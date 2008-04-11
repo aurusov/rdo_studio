@@ -209,27 +209,27 @@ dpt_main:
 // ---------- DPT Search
 // ----------------------------------------------------------------------------
 dpt_search_trace:		/* empty */ {
-							$$ = rdoRuntime::RDODecisionPointTrace::DPT_no_trace;
+							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
 						}
 						| no_trace {
-							$$ = rdoRuntime::RDODecisionPointTrace::DPT_no_trace;
+							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
 						}
 						| trace_keyword {
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа search" );
 						}
 						| trace_stat {
-							$$ = rdoRuntime::RDODecisionPointTrace::DPT_trace_stat;
+							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_stat;
 						}
 						| trace_tops {
-							$$ = rdoRuntime::RDODecisionPointTrace::DPT_trace_tops;
+							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_tops;
 						}
 						| trace_all {
-							$$ = rdoRuntime::RDODecisionPointTrace::DPT_trace_all;
+							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
 						};
 
 dpt_search_begin:		Decision_point IDENTIF_COLON search_keyword dpt_search_trace {
 							std::string name = *reinterpret_cast<std::string*>($2);
-							$$ = (int)new RDODPTSearch( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), *reinterpret_cast<rdoRuntime::RDODecisionPointTrace::DPT_TraceFlag*>(&$4) );
+							$$ = (int)new RDODPTSearch( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
 						}
 						| Decision_point IDENTIF_COLON error {
 							PARSER->error( @2, @3, "Ожидается тип точки" );
@@ -323,11 +323,11 @@ dpt_search_descr_param:	/* empty */
 
 dpt_search_descr_value:	value_before fun_arithm {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							dpt->getLastActivity()->setValue( RDODPTSearchActivity::DPT_value_before, (RDOFUNArithm *)$2, @1 );
+							dpt->getLastActivity()->setValue( rdoRuntime::RDODPTSearch::Activity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
 						| value_after fun_arithm {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							dpt->getLastActivity()->setValue( RDODPTSearchActivity::DPT_value_after, (RDOFUNArithm *)$2, @1 );
+							dpt->getLastActivity()->setValue( rdoRuntime::RDODPTSearch::Activity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
 						| value_before error {
 							PARSER->error( @1, @2, "Ошибка в арифметическом выражении" );

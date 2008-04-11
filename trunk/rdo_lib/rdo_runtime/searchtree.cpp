@@ -15,7 +15,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- TreeRoot - корень дерева DPT
 // ----------------------------------------------------------------------------
-TreeRoot::TreeRoot( RDOSimulator* sim, RDODecisionPoint* _dp ):
+TreeRoot::TreeRoot( RDOSimulator* sim, RDODPTSearch* _dp ):
 	dp( _dp ),
 	rootNode( NULL ),
 	targetNode( NULL ),
@@ -32,7 +32,7 @@ TreeRoot::TreeRoot( RDOSimulator* sim, RDODecisionPoint* _dp ):
 // ----------------------------------------------------------------------------
 // ---------- TreeNode - узел графа DPT
 // ----------------------------------------------------------------------------
-TreeNode::TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDOActivity* _activity, double cost, int cnt ):
+TreeNode::TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDODPTSearch::Activity* _activity, double cost, int cnt ):
 	currAct( NULL ),
 	childSim( NULL ),
 	newCostPath( 0 ),
@@ -87,7 +87,7 @@ void TreeNode::ExpandChildren()
 	root->expandedNodesCount++;
 
 	// Бегаем по всем активностям самой точки
-	for ( std::list< RDOActivity* >::iterator i = root->dp->activities.begin(); i != root->dp->activities.end(); i++ ) {
+	for ( std::list< RDODPTSearch::Activity* >::iterator i = root->dp->activities.begin(); i != root->dp->activities.end(); i++ ) {
 		currAct  = (*i);
 		childSim = sim->createCopy();
 #ifdef _DEBUG
@@ -96,8 +96,8 @@ void TreeNode::ExpandChildren()
 		}
 #endif
 		root->sizeof_dpt += childSim->sizeof_sim;
-		currAct->rule->onBeforeChoiceFrom( childSim );
-		if ( !currAct->rule->choiceFrom( childSim ) ) {
+		currAct->rule()->onBeforeChoiceFrom( childSim );
+		if ( !currAct->rule()->choiceFrom( childSim ) ) {
 			// Не прошел Choice from, удаляем симулятор и переходим к другой активности.
 			// TODO: а зачем удалять симулятор, ведь БД не поменялась ?
 			// Такое будет возможно, если при подготовке параметров паттерна будет
@@ -111,17 +111,17 @@ void TreeNode::ExpandChildren()
 			// Только для статистики
 			root->fullNodesCount++;
 			// Расчитать стоимость применения правила (value before)
-			if ( !currAct->valueAfter ) {
-				newCostRule = currAct->costOfRule( childSim );
+			if ( currAct->valueTime() == RDODPTSearch::Activity::vt_before ) {
+				newCostRule = currAct->cost( childSim );
 			}
 			// Выполнить само правило (раскрыть вершину)
-			currAct->rule->onBeforeRule( childSim );
-			currAct->rule->convertRule( childSim );
-			currAct->rule->onAfterRule( childSim, true );
+			currAct->rule()->onBeforeRule( childSim );
+			currAct->rule()->convertRule( childSim );
+			currAct->rule()->onAfterRule( childSim, true );
 
 			// Расчитать стоимость применения правила (value after)
-			if ( currAct->valueAfter ) {
-				newCostRule = currAct->costOfRule( childSim );
+			if ( currAct->valueTime() == RDODPTSearch::Activity::vt_after ) {
+				newCostRule = currAct->cost( childSim );
 			}
 			// Расчитали стоимость пути до текущей вершины
 			newCostPath = costPath + newCostRule;

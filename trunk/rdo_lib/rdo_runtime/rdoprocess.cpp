@@ -92,17 +92,17 @@ RDOPROCBlock::RDOPROCBlock( RDOPROCProcess* _process ):
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-void RDOPROCGenerate::init( RDOSimulator* sim )
+void RDOPROCGenerate::onStart( RDOSimulator* sim )
 {
 	calcNextTimeInterval( sim );
 }
 
-bool RDOPROCGenerate::checkOperation( RDOSimulator* sim )
+bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
 {
 	return sim->getCurrentTime() >= timeNext ? true : false;
 }
 
-RDOBaseOperation::BOResult RDOPROCGenerate::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
 {
 	TRACE( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval( sim );
@@ -130,10 +130,10 @@ RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, int _rss_i
 {
 }
 
-void RDOPROCBlockForSeize::init( RDOSimulator* sim )
+void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
 {
 	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
-	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
+	// как при DPT search, то инициализацию атрибутов надо будет делать в onCheckCondition
 	rss = static_cast<RDORuntime*>(sim)->getResourceByID( rss_id );
 	enum_free = RDOValue( rss->getParam(0).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
 	enum_buzy = RDOValue( rss->getParam(0).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
@@ -142,7 +142,7 @@ void RDOPROCBlockForSeize::init( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
-bool RDOPROCSeize::checkOperation( RDOSimulator* sim )
+bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
@@ -159,7 +159,7 @@ bool RDOPROCSeize::checkOperation( RDOSimulator* sim )
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOPROCSeize::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCSeize::onDoOperation( RDOSimulator* sim )
 {
 	TRACE( "%7.1f SEIZE\n", sim->getCurrentTime() );
 	rss->setParam(0, enum_buzy);
@@ -170,7 +170,7 @@ RDOBaseOperation::BOResult RDOPROCSeize::doOperation( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCRelease
 // ----------------------------------------------------------------------------
-bool RDOPROCRelease::checkOperation( RDOSimulator* sim )
+bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
@@ -187,7 +187,7 @@ bool RDOPROCRelease::checkOperation( RDOSimulator* sim )
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOPROCRelease::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCRelease::onDoOperation( RDOSimulator* sim )
 {
 	TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
 	rss->setParam(0, enum_free);
@@ -198,7 +198,7 @@ RDOBaseOperation::BOResult RDOPROCRelease::doOperation( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-bool RDOPROCAdvance::checkOperation( RDOSimulator* sim )
+bool RDOPROCAdvance::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		return true;
@@ -215,7 +215,7 @@ bool RDOPROCAdvance::checkOperation( RDOSimulator* sim )
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOPROCAdvance::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCAdvance::onDoOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		TRACE( "%7.1f ADVANCE BEGIN\n", sim->getCurrentTime() );
@@ -251,12 +251,12 @@ RDOBaseOperation::BOResult RDOPROCAdvance::doOperation( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
-bool RDOPROCTerminate::checkOperation( RDOSimulator* sim )
+bool RDOPROCTerminate::onCheckCondition( RDOSimulator* sim )
 {
 	return !transacts.empty() ? true : false;
 }
 
-RDOBaseOperation::BOResult RDOPROCTerminate::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 {
 	TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
 	RDOPROCTransact* transact = transacts.front();

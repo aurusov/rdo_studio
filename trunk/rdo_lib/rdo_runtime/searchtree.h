@@ -7,9 +7,6 @@ namespace rdoRuntime
 {
 
 class TreeNode;
-class RDOSimulator;
-class RDOActivity;
-class RDODecisionPoint;
 
 // ----------------------------------------------------------------------------
 // ---------- TreeRoot - корень дерева DPT
@@ -22,7 +19,7 @@ private:
 	int nodesCount;
 
 protected:
-	TreeRoot( RDOSimulator* sim, RDODecisionPoint* _dp);
+	TreeRoot( RDOSimulator* sim, RDODPTSearch* _dp);
 
 public:
 	virtual ~TreeRoot() {}
@@ -30,7 +27,7 @@ public:
 	virtual void createRootTreeNode( RDOSimulator* sim ) = 0;
 
 	std::vector< TreeNode* > OPEN;
-	RDODecisionPoint* dp;
+	RDODPTSearch*     dp;
 	TreeNode*         rootNode;
 	TreeNode*         targetNode;
 	RDOSimulator*     theRealSimulator;       // all others are copy
@@ -53,10 +50,10 @@ public:
 class TreeNode
 {
 protected:
-	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDOActivity* _activity, double cost, int cnt );
+	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDODPTSearch::Activity* _activity, double cost, int cnt );
 
-	RDOActivity*  currAct; // вершина пытается применять различные активности
-	RDOSimulator* childSim;
+	RDODPTSearch::Activity*  currAct; // вершина пытается применять различные активности
+	RDOSimulator*            childSim;
 
 	double newCostPath; 
 	double newCostRest;
@@ -71,11 +68,11 @@ protected:
 public:
 	virtual ~TreeNode();
 
-	RDOSimulator* sim;
+	RDOSimulator*            sim;
 	std::vector< TreeNode* > children;
-	TreeNode*    parent;
-	TreeRoot*    root;
-	RDOActivity* activity; // активность (currAct), которую применил предок при создании this
+	TreeNode*                parent;
+	TreeRoot*                root;
+	RDODPTSearch::Activity*  activity; // активность (currAct), которую применил предок при создании this
 	double costRule;
 	double costPath;
 	double costRest;

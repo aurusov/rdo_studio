@@ -220,7 +220,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODecisionPointTrace::DPT_TraceFlag _trace ):
+RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag _trace ):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _src_info ),
 	trace( _trace )
@@ -241,7 +241,7 @@ void RDODPTSearch::end()
 	rdoRuntime::RDOCalc* condCalc = conditon ? conditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 	rdoRuntime::RDOCalc* termCalc = termConditon ? termConditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 
-	rdoRuntime::RDOSearchRuntime* dpt = new rdoRuntime::RDOSearchRuntime( parser()->runtime(),
+	rdoRuntime::RDODPTSearchRuntime* dpt = new rdoRuntime::RDODPTSearchRuntime( parser()->runtime(),
 		condCalc,
 		termCalc,
 		evalBy->createCalc(),
@@ -255,7 +255,7 @@ void RDODPTSearch::end()
 		RDODPTSearchActivity* activity = activities.at(i);
 		rdoRuntime::RDOSearchActivityRuntime* act = new rdoRuntime::RDOSearchActivityRuntime( parser()->runtime(),
 			dynamic_cast<rdoRuntime::RDORule*>(activity->getActivity()),
-			(activity->getValue() == RDODPTSearchActivity::DPT_value_after),
+			activity->getValue(),
 			activity->getRuleCost()->createCalc());
 		dpt->addActivity( act );
 	}
@@ -266,7 +266,7 @@ void RDODPTSearch::end()
 // ----------------------------------------------------------------------------
 RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
 	RDODPTActivity( _parent, _src_info, _pattern_src_info ),
-	value( DPT_value_before ),
+	value( rdoRuntime::RDODPTSearch::Activity::vt_before ),
 	ruleCost( NULL )
 {
 	if ( pattern->getType() != RDOPATPattern::PT_Rule ) {
@@ -283,10 +283,10 @@ RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, cons
 //			parser()->error( "Rule: " + getName() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
-	activity = new rdoRuntime::RDOActivityRuleRuntime( parser()->runtime(), pattern->getPatRuntime(), true, getName() );
+	activity = new rdoRuntime::RDOActivityRule( parser()->runtime(), pattern->getPatRuntime(), true, getName() );
 }
 
-void RDODPTSearchActivity::setValue( DPTSearchValue _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos )
+void RDODPTSearchActivity::setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos )
 {
 	endParam( _param_pos );
 	value    = _value;

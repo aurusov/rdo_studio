@@ -7,9 +7,10 @@
 
 namespace rdoRuntime {
 
+class RDOSimulator;
 class RDOSimulatorTrace;
 class TreeNodeTrace;
-class RDODecisionPointTrace;
+//class RDODPTSearchTrace;
 class RDORuleTrace;
 class RDOIETrace;
 class RDOResourceTrace;
@@ -17,6 +18,8 @@ class RDOOperationTrace;
 class RDOTraceableObject;
 class TreeRootTrace;
 class RDOPokazTrace;
+class TreeNode;
+class TreeRoot;
 
 class RDOEndL
 {

@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoRuntime
 {
 
-void RDOSimulatorTrace::addTemplateDecisionPoint( RDODecisionPointTrace* dp )
+void RDOSimulatorTrace::addTemplateDecisionPoint( RDODPTSearchTrace* dp )
 {
 	dp->id = dptCounter++;
 	RDOSimulator::addTemplateBaseOperation( dp );
@@ -50,7 +50,7 @@ void RDOSimulatorTrace::addTemplateBaseOperation( RDOBaseOperation* bop )
 			if ( op ) {
 				addTemplateOperation( op );
 			} else {
-				RDODecisionPointTrace* dp = dynamic_cast<RDODecisionPointTrace*>(bop);
+				RDODPTSearchTrace* dp = dynamic_cast<RDODPTSearchTrace*>(bop);
 				if ( dp ) {
 					addTemplateDecisionPoint( dp );
 				} else {

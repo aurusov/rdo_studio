@@ -7,7 +7,7 @@
 
 namespace rdoRuntime
 {
-class RDOPatternRuntime;
+class RDOPattern;
 }
 
 namespace rdoParse 
@@ -54,7 +54,7 @@ protected:
 	RDOPATPattern( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, const bool _trace );
 	virtual ~RDOPATPattern() {}
 
-	rdoRuntime::RDOPatternRuntime* patRuntime;
+	rdoRuntime::RDOPattern* patRuntime;
 
 	rdoRuntime::RDOCalc* createRelRes( const RDOPATParamSet* const parSet, bool trace ) const;
 	virtual void addParamSetCalc( const RDOPATParamSet* const parSet, rdoRuntime::RDOCalc* calc );
@@ -70,7 +70,7 @@ public:
 	};
 	virtual PatType getType() const = 0;
 	bool    isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
-	rdoRuntime::RDOPatternRuntime* getPatRuntime() const { return patRuntime; }
+	rdoRuntime::RDOPattern* getPatRuntime() const { return patRuntime; }
 
 	static std::string StatusToStr( rdoRuntime::RDOResourceTrace::ConvertStatus value );
 	rdoRuntime::RDOResourceTrace::ConvertStatus StrToStatus( const std::string& value, const YYLTYPE& convertor_pos );
@@ -123,16 +123,16 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPATPatternRule
+// ---------- RDOPATRule
 // ----------------------------------------------------------------------------
-class RDOPATPatternRule: public RDOPATPattern
+class RDOPATRule: public RDOPATPattern
 {
 protected:
 	virtual std::string getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet );
 	virtual std::string getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet );
 
 public:
-	RDOPATPatternRule( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
+	RDOPATRule( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
 	virtual void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& convertor_pos );
 	virtual void setTime( RDOFUNArithm* arithm );
 	virtual char getModelStructureLetter() const { return 'R'; };

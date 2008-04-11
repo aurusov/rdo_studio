@@ -9,7 +9,6 @@
 namespace rdoRuntime
 {
 class RDOCalc;
-class RDOPatternRuntime;
 class RDOPROCProcess;
 class RDOPROCGenerate;
 class RDOPROCSeize;
@@ -71,7 +70,7 @@ public:
 class RDODPTSearch: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	rdoRuntime::RDODecisionPointTrace::DPT_TraceFlag trace;
+	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace;
 	RDOFUNLogic*   conditon;
 	RDOFUNLogic*   termConditon;
 	RDOFUNArithm*  evalBy;
@@ -79,7 +78,7 @@ private:
 	std::vector< RDODPTSearchActivity* > activities;
 
 public:
-	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODecisionPointTrace::DPT_TraceFlag _trace = rdoRuntime::RDODecisionPointTrace::DPT_no_trace );
+	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag _trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace );
 	const std::string& getName() const                         { return src_info().src_text(); }
 	void setCondition( RDOFUNLogic* _conditon = NULL )         { conditon     = _conditon;     }
 	void setTermCondition( RDOFUNLogic* _termConditon = NULL ) { termConditon = _termConditon; }
@@ -100,21 +99,15 @@ public:
 // ----------------------------------------------------------------------------
 class RDODPTSearchActivity: public RDODPTActivity
 {
-public:
-	enum DPTSearchValue {
-		DPT_value_before,
-		DPT_value_after
-	};
-
 private:
-	DPTSearchValue value;
+	rdoRuntime::RDODPTSearch::Activity::ValueTime value;
 	RDOFUNArithm* ruleCost;
 
 public:
 	RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
-	DPTSearchValue getValue() const { return value; }
-	void setValue( DPTSearchValue _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos );
+	rdoRuntime::RDODPTSearch::Activity::ValueTime getValue() const { return value; }
+	void setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos );
 
 	RDOFUNArithm* getRuleCost() const { return ruleCost; }
 };

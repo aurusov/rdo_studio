@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "rdocalc.h"
 #include "rdoprocess.h"
+#include "rdo_runtime.h"
 #include <limits>
 
 #ifdef _DEBUG
@@ -14,8 +15,8 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-RDOCalc::RDOCalc( RDORuntimeParent* _parent ):
-	RDORuntimeObject( _parent )
+RDOCalc::RDOCalc( RDORuntimeParent* parent ):
+	RDORuntimeObject( parent )
 {
 }
 
@@ -51,7 +52,187 @@ RDOValue& RDOCalc::calcValueBase( RDORuntime* runtime )
 			runtime->error( "", this );
 		}
 	}
-	return value;
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetResParam (Параметры постоянного ресурса)
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetResParam::calcValue( RDORuntime* runtime )
+{
+	m_value = runtime->getResParamVal( m_resID, m_paramID );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
+// ----------------------------------------------------------------------------
+RDOCalcGetTempResParamFRM::RDOCalcGetTempResParamFRM( RDORuntime* parent, int _resNumb, int _parNumb ):
+	RDOCalcGetResParam( parent, _resNumb, _parNumb )
+{
+	parent->connect( this, RDORuntime::RO_BEFOREDELETE );
+}
+
+RDOValue& RDOCalcGetTempResParamFRM::calcValue( RDORuntime* runtime )
+{
+	if ( m_resID >= 0 ) {
+		m_value = runtime->getResParamVal( m_resID, m_paramID );
+	} else if ( m_resID == -1 ) {
+		RDOEnum* _enum = new RDOEnum( runtime );
+		_enum->add( "Удален" );
+		m_value = RDOValue( *_enum );
+		m_resID = -2;
+	}
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetUnknowResParam (Параметры несуществующего ресурса)
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetUnknowResParam::calcValue( RDORuntime* runtime )
+{
+	runtime->error( rdo::format("Попытка использовать несуществующий ресурс: %s.%s", m_resName.c_str(), m_parName.c_str()), this );
+	return m_value;
+}
+
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetGroupResParam
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetGroupResParam::calcValue( RDORuntime* runtime )
+{
+	RDOResource* currRes = static_cast<RDOResource*>(runtime->getGroupFuncRes());
+	m_value = currRes->getParam( m_parNumb );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetRelevantResParam
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetRelevantResParam::calcValue( RDORuntime* runtime )
+{
+	m_value = runtime->getResParamVal( runtime->getResByRelRes(m_relNumb), m_parNumb );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOSetRelParamCalc
+// ----------------------------------------------------------------------------
+RDOValue& RDOSetRelParamCalc::calcValue( RDORuntime* runtime )
+{
+	runtime->setResParamVal( runtime->getResByRelRes(m_relNumb), m_parNumb, m_calc->calcValueBase( runtime ) );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOSetRelParamDiapCalc
+// ----------------------------------------------------------------------------
+RDOValue& RDOSetRelParamDiapCalc::calcValue( RDORuntime* runtime )
+{
+	m_value = m_calc->calcValueBase( runtime );
+	if ( m_value < m_min_value || m_value > m_max_value ) {
+		if ( m_value.getType() == RDOValue::rvt_int && m_min_value.getType() == RDOValue::rvt_int && m_max_value.getType() == RDOValue::rvt_int ) {
+			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_min_value.getInt(), m_max_value.getInt(), m_value.getInt()), this );
+		} else {
+			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_min_value.getDouble(), m_max_value.getDouble(), m_value.getDouble()), this );
+		}
+	}
+	runtime->setResParamVal( runtime->getResByRelRes(m_relNumb), m_parNumb, m_value );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOSetResourceParamCalc
+// ----------------------------------------------------------------------------
+RDOValue& RDOSetResourceParamCalc::calcValue( RDORuntime* runtime )
+{
+	runtime->setResParamVal( m_resNumb, m_parNumb, m_calc->calcValueBase( runtime ) );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcEraseRes
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcEraseRes::calcValue( RDORuntime* runtime )
+{
+	runtime->onEraseRes( runtime->getResByRelRes(m_rel_res_id), this );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOSetPatternParamCalc
+// ----------------------------------------------------------------------------
+RDOValue& RDOSetPatternParamCalc::calcValue( RDORuntime* runtime )
+{
+	runtime->setPatternParameter( m_parNumb, m_val );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcPatParam
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcPatParam::calcValue( RDORuntime* runtime )
+{
+	m_value = runtime->getPatternParameter(m_numberOfParam);
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetTimeNow
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetTimeNow::calcValue( RDORuntime* runtime )
+{
+	m_value = runtime->getTimeNow();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetSeconds
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetSeconds::calcValue( RDORuntime* runtime )
+{
+	m_value = runtime->getSeconds();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFunAlgorithmicCalc
+// ----------------------------------------------------------------------------
+RDOValue& RDOFunAlgorithmicCalc::calcValue( RDORuntime* runtime )
+{
+	int size = m_conditions.size();
+	for ( int i = 0; i < size; i++ ) {
+		if ( m_conditions[i]->calcValueBase( runtime ).getBool() ) {
+			return m_actions[i]->calcValueBase( runtime );
+		}
+	}
+	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
+	runtime->error( "Внутренная ошибка, RDOFunAlgorithmicCalc", this );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFunAlgorithmicDiapCalc
+// ----------------------------------------------------------------------------
+RDOValue& RDOFunAlgorithmicDiapCalc::calcValue( RDORuntime* runtime )
+{
+	int size = m_conditions.size();
+	for ( int i = 0; i < size; i++ ) {
+		if ( m_conditions[i]->calcValueBase( runtime ).getBool() ) {
+			m_value = m_actions[i]->calcValueBase( runtime );
+			if ( m_value < m_min_value || m_value > m_max_value ) {
+				if ( m_value.getType() == RDOValue::rvt_int && m_min_value.getType() == RDOValue::rvt_int && m_max_value.getType() == RDOValue::rvt_int ) {
+					runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_min_value.getInt(), m_max_value.getInt(), m_value.getInt()), m_actions[i] );
+				} else {
+					runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_min_value.getDouble(), m_max_value.getDouble(), m_value.getDouble()), m_actions[i] );
+				}
+			}
+			return m_value;
+		}
+	}
+	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
+	runtime->error( "Внутренная ошибка, RDOFunAlgorithmicDiapCalc", this );
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
@@ -63,13 +244,13 @@ RDOValue& RDOFunCalcExist::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( !(*it)->checkType(nResType) ) continue;
+		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
-		if ( condition->calcValueBase( runtime ).getBool() ) res = true;
+		if ( m_condition->calcValueBase( runtime ).getBool() ) res = true;
 		runtime->popGroupFunc();
 	}
-	value = res;
-	return value;
+	m_value = res;
+	return m_value;
 }
 
 RDOValue& RDOFunCalcNotExist::calcValue( RDORuntime* runtime )
@@ -78,13 +259,13 @@ RDOValue& RDOFunCalcNotExist::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( !(*it)->checkType(nResType) ) continue;
+		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
-		if ( condition->calcValueBase( runtime ).getBool() ) res = false;
+		if ( m_condition->calcValueBase( runtime ).getBool() ) res = false;
 		runtime->popGroupFunc();
 	}
-	value = res;
-	return value;
+	m_value = res;
+	return m_value;
 }
 
 RDOValue& RDOFunCalcForAll::calcValue( RDORuntime* runtime )
@@ -94,17 +275,17 @@ RDOValue& RDOFunCalcForAll::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( !(*it)->checkType(nResType) ) continue;
+		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
-		if ( !condition->calcValueBase( runtime ).getBool() ) {
+		if ( !m_condition->calcValueBase( runtime ).getBool() ) {
 			res = false;
 		} else if ( !first_found ) {
 			first_found = true;
 		}
 		runtime->popGroupFunc();
 	}
-	value = first_found ? res : false;
-	return value;
+	m_value = first_found ? res : false;
+	return m_value;
 }
 
 RDOValue& RDOFunCalcNotForAll::calcValue( RDORuntime* runtime )
@@ -113,13 +294,13 @@ RDOValue& RDOFunCalcNotForAll::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( !(*it)->checkType(nResType) ) continue;
+		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
-		if( !condition->calcValueBase( runtime ).getBool() ) res = true;
+		if( !m_condition->calcValueBase( runtime ).getBool() ) res = true;
 		runtime->popGroupFunc();
 	}
-	value = res;
-	return value;
+	m_value = res;
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
@@ -131,9 +312,9 @@ void RDOFunCalcSelect::prepare( RDORuntime* sim ) const
 	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( !(*it)->checkType(nResType) ) continue;
+		if ( !(*it)->checkType(m_nResType) ) continue;
 		sim->pushGroupFunc( *it );
-		if ( condition->calcValueBase( sim ).getBool() ) {
+		if ( m_condition->calcValueBase( sim ).getBool() ) {
 			res_list.push_back( *it );
 		}
 		sim->popGroupFunc();
@@ -143,89 +324,328 @@ void RDOFunCalcSelect::prepare( RDORuntime* sim ) const
 RDOValue& RDOFunCalcSelect::calcValue( RDORuntime* runtime )
 {
 	prepare( runtime );
-	return value;
-}
-
-RDOValue& RDOFunCalcSelectSize::calcValue( RDORuntime* runtime )
-{
-	select->prepare( runtime );
-	value = select->res_list.size();
-	return value;
-}
-
-RDOValue& RDOFunCalcSelectEmpty::calcValue( RDORuntime* runtime )
-{
-	select->prepare( runtime );
-	value = select->res_list.empty();
-	return value;
+	return m_value;
 }
 
 RDOValue& RDOFunCalcSelectExist::calcValue( RDORuntime* runtime )
 {
-	select->prepare( runtime );
+	m_select->prepare( runtime );
 	bool res = false;
-	std::list< RDOResource* >::iterator it  = select->res_list.begin();
-	std::list< RDOResource* >::iterator end = select->res_list.end();
+	std::list< RDOResource* >::iterator it  = m_select->res_list.begin();
+	std::list< RDOResource* >::iterator end = m_select->res_list.end();
 	while ( it != end && !res ) {
 		runtime->pushGroupFunc( *it );
-		if ( condition->calcValueBase( runtime ).getBool() ) res = true;
+		if ( m_condition->calcValueBase( runtime ).getBool() ) res = true;
 		runtime->popGroupFunc();
 		it++;
 	}
-	value = res;
-	return value;
+	m_value = res;
+	return m_value;
 }
 
 RDOValue& RDOFunCalcSelectNotExist::calcValue( RDORuntime* runtime )
 {
-	select->prepare( runtime );
+	m_select->prepare( runtime );
 	bool res = true;
-	std::list< RDOResource* >::iterator it  = select->res_list.begin();
-	std::list< RDOResource* >::iterator end = select->res_list.end();
+	std::list< RDOResource* >::iterator it  = m_select->res_list.begin();
+	std::list< RDOResource* >::iterator end = m_select->res_list.end();
 	while ( it != end && res ) {
 		runtime->pushGroupFunc( *it );
-		if ( condition->calcValueBase( runtime ).getBool() ) res = false;
+		if ( m_condition->calcValueBase( runtime ).getBool() ) res = false;
 		runtime->popGroupFunc();
 		it++;
 	}
-	value = res;
-	return value;
+	m_value = res;
+	return m_value;
 }
 
 RDOValue& RDOFunCalcSelectForAll::calcValue( RDORuntime* runtime )
 {
-	select->prepare( runtime );
-	if ( select->res_list.empty() ) {
-		value = false;
-		return value;
+	m_select->prepare( runtime );
+	if ( m_select->res_list.empty() ) {
+		m_value = false;
+		return m_value;
 	}
 	bool res = true;
-	std::list< RDOResource* >::iterator it  = select->res_list.begin();
-	std::list< RDOResource* >::iterator end = select->res_list.end();
+	std::list< RDOResource* >::iterator it  = m_select->res_list.begin();
+	std::list< RDOResource* >::iterator end = m_select->res_list.end();
 	while ( it != end && res ) {
 		runtime->pushGroupFunc( *it );
-		if ( !condition->calcValueBase( runtime ).getBool() ) res = false;
+		if ( !m_condition->calcValueBase( runtime ).getBool() ) res = false;
 		runtime->popGroupFunc();
 		it++;
 	}
-	value = res;
-	return value;
+	m_value = res;
+	return m_value;
 }
 
 RDOValue& RDOFunCalcSelectNotForAll::calcValue( RDORuntime* runtime )
 {
-	select->prepare( runtime );
+	m_select->prepare( runtime );
 	bool res = false;
-	std::list< RDOResource* >::iterator it  = select->res_list.begin();
-	std::list< RDOResource* >::iterator end = select->res_list.end();
+	std::list< RDOResource* >::iterator it  = m_select->res_list.begin();
+	std::list< RDOResource* >::iterator end = m_select->res_list.end();
 	while ( it != end && !res ) {
 		runtime->pushGroupFunc( *it );
-		if ( !condition->calcValueBase( runtime ).getBool() ) res = true;
+		if ( !m_condition->calcValueBase( runtime ).getBool() ) res = true;
 		runtime->popGroupFunc();
 		it++;
 	}
-	value = res;
-	return value;
+	m_value = res;
+	return m_value;
+}
+
+RDOValue& RDOFunCalcSelectSize::calcValue( RDORuntime* runtime )
+{
+	m_select->prepare( runtime );
+	m_value = m_select->res_list.size();
+	return m_value;
+}
+
+RDOValue& RDOFunCalcSelectEmpty::calcValue( RDORuntime* runtime )
+{
+	m_select->prepare( runtime );
+	m_value = m_select->res_list.empty();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- Стандартные функции языка
+// ----------------------------------------------------------------------------
+#define DECLARE_RDO_STD_FUN_DOUBLE( CalcName, FunName ) \
+RDOValue& RDOFunCalc##CalcName::calcValue( RDORuntime* runtime ) \
+{ \
+	m_value = FunName( runtime->getFuncArgument(0).getDouble() ); \
+	return m_value; \
+}
+
+#define DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( CalcName, FunName ) \
+RDOValue& RDOFunCalc##CalcName::calcValue( RDORuntime* runtime ) \
+{ \
+	m_value = FunName( runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble() ); \
+	return m_value; \
+}
+
+#define DECLARE_RDO_STD_FUN_DOUBLE_INT( CalcName, FunName ) \
+RDOValue& RDOFunCalc##CalcName::calcValue( RDORuntime* runtime ) \
+{ \
+	m_value = FunName( runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getInt() ); \
+	return m_value; \
+}
+
+#define DECLARE_RDO_STD_FUN_INT( CalcName, FunName ) \
+RDOValue& RDOFunCalc##CalcName::calcValue( RDORuntime* runtime ) \
+{ \
+	m_value = FunName( runtime->getFuncArgument(0).getInt() ); \
+	return m_value; \
+}
+
+#define DECLARE_RDO_STD_FUN_INT_INT( CalcName, FunName ) \
+RDOValue& RDOFunCalc##CalcName::calcValue( RDORuntime* runtime ) \
+{ \
+	m_value = FunName( runtime->getFuncArgument(0).getInt(), runtime->getFuncArgument(1).getInt() ); \
+	return m_value; \
+}
+
+double modf( double value )
+{
+	double tmp;
+	return ::modf( value, &tmp );
+}
+
+double log2( double value )
+{
+	return log( value ) / log(2);
+}
+
+double logN( double value1, double value2 )
+{
+	return log( value1 ) / log( value2 );
+}
+
+int round( double value )
+{
+	return (int)floor( value + 0.5 );
+}
+
+DECLARE_RDO_STD_FUN_DOUBLE       ( Sin     , sin       );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Cos     , cos       );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Tan     , tan       );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Cotan   , 1.0 / tan );
+DECLARE_RDO_STD_FUN_DOUBLE       ( ArcCos  , acos      );
+DECLARE_RDO_STD_FUN_DOUBLE       ( ArcSin  , asin      );
+DECLARE_RDO_STD_FUN_DOUBLE       ( ArcTan  , atan      );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Abs     , fabs      );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Sqrt    , sqrt      );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Round   , round     );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Exp     , exp       );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Floor   , floor     );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Frac    , modf      );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Ln      , log       );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Log10   , log10     );
+DECLARE_RDO_STD_FUN_DOUBLE       ( Log2    , log2      );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( LogN    , logN      );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Max     , std::_MAX );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Min     , std::_MIN );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Power   , pow       );
+DECLARE_RDO_STD_FUN_INT          ( IAbs    , abs       );
+DECLARE_RDO_STD_FUN_INT_INT      ( IMax    , std::_MAX );
+DECLARE_RDO_STD_FUN_INT_INT      ( IMin    , std::_MIN );
+DECLARE_RDO_STD_FUN_INT          ( Int     , int       );
+DECLARE_RDO_STD_FUN_DOUBLE_INT   ( IntPower, pow       );
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFuncParam
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcFuncParam::calcValue( RDORuntime* runtime )
+{
+	m_value = runtime->getFuncArgument( m_param_number );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcBinary
+// ----------------------------------------------------------------------------
+#define DECLARE_BINARY_CALC( CalcName, CalcOpr ) \
+RDOValue& RDOCalc##CalcName::calcValue( RDORuntime* runtime ) \
+{ \
+	runtime->inc_cnt_calc_logic(); \
+	m_value = m_left->calcValueBase( runtime ) CalcOpr m_right->calcValueBase( runtime ); \
+	return m_value; \
+}
+
+// ----------------------------------------------------------------------------
+// ---------- Арифметические функции
+// ----------------------------------------------------------------------------
+DECLARE_BINARY_CALC( Plus , + );
+DECLARE_BINARY_CALC( Minus, - );
+DECLARE_BINARY_CALC( Mult , * );
+
+RDOValue& RDOCalcDiv::calcValue( RDORuntime* runtime ) {
+	runtime->inc_cnt_calc_arithm();
+	RDOValue& rVal = m_right->calcValueBase( runtime );
+	if ( rVal == 0 ) {
+		runtime->error( "Деление на ноль", this );
+//		runtime->error("Division by zero", this);
+	}
+	m_value = m_left->calcValueBase( runtime ) / rVal;
+	return m_value;
+}
+
+RDOValue& RDOCalcPlusEnumSafe::calcValue( RDORuntime* runtime )
+{
+	runtime->inc_cnt_calc_arithm();
+	m_value = m_left->calcValueBase( runtime ).getEnumAsInt() + m_right->calcValueBase( runtime ).getEnumAsInt();
+	return m_value;
+}
+
+RDOValue& RDOCalcMultEnumSafe::calcValue( RDORuntime* runtime )
+{
+	runtime->inc_cnt_calc_arithm();
+	m_value = m_left->calcValueBase( runtime ).getEnumAsInt() * m_right->calcValueBase( runtime ).getEnumAsInt();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- Логические функции
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcAnd::calcValue( RDORuntime* runtime )
+{
+	runtime->inc_cnt_calc_logic();
+	if ( !m_left->calcValueBase( runtime ).getBool()  ) {
+		return m_value_false;
+	}
+	if ( !m_right->calcValueBase( runtime ).getBool() ) {
+		return m_value_false;
+	}
+	return m_value_true;
+}
+
+RDOValue& RDOCalcOr::calcValue( RDORuntime* runtime )
+{
+	runtime->inc_cnt_calc_logic();
+	if ( m_left->calcValueBase( runtime ).getBool()  ) {
+		return m_value_true;
+	}
+	if ( m_right->calcValueBase( runtime ).getBool() ) {
+		return m_value_true;
+	}
+	return m_value_false;
+}
+
+RDOValue& RDOCalcNot::calcValue( RDORuntime* runtime )
+{
+	runtime->inc_cnt_calc_logic();
+	m_value = !m_calc->calcValueBase( runtime ).getBool();
+	return m_value;
+}
+
+DECLARE_BINARY_CALC( IsEqual   , == );
+DECLARE_BINARY_CALC( IsNotEqual, != );
+DECLARE_BINARY_CALC( IsLess    , <  );
+DECLARE_BINARY_CALC( IsGreater , >  );
+DECLARE_BINARY_CALC( IsLEQ     , <= );
+DECLARE_BINARY_CALC( IsGEQ     , >= );
+
+// ----------------------------------------------------------------------------
+// ---------- Унарные операции
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcCheckDiap::calcValue( RDORuntime* runtime )
+{
+	m_value = m_oper->calcValueBase( runtime );
+	if ( m_value < m_min_value || m_value > m_max_value ) {
+		if ( m_value.getType() == RDOValue::rvt_int && m_min_value.getType() == RDOValue::rvt_int && m_max_value.getType() == RDOValue::rvt_int ) {
+			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_min_value.getInt(), m_max_value.getInt(), m_value.getInt()), this );
+		} else {
+			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_min_value.getDouble(), m_max_value.getDouble(), m_value.getDouble()), this );
+		}
+	}
+	return m_value; 
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetConst / RDOCalcSetConst
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetConst::calcValue( RDORuntime* runtime )
+{
+	m_value = runtime->getConstValue( m_number );
+	return m_value;
+}
+
+RDOValue& RDOCalcSetConst::calcValue( RDORuntime* runtime )
+{
+	runtime->setConstValue( m_number, m_calc->calcValueBase( runtime ) );
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunctionCall
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcFunctionCall::calcValue( RDORuntime* runtime )
+{
+	runtime->pushFuncTop();
+	int size = m_parameters.size();
+	for ( int i = 0; i < size; i++ ) {
+		RDOValue arg = m_parameters[i]->calcValueBase( runtime );
+		runtime->pushFuncArgument( arg );
+	}
+	runtime->resetFuncTop( m_parameters.size() );
+	m_value = m_function->calcValueBase( runtime );
+	size = m_parameters.size();
+	for ( i = 0; i < size; i++ ) {
+		runtime->popFuncArgument();
+	}
+	runtime->popFuncTop();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- Выбор ресурсов
+// ----------------------------------------------------------------------------
+RDOValue& RDOSelectResourceNonExistCalc::calcValue( RDORuntime* runtime )
+{
+	runtime->setRelRes( rel_res_id, -1 );
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
@@ -233,95 +653,40 @@ RDOValue& RDOFunCalcSelectNotForAll::calcValue( RDORuntime* runtime )
 // ----------------------------------------------------------------------------
 RDOValue& RDOCalcSeqInit::calcValue( RDORuntime* runtime )	
 {
-	gen->setSeed( base );
-	return value;
+	m_gen->setSeed( m_base );
+	return m_value;
 }
 
 RDOCalcSeqInit::~RDOCalcSeqInit() 
 { 
-	delete gen;
+	delete m_gen;
 }
 
-RDOValue& RDOCalcSeqNextUniform::calcValue( RDORuntime* runtime )	
+RDOValue RDOCalcSeqNextUniform::getNextValue( RDORuntime* runtime )
 {
-	RDOValue res = gen->next( runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble() );
-	if ( diap ) {
-		if ( res < diap_min ) {
-			value = res_real ? diap_min : RDOValue(diap_min > 0 ? diap_min + 0.5 : diap_min - 0.5).getInt();
-			return value;
-		}
-		if ( res > diap_max ) {
-			value = res_real ? diap_max : RDOValue(diap_max > 0 ? diap_max + 0.5 : diap_max - 0.5).getInt();
-			return value;
-		}
-		value = res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
-		return value;
-	} else {
-		value = res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
-		return value;
-	}
+	return m_gen->next( runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble() );
 }
 
-RDOValue& RDOCalcSeqNextExponential::calcValue( RDORuntime* runtime )	
+RDOValue RDOCalcSeqNextNormal::getNextValue( RDORuntime* runtime )
 {
-	RDOValue res = gen->next( runtime->getFuncArgument(0).getDouble() );
-	if ( diap ) {
-		if ( res < diap_min ) {
-			value = res_real ? diap_min : RDOValue(diap_min > 0 ? diap_min + 0.5 : diap_min - 0.5).getInt();
-			return value;
-		}
-		if ( res > diap_max ) {
-			value = res_real ? diap_max : RDOValue(diap_max > 0 ? diap_max + 0.5 : diap_max - 0.5).getInt();
-			return value;
-		}
-		value = res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
-		return value;
-	} else {
-		value = res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
-		return value;
-	}
+	return m_gen->next( runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble() );
 }
 
-RDOValue& RDOCalcSeqNextNormal::calcValue( RDORuntime* runtime )
+RDOValue RDOCalcSeqNextExponential::getNextValue( RDORuntime* runtime )
 {
-	RDOValue res = gen->next( runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble() );
-	if ( diap ) {
-		// В старом РДО при выходе за допустимый диапазон просто присваиваются значения диапазона, без выбора нового случайного числа. Вот этот алгоритм.
-		if ( res < diap_min ) {
-			value = res_real ? diap_min : RDOValue(diap_min > 0 ? diap_min + 0.5 : diap_min - 0.5).getInt();
-			return value;
-		}
-		if ( res > diap_max ) {
-			value = res_real ? diap_max : RDOValue(diap_max > 0 ? diap_max + 0.5 : diap_max - 0.5).getInt();
-			return value;
-		}
-		value = res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
-		return value;
-		// В новом РДО была сделана попытка выбирать новое случайное число, если текущее вышло за диапазон. Но при этом смешается среднее (оно и в другом случае может смещаться imho). Для совместимости оставим первый вариант.
-//		for ( int i = 0; i < 1000; i++ ) {
-//			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
-//			res = gen->next( runtime->getFuncArgument(0), runtime->getFuncArgument(1) );
-//		}
-//		runtime->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
-//		return res_real ? diap_min : static_cast<int>(diap_min);
-	} else {
-		value = res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
-		return value;
-	}
+	return m_gen->next( runtime->getFuncArgument(0).getDouble() );
 }
 
-RDOValue& RDOCalcSeqNextByHist::calcValue( RDORuntime* runtime )
+RDOValue RDOCalcSeqNextByHist::getNextValue( RDORuntime* runtime )
 {
-	RDOValue res = gen->next();
-	value = res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
-	return value;
+	return m_gen->next();
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateNumberedResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent ):
-	RDOCalc( _parent ),
+RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent ):
+	RDOCalc( parent ),
 	type( _type ),
 	traceFlag( _traceFlag ),
 	number( _number ),
@@ -337,7 +702,7 @@ RDOValue& RDOCalcCreateNumberedResource::calcValue( RDORuntime* runtime )
 		res->makeTemporary( true );
 	}
 	res->appendParams( paramsCalcs.begin(), paramsCalcs.end() );
-	return value; // just to return something
+	return m_value; // just to return something
 }
 
 RDOResource* RDOCalcCreateNumberedResource::createResource( RDORuntime* runtime ) const
@@ -348,8 +713,8 @@ RDOResource* RDOCalcCreateNumberedResource::createResource( RDORuntime* runtime 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateProcessResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateProcessResource::RDOCalcCreateProcessResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent ):
-	RDOCalcCreateNumberedResource( _parent, _type, _traceFlag, _paramsCalcs, _number, _isPermanent )
+RDOCalcCreateProcessResource::RDOCalcCreateProcessResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent ):
+	RDOCalcCreateNumberedResource( parent, _type, _traceFlag, _paramsCalcs, _number, _isPermanent )
 {
 }
 
@@ -361,8 +726,8 @@ RDOResource* RDOCalcCreateProcessResource::createResource( RDORuntime* runtime )
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateEmptyResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _params_default, int _rel_res_id ):
-	RDOCalc( _parent ),
+RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _params_default, int _rel_res_id ):
+	RDOCalc( parent ),
 	type( _type ),
 	traceFlag( _traceFlag ),
 	rel_res_id( _rel_res_id )
@@ -375,14 +740,14 @@ RDOValue& RDOCalcCreateEmptyResource::calcValue( RDORuntime* runtime )
 	RDOResource* res = runtime->createNewResource( type, traceFlag );
 	runtime->setRelRes( rel_res_id, res->getTraceID() );
 	res->appendParams( params_default.begin(), params_default.end() );
-	return value; // just to return something
+	return m_value; // just to return something
 }
 
 // ----------------------------------------------------------------------------
 // ---------- Выбор ресурсов
 // ----------------------------------------------------------------------------
-RDOSelectResourceCalc::RDOSelectResourceCalc( RDORuntimeParent* _parent, int _rel_res_id, RDOCalc* _choice_calc, RDOCalc* _order_calc, Type _order_type ):
-	RDOCalc( _parent ),
+RDOSelectResourceCalc::RDOSelectResourceCalc( RDORuntimeParent* parent, int _rel_res_id, RDOCalc* _choice_calc, RDOCalc* _order_calc, Type _order_type ):
+	RDOCalc( parent ),
 	rel_res_id( _rel_res_id ),
 	choice_calc( _choice_calc ),
 	order_calc( _order_calc ),
@@ -395,11 +760,11 @@ RDOValue& RDOSelectResourceDirectCalc::calcValue( RDORuntime* runtime )
 	runtime->setRelRes( rel_res_id, res_id );
 	if ( choice_calc && !choice_calc->calcValueBase( runtime ).getBool() ) {
 		runtime->setRelRes( rel_res_id, -1 );
-		value = 0;
-		return value;
+		m_value = 0;
+		return m_value;
 	}
-	value = 1;
-	return value;
+	m_value = 1;
+	return m_value;
 }
 
 RDOValue& RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime )
@@ -422,8 +787,8 @@ RDOValue& RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime )
 						runtime->setRelRes( rel_res_id, -1 );
 						continue;
 					}
-					value = 1;
-					return value;
+					m_value = 1;
+					return m_value;
 				}
 				case order_with_min: {
 					runtime->setRelRes( rel_res_id, res_id );
@@ -457,11 +822,11 @@ RDOValue& RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime )
 
 	if ( res_minmax_id != -1 ) {
 		runtime->setRelRes( rel_res_id, res_minmax_id );
-		value = 1;
-		return value;
+		m_value = 1;
+		return m_value;
 	}
-	value = 0;
-	return value;
+	m_value = 0;
+	return m_value;
 }
 
 void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& allNumbs, int level, std::vector< int >& res, RDOValue& bestVal, RDORuntime* sim, bool& hasBest ) const
@@ -509,27 +874,25 @@ bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& a
 	return false;
 }
 
-/*
-bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const
-{
-	if ( level <= 0 ) {
-		for ( int i = 0; i < resSelectors.size(); i++ ) {
-			if( !resSelectors.at(i)->callChoice(sim) ) {
-				return false;
-			}
-		}
-		return true;
-	} else {
-		level--;
-		std::vector< int >& ourLevel = allNumbs.at(level);
-		for ( int i = 0; i < ourLevel.size(); i++ ) {
-			sim->setRelRes( level, ourLevel.at(i) );
-			if ( getFirst( allNumbs, level, sim ) ) return true;
-		}
-	}
-	return false;
-}
-*/
+//bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const
+//{
+//	if ( level <= 0 ) {
+//		for ( int i = 0; i < resSelectors.size(); i++ ) {
+//			if( !resSelectors.at(i)->callChoice(sim) ) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	} else {
+//		level--;
+//		std::vector< int >& ourLevel = allNumbs.at(level);
+//		for ( int i = 0; i < ourLevel.size(); i++ ) {
+//			sim->setRelRes( level, ourLevel.at(i) );
+//			if ( getFirst( allNumbs, level, sim ) ) return true;
+//		}
+//	}
+//	return false;
+//}
 
 RDOValue& RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime )
 {
@@ -541,14 +904,12 @@ RDOValue& RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime )
 	}
 	if ( !choice_calc ) {
 		// first
-/*
-		if ( getFirst( allNumbs, allNumbs.size(), runtime ) ) {
-			return true;
-		}
-*/
+//		if ( getFirst( allNumbs, allNumbs.size(), runtime ) ) {
+//			return true;
+//		}
 		if ( getFirst( allNumbs, 0, runtime ) ) {
-			value = 1;
-			return value;
+			m_value = 1;
+			return m_value;
 		}
 	} else {
 		// with_min / with_max
@@ -559,12 +920,12 @@ RDOValue& RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime )
 			for ( i = 0; i < res.size(); i++ ) {
 				runtime->setRelRes( i, res.at(i) );
 			}
-			value = 1;
-			return value;
+			m_value = 1;
+			return m_value;
 		}
 	}
-	value = 0;
-	return value;
+	m_value = 0;
+	return m_value;
 }
 
 std::vector< int > RDOSelectResourceDirectCommonCalc::getPossibleNumbers( RDORuntime* sim ) const

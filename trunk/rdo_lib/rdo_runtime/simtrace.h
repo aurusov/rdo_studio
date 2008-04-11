@@ -2,6 +2,7 @@
 #define SIMTRACE_H
 
 #include "rdotrace.h"
+#include "rdo.h"
 
 namespace rdoParse {
 class RDODPTSome;
@@ -14,7 +15,7 @@ class RDOBaseOperation;
 
 class RDOSimulatorTrace: public RDOSimulator
 {
-friend class RDODecisionPointTrace;
+friend class RDODPTSearchTrace;
 friend class RDOOperationTrace;
 friend class TreeRootTrace;
 friend class TreeNodeTrace;
@@ -46,7 +47,7 @@ private:
 	int activityCounter;
 	int dptCounter;
 
-	void addTemplateDecisionPoint(RDODecisionPointTrace *dp);
+	void addTemplateDecisionPoint(RDODPTSearchTrace *dp);
 	void addTemplateOperation(RDOOperationTrace *op);
 	void addTemplateIrregularEvent(RDOIETrace *ev);
 	void addTemplateRule(RDORuleTrace *rule);

@@ -39,8 +39,8 @@ void RDOSimulatorBase::rdoInit()
 	check_operation = true;
 	onInit();
 
-	timePointList.clear();
-	timePointList[currentTime] = NULL;
+	m_timePoints.clear();
+	m_timePoints[currentTime] = NULL;
 	preProcess();
 
 	speed              = 1;
@@ -116,14 +116,14 @@ bool RDOSimulatorBase::rdoNext()
 		return true;
 	} else {
 		// ѕереход к следующей операции
-		if ( !timePointList.empty() ) {
-			double newTime = timePointList.begin()->first;
-			std::list< BOPlanned >* list = timePointList.begin()->second;
+		if ( !m_timePoints.empty() ) {
+			double newTime = m_timePoints.begin()->first;
+			BOPlannedItem* list = m_timePoints.begin()->second;
 			if ( !list || list->empty() ) {
-				delete timePointList.begin()->second;
-				timePointList.erase( timePointList.begin() );
+				delete m_timePoints.begin()->second;
+				m_timePoints.erase( m_timePoints.begin() );
 			}
-//			timePointList.pop_front();
+//			m_timePoints.pop_front();
 			if ( currentTime > newTime ) {
 				newTime = currentTime;
 			}
@@ -194,21 +194,51 @@ void RDOSimulatorBase::setShowRate( double value )
 void RDOSimulatorBase::rdoPostProcess()
 {
 	postProcess();
-	while ( !timePointList.empty() ) {
-		delete timePointList.begin()->second;
-		timePointList.erase( timePointList.begin() );
+	while ( !m_timePoints.empty() ) {
+		delete m_timePoints.begin()->second;
+		m_timePoints.erase( m_timePoints.begin() );
 	}
 }
 
 void RDOSimulatorBase::addTimePoint( double timePoint, RDOBaseOperation* opr, void* param )
 {
-	std::list< BOPlanned >* list = NULL;
-	if ( opr && (timePointList.find( timePoint ) == timePointList.end() || timePointList[timePoint] == NULL) ) {
-		list = new std::list< BOPlanned >();
-		timePointList[timePoint] = list;
+	BOPlannedItem* list = NULL;
+	if ( opr && (m_timePoints.find( timePoint ) == m_timePoints.end() || m_timePoints[timePoint] == NULL) ) {
+		list = new BOPlannedItem();
+		m_timePoints[timePoint] = list;
 	}
 	if ( opr ) {
-		timePointList[timePoint]->push_back( BOPlanned(opr, param) );
+		m_timePoints[timePoint]->push_back( BOPlanned(opr, param) );
+	}
+}
+
+void RDOSimulatorBase::removeTimePoint( const RDOBaseOperation* opr )
+{
+	BOPlannedMap::iterator it = m_timePoints.begin();
+	while ( it != m_timePoints.end() )
+	{
+		BOPlannedItem* list = it->second;
+		BOPlannedItem::iterator item = list->begin();
+		while ( item != list->end() )
+		{
+			// ”далим операцию из списка запланированных
+			if ( item->opr == opr )
+			{
+				item = list->erase( item );
+				continue;
+			}
+			item++;
+		}
+		// ≈сли список запланированых пустой, то удалим и его
+		if ( list->empty() )
+		{
+			it = m_timePoints.erase( it );
+			continue;
+		}
+		else
+		{
+			it++;
+		}
 	}
 }
 

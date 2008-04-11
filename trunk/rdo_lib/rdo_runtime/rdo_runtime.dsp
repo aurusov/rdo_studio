@@ -310,6 +310,10 @@ SOURCE=.\rdo.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_random_distribution.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_runtime.h
 # End Source File
 # Begin Source File
@@ -322,19 +326,11 @@ SOURCE=.\rdocalc.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdodefines.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdodptrtime.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdoframe.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdofunc.h
 # End Source File
 # Begin Source File
 

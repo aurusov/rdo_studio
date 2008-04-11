@@ -3,7 +3,6 @@
 #include "rdoparser.h"
 #include "rdofun.h"
 #include "rdoparser.h"
-#include "rdoDefines.h"
 #include "rdoparser_lexer.h"
 #include <rdocalc.h>
 

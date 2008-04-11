@@ -2,8 +2,7 @@
 #define RDOCALC_H
 
 #include "rdoruntime_object.h"
-#include "rdo_runtime.h"
-#include "rdofunc.h"
+#include "rdo_random_distribution.h"
 
 namespace rdoRuntime
 {
@@ -13,17 +12,16 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 class RDOCalc: public RDORuntimeObject, public RDOSrcInfo
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) = 0;
-
-protected:
-	RDOValue value;
-
 public:
-	RDOCalc( RDORuntimeParent* _parent );
+	RDOCalc( RDORuntimeParent* parent );
 	virtual ~RDOCalc();
 
 	RDOValue& calcValueBase( RDORuntime* runtime );
+
+protected:
+	RDOValue m_value;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime ) = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -31,17 +29,17 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcConst: public RDOCalc
 {
+public:
+	RDOCalcConst( RDORuntimeParent* parent, const RDOValue& val ):
+		RDOCalc( parent )
+	{
+		m_value = val;
+	};
+
 private:
 	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		return value;
+		return m_value;
 	}
-
-public:
-	RDOCalcConst( RDORuntimeParent* _parent, const RDOValue& val ):
-		RDOCalc( _parent )
-	{
-		value = val;
-	};
 };
 
 // ----------------------------------------------------------------------------
@@ -49,22 +47,19 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetResParam: public RDOCalc
 {
-protected:
-	int m_resID;
-	int m_paramID;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getResParamVal( m_resID, m_paramID );
-		return value;
-	}
-
 public:
-	RDOCalcGetResParam( RDORuntimeParent* _parent, int _resNumb, int _parNumb ):
-		RDOCalc( _parent ),
+	RDOCalcGetResParam( RDORuntimeParent* parent, int _resNumb, int _parNumb ):
+		RDOCalc( parent ),
 		m_resID( _resNumb ),
 		m_paramID( _parNumb )
 	{
 	}
+
+protected:
+	int m_resID;
+	int m_paramID;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -72,18 +67,12 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetTempResParamFRM: public RDOCalcGetResParam
 {
+public:
+	RDOCalcGetTempResParamFRM( RDORuntime* parent, int _resNumb, int _parNumb );
+
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		if ( m_resID >= 0 ) {
-			value = runtime->getResParamVal( m_resID, m_paramID );
-		} else if ( m_resID == -1 ) {
-			RDOEnum* _enum = new RDOEnum( runtime );
-			_enum->add( "Удален" );
-			value = RDOValue( *_enum );
-			m_resID = -2;
-		}
-		return value;
-	}
+	virtual RDOValue& calcValue( RDORuntime* runtime );
+
 	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL )
 	{
 		if ( (int)param == m_resID )
@@ -91,14 +80,6 @@ private:
 			m_resID = -1;
 		}
 	};
-
-
-public:
-	RDOCalcGetTempResParamFRM( RDORuntime* _parent, int _resNumb, int _parNumb ):
-		RDOCalcGetResParam( _parent, _resNumb, _parNumb )
-	{
-		_parent->connect( this, RDORuntime::RO_BEFOREDELETE );
-	}
 };
 
 // ----------------------------------------------------------------------------
@@ -106,23 +87,19 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetUnknowResParam: public RDOCalc
 {
-private:
-	std::string m_resName;
-	std::string m_parName;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime )
-	{
-		runtime->error( rdo::format("Попытка использовать несуществующий ресурс: %s.%s", m_resName.c_str(), m_parName.c_str()), this );
-		return value;
-	}
-
 public:
-	RDOCalcGetUnknowResParam( RDORuntimeParent* _parent, const std::string& resName, const std::string& parName ):
-		RDOCalc( _parent ),
+	RDOCalcGetUnknowResParam( RDORuntimeParent* parent, const std::string& resName, const std::string& parName ):
+		RDOCalc( parent ),
 		m_resName( resName ),
 		m_parName( parName )
 	{
 	}
+
+private:
+	std::string m_resName;
+	std::string m_parName;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -130,21 +107,17 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetGroupResParam: public RDOCalc
 {
-private:
-	int parNumb;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		RDOResource* currRes = (RDOResource*)runtime->getGroupFuncRes();
-		value = currRes->getParam( parNumb );
-		return value;
-	}
-
 public:
-	RDOCalcGetGroupResParam( RDORuntimeParent* _parent, int _parNumb ):
-		RDOCalc( _parent ),
-		parNumb( _parNumb )
+	RDOCalcGetGroupResParam( RDORuntimeParent* parent, int parNumb ):
+		RDOCalc( parent ),
+		m_parNumb( parNumb )
 	{
 	}
+
+private:
+	int m_parNumb;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -152,22 +125,19 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetRelevantResParam: public RDOCalc
 {
-private:
-	int relNumb;
-	int parNumb;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getResParamVal( runtime->getResByRelRes(relNumb), parNumb );
-		return value;
-	}
-
 public:
-	RDOCalcGetRelevantResParam( RDORuntimeParent* _parent, int _relNumb, int _parNumb ):
-		RDOCalc( _parent ),
-		relNumb( _relNumb ),
-		parNumb( _parNumb )
+	RDOCalcGetRelevantResParam( RDORuntimeParent* parent, int relNumb, int parNumb ):
+		RDOCalc( parent ),
+		m_relNumb( relNumb ),
+		m_parNumb( parNumb )
 	{
 	}
+
+private:
+	int m_relNumb;
+	int m_parNumb;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -175,27 +145,24 @@ public:
 // ----------------------------------------------------------------------------
 class RDOSetRelParamCalc: public RDOCalc
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, calc->calcValueBase( runtime ) );
-		return value;
+public:
+	RDOSetRelParamCalc( RDORuntimeParent* parent, int relNumb, int parNumb, RDOCalc* calc ):
+		RDOCalc( parent ),
+		m_relNumb( relNumb ),
+		m_parNumb( parNumb ),
+		m_calc( calc )
+	{
+		m_value = 1;
+		if ( m_calc ) setSrcInfo( m_calc->src_info() );
 	}
 
 protected:
-	int relNumb;
-	int parNumb;
-	RDOCalc* calc;
+	int      m_relNumb;
+	int      m_parNumb;
+	RDOCalc* m_calc;
 
-public:
-	RDOSetRelParamCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc ):
-		RDOCalc( _parent ),
-		relNumb( _relNumb ),
-		parNumb( _parNumb ),
-		calc( _calc )
-	{
-		value = 1;
-		if ( calc ) setSrcInfo( calc->src_info() );
-	}
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -203,31 +170,20 @@ public:
 // ----------------------------------------------------------------------------
 class RDOSetRelParamDiapCalc: public RDOSetRelParamCalc
 {
-private:
-	RDOValue min_value;
-	RDOValue max_value;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = calc->calcValueBase( runtime );
-		if ( value < min_value || value > max_value ) {
-			if ( value.getType() == RDOValue::rvt_int && min_value.getType() == RDOValue::rvt_int && max_value.getType() == RDOValue::rvt_int ) {
-				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", min_value.getInt(), max_value.getInt(), value.getInt()), this );
-			} else {
-				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", min_value.getDouble(), max_value.getDouble(), value.getDouble()), this );
-			}
-		}
-		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
-		return value;
-	}
-
 public:
-	RDOSetRelParamDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, RDOValue _min_value, RDOValue _max_value ):
-		RDOSetRelParamCalc( _parent, _relNumb, _parNumb, _calc ),
-		min_value( _min_value ),
-		max_value( _max_value )
+	RDOSetRelParamDiapCalc( RDORuntimeParent* parent, int relNumb, int parNumb, RDOCalc* calc, RDOValue min_value, RDOValue max_value ):
+		RDOSetRelParamCalc( parent, relNumb, parNumb, calc ),
+		m_min_value( min_value ),
+		m_max_value( max_value )
 	{
-		value = 1;
+		m_value = 1;
 	}
+
+private:
+	RDOValue m_min_value;
+	RDOValue m_max_value;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -235,26 +191,23 @@ public:
 // ----------------------------------------------------------------------------
 class RDOSetResourceParamCalc: public RDOCalc
 {
-private:
-	int resNumb;
-	int parNumb;
-	RDOCalc* calc;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->setResParamVal( resNumb, parNumb, calc->calcValueBase( runtime ) );
-		return value;
-	}
-
 public:
-	RDOSetResourceParamCalc( RDORuntimeParent* _parent, int _resNumb, int _parNumb, RDOCalc* _calc ):
-		RDOCalc( _parent ),
-		resNumb( _resNumb ),
-		parNumb( _parNumb ),
-		calc( _calc )
+	RDOSetResourceParamCalc( RDORuntimeParent* parent, int resNumb, int parNumb, RDOCalc* calc ):
+		RDOCalc( parent ),
+		m_resNumb( resNumb ),
+		m_parNumb( parNumb ),
+		m_calc( calc )
 	{
-		value = 1;
-		if ( calc ) setSrcInfo( calc->src_info() );
+		m_value = 1;
+		if ( m_calc ) setSrcInfo( m_calc->src_info() );
 	}
+
+private:
+	int      m_resNumb;
+	int      m_parNumb;
+	RDOCalc* m_calc;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -262,24 +215,21 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcEraseRes: public RDOCalc
 {
-private:
-	int          rel_res_id;
-	std::string  rel_res_name;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->onEraseRes( runtime->getResByRelRes(rel_res_id), this );
-		return value;
-	}
-
 public:
-	RDOCalcEraseRes( RDORuntimeParent* _parent, int _rel_res_id, const std::string& _rel_res_name ):
-		RDOCalc( _parent ),
-		rel_res_id( _rel_res_id ),
-		rel_res_name( _rel_res_name )
+	RDOCalcEraseRes( RDORuntimeParent* parent, int rel_res_id, const std::string& rel_res_name ):
+		RDOCalc( parent ),
+		m_rel_res_id( rel_res_id ),
+		m_rel_res_name( rel_res_name )
 	{
-		value = 1;
+		m_value = 1;
 	}
-	std::string getName() const { return rel_res_name; }
+	std::string getName() const { return m_rel_res_name; }
+
+private:
+	int          m_rel_res_id;
+	std::string  m_rel_res_name;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -287,23 +237,20 @@ public:
 // ----------------------------------------------------------------------------
 class RDOSetPatternParamCalc: public RDOCalc
 {
-private:
-	int parNumb;
-	RDOValue val;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->setPatternParameter( parNumb, val );
-		return value;
-	}
-
 public:
-	RDOSetPatternParamCalc( RDORuntimeParent* _parent, int _parNumb, RDOValue _val ):
-		RDOCalc( _parent ),
-		parNumb( _parNumb ),
-		val( _val )
+	RDOSetPatternParamCalc( RDORuntimeParent* parent, int parNumb, RDOValue val ):
+		RDOCalc( parent ),
+		m_parNumb( parNumb ),
+		m_val( val )
 	{
-		value = 0;
+		m_value = 0;
 	}
+
+private:
+	int      m_parNumb;
+	RDOValue m_val;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -311,20 +258,17 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcPatParam: public RDOCalc
 {
-private:
-	int numberOfParam;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) { 
-		value = runtime->getPatternParameter(numberOfParam);
-		return value;
-	}
-
 public:
-	RDOCalcPatParam( RDORuntimeParent* _parent, int _numberOfParam ):
-		RDOCalc( _parent ),
-		numberOfParam( _numberOfParam )
+	RDOCalcPatParam( RDORuntimeParent* parent, int numberOfParam ):
+		RDOCalc( parent ),
+		m_numberOfParam( numberOfParam )
 	{
 	}
+
+private:
+	int m_numberOfParam;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -332,14 +276,11 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetTimeNow: public RDOCalc
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getTimeNow();
-		return value;
-	}
-
 public:
-	RDOCalcGetTimeNow( RDORuntimeParent* _parent ): RDOCalc( _parent ) {}
+	RDOCalcGetTimeNow( RDORuntimeParent* parent ): RDOCalc( parent ) {}
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -347,14 +288,11 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetSeconds: public RDOCalc
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getSeconds();
-		return value;
-	}
-
 public:
-	RDOCalcGetSeconds( RDORuntimeParent* _parent ): RDOCalc( _parent ) {}
+	RDOCalcGetSeconds( RDORuntimeParent* parent ): RDOCalc( parent ) {}
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -363,8 +301,8 @@ public:
 class RDOFunCalc: public RDOCalc
 {
 protected:
-	RDOFunCalc( RDORuntimeParent* _parent ):
-		RDOCalc( _parent )
+	RDOFunCalc( RDORuntimeParent* parent ):
+		RDOCalc( parent )
 	{
 	}
 };
@@ -376,23 +314,25 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOFuncTableCalc: public RDOFunCalc
 {
-private:
-	std::vector< RDOCalcConst* > results;
-	RDOCalc* argCalc;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		int index = argCalc->calcValueBase( runtime ).getInt();
-		return results.at(index)->calcValueBase( runtime );
-	}
-
 public:
-	RDOFuncTableCalc( RDORuntimeParent* _parent, RDOCalc* _argCalc ):
-		RDOFunCalc( _parent ),
-		argCalc( _argCalc )
+	RDOFuncTableCalc( RDORuntimeParent* parent, RDOCalc* argCalc ):
+		RDOFunCalc( parent ),
+		m_argCalc( argCalc )
 	{
 	}
-	void addResultCalc( RDOCalcConst* res ) {
-		results.push_back( res );
+	void addResultCalc( RDOCalcConst* res )
+	{
+		m_results.push_back( res );
+	}
+
+private:
+	std::vector< RDOCalcConst* > m_results;
+	RDOCalc*                     m_argCalc;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime )
+	{
+		int index = m_argCalc->calcValueBase( runtime ).getInt();
+		return m_results.at(index)->calcValueBase( runtime );
 	}
 };
 
@@ -403,32 +343,34 @@ public:
 // ----------------------------------------------------------------------------
 class RDOFunListCalc: public RDOFunCalc
 {
-private:
-	std::vector< RDOCalc* >      cases;
-	std::vector< RDOCalcConst* > results;
-	RDOCalcConst*                default_value;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		int size = cases.size();
-		for ( int i = 0; i < size; i++ ) {
-			RDOCalc* cas = cases[i];
-			if ( cas->calcValueBase( runtime ).getBool() ) {
-				return results[i]->calcValueBase( runtime );
-			}
-		}
-		return default_value->calcValueBase( runtime );
-	}
-
 public:
-	RDOFunListCalc( RDORuntimeParent* _parent, RDOCalcConst* _default_value ):
-		RDOFunCalc( _parent ),
-		default_value( _default_value )
+	RDOFunListCalc( RDORuntimeParent* parent, RDOCalcConst* default_value ):
+		RDOFunCalc( parent ),
+		m_default_value( default_value )
 	{
 	}
 
-	void addCase( RDOCalc* _case_calc, RDOCalcConst* _result_calc ) {
-		cases.push_back( _case_calc ); 
-		results.push_back( _result_calc );
+	void addCase( RDOCalc* case_calc, RDOCalcConst* result_calc )
+	{
+		m_cases.push_back( case_calc ); 
+		m_results.push_back( result_calc );
+	}
+
+private:
+	std::vector< RDOCalc* >      m_cases;
+	std::vector< RDOCalcConst* > m_results;
+	RDOCalcConst*                m_default_value;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime )
+	{
+		int size = m_cases.size();
+		for ( int i = 0; i < size; i++ ) {
+			RDOCalc* cas = m_cases[i];
+			if ( cas->calcValueBase( runtime ).getBool() ) {
+				return m_results[i]->calcValueBase( runtime );
+			}
+		}
+		return m_default_value->calcValueBase( runtime );
 	}
 };
 
@@ -439,32 +381,23 @@ public:
 // ----------------------------------------------------------------------------
 class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
-protected:
-	std::vector< RDOCalc* > conditions;
-	std::vector< RDOCalc* > actions;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		int size = conditions.size();
-		for ( int i = 0; i < size; i++ ) {
-			if ( conditions[i]->calcValueBase( runtime ).getBool() ) {
-				return actions[i]->calcValueBase( runtime );
-			}
-		}
-		// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
-		runtime->error( "Внутренная ошибка, RDOFunAlgorithmicCalc", this );
-		return value;
-	}
-
 public:
-	RDOFunAlgorithmicCalc( RDORuntimeParent* _parent ):
-		RDOFunCalc( _parent )
+	RDOFunAlgorithmicCalc( RDORuntimeParent* parent ):
+		RDOFunCalc( parent )
 	{
-		value = 0;
+		m_value = 0;
 	}
-	void addCalcIf( RDOCalc* cond, RDOCalc* act ) {
-		conditions.push_back( cond );
-		actions.push_back( act );
+	void addCalcIf( RDOCalc* cond, RDOCalc* act )
+	{
+		m_conditions.push_back( cond );
+		m_actions.push_back( act );
 	}
+
+protected:
+	std::vector< RDOCalc* > m_conditions;
+	std::vector< RDOCalc* > m_actions;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -474,37 +407,19 @@ public:
 // ----------------------------------------------------------------------------
 class RDOFunAlgorithmicDiapCalc: public RDOFunAlgorithmicCalc
 {
-private:
-	RDOValue min_value;
-	RDOValue max_value;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		int size = conditions.size();
-		for ( int i = 0; i < size; i++ ) {
-			if ( conditions[i]->calcValueBase( runtime ).getBool() ) {
-				value = actions[i]->calcValueBase( runtime );
-				if ( value < min_value || value > max_value ) {
-					if ( value.getType() == RDOValue::rvt_int && min_value.getType() == RDOValue::rvt_int && max_value.getType() == RDOValue::rvt_int ) {
-						runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", min_value.getInt(), max_value.getInt(), value.getInt()), actions[i] );
-					} else {
-						runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", min_value.getDouble(), max_value.getDouble(), value.getDouble()), actions[i] );
-					}
-				}
-				return value;
-			}
-		}
-		// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
-		runtime->error( "Внутренная ошибка, RDOFunAlgorithmicDiapCalc", this );
-		return value;
-	}
-
 public:
-	RDOFunAlgorithmicDiapCalc( RDORuntimeParent* _parent, RDOValue _min_value, RDOValue _max_value ):
-		RDOFunAlgorithmicCalc( _parent ),
-		min_value( _min_value ),
-		max_value( _max_value )
+	RDOFunAlgorithmicDiapCalc( RDORuntimeParent* parent, const RDOValue& min_value, const RDOValue& max_value ):
+		RDOFunAlgorithmicCalc( parent ),
+		m_min_value( min_value ),
+		m_max_value( max_value )
 	{
 	}
+
+private:
+	RDOValue m_min_value;
+	RDOValue m_max_value;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -513,64 +428,34 @@ public:
 class RDOFunCalcGroup: public RDOFunCalc
 {
 protected:
-	int      nResType;
-	RDOCalc* condition;
+	int      m_nResType;
+	RDOCalc* m_condition;
 
-	RDOFunCalcGroup( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
-		RDOFunCalc( _parent ),
-		nResType( _nResType ),
-		condition( _condition )
+	RDOFunCalcGroup( RDORuntimeParent* parent, int nResType, RDOCalc* condition ):
+		RDOFunCalc( parent ),
+		m_nResType( nResType ),
+		m_condition( condition )
 	{
 	}
 };
 
-class RDOFunCalcExist: public RDOFunCalcGroup
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcExist( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition):
-		RDOFunCalcGroup( _parent, _nResType, _condition )
-	{
-	}
+#define DEFINE_CALC_GROUP( CalcName ) \
+class RDOFunCalc##CalcName: public RDOFunCalcGroup \
+{ \
+public: \
+	RDOFunCalc##CalcName( RDORuntimeParent* parent, int nResType, RDOCalc* condition): \
+		RDOFunCalcGroup( parent, nResType, condition ) \
+	{ \
+	} \
+ \
+private: \
+	virtual RDOValue& calcValue( RDORuntime* runtime ); \
 };
 
-class RDOFunCalcNotExist: public RDOFunCalcGroup
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcNotExist( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
-		RDOFunCalcGroup( _parent, _nResType, _condition )
-	{
-	}
-};
-
-class RDOFunCalcForAll: public RDOFunCalcGroup
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcForAll( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
-		RDOFunCalcGroup( _parent, _nResType, _condition )
-	{
-	}
-};
-
-class RDOFunCalcNotForAll: public RDOFunCalcGroup
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcNotForAll( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
-		RDOFunCalcGroup( _parent, _nResType, _condition )
-	{
-	}
-};
+DEFINE_CALC_GROUP( Exist     );
+DEFINE_CALC_GROUP( NotExist  );
+DEFINE_CALC_GROUP( ForAll    );
+DEFINE_CALC_GROUP( NotForAll );
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFunCalcSelect
@@ -579,384 +464,340 @@ class RDOResource;
 
 class RDOFunCalcSelect: public RDOFunCalcGroup
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
 public:
 	mutable std::list< RDOResource* > res_list;
 	void prepare( RDORuntime* sim ) const;
 
-	RDOFunCalcSelect( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
-		RDOFunCalcGroup( _parent, _nResType, _condition )
+	RDOFunCalcSelect( RDORuntimeParent* parent, int nResType, RDOCalc* condition ):
+		RDOFunCalcGroup( parent, nResType, condition )
 	{
-		value = 1;
+		m_value = 1;
 	}
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 class RDOFunCalcSelectBase: public RDOFunCalc
 {
+public:
+	RDOFunCalcSelectBase( RDORuntimeParent* parent, RDOFunCalcSelect* select, RDOCalc* condition ):
+		RDOFunCalc( parent ),
+		m_select( select ),
+		m_condition( condition )
+	{
+	}
+
 protected:
-	RDOFunCalcSelect* select;
-	RDOCalc*          condition;
-
-public:
-	RDOFunCalcSelectBase( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
-		RDOFunCalc( _parent ),
-		select( _select ),
-		condition( _condition )
-	{
-	}
+	RDOFunCalcSelect* m_select;
+	RDOCalc*          m_condition;
 };
 
-class RDOFunCalcSelectEmpty: public RDOFunCalcSelectBase
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcSelectEmpty( RDORuntimeParent* _parent, RDOFunCalcSelect* _select ):
-		RDOFunCalcSelectBase( _parent, _select, NULL )
-	{
-	}
+#define DEFINE_CALC_SELECT_GROUP( CalcName ) \
+class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
+{ \
+public: \
+	RDOFunCalcSelect##CalcName( RDORuntimeParent* parent, RDOFunCalcSelect* select, RDOCalc* condition ): \
+		RDOFunCalcSelectBase( parent, select, condition ) \
+	{ \
+	} \
+ \
+private: \
+	virtual RDOValue& calcValue( RDORuntime* runtime ); \
 };
 
-class RDOFunCalcSelectSize: public RDOFunCalcSelectBase
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcSelectSize( RDORuntimeParent* _parent, RDOFunCalcSelect* _select ):
-		RDOFunCalcSelectBase( _parent, _select, NULL )
-	{
-	}
+#define DEFINE_CALC_SELECT_METHOD( CalcName ) \
+class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
+{ \
+public: \
+	RDOFunCalcSelect##CalcName( RDORuntimeParent* parent, RDOFunCalcSelect* select ): \
+		RDOFunCalcSelectBase( parent, select, NULL ) \
+	{ \
+	} \
+ \
+private: \
+	virtual RDOValue& calcValue( RDORuntime* runtime ); \
 };
 
-class RDOFunCalcSelectExist: public RDOFunCalcSelectBase
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcSelectExist( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
-		RDOFunCalcSelectBase( _parent, _select, _condition )
-	{
-	}
-};
-
-class RDOFunCalcSelectNotExist: public RDOFunCalcSelectBase
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcSelectNotExist( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
-		RDOFunCalcSelectBase( _parent, _select, _condition )
-	{
-	}
-};
-
-class RDOFunCalcSelectForAll: public RDOFunCalcSelectBase
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcSelectForAll( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
-		RDOFunCalcSelectBase( _parent, _select, _condition )
-	{
-	}
-};
-
-class RDOFunCalcSelectNotForAll: public RDOFunCalcSelectBase
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOFunCalcSelectNotForAll( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
-		RDOFunCalcSelectBase( _parent, _select, _condition )
-	{
-	}
-};
+DEFINE_CALC_SELECT_GROUP ( Exist     );
+DEFINE_CALC_SELECT_GROUP ( NotExist  );
+DEFINE_CALC_SELECT_GROUP ( ForAll    );
+DEFINE_CALC_SELECT_GROUP ( NotForAll );
+DEFINE_CALC_SELECT_METHOD( Empty     );
+DEFINE_CALC_SELECT_METHOD( Size      );
 
 // ----------------------------------------------------------------------------
 // ---------- Стандартные функции языка
 // ----------------------------------------------------------------------------
-class RDOFunCalcAbs: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = fabs( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
-public:
-	RDOFunCalcAbs( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+#define DEFINE_RDO_STD_FUN( CalcName ) \
+class RDOFunCalc##CalcName: public RDOFunCalc \
+{ \
+public: \
+	RDOFunCalc##CalcName( RDORuntimeParent* parent ): \
+		RDOFunCalc( parent ) \
+	{ \
+	} \
+\
+private: \
+	virtual RDOValue& calcValue( RDORuntime* runtime ); \
 };
 
-class RDOFunCalcArcCos: public RDOFunCalc
+DEFINE_RDO_STD_FUN( Sin      );
+DEFINE_RDO_STD_FUN( Cos      );
+DEFINE_RDO_STD_FUN( Tan      );
+DEFINE_RDO_STD_FUN( Cotan    );
+DEFINE_RDO_STD_FUN( ArcCos   );
+DEFINE_RDO_STD_FUN( ArcSin   );
+DEFINE_RDO_STD_FUN( ArcTan   );
+DEFINE_RDO_STD_FUN( Abs      );
+DEFINE_RDO_STD_FUN( Sqrt     );
+DEFINE_RDO_STD_FUN( Round    );
+DEFINE_RDO_STD_FUN( Exp      );
+DEFINE_RDO_STD_FUN( Floor    );
+DEFINE_RDO_STD_FUN( Frac     );
+DEFINE_RDO_STD_FUN( IAbs     );
+DEFINE_RDO_STD_FUN( IMax     );
+DEFINE_RDO_STD_FUN( IMin     );
+DEFINE_RDO_STD_FUN( Int      );
+DEFINE_RDO_STD_FUN( IntPower );
+DEFINE_RDO_STD_FUN( Ln       );
+DEFINE_RDO_STD_FUN( Log2     );
+DEFINE_RDO_STD_FUN( LogN     );
+DEFINE_RDO_STD_FUN( Log10    );
+DEFINE_RDO_STD_FUN( Max      );
+DEFINE_RDO_STD_FUN( Min      );
+DEFINE_RDO_STD_FUN( Power    );
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcBinary
+// ----------------------------------------------------------------------------
+class RDOCalcBinary: public RDOCalc
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = acos( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
 public:
-	RDOFunCalcArcCos( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	RDOCalcBinary( RDORuntimeParent* parent, RDOCalc* left, RDOCalc* right ):
+		RDOCalc( parent ),
+		m_left( left ),
+		m_right( right )
+	{
+	}
+	RDOCalc*      getLeft() const          { return m_left; }
+	RDOCalcConst* getRightAsConst() const  { return dynamic_cast<RDOCalcConst*>(m_right); }
+	void setRight( RDOCalc* right )        { m_right = right; }
+
+protected:
+	RDOCalc* m_left;
+	RDOCalc* m_right;
 };
 
-class RDOFunCalcArcSin: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = asin( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
-public:
-	RDOFunCalcArcSin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+#define DEFINE_BINARY_CALC( CalcName, CalcOpr ) \
+class RDOCalc##CalcName: public RDOCalcBinary \
+{ \
+public: \
+	RDOCalc##CalcName( RDORuntimeParent* parent, RDOCalc* const left, RDOCalc* const right): \
+		RDOCalcBinary( parent, left, right ) \
+	{ \
+		setSrcInfo( getStaticSrcInfo( m_left, m_right ) ); \
+	} \
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) \
+	{ \
+		RDOSrcInfo src_info; \
+		src_info.setSrcInfo( left->src_info(), CalcOpr, right->src_info() ); \
+		return src_info; \
+	} \
+ \
+private: \
+	virtual RDOValue& calcValue( RDORuntime* runtime ); \
 };
 
-class RDOFunCalcArcTan: public RDOFunCalc
+// ----------------------------------------------------------------------------
+// ---------- Арифметические функции
+// ----------------------------------------------------------------------------
+DEFINE_BINARY_CALC( Plus , " + "  );
+DEFINE_BINARY_CALC( Minus, " - "  );
+DEFINE_BINARY_CALC( Mult , " * "  );
+DEFINE_BINARY_CALC( Div  , " / "  );
+
+class RDOCalcPlusEnumSafe: public RDOCalcPlus
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = atan( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
 public:
-	RDOFunCalcArcTan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	RDOCalcPlusEnumSafe( RDORuntimeParent* parent, RDOCalc* _left, RDOCalc *_right ):
+		RDOCalcPlus( parent, _left, _right )
+	{
+	}
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
-class RDOFunCalcCos: public RDOFunCalc
+class RDOCalcMultEnumSafe: public RDOCalcMult
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = cos( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
 public:
-	RDOFunCalcCos( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	RDOCalcMultEnumSafe( RDORuntimeParent* parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcMult( parent, _left, _right )
+	{
+	}
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
-class RDOFunCalcCotan: public RDOFunCalc
+// ----------------------------------------------------------------------------
+// ---------- Логические функции
+// ----------------------------------------------------------------------------
+class RDOCalcAnd: public RDOCalcBinary
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = 1.0 / tan( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
 public:
-	RDOFunCalcCotan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	RDOCalcAnd( RDORuntimeParent* parent, RDOCalc* left, RDOCalc* right ):
+		RDOCalcBinary( parent, left, right )
+	{
+		m_value_true  = 1;
+		m_value_false = 0;
+		setSrcInfo( getStaticSrcInfo( m_left, m_right ) );
+	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right )
+	{
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " and ", right->src_info() );
+		return src_info;
+	}
+
+private:
+	RDOValue m_value_true;
+	RDOValue m_value_false;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
-class RDOFunCalcExp: public RDOFunCalc
+class RDOCalcOr: public RDOCalcBinary
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = exp( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
 public:
-	RDOFunCalcExp( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	RDOCalcOr( RDORuntimeParent* parent, RDOCalc* left, RDOCalc* right ):
+		RDOCalcBinary( parent, left, right )
+	{
+		m_value_true  = 1;
+		m_value_false = 0;
+		setSrcInfo( getStaticSrcInfo( m_left, m_right ) );
+	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right )
+	{
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " or ", right->src_info() );
+		return src_info;
+	}
+
+private:
+	RDOValue m_value_true;
+	RDOValue m_value_false;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
-class RDOFunCalcFloor: public RDOFunCalc
+class RDOCalcNot: public RDOCalc
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = floor( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
 public:
-	RDOFunCalcFloor( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	RDOCalcNot( RDORuntimeParent* parent, RDOCalc* calc ):
+		RDOCalc( parent ),
+		m_calc( calc )
+	{
+	}
+
+private:
+	RDOCalc* m_calc;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
-class RDOFunCalcFrac: public RDOFunCalc
+DEFINE_BINARY_CALC( IsEqual   , " = "  );
+DEFINE_BINARY_CALC( IsNotEqual, " <> " );
+DEFINE_BINARY_CALC( IsLess    , " < "  );
+DEFINE_BINARY_CALC( IsGreater , " > "  );
+DEFINE_BINARY_CALC( IsLEQ     , " <= " );
+DEFINE_BINARY_CALC( IsGEQ     , " >= " );
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcUnary
+// ----------------------------------------------------------------------------
+class RDOCalcUnary: public RDOCalc
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		double tmp;
-		value = modf( runtime->getFuncArgument(0).getDouble(), &tmp );
-		return value;
+protected:
+	RDOCalc* m_oper;
+
+	RDOCalcUnary( RDORuntimeParent* parent, RDOCalc* oper ):
+		RDOCalc( parent ),
+		m_oper( oper )
+	{
+		if ( m_oper ) setSrcInfo( m_oper->src_info() );
 	}
-public:
-	RDOFunCalcFrac( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
-class RDOFunCalcIAbs: public RDOFunCalc
+// ----------------------------------------------------------------------------
+// ---------- Унарные операции
+// ----------------------------------------------------------------------------
+class RDOCalcUMinus: public RDOCalcUnary
 {
+public:
+	RDOCalcUMinus( RDORuntimeParent* parent, RDOCalc* _oper ): RDOCalcUnary( parent, _oper ) {}
+
 private:
 	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = abs( runtime->getFuncArgument(0).getInt() );
-		return value;
+		m_value = -m_oper->calcValueBase( runtime );
+		return m_value;
 	}
-public:
-	RDOFunCalcIAbs( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
-class RDOFunCalcIMax: public RDOFunCalc
+class RDOCalcDoubleToInt: public RDOCalcUnary
 {
+public:
+	RDOCalcDoubleToInt( RDORuntimeParent* parent, RDOCalc* _oper ):
+		RDOCalcUnary( parent, _oper )
+	{
+	}
+
 private:
 	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = std::_MAX(runtime->getFuncArgument(0).getInt(), runtime->getFuncArgument(1).getInt());
-		return value;
+		m_value = m_oper->calcValueBase( runtime ).getInt();
+		return m_value;
 	}
-public:
-	RDOFunCalcIMax( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
-class RDOFunCalcIMin: public RDOFunCalc
+class RDOCalcDoubleToIntByResult: public RDOCalcUnary
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = std::_MIN(runtime->getFuncArgument(0).getInt(), runtime->getFuncArgument(1).getInt());
-		return value;
-	}
 public:
-	RDOFunCalcIMin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	RDOCalcDoubleToIntByResult( RDORuntimeParent* parent, RDOCalc* _oper ):
+		RDOCalcUnary( parent, _oper ),
+		m_round( false )
+	{
+	}
+	void needRound()
+	{
+		m_round = true;
+	}
+
+private:
+	bool m_round;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime )
+	{
+		m_value = m_round ? RDOValue( m_oper->calcValueBase( runtime ).getInt() ) : m_oper->calcValueBase( runtime );
+		return m_value;
+	}
 };
 
-class RDOFunCalcInt: public RDOFunCalc
+class RDOCalcCheckDiap: public RDOCalcUnary
 {
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getFuncArgument(0).getInt();
-		return value;
-	}
 public:
-	RDOFunCalcInt( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
+	RDOCalcCheckDiap( RDORuntimeParent* parent, const RDOValue& min_value, const RDOValue& max_value, RDOCalc* oper ):
+		RDOCalcUnary( parent, oper ),
+		m_min_value( min_value ),
+		m_max_value( max_value )
+	{
+	}
 
-class RDOFunCalcIntPower: public RDOFunCalc
-{
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = pow( runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getInt() );
-		return value;
-	}
-public:
-	RDOFunCalcIntPower( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
+	RDOValue m_min_value;
+	RDOValue m_max_value;
 
-class RDOFunCalcLn: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = log( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
-public:
-	RDOFunCalcLn( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcLog10: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = log10( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
-public:
-	RDOFunCalcLog10( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcLog2: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = log( runtime->getFuncArgument(0).getDouble()) / log(2);
-		return value;
-	}
-public:
-	RDOFunCalcLog2( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcLogN: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = log( runtime->getFuncArgument(0).getDouble()) / log(runtime->getFuncArgument(1).getDouble() );
-		return value;
-	}
-public:
-	RDOFunCalcLogN( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcMax: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = std::_MAX(runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble());
-		return value;
-	}
-public:
-	RDOFunCalcMax( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcMin: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = std::_MIN(runtime->getFuncArgument(0), runtime->getFuncArgument(1));
-		return value;
-	}
-public:
-	RDOFunCalcMin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcPower: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = pow(runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble());
-		return value;
-	}
-public:
-	RDOFunCalcPower( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcRound: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = (int)floor( runtime->getFuncArgument(0).getDouble() + 0.5 );
-		return value;
-	}
-public:
-	RDOFunCalcRound( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcSin: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = sin(runtime->getFuncArgument(0).getDouble());
-		return value;
-	}
-public:
-	RDOFunCalcSin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcSqrt: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = sqrt(runtime->getFuncArgument(0).getDouble());
-		return value;
-	}
-public:
-	RDOFunCalcSqrt( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-};
-
-class RDOFunCalcTan: public RDOFunCalc
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = tan( runtime->getFuncArgument(0).getDouble() );
-		return value;
-	}
-public:
-	RDOFunCalcTan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -964,542 +805,125 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcSeqInit: public RDOCalc
 {
-private:
-	int            base;
-	RandGenerator* gen;
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
 public:
-	RDOCalcSeqInit( RDORuntimeParent* _parent, int _base, RandGenerator* _gen ):
-		RDOCalc( _parent ),
-		base( _base ),
-		gen( _gen )
+	RDOCalcSeqInit( RDORuntimeParent* parent, int base, RandGenerator* gen ):
+		RDOCalc( parent ),
+		m_base( base ),
+		m_gen( gen )
 	{
 	}
 	virtual ~RDOCalcSeqInit();
-	void setBase( int _base ) { base = _base; }
+
+	void setBase( int base )
+	{
+		m_base = base;
+	}
+
+private:
+	int            m_base;
+	RandGenerator* m_gen;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 class RDOCalcSeqNext: public RDOFunCalc
 {
 public:
-	bool   res_real;
-	bool   diap;
-	double diap_min;
-	double diap_max;
+	bool   m_res_real;
+	bool   m_diap;
+	double m_diap_min;
+	double m_diap_max;
 
-	RDOCalcSeqNext( RDORuntimeParent* _parent ):
-		RDOFunCalc( _parent ),
-		res_real( true ),
-		diap( false ),
-		diap_min( 0 ),
-		diap_max( 0 )
+	RDOCalcSeqNext( RDORuntimeParent* parent ):
+		RDOFunCalc( parent ),
+		m_res_real( true ),
+		m_diap( false ),
+		m_diap_min( 0 ),
+		m_diap_max( 0 )
 	{
 	}
+
+protected:
+	virtual RDOValue getNextValue( RDORuntime* runtime ) = 0;
 };
 
-class RDOCalcSeqNextUniform: public RDOCalcSeqNext
+template< class T >
+class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
-private:
-	RandGeneratorUniform* gen;
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
 public:
-	RDOCalcSeqNextUniform( RDORuntimeParent* _parent, RandGeneratorUniform* _gen ):
-		RDOCalcSeqNext( _parent ),
-		gen( _gen )
+	RDOCalcRandomDistribution( RDORuntimeParent* parent, T* gen ):
+		RDOCalcSeqNext( parent ),
+		m_gen( gen )
 	{
+	}
+
+protected:
+	T* m_gen;
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime )
+	{
+		RDOValue res = getNextValue( runtime );
+		if ( m_diap ) {
+			if ( res < m_diap_min ) {
+				m_value = m_res_real ? m_diap_min : RDOValue(m_diap_min > 0 ? m_diap_min + 0.5 : m_diap_min - 0.5).getInt();
+				return m_value;
+			}
+			if ( res > m_diap_max ) {
+				m_value = m_res_real ? m_diap_max : RDOValue(m_diap_max > 0 ? m_diap_max + 0.5 : m_diap_max - 0.5).getInt();
+				return m_value;
+			}
+			m_value = m_res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
+			return m_value;
+			// В новом РДО была сделана попытка выбирать новое случайное число, если текущее вышло за диапазон. Но при этом смешается среднее (оно и в другом случае может смещаться imho). Для совместимости оставим первый вариант.
+//			for ( int i = 0; i < 1000; i++ ) {
+//				if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
+//				res = gen->next( runtime->getFuncArgument(0), runtime->getFuncArgument(1) );
+//			}
+//			runtime->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
+//			return res_real ? diap_min : static_cast<int>(diap_min);
+		} else {
+			m_value = m_res_real ? res : RDOValue(res > 0 ? res + 0.5 : res - 0.5).getInt();
+			return m_value;
+		}
 	}
 };
 
-class RDOCalcSeqNextExponential: public RDOCalcSeqNext
-{
-private:
-	RandGeneratorExponential* gen;
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOCalcSeqNextExponential( RDORuntimeParent* _parent, RandGeneratorExponential* _gen ):
-		RDOCalcSeqNext( _parent ),
-		gen( _gen )
-	{
-	}
+#define DEFINE_RANDON_DISTRIBUTION( CalcName, Distribution ) \
+class RDOCalcSeqNext##CalcName: public RDOCalcRandomDistribution<Distribution> \
+{ \
+public: \
+	RDOCalcSeqNext##CalcName( RDORuntimeParent* parent, Distribution* gen ): \
+		RDOCalcRandomDistribution<Distribution>( parent, gen ) \
+	{ \
+	} \
+ \
+private: \
+	virtual RDOValue getNextValue( RDORuntime* runtime ); \
 };
 
-class RDOCalcSeqNextNormal: public RDOCalcSeqNext
-{
-private:
-	RandGeneratorNormal* gen;
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOCalcSeqNextNormal( RDORuntimeParent* _parent, RandGeneratorNormal* _gen ):
-		RDOCalcSeqNext( _parent ),
-		gen( _gen )
-	{
-	}
-};
-
-class RDOCalcSeqNextByHist: public RDOCalcSeqNext
-{
-private:
-	RandGeneratorCommonNext* gen;
-	virtual RDOValue& calcValue( RDORuntime* runtime );
-
-public:
-	RDOCalcSeqNextByHist( RDORuntimeParent* _parent, RandGeneratorCommonNext* _gen ):
-		RDOCalcSeqNext( _parent ),
-		gen( _gen )
-	{
-	}
-};
+DEFINE_RANDON_DISTRIBUTION( Uniform    , RandGeneratorUniform     );
+DEFINE_RANDON_DISTRIBUTION( Normal     , RandGeneratorNormal      );
+DEFINE_RANDON_DISTRIBUTION( Exponential, RandGeneratorExponential );
+DEFINE_RANDON_DISTRIBUTION( ByHist     , RandGeneratorCommonNext  );
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcFuncParam
 // ----------------------------------------------------------------------------
 class RDOCalcFuncParam: public RDOCalc
 {
-private:
-	int param_number;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getFuncArgument( param_number );
-		return value;
-	}
-
 public:
-	RDOCalcFuncParam( RDORuntimeParent* _parent, int _param_number, const RDOSrcInfo& _src_info ):
-		RDOCalc( _parent ),
-		param_number( _param_number )
+	RDOCalcFuncParam( RDORuntimeParent* parent, int param_number, const RDOSrcInfo& _src_info ):
+		RDOCalc( parent ),
+		m_param_number( param_number )
 	{
 		setSrcInfo( _src_info );
 	}
-};
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinary (Binary Ariphmetic calcs)
-// ----------------------------------------------------------------------------
-class RDOCalcBinary: public RDOCalc
-{
-protected:
-	RDOCalc* left;
-	RDOCalc* right;
-
-public:
-	RDOCalcBinary( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalc( _parent ),
-		left( _left ),
-		right( _right )
-	{
-	}
-	RDOCalc*      getLeft() const          { return left; }
-	RDOCalcConst* getRightAsConst() const  { return dynamic_cast<RDOCalcConst*>(right); }
-	void setRight( RDOCalc* _right )       { right = _right; }
-};
-
-class RDOCalcPlus: public RDOCalcBinary
-{
-public:
-	RDOCalcPlus( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc *_right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " + ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_arithm();
-		value = left->calcValueBase( runtime ) + right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcMinus: public RDOCalcBinary
-{
-public:
-	RDOCalcMinus( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " - ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_arithm();
-		value = left->calcValueBase( runtime ) - right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcMult: public RDOCalcBinary
-{
-public:
-	RDOCalcMult( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " * ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_arithm();
-		value = left->calcValueBase( runtime ) * right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcDiv: public RDOCalcBinary
-{
-public:
-	RDOCalcDiv( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " / ", right->src_info() );
-		return src_info;
-	}
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_arithm();
-		RDOValue& rVal = right->calcValueBase( runtime );
-		if ( rVal == 0 ) {
-			runtime->error( "Деление на ноль", this );
-//			runtime->error("Division by zero", this);
-		}
-		value = left->calcValueBase( runtime ) / rVal;
-		return value;
-	}
-};
-
-class RDOCalcPlusEnumSafe: public RDOCalcPlus
-{
-public:
-	RDOCalcPlusEnumSafe( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc *_right ):
-		RDOCalcPlus( _parent, _left, _right )
-	{
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_arithm();
-		value = left->calcValueBase( runtime ).getEnumAsInt() + right->calcValueBase( runtime ).getEnumAsInt();
-		return value;
-	}
-};
-
-class RDOCalcMultEnumSafe: public RDOCalcMult
-{
-public:
-	RDOCalcMultEnumSafe( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcMult( _parent, _left, _right )
-	{
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_arithm();
-		value = left->calcValueBase( runtime ).getEnumAsInt() * right->calcValueBase( runtime ).getEnumAsInt();
-		return value;
-	}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinary (Binary Logic calcs)
-// ----------------------------------------------------------------------------
-class RDOCalcAnd: public RDOCalcBinary
-{
 private:
-	RDOValue value_true;
-	RDOValue value_false;
+	int m_param_number;
 
-public:
-	RDOCalcAnd( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		value_true  = 1;
-		value_false = 0;
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " and ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		if ( !left->calcValueBase( runtime ).getBool()  ) {
-			return value_false;
-		}
-		if ( !right->calcValueBase( runtime ).getBool() ) {
-			return value_false;
-		}
-		return value_true;
-	}
-};
-
-class RDOCalcOr: public RDOCalcBinary
-{
-private:
-	RDOValue value_true;
-	RDOValue value_false;
-
-public:
-	RDOCalcOr( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		value_true  = 1;
-		value_false = 0;
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " or ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		if ( left->calcValueBase( runtime ).getBool()  ) {
-			return value_true;
-		}
-		if ( right->calcValueBase( runtime ).getBool() ) {
-			return value_true;
-		}
-		return value_false;
-	}
-};
-
-class RDOCalcNot: public RDOCalc
-{
-private:
-	RDOCalc* calc;
-
-public:
-	RDOCalcNot( RDORuntimeParent* _parent, RDOCalc* _calc ):
-		RDOCalc( _parent ),
-		calc( _calc )
-	{
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		value = !calc->calcValueBase( runtime ).getBool();
-		return value;
-	}
-};
-
-class RDOCalcIsEqual: public RDOCalcBinary
-{
-public:
-	RDOCalcIsEqual( RDORuntimeParent* _parent, RDOCalc* const _left, RDOCalc* const _right):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " = ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		value = left->calcValueBase( runtime ) == right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcIsNotEqual: public RDOCalcBinary
-{
-public:
-	RDOCalcIsNotEqual( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " <> ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		value = left->calcValueBase( runtime ) != right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcIsLess: public RDOCalcBinary
-{
-public:
-	RDOCalcIsLess( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		if ( left && right ) {
-			setSrcInfo( getStaticSrcInfo( left, right ) );
-		}
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " < ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		value = left->calcValueBase( runtime ) < right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcIsGreater: public RDOCalcBinary
-{
-public:
-	RDOCalcIsGreater( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " > ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		value = left->calcValueBase( runtime ) > right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcIsLEQ: public RDOCalcBinary
-{
-public:
-	RDOCalcIsLEQ( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " <= ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		value = left->calcValueBase( runtime ) <= right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-class RDOCalcIsGEQ: public RDOCalcBinary
-{
-public:
-	RDOCalcIsGEQ( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-		RDOCalcBinary( _parent, _left, _right )
-	{
-		setSrcInfo( getStaticSrcInfo( left, right ) );
-	}
-	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo( left->src_info(), " >= ", right->src_info() );
-		return src_info;
-	}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->inc_cnt_calc_logic();
-		value = left->calcValueBase( runtime ) >= right->calcValueBase( runtime );
-		return value;
-	}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcUnary (Unary Ariphmetic calcs)
-// ----------------------------------------------------------------------------
-class RDOCalcUnary: public RDOCalc
-{
-protected:
-	RDOCalc* oper;
-
-	RDOCalcUnary( RDORuntimeParent* _parent, RDOCalc* _oper ):
-		RDOCalc( _parent ),
-		oper( _oper )
-	{
-		if ( oper ) setSrcInfo( oper->src_info() );
-	}
-};
-
-class RDOCalcUMinus: public RDOCalcUnary
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = -oper->calcValueBase( runtime );
-		return value;
-	}
-
-public:
-	RDOCalcUMinus( RDORuntimeParent* _parent, RDOCalc* _oper ): RDOCalcUnary( _parent, _oper ) {}
-};
-
-class RDOCalcDoubleToInt: public RDOCalcUnary
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = oper->calcValueBase( runtime ).getInt();
-		return value;
-	}
-
-public:
-	RDOCalcDoubleToInt( RDORuntimeParent* _parent, RDOCalc* _oper ):
-		RDOCalcUnary( _parent, _oper )
-	{
-	}
-};
-
-class RDOCalcDoubleToIntByResult: public RDOCalcUnary
-{
-private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = round ? RDOValue( oper->calcValueBase( runtime ).getInt() ) : oper->calcValueBase( runtime );
-		return value;
-	}
-
-public:
-	bool round;
-	RDOCalcDoubleToIntByResult( RDORuntimeParent* _parent, RDOCalc* _oper ):
-		RDOCalcUnary( _parent, _oper ),
-		round( false )
-	{
-	}
-};
-
-class RDOCalcCheckDiap: public RDOCalcUnary
-{
-private:
-	RDOValue min_value;
-	RDOValue max_value;
-
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = oper->calcValueBase( runtime );
-		if ( value < min_value || value > max_value ) {
-			if ( value.getType() == RDOValue::rvt_int && min_value.getType() == RDOValue::rvt_int && max_value.getType() == RDOValue::rvt_int ) {
-				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", min_value.getInt(), max_value.getInt(), value.getInt()), this );
-			} else {
-				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", min_value.getDouble(), max_value.getDouble(), value.getDouble()), this );
-			}
-		}
-		return value; 
-	}
-
-public:
-	RDOCalcCheckDiap( RDORuntimeParent* _parent, RDOValue _min_value, RDOValue _max_value, RDOCalc* _oper ):
-		RDOCalcUnary( _parent, _oper ),
-		min_value( _min_value ),
-		max_value( _max_value )
-	{
-	}
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -1507,40 +931,35 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetConst: public RDOCalc
 {
-private:
-	int number;
-
 public:
-	RDOCalcGetConst( RDORuntimeParent* _parent, int _number ):
-		RDOCalc( _parent ),
-		number(_number)
+	RDOCalcGetConst( RDORuntimeParent* parent, int number ):
+		RDOCalc( parent ),
+		m_number( number )
 	{
 	}
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getConstValue( number );
-		return value;
-	}
+
+private:
+	int m_number;
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 class RDOCalcSetConst: public RDOCalc
 {
-private:
-	int number;
-	RDOCalc* calc;
-
 public:
-	RDOCalcSetConst( RDORuntimeParent* _parent, int _number, RDOCalc *_calc ):
-		RDOCalc( _parent ),
-		number( _number ),
-		calc( _calc )
+	RDOCalcSetConst( RDORuntimeParent* parent, int number, RDOCalc* calc ):
+		RDOCalc( parent ),
+		m_number( number ),
+		m_calc( calc )
 	{
-		value = 0;
-		if ( calc ) setSrcInfo( calc->src_info() );
+		m_value = 0;
+		if ( m_calc ) setSrcInfo( m_calc->src_info() );
 	}
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->setConstValue( number, calc->calcValueBase( runtime ) );
-		return value;
-	}
+
+private:
+	int      m_number;
+	RDOCalc* m_calc;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -1549,11 +968,13 @@ public:
 class RDOCalcInt: public RDOCalcUnary
 {
 public:
-	RDOCalcInt( RDORuntimeParent* _parent, RDOCalc* oper ): RDOCalcUnary( _parent, oper ) {}
-	RDOValue& calcValue( RDORuntime* runtime ) {
-		RDOValue res = oper->calcValueBase( runtime );
-		value = res > 0 ? RDOValue( (int)(res.getDouble() + 0.5) ) : RDOValue( (int)(res.getDouble() - 0.5) );
-		return value;
+	RDOCalcInt( RDORuntimeParent* parent, RDOCalc* oper ): RDOCalcUnary( parent, oper ) {}
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime ) {
+		RDOValue res = m_oper->calcValueBase( runtime );
+		m_value = res > 0 ? RDOValue( (int)(res.getDouble() + 0.5) ) : RDOValue( (int)(res.getDouble() - 0.5) );
+		return m_value;
 	}
 };
 
@@ -1562,41 +983,26 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcFunctionCall: public RDOCalc
 {
-private:
-	std::vector< RDOCalc* > parameters;
-	RDOFunCalc* function;
-
 public:
-	RDOCalcFunctionCall( RDORuntimeParent* _parent, RDOFunCalc* _function ):
-		RDOCalc( _parent ),
-		function( _function )
+	RDOCalcFunctionCall( RDORuntimeParent* parent, RDOFunCalc* function ):
+		RDOCalc( parent ),
+		m_function( function )
 	{
 	}
 	void addParameter( RDOCalc* calc )
 	{
-		parameters.push_back( calc );
+		m_parameters.push_back( calc );
 	}
 	void setFunctionCalc( RDOFunCalc* calc )
 	{
-		function = calc;
+		m_function = calc;
 	}
-	virtual RDOValue& calcValue( RDORuntime* runtime )
-	{
-		runtime->pushFuncTop();
-		int size = parameters.size();
-		for ( int i = 0; i < size; i++ ) {
-			RDOValue arg = parameters[i]->calcValueBase( runtime );
-			runtime->pushFuncArgument( arg );
-		}
-		runtime->resetFuncTop( parameters.size() );
-		value = function->calcValueBase( runtime );
-		size = parameters.size();
-		for ( i = 0; i < size; i++ ) {
-			runtime->popFuncArgument();
-		}
-		runtime->popFuncTop();
-		return value;
-	}
+
+private:
+	std::vector< RDOCalc* > m_parameters;
+	RDOFunCalc*             m_function;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -1614,7 +1020,7 @@ protected:
 	virtual RDOValue& calcValue( RDORuntime* runtime );
 
 public:
-	RDOCalcCreateNumberedResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
+	RDOCalcCreateNumberedResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
 	virtual RDOResource* createResource( RDORuntime* runtime ) const;
 
 	int getNumber() const { return number; }
@@ -1629,7 +1035,7 @@ private:
 	virtual RDOResource* createResource( RDORuntime* runtime ) const;
 
 public:
-	RDOCalcCreateProcessResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
+	RDOCalcCreateProcessResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
 };
 
 // ----------------------------------------------------------------------------
@@ -1644,7 +1050,7 @@ private:
 	int  rel_res_id;
 
 public:
-	RDOCalcCreateEmptyResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _params_default, int _rel_res_id );
+	RDOCalcCreateEmptyResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _params_default, int _rel_res_id );
 	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
@@ -1666,21 +1072,20 @@ protected:
 	RDOCalc*  choice_calc;
 	RDOCalc*  order_calc;
 	Type      order_type;
-	RDOSelectResourceCalc( RDORuntimeParent* _parent, int _rel_res_id, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty );
+	RDOSelectResourceCalc( RDORuntimeParent* parent, int _rel_res_id, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty );
 };
 
 class RDOSelectResourceNonExistCalc: public RDOSelectResourceCalc
 {
 public:
-	RDOSelectResourceNonExistCalc( RDORuntimeParent* _parent, int _rel_res_id ):
-		RDOSelectResourceCalc( _parent, _rel_res_id, NULL, NULL )
+	RDOSelectResourceNonExistCalc( RDORuntimeParent* parent, int _rel_res_id ):
+		RDOSelectResourceCalc( parent, _rel_res_id, NULL, NULL )
 	{
-		value = 1;
+		m_value = 1;
 	}
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		runtime->setRelRes( rel_res_id, -1 );
-		return value;
-	}
+
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
@@ -1689,8 +1094,8 @@ protected:
 	int res_id;
 
 public:
-	RDOSelectResourceDirectCalc( RDORuntimeParent* _parent, int _rel_res_id, int _res_id, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
-		RDOSelectResourceCalc( _parent, _rel_res_id, _choice_calc, _order_calc, _order_type ),
+	RDOSelectResourceDirectCalc( RDORuntimeParent* parent, int _rel_res_id, int _res_id, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceCalc( parent, _rel_res_id, _choice_calc, _order_calc, _order_type ),
 		res_id( _res_id )
 	{
 	}
@@ -1703,8 +1108,8 @@ protected:
 	int resType;
 
 public:
-	RDOSelectResourceByTypeCalc( RDORuntimeParent* _parent, int _rel_res_id, int _resType, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
-		RDOSelectResourceCalc( _parent, _rel_res_id, _choice_calc, _order_calc, _order_type ),
+	RDOSelectResourceByTypeCalc( RDORuntimeParent* parent, int _rel_res_id, int _resType, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceCalc( parent, _rel_res_id, _choice_calc, _order_calc, _order_type ),
 		resType( _resType )
 	{
 	}
@@ -1728,8 +1133,8 @@ private:
 	bool getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const;
 
 public:
-	RDOSelectResourceCommonCalc( RDORuntimeParent* _parent, const std::vector< RDOSelectResourceCommon* >& _resSelectors, bool _useCommonWithMax, RDOCalc* _choice_calc ):
-		RDOCalc( _parent ),
+	RDOSelectResourceCommonCalc( RDORuntimeParent* parent, const std::vector< RDOSelectResourceCommon* >& _resSelectors, bool _useCommonWithMax, RDOCalc* _choice_calc ):
+		RDOCalc( parent ),
 		resSelectors( _resSelectors ),
 		useCommonWithMax( _useCommonWithMax ),
 		choice_calc( _choice_calc )
@@ -1742,8 +1147,8 @@ public:
 class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceDirectCommonCalc( RDORuntimeParent* _parent, int _relNumb, int _resNumb, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
-		RDOSelectResourceDirectCalc( _parent, _relNumb, _resNumb, _choice_calc, _order_calc, _order_type )
+	RDOSelectResourceDirectCommonCalc( RDORuntimeParent* parent, int _relNumb, int _resNumb, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceDirectCalc( parent, _relNumb, _resNumb, _choice_calc, _order_calc, _order_type )
 	{
 	}
 	std::vector<int> getPossibleNumbers( RDORuntime* sim ) const;
@@ -1753,8 +1158,8 @@ public:
 class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceByTypeCommonCalc( RDORuntimeParent* _parent, int _relNumb, int _resType, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
-		RDOSelectResourceByTypeCalc( _parent, _relNumb, _resType, _choice_calc, _order_calc, _order_type )
+	RDOSelectResourceByTypeCommonCalc( RDORuntimeParent* parent, int _relNumb, int _resType, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceByTypeCalc( parent, _relNumb, _resType, _choice_calc, _order_calc, _order_type )
 	{
 	}
 	std::vector<int> getPossibleNumbers( RDORuntime* sim ) const;

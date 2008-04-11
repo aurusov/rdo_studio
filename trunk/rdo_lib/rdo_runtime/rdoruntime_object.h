@@ -1,8 +1,30 @@
 #ifndef RDORUNTIME_OBJECT_H
 #define RDORUNTIME_OBJECT_H
 
-#include "rdodefines.h"
 #include <rdocommon.h>
+
+// ----------------------------------------------------------------------------
+// ---------- toString
+// ----------------------------------------------------------------------------
+template < class Arg > inline std::string toString( Arg i )
+{
+   std::ostringstream str;
+   str << i;
+   return str.str();
+}
+
+// ----------------------------------------------------------------------------
+// ---------- DeleteAllObjects
+// ----------------------------------------------------------------------------
+template < class Stor > void DeleteAllObjects( Stor& storage )
+{
+	Stor::reverse_iterator it = storage.rbegin();
+	while ( it != storage.rend() ) {
+		delete *it;
+		it++;
+	}
+	storage.clear();
+}
 
 namespace rdoRuntime {
 

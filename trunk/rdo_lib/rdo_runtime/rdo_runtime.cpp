@@ -2,7 +2,6 @@
 #include "rdo_runtime.h"
 #include "rdoprocess.h"
 #include "rdopokaz.h"
-#include "rdopokaz.h"
 #include "rdodptrtime.h"
 #include "rdocalc.h"
 #include <limits>
@@ -326,17 +325,17 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimeOperation( RDOActivityOperationRuntime* opr )
+void RDORuntime::addRuntimeOperation( RDOActivityOperation* opr )
 {
 	addTemplateBaseOperation( opr );
 }
 
-void RDORuntime::addRuntimeRule( RDOActivityRuleRuntime* rule )
+void RDORuntime::addRuntimeRule( RDOActivityRule* rule )
 {
 	addTemplateBaseOperation( rule );
 }
 
-void RDORuntime::addRuntimeIE( RDOActivityIERuntime* ie )
+void RDORuntime::addRuntimeIE( RDOActivityIrregEvent* ie )
 {
 	addTemplateBaseOperation( ie );
 }
@@ -347,7 +346,7 @@ void RDORuntime::addRuntimeProcess( RDOPROCProcess* process )
 //	addTemplateBaseOperation( process );
 }
 
-void RDORuntime::addRuntimeDPT( RDOSearchRuntime* dpt )
+void RDORuntime::addRuntimeDPT( RDODPTSearchRuntime* dpt )
 {
 	addTemplateBaseOperation( dpt );
 }
@@ -567,12 +566,12 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 	std::stringstream stream;
 	RDOLogicContainer::CIterator it = m_logics.begin();
 	while ( it != m_logics.end() ) {
-		RDOActivityRuleRuntime* rule = dynamic_cast<RDOActivityRuleRuntime*>(*it);
+		RDOActivityRule* rule = dynamic_cast<RDOActivityRule*>(*it);
 		if ( rule ) {
 			stream << counter++ << " ";
 			rule->writeModelStructure( stream );
 		} else {
-			RDOActivityOperationRuntime* opr = dynamic_cast<RDOActivityOperationRuntime*>(*it);
+			RDOActivityOperation* opr = dynamic_cast<RDOActivityOperation*>(*it);
 			if ( opr ) {
 				stream << counter++ << " ";
 				opr->writeModelStructure( stream );
@@ -588,7 +587,7 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 	int _counter = 1;
 	it = m_logics.begin();
 	while ( it != m_logics.end() ) {
-		RDOActivityIERuntime* ie = dynamic_cast<RDOActivityIERuntime*>(*it);
+		RDOActivityIrregEvent* ie = dynamic_cast<RDOActivityIrregEvent*>(*it);
 		if ( ie ) {
 			stream << _counter++ << " ";
 			counter++;

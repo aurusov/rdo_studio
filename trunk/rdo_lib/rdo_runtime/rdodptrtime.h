@@ -10,28 +10,30 @@ namespace rdoRuntime
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSearchActivityRuntime - активность внутри DPT (потомок RDOActivity)
+// ---------- RDOSearchActivityRuntime - активность внутри DPT (потомок RDODPTSearch::Activity)
 // ----------------------------------------------------------------------------
 class RDOSearchActivityRuntime: public RDOActivityTrace
 {
-private:
-	RDOCalc* cost;
-	virtual double costOfRule( RDOSimulator* runtime ) {
-		return cost->calcValueBase( static_cast<RDORuntime*>(runtime) ).getDouble();
+public:
+	RDOSearchActivityRuntime( RDORuntime* runtime, RDORule* r, ValueTime valueTime, RDOCalc* cost ):
+		RDOActivityTrace( runtime, r, valueTime ),
+		m_cost( cost )
+	{
 	}
 
-public:
-	RDOSearchActivityRuntime( RDORuntime* runtime, RDORule* r, bool vA, RDOCalc* _cost ):
-		RDOActivityTrace( runtime, r, vA ),
-		cost( _cost )
+private:
+	RDOCalc* m_cost;
+
+	virtual double cost( RDOSimulator* runtime )
 	{
+		return m_cost->calcValueBase( static_cast<RDORuntime*>(runtime) ).getDouble();
 	}
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSearchRuntime - DPT (потомок RDODecisionPoint)
+// ---------- RDODPTSearchRuntime - DPT (потомок RDODPTSearch)
 // ----------------------------------------------------------------------------
-class RDOSearchRuntime: public RDODecisionPointTrace
+class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
 private:
 	RDOCalc* condition;
@@ -45,8 +47,8 @@ private:
 	virtual bool NeedCompareTops()                  { return compTops; }
 
 public:
-	RDOSearchRuntime( RDORuntime* sim, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops ):
-		RDODecisionPointTrace( sim ),
+	RDODPTSearchRuntime( RDORuntime* sim, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops ):
+		RDODPTSearchTrace( sim ),
 		condition( _condition ),
 		termCondition( _termCondition ),
 		evaluateBy( _evaluateBy ),

@@ -203,7 +203,7 @@ pat_header:	Pattern IDENTIF_COLON operation_kw pat_trace {
 			}
 			| Pattern IDENTIF_COLON rule_keyword pat_trace {
 				std::string name = *reinterpret_cast<std::string*>($2);
-				$$ = (int)(new RDOPATPatternRule( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				$$ = (int)(new RDOPATRule( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
 			}
 			| Pattern IDENTIF_COLON keyboard pat_trace {
 				std::string name = *reinterpret_cast<std::string*>($2);

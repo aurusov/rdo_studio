@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "rdoframe.h"
+#include "rdo_runtime.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

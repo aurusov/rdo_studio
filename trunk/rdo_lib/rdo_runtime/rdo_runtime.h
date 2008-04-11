@@ -94,13 +94,13 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
-class RDOActivityRuleRuntime;
-class RDOActivityIERuntime;
-class RDOActivityOperationRuntime;
+class RDOActivityRule;
+class RDOActivityIrregEvent;
+class RDOActivityOperation;
 class RDOPROCProcess;
 class RDOPMDPokaz;
-class RDOPatternRuntime;
-class RDOSearchRuntime;
+class RDOPattern;
+class RDODPTSearchRuntime;
 class RDOCalcEraseRes;
 class RDOFRMFrame;
 class RDOCalcCreateNumberedResource;
@@ -231,11 +231,11 @@ public:
 	double getSeconds() { return (time(NULL) - physic_time); }
 
 	void setCurrentActivity( RDOActivityRuntime* pat )           { currActivity = pat; }
-	void addRuntimeOperation( RDOActivityOperationRuntime* opr );
-	void addRuntimeRule( RDOActivityRuleRuntime* rule );
-	void addRuntimeIE( RDOActivityIERuntime* ie );
+	void addRuntimeOperation( RDOActivityOperation* opr );
+	void addRuntimeRule( RDOActivityRule* rule );
+	void addRuntimeIE( RDOActivityIrregEvent* ie );
 	void addRuntimeProcess( RDOPROCProcess* process );
-	void addRuntimeDPT( RDOSearchRuntime* dpt );
+	void addRuntimeDPT( RDODPTSearchRuntime* dpt );
 	void addRuntimePokaz( RDOPMDPokaz* pok );
 	void addRuntimeFrame( RDOFRMFrame* frame );
 	RDOFRMFrame* lastFrame() const;

@@ -4,7 +4,7 @@
 #include "rdortp.h"
 #include "rdorss.h"
 #include "rdopat.h"
-#include "rdofunc.h"
+#include "rdo_random_distribution.h"
 #include "rdodpt.h"
 #include "rdoparser_lexer.h"
 #include <rdo_runtime.h>
@@ -37,7 +37,7 @@ void RDOFUNDoubleToIntByResult::initCalc( bool round )
 {
 	std::vector< rdoRuntime::RDOCalcDoubleToIntByResult* >::iterator it = int_or_double.begin();
 	while ( it != int_or_double.end() ) {
-		(*it)->round = true;
+		(*it)->needRound();
 		it++;
 	}
 }
@@ -1014,19 +1014,19 @@ void RDOFUNSequence::initResult()
 	initCalcSrcInfo();
 	switch ( header->getType()->getType() ) {
 		case rdoRuntime::RDOValue::Type::rvt_int: {
-			next_calc->res_real = false;
+			next_calc->m_res_real = false;
 			if ( static_cast<const RDORTPIntParamType*>(header->getType())->getDiap().isExist() ) {
-				next_calc->diap     = true;
-				next_calc->diap_min = static_cast<const RDORTPIntParamType*>(header->getType())->getDiap().getMin();
-				next_calc->diap_max = static_cast<const RDORTPIntParamType*>(header->getType())->getDiap().getMax();
+				next_calc->m_diap     = true;
+				next_calc->m_diap_min = static_cast<const RDORTPIntParamType*>(header->getType())->getDiap().getMin();
+				next_calc->m_diap_max = static_cast<const RDORTPIntParamType*>(header->getType())->getDiap().getMax();
 			}
 			break;
 		}
 		case rdoRuntime::RDOValue::Type::rvt_real: {
 			if ( static_cast<const RDORTPRealParamType*>(header->getType())->getDiap().isExist() ) {
-				next_calc->diap     = true;
-				next_calc->diap_min = static_cast<const RDORTPRealParamType*>(header->getType())->getDiap().getMin();
-				next_calc->diap_max = static_cast<const RDORTPRealParamType*>(header->getType())->getDiap().getMax();
+				next_calc->m_diap     = true;
+				next_calc->m_diap_min = static_cast<const RDORTPRealParamType*>(header->getType())->getDiap().getMin();
+				next_calc->m_diap_max = static_cast<const RDORTPRealParamType*>(header->getType())->getDiap().getMax();
 			}
 			break;
 		}

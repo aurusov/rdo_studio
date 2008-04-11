@@ -2,23 +2,24 @@
 #define SEARCHTRACE_H
 
 #include "rdo.h"
+#include "searchtree.h"
 #include "rdotrace.h"
 #include "simtrace.h"
 
 namespace rdoRuntime
 {
 
-class RDOActivityTrace: public RDOActivity, public RDOTraceableObject
+class RDOActivityTrace: public RDODPTSearch::Activity, public RDOTraceableObject
 {
 friend class TreeNodeTrace;
-friend class RDODecisionPointTrace;
+friend class RDODPTSearchTrace;
 friend class RDOTrace;
 
 public:
-	RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, bool vA );
+	RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, ValueTime valueTime );
 };
 
-class RDODecisionPointTrace: public RDODecisionPoint, RDOTraceableObject
+class RDODPTSearchTrace: public RDODPTSearch, RDOTraceableObject
 {
 public:
 	enum DPT_TraceFlag {
@@ -48,8 +49,8 @@ public:
 	void getStats( std::list< unsigned int >& list, unsigned int& min, unsigned int& max, double& med ) const;
 
 	DPT_TraceFlag traceFlag;
-	RDODecisionPointTrace( RDOSimulatorTrace* i_sim ):
-		RDODecisionPoint( i_sim ), //qq
+	RDODPTSearchTrace( RDOSimulatorTrace* i_sim ):
+		RDODPTSearch( i_sim ), //qq
 		RDOTraceableObject( i_sim ),
 		calc_cnt( 0 ),
 		calc_res_found_cnt( 0 )
@@ -64,7 +65,7 @@ private:
 	virtual void createRootTreeNode( RDOSimulator* sim );
 
 public:
-	TreeRootTrace( RDOSimulator* sim, RDODecisionPoint* _dp ): TreeRoot( sim, _dp ) {}
+	TreeRootTrace( RDOSimulator* sim, RDODPTSearch* _dp ): TreeRoot( sim, _dp ) {}
 };
 
 class TreeNodeTrace: public TreeNode
@@ -79,7 +80,7 @@ private:
 	TreeNode* createChildTreeNode();
 
 public:
-	TreeNodeTrace( RDOSimulator* i_sim, TreeNode* i_parent, TreeRoot* i_root, RDOActivity* i_activity, double cost, int cnt ):
+	TreeNodeTrace( RDOSimulator* i_sim, TreeNode* i_parent, TreeRoot* i_root, RDODPTSearch::Activity* i_activity, double cost, int cnt ):
 		TreeNode( i_sim, i_parent, i_root, i_activity, cost, cnt )
 	{
 	}

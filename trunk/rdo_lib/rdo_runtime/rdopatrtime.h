@@ -13,16 +13,16 @@ class RDORuntime;
 class RDOActivityRuntime;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPatternRuntime
+// ---------- RDOPattern
 // ----------------------------------------------------------------------------
-class RDOPatternRuntime: public RDORuntimeParent
+class RDOPattern: public RDORuntimeParent
 {
-friend class RDOActivityRuleRuntime;
-friend class RDOActivityIERuntime;
-friend class RDOActivityOperationRuntime;
+friend class RDOActivityRule;
+friend class RDOActivityIrregEvent;
+friend class RDOActivityOperation;
 
 protected:
-	RDOPatternRuntime( RDORuntime* _runtime, bool _trace );
+	RDOPattern( RDORuntime* _runtime, bool _trace );
 
 	std::vector< RDOCalc* > choiceFromCalcs;
 	std::vector< RDOCalc* > beginCalcs;
@@ -32,7 +32,7 @@ protected:
 	bool        trace;
 
 public:
-	virtual ~RDOPatternRuntime() {}
+	virtual ~RDOPattern() {}
 
 	bool choiceFrom( RDOSimulator* sim );
 	void convertBegin( RDORuntime* _runtime );
@@ -56,12 +56,12 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDORuleRuntime
+// ---------- RDOPATRule
 // ----------------------------------------------------------------------------
-class RDORuleRuntime: public RDOPatternRuntime
+class RDOPATRule: public RDOPattern
 {
 public:
-	RDORuleRuntime( RDORuntime* rTime, bool _trace );
+	RDOPATRule( RDORuntime* rTime, bool _trace );
 
 	void convertRule( RDOSimulator* sim );
 
@@ -70,15 +70,15 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOIERuntime
+// ---------- RDOPATIrregEvent
 // ----------------------------------------------------------------------------
-class RDOIERuntime: public RDOPatternRuntime
+class RDOPATIrregEvent: public RDOPattern
 {
 protected:
 	RDOCalc* timeCalc;
 
 public:
-	RDOIERuntime( RDORuntime* rTime, bool _trace );
+	RDOPATIrregEvent( RDORuntime* rTime, bool _trace );
 
 	void convertEvent( RDOSimulator* sim );
 
@@ -89,11 +89,11 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOOperationRuntime
+// ---------- RDOPATOperation
 // ----------------------------------------------------------------------------
-class RDOOperationRuntime: public RDOPatternRuntime
+class RDOPATOperation: public RDOPattern
 {
-friend class RDOActivityOperationRuntime;
+friend class RDOActivityOperation;
 
 private:
 	std::vector< RDOCalc* >	endCalcs;
@@ -104,7 +104,7 @@ protected:
 	std::vector< RDOResourceTrace::ConvertStatus > endConvertStatus;
 
 public:
-	RDOOperationRuntime( RDORuntime* rTime, bool _trace );
+	RDOPATOperation( RDORuntime* rTime, bool _trace );
 
 	void convertBegin( RDOSimulator* sim );
 	void convertEnd( RDOSimulator* sim );
@@ -124,12 +124,12 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOKeyboardRuntime
+// ---------- RDOPATKeyboard
 // ----------------------------------------------------------------------------
-class RDOKeyboardRuntime: public RDOOperationRuntime
+class RDOPATKeyboard: public RDOPATOperation
 {
 public:
-	RDOKeyboardRuntime( RDORuntime* rTime, bool _trace );
+	RDOPATKeyboard( RDORuntime* rTime, bool _trace );
 
 	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, const std::string& _oprName );
 	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
@@ -141,7 +141,7 @@ public:
 class RDOActivityRuntime
 {
 protected:
-	RDOActivityRuntime( RDOPatternRuntime* _pattern, const std::string& _oprName ):
+	RDOActivityRuntime( RDOPattern* _pattern, const std::string& _oprName ):
 		pattern( _pattern ),
 		oprName( _oprName )
 	{
@@ -152,7 +152,7 @@ protected:
 	std::list< RDOResourceTrace* > relevantResources; // Список релевантных ресурсов
 	std::vector< int >             relResID;  // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector< RDOCalc* >        paramsCalcs;
-	RDOPatternRuntime*             pattern;
+	RDOPattern*                    pattern;
 	void setPatternParameters( RDOSimulator* sim );
 	void getRelevantResources( RDOSimulator* sim, std::list< RDOResourceTrace* >& rel_res_list );
 	void incrementRelevantResourceReference( RDOSimulator* sim );
@@ -198,9 +198,9 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOActivityRuleRuntime
+// ---------- RDOActivityRule
 // ----------------------------------------------------------------------------
-class RDOActivityRuleRuntime: public RDORuleTrace, public RDOActivityRuntime
+class RDOActivityRule: public RDORuleTrace, public RDOActivityRuntime
 {
 private:
 	bool choiceFrom( RDOSimulator* sim );
@@ -220,14 +220,14 @@ private:
 	}
 
 public:
-	RDOActivityRuleRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
-	RDOActivityRuleRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
+	RDOActivityRule( RDORuntime* rTime, RDOPattern* _pattern, bool _trace, const std::string& _oprName );
+	RDOActivityRule( RDORuntime* rTime, RDOPattern* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOActivityIERuntime
+// ---------- RDOActivityIrregEvent
 // ----------------------------------------------------------------------------
-class RDOActivityIERuntime: public RDOIETrace, public RDOActivityRuntime
+class RDOActivityIrregEvent: public RDOIETrace, public RDOActivityRuntime
 {
 private:
 	bool choiceFrom( RDOSimulator* sim );
@@ -245,13 +245,13 @@ private:
 	}
 
 public:
-	RDOActivityIERuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
+	RDOActivityIrregEvent( RDORuntime* rTime, RDOPattern* _pattern, bool _trace, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOActivityOperationRuntime
+// ---------- RDOActivityOperation
 // ----------------------------------------------------------------------------
-class RDOActivityOperationRuntime: public RDOOperationTrace, public RDOActivityRuntime
+class RDOActivityOperation: public RDOOperationTrace, public RDOActivityRuntime
 {
 private:
 	void convertBegin(RDOSimulator *sim);
@@ -279,14 +279,14 @@ protected:
 	virtual bool choiceFrom( RDOSimulator* sim );
 
 public:
-	RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
-	RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
+	RDOActivityOperation( RDORuntime* rTime, RDOPattern* _pattern, bool _trace, const std::string& _oprName );
+	RDOActivityOperation( RDORuntime* rTime, RDOPattern* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOActivityKeyboardRuntime
+// ---------- RDOActivityKeyboard
 // ----------------------------------------------------------------------------
-class RDOActivityKeyboardRuntime: public RDOActivityOperationRuntime
+class RDOActivityKeyboard: public RDOActivityOperation
 {
 private:
 	bool shift;
@@ -294,8 +294,8 @@ private:
 	int scan_code;
 
 public:
-	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
-	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
+	RDOActivityKeyboard( RDORuntime* rTime, RDOPattern* _pattern, bool _trace, const std::string& _oprName );
+	RDOActivityKeyboard( RDORuntime* rTime, RDOPattern* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 
 	bool choiceFrom( RDOSimulator* sim );
 	virtual AddHotKey addHotKey( RDORuntime* runtime, const std::string& hotKey );

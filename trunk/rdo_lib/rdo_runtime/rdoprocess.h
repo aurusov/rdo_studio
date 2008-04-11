@@ -81,9 +81,9 @@ protected:
 	RDOCalc* timeCalc;
 
 protected:
-	virtual void init( RDOSimulator* sim );
-	virtual bool     checkOperation( RDOSimulator* sim );
-	virtual BOResult doOperation   ( RDOSimulator* sim );
+	virtual void     onStart         ( RDOSimulator* sim );
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
@@ -100,7 +100,7 @@ protected:
 	int          rss_id;
 	RDOValue     enum_free;
 	RDOValue     enum_buzy;
-	virtual void init( RDOSimulator* sim );
+	virtual void onStart( RDOSimulator* sim );
 
 public:
 	RDOPROCBlockForSeize( RDOPROCProcess* _process, int _rss_id );
@@ -116,8 +116,8 @@ public:
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 private:
-	virtual bool     checkOperation( RDOSimulator* sim );
-	virtual BOResult doOperation   ( RDOSimulator* sim );
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCSeize( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlockForSeize( _process, _rss_id ) {}
@@ -129,8 +129,8 @@ public:
 class RDOPROCRelease: public RDOPROCBlockForSeize
 {
 private:
-	virtual bool     checkOperation( RDOSimulator* sim );
-	virtual BOResult doOperation   ( RDOSimulator* sim );
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCRelease( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlockForSeize( _process, _rss_id ) {}
@@ -155,8 +155,8 @@ protected:
 	};
 	std::list< LeaveTr > leave_list;
 
-	virtual bool     checkOperation( RDOSimulator* sim );
-	virtual BOResult doOperation   ( RDOSimulator* sim );
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCAdvance( RDOPROCProcess* _process, RDOCalc* _delayCalc ): RDOPROCBlock( _process ), delayCalc( _delayCalc ) {}
@@ -168,8 +168,8 @@ public:
 class RDOPROCTerminate: public RDOPROCBlock
 {
 protected:
-	virtual bool     checkOperation( RDOSimulator* sim );
-	virtual BOResult doOperation( RDOSimulator* sim );
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation( RDOSimulator* sim );
 
 public:
 	RDOPROCTerminate( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}

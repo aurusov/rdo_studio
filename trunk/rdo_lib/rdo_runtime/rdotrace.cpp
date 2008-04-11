@@ -55,7 +55,7 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
 
 	RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
 	RDOActivityTrace *actTr = (RDOActivityTrace *)node->activity;
-	RDORuleTrace *ruleTr = (RDORuleTrace *)actTr->rule;
+	RDORuleTrace *ruleTr = (RDORuleTrace *)actTr->rule();
 
 	getOStream() << node->number
 	             << " " << actTr->traceId()
@@ -83,10 +83,10 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 {
 	if ( isNull() || !canWrite() ) return;
 
-	RDODecisionPointTrace* dpTrace = static_cast<RDODecisionPointTrace*>(node->root->dp);
-	if ( dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_tops || dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_all ) {
+	RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->root->dp);
+	if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
 		RDOActivityTrace*  actTr  = static_cast<RDOActivityTrace*>(node->currAct);
-		RDORuleTrace*      ruleTr = static_cast<RDORuleTrace*>(actTr->rule);
+		RDORuleTrace*      ruleTr = static_cast<RDORuleTrace*>(actTr->rule());
 		RDOSimulatorTrace* sim    = static_cast<RDOSimulatorTrace*>(node->sim);
 
 		getOStream().precision(4);
@@ -101,8 +101,8 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 		             << " " << ruleTr->traceResourcesListNumbers( sim )
 		             << std::endl << getEOL();
 
-		RDODecisionPointTrace* dpTrace = static_cast<RDODecisionPointTrace*>(node->root->dp);
-		if ( dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_all ) {
+		RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->root->dp);
+		if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
 			getOStream() << ruleTr->traceResourcesList( 'S', sim ) << getEOL();
 		}
 	}
@@ -120,7 +120,7 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 	if ( systime_current.wYear == treeRoot->systime_begin.wYear && systime_current.wMonth == treeRoot->systime_begin.wMonth ) {
 		sec_delay = static_cast<double>(msec_current - msec_begin) / 1000 + (systime_current.wDay - treeRoot->systime_begin.wDay) * 24 * 60 * 60;
 	}
-	static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_times.push_back( sec_delay );
+	static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_times.push_back( sec_delay );
 
 	getOStream() << "SE" << letter
 	             << " " << simTr->getCurrentTime()
@@ -137,11 +137,11 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 		             << " " << simTr->getCurrentTime()
 		             << " 4"
 		             << std::endl << getEOL();
-		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_cost.push_back( treeRoot->targetNode->costPath );
-		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes.push_back( treeRoot->getNodesCound() );
-		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_expended.push_back( treeRoot->expandedNodesCount );
-		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_full.push_back( treeRoot->fullNodesCount );
-		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_in_graph.push_back( treeRoot->nodesInGraphCount );
+		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_cost.push_back( treeRoot->targetNode->costPath );
+		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes.push_back( treeRoot->getNodesCound() );
+		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes_expended.push_back( treeRoot->expandedNodesCount );
+		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes_full.push_back( treeRoot->fullNodesCount );
+		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes_in_graph.push_back( treeRoot->nodesInGraphCount );
 	}
 }
 
@@ -320,7 +320,7 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 	// Статистика по поиску на графе
 	RDOLogicContainer::CIterator it = sim->m_logics.begin();
 	while ( it != sim->m_logics.end() ) {
-		RDODecisionPointTrace* dp = dynamic_cast<RDODecisionPointTrace*>(*it);
+		RDODPTSearchTrace* dp = dynamic_cast<RDODPTSearchTrace*>(*it);
 		if ( dp ) {
 			// Информация о точке
 			getOStream() << std::endl << getEOL();

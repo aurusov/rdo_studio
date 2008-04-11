@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "rdo.h"
 #include "rdoprocess.h"
+#include "searchtree.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,42 +16,47 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOIE - irregular_event
 // ----------------------------------------------------------------------------
-void RDOIE::init( RDOSimulator* sim )
+void RDOIE::onStart( RDOSimulator* sim )
 {
 	onBeforeIrregularEvent( sim );
-	sim->addTimePoint( m_time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
+	sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
 }
 
-bool RDOIE::checkOperation(RDOSimulator *sim)
+void RDOIE::onStop( RDOSimulator* sim )
+{
+	sim->removeTimePoint( this );
+}
+
+bool RDOIE::onCheckCondition(RDOSimulator *sim)
 {
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOIE::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOIE::onDoOperation( RDOSimulator* sim )
 {
 	return RDOBaseOperation::BOR_cant_run;
 }
 
-void RDOIE::makePlaned( RDOSimulator* sim, void* param )
+void RDOIE::onMakePlaned( RDOSimulator* sim, void* param )
 {
 	sim->inc_cnt_events();
 	onBeforeIrregularEvent( sim );
 	convertEvent( sim );
-	sim->addTimePoint( m_time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
+	sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
 	onAfterIrregularEvent( sim );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDORule - rule
 // ----------------------------------------------------------------------------
-bool RDORule::checkOperation( RDOSimulator* sim )
+bool RDORule::onCheckCondition( RDOSimulator* sim )
 {
 	onBeforeChoiceFrom( sim );
 	sim->inc_cnt_choice_from();
 	return choiceFrom(sim);
 }
 
-RDOBaseOperation::BOResult RDORule::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDORule::onDoOperation( RDOSimulator* sim )
 {
 	onBeforeRule( sim );
 	convertRule( sim );
@@ -61,7 +67,7 @@ RDOBaseOperation::BOResult RDORule::doOperation( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation - operation
 // ----------------------------------------------------------------------------
-bool RDOOperation::checkOperation( RDOSimulator* sim )
+bool RDOOperation::onCheckCondition( RDOSimulator* sim )
 {
 	// Если операция может начаться, то создать её клон и поместить его в список
 	onBeforeChoiceFrom( sim );
@@ -69,19 +75,18 @@ bool RDOOperation::checkOperation( RDOSimulator* sim )
 	return choiceFrom(sim);
 }
 
-RDOBaseOperation::BOResult RDOOperation::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOOperation::onDoOperation( RDOSimulator* sim )
 {
 	RDOOperation* newOp = clone( sim );
-	newOp->reparent( &clones );
+	newOp->reparent( &m_clones );
 	newOp->onBeforeOperationBegin( sim );
 	newOp->convertBegin( sim );
-	sim->addTimePoint( newOp->time = (newOp->getNextTimeInterval(sim) + sim->getCurrentTime()), this, newOp );
+	sim->addTimePoint( newOp->getNextTimeInterval(sim) + sim->getCurrentTime(), this, newOp );
 	newOp->onAfterOperationBegin( sim );
-	newOp->convert_end = true;
 	return RDOBaseOperation::BOR_planned_and_run;
 }
 
-void RDOOperation::makePlaned( RDOSimulator* sim, void* param )
+void RDOOperation::onMakePlaned( RDOSimulator* sim, void* param )
 {
 	// Выполняем событие конца операции-клона
 	sim->inc_cnt_events();
@@ -93,24 +98,24 @@ void RDOOperation::makePlaned( RDOSimulator* sim, void* param )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDODecisionPoint - DPT
+// ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODecisionPoint::~RDODecisionPoint()
+RDODPTSearch::~RDODPTSearch()
 {
 //qq	DeleteAllObjects( activities );
 }
 
-bool RDODecisionPoint::checkOperation( RDOSimulator* sim )
+bool RDODPTSearch::onCheckCondition( RDOSimulator* sim )
 {
 	return Condition(sim);
 }
 
-RDOBaseOperation::BOResult RDODecisionPoint::doOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDODPTSearch::onDoOperation( RDOSimulator* sim )
 {
 	return RunSearchInTree( sim );
 }
 
-RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
 {
 	DWORD time_begin = ::GetTickCount();
 	while ( true ) {
@@ -142,11 +147,11 @@ RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* si
 		// Отработали рулы
 		for ( std::list< TreeNode* >::iterator ii = bestPath.begin(); ii != bestPath.end(); ii++ ) {
 			TreeNode* node = (*ii);
-			node->activity->rule->onBeforeChoiceFrom( treeRoot->theRealSimulator );
-			node->activity->rule->choiceFrom( treeRoot->theRealSimulator );
-			node->activity->rule->onBeforeRule( treeRoot->theRealSimulator );
-			node->activity->rule->convertRule( treeRoot->theRealSimulator );
-			node->activity->rule->onAfterRule( treeRoot->theRealSimulator, true );
+			node->activity->rule()->onBeforeChoiceFrom( treeRoot->theRealSimulator );
+			node->activity->rule()->choiceFrom( treeRoot->theRealSimulator );
+			node->activity->rule()->onBeforeRule( treeRoot->theRealSimulator );
+			node->activity->rule()->convertRule( treeRoot->theRealSimulator );
+			node->activity->rule()->onAfterRule( treeRoot->theRealSimulator, true );
 			// Отработали каждую вершину: вывели трассировку
 			onSearchDecision( treeRoot->theRealSimulator, node );
 		}
@@ -162,17 +167,17 @@ RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* si
 	return success ? RDOBaseOperation::BOR_done : RDOBaseOperation::BOR_cant_run;
 }
 
-RDOBaseOperation::BOResult RDODecisionPoint::RunSearchInTree( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDODPTSearch::RunSearchInTree( RDOSimulator* sim )
 {
 	// Начало поиска: вывели трасировку, обновили статистику
 	onSearchBegin( sim );
 	treeRoot = createTreeRoot( sim );
 	treeRoot->createRootTreeNode( sim->createCopy() );
 
-	return continueOperation( sim );
+	return onContinue( sim );
 }
 
-void RDODecisionPoint::addActivity( RDOActivity* act )
+void RDODPTSearch::addActivity( Activity* act )
 {
 	// Удалять активности из activities не надо, т.к. это делает объект-родитель
 	act->reparent( this );
@@ -187,7 +192,7 @@ bool RDOSimulator::doOperation()
 	bool res;
 	if ( getMustContinueOpr() ) {
 		// Есть действие, которое необходимо продолжить. Используется в DPT
-		RDOBaseOperation::BOResult result = getMustContinueOpr()->continueOperation( this );
+		RDOBaseOperation::BOResult result = getMustContinueOpr()->onContinue( this );
 		if ( result != RDOBaseOperation::BOR_must_continue ) {
 			setMustContinueOpr( NULL );
 		}
@@ -195,11 +200,11 @@ bool RDOSimulator::doOperation()
 	} else {
 		bool found_planed = false;
 		// Отработаем все запланированные на данный момент события
-		if ( !check_operation && !timePointList.empty() ) {
+		if ( !check_operation && !m_timePoints.empty() ) {
 			check_operation = true;
-			double newTime = timePointList.begin()->first;
+			double newTime = m_timePoints.begin()->first;
 			if ( getCurrentTime() >= newTime ) {
-				std::list< BOPlanned >* list = timePointList.begin()->second;
+				BOPlannedItem* list = m_timePoints.begin()->second;
 				if ( list && !list->empty() ) {
 #ifdef RDOSIM_COMPATIBLE
 					// Дисциплина списка текущих событий LIFO
@@ -213,10 +218,11 @@ bool RDOSimulator::doOperation()
 					list->pop_front();
 #endif
 					if ( list->empty() ) {
-						delete timePointList.begin()->second;
-						timePointList.erase( timePointList.begin() );
+						delete list;
+//						delete m_timePoints.begin()->second;
+						m_timePoints.erase( m_timePoints.begin() );
 					}
-					opr->makePlaned( this, param );
+					opr->onMakePlaned( this, param );
 					found_planed = true;
 				}
 			}
@@ -225,10 +231,10 @@ bool RDOSimulator::doOperation()
 		if ( !found_planed ) {
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
-			res = m_logics.checkOperation(this);
+			res = m_logics.onCheckCondition(this);
 			if ( res )
 			{
-				res = m_logics.doOperation(this) != RDOBaseOperation::BOR_cant_run;
+				res = m_logics.onDoOperation(this) != RDOBaseOperation::BOR_cant_run;
 			}
 			if ( !res ) check_operation = false;
 		}
@@ -240,7 +246,7 @@ bool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	m_logics.init( this );
+	m_logics.onStart( this );
 	onResetPokaz();
 }
 

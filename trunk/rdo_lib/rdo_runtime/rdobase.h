@@ -2,7 +2,6 @@
 #define RDOBASE_H
 
 #include "rdoruntime_object.h"
-#include "rdodefines.h"
 #include <rdocommon.h>
 
 namespace rdoRuntime
@@ -41,7 +40,9 @@ protected:
 		BOPlanned( const BOPlanned& copy )                      : opr( copy.opr ), param( copy.param ) {}
 		BOPlanned( RDOBaseOperation* _opr, void* _param = NULL ): opr( _opr )    , param( _param )     {}
 	};
-	std::map< double, std::list< BOPlanned >* > timePointList;
+	typedef std::list< BOPlanned >              BOPlannedItem;
+	typedef std::map< double, BOPlannedItem* >  BOPlannedMap;
+	BOPlannedMap                                m_timePoints;
 
 	bool check_operation;
 
@@ -102,7 +103,8 @@ public:
 	double getShowRate() const              { return showRate;    }
 	void setShowRate( double value );
 
-	void addTimePoint( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL  );
+	void addTimePoint   ( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL );
+	void removeTimePoint( const RDOBaseOperation* opr );
 
 	RDOSimulatorBase();
 	virtual ~RDOSimulatorBase() {}
