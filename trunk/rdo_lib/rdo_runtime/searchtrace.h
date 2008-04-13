@@ -16,10 +16,10 @@ friend class RDODPTSearchTrace;
 friend class RDOTrace;
 
 public:
-	RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, ValueTime valueTime );
+	RDOActivityTrace( RDORule* r, ValueTime valueTime );
 };
 
-class RDODPTSearchTrace: public RDODPTSearch, RDOTraceableObject
+class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject
 {
 public:
 	enum DPT_TraceFlag {
@@ -49,9 +49,9 @@ public:
 	void getStats( std::list< unsigned int >& list, unsigned int& min, unsigned int& max, double& med ) const;
 
 	DPT_TraceFlag traceFlag;
-	RDODPTSearchTrace( RDOSimulatorTrace* i_sim ):
-		RDODPTSearch( i_sim ), //qq
-		RDOTraceableObject( i_sim ),
+	RDODPTSearchTrace( RDOSimulatorTrace* sim ):
+		RDODPTSearch( sim ),
+		RDOTraceableObject( false ),
 		calc_cnt( 0 ),
 		calc_res_found_cnt( 0 )
 	{

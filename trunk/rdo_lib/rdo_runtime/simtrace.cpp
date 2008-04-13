@@ -16,7 +16,7 @@ namespace rdoRuntime
 
 void RDOSimulatorTrace::addTemplateDecisionPoint( RDODPTSearchTrace* dp )
 {
-	dp->id = dptCounter++;
+	dp->setTraceID( dptCounter++ );
 	RDOSimulator::addTemplateBaseOperation( dp );
 }
 
@@ -27,7 +27,7 @@ void RDOSimulatorTrace::addTemplateOperation( RDOOperationTrace* op )
 
 void RDOSimulatorTrace::addTemplateIrregularEvent( RDOIETrace* ev )
 {
-	ev->id = ieCounter++;
+	ev->setTraceID( ieCounter++ );
 	RDOSimulator::addTemplateBaseOperation( ev );
 }
 
@@ -144,7 +144,7 @@ void RDOSimulatorTrace::freeOperationId(int id)
 
 void RDOSimulatorTrace::onResourceErase( RDOResourceTrace* res )
 {
-	eraseFreeResourceId( res->id );
+	eraseFreeResourceId( res->getTraceID() );
 }
 
 void RDOSimulatorTrace::preProcess()

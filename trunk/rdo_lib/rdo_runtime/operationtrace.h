@@ -8,25 +8,25 @@
 namespace rdoRuntime
 {
 
-class RDOOperationTrace: public RDOOperation, public RDOTraceableObject, protected RDOPatternTrace
+class RDOOperationTrace: public RDOOperation, public RDOPatternTrace
 {
 friend RDOTrace;
 friend RDOSimulatorTrace;
 
 private:
-	virtual std::string traceOperId() { return toString(operId); }
+	virtual std::string traceOperId() { return toString(m_operId); }
 	virtual const std::string& tracePatternId() const = 0;
-	int operId;
+	int m_operId;
 
 	RDOOperation* clone( RDOSimulator* sim ) {
 		RDOOperationTrace* newOper = clone2( sim );
-		newOper->id     = id;
-		newOper->operId = static_cast<RDOSimulatorTrace*>(sim)->getFreeOperationId();
+		newOper->setTraceID( getTraceID() );
+		newOper->m_operId = static_cast<RDOSimulatorTrace*>(sim)->getFreeOperationId();
 		return newOper;
 	};
 
 protected:
-	RDOOperationTrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* sim ); //qq
+	RDOOperationTrace( RDORuntime* runtime, bool trace );
 	virtual ~RDOOperationTrace();
 
 	virtual void onAfterOperationBegin( RDOSimulator* sim );

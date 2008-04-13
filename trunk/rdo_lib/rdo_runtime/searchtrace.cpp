@@ -13,12 +13,11 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoRuntime
 {
 
-RDOActivityTrace::RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, ValueTime valueTime ):
+RDOActivityTrace::RDOActivityTrace( RDORule* r, ValueTime valueTime ):
 	Activity( r, valueTime ),
-	RDOTraceableObject( i_sim )
+	RDOTraceableObject( false )
 {
-	id = reinterpret_cast<RDORuleTrace*>(r)->getTraceID();
-	setTraceID( id, id );
+	setTraceID( reinterpret_cast<RDORuleTrace*>(r)->getTraceID() );
 }
 
 void RDODPTSearchTrace::onSearchBegin( RDOSimulator* sim )

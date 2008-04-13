@@ -6,7 +6,7 @@
 
 namespace rdoRuntime {
 
-class RDOIETrace: public RDOIE, public RDOTraceableObject, protected RDOPatternTrace
+class RDOIETrace: public RDOIE, public RDOPatternTrace
 {
 friend RDOTrace;
 friend RDOSimulatorTrace;
@@ -15,7 +15,7 @@ private:
 	virtual const std::string& tracePatternId() const = 0;
 
 protected:
-	RDOIETrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* sim ); //qq
+	RDOIETrace( RDORuntimeParent* runtime, bool trace );
 	virtual void onAfterIrregularEvent( RDOSimulator* sim );
 };
 

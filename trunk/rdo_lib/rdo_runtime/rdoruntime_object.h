@@ -94,6 +94,23 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDORuntimeContainer
+// ----------------------------------------------------------------------------
+class RDORuntimeContainer
+{
+protected:
+	RDORuntimeContainer( RDORuntime* runtime ):
+		m_runtime( runtime )
+	{
+	}
+
+	RDORuntime* getRuntime() const { return m_runtime; }
+
+private:
+	RDORuntime* m_runtime;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDORuntimeParent
 // ----------------------------------------------------------------------------
 class RDORuntimeParent: public RDORuntimeObject

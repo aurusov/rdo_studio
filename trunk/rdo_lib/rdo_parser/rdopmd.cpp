@@ -45,7 +45,7 @@ RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser, const RDOParserSrcInfo& _src_info 
 void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 {
 	pokaz_runtime = _pokaz_runtime;
-	pokaz_runtime->setID( parser()->getPMD_id() );
+	pokaz_runtime->setTraceID( parser()->getPMD_id() );
 	parser()->insertPMDPokaz( this );
 	//todo: перенести в конструктор rdoRuntime::RDOPMDPokaz
 	parser()->runtime()->addRuntimePokaz( pokaz_runtime );

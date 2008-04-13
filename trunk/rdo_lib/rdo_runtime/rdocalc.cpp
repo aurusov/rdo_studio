@@ -2,6 +2,7 @@
 #include "rdocalc.h"
 #include "rdoprocess.h"
 #include "rdo_runtime.h"
+#include "rdo_activity.h"
 #include <limits>
 
 #ifdef _DEBUG
@@ -111,7 +112,7 @@ RDOValue& RDOCalcGetGroupResParam::calcValue( RDORuntime* runtime )
 // ----------------------------------------------------------------------------
 RDOValue& RDOCalcGetRelevantResParam::calcValue( RDORuntime* runtime )
 {
-	m_value = runtime->getResParamVal( runtime->getResByRelRes(m_relNumb), m_parNumb );
+	m_value = runtime->getResParamVal( runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb );
 	return m_value;
 }
 
@@ -120,7 +121,7 @@ RDOValue& RDOCalcGetRelevantResParam::calcValue( RDORuntime* runtime )
 // ----------------------------------------------------------------------------
 RDOValue& RDOSetRelParamCalc::calcValue( RDORuntime* runtime )
 {
-	runtime->setResParamVal( runtime->getResByRelRes(m_relNumb), m_parNumb, m_calc->calcValueBase( runtime ) );
+	runtime->setResParamVal( runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb, m_calc->calcValueBase( runtime ) );
 	return m_value;
 }
 
@@ -137,7 +138,7 @@ RDOValue& RDOSetRelParamDiapCalc::calcValue( RDORuntime* runtime )
 			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_min_value.getDouble(), m_max_value.getDouble(), m_value.getDouble()), this );
 		}
 	}
-	runtime->setResParamVal( runtime->getResByRelRes(m_relNumb), m_parNumb, m_value );
+	runtime->setResParamVal( runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb, m_value );
 	return m_value;
 }
 
@@ -155,7 +156,7 @@ RDOValue& RDOSetResourceParamCalc::calcValue( RDORuntime* runtime )
 // ----------------------------------------------------------------------------
 RDOValue& RDOCalcEraseRes::calcValue( RDORuntime* runtime )
 {
-	runtime->onEraseRes( runtime->getResByRelRes(m_rel_res_id), this );
+	runtime->onEraseRes( runtime->getCurrentActivity()->getResByRelRes(m_rel_res_id), this );
 	return m_value;
 }
 
@@ -644,7 +645,7 @@ RDOValue& RDOCalcFunctionCall::calcValue( RDORuntime* runtime )
 // ----------------------------------------------------------------------------
 RDOValue& RDOSelectResourceNonExistCalc::calcValue( RDORuntime* runtime )
 {
-	runtime->setRelRes( rel_res_id, -1 );
+	runtime->getCurrentActivity()->setRelRes( rel_res_id, -1 );
 	return m_value;
 }
 
@@ -738,7 +739,7 @@ RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( RDORuntimeParent* parent
 RDOValue& RDOCalcCreateEmptyResource::calcValue( RDORuntime* runtime )
 {
 	RDOResource* res = runtime->createNewResource( type, traceFlag );
-	runtime->setRelRes( rel_res_id, res->getTraceID() );
+	runtime->getCurrentActivity()->setRelRes( rel_res_id, res->getTraceID() );
 	res->appendParams( params_default.begin(), params_default.end() );
 	return m_value; // just to return something
 }
@@ -757,9 +758,9 @@ RDOSelectResourceCalc::RDOSelectResourceCalc( RDORuntimeParent* parent, int _rel
 
 RDOValue& RDOSelectResourceDirectCalc::calcValue( RDORuntime* runtime )
 {
-	runtime->setRelRes( rel_res_id, res_id );
+	runtime->getCurrentActivity()->setRelRes( rel_res_id, res_id );
 	if ( choice_calc && !choice_calc->calcValueBase( runtime ).getBool() ) {
-		runtime->setRelRes( rel_res_id, -1 );
+		runtime->getCurrentActivity()->setRelRes( rel_res_id, -1 );
 		m_value = 0;
 		return m_value;
 	}
@@ -782,18 +783,18 @@ RDOValue& RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime )
 			switch ( order_type ) {
 				case order_empty:
 				case order_first: {
-					runtime->setRelRes( rel_res_id, res_id );
+					runtime->getCurrentActivity()->setRelRes( rel_res_id, res_id );
 					if ( choice_calc && !choice_calc->calcValueBase( runtime ).getBool() ) {
-						runtime->setRelRes( rel_res_id, -1 );
+						runtime->getCurrentActivity()->setRelRes( rel_res_id, -1 );
 						continue;
 					}
 					m_value = 1;
 					return m_value;
 				}
 				case order_with_min: {
-					runtime->setRelRes( rel_res_id, res_id );
+					runtime->getCurrentActivity()->setRelRes( rel_res_id, res_id );
 					if ( choice_calc && !choice_calc->calcValueBase( runtime ).getBool() ) {
-						runtime->setRelRes( rel_res_id, -1 );
+						runtime->getCurrentActivity()->setRelRes( rel_res_id, -1 );
 						continue;
 					}
 					RDOValue tmp = order_calc->calcValueBase( runtime );
@@ -804,9 +805,9 @@ RDOValue& RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime )
 					break;
 				}
 				case order_with_max: {
-					runtime->setRelRes( rel_res_id, res_id );
+					runtime->getCurrentActivity()->setRelRes( rel_res_id, res_id );
 					if ( choice_calc && !choice_calc->calcValueBase( runtime ).getBool() ) {
-						runtime->setRelRes( rel_res_id, -1 );
+						runtime->getCurrentActivity()->setRelRes( rel_res_id, -1 );
 						continue;
 					}
 					RDOValue tmp = order_calc->calcValueBase( runtime );
@@ -821,7 +822,7 @@ RDOValue& RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime )
 	}
 
 	if ( res_minmax_id != -1 ) {
-		runtime->setRelRes( rel_res_id, res_minmax_id );
+		runtime->getCurrentActivity()->setRelRes( rel_res_id, res_minmax_id );
 		m_value = 1;
 		return m_value;
 	}
@@ -842,7 +843,7 @@ void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& al
 			(!useCommonWithMax && (newVal < bestVal))) // found better value
 		{
 			for ( int i = 0; i < resSelectors.size(); i++ ) {
-				res.at(i) = sim->getResByRelRes(i);
+				res.at(i) = sim->getCurrentActivity()->getResByRelRes(i);
 			}
 			bestVal = newVal;
 			hasBest = true;
@@ -851,7 +852,7 @@ void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& al
 	}
 	std::vector< int >& ourLevel = allNumbs.at(level);
 	for ( int i = 0; i < ourLevel.size(); i++ ) {
-		sim->setRelRes( level, ourLevel.at(i) );
+		sim->getCurrentActivity()->setRelRes( level, ourLevel.at(i) );
 		getBest( allNumbs, level+1, res, bestVal, sim, hasBest );
 	}
 }
@@ -868,7 +869,7 @@ bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& a
 	}
 	std::vector< int >& ourLevel = allNumbs.at(level);
 	for ( int i = 0; i < ourLevel.size(); i++ ) {
-		sim->setRelRes( level, ourLevel.at(i) );
+		sim->getCurrentActivity()->setRelRes( level, ourLevel.at(i) );
 		if ( getFirst( allNumbs, level+1, sim ) ) return true;
 	}
 	return false;
@@ -900,7 +901,7 @@ RDOValue& RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime )
 	std::vector< int > res;
 	for ( int i = 0; i < resSelectors.size(); i++ ) {
 		allNumbs.push_back( resSelectors.at(i)->getPossibleNumbers(runtime) );
-		res.push_back( runtime->getResByRelRes(i) );
+		res.push_back( runtime->getCurrentActivity()->getResByRelRes(i) );
 	}
 	if ( !choice_calc ) {
 		// first
@@ -918,7 +919,7 @@ RDOValue& RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime )
 		getBest( allNumbs, 0, res, bestVal, runtime, found );
 		if ( found ) {
 			for ( i = 0; i < res.size(); i++ ) {
-				runtime->setRelRes( i, res.at(i) );
+				runtime->getCurrentActivity()->setRelRes( i, res.at(i) );
 			}
 			m_value = 1;
 			return m_value;

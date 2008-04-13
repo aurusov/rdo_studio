@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "rdo_runtime.h"
+#include "rdo_activity.h"
 #include "rdoprocess.h"
 #include "rdopokaz.h"
 #include "rdodptrtime.h"
@@ -29,7 +30,7 @@ RDOResource::RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool 
 
 inline RDOResource::~RDOResource()
 {
-	static_cast<RDORuntime*>(sim)->fireMessage( this, RDORuntime::RO_BEFOREDELETE, (void*)getTraceID() );
+	getRuntime()->fireMessage( this, RDORuntime::RO_BEFOREDELETE, (void*)getTraceID() );
 }
 
 inline bool RDOResource::operator != (RDOResource &other)
@@ -86,6 +87,7 @@ inline std::string RDOResource::traceParametersValue()
 // ----------------------------------------------------------------------------
 RDORuntime::RDORuntime():
 	RDOSimulatorTrace(),
+	m_currActivity( NULL ),
 	tracer( NULL ),
 	results( NULL ),
 	results_info( NULL ),
@@ -312,12 +314,12 @@ RDOResource* RDORuntime::createNewResource( unsigned int type, bool trace )
 
 void RDORuntime::insertNewResource( RDOResource* res )
 {
-	if ( res->id >= allResourcesByID.size() ) {
-		allResourcesByID.resize( res->id + 1, NULL );
-		allResourcesByID.at( res->id ) = res;
+	if ( res->getTraceID() >= allResourcesByID.size() ) {
+		allResourcesByID.resize( res->getTraceID() + 1, NULL );
+		allResourcesByID.at( res->getTraceID() ) = res;
 	} else {
-		if ( allResourcesByID.at( res->id ) == NULL ) {
-			allResourcesByID.at( res->id ) = res;
+		if ( allResourcesByID.at( res->getTraceID() ) == NULL ) {
+			allResourcesByID.at( res->getTraceID() ) = res;
 		} else {
 			error( "¬нутренн€€ ошибка: insertNewResource" );
 		}
@@ -519,7 +521,7 @@ RDOSimulator* RDORuntime::clone()
 			other->allResourcesByID.push_back( NULL );
 		} else {
 			RDOResource* res = new RDOResource( *allResourcesByID.at(i) );
-			res->setTraceID( res->id, res->id + 1 );
+			res->setTraceID( res->getTraceID(), res->getTraceID() + 1 );
 			other->sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
 			other->allResourcesByID.push_back( res );
 			other->allResourcesByTime.push_back( res );

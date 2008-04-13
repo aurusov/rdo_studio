@@ -60,9 +60,9 @@ RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
 	block( _block )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource( this );
-	trace       = true;
-	temporary   = true;
-	state       = RDOResourceTrace::CS_Create;
+	setTrace( true );
+	m_temporary = true;
+	m_state     = RDOResourceTrace::CS_Create;
 	m_params.push_back( sim->getCurrentTime() );
 }
 

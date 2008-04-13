@@ -18,10 +18,19 @@ public:
 
 	RDOValue& calcValueBase( RDORuntime* runtime );
 
+	bool operator== ( const RDOCalc& calc ) const
+	{
+		return compare( calc );
+	}
+
 protected:
 	RDOValue m_value;
 
 	virtual RDOValue& calcValue( RDORuntime* runtime ) = 0;
+	virtual bool      compare  ( const RDOCalc& calc ) const
+	{
+		return false;
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -1090,9 +1099,6 @@ private:
 
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
-protected:
-	int res_id;
-
 public:
 	RDOSelectResourceDirectCalc( RDORuntimeParent* parent, int _rel_res_id, int _res_id, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
 		RDOSelectResourceCalc( parent, _rel_res_id, _choice_calc, _order_calc, _order_type ),
@@ -1100,6 +1106,19 @@ public:
 	{
 	}
 	virtual RDOValue& calcValue( RDORuntime* runtime );
+
+protected:
+	int res_id;
+
+	virtual bool compare( const RDOCalc& calc ) const
+	{
+		const RDOSelectResourceDirectCalc* directCalc = dynamic_cast<const RDOSelectResourceDirectCalc*>(&calc);
+		if ( !directCalc )
+		{
+			return false;
+		}
+		return rel_res_id == directCalc->rel_res_id && res_id == directCalc->res_id;
+	}
 };
 
 class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc

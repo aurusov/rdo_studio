@@ -3,7 +3,6 @@
 
 #include "rdotrace.h"
 #include "simtrace.h"
-#include "rdopatrtime.h"
 #include <rdocommon.h>
 
 namespace rdoRuntime
@@ -103,6 +102,7 @@ class RDOPattern;
 class RDODPTSearchRuntime;
 class RDOCalcEraseRes;
 class RDOFRMFrame;
+class RDOActivity;
 class RDOCalcCreateNumberedResource;
 
 class RDORuntime: public RDOSimulatorTrace
@@ -159,7 +159,7 @@ private:
 
 	std::vector< RDOPMDPokaz* > allPokaz;
 
-	RDOActivityRuntime* currActivity;
+	RDOActivity* m_currActivity;
 
 	std::vector<RDOValue> patternParameters;
 
@@ -230,7 +230,9 @@ public:
 	double getTimeNow() { return getCurrentTime(); }
 	double getSeconds() { return (time(NULL) - physic_time); }
 
-	void setCurrentActivity( RDOActivityRuntime* pat )           { currActivity = pat; }
+	RDOActivity* getCurrentActivity() const                   { return m_currActivity;      }
+	void         setCurrentActivity( RDOActivity* activity )  { m_currActivity = activity;  }
+
 	void addRuntimeOperation( RDOActivityOperation* opr );
 	void addRuntimeRule( RDOActivityRule* rule );
 	void addRuntimeIE( RDOActivityIrregEvent* ie );
@@ -254,10 +256,6 @@ public:
 		RDOResource* res = getResourceByID( res_id );
 		res->setParam( param_id, value );
 	}
-
-	// Релевантные ресурсы
-	int getResByRelRes( const int rel_res_id ) const { return currActivity->getResByRelRes( rel_res_id ); }
-	void setRelRes( int rel_res_id, int res_id )     { currActivity->setRelRes( rel_res_id, res_id );     }
 
 #ifdef _DEBUG
 	std::vector< std::vector< RDOValue > > state;

@@ -6,7 +6,7 @@
 
 namespace rdoRuntime {
 
-class RDORuleTrace: public RDORule, public RDOTraceableObject, protected RDOPatternTrace
+class RDORuleTrace: public RDORule, public RDOPatternTrace, public RDORuntimeContainer
 {
 friend class RDOTrace;
 
@@ -14,7 +14,7 @@ private:
    virtual const std::string& tracePatternId() const = 0;
 
 protected:
-	RDORuleTrace( RDOSimulatorTrace* sim );
+	RDORuleTrace( RDORuntime* sim, bool trace );
 	virtual void onBeforeRule( RDOSimulator* sim );
 	virtual void onAfterRule( RDOSimulator* sim, bool inSearch = false );
 

@@ -10,7 +10,6 @@ class RDODPTSome;
 
 namespace rdoRuntime {
 
-class RDOActivityRuntime;
 class RDOBaseOperation;
 
 class RDOSimulatorTrace: public RDOSimulator
@@ -24,7 +23,6 @@ friend class RDOResourceTrace;
 friend class RDOIETrace;
 friend class RDORuleTrace;
 friend class RDOActivityTrace;
-friend class RDOActivityRuntime;
 friend class rdoParse::RDODPTSome;
 
 private:

@@ -89,46 +89,54 @@ public:
 
 class RDOTraceableObject
 {
-friend class RDOSimulatorTrace;
-friend class RDORuntime;
-friend class RDOTrace;
+public:
+	enum { NONE = 0xFFFFFFFF };
+
+	bool traceable() const                { return m_trace;  }
+	void setTrace( bool trace )           { m_trace = trace; }
+
+	unsigned int getTraceID() const       { return m_id;     }
+	void setTraceID( unsigned int id )
+	{
+		setTraceID( id, id );
+	}
+	void setTraceID( unsigned int id, unsigned int str_id )
+	{
+		m_id     = id;
+		m_str_id = toString( str_id );
+	}
+
+	std::string& traceId() const
+	{
+		if ( m_str_id.empty() ) {
+			m_str_id = toString( m_id );
+		}
+		return m_str_id;
+	}
 
 protected:
-	RDOSimulatorTrace*  sim;
-	bool                trace;
-	int                 id;
-	mutable std::string str_id;
-
-	RDOTraceableObject( RDOSimulatorTrace* _sim ):
-		sim( _sim ),
-		trace( false ),
-		id( -1 ),
-		str_id( "" )
+	RDOTraceableObject( bool trace ):
+		m_trace( trace ),
+		m_id( NONE ),
+		m_str_id( "" )
 	{
 	}
 	virtual ~RDOTraceableObject()
 	{
 	}
 
-public:
-	bool isTrace() const                { return trace; }
-	int getTraceID() const              { return id;    }
-	std::string& traceId() const {
-		if ( str_id.empty() ) {
-			str_id = toString( id );
-		}
-		return str_id;
-	}
-	void setTraceID( int _id, int _str_id ) {
-		id     = _id;
-		str_id = toString( _str_id );
-	}
+private:
+	bool                m_trace;
+	unsigned int        m_id;
+	mutable std::string m_str_id;
 };
 
-class RDOPatternTrace
+class RDOPatternTrace: public RDOTraceableObject
 {
 friend class RDOSimulatorTrace;
 protected:
+	RDOPatternTrace( bool trace ): RDOTraceableObject( trace ) {};
+
 	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) = 0;
 	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true ) = 0;
 };
@@ -136,7 +144,7 @@ protected:
 class RDORuntime;
 
 // Base class for all resources
-class RDOResourceTrace: public RDOTraceableObject
+class RDOResourceTrace: public RDOTraceableObject, public RDORuntimeContainer
 {
 public:
 	enum ConvertStatus {
@@ -148,42 +156,42 @@ public:
 		CS_NoChange
 	};
 
-private:
-	std::string typeId;
-	std::string traceTypeId() { return typeId.empty()?(typeId=getTypeId()):typeId; }
+
+	void makeTemporary( bool value )     { m_temporary = value; }
+	ConvertStatus getState() const       { return m_state;      }
+	void setState( ConvertStatus value ) { m_state = value;     }
+	std::string traceResourceState( char prefix, RDOSimulatorTrace* sim );
 
 protected:
-	RDOResourceTrace( RDOSimulatorTrace* sim, int _id, bool _tarce );
+	RDOResourceTrace( RDORuntime* sim, int id, bool tarce );
 	RDOResourceTrace( const RDOResourceTrace& orig );
 	virtual ~RDOResourceTrace();
 
 	virtual std::string getTypeId()            = 0;
 	virtual std::string traceParametersValue() = 0;
 
-	ConvertStatus state;
-	bool temporary;
+	ConvertStatus m_state;
+	bool          m_temporary;
 
-public:
-	void makeTemporary( bool value )     { temporary = value; }
-	ConvertStatus getState() const       { return state;      }
-	void setState( ConvertStatus value ) { state = value;     }
-	std::string traceResourceState( char prefix, RDOSimulatorTrace* sim );
+private:
+	std::string m_typeId;
+
+	std::string traceTypeId()
+	{
+		return m_typeId.empty() ? (m_typeId = getTypeId()) : m_typeId;
+	}
 };
 
-class RDOPokazTrace: public RDOPokaz, public RDOTraceableObject
+class RDOPokazTrace: public RDOPokaz, public RDOTraceableObject, public RDORuntimeContainer
 {
-protected:
-	bool wasChanged;
-
 public:
-	RDOPokazTrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* _sim ): // qq
-		RDOPokaz( _runtime ),
-		RDOTraceableObject( _sim ),
-		wasChanged( true )
-	{
-	}
+	RDOPokazTrace( RDORuntime* runtime, bool trace );
+
 	bool tracePokaz();
 	virtual std::string traceValue() = 0;
+
+protected:
+	bool m_wasChanged;
 };
 
 } // namespace rdoRuntime

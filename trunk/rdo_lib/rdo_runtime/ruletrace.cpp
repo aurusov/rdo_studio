@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ruletrace.h"
-#include "simtrace.h"
+#include "rdo_runtime.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -10,13 +10,12 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoRuntime {
 
-RDORuleTrace::RDORuleTrace( RDOSimulatorTrace* i_sim ):
-	RDORule( i_sim ), //qq
-	RDOTraceableObject( i_sim ),
-	RDOPatternTrace(),
-	trace( false )
+RDORuleTrace::RDORuleTrace( RDORuntime* sim, bool trace ):
+	RDORule( sim ),
+	RDOPatternTrace( trace ),
+	RDORuntimeContainer( sim )
 {
-	id = i_sim->activityCounter++;
+	setTraceID( getRuntime()->activityCounter++ );
 }
 
 void RDORuleTrace::onBeforeRule(RDOSimulator *sim)
@@ -26,7 +25,7 @@ void RDORuleTrace::onBeforeRule(RDOSimulator *sim)
 void RDORuleTrace::onAfterRule( RDOSimulator* sim, bool inSearch )
 {
 	if ( !inSearch ) {
-		RDOTraceableObject::sim->getTracer()->writeRule( this, RDOTraceableObject::sim );
+		getRuntime()->getTracer()->writeRule( this, getRuntime() );
 	}
 }
 

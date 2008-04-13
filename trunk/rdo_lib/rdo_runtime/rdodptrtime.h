@@ -15,8 +15,8 @@ namespace rdoRuntime
 class RDOSearchActivityRuntime: public RDOActivityTrace
 {
 public:
-	RDOSearchActivityRuntime( RDORuntime* runtime, RDORule* r, ValueTime valueTime, RDOCalc* cost ):
-		RDOActivityTrace( runtime, r, valueTime ),
+	RDOSearchActivityRuntime( RDORule* r, ValueTime valueTime, RDOCalc* cost ):
+		RDOActivityTrace( r, valueTime ),
 		m_cost( cost )
 	{
 	}

@@ -97,7 +97,7 @@ void TreeNode::ExpandChildren()
 #endif
 		root->sizeof_dpt += childSim->sizeof_sim;
 		currAct->rule()->onBeforeChoiceFrom( childSim );
-		if ( !currAct->rule()->choiceFrom( childSim ) ) {
+		if ( !currAct->rule()->choiceFrom( static_cast<RDORuntime*>(childSim) ) ) {
 			// Не прошел Choice from, удаляем симулятор и переходим к другой активности.
 			// TODO: а зачем удалять симулятор, ведь БД не поменялась ?
 			// Такое будет возможно, если при подготовке параметров паттерна будет
@@ -116,7 +116,7 @@ void TreeNode::ExpandChildren()
 			}
 			// Выполнить само правило (раскрыть вершину)
 			currAct->rule()->onBeforeRule( childSim );
-			currAct->rule()->convertRule( childSim );
+			currAct->rule()->convertRule( static_cast<RDORuntime*>(childSim) );
 			currAct->rule()->onAfterRule( childSim, true );
 
 			// Расчитать стоимость применения правила (value after)

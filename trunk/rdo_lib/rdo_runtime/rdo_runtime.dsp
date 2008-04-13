@@ -146,6 +146,14 @@ SOURCE=.\rdo.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_activity.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_pattern.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_runtime.cpp
 # End Source File
 # Begin Source File
@@ -181,10 +189,6 @@ SOURCE=.\rdoframe.cpp
 
 !ENDIF 
 
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdopatrtime.cpp
 # End Source File
 # Begin Source File
 
@@ -310,6 +314,14 @@ SOURCE=.\rdo.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_activity.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_pattern.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_random_distribution.h
 # End Source File
 # Begin Source File
@@ -331,10 +343,6 @@ SOURCE=.\rdodptrtime.h
 # Begin Source File
 
 SOURCE=.\rdoframe.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdopatrtime.h
 # End Source File
 # Begin Source File
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "operationtrace.h"
+#include "rdo_runtime.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -10,12 +11,11 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoRuntime
 {
 
-RDOOperationTrace::RDOOperationTrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* i_sim ): //qq
-	RDOOperation( _runtime ),
-	RDOTraceableObject( i_sim ),
-	RDOPatternTrace()
+RDOOperationTrace::RDOOperationTrace( RDORuntime* runtime, bool trace ):
+	RDOOperation( runtime ),
+	RDOPatternTrace( trace )
 {
-	id = i_sim->activityCounter++;
+	setTraceID( runtime->activityCounter++ );
 //	operId = RDOTraceableObject::sim->getFreeOperationId();
 }
 
@@ -29,7 +29,7 @@ void RDOOperationTrace::onAfterOperationEnd( RDOSimulator* sim )
 {
 	RDOSimulatorTrace* simTr = static_cast<RDOSimulatorTrace*>(sim);
 	simTr->getTracer()->writeAfterOperationEnd(this, simTr); 
-	((RDOSimulatorTrace *)sim)->freeOperationId(operId);
+	((RDOSimulatorTrace *)sim)->freeOperationId(m_operId);
 }
 
 RDOOperationTrace::~RDOOperationTrace()

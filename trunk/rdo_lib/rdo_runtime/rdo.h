@@ -339,8 +339,8 @@ friend class TreeNode;
 public:
 	RDORule( RDORuntimeParent* runtime ): RDOBaseOperation( runtime ) {}
 	virtual ~RDORule() {}
-	virtual bool choiceFrom( RDOSimulator* sim )  = 0;
-	virtual void convertRule( RDOSimulator* sim ) = 0;
+	virtual bool choiceFrom( RDORuntime* runtime )  = 0;
+	virtual void convertRule( RDORuntime* runtime ) = 0;
 
 protected:
 	virtual void onBeforeChoiceFrom( RDOSimulator* sim )                 {}

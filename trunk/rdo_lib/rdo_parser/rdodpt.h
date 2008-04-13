@@ -41,27 +41,27 @@ void proc_opr_error( char* mes );
 // ----------------------------------------------------------------------------
 class RDODPTActivity: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	void init( const RDOParserSrcInfo& _pattern_src_info );
-
-protected:
-	const RDOPATPattern*            pattern;
-	int                             currParam;
-	rdoRuntime::RDOActivityRuntime* activity;
-
 public:
 	RDODPTActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 	RDODPTActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
-	const std::string&              getName() const     { return src_info().src_text(); }
-	const RDOPATPattern*            getType() const     { return pattern;               }
-	rdoRuntime::RDOActivityRuntime* getActivity() const { return activity;              }
+	const std::string&       getName() const     { return src_info().src_text(); }
+	const RDOPATPattern*     getType() const     { return m_pattern;             }
+	rdoRuntime::RDOActivity* getActivity() const { return m_activity;            }
 
 	void addParam( const std::string& _param, const YYLTYPE& _param_pos );
 	void addParam( int _param, const YYLTYPE& _param_pos );
 	void addParam( double _param, const YYLTYPE& _param_pos );
 	void addParam( const YYLTYPE& _param_pos );
 	void endParam( const YYLTYPE& _param_pos );
+
+protected:
+	const RDOPATPattern*     m_pattern;
+	int                      m_currParam;
+	rdoRuntime::RDOActivity* m_activity;
+
+private:
+	void init( const RDOParserSrcInfo& _pattern_src_info );
 };
 
 // ----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ public:
 class RDODPTSearch: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace;
+	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag m_trace;
 	RDOFUNLogic*   conditon;
 	RDOFUNLogic*   termConditon;
 	RDOFUNArithm*  evalBy;
@@ -78,7 +78,7 @@ private:
 	std::vector< RDODPTSearchActivity* > activities;
 
 public:
-	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag _trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace );
+	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace );
 	const std::string& getName() const                         { return src_info().src_text(); }
 	void setCondition( RDOFUNLogic* _conditon = NULL )         { conditon     = _conditon;     }
 	void setTermCondition( RDOFUNLogic* _termConditon = NULL ) { termConditon = _termConditon; }

@@ -53,13 +53,13 @@ bool RDORule::onCheckCondition( RDOSimulator* sim )
 {
 	onBeforeChoiceFrom( sim );
 	sim->inc_cnt_choice_from();
-	return choiceFrom(sim);
+	return choiceFrom( static_cast<RDORuntime*>(sim) );
 }
 
 RDOBaseOperation::BOResult RDORule::onDoOperation( RDOSimulator* sim )
 {
 	onBeforeRule( sim );
-	convertRule( sim );
+	convertRule( static_cast<RDORuntime*>(sim) );
 	onAfterRule( sim );
 	return RDOBaseOperation::BOR_done;
 }
@@ -148,9 +148,9 @@ RDOBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
 		for ( std::list< TreeNode* >::iterator ii = bestPath.begin(); ii != bestPath.end(); ii++ ) {
 			TreeNode* node = (*ii);
 			node->activity->rule()->onBeforeChoiceFrom( treeRoot->theRealSimulator );
-			node->activity->rule()->choiceFrom( treeRoot->theRealSimulator );
+			node->activity->rule()->choiceFrom( static_cast<RDORuntime*>(treeRoot->theRealSimulator) );
 			node->activity->rule()->onBeforeRule( treeRoot->theRealSimulator );
-			node->activity->rule()->convertRule( treeRoot->theRealSimulator );
+			node->activity->rule()->convertRule( static_cast<RDORuntime*>(treeRoot->theRealSimulator) );
 			node->activity->rule()->onAfterRule( treeRoot->theRealSimulator, true );
 			// ќтработали каждую вершину: вывели трассировку
 			onSearchDecision( treeRoot->theRealSimulator, node );

@@ -10,10 +10,9 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoRuntime {
 
-RDOIETrace::RDOIETrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* _sim ): //qq
-	RDOIE( _runtime ),
-	RDOTraceableObject( _sim ),
-	RDOPatternTrace()
+RDOIETrace::RDOIETrace( RDORuntimeParent* runtime, bool trace ):
+	RDOIE( runtime ),
+	RDOPatternTrace( trace )
 {
 }
 

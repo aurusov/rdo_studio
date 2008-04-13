@@ -228,14 +228,14 @@ std::stringstream& RDOParser::getModelStructure()
 		int watching_max_length = 0;
 		std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = m_runtime.getPokaz().begin();
 		while ( watching_it != m_runtime.getPokaz().end() ) {
-			if ( (*watching_it)->isTrace() && (*watching_it)->getName().length() > watching_max_length ) {
+			if ( (*watching_it)->traceable() && (*watching_it)->getName().length() > watching_max_length ) {
 				watching_max_length = (*watching_it)->getName().length();
 			}
 			watching_it++;
 		}
 		watching_it = m_runtime.getPokaz().begin();
 		while ( watching_it != m_runtime.getPokaz().end() ) {
-			if ( (*watching_it)->isTrace() ) {
+			if ( (*watching_it)->traceable() ) {
 				modelStructure << "  " << (*watching_it)->getName();
 				for ( int i = (*watching_it)->getName().length(); i < watching_max_length + 2; i++ ) {
 					modelStructure << " ";
