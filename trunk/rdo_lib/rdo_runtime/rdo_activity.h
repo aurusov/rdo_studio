@@ -53,13 +53,13 @@ protected:
 	}
 	virtual ~RDOActivity() {}
 
-	std::string                    m_oprName;
-	std::list< RDOResourceTrace* > m_relevantResources; // Список релевантных ресурсов
-	std::vector< int >             m_relResID;  // Содержит список id ресурсов, которые стали релевантными образцу
-	std::vector< RDOCalc* >        m_paramsCalcs;
+	std::string               m_oprName;
+	std::list< RDOResource* > m_relevantResources; // Список релевантных ресурсов
+	std::vector< int >        m_relResID;  // Содержит список id ресурсов, которые стали релевантными образцу
+	std::vector< RDOCalc* >   m_paramsCalcs;
 
 	void setPatternParameters( RDOSimulator* sim );
-	void getRelevantResources( RDOSimulator* sim, std::list< RDOResourceTrace* >& rel_res_list );
+	void getRelevantResources( RDOSimulator* sim, std::list< RDOResource* >& rel_res_list );
 	void incrementRelevantResourceReference( RDOSimulator* sim );
 	void decrementRelevantResourceReference( RDOSimulator* sim );
 
@@ -67,7 +67,7 @@ protected:
 	{
 		getRelevantResources( sim, m_relevantResources );
 	}
-	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResourceTrace::ConvertStatus >& status_list );
+	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResource::ConvertStatus >& status_list );
 
 	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim );
 	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true );

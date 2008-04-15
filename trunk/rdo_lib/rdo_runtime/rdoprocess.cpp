@@ -62,7 +62,7 @@ RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
 	static_cast<RDORuntime*>(sim)->insertNewResource( this );
 	setTrace( true );
 	m_temporary = true;
-	m_state     = RDOResourceTrace::CS_Create;
+	m_state     = RDOResource::CS_Create;
 	m_params.push_back( sim->getCurrentTime() );
 }
 
@@ -117,7 +117,7 @@ RDOBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
 
 void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 {
-	sim->addTimePoint( timeNext = timeCalc->calcValueBase( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime(), process, this );
+	sim->addTimePoint( timeNext = timeCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime(), process, this );
 }
 
 // ----------------------------------------------------------------------------
@@ -219,7 +219,7 @@ RDOBaseOperation::BOResult RDOPROCAdvance::onDoOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		TRACE( "%7.1f ADVANCE BEGIN\n", sim->getCurrentTime() );
-		double timeLeave = delayCalc->calcValueBase( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime();
+		double timeLeave = delayCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime();
 		leave_list.push_back( LeaveTr(transacts.front(), timeLeave) );
 		transacts.erase( transacts.begin() );
 		sim->addTimePoint( timeLeave, process, this );
@@ -260,7 +260,7 @@ RDOBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 {
 	TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
 	RDOPROCTransact* transact = transacts.front();
-	transact->setState( RDOResourceTrace::CS_Erase );
+	transact->setState( RDOResource::CS_Erase );
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) {
 		tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();

@@ -16,7 +16,7 @@ public:
 	RDOCalc( RDORuntimeParent* parent );
 	virtual ~RDOCalc();
 
-	RDOValue& calcValueBase( RDORuntime* runtime );
+	RDOValue& calcValue( RDORuntime* runtime );
 
 	bool operator== ( const RDOCalc& calc ) const
 	{
@@ -26,8 +26,8 @@ public:
 protected:
 	RDOValue m_value;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime ) = 0;
-	virtual bool      compare  ( const RDOCalc& calc ) const
+	virtual RDOValue& doCalc ( RDORuntime* runtime ) = 0;
+	virtual bool      compare( const RDOCalc& calc ) const
 	{
 		return false;
 	}
@@ -46,7 +46,7 @@ public:
 	};
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
+	virtual RDOValue& doCalc( RDORuntime* runtime ) {
 		return m_value;
 	}
 };
@@ -68,7 +68,7 @@ protected:
 	int m_resID;
 	int m_paramID;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -80,7 +80,7 @@ public:
 	RDOCalcGetTempResParamFRM( RDORuntime* parent, int _resNumb, int _parNumb );
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 
 	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL )
 	{
@@ -108,7 +108,7 @@ private:
 	std::string m_resName;
 	std::string m_parName;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ public:
 private:
 	int m_parNumb;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -146,7 +146,7 @@ private:
 	int m_relNumb;
 	int m_parNumb;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -171,7 +171,7 @@ protected:
 	RDOCalc* m_calc;
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -192,7 +192,7 @@ private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -216,7 +216,7 @@ private:
 	int      m_parNumb;
 	RDOCalc* m_calc;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -238,7 +238,7 @@ private:
 	int          m_rel_res_id;
 	std::string  m_rel_res_name;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -259,7 +259,7 @@ private:
 	int      m_parNumb;
 	RDOValue m_val;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -277,7 +277,7 @@ public:
 private:
 	int m_numberOfParam;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -289,7 +289,7 @@ public:
 	RDOCalcGetTimeNow( RDORuntimeParent* parent ): RDOCalc( parent ) {}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -301,7 +301,7 @@ public:
 	RDOCalcGetSeconds( RDORuntimeParent* parent ): RDOCalc( parent ) {}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -338,10 +338,10 @@ private:
 	std::vector< RDOCalcConst* > m_results;
 	RDOCalc*                     m_argCalc;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime )
+	virtual RDOValue& doCalc( RDORuntime* runtime )
 	{
-		int index = m_argCalc->calcValueBase( runtime ).getInt();
-		return m_results.at(index)->calcValueBase( runtime );
+		int index = m_argCalc->calcValue( runtime ).getInt();
+		return m_results.at(index)->calcValue( runtime );
 	}
 };
 
@@ -370,16 +370,16 @@ private:
 	std::vector< RDOCalcConst* > m_results;
 	RDOCalcConst*                m_default_value;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime )
+	virtual RDOValue& doCalc( RDORuntime* runtime )
 	{
 		int size = m_cases.size();
 		for ( int i = 0; i < size; i++ ) {
 			RDOCalc* cas = m_cases[i];
-			if ( cas->calcValueBase( runtime ).getBool() ) {
-				return m_results[i]->calcValueBase( runtime );
+			if ( cas->calcValue( runtime ).getBool() ) {
+				return m_results[i]->calcValue( runtime );
 			}
 		}
-		return m_default_value->calcValueBase( runtime );
+		return m_default_value->calcValue( runtime );
 	}
 };
 
@@ -406,7 +406,7 @@ protected:
 	std::vector< RDOCalc* > m_conditions;
 	std::vector< RDOCalc* > m_actions;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -428,7 +428,7 @@ private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -458,7 +458,7 @@ public: \
 	} \
  \
 private: \
-	virtual RDOValue& calcValue( RDORuntime* runtime ); \
+	virtual RDOValue& doCalc( RDORuntime* runtime ); \
 };
 
 DEFINE_CALC_GROUP( Exist     );
@@ -484,7 +484,7 @@ public:
 	}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOFunCalcSelectBase: public RDOFunCalc
@@ -512,7 +512,7 @@ public: \
 	} \
  \
 private: \
-	virtual RDOValue& calcValue( RDORuntime* runtime ); \
+	virtual RDOValue& doCalc( RDORuntime* runtime ); \
 };
 
 #define DEFINE_CALC_SELECT_METHOD( CalcName ) \
@@ -525,7 +525,7 @@ public: \
 	} \
  \
 private: \
-	virtual RDOValue& calcValue( RDORuntime* runtime ); \
+	virtual RDOValue& doCalc( RDORuntime* runtime ); \
 };
 
 DEFINE_CALC_SELECT_GROUP ( Exist     );
@@ -548,7 +548,7 @@ public: \
 	} \
 \
 private: \
-	virtual RDOValue& calcValue( RDORuntime* runtime ); \
+	virtual RDOValue& doCalc( RDORuntime* runtime ); \
 };
 
 DEFINE_RDO_STD_FUN( Sin      );
@@ -615,7 +615,7 @@ public: \
 	} \
  \
 private: \
-	virtual RDOValue& calcValue( RDORuntime* runtime ); \
+	virtual RDOValue& doCalc( RDORuntime* runtime ); \
 };
 
 // ----------------------------------------------------------------------------
@@ -635,7 +635,7 @@ public:
 	}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOCalcMultEnumSafe: public RDOCalcMult
@@ -647,7 +647,7 @@ public:
 	}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -674,7 +674,7 @@ private:
 	RDOValue m_value_true;
 	RDOValue m_value_false;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOCalcOr: public RDOCalcBinary
@@ -698,7 +698,7 @@ private:
 	RDOValue m_value_true;
 	RDOValue m_value_false;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOCalcNot: public RDOCalc
@@ -713,7 +713,7 @@ public:
 private:
 	RDOCalc* m_calc;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 DEFINE_BINARY_CALC( IsEqual   , " = "  );
@@ -748,8 +748,8 @@ public:
 	RDOCalcUMinus( RDORuntimeParent* parent, RDOCalc* _oper ): RDOCalcUnary( parent, _oper ) {}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		m_value = -m_oper->calcValueBase( runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime ) {
+		m_value = -m_oper->calcValue( runtime );
 		return m_value;
 	}
 };
@@ -763,8 +763,8 @@ public:
 	}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		m_value = m_oper->calcValueBase( runtime ).getInt();
+	virtual RDOValue& doCalc( RDORuntime* runtime ) {
+		m_value = m_oper->calcValue( runtime ).getInt();
 		return m_value;
 	}
 };
@@ -785,9 +785,9 @@ public:
 private:
 	bool m_round;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime )
+	virtual RDOValue& doCalc( RDORuntime* runtime )
 	{
-		m_value = m_round ? RDOValue( m_oper->calcValueBase( runtime ).getInt() ) : m_oper->calcValueBase( runtime );
+		m_value = m_round ? RDOValue( m_oper->calcValue( runtime ).getInt() ) : m_oper->calcValue( runtime );
 		return m_value;
 	}
 };
@@ -806,7 +806,7 @@ private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -832,7 +832,7 @@ private:
 	int            m_base;
 	RandGenerator* m_gen;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOCalcSeqNext: public RDOFunCalc
@@ -870,7 +870,7 @@ protected:
 	T* m_gen;
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime )
+	virtual RDOValue& doCalc( RDORuntime* runtime )
 	{
 		RDOValue res = getNextValue( runtime );
 		if ( m_diap ) {
@@ -932,7 +932,7 @@ public:
 private:
 	int m_param_number;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -949,7 +949,7 @@ public:
 
 private:
 	int m_number;
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOCalcSetConst: public RDOCalc
@@ -968,7 +968,7 @@ private:
 	int      m_number;
 	RDOCalc* m_calc;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -980,8 +980,8 @@ public:
 	RDOCalcInt( RDORuntimeParent* parent, RDOCalc* oper ): RDOCalcUnary( parent, oper ) {}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		RDOValue res = m_oper->calcValueBase( runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime ) {
+		RDOValue res = m_oper->calcValue( runtime );
 		m_value = res > 0 ? RDOValue( (int)(res.getDouble() + 0.5) ) : RDOValue( (int)(res.getDouble() - 0.5) );
 		return m_value;
 	}
@@ -1011,7 +1011,7 @@ private:
 	std::vector< RDOCalc* > m_parameters;
 	RDOFunCalc*             m_function;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -1026,7 +1026,7 @@ protected:
 	int  number;
 	bool isPermanent;
 
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 
 public:
 	RDOCalcCreateNumberedResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
@@ -1060,7 +1060,7 @@ private:
 
 public:
 	RDOCalcCreateEmptyResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _params_default, int _rel_res_id );
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------
@@ -1094,7 +1094,7 @@ public:
 	}
 
 private:
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
@@ -1105,7 +1105,7 @@ public:
 		res_id( _res_id )
 	{
 	}
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 
 protected:
 	int res_id;
@@ -1132,7 +1132,7 @@ public:
 		resType( _resType )
 	{
 	}
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOSelectResourceCommon
@@ -1160,7 +1160,7 @@ public:
 	{
 		if ( choice_calc ) setSrcInfo( choice_calc->src_info() );
 	}
-	virtual RDOValue& calcValue( RDORuntime* runtime );
+	virtual RDOValue& doCalc( RDORuntime* runtime );
 };
 
 class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon

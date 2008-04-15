@@ -41,8 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /Ob2 /I "." /I "../rdo_parser" /I "../../rdo_common" /D "_LIB" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Yu"pch.h" /FD /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /Ob2 /I "." /I "../rdo_parser" /I "../../rdo_common" /D "_LIB" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Fr /Yu"pch.h" /FD /c
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -151,6 +150,10 @@ SOURCE=.\rdo_activity.cpp
 # Begin Source File
 
 SOURCE=.\rdo_pattern.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_resource.cpp
 # End Source File
 # Begin Source File
 
@@ -323,6 +326,10 @@ SOURCE=.\rdo_pattern.h
 # Begin Source File
 
 SOURCE=.\rdo_random_distribution.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_resource.h
 # End Source File
 # Begin Source File
 

@@ -48,7 +48,7 @@ public:
 		{
 		}
 		int getX( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValueBase( sim );
+			RDOValue res = calc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_x;                     break;
 				case RDOFRMPosition::gabarit: res += frame->last_x + frame->last_width; break;
@@ -58,7 +58,7 @@ public:
 			return res.getInt();
 		}
 		int getY( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValueBase( sim );
+			RDOValue res = calc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_y;                      break;
 				case RDOFRMPosition::gabarit: res += frame->last_y + frame->last_height; break;
@@ -68,7 +68,7 @@ public:
 			return res.getInt();
 		}
 		int getWidth( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValueBase( sim );
+			RDOValue res = calc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_width; break;
 				case RDOFRMPosition::mult   : res *= frame->last_width; break;
@@ -77,7 +77,7 @@ public:
 			return res.getInt();
 		}
 		int getHeight( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValueBase( sim );
+			RDOValue res = calc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_height; break;
 				case RDOFRMPosition::mult   : res *= frame->last_height; break;
@@ -200,7 +200,7 @@ public:
 	int getRuletX( RDORuntime* sim, int rulet_id ) {
 		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->x->calc->calcValueBase( sim ).getInt();
+			if ( (*it)->index == rulet_id ) return (*it)->x->calc->calcValue( sim ).getInt();
 			it++;
 		}
 		return 0;
@@ -208,7 +208,7 @@ public:
 	int getRuletY( RDORuntime* sim, int rulet_id ) {
 		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->y->calc->calcValueBase( sim ).getInt();
+			if ( (*it)->index == rulet_id ) return (*it)->y->calc->calcValue( sim ).getInt();
 			it++;
 		}
 		return 0;

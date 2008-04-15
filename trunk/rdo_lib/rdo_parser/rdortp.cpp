@@ -88,7 +88,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			}
 			rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->getCalc());
 			if ( calc_const ) {
-				rdoRuntime::RDOValue value = calc_const->calcValueBase( parser()->runtime() );
+				rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
 				checkRSSIntValue( value.getInt(), action->src_info() );
 			}
 			break;
@@ -99,7 +99,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			} else {
 				rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->getCalc());
 				if ( calc_const ) {
-					rdoRuntime::RDOValue value = calc_const->calcValueBase( parser()->runtime() );
+					rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
 					checkRSSRealValue( value.getDouble(), action->src_info() );
 				}
 			}

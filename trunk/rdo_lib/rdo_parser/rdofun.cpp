@@ -56,7 +56,7 @@ RDOFUNLogic::RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _
 	if ( !hide_warning ) {
 		rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(calc);
 		if ( calc_const ) {
-			if ( calc_const->calcValueBase( parser()->runtime() ).getBool() ) {
+			if ( calc_const->calcValue( parser()->runtime() ).getBool() ) {
 				parser()->warning( calc_const->src_info(), rdo::format("Логическое выражение всегда истинно: %s", calc_const->src_text().c_str()) );
 			} else {
 				parser()->warning( calc_const->src_info(), rdo::format("Логическое выражение всегда ложно: %s", calc_const->src_text().c_str()) );
@@ -79,7 +79,7 @@ RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ).getBool() && calc2->calcValueBase( parser()->runtime() ).getBool() );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ).getBool() && calc2->calcValue( parser()->runtime() ).getBool() );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcAnd::getStaticSrcInfo( calc1, calc2 ) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcAnd( parser()->runtime(), calc, second.calc );
@@ -96,7 +96,7 @@ RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ).getBool() || calc2->calcValueBase( parser()->runtime() ).getBool() );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ).getBool() || calc2->calcValue( parser()->runtime() ).getBool() );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcOr::getStaticSrcInfo( calc1, calc2 ) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcOr( parser()->runtime(), calc, second.calc );
@@ -232,7 +232,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 					const RDORelevantResource* const rel = pat->findRelevantResource( res_name_src_info.src_text() );
 					if ( !pat->currRelRes ) {
 						// Внутри with_min-common-choice или $Time
-						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist || rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
+						if ( rel->begin == rdoRuntime::RDOResource::CS_NonExist || rel->begin == rdoRuntime::RDOResource::CS_Create ) {
 							parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName().c_str()) );
 						}
 					} else {
@@ -242,10 +242,10 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 							if ( !rel->alreadyHaveConverter && !rel->isDirect() ) {
 								parser()->error( res_name_src_info, rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName().c_str()) );
 							}
-							if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+							if ( rel->begin == rdoRuntime::RDOResource::CS_NonExist ) {
 								parser()->error( res_name_src_info, rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName().c_str()) );
 							}
-							if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
+							if ( rel->begin == rdoRuntime::RDOResource::CS_Create ) {
 								parser()->error( res_name_src_info, rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", rel->getName().c_str()) );
 							}
 						}
@@ -253,25 +253,25 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 						if ( rel->getType()->isTemporary() ) {
 							// В конверторе начала
 							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
-								if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
+								if ( rel->begin == rdoRuntime::RDOResource::CS_Create && !rel->alreadyHaveConverter ) {
 									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
 								}
-								if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
+								if ( rel->begin == rdoRuntime::RDOResource::CS_Erase && rel->alreadyHaveConverter ) {
 									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
 								}
-								if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+								if ( rel->begin == rdoRuntime::RDOResource::CS_NonExist ) {
 									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
 								}
 							}
 							// В конверторе конца
 							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
-								if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
+								if ( rel->end == rdoRuntime::RDOResource::CS_Create && !rel->alreadyHaveConverter ) {
 									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
 								}
-								if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
+								if ( rel->end == rdoRuntime::RDOResource::CS_Erase && rel->alreadyHaveConverter ) {
 									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
 								}
-								if ( rel->end == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+								if ( rel->end == rdoRuntime::RDOResource::CS_NonExist ) {
 									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
 								}
 							}
@@ -280,7 +280,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 						const RDORTPParam* param = pat->currRelRes->getType()->findRTPParam( par_name_src_info.src_text() );
 						if ( param && pat->currRelRes->getName() == res_name_src_info.src_text() ) {
 							// В конверторе начала
-							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResourceTrace::CS_Create) {
+							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResource::CS_Create) {
 								if ( !pat->currRelRes->getParamSetBegin()->isExist( par_name_src_info.src_text() ) ) {
 									if ( !param->getType()->getDV().isExist() ) {
 										parser()->error( par_name_src_info, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
@@ -288,7 +288,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 								}
 							}
 							// В конверторе начала
-							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResourceTrace::CS_Create) {
+							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResource::CS_Create) {
 								if ( !pat->currRelRes->getParamSetEnd()->isExist( par_name_src_info.src_text() ) ) {
 									if ( !param->getType()->getDV().isExist() ) {
 										parser()->error( par_name_src_info, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
@@ -536,7 +536,7 @@ RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) + calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) + calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcPlus::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcPlus( parser()->runtime(), calc, second.calc );
@@ -568,7 +568,7 @@ RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) - calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) - calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcMinus::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcMinus( parser()->runtime(), calc, second.calc );
@@ -609,7 +609,7 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 	}
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) * calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) * calc2->calcValue( parser()->runtime() ) );
 		if ( right ) {
 			dynamic_cast<rdoRuntime::RDOCalcBinary*>(calc)->setRight( newCalc );
 			return this;
@@ -622,7 +622,7 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) * calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) * calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcMult::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcMult( parser()->runtime(), calc, second.calc );
@@ -654,7 +654,7 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ).getDouble() / calc2->calcValueBase( parser()->runtime() ).getDouble() );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ).getDouble() / calc2->calcValue( parser()->runtime() ).getDouble() );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcDiv::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcDiv( parser()->runtime(), calc, second.calc );
@@ -690,7 +690,7 @@ RDOFUNLogic* RDOFUNArithm::operator <( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) < calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) < calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcIsLess::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcIsLess( parser()->runtime(), calc, second.calc );
@@ -716,7 +716,7 @@ RDOFUNLogic* RDOFUNArithm::operator >( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) > calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) > calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcIsGreater::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcIsGreater( parser()->runtime(), calc, second.calc );
@@ -742,7 +742,7 @@ RDOFUNLogic* RDOFUNArithm::operator <=( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) <= calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) <= calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcIsLEQ::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcIsLEQ( parser()->runtime(), calc, second.calc );
@@ -767,7 +767,7 @@ RDOFUNLogic* RDOFUNArithm::operator >=( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) >= calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) >= calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcIsGEQ::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcIsGEQ( parser()->runtime(), calc, second.calc );
@@ -801,7 +801,7 @@ RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) == calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) == calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcIsEqual::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcIsEqual( parser()->runtime(), calc, second.calc );
@@ -832,7 +832,7 @@ RDOFUNLogic* RDOFUNArithm::operator !=( RDOFUNArithm& second )
 	rdoRuntime::RDOCalcConst* calc2 = dynamic_cast<rdoRuntime::RDOCalcConst*>(second.calc);
 	rdoRuntime::RDOCalc* newCalc;
 	if ( calc1 && calc2 ) {
-		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValueBase( parser()->runtime() ) != calc2->calcValueBase( parser()->runtime() ) );
+		newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), calc1->calcValue( parser()->runtime() ) != calc2->calcValue( parser()->runtime() ) );
 		newCalc->setSrcInfo( rdoRuntime::RDOCalcIsNotEqual::getStaticSrcInfo(calc1, calc2) );
 	} else {
 		newCalc = new rdoRuntime::RDOCalcIsNotEqual( parser()->runtime(), calc, second.calc );
@@ -1639,12 +1639,12 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 		if ( true_const ) {
 			parser()->warning( calculateIf[i]->condition->src_info(), rdo::format("Условие не используется: %s", calculateIf[i]->condition->src_text().c_str()) );
 			parser()->warning( calc_cond_const->src_info(), rdo::format("Последнее рабочее условие функции: %s", calc_cond_const->src_text().c_str()) );
-		} else if ( !calc_cond_last || calc_cond_last->calcValueBase( parser()->runtime() ).getBool() ) {
+		} else if ( !calc_cond_last || calc_cond_last->calcValue( parser()->runtime() ).getBool() ) {
 			// Игнорируем чистые false-условия предыдущей проверкой
 			fun_calc->addCalcIf( logic_calc, calculateIf[i]->action->createCalc(getType()) );
 			cnt++;
 		}
-		if ( !default_flag && calc_cond_last && calc_cond_last->calcValueBase( parser()->runtime() ).getBool() ) {
+		if ( !default_flag && calc_cond_last && calc_cond_last->calcValue( parser()->runtime() ).getBool() ) {
 			true_const   = true;
 			default_flag = true;
 			calc_cond_const = calc_cond_last;

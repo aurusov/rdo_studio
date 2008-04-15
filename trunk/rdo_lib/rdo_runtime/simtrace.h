@@ -19,7 +19,7 @@ friend class RDOOperationTrace;
 friend class TreeRootTrace;
 friend class TreeNodeTrace;
 friend class RDOTrace;
-friend class RDOResourceTrace;
+friend class RDOResource;
 friend class RDOIETrace;
 friend class RDORuleTrace;
 friend class RDOActivityTrace;
@@ -53,9 +53,16 @@ private:
 	unsigned int memory_current;
 	unsigned int memory_max;
 
+	bool timeForTrace() const {
+		if ( getTraceStartTime() != -1 && getTraceStartTime() > getCurrentTime() ) return false;
+		if ( getTraceEndTime() != -1 && getTraceEndTime() < getCurrentTime() ) return false;
+		return true;
+	}
+
 protected:
 	RDOSimulatorTrace():
 		RDOSimulator(),
+		m_tracer( NULL ),
 		traceStartTime( -1 ),
 		traceEndTime( -1 ),
 		dptCounter( 1 ),
@@ -67,6 +74,10 @@ protected:
 		memory_max( 0 )
 	{
 	}
+	~RDOSimulatorTrace();
+
+	RDOTrace* m_tracer;
+
 	int maxOperationId;
 	void addTemplateBaseOperation( RDOBaseOperation* op );
 
@@ -76,30 +87,26 @@ protected:
 	virtual void postProcess();
 	void checkRSSDefinedResources();
 
-	void onResourceErase( RDOResourceTrace* res );
-	virtual std::list< RDOResourceTrace* > getResourcesBeforeSim() const = 0;
+	void onResourceErase( RDOResource* res );
+	virtual std::list< RDOResource* > getResourcesBeforeSim() const = 0;
 
 public:
-	virtual RDOTrace* getTracer() = 0;
+	RDOTrace* getTracer() const { return m_tracer; }
 	virtual void rdoInit();
 
-	double getTraceStartTime() const       { return traceStartTime;  }
-	void setTraceStartTime( double value ) { traceStartTime = value; }
+	bool canTrace() const                  { return getTracer()->canTrace(); }
 
-	double getTraceEndTime() const         { return traceEndTime;    }
-	void setTraceEndTime( double value )   { traceEndTime = value;   }
+	double getTraceStartTime() const       { return traceStartTime;          }
+	void setTraceStartTime( double value ) { traceStartTime = value;         }
 
-	bool canTrace() const {
-		if ( getTraceStartTime() != -1 && getTraceStartTime() > getCurrentTime() ) return false;
-		if ( getTraceEndTime() != -1 && getTraceEndTime() < getCurrentTime() ) return false;
-		return true;
-	}
+	double getTraceEndTime() const         { return traceEndTime;            }
+	void setTraceEndTime( double value )   { traceEndTime = value;           }
+
 	virtual void onNewTimeNow() {
-		RDOTrace* tracer = getTracer();
-		if ( canTrace() ) {
-			tracer->startWriting();
+		if ( timeForTrace() ) {
+			getTracer()->startWriting();
 		} else {
-			tracer->stopWriting();
+			getTracer()->stopWriting();
 		}
 	}
 

@@ -4,6 +4,7 @@
 #include "operationtrace.h"
 #include "ietrace.h"
 #include "ruletrace.h"
+#include "rdo_resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,6 +14,14 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoRuntime
 {
+
+RDOSimulatorTrace::~RDOSimulatorTrace()
+{
+	if ( m_tracer ) {
+		delete m_tracer;
+		m_tracer = NULL;
+	}
+}
 
 void RDOSimulatorTrace::addTemplateDecisionPoint( RDODPTSearchTrace* dp )
 {
@@ -65,6 +74,7 @@ void RDOSimulatorTrace::rdoInit()
 {
 	maxResourcesId = 0;
 	maxOperationId = 1;
+	ASSERT(m_tracer != NULL);
 	RDOSimulator::rdoInit();
 }
 
@@ -142,7 +152,7 @@ void RDOSimulatorTrace::freeOperationId(int id)
 	freeOperationsIds.push_front(id); 
 }
 
-void RDOSimulatorTrace::onResourceErase( RDOResourceTrace* res )
+void RDOSimulatorTrace::onResourceErase( RDOResource* res )
 {
 	eraseFreeResourceId( res->getTraceID() );
 }

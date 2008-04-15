@@ -10,10 +10,8 @@ namespace rdoRuntime {
 class RDOSimulator;
 class RDOSimulatorTrace;
 class TreeNodeTrace;
-//class RDODPTSearchTrace;
 class RDORuleTrace;
 class RDOIETrace;
-class RDOResourceTrace;
 class RDOOperationTrace;
 class RDOTraceableObject;
 class TreeRootTrace;
@@ -21,6 +19,9 @@ class RDOPokazTrace;
 class TreeNode;
 class TreeRoot;
 
+// ----------------------------------------------------------------------------
+// ---------- RDOEndL - Рассылает броадкастом строку трассировки
+// ----------------------------------------------------------------------------
 class RDOEndL
 {
 public:
@@ -29,34 +30,28 @@ public:
 
 inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL)
 {
-//	stream << std::endl;
 	rdoEndL.onEndl();
 	return stream;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOTrace - Формирует строки трассировки
+// ----------------------------------------------------------------------------
 class RDOTrace
 {
 friend RDOSimulatorTrace;
-friend RDOResourceTrace;
-
-private:
-	std::string fileName;
-	std::ofstream out;
-	bool canWriteToStream;
-
-protected:
-	bool isNullTracer;
-	RDOEndL rdoEndL;
+friend RDOResource;
 
 public:
-	RDOTrace(): isNullTracer( true ), canWriteToStream( false ) {}
-	RDOTrace( std::string fn ): fileName( fn ), out( fileName.begin(), std::ios_base::out ), isNullTracer( false ) {}
+	RDOTrace(): m_isNullTracer( true ), m_canWriteToStream( false ) {}
 	virtual ~RDOTrace() {}
 
-	void startWriting()   { canWriteToStream = true;  }
-	void stopWriting()    { canWriteToStream = false; }
-	bool canWrite() const { return canWriteToStream;  }
-	bool isNull() const   { return isNullTracer;      }
+	bool canTrace() const { return !isNull() && canWrite();   }
+
+	void startWriting()   { m_canWriteToStream = true;        }
+	void stopWriting()    { m_canWriteToStream = false;       }
+	bool canWrite() const { return m_canWriteToStream;        }
+	bool isNull() const   { return m_isNullTracer;            }
 
 	// Search in tree
 	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
@@ -77,16 +72,28 @@ public:
 	virtual void writeTraceEnd(RDOSimulatorTrace *sim);
 	virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
 
-	virtual void writePermanentResources( RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& res_perm );
+	virtual void writePermanentResources( RDOSimulatorTrace* sim, const std::list< RDOResource* >& res_perm );
 
-	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& rel_res_list );
+	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResource* >& rel_res_list );
 
 	virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
 
-	virtual std::ostream& getOStream() { return out; }
-	virtual RDOEndL& getEOL() { return rdoEndL; }
+public:
+	virtual std::ostream& getOStream() { return m_emptyOut; }
+	virtual RDOEndL&      getEOL()     { return m_emptyEndL;}
+
+protected:
+	bool          m_isNullTracer;
+
+private:
+	bool          m_canWriteToStream;
+	std::ofstream m_emptyOut;
+	RDOEndL       m_emptyEndL;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOTraceableObject
+// ----------------------------------------------------------------------------
 class RDOTraceableObject
 {
 public:
@@ -131,57 +138,22 @@ private:
 	mutable std::string m_str_id;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPatternTrace
+// ----------------------------------------------------------------------------
 class RDOPatternTrace: public RDOTraceableObject
 {
 friend class RDOSimulatorTrace;
 protected:
 	RDOPatternTrace( bool trace ): RDOTraceableObject( trace ) {};
 
-	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) = 0;
+	virtual std::string traceResourcesList       ( char prefix, RDOSimulatorTrace* sim                   ) = 0;
 	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true ) = 0;
 };
 
-class RDORuntime;
-
-// Base class for all resources
-class RDOResourceTrace: public RDOTraceableObject, public RDORuntimeContainer
-{
-public:
-	enum ConvertStatus {
-		CS_None = 0,
-		CS_Keep,
-		CS_Create,
-		CS_Erase,
-		CS_NonExist,
-		CS_NoChange
-	};
-
-
-	void makeTemporary( bool value )     { m_temporary = value; }
-	ConvertStatus getState() const       { return m_state;      }
-	void setState( ConvertStatus value ) { m_state = value;     }
-	std::string traceResourceState( char prefix, RDOSimulatorTrace* sim );
-
-protected:
-	RDOResourceTrace( RDORuntime* sim, int id, bool tarce );
-	RDOResourceTrace( const RDOResourceTrace& orig );
-	virtual ~RDOResourceTrace();
-
-	virtual std::string getTypeId()            = 0;
-	virtual std::string traceParametersValue() = 0;
-
-	ConvertStatus m_state;
-	bool          m_temporary;
-
-private:
-	std::string m_typeId;
-
-	std::string traceTypeId()
-	{
-		return m_typeId.empty() ? (m_typeId = getTypeId()) : m_typeId;
-	}
-};
-
+// ----------------------------------------------------------------------------
+// ---------- RDOPokazTrace
+// ----------------------------------------------------------------------------
 class RDOPokazTrace: public RDOPokaz, public RDOTraceableObject, public RDORuntimeContainer
 {
 public:

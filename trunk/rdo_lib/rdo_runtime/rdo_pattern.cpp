@@ -22,33 +22,6 @@ RDOPattern::RDOPattern( RDORuntime* runtime, bool trace ):
 {
 }
 
-/*
-bool RDOPattern::choiceFrom( RDOSimulator* sim )
-{
-	RDORuntime* runtime = (RDORuntime*)sim;
-	int size = m_choiceFromCalcs.size();
-	for ( int i = 0; i < size; i++ ) {
-		if ( !m_choiceFromCalcs[i]->calcValueBase( runtime ).getBool() ) return false;
-	}
-	return true;
-}
-
-void RDOPattern::convertBegin( RDORuntime* _runtime )
-{
-	int size = m_beginCalcs.size();
-	for ( int i = 0; i < size; i++ ) {
-		m_beginCalcs.at(i)->calcValueBase( _runtime );
-	}
-}
-
-void RDOPattern::convertBeginErase( RDORuntime* _runtime )
-{
-	int size = m_beginEraseCalcs.size();
-	for ( int i = 0; i < size; i++ ) {
-		m_beginEraseCalcs.at(i)->calcValueBase( _runtime );
-	}
-}
-*/
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternIrregEvent
 // ----------------------------------------------------------------------------
@@ -60,7 +33,7 @@ RDOPatternIrregEvent::RDOPatternIrregEvent( RDORuntime* rTime, bool trace ):
 
 double RDOPatternIrregEvent::getNextTimeInterval( RDORuntime* runtime )
 {
-	double time_next = m_timeCalc->calcValueBase( runtime ).getDouble();
+	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
 	if ( time_next >= 0 ) return time_next;
 	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), m_timeCalc );
 	return 0;
@@ -106,7 +79,7 @@ RDOPatternOperation::RDOPatternOperation( RDORuntime* rTime, bool trace ):
 
 double RDOPatternOperation::getNextTimeInterval( RDORuntime* runtime )
 {
-	double time_next = m_timeCalc->calcValueBase( runtime ).getDouble();
+	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
 	if ( time_next >= 0 ) return time_next;
 	runtime->error( rdo::format("ѕопытка запланировать окончание операции в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), m_timeCalc );
 	return 0;

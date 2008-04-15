@@ -128,7 +128,7 @@ bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	m_watchNumber = 0;
-	m_currValue   = fabs(m_logicCalc->calcValueBase( runtime ).getDouble()) > DBL_EPSILON;
+	m_currValue   = fabs(m_logicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
 	m_sum         = 0;
 	m_sumSqr      = 0;
 	m_minValue    = DBL_MAX;
@@ -141,7 +141,7 @@ bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	bool newValue = fabs(m_logicCalc->calcValueBase( runtime ).getDouble()) > DBL_EPSILON;
+	bool newValue = fabs(m_logicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
 	if ( newValue && !m_currValue ) { // from FALSE to TRUE
 		m_timePrev   = runtime->getCurrentTime();
 		m_wasChanged = true;
@@ -232,7 +232,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if(m_logicCalc->calcValueBase( runtime ).getBool())
+		if(m_logicCalc->calcValue( runtime ).getBool())
 			newValue++;
 
 		runtime->popGroupFunc();
@@ -349,8 +349,8 @@ bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 		return false;
 	}
 	getRuntime()->pushGroupFunc(res);
-	if ( m_logicCalc->calcValueBase( getRuntime() ).getBool() ) {
-		m_currValue = m_arithmCalc->calcValueBase( getRuntime() );
+	if ( m_logicCalc->calcValue( getRuntime() ).getBool() ) {
+		m_currValue = m_arithmCalc->calcValue( getRuntime() );
 		tracePokaz();
 //		runtime->getTracer()->writePokaz(runtime, this);
 		double curr = m_currValue.getDouble();
@@ -399,7 +399,7 @@ bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
 
 	runtime->getResults().width(30);
 	runtime->getResults() << std::left << m_name 
-		<< "\t" << m_arithmCalc->calcValueBase( runtime ).getAsString() << '\n';
+		<< "\t" << m_arithmCalc->calcValue( runtime ).getAsString() << '\n';
 
 	return true;
 }

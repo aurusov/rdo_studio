@@ -38,33 +38,35 @@ namespace rdoSimulator
 // --------------------------------------------------------------------
 class RDORuntimeTracer: public rdoRuntime::RDOTrace, public rdoRuntime::RDOEndL
 {
-private:
-	RDOThreadSimulator* simulator;
-	std::stringstream stream;
-
 public:
-	std::ostream& getOStream() { return stream; }
-	rdoRuntime::RDOEndL& getEOL() { return *this; }
+	virtual std::ostream&        getOStream()    { return m_stream; }
+	virtual rdoRuntime::RDOEndL& getEOL()        { return *this;    }
+
 	void onEndl() {
-		const std::string& trace_str = stream.str();
-		if ( trace_str.empty() ) return;
-		if ( !simulator->canTrace ) return;
-		int pos = 0;
-		for (;;) {
-			int next = trace_str.find( '\n', pos );
+		const std::string& trace_str = m_stream.str();
+		if ( trace_str.empty()        ) return;
+		if ( !m_simulator->m_canTrace ) return;
+		std::string::size_type pos = 0;
+		while ( true )
+		{
+			std::string::size_type next = trace_str.find( '\n', pos );
 			std::string str = trace_str.substr( pos, next-pos );
-			simulator->thread_runtime->broadcastMessage( RDOThread::RT_RUNTIME_TRACE_STRING, &str );
+			m_simulator->thread_runtime->broadcastMessage( RDOThread::RT_RUNTIME_TRACE_STRING, &str );
 			if ( next == std::string::npos ) break;
 			pos = next + 1;
 			if ( pos >= trace_str.length() ) break;
 		}
-		stream.str("");
+		m_stream.str("");
 	}
-	RDORuntimeTracer( RDOThreadSimulator* _simulator ):
-		simulator( _simulator )
+	RDORuntimeTracer( RDOThreadSimulator* simulator ):
+		m_simulator( simulator )
 	{
-		isNullTracer = false;
+		m_isNullTracer = false;
 	}
+
+private:
+	RDOThreadSimulator* m_simulator;
+	std::stringstream   m_stream;
 };
 
 // --------------------------------------------------------------------
@@ -239,7 +241,7 @@ void RDOThreadRunTime::start()
 	simulator->runtime->setTraceEndTime( simulator->parser->getSMR()->getTraceEndTime() );
 
 	// Modelling
-	simulator->canTrace = true;
+	simulator->m_canTrace = true;
 
 	try {
 		simulator->exitCode = rdoSimulator::EC_OK;
@@ -592,7 +594,7 @@ void RDOThreadSimulator::stopModel()
 	runtime->onUserBreak();
 	exitCode = rdoSimulator::EC_UserBreak;
 	terminateModel();
-	canTrace = false;
+	m_canTrace = false;
 	broadcastMessage( RT_SIMULATOR_MODEL_STOP_BY_USER );
 	closeModel();
 	// UA 19.08.04 // добавил код возврата

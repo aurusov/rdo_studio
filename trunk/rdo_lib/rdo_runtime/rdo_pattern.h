@@ -2,6 +2,7 @@
 #define RDO_PATTERN_H
 
 #include "rdotrace.h"
+#include "rdo_resource.h"
 
 namespace rdoRuntime {
 
@@ -52,7 +53,7 @@ protected:
 		std::vector< RDOCalc* >::iterator it = calcs.begin();
 		while ( it != calcs.end() )
 		{
-			(*it)->calcValueBase( runtime );
+			(*it)->calcValue( runtime );
 			it++;
 		}
 	}
@@ -61,16 +62,11 @@ protected:
 		std::vector< RDOCalc* >::iterator it = calcs.begin();
 		while ( it != calcs.end() )
 		{
-			if ( !(*it)->calcValueBase( runtime ).getBool() ) return false;
+			if ( !(*it)->calcValue( runtime ).getBool() ) return false;
 			it++;
 		}
 		return true;
 	}
-
-//	std::vector< RDOCalc* > m_choiceFromCalcs;
-//	std::vector< RDOCalc* > m_beginCalcs;
-//	std::vector< RDOCalc* > m_beginEraseCalcs;
-//	std::vector< RDOResourceTrace::ConvertStatus > m_beginConvertStatus;
 };
 
 // ----------------------------------------------------------------------------
@@ -83,10 +79,10 @@ friend class RDOActivityIrregEvent;
 public:
 	RDOPatternIrregEvent( RDORuntime* rTime, bool trace );
 
-	void addConvertorCalc  ( RDOCalc* calc                          ) { m_convertor.push_back( calc );         }
-	void addConvertorStatus( RDOResourceTrace::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
-	void addEraseCalc      ( RDOCalc* calc                          ) { m_erase.push_back( calc );             }
-	void setTime           ( RDOCalc* timeCalc                      ) { m_timeCalc = timeCalc;	               }
+	void addConvertorCalc  ( RDOCalc* calc                     ) { m_convertor.push_back( calc );         }
+	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
+	void addEraseCalc      ( RDOCalc* calc                     ) { m_erase.push_back( calc );             }
+	void setTime           ( RDOCalc* timeCalc                 ) { m_timeCalc = timeCalc;	               }
 
 	void convertEvent( RDORuntime* runtime )
 	{
@@ -103,10 +99,10 @@ public:
 	RDOActivityIrregEvent* createActivity( RDORuntime* runtime, const std::string& oprName );
 
 private:
-	RDOCalc*                                       m_timeCalc;
-	std::vector< RDOCalc* >                        m_convertor;
-	std::vector< RDOResourceTrace::ConvertStatus > m_convertorStatus;
-	std::vector< RDOCalc* >                        m_erase;
+	RDOCalc*                                  m_timeCalc;
+	std::vector< RDOCalc* >                   m_convertor;
+	std::vector< RDOResource::ConvertStatus > m_convertorStatus;
+	std::vector< RDOCalc* >                   m_erase;
 };
 
 // ----------------------------------------------------------------------------
@@ -119,10 +115,10 @@ friend class RDOActivityRule;
 public:
 	RDOPatternRule( RDORuntime* rTime, bool trace );
 
-	void addChoiceFromCalc ( RDOCalc* calc                          ) { m_choiceFrom.push_back( calc );        }
-	void addConvertorCalc  ( RDOCalc* calc                          ) { m_convertor.push_back( calc );         }
-	void addConvertorStatus( RDOResourceTrace::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
-	void addEraseCalc      ( RDOCalc* calc                          ) { m_erase.push_back( calc );             }
+	void addChoiceFromCalc ( RDOCalc* calc                     ) { m_choiceFrom.push_back( calc );        }
+	void addConvertorCalc  ( RDOCalc* calc                     ) { m_convertor.push_back( calc );         }
+	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
+	void addEraseCalc      ( RDOCalc* calc                     ) { m_erase.push_back( calc );             }
 
 	bool choiceFrom( RDORuntime* runtime )
 	{
@@ -142,10 +138,10 @@ public:
 	RDOActivityRule* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 
 private:
-	std::vector< RDOCalc* >                        m_choiceFrom;
-	std::vector< RDOCalc* >                        m_convertor;
-	std::vector< RDOResourceTrace::ConvertStatus > m_convertorStatus;
-	std::vector< RDOCalc* >                        m_erase;
+	std::vector< RDOCalc* >                   m_choiceFrom;
+	std::vector< RDOCalc* >                   m_convertor;
+	std::vector< RDOResource::ConvertStatus > m_convertorStatus;
+	std::vector< RDOCalc* >                   m_erase;
 };
 
 // ----------------------------------------------------------------------------
@@ -158,17 +154,17 @@ friend class RDOActivityOperation;
 public:
 	RDOPatternOperation( RDORuntime* rTime, bool trace );
 
-	void addChoiceFromCalc      ( RDOCalc* calc                          ) { m_choiceFrom.push_back( calc );             }
+	void addChoiceFromCalc      ( RDOCalc* calc                     ) { m_choiceFrom.push_back( calc );             }
 
-	void addConvertorBeginCalc  ( RDOCalc* calc                          ) { m_convertorBegin.push_back( calc );         }
-	void addConvertorBeginStatus( RDOResourceTrace::ConvertStatus status ) { m_convertorBeginStatus.push_back( status ); }
-	void addEraseBeginCalc      ( RDOCalc* calc                          ) { m_eraseBegin.push_back( calc );             }
+	void addConvertorBeginCalc  ( RDOCalc* calc                     ) { m_convertorBegin.push_back( calc );         }
+	void addConvertorBeginStatus( RDOResource::ConvertStatus status ) { m_convertorBeginStatus.push_back( status ); }
+	void addEraseBeginCalc      ( RDOCalc* calc                     ) { m_eraseBegin.push_back( calc );             }
 
-	void addConvertorEndCalc    ( RDOCalc* calc                          ) { m_convertorEnd.push_back( calc );           }
-	void addConvertorEndStatus  ( RDOResourceTrace::ConvertStatus status ) { m_convertorEndStatus.push_back( status );   }
-	void addEraseEndCalc        ( RDOCalc* calc                          ) { m_eraseEnd.push_back( calc );               }
+	void addConvertorEndCalc    ( RDOCalc* calc                     ) { m_convertorEnd.push_back( calc );           }
+	void addConvertorEndStatus  ( RDOResource::ConvertStatus status ) { m_convertorEndStatus.push_back( status );   }
+	void addEraseEndCalc        ( RDOCalc* calc                     ) { m_eraseEnd.push_back( calc );               }
 
-	void setTime                ( RDOCalc* calc                          ) { m_timeCalc = calc;                          }
+	void setTime                ( RDOCalc* calc                     ) { m_timeCalc = calc;                          }
 
 	bool choiceFrom( RDORuntime* runtime )
 	{
@@ -198,16 +194,16 @@ public:
 	RDOActivityOperation* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 
 private:
-	RDOCalc*                                       m_timeCalc;
-	std::vector< RDOCalc* >                        m_choiceFrom;
+	RDOCalc*                                  m_timeCalc;
+	std::vector< RDOCalc* >                   m_choiceFrom;
 
-	std::vector< RDOCalc* >                        m_convertorBegin;
-	std::vector< RDOResourceTrace::ConvertStatus > m_convertorBeginStatus;
-	std::vector< RDOCalc* >                        m_eraseBegin;
+	std::vector< RDOCalc* >                   m_convertorBegin;
+	std::vector< RDOResource::ConvertStatus > m_convertorBeginStatus;
+	std::vector< RDOCalc* >                   m_eraseBegin;
 
-	std::vector< RDOCalc* >                        m_convertorEnd;
-	std::vector< RDOResourceTrace::ConvertStatus > m_convertorEndStatus;
-	std::vector< RDOCalc* >                        m_eraseEnd;
+	std::vector< RDOCalc* >                   m_convertorEnd;
+	std::vector< RDOResource::ConvertStatus > m_convertorEndStatus;
+	std::vector< RDOCalc* >                   m_eraseEnd;
 };
 
 // ----------------------------------------------------------------------------

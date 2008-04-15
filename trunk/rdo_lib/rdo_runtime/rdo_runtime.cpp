@@ -18,77 +18,11 @@ namespace rdoRuntime
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOResource
-// ----------------------------------------------------------------------------
-RDOResource::RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool _trace ):
-	RDOResourceTrace( rt, _number, _trace ),
-	RDORuntimeObject( NULL ),
-	m_type( _type ),
-	m_referenceCount( 0 )
-{
-}
-
-inline RDOResource::~RDOResource()
-{
-	getRuntime()->fireMessage( this, RDORuntime::RO_BEFOREDELETE, (void*)getTraceID() );
-}
-
-inline bool RDOResource::operator != (RDOResource &other)
-{
-	if ( m_type != other.m_type ) return true;
-	if ( m_params.size() != other.m_params.size() ) return true;
-
-	int size = m_params.size();
-	for ( int i = 0; i < size; i++ ) {
-		if ( m_params.at(i) != other.m_params.at(i) ) return true;
-	}
-	return false;
-}
-
-inline std::string RDOResource::getTypeId()
-{
-	std::ostringstream str;
-	str << m_type;
-	return str.str();
-}
-
-inline std::string RDOResource::traceParametersValue()
-{
-	std::ostringstream str;
-	if(m_params.size() > 0)
-	{
-		std::vector<RDOValue>::iterator end = m_params.end();
-		for(std::vector<RDOValue>::iterator it = m_params.begin();;)
-		{
-#ifdef RDOSIM_COMPATIBLE
-			std::ostringstream _str;
-			_str << *it;
-			std::string::size_type pos = _str.str().find( "e" );
-			if ( pos != std::string::npos ) {
-				std::string __str = _str.str();
-				__str.erase( pos + 2, 1 );
-				str << __str.c_str();
-			} else {
-				str << _str.str().c_str();
-			}
-#else
-			str << *it;
-#endif
-			if(++it == end)
-				break;
-			str << " ";
-		}
-	}
-	return str.str();
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
 RDORuntime::RDORuntime():
 	RDOSimulatorTrace(),
 	m_currActivity( NULL ),
-	tracer( NULL ),
 	results( NULL ),
 	results_info( NULL ),
 	lastActiveBreakPoint( NULL ),
@@ -157,7 +91,7 @@ bool RDORuntime::endCondition()
 	if ( !terminateIfCalc ) {
 		return false;	// forever
 	}
-	return fabs( terminateIfCalc->calcValueBase( this ).getDouble() ) > DBL_EPSILON;
+	return fabs( terminateIfCalc->calcValue( this ).getDouble() ) > DBL_EPSILON;
 }
 
 void RDORuntime::setTerminateIf( RDOCalc* _terminateIfCalc )
@@ -169,7 +103,7 @@ bool RDORuntime::breakPoints()
 {
 	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
 	while ( it != breakPointsCalcs.end() ) {
-		if ( (*it)->calc->calcValueBase( this ).getBool() ) {
+		if ( (*it)->calc->calcValue( this ).getBool() ) {
 			lastActiveBreakPoint = *it;
 			return true;
 		}
@@ -463,9 +397,9 @@ bool RDORuntime::isKeyDown()
 	return key_found || !activeAreasMouseClicked.empty();
 }
 
-void RDORuntime::rdoInit( RDOTrace* customTracer, RDOResults* customResults, RDOResults* customResultsInfo )
+void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo )
 {
-	tracer       = customTracer;
+	m_tracer     = tracer;
 	results      = customResults;
 	results_info = customResultsInfo;
 	currFuncTop  = 0;
@@ -474,7 +408,7 @@ void RDORuntime::rdoInit( RDOTrace* customTracer, RDOResults* customResults, RDO
 
 void RDORuntime::onInit()
 {
-	std::for_each( initCalcs.begin(), initCalcs.end(), std::bind2nd(std::mem_fun1(&RDOCalc::calcValueBase), this) );
+	std::for_each( initCalcs.begin(), initCalcs.end(), std::bind2nd(std::mem_fun1(&RDOCalc::calcValue), this) );
 	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();
 	while ( it != allResourcesByID.end() ) {
 		allResourcesByTime.push_back( *it );
@@ -483,19 +417,10 @@ void RDORuntime::onInit()
 //	std::copy( allResourcesByID.begin(), allResourcesByID.end(), allResourcesByTime.begin() );
 }
 
-RDOTrace *RDORuntime::getTracer()
-{
-	return tracer;
-}
-
 void RDORuntime::onDestroy()
 {                    
 	DeleteAllObjects( allResourcesByID );
 
-	if ( tracer ) {
-		delete tracer;
-		tracer = NULL;
-	}
 	if ( results ) {
 		delete results;
 		results = NULL;
@@ -532,7 +457,7 @@ RDOSimulator* RDORuntime::clone()
 	return other;
 }
 
-bool RDORuntime::operator == ( RDOSimulator& other )
+bool RDORuntime::operator== ( RDOSimulator& other )
 {
 	RDORuntime* otherRuntime = dynamic_cast<RDORuntime*>(&other);
 

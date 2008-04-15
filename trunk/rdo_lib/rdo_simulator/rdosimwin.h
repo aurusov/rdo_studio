@@ -100,7 +100,7 @@ public:
 private:
 	rdoParse::RDOParser*    parser;
 	rdoRuntime::RDORuntime* runtime;
-	bool canTrace;
+	bool m_canTrace;
 
 	rdoRuntime::RDOThreadRunTime* thread_runtime;
 	rdoSimulator::RDOExitCode exitCode;

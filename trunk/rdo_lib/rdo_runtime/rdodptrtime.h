@@ -26,7 +26,7 @@ private:
 
 	virtual double cost( RDOSimulator* runtime )
 	{
-		return m_cost->calcValueBase( static_cast<RDORuntime*>(runtime) ).getDouble();
+		return m_cost->calcValue( static_cast<RDORuntime*>(runtime) ).getDouble();
 	}
 };
 
@@ -41,9 +41,9 @@ private:
 	RDOCalc* evaluateBy;
 	bool compTops;
 
-	virtual bool Condition( RDOSimulator* sim )     { return condition->calcValueBase( static_cast<RDORuntime*>(sim) ).getBool();     }
-	virtual bool TermCondition( RDOSimulator* sim ) { return termCondition->calcValueBase( static_cast<RDORuntime*>(sim) ).getBool(); }
-	virtual double EvaluateBy( RDOSimulator* sim )  { return evaluateBy->calcValueBase( static_cast<RDORuntime*>(sim) ).getDouble();  }
+	virtual bool Condition( RDOSimulator* sim )     { return condition->calcValue( static_cast<RDORuntime*>(sim) ).getBool();     }
+	virtual bool TermCondition( RDOSimulator* sim ) { return termCondition->calcValue( static_cast<RDORuntime*>(sim) ).getBool(); }
+	virtual double EvaluateBy( RDOSimulator* sim )  { return evaluateBy->calcValue( static_cast<RDORuntime*>(sim) ).getDouble();  }
 	virtual bool NeedCompareTops()                  { return compTops; }
 
 public:

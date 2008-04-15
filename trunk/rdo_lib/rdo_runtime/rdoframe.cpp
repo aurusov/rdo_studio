@@ -61,9 +61,9 @@ rdoSimulator::RDOColor RDOFRMFrame::RDOFRMColor::getColor( RDORuntime* sim, RDOF
 		}
 		case color_rgb: {
 			color.isTransparent = false;
-			color.r = red_calc->calcValueBase( sim ).getInt();
-			color.g = green_calc->calcValueBase( sim ).getInt();
-			color.b = blue_calc->calcValueBase( sim ).getInt();
+			color.r = red_calc->calcValue( sim ).getInt();
+			color.g = green_calc->calcValue( sim ).getInt();
+			color.b = blue_calc->calcValue( sim ).getInt();
 			break;
 		}
 		case color_transparent: {
@@ -219,7 +219,7 @@ void RDOFRMFrame::end()
 bool RDOFRMFrame::checkCondition( RDORuntime* sim )
 {
 	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValueBase( sim ) != 0;
+	return conditionCalc->calcValue( sim ) != 0;
 }
 
 rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame, RDORuntime* sim )
@@ -327,7 +327,7 @@ rdoSimulator::RDOFrameElement* RDOFRMText::createElement( RDORuntime* sim )
 	if ( isTextString ) {
 		t = txt;
 	} else {
-		RDOValue val = value->calcValueBase( sim );
+		RDOValue val = value->calcValue( sim );
 		t = val.getAsString();
 	}
 
@@ -641,7 +641,7 @@ void RDOFRMShow::getBitmaps( std::list< std::string >& list )
 bool RDOFRMShow::checkCondition( RDORuntime* sim )
 {
 	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValueBase( sim ) != 0;
+	return conditionCalc->calcValue( sim ) != 0;
 }
 
 } // namespace rdoRuntime

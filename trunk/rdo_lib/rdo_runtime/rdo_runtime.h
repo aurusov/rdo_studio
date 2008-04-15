@@ -3,58 +3,11 @@
 
 #include "rdotrace.h"
 #include "simtrace.h"
+#include "rdo_resource.h"
 #include <rdocommon.h>
 
 namespace rdoRuntime
 {
-
-// ----------------------------------------------------------------------------
-// ---------- RDOResource
-// ----------------------------------------------------------------------------
-class RDOResource: public RDOResourceTrace, public RDORuntimeObject
-{
-public:
-	RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool _trace );
-	virtual ~RDOResource();
-
-	bool checkType( unsigned int type ) const
-	{
-		return m_type == type;
-	}
-
-	virtual const RDOValue& getParam( unsigned int index ) const
-	{
-		return m_params.at( index );
-	}
-	virtual void setParam( unsigned int index, const RDOValue& value )
-	{
-		if ( m_params.size() <= index ) {
-			m_params.resize( index + 1 );
-		}
-		m_params.at( index ) = value;
-	}
-	virtual unsigned int paramsCount() const
-	{
-		return m_params.size();
-	}
-	virtual void appendParams( const std::vector< RDOValue >::const_iterator& from_begin, const std::vector< RDOValue >::const_iterator& from_end )
-	{
-		m_params.insert( m_params.end(), from_begin, from_end );
-	}
-
-	std::string getTypeId();
-	std::string traceParametersValue();
-	bool operator != ( RDOResource& other );
-
-	bool canFree() const { return m_referenceCount == 0; }
-	void incRef()        { m_referenceCount++;           }
-	void decRef()        { m_referenceCount--;           }
-
-protected:
-	std::vector< RDOValue > m_params;
-	unsigned int            m_type;
-	unsigned int            m_referenceCount;
-};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResults
@@ -147,8 +100,8 @@ private:
 	virtual void onInit();
 	virtual void onDestroy();
 
-	virtual std::list< RDOResourceTrace* > getResourcesBeforeSim() const {
-		std::list< RDOResourceTrace* > list;
+	virtual std::list< RDOResource* > getResourcesBeforeSim() const {
+		std::list< RDOResource* > list;
 		std::list< RDOResource* >::const_iterator it = allResourcesBeforeSim.begin();
 		while ( it != allResourcesBeforeSim.end() ) {
 			list.push_back( *it );
@@ -170,7 +123,6 @@ private:
 		physic_time = time(NULL);
 	}
 
-	RDOTrace*   tracer;
 	RDOResults* results;
 	RDOResults* results_info;
 
@@ -178,7 +130,7 @@ private:
 	std::vector< RDOValue > allConstants;
 
 	virtual RDOSimulator* clone();
-	virtual bool operator == ( RDOSimulator& other );
+	virtual bool operator== ( RDOSimulator& other );
 
 	void writeExitCode();
 
@@ -222,7 +174,7 @@ public:
 
 	void setConstValue( int numberOfConst, RDOValue value );
 	RDOValue getConstValue( int numberOfConst );
-	void rdoInit( RDOTrace* customTracer, RDOResults* customResults, RDOResults* customResultsInfo );
+	void rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo );
 
 	RDOResults& getResults()     { return *results;      }
 	RDOResults& getResultsInfo() { return *results_info; }
@@ -316,8 +268,6 @@ public:
 	virtual void onUserBreak()       { whyStop = rdoSimulator::EC_UserBreak;    }
 
 	virtual void postProcess();
-
-	RDOTrace* getTracer();
 };
 
 } // namespace rdoRuntime

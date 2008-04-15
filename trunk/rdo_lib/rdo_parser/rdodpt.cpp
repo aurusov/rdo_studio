@@ -275,7 +275,7 @@ RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, cons
 		parser()->error_push_done();
 	}
 	for ( std::vector< RDORelevantResource* >::const_iterator i = m_pattern->rel_res_begin(); i != m_pattern->rel_res_end(); i++ ) {
-		if ( ((*i)->begin == rdoRuntime::RDOResourceTrace::CS_Create) || ((*i)->begin == rdoRuntime::RDOResourceTrace::CS_Erase) ) {
+		if ( ((*i)->begin == rdoRuntime::RDOResource::CS_Create) || ((*i)->begin == rdoRuntime::RDOResource::CS_Erase) ) {
 			parser()->error_push_only( src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()) );
 			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
 			parser()->error_push_only( (*i)->src_info(), "См. релевантный ресурс" );

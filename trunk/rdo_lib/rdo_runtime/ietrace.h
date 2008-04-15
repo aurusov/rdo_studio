@@ -11,12 +11,12 @@ class RDOIETrace: public RDOIE, public RDOPatternTrace
 friend RDOTrace;
 friend RDOSimulatorTrace;
 
-private:
-	virtual const std::string& tracePatternId() const = 0;
-
 protected:
 	RDOIETrace( RDORuntimeParent* runtime, bool trace );
 	virtual void onAfterIrregularEvent( RDOSimulator* sim );
+
+private:
+	virtual const std::string& tracePatternId() const = 0;
 };
 
 } // namespace rdoRuntime

@@ -303,7 +303,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
 							std::string type_name = *reinterpret_cast<std::string*>($3);
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResourceTrace::ConvertStatus)$4, (rdoRuntime::RDOResourceTrace::ConvertStatus)$5, @4, @5 );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -324,7 +324,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
 							std::string type_name = *reinterpret_cast<std::string*>($3);
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResourceTrace::ConvertStatus)$4, (rdoRuntime::RDOResourceTrace::ConvertStatus)$5, @4, @5 );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -343,14 +343,14 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResourceTrace::ConvertStatus)$4).c_str()) );
+							PARSER->error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()) );
 							break;
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
 							std::string type_name = *reinterpret_cast<std::string*>($3);
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResourceTrace::ConvertStatus)$4, @4 );
+							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
 							break;
 						}
 					}
@@ -361,14 +361,14 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResourceTrace::ConvertStatus)$4).c_str()) );
+							PARSER->error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()) );
 							break;
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
 							std::string type_name = *reinterpret_cast<std::string*>($3);
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResourceTrace::ConvertStatus)$4, @4 );
+							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
 							break;
 						}
 					}
@@ -386,8 +386,8 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 							type_pos.last_column = type_pos.first_column + type_name.length();
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
-							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResourceTrace::CS_NoChange, (rdoRuntime::RDOResourceTrace::ConvertStatus)$4, convertor_pos, @4 );
+							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -413,8 +413,8 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 							type_pos.last_column = type_pos.first_column + type_name.length();
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
-							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResourceTrace::CS_NoChange, (rdoRuntime::RDOResourceTrace::ConvertStatus)$4, convertor_pos, @4 );
+							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -454,11 +454,11 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 								if ( i == first_nochange ) break;
 							}
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
-							convertor_begin_pos.last_column = convertor_begin_pos.first_column + RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
+							convertor_begin_pos.last_column = convertor_begin_pos.first_column + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
-							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResourceTrace::CS_NoChange, rdoRuntime::RDOResourceTrace::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -498,11 +498,11 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 								if ( i == first_nochange ) break;
 							}
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
-							convertor_begin_pos.last_column = convertor_begin_pos.first_column + RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
+							convertor_begin_pos.last_column = convertor_begin_pos.first_column + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
-							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResourceTrace::CS_NoChange, rdoRuntime::RDOResourceTrace::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -521,7 +521,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).c_str()) );
+							PARSER->error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()) );
 							break;
 						}
 						case RDOPATPattern::PT_IE  : 
@@ -533,8 +533,8 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 							type_pos.last_column = type_pos.first_column + type_name.length();
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
-							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResourceTrace::CS_NoChange, convertor_pos );
+							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
 							break;
 						}
 					}
@@ -545,7 +545,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).c_str()) );
+							PARSER->error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()) );
 							break;
 						}
 						case RDOPATPattern::PT_IE  : 
@@ -557,8 +557,8 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 							type_pos.last_column = type_pos.first_column + type_name.length();
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
-							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResourceTrace::CS_NoChange, convertor_pos );
+							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
 							break;
 						}
 					}
@@ -577,8 +577,8 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 							convertor_begin_pos.last_column = convertor_begin_pos.first_column + convert_begin->length();
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
-							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( *convert_begin, convertor_begin_pos ), rdoRuntime::RDOResourceTrace::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( *convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -605,8 +605,8 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 							convertor_begin_pos.last_column = convertor_begin_pos.first_column + convert_begin->length();
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
-							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( *convert_begin, convertor_begin_pos ), rdoRuntime::RDOResourceTrace::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( *convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -712,10 +712,10 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					}
 				};
 
-pat_conv:	Keep				{ $$ = rdoRuntime::RDOResourceTrace::CS_Keep;     }
-			| Create_keyword	{ $$ = rdoRuntime::RDOResourceTrace::CS_Create;   }
-			| Erase				{ $$ = rdoRuntime::RDOResourceTrace::CS_Erase;    }
-			| NonExist			{ $$ = rdoRuntime::RDOResourceTrace::CS_NonExist; };
+pat_conv:	Keep				{ $$ = rdoRuntime::RDOResource::CS_Keep;     }
+			| Create_keyword	{ $$ = rdoRuntime::RDOResource::CS_Create;   }
+			| Erase				{ $$ = rdoRuntime::RDOResource::CS_Erase;    }
+			| NonExist			{ $$ = rdoRuntime::RDOResource::CS_NonExist; };
 
 pat_common_choice:	pat_rel_res
 					| pat_rel_res first_keyword {
@@ -907,7 +907,7 @@ pat_convert:	pat_res_usage {
 					} else {
 						str = "Сразу после имени";
 					}
-					if ( rel_res->begin != rdoRuntime::RDOResourceTrace::CS_NoChange && rel_res->begin != rdoRuntime::RDOResourceTrace::CS_Erase && rel_res->begin != rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+					if ( rel_res->begin != rdoRuntime::RDOResource::CS_NoChange && rel_res->begin != rdoRuntime::RDOResource::CS_Erase && rel_res->begin != rdoRuntime::RDOResource::CS_NonExist ) {
 						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
 							case RDOPATPattern::PT_Rule     : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
@@ -916,7 +916,7 @@ pat_convert:	pat_res_usage {
 						}
 //						PARSER->error( "Converter needed for \"" + *rel_res->getName() + "\" relevant resource in pattern \"" + getName() + "\"" );
 					}
-					if ( rel_res->end != rdoRuntime::RDOResourceTrace::CS_NoChange && rel_res->end != rdoRuntime::RDOResourceTrace::CS_Erase && rel_res->end != rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+					if ( rel_res->end != rdoRuntime::RDOResource::CS_NoChange && rel_res->end != rdoRuntime::RDOResource::CS_Erase && rel_res->end != rdoRuntime::RDOResource::CS_NonExist ) {
 						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : PARSER->error( @1, "Внутренняя ошибка" ); break;
 							case RDOPATPattern::PT_Rule     : PARSER->error( @1, "Внутренняя ошибка" ); break;
