@@ -1,5 +1,5 @@
-#ifndef RDO_SIMULATOR
-#define RDO_SIMULATOR
+#ifndef RDO_H
+#define RDO_H
 
 #include "rdobase.h"
 #include "rdocalc.h"
@@ -25,8 +25,6 @@ public:
 		BOR_must_continue,
 		BOR_done
 	};
-	RDOBaseOperation( RDORuntimeParent* parent ): RDORuntimeParent( parent ) {}
-	virtual ~RDOBaseOperation() {}
 
 	// Вызывается перед стартом прогона и перед возобновление операции
 	// Например, условие DPT-some поменялось с false на true
@@ -57,6 +55,10 @@ public:
 	{
 		return BOR_cant_run;
 	}
+
+protected:
+	RDOBaseOperation( RDORuntimeParent* parent ): RDORuntimeParent( parent ) {}
+	virtual ~RDOBaseOperation() {}
 };
 
 // ----------------------------------------------------------------------------
@@ -301,101 +303,10 @@ private:
 typedef RDOBaseLogic< RDOBaseOperation > RDOLogicContainer;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOIE
-// ----------------------------------------------------------------------------
-class RDOIE: public RDOBaseOperation
-{
-friend class RDOSimulator;
-
-public:
-	RDOIE( RDORuntimeParent* runtime ): RDOBaseOperation( runtime ) {}
-	virtual ~RDOIE() {}
-
-protected:
-	virtual void   convertEvent( RDOSimulator* sim )        = 0;
-	virtual double getNextTimeInterval( RDOSimulator* sim ) = 0;
-
-	virtual void onBeforeIrregularEvent( RDOSimulator* sim )  {}
-	virtual void onAfterIrregularEvent ( RDOSimulator* sim )  {}
-
-private:
-	double  m_time;
-	virtual void     onStart         ( RDOSimulator* sim );
-	virtual void     onStop          ( RDOSimulator* sim );
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-	virtual void     onMakePlaned    ( RDOSimulator* sim, void* param = NULL );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORule
-// ----------------------------------------------------------------------------
-class RDORule: public RDOBaseOperation
-{
-friend class RDOSimulator;
-friend class RDODPTSearch;
-friend class TreeNode;
-
-public:
-	RDORule( RDORuntimeParent* runtime ): RDOBaseOperation( runtime ) {}
-	virtual ~RDORule() {}
-	virtual bool choiceFrom( RDORuntime* runtime )  = 0;
-	virtual void convertRule( RDORuntime* runtime ) = 0;
-
-protected:
-	virtual void onBeforeChoiceFrom( RDOSimulator* sim )                 {}
-	virtual void onBeforeRule( RDOSimulator* sim )                       {}
-	virtual void onAfterRule( RDOSimulator* sim, bool inSearch = false ) {}
-
-private:
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOOperation
-// ----------------------------------------------------------------------------
-class RDOOperation: public RDOBaseOperation
-{
-friend class RDOSimulator;
-
-public:
-	RDOOperation( RDORuntimeParent* runtime ):
-		RDOBaseOperation( runtime ),
-		m_clones( NULL )
-	{
-		m_clones.reparent( this );
-	}
-	virtual ~RDOOperation()
-	{
-		m_clones.deleteObjects();
-	}
-	virtual bool   choiceFrom( RDOSimulator* sim )          = 0;
-	virtual void   convertEnd( RDOSimulator* sim )          = 0;
-	virtual void   convertBegin( RDOSimulator* sim )        = 0;
-	virtual double getNextTimeInterval( RDOSimulator* sim ) = 0;
-
-	// The clone function should create and return copy of operation object.
-	// Do not forget to copy relevant resources.
-	virtual RDOOperation* clone( RDOSimulator* sim ) = 0;
-
-	virtual void onBeforeChoiceFrom( RDOSimulator* sim )     {}
-	virtual void onBeforeOperationBegin( RDOSimulator* sim ) {}
-	virtual void onBeforeOperationEnd( RDOSimulator* sim )   {}
-	virtual void onAfterOperationBegin( RDOSimulator* sim )  {}
-	virtual void onAfterOperationEnd( RDOSimulator* sim )    {}
-
-private:
-	RDORuntimeParent m_clones;
-
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-	virtual void     onMakePlaned    ( RDOSimulator* sim, void* param = NULL );
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
+class RDORule;
+
 class RDODPTSearch: public RDOBaseOperation
 {
 friend class RDOSimulator;
@@ -414,12 +325,7 @@ public:
 			vt_after
 		};
 
-		Activity( RDORule* rule, ValueTime valueTime ):
-			RDORuntimeObject( rule ),
-			m_rule( rule ),
-			m_valueTime( valueTime )
-		{
-		}
+		Activity( RDORule* rule, ValueTime valueTime );
 		virtual ~Activity()
 		{
 		}
@@ -544,4 +450,4 @@ public:
 
 } // namespace rdoRuntime
 
-#endif //RDO_SIMULATOR
+#endif // RDO_H

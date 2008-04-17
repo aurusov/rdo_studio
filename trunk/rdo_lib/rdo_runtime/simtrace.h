@@ -15,13 +15,13 @@ class RDOBaseOperation;
 class RDOSimulatorTrace: public RDOSimulator
 {
 friend class RDODPTSearchTrace;
-friend class RDOOperationTrace;
 friend class TreeRootTrace;
 friend class TreeNodeTrace;
 friend class RDOTrace;
 friend class RDOResource;
-friend class RDOIETrace;
-friend class RDORuleTrace;
+friend class RDOIrregEvent;
+friend class RDORule;
+friend class RDOOperation;
 friend class RDOActivityTrace;
 friend class rdoParse::RDODPTSome;
 
@@ -45,10 +45,10 @@ private:
 	int activityCounter;
 	int dptCounter;
 
-	void addTemplateDecisionPoint(RDODPTSearchTrace *dp);
-	void addTemplateOperation(RDOOperationTrace *op);
-	void addTemplateIrregularEvent(RDOIETrace *ev);
-	void addTemplateRule(RDORuleTrace *rule);
+	void addTemplateDecisionPoint(RDODPTSearchTrace* dp);
+	void addTemplateIrregularEvent( RDOIrregEvent* ev   );
+	void addTemplateRule          ( RDORule*       rule );
+	void addTemplateOperation     ( RDOOperation*  op   );
 
 	unsigned int memory_current;
 	unsigned int memory_max;

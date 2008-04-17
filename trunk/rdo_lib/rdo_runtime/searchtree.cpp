@@ -2,6 +2,7 @@
 #include "searchtree.h"
 #include "searchtrace.h"
 #include "rdo_runtime.h"
+#include "rdo_rule.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

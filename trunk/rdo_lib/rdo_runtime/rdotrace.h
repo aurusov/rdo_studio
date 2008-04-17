@@ -10,9 +10,9 @@ namespace rdoRuntime {
 class RDOSimulator;
 class RDOSimulatorTrace;
 class TreeNodeTrace;
-class RDORuleTrace;
-class RDOIETrace;
-class RDOOperationTrace;
+class RDOIrregEvent;
+class RDORule;
+class RDOOperation;
 class RDOTraceableObject;
 class TreeRootTrace;
 class RDOPokazTrace;
@@ -62,10 +62,10 @@ public:
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
 	virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
 
-	virtual void writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim);
-	virtual void writeRule(RDORuleTrace *rule, RDOSimulatorTrace *sim);
-	virtual void writeAfterOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim);
-	virtual void writeAfterOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim);
+	virtual void writeIrregularEvent     ( RDOIrregEvent* ie  , RDOSimulatorTrace* sim );
+	virtual void writeRule               ( RDORule*       rule, RDOSimulatorTrace* sim );
+	virtual void writeAfterOperationBegin( RDOOperation*  op  , RDOSimulatorTrace* sim );
+	virtual void writeAfterOperationEnd  ( RDOOperation*  op  , RDOSimulatorTrace* sim );
 
 	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
 	virtual void writeModelBegin(RDOSimulatorTrace *sim);
@@ -74,7 +74,7 @@ public:
 
 	virtual void writePermanentResources( RDOSimulatorTrace* sim, const std::list< RDOResource* >& res_perm );
 
-	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResource* >& rel_res_list );
+	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResource* >& rel_res_list );
 
 	virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
 
@@ -146,9 +146,6 @@ class RDOPatternTrace: public RDOTraceableObject
 friend class RDOSimulatorTrace;
 protected:
 	RDOPatternTrace( bool trace ): RDOTraceableObject( trace ) {};
-
-	virtual std::string traceResourcesList       ( char prefix, RDOSimulatorTrace* sim                   ) = 0;
-	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true ) = 0;
 };
 
 // ----------------------------------------------------------------------------

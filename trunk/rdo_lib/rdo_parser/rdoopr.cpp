@@ -6,7 +6,10 @@
 #include "rdopat.h"
 #include "rdoparser_lexer.h"
 #include <rdo_pattern.h>
-#include <rdo_activity.h>
+#include <rdo_ie.h>
+#include <rdo_rule.h>
+#include <rdo_operation.h>
+#include <rdo_keyboard.h>
 #include <rdocalc.h>
 
 #ifdef _DEBUG

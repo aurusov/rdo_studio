@@ -46,9 +46,9 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
-class RDOActivityRule;
-class RDOActivityIrregEvent;
-class RDOActivityOperation;
+class RDOIrregEvent;
+class RDORule;
+class RDOOperation;
 class RDOPROCProcess;
 class RDOPMDPokaz;
 class RDOPattern;
@@ -185,9 +185,9 @@ public:
 	RDOActivity* getCurrentActivity() const                   { return m_currActivity;      }
 	void         setCurrentActivity( RDOActivity* activity )  { m_currActivity = activity;  }
 
-	void addRuntimeOperation( RDOActivityOperation* opr );
-	void addRuntimeRule( RDOActivityRule* rule );
-	void addRuntimeIE( RDOActivityIrregEvent* ie );
+	void addRuntimeIE       ( RDOIrregEvent *ie   );
+	void addRuntimeRule     ( RDORule       *rule );
+	void addRuntimeOperation( RDOOperation  *opr  );
 	void addRuntimeProcess( RDOPROCProcess* process );
 	void addRuntimeDPT( RDODPTSearchRuntime* dpt );
 	void addRuntimePokaz( RDOPMDPokaz* pok );

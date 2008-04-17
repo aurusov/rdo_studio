@@ -85,36 +85,6 @@ LIB32=link.exe -lib
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\ietrace.cpp
-
-!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
-
-# ADD CPP /GR /Yu"pch.h"
-
-!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
-
-# ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\operationtrace.cpp
-
-!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
-
-# ADD CPP /GR /Yu"pch.h"
-
-!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
-
-# ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\pch.cpp
 
 !IF  "$(CFG)" == "rdo_runtime - Win32 Release"
@@ -149,11 +119,27 @@ SOURCE=.\rdo_activity.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_ie.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_keyboard.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_operation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_pattern.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdo_resource.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_rule.cpp
 # End Source File
 # Begin Source File
 
@@ -233,21 +219,6 @@ SOURCE=.\rdotrace.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ruletrace.cpp
-
-!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
-
-# ADD CPP /GR /Yu"pch.h"
-
-!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
-
-# ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\searchtrace.cpp
 
 !IF  "$(CFG)" == "rdo_runtime - Win32 Release"
@@ -297,15 +268,7 @@ SOURCE=.\simtrace.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\ietrace.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\memcheck.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\operationtrace.h
 # End Source File
 # Begin Source File
 
@@ -321,6 +284,18 @@ SOURCE=.\rdo_activity.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_ie.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_keyboard.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_operation.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_pattern.h
 # End Source File
 # Begin Source File
@@ -330,6 +305,10 @@ SOURCE=.\rdo_random_distribution.h
 # Begin Source File
 
 SOURCE=.\rdo_resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_rule.h
 # End Source File
 # Begin Source File
 
@@ -366,10 +345,6 @@ SOURCE=.\rdoruntime_object.h
 # Begin Source File
 
 SOURCE=.\rdotrace.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ruletrace.h
 # End Source File
 # Begin Source File
 

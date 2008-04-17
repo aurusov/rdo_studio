@@ -4,7 +4,10 @@
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
 #include "rdorss.h"
-#include <rdo_activity.h>
+#include <rdo_ie.h>
+#include <rdo_rule.h>
+#include <rdo_operation.h>
+#include <rdo_keyboard.h>
 #include <rdoprocess.h>
 
 #ifdef _DEBUG
@@ -206,7 +209,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 		}
 		parser()->error_push_done();
 	}
-	if ( m_pattern->getType() == RDOPATPattern::PT_Keyboard && !m_activity->hasHotKey() ) {
+	if ( m_pattern->getType() == RDOPATPattern::PT_Keyboard && !static_cast<rdoRuntime::RDOKeyboard*>(m_activity)->hasHotKey() ) {
 		if ( dynamic_cast<RDOOPROperation*>(this) ) {
 			parser()->error_push_only( _param_pos, "Для клавиатурной операции должна быть указана клавиша" );
 		} else {
@@ -283,7 +286,7 @@ RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, cons
 //			parser()->error( "Rule: " + getName() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
-	m_activity = new rdoRuntime::RDOActivityRule( parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(m_pattern->getPatRuntime()), true, getName() );
+	m_activity = new rdoRuntime::RDORule( parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(m_pattern->getPatRuntime()), true, getName() );
 }
 
 void RDODPTSearchActivity::setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos )
@@ -358,11 +361,11 @@ RDODPTActivityHotKey::RDODPTActivityHotKey( RDOParser* _parser, const RDOParserS
 
 void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos )
 {
-	switch ( m_activity->addHotKey( parser()->runtime(), hotKey ) ) {
-		case rdoRuntime::RDOActivity::addhk_ok      : {
+	switch ( static_cast<rdoRuntime::RDOKeyboard*>(m_activity)->addHotKey( parser()->runtime(), hotKey ) ) {
+		case rdoRuntime::RDOKeyboard::addhk_ok      : {
 			break;
 		}
-		case rdoRuntime::RDOActivity::addhk_already : {
+		case rdoRuntime::RDOKeyboard::addhk_already : {
 			if ( dynamic_cast<RDOOPROperation*>(this) ) {
 				parser()->error( hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()) );
 			} else {
@@ -370,11 +373,11 @@ void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& 
 			}
 			break;
 		}
-		case rdoRuntime::RDOActivity::addhk_notfound: {
+		case rdoRuntime::RDOKeyboard::addhk_notfound: {
 			parser()->error( hotkey_pos, rdo::format("Неизвестная клавиша: %s", hotKey.c_str()) );
 			break;
 		}
-		case rdoRuntime::RDOActivity::addhk_dont    : {
+		case rdoRuntime::RDOKeyboard::addhk_dont    : {
 			parser()->error_push_only( src_info(), rdo::format("Операция '%s' не является клавиатурной", src_text().c_str()) );
 			parser()->error_push_only( getType()->src_info(), "См. образец" );
 			parser()->error_push_done();

@@ -2,6 +2,7 @@
 #include "rdo.h"
 #include "rdoprocess.h"
 #include "searchtree.h"
+#include "rdo_rule.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -12,90 +13,6 @@ static char THIS_FILE[] = __FILE__;
 #pragma warning(disable : 4786)  
 
 namespace rdoRuntime {
-
-// ----------------------------------------------------------------------------
-// ---------- RDOIE - irregular_event
-// ----------------------------------------------------------------------------
-void RDOIE::onStart( RDOSimulator* sim )
-{
-	onBeforeIrregularEvent( sim );
-	sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
-}
-
-void RDOIE::onStop( RDOSimulator* sim )
-{
-	sim->removeTimePoint( this );
-}
-
-bool RDOIE::onCheckCondition(RDOSimulator *sim)
-{
-	return false;
-}
-
-RDOBaseOperation::BOResult RDOIE::onDoOperation( RDOSimulator* sim )
-{
-	return RDOBaseOperation::BOR_cant_run;
-}
-
-void RDOIE::onMakePlaned( RDOSimulator* sim, void* param )
-{
-	sim->inc_cnt_events();
-	onBeforeIrregularEvent( sim );
-	convertEvent( sim );
-	sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
-	onAfterIrregularEvent( sim );
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDORule - rule
-// ----------------------------------------------------------------------------
-bool RDORule::onCheckCondition( RDOSimulator* sim )
-{
-	onBeforeChoiceFrom( sim );
-	sim->inc_cnt_choice_from();
-	return choiceFrom( static_cast<RDORuntime*>(sim) );
-}
-
-RDOBaseOperation::BOResult RDORule::onDoOperation( RDOSimulator* sim )
-{
-	onBeforeRule( sim );
-	convertRule( static_cast<RDORuntime*>(sim) );
-	onAfterRule( sim );
-	return RDOBaseOperation::BOR_done;
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOOperation - operation
-// ----------------------------------------------------------------------------
-bool RDOOperation::onCheckCondition( RDOSimulator* sim )
-{
-	// Если операция может начаться, то создать её клон и поместить его в список
-	onBeforeChoiceFrom( sim );
-	sim->inc_cnt_choice_from();
-	return choiceFrom(sim);
-}
-
-RDOBaseOperation::BOResult RDOOperation::onDoOperation( RDOSimulator* sim )
-{
-	RDOOperation* newOp = clone( sim );
-	newOp->reparent( &m_clones );
-	newOp->onBeforeOperationBegin( sim );
-	newOp->convertBegin( sim );
-	sim->addTimePoint( newOp->getNextTimeInterval(sim) + sim->getCurrentTime(), this, newOp );
-	newOp->onAfterOperationBegin( sim );
-	return RDOBaseOperation::BOR_planned_and_run;
-}
-
-void RDOOperation::onMakePlaned( RDOSimulator* sim, void* param )
-{
-	// Выполняем событие конца операции-клона
-	sim->inc_cnt_events();
-	RDOOperation* opr = static_cast<RDOOperation*>(param);
-	opr->onBeforeOperationEnd( sim );
-	opr->convertEnd( sim );
-	opr->onAfterOperationEnd( sim );
-	delete opr;
-}
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
@@ -182,6 +99,13 @@ void RDODPTSearch::addActivity( Activity* act )
 	// Удалять активности из activities не надо, т.к. это делает объект-родитель
 	act->reparent( this );
 	activities.push_back( act ); 
+}
+
+RDODPTSearch::Activity::Activity( RDORule* rule, ValueTime valueTime ):
+	RDORuntimeObject( rule ),
+	m_rule( rule ),
+	m_valueTime( valueTime )
+{
 }
 
 // ----------------------------------------------------------------------------

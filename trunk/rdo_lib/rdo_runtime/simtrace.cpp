@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "simtrace.h"
 #include "searchtrace.h"
-#include "operationtrace.h"
-#include "ietrace.h"
-#include "ruletrace.h"
+#include "rdo_ie.h"
+#include "rdo_rule.h"
+#include "rdo_operation.h"
 #include "rdo_resource.h"
 
 #ifdef _DEBUG
@@ -29,33 +29,33 @@ void RDOSimulatorTrace::addTemplateDecisionPoint( RDODPTSearchTrace* dp )
 	RDOSimulator::addTemplateBaseOperation( dp );
 }
 
-void RDOSimulatorTrace::addTemplateOperation( RDOOperationTrace* op )
+void RDOSimulatorTrace::addTemplateOperation( RDOOperation* op )
 {
 	RDOSimulator::addTemplateBaseOperation( op );
 }
 
-void RDOSimulatorTrace::addTemplateIrregularEvent( RDOIETrace* ev )
+void RDOSimulatorTrace::addTemplateIrregularEvent( RDOIrregEvent* ev )
 {
 	ev->setTraceID( ieCounter++ );
 	RDOSimulator::addTemplateBaseOperation( ev );
 }
 
-void RDOSimulatorTrace::addTemplateRule( RDORuleTrace* rule )
+void RDOSimulatorTrace::addTemplateRule( RDORule* rule )
 {
 	RDOSimulator::addTemplateBaseOperation( rule );
 }
 
 void RDOSimulatorTrace::addTemplateBaseOperation( RDOBaseOperation* bop )
 {
-	RDORuleTrace* rule = dynamic_cast<RDORuleTrace*>(bop);
+	RDORule* rule = dynamic_cast<RDORule*>(bop);
 	if ( rule ) {
 		addTemplateRule( rule );
 	} else {
-		RDOIETrace* ie = dynamic_cast<RDOIETrace*>(bop);
+		RDOIrregEvent* ie = dynamic_cast<RDOIrregEvent*>(bop);
 		if ( ie ) {
 			addTemplateIrregularEvent( ie );
 		} else {
-			RDOOperationTrace* op = dynamic_cast<RDOOperationTrace*>(bop);
+			RDOOperation* op = dynamic_cast<RDOOperation*>(bop);
 			if ( op ) {
 				addTemplateOperation( op );
 			} else {

@@ -2,7 +2,7 @@
 #include "searchtrace.h"
 #include "rdotrace.h"
 #include "simtrace.h"
-#include "ruletrace.h"
+#include "rdo_rule.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,7 +17,7 @@ RDOActivityTrace::RDOActivityTrace( RDORule* r, ValueTime valueTime ):
 	Activity( r, valueTime ),
 	RDOTraceableObject( false )
 {
-	setTraceID( reinterpret_cast<RDORuleTrace*>(r)->getTraceID() );
+	setTraceID( r->getTraceID() );
 }
 
 void RDODPTSearchTrace::onSearchBegin( RDOSimulator* sim )

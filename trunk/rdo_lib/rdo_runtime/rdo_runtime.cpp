@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "rdo_runtime.h"
 #include "rdo_activity.h"
+#include "rdo_ie.h"
+#include "rdo_rule.h"
+#include "rdo_operation.h"
 #include "rdoprocess.h"
 #include "rdopokaz.h"
 #include "rdodptrtime.h"
@@ -261,17 +264,17 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimeOperation( RDOActivityOperation* opr )
+void RDORuntime::addRuntimeOperation( RDOOperation* opr )
 {
 	addTemplateBaseOperation( opr );
 }
 
-void RDORuntime::addRuntimeRule( RDOActivityRule* rule )
+void RDORuntime::addRuntimeRule( RDORule* rule )
 {
 	addTemplateBaseOperation( rule );
 }
 
-void RDORuntime::addRuntimeIE( RDOActivityIrregEvent* ie )
+void RDORuntime::addRuntimeIE( RDOIrregEvent* ie )
 {
 	addTemplateBaseOperation( ie );
 }
@@ -493,12 +496,12 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 	std::stringstream stream;
 	RDOLogicContainer::CIterator it = m_logics.begin();
 	while ( it != m_logics.end() ) {
-		RDOActivityRule* rule = dynamic_cast<RDOActivityRule*>(*it);
+		RDORule* rule = dynamic_cast<RDORule*>(*it);
 		if ( rule ) {
 			stream << counter++ << " ";
 			rule->writeModelStructure( stream );
 		} else {
-			RDOActivityOperation* opr = dynamic_cast<RDOActivityOperation*>(*it);
+			RDOOperation* opr = dynamic_cast<RDOOperation*>(*it);
 			if ( opr ) {
 				stream << counter++ << " ";
 				opr->writeModelStructure( stream );
@@ -514,7 +517,7 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 	int _counter = 1;
 	it = m_logics.begin();
 	while ( it != m_logics.end() ) {
-		RDOActivityIrregEvent* ie = dynamic_cast<RDOActivityIrregEvent*>(*it);
+		RDOIrregEvent* ie = dynamic_cast<RDOIrregEvent*>(*it);
 		if ( ie ) {
 			stream << _counter++ << " ";
 			counter++;

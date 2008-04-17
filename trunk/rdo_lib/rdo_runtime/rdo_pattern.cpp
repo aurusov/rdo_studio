@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "rdo_pattern.h"
-#include "rdo_activity.h"
+#include "rdo_ie.h"
+#include "rdo_rule.h"
+#include "rdo_operation.h"
+#include "rdo_keyboard.h"
 #include "rdo_runtime.h"
 #include "rdocalc.h"
 
@@ -39,9 +42,9 @@ double RDOPatternIrregEvent::getNextTimeInterval( RDORuntime* runtime )
 	return 0;
 }
 
-RDOActivityIrregEvent* RDOPatternIrregEvent::createActivity( RDORuntime* runtime, const std::string& oprName )
+RDOIrregEvent* RDOPatternIrregEvent::createActivity( RDORuntime* runtime, const std::string& oprName )
 {
-	RDOActivityIrregEvent* ie = new RDOActivityIrregEvent( runtime, this, traceable(), oprName );
+	RDOIrregEvent* ie = new RDOIrregEvent( runtime, this, traceable(), oprName );
 	runtime->addRuntimeIE( ie );
 	return ie;
 }
@@ -54,16 +57,16 @@ RDOPatternRule::RDOPatternRule( RDORuntime* rTime, bool trace ):
 {
 }
 
-RDOActivityRule* RDOPatternRule::createActivity( RDORuntime* runtime, const std::string& _oprName )
+RDORule* RDOPatternRule::createActivity( RDORuntime* runtime, const std::string& _oprName )
 {
-	RDOActivityRule* rule = new RDOActivityRule( runtime, this, traceable(), _oprName );
+	RDORule* rule = new RDORule( runtime, this, traceable(), _oprName );
 	runtime->addRuntimeRule( rule );
 	return rule;
 }
 
-RDOActivityRule* RDOPatternRule::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName )
+RDORule* RDOPatternRule::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName )
 {
-	RDOActivityRule* rule = new RDOActivityRule( runtime, this, traceable(), condition, _oprName );
+	RDORule* rule = new RDORule( runtime, this, traceable(), condition, _oprName );
 	runtime->addRuntimeRule( rule );
 	return rule;
 }
@@ -85,16 +88,16 @@ double RDOPatternOperation::getNextTimeInterval( RDORuntime* runtime )
 	return 0;
 }
 
-RDOActivityOperation* RDOPatternOperation::createActivity( RDORuntime* runtime, const std::string& _oprName )
+RDOOperation* RDOPatternOperation::createActivity( RDORuntime* runtime, const std::string& _oprName )
 {
-	RDOActivityOperation* oper = new RDOActivityOperation( runtime, this, traceable(), _oprName );
+	RDOOperation* oper = new RDOOperation( runtime, this, traceable(), _oprName );
 	runtime->addRuntimeOperation( oper );
 	return oper;
 }
 
-RDOActivityOperation* RDOPatternOperation::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName)
+RDOOperation* RDOPatternOperation::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName)
 {
-	RDOActivityOperation* oper = new RDOActivityOperation( runtime, this, traceable(), condition, _oprName );
+	RDOOperation* oper = new RDOOperation( runtime, this, traceable(), condition, _oprName );
 	runtime->addRuntimeOperation( oper );
 	return oper;
 }
@@ -107,16 +110,16 @@ RDOPatternKeyboard::RDOPatternKeyboard( RDORuntime* rTime, bool _trace ):
 {
 }
 
-RDOActivityKeyboard* RDOPatternKeyboard::createActivity( RDORuntime* runtime, const std::string& _oprName )
+RDOKeyboard* RDOPatternKeyboard::createActivity( RDORuntime* runtime, const std::string& _oprName )
 {
-	RDOActivityKeyboard* oper = new RDOActivityKeyboard( runtime, this, traceable(), _oprName );
+	RDOKeyboard* oper = new RDOKeyboard( runtime, this, traceable(), _oprName );
 	runtime->addRuntimeOperation( oper );
 	return oper;
 }
 
-RDOActivityKeyboard* RDOPatternKeyboard::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName )
+RDOKeyboard* RDOPatternKeyboard::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName )
 {
-	RDOActivityKeyboard* oper = new RDOActivityKeyboard( runtime, this, traceable(), condition, _oprName );
+	RDOKeyboard* oper = new RDOKeyboard( runtime, this, traceable(), condition, _oprName );
 	runtime->addRuntimeOperation( oper );
 	return oper;
 }

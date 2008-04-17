@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "rdotrace.h"
 #include "searchtrace.h"
-#include "ruletrace.h"
-#include "ietrace.h"
-#include "operationtrace.h"
+#include "rdo_ie.h"
+#include "rdo_rule.h"
+#include "rdo_operation.h"
 #include "rdo_runtime.h"
 
 #ifdef _DEBUG
@@ -56,9 +56,9 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
 {
 	if ( !canTrace() ) return;
 
-	RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-	RDOActivityTrace *actTr = (RDOActivityTrace *)node->activity;
-	RDORuleTrace *ruleTr = (RDORuleTrace *)actTr->rule();
+	RDOSimulatorTrace* simTr  = (RDOSimulatorTrace*)sim;
+	RDOActivityTrace*  actTr  = (RDOActivityTrace*)node->activity;
+	RDORule*           ruleTr = (RDORule*)actTr->rule();
 
 	getOStream() << node->number
 	             << " " << actTr->traceId()
@@ -88,9 +88,9 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 
 	RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->root->dp);
 	if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
-		RDOActivityTrace*  actTr  = static_cast<RDOActivityTrace*>(node->currAct);
-		RDORuleTrace*      ruleTr = static_cast<RDORuleTrace*>(actTr->rule());
-		RDOSimulatorTrace* sim    = static_cast<RDOSimulatorTrace*>(node->sim);
+		RDOActivityTrace*  actTr = static_cast<RDOActivityTrace*>(node->currAct);
+		RDORule*           rule  = static_cast<RDORule*>(actTr->rule());
+		RDOSimulatorTrace* sim   = static_cast<RDOSimulatorTrace*>(node->sim);
 
 		getOStream().precision(4);
 		getOStream() << "ST" << sign
@@ -99,14 +99,14 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 		             << " " << ((sign != 'D') ? doubleToString(node->costPath) : doubleToString(node->newCostPath) )
 		             << " " << ((sign != 'D') ? doubleToString(node->costRest) : doubleToString(node->newCostRest) )
 		             << " " << actTr->traceId()
-		             << " " << ruleTr->tracePatternId()
+		             << " " << rule->tracePatternId()
 		             << " " << ((sign != 'D') ? doubleToString(node->costRule) : doubleToString(node->newCostRule) )
-		             << " " << ruleTr->traceResourcesListNumbers( sim )
+		             << " " << rule->traceResourcesListNumbers( sim )
 		             << std::endl << getEOL();
 
 		RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->root->dp);
 		if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
-			getOStream() << ruleTr->traceResourcesList( 'S', sim ) << getEOL();
+			getOStream() << rule->traceResourcesList( 'S', sim ) << getEOL();
 		}
 	}
 }
@@ -166,7 +166,7 @@ std::string RDOTrace::traceResourcesList( char prefix, RDOSimulatorTrace* sim, c
 	return res;
 }
 
-void RDOTrace::writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim)
+void RDOTrace::writeIrregularEvent(RDOIrregEvent *ie, RDOSimulatorTrace *sim)
 {
 	if ( !canTrace() ) return;
 
@@ -187,7 +187,7 @@ void RDOTrace::writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim)
 #endif
 }
 
-void RDOTrace::writeRule( RDORuleTrace* rule, RDOSimulatorTrace* sim )
+void RDOTrace::writeRule( RDORule* rule, RDOSimulatorTrace* sim )
 {
 	if ( !canTrace() ) return;
 
@@ -204,7 +204,7 @@ void RDOTrace::writeRule( RDORuleTrace* rule, RDOSimulatorTrace* sim )
 	getOStream() << rule->traceResourcesList( '\0', sim ) << getEOL();
 }
 
-void RDOTrace::writeAfterOperationBegin( RDOOperationTrace* op, RDOSimulatorTrace* sim )
+void RDOTrace::writeAfterOperationBegin( RDOOperation* op, RDOSimulatorTrace* sim )
 {
 	if ( !canTrace() ) return;
 
@@ -219,7 +219,7 @@ void RDOTrace::writeAfterOperationBegin( RDOOperationTrace* op, RDOSimulatorTrac
 	getOStream() << op->traceResourcesList( '\0', sim ) << getEOL();
 }
 
-void RDOTrace::writeAfterOperationEnd( RDOOperationTrace* op, RDOSimulatorTrace* sim )
+void RDOTrace::writeAfterOperationEnd( RDOOperation* op, RDOSimulatorTrace* sim )
 {
 	if ( !canTrace() ) return;
 

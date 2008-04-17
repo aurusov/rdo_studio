@@ -8,19 +8,18 @@ namespace rdoRuntime {
 
 class RDOCalc;
 class RDORuntime;
-class RDOActivityRule;
-class RDOActivityIrregEvent;
-class RDOActivityKeyboard;
-
+class RDOIrregEvent;
+class RDORule;
+class RDOKeyboard;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPattern
 // ----------------------------------------------------------------------------
 class RDOPattern: public RDORuntimeParent, public RDOTraceableObject
 {
-friend class RDOActivityRule;
-friend class RDOActivityIrregEvent;
-friend class RDOActivityOperation;
+friend class RDOIrregEvent;
+friend class RDORule;
+friend class RDOOperation;
 
 public:
 	virtual ~RDOPattern() {}
@@ -74,7 +73,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPatternIrregEvent: public RDOPattern
 {
-friend class RDOActivityIrregEvent;
+friend class RDOIrregEvent;
 
 public:
 	RDOPatternIrregEvent( RDORuntime* rTime, bool trace );
@@ -96,7 +95,7 @@ public:
 
 	double getNextTimeInterval( RDORuntime* runtime );
 
-	RDOActivityIrregEvent* createActivity( RDORuntime* runtime, const std::string& oprName );
+	RDOIrregEvent* createActivity( RDORuntime* runtime, const std::string& oprName );
 
 private:
 	RDOCalc*                                  m_timeCalc;
@@ -110,7 +109,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPatternRule: public RDOPattern
 {
-friend class RDOActivityRule;
+friend class RDORule;
 
 public:
 	RDOPatternRule( RDORuntime* rTime, bool trace );
@@ -134,8 +133,8 @@ public:
 		runCalcs( m_erase, runtime );
 	}
 
-	RDOActivityRule* createActivity( RDORuntime* runtime, const std::string& _oprName );
-	RDOActivityRule* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
+	RDORule* createActivity( RDORuntime* runtime, const std::string& _oprName );
+	RDORule* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 
 private:
 	std::vector< RDOCalc* >                   m_choiceFrom;
@@ -149,7 +148,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPatternOperation: public RDOPattern
 {
-friend class RDOActivityOperation;
+friend class RDOOperation;
 
 public:
 	RDOPatternOperation( RDORuntime* rTime, bool trace );
@@ -190,8 +189,8 @@ public:
 
 	double getNextTimeInterval( RDORuntime* runtime );
 
-	RDOActivityOperation* createActivity( RDORuntime* runtime, const std::string& _oprName );
-	RDOActivityOperation* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
+	RDOOperation* createActivity( RDORuntime* runtime, const std::string& _oprName );
+	RDOOperation* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 
 private:
 	RDOCalc*                                  m_timeCalc;
@@ -214,8 +213,8 @@ class RDOPatternKeyboard: public RDOPatternOperation
 public:
 	RDOPatternKeyboard( RDORuntime* rTime, bool trace );
 
-	RDOActivityKeyboard* createActivity( RDORuntime* runtime, const std::string& _oprName );
-	RDOActivityKeyboard* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
+	RDOKeyboard* createActivity( RDORuntime* runtime, const std::string& _oprName );
+	RDOKeyboard* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 };
 
 } // namespace rdoRuntime
