@@ -14,7 +14,7 @@ namespace rdoRuntime {
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess( const std::string& _name, RDOSimulator* sim ):
-	RDOBaseLogic<RDOPROCBlock>( static_cast<RDORuntime*>(sim) ),
+	RDOBaseLogic( sim ),
 	name( _name ),
 	parent( NULL )
 {
@@ -33,15 +33,15 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 {
 	Iterator it = std::find( begin(), end(), transact->block );
 	if ( it != end() ) {
-		RDOPROCBlock* block = *it;
+		RDOPROCBlock* block = static_cast<RDOPROCBlock*>(*it);
 		std::list< RDOPROCTransact* >::iterator it_res = std::find( block->transacts.begin(), block->transacts.end(), transact );
 		if ( it_res != block->transacts.end() ) {
 			block->transacts.erase( it_res );
 		}
 		it++;
 		if ( it != end() ) {
-			transact->block = *it;
-			(*it)->transacts.push_back( transact );
+			transact->block = static_cast<RDOPROCBlock*>(*it);
+			static_cast<RDOPROCBlock*>(*it)->transacts.push_back( transact );
 		} else {
 			// run-time error
 		}
@@ -86,7 +86,7 @@ RDOPROCBlock::RDOPROCBlock( RDOPROCProcess* _process ):
 	RDOBaseOperation( _process ),
 	process( _process )
 {
-	process->append( *this );
+	process->append( this );
 }
 
 // ----------------------------------------------------------------------------

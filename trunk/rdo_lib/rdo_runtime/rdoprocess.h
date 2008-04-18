@@ -29,7 +29,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCTransact;
 
-class RDOPROCProcess: public RDOBaseLogic<RDOPROCBlock>
+class RDOPROCProcess: public RDOBaseLogic
 {
 friend class RDOPROCBlock;
 

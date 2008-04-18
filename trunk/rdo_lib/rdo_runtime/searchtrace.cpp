@@ -117,7 +117,7 @@ void TreeRootTrace::createRootTreeNode( RDOSimulator* sim )
 TreeRoot* RDODPTSearchTrace::createTreeRoot( RDOSimulator* sim )
 {
 	TreeRootTrace* root = new TreeRootTrace( sim, this );
-	root->sizeof_dpt = sizeof(TreeRootTrace) + sim->sizeof_sim;
+	root->sizeof_dpt = sizeof(TreeRootTrace) + sim->getSizeofSim();
 	return root;
 }
 

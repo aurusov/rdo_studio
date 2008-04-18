@@ -1,8 +1,8 @@
-#ifndef SIMTRACE_H
-#define SIMTRACE_H
+#ifndef RDO_SIMTRACE_H
+#define RDO_SIMTRACE_H
 
+#include "rdo_simulator.h"
 #include "rdotrace.h"
-#include "rdo.h"
 
 namespace rdoParse {
 class RDODPTSome;
@@ -25,38 +25,35 @@ friend class RDOOperation;
 friend class RDOActivityTrace;
 friend class rdoParse::RDODPTSome;
 
-private:
-	double traceStartTime;
-	double traceEndTime;
+public:
+	virtual void rdoInit();
 
-	int maxResourcesId;
+	RDOTrace* getTracer() const            { return m_tracer;                }
+	bool      canTrace() const             { return getTracer()->canTrace(); }
 
-	std::list< int > freeResourcesIds;
-	typedef std::map<int, int> MAPII;
-	MAPII resourcesIdsRefs;
-	std::list< int > freeOperationsIds;
+	double getTraceStartTime() const       { return traceStartTime;          }
+	void setTraceStartTime( double value ) { traceStartTime = value;         }
 
-	int getFreeResourceId( int id = -1 );
-	void eraseFreeResourceId( int id );
-	int getFreeOperationId(); 
-	void freeOperationId(int id);
+	double getTraceEndTime() const         { return traceEndTime;            }
+	void setTraceEndTime( double value )   { traceEndTime = value;           }
 
-	int ieCounter;
-	int activityCounter;
-	int dptCounter;
+	virtual void onNewTimeNow() {
+		if ( timeForTrace() ) {
+			getTracer()->startWriting();
+		} else {
+			getTracer()->stopWriting();
+		}
+	}
 
-	void addTemplateDecisionPoint(RDODPTSearchTrace* dp);
-	void addTemplateIrregularEvent( RDOIrregEvent* ev   );
-	void addTemplateRule          ( RDORule*       rule );
-	void addTemplateOperation     ( RDOOperation*  op   );
-
-	unsigned int memory_current;
-	unsigned int memory_max;
-
-	bool timeForTrace() const {
-		if ( getTraceStartTime() != -1 && getTraceStartTime() > getCurrentTime() ) return false;
-		if ( getTraceEndTime() != -1 && getTraceEndTime() < getCurrentTime() ) return false;
-		return true;
+	void memory_insert( unsigned int mem ) {
+		memory_current += mem;
+		if ( memory_current > memory_max ) memory_max = memory_current;
+	}
+	void memory_remove( unsigned int mem ) {
+		memory_current -= mem;
+	}
+	unsigned int memory_get() const {
+		return memory_max;
 	}
 
 protected:
@@ -90,38 +87,41 @@ protected:
 	void onResourceErase( RDOResource* res );
 	virtual std::list< RDOResource* > getResourcesBeforeSim() const = 0;
 
-public:
-	RDOTrace* getTracer() const { return m_tracer; }
-	virtual void rdoInit();
+private:
+	double traceStartTime;
+	double traceEndTime;
 
-	bool canTrace() const                  { return getTracer()->canTrace(); }
+	int maxResourcesId;
 
-	double getTraceStartTime() const       { return traceStartTime;          }
-	void setTraceStartTime( double value ) { traceStartTime = value;         }
+	std::list< int > freeResourcesIds;
+	typedef std::map<int, int> MAPII;
+	MAPII resourcesIdsRefs;
+	std::list< int > freeOperationsIds;
 
-	double getTraceEndTime() const         { return traceEndTime;            }
-	void setTraceEndTime( double value )   { traceEndTime = value;           }
+	int getFreeResourceId( int id = -1 );
+	void eraseFreeResourceId( int id );
+	int getFreeOperationId(); 
+	void freeOperationId(int id);
 
-	virtual void onNewTimeNow() {
-		if ( timeForTrace() ) {
-			getTracer()->startWriting();
-		} else {
-			getTracer()->stopWriting();
-		}
-	}
+	int ieCounter;
+	int activityCounter;
+	int dptCounter;
 
-	void memory_insert( unsigned int mem ) {
-		memory_current += mem;
-		if ( memory_current > memory_max ) memory_max = memory_current;
-	}
-	void memory_remove( unsigned int mem ) {
-		memory_current -= mem;
-	}
-	unsigned int memory_get() const {
-		return memory_max;
+	void addTemplateDecisionPoint ( RDODPTSearchTrace *dp   );
+	void addTemplateIrregularEvent( RDOIrregEvent     *ev   );
+	void addTemplateRule          ( RDORule           *rule );
+	void addTemplateOperation     ( RDOOperation      *op   );
+
+	unsigned int memory_current;
+	unsigned int memory_max;
+
+	bool timeForTrace() const {
+		if ( getTraceStartTime() != -1 && getTraceStartTime() > getCurrentTime() ) return false;
+		if ( getTraceEndTime() != -1 && getTraceEndTime() < getCurrentTime() ) return false;
+		return true;
 	}
 };
 
 } // namespace rdoRuntime
 
-#endif // SIMTRACE_H
+#endif // RDO_SIMTRACE_H

@@ -127,6 +127,10 @@ SOURCE=.\rdo_keyboard.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_logic_opr.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_operation.cpp
 # End Source File
 # Begin Source File
@@ -144,6 +148,10 @@ SOURCE=.\rdo_rule.cpp
 # Begin Source File
 
 SOURCE=.\rdo_runtime.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_simulator.cpp
 # End Source File
 # Begin Source File
 
@@ -292,6 +300,10 @@ SOURCE=.\rdo_keyboard.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_logic_opr.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_operation.h
 # End Source File
 # Begin Source File
@@ -313,6 +325,10 @@ SOURCE=.\rdo_rule.h
 # Begin Source File
 
 SOURCE=.\rdo_runtime.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_simulator.h
 # End Source File
 # Begin Source File
 

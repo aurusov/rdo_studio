@@ -57,7 +57,7 @@ TreeNode::~TreeNode()
 		delete (*i);
 		root->sizeof_dpt -= sizeof(TreeNode);
 	}
-	root->sizeof_dpt -= sim->sizeof_sim;
+	root->sizeof_dpt -= sim->getSizeofSim();
 	delete sim;
 }
 
@@ -68,7 +68,7 @@ int TreeNode::getActivityID() const
 
 void TreeNode::ExpandChildren()
 {
-	root->sizeof_dpt -= (sim->sizeof_sim + sizeof(TreeNode)) * children.size();
+	root->sizeof_dpt -= (sim->getSizeofSim() + sizeof(TreeNode)) * children.size();
 	DeleteAllObjects( children );
 
 	// Вывели статистику
@@ -96,7 +96,7 @@ void TreeNode::ExpandChildren()
 			TRACE( "состояние, node = %d\n", number );
 		}
 #endif
-		root->sizeof_dpt += childSim->sizeof_sim;
+		root->sizeof_dpt += childSim->getSizeofSim();
 		currAct->rule()->onBeforeChoiceFrom( childSim );
 		if ( !currAct->rule()->choiceFrom( static_cast<RDORuntime*>(childSim) ) ) {
 			// Не прошел Choice from, удаляем симулятор и переходим к другой активности.
@@ -105,7 +105,7 @@ void TreeNode::ExpandChildren()
 			// вызываться calc, на котором весит уведомление по вызову для другого
 			// объекта, который будут меняться параметры ресурсов
 			// Пока таких сложных взаимодействий в системе нет.
-			root->sizeof_dpt -= childSim->sizeof_sim;
+			root->sizeof_dpt -= childSim->getSizeofSim();
 			delete childSim;
 			childSim = NULL;
 		} else {
@@ -141,7 +141,7 @@ void TreeNode::ExpandChildren()
 					// Граф перестраивать не надо.
 					// Вывели трассировку раскрытой вершины.
 					onSearchNodeInfoDeleted( root->theRealSimulator );
-					root->sizeof_dpt -= childSim->sizeof_sim;
+					root->sizeof_dpt -= childSim->getSizeofSim();
 					delete childSim;
 					// Переходим к следующей активности
 					continue;
@@ -188,7 +188,7 @@ void TreeNode::ExpandChildren()
 					loser->onSearchNodeInfoReplaced( root->theRealSimulator );
 					// Добавляем в список потомков текущей
 					children.push_back( loser );
-					root->sizeof_dpt -= childSim->sizeof_sim;
+					root->sizeof_dpt -= childSim->getSizeofSim();
 					delete childSim;
 #ifdef _DEBUG
 					if ( number == 294 ) {

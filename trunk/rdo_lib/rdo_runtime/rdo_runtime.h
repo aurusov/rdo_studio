@@ -72,78 +72,6 @@ friend class RDOPMDWatchValue;
 friend class RDOPMDWatchPar;	  
 friend class RDOPMDWatchState;
 
-private:
-	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
-	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
-	std::list< RDOCalc* > initCalcs;
-
-	class BreakPoint: public RDORuntimeObject {
-	public:
-		std::string name;
-		RDOCalc*    calc;
-		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, RDOCalc* _calc ):
-			RDORuntimeObject( _parent ),
-			name( _name ),
-			calc( _calc )
-		{
-		}
-	};
-	std::list< BreakPoint* > breakPointsCalcs;
-	BreakPoint*              lastActiveBreakPoint;
-
-	std::vector< RDOValue >     funcStack;
-	std::vector< RDOResource* > groupFuncStack;
-	int currFuncTop;
-	int savedFuncTop;
-
-	virtual void onInit();
-	virtual void onDestroy();
-
-	virtual std::list< RDOResource* > getResourcesBeforeSim() const {
-		std::list< RDOResource* > list;
-		std::list< RDOResource* >::const_iterator it = allResourcesBeforeSim.begin();
-		while ( it != allResourcesBeforeSim.end() ) {
-			list.push_back( *it );
-			it++;
-		}
-		return list;
-	}
-
-	std::vector< RDOPMDPokaz* > allPokaz;
-
-	RDOActivity* m_currActivity;
-
-	std::vector<RDOValue> patternParameters;
-
-	time_t physic_time;
-	virtual void preProcess()
-	{
-		RDOSimulatorTrace::preProcess();
-		physic_time = time(NULL);
-	}
-
-	RDOResults* results;
-	RDOResults* results_info;
-
-	RDOCalc* terminateIfCalc;
-	std::vector< RDOValue > allConstants;
-
-	virtual RDOSimulator* clone();
-	virtual bool operator== ( RDOSimulator& other );
-
-	void writeExitCode();
-
-	bool key_found;
-	virtual bool isKeyDown();
-
-	typedef std::multimap< UINT, RDORuntimeObject* > Connected;
-	Connected connected;
-
-	virtual void onResetPokaz();
-	virtual void onCheckPokaz();
-	virtual void onAfterCheckPokaz();
-
 public:
 	// Работа с уведомлениями
 	enum Messages {
@@ -253,7 +181,6 @@ public:
 	{ 
 		return patternParameters.at(parNumb);
 	}
-	std::string writeActivitiesStructure( int& counter );
 
 	std::vector< std::string >  activeAreasMouseClicked;
 	std::list< unsigned int >   keysDown;
@@ -268,6 +195,78 @@ public:
 	virtual void onUserBreak()       { whyStop = rdoSimulator::EC_UserBreak;    }
 
 	virtual void postProcess();
+
+private:
+	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
+	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
+	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
+	std::list< RDOCalc* > initCalcs;
+
+	class BreakPoint: public RDORuntimeObject {
+	public:
+		std::string name;
+		RDOCalc*    calc;
+		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, RDOCalc* _calc ):
+			RDORuntimeObject( _parent ),
+			name( _name ),
+			calc( _calc )
+		{
+		}
+	};
+	std::list< BreakPoint* > breakPointsCalcs;
+	BreakPoint*              lastActiveBreakPoint;
+
+	std::vector< RDOValue >     funcStack;
+	std::vector< RDOResource* > groupFuncStack;
+	int currFuncTop;
+	int savedFuncTop;
+
+	virtual void onInit();
+	virtual void onDestroy();
+
+	virtual std::list< RDOResource* > getResourcesBeforeSim() const {
+		std::list< RDOResource* > list;
+		std::list< RDOResource* >::const_iterator it = allResourcesBeforeSim.begin();
+		while ( it != allResourcesBeforeSim.end() ) {
+			list.push_back( *it );
+			it++;
+		}
+		return list;
+	}
+
+	std::vector< RDOPMDPokaz* > allPokaz;
+
+	RDOActivity* m_currActivity;
+
+	std::vector<RDOValue> patternParameters;
+
+	time_t physic_time;
+	virtual void preProcess()
+	{
+		RDOSimulatorTrace::preProcess();
+		physic_time = time(NULL);
+	}
+
+	RDOResults* results;
+	RDOResults* results_info;
+
+	RDOCalc* terminateIfCalc;
+	std::vector< RDOValue > allConstants;
+
+	virtual RDOSimulator* clone();
+	virtual bool operator== ( RDOSimulator& other );
+
+	void writeExitCode();
+
+	bool key_found;
+	virtual bool isKeyDown();
+
+	typedef std::multimap< UINT, RDORuntimeObject* > Connected;
+	Connected connected;
+
+	virtual void onResetPokaz();
+	virtual void onCheckPokaz();
+	virtual void onAfterCheckPokaz();
 };
 
 } // namespace rdoRuntime

@@ -266,7 +266,7 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
-	RDOLogicContainer::CIterator it = sim->m_logics.begin();
+	RDOBaseLogic::CIterator it = sim->m_logics.begin();
 	while ( it != sim->m_logics.end() ) {
 		RDODPTSearchTrace* dp = dynamic_cast<RDODPTSearchTrace*>(*it);
 		if ( dp ) {

@@ -281,8 +281,7 @@ void RDORuntime::addRuntimeIE( RDOIrregEvent* ie )
 
 void RDORuntime::addRuntimeProcess( RDOPROCProcess* process )
 {
-	m_logics.m_childLogic.append( *process );
-//	addTemplateBaseOperation( process );
+	addBaseLogic( process );
 }
 
 void RDORuntime::addRuntimeDPT( RDODPTSearchRuntime* dpt )
@@ -442,7 +441,7 @@ RDOValue RDORuntime::getFuncArgument( int numberOfParam )
 RDOSimulator* RDORuntime::clone()
 {
 	RDORuntime* other = new RDORuntime();
-	other->sizeof_sim = sizeof( RDORuntime );
+	other->m_sizeof_sim = sizeof( RDORuntime );
 	int size = allResourcesByID.size();
 	for ( int i = 0; i < size; i++ ) {
 		if ( allResourcesByID.at(i) == NULL ) {
@@ -450,7 +449,7 @@ RDOSimulator* RDORuntime::clone()
 		} else {
 			RDOResource* res = new RDOResource( *allResourcesByID.at(i) );
 			res->setTraceID( res->getTraceID(), res->getTraceID() + 1 );
-			other->sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
+			other->m_sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
 			other->allResourcesByID.push_back( res );
 			other->allResourcesByTime.push_back( res );
 		}
@@ -489,44 +488,6 @@ void RDORuntime::onCheckPokaz()
 void RDORuntime::onAfterCheckPokaz()
 {
 	std::for_each( allPokaz.begin(), allPokaz.end(), std::mem_fun(&RDOPokazTrace::tracePokaz) );
-}
-
-std::string RDORuntime::writeActivitiesStructure( int& counter )
-{
-	std::stringstream stream;
-	RDOLogicContainer::CIterator it = m_logics.begin();
-	while ( it != m_logics.end() ) {
-		RDORule* rule = dynamic_cast<RDORule*>(*it);
-		if ( rule ) {
-			stream << counter++ << " ";
-			rule->writeModelStructure( stream );
-		} else {
-			RDOOperation* opr = dynamic_cast<RDOOperation*>(*it);
-			if ( opr ) {
-				stream << counter++ << " ";
-				opr->writeModelStructure( stream );
-			}
-		}
-		it++;
-	}
-#ifdef RDOSIM_COMPATIBLE
-#else
-	stream << std::endl;
-#endif
-
-	int _counter = 1;
-	it = m_logics.begin();
-	while ( it != m_logics.end() ) {
-		RDOIrregEvent* ie = dynamic_cast<RDOIrregEvent*>(*it);
-		if ( ie ) {
-			stream << _counter++ << " ";
-			counter++;
-			ie->writeModelStructure( stream );
-		}
-		it++;
-	}
-
-	return stream.str();
 }
 
 void RDORuntime::error( const std::string& message, const RDOCalc* calc )
