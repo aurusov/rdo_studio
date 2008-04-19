@@ -292,17 +292,15 @@ RDOFRMText::RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, R
 	align( rdoSimulator::RDOTextElement::left ),
 	value( NULL ),
 	txt( "" ),
-	isTextString( true ),
-	enu( NULL )
+	isTextString( true )
 {
 	color_reparent( this );
 }
 
-void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDOCalc* _value, RDORTPEnum* _enu )
+void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDOCalc* _value )
 {
 	align = _align;
 	value = _value;
-	enu   = _enu;
 
 	isTextString = false;
 }

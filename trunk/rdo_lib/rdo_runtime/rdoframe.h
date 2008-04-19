@@ -336,14 +336,11 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMText
 // ----------------------------------------------------------------------------
-class RDORTPEnum;
-
 class RDOFRMText: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 private:
 	rdoSimulator::RDOTextElement::RDOTextAlign align;
 	RDOCalc* value;
-	RDORTPEnum*          enu;
 	std::string          txt;
 	bool                 isTextString;
 
@@ -352,7 +349,7 @@ protected:
 
 public:
 	RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-	void setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDOCalc* _value, RDORTPEnum* _enu );
+	void setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDOCalc* _value );
 	void setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, std::string* _txt );
 };
 

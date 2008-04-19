@@ -594,7 +594,7 @@ frm_text_common:	text '[' frm_position_xy ',' frm_position_xy ',' frm_position_w
 					};
 
 frm_text:	frm_text_common frm_text_align fun_arithm ']' {
-				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, ((RDOFUNArithm *)$3)->createCalc(), NULL /*//qq((RDOFUNArithm *)$3)->enu*/ );
+				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, ((RDOFUNArithm *)$3)->createCalc() );
 			}
 			| frm_text_common frm_text_align QUOTED_IDENTIF ']' {
 				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, (std::string *)$3);
