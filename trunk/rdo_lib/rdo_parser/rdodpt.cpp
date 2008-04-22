@@ -305,7 +305,7 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 {
 	parser()->checkDPTName( src_info() );
 	// TODO: а почему some делает инкремент тут, а search в другом мечте ?
-	parser()->runtime()->dptCounter++;
+	parser()->runtime()->getFreeDPTId();
 	parser()->insertDPTSome( this );
 }
 

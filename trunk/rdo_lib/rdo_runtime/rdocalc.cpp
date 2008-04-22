@@ -242,8 +242,8 @@ RDOValue& RDOFunAlgorithmicDiapCalc::doCalc( RDORuntime* runtime )
 RDOValue& RDOFunCalcExist::doCalc( RDORuntime* runtime )
 {
 	bool res = false;
-	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
-	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && !res; it++ ) {
+	RDORuntime::ResCIterator end = runtime->res_end();
+	for ( RDORuntime::ResCIterator it = runtime->res_begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
@@ -257,8 +257,8 @@ RDOValue& RDOFunCalcExist::doCalc( RDORuntime* runtime )
 RDOValue& RDOFunCalcNotExist::doCalc( RDORuntime* runtime )
 {
 	bool res = true;
-	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
-	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && res; it++ ) {
+	RDORuntime::ResCIterator end = runtime->res_end();
+	for ( RDORuntime::ResCIterator it = runtime->res_begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
@@ -273,8 +273,8 @@ RDOValue& RDOFunCalcForAll::doCalc( RDORuntime* runtime )
 {
 	bool first_found = false;
 	bool res = true;
-	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
-	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && res; it++ ) {
+	RDORuntime::ResCIterator end = runtime->res_end();
+	for ( RDORuntime::ResCIterator it = runtime->res_begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
@@ -292,8 +292,8 @@ RDOValue& RDOFunCalcForAll::doCalc( RDORuntime* runtime )
 RDOValue& RDOFunCalcNotForAll::doCalc( RDORuntime* runtime )
 {
 	bool res = false;
-	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
-	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && !res; it++ ) {
+	RDORuntime::ResCIterator end = runtime->res_end();
+	for ( RDORuntime::ResCIterator it = runtime->res_begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( !(*it)->checkType(m_nResType) ) continue;
 		runtime->pushGroupFunc( *it );
@@ -310,8 +310,8 @@ RDOValue& RDOFunCalcNotForAll::doCalc( RDORuntime* runtime )
 void RDOFunCalcSelect::prepare( RDORuntime* sim ) const
 {
 	res_list.clear();
-	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
-	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end; it++ ) {
+	RDORuntime::ResCIterator end = sim->res_end();
+	for ( RDORuntime::ResCIterator it = sim->res_begin(); it != end; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( !(*it)->checkType(m_nResType) ) continue;
 		sim->pushGroupFunc( *it );
@@ -773,8 +773,8 @@ RDOValue& RDOSelectResourceByTypeCalc::doCalc( RDORuntime* runtime )
 	RDOValue maxVal   = -DBL_MAX;
 	RDOValue minVal   = DBL_MAX;
 	int res_minmax_id = -1;
-	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
-	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end; it++ ) {
+	RDORuntime::ResCIterator end = runtime->res_end();
+	for ( RDORuntime::ResCIterator it = runtime->res_begin(); it != end; it++ ) {
 
 		if ( *it && (*it)->checkType(resType) ) {
 
@@ -938,17 +938,18 @@ std::vector< int > RDOSelectResourceDirectCommonCalc::getPossibleNumbers( RDORun
 
 std::vector< int > RDOSelectResourceByTypeCommonCalc::getPossibleNumbers( RDORuntime* sim ) const
 {
-	std::vector< int > res;	
-	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
-	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end; it++ ) {
-		if(*it == NULL)
+	std::vector< int > res;
+	RDORuntime::ResCIterator end = sim->res_end();
+	for ( RDORuntime::ResCIterator it = sim->res_begin(); it != end; it++ )
+	{
+		if ( *it == NULL )
+		{
 			continue;
-
+		}
 		if ( !(*it)->checkType(resType) )
 		{
 			continue;
 		}
-
 		res.push_back((*it)->getTraceID());
 	}
 

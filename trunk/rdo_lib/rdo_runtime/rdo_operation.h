@@ -13,7 +13,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation
 // ----------------------------------------------------------------------------
-class RDOOperation: public RDOBaseOperation, public RDOPatternTrace, public RDOActivityPattern<RDOPatternOperation>
+class RDOOperation: public RDOActivityPattern<RDOPatternOperation>
 {
 friend class RDOTrace;
 friend class RDOSimulatorTrace;
@@ -44,7 +44,6 @@ private:
 	RDOCalc* additionalCondition;
 
 	double getNextTimeInterval(RDOSimulator *sim);
-	const std::string& tracePatternId() const    { return m_pattern->traceId(); }
 
 	std::string traceOperId() { return toString(m_operId); }
 

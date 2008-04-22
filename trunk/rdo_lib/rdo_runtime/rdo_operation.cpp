@@ -15,28 +15,24 @@ namespace rdoRuntime
 // ---------- RDOOperation
 // ----------------------------------------------------------------------------
 RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name ):
-	RDOBaseOperation( runtime ),
-	RDOPatternTrace( trace ),
-	RDOActivityPattern<RDOPatternOperation>( pattern, name ),
+	RDOActivityPattern<RDOPatternOperation>( runtime, pattern, trace, name ),
 	m_clones( NULL ),
 	additionalCondition( NULL )
 {
 	setTrace( trace );
 	haveAdditionalCondition = false;
-	setTraceID( runtime->activityCounter++ );
+	setTraceID( runtime->getFreeActivityId() );
 	m_clones.reparent( this );
 }
 
 RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, RDOCalc* condition, const std::string& name ):
-	RDOBaseOperation( runtime ),
-	RDOPatternTrace( trace ),
-	RDOActivityPattern<RDOPatternOperation>( pattern, name ),
+	RDOActivityPattern<RDOPatternOperation>( runtime, pattern, trace, name ),
 	m_clones( NULL ),
 	additionalCondition( condition )
 {
 	setTrace( trace );
 	haveAdditionalCondition = true;
-	setTraceID( runtime->activityCounter++ );
+	setTraceID( runtime->getFreeActivityId() );
 	m_clones.reparent( this );
 }
 

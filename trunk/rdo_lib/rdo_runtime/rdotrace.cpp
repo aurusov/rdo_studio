@@ -66,12 +66,14 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
 	             << " " << ruleTr->traceResourcesListNumbers( simTr )
 	             << std::endl << getEOL();
 }
+
 void RDOTrace::writeString(std::string str)
 {
 	if ( !canTrace() ) return;
 	
 	getOStream() << str << std::endl << getEOL();
 }
+
 void RDOTrace::writeSearchOpenNode( int nodeCount, int parentCount, double pathCost, double restCost )
 {
 	if ( !canTrace() ) return;
@@ -266,7 +268,7 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
-	RDOBaseLogic::CIterator it = sim->m_logics.begin();
+	RDOLogic::CIterator it = sim->m_logics.begin();
 	while ( it != sim->m_logics.end() ) {
 		RDODPTSearchTrace* dp = dynamic_cast<RDODPTSearchTrace*>(*it);
 		if ( dp ) {

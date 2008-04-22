@@ -1,6 +1,8 @@
 #ifndef RDO_RUNTIME_H
 #define RDO_RUNTIME_H
 
+#pragma warning(disable : 4786)  
+
 #include "rdotrace.h"
 #include "simtrace.h"
 #include "rdo_resource.h"
@@ -60,19 +62,10 @@ class RDOCalcCreateNumberedResource;
 
 class RDORuntime: public RDOSimulatorTrace
 {
-friend class RDOFunCalcSelect;
-friend class RDOFunCalcExist;
-friend class RDOFunCalcNotExist;
-friend class RDOFunCalcForAll;
-friend class RDOFunCalcNotForAll;
-friend class RDOSelectResourceByTypeCalc;
-friend class RDOSelectResourceByTypeCommonCalc;
-friend class RDOPMDWatchQuant;
-friend class RDOPMDWatchValue;
-friend class RDOPMDWatchPar;	  
-friend class RDOPMDWatchState;
-
 public:
+	RDORuntime();
+	virtual ~RDORuntime();
+
 	// –абота с уведомлени€ми
 	enum Messages {
 		RO_BEFOREDELETE = 0
@@ -113,13 +106,13 @@ public:
 	RDOActivity* getCurrentActivity() const                   { return m_currActivity;      }
 	void         setCurrentActivity( RDOActivity* activity )  { m_currActivity = activity;  }
 
-	void addRuntimeIE       ( RDOIrregEvent *ie   );
-	void addRuntimeRule     ( RDORule       *rule );
-	void addRuntimeOperation( RDOOperation  *opr  );
-	void addRuntimeProcess( RDOPROCProcess* process );
-	void addRuntimeDPT( RDODPTSearchRuntime* dpt );
-	void addRuntimePokaz( RDOPMDPokaz* pok );
-	void addRuntimeFrame( RDOFRMFrame* frame );
+	void addRuntimeIE       ( RDOIrregEvent       *ie      );
+	void addRuntimeRule     ( RDORule             *rule    );
+	void addRuntimeOperation( RDOOperation        *opr     );
+	void addRuntimeProcess  ( RDOPROCProcess      *process );
+	void addRuntimeDPT      ( RDODPTSearchRuntime *dpt     );
+	void addRuntimePokaz    ( RDOPMDPokaz         *pok     );
+	void addRuntimeFrame    ( RDOFRMFrame         *frame   );
 	RDOFRMFrame* lastFrame() const;
 
 	const std::vector< RDOPMDPokaz* >& getPokaz() const { return allPokaz; }
@@ -147,8 +140,6 @@ public:
 	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
 	RDOResource* createNewResource( unsigned int type, bool trace );
 	void insertNewResource( RDOResource* res );
-	RDORuntime();
-	~RDORuntime();
 
 	RDOValue getFuncArgument(int numberOfParam); 
 	RDOResource* getGroupFuncRes()         { return groupFuncStack.back();                         }
@@ -196,13 +187,26 @@ public:
 
 	virtual void postProcess();
 
+	typedef std::list< RDOResource* > ResList;
+	typedef ResList::const_iterator ResCIterator;
+
+	ResCIterator res_begin() const
+	{
+		return allResourcesByTime.begin();
+	}
+	ResCIterator res_end() const
+	{
+		return allResourcesByTime.end();
+	}
+
 private:
 	std::vector< RDOResource* > allResourcesByID;      // ¬се ресурсы симул€тора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // ќни же, только упор€дочены по времени создани€ и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // ќни же, только упор€дочены по типу перед запуском
-	std::list< RDOCalc* > initCalcs;
+	std::list  < RDOCalc*     > initCalcs;
 
-	class BreakPoint: public RDORuntimeObject {
+	class BreakPoint: public RDORuntimeObject
+	{
 	public:
 		std::string name;
 		RDOCalc*    calc;
@@ -224,9 +228,10 @@ private:
 	virtual void onInit();
 	virtual void onDestroy();
 
-	virtual std::list< RDOResource* > getResourcesBeforeSim() const {
-		std::list< RDOResource* > list;
-		std::list< RDOResource* >::const_iterator it = allResourcesBeforeSim.begin();
+	virtual ResList getResourcesBeforeSim() const
+	{
+		ResList list;
+		ResCIterator it = allResourcesBeforeSim.begin();
 		while ( it != allResourcesBeforeSim.end() ) {
 			list.push_back( *it );
 			it++;

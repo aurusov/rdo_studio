@@ -14,7 +14,7 @@ namespace rdoRuntime {
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess( const std::string& _name, RDOSimulator* sim ):
-	RDOBaseLogic( sim ),
+	RDOLogic( sim ),
 	name( _name ),
 	parent( NULL )
 {

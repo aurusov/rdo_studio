@@ -47,13 +47,14 @@ private:
 	virtual bool NeedCompareTops()                  { return compTops; }
 
 public:
-	RDODPTSearchRuntime( RDORuntime* sim, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops ):
-		RDODPTSearchTrace( sim ),
+	RDODPTSearchRuntime( RDORuntime* runtime, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops ):
+		RDODPTSearchTrace( runtime ),
 		condition( _condition ),
 		termCondition( _termCondition ),
 		evaluateBy( _evaluateBy ),
 		compTops( _compTops )
 	{
+		setTraceID( runtime->getFreeDPTId() );
 	}
 };
 

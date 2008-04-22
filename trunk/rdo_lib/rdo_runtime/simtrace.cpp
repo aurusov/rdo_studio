@@ -23,53 +23,6 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 	}
 }
 
-void RDOSimulatorTrace::addTemplateDecisionPoint( RDODPTSearchTrace* dp )
-{
-	dp->setTraceID( dptCounter++ );
-	RDOSimulator::addTemplateBaseOperation( dp );
-}
-
-void RDOSimulatorTrace::addTemplateOperation( RDOOperation* op )
-{
-	RDOSimulator::addTemplateBaseOperation( op );
-}
-
-void RDOSimulatorTrace::addTemplateIrregularEvent( RDOIrregEvent* ev )
-{
-	ev->setTraceID( ieCounter++ );
-	RDOSimulator::addTemplateBaseOperation( ev );
-}
-
-void RDOSimulatorTrace::addTemplateRule( RDORule* rule )
-{
-	RDOSimulator::addTemplateBaseOperation( rule );
-}
-
-void RDOSimulatorTrace::addTemplateBaseOperation( RDOBaseOperation* bop )
-{
-	RDORule* rule = dynamic_cast<RDORule*>(bop);
-	if ( rule ) {
-		addTemplateRule( rule );
-	} else {
-		RDOIrregEvent* ie = dynamic_cast<RDOIrregEvent*>(bop);
-		if ( ie ) {
-			addTemplateIrregularEvent( ie );
-		} else {
-			RDOOperation* op = dynamic_cast<RDOOperation*>(bop);
-			if ( op ) {
-				addTemplateOperation( op );
-			} else {
-				RDODPTSearchTrace* dp = dynamic_cast<RDODPTSearchTrace*>(bop);
-				if ( dp ) {
-					addTemplateDecisionPoint( dp );
-				} else {
-					RDOSimulator::addTemplateBaseOperation( bop );
-				}
-			}
-		}
-	}
-}
-
 void RDOSimulatorTrace::rdoInit()
 {
 	maxResourcesId = 0;

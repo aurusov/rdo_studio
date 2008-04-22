@@ -11,10 +11,9 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDORule
 // ----------------------------------------------------------------------------
-class RDORule: public RDOBaseOperation, public RDOPatternTrace, public RDOActivityPattern<RDOPatternRule>, public RDORuntimeContainer
+class RDORule: public RDOActivityPattern<RDOPatternRule>, public RDORuntimeContainer
 {
 friend class RDOTrace;
-friend class RDOSimulator;
 friend class RDODPTSearch;
 friend class TreeNode;
 
@@ -36,11 +35,6 @@ private:
 	void onBeforeRule      ( RDOSimulator* sim   )    {                            }
 	void convertRule       ( RDORuntime* runtime );
 	void onAfterRule       ( RDOSimulator* sim, bool inSearch = false );
-
-	const std::string& tracePatternId() const
-	{
-		return m_pattern->traceId();
-	}
 };
 
 } // namespace rdoRuntime

@@ -2,6 +2,7 @@
 #define RDO_SIMULATOR_H
 
 #include "rdo.h"
+#include "rdobase.h"
 #include "rdo_logic_opr.h"
 
 namespace rdoRuntime {
@@ -27,7 +28,7 @@ public:
 		RDOOperations::destroy( this );
 	}
 
-	void addBaseLogic( RDOBaseOperation* logic )
+	void appendLogic( RDOBaseOperation* logic )
 	{
 		m_logics.append( logic );
 	}
@@ -52,7 +53,7 @@ public:
 	}
 
 protected:
-	virtual void addTemplateBaseOperation( RDOBaseOperation* op )
+	void appendBaseOperation( RDOBaseOperation* op )
 	{
 		RDOOperations::getInstance( this )->append( op );
 	}
@@ -67,7 +68,7 @@ protected:
 	unsigned int m_sizeof_sim;
 
 private:
-	RDOBaseLogic m_logics;
+	RDOLogic m_logics;
 
 	RDOBaseOperation* opr_must_continue;
 	virtual bool doOperation();

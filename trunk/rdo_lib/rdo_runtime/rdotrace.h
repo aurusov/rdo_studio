@@ -139,16 +139,6 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPatternTrace
-// ----------------------------------------------------------------------------
-class RDOPatternTrace: public RDOTraceableObject
-{
-friend class RDOSimulatorTrace;
-protected:
-	RDOPatternTrace( bool trace ): RDOTraceableObject( trace ) {};
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOPokazTrace
 // ----------------------------------------------------------------------------
 class RDOPokazTrace: public RDOPokaz, public RDOTraceableObject, public RDORuntimeContainer

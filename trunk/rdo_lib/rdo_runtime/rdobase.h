@@ -11,42 +11,60 @@ class RDOBaseOperation;
 
 class RDOSimulatorBase: public RDORuntimeParent
 {
-private:
-	double startTime;
-	double currentTime;
-	double nextTime;
+public:
+	// Публичные методы управления симулятором
+	virtual void rdoInit();
+	virtual bool rdoNext();
+	virtual void rdoPostProcess();
 
-	RunTimeMode  mode;
+	void setStartTime( double value )       { m_startTime = value;  }
+	double getCurrentTime() const           { return m_currentTime; }
 
-	double       speed;
-	unsigned int speed_range_max;
-	unsigned int next_delay_count;
-	unsigned int next_delay_current;
+	RunTimeMode getMode() const             { return m_mode;        }
+	void setMode( RunTimeMode _mode );
 
-	double       showRate;
-	double       msec_wait;
-	unsigned int msec_prev;
+	double getSpeed() const                 { return m_speed;       }
+	void setSpeed( double persent );
 
-	unsigned int cnt_events;
-	unsigned int cnt_choice_from;
-	unsigned int cnt_calc_arithm;
-	unsigned int cnt_calc_logic;
+	double getShowRate() const              { return m_showRate;    }
+	void setShowRate( double value );
+
+	void addTimePoint   ( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL );
+	void removeTimePoint( const RDOBaseOperation* opr );
+
+	void inc_cnt_events()      { m_cnt_events++;      }
+	void inc_cnt_choice_from() { m_cnt_choice_from++; }
+	void inc_cnt_calc_arithm() { m_cnt_calc_arithm++; }
+	void inc_cnt_calc_logic()  { m_cnt_calc_logic++;  }
+
+	unsigned int get_cnt_events()      { return m_cnt_events;      }
+	unsigned int get_cnt_choice_from() { return m_cnt_choice_from; }
+	unsigned int get_cnt_calc_arithm() { return m_cnt_calc_arithm; }
+	unsigned int get_cnt_calc_logic()  { return m_cnt_calc_logic;  }
+
+	static unsigned int getMSec( const SYSTEMTIME& systime )
+	{
+		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
+	}
 
 protected:
+	RDOSimulatorBase();
+	virtual ~RDOSimulatorBase() {}
+
 	struct BOPlanned {
-		RDOBaseOperation* opr;
-		void*             param;
-		BOPlanned()                                             : opr( NULL )    , param( NULL )       {}
-		BOPlanned( const BOPlanned& copy )                      : opr( copy.opr ), param( copy.param ) {}
-		BOPlanned( RDOBaseOperation* _opr, void* _param = NULL ): opr( _opr )    , param( _param )     {}
+		RDOBaseOperation* m_opr;
+		void*             m_param;
+		BOPlanned()                                           : m_opr( NULL )      , m_param( NULL )         {}
+		BOPlanned( const BOPlanned& copy )                    : m_opr( copy.m_opr ), m_param( copy.m_param ) {}
+		BOPlanned( RDOBaseOperation* opr, void* param = NULL ): m_opr( opr )       , m_param( param )        {}
 	};
 	typedef std::list< BOPlanned >              BOPlannedItem;
 	typedef std::map< double, BOPlannedItem* >  BOPlannedMap;
 	BOPlannedMap                                m_timePoints;
 
-	bool check_operation;
+	bool m_check_operation;
 
-	void setCurrentTime( double value ) { currentTime = value; }
+	void setCurrentTime( double value ) { m_currentTime = value; }
 
 	// Выполнение любых операций (паттерны, DPT и процессы)
 	// Если вернулось значение true, то необходимо вызвать doOperation
@@ -84,44 +102,26 @@ protected:
 	// Вызывается при увеличении модельного времени
 	virtual void onNewTimeNow() {};
 
-public:
-	// Публичные методы управления симулятором
-	virtual void rdoInit();
-	virtual void rdoDestroy();
-	virtual bool rdoNext();
-	virtual void rdoPostProcess();
+private:
+	double m_startTime;
+	double m_currentTime;
+	double m_nextTime;
 
-	void setStartTime( double value )       { startTime = value;  }
-	double getCurrentTime() const           { return currentTime; }
+	RunTimeMode  m_mode;
 
-	RunTimeMode getMode() const             { return mode;        }
-	void setMode( RunTimeMode _mode );
+	double       m_speed;
+	unsigned int m_speed_range_max;
+	unsigned int m_next_delay_count;
+	unsigned int m_next_delay_current;
 
-	double getSpeed() const                 { return speed;       }
-	void setSpeed( double persent );
+	double       m_showRate;
+	double       m_msec_wait;
+	unsigned int m_msec_prev;
 
-	double getShowRate() const              { return showRate;    }
-	void setShowRate( double value );
-
-	void addTimePoint   ( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL );
-	void removeTimePoint( const RDOBaseOperation* opr );
-
-	RDOSimulatorBase();
-	virtual ~RDOSimulatorBase() {}
-
-	void inc_cnt_events()      { cnt_events++;      }
-	void inc_cnt_choice_from() { cnt_choice_from++; }
-	void inc_cnt_calc_arithm() { cnt_calc_arithm++; }
-	void inc_cnt_calc_logic()  { cnt_calc_logic++;  }
-
-	unsigned int get_cnt_events()      { return cnt_events;      }
-	unsigned int get_cnt_choice_from() { return cnt_choice_from; }
-	unsigned int get_cnt_calc_arithm() { return cnt_calc_arithm; }
-	unsigned int get_cnt_calc_logic()  { return cnt_calc_logic;  }
-
-	static unsigned int getMSec( const SYSTEMTIME& systime ) {
-		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
-	}
+	unsigned int m_cnt_events;
+	unsigned int m_cnt_choice_from;
+	unsigned int m_cnt_calc_arithm;
+	unsigned int m_cnt_calc_logic;
 };
 
 } // namespace rdoRuntime;

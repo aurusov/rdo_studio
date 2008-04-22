@@ -17,6 +17,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#pragma warning(disable : 4786)  
+
 namespace rdoRuntime
 {
 
@@ -40,7 +42,7 @@ RDORuntime::RDORuntime():
 RDORuntime::~RDORuntime()
 {
 	connected.clear();
-	rdoDestroy();
+	onDestroy();
 	DeleteAllObjects( allPokaz );
 }
 
@@ -264,29 +266,29 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimeOperation( RDOOperation* opr )
+void RDORuntime::addRuntimeIE( RDOIrregEvent* ie )
 {
-	addTemplateBaseOperation( opr );
+	appendBaseOperation( ie );
 }
 
 void RDORuntime::addRuntimeRule( RDORule* rule )
 {
-	addTemplateBaseOperation( rule );
+	appendBaseOperation( rule );
 }
 
-void RDORuntime::addRuntimeIE( RDOIrregEvent* ie )
+void RDORuntime::addRuntimeOperation( RDOOperation* opr )
 {
-	addTemplateBaseOperation( ie );
-}
-
-void RDORuntime::addRuntimeProcess( RDOPROCProcess* process )
-{
-	addBaseLogic( process );
+	appendBaseOperation( opr );
 }
 
 void RDORuntime::addRuntimeDPT( RDODPTSearchRuntime* dpt )
 {
-	addTemplateBaseOperation( dpt );
+	appendBaseOperation( dpt );
+}
+
+void RDORuntime::addRuntimeProcess( RDOPROCProcess* process )
+{
+	appendLogic( process );
 }
 
 void RDORuntime::addRuntimePokaz( RDOPMDPokaz* pok )

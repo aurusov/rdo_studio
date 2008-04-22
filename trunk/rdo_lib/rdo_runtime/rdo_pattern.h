@@ -17,13 +17,7 @@ class RDOKeyboard;
 // ----------------------------------------------------------------------------
 class RDOPattern: public RDORuntimeParent, public RDOTraceableObject
 {
-friend class RDOIrregEvent;
-friend class RDORule;
-friend class RDOOperation;
-
 public:
-	virtual ~RDOPattern() {}
-
 	void addPreSelectRelRes( RDOCalc* calc )
 	{
 		std::vector< RDOCalc* >::iterator it = m_preSelectRelRes.begin();
@@ -40,6 +34,7 @@ public:
 
 protected:
 	RDOPattern( RDORuntime* runtime, bool trace );
+	virtual ~RDOPattern() {}
 
 	std::vector< RDOCalc* > m_preSelectRelRes;
 	void preSelectRelRes( RDORuntime* runtime )

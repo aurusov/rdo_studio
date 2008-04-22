@@ -30,21 +30,21 @@ bool RDOSimulator::doOperation()
 	} else {
 		bool found_planed = false;
 		// Отработаем все запланированные на данный момент события
-		if ( !check_operation && !m_timePoints.empty() ) {
-			check_operation = true;
+		if ( !m_check_operation && !m_timePoints.empty() ) {
+			m_check_operation = true;
 			double newTime = m_timePoints.begin()->first;
 			if ( getCurrentTime() >= newTime ) {
 				BOPlannedItem* list = m_timePoints.begin()->second;
 				if ( list && !list->empty() ) {
 #ifdef RDOSIM_COMPATIBLE
 					// Дисциплина списка текущих событий LIFO
-					RDOBaseOperation* opr   = list->back().opr;
-					void*             param = list->back().param;
+					RDOBaseOperation* opr   = list->back().m_opr;
+					void*             param = list->back().m_param;
 					list->pop_back();
 #else
 					// Дисциплина списка текущих событий FIFO
-					RDOBaseOperation* opr   = list->front().opr;
-					void*             param = list->front().param;
+					RDOBaseOperation* opr   = list->front().m_opr;
+					void*             param = list->front().m_param;
 					list->pop_front();
 #endif
 					if ( list->empty() ) {
@@ -66,7 +66,7 @@ bool RDOSimulator::doOperation()
 			{
 				res = m_logics.onDoOperation(this) != RDOBaseOperation::BOR_cant_run;
 			}
-			if ( !res ) check_operation = false;
+			if ( !res ) m_check_operation = false;
 		}
 	}
 	onCheckPokaz();
@@ -88,10 +88,10 @@ RDOSimulator* RDOSimulator::createCopy()
 }
 
 
-std::string writeActivitiesStructureRecurse( RDOBaseLogic* logic, int& counter )
+std::string writeActivitiesStructureRecurse( RDOLogic* logic, int& counter )
 {
 	std::stringstream stream;
-	RDOBaseLogic::CIterator it = logic->begin();
+	RDOLogic::CIterator it = logic->begin();
 	while ( it != logic->end() ) {
 		RDORule* rule = dynamic_cast<RDORule*>(*it);
 		if ( rule ) {
@@ -125,7 +125,7 @@ std::string writeActivitiesStructureRecurse( RDOBaseLogic* logic, int& counter )
 
 	it = logic->begin();
 	while ( it != logic->end() ) {
-		RDOBaseLogic* logic = dynamic_cast<RDOBaseLogic*>(*it);
+		RDOLogic* logic = dynamic_cast<RDOLogic*>(*it);
 		if ( logic )
 		{
 			stream << writeActivitiesStructureRecurse( logic, counter );

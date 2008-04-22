@@ -1,14 +1,14 @@
 #ifndef RDO_LOGIC_OPR_H
 #define RDO_LOGIC_OPR_H
 
-#include "rdo.h"
+#include "rdo_logic.h"
 
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOperations
 // ----------------------------------------------------------------------------
-class RDOOperations: public RDOBaseLogic
+class RDOOperations: public RDOLogic
 {
 public:
 	static RDOOperations* getInstance( RDOSimulator* sim );

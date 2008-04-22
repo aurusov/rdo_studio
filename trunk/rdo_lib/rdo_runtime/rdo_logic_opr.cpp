@@ -17,9 +17,9 @@ namespace rdoRuntime
 RDOOperations* RDOOperations::s_instance = NULL;
 
 RDOOperations::RDOOperations( RDOSimulator* sim ):
-	RDOBaseLogic( sim )
+	RDOLogic( sim )
 {
-	sim->addBaseLogic( this );
+	sim->appendLogic( this );
 }
 
 RDOOperations::~RDOOperations()

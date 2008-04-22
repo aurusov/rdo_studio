@@ -13,12 +13,11 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOIrregEvent
 // ----------------------------------------------------------------------------
-RDOIrregEvent::RDOIrregEvent( RDORuntimeParent* parent, RDOPatternIrregEvent* pattern, bool trace, const std::string& name ):
-	RDOBaseOperation( parent ),
-	RDOPatternTrace( trace ),
-	RDOActivityPattern<RDOPatternIrregEvent>( pattern, name )
+RDOIrregEvent::RDOIrregEvent( RDORuntime* runtime, RDOPatternIrregEvent* pattern, bool trace, const std::string& name ):
+	RDOActivityPattern<RDOPatternIrregEvent>( runtime, pattern, trace, name )
 {
 	setTrace( trace );
+	setTraceID( runtime->getFreeIrregEventId() );
 }
 
 void RDOIrregEvent::onStart( RDOSimulator* sim )

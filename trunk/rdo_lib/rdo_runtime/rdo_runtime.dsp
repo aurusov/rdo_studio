@@ -127,6 +127,14 @@ SOURCE=.\rdo_keyboard.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_logic.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_logic_dptsome.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_logic_opr.cpp
 # End Source File
 # Begin Source File
@@ -297,6 +305,14 @@ SOURCE=.\rdo_ie.h
 # Begin Source File
 
 SOURCE=.\rdo_keyboard.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_logic.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_logic_dptsome.h
 # End Source File
 # Begin Source File
 

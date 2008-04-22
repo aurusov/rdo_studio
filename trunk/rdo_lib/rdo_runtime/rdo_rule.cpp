@@ -14,24 +14,20 @@ namespace rdoRuntime {
 // ---------- RDORule
 // ----------------------------------------------------------------------------
 RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name ):
-	RDOBaseOperation( runtime ),
-	RDOPatternTrace( trace ),
-	RDOActivityPattern<RDOPatternRule>( pattern, name ),
+	RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name ),
 	RDORuntimeContainer( runtime ),
 	additionalCondition( NULL )
 {
-	setTraceID( getRuntime()->activityCounter++ );
+	setTraceID( getRuntime()->getFreeActivityId() );
 	haveAdditionalCondition = false;
 }
 
 RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, RDOCalc* condition, const std::string& name ):
-	RDOBaseOperation( runtime ),
-	RDOPatternTrace( trace ),
-	RDOActivityPattern<RDOPatternRule>( pattern, name ),
+	RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name ),
 	RDORuntimeContainer( runtime ),
 	additionalCondition( condition )
 {
-	setTraceID( getRuntime()->activityCounter++ );
+	setTraceID( getRuntime()->getFreeActivityId() );
 	haveAdditionalCondition = true;
 }
 

@@ -1,15 +1,15 @@
 #ifndef RDO_ACTIVITY_H
 #define RDO_ACTIVITY_H
 
-#include "rdo_pattern.h"
-#include "rdotrace.h"
+#include "rdo.h"
+#include "rdo_resource.h"
 
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOActivity
 // ----------------------------------------------------------------------------
-class RDOActivity
+class RDOActivity: public RDOBaseOperation, public RDOTraceableObject
 {
 public:
 	void addParamCalc( RDOCalc* calc )
@@ -32,7 +32,9 @@ public:
 	}
 
 protected:
-	RDOActivity( const std::string& name ):
+	RDOActivity( RDORuntimeParent* parent, bool trace, const std::string& name ):
+		RDOBaseOperation( parent ),
+		RDOTraceableObject( trace ),
 		m_oprName( name )
 	{
 	}
@@ -67,12 +69,16 @@ class RDOActivityPattern: public RDOActivity
 public:
 	void writeModelStructure( std::stringstream& stream )
 	{
-		stream << m_oprName << " " << m_pattern->traceId() << std::endl;
+		stream << m_oprName << " " << tracePatternId() << std::endl;
+	}
+	const std::string& tracePatternId() const
+	{
+		return m_pattern->traceId();
 	}
 
 protected:
-	RDOActivityPattern( T* pattern, const std::string& name ):
-		RDOActivity( name ),
+	RDOActivityPattern( RDORuntimeParent* parent, T* pattern, bool trace, const std::string& name ):
+		RDOActivity( parent, trace, name ),
 		m_pattern( pattern )
 	{
 	}

@@ -11,20 +11,10 @@ class RDODPTSome;
 namespace rdoRuntime {
 
 class RDOBaseOperation;
+class RDODPTSearchTrace;
 
 class RDOSimulatorTrace: public RDOSimulator
 {
-friend class RDODPTSearchTrace;
-friend class TreeRootTrace;
-friend class TreeNodeTrace;
-friend class RDOTrace;
-friend class RDOResource;
-friend class RDOIrregEvent;
-friend class RDORule;
-friend class RDOOperation;
-friend class RDOActivityTrace;
-friend class rdoParse::RDODPTSome;
-
 public:
 	virtual void rdoInit();
 
@@ -56,15 +46,36 @@ public:
 		return memory_max;
 	}
 
+	int getFreeResourceId( int id = -1 );
+	void incrementResourceIdReference(int id);
+
+	void freeOperationId(int id);
+	int getFreeOperationId(); 
+	void onResourceErase( RDOResource* res );
+
+	int getFreeIrregEventId()
+	{
+		return m_ieCounter++;
+	}
+	int getFreeActivityId()
+	{
+		return m_activityCounter++;
+	}
+
+	int getFreeDPTId()
+	{
+		return m_dptCounter++;
+	}
+
 protected:
 	RDOSimulatorTrace():
 		RDOSimulator(),
 		m_tracer( NULL ),
 		traceStartTime( -1 ),
 		traceEndTime( -1 ),
-		dptCounter( 1 ),
-		activityCounter( 1 ),
-		ieCounter( 1 ),
+		m_ieCounter( 1 ),
+		m_activityCounter( 1 ),
+		m_dptCounter( 1 ),
 		maxResourcesId( 0 ),
 		maxOperationId( 1 ),
 		memory_current( 0 ),
@@ -76,15 +87,11 @@ protected:
 	RDOTrace* m_tracer;
 
 	int maxOperationId;
-	void addTemplateBaseOperation( RDOBaseOperation* op );
-
-	void incrementResourceIdReference(int id);
 
 	virtual void preProcess();
 	virtual void postProcess();
 	void checkRSSDefinedResources();
 
-	void onResourceErase( RDOResource* res );
 	virtual std::list< RDOResource* > getResourcesBeforeSim() const = 0;
 
 private:
@@ -98,14 +105,11 @@ private:
 	MAPII resourcesIdsRefs;
 	std::list< int > freeOperationsIds;
 
-	int getFreeResourceId( int id = -1 );
 	void eraseFreeResourceId( int id );
-	int getFreeOperationId(); 
-	void freeOperationId(int id);
 
-	int ieCounter;
-	int activityCounter;
-	int dptCounter;
+	int m_ieCounter;
+	int m_activityCounter;
+	int m_dptCounter;
 
 	void addTemplateDecisionPoint ( RDODPTSearchTrace *dp   );
 	void addTemplateIrregularEvent( RDOIrregEvent     *ev   );

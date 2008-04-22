@@ -445,7 +445,6 @@ void RDOPATPattern::end()
 RDOPatternIrregEvent::RDOPatternIrregEvent( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool trace ):
 	RDOPATPattern( _parser, _name_src_info )
 { 
-//	parser()->runtime()->addRuntimeIE((RDOPatternIrregEvent *)(patRuntime = new RDOPatternIrregEvent(parser()->runtime(), _trace))); 
 	patRuntime = new rdoRuntime::RDOPatternIrregEvent( parser()->runtime(), trace ); 
 	patRuntime->setTraceID( parser()->getPAT_id() );
 }
@@ -614,7 +613,6 @@ std::string RDOPatternRule::getWarningMessage_EmptyConvertor( const RDOPATParamS
 RDOPatternOperation::RDOPatternOperation( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool trace ):
 	RDOPATPattern( _parser, _name_src_info )
 { 
-//	parser()->runtime()->addRuntimeOperation((RDOPatternOperation *)(patRuntime = new RDOPatternOperation(parser()->runtime(), _trace)));
 	patRuntime = new rdoRuntime::RDOPatternOperation( parser()->runtime(), trace );
 	patRuntime->setTraceID( parser()->getPAT_id() );
 }

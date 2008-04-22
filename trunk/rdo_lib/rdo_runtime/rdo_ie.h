@@ -11,14 +11,12 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOIrregEvent
 // ----------------------------------------------------------------------------
-class RDOIrregEvent: public RDOBaseOperation, public RDOPatternTrace, public RDOActivityPattern<RDOPatternIrregEvent>
+class RDOIrregEvent: public RDOActivityPattern<RDOPatternIrregEvent>
 {
 friend class RDOTrace;
-friend class RDOSimulator;
-friend class RDOSimulatorTrace;
 
 public:
-	RDOIrregEvent( RDORuntimeParent* parent, RDOPatternIrregEvent* pattern, bool trace, const std::string& name );
+	RDOIrregEvent( RDORuntime* runtime, RDOPatternIrregEvent* pattern, bool trace, const std::string& name );
 
 private:
 	double  m_time;
@@ -32,10 +30,6 @@ private:
 	void convertEvent( RDOSimulator* sim );
 
 	double getNextTimeInterval( RDOSimulator* sim );
-	virtual const std::string& tracePatternId() const
-	{
-		return m_pattern->traceId();
-	}
 	virtual void onBeforeIrregularEvent( RDOSimulator* sim );
 	virtual void onAfterIrregularEvent( RDOSimulator* sim );
 };
