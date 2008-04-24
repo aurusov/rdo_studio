@@ -43,8 +43,8 @@ RDOThreadRepository::RDOThreadRepository():
 	files[ rdoModelObjects::PMV ].extention = ".pmv";
 	files[ rdoModelObjects::TRC ].extention = ".trc";
 
-	files[ rdoModelObjects::OPR ].deleteifempty = true;
-	files[ rdoModelObjects::DPT ].deleteifempty = true;
+//	files[ rdoModelObjects::OPR ].deleteifempty = true;
+//	files[ rdoModelObjects::DPT ].deleteifempty = true;
 
 	resetModelNames();
 
@@ -170,10 +170,10 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		files[ rdoModelObjects::PAT ].described = !fileInfo.model_name.empty();
 		files[ rdoModelObjects::RTP ].described = !fileInfo.model_name.empty();
 		files[ rdoModelObjects::RSS ].described = !fileInfo.resource_file.empty();
-		files[ rdoModelObjects::OPR ].described = !fileInfo.oprIev_file.empty();// && rdo::isFileExists( getFullFileName( rdoModelObjects::OPR ) );
+		files[ rdoModelObjects::OPR ].described = !fileInfo.oprIev_file.empty(); // && rdo::isFileExists( getFullFileName( rdoModelObjects::OPR ) );
 		files[ rdoModelObjects::FRM ].described = !fileInfo.frame_file.empty();
 		files[ rdoModelObjects::FUN ].described = !fileInfo.model_name.empty();
-		files[ rdoModelObjects::DPT ].described = !files[ rdoModelObjects::OPR ].described;
+		files[ rdoModelObjects::DPT ].described = !fileInfo.model_name.empty(); // !files[ rdoModelObjects::OPR ].described;
 		files[ rdoModelObjects::SMR ].described = true;
 		files[ rdoModelObjects::PMD ].described = !fileInfo.statistic_file.empty();
 		files[ rdoModelObjects::PMV ].described = !fileInfo.results_file.empty();
@@ -185,7 +185,7 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		files[ rdoModelObjects::OPR ].mustexist = files[ rdoModelObjects::OPR ].described;
 		files[ rdoModelObjects::FRM ].mustexist = !fileInfo.frame_file.empty();
 		files[ rdoModelObjects::FUN ].mustexist = false;
-		files[ rdoModelObjects::DPT ].mustexist = files[ rdoModelObjects::DPT ].described;
+		files[ rdoModelObjects::DPT ].mustexist = false; // files[ rdoModelObjects::DPT ].described;
 		files[ rdoModelObjects::SMR ].mustexist = true;
 		files[ rdoModelObjects::PMD ].mustexist = !fileInfo.statistic_file.empty();
 		files[ rdoModelObjects::PMV ].mustexist = false;

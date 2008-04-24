@@ -9,6 +9,7 @@
 #include <rdo_operation.h>
 #include <rdo_keyboard.h>
 #include <rdoprocess.h>
+#include <rdo_logic_dptsome.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -304,8 +305,7 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	RDOParserSrcInfo( _src_info )
 {
 	parser()->checkDPTName( src_info() );
-	// TODO: а почему some делает инкремент тут, а search в другом мечте ?
-	parser()->runtime()->getFreeDPTId();
+	new rdoRuntime::RDODPTSome( parser()->runtime() );
 	parser()->insertDPTSome( this );
 }
 

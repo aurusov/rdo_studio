@@ -109,10 +109,10 @@ public:
 	void addRuntimeIE       ( RDOIrregEvent       *ie      );
 	void addRuntimeRule     ( RDORule             *rule    );
 	void addRuntimeOperation( RDOOperation        *opr     );
-	void addRuntimeProcess  ( RDOPROCProcess      *process );
 	void addRuntimeDPT      ( RDODPTSearchRuntime *dpt     );
 	void addRuntimePokaz    ( RDOPMDPokaz         *pok     );
 	void addRuntimeFrame    ( RDOFRMFrame         *frame   );
+	
 	RDOFRMFrame* lastFrame() const;
 
 	const std::vector< RDOPMDPokaz* >& getPokaz() const { return allPokaz; }

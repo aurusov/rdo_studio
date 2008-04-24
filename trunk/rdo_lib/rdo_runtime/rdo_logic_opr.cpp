@@ -19,7 +19,6 @@ RDOOperations* RDOOperations::s_instance = NULL;
 RDOOperations::RDOOperations( RDOSimulator* sim ):
 	RDOLogic( sim )
 {
-	sim->appendLogic( this );
 }
 
 RDOOperations::~RDOOperations()

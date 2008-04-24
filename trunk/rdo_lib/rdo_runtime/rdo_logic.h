@@ -120,14 +120,7 @@ private:
 class RDOLogic: public RDOOprContainer< RDOBaseOperation >
 {
 public:
-	RDOLogic( RDORuntimeParent* parent ):
-		RDOOprContainer< RDOBaseOperation >( parent ),
-		m_childLogic( NULL ),
-		m_condition( NULL ),
-		m_lastCondition( false )
-	{
-		m_childLogic.reparent( this );
-	}
+	RDOLogic( RDOSimulator* sim );
 	virtual ~RDOLogic() {}
 
 	RDOOprContainer< RDOBaseOperation > m_childLogic;

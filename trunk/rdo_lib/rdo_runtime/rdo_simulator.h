@@ -18,6 +18,7 @@ public:
 	RDOSimulator():
 		RDOSimulatorBase(),
 		m_logics( NULL ),
+		m_lastLogic( NULL ),
 		opr_must_continue( NULL ),
 		m_sizeof_sim( 0 )
 	{
@@ -28,8 +29,9 @@ public:
 		RDOOperations::destroy( this );
 	}
 
-	void appendLogic( RDOBaseOperation* logic )
+	void appendLogic( RDOLogic* logic )
 	{
+		m_lastLogic = logic;
 		m_logics.append( logic );
 	}
 
@@ -55,7 +57,7 @@ public:
 protected:
 	void appendBaseOperation( RDOBaseOperation* op )
 	{
-		RDOOperations::getInstance( this )->append( op );
+		getLastLogic()->append( op );
 	}
 
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
@@ -68,7 +70,21 @@ protected:
 	unsigned int m_sizeof_sim;
 
 private:
-	RDOLogic m_logics;
+	RDOLogic  m_logics;
+	RDOLogic* m_lastLogic;
+
+	RDOLogic* getLastLogic()
+	{
+		if ( m_lastLogic )
+		{
+			return m_lastLogic;
+		}
+		else
+		{
+			m_lastLogic = RDOOperations::getInstance( this );
+			return m_lastLogic;
+		}
+	}
 
 	RDOBaseOperation* opr_must_continue;
 	virtual bool doOperation();

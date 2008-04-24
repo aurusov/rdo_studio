@@ -12,4 +12,18 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoRuntime {
 
+RDOLogic::RDOLogic( RDOSimulator* sim ):
+	RDOOprContainer< RDOBaseOperation >( sim ),
+	m_childLogic( NULL ),
+	m_condition( NULL ),
+	m_lastCondition( false )
+{
+	m_childLogic.reparent( this );
+
+	if ( sim )
+	{
+		sim->appendLogic( this );
+	}
+}
+
 } // namespace rdoRuntime

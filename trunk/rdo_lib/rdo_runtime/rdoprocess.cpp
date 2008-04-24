@@ -18,7 +18,6 @@ RDOPROCProcess::RDOPROCProcess( const std::string& _name, RDOSimulator* sim ):
 	name( _name ),
 	parent( NULL )
 {
-	static_cast<RDORuntime*>(sim)->addRuntimeProcess( this );
 }
 
 void RDOPROCProcess::insertChild( RDOPROCProcess* value )

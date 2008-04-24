@@ -17,7 +17,7 @@ namespace rdoRuntime
 RDODPTSome::RDODPTSome( RDOSimulator* sim ):
 	RDOLogic( sim )
 {
-	sim->appendLogic( this );
+	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }
 
 RDODPTSome::~RDODPTSome()
