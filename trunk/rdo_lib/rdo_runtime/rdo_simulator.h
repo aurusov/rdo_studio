@@ -26,7 +26,6 @@ public:
 	}
 	virtual ~RDOSimulator()
 	{
-		RDOOperations::destroy( this );
 	}
 
 	void appendLogic( RDOLogic* logic )
@@ -75,15 +74,7 @@ private:
 
 	RDOLogic* getLastLogic()
 	{
-		if ( m_lastLogic )
-		{
-			return m_lastLogic;
-		}
-		else
-		{
-			m_lastLogic = RDOOperations::getInstance( this );
-			return m_lastLogic;
-		}
+		return m_lastLogic;
 	}
 
 	RDOBaseOperation* opr_must_continue;

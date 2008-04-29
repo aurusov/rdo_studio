@@ -54,7 +54,6 @@ class RDOOperation;
 class RDOPROCProcess;
 class RDOPMDPokaz;
 class RDOPattern;
-class RDODPTSearchRuntime;
 class RDOCalcEraseRes;
 class RDOFRMFrame;
 class RDOActivity;
@@ -109,7 +108,6 @@ public:
 	void addRuntimeIE       ( RDOIrregEvent       *ie      );
 	void addRuntimeRule     ( RDORule             *rule    );
 	void addRuntimeOperation( RDOOperation        *opr     );
-	void addRuntimeDPT      ( RDODPTSearchRuntime *dpt     );
 	void addRuntimePokaz    ( RDOPMDPokaz         *pok     );
 	void addRuntimeFrame    ( RDOFRMFrame         *frame   );
 	

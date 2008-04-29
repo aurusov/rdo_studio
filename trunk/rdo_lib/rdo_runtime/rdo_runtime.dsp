@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /I "." /I "../rdo_parser" /I "../../rdo_common" /D "RDOSIM_COMPATIBLE" /D "_LIB" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /Fr /Yu"pch.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /I "." /I "../rdo_parser" /I "../../rdo_common" /D "_LIB" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /Fr /Yu"pch.h" /FD /GZ /c
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
@@ -128,6 +128,10 @@ SOURCE=.\rdo_keyboard.cpp
 # Begin Source File
 
 SOURCE=.\rdo_logic.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_logic_dptsearch.cpp
 # End Source File
 # Begin Source File
 
@@ -309,6 +313,10 @@ SOURCE=.\rdo_keyboard.h
 # Begin Source File
 
 SOURCE=.\rdo_logic.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_logic_dptsearch.h
 # End Source File
 # Begin Source File
 

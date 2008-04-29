@@ -281,11 +281,6 @@ void RDORuntime::addRuntimeOperation( RDOOperation* opr )
 	appendBaseOperation( opr );
 }
 
-void RDORuntime::addRuntimeDPT( RDODPTSearchRuntime* dpt )
-{
-	appendBaseOperation( dpt );
-}
-
 void RDORuntime::addRuntimePokaz( RDOPMDPokaz* pok )
 {
 	allPokaz.push_back( pok );

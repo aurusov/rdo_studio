@@ -4,6 +4,7 @@
 #pragma warning(disable : 4786)  
 
 #include "rdo.h"
+#include "rdocalc.h"
 
 namespace rdoRuntime {
 
@@ -132,7 +133,7 @@ public:
 
 	virtual void onStart( RDOSimulator* sim )
 	{
-		m_lastCondition = checkCondition( sim );
+		m_lastCondition = checkSelfCondition( sim );
 		if ( m_lastCondition )
 		{
 			start( sim );
@@ -145,7 +146,7 @@ public:
 	}
 	virtual bool onCheckCondition( RDOSimulator* sim )
 	{
-		bool condition = checkCondition( sim );
+		bool condition = checkSelfCondition( sim );
 		if ( condition != m_lastCondition )
 		{
 			m_lastCondition = condition;
@@ -215,7 +216,7 @@ private:
 	RDOCalc* m_condition;
 	bool     m_lastCondition;
 
-	bool checkCondition( RDOSimulator* sim )
+	bool checkSelfCondition( RDOSimulator* sim )
 	{
 		if ( m_condition )
 		{

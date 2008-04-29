@@ -55,8 +55,8 @@ void RDODPTSearchTrace::onSearchResultSuccess( RDOSimulator* sim, TreeRoot* tree
 		simTr->getTracer()->writeSearchResult( 'S', simTr, treeRoot );
 	}
 	calc_res_found_cnt++;
-	calc_mems.push_back( treeRoot->sizeof_dpt );
-	simTr->memory_insert( treeRoot->sizeof_dpt );
+	calc_mems.push_back( treeRoot->m_sizeof_dpt );
+	simTr->memory_insert( treeRoot->m_sizeof_dpt );
 }
 
 void RDODPTSearchTrace::onSearchResultNotFound(RDOSimulator *sim, TreeRoot *treeRoot)
@@ -69,13 +69,13 @@ void RDODPTSearchTrace::onSearchResultNotFound(RDOSimulator *sim, TreeRoot *tree
 
 void TreeNodeTrace::onSearchOpenNode( RDOSimulator* sim )
 {
-	RDODPTSearchTrace* dpTrace = (RDODPTSearchTrace *)root->dp;
+	RDODPTSearchTrace* dpTrace = (RDODPTSearchTrace *)m_root->m_dp;
 	if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
 		RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
-		simTr->getTracer()->writeSearchOpenNode( number,
-			(parent ? parent->number : 0 ),
-			costPath,
-			costRest );
+		simTr->getTracer()->writeSearchOpenNode( m_number,
+			(m_parent ? m_parent->m_number : 0 ),
+			m_costPath,
+			m_costRest );
 	}
 }
 
@@ -100,24 +100,24 @@ void TreeNodeTrace::onSearchNodeInfoNew( RDOSimulator* sim )
 
 TreeNode* TreeNodeTrace::createChildTreeNode()
 {
-	root->sizeof_dpt += sizeof( TreeNode );
-	return new TreeNodeTrace( childSim, this, root, currAct, costPath, root->getNewNodeNumber() );
+	m_root->m_sizeof_dpt += sizeof( TreeNode );
+	return new TreeNodeTrace( m_childSim, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber() );
 }
 
 void TreeRootTrace::createRootTreeNode( RDOSimulator* sim )
 {
-	rootNode = new TreeNodeTrace( sim, NULL, this, NULL, 0, getNewNodeNumber() );
-	rootNode->costRule = 0;
-	rootNode->costPath = 0;
-	rootNode->costRest = 0;
-	OPEN.push_back( rootNode );
-	sizeof_dpt += sizeof( TreeNodeTrace ) + sizeof( void* );
+	m_rootNode = new TreeNodeTrace( sim, NULL, this, NULL, 0, getNewNodeNumber() );
+	m_rootNode->m_costRule = 0;
+	m_rootNode->m_costPath = 0;
+	m_rootNode->m_costRest = 0;
+	m_OPEN.push_back( m_rootNode );
+	m_sizeof_dpt += sizeof( TreeNodeTrace ) + sizeof( void* );
 }
 
 TreeRoot* RDODPTSearchTrace::createTreeRoot( RDOSimulator* sim )
 {
 	TreeRootTrace* root = new TreeRootTrace( sim, this );
-	root->sizeof_dpt = sizeof(TreeRootTrace) + sim->getSizeofSim();
+	root->m_sizeof_dpt = sizeof(TreeRootTrace) + sim->getSizeofSim();
 	return root;
 }
 

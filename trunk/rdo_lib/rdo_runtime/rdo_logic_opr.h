@@ -11,14 +11,8 @@ namespace rdoRuntime {
 class RDOOperations: public RDOLogic
 {
 public:
-	static RDOOperations* getInstance( RDOSimulator* sim );
-	static void           destroy    ( RDOSimulator* sim );
-
-private:
 	RDOOperations( RDOSimulator* sim );
 	virtual ~RDOOperations();
-
-	static RDOOperations* s_instance;
 };
 
 } // namespace rdoRuntime

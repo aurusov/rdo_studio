@@ -2,6 +2,7 @@
 #define RDOTRACE_H
 
 #include "rdo.h"
+#include "rdo_logic_dptsearch.h"
 
 #include <fstream>
 
@@ -39,8 +40,8 @@ inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL)
 // ----------------------------------------------------------------------------
 class RDOTrace
 {
-friend RDOSimulatorTrace;
-friend RDOResource;
+friend class RDOSimulatorTrace;
+friend class RDOResource;
 
 public:
 	RDOTrace(): m_isNullTracer( true ), m_canWriteToStream( false ) {}

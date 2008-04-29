@@ -57,10 +57,10 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
 	if ( !canTrace() ) return;
 
 	RDOSimulatorTrace* simTr  = (RDOSimulatorTrace*)sim;
-	RDOActivityTrace*  actTr  = (RDOActivityTrace*)node->activity;
+	RDOActivityTrace*  actTr  = (RDOActivityTrace*)node->m_activity;
 	RDORule*           ruleTr = (RDORule*)actTr->rule();
 
-	getOStream() << node->number
+	getOStream() << node->m_number
 	             << " " << actTr->traceId()
 	             << " " << ruleTr->tracePatternId()
 	             << " " << ruleTr->traceResourcesListNumbers( simTr )
@@ -88,25 +88,25 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 {
 	if ( !canTrace() ) return;
 
-	RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->root->dp);
+	RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->m_root->m_dp);
 	if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
-		RDOActivityTrace*  actTr = static_cast<RDOActivityTrace*>(node->currAct);
+		RDOActivityTrace*  actTr = static_cast<RDOActivityTrace*>(node->m_currAct);
 		RDORule*           rule  = static_cast<RDORule*>(actTr->rule());
-		RDOSimulatorTrace* sim   = static_cast<RDOSimulatorTrace*>(node->sim);
+		RDOSimulatorTrace* sim   = static_cast<RDOSimulatorTrace*>(node->m_sim);
 
 		getOStream().precision(4);
 		getOStream() << "ST" << sign
-		             << " " << ((sign != 'D') ? node->number : node->root->getNodesCound())
-		             << " " << ((sign != 'D') ? node->parent->number : node->number)
-		             << " " << ((sign != 'D') ? doubleToString(node->costPath) : doubleToString(node->newCostPath) )
-		             << " " << ((sign != 'D') ? doubleToString(node->costRest) : doubleToString(node->newCostRest) )
+		             << " " << ((sign != 'D') ? node->m_number : node->m_root->getNodesCound())
+		             << " " << ((sign != 'D') ? node->m_parent->m_number : node->m_number)
+		             << " " << ((sign != 'D') ? doubleToString(node->m_costPath) : doubleToString(node->m_newCostPath) )
+		             << " " << ((sign != 'D') ? doubleToString(node->m_costRest) : doubleToString(node->m_newCostRest) )
 		             << " " << actTr->traceId()
 		             << " " << rule->tracePatternId()
-		             << " " << ((sign != 'D') ? doubleToString(node->costRule) : doubleToString(node->newCostRule) )
+		             << " " << ((sign != 'D') ? doubleToString(node->m_costRule) : doubleToString(node->m_newCostRule) )
 		             << " " << rule->traceResourcesListNumbers( sim )
 		             << std::endl << getEOL();
 
-		RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->root->dp);
+		RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->m_root->m_dp);
 		if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
 			getOStream() << rule->traceResourcesList( 'S', sim ) << getEOL();
 		}
@@ -120,33 +120,33 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 	SYSTEMTIME systime_current;
 	::GetSystemTime( &systime_current );
 	unsigned int msec_current = RDOSimulatorBase::getMSec( systime_current );
-	unsigned int msec_begin   = RDOSimulatorBase::getMSec( treeRoot->systime_begin );
+	unsigned int msec_begin   = RDOSimulatorBase::getMSec( treeRoot->m_systime_begin );
 	double sec_delay = 0;
-	if ( systime_current.wYear == treeRoot->systime_begin.wYear && systime_current.wMonth == treeRoot->systime_begin.wMonth ) {
-		sec_delay = static_cast<double>(msec_current - msec_begin) / 1000 + (systime_current.wDay - treeRoot->systime_begin.wDay) * 24 * 60 * 60;
+	if ( systime_current.wYear == treeRoot->m_systime_begin.wYear && systime_current.wMonth == treeRoot->m_systime_begin.wMonth ) {
+		sec_delay = static_cast<double>(msec_current - msec_begin) / 1000 + (systime_current.wDay - treeRoot->m_systime_begin.wDay) * 24 * 60 * 60;
 	}
-	static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_times.push_back( sec_delay );
+	static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_times.push_back( sec_delay );
 
 	getOStream() << "SE" << letter
 	             << " " << simTr->getCurrentTime()
 	             << " " << sec_delay            // realTime
-	             << " " << treeRoot->sizeof_dpt // memUsed
-	             << " " << (letter == 'S' ? treeRoot->targetNode->costPath : 0)
-	             << " " << treeRoot->expandedNodesCount
-	             << " " << treeRoot->nodesInGraphCount
+	             << " " << treeRoot->m_sizeof_dpt // memUsed
+	             << " " << (letter == 'S' ? treeRoot->m_targetNode->m_costPath : 0)
+	             << " " << treeRoot->m_expandedNodesCount
+	             << " " << treeRoot->m_nodesInGraphCount
 	             << " " << treeRoot->getNodesCound()
-	             << " " << treeRoot->fullNodesCount 
+	             << " " << treeRoot->m_fullNodesCount 
 	             << std::endl << getEOL();
 	if ( letter == 'S' ) {
 		getOStream() << "ES"
 		             << " " << simTr->getCurrentTime()
 		             << " 4"
 		             << std::endl << getEOL();
-		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_cost.push_back( treeRoot->targetNode->costPath );
-		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes.push_back( treeRoot->getNodesCound() );
-		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes_expended.push_back( treeRoot->expandedNodesCount );
-		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes_full.push_back( treeRoot->fullNodesCount );
-		static_cast<RDODPTSearchTrace*>(treeRoot->dp)->calc_nodes_in_graph.push_back( treeRoot->nodesInGraphCount );
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_cost.push_back( treeRoot->m_targetNode->m_costPath );
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes.push_back( treeRoot->getNodesCound() );
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes_expended.push_back( treeRoot->m_expandedNodesCount );
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes_full.push_back( treeRoot->m_fullNodesCount );
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes_in_graph.push_back( treeRoot->m_nodesInGraphCount );
 	}
 }
 

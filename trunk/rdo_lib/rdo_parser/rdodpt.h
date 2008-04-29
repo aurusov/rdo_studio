@@ -9,6 +9,7 @@
 namespace rdoRuntime
 {
 class RDOCalc;
+class RDODPTSome;
 class RDOPROCProcess;
 class RDOPROCGenerate;
 class RDOPROCSeize;
@@ -117,23 +118,26 @@ public:
 // ----------------------------------------------------------------------------
 class RDODPTSome: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	RDOFUNLogic* conditon;
-	std::vector< RDODPTSomeActivity* > activities;
-
 public:
 	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 
-	const std::string& getName() const                 { return src_info().src_text(); }
+	const std::string& getName() const                { return src_info().src_text(); }
 
-	RDOFUNLogic* getConditon() const                   { return conditon;              }
-	void setCondition( RDOFUNLogic* _conditon = NULL ) { conditon = _conditon;         }
+	RDOFUNLogic* getConditon() const                  { return m_conditon;             }
+	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon;         }
 
 	RDODPTSomeActivity* addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info );
-	RDODPTSomeActivity* getLastActivity() const {
-		return !activities.empty() ? activities.back() : NULL;
+	RDODPTSomeActivity* getLastActivity() const
+	{
+		return !m_activities.empty() ? m_activities.back() : NULL;
 	}
-	const std::vector< RDODPTSomeActivity* >& getActivities() const { return activities; }
+	const std::vector< RDODPTSomeActivity* >& getActivities() const { return m_activities; }
+	void end();
+
+private:
+	rdoRuntime::RDODPTSome*            m_dpt;
+	RDOFUNLogic*                       m_conditon;
+	std::vector< RDODPTSomeActivity* > m_activities;
 };
 
 // ----------------------------------------------------------------------------

@@ -2,13 +2,10 @@
 #define RDO_H
 
 #include "rdoruntime_object.h"
-#include "rdocalc.h"
 
 namespace rdoRuntime {
 
 class RDOSimulator;
-class TreeNode;
-class TreeRoot;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseOperation - базовый класс для паттернов, процессов и блоков процесса
@@ -58,76 +55,6 @@ public:
 protected:
 	RDOBaseOperation( RDORuntimeParent* parent ): RDORuntimeParent( parent ) {}
 	virtual ~RDOBaseOperation() {}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
-// ----------------------------------------------------------------------------
-class RDORule;
-
-class RDODPTSearch: public RDOBaseOperation
-{
-friend class RDOSimulator;
-friend class TreeNode;
-
-public:
-	// ----------------------------------------------------------------------------
-	// ---------- Activity
-	// ----------------------------------------------------------------------------
-	class Activity: public RDORuntimeObject
-	{
-	public:
-		enum ValueTime
-		{
-			vt_before,
-			vt_after
-		};
-
-		Activity( RDORule* rule, ValueTime valueTime );
-		virtual ~Activity()
-		{
-		}
-
-		RDORule*  rule()            { return m_rule;      }
-		ValueTime valueTime() const { return m_valueTime; }
-
-		virtual double cost( RDOSimulator* sim ) = 0;
-
-	private:
-		ValueTime m_valueTime;
-
-	protected:
-		RDORule* m_rule;
-	};
-
-private:
-	TreeRoot* treeRoot;
-	RDOBaseOperation::BOResult RunSearchInTree( RDOSimulator* sim );
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-
-protected:
-	std::list< Activity* > activities;
-	virtual void onSearchBegin( RDOSimulator* sim )                              = 0;
-	virtual void onSearchDecisionHeader( RDOSimulator* sim )                     = 0;
-	virtual void onSearchDecision( RDOSimulator* sim, TreeNode* node )           = 0;
-	virtual void onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )  = 0;
-	virtual void onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot ) = 0;
-	virtual TreeRoot* createTreeRoot( RDOSimulator* sim )                        = 0;
-	virtual BOResult  onContinue( RDOSimulator* sim );
-
-public:
-	RDODPTSearch( RDORuntimeParent* runtime ):
-		RDOBaseOperation( runtime ),
-		treeRoot( NULL )
-	{
-	}
-	virtual ~RDODPTSearch();
-	virtual bool Condition( RDOSimulator* sim )     = 0;
-	virtual bool TermCondition( RDOSimulator* sim ) = 0;
-	virtual double EvaluateBy( RDOSimulator* sim )  = 0;
-	virtual bool NeedCompareTops()                  = 0;
-	virtual void addActivity( Activity* act );
 };
 
 // ----------------------------------------------------------------------------

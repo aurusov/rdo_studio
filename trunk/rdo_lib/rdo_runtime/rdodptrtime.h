@@ -35,17 +35,6 @@ private:
 // ----------------------------------------------------------------------------
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
-private:
-	RDOCalc* condition;
-	RDOCalc* termCondition;
-	RDOCalc* evaluateBy;
-	bool compTops;
-
-	virtual bool Condition( RDOSimulator* sim )     { return condition->calcValue( static_cast<RDORuntime*>(sim) ).getBool();     }
-	virtual bool TermCondition( RDOSimulator* sim ) { return termCondition->calcValue( static_cast<RDORuntime*>(sim) ).getBool(); }
-	virtual double EvaluateBy( RDOSimulator* sim )  { return evaluateBy->calcValue( static_cast<RDORuntime*>(sim) ).getDouble();  }
-	virtual bool NeedCompareTops()                  { return compTops; }
-
 public:
 	RDODPTSearchRuntime( RDORuntime* runtime, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops ):
 		RDODPTSearchTrace( runtime ),
@@ -56,6 +45,17 @@ public:
 	{
 		setTraceID( runtime->getFreeDPTId() );
 	}
+
+private:
+	RDOCalc* condition;
+	RDOCalc* termCondition;
+	RDOCalc* evaluateBy;
+	bool compTops;
+
+	virtual bool   onCheckCondition( RDOSimulator* sim ) { return condition->calcValue( static_cast<RDORuntime*>(sim) ).getBool();     }
+	virtual bool   TermCondition( RDOSimulator* sim )    { return termCondition->calcValue( static_cast<RDORuntime*>(sim) ).getBool(); }
+	virtual double EvaluateBy( RDOSimulator* sim )       { return evaluateBy->calcValue( static_cast<RDORuntime*>(sim) ).getDouble();  }
+	virtual bool   NeedCompareTops()                     { return compTops; }
 };
 
 } // namespace rdoRuntime

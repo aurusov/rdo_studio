@@ -465,7 +465,10 @@ dpt_some_header:		dpt_some_condition Activities dpt_some_activity {
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Activities" );
 						};
 
-dpt_some_end:			dpt_some_header End
+dpt_some_end:			dpt_some_header End {
+							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
+							dpt->end();
+						}
 						| dpt_some_header {
 							PARSER->error( @1, "Ожидается ключевое слово $End" );
 						};

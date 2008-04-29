@@ -169,7 +169,8 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
 
-#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define RUNTIME PARSER->runtime()
 
 namespace rdoParse 
 {
@@ -190,6 +191,7 @@ opr_main:	opr_end
 
 opr_header:	Operations {
 				PARSER->setHaveKWOperations( true );
+				new rdoRuntime::RDOOperations( RUNTIME );
 			};
 
 opr_body:	opr_header IDENTIF_COLON IDENTIF {
@@ -252,7 +254,7 @@ opr_param:	opr_param IDENTIF {
 opr_end:	opr_param End {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endParam( @1 );
-				PARSER->setHaveKWOperationsEnd( true );
+//				PARSER->setHaveKWOperationsEnd( true );
 			};
 
 %%

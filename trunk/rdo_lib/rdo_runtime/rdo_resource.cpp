@@ -51,10 +51,12 @@ RDOResource::RDOResource( const RDOResource& copy ):
 	m_type( copy.m_type ),
 	m_state( copy.m_state ),
 	m_typeId( copy.m_typeId ),
-	m_temporary( copy.m_temporary )
+	m_temporary( copy.m_temporary ),
+	m_params( copy.m_params )
 {
 	setTraceID( copy.getTraceID() );
-	getRuntime()->incrementResourceIdReference( getTraceID() );
+	m_referenceCount = 0;
+//	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
 
 RDOResource::~RDOResource()

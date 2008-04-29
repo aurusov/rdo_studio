@@ -252,7 +252,6 @@ void RDODPTSearch::end()
 		compTops );
 
 	dpt->traceFlag = m_trace;
-	parser()->runtime()->addRuntimeDPT( dpt );
 
 	int size = activities.size();
 	for ( int i = 0; i < size; i++ ) {
@@ -302,18 +301,27 @@ void RDODPTSearchActivity::setValue( rdoRuntime::RDODPTSearch::Activity::ValueTi
 // ----------------------------------------------------------------------------
 RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info )
+	RDOParserSrcInfo( _src_info ),
+	m_dpt( NULL )
 {
 	parser()->checkDPTName( src_info() );
-	new rdoRuntime::RDODPTSome( parser()->runtime() );
+	m_dpt = new rdoRuntime::RDODPTSome( parser()->runtime() );
 	parser()->insertDPTSome( this );
 }
 
 RDODPTSomeActivity* RDODPTSome::addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info )
 {
 	RDODPTSomeActivity* activity = new RDODPTSomeActivity( this, _activity_src_info, _pattern_src_info );
-	activities.push_back( activity );
+	m_activities.push_back( activity );
 	return activity;
+}
+
+void RDODPTSome::end()
+{
+	if ( getConditon() )
+	{
+		m_dpt->setCondition( getConditon()->createCalc() );
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -326,20 +334,12 @@ RDODPTSomeActivity::RDODPTSomeActivity( const RDODPTSome* _parent, const RDOPars
 	{
 		case RDOPATPattern::PT_Rule:
 		{
-			if ( !_parent->getConditon() ) {
-				m_activity = static_cast<rdoRuntime::RDOPatternRule*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
-			} else {
-				m_activity = static_cast<rdoRuntime::RDOPatternRule*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), _parent->getConditon()->createCalc(), getName() );
-			}
+			m_activity = static_cast<rdoRuntime::RDOPatternRule*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
 			break;
 		}
 		case RDOPATPattern::PT_Operation:
 		{
-			if ( !_parent->getConditon() ) {
-				m_activity = static_cast<rdoRuntime::RDOPatternOperation*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
-			} else {
-				m_activity = static_cast<rdoRuntime::RDOPatternOperation*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), _parent->getConditon()->createCalc(), getName() );
-			}
+			m_activity = static_cast<rdoRuntime::RDOPatternOperation*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
 			break;
 		}
 		default:

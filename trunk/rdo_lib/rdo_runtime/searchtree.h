@@ -1,7 +1,7 @@
 #ifndef SEARCHTREE_H
 #define SEARCHTREE_H
 
-#include "rdo.h"
+#include "rdo_logic_dptsearch.h"
 
 namespace rdoRuntime
 {
@@ -15,33 +15,32 @@ class TreeNode;
 // ----------------------------------------------------------------------------
 class TreeRoot
 {
-private:
-	int nodesCount;
-
-protected:
-	TreeRoot( RDOSimulator* sim, RDODPTSearch* _dp);
-
 public:
 	virtual ~TreeRoot() {}
 
 	virtual void createRootTreeNode( RDOSimulator* sim ) = 0;
 
-	std::vector< TreeNode* > OPEN;
-	RDODPTSearch*     dp;
-	TreeNode*         rootNode;
-	TreeNode*         targetNode;
-	RDOSimulator*     theRealSimulator;       // all others are copy
-	int               nodesInGraphCount;
-	int               expandedNodesCount;
-	int               fullNodesCount;
-	SYSTEMTIME        systime_begin;
-	unsigned int      sizeof_dpt;
+	std::vector< TreeNode* > m_OPEN;
+	RDODPTSearch*            m_dp;
+	TreeNode*                m_rootNode;
+	TreeNode*                m_targetNode;
+	RDOSimulator*            m_theRealSimulator;
+	int                      m_nodesInGraphCount;
+	int                      m_expandedNodesCount;
+	int                      m_fullNodesCount;
+	SYSTEMTIME               m_systime_begin;
+	unsigned int             m_sizeof_dpt;
 
-	int getNodesCound() const { return nodesCount; }
+	int getNodesCound() const { return m_nodesCount; }
 	int getNewNodeNumber() {
-		return ++nodesCount;
+		return ++m_nodesCount;
 	}
 
+protected:
+	TreeRoot( RDOSimulator* sim, RDODPTSearch* _dp);
+
+private:
+	int m_nodesCount;
 };
 
 // ----------------------------------------------------------------------------
@@ -49,36 +48,19 @@ public:
 // ----------------------------------------------------------------------------
 class TreeNode
 {
-protected:
-	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDODPTSearch::Activity* _activity, double cost, int cnt );
-
-	RDODPTSearch::Activity*  currAct; // вершина пытается применять различные активности
-	RDOSimulator*            childSim;
-
-	double newCostPath; 
-	double newCostRest;
-	double newCostRule;
-
-	virtual void onSearchOpenNode( RDOSimulator* sim )         {}
-	virtual void onSearchNodeInfoDeleted( RDOSimulator* sim )  {}
-	virtual void onSearchNodeInfoReplaced( RDOSimulator* sim ) {}
-	virtual void onSearchNodeInfoNew( RDOSimulator* sim )      {}
-	virtual TreeNode* createChildTreeNode();
-
 public:
 	virtual ~TreeNode();
 
-	RDOSimulator*            sim;
-	std::vector< TreeNode* > children;
-	TreeNode*                parent;
-	TreeRoot*                root;
-	RDODPTSearch::Activity*  activity; // активность (currAct), которую применил предок при создании this
-	double costRule;
-	double costPath;
-	double costRest;
-	int number; // Номер узла
+	RDOSimulator*            m_sim;
+	std::vector< TreeNode* > m_children;
+	TreeNode*                m_parent;
+	TreeRoot*                m_root;
+	RDODPTSearch::Activity*  m_activity; // активность (currAct), которую применил предок при создании this
+	double                   m_costRule;
+	double                   m_costPath;
+	double                   m_costRest;
+	int                      m_number; // Номер узла
 
-public:
 	void ExpandChildren();
 
 	enum NodeFoundInfo {
@@ -91,6 +73,22 @@ public:
 	void ReCostSubTree( double cost );
 
 	int getActivityID() const;
+
+protected:
+	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDODPTSearch::Activity* _activity, double cost, int cnt );
+
+	RDODPTSearch::Activity* m_currAct; // вершина пытается применять различные активности
+	RDOSimulator*           m_childSim;
+
+	double m_newCostPath;
+	double m_newCostRest;
+	double m_newCostRule;
+
+	virtual void onSearchOpenNode( RDOSimulator* sim )         {}
+	virtual void onSearchNodeInfoDeleted( RDOSimulator* sim )  {}
+	virtual void onSearchNodeInfoReplaced( RDOSimulator* sim ) {}
+	virtual void onSearchNodeInfoNew( RDOSimulator* sim )      {}
+	virtual TreeNode* createChildTreeNode();
 };
 
 // ----------------------------------------------------------------------------
@@ -98,12 +96,12 @@ public:
 // ----------------------------------------------------------------------------
 // функция сравнения вершин графа для сортировки списка OPEN
 // ----------------------------------------------------------------------------
-inline bool compareNodes( const TreeNode* tn1, const TreeNode* tn2 ) 
+inline bool compareNodes( const TreeNode* tn1, const TreeNode* tn2 )
 {
-	if ( fabs(tn1->costRest - tn2->costRest) > 0.0000001 ) {
-		return ( tn1->costRest < tn2->costRest );
+	if ( fabs(tn1->m_costRest - tn2->m_costRest) > 0.0000001 ) {
+		return ( tn1->m_costRest < tn2->m_costRest );
 	} else {
-		return ( tn1->number < tn2->number );
+		return ( tn1->m_number < tn2->m_number );
 	}
 }
 
