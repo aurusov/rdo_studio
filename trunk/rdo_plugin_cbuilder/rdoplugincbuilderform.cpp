@@ -47,7 +47,7 @@ void TCBuilderPluginForm::updateControlsState()
 //---------------------------------------------------------------------------
 void __fastcall TCBuilderPluginForm::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	studio.stopPlugin( HInstance );
+//	studio.stopPlugin( HInstance );
 }
 //---------------------------------------------------------------------------
 void TCBuilderPluginForm::insertLine( const char* line )
@@ -64,22 +64,22 @@ void __fastcall TCBuilderPluginForm::Close1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TCBuilderPluginForm::New1Click(TObject *Sender)
 {
-	studio.model.newModel();
+//	studio.model.newModel();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCBuilderPluginForm::Open1Click(TObject *Sender)
 {
-	studio.model.openModel( NULL );
+	studio.model.open( NULL );
 }
 //---------------------------------------------------------------------------
 void __fastcall TCBuilderPluginForm::Save1Click(TObject *Sender)
 {
-	studio.model.saveModel();
+	studio.model.save();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCBuilderPluginForm::Close2Click(TObject *Sender)
 {
-	studio.model.closeModel();
+	studio.model.close();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCBuilderPluginForm::Build1Click(TObject *Sender)

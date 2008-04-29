@@ -4,15 +4,15 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="..\rdo_studio\Debug\plugins\rdo_plugin_cbuilder.rsp"/>
-    <OBJFILES value="rdoplugincbuilder.obj rdoplugincbuilderform.obj"/>
-    <RESFILES value="rdo_plugin_cbuilder.res"/>
+    <OBJFILES value="rdoplugincbuilderform.obj"/>
+    <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
-    <DEFFILE value="rdo_plugin_cbuilder.def"/>
+    <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) rdoplugincbuilderform.dfm"/>
-    <LIBFILES value="J:\CBuilder6\Lib\vcllink.lib"/>
-    <LIBRARIES value="vcl.lib rtl.lib"/>
-    <SPARELIBS value="rtl.lib vcl.lib"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value="Vcl50.lib vcl.lib"/>
+    <SPARELIBS value="vcl.lib Vcl50.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi 
       teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
@@ -27,42 +27,27 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_DEBUG"/>
+    <USERDEFINES value=""/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="rdo_plugin_cbuilder.bpf"/>
-    <INCLUDEPATH value="J:\CBuilder6\Projects;..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="J:\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="J:\CBuilder6\Projects\;..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="J:\CBuilder6\Projects\;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
-    <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IJ:\CBuilder6\Projects -I..\rdo_plugin -I$(BCB)\include 
-      -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
-    <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b -k -y -v -vi- 
-      -tWD -tWM -c"/>
-    <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
+    <IDLCFLAGS value="-IJ:\CBuilder6\Projects\. -I..\rdo_plugin -I$(BCB)\include 
+      -I$(BCB)\include\vcl -src_suffix cpp -boa"/>
+    <CFLAG1 value="-WD -O2 -Vx -Ve -VF -X- -ps -a8 -b -k- -vi -tWD -tWM -c"/>
+    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-D&quot;&quot; -aa -Tpd -x -Gn -v"/>
-    <OTHERFILES value=""/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpd -x -Gn"/>
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="c0d32.obj sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
-    <OTHERFILES value=""/>
   </LINKER>
-  <FILELIST>
-      <FILE FILENAME="rdo_plugin_cbuilder.res" FORMNAME="" UNITNAME="rdo_plugin_cbuilder.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="rdo_plugin_cbuilder.bpf" FORMNAME="" UNITNAME="rdo_plugin_cbuilder" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="rdoplugincbuilder.cpp" FORMNAME="" UNITNAME="rdoplugincbuilder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="J:\CBuilder6\Lib\vcllink.lib" FORMNAME="" UNITNAME="vcllink.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="rdo_plugin_cbuilder.def" FORMNAME="" UNITNAME="rdo_plugin_cbuilder.def" CONTAINERID="DefTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="rdoplugincbuilderform.cpp" FORMNAME="CBuilderPluginForm" UNITNAME="rdoplugincbuilderform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-  </FILELIST>
-  <BUILDTOOLS>
-  </BUILDTOOLS>
-
   <IDEOPTIONS>
 [Version Info]
 IncludeVerInfo=0
@@ -92,17 +77,21 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=3
-Item0=..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl
-Item1=.;..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl
-Item2=F:\rdo\rdo_studio\rdo_plugin_cbuilder;$(BCB)\include;$(BCB)\include\vcl
+Count=5
+Item0=J:\CBuilder6\Projects\;..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl
+Item1=J:\CBuilder6\Projects;..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl
+Item2=..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl
+Item3=.;..\rdo_plugin;$(BCB)\include;$(BCB)\include\vcl
+Item4=F:\rdo\rdo_studio\rdo_plugin_cbuilder;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=4
-Item0=$(BCB)\lib\obj;$(BCB)\lib
-Item1=.;$(BCB)\lib\obj;$(BCB)\lib
-Item2=..\rdo_plugin;$(BCB)\lib\obj;$(BCB)\lib
-Item3=F:\rdo\rdo_studio\rdo_plugin_cbuilder;$(BCB)\lib\obj;$(BCB)\lib
+Count=6
+Item0=J:\CBuilder6\Projects\;$(BCB)\lib\obj;$(BCB)\lib
+Item1=J:\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item2=$(BCB)\lib\obj;$(BCB)\lib
+Item3=.;$(BCB)\lib\obj;$(BCB)\lib
+Item4=..\rdo_plugin;$(BCB)\lib\obj;$(BCB)\lib
+Item5=F:\rdo\rdo_studio\rdo_plugin_cbuilder;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -122,14 +111,9 @@ DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
 RunParams=
-Launcher=
-UseLauncher=0
-DebugCWD=
 HostApplication=F:\rdo\rdo_studio\rdo_studio\Debug\rdo_studio.exe
 RemoteHost=
 RemotePath=
-RemoteLauncher=
-RemoteCWD=
 RemoteDebug=0
 
 [Compiler]
@@ -146,10 +130,5 @@ PrecompiledHeaders=1
 ActiveLang=
 ProjectLang=
 RootDir=
-
-[Linker]
-LibPrefix=
-LibSuffix=
-LibVersion=
   </IDEOPTIONS>
 </PROJECT>
