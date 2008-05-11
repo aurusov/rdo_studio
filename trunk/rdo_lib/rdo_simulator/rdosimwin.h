@@ -15,6 +15,54 @@
 #include <rdobinarystream.h>
 #include <rdocommon.h>
 
+#ifndef __WIN32__
+#define __WIN32__
+#endif
+
+#ifndef __x86__
+#define __x86__
+#endif
+
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0400
+#endif
+
+#ifndef __NT__
+#define __NT__
+#endif
+
+#ifndef __OSVERSION__
+#define __OSVERSION__ 4
+#endif
+
+#pragma warning(disable: 4996)
+#include <omniORB4/CORBA.h>
+#include "RDOCorba.hh"
+#pragma warning(default: 4996)
+
+namespace rdoCorba {
+
+// --------------------------------------------------------------------
+// ---------- RDOThreadCorba
+// --------------------------------------------------------------------
+class RDOThreadCorba: public RDOThreadMT
+{
+public:
+	RDOThreadCorba();
+	
+private:
+	virtual ~RDOThreadCorba() {}; // „тобы нельз€ было удалить через delete
+	virtual void proc( RDOMessageInfo& msg );
+	virtual void idle();
+	virtual void start();
+	virtual void stop();
+
+	CWinThread* thread_corbaRunThreadFun;
+	static unsigned int corbaRunThreadFun( void* param );
+};
+
+} // namespace rdoCorba
+
 namespace rdoSimulator {
 class RDOThreadSimulator;
 }
@@ -113,6 +161,9 @@ private:
 
 	std::stringstream resultString;
 	std::stringstream resultInfoString;
+
+	void corbaGetRTPcount(::CORBA::Long& rtp_count);
+	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
 
 protected:
 	virtual ~RDOThreadSimulator(); // „тобы нельз€ было удалить через delete помещаем его в protected

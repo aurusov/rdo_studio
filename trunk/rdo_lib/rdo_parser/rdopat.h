@@ -101,7 +101,7 @@ private:
 	bool useCommonWithMax;
 	RDOFUNArithm* commonChoice;
 
-	int current_rel_res_index;
+	unsigned int current_rel_res_index;
 
 	std::string typeToString( PatType type )
 	{

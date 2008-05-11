@@ -346,7 +346,8 @@ void RDOStudioChartView::setFromTo()
 		int it_max_pos = 0;
 		bool need_search_to = true;
 		int ticks = 0;
-		for( timesList::iterator it = doc->docTimes.begin(); it != doc->docTimes.end(); it++ ) {
+		timesList::iterator it;
+		for( it = doc->docTimes.begin(); it != doc->docTimes.end(); it++ ) {
 			it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * timeScale ) + ticks * style->fonts_ticks->tickWidth;
 			it_max_pos = it_pos + style->fonts_ticks->tickWidth * (*it)->eventCount;
 			if ( it_pos == xPos ) {
@@ -526,7 +527,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
 				int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 				RDOTracerTimeNow* timenow = (*it);
-				tmprect.left = chartRect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift;
+				tmprect.left = chartRect.left + (LONG)(( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift);
 				tmprect.left = min( tmprect.left, chartRect.right - 1 );
 				str = rdo::format( formatstr.c_str(), (*it)->time );
 				if ( *(*it) == drawFromX ) {
@@ -593,7 +594,7 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 		for( ; it != unwrapTimesList.end(); it++ ) {
 			int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 			RDOTracerTimeNow* timenow = (*it);
-			tmprect.left = rect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift;
+			tmprect.left = rect.left + (LONG)(( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift);
 			if ( tmprect.left < rect.left )
 				tmprect.left = rect.left;
 			if ( *(*it) == drawFromX ) {
@@ -1039,8 +1040,9 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 		lf.lfItalic    = chart_theme->defaultStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->defaultStyle & RDOStyleFont::UNDERLINE;
 		lf.lfCharSet   = style->font->characterSet;
+#pragma warning(disable: 4996)
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
-
+#pragma warning(default: 4996)
 		hfontAxis = ::CreateFontIndirect( &lf );
 	}
 
@@ -1053,7 +1055,9 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 		lf.lfItalic    = chart_theme->titleStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->titleStyle & RDOStyleFont::UNDERLINE;
 		lf.lfCharSet   = style->font->characterSet;
+#pragma warning(disable: 4996)
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
+#pragma warning(default: 4996)
 
 		hfontTitle = ::CreateFontIndirect( &lf );
 	}
@@ -1066,7 +1070,9 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 		lf.lfItalic    = chart_theme->legendStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->legendStyle & RDOStyleFont::UNDERLINE;
 		lf.lfCharSet   = style->font->characterSet;
+#pragma warning(disable: 4996)
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
+#pragma warning(default: 4996)
 
 		hfontLegend = ::CreateFontIndirect( &lf );
 	}

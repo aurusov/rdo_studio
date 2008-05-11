@@ -33,7 +33,9 @@ std::string format( const char* str, va_list& params )
 	s.resize( 256 );
 	int size = -1;
 	while ( size == -1 ) {
-		size = _vsnprintf( s.begin(), s.size(), str, params );
+#pragma warning(disable: 4996)
+		size = _vsnprintf( &s[0], s.size(), str, params );
+#pragma warning(default: 4996)
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
 		}
@@ -105,7 +107,7 @@ std::string extractFilePath( const std::string& fileName )
 		return "";
 	}
 	if ( pos != std::string::npos && pos < fileName.length() - 1 ) {
-		s.assign( fileName.begin(), pos + 1 );
+		s.assign( &fileName[0], pos + 1 );
 		static char szDelims[] = " \t\n\r";
 		s.erase( 0, s.find_first_not_of( szDelims ) );
 		s.erase( s.find_last_not_of( szDelims ) + 1, std::string::npos );

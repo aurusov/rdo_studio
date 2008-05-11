@@ -34,7 +34,7 @@
 // Если НЕ определена в дефайнах проекта
 #else
 	#define RDO_MT
-	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
+//	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
 
 	// RDO_ST автоматически выставляется для однотредовой версии РДО
 	#ifndef RDO_MT
@@ -47,7 +47,7 @@
 // Если НЕ определена в дефайнах проекта
 #ifndef TR_TRACE
 	#define TR_TRACE
-	#undef TR_TRACE // Закомментировать для вывода трассировка
+//	#undef TR_TRACE // Закомментировать для вывода трассировка
 #endif
 
 // --------------------------------------------------------------------
@@ -130,7 +130,9 @@ public:
 		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< std::string >& }
 		RT_DEBUG_STRING,                       // param = std::string*
 		RT_CORBA_PARSER_GET_RTP,
-		RT_CORBA_PARSER_GET_RSS
+		RT_CORBA_PARSER_GET_RSS,
+		RT_CORBA_PARSER_GET_RTP_COUNT,
+		RT_CORBA_PARSER_GET_RTP_PAR_COUNT
 	};
 	std::string messageToString( RDOTreadMessage message ) {
 		switch ( message ) {
@@ -198,6 +200,8 @@ public:
 			case RT_DEBUG_STRING                      : return "RT_DEBUG_STRING";
 			case RT_CORBA_PARSER_GET_RTP              : return "RT_CORBA_PARSER_GET_RTP";
 			case RT_CORBA_PARSER_GET_RSS              : return "RT_CORBA_PARSER_GET_RSS";
+			case RT_CORBA_PARSER_GET_RTP_COUNT        : return "RT_CORBA_PARSER_GET_RTP_COUNT";
+			case RT_CORBA_PARSER_GET_RTP_PAR_COUNT    : return "RT_CORBA_PARSER_GET_RTP_PAR_COUNT";
 			default                                   : return "RT_UNKNOWN";
 		}
 	}
@@ -364,7 +368,7 @@ protected:
 		}
 	};
 	std::vector< BroadcastData > broadcast_data;
-	int                          broadcast_cnt;
+	unsigned int                 broadcast_cnt;
 
 #endif
 
@@ -432,6 +436,7 @@ protected:
 #ifdef RDO_MT
 class RDOThreadGUI: public RDOThread
 {
+friend class RDOKernelGUI;
 private:
 	RDOThread* kernel_gui;
 

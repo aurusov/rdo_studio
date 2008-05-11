@@ -1,8 +1,7 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by rdo_studio.rc
 //
-#define IDR_RT_MANIFEST1                1
 #define IDD_CHART_OPTIONS_CHART         107
 #define IDR_MAINFRAME                   128
 #define IDR_MODEL_TYPE                  129

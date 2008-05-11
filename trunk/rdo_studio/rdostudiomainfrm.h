@@ -46,11 +46,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOToolBarModel(): RDOToolBar(), log101( log(101) ) {}
+	RDOToolBarModel(): RDOToolBar(), log101( log(101.0) ) {}
 
 	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
 
-	double getSpeed() const { return log( slider.GetPos() + 1 ) / log101; }
+	double getSpeed() const { return log( double(slider.GetPos() + 1) ) / log101; }
 };
 
 // ----------------------------------------------------------------------------

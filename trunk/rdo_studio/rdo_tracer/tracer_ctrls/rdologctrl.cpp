@@ -81,10 +81,10 @@ bool RDOLogCtrlFindInList::match( std::string::iterator &wildcards, std::string:
 	std::string strWild;
 	std::string strComp;
 	if ( wildcards != wildend ) {
-		strWild.assign( wildcards );
+		strWild.assign( &(*wildcards) );
 	}
 	if ( strcomp != strend ) {
-		strComp.assign( strcomp );
+		strComp.assign( &(*strcomp) );
 	}
 	std::string::iterator strWildb = strWild.begin();
 	std::string::iterator strWilde = strWild.end();
@@ -108,7 +108,7 @@ bool RDOLogCtrlFindInList::match( std::string::iterator &wildcards, std::string:
 		}
 		strWildb ++;
 	}
-	while ( strWildb && *strWildb == '*' && res )  strWildb ++;
+	while ( *strWildb && *strWildb == '*' && res )  strWildb ++;
 
 	return res && strCompb == strCompe && strWildb == strWilde;
 }
@@ -957,8 +957,10 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	lf.lfItalic    = logStyle->theme->style & RDOStyleFont::ITALIC;
 	lf.lfUnderline = logStyle->theme->style & RDOStyleFont::UNDERLINE;
 	lf.lfCharSet   = logStyle->font->characterSet;
+#pragma warning(disable: 4996)
 	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
-	
+#pragma warning(default: 4996)
+
 	//Create new log font
 	hfontLog = ::CreateFontIndirect( &lf );
 
@@ -1012,7 +1014,9 @@ void RDOLogCtrl::copy()
 		std::string str;
 		getSelected( str );
 		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.length() + 1 );
+#pragma warning(disable: 4996)
 		strcpy( ptr, str.c_str() );
+#pragma warning(default: 4996)
 		::SetClipboardData( CF_TEXT, ptr );
 		CloseClipboard();
 	}
@@ -1101,7 +1105,8 @@ stringList::iterator RDOLogCtrl::findString( int index )
 
 stringList::reverse_iterator RDOLogCtrl::reverse_findString( int index )
 {
-	return findString( index );
+	stringList::reverse_iterator rit(findString( index ));
+	return rit;
 }
 
 stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
@@ -1146,7 +1151,8 @@ stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
 
 stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString( int index ) const
 {
-	return const_findString( index );
+	stringList::const_reverse_iterator rit(const_findString( index ));
+	return rit;
 }
 
 void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase, const bool matchWholeWord )

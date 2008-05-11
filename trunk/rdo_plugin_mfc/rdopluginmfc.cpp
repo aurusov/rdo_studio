@@ -126,12 +126,12 @@ void __stdcall pluginProc( const int message, void* param1 )
 			std::string::size_type pos = str.find( '\n' );
 			if ( pos != std::string::npos ) {
 				while ( pos != std::string::npos ) {
-					std::string str2( str.begin(), 0, pos );
+					std::string str2( &str[0], 0, pos );
 					pluginMFCApp.frame->insertLine( str2.c_str() );
 					str.erase( 0, pos + 1 );
 					pos = str.find( '\n' );
 				}
-				std::string str2( str.begin(), 0, pos );
+				std::string str2( &str[0], 0, pos );
 				if ( !str2.empty() ) {
 					pluginMFCApp.frame->insertLine( str2.c_str() );
 				}
@@ -176,12 +176,12 @@ void __stdcall results( const char* lines )
 	std::string::size_type pos = str.find( '\n' );
 	if ( pos != std::string::npos ) {
 		while ( pos != std::string::npos ) {
-			std::string str2( str.begin(), 0, pos );
+			std::string str2( &str[0], 0, pos );
 			pluginMFCApp.frame->insertLine( str2.c_str() );
 			str.erase( 0, pos + 1 );
 			pos = str.find( '\n' );
 		}
-		std::string str2( str.begin(), 0, pos );
+		std::string str2( &str[0], 0, pos );
 		if ( !str2.empty() ) {
 			pluginMFCApp.frame->insertLine( str2.c_str() );
 		}

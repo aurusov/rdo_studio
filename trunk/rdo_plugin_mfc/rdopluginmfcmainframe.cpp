@@ -20,7 +20,7 @@ std::string format( const char* str, ... )
 	int size = -1;
 	while ( size == -1 ) {
 		va_start( paramList, str );
-		size = _vsnprintf( s.begin(), s.size(), str, paramList );
+		size = vsnprintf_s( &s[0], s.size(), s.size(), str, paramList );
 		va_end( paramList );
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
@@ -912,11 +912,6 @@ stringList::iterator RDOPluginMFCLogCtrl::findString( int index )
 	return res;
 }
 
-stringList::reverse_iterator RDOPluginMFCLogCtrl::reverse_findString( int index )
-{
-	return findString( index );
-}
-
 stringList::const_iterator RDOPluginMFCLogCtrl::const_findString( int index ) const
 {
 	stringList::const_iterator res;
@@ -955,11 +950,6 @@ stringList::const_iterator RDOPluginMFCLogCtrl::const_findString( int index ) co
 	}
 
 	return res;
-}
-
-stringList::const_reverse_iterator RDOPluginMFCLogCtrl::const_reverse_findString( int index ) const
-{
-	return const_findString( index );
 }
 
 void RDOPluginMFCLogCtrl::OnDestroy() 

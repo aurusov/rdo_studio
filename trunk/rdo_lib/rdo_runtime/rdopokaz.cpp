@@ -327,7 +327,7 @@ bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
 		average    = m_sum / m_watchNumber;
 		averageSqr = m_sumSqr - 2 * average * m_sum + m_watchNumber * average * average;
 		averageSqr = sqrt(averageSqr / (m_watchNumber - 1));
-		deviation  = averageSqr / sqrt(m_watchNumber);
+		deviation  = averageSqr / sqrt((double)m_watchNumber); // qq а почему корень берем от m_watchNumber ?
 	}
 
 	runtime->getResults().width(30);

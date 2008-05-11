@@ -147,7 +147,8 @@ private:
 	{
 		double ran1 = RandGeneratorUniform::next( 0, summ );
 		double add = 0;
-		for ( int i = 0; i < m_freq.size() - 1; i++ ) {
+		std::vector< double >::size_type i;
+		for ( i = 0; i < m_freq.size() - 1; i++ ) {
 			if ( ran1 < m_freq[i] + add ) break;
 			add += m_freq[i];
 		}
@@ -177,7 +178,8 @@ private:
 	{
 		double ran1 = RandGeneratorUniform::next( 0, summ );
 		double add = 0;
-		for ( int i = 0; i < m_freq.size() - 1; i++ ) {
+		std::vector< double >::size_type i;
+		for ( i = 0; i < m_freq.size() - 1; i++ ) {
 			if ( ran1 < m_freq[i] + add ) break;
 			add += m_freq[i];
 		}
@@ -203,8 +205,8 @@ public:
 	}
 
 private:
-	std::vector< RDOValue > m_vals;
-	int                     m_curr;
+	std::vector< RDOValue >            m_vals;
+	std::vector< RDOValue >::size_type m_curr;
 
 	virtual RDOValue next()
 	{

@@ -7,6 +7,9 @@
 
 #include <rdoruntime_object.h>
 #include <rdoparser_object.h>
+#include <rdoparser.h>
+#include <rdorss.h>
+#include <list>
 
 namespace rdoParse
 {
@@ -25,7 +28,8 @@ template <class T>
 class RDOList
 {
 public:
-	typedef std::list< T > List;
+	typedef std::list< T >                List;
+	typedef typename List::const_iterator CIterator;
 
 	RDOList():
 		m_parser( NULL )
@@ -36,10 +40,10 @@ public:
 	{
 	}
 
-	List::const_iterator begin() const { return m_list.begin(); }
-	List::const_iterator end  () const { return m_list.end();   }
-	unsigned int         size () const { return m_list.size();  }
-	List::const_iterator found( const std::string& name ) const
+	CIterator     begin() const { return m_list.begin(); }
+	CIterator     end  () const { return m_list.end();   }
+	unsigned int  size () const { return m_list.size();  }
+	CIterator     found( const std::string& name ) const
 	{
 		return std::find_if( begin(), end(), rdoParse::compareNameRef<T>(name) );
 	}
@@ -99,6 +103,7 @@ public:
 	RDOResType( const std::string& name, Type type = rt_permanent );
 
 	MBUILDER_OBJECT(Param)
+	friend class RDOResType;
 	public:
 		Param( const rdoParse::RDORTPParam& param );
 		Param( const std::string& name, rdoRuntime::RDOValue::Type type );
@@ -111,6 +116,7 @@ public:
 		rdoRuntime::RDOValue        getTypeObject() const { return m_type;                   }
 		rdoRuntime::RDOValue::Type  getType() const       { return m_type.getType();         }
 		std::string                 getTypeStr() const    { return m_type.getTypeAsString(); }
+		int                         id() const            { return m_id;                     }
 
 		bool                        hasDiap() const    { return m_min.getType() != rdoRuntime::RDOValue::rvt_unknow && m_max.getType() != rdoRuntime::RDOValue::rvt_unknow; }
 		const rdoRuntime::RDOValue& getMin() const     { return m_min; }
@@ -130,11 +136,12 @@ public:
 		rdoRuntime::RDOValue   m_min;
 		rdoRuntime::RDOValue   m_max;
 		rdoRuntime::RDOValue   m_default;
+		int                    m_id;
 	};
 	class ParamList: public RDOList<Param>
 	{
 	public:
-		bool append( const Param& param );
+		bool append( Param& param );
 	};
 	ParamList m_params;
 
@@ -189,7 +196,41 @@ class RDOResourceList: public RDOList<RDOResource>
 {
 public:
 	RDOResourceList( rdoParse::RDOParser* parser );
-	bool append( RDOResource& rss );
+
+	// --------------------------------------------------------------------
+	// ---- Добавление *нового* ресурса
+	// --------------------------------------------------------------------
+	template<class T> bool append( RDOResource& rss )
+	{
+		if ( std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResource>(rss.name())) == end() )
+		{
+			const rdoParse::RDORTPResType* pRTP = m_parser->findRTPResType(rss.getType().name());
+			if ( !pRTP )
+			{
+				return false;
+			}
+			rdoParse::RDORSSResource* pRSS = new T( m_parser, rss.name(), pRTP );
+			RDOResType::ParamList::List::const_iterator param_it = rss.getType().m_params.begin();
+			while ( param_it != rss.getType().m_params.end() )
+			{
+				RDOResource::Params::const_iterator value_it = const_cast<const RDOResource&>(rss)[param_it->name()];
+				if ( value_it == rss.end() )
+				{
+					delete pRSS;
+					return false;
+				}
+				pRSS->addValue( value_it->second );
+				param_it++;
+			}
+			rss.m_exist = true;
+			m_list.push_back( rss );
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
 } // rdoMBuilder

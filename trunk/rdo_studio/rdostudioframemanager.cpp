@@ -421,7 +421,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							case rdoSimulator::RDOTextElement::center: nFormat |= DT_CENTER; break;
 						}
 
-						::DrawText( hdc, element->strText.c_str(), element->strText.length(), CRect( element->x, element->y, element->x + element->w, element->y + element->h ), nFormat );
+						::DrawText( hdc, element->strText.c_str(), element->strText.length(), CRect( (int)element->x, (int)element->y, (int)(element->x + element->w), (int)(element->y + element->h) ), nFormat );
 
 						break;
 					}
@@ -442,7 +442,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						::Rectangle( hdc, element->x, element->y, element->x + element->w, element->y + element->h );
+						::Rectangle( hdc, (int)element->x, (int)element->y, (int)(element->x + element->w), (int)(element->y + element->h) );
 
 						::SelectObject( hdc, pOldBrush );
 						::DeleteObject( brush );
@@ -470,8 +470,8 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						int w = min( element->w, element->h ) / 3;
-						RoundRect( hdc, element->x, element->y, element->x + element->w, element->y + element->h, w, w );
+						int w = (int)(std::min<double>( element->w, element->h ) / 3);
+						RoundRect( hdc, (int)(element->x), (int)(element->y), (int)(element->x + element->w), (int)(element->y + element->h), w, w );
 
 						::SelectObject( hdc, pOldBrush );
 						::DeleteObject( brush );
@@ -488,8 +488,8 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 							HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 
-							::MoveToEx( hdc, element->x, element->y, NULL );
-							::LineTo( hdc, element->w, element->h );
+							::MoveToEx( hdc, (int)(element->x), (int)(element->y), NULL );
+							::LineTo( hdc, (int)(element->w), (int)(element->h) );
 
 							::SelectObject( hdc, pOldPen );
 							::DeleteObject( pen );
@@ -515,12 +515,12 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						}
 
 						CPoint pts[3];
-						pts[0].x = element->x1;
-						pts[0].y = element->y1;
-						pts[1].x = element->x2;
-						pts[1].y = element->y2;
-						pts[2].x = element->x3;
-						pts[2].y = element->y3;
+						pts[0].x = (int)(element->x1);
+						pts[0].y = (int)(element->y1);
+						pts[1].x = (int)(element->x2);
+						pts[1].y = (int)(element->y2);
+						pts[2].x = (int)(element->x3);
+						pts[2].y = (int)(element->y3);
 						::Polygon( hdc, pts, 3 );
 
 						::SelectObject( hdc, pOldBrush );
@@ -549,7 +549,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						::Ellipse( hdc, element->x, element->y, element->x + element->w, element->y + element->h );
+						::Ellipse( hdc, (int)(element->x), (int)(element->y), (int)(element->x + element->w), (int)(element->y + element->h) );
 
 						::SelectObject( hdc, pOldBrush );
 						::DeleteObject( brush );
@@ -568,11 +568,11 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::BitBlt( hdc, element->x, element->y, mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
-								::BitBlt( hdc, element->x, element->y, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
+								::BitBlt( hdc, (int)(element->x), (int)(element->y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
+								::BitBlt( hdc, (int)(element->x), (int)(element->y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								::BitBlt( hdc, element->x, element->y, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
+								::BitBlt( hdc, (int)(element->x), (int)(element->y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
@@ -586,11 +586,11 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::StretchBlt( hdc, element->x, element->y, element->w, element->h, dcMask.m_hDC, 0, 0, mask->w, mask->h, SRCAND );
-								::StretchBlt( hdc, element->x, element->y, element->w, element->h, dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCPAINT );
+								::StretchBlt( hdc, (int)(element->x), (int)(element->y), (int)(element->w), (int)(element->h), dcMask.m_hDC, 0, 0, mask->w, mask->h, SRCAND );
+								::StretchBlt( hdc, (int)(element->x), (int)(element->y), (int)(element->w), (int)(element->h), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								::StretchBlt( hdc, element->x, element->y, element->w, element->h, dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCCOPY );
+								::StretchBlt( hdc, (int)(element->x), (int)(element->y), (int)(element->w), (int)(element->h), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
@@ -606,16 +606,16 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						if ( it == frames[index]->areas_sim.end() ) {
 							Area* area = new Area;
 							area->name = element->operName;
-							area->x    = element->x;
-							area->y    = element->y;
-							area->w    = element->w;
-							area->h    = element->h;
+							area->x    = (int)(element->x);
+							area->y    = (int)(element->y);
+							area->w    = (int)(element->w);
+							area->h    = (int)(element->h);
 							frames[index]->areas_sim.push_back( area );
 						} else {
-							(*it)->x    = element->x;
-							(*it)->y    = element->y;
-							(*it)->w    = element->w;
-							(*it)->h    = element->h;
+							(*it)->x    = (int)(element->x);
+							(*it)->y    = (int)(element->y);
+							(*it)->w    = (int)(element->w);
+							(*it)->h    = (int)(element->h);
 						}
 						break;
 					}

@@ -365,7 +365,7 @@ void RDOThreadRepository::extractName( const std::string& fullname )
 	std::string::size_type pos = name.find_last_of( '.' );
 	if ( pos != std::string::npos ) {
 		std::string s;
-		s.assign( name.begin(), pos );
+		s.assign( &name[0], pos );
 		name = s;
 	}
 	static char szDelims[] = " \t\n\r";
@@ -414,7 +414,18 @@ void RDOThreadRepository::loadFile( const std::string& filename, rdo::binarystre
 			} else {
 				reanOnly = true;
 			}
-			if ( stream.getOpenMode() & std::ios::binary ) {
+			if ( stream.isBinary() )
+			{
+				std::ifstream file( filename.c_str(), std::ios::in | std::ios::binary );
+				stream << file.rdbuf();
+				file.close();
+			} else {
+				std::ifstream file( filename.c_str() );
+				stream << file.rdbuf();
+				file.close();
+			}
+/*
+			if ( stream.getOpenMode() & std::ios::binary* ) {
 				std::ifstream file( filename.c_str(), std::ios::in | std::ios::binary );
 				file.seekg( 0, std::ios::end );
 				int len = file.tellg();
@@ -427,6 +438,7 @@ void RDOThreadRepository::loadFile( const std::string& filename, rdo::binarystre
 				stream << file.rdbuf();
 				file.close();
 			}
+*/
 		} else {
 			stream.setstate( std::ios_base::badbit );
 			if ( mustExist ) stream.setstate( stream.rdstate() | std::ios_base::failbit );
@@ -440,10 +452,10 @@ void RDOThreadRepository::saveFile( const std::string& filename, rdo::binarystre
 {
 	if ( !filename.empty() ) {
 		bool file_exist = rdo::isFileExists( filename );
-		if ( stream.size() || ( file_exist && !deleteIfEmpty ) ) {
-			if ( stream.getOpenMode() & std::ios::binary ) {
+		if ( !stream.str().empty() || ( file_exist && !deleteIfEmpty ) ) {
+			if ( stream.isBinary() ) {
 				std::ofstream file( filename.c_str(), std::ios::out | std::ios::binary );
-				file.write( stream.data(), stream.size() );
+				file << stream.rdbuf();
 				file.close();
 			} else {
 				std::ofstream file( filename.c_str() );
@@ -476,11 +488,7 @@ void RDOThreadRepository::loadBMP( const std::string& name, rdo::binarystream& s
 	std::string file_name = modelPath + name + ".bmp";
 	if ( rdo::isFileExists( file_name ) ) {
 		std::ifstream file( file_name.c_str(), std::ios::in | std::ios::binary );
-		file.seekg( 0, std::ios::end );
-		int len = file.tellg();
-		file.seekg( 0, std::ios::beg );
-		stream.resize( len );
-		file.read( stream.data(), len );
+		stream << file.rdbuf();
 		file.close();
 	} else {
 		stream.setstate( std::ios_base::badbit );

@@ -76,14 +76,14 @@ const std::string& RDORTPDefVal::getEnumValue() const
 void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool warning ) const
 {
 	switch ( getType() ) {
-		case rdoRuntime::RDOValue::Type::rvt_int: {
-			if ( action->getType() == rdoRuntime::RDOValue::Type::rvt_real ) {
+		case rdoRuntime::RDOValue::rvt_int: {
+			if ( action->getType() == rdoRuntime::RDOValue::rvt_real ) {
 //				if ( warning ) {
 					parser()->warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
 //				} else {
 //					parser()->error( action->src_info(), "Ожидается целое число" );
 //				}
-			} else if ( action->getType() != rdoRuntime::RDOValue::Type::rvt_int ) {
+			} else if ( action->getType() != rdoRuntime::RDOValue::rvt_int ) {
 				parser()->error( action->src_info(), "Несоответствие типов. Ожидается целочисленное значение" );
 			}
 			rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->getCalc());
@@ -93,8 +93,8 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			}
 			break;
 		}
-		case rdoRuntime::RDOValue::Type::rvt_real: {
-			if ( action->getType() != rdoRuntime::RDOValue::Type::rvt_real && action->getType() != rdoRuntime::RDOValue::Type::rvt_int ) {
+		case rdoRuntime::RDOValue::rvt_real: {
+			if ( action->getType() != rdoRuntime::RDOValue::rvt_real && action->getType() != rdoRuntime::RDOValue::rvt_int ) {
 				parser()->error( action->src_info(), "Несоответствие типов. Ожидается вещественное значение" );
 			} else {
 				rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->getCalc());
@@ -105,8 +105,8 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			}
 			break;
 		}
-		case rdoRuntime::RDOValue::Type::rvt_enum: {
-			if ( action->getType() == rdoRuntime::RDOValue::Type::rvt_unknow ) {
+		case rdoRuntime::RDOValue::rvt_enum: {
+			if ( action->getType() == rdoRuntime::RDOValue::rvt_unknow ) {
 				if ( static_cast<const RDORTPEnumParamType*>(this)->enu->getEnums().findEnum( action->str ) == -1 ) {
 					if ( static_cast<const RDORTPEnumParamType*>(this)->enum_fun ) {
 						parser()->error( action->src_info(), rdo::format("Значение '%s' не может являться результатом функции: %s", action->str.c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
@@ -114,7 +114,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 						parser()->error( action->src_info(), rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->str.c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
 					}
 				}
-			} else if ( action->getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
+			} else if ( action->getType() != rdoRuntime::RDOValue::rvt_enum ) {
 				parser()->error_push_only( action->src_info(), rdo::format("Несоответствие типов. Ожидается перечислимый тип: %s", src_text().c_str()) );
 				parser()->error_push_only( static_cast<const RDORTPEnumParamType*>(this)->enu->src_info(), rdo::format("Возможные значения: %s", static_cast<const RDORTPEnumParamType*>(this)->enu->src_text().c_str()) );
 				parser()->error_push_done();
@@ -142,15 +142,15 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 void RDORTPParamType::checkParamType( const rdoRuntime::RDOValue& value, const RDOParserSrcInfo& value_info ) const
 {
 	switch ( getType() ) {
-		case rdoRuntime::RDOValue::Type::rvt_int: {
+		case rdoRuntime::RDOValue::rvt_int: {
 			checkRSSIntValue( value.getInt(), value_info );
 			break;
 		}
-		case rdoRuntime::RDOValue::Type::rvt_real: {
+		case rdoRuntime::RDOValue::rvt_real: {
 			checkRSSRealValue( value.getDouble(), value_info );
 			break;
 		}
-		case rdoRuntime::RDOValue::Type::rvt_enum: {
+		case rdoRuntime::RDOValue::rvt_enum: {
 			if ( static_cast<const RDORTPEnumParamType*>(this)->enu->getEnums().findEnum( value_info.src_text() ) == -1 ) {
 				parser()->error( value_info, rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", value_info.src_text().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
 			}
@@ -233,7 +233,7 @@ int RDORTPResType::getRTPParamNumber( const std::string& param ) const
 int RDORTPResType::writeModelStructure() const
 {
 	parser()->modelStructure << getNumber() << " " << getName() << " " << getParams().size() << std::endl;
-	for(int i = 0; i < getParams().size(); i++)
+	for ( unsigned int i = 0; i < getParams().size(); i++ )
 	{
 		parser()->modelStructure << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure();
@@ -666,8 +666,10 @@ const RDORTPParamType* RDORTPEnumParamType::constructSuchAs( const std::string& 
 int RDORTPEnumParamType::writeModelStructure() const
 {
 	parser()->modelStructure << "E " << enu->getEnums().getValues().size() << std::endl;
-	for(int i = 0; i < enu->getEnums().getValues().size(); i++)
+	for ( unsigned int i = 0; i < enu->getEnums().getValues().size(); i++ )
+	{
 		parser()->modelStructure << "    " << i << " " << enu->getEnums().getValues().at(i) << std::endl;
+	}
 	return 0;
 }
 

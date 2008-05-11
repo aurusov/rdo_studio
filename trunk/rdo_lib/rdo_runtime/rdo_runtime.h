@@ -92,15 +92,15 @@ public:
 	bool checkKeyPressed( unsigned int scan_code, bool shift, bool control );
 	bool checkAreaActivated( const std::string& oprName );
 
-	void setConstValue( int numberOfConst, RDOValue value );
+	void setConstValue( unsigned int numberOfConst, RDOValue value );
 	RDOValue getConstValue( int numberOfConst );
 	void rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo );
 
 	RDOResults& getResults()     { return *results;      }
 	RDOResults& getResultsInfo() { return *results_info; }
 
-	double getTimeNow() { return getCurrentTime(); }
-	double getSeconds() { return (time(NULL) - physic_time); }
+	double getTimeNow() { return getCurrentTime();                   }
+	double getSeconds() { return (double)(time(NULL) - physic_time); }
 
 	RDOActivity* getCurrentActivity() const                   { return m_currActivity;      }
 	void         setCurrentActivity( RDOActivity* activity )  { m_currActivity = activity;  }
@@ -159,11 +159,12 @@ public:
 
 	RDOResource* getResourceByID( const int num ) const { return num >= 0 ? allResourcesByID.at( num ) : NULL; }
 
-	void setPatternParameter(int parNumb, RDOValue val) 
+	void setPatternParameter( unsigned int parNumb, RDOValue val )
 	{ 
-		if(patternParameters.size() <= parNumb) 
+		if ( patternParameters.size() <= parNumb )
+		{
 			patternParameters.resize(parNumb + 1);
-
+		}
 		patternParameters.at(parNumb) = val;
 	}
 	RDOValue getPatternParameter(int parNumb) 

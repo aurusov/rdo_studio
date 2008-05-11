@@ -144,21 +144,21 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
 			rdoRuntime::RDOCalc* calc = NULL;
 			switch ( param->getType()->getType() ) {
-				case rdoRuntime::RDOValue::Type::rvt_int: {
+				case rdoRuntime::RDOValue::rvt_int: {
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
 					if ( param_type->getDiap().isExist() ) {
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
 					break;
 				}
-				case rdoRuntime::RDOValue::Type::rvt_real: {
+				case rdoRuntime::RDOValue::rvt_real: {
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
 					if ( param_type->getDiap().isExist() ) {
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
 					break;
 				}
-				case rdoRuntime::RDOValue::Type::rvt_enum: {
+				case rdoRuntime::RDOValue::rvt_enum: {
 					break;
 				}
 				default: parser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
@@ -211,7 +211,7 @@ std::string RDOPATPattern::getPatternId() const
 int RDOPATPattern::writeModelStructure() const
 {
 	parser()->modelStructure << getPatternId() << " " << getName() << " " << getModelStructureLetter() << " " << relRes.size();
-	for ( int i = 0; i < relRes.size(); i++ ) {
+	for ( unsigned int i = 0; i < relRes.size(); i++ ) {
 		parser()->modelStructure << " " << relRes.at(i)->getType()->getNumber();
 	}
 	parser()->modelStructure << std::endl;
@@ -792,7 +792,7 @@ void RDORelevantResource::deleteParamSetBegin()
 rdoRuntime::RDOCalc* RDORelevantResource::getChoiceCalc() const
 {
 	if ( choice_from && choice_from->type == rdoParse::RDOPATChoiceFrom::ch_from ) {
-		return choice_from->logic->createCalc( rdoRuntime::RDOValue::Type::rvt_int );
+		return choice_from->logic->createCalc( rdoRuntime::RDOValue::rvt_int );
 	}
 	return NULL;
 }

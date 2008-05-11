@@ -57,7 +57,7 @@ void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const i
 			} else {
 				real_val_count = delta;
 			}
-			int valo = minValue;
+			int valo = (int)minValue;
 			int valoffset = ( delta - 1 ) / ( real_val_count - 1 );
 			for ( int i = 0; i < real_val_count; i++ ) {
 				captions.push_back( getParamInfo()->getEnumValue( valo ) );
@@ -112,7 +112,7 @@ void RDOTracerResource::addParam( RDOTracerResParam* const value )
 	mutex.Unlock();
 }
 
-RDOTracerResParam* RDOTracerResource::getParam( const int index ) const
+RDOTracerResParam* RDOTracerResource::getParam( unsigned int index ) const
 {
 	if ( index >= params.size() || index < 0 )
 		return NULL;

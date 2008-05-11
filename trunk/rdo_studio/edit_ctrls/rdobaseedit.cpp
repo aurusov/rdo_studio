@@ -833,7 +833,9 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
+#pragma warning(disable: 4996)
 		strcat (delta, RTF_SETFONTFACE);
+#pragma warning(default: 4996)
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -854,7 +856,9 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
+#pragma warning(disable: 4996)
 		strcat (delta, RTF_SETFONTSIZE);
+#pragma warning(default: 4996)
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -875,7 +879,9 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
+#pragma warning(disable: 4996)
 		strcat (delta, RTF_SETCOLOR);
+#pragma warning(default: 4996)
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -896,7 +902,9 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
+#pragma warning(disable: 4996)
 		strcat (delta, RTF_SETBACKGROUND);
+#pragma warning(default: 4996)
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -906,12 +914,16 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 	if (last[offset] != current[offset]) {
 		if (current[offset] == '\\') { // turn on
 			memmove (last + offset, last + offset + 1, lastLen-- - offset);
+#pragma warning(disable: 4996)
 			strcat (delta, RTF_BOLD_ON);
+#pragma warning(default: 4996)
 			offset += 2;
 		} else { // turn off
 			memmove (last + offset + 1, last + offset, ++lastLen - offset);
 			last[offset] = '0';
+#pragma warning(disable: 4996)
 			strcat (delta, RTF_BOLD_OFF);
+#pragma warning(default: 4996)
 			offset += 3;
 		}
 	} else
@@ -920,11 +932,15 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 	if (last[offset] != current[offset]) {
 		if (current[offset] == '\\') { // turn on
 			memmove (last + offset, last + offset + 1, lastLen-- - offset);
+#pragma warning(disable: 4996)
 			strcat (delta, RTF_ITALIC_ON);
+#pragma warning(default: 4996)
 		} else { // turn off
 			memmove (last + offset + 1, last + offset, ++lastLen - offset);
 			last[offset] = '0';
+#pragma warning(disable: 4996)
 			strcat (delta, RTF_ITALIC_OFF);
+#pragma warning(default: 4996)
 		}
 	}
 	if (*delta) {
@@ -958,27 +974,39 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	saveStr += RTF_HEADEROPEN;
 	saveStr += RTF_FONTDEFOPEN;
 
+#pragma warning(disable: 4996)
 	strncpy( *fonts, style->font->name.c_str(), MAX_FONTDEF );
+#pragma warning(default: 4996)
 	saveStr += rdo::format( RTF_FONTDEF, 0, style->font->characterSet, style->font->name.c_str() );
+#pragma warning(disable: 4996)
 	strncpy( *colors, "#000000", MAX_COLORDEF );
+#pragma warning(default: 4996)
 
 	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(style->theme);
 
 	for ( int istyle = 0; istyle <= STYLE_DEFAULT; istyle++ ) {
 		if ( theme->styleUsing( istyle ) ) {
+#pragma warning(disable: 4996)
 			sprintf( lastStyle, RTF_SETFONTFACE "%d", fontCount-1 );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", style->font->size * 2 );
+#pragma warning(default: 4996)
 			if ( theme->styleDefault( istyle ) ) {
+#pragma warning(disable: 4996)
 				strncpy( colors[colorCount++], theme->styleBGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
+#pragma warning(default: 4996)
 			}
+#pragma warning(disable: 4996)
 			strncpy( colors[colorCount++], theme->styleFGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
+#pragma warning(default: 4996)
 			bool bold   = theme->styleBold( istyle );
 			bool italic = theme->styleItalic( istyle );
+#pragma warning(disable: 4996)
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1 );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1 );
 			strcat( lastStyle, bold ? RTF_BOLD_ON : RTF_BOLD_OFF );
 			strcat( lastStyle, italic ? RTF_ITALIC_ON : RTF_ITALIC_OFF );
 			strncpy( styles[istyle], lastStyle, MAX_STYLEDEF );
+#pragma warning(default: 4996)
 		}
 	}
 	saveStr += RTF_FONTDEFCLOSE;
@@ -990,7 +1018,9 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 
 	saveStr += rdo::format( RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", style->font->size * 2 );
 
+#pragma warning(disable: 4996)
 	sprintf( lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, style->font->size * 2 );
+#pragma warning(default: 4996)
 
 	bool prevCR = false;
 	int styleCurrent = -1;
@@ -1017,6 +1047,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 
 	file.Write( saveStr.c_str(), saveStr.length() );
 }
+#pragma warning(default: 4996)
 
 void RDOBaseEdit::setCurrentPos( const int value ) const
 {
@@ -1112,7 +1143,7 @@ void RDOBaseEdit::load( rdo::binarystream& stream )
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
 
-	sendEditorString( SCI_ADDTEXT, stream.size(), stream.data() );
+	sendEditorString( SCI_ADDTEXT, stream.str().length(), &stream.str()[0] );
 
 	setReadOnly( readOnly );
 }
@@ -1120,9 +1151,12 @@ void RDOBaseEdit::load( rdo::binarystream& stream )
 void RDOBaseEdit::save( rdo::binarystream& stream ) const
 {
 	int len = getLength();
-	stream.resize( len + 1 );
-	sendEditorString( SCI_GETTEXT, len + 1, stream.data() );
-	stream.resize( len );
+	std::vector<char> str;
+	str.resize( len + 1 );
+	sendEditorString( SCI_GETTEXT, len + 1, &str[0] );
+//	str[len] = "\0";
+//	str.resize( len );
+	stream.str( &str[0] ); // qq
 }
 
 int RDOBaseEdit::indentOfBlock( int line ) const
@@ -1195,7 +1229,7 @@ void RDOBaseEdit::OnBookmarkNext()
 	} else {
 
 		RDOBaseEditListIterator it = group->begin();
-		while ( it ) {
+		while ( it != group->end() ) {
 			if ( *it == this ) break;
 			it++;
 		}
@@ -1233,7 +1267,7 @@ void RDOBaseEdit::OnBookmarkPrev()
 	} else {
 
 		RDOBaseEditListIterator it = group->begin();
-		while ( it ) {
+		while ( it != group->end() ) {
 			if ( *it == this ) break;
 			it++;
 		}

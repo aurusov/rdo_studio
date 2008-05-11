@@ -45,7 +45,7 @@ public:
 	int id;
 	RDOTracerResType* getType() const { return resType; };
 	void addParam( RDOTracerResParam* const value );
-	RDOTracerResParam* getParam( const int index ) const;
+	RDOTracerResParam* getParam( unsigned int index ) const;
 	int getParamIndex( const RDOTracerResParam* const param ) const;
 	void setParams( std::string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing = false );
 	void setErased( const bool value );

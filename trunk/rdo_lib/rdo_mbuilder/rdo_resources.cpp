@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "rdo_resources.h"
-#include <rdoparser.h>
-#include <rdoparser_object.h>
 #include <rdortp.h>
-#include <rdorss.h>
 
 namespace rdoMBuilder
 {
@@ -24,17 +21,19 @@ RDOResType::RDOResType( const rdoParse::RDORTPResType& rtp ):
 	while ( param_it != rtp.getParams().end() )
 	{
 		Param param( **param_it );
+		param.m_id = m_params.size();
 		m_params.append( param );
 		param_it++;
 	}
 }
 
 RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
-	m_name( param.getName() )
+	m_name( param.getName() ),
+	m_id( -1 )
 {
 	switch ( param.getType()->getType() ) {
-		case rdoRuntime::RDOValue::Type::rvt_int: {
-			m_type = rdoRuntime::RDOValue( rdoRuntime::RDOValue::Type::rvt_int );
+		case rdoRuntime::RDOValue::rvt_int: {
+			m_type = rdoRuntime::RDOValue( rdoRuntime::RDOValue::rvt_int );
 			const rdoParse::RDORTPIntParamType* param_type = static_cast<const rdoParse::RDORTPIntParamType*>(param.getType());
 			if ( param_type->getDiap().isExist() ) {
 				m_min = param_type->getDiap().getMin();
@@ -42,8 +41,8 @@ RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 			}
 			break;
 		}
-		case rdoRuntime::RDOValue::Type::rvt_real: {
-			m_type = rdoRuntime::RDOValue( rdoRuntime::RDOValue::Type::rvt_real );
+		case rdoRuntime::RDOValue::rvt_real: {
+			m_type = rdoRuntime::RDOValue( rdoRuntime::RDOValue::rvt_real );
 			const rdoParse::RDORTPRealParamType* param_type = static_cast<const rdoParse::RDORTPRealParamType*>(param.getType());
 			if ( param_type->getDiap().isExist() ) {
 				m_min = param_type->getDiap().getMin();
@@ -51,7 +50,7 @@ RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 			}
 			break;
 		}
-		case rdoRuntime::RDOValue::Type::rvt_enum: {
+		case rdoRuntime::RDOValue::rvt_enum: {
 			const rdoParse::RDORTPEnumParamType* enumParamType = static_cast<const rdoParse::RDORTPEnumParamType*>(param.getType());
 			m_type = rdoRuntime::RDOValue( enumParamType->enu->getEnums() );
 			break;
@@ -74,7 +73,7 @@ RDOResType::RDOResType( const std::string& name, Type type ):
 {
 }
 
-bool RDOResType::ParamList::append( const Param& param )
+bool RDOResType::ParamList::append( Param& param )
 {
 	if ( std::find_if(begin(), end(), rdoParse::compareNameRef<Param>(param.name())) == end() )
 	{
@@ -90,7 +89,8 @@ bool RDOResType::ParamList::append( const Param& param )
 RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOValue::Type type ):
 	m_name( name ),
 	m_type( type ),
-	m_exist( true )
+	m_exist( true ),
+	m_id( -1 )
 {
 }
 
@@ -98,14 +98,16 @@ RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOValue::Type ty
 	m_name( name ),
 	m_type( def ),
 	m_default( def ),
-	m_exist( true )
+	m_exist( true ),
+	m_id( -1 )
 {
 }
 
 RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& type ):
 	m_name( name ),
 	m_type( type ),
-	m_exist( true )
+	m_exist( true ),
+	m_id( -1 )
 {
 }
 
@@ -115,13 +117,15 @@ RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& m
 	m_min( min ),
 	m_max( max ),
 	m_default( def ),
-	m_exist( true )
+	m_exist( true ),
+	m_id( -1 )
 {
 }
 
 RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOEnum* enums ):
 	m_name( name ),
-	m_exist( true )
+	m_exist( true ),
+	m_id( -1 )
 {
 	if ( enums )
 	{
@@ -136,7 +140,8 @@ RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOEnum* enums ):
 
 RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOEnum* enums, const rdoRuntime::RDOEnum::EnumItem& defaultValue ):
 	m_name( name ),
-	m_exist( true )
+	m_exist( true ),
+	m_id( -1 )
 {
 	if ( enums )
 	{
@@ -367,41 +372,6 @@ RDOResourceList::RDOResourceList( rdoParse::RDOParser* parser ):
 		RDOResource rss( **rss_it );
 		m_list.push_back( rss );
 		rss_it++;
-	}
-}
-
-// --------------------------------------------------------------------
-// ---- Добавление *нового* ресурса
-// --------------------------------------------------------------------
-bool RDOResourceList::append( RDOResource& rss )
-{
-	if ( std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResource>(rss.name())) == end() )
-	{
-		const rdoParse::RDORTPResType* pRTP = m_parser->findRTPResType(rss.getType().name());
-		if ( !pRTP )
-		{
-			return false;
-		}
-		rdoParse::RDORSSResource* pRSS = new rdoParse::RDORSSResource( m_parser, rss.name(), pRTP );
-		RDOResType::ParamList::List::const_iterator param_it = rss.getType().m_params.begin();
-		while ( param_it != rss.getType().m_params.end() )
-		{
-			RDOResource::Params::const_iterator value_it = const_cast<const RDOResource&>(rss)[param_it->name()];
-			if ( value_it == rss.end() )
-			{
-				delete pRSS;
-				return false;
-			}
-			pRSS->addValue( value_it->second );
-			param_it++;
-		}
-		rss.m_exist = true;
-		m_list.push_back( rss );
-		return true;
-	}
-	else
-	{
-		return false;
 	}
 }
 

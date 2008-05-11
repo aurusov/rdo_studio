@@ -168,7 +168,7 @@ std::string RDOParser::getChanges() const
 {
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
-	int changes_max_length = 0;
+	unsigned int changes_max_length = 0;
 	std::vector< Changes >::const_iterator change_it = changes.begin();
 	while ( change_it != changes.end() ) {
 		if ( change_it->name.length() > changes_max_length ) {
@@ -179,7 +179,7 @@ std::string RDOParser::getChanges() const
 	change_it = changes.begin();
 	while ( change_it != changes.end() ) {
 		stream << "  " << change_it->name;
-		for ( int i = change_it->name.length(); i < changes_max_length; i++ ) {
+		for ( unsigned int i = change_it->name.length(); i < changes_max_length; i++ ) {
 			stream << " ";
 		}
 		stream << "  = " << change_it->value << std::endl;
@@ -216,8 +216,8 @@ std::stringstream& RDOParser::getModelStructure()
 		modelStructure << m_runtime.writeActivitiesStructure( counter );
 
 		// DPT only
-		for( int i = 0; i < allDPTSearch.size(); i++ ) {
-			for( int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++ ) {
+		for( unsigned int i = 0; i < allDPTSearch.size(); i++ ) {
+			for( unsigned int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++ ) {
 				RDODPTSearchActivity* curr = allDPTSearch.at(i)->getActivities().at(j);
 				modelStructure << counter++ << " " << curr->getName() << " " << curr->getType()->getPatternId() << std::endl;
 			}
@@ -225,7 +225,7 @@ std::stringstream& RDOParser::getModelStructure()
 
 		// PMD
 		modelStructure << std::endl << "$Watching" << std::endl;
-		int watching_max_length = 0;
+		unsigned int watching_max_length = 0;
 		std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = m_runtime.getPokaz().begin();
 		while ( watching_it != m_runtime.getPokaz().end() ) {
 			if ( (*watching_it)->traceable() && (*watching_it)->getName().length() > watching_max_length ) {
@@ -237,7 +237,7 @@ std::stringstream& RDOParser::getModelStructure()
 		while ( watching_it != m_runtime.getPokaz().end() ) {
 			if ( (*watching_it)->traceable() ) {
 				modelStructure << "  " << (*watching_it)->getName();
-				for ( int i = (*watching_it)->getName().length(); i < watching_max_length + 2; i++ ) {
+				for ( unsigned int i = (*watching_it)->getName().length(); i < watching_max_length + 2; i++ ) {
 					modelStructure << " ";
 				}
 				(*watching_it)->writePokazStructure( modelStructure );

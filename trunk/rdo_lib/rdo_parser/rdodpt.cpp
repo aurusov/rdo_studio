@@ -204,7 +204,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 	if ( m_pattern->params.size() > m_currParam ) {
 		RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
 		parser()->error_push_only( _param_pos, rdo::format("”казаны не все параметра образца '%s':", m_pattern->src_text().c_str()) );
-		for ( int i = m_currParam; i < m_pattern->params.size(); i++ ) {
+		for ( unsigned int i = m_currParam; i < m_pattern->params.size(); i++ ) {
 			param = m_pattern->params.at( i );
 			parser()->error_push_only( param->src_info(), rdo::format("ќжидаемый параметр '%s' имеет тип '%s'", param->getName().c_str(), param->getType()->src_text().c_str()) );
 		}

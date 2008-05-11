@@ -60,13 +60,13 @@ void RDOParserRDOItem::parse( std::istream& in_stream )
 {
 	if ( m_lexer ) delete m_lexer;
 	std::ostringstream out_stream;
-	m_lexer = getLexer( in_stream, out_stream );
+	m_lexer = getLexer( &in_stream, &out_stream );
 	if ( m_lexer && m_parser_fun ) m_parser_fun( m_lexer );
 }
 
-RDOLexer* RDOParserRDOItem::getLexer( std::istream& in_stream, std::ostream& out_stream )
+RDOLexer* RDOParserRDOItem::getLexer( std::istream* in_stream, std::ostream* out_stream )
 {
-	return new RDOLexer( m_parser, &in_stream, &out_stream );
+	return new RDOLexer( m_parser, in_stream, out_stream );
 }
 
 int RDOParserRDOItem::lexer_loc_line()

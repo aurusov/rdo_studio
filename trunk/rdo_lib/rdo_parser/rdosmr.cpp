@@ -63,7 +63,7 @@ void RDOSMR::setFrameNumber( int value, const YYLTYPE& pos )
 	if ( value <= 0 ) {
 		parser()->error( pos, "Номер кадра должен быть больше нуля" );
 	}
-	if ( parser()->runtime()->allFrames.size() + 1 <= value ) {
+	if ( parser()->runtime()->allFrames.size() + 1 <= (unsigned int)value ) {
 		parser()->error( pos, rdo::format("Несуществующий кадр: %d", value) );
 	}
 	frameNumber = value;

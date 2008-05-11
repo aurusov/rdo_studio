@@ -1023,7 +1023,7 @@ protected:
 	int  type;
 	bool traceFlag;
 	std::vector< RDOValue > paramsCalcs;
-	int  number;
+	unsigned int  number;
 	bool isPermanent;
 
 	virtual RDOValue& doCalc( RDORuntime* runtime );
@@ -1032,7 +1032,7 @@ public:
 	RDOCalcCreateNumberedResource( RDORuntimeParent* parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
 	virtual RDOResource* createResource( RDORuntime* runtime ) const;
 
-	int getNumber() const { return number; }
+	unsigned int getNumber() const { return number; }
 };
 
 // ----------------------------------------------------------------------------
@@ -1148,8 +1148,8 @@ private:
 	RDOCalc* choice_calc;
 	std::vector< RDOSelectResourceCommon* > resSelectors;
 	bool useCommonWithMax;
-	void getBest( std::vector< std::vector< int > >& allNumbs, int level, std::vector< int >& res, RDOValue& bestVal, RDORuntime* sim, bool& hasBest ) const;
-	bool getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const;
+	void getBest( std::vector< std::vector< int > >& allNumbs, unsigned int level, std::vector< int >& res, RDOValue& bestVal, RDORuntime* sim, bool& hasBest ) const;
+	bool getFirst( std::vector< std::vector< int > >& allNumbs, unsigned int level, RDORuntime* sim ) const;
 
 public:
 	RDOSelectResourceCommonCalc( RDORuntimeParent* parent, const std::vector< RDOSelectResourceCommon* >& _resSelectors, bool _useCommonWithMax, RDOCalc* _choice_calc ):

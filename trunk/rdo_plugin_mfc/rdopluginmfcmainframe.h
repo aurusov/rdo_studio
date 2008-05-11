@@ -48,9 +48,7 @@ protected:
 	stringList::iterator yPos_iterator;
 	void setYPosIterator( const int prev_yPos );
 	stringList::iterator findString( int index );
-	stringList::reverse_iterator reverse_findString( int index );
 	stringList::const_iterator const_findString( int index ) const;
-	stringList::const_reverse_iterator const_reverse_findString( int index ) const;
 
 	void recalcWidth( const int newMaxStrWidth );
 	void updateScrollBars();

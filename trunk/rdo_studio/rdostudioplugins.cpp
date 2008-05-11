@@ -194,7 +194,7 @@ std::string RDOStudioPlugin::getFileName() const
 	std::string::size_type pos = name.find_last_of( '.' );
 	if ( pos != std::string::npos ) {
 		std::string s;
-		s.assign( name.begin(), pos );
+		s.assign( &name[0], pos );
 		name = s;
 	}
 	static char szDelims[] = " \t\n\r";
@@ -659,8 +659,8 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 				edit->save( stream );
 				std::string::size_type size = stream.str().size();
 				*data = new char[size + 1];
-				stream.str().copy( *data, size );
 				(*data)[size] = '\0';
+				stream.str( *data );//.copy( *data, size );
 				return true;
 			}
 		}
@@ -690,9 +690,10 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 			if ( tab->typeSupported( edit_type ) ) {
 				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );
 				rdo::binarystream stream;
-				size_t size = strlen(data);
-				stream.resize( size );
-				memcpy( stream.data(), data, strlen(data) );
+				stream.str( data );
+//				size_t size = strlen(data);
+//				stream.resize( size );
+//				memcpy( stream.data(), data, strlen(data) );
 				bool readonly = edit->isReadOnly();
 				if ( readonly ) edit->setReadOnly( false );
 				edit->clearAll();

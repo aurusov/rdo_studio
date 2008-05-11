@@ -16,14 +16,14 @@ public:
 	{
 		m_paramsCalcs.push_back( calc );
 	}
-	int getResByRelRes( const int rel_res_id ) const
+	int getResByRelRes( unsigned int rel_res_id ) const
 	{
 		if ( m_relResID.size() <= rel_res_id ) {
 			return 0;
 		}
 		return m_relResID.at( rel_res_id ); 
 	}
-	void setRelRes( int rel_res_id, int res_id )
+	void setRelRes( unsigned int rel_res_id, unsigned int res_id )
 	{
 		if ( m_relResID.size() <= rel_res_id ) {
 			m_relResID.resize( rel_res_id + 1 );

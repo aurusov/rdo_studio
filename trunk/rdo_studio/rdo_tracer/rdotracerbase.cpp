@@ -468,7 +468,8 @@ void RDOTracerBase::deleteTrace()
 	mutex.Lock();
 	
 	int count = resources.size();
-	for ( int i = 0; i < count; i++ ) {
+	int i;
+	for ( i = 0; i < count; i++ ) {
 		delete resources.at( i );
 	}
 	resources.clear();
@@ -599,8 +600,9 @@ void RDOTracerBase::getModelStructure( std::stringstream& stream )
 						addOperation( s, stream );
 				} while ( pos == std::string::npos && !stream.eof() );
 			}
-			if ( s.find( "$Watching" ) != std::string::npos ) {
+			if ( s.find( "$Watching" ) != std::string::npos && !stream.eof() ) {
 				do {
+					s = "";
 					stream >> s;
 					if ( !s.empty() )
 						addResult( s, stream );

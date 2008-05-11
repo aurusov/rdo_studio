@@ -5,160 +5,160 @@
 
 %pure-parser
 
-%token Resource_type		257
-%token permanent_kw			258
-%token Parameters			259
-%token integer				260
-%token real					261
-%token End					262
-%token temporary_kw			263
-%token IDENTIF				264
-%token INT_CONST			265
-%token REAL_CONST			266
-%token such_as				267
-%token dblpoint				268
-%token Resources			269
-%token trace_keyword		270
-%token no_trace				271
-%token IDENTIF_COLON		272
-%token Constant				273
-%token Body					274
-%token Function_keyword		275
-%token Type_keyword			276
-%token algorithmic			277
-%token table_keyword		278
-%token list_keyword			279
-%token Exist				281
-%token Not_Exist			282
-%token For_All				283
-%token Not_For_All			284
-%token neq					285
-%token leq					286
-%token geq					287
-%token NoCheck				288
-%token Calculate_if			289
-%token or_keyword			290
-%token and_keyword			291
-%token Sequence				292
-%token uniform				293
-%token exponential			294
-%token normal_keyword		295
-%token by_hist				296
-%token enumerative			297
+%token RDO_Resource_type				257
+%token RDO_permanent					258
+%token RDO_Parameters					259
+%token RDO_integer						260
+%token RDO_real							261
+%token RDO_End							262
+%token RDO_temporary					263
+%token RDO_IDENTIF						264
+%token RDO_INT_CONST					265
+%token RDO_REAL_CONST					266
+%token RDO_such_as						267
+%token RDO_dblpoint						268
+%token RDO_Resources					269
+%token RDO_trace						270
+%token RDO_no_trace						271
+%token RDO_IDENTIF_COLON				272
+%token RDO_Constant						273
+%token RDO_Body							274
+%token RDO_Function						275
+%token RDO_Type							276
+%token RDO_algorithmic					277
+%token RDO_table						278
+%token RDO_list							279
+%token RDO_Exist						281
+%token RDO_Not_Exist					282
+%token RDO_For_All						283
+%token RDO_Not_For_All					284
+%token RDO_neq							285
+%token RDO_leq							286
+%token RDO_geq							287
+%token RDO_NoCheck						288
+%token RDO_Calculate_if					289
+%token RDO_or							290
+%token RDO_and							291
+%token RDO_Sequence						292
+%token RDO_uniform						293
+%token RDO_exponential					294
+%token RDO_normal						295
+%token RDO_by_hist						296
+%token RDO_enumerative					297
 
-%token Pattern				298
-%token operation_kw			299
-%token irregular_event		300
-%token rule_keyword			301
-%token keyboard				302
-%token Relevant_resources	303
-%token Keep					304
-%token Create_keyword		305
-%token Erase				306
-%token NonExist				307
-%token IDENTIF_NoChange		308
-%token Time					309
-%token Choice				310
-%token from_keyword			311
-%token first_keyword		312
-%token Convert_begin		313
-%token Convert_end			314
-%token Convert_rule			315
-%token Convert_event		316
-%token with_max				317
-%token with_min				318
-%token IDENTIF_set			319
-%token IDENTIF_NoChange_NoChange	320
-%token Operations			321
+%token RDO_Pattern						298
+%token RDO_operation					299
+%token RDO_irregular_event				300
+%token RDO_rule							301
+%token RDO_keyboard						302
+%token RDO_Relevant_resources			303
+%token RDO_Keep							304
+%token RDO_Create						305
+%token RDO_Erase						306
+%token RDO_NonExist						307
+%token RDO_IDENTIF_NoChange				308
+%token RDO_Time							309
+%token RDO_Choice						310
+%token RDO_from							311
+%token RDO_first						312
+%token RDO_Convert_begin				313
+%token RDO_Convert_end					314
+%token RDO_Convert_rule					315
+%token RDO_Convert_event				316
+%token RDO_with_max						317
+%token RDO_with_min						318
+%token RDO_IDENTIF_set					319
+%token RDO_IDENTIF_NoChange_NoChange	320
+%token RDO_Operations					321
 	
-%token Results				322
-%token watch_par			323
-%token watch_state			324
-%token watch_quant			325
-%token watch_value			326
-%token get_value			327
+%token RDO_Results						322
+%token RDO_watch_par					323
+%token RDO_watch_state					324
+%token RDO_watch_quant					325
+%token RDO_watch_value					326
+%token RDO_get_value					327
 
-%token Model_name			328
-%token Resource_file		329
-%token OprIev_file			330
-%token Frame_file			331
-%token Statistic_file		332
-%token Results_file			333
-%token Trace_file			334
-%token Show_mode			335
-%token Frame_number			336
-%token Show_rate			337
-%token Run_StartTime		338
-%token Trace_StartTime		339
-%token Trace_EndTime		340
-%token Terminate_if			341
-%token Break_point			342
-%token Seed					343
-%token NoShow				344
-%token Monitor				345
-%token Animation			346
-%token NoChange				347
+%token RDO_Model_name					328
+%token RDO_Resource_file				329
+%token RDO_OprIev_file					330
+%token RDO_Frame_file					331
+%token RDO_Statistic_file				332
+%token RDO_Results_file					333
+%token RDO_Trace_file					334
+%token RDO_Show_mode					335
+%token RDO_Frame_number					336
+%token RDO_Show_rate					337
+%token RDO_Run_StartTime				338
+%token RDO_Trace_StartTime				339
+%token RDO_Trace_EndTime				340
+%token RDO_Terminate_if					341
+%token RDO_Break_point					342
+%token RDO_Seed							343
+%token RDO_NoShow						344
+%token RDO_Monitor						345
+%token RDO_Animation					346
+%token RDO_NoChange						347
 
-%token Decision_point		348
-%token search_keyword		349
-%token trace_stat			350
-%token trace_tops			351
-%token trace_all			352
-%token Condition_keyword	353
-%token Term_condition		354
-%token Evaluate_by			355
-%token Compare_tops			356
-%token NO					357
-%token YES					358
-%token Activities			359
-%token value_before			360
-%token value_after			361
-%token some					362
-%token Process				363
-%token SEIZE				364
-%token GENERATE				365
-%token TERMINATE			366
-%token ADVANCE				367
-%token RELEASE				368
-%token if_keyword			369
-%token result_keyword		370
+%token RDO_Decision_point				348
+%token RDO_search						349
+%token RDO_trace_stat					350
+%token RDO_trace_tops					351
+%token RDO_trace_all					352
+%token RDO_Condition					353
+%token RDO_Term_condition				354
+%token RDO_Evaluate_by					355
+%token RDO_Compare_tops					356
+%token RDO_NO							357
+%token RDO_YES							358
+%token RDO_Activities					359
+%token RDO_value_before					360
+%token RDO_value_after					361
+%token RDO_some							362
+%token RDO_Process						363
+%token RDO_SEIZE						364
+%token RDO_GENERATE						365
+%token RDO_TERMINATE					366
+%token RDO_ADVANCE						367
+%token RDO_RELEASE						368
+%token RDO_if							369
+%token RDO_result						370
 
-%token Frame				400
-%token Show_if				401
-%token Back_picture			402
-%token Show					403
-%token frm_cell				404
-%token text					405
-%token bitmap				406
-%token s_bmp				407
-%token rect_keyword			408
-%token r_rect				409
-%token line					410
-%token ellipse				411
-%token triang				412
-%token active				413
-%token ruler				414
-%token space_kw				415
-%token color_transparent_kw	416
-%token color_last_kw		417
-%token color_white_kw		418
-%token color_black_kw		419
-%token color_red_kw			420
-%token color_green_kw		421
-%token color_blue_kw		422
-%token color_cyan_kw		423
-%token color_magenta_kw		424
-%token color_yellow_kw		425
-%token color_gray_kw		426
+%token RDO_Frame						400
+%token RDO_Show_if						401
+%token RDO_Back_picture					402
+%token RDO_Show							403
+%token RDO_frm_cell						404
+%token RDO_text							405
+%token RDO_bitmap						406
+%token RDO_s_bmp						407
+%token RDO_rect							408
+%token RDO_r_rect						409
+%token RDO_line							410
+%token RDO_ellipse						411
+%token RDO_triang						412
+%token RDO_active						413
+%token RDO_ruler						414
+%token RDO_space						415
+%token RDO_color_transparent			416
+%token RDO_color_last					417
+%token RDO_color_white					418
+%token RDO_color_black					419
+%token RDO_color_red					420
+%token RDO_color_green					421
+%token RDO_color_blue					422
+%token RDO_color_cyan					423
+%token RDO_color_magenta				424
+%token RDO_color_yellow					425
+%token RDO_color_gray					426
 
-%token QUOTED_IDENTIF		430
-%token QUOTED_IDENTIF_BAD	431
-%token IDENTIF_BAD			432
-%token Select				433
-%token Size_kw				434
-%token Empty_kw				435
-%token not_keyword			436
-%token UMINUS				437
+%token RDO_QUOTED_IDENTIF				430
+%token RDO_QUOTED_IDENTIF_BAD			431
+%token RDO_IDENTIF_BAD					432
+%token RDO_Select						433
+%token RDO_Size							434
+%token RDO_Empty						435
+%token RDO_not							436
+%token RDO_UMINUS						437
 
 %{
 #include "pch.h"
@@ -182,12 +182,12 @@ namespace rdoParse
 {
 %}
 
-%left or_keyword
-%left and_keyword
+%left RDO_or
+%left RDO_and
 %left '+' '-'
 %left '*' '/'
-%left not_keyword
-%left UMINUS
+%left RDO_not
+%left RDO_UMINUS
 
 %start dpt_main
 
@@ -211,89 +211,89 @@ dpt_main:
 dpt_search_trace:		/* empty */ {
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
 						}
-						| no_trace {
+						| RDO_no_trace {
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
 						}
-						| trace_keyword {
+						| RDO_trace {
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа search" );
 						}
-						| trace_stat {
+						| RDO_trace_stat {
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_stat;
 						}
-						| trace_tops {
+						| RDO_trace_tops {
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_tops;
 						}
-						| trace_all {
+						| RDO_trace_all {
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
 						};
 
-dpt_search_begin:		Decision_point IDENTIF_COLON search_keyword dpt_search_trace {
+dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace {
 							std::string name = *reinterpret_cast<std::string*>($2);
 							$$ = (int)new RDODPTSearch( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
 						}
-						| Decision_point IDENTIF_COLON error {
+						| RDO_Decision_point RDO_IDENTIF_COLON error {
 							PARSER->error( @2, @3, "Ожидается тип точки" );
 						}
-						| Decision_point IDENTIF error {
+						| RDO_Decision_point RDO_IDENTIF error {
 							PARSER->error( @2, "Ожидается двоеточие" );
 						}
-						| Decision_point error {
+						| RDO_Decision_point error {
 							PARSER->error( @1, @2, "После ключевого слова $Decision_point ожидается имя точки" );
 						};
 
-dpt_search_condition:	dpt_search_begin Condition_keyword fun_logic {
+dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCondition((RDOFUNLogic *)$3);
 						}
-						| dpt_search_begin Condition_keyword NoCheck {
+						| dpt_search_begin RDO_Condition RDO_NoCheck {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCondition();
 						}
-						| dpt_search_begin Condition_keyword error {
+						| dpt_search_begin RDO_Condition error {
 							PARSER->error( @2, @3, "После ключевого слова $Condition ожидается условие начала поиска (начальная вершина)" );
 						}
 						| dpt_search_begin error {
 							PARSER->error( @2, "Ожидается ключевое слово $Condition" );
 						};
 
-dpt_search_term:		dpt_search_condition Term_condition fun_logic {
+dpt_search_term:		dpt_search_condition RDO_Term_condition fun_logic {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition((RDOFUNLogic *)$3);
 						}
-						| dpt_search_condition Term_condition NoCheck {
+						| dpt_search_condition RDO_Term_condition RDO_NoCheck {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition();
 						}
-						| dpt_search_condition Term_condition error {
+						| dpt_search_condition RDO_Term_condition error {
 							PARSER->error( @2, @3, "После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)" );
 						}
 						| dpt_search_condition error {
 							PARSER->error( @2, "Ожидается ключевое слово $Term_condition" );
 						};
 
-dpt_search_evaluate:	dpt_search_term Evaluate_by fun_arithm {
+dpt_search_evaluate:	dpt_search_term RDO_Evaluate_by fun_arithm {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setEvaluateBy((RDOFUNArithm *)$3);
 						}
-						| dpt_search_term Evaluate_by error {
+						| dpt_search_term RDO_Evaluate_by error {
 							PARSER->error( @2, @3, "После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину" );
 						}
 						| dpt_search_term error {
 							PARSER->error( @2, "Ожидается ключевое слово $Evaluate_by" );
 						};
 
-dp_searcht_compare:		dpt_search_evaluate Compare_tops '=' NO {
+dp_searcht_compare:		dpt_search_evaluate RDO_Compare_tops '=' RDO_NO {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCompareTops(false);
 						}
-						| dpt_search_evaluate Compare_tops '=' YES {
+						| dpt_search_evaluate RDO_Compare_tops '=' RDO_YES {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCompareTops(true);
 						}
-						| dpt_search_evaluate Compare_tops '=' error {
+						| dpt_search_evaluate RDO_Compare_tops '=' error {
 							PARSER->error( @3, @4, "Ожидается режим запоминания пройденных вершин (YES или NO)" );
 						}
-						| dpt_search_evaluate Compare_tops error {
+						| dpt_search_evaluate RDO_Compare_tops error {
 							PARSER->error( @2, @3, "Ожидается знак равенства" );
 						}
 						| dpt_search_evaluate error {
@@ -301,17 +301,17 @@ dp_searcht_compare:		dpt_search_evaluate Compare_tops '=' NO {
 						};
 
 dpt_search_descr_param:	/* empty */
-						| dpt_search_descr_param IDENTIF {
+						| dpt_search_descr_param RDO_IDENTIF {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
 							std::string param = *reinterpret_cast<std::string*>($2);
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
-						| dpt_search_descr_param INT_CONST {
+						| dpt_search_descr_param RDO_INT_CONST {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
 							int         param = $2;
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
-						| dpt_search_descr_param REAL_CONST {
+						| dpt_search_descr_param RDO_REAL_CONST {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
 							double      param = *reinterpret_cast<double*>($2);
 							dpt->getLastActivity()->addParam( param, @2 );
@@ -321,31 +321,31 @@ dpt_search_descr_param:	/* empty */
 							dpt->getLastActivity()->addParam( @2 );
 						};
 
-dpt_search_descr_value:	value_before fun_arithm {
+dpt_search_descr_value:	RDO_value_before fun_arithm {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
 							dpt->getLastActivity()->setValue( rdoRuntime::RDODPTSearch::Activity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
-						| value_after fun_arithm {
+						| RDO_value_after fun_arithm {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
 							dpt->getLastActivity()->setValue( rdoRuntime::RDODPTSearch::Activity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
-						| value_before error {
+						| RDO_value_before error {
 							PARSER->error( @1, @2, "Ошибка в арифметическом выражении" );
 						}
-						| value_after error {
+						| RDO_value_after error {
 							PARSER->error( @1, @2, "Ошибка в арифметическом выражении" );
 						};
 
-dpt_search_name:		IDENTIF_COLON IDENTIF {
+dpt_search_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
 							RDODPTSearch* dpt   = PARSER->getLastDPTSearch();
 							std::string name    = *reinterpret_cast<std::string*>($1);
 							std::string pattern = *reinterpret_cast<std::string*>($2);
 							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
 						}
-						| IDENTIF_COLON error {
+						| RDO_IDENTIF_COLON error {
 							PARSER->error( @1, @2, "Ожидается имя образца" );
 						}
-						| IDENTIF {
+						| RDO_IDENTIF {
 							PARSER->error( @1, "Ожидается ':'" );
 						}
 						| error {
@@ -361,13 +361,13 @@ dpt_searcht_activity:	/* empty */
 							PARSER->error( @3, @4, "Ожидаются ключевые слова value before или value after и стоимость применения правила" );
 						};
 
-dpt_search_header:		dp_searcht_compare Activities dpt_searcht_activity {
+dpt_search_header:		dp_searcht_compare RDO_Activities dpt_searcht_activity {
 						}
 						| dp_searcht_compare error {
 							PARSER->error( @1, @2, "После режима запоминания пройденных вершин ожидается ключевое слово $Activities" );
 						};
 
-dpt_search_end:			dpt_search_header End {
+dpt_search_end:			dpt_search_header RDO_End {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->end();
 						}
@@ -381,37 +381,37 @@ dpt_search_end:			dpt_search_header End {
 dpt_some_trace:			/* empty */ {
 							$$ = 1;
 						}
-						| no_trace {
+						| RDO_no_trace {
 							$$ = 1;
 						}
-						| trace_keyword {
+						| RDO_trace {
 							$$ = 2;
 						}
-						| trace_stat {
+						| RDO_trace_stat {
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа some" );
 						}
-						| trace_tops {
+						| RDO_trace_tops {
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа some" );
 						}
-						| trace_all {
+						| RDO_trace_all {
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа some" );
 						};
 
-dpt_some_begin:			Decision_point IDENTIF_COLON some dpt_some_trace {
+dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace {
 							// TODO: а где признак трассировки для some ?
 							std::string name = *reinterpret_cast<std::string*>($2);
 							$$ = (int)new RDODPTSome( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext) );
 						};
 
-dpt_some_condition:		dpt_some_begin Condition_keyword fun_logic {
+dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic {
 							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
 							dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
 						}
-						| dpt_some_begin Condition_keyword NoCheck {
+						| dpt_some_begin RDO_Condition RDO_NoCheck {
 							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
 							dpt->setCondition();
 						}
-						| dpt_some_begin Condition_keyword error {
+						| dpt_some_begin RDO_Condition error {
 							PARSER->error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
 						}
 						| dpt_some_begin {
@@ -419,28 +419,28 @@ dpt_some_condition:		dpt_some_begin Condition_keyword fun_logic {
 							dpt->setCondition();
 						};
 
-dpt_some_name:			IDENTIF_COLON IDENTIF {
+dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
 							RDODPTSome* dpt     = PARSER->getLastDPTSome();
 							std::string name    = *reinterpret_cast<std::string*>($1);
 							std::string pattern = *reinterpret_cast<std::string*>($2);
 							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
 						}
-						| IDENTIF_COLON error {
+						| RDO_IDENTIF_COLON error {
 							PARSER->error( @1, @2, "Ожидается имя образца" );
 						};
 
 dpt_some_descr_param:	/* empty */
-						| dpt_some_descr_param IDENTIF {
+						| dpt_some_descr_param RDO_IDENTIF {
 							RDODPTSome*  dpt   = PARSER->getLastDPTSome();
 							std::string  param = *reinterpret_cast<std::string*>($2);
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
-						| dpt_some_descr_param INT_CONST {
+						| dpt_some_descr_param RDO_INT_CONST {
 							RDODPTSome* dpt   = PARSER->getLastDPTSome();
 							int         param = $2;
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
-						| dpt_some_descr_param REAL_CONST {
+						| dpt_some_descr_param RDO_REAL_CONST {
 							RDODPTSome* dpt   = PARSER->getLastDPTSome();
 							double      param = *reinterpret_cast<double*>($2);
 							dpt->getLastActivity()->addParam( param, @2 );
@@ -459,13 +459,13 @@ dpt_some_activity:		/* empty */
 							activity->endParam( @3 );
 						};
 
-dpt_some_header:		dpt_some_condition Activities dpt_some_activity {
+dpt_some_header:		dpt_some_condition RDO_Activities dpt_some_activity {
 						}
 						| dpt_some_condition error {
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Activities" );
 						};
 
-dpt_some_end:			dpt_some_header End {
+dpt_some_end:			dpt_some_header RDO_End {
 							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
 							dpt->end();
 						}
@@ -476,19 +476,19 @@ dpt_some_end:			dpt_some_header End {
 // ----------------------------------------------------------------------------
 // ---------- DPT Free
 // ----------------------------------------------------------------------------
-dpt_free:				Activities {
+dpt_free:				RDO_Activities {
 						}
 						| dpt_free_descr_param {
 							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
 							activity->endParam( @1 );
 						};
 
-dpt_free_descr:			dpt_free IDENTIF_COLON IDENTIF {
+dpt_free_descr:			dpt_free RDO_IDENTIF_COLON RDO_IDENTIF {
 							std::string name    = *reinterpret_cast<std::string*>($2);
 							std::string pattern = *reinterpret_cast<std::string*>($3);
 							$$ = (int)new RDODPTFreeActivity( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, pattern) );
 						}
-						| dpt_free IDENTIF_COLON error {
+						| dpt_free RDO_IDENTIF_COLON error {
 							PARSER->error( @2, @3, "Ожидается имя образца" );
 						}
 						| dpt_free error {
@@ -496,28 +496,28 @@ dpt_free_descr:			dpt_free IDENTIF_COLON IDENTIF {
 						};
 
 dpt_free_descr_activ:	dpt_free_descr
-						| dpt_free_descr_activ QUOTED_IDENTIF {
+						| dpt_free_descr_activ RDO_QUOTED_IDENTIF {
 							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
 							std::string         key      = *reinterpret_cast<std::string*>($2);
 							activity->addHotKey( key, @2 );
 						}
-						| dpt_free_descr_activ '+' QUOTED_IDENTIF {
+						| dpt_free_descr_activ '+' RDO_QUOTED_IDENTIF {
 							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
 							std::string         key      = *reinterpret_cast<std::string*>($3);
 							activity->addHotKey( key, @3 );
 						};
 
-dpt_free_descr_param:	dpt_free_descr_param IDENTIF {
+dpt_free_descr_param:	dpt_free_descr_param RDO_IDENTIF {
 							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
 							std::string         param    = *reinterpret_cast<std::string*>($2);
 							activity->addParam( param, @2 );
 						}
-						| dpt_free_descr_param INT_CONST {
+						| dpt_free_descr_param RDO_INT_CONST {
 							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
 							int                 param    = $2;
 							activity->addParam( param, @2 );
 						}
-						| dpt_free_descr_param REAL_CONST {
+						| dpt_free_descr_param RDO_REAL_CONST {
 							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
 							double              param    = *reinterpret_cast<double*>($2);
 							activity->addParam( param, @2 );
@@ -528,7 +528,7 @@ dpt_free_descr_param:	dpt_free_descr_param IDENTIF {
 						}
 						| dpt_free_descr_activ;
 
-dpt_free_end:			dpt_free End
+dpt_free_end:			dpt_free RDO_End
 						| dpt_free {
 							PARSER->error( @1, "Ожидается ключевое слово $End" );
 						};
@@ -536,19 +536,19 @@ dpt_free_end:			dpt_free End
 // ----------------------------------------------------------------------------
 // ---------- $Process
 // ----------------------------------------------------------------------------
-dpt_process_end:	Process error End; /* заглушка для $Process */
+dpt_process_end:	RDO_Process error RDO_End; /* заглушка для $Process */
 
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| fun_arithm neq fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
+			| fun_arithm RDO_neq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
 			| fun_arithm '<' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
 			| fun_arithm '>' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| fun_arithm leq fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| fun_arithm geq fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| fun_logic and_keyword fun_logic { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
-			| fun_logic or_keyword fun_logic  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
+			| fun_arithm RDO_leq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
+			| fun_arithm RDO_geq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
+			| fun_logic RDO_and fun_logic     { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
+			| fun_logic RDO_or fun_logic      { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
 			| '[' fun_logic ']' {
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
@@ -567,7 +567,7 @@ fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 ==
 			| '(' fun_logic error {
 				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			}
-			| not_keyword fun_logic {
+			| RDO_not fun_logic {
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				RDOFUNLogic* logic_not = logic->operator_not();
 				logic_not->setSrcPos( @1, @2 );
@@ -596,13 +596,13 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			}
 			| fun_select_arithm {
 			}
-			| IDENTIF '.' IDENTIF {
+			| RDO_IDENTIF '.' RDO_IDENTIF {
 				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
 			}
-			| INT_CONST                   { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| REAL_CONST                  { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| IDENTIF                     { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
-			| '-' fun_arithm %prec UMINUS {
+			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
+			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
+			| '-' fun_arithm %prec RDO_UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
@@ -612,7 +612,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 // ----------------------------------------------------------------------------
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
-fun_arithm_func_call:	IDENTIF '(' ')' {
+fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							RDOFUNParams* fun = new RDOFUNParams( PARSER );
 							std::string fun_name = *reinterpret_cast<std::string*>($1);
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
@@ -621,7 +621,7 @@ fun_arithm_func_call:	IDENTIF '(' ')' {
 							RDOFUNArithm* arithm = fun->createCall( fun_name );
 							$$ = (int)arithm;
 						}
-						| IDENTIF '(' fun_arithm_func_call_pars ')' {
+						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
 							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
 							std::string fun_name = *reinterpret_cast<std::string*>($1);
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
@@ -630,7 +630,7 @@ fun_arithm_func_call:	IDENTIF '(' ')' {
 							RDOFUNArithm* arithm = fun->createCall( fun_name );
 							$$ = (int)arithm;
 						}
-						| IDENTIF '(' error {
+						| RDO_IDENTIF '(' error {
 							PARSER->error( @3, "Ошибка в параметрах функции" );
 						};
 
@@ -658,12 +658,12 @@ fun_arithm_func_call_pars:	fun_arithm {
 // ----------------------------------------------------------------------------
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
-fun_group_keyword:	Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
+fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
 						std::string type_name = *reinterpret_cast<std::string*>($3);
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
@@ -679,7 +679,7 @@ fun_group:			fun_group_header fun_logic ')' {
 						groupfun->setSrcPos( @1, @3 );
 						$$ = (int)groupfun->createFunLogic( reinterpret_cast<RDOFUNLogic*>($2) );
 					}
-					| fun_group_header NoCheck ')' {
+					| fun_group_header RDO_NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
 						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( RUNTIME, 1 ) );
@@ -690,7 +690,7 @@ fun_group:			fun_group_header fun_logic ')' {
 					| fun_group_header fun_logic error {
 						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
-					| fun_group_header NoCheck error {
+					| fun_group_header RDO_NoCheck error {
 						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header error {
@@ -700,16 +700,16 @@ fun_group:			fun_group_header fun_logic ')' {
 // ----------------------------------------------------------------------------
 // ---------- Select
 // ----------------------------------------------------------------------------
-fun_select_header:	Select '(' IDENTIF_COLON {
+fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
 						std::string type_name = *reinterpret_cast<std::string*>($3);
 						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
 						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;
 					}
-					| Select '(' error {
+					| RDO_Select '(' error {
 						PARSER->error( @3, "Ожидается имя типа" );
 					}
-					| Select error {
+					| RDO_Select error {
 						PARSER->error( @1, "Ожидается октрывающаяся скобка" );
 					};
 
@@ -719,7 +719,7 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						select->setSrcText( select->src_text() + flogic->src_text() + ")" );
 						select->initSelect( flogic );
 					}
-					| fun_select_header NoCheck ')' {
+					| fun_select_header RDO_NoCheck ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						RDOParserSrcInfo logic_info(@2, "NoCheck");
 						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
@@ -731,17 +731,17 @@ fun_select_body:	fun_select_header fun_logic ')' {
 					| fun_select_header fun_logic error {
 						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
-					| fun_select_header NoCheck error {
+					| fun_select_header RDO_NoCheck error {
 						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header error {
 						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
-fun_select_keyword:	Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
@@ -755,17 +755,17 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 					| fun_select_body '.' fun_select_keyword error {
 						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
 					}
-					| fun_select_body '.' Empty_kw '(' ')' {
+					| fun_select_body '.' RDO_Empty '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @5 );
 						RDOParserSrcInfo empty_info(@3, @5, "Empty()");
 						RDOFUNLogic* logic = select->createFunSelectEmpty( empty_info );
 						$$ = (int)logic;
 					}
-					| fun_select_body '.' Empty_kw '(' error {
+					| fun_select_body '.' RDO_Empty '(' error {
 						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
 					}
-					| fun_select_body '.' Empty_kw error {
+					| fun_select_body '.' RDO_Empty error {
 						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' error {
@@ -775,17 +775,17 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						PARSER->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					};
 
-fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
+fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @5 );
 						RDOParserSrcInfo size_info(@3, @5, "Size()");
 						RDOFUNArithm* arithm = select->createFunSelectSize( size_info );
 						$$ = (int)arithm;
 					}
-					| fun_select_body '.' Size_kw error {
+					| fun_select_body '.' RDO_Size error {
 						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
 					}
-					| fun_select_body '.' Size_kw '(' error {
+					| fun_select_body '.' RDO_Size '(' error {
 						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
 					};
 

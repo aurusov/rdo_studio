@@ -5,7 +5,7 @@
 #include "rdoparser_lexer.h"
 #include "rdoparser_object.h"
 #include <rdoruntime_object.h>
-#include <iostream.h>
+#include <iostream>
 
 namespace rdoParse
 {
@@ -21,7 +21,7 @@ public:
 
 	virtual void parse();
 	virtual void parse( std::istream& in_stream );
-	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
+	virtual RDOLexer* getLexer( std::istream* in_stream, std::ostream* out_stream );
 
 	virtual int  lexer_loc_line();
 	virtual int  lexer_loc_pos();

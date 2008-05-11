@@ -22,9 +22,9 @@ public:
 	}
 	virtual ~RDOOprContainer() {}
 
-	typedef std::vector< T* >    List;
-	typedef List::iterator       Iterator;
-	typedef List::const_iterator CIterator;
+	typedef          std::vector< T* >     List;
+	typedef typename List::iterator        Iterator;
+	typedef typename List::const_iterator  CIterator;
 
 	Iterator  begin()       { return m_items.begin(); }
 	Iterator  end()         { return m_items.end();   }

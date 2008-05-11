@@ -20,6 +20,7 @@ private:
 
 public:
 	RDOLexer( RDOParser* parser, std::istream* _yyin, std::ostream* _yyout ):
+		yyFlexLexer( _yyin, _yyout ),
 		m_parser( parser ),
 		yyin( _yyin ),
 		yyout( _yyout ),

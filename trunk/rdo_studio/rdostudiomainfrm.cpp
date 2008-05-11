@@ -47,7 +47,7 @@ void RDOToolBarModel::init( CWnd* parent, unsigned int tbResID, unsigned int tbD
 	slider.Create( WS_CHILD | WS_VISIBLE | WS_TABSTOP | TBS_HORZ, rc, this, ID_MODEL_SPEED_SLIDER );
 	slider.SetRange( 0, 100 );
 	for ( int i = 1; i <= 101; i += 10 ) {
-		slider.SetTic( log( i ) / log101 * 100 );
+		slider.SetTic( (int)(log( (double)i ) / log101 * 100) );
 	}
 	slider.SetPos( 100 );
 }

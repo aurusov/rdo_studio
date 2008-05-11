@@ -78,7 +78,8 @@ void RDOTracerSerie::setTitle( const std::string& value )
 
 void RDOTracerSerie::addValue( RDOTracerValue* const value )
 {
-	for ( std::vector< RDOStudioChartDoc* >::iterator it = documents.begin(); it != documents.end(); it++ )
+	std::vector< RDOStudioChartDoc* >::iterator it;
+	for ( it = documents.begin(); it != documents.end(); it++ )
 		(*it)->lock();
 
 	mutex.Lock();
@@ -143,10 +144,10 @@ void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const i
 		while ( (int)(( maxValue - minValue ) / ( real_val_count - 1 )) != (double)(( maxValue - minValue ) / ( real_val_count - 1 )) )
 			real_val_count--;
 	} else {
-		real_val_count = maxValue - minValue + 1;
+		real_val_count = (int)(maxValue - minValue + 1);
 	}
-	int valo = minValue;
-	int valoffset = ( maxValue - minValue ) / ( real_val_count - 1 );
+	int valo = (int)minValue;
+	int valoffset = (int)(( maxValue - minValue ) / ( real_val_count - 1 ));
 	std::string formatstr = "%d";
 	for ( int i = 0; i < real_val_count; i++ ) {
 		captions.push_back( rdo::format( formatstr.c_str(), valo ) );

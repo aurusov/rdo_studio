@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -32,7 +32,7 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO 
 BEGIN
     IDD_OPTIONS_EDITOR, DIALOG
     BEGIN
@@ -139,142 +139,82 @@ END
 //
 
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 138
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Редактор"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    GROUPBOX        "Буфер",IDC_BUFFERS_STATIC,0,4,292,43,0,0,
-                    HIDC_BUFFERS_STATIC
-    CONTROL         "Очищать автоматически",IDC_CLEARAUTO_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,16,100,10,0,
-                    HIDC_CLEARAUTO_CHECK
-    LTEXT           "Через",IDC_CLEARAUTO_STATIC1,24,32,22,8,0,0,
-                    HIDC_CLEARAUTO_STATIC1
-    EDITTEXT        IDC_CLEARAUTO_EDIT,52,28,40,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_CLEARAUTO_EDIT
-    LTEXT           "секунд",IDC_CLEARAUTO_STATIC2,96,32,24,8,0,0,
-                    HIDC_CLEARAUTO_STATIC2
-    GROUPBOX        "Авто-завершение",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,
-                    0,HIDC_AUTOCOMPLETE_STATIC
-    CONTROL         "Включить",IDC_USEAUTOCOMPLETE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,64,49,10,0,
-                    HIDC_USEAUTOCOMPLETE_CHECK
-    CONTROL         "Полный список",IDC_SHOWFULLLIST_RADIO,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,16,80,69,10,0,
-                    HIDC_SHOWFULLLIST_RADIO
+    GROUPBOX        "Буфер",IDC_BUFFERS_STATIC,0,4,292,43,0,0,HIDC_BUFFERS_STATIC
+    CONTROL         "Очищать автоматически",IDC_CLEARAUTO_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,16,100,10,0,HIDC_CLEARAUTO_CHECK
+    LTEXT           "Через",IDC_CLEARAUTO_STATIC1,24,32,22,8,0,0,HIDC_CLEARAUTO_STATIC1
+    EDITTEXT        IDC_CLEARAUTO_EDIT,52,28,40,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_CLEARAUTO_EDIT
+    LTEXT           "секунд",IDC_CLEARAUTO_STATIC2,96,32,24,8,0,0,HIDC_CLEARAUTO_STATIC2
+    GROUPBOX        "Авто-завершение",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,0,HIDC_AUTOCOMPLETE_STATIC
+    CONTROL         "Включить",IDC_USEAUTOCOMPLETE_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,64,49,10,0,HIDC_USEAUTOCOMPLETE_CHECK
+    CONTROL         "Полный список",IDC_SHOWFULLLIST_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,80,69,10,0,HIDC_SHOWFULLLIST_RADIO
     CONTROL         "Только ближайшие слова",IDC_SHOWNEARESTWORDSONLY_RADIO,
-                    "Button",BS_AUTORADIOBUTTON,16,92,104,10,0,
-                    HIDC_SHOWNEARESTWORDSONLY_RADIO
-    GROUPBOX        "Слева",IDC_MARGIN_STATIC,144,52,148,56,0,0,
-                    HIDC_MARGIN_STATIC
-    CONTROL         "Выводить группы",IDC_MARGIN_FOLD_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,152,64,75,10,0,
-                    HIDC_MARGIN_FOLD_CHECK
-    CONTROL         "Выводить закладки",IDC_MARGIN_BOOKMARK_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,152,76,83,10,0,
-                    HIDC_MARGIN_BOOKMARK_CHECK
+                    "Button",BS_AUTORADIOBUTTON,16,92,104,10,0,HIDC_SHOWNEARESTWORDSONLY_RADIO
+    GROUPBOX        "Слева",IDC_MARGIN_STATIC,144,52,148,56,0,0,HIDC_MARGIN_STATIC
+    CONTROL         "Выводить группы",IDC_MARGIN_FOLD_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,64,75,10,0,HIDC_MARGIN_FOLD_CHECK
+    CONTROL         "Выводить закладки",IDC_MARGIN_BOOKMARK_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,76,83,10,0,HIDC_MARGIN_BOOKMARK_CHECK
     CONTROL         "Выводить номера строк",IDC_MARGIN_LINENUMBER_CHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,88,98,10,0,
-                    HIDC_MARGIN_LINENUMBER_CHECK
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,88,98,10,0,HIDC_MARGIN_LINENUMBER_CHECK
 END
 
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Стиль и цвет"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
-                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
-                    TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | WS_TABSTOP,0,4,84,
-                    108,WS_EX_CLIENTEDGE,HIDC_STYLEITEM_TREE
+    CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | WS_TABSTOP,0,4,84,108,WS_EX_CLIENTEDGE,HIDC_STYLEITEM_TREE
     LTEXT           "Тема",IDC_THEME_STATIC,88,8,19,8,0,0,HIDC_THEME_STATIC
-    COMBOBOX        IDC_THEME_COMBO,116,4,104,86,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_THEME_COMBO
-    COMBOBOX        IDC_FONTNAME_COMBO,88,20,132,80,CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTNAME_COMBO
-    COMBOBOX        IDC_FONTSIZE_COMBO,224,20,64,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTSIZE_COMBO
-    LTEXT           "Текст",IDC_FGCOLOR_STATIC,88,40,21,8,0,0,
-                    HIDC_FGCOLOR_STATIC
-    COMBOBOX        IDC_FGCOLOR_COMBO,112,36,88,92,CBS_DROPDOWNLIST | 
-                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
-                    WS_TABSTOP,0,HIDC_FGCOLOR_COMBO
-    PUSHBUTTON      "...",IDC_FGCOLOR_BUTTON,200,36,16,12,0,WS_EX_STATICEDGE,
-                    HIDC_FGCOLOR_BUTTON
-    LTEXT           "Фон",IDC_BGCOLOR_STATIC,88,56,16,8,0,0,
-                    HIDC_BGCOLOR_STATIC
-    COMBOBOX        IDC_BGCOLOR_COMBO,112,52,88,92,CBS_DROPDOWNLIST | 
-                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
-                    WS_TABSTOP,0,HIDC_BGCOLOR_COMBO
-    PUSHBUTTON      "...",IDC_BGCOLOR_BUTTON,200,52,16,12,0,WS_EX_STATICEDGE,
-                    HIDC_BGCOLOR_BUTTON
-    CONTROL         "Утолстить",IDC_FONTBOLD_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,228,36,51,10,0,HIDC_FONTBOLD_CHECK
-    CONTROL         "Наклонить",IDC_FONTITALIC_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,228,48,53,10,0,
-                    HIDC_FONTITALIC_CHECK
-    CONTROL         "Подчеркнуть",IDC_FONTUNDERLINE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,228,60,59,10,0,
-                    HIDC_FONTUNDERLINE_CHECK
-    CONTROL         "Перенос слов",IDC_WORDWRAP_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,88,72,81,10,0,
-                    HIDC_WORDWRAP_CHECK
+    COMBOBOX        IDC_THEME_COMBO,116,4,104,86,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_THEME_COMBO
+    COMBOBOX        IDC_FONTNAME_COMBO,88,20,132,80,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTNAME_COMBO
+    COMBOBOX        IDC_FONTSIZE_COMBO,224,20,64,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTSIZE_COMBO
+    LTEXT           "Текст",IDC_FGCOLOR_STATIC,88,40,21,8,0,0,HIDC_FGCOLOR_STATIC
+    COMBOBOX        IDC_FGCOLOR_COMBO,112,36,88,92,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP,0,HIDC_FGCOLOR_COMBO
+    PUSHBUTTON      "...",IDC_FGCOLOR_BUTTON,200,36,16,12,0,WS_EX_STATICEDGE,HIDC_FGCOLOR_BUTTON
+    LTEXT           "Фон",IDC_BGCOLOR_STATIC,88,56,16,8,0,0,HIDC_BGCOLOR_STATIC
+    COMBOBOX        IDC_BGCOLOR_COMBO,112,52,88,92,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP,0,HIDC_BGCOLOR_COMBO
+    PUSHBUTTON      "...",IDC_BGCOLOR_BUTTON,200,52,16,12,0,WS_EX_STATICEDGE,HIDC_BGCOLOR_BUTTON
+    CONTROL         "Утолстить",IDC_FONTBOLD_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,228,36,51,10,0,HIDC_FONTBOLD_CHECK
+    CONTROL         "Наклонить",IDC_FONTITALIC_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,228,48,53,10,0,HIDC_FONTITALIC_CHECK
+    CONTROL         "Подчеркнуть",IDC_FONTUNDERLINE_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,228,60,59,10,0,HIDC_FONTUNDERLINE_CHECK
+    CONTROL         "Перенос слов",IDC_WORDWRAP_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,72,81,10,0,HIDC_WORDWRAP_CHECK
     CONTROL         "Горизонтальная прокрутка",IDC_HORZSCROLLBAR_CHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,72,108,10,0,
-                    HIDC_HORZSCROLLBAR_CHECK
-    LTEXT           "Закладка",IDC_BOOKMARK_STATIC,196,88,34,8,0,0,
-                    HIDC_BOOKMARK_STATIC
-    COMBOBOX        IDC_BOOKMARK_COMBO,232,84,56,76,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_BOOKMARK_COMBO
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,72,108,10,0,HIDC_HORZSCROLLBAR_CHECK
+    LTEXT           "Закладка",IDC_BOOKMARK_STATIC,196,88,34,8,0,0,HIDC_BOOKMARK_STATIC
+    COMBOBOX        IDC_BOOKMARK_COMBO,232,84,56,76,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_BOOKMARK_COMBO
     LTEXT           "Группа",IDC_FOLD_STATIC,88,88,24,8,0,0,HIDC_FOLD_STATIC
-    COMBOBOX        IDC_FOLD_COMBO,114,84,70,116,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_FOLD_COMBO
-    LTEXT           "Показать как",IDC_PREVIEWAS_STATIC,88,104,48,8,0,0,
-                    HIDC_PREVIEWAS_STATIC
-    COMBOBOX        IDC_PREVIEWAS_COMBO,140,100,92,86,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_PREVIEWAS_COMBO
-    LTEXT           "Верт. отступ",IDC_VERTBORDER_STATIC,88,76,43,8,0,0,
-                    HIDC_VERTBORDER_STATIC
-    EDITTEXT        IDC_VERTBORDER_EDIT,132,72,24,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_VERTBORDER_EDIT
-    LTEXT           "Горизонт. отступ",IDC_HORZBORDER_STATIC,164,76,58,8,0,0,
-                    HIDC_HORZBORDER_STATIC
-    EDITTEXT        IDC_HORZBORDER_EDIT,224,72,24,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_HORZBORDER_EDIT
-    COMBOBOX        IDC_TITLE_FONTSIZE_COMBO,128,72,38,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_TITLE_FONTSIZE_COMBO
-    LTEXT           "Заголовок",IDC_TITLE_FONTSIZE_STATIC,88,76,37,8,0,0,
-                    HIDC_TITLE_FONTSIZE_STATIC
-    COMBOBOX        IDC_LEGEND_FONTSIZE_COMBO,227,72,38,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_LEGEND_FONTSIZE_COMBO
-    LTEXT           "Легенда",IDC_LEGEND_FONTSIZE_STATIC,192,76,30,8,0,0,
-                    HIDC_LEGEND_FONTSIZE_STATIC
-    EDITTEXT        IDC_TICKWIDTH_EDIT,248,88,29,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_TICKWIDTH_EDIT
-    LTEXT           "Минимаольный интервал между значениями",
-                    IDC_TICKWIDTH_STATIC,88,92,154,8,0,0,
-                    HIDC_TICKWIDTH_STATIC
-    CONTROL         "Группа для комментариев",IDC_COMMENTGROUP_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,88,100,105,10
-    CONTROL         "Вывод предупреждений",IDC_WARNING_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,88,84,97,10
+    COMBOBOX        IDC_FOLD_COMBO,114,84,70,116,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_FOLD_COMBO
+    LTEXT           "Показать как",IDC_PREVIEWAS_STATIC,88,104,48,8,0,0,HIDC_PREVIEWAS_STATIC
+    COMBOBOX        IDC_PREVIEWAS_COMBO,140,100,92,86,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_PREVIEWAS_COMBO
+    LTEXT           "Верт. отступ",IDC_VERTBORDER_STATIC,88,76,43,8,0,0,HIDC_VERTBORDER_STATIC
+    EDITTEXT        IDC_VERTBORDER_EDIT,132,72,24,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_VERTBORDER_EDIT
+    LTEXT           "Горизонт. отступ",IDC_HORZBORDER_STATIC,164,76,58,8,0,0,HIDC_HORZBORDER_STATIC
+    EDITTEXT        IDC_HORZBORDER_EDIT,224,72,24,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_HORZBORDER_EDIT
+    COMBOBOX        IDC_TITLE_FONTSIZE_COMBO,128,72,38,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_TITLE_FONTSIZE_COMBO
+    LTEXT           "Заголовок",IDC_TITLE_FONTSIZE_STATIC,88,76,37,8,0,0,HIDC_TITLE_FONTSIZE_STATIC
+    COMBOBOX        IDC_LEGEND_FONTSIZE_COMBO,227,72,38,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_LEGEND_FONTSIZE_COMBO
+    LTEXT           "Легенда",IDC_LEGEND_FONTSIZE_STATIC,192,76,30,8,0,0,HIDC_LEGEND_FONTSIZE_STATIC
+    EDITTEXT        IDC_TICKWIDTH_EDIT,248,88,29,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_TICKWIDTH_EDIT
+    LTEXT           "Минимаольный интервал между значениями",IDC_TICKWIDTH_STATIC,88,92,154,8,0,0,HIDC_TICKWIDTH_STATIC
+    CONTROL         "Группа для комментариев",IDC_COMMENTGROUP_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,100,105,10
+    CONTROL         "Вывод предупреждений",IDC_WARNING_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,84,97,10
 END
 
-IDD_FILEASSOCIATION DIALOG DISCARDABLE  0, 0, 200, 70
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_FILEASSOCIATION DIALOG  0, 0, 200, 70
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Привязка к расширению"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "Да",IDOK,45,50,50,14
     PUSHBUTTON      "Нет",IDCANCEL,115,50,50,14
-    LTEXT           "Запущенная RAO-studio не связана с расширением SMR (файлы прокта модели). Связать ?",
-                    IDC_FILEASSOCIATION_STATIC,5,5,190,20
-    CONTROL         "Проверять в будущем",IDC_FILEASSOCIATION_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,30,91,10
+    LTEXT           "Запущенная RAO-studio не связана с расширением SMR (файлы прокта модели). Связать ?",IDC_FILEASSOCIATION_STATIC,5,5,190,20
+    CONTROL         "Проверять в будущем",IDC_FILEASSOCIATION_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,30,91,10
 END
 
-IDD_BUFFER DIALOG DISCARDABLE  0, 0, 205, 60
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_BUFFER DIALOG  0, 0, 205, 60
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Буфер"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -285,79 +225,56 @@ BEGIN
 END
 
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Табуляция"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
-    LTEXT           "Размер табуляции",IDC_TABSIZE_STATIC,8,21,64,8,NOT 
-                    WS_GROUP,0,HIDC_TABSIZE_STATIC
-    EDITTEXT        IDC_TABSIZE_EDIT,76,16,40,12,ES_AUTOHSCROLL | ES_NUMBER,
-                    0,HIDC_TABSIZE_EDIT
-    CONTROL         "Использовать символ табуляции (не пробел)",
-                    IDC_USETABS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    120,20,168,10,0,HIDC_USETABS_CHECK
-    LTEXT           "Размер отступа",IDC_INDENTSIZE_STATIC,8,37,55,8,NOT 
-                    WS_GROUP,0,HIDC_INDENTSIZE_STATIC
-    EDITTEXT        IDC_INDENTSIZE_EDIT,76,32,40,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_INDENTSIZE_EDIT
-    CONTROL         "Отступ через табуляцию",IDC_TABINDENTS_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,120,36,99,10,0,
-                    HIDC_TABINDENTS_CHECK
-    CONTROL         "Стирать табуляцией",IDC_BACKSPACEUNTABS_RADIO,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,8,53,84,10,0,
-                    HIDC_BACKSPACEUNTABS_RADIO
-    CONTROL         "Стирать отступом",IDC_BACKSPACEUNINDENTS_RADIO,"Button",
-                    BS_AUTORADIOBUTTON,8,64,77,10,0,
-                    HIDC_BACKSPACEUNINDENTS_RADIO
-    CONTROL         "Авто-отступ",IDC_AUTOINDENT_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,80,56,10,0,
-                    HIDC_AUTOINDENT_CHECK
+    LTEXT           "Размер табуляции",IDC_TABSIZE_STATIC,8,21,64,8,NOT WS_GROUP,0,HIDC_TABSIZE_STATIC
+    EDITTEXT        IDC_TABSIZE_EDIT,76,16,40,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_TABSIZE_EDIT
+    CONTROL         "Использовать символ табуляции (не пробел)",IDC_USETABS_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,20,168,10,0,HIDC_USETABS_CHECK
+    LTEXT           "Размер отступа",IDC_INDENTSIZE_STATIC,8,37,55,8,NOT WS_GROUP,0,HIDC_INDENTSIZE_STATIC
+    EDITTEXT        IDC_INDENTSIZE_EDIT,76,32,40,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_INDENTSIZE_EDIT
+    CONTROL         "Отступ через табуляцию",IDC_TABINDENTS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,36,99,10,0,HIDC_TABINDENTS_CHECK
+    CONTROL         "Стирать табуляцией",IDC_BACKSPACEUNTABS_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,8,53,84,10,0,HIDC_BACKSPACEUNTABS_RADIO
+    CONTROL         "Стирать отступом",IDC_BACKSPACEUNINDENTS_RADIO,"Button",BS_AUTORADIOBUTTON,8,64,77,10,0,HIDC_BACKSPACEUNINDENTS_RADIO
+    CONTROL         "Авто-отступ",IDC_AUTOINDENT_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,80,56,10,0,HIDC_AUTOINDENT_CHECK
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 292, 138
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Основные"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    GROUPBOX        "Привязка к расширению",IDC_FILEASSOCIATION_STATIC,0,4,
-                    292,40,0,0,HIDC_FILEASSOCIATION_STATIC
-    CONTROL         "Установить привязку для файла проекта (*.smr)",
-                    IDC_FILEASSOCIATION_SETUP_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,8,16,177,10,0,
-                    HIDC_FILEASSOCIATION_SETUP_CHECK
-    CONTROL         "Проверять в будущем",
-                    IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,28,91,10,0,
-                    HIDC_FILEASSOCIATION_CHECKINFUTURE_CHECK
-    CONTROL         "Открывать последний проект при старте",
-                    IDC_OPENLASTPROJECT_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,8,52,155,10,0,HIDC_OPENLASTPROJECT_CHECK
-    CONTROL         "Показывать полное имя проекта в заголовке",
-                    IDC_SHOWCAPTIONFULLNAME_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,8,64,172,10,0,HIDC_SHOWCAPTIONFULLNAME_CHECK
+    GROUPBOX        "Привязка к расширению",IDC_FILEASSOCIATION_STATIC,0,4,292,40,0,0,HIDC_FILEASSOCIATION_STATIC
+    CONTROL         "Установить привязку для файла проекта (*.smr)",IDC_FILEASSOCIATION_SETUP_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,16,177,10,0,HIDC_FILEASSOCIATION_SETUP_CHECK
+    CONTROL         "Проверять в будущем",IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,28,91,10,0,HIDC_FILEASSOCIATION_CHECKINFUTURE_CHECK
+    CONTROL         "Открывать последний проект при старте",IDC_OPENLASTPROJECT_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,52,155,10,0,HIDC_OPENLASTPROJECT_CHECK
+    CONTROL         "Показывать полное имя проекта в заголовке",IDC_SHOWCAPTIONFULLNAME_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,64,172,10,0,HIDC_SHOWCAPTIONFULLNAME_CHECK
 END
 
-IDD_OPTIONS_PLUGINS DIALOG DISCARDABLE  0, 0, 292, 187
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+IDD_OPTIONS_PLUGINS DIALOG  0, 0, 292, 187
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Внешние модули"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "List1",IDC_PLUGIN_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,4,292,136
+    CONTROL         "List1",IDC_PLUGIN_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,4,292,136
     LTEXT           "Автозапуск",IDC_PLUGIN_RUNMODE_STATIC,8,148,40,8
-    COMBOBOX        IDC_PLUGIN_RUNMODE_COMBOBOX,52,144,64,44,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_PLUGIN_RUNMODE_COMBOBOX,52,144,64,44,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "По-умолчанию",IDC_PLUGIN_RUNMODE_BUTTON,120,144,56,14
     PUSHBUTTON      "Запустить",IDC_PLUGIN_START,8,164,50,14
     PUSHBUTTON      "Остановить",IDC_PLUGIN_STOP,64,164,50,14
-    CONTROL         "Восстановить состояние при запуске",
-                    IDC_PLUGIN_RESTORESTATE_CHECKBOX,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,128,168,144,10
+    CONTROL         "Восстановить состояние при запуске",IDC_PLUGIN_RESTORESTATE_CHECKBOX,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,128,168,144,10
 END
 
-IDD_CHART_OPTIONS_CHART DIALOG DISCARDABLE  0, 0, 235, 71
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+IDD_CHART_OPTIONS_CHART DIALOG  0, 0, 235, 71
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "График"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -365,69 +282,53 @@ BEGIN
     EDITTEXT        IDC_CHART_TITLE_EDIT,44,5,186,12,ES_AUTOHSCROLL
     LTEXT           "Кол-во значений по Y",IDC_VAL_COUNT_Y_STATIC,5,25,74,8
     EDITTEXT        IDC_IDC_VAL_COUNT_Y_EDIT,83,21,29,12,ES_AUTOHSCROLL
-    LTEXT           "Кол-во значений по X",IDC_VAL_COUNT_X_STATIC,124,25,74,
-                    8
+    LTEXT           "Кол-во значений по X",IDC_VAL_COUNT_X_STATIC,124,25,74,8
     EDITTEXT        IDC_IDC_VAL_COUNT_X_EDIT,201,21,29,12,ES_AUTOHSCROLL
-    CONTROL         "Показать легенду",IDC_DRAW_LEGEND_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,90,40,77,10
+    CONTROL         "Показать легенду",IDC_DRAW_LEGEND_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,90,40,77,10
     LTEXT           "По Y откладывать",IDC_AXIS_VAL_STATIC,5,59,63,8
-    COMBOBOX        IDC_AXIS_SERIES,72,55,158,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_AXIS_SERIES,72,55,158,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_CHART_OPTIONS_SERIES DIALOGEX 0, 0, 235, 84
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Значение"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     LTEXT           "Значение",IDC_SERIES_STATIC,5,9,33,8
-    COMBOBOX        IDC_SERIES_COMBO,48,5,182,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SERIES_COMBO,48,5,182,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Заголовок",IDC_SERIE_TITLE_STATIC,5,25,37,8
     EDITTEXT        IDC_SERIE_TITLE_EDIT,48,21,182,12,ES_AUTOHSCROLL
-    CONTROL         "Выводить в легенде",IDC_LEGEND_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,40,85,10
+    CONTROL         "Выводить в легенде",IDC_LEGEND_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,40,85,10
     LTEXT           "Цвет",IDC_COLOR_STATIC,106,41,18,8
-    COMBOBOX        IDC_COLOR_COMBO,126,37,88,92,CBS_DROPDOWNLIST | 
-                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
-                    WS_TABSTOP
+    COMBOBOX        IDC_COLOR_COMBO,126,37,88,92,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "...",IDC_COLOR_BUTTON,214,37,16,12,0,WS_EX_STATICEDGE
     LTEXT           "Маркер",IDC_MARKER_STATIC,12,60,27,8
-    COMBOBOX        IDC_MARKER_COMBO,40,56,53,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MARKER_COMBO,40,56,53,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Размер маркера",IDC_MAKER_SIZE_STATIC,104,60,58,8
     EDITTEXT        IDC_MARKER_SIZE_EDIT,164,56,25,12,ES_AUTOHSCROLL
-    CONTROL         "Показать",IDC_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,64,72,58,10
-    CONTROL         "Прозрачный маркер",IDC_TRANSP_MARKER_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,144,72,85,10
+    CONTROL         "Показать",IDC_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,64,72,58,10
+    CONTROL         "Прозрачный маркер",IDC_TRANSP_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,144,72,85,10
 END
 
-IDD_ABOUT DIALOG DISCARDABLE  0, 0, 268, 249
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_ABOUT DIALOG  0, 0, 268, 249
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "О программе"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,212,228,50,14
     ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
     CTEXT           "caption",IDC_ABOUT_CAPTION,40,8,220,8
-    LTEXT           "Московский Государственный Университет им.Н.Э.Баумана,\nФакультет Робототехники и комплексной автоматизации,\nКафедра Компьютерные системы автоматизации производства",
-                    IDC_ABOUT_INFO,40,20,220,24
-    RTEXT           "Телефон: +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nФакс: +7 (495) 263 61 70",
-                    IDC_ABOUT_TEL,116,76,144,32
-    EDITTEXT        IDC_DEVELOPERS,4,131,260,92,ES_MULTILINE | 
-                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Московский Государственный Университет им.Н.Э.Баумана,\nФакультет Робототехники и комплексной автоматизации,\nКафедра Компьютерные системы автоматизации производства",IDC_ABOUT_INFO,40,20,220,24
+    RTEXT           "Телефон: +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nФакс: +7 (495) 263 61 70",IDC_ABOUT_TEL,116,76,144,32
+    EDITTEXT        IDC_DEVELOPERS,4,131,260,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "Разработчики",IDC_STATIC,4,120,50,8
-    RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,204,112,56,8,
-                    SS_NOTIFY
-    RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,180,120,80,8,
-                    SS_NOTIFY
-    RTEXT           "Россия, Москва, 105005,\nул. 2-ая Бауманская, д.5.\nКафедра РК-9",
-                    IDC_ABOUT_ADDRESS,116,48,144,24
+    RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,204,112,56,8,SS_NOTIFY
+    RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,180,120,80,8,SS_NOTIFY
+    RTEXT           "Россия, Москва, 105005,\nул. 2-ая Бауманская, д.5.\nКафедра РК-9",IDC_ABOUT_ADDRESS,116,48,144,24
 END
 
-IDD_MODEL_NEW DIALOG DISCARDABLE  0, 0, 238, 170
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_MODEL_NEW DIALOG  0, 0, 238, 170
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Создание модели"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -435,28 +336,22 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,184,152,50,14
     EDITTEXT        IDC_MODEL_NAME,62,6,172,12,ES_AUTOHSCROLL
     RTEXT           "Путь",IDC_STATIC,8,22,48,8
-    EDITTEXT        IDC_MODEL_PATH,62,20,156,12,ES_AUTOHSCROLL | ES_READONLY | 
-                    NOT WS_TABSTOP
+    EDITTEXT        IDC_MODEL_PATH,62,20,156,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     PUSHBUTTON      "...",IDC_MODEL_PATH_BUTTON,220,20,14,12,BS_FLAT
     GROUPBOX        "Шаблон",IDC_STATIC,4,64,230,82
     RTEXT           "Имя модели",IDC_STATIC,8,10,47,8
-    CONTROL         "Пустая модель",IDC_MODEL_EMPTY,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT | WS_GROUP,8,76,67,10
-    CONTROL         "Только каркас",IDC_MODEL_TEMPLATE,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT,8,88,67,10
-    CONTROL         "Модель простейшей СМО",IDC_MODEL_BARBER1,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT,8,100,103,10
-    CONTROL         "Модель многоканальной СМО с временными ресурсами",
-                    IDC_MODEL_BARBER2,"Button",BS_AUTORADIOBUTTON | BS_FLAT,
-                    8,112,209,10
+    CONTROL         "Пустая модель",IDC_MODEL_EMPTY,"Button",BS_AUTORADIOBUTTON | BS_FLAT | WS_GROUP,8,76,67,10
+    CONTROL         "Только каркас",IDC_MODEL_TEMPLATE,"Button",BS_AUTORADIOBUTTON | BS_FLAT,8,88,67,10
+    CONTROL         "Модель простейшей СМО",IDC_MODEL_BARBER1,"Button",BS_AUTORADIOBUTTON | BS_FLAT,8,100,103,10
+    CONTROL         "Модель многоканальной СМО с временными ресурсами",IDC_MODEL_BARBER2,
+                    "Button",BS_AUTORADIOBUTTON | BS_FLAT,8,112,209,10
     LTEXT           "Static",IDC_INFO,8,36,226,24
-    CONTROL         "Добавить комментарии",IDC_COMMENT,"Button",
-                    BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
+    CONTROL         "Добавить комментарии",IDC_COMMENT,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
     CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,126,192,1
 END
 
-IDD_GOTO_LINE_DIALOG DIALOG DISCARDABLE  0, 0, 160, 41
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_GOTO_LINE_DIALOG DIALOG  0, 0, 160, 41
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Перейти на строчку"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -472,18 +367,18 @@ END
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -510,24 +405,24 @@ END
 // Bitmap
 //
 
-IDB_FILE_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\fileToolbar_d.bmp"
-IDB_EDIT_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
-IDR_FILE_TOOLBAR        BITMAP  DISCARDABLE     "res\\fileToolbar.bmp"
-IDB_TREECTRL            BITMAP  DISCARDABLE     "res\\tracertreectrl.bmp"
-IDR_EDIT_TOOLBAR        BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
-IDR_MODEL_TOOLBAR       BITMAP  DISCARDABLE     "res\\modeToolbar.bmp"
-IDB_MODEL_TOOLBAR_D     BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
-IDB_FRAMES_TREECTRL     BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
-IDR_ZOOM_TOOLBAR        BITMAP  DISCARDABLE     "res\\zoomToolbar.bmp"
-IDB_ZOOM_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\zoomToolbar_d.bmp"
-IDB_FRAME_OPTIONS_CTRL  BITMAP  DISCARDABLE     "res\\frameoptionsctrl.bmp"
+IDB_FILE_TOOLBAR_D      BITMAP                  "res\\fileToolbar_d.bmp"
+IDB_EDIT_TOOLBAR_D      BITMAP                  "res\\editToolbar_d.bmp"
+IDR_FILE_TOOLBAR        BITMAP                  "res\\fileToolbar.bmp"
+IDB_TREECTRL            BITMAP                  "res\\tracertreectrl.bmp"
+IDR_EDIT_TOOLBAR        BITMAP                  "res\\editToolbar.bmp"
+IDR_MODEL_TOOLBAR       BITMAP                  "res\\modeToolbar.bmp"
+IDB_MODEL_TOOLBAR_D     BITMAP                  "res\\modelToolbar_d.bmp"
+IDB_FRAMES_TREECTRL     BITMAP                  "res\\framestreectrl.bmp"
+IDR_ZOOM_TOOLBAR        BITMAP                  "res\\zoomToolbar.bmp"
+IDB_ZOOM_TOOLBAR_D      BITMAP                  "res\\zoomToolbar_d.bmp"
+IDB_FRAME_OPTIONS_CTRL  BITMAP                  "res\\frameoptionsctrl.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Toolbar
 //
 
-IDR_FILE_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_FILE_TOOLBAR TOOLBAR  16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
@@ -535,7 +430,7 @@ BEGIN
     BUTTON      ID_FILE_SAVE_ALL
 END
 
-IDR_EDIT_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_EDIT_TOOLBAR TOOLBAR  16, 15
 BEGIN
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
@@ -554,7 +449,7 @@ BEGIN
     BUTTON      ID_VIEW_OUTPUT
 END
 
-IDR_MODEL_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_MODEL_TOOLBAR TOOLBAR  16, 15
 BEGIN
     BUTTON      ID_MODEL_RUN
     BUTTON      ID_MODEL_STOP
@@ -573,7 +468,7 @@ BEGIN
     BUTTON      ID_MODEL_FRAME_PREV
 END
 
-IDR_ZOOM_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_ZOOM_TOOLBAR TOOLBAR  16, 15
 BEGIN
     BUTTON      ID_VIEW_ZOOMIN
     BUTTON      ID_VIEW_ZOOMOUT
@@ -587,7 +482,7 @@ END
 // Cursor
 //
 
-IDC_CURMARGIN           CURSOR  DISCARDABLE     "res\\Margin.cur"
+IDC_CURMARGIN           CURSOR                  "res\\Margin.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -769,18 +664,18 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON    DISCARDABLE     "res\\rdo_studio.ico"
-IDR_CHARTTYPE           ICON    DISCARDABLE     "res\\rdostudiochartdoc.ico"
-IDR_MODEL_TYPE          ICON    DISCARDABLE     "res\\rdostudiomodeldoc.ico"
-IDR_EDIT_TYPE           ICON    DISCARDABLE     "res\\rdostudioeditdoc.ico"
-IDR_FRAME_TYPE          ICON    DISCARDABLE     "res\\rdostudioframedoc.ico"
+IDR_MAINFRAME           ICON                    "res\\rdo_studio.ico"
+IDR_CHARTTYPE           ICON                    "res\\rdostudiochartdoc.ico"
+IDR_MODEL_TYPE          ICON                    "res\\rdostudiomodeldoc.ico"
+IDR_EDIT_TYPE           ICON                    "res\\rdostudioeditdoc.ico"
+IDR_FRAME_TYPE          ICON                    "res\\rdostudioframedoc.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+IDR_MAINFRAME MENU 
 BEGIN
     POPUP "&Файл"
     BEGIN
@@ -823,8 +718,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "В верхний &регистр\tCtrl+Shift+U", ID_EDIT_UPPERCASE
         MENUITEM "В нижний ре&гистр\tCtrl+U",   ID_EDIT_LOWERCASE
-        MENUITEM "&Закомментировать выделенное\tCtrl+Q", 
-                                                ID_EDIT_COMMENTSELECTION
+        MENUITEM "&Закомментировать выделенное\tCtrl+Q", ID_EDIT_COMMENTSELECTION
         MENUITEM "Завершить &слово\tCtrl+Space", ID_EDIT_COMPLETEWORD
     END
     POPUP "П&оиск"
@@ -836,26 +730,20 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Найти в &моделе...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
         MENUITEM SEPARATOR
-        MENUITEM "Пос&тавить/снять закладку\tCtrl+F2", 
-                                                ID_SEARCH_BOOKMARK_TOGGLE
+        MENUITEM "Пос&тавить/снять закладку\tCtrl+F2", ID_SEARCH_BOOKMARK_TOGGLE
         MENUITEM "Перейти к с&лед. закладке\tF2", ID_SEARCH_BOOKMARK_NEXT
-        MENUITEM "Перейти к п&ред. закладке\tShift+F2", 
-                                                ID_SEARCH_BOOKMARK_PREVIOUS
-        MENUITEM "&Очисть все закладки\tCtrl+Shift+F2", 
-                                                ID_SEARCH_BOOKMARKS_CLEAR
+        MENUITEM "Перейти к п&ред. закладке\tShift+F2", ID_SEARCH_BOOKMARK_PREVIOUS
+        MENUITEM "&Очисть все закладки\tCtrl+Shift+F2", ID_SEARCH_BOOKMARKS_CLEAR
         MENUITEM SEPARATOR
         MENUITEM "П&ерейти на строчку\tCtrl+G", ID_SEARCH_GOTO_LINE
     END
     POPUP "П&росмотр"
     BEGIN
-        MENUITEM "Свернуть/равернуть все &группы\tCtrl+Shift+0", 
-                                                ID_VIEW_TOGGLE_ALLFOLDS
-        MENUITEM "Свернуть/равернуть текущую гр&уппу", 
-                                                ID_VIEW_TOGGLE_CURRENTFOLD
+        MENUITEM "Свернуть/равернуть все &группы\tCtrl+Shift+0", ID_VIEW_TOGGLE_ALLFOLDS
+        MENUITEM "Свернуть/равернуть текущую гр&уппу", ID_VIEW_TOGGLE_CURRENTFOLD
         MENUITEM SEPARATOR
         MENUITEM "Показать &пробелы\tCtrl+Shift+8", ID_VIEW_WHITESPACE
-        MENUITEM "Показать символ &конца строки\tCtrl+Shift+9", 
-                                                ID_VIEW_ENDOFLINE
+        MENUITEM "Показать символ &конца строки\tCtrl+Shift+9", ID_VIEW_ENDOFLINE
         MENUITEM SEPARATOR
         MENUITEM "Увеличить &масштаб\tCtrl+Num+", ID_VIEW_ZOOMIN
         MENUITEM "Уменьшить ма&сштаб\tCtrl+Num-", ID_VIEW_ZOOMOUT
@@ -867,13 +755,9 @@ BEGIN
         POPUP "Па&нели"
         BEGIN
             MENUITEM "Панель &файлов",              ID_VIEW_TOOLBAR_FILE_TOOLBAR
-
             MENUITEM "Панель &редактирования",      ID_VIEW_TOOLBAR_EDIT_TOOLBAR
-
             MENUITEM "Панель мас&штаба",            ID_VIEW_TOOLBAR_ZOOM_TOOLBAR
-
             MENUITEM "Панель &модели",              ID_VIEW_TOOLBAR_MODEL_TOOLBAR
-
         END
         MENUITEM SEPARATOR
         MENUITEM "Нас&тройки...",               ID_VIEW_OPTIONS
@@ -883,21 +767,17 @@ BEGIN
         POPUP "PAT"
         BEGIN
             MENUITEM "PAT operation",               ID_INSERT_PAT_PATOPERATION
-
             MENUITEM "PAT irregular_event",         ID_INSERT_PAT_PATIRREGULAREVENT
-
             MENUITEM "PAT rule",                    ID_INSERT_PAT_PATRULE
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "operation",                   ID_INSERT_PAT_OPERATION
             MENUITEM "irregular_event",             ID_INSERT_PAT_IRREGULAREVENT
-
             MENUITEM "rule",                        ID_INSERT_PAT_RULE
             MENUITEM "keyboard",                    ID_INSERT_PAT_KEYBOARD
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
             MENUITEM "no_trace",                    ID_INSERT_PAT_NOTRACE
             MENUITEM "$Parameters",                 ID_INSERT_PAT_PARAMETERS
             MENUITEM "$Relevant_resources",         ID_INSERT_PAT_RELEVANTRESOURCES
-
             MENUITEM "Keep",                        ID_INSERT_PAT_KEEP
             MENUITEM "NoChange",                    ID_INSERT_PAT_NOCHANGE
             MENUITEM "Create",                      ID_INSERT_PAT_CREATE
@@ -906,15 +786,11 @@ BEGIN
             MENUITEM "$Time",                       ID_INSERT_PAT_TIME
             MENUITEM "$Body",                       ID_INSERT_PAT_BODY
             MENUITEM "Convert_begin",               ID_INSERT_PAT_CONVERTBEGIN
-
             MENUITEM "Convert_end",                 ID_INSERT_PAT_CONVERTEND
             MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
-
             MENUITEM "Convert_rule",                ID_INSERT_PAT_CONVERTRULE
-
             MENUITEM "Choice from",                 ID_INSERT_PAT_CHOICEFROM
             MENUITEM "Choice NoCheck",              ID_INSERT_PAT_CHOICENOCHECK
-
             MENUITEM "first",                       ID_INSERT_PAT_FIRST
             MENUITEM "with_max",                    ID_INSERT_PAT_WITHMAX
             MENUITEM "with_min",                    ID_INSERT_PAT_WITHMIN
@@ -924,11 +800,8 @@ BEGIN
         POPUP "RTP"
         BEGIN
             MENUITEM "RTP permanent",               ID_INSERT_RTP_RTPPERMANENT
-
             MENUITEM "RTP temporary",               ID_INSERT_RTP_RTPTEMPORARY
-
             MENUITEM "$Resource_type",              ID_INSERT_RTP_RESOURCETYPE
-
             MENUITEM "permanent",                   ID_INSERT_RTP_PERMANENT
             MENUITEM "temporary",                   ID_INSERT_RTP_TEMPORARY
             MENUITEM "$Parameters",                 ID_INSERT_RTP_PARAMETERS
@@ -959,7 +832,6 @@ BEGIN
             MENUITEM "FRM",                         ID_INSERT_FRM_FRM
             MENUITEM "$Frame",                      ID_INSERT_FRM_FRAME
             MENUITEM "$Back_picture",               ID_INSERT_FRM_BACKPICTURE
-
             MENUITEM "Show",                        ID_INSERT_FRM_SHOW
             MENUITEM "Show_if",                     ID_INSERT_FRM_SHOWIF
             MENUITEM "bitmap",                      ID_INSERT_FRM_BITMAP
@@ -981,20 +853,16 @@ BEGIN
             MENUITEM "$Function",                   ID_INSERT_FUN_FUNCTION
             MENUITEM "$Type",                       ID_INSERT_FUN_TYPE
             MENUITEM "algorithmic",                 ID_INSERT_FUN_ALGORITHMIC
-
             MENUITEM "list",                        ID_INSERT_FUN_LIST
             MENUITEM "table",                       ID_INSERT_FUN_TABLE
             MENUITEM "normal",                      ID_INSERT_FUN_NORMAL
             MENUITEM "uniform",                     ID_INSERT_FUN_UNIFORM
             MENUITEM "exponential",                 ID_INSERT_FUN_EXPONENTIAL
-
             MENUITEM "by_hist",                     ID_INSERT_FUN_BYHIST
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
-
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
             MENUITEM "$Body",                       ID_INSERT_FUN_BODY
             MENUITEM "Calculate_if",                ID_INSERT_FUN_CALCULATEIF
-
             MENUITEM "$Sequence",                   ID_INSERT_FUN_SEQUENCE
             MENUITEM "$Constant",                   ID_INSERT_FUN_CONSTANT
             MENUITEM "$End",                        ID_INSERT_FUN_END
@@ -1005,7 +873,6 @@ BEGIN
             MENUITEM "DPT some",                    ID_INSERT_DPT_DPTSOME
             MENUITEM "ACTIV",                       ID_INSERT_DPT_ACTIV
             MENUITEM "$Decision_point",             ID_INSERT_DPT_DECISIONPOINT
-
             MENUITEM "some",                        ID_INSERT_DPT_SOME
             MENUITEM "search",                      ID_INSERT_DPT_SEARCH
             MENUITEM "no_trace",                    ID_INSERT_DPT_NOTRACE
@@ -1014,15 +881,12 @@ BEGIN
             MENUITEM "trace_all",                   ID_INSERT_DPT_TRACEALL
             MENUITEM "$Condition",                  ID_INSERT_DPT_CONDITION
             MENUITEM "$Term_condition",             ID_INSERT_DPT_TERMCONDITION
-
             MENUITEM "$Evaluate_by",                ID_INSERT_DPT_EVALUATEBY
             MENUITEM "$Compare_tops",               ID_INSERT_DPT_COMPARETOPS
-
             MENUITEM "YES",                         ID_INSERT_DPT_YES
             MENUITEM "NO",                          ID_INSERT_DPT_NO
             MENUITEM "$Activities",                 ID_INSERT_DPT_ACTIVITIES
             MENUITEM "value before",                ID_INSERT_DPT_VALUEBEFORE
-
             MENUITEM "value after",                 ID_INSERT_DPT_VALUEAFTER
             MENUITEM "$End",                        ID_INSERT_DPT_END
         END
@@ -1031,29 +895,21 @@ BEGIN
             MENUITEM "SMR",                         ID_INSERT_PAT_OPERATION
             MENUITEM "Model_name",                  ID_INSERT_SMR_MODELNAME
             MENUITEM "Resource_file",               ID_INSERT_SMR_RESOURCEFILE
-
             MENUITEM "OprIev_file",                 ID_INSERT_SMR_OPRIEVFILE
             MENUITEM "Statistic_file",              ID_INSERT_SMR_STATISTICFILE
-
             MENUITEM "Results_file",                ID_INSERT_SMR_RESULTSFILE
-
             MENUITEM "Trace_file",                  ID_INSERT_SMR_TRACEFILE
             MENUITEM "Frame_file",                  ID_INSERT_SMR_FRAMEFILE
             MENUITEM "Frame_number",                ID_INSERT_SMR_FRAMENUMBER
-
             MENUITEM "Show_mode",                   ID_INSERT_SMR_SHOWMODE
             MENUITEM "Animation",                   ID_INSERT_SMR_ANIMATION
             MENUITEM "Monitor",                     ID_INSERT_SMR_MONITOR
             MENUITEM "NoShow",                      ID_INSERT_SMR_NOSHOW
             MENUITEM "Show_rate",                   ID_INSERT_SMR_SHOWRATE
             MENUITEM "Run_StartTime",               ID_INSERT_SMR_RUNSTARTTIME
-
             MENUITEM "Trace_StartTime",             ID_INSERT_SMR_TRACESTARTTIME
-
             MENUITEM "Trace_EndTime",               ID_INSERT_SMR_TRACEENDTIME
-
             MENUITEM "Terminate_if",                ID_INSERT_SMR_TERMINATEIF
-
             MENUITEM "Time_now",                    ID_INSERT_SMR_TIMENOW
             MENUITEM "Seconds",                     ID_INSERT_SMR_SECONDS
             MENUITEM "Break_point",                 ID_INSERT_SMR_BREAKPOINT
@@ -1077,49 +933,33 @@ BEGIN
         BEGIN
             MENUITEM "Abs",                         ID_INSERT_FUNCTIONS_ABS
             MENUITEM "ArcCos",                      ID_INSERT_FUNCTIONS_ARCCOS
-
             MENUITEM "ArcSin",                      ID_INSERT_FUNCTIONS_ARCSIN
-
             MENUITEM "ArcTan",                      ID_INSERT_FUNCTIONS_ARCTAN
-
             MENUITEM "Cos",                         ID_INSERT_FUNCTIONS_COS
             MENUITEM "Cotan",                       ID_INSERT_FUNCTIONS_COTAN
-
             MENUITEM "Exist",                       ID_INSERT_FUNCTIONS_EXIST
-
             MENUITEM "Exp",                         ID_INSERT_FUNCTIONS_EXP
             MENUITEM "Floor",                       ID_INSERT_FUNCTIONS_FLOOR
-
             MENUITEM "For_All",                     ID_INSERT_FUNCTIONS_FORALL
-
             MENUITEM "Frac",                        ID_INSERT_FUNCTIONS_FRAC
             MENUITEM "GetRelResNumber",             ID_INSERT_FUNCTIONS_GETRELRESNUMBER
-
             MENUITEM "GetResNumber",                ID_INSERT_FUNCTIONS_GETRESNUMBER
-
             MENUITEM "IAbs",                        ID_INSERT_FUNCTIONS_IABS
             MENUITEM "IMax",                        ID_INSERT_FUNCTIONS_IMAX
             MENUITEM "IMin",                        ID_INSERT_FUNCTIONS_IMIN
             MENUITEM "Int",                         ID_INSERT_FUNCTIONS_INT
             MENUITEM "IntPower",                    ID_INSERT_FUNCTIONS_INTPOWER
-
             MENUITEM "Ln",                          ID_INSERT_FUNCTIONS_LN
             MENUITEM "Log10",                       ID_INSERT_FUNCTIONS_LOG10
-
             MENUITEM "Log2",                        ID_INSERT_FUNCTIONS_LOG2
             MENUITEM "LogN",                        ID_INSERT_FUNCTIONS_LOGN
             MENUITEM "Max",                         ID_INSERT_FUNCTIONS_MAX
             MENUITEM "Min",                         ID_INSERT_FUNCTIONS_MIN
             MENUITEM "Not_Exist",                   ID_INSERT_FUNCTIONS_NOTEXIST
-
             MENUITEM "Not_For_All",                 ID_INSERT_FUNCTIONS_NOTFORALL
-
             MENUITEM "Power",                       ID_INSERT_FUNCTIONS_POWER
-
             MENUITEM "Round",                       ID_INSERT_FUNCTIONS_ROUND
-
             MENUITEM "Select",                      ID_INSERT_FUNCTIONS_SELECT
-
             MENUITEM "Sin",                         ID_INSERT_FUNCTIONS_SIN
             MENUITEM "Sqrt",                        ID_INSERT_FUNCTIONS_SQRT
             MENUITEM "Tan",                         ID_INSERT_FUNCTIONS_TAN
@@ -1206,98 +1046,70 @@ END
 // Accelerator
 //
 
-IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+IDR_MAINFRAME ACCELERATORS 
 BEGIN
     "0",            ID_VIEW_WORKSPACE,      VIRTKEY, ALT, NOINVERT
-    "0",            ID_VIEW_TOGGLE_ALLFOLDS, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "0",            ID_VIEW_TOGGLE_ALLFOLDS, VIRTKEY, SHIFT, CONTROL, NOINVERT
     27,             ID_EMPTYCOMMAND_13,     ASCII,  NOINVERT
     28,             ID_EMPTYCOMMAND_15,     ASCII,  NOINVERT
     29,             ID_EMPTYCOMMAND_14,     ASCII,  NOINVERT
     31,             ID_EMPTYCOMMAND_35,     ASCII,  NOINVERT
     "1",            ID_INSERT_BUFFER1_PASTE, VIRTKEY, CONTROL, NOINVERT
     "1",            ID_INSERT_BUFFER1_APPEND, VIRTKEY, ALT, NOINVERT
-    "1",            ID_INSERT_BUFFER1_CLEAR, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "1",            ID_INSERT_BUFFER1_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
     "2",            ID_INSERT_BUFFER2_PASTE, VIRTKEY, CONTROL, NOINVERT
     "2",            ID_INSERT_BUFFER2_APPEND, VIRTKEY, ALT, NOINVERT
-    "2",            ID_INSERT_BUFFER2_CLEAR, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "2",            ID_INSERT_BUFFER2_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
     "3",            ID_INSERT_BUFFER3_PASTE, VIRTKEY, CONTROL, NOINVERT
     "3",            ID_INSERT_BUFFER3_APPEND, VIRTKEY, ALT, NOINVERT
-    "3",            ID_INSERT_BUFFER3_CLEAR, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "3",            ID_INSERT_BUFFER3_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
     "4",            ID_INSERT_BUFFER4_PASTE, VIRTKEY, CONTROL, NOINVERT
     "4",            ID_INSERT_BUFFER4_APPEND, VIRTKEY, ALT, NOINVERT
-    "4",            ID_INSERT_BUFFER4_CLEAR, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
-    "6",            ID_EMPTYCOMMAND_36,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
-    "8",            ID_VIEW_WHITESPACE,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "4",            ID_INSERT_BUFFER4_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "6",            ID_EMPTYCOMMAND_36,     VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "8",            ID_VIEW_WHITESPACE,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "9",            ID_VIEW_OUTPUT,         VIRTKEY, ALT, NOINVERT
-    "9",            ID_VIEW_ENDOFLINE,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "9",            ID_VIEW_ENDOFLINE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "A",            ID_EDIT_SELECT_ALL,     VIRTKEY, CONTROL, NOINVERT
     "A",            ID_EDIT_CLEAR,          VIRTKEY, CONTROL, NOINVERT
-    "A",            ID_EMPTYCOMMAND_17,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "A",            ID_EMPTYCOMMAND_17,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "B",            ID_EMPTYCOMMAND_31,     VIRTKEY, CONTROL, NOINVERT
-    "B",            ID_EMPTYCOMMAND_32,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "B",            ID_EMPTYCOMMAND_32,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    "C",            ID_EDIT_COPYASRTF,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "C",            ID_EDIT_COPYASRTF,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "D",            ID_EMPTYCOMMAND_19,     VIRTKEY, CONTROL, NOINVERT
-    "D",            ID_EMPTYCOMMAND_20,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "D",            ID_EMPTYCOMMAND_20,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "E",            ID_EMPTYCOMMAND_4,      VIRTKEY, CONTROL, NOINVERT
-    "E",            ID_EMPTYCOMMAND_5,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "E",            ID_EMPTYCOMMAND_5,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "F",            ID_SEARCH_FIND,         VIRTKEY, CONTROL, NOINVERT
-    "F",            ID_SEARCH_FIND_INMODEL, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "F",            ID_SEARCH_FIND_INMODEL, VIRTKEY, SHIFT, CONTROL, NOINVERT
     "G",            ID_SEARCH_GOTO_LINE,    VIRTKEY, CONTROL, NOINVERT
-    "G",            ID_EMPTYCOMMAND_23,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "G",            ID_EMPTYCOMMAND_23,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "H",            ID_EMPTYCOMMAND_24,     VIRTKEY, CONTROL, NOINVERT
-    "H",            ID_EMPTYCOMMAND_25,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "H",            ID_EMPTYCOMMAND_25,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "J",            ID_EMPTYCOMMAND_37,     VIRTKEY, CONTROL, NOINVERT
-    "J",            ID_EMPTYCOMMAND_38,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "J",            ID_EMPTYCOMMAND_38,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "K",            ID_EMPTYCOMMAND_26,     VIRTKEY, CONTROL, NOINVERT
-    "K",            ID_EMPTYCOMMAND_27,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "K",            ID_EMPTYCOMMAND_27,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "M",            ID_EMPTYCOMMAND_9,      VIRTKEY, CONTROL, NOINVERT
-    "M",            ID_EMPTYCOMMAND_33,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "M",            ID_EMPTYCOMMAND_33,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
-    "N",            ID_EMPTYCOMMAND_34,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "N",            ID_EMPTYCOMMAND_34,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
-    "O",            ID_EMPTYCOMMAND_10,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "O",            ID_EMPTYCOMMAND_10,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "P",            ID_EMPTYCOMMAND_11,     VIRTKEY, CONTROL, NOINVERT
-    "P",            ID_EMPTYCOMMAND_12,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "P",            ID_EMPTYCOMMAND_12,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "Q",            ID_EDIT_COMMENTSELECTION, VIRTKEY, CONTROL, NOINVERT
-    "Q",            ID_EMPTYCOMMAND_1,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "Q",            ID_EMPTYCOMMAND_1,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "R",            ID_SEARCH_REPLACE,      VIRTKEY, CONTROL, NOINVERT
-    "R",            ID_EMPTYCOMMAND_6,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "R",            ID_EMPTYCOMMAND_6,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "S",            ID_FILE_MODEL_SAVE,     VIRTKEY, CONTROL, NOINVERT
-    "S",            ID_EMPTYCOMMAND_18,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
-    "T",            ID_EMPTYCOMMAND_7,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "S",            ID_EMPTYCOMMAND_18,     VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "T",            ID_EMPTYCOMMAND_7,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "U",            ID_EDIT_LOWERCASE,      VIRTKEY, CONTROL, NOINVERT
-    "U",            ID_EDIT_UPPERCASE,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "U",            ID_EDIT_UPPERCASE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
-    "V",            ID_EMPTYCOMMAND_30,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "V",            ID_EMPTYCOMMAND_30,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, CONTROL, NOINVERT
     VK_ADD,         ID_MODEL_SHOWRATE_INC,  VIRTKEY, ALT, NOINVERT
     VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
@@ -1308,13 +1120,11 @@ BEGIN
     VK_F2,          ID_SEARCH_BOOKMARK_NEXT, VIRTKEY, NOINVERT
     VK_F2,          ID_SEARCH_BOOKMARK_TOGGLE, VIRTKEY, CONTROL, NOINVERT
     VK_F2,          ID_SEARCH_BOOKMARK_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARKS_CLEAR, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    VK_F2,          ID_SEARCH_BOOKMARKS_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_F3,          ID_SEARCH_FIND_NEXT,    VIRTKEY, NOINVERT
     VK_F3,          ID_SEARCH_FIND_NEXT_FAST, VIRTKEY, CONTROL, NOINVERT
     VK_F3,          ID_SEARCH_FIND_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_PREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    VK_F3,          ID_SEARCH_FIND_PREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_F4,          ID_BUILDFINDLOG_GOTO_NEXT, VIRTKEY, NOINVERT
     VK_F4,          ID_BUILDFINDLOG_GOTO_PREV, VIRTKEY, SHIFT, NOINVERT
     VK_F5,          ID_MODEL_RUN,           VIRTKEY, NOINVERT
@@ -1329,29 +1139,24 @@ BEGIN
     VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_MODEL_SHOWRATE_DEC,  VIRTKEY, ALT, NOINVERT
     "W",            ID_CHART_TIMEWRAP,      VIRTKEY, CONTROL, NOINVERT
-    "W",            ID_EMPTYCOMMAND_3,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "W",            ID_EMPTYCOMMAND_3,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
-    "X",            ID_EMPTYCOMMAND_28,     VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "X",            ID_EMPTYCOMMAND_28,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     "Y",            ID_EDIT_REDO,           VIRTKEY, CONTROL, NOINVERT
-    "Y",            ID_EMPTYCOMMAND_8,      VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "Y",            ID_EMPTYCOMMAND_8,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
-    "Z",            ID_EDIT_REDO,           VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    "Z",            ID_EDIT_REDO,           VIRTKEY, SHIFT, CONTROL, NOINVERT
 END
 
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,681
- PRODUCTVERSION 1,0,0,681
+ FILEVERSION 1,0,0,684
+ PRODUCTVERSION 1,0,0,684
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1366,18 +1171,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "\0"
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "1, 0, 0, 681\0"
-            VALUE "InternalName", "RAO-Studio\0"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2008\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "RAO-Studio.exe\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "1, 0, 0, 681\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "FileDescription", "RAO studio"
+            VALUE "FileVersion", "1, 0, 0, 684"
+            VALUE "InternalName", "RAO-Studio"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2008"
+            VALUE "OriginalFilename", "RAO-Studio.exe"
+            VALUE "ProductName", "RAO-Studio"
+            VALUE "ProductVersion", "1, 0, 0, 684"
         END
     END
     BLOCK "VarFileInfo"
@@ -1386,22 +1186,13 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// 24
-//
-
-IDR_RT_MANIFEST1        24      MOVEABLE PURE   "res\\RAO-studio.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // MODEL_TMP
 //
 
-IDR_MODEL_TMP3_PAT MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP3_PAT MODEL_TMP 
 BEGIN
     0x2f2f, 0xce20, 0xf0e1, 0xe7e0, 0xf6e5, 0xee20, 0xe5ef, 0xe0f0, 0xe8f6, 
     0x20e8, 0xe8f2, 0xe0ef, 0x6920, 0x7272, 0x6765, 0x6c75, 0x7261, 0x655f, 
@@ -1521,7 +1312,7 @@ BEGIN
     0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP3_RTP MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP3_RTP MODEL_TMP 
 BEGIN
     0x2f2f, 0xd220, 0xefe8, 0x20fb, 0xe5f0, 0xf3f1, 0xf1f0, 0xe2ee, 0xe820, 
     0xeff1, 0xebee, 0xe7fc, 0xfef3, 0xf1f2, 0x20ff, 0xebe4, 0x20ff, 0xefee, 
@@ -1581,7 +1372,7 @@ BEGIN
     0xe2ee, 0x0a0d, 0x2f2a, 0x0a0d
 END
 
-IDR_MODEL_TMP3_RSS MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP3_RSS MODEL_TMP 
 BEGIN
     0x2f2f, 0xc720, 0xe5e4, 0xfcf1, 0xee20, 0xf0ef, 0xe4e5, 0xebe5, 0xfeff, 
     0xf1f2, 0x20ff, 0xf1e2, 0x20e5, 0xeeef, 0xf2f1, 0xffee, 0xeded, 0xe5fb, 
@@ -1624,7 +1415,7 @@ BEGIN
 
 END
 
-IDR_MODEL_TMP3_OPR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP3_OPR MODEL_TMP 
 BEGIN
     0x2f2f, 0xc720, 0xe5e4, 0xfcf1, 0xee20, 0xf0ef, 0xe4e5, 0xebe5, 0xfeff, 
     0xf1f2, 0x20ff, 0xf1e2, 0x20e5, 0xf0ef, 0xe2e0, 0xebe8, 0x20e0, 0xf3f4, 
@@ -1664,7 +1455,7 @@ BEGIN
 
 END
 
-IDR_MODEL_TMP3_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP3_SMR MODEL_TMP 
 BEGIN
     0x2f2f, 0xc820, 0xffec, 0xec20, 0xe4ee, 0xebe5, 0x20e8, 0x2a28, 0x702e, 
     0x7461, 0x202c, 0x2e2a, 0x7472, 0x2c70, 0x2a20, 0x662e, 0x6e75, 0xe820, 
@@ -1720,7 +1511,7 @@ BEGIN
 
 END
 
-IDR_MODEL_TMP3_FUN MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP3_FUN MODEL_TMP 
 BEGIN
     0x2f2f, 0xd420, 0xedf3, 0xf6ea, 0xffe8, 0xe020, 0xe3eb, 0xf0ee, 0xf2e8, 
     0xe8ec, 0xe5f7, 0xeaf1, 0xe3ee, 0x20ee, 0xe8f2, 0xe0ef, 0x0a0d, 0x4624, 
@@ -1778,7 +1569,7 @@ BEGIN
     0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP3_FRM MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP3_FRM MODEL_TMP 
 BEGIN
     0x2f2f, 0xca20, 0xe4e0, 0xfbf0, 0xe020, 0xe8ed, 0xe0ec, 0xe8f6, 0x20e8, 
     0xeeef, 0xe2e7, 0xebee, 0xfeff, 0x20f2, 0xf2ee, 0xe1ee, 0xe0f0, 0xe0e6, 
@@ -1830,7 +1621,7 @@ BEGIN
     0x2eee, 0x0a0d, 0x2f2a, 0x0a0d
 END
 
-IDR_MODEL_TMP2_PAT MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP2_PAT MODEL_TMP 
 BEGIN
     0x5024, 0x7461, 0x6574, 0x6e72, 0x3a20, 0x6920, 0x7272, 0x6765, 0x6c75, 
     0x7261, 0x655f, 0x6576, 0x746e, 0x0a0d, 0x5224, 0x6c65, 0x7665, 0x6e61, 
@@ -1846,7 +1637,7 @@ BEGIN
 
 END
 
-IDR_MODEL_TMP2_RTP MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP2_RTP MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x5f65, 0x7974, 0x6570, 0x3a20, 0x7020, 
     0x7265, 0x616d, 0x656e, 0x746e, 0x0a0d, 0x5024, 0x7261, 0x6d61, 0x7465, 
@@ -1856,19 +1647,19 @@ BEGIN
     0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP2_RSS MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP2_RSS MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x7365, 0x0a0d, 0x0a0d, 0x4524, 0x646e, 
     0x0a0d
 END
 
-IDR_MODEL_TMP2_OPR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP2_OPR MODEL_TMP 
 BEGIN
     0x4f24, 0x6570, 0x6172, 0x6974, 0x6e6f, 0x0d73, 0x0d0a, 0x240a, 0x6e45, 
     0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP2_FRM MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP2_FRM MODEL_TMP 
 BEGIN
     0x4624, 0x6172, 0x656d, 0x0d20, 0x240a, 0x6142, 0x6b63, 0x705f, 0x6369, 
     0x7574, 0x6572, 0x3d20, 0x3c20, 0x3532, 0x2035, 0x3532, 0x2035, 0x3532, 
@@ -1878,7 +1669,7 @@ BEGIN
     0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP2_FUN MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP2_FUN MODEL_TMP 
 BEGIN
     0x4624, 0x6e75, 0x7463, 0x6f69, 0x206e, 0x203a, 0x6e69, 0x6574, 0x6567, 
     0x0d72, 0x240a, 0x7954, 0x6570, 0x3d20, 0x6120, 0x676c, 0x726f, 0x7469, 
@@ -1886,7 +1677,7 @@ BEGIN
     0x240a, 0x6f42, 0x7964, 0x0a0d, 0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP2_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP2_SMR MODEL_TMP 
 BEGIN
     0x6f4d, 0x6564, 0x5f6c, 0x616e, 0x656d, 0x2020, 0x2020, 0x3d20, 0x2520, 
     0x0d73, 0x0d0a, 0x520a, 0x7365, 0x756f, 0x6372, 0x5f65, 0x6966, 0x656c, 
@@ -1905,7 +1696,7 @@ BEGIN
     0x362a, 0x2a30, 0x3036, 0x302e, 0x0a0d
 END
 
-IDR_MODEL_TMP0_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP0_SMR MODEL_TMP 
 BEGIN
     0x6f4d, 0x6564, 0x5f6c, 0x616e, 0x656d, 0x2020, 0x2020, 0x3d20, 0x2520, 
     0x0d73, 0x0d0a, 0x520a, 0x7365, 0x756f, 0x6372, 0x5f65, 0x6966, 0x656c, 
@@ -1924,7 +1715,7 @@ BEGIN
     0x362a, 0x2a30, 0x3036, 0x302e, 0x0a0d
 END
 
-IDR_MODEL_TMP1_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP1_SMR MODEL_TMP 
 BEGIN
     0x2f2f, 0xc820, 0xffec, 0xec20, 0xe4ee, 0xebe5, 0x20e8, 0x2a28, 0x702e, 
     0x7461, 0x202c, 0x2e2a, 0x7472, 0x2c70, 0x2a20, 0x662e, 0x6e75, 0xe820, 
@@ -1980,7 +1771,7 @@ BEGIN
 
 END
 
-IDR_MODEL_TMP5_PAT MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP5_PAT MODEL_TMP 
 BEGIN
     0x2f2f, 0xcf20, 0xe8f0, 0xeef5, 0x20e4, 0xebea, 0xe5e8, 0xf2ed, 0x20e0, 
     0xefee, 0xf1e8, 0xe2fb, 0xe5e0, 0xf1f2, 0x20ff, 0xe1ee, 0xe0f0, 0xf6e7, 
@@ -2102,7 +1893,7 @@ BEGIN
     0xfbed, 0x20f5, 0x202b, 0x0d31, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP5_RTP MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP5_RTP MODEL_TMP 
 BEGIN
     0x2f2f, 0xce20, 0xe8ef, 0xfbf1, 0xe0e2, 0xece5, 0xf220, 0xefe8, 0xf020, 
     0xf1e5, 0xf0f3, 0xe0f1, 0x202c, 0xe0f1, 0x20ec, 0xe5f0, 0xf3f1, 0xf1f0, 
@@ -2140,7 +1931,7 @@ BEGIN
     0x203a, 0x6e69, 0x6574, 0x6567, 0x0d72, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP5_RSS MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP5_RSS MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x7365, 0x0a0d, 0x2f09, 0x202f, 0xeed1, 
     0xe4e7, 0xe5e0, 0x20ec, 0xe5f0, 0xf3f1, 0xf1f0, 0xef20, 0x20ee, 0xefee, 
@@ -2176,7 +1967,7 @@ BEGIN
 
 END
 
-IDR_MODEL_TMP5_OPR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP5_OPR MODEL_TMP 
 BEGIN
     0x4f24, 0x6570, 0x6172, 0x6974, 0x6e6f, 0x0d73, 0x090a, 0x2f2f, 0xce20, 
     0xe8ef, 0xe0f1, 0xeded, 0xe5fb, 0xed20, 0x20e0, 0xe0e7, 0xebea, 0xe4e0, 
@@ -2256,7 +2047,7 @@ BEGIN
     0x0d31, 0x2a0a, 0x0d2f, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP5_FUN MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP5_FUN MODEL_TMP 
 BEGIN
     0x2f2f, 0xcf20, 0xf1ee, 0xe5eb, 0xeee4, 0xe0e2, 0xe5f2, 0xfceb, 0xeeed, 
     0xf2f1, 0x20fc, 0xf1ef, 0xe2e5, 0xeee4, 0xebf1, 0xf7f3, 0xe9e0, 0xfbed, 
@@ -2278,7 +2069,7 @@ BEGIN
     0x3231, 0x3433, 0x3635, 0x3837, 0x0d39, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP5_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP5_SMR MODEL_TMP 
 BEGIN
     0x2f2f, 0xc820, 0xffec, 0xec20, 0xe4ee, 0xebe5, 0x20e8, 0x2a28, 0x702e, 
     0x7461, 0x202c, 0x2e2a, 0x7472, 0x2c70, 0x2a20, 0x662e, 0x6e75, 0xe820, 
@@ -2323,7 +2114,7 @@ BEGIN
     0x2a20, 0x3720, 0x2a20, 0x3620, 0x0d30, "\012" 
 END
 
-IDR_MODEL_TMP5_PMD MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP5_PMD MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x6c75, 0x7374, 0x0a0d, 0x2f09, 0x202f, 0xeed1, 0xe8e1, 
     0xe0f0, 0xece5, 0xe820, 0xf4ed, 0xf0ee, 0xe0ec, 0xe8f6, 0x20fe, 0x20ee, 
@@ -2416,7 +2207,7 @@ BEGIN
     0x2f2a, 0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP4_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP4_SMR MODEL_TMP 
 BEGIN
     0x6f4d, 0x6564, 0x5f6c, 0x616e, 0x656d, 0x2020, 0x2020, 0x3d20, 0x2520, 
     0x0d73, 0x0d0a, 0x520a, 0x7365, 0x756f, 0x6372, 0x5f65, 0x6966, 0x656c, 
@@ -2433,7 +2224,7 @@ BEGIN
     0x0a0d
 END
 
-IDR_MODEL_TMP4_RTP MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP4_RTP MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x5f65, 0x7974, 0x6570, 0xcf20, 0xf0e0, 
     0xeae8, 0xe0ec, 0xe5f5, 0xf1f0, 0xe8ea, 0x3ae5, 0x7020, 0x7265, 0x616d, 
@@ -2447,7 +2238,7 @@ BEGIN
     0x6574, 0x6567, 0x0d72, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP4_RSS MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP4_RSS MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x7365, 0x0a0d, 0xcf09, 0xf0e0, 0xeae8, 
     0xe0ec, 0xe5f5, 0xf1f0, 0xe0ea, 0x3aff, 0xcf20, 0xf0e0, 0xeae8, 0xe0ec, 
@@ -2455,7 +2246,7 @@ BEGIN
     0xe4ee, 0xede5, 0x3020, 0x3020, 0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP4_PMD MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP4_PMD MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x6c75, 0x7374, 0x0a0d, 0xc709, 0xede0, 0xf2ff, 0xf1ee, 
     0xfcf2, 0xef5f, 0xf0e0, 0xeae8, 0xe0ec, 0xe5f5, 0xe0f0, 0x3a20, 0x7720, 
@@ -2481,7 +2272,7 @@ BEGIN
     0x776f, 0x2f20, 0x3620, 0x0d30, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP4_PAT MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP4_PAT MODEL_TMP 
 BEGIN
     0x5024, 0x7461, 0x6574, 0x6e72, 0xce20, 0xf0e1, 0xe7e0, 0xf6e5, 0xef5f, 
     0xe8f0, 0xeef5, 0xe0e4, 0xea5f, 0xe8eb, 0xede5, 0xe0f2, 0x3a20, 0x6920, 
@@ -2530,7 +2321,7 @@ BEGIN
     0xfbed, 0x20f5, 0x202b, 0x0d31, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP4_OPR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP4_OPR MODEL_TMP 
 BEGIN
     0x4f24, 0x6570, 0x6172, 0x6974, 0x6e6f, 0x0d73, 0x090a, 0xf0cf, 0xf5e8, 
     0xe4ee, 0xea5f, 0xe8eb, 0xede5, 0xe0f2, 0x2020, 0x2020, 0x2020, 0x203a, 
@@ -2541,7 +2332,7 @@ BEGIN
     0xede5, 0xe0f2, 0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP4_FUN MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP4_FUN MODEL_TMP 
 BEGIN
     0x5324, 0x7165, 0x6575, 0x636e, 0x2065, 0xedc8, 0xe5f2, 0xe2f0, 0xebe0, 
     0xef5f, 0xe8f0, 0xeef5, 0xe0e4, 0x3a20, 0x7220, 0x6165, 0x0d6c, 0x240a, 
@@ -2554,7 +2345,7 @@ BEGIN
     0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP7_PAT MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP7_PAT MODEL_TMP 
 BEGIN
     0x2f2f, 0xcf20, 0xe8f0, 0xeef5, 0xe0e4, 0xea20, 0xe8eb, 0xede5, 0xe0f2, 
     0x202c, 0xefee, 0xf1e8, 0xe2fb, 0xe5e0, 0x20f2, 0xe1ee, 0xe0f0, 0xf6e7, 
@@ -2757,7 +2548,7 @@ BEGIN
     0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP7_FUN MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP7_FUN MODEL_TMP 
 BEGIN
     0x2f2f, 0xcf20, 0xf1ee, 0xe5eb, 0xeee4, 0xe0e2, 0xe5f2, 0xfceb, 0xeeed, 
     0xf2f1, 0x20fc, 0xf1ef, 0xe2e5, 0xeee4, 0xebf1, 0xf7f3, 0xe9e0, 0xfbed, 
@@ -2790,7 +2581,7 @@ BEGIN
     0x0d30, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP7_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP7_SMR MODEL_TMP 
 BEGIN
     0x2f2f, 0xc820, 0xffec, 0xec20, 0xe4ee, 0xebe5, 0x20e8, 0x2a28, 0x702e, 
     0x7461, 0x202c, 0x2e2a, 0x7472, 0x2c70, 0x2a20, 0x662e, 0x6e75, 0xe820, 
@@ -2835,7 +2626,7 @@ BEGIN
     0x2a20, 0x3720, 0x2a20, 0x3620, 0x0d30, "\012" 
 END
 
-IDR_MODEL_TMP7_RTP MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP7_RTP MODEL_TMP 
 BEGIN
     0x2f2f, 0xce20, 0xe8ef, 0xfbf1, 0xe0e2, 0xece5, 0xf220, 0xefe8, 0x20fb, 
     0xe5f0, 0xf3f1, 0xf1f0, 0xe2ee, 0x202c, 0xe0f1, 0xe8ec, 0xf020, 0xf1e5, 
@@ -2906,7 +2697,7 @@ BEGIN
     0xe5e8, 0xf2ed, 0xe2ee, 0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP7_RSS MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP7_RSS MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x7365, 0x0a0d, 0x2f09, 0x202f, 0xeed1, 
     0xe4e7, 0xe5e0, 0x20ec, 0xe5f0, 0xf3f1, 0xf1f0, 0xef20, 0x20ee, 0xefee, 
@@ -2984,7 +2775,7 @@ BEGIN
     0x0de0, 0x0d0a, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP7_OPR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP7_OPR MODEL_TMP 
 BEGIN
     0x4f24, 0x6570, 0x6172, 0x6974, 0x6e6f, 0x0d73, 0x090a, 0x2f2f, 0xce20, 
     0xe8ef, 0xe0f1, 0xeded, 0xe5fb, 0xed20, 0x20e0, 0xe0e7, 0xebea, 0xe4e0, 
@@ -3064,7 +2855,7 @@ BEGIN
     0x0d31, 0x2a0a, 0x0d2f, 0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP7_PMD MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP7_PMD MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x6c75, 0x7374, 0x0a0d, 0x2f09, 0x202f, 0xeed1, 0xe8e1, 
     0xe0f0, 0xece5, 0xe820, 0xf4ed, 0xf0ee, 0xe0ec, 0xe8f6, 0x20fe, 0x20ee, 
@@ -3170,7 +2961,7 @@ BEGIN
     0x29ff, 0x0a0d, 0x2f2a, 0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP6_PAT MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP6_PAT MODEL_TMP 
 BEGIN
     0x5024, 0x7461, 0x6574, 0x6e72, 0xce20, 0xf0e1, 0xe7e0, 0xf6e5, 0xef5f, 
     0xe8f0, 0xeef5, 0xe0e4, 0xea5f, 0xe8eb, 0xede5, 0xe0f2, 0x3a20, 0x6920, 
@@ -3247,7 +3038,7 @@ BEGIN
     0x240a, 0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP6_RTP MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP6_RTP MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x5f65, 0x7974, 0x6570, 0xcf20, 0xf0e0, 
     0xeae8, 0xe0ec, 0xe5f5, 0xf1f0, 0xe8ea, 0x3ae5, 0x7020, 0x7265, 0x616d, 
@@ -3279,7 +3070,7 @@ BEGIN
     0x0a0d
 END
 
-IDR_MODEL_TMP6_RSS MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP6_RSS MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x756f, 0x6372, 0x7365, 0x0a0d, 0xcf09, 0xf0e0, 0xeae8, 
     0xe0ec, 0xe5f5, 0xf1f0, 0xe0ea, 0x3aff, 0xcf20, 0xf0e0, 0xeae8, 0xe0ec, 
@@ -3296,7 +3087,7 @@ BEGIN
     0x6e45, 0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP6_PMD MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP6_PMD MODEL_TMP 
 BEGIN
     0x5224, 0x7365, 0x6c75, 0x7374, 0x0a0d, 0xc709, 0xede0, 0xf2ff, 0xf1ee, 
     0xfcf2, 0xef5f, 0xf0e0, 0xeae8, 0xe0ec, 0xe5f5, 0xe0f0, 0x315f, 0x3a20, 
@@ -3332,7 +3123,7 @@ BEGIN
     0x0d64, "\012" 
 END
 
-IDR_MODEL_TMP6_FUN MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP6_FUN MODEL_TMP 
 BEGIN
     0x5324, 0x7165, 0x6575, 0x636e, 0x2065, 0xedc8, 0xe5f2, 0xe2f0, 0xebe0, 
     0xef5f, 0xe8f0, 0xeef5, 0xe0e4, 0x3a20, 0x7220, 0x6165, 0x0d6c, 0x240a, 
@@ -3351,7 +3142,7 @@ BEGIN
     0xe0ea, 0x3520, 0x302e, 0x0a0d, 0x4524, 0x646e, 0x0a0d
 END
 
-IDR_MODEL_TMP6_SMR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP6_SMR MODEL_TMP 
 BEGIN
     0x6f4d, 0x6564, 0x5f6c, 0x616e, 0x656d, 0x2020, 0x2020, 0x3d20, 0x2520, 
     0x0d73, 0x0d0a, 0x520a, 0x7365, 0x756f, 0x6372, 0x5f65, 0x6966, 0x656c, 
@@ -3368,7 +3159,7 @@ BEGIN
     0x0a0d
 END
 
-IDR_MODEL_TMP6_OPR MODEL_TMP DISCARDABLE 
+IDR_MODEL_TMP6_OPR MODEL_TMP 
 BEGIN
     0x4f24, 0x6570, 0x6172, 0x6974, 0x6e6f, 0x0d73, 0x090a, 0xf0cf, 0xf5e8, 
     0xe4ee, 0xea5f, 0xe8eb, 0xede5, 0xe0f2, 0x2020, 0x2020, 0x2020, 0x203a, 
@@ -3385,7 +3176,7 @@ END
 // String Table
 //
 
-STRINGTABLE PRELOAD DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
@@ -3395,13 +3186,13 @@ BEGIN
     IDR_FRAME_TYPE          "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
-STRINGTABLE PRELOAD DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "RAO-Studio"
     AFX_IDS_IDLEMESSAGE     "Готово"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_NEW             "\nНовая модель (Ctrl+N)"
     ID_FILE_OPEN            "\nОткрыть (Ctrl+O)"
@@ -3413,19 +3204,19 @@ BEGIN
     ID_FILE_PRINT_PREVIEW   "Печать с предварительным просмотром \nПредварительный просмотр"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_APP_ABOUT            "Показать информация о программе\nО программе"
     ID_APP_EXIT             "Выход из приложения\nВыход"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_NEXT_PANE            "Переключиться на следующее окно\nСлед. окно"
     ID_PREV_PANE            "Переключиться на предыдущее окно\nПред. окно"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_SCSIZE          "Изменить размер окна"
     AFX_IDS_SCMOVE          "Изменить позицию окна"
@@ -3436,25 +3227,25 @@ BEGIN
     AFX_IDS_SCCLOSE         "Закрыть окно"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_SCRESTORE       "Восстановить окно"
     AFX_IDS_SCTASKLIST      "Показать список задач"
     AFX_IDS_MDICHILD        "Показать окно"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "Завершить предварительный просмотр\nЗавершить предварительный просмотр"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDR_MODEL_TOOLBAR       "Модель"
     IDR_EDIT_TOOLBAR        "Редактирование"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_SEARCH_FIND          "\nПоиск (Ctrl+F)"
     ID_SEARCH_REPLACE       "\nЗамена (Ctrl+R)"
@@ -3463,7 +3254,7 @@ BEGIN
     ID_FILE_SAVE_ALL        "\nЗаписать всё"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_PAT_PATOPERATION 
                             "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
@@ -3473,7 +3264,7 @@ BEGIN
     ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_RTP_RTPPERMANENT 
                             "$Resource_type  : permanent\r\n$Parameters\r\n\r\n$End\r\n"
@@ -3481,37 +3272,37 @@ BEGIN
                             "$Resource_type  : temporary\r\n$Parameters\r\n\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_RSS_RSS       "$Resources\r\n\t\r\n$End\r\n"
     ID_INSERT_OPR_OPR       "$Operations\r\n\t\r\n$End\r\n"
     ID_INSERT_FRM_FRM       "$Frame \r\n$Back_picture = <255 255 255> 800 600\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n\tCalculate_if\r\n$End\r\n"
     ID_INSERT_FUN_SQN       "$Sequence  : real\r\n$Type = exponential 123456789\r\n$End\r\n"
     ID_INSERT_FUN_CNS       "$Constant\r\n\t : integer =\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_DPT_DPTSEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
     ID_INSERT_DPT_DPTSOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_DPT_ACTIV     "$Activities\r\n\t\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_STATUSBAR_READONLY   "Только чтение"
     ID_STATUSBAR_MODIFIED   "Изменён"
@@ -3531,7 +3322,7 @@ BEGIN
     ID_FINDINMODEL_BEGINMSG "Поиск '%s'...\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_EDITOR_PLAINTEXT "обыкновенный текст"
     IDS_COLORSTYLE_EDITOR_IDENTIFICATOR "переменная"
@@ -3547,7 +3338,7 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_BOOKMARK "закладка"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_EDITOR_FOLD "группа"
     IDS_COLORSTYLE_EDITOR_ERROR "ошибка"
@@ -3567,7 +3358,7 @@ BEGIN
     IDS_COLORSTYLE_LOG_STN  "Признак вершины (STN)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MODEL_START          "Модель"
     ID_RESOURCE_TYPES       "Типы ресурсов"
@@ -3578,7 +3369,7 @@ BEGIN
     IDS_MODEL_RUNTIMEERROR_STOPED "Модель остановлена из-за ошибки прогона"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_EDIT_CLEAR           "Удалить выделенное\nУдалить"
     ID_EDIT_CLEAR_ALL       "Удалить всё\nУдалить всё"
@@ -3590,7 +3381,7 @@ BEGIN
     ID_EDIT_REDO            "Повторить отмененное действие\nПовторить (Ctrl+Y)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_COORD_STATUSBAR      " "
     ID_MODIFY_STATUSBAR     " "
@@ -3601,7 +3392,7 @@ BEGIN
     ID_MODEL_SPEED_STATUSBAR " "
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MSG_NO_HELP_FILE     "Невозможно найти файл справки '%s'.\r\nОн должен быть расположен в директории с RAO-studio."
     ID_MSG_CANTFIND         "Невозможно найти строчку '%s'."
@@ -3615,7 +3406,7 @@ BEGIN
     ID_MSG_MODELCLOSE_QUERY "Закрыть модель ?"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FINDINMODEL_ENDMSG_COUNT "'%d' раз было найдено.\r\n"
     ID_FINDINMODEL_ENDMSG_NOTFOUND "Не получилось найти строчку '%s'.\r\n"
@@ -3631,13 +3422,13 @@ BEGIN
     IDS_PLUGIN_DESCRIPTION  "Описание"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MODEL_RUN            "\nЗапустить (F5)"
     ID_MODEL_STOP           "\nОстановить (Shift+F5)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_MODEL_SAVE      "\nЗаписать (Ctrl+S)"
     ID_VIEW_ZOOMIN          "\nУвеличить масштаб (Ctrl+Num+)"
@@ -3645,7 +3436,7 @@ BEGIN
     ID_VIEW_ZOOMRESET       "\nВосстаносить мастшаб (Ctrl+Num/)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_LOG_STD  "Признак вершины (STD)"
     IDS_COLORSTYLE_LOG_STR  "Признак вершины (STR)"
@@ -3665,7 +3456,7 @@ BEGIN
     IDS_COLORSTYLE_CHART_TIME "время"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_ALLWINDOW "Все окна"
     IDS_COLORSTYLE_EDITOR   "Исходный текст"
@@ -3687,7 +3478,7 @@ BEGIN
                             "Получение структуры модели...ok\nМодель запущена"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_LOG_SAMPLE 
                             "Простая строка\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"
@@ -3709,7 +3500,7 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_THEME_OCEAN "Океан"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_FRAMES              "Кадры"
     IDS_FRAME_NAME          "кадр: %s"
@@ -3721,7 +3512,7 @@ BEGIN
     IDS_MODEL_PATTERNS      "образцы"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CHART_TITLE         "график: %s"
     IDS_CHART_OPTIONS       "Настройки графика"
@@ -3729,7 +3520,7 @@ BEGIN
     IDS_CHART_OPTIONS_INT_VERIFY "'%s' должно быть целым между %d и %d."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_VIEW_ZOOMAUTO        "\nАвтоматический масштаб (Ctrl+Num*)"
     ID_MODEL_SHOWRATE_INC   "\nУвеличить масштаб (Alt+Num+)"
@@ -3742,7 +3533,7 @@ BEGIN
     IDS_WARNING             "предупреждение C%04d"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MODEL_SHOWRATE_FMOREONE "Масштаб: %1.1f"
     IDS_MODEL_SHOWRATE_FLESSONE "Масштаб: %1.10f"
@@ -3753,7 +3544,7 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_COLOR "цвет"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MODEL_RESOURCETYPES "типы ресурсов"
     IDS_MODEL_RESOURCES     "ресурсы"
@@ -3772,7 +3563,7 @@ BEGIN
     IDS_MODEL_RESOURCE_LOADING_OK "Загрузка ресурсов для анимации...ok\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MODEL_STARTED       "Модель запущена\n"
     IDS_MODEL_FINISHED      "Модель завершена\n"
@@ -3785,23 +3576,23 @@ BEGIN
     IDS_MODEL_DURATION      "Длительность прогона: %u мсек.\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_VIEW_WORKSPACE       "\nПанель объектов (Alt+0)"
     ID_VIEW_OUTPUT          "\nПанель вывод (Alt+9)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDR_ZOOM_TOOLBAR        "Масштаб"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DEVELOPERS          "RAO-Studio v1.0 (РДО v2.0, 2003-2008 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (РДО v1.0, 1991-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_TAB_BUILD           "Компилятор"
     IDS_TAB_DEBUG           "Вывод"
@@ -3812,7 +3603,7 @@ BEGIN
     IDS_TAB_FRAMES          "Анимация"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ER_UNKNOWN          "Неизвестная синтаксическая ошибка. Пример с ошибкой  можно высылать на http://rdo.rk9.bmstu.ru/bugs в категорию rdo-parser."
     IDS_ER_RTP_SECOND_RES_TYPE "Тип ресурса уже существует: %s"
@@ -3827,7 +3618,7 @@ BEGIN
     IDS_ER_RTP_SECOND_PARAM_NAME "Параметр уже существует: %s"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ER_RTP_INVALID_DEFVALUE_INT "Неверное значение по-умолчанию"
     IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL 
@@ -3848,7 +3639,7 @@ BEGIN
                             "Ожидается описание параметра ресурса"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MODEL_RUNTIME_MAXSPEED "\nБез анимации, максимальная скорость"
     ID_MODEL_RUNTIME_JUMP   "\nДискретная имитация"
@@ -3856,7 +3647,7 @@ BEGIN
     ID_MODEL_RUNTIME_PAUSE  "\nПауза"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MODEL_SPEED_SLIDER   "\nСкорость имитатора"
 END
@@ -3880,7 +3671,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO 
 BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
@@ -3986,31 +3777,25 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOG DISCARDABLE  0, 0, 224, 249
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_ABOUT DIALOG  0, 0, 224, 249
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About RAO Studio"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,168,228,50,14
     ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
     CTEXT           "caption",IDC_ABOUT_CAPTION,48,8,144,8
-    LTEXT           "Bauman Moscow State Technical University,\nRobotics and Complex Automation Faculty,\nComputer-Aided Systems for Manufacturing Automatization Departmen",
-                    IDC_ABOUT_INFO,52,20,144,24
-    RTEXT           "Tel. +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nFax +7 (495) 263 61 70",
-                    IDC_ABOUT_TEL,52,76,144,32
-    EDITTEXT        IDC_DEVELOPERS,4,131,216,92,ES_MULTILINE | 
-                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Bauman Moscow State Technical University,\nRobotics and Complex Automation Faculty,\nComputer-Aided Systems for Manufacturing Automatization Departmen",IDC_ABOUT_INFO,52,20,144,24
+    RTEXT           "Tel. +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nFax +7 (495) 263 61 70",IDC_ABOUT_TEL,52,76,144,32
+    EDITTEXT        IDC_DEVELOPERS,4,131,216,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "Developers",IDC_STATIC,4,120,50,8
-    RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,140,112,56,8,
-                    SS_NOTIFY
-    RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,116,120,80,8,
-                    SS_NOTIFY
-    RTEXT           "RK9 Department,\n5, 2nd Baumanskaya Ul.,\nMoscow, Russia 105005",
-                    IDC_ABOUT_ADDRESS,52,48,144,24
+    RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,140,112,56,8,SS_NOTIFY
+    RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,116,120,80,8,SS_NOTIFY
+    RTEXT           "RK9 Department,\n5, 2nd Baumanskaya Ul.,\nMoscow, Russia 105005",IDC_ABOUT_ADDRESS,52,48,144,24
 END
 
-IDD_BUFFER DIALOG DISCARDABLE  0, 0, 205, 60
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_BUFFER DIALOG  0, 0, 205, 60
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Buffer Value"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -4020,259 +3805,168 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,113,39,50,14
 END
 
-IDD_CHART_OPTIONS_CHART DIALOG DISCARDABLE  0, 0, 235, 71
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+IDD_CHART_OPTIONS_CHART DIALOG  0, 0, 235, 71
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Chart"
 FONT 8, "MS Sans Serif"
 BEGIN
     LTEXT           "Title",IDC_CHART_TITLE_STATIC,5,9,14,8
     EDITTEXT        IDC_CHART_TITLE_EDIT,23,5,207,12,ES_AUTOHSCROLL
-    LTEXT           "Values count on Y axis",IDC_VAL_COUNT_Y_STATIC,5,25,73,
-                    8
+    LTEXT           "Values count on Y axis",IDC_VAL_COUNT_Y_STATIC,5,25,73,8
     EDITTEXT        IDC_IDC_VAL_COUNT_Y_EDIT,83,21,29,12,ES_AUTOHSCROLL
-    LTEXT           "Values count on X axis",IDC_VAL_COUNT_X_STATIC,124,25,
-                    73,8
+    LTEXT           "Values count on X axis",IDC_VAL_COUNT_X_STATIC,124,25,73,8
     EDITTEXT        IDC_IDC_VAL_COUNT_X_EDIT,201,21,29,12,ES_AUTOHSCROLL
-    CONTROL         "Draw legend",IDC_DRAW_LEGEND_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,90,40,56,10
+    CONTROL         "Draw legend",IDC_DRAW_LEGEND_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,90,40,56,10
     LTEXT           "Y axis values",IDC_AXIS_VAL_STATIC,5,59,42,8
-    COMBOBOX        IDC_AXIS_SERIES,51,55,179,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_AXIS_SERIES,51,55,179,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_CHART_OPTIONS_SERIES DIALOGEX 0, 0, 235, 84
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Series"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     LTEXT           "Chart series",IDC_SERIES_STATIC,5,9,38,8
-    COMBOBOX        IDC_SERIES_COMBO,45,5,185,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SERIES_COMBO,45,5,185,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Serie title",IDC_SERIE_TITLE_STATIC,5,25,30,8
     EDITTEXT        IDC_SERIE_TITLE_EDIT,40,21,190,12,ES_AUTOHSCROLL
-    CONTROL         "Show serie in legend",IDC_LEGEND_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,40,81,10
+    CONTROL         "Show serie in legend",IDC_LEGEND_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,40,81,10
     LTEXT           "Color",IDC_COLOR_STATIC,106,41,17,8
-    COMBOBOX        IDC_COLOR_COMBO,126,37,88,92,CBS_DROPDOWNLIST | 
-                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
-                    WS_TABSTOP
+    COMBOBOX        IDC_COLOR_COMBO,126,37,88,92,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "...",IDC_COLOR_BUTTON,214,37,16,12,0,WS_EX_STATICEDGE
     LTEXT           "Marker",IDC_MARKER_STATIC,5,58,23,8
-    COMBOBOX        IDC_MARKER_COMBO,32,54,57,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MARKER_COMBO,32,54,57,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Marker size",IDC_MAKER_SIZE_STATIC,96,58,37,8
     EDITTEXT        IDC_MARKER_SIZE_EDIT,137,54,25,12,ES_AUTOHSCROLL
-    CONTROL         "Draw marker",IDC_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,172,57,58,10
-    CONTROL         "Transparent marker",IDC_TRANSP_MARKER_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,79,72,77,10
+    CONTROL         "Draw marker",IDC_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,57,58,10
+    CONTROL         "Transparent marker",IDC_TRANSP_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,79,72,77,10
 END
 
-IDD_FILEASSOCIATION DIALOG DISCARDABLE  0, 0, 200, 70
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_FILEASSOCIATION DIALOG  0, 0, 200, 70
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "File association"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "Yes",IDOK,45,50,50,14
     PUSHBUTTON      "No",IDCANCEL,115,50,50,14
-    LTEXT           "Current instance of RAO-studio is't associated with SMR file. Do you want to make new association for SMR ?",
-                    IDC_FILEASSOCIATION_STATIC,5,5,190,20
+    LTEXT           "Current instance of RAO-studio is't associated with SMR file. Do you want to make new association for SMR ?",IDC_FILEASSOCIATION_STATIC,5,5,190,20
     CONTROL         "Check association in future",IDC_FILEASSOCIATION_CHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,30,101,10
 END
 
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 138
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Editor"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    GROUPBOX        "Buffers",IDC_BUFFERS_STATIC,0,4,292,43,0,0,
-                    HIDC_BUFFERS_STATIC
-    CONTROL         "Clear automatically",IDC_CLEARAUTO_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,16,88,10,0,
-                    HIDC_CLEARAUTO_CHECK
-    LTEXT           "Clear after",IDC_CLEARAUTO_STATIC1,16,32,33,8,0,0,
-                    HIDC_CLEARAUTO_STATIC1
-    EDITTEXT        IDC_CLEARAUTO_EDIT,52,28,40,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_CLEARAUTO_EDIT
-    LTEXT           "sec.",IDC_CLEARAUTO_STATIC2,96,32,14,8,0,0,
-                    HIDC_CLEARAUTO_STATIC2
-    GROUPBOX        "Auto complete",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,0,
-                    HIDC_AUTOCOMPLETE_STATIC
-    CONTROL         "Use auto complete",IDC_USEAUTOCOMPLETE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,64,75,10,0,
-                    HIDC_USEAUTOCOMPLETE_CHECK
-    CONTROL         "Show full list",IDC_SHOWFULLLIST_RADIO,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,16,80,55,10,0,
-                    HIDC_SHOWFULLLIST_RADIO
+    GROUPBOX        "Buffers",IDC_BUFFERS_STATIC,0,4,292,43,0,0,HIDC_BUFFERS_STATIC
+    CONTROL         "Clear automatically",IDC_CLEARAUTO_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,16,88,10,0,HIDC_CLEARAUTO_CHECK
+    LTEXT           "Clear after",IDC_CLEARAUTO_STATIC1,16,32,33,8,0,0,HIDC_CLEARAUTO_STATIC1
+    EDITTEXT        IDC_CLEARAUTO_EDIT,52,28,40,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_CLEARAUTO_EDIT
+    LTEXT           "sec.",IDC_CLEARAUTO_STATIC2,96,32,14,8,0,0,HIDC_CLEARAUTO_STATIC2
+    GROUPBOX        "Auto complete",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,0,HIDC_AUTOCOMPLETE_STATIC
+    CONTROL         "Use auto complete",IDC_USEAUTOCOMPLETE_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,64,75,10,0,HIDC_USEAUTOCOMPLETE_CHECK
+    CONTROL         "Show full list",IDC_SHOWFULLLIST_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,80,55,10,0,HIDC_SHOWFULLLIST_RADIO
     CONTROL         "Show nearest words only",IDC_SHOWNEARESTWORDSONLY_RADIO,
-                    "Button",BS_AUTORADIOBUTTON,16,92,92,10,0,
-                    HIDC_SHOWNEARESTWORDSONLY_RADIO
-    GROUPBOX        "Margin",IDC_MARGIN_STATIC,144,52,148,56,0,0,
-                    HIDC_MARGIN_STATIC
-    CONTROL         "Fold",IDC_MARGIN_FOLD_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,152,64,29,10,0,HIDC_MARGIN_FOLD_CHECK
-    CONTROL         "Bookmark",IDC_MARGIN_BOOKMARK_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,152,76,48,10,0,
-                    HIDC_MARGIN_BOOKMARK_CHECK
-    CONTROL         "Line number",IDC_MARGIN_LINENUMBER_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,152,88,55,10,0,
-                    HIDC_MARGIN_LINENUMBER_CHECK
+                    "Button",BS_AUTORADIOBUTTON,16,92,92,10,0,HIDC_SHOWNEARESTWORDSONLY_RADIO
+    GROUPBOX        "Margin",IDC_MARGIN_STATIC,144,52,148,56,0,0,HIDC_MARGIN_STATIC
+    CONTROL         "Fold",IDC_MARGIN_FOLD_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,64,29,10,0,HIDC_MARGIN_FOLD_CHECK
+    CONTROL         "Bookmark",IDC_MARGIN_BOOKMARK_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,76,48,10,0,HIDC_MARGIN_BOOKMARK_CHECK
+    CONTROL         "Line number",IDC_MARGIN_LINENUMBER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,88,55,10,0,HIDC_MARGIN_LINENUMBER_CHECK
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 292, 138
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    GROUPBOX        "File Association",IDC_FILEASSOCIATION_STATIC,0,4,292,40,
-                    0,0,HIDC_FILEASSOCIATION_STATIC
-    CONTROL         "Setup file association for project file (*.smr)",
-                    IDC_FILEASSOCIATION_SETUP_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,8,16,148,10,0,
-                    HIDC_FILEASSOCIATION_SETUP_CHECK
-    CONTROL         "Check association in future",
-                    IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,28,101,10,0,
-                    HIDC_FILEASSOCIATION_CHECKINFUTURE_CHECK
+    GROUPBOX        "File Association",IDC_FILEASSOCIATION_STATIC,0,4,292,40,0,0,HIDC_FILEASSOCIATION_STATIC
+    CONTROL         "Setup file association for project file (*.smr)",IDC_FILEASSOCIATION_SETUP_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,16,148,10,0,HIDC_FILEASSOCIATION_SETUP_CHECK
+    CONTROL         "Check association in future",IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,28,101,10,0,HIDC_FILEASSOCIATION_CHECKINFUTURE_CHECK
     CONTROL         "Open last project at startup",IDC_OPENLASTPROJECT_CHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,52,101,10,0,
-                    HIDC_OPENLASTPROJECT_CHECK
-    CONTROL         "Show project's full name on application's caption",
-                    IDC_SHOWCAPTIONFULLNAME_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,8,64,168,10,0,HIDC_SHOWCAPTIONFULLNAME_CHECK
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,52,101,10,0,HIDC_OPENLASTPROJECT_CHECK
+    CONTROL         "Show project's full name on application's caption",IDC_SHOWCAPTIONFULLNAME_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,64,168,10,0,HIDC_SHOWCAPTIONFULLNAME_CHECK
 END
 
-IDD_OPTIONS_PLUGINS DIALOG DISCARDABLE  0, 0, 292, 187
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+IDD_OPTIONS_PLUGINS DIALOG  0, 0, 292, 187
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Plugins"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "List1",IDC_PLUGIN_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,4,292,136
+    CONTROL         "List1",IDC_PLUGIN_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,4,292,136
     LTEXT           "Autorun",IDC_PLUGIN_RUNMODE_STATIC,8,148,26,8
-    COMBOBOX        IDC_PLUGIN_RUNMODE_COMBOBOX,40,144,56,44,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_PLUGIN_RUNMODE_COMBOBOX,40,144,56,44,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Default",IDC_PLUGIN_RUNMODE_BUTTON,100,144,50,14
     PUSHBUTTON      "Start",IDC_PLUGIN_START,8,164,50,14
     PUSHBUTTON      "Stop",IDC_PLUGIN_STOP,64,164,50,14
-    CONTROL         "Restore state at startup",
-                    IDC_PLUGIN_RESTORESTATE_CHECKBOX,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,128,168,89,10
+    CONTROL         "Restore state at startup",IDC_PLUGIN_RESTORESTATE_CHECKBOX,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,128,168,89,10
 END
 
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Styles and Colors"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
-                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
-                    TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | WS_TABSTOP,0,4,84,
-                    108,WS_EX_CLIENTEDGE,HIDC_STYLEITEM_TREE
+    CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | WS_TABSTOP,0,4,84,108,WS_EX_CLIENTEDGE,HIDC_STYLEITEM_TREE
     LTEXT           "Theme",IDC_THEME_STATIC,88,8,23,8,0,0,HIDC_THEME_STATIC
-    COMBOBOX        IDC_THEME_COMBO,116,4,104,86,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_THEME_COMBO
-    COMBOBOX        IDC_FONTNAME_COMBO,88,20,132,80,CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTNAME_COMBO
-    COMBOBOX        IDC_FONTSIZE_COMBO,224,20,64,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTSIZE_COMBO
-    LTEXT           "Foreground",IDC_FGCOLOR_STATIC,88,40,37,8,0,0,
-                    HIDC_FGCOLOR_STATIC
-    COMBOBOX        IDC_FGCOLOR_COMBO,132,36,88,92,CBS_DROPDOWNLIST | 
-                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
-                    WS_TABSTOP,0,HIDC_FGCOLOR_COMBO
-    PUSHBUTTON      "...",IDC_FGCOLOR_BUTTON,220,36,16,12,0,WS_EX_STATICEDGE,
-                    HIDC_FGCOLOR_BUTTON
-    LTEXT           "Background",IDC_BGCOLOR_STATIC,88,56,40,8,0,0,
-                    HIDC_BGCOLOR_STATIC
-    COMBOBOX        IDC_BGCOLOR_COMBO,132,52,88,92,CBS_DROPDOWNLIST | 
-                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
-                    WS_TABSTOP,0,HIDC_BGCOLOR_COMBO
-    PUSHBUTTON      "...",IDC_BGCOLOR_BUTTON,220,52,16,12,0,WS_EX_STATICEDGE,
-                    HIDC_BGCOLOR_BUTTON
-    CONTROL         "Bold",IDC_FONTBOLD_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,244,36,30,10,0,HIDC_FONTBOLD_CHECK
-    CONTROL         "Italic",IDC_FONTITALIC_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,244,48,31,10,0,HIDC_FONTITALIC_CHECK
-    CONTROL         "Underline",IDC_FONTUNDERLINE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,244,60,46,10,0,
-                    HIDC_FONTUNDERLINE_CHECK
-    CONTROL         "Word wrap",IDC_WORDWRAP_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,88,72,81,10,0,HIDC_WORDWRAP_CHECK
-    CONTROL         "Horizontal scroll bar",IDC_HORZSCROLLBAR_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,180,72,92,10,0,
-                    HIDC_HORZSCROLLBAR_CHECK
-    LTEXT           "Bookmark",IDC_BOOKMARK_STATIC,196,88,33,8,0,0,
-                    HIDC_BOOKMARK_STATIC
-    COMBOBOX        IDC_BOOKMARK_COMBO,232,84,56,76,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_BOOKMARK_COMBO
+    COMBOBOX        IDC_THEME_COMBO,116,4,104,86,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_THEME_COMBO
+    COMBOBOX        IDC_FONTNAME_COMBO,88,20,132,80,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTNAME_COMBO
+    COMBOBOX        IDC_FONTSIZE_COMBO,224,20,64,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTSIZE_COMBO
+    LTEXT           "Foreground",IDC_FGCOLOR_STATIC,88,40,37,8,0,0,HIDC_FGCOLOR_STATIC
+    COMBOBOX        IDC_FGCOLOR_COMBO,132,36,88,92,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP,0,HIDC_FGCOLOR_COMBO
+    PUSHBUTTON      "...",IDC_FGCOLOR_BUTTON,220,36,16,12,0,WS_EX_STATICEDGE,HIDC_FGCOLOR_BUTTON
+    LTEXT           "Background",IDC_BGCOLOR_STATIC,88,56,40,8,0,0,HIDC_BGCOLOR_STATIC
+    COMBOBOX        IDC_BGCOLOR_COMBO,132,52,88,92,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP,0,HIDC_BGCOLOR_COMBO
+    PUSHBUTTON      "...",IDC_BGCOLOR_BUTTON,220,52,16,12,0,WS_EX_STATICEDGE,HIDC_BGCOLOR_BUTTON
+    CONTROL         "Bold",IDC_FONTBOLD_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,36,30,10,0,HIDC_FONTBOLD_CHECK
+    CONTROL         "Italic",IDC_FONTITALIC_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,48,31,10,0,HIDC_FONTITALIC_CHECK
+    CONTROL         "Underline",IDC_FONTUNDERLINE_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,60,46,10,0,HIDC_FONTUNDERLINE_CHECK
+    CONTROL         "Word wrap",IDC_WORDWRAP_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,72,81,10,0,HIDC_WORDWRAP_CHECK
+    CONTROL         "Horizontal scroll bar",IDC_HORZSCROLLBAR_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,180,72,92,10,0,HIDC_HORZSCROLLBAR_CHECK
+    LTEXT           "Bookmark",IDC_BOOKMARK_STATIC,196,88,33,8,0,0,HIDC_BOOKMARK_STATIC
+    COMBOBOX        IDC_BOOKMARK_COMBO,232,84,56,76,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_BOOKMARK_COMBO
     LTEXT           "Fold",IDC_FOLD_STATIC,88,88,14,8,0,0,HIDC_FOLD_STATIC
-    COMBOBOX        IDC_FOLD_COMBO,108,84,76,116,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_FOLD_COMBO
-    LTEXT           "Preview as",IDC_PREVIEWAS_STATIC,88,104,36,8,0,0,
-                    HIDC_PREVIEWAS_STATIC
-    COMBOBOX        IDC_PREVIEWAS_COMBO,128,100,92,86,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_PREVIEWAS_COMBO
-    LTEXT           "Vertical border",IDC_VERTBORDER_STATIC,88,76,46,8,0,0,
-                    HIDC_VERTBORDER_STATIC
-    EDITTEXT        IDC_VERTBORDER_EDIT,140,72,24,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_VERTBORDER_EDIT
-    LTEXT           "Horizontal border",IDC_HORZBORDER_STATIC,172,76,54,8,0,
-                    0,HIDC_HORZBORDER_STATIC
-    EDITTEXT        IDC_HORZBORDER_EDIT,232,72,24,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_HORZBORDER_EDIT
-    COMBOBOX        IDC_TITLE_FONTSIZE_COMBO,136,73,38,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_TITLE_FONTSIZE_COMBO
-    LTEXT           "Title font size",IDC_TITLE_FONTSIZE_STATIC,88,78,42,8,0,
-                    0,HIDC_TITLE_FONTSIZE_STATIC
-    COMBOBOX        IDC_LEGEND_FONTSIZE_COMBO,247,72,38,80,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP,0,HIDC_LEGEND_FONTSIZE_COMBO
-    LTEXT           "Legend font size",IDC_LEGEND_FONTSIZE_STATIC,189,77,53,
-                    8,0,0,HIDC_LEGEND_FONTSIZE_STATIC
-    EDITTEXT        IDC_TICKWIDTH_EDIT,236,89,29,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_TICKWIDTH_EDIT
-    LTEXT           "Minimal interval between points of time",
-                    IDC_TICKWIDTH_STATIC,110,94,122,8,0,0,
-                    HIDC_TICKWIDTH_STATIC
-    CONTROL         "Comments fold",IDC_COMMENTGROUP_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,88,100,62,10
-    CONTROL         "Show warnings",IDC_WARNING_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,88,84,64,10
+    COMBOBOX        IDC_FOLD_COMBO,108,84,76,116,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_FOLD_COMBO
+    LTEXT           "Preview as",IDC_PREVIEWAS_STATIC,88,104,36,8,0,0,HIDC_PREVIEWAS_STATIC
+    COMBOBOX        IDC_PREVIEWAS_COMBO,128,100,92,86,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_PREVIEWAS_COMBO
+    LTEXT           "Vertical border",IDC_VERTBORDER_STATIC,88,76,46,8,0,0,HIDC_VERTBORDER_STATIC
+    EDITTEXT        IDC_VERTBORDER_EDIT,140,72,24,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_VERTBORDER_EDIT
+    LTEXT           "Horizontal border",IDC_HORZBORDER_STATIC,172,76,54,8,0,0,HIDC_HORZBORDER_STATIC
+    EDITTEXT        IDC_HORZBORDER_EDIT,232,72,24,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_HORZBORDER_EDIT
+    COMBOBOX        IDC_TITLE_FONTSIZE_COMBO,136,73,38,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_TITLE_FONTSIZE_COMBO
+    LTEXT           "Title font size",IDC_TITLE_FONTSIZE_STATIC,88,78,42,8,0,0,HIDC_TITLE_FONTSIZE_STATIC
+    COMBOBOX        IDC_LEGEND_FONTSIZE_COMBO,247,72,38,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0,HIDC_LEGEND_FONTSIZE_COMBO
+    LTEXT           "Legend font size",IDC_LEGEND_FONTSIZE_STATIC,189,77,53,8,0,0,HIDC_LEGEND_FONTSIZE_STATIC
+    EDITTEXT        IDC_TICKWIDTH_EDIT,236,89,29,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_TICKWIDTH_EDIT
+    LTEXT           "Minimal interval between points of time",IDC_TICKWIDTH_STATIC,110,94,122,8,0,0,HIDC_TICKWIDTH_STATIC
+    CONTROL         "Comments fold",IDC_COMMENTGROUP_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,100,62,10
+    CONTROL         "Show warnings",IDC_WARNING_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,84,64,10
 END
 
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
-STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Tabs"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
-    LTEXT           "Tab size",IDC_TABSIZE_STATIC,8,21,28,8,NOT WS_GROUP,0,
-                    HIDC_TABSIZE_STATIC
-    EDITTEXT        IDC_TABSIZE_EDIT,48,16,40,12,ES_AUTOHSCROLL | ES_NUMBER,
-                    0,HIDC_TABSIZE_EDIT
-    CONTROL         "Use tabs",IDC_USETABS_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,96,21,44,10,0,HIDC_USETABS_CHECK
-    LTEXT           "Indent size",IDC_INDENTSIZE_STATIC,8,37,35,8,NOT 
-                    WS_GROUP,0,HIDC_INDENTSIZE_STATIC
-    EDITTEXT        IDC_INDENTSIZE_EDIT,48,32,40,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER,0,HIDC_INDENTSIZE_EDIT
-    CONTROL         "Tab indents",IDC_TABINDENTS_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,96,37,53,10,0,
-                    HIDC_TABINDENTS_CHECK
-    CONTROL         "Backspace Untabs",IDC_BACKSPACEUNTABS_RADIO,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,8,53,77,10,0,
-                    HIDC_BACKSPACEUNTABS_RADIO
+    LTEXT           "Tab size",IDC_TABSIZE_STATIC,8,21,28,8,NOT WS_GROUP,0,HIDC_TABSIZE_STATIC
+    EDITTEXT        IDC_TABSIZE_EDIT,48,16,40,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_TABSIZE_EDIT
+    CONTROL         "Use tabs",IDC_USETABS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,96,21,44,10,0,HIDC_USETABS_CHECK
+    LTEXT           "Indent size",IDC_INDENTSIZE_STATIC,8,37,35,8,NOT WS_GROUP,0,HIDC_INDENTSIZE_STATIC
+    EDITTEXT        IDC_INDENTSIZE_EDIT,48,32,40,12,ES_AUTOHSCROLL | ES_NUMBER,0,HIDC_INDENTSIZE_EDIT
+    CONTROL         "Tab indents",IDC_TABINDENTS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,96,37,53,10,0,HIDC_TABINDENTS_CHECK
+    CONTROL         "Backspace Untabs",IDC_BACKSPACEUNTABS_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,8,53,77,10,0,HIDC_BACKSPACEUNTABS_RADIO
     CONTROL         "Backspace Unindents",IDC_BACKSPACEUNINDENTS_RADIO,
-                    "Button",BS_AUTORADIOBUTTON,8,64,86,10,0,
-                    HIDC_BACKSPACEUNINDENTS_RADIO
-    CONTROL         "Auto indent",IDC_AUTOINDENT_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,80,52,10,0,
-                    HIDC_AUTOINDENT_CHECK
+                    "Button",BS_AUTORADIOBUTTON,8,64,86,10,0,HIDC_BACKSPACEUNINDENTS_RADIO
+    CONTROL         "Auto indent",IDC_AUTOINDENT_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,80,52,10,0,HIDC_AUTOINDENT_CHECK
 END
 
-IDD_MODEL_NEW DIALOG DISCARDABLE  0, 0, 238, 170
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_MODEL_NEW DIALOG  0, 0, 238, 170
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "New model"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -4280,28 +3974,22 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,184,152,50,14
     EDITTEXT        IDC_MODEL_NAME,62,6,172,12,ES_AUTOHSCROLL
     RTEXT           "Model path",IDC_STATIC,8,22,48,8
-    EDITTEXT        IDC_MODEL_PATH,62,20,156,12,ES_AUTOHSCROLL | ES_READONLY | 
-                    NOT WS_TABSTOP
+    EDITTEXT        IDC_MODEL_PATH,62,20,156,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     PUSHBUTTON      "...",IDC_MODEL_PATH_BUTTON,220,20,14,12,BS_FLAT
     GROUPBOX        "Template",IDC_STATIC,4,64,230,82
     RTEXT           "Model name",IDC_STATIC,8,10,47,8
-    CONTROL         "Empty model",IDC_MODEL_EMPTY,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT | WS_GROUP,8,76,67,10
-    CONTROL         "Empty templates",IDC_MODEL_TEMPLATE,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT,8,88,67,10
-    CONTROL         "Simple system of mass service",IDC_MODEL_BARBER1,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT,8,100,103,10
-    CONTROL         "Simple system of mass service with temporary resources",
-                    IDC_MODEL_BARBER2,"Button",BS_AUTORADIOBUTTON | BS_FLAT,
-                    8,112,193,10
+    CONTROL         "Empty model",IDC_MODEL_EMPTY,"Button",BS_AUTORADIOBUTTON | BS_FLAT | WS_GROUP,8,76,67,10
+    CONTROL         "Empty templates",IDC_MODEL_TEMPLATE,"Button",BS_AUTORADIOBUTTON | BS_FLAT,8,88,67,10
+    CONTROL         "Simple system of mass service",IDC_MODEL_BARBER1,"Button",BS_AUTORADIOBUTTON | BS_FLAT,8,100,103,10
+    CONTROL         "Simple system of mass service with temporary resources",IDC_MODEL_BARBER2,
+                    "Button",BS_AUTORADIOBUTTON | BS_FLAT,8,112,193,10
     LTEXT           "Static",IDC_INFO,8,36,226,24
-    CONTROL         "Include comments (russian only)",IDC_COMMENT,"Button",
-                    BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
+    CONTROL         "Include comments (russian only)",IDC_COMMENT,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
     CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,126,192,1
 END
 
-IDD_GOTO_LINE_DIALOG DIALOG DISCARDABLE  0, 0, 160, 41
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_GOTO_LINE_DIALOG DIALOG  0, 0, 160, 41
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Go to line"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -4489,7 +4177,7 @@ END
 // Menu
 //
 
-IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+IDR_MAINFRAME MENU 
 BEGIN
     POPUP "&File"
     BEGIN
@@ -4530,8 +4218,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Select &All\tCtrl+A",         ID_EDIT_SELECT_ALL
         MENUITEM SEPARATOR
-        MENUITEM "Make Selection &Uppercase\tCtrl+Shift+U", 
-                                                ID_EDIT_UPPERCASE
+        MENUITEM "Make Selection &Uppercase\tCtrl+Shift+U", ID_EDIT_UPPERCASE
         MENUITEM "Make Selection &Lowercase\tCtrl+U", ID_EDIT_LOWERCASE
         MENUITEM "Co&mment Selection\tCtrl+Q",  ID_EDIT_COMMENTSELECTION
         MENUITEM "Complete W&ord\tCtrl+Space",  ID_EDIT_COMPLETEWORD
@@ -4548,8 +4235,7 @@ BEGIN
         MENUITEM "&Toggle Bookmark\tCtrl+F2",   ID_SEARCH_BOOKMARK_TOGGLE
         MENUITEM "N&ext Bookmark\tF2",          ID_SEARCH_BOOKMARK_NEXT
         MENUITEM "Pre&vious Bookmark\tShift+F2", ID_SEARCH_BOOKMARK_PREVIOUS
-        MENUITEM "&Clear Bookmarks\tCtrl+Shift+F2", 
-                                                ID_SEARCH_BOOKMARKS_CLEAR
+        MENUITEM "&Clear Bookmarks\tCtrl+Shift+F2", ID_SEARCH_BOOKMARKS_CLEAR
         MENUITEM SEPARATOR
         MENUITEM "&Go to line\tCtrl+G",         ID_SEARCH_GOTO_LINE
     END
@@ -4571,13 +4257,9 @@ BEGIN
         POPUP "&Toolbar"
         BEGIN
             MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILE_TOOLBAR
-
             MENUITEM "&Edit Toolbar",               ID_VIEW_TOOLBAR_EDIT_TOOLBAR
-
             MENUITEM "&Zoom Toolbar",               ID_VIEW_TOOLBAR_ZOOM_TOOLBAR
-
             MENUITEM "&Model Toolbar",              ID_VIEW_TOOLBAR_MODEL_TOOLBAR
-
         END
         MENUITEM SEPARATOR
         MENUITEM "&Options...",                 ID_VIEW_OPTIONS
@@ -4587,21 +4269,17 @@ BEGIN
         POPUP "PAT"
         BEGIN
             MENUITEM "PAT operation",               ID_INSERT_PAT_PATOPERATION
-
             MENUITEM "PAT irregular_event",         ID_INSERT_PAT_PATIRREGULAREVENT
-
             MENUITEM "PAT rule",                    ID_INSERT_PAT_PATRULE
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "operation",                   ID_INSERT_PAT_OPERATION
             MENUITEM "irregular_event",             ID_INSERT_PAT_IRREGULAREVENT
-
             MENUITEM "rule",                        ID_INSERT_PAT_RULE
             MENUITEM "keyboard",                    ID_INSERT_PAT_KEYBOARD
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
             MENUITEM "no_trace",                    ID_INSERT_PAT_NOTRACE
             MENUITEM "$Parameters",                 ID_INSERT_PAT_PARAMETERS
             MENUITEM "$Relevant_resources",         ID_INSERT_PAT_RELEVANTRESOURCES
-
             MENUITEM "Keep",                        ID_INSERT_PAT_KEEP
             MENUITEM "NoChange",                    ID_INSERT_PAT_NOCHANGE
             MENUITEM "Create",                      ID_INSERT_PAT_CREATE
@@ -4610,15 +4288,11 @@ BEGIN
             MENUITEM "$Time",                       ID_INSERT_PAT_TIME
             MENUITEM "$Body",                       ID_INSERT_PAT_BODY
             MENUITEM "Convert_begin",               ID_INSERT_PAT_CONVERTBEGIN
-
             MENUITEM "Convert_end",                 ID_INSERT_PAT_CONVERTEND
             MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
-
             MENUITEM "Convert_rule",                ID_INSERT_PAT_CONVERTRULE
-
             MENUITEM "Choice from",                 ID_INSERT_PAT_CHOICEFROM
             MENUITEM "Choice NoCheck",              ID_INSERT_PAT_CHOICENOCHECK
-
             MENUITEM "first",                       ID_INSERT_PAT_FIRST
             MENUITEM "with_max",                    ID_INSERT_PAT_WITHMAX
             MENUITEM "with_min",                    ID_INSERT_PAT_WITHMIN
@@ -4628,11 +4302,8 @@ BEGIN
         POPUP "RTP"
         BEGIN
             MENUITEM "RTP permanent",               ID_INSERT_RTP_RTPPERMANENT
-
             MENUITEM "RTP temporary",               ID_INSERT_RTP_RTPTEMPORARY
-
             MENUITEM "$Resource_type",              ID_INSERT_RTP_RESOURCETYPE
-
             MENUITEM "permanent",                   ID_INSERT_RTP_PERMANENT
             MENUITEM "temporary",                   ID_INSERT_RTP_TEMPORARY
             MENUITEM "$Parameters",                 ID_INSERT_RTP_PARAMETERS
@@ -4663,7 +4334,6 @@ BEGIN
             MENUITEM "FRM",                         ID_INSERT_FRM_FRM
             MENUITEM "$Frame",                      ID_INSERT_FRM_FRAME
             MENUITEM "$Back_picture",               ID_INSERT_FRM_BACKPICTURE
-
             MENUITEM "Show",                        ID_INSERT_FRM_SHOW
             MENUITEM "Show_if",                     ID_INSERT_FRM_SHOWIF
             MENUITEM "bitmap",                      ID_INSERT_FRM_BITMAP
@@ -4685,20 +4355,16 @@ BEGIN
             MENUITEM "$Function",                   ID_INSERT_FUN_FUNCTION
             MENUITEM "$Type",                       ID_INSERT_FUN_TYPE
             MENUITEM "algorithmic",                 ID_INSERT_FUN_ALGORITHMIC
-
             MENUITEM "list",                        ID_INSERT_FUN_LIST
             MENUITEM "table",                       ID_INSERT_FUN_TABLE
             MENUITEM "normal",                      ID_INSERT_FUN_NORMAL
             MENUITEM "uniform",                     ID_INSERT_FUN_UNIFORM
             MENUITEM "exponential",                 ID_INSERT_FUN_EXPONENTIAL
-
             MENUITEM "by_hist",                     ID_INSERT_FUN_BYHIST
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
-
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
             MENUITEM "$Body",                       ID_INSERT_FUN_BODY
             MENUITEM "Calculate_if",                ID_INSERT_FUN_CALCULATEIF
-
             MENUITEM "$Sequence",                   ID_INSERT_FUN_SEQUENCE
             MENUITEM "$Constant",                   ID_INSERT_FUN_CONSTANT
             MENUITEM "$End",                        ID_INSERT_FUN_END
@@ -4709,7 +4375,6 @@ BEGIN
             MENUITEM "DPT some",                    ID_INSERT_DPT_DPTSOME
             MENUITEM "ACTIV",                       ID_INSERT_DPT_ACTIV
             MENUITEM "$Decision_point",             ID_INSERT_DPT_DECISIONPOINT
-
             MENUITEM "some",                        ID_INSERT_DPT_SOME
             MENUITEM "search",                      ID_INSERT_DPT_SEARCH
             MENUITEM "no_trace",                    ID_INSERT_DPT_NOTRACE
@@ -4718,15 +4383,12 @@ BEGIN
             MENUITEM "trace_all",                   ID_INSERT_DPT_TRACEALL
             MENUITEM "$Condition",                  ID_INSERT_DPT_CONDITION
             MENUITEM "$Term_condition",             ID_INSERT_DPT_TERMCONDITION
-
             MENUITEM "$Evaluate_by",                ID_INSERT_DPT_EVALUATEBY
             MENUITEM "$Compare_tops",               ID_INSERT_DPT_COMPARETOPS
-
             MENUITEM "YES",                         ID_INSERT_DPT_YES
             MENUITEM "NO",                          ID_INSERT_DPT_NO
             MENUITEM "$Activities",                 ID_INSERT_DPT_ACTIVITIES
             MENUITEM "value before",                ID_INSERT_DPT_VALUEBEFORE
-
             MENUITEM "value after",                 ID_INSERT_DPT_VALUEAFTER
             MENUITEM "$End",                        ID_INSERT_DPT_END
         END
@@ -4735,29 +4397,21 @@ BEGIN
             MENUITEM "SMR",                         ID_INSERT_PAT_OPERATION
             MENUITEM "Model_name",                  ID_INSERT_SMR_MODELNAME
             MENUITEM "Resource_file",               ID_INSERT_SMR_RESOURCEFILE
-
             MENUITEM "OprIev_file",                 ID_INSERT_SMR_OPRIEVFILE
             MENUITEM "Statistic_file",              ID_INSERT_SMR_STATISTICFILE
-
             MENUITEM "Results_file",                ID_INSERT_SMR_RESULTSFILE
-
             MENUITEM "Trace_file",                  ID_INSERT_SMR_TRACEFILE
             MENUITEM "Frame_file",                  ID_INSERT_SMR_FRAMEFILE
             MENUITEM "Frame_number",                ID_INSERT_SMR_FRAMENUMBER
-
             MENUITEM "Show_mode",                   ID_INSERT_SMR_SHOWMODE
             MENUITEM "Animation",                   ID_INSERT_SMR_ANIMATION
             MENUITEM "Monitor",                     ID_INSERT_SMR_MONITOR
             MENUITEM "NoShow",                      ID_INSERT_SMR_NOSHOW
             MENUITEM "Show_rate",                   ID_INSERT_SMR_SHOWRATE
             MENUITEM "Run_StartTime",               ID_INSERT_SMR_RUNSTARTTIME
-
             MENUITEM "Trace_StartTime",             ID_INSERT_SMR_TRACESTARTTIME
-
             MENUITEM "Trace_EndTime",               ID_INSERT_SMR_TRACEENDTIME
-
             MENUITEM "Terminate_if",                ID_INSERT_SMR_TERMINATEIF
-
             MENUITEM "Time_now",                    ID_INSERT_SMR_TIMENOW
             MENUITEM "Seconds",                     ID_INSERT_SMR_SECONDS
             MENUITEM "Break_point",                 ID_INSERT_SMR_BREAKPOINT
@@ -4781,47 +4435,32 @@ BEGIN
         BEGIN
             MENUITEM "Abs",                         ID_INSERT_FUNCTIONS_ABS
             MENUITEM "ArcCos",                      ID_INSERT_FUNCTIONS_ARCCOS
-
             MENUITEM "ArcSin",                      ID_INSERT_FUNCTIONS_ARCSIN
-
             MENUITEM "ArcTan",                      ID_INSERT_FUNCTIONS_ARCTAN
-
             MENUITEM "Cos",                         ID_INSERT_FUNCTIONS_COS
             MENUITEM "Cotan",                       ID_INSERT_FUNCTIONS_COTAN
-
             MENUITEM "Exist",                       ID_INSERT_FUNCTIONS_EXIST
-
             MENUITEM "Exp",                         ID_INSERT_FUNCTIONS_EXP
             MENUITEM "Floor",                       ID_INSERT_FUNCTIONS_FLOOR
-
             MENUITEM "For_All",                     ID_INSERT_FUNCTIONS_FORALL
-
             MENUITEM "Frac",                        ID_INSERT_FUNCTIONS_FRAC
             MENUITEM "GetRelResNumber",             ID_INSERT_FUNCTIONS_GETRELRESNUMBER
-
             MENUITEM "GetResNumber",                ID_INSERT_FUNCTIONS_GETRESNUMBER
-
             MENUITEM "IAbs",                        ID_INSERT_FUNCTIONS_IABS
             MENUITEM "IMax",                        ID_INSERT_FUNCTIONS_IMAX
             MENUITEM "IMin",                        ID_INSERT_FUNCTIONS_IMIN
             MENUITEM "Int",                         ID_INSERT_FUNCTIONS_INT
             MENUITEM "IntPower",                    ID_INSERT_FUNCTIONS_INTPOWER
-
             MENUITEM "Ln",                          ID_INSERT_FUNCTIONS_LN
             MENUITEM "Log10",                       ID_INSERT_FUNCTIONS_LOG10
-
             MENUITEM "Log2",                        ID_INSERT_FUNCTIONS_LOG2
             MENUITEM "LogN",                        ID_INSERT_FUNCTIONS_LOGN
             MENUITEM "Max",                         ID_INSERT_FUNCTIONS_MAX
             MENUITEM "Min",                         ID_INSERT_FUNCTIONS_MIN
             MENUITEM "Not_Exist",                   ID_INSERT_FUNCTIONS_NOTEXIST
-
             MENUITEM "Not_For_All",                 ID_INSERT_FUNCTIONS_NOTFORALL
-
             MENUITEM "Power",                       ID_INSERT_FUNCTIONS_POWER
-
             MENUITEM "Round",                       ID_INSERT_FUNCTIONS_ROUND
-
             MENUITEM "Sin",                         ID_INSERT_FUNCTIONS_SIN
             MENUITEM "Sqrt",                        ID_INSERT_FUNCTIONS_SQRT
             MENUITEM "Tan",                         ID_INSERT_FUNCTIONS_TAN
@@ -4908,7 +4547,7 @@ END
 // String Table
 //
 
-STRINGTABLE PRELOAD DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
@@ -4918,13 +4557,13 @@ BEGIN
     IDR_FRAME_TYPE          "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
-STRINGTABLE PRELOAD DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "RAO-Studio"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_NEW             "\nNew (Ctrl+N)"
     ID_FILE_OPEN            "\nOpen (Ctrl+O)"
@@ -4936,19 +4575,19 @@ BEGIN
     ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
     ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_SCSIZE          "Change the window size"
     AFX_IDS_SCMOVE          "Change the window position"
@@ -4959,25 +4598,25 @@ BEGIN
     AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_SCRESTORE       "Restore the window to normal size"
     AFX_IDS_SCTASKLIST      "Activate Task List"
     AFX_IDS_MDICHILD        "Activate this window"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDR_MODEL_TOOLBAR       "Model"
     IDR_EDIT_TOOLBAR        "Edit"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_SEARCH_FIND          "\nFind (Ctrl+F)"
     ID_SEARCH_REPLACE       "\nReplace (Ctrl+R)"
@@ -4986,7 +4625,7 @@ BEGIN
     ID_FILE_SAVE_ALL        "\nSave All"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_PAT_PATOPERATION 
                             "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
@@ -4996,7 +4635,7 @@ BEGIN
     ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_RTP_RTPPERMANENT 
                             "$Resource_type  : permanent\r\n$Parameters\r\n\r\n$End\r\n"
@@ -5004,37 +4643,37 @@ BEGIN
                             "$Resource_type  : temporary\r\n$Parameters\r\n\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_RSS_RSS       "$Resources\r\n\t\r\n$End\r\n"
     ID_INSERT_OPR_OPR       "$Operations\r\n\t\r\n$End\r\n"
     ID_INSERT_FRM_FRM       "$Frame \r\n$Back_picture = <255 255 255> 800 600\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n\tCalculate_if\r\n$End\r\n"
     ID_INSERT_FUN_SQN       "$Sequence  : real\r\n$Type = exponential 123456789\r\n$End\r\n"
     ID_INSERT_FUN_CNS       "$Constant\r\n\t : integer =\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_DPT_DPTSEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
     ID_INSERT_DPT_DPTSOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_DPT_ACTIV     "$Activities\r\n\t\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_STATUSBAR_READONLY   "Read only"
     ID_STATUSBAR_MODIFIED   "Modified"
@@ -5054,7 +4693,7 @@ BEGIN
     ID_FINDINMODEL_BEGINMSG "Searching for '%s'...\r\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_EDITOR_PLAINTEXT "plain text"
     IDS_COLORSTYLE_EDITOR_IDENTIFICATOR "identificator"
@@ -5070,7 +4709,7 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_BOOKMARK "bookmark"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_EDITOR_FOLD "fold"
     IDS_COLORSTYLE_EDITOR_ERROR "error"
@@ -5090,7 +4729,7 @@ BEGIN
     IDS_COLORSTYLE_LOG_STN  "Successor information (STN)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MODEL_START          "Model"
     ID_RESOURCE_TYPES       "Resource types"
@@ -5101,7 +4740,7 @@ BEGIN
     IDS_MODEL_RUNTIMEERROR_STOPED "Run-time error"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_EDIT_CLEAR           "Erase the selection\nErase"
     ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
@@ -5113,7 +4752,7 @@ BEGIN
     ID_EDIT_REDO            "Redo the previously undone action\nRedo (Ctrl+Y)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_COORD_STATUSBAR      " "
     ID_MODIFY_STATUSBAR     " "
@@ -5124,7 +4763,7 @@ BEGIN
     ID_MODEL_SPEED_STATUSBAR " "
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MSG_NO_HELP_FILE     "Cannot find help file '%s'.\r\nIt must be in the application's directory."
     ID_MSG_CANTFIND         "Cannot find the string '%s'."
@@ -5137,7 +4776,7 @@ BEGIN
     ID_MSG_MODELCLOSE_QUERY2 "Close model ?"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FINDINMODEL_ENDMSG_COUNT "'%d' occurrence(s) have been found.\r\n"
     ID_FINDINMODEL_ENDMSG_NOTFOUND "Cannot find the string '%s'.\r\n"
@@ -5153,13 +4792,13 @@ BEGIN
     IDS_PLUGIN_DESCRIPTION  "Description"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MODEL_RUN            "\nExecute (F5)"
     ID_MODEL_STOP           "\nStop (Shift+F5)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
     ID_VIEW_ZOOMIN          "\nZoom &In (Ctrl+Num+)"
@@ -5167,7 +4806,7 @@ BEGIN
     ID_VIEW_ZOOMRESET       "\nReset Zoom (Ctrl+Num/)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_LOG_STD  "Successor information (STD)"
     IDS_COLORSTYLE_LOG_STR  "Successor information (STR)"
@@ -5187,7 +4826,7 @@ BEGIN
     IDS_COLORSTYLE_CHART_TIME "time"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_ALLWINDOW "All Windows"
     IDS_COLORSTYLE_EDITOR   "Source Windows"
@@ -5208,7 +4847,7 @@ BEGIN
     IDS_COLORSTYLE_DEBUG_SAMPLE "Start executing\nEI 0 1 1 0\nES 0 1\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORSTYLE_LOG_SAMPLE 
                             "Default string type\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"
@@ -5230,7 +4869,7 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_THEME_OCEAN "Ocean"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_FRAMES              "Frames"
     IDS_FRAME_NAME          "frame: %s"
@@ -5242,7 +4881,7 @@ BEGIN
     IDS_MODEL_PATTERNS      "patterns"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CHART_TITLE         "chart: %s"
     IDS_CHART_OPTIONS       "Chart options"
@@ -5251,7 +4890,7 @@ BEGIN
                             "'%s' must be an integer value between %d and %d."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_VIEW_ZOOMAUTO        "\nZoom Auto (Ctrl+Num*)"
     ID_MODEL_SHOWRATE_INC   "\nIncrease Tempo (Alt+Num+)"
@@ -5264,7 +4903,7 @@ BEGIN
     IDS_WARNING             "warning С%04d"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MODEL_SHOWRATE_FMOREONE "Tempo: %1.1f"
     IDS_MODEL_SHOWRATE_FLESSONE "Tempo: %1.10f"
@@ -5275,7 +4914,7 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_COLOR "color"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MODEL_RESOURCETYPES "types of resoucres"
     IDS_MODEL_RESOURCES     "resources"
@@ -5294,7 +4933,7 @@ BEGIN
     IDS_MODEL_RESOURCE_LOADING_OK "Loading animation resources...ok\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MODEL_STARTED       "Model started\n"
     IDS_MODEL_FINISHED      "Model finished\n"
@@ -5307,23 +4946,23 @@ BEGIN
     IDS_MODEL_DURATION      "Model execution duration: %u msec.\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_VIEW_WORKSPACE       "\nWorkspace (Alt+0)"
     ID_VIEW_OUTPUT          "\nOutput (Alt+9)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDR_ZOOM_TOOLBAR        "Zoom"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DEVELOPERS          "RAO-Studio v1.0 (RDO v2.0, 2003-2008)\r\n\tEmelyanov V.V.\r\n\tBars A.V.\r\n\tZakharov P.A.\r\n\tUrusov A.V.\r\n\r\nRAO-Simulator v3.0 (RDO v1.0, 1991-1999)\r\n\tEmelyanov V.V.\r\n\tYasinovsky S.I.\r\n\tOvsyannikov M.V."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_TAB_BUILD           "Build"
     IDS_TAB_DEBUG           "Debug"
@@ -5334,7 +4973,7 @@ BEGIN
     IDS_TAB_FRAMES          "Frames"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ER_UNKNOWN          "Parser error. Tell us about it using http://rdo.rk9.bmstu.ru/bugs."
     IDS_ER_RTP_SECOND_RES_TYPE 
@@ -5350,7 +4989,7 @@ BEGIN
                             "Second appearance of the same parameter name: %s"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ER_RTP_INVALID_DEFVALUE_INT "Invalid default value"
     IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL "Invalid default value"
@@ -5369,7 +5008,7 @@ BEGIN
     IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION "Waiting for param definition"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_MODEL_RUNTIME_MAXSPEED "\nMaximum speed"
     ID_MODEL_RUNTIME_JUMP   "\nDiscrete simulation"

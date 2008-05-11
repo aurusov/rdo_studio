@@ -161,6 +161,8 @@ RDOStudioApp::RDOStudioApp():
 	exitCode( rdoSimulator::EC_OK ),
 	openModelName( "" )
 {
+	setlocale( LC_ALL, "rus" );
+	setlocale( LC_NUMERIC, "eng" );
 }
 
 BOOL RDOStudioApp::InitInstance()
@@ -169,12 +171,6 @@ BOOL RDOStudioApp::InitInstance()
 
 	if ( ::OleInitialize( NULL ) != S_OK )
 		return FALSE;
-
-#ifdef _AFXDLL
-	Enable3dControls();
-#else
-	Enable3dControlsStatic();
-#endif
 
 	free( (void*)m_pszProfileName );
 	m_pszProfileName = _tcsdup( _T("") );
@@ -200,6 +196,7 @@ BOOL RDOStudioApp::InitInstance()
 	new rdoSimulator::RDOThreadSimulator();
 	new rdoSimulator::RDOThreadCodeComp();
 	new rdoRepository::RDOThreadRepository();
+	new rdoCorba::RDOThreadCorba();
 #ifdef RDO_MT
 	studioMT = new RDOThreadStudio();
 #endif

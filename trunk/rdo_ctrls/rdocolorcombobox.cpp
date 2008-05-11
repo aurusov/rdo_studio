@@ -54,7 +54,7 @@ void RDOColorComboBox::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 		CString str;
 		GetLBText( itemIndex, str );
 
-		COLORREF color = GetItemData( itemIndex );
+		COLORREF color = (COLORREF)GetItemData( itemIndex );
 //		if ( itemState & ODS_DISABLED ) {
 //			color = GetSysColor( COLOR_INACTIVECAPTIONTEXT );
 //		} else {
@@ -179,7 +179,7 @@ COLORREF RDOColorComboBox::getCurrentColor() const
 {
 	int itemIndex = GetCurSel();
 	if ( itemIndex >= 0 ) {
-		return GetItemData( itemIndex );
+		return (COLORREF)GetItemData( itemIndex );
 	} else {
 		return RGB( 0xFF, 0xFF, 0xFF );
 	}

@@ -70,7 +70,7 @@ void RDOParserCorbaRSS::parse()
 		// Заполнили его параметры
 		rss["длительность_max"] = 174;
 		// Добавляем его к списку существующих
-		if ( rssList.append( rss ) )
+		if ( rssList.append<rdoParse::RDORSSResource>( rss ) )
 		{
 			// Добавили успешно
 		}

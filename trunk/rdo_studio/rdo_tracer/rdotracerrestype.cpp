@@ -34,7 +34,7 @@ int RDOTracerResParamInfo::addEnumValue( const std::string& value )
 
 static std::string nullStr = "";
 
-std::string RDOTracerResParamInfo::getEnumValue( const int index ) const
+std::string RDOTracerResParamInfo::getEnumValue( unsigned int index ) const
 {
 	if ( !enumValues )
 		return nullStr;
@@ -66,7 +66,7 @@ int RDOTracerResType::addParamInfo( RDOTracerResParamInfo* const value )
 	return paramsInfo.size() - 1;
 }
 
-RDOTracerResParamInfo* RDOTracerResType::getParamInfo( const int index ) const
+RDOTracerResParamInfo* RDOTracerResType::getParamInfo( unsigned int index ) const
 {
 	if ( index >= paramsInfo.size() || index < 0 )
 		return NULL;

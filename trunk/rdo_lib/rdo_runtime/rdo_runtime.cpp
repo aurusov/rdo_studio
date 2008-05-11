@@ -139,11 +139,12 @@ std::string RDORuntime::getLastBreakPointName() const
 	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->calc->src_text() : "";
 }
 
-void RDORuntime::setConstValue( int numberOfConst, RDOValue value )
+void RDORuntime::setConstValue( unsigned int numberOfConst, RDOValue value )
 {
-	if(allConstants.size() <= numberOfConst)
+	if ( allConstants.size() <= numberOfConst )
+	{
 		allConstants.resize(numberOfConst + 1);
-
+	}
 	allConstants.at(numberOfConst) = value;
 }
 
@@ -177,7 +178,7 @@ bool RDORuntime::checkState()
 		state.push_back( res );
 	}
 	if ( state.size() != allResourcesByID.size() ) return false;
-	for ( int i = 0; i < state.size(); i++ ) {
+	for ( unsigned int i = 0; i < state.size(); i++ ) {
 		if ( state[i].size() != allResourcesByID[i]->paramsCount() ) return false;
 		for ( unsigned int j = 0; j < allResourcesByID[i]->paramsCount(); j++ )
 		{
@@ -219,7 +220,7 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
 //		error( "Try to erase used resource", fromCalc );
 	} else {
-		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoRuntime::RDOPMDPokaz::checkResourceErased), res) );
+		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&rdoRuntime::RDOPMDPokaz::checkResourceErased), res) );
 		allResourcesByID.at( res_id ) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		allResourcesByTime.remove( res );
@@ -495,12 +496,13 @@ void RDORuntime::onPutToTreeNode()
 	// when create TreeNode with new RDOSimulator,
 	// make all resources permanent, to avoid trace their
 	// erase when delete TreeNode
-	for(int i = 0; i < allResourcesByID.size(); i++)
+	for ( unsigned int i = 0; i < allResourcesByID.size(); i++ )
 	{
-		if(allResourcesByID.at(i))
+		if ( allResourcesByID.at(i) )
+		{
 			allResourcesByID.at(i)->makeTemporary(false);
+		}
 	}
-
 }
 
 void RDORuntime::writeExitCode()
@@ -590,7 +592,7 @@ RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
 	for ( char i = '0'; i <= '9'; i++ ) {
 		keys.insert( std::map< std::string, int >::value_type( std::string(1, i), (int)i ) );
 	}
-	for ( i = 'A'; i <= 'Z'; i++ ) {
+	for ( char i = 'A'; i <= 'Z'; i++ ) {
 		keys.insert( std::map< std::string, int >::value_type( std::string(1, i), (int)i ) );
 	}
 }

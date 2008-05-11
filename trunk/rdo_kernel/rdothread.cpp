@@ -1,5 +1,6 @@
 #include "rdothread.h"
 #include "rdokernel.h"
+#include <rdocommon.h>
 #include <afxwin.h>
 #include <fstream>
 #include <algorithm>
@@ -11,14 +12,18 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #ifdef TR_TRACE
+#ifdef RDO_MT
 std::fstream file( "C:\\rdo_kernel_mt.log", std::ios_base::in | std::ios_base::out | std::ios_base::trunc );
+#else
+std::fstream file( "C:\\rdo_kernel_st.log", std::ios_base::in | std::ios_base::out | std::ios_base::trunc );
+#endif
 
 void RDOThread::trace( const std::string& str )
 {
 	file << str << std::endl;
 	file.flush();
 }
-#endif
+#endif // TR_TRACE
 
 // --------------------------------------------------------------------
 // ---------- RDOThread
@@ -63,7 +68,8 @@ RDOThread::RDOThread( const std::string& _thread_name ):
 RDOThread::~RDOThread()
 {
 #ifdef TR_TRACE
-	trace( thread_name + "::~" + thread_name );
+	trace( rdo::format("%s (%d)::~%s", thread_name.c_str(), thread_id, thread_name.c_str()) );
+//	trace( thread_name + "::~" + thread_name );
 #endif
 
 #ifdef RDO_MT

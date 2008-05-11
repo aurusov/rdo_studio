@@ -58,7 +58,7 @@ public:
 
 protected:
 	const RDOPATPattern*     m_pattern;
-	int                      m_currParam;
+	unsigned int             m_currParam;
 	rdoRuntime::RDOActivity* m_activity;
 
 private:

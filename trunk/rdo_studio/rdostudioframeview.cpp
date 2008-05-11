@@ -136,7 +136,9 @@ void RDOStudioFrameView::updateFont()
 	lf.lfItalic    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
 	lf.lfUnderline = style->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
 	lf.lfCharSet   = style->font->characterSet;
+#pragma warning(disable: 4996)
 	strcpy( lf.lfFaceName, style->font->name.c_str() );
+#pragma warning(default: 4996)
 
 	hfontCurrent = ::CreateFontIndirect( &lf );
 	::SelectObject( hmemdc, hfontCurrent );

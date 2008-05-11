@@ -4,6 +4,7 @@
 #include "rdo_runtime.h"
 #include "rdo_activity.h"
 #include <limits>
+#include <math.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -456,7 +457,7 @@ double modf( double value )
 
 double log2( double value )
 {
-	return log( value ) / log(2);
+	return log( value ) / log(2.0);
 }
 
 double logN( double value1, double value2 )
@@ -486,12 +487,12 @@ DECLARE_RDO_STD_FUN_DOUBLE       ( Ln      , log       );
 DECLARE_RDO_STD_FUN_DOUBLE       ( Log10   , log10     );
 DECLARE_RDO_STD_FUN_DOUBLE       ( Log2    , log2      );
 DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( LogN    , logN      );
-DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Max     , std::_MAX );
-DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Min     , std::_MIN );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Max     , max       );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Min     , min       );
 DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Power   , pow       );
 DECLARE_RDO_STD_FUN_INT          ( IAbs    , abs       );
-DECLARE_RDO_STD_FUN_INT_INT      ( IMax    , std::_MAX );
-DECLARE_RDO_STD_FUN_INT_INT      ( IMin    , std::_MIN );
+DECLARE_RDO_STD_FUN_INT_INT      ( IMax    , max       );
+DECLARE_RDO_STD_FUN_INT_INT      ( IMin    , min       );
 DECLARE_RDO_STD_FUN_INT          ( Int     , int       );
 DECLARE_RDO_STD_FUN_DOUBLE_INT   ( IntPower, pow       );
 
@@ -633,7 +634,7 @@ RDOValue& RDOCalcFunctionCall::doCalc( RDORuntime* runtime )
 	runtime->resetFuncTop( m_parameters.size() );
 	m_value = m_function->calcValue( runtime );
 	size = m_parameters.size();
-	for ( i = 0; i < size; i++ ) {
+	for ( int i = 0; i < size; i++ ) {
 		runtime->popFuncArgument();
 	}
 	runtime->popFuncTop();
@@ -830,10 +831,10 @@ RDOValue& RDOSelectResourceByTypeCalc::doCalc( RDORuntime* runtime )
 	return m_value;
 }
 
-void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& allNumbs, int level, std::vector< int >& res, RDOValue& bestVal, RDORuntime* sim, bool& hasBest ) const
+void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& allNumbs, unsigned int level, std::vector< int >& res, RDOValue& bestVal, RDORuntime* sim, bool& hasBest ) const
 {
 	if ( level >= allNumbs.size() ) {
-		for ( int i = 0; i < resSelectors.size(); i++ ) {
+		for ( unsigned int i = 0; i < resSelectors.size(); i++ ) {
 			if( !resSelectors.at(i)->callChoice(sim) ) {
 				return; // state not valid
 			}
@@ -842,7 +843,7 @@ void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& al
 		if ( !hasBest || (useCommonWithMax && (newVal > bestVal)) ||
 			(!useCommonWithMax && (newVal < bestVal))) // found better value
 		{
-			for ( int i = 0; i < resSelectors.size(); i++ ) {
+			for ( unsigned int i = 0; i < resSelectors.size(); i++ ) {
 				res.at(i) = sim->getCurrentActivity()->getResByRelRes(i);
 			}
 			bestVal = newVal;
@@ -851,16 +852,16 @@ void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& al
 		return;
 	}
 	std::vector< int >& ourLevel = allNumbs.at(level);
-	for ( int i = 0; i < ourLevel.size(); i++ ) {
+	for ( unsigned int i = 0; i < ourLevel.size(); i++ ) {
 		sim->getCurrentActivity()->setRelRes( level, ourLevel.at(i) );
 		getBest( allNumbs, level+1, res, bestVal, sim, hasBest );
 	}
 }
 
-bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const
+bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, unsigned int level, RDORuntime* sim ) const
 {
 	if ( level >= allNumbs.size() ) {
-		for ( int i = 0; i < resSelectors.size(); i++ ) {
+		for ( unsigned int i = 0; i < resSelectors.size(); i++ ) {
 			if( !resSelectors.at(i)->callChoice(sim) ) {
 				return false;
 			}
@@ -868,7 +869,7 @@ bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& a
 		return true;
 	}
 	std::vector< int >& ourLevel = allNumbs.at(level);
-	for ( int i = 0; i < ourLevel.size(); i++ ) {
+	for ( unsigned int i = 0; i < ourLevel.size(); i++ ) {
 		sim->getCurrentActivity()->setRelRes( level, ourLevel.at(i) );
 		if ( getFirst( allNumbs, level+1, sim ) ) return true;
 	}
@@ -899,7 +900,7 @@ RDOValue& RDOSelectResourceCommonCalc::doCalc( RDORuntime* runtime )
 {
 	std::vector< std::vector<int> > allNumbs;
 	std::vector< int > res;
-	for ( int i = 0; i < resSelectors.size(); i++ ) {
+	for ( unsigned int i = 0; i < resSelectors.size(); i++ ) {
 		allNumbs.push_back( resSelectors.at(i)->getPossibleNumbers(runtime) );
 		res.push_back( runtime->getCurrentActivity()->getResByRelRes(i) );
 	}
@@ -918,7 +919,7 @@ RDOValue& RDOSelectResourceCommonCalc::doCalc( RDORuntime* runtime )
 		bool found = false;
 		getBest( allNumbs, 0, res, bestVal, runtime, found );
 		if ( found ) {
-			for ( i = 0; i < res.size(); i++ ) {
+			for ( unsigned int i = 0; i < res.size(); i++ ) {
 				runtime->getCurrentActivity()->setRelRes( i, res.at(i) );
 			}
 			m_value = 1;

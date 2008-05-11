@@ -87,7 +87,7 @@ std::string RDOActivity::traceResourcesListNumbers( RDOSimulatorTrace* sim, bool
 
 void RDOActivity::incrementRelevantResourceReference( RDOSimulator* sim )
 {
-	for ( int i = 0; i < m_relResID.size(); i++ )
+	for ( unsigned int i = 0; i < m_relResID.size(); i++ )
 	{
 		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( m_relResID.at(i) );
 		if ( res && (res->getState() == RDOResource::CS_Keep || res->getState() == RDOResource::CS_Create || res->getState() == RDOResource::CS_Erase ) ) res->incRef();
@@ -96,7 +96,7 @@ void RDOActivity::incrementRelevantResourceReference( RDOSimulator* sim )
 
 void RDOActivity::decrementRelevantResourceReference( RDOSimulator* sim )
 {
-	for ( int i = 0; i < m_relResID.size(); i++ )
+	for ( unsigned int i = 0; i < m_relResID.size(); i++ )
 	{
 		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( m_relResID.at(i) );
 		if ( res && (res->getState() == RDOResource::CS_Keep || res->getState() == RDOResource::CS_Create || res->getState() == RDOResource::CS_Erase ) ) res->decRef();

@@ -6,6 +6,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// #include <iostream>
+// using namespace std;
+
 #include "rdogramma.h"
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
@@ -33,225 +36,225 @@ static char THIS_FILE[] = __FILE__;
 %x comment_line
 %%
 
-$Resource_type		return(Resource_type);
-$resource_type		return(Resource_type);
-permanent			return(permanent_kw);
-$Parameters			return(Parameters);
-$parameters			return(Parameters);
-integer				return(integer);
-longint				return(integer);
-real				return(real);
-$End				return(End);
-$end				return(End);
-temporary			return(temporary_kw);
-such_as				return(such_as);
-".."				return(dblpoint);
+$Resource_type		return(RDO_Resource_type);
+$resource_type		return(RDO_Resource_type);
+permanent			return(RDO_permanent);
+$Parameters			return(RDO_Parameters);
+$parameters			return(RDO_Parameters);
+integer				return(RDO_integer);
+longint				return(RDO_integer);
+real				return(RDO_real);
+$End				return(RDO_End);
+$end				return(RDO_End);
+temporary			return(RDO_temporary);
+such_as				return(RDO_such_as);
+".."				return(RDO_dblpoint);
 
-$Resources			return(Resources);
-$resources			return(Resources);
-trace				return(trace_keyword);
-no_trace			return(no_trace);
+$Resources			return(RDO_Resources);
+$resources			return(RDO_Resources);
+trace				return(RDO_trace);
+no_trace			return(RDO_no_trace);
 
-$Constant			return(Constant);
-$constant			return(Constant);
-$Body				return(Body);
-$body				return(Body);
-$Function			return(Function_keyword);
-$function			return(Function_keyword);
-$Type				return(Type_keyword);
-$type				return(Type_keyword);
-algorithmic			return(algorithmic);
-table				return(table_keyword);
-list				return(list_keyword);
-Calculate_if		return(Calculate_if);
-calculate_if		return(Calculate_if);
-if					return(if_keyword);
-result				return(result_keyword);
-$Sequence			return(Sequence);
-$sequence			return(Sequence);
-uniform				return(uniform);
-exponential			return(exponential);
-normal				return(normal_keyword);
-by_hist				return(by_hist);
-enumerative			return(enumerative);
+$Constant			return(RDO_Constant);
+$constant			return(RDO_Constant);
+$Body				return(RDO_Body);
+$body				return(RDO_Body);
+$Function			return(RDO_Function);
+$function			return(RDO_Function);
+$Type				return(RDO_Type);
+$type				return(RDO_Type);
+algorithmic			return(RDO_algorithmic);
+table				return(RDO_table);
+list				return(RDO_list);
+Calculate_if		return(RDO_Calculate_if);
+calculate_if		return(RDO_Calculate_if);
+if					return(RDO_if);
+result				return(RDO_result);
+$Sequence			return(RDO_Sequence);
+$sequence			return(RDO_Sequence);
+uniform				return(RDO_uniform);
+exponential			return(RDO_exponential);
+normal				return(RDO_normal);
+by_hist				return(RDO_by_hist);
+enumerative			return(RDO_enumerative);
 
-Exist				return(Exist);
-exist				return(Exist);
-Not_Exist			return(Not_Exist);
-not_exist			return(Not_Exist);
-For_All				return(For_All);
-for_all				return(For_All);
-Not_For_All			return(Not_For_All);
-not_for_all			return(Not_For_All);
-\<\>				return(neq);
-\<\=				return(leq);
-\>\=				return(geq);
-NoCheck				return(NoCheck);
-nocheck				return(NoCheck);
-or					return(or_keyword);
-and					return(and_keyword);
-!					return(not_keyword);
-not					return(not_keyword);
+Exist				return(RDO_Exist);
+exist				return(RDO_Exist);
+Not_Exist			return(RDO_Not_Exist);
+not_exist			return(RDO_Not_Exist);
+For_All				return(RDO_For_All);
+for_all				return(RDO_For_All);
+Not_For_All			return(RDO_Not_For_All);
+not_for_all			return(RDO_Not_For_All);
+\<\>				return(RDO_neq);
+\<\=				return(RDO_leq);
+\>\=				return(RDO_geq);
+NoCheck				return(RDO_NoCheck);
+nocheck				return(RDO_NoCheck);
+or					return(RDO_or);
+and					return(RDO_and);
+!					return(RDO_not);
+not					return(RDO_not);
 
-$Pattern			return(Pattern);
-$pattern			return(Pattern);
-operation			return(operation_kw);
-irregular_event		return(irregular_event);
-rule				return(rule_keyword);
-keyboard			return(keyboard);
-$Relevant_resources	return(Relevant_resources);
-$relevant_resources	return(Relevant_resources);
-Keep				return(Keep);
-keep				return(Keep);
-Create				return(Create_keyword);
-create				return(Create_keyword);
-Erase				return(Erase);
-erase				return(Erase);
-NonExist			return(NonExist);
-nonexist			return(NonExist);
-NoChange			return(NoChange);
-nochange			return(NoChange);
-$Time				return(Time);
-$time				return(Time);
-Choice				return(Choice);
-choice				return(Choice);
-from				return(from_keyword);
-first				return(first_keyword);
-Convert_begin		return(Convert_begin);
-convert_begin		return(Convert_begin);
-Convert_end			return(Convert_end);
-convert_end			return(Convert_end);
-Convert_rule		return(Convert_rule);
-convert_rule		return(Convert_rule);
-Convert_event		return(Convert_event);
-convert_event		return(Convert_event);
-with_max			return(with_max);
-with_min			return(with_min);
-$Operations			return(Operations);
-$operations			return(Operations);
-$Results			return(Results);
-$results			return(Results);
-watch_par			return(watch_par);
-watch_state			return(watch_state);
-watch_quant			return(watch_quant);
-watch_value			return(watch_value);
-get_value			return(get_value);
+$Pattern			return(RDO_Pattern);
+$pattern			return(RDO_Pattern);
+operation			return(RDO_operation);
+irregular_event		return(RDO_irregular_event);
+rule				return(RDO_rule);
+keyboard			return(RDO_keyboard);
+$Relevant_resources	return(RDO_Relevant_resources);
+$relevant_resources	return(RDO_Relevant_resources);
+Keep				return(RDO_Keep);
+keep				return(RDO_Keep);
+Create				return(RDO_Create);
+create				return(RDO_Create);
+Erase				return(RDO_Erase);
+erase				return(RDO_Erase);
+NonExist			return(RDO_NonExist);
+nonexist			return(RDO_NonExist);
+NoChange			return(RDO_NoChange);
+nochange			return(RDO_NoChange);
+$Time				return(RDO_Time);
+$time				return(RDO_Time);
+Choice				return(RDO_Choice);
+choice				return(RDO_Choice);
+from				return(RDO_from);
+first				return(RDO_first);
+Convert_begin		return(RDO_Convert_begin);
+convert_begin		return(RDO_Convert_begin);
+Convert_end			return(RDO_Convert_end);
+convert_end			return(RDO_Convert_end);
+Convert_rule		return(RDO_Convert_rule);
+convert_rule		return(RDO_Convert_rule);
+Convert_event		return(RDO_Convert_event);
+convert_event		return(RDO_Convert_event);
+with_max			return(RDO_with_max);
+with_min			return(RDO_with_min);
+$Operations			return(RDO_Operations);
+$operations			return(RDO_Operations);
+$Results			return(RDO_Results);
+$results			return(RDO_Results);
+watch_par			return(RDO_watch_par);
+watch_state			return(RDO_watch_state);
+watch_quant			return(RDO_watch_quant);
+watch_value			return(RDO_watch_value);
+get_value			return(RDO_get_value);
 
-Model_name			return(Model_name);
-model_name			return(Model_name);
-Resource_file		return(Resource_file);
-resource_file		return(Resource_file);
-OprIev_file			return(OprIev_file);
-opriev_file			return(OprIev_file);
-Frame_file			return(Frame_file);	
-frame_file			return(Frame_file);	
-Statistic_file		return(Statistic_file);
-statistic_file		return(Statistic_file);
-Results_file		return(Results_file);
-results_file		return(Results_file);
-Trace_file			return(Trace_file);
-trace_file			return(Trace_file);
-Show_mode			return(Show_mode);
-show_mode			return(Show_mode);
-Frame_number		return(Frame_number);
-frame_number		return(Frame_number);
-Show_rate			return(Show_rate);
-show_rate			return(Show_rate);
-Run_StartTime		return(Run_StartTime);
-run_starttime		return(Run_StartTime);
-Trace_StartTime		return(Trace_StartTime);
-trace_starttime		return(Trace_StartTime);
-Trace_EndTime		return(Trace_EndTime);
-trace_endtime		return(Trace_EndTime);
-Terminate_if		return(Terminate_if);
-terminate_if		return(Terminate_if);
-Break_point			return(Break_point);
-break_point			return(Break_point);
-Seed				return(Seed);
-seed				return(Seed);
-NoShow				return(NoShow);
-noshow				return(NoShow);
-Monitor 			return(Monitor);
-monitor 			return(Monitor);
-Animation			return(Animation);
-animation			return(Animation);
+Model_name			return(RDO_Model_name);
+model_name			return(RDO_Model_name);
+Resource_file		return(RDO_Resource_file);
+resource_file		return(RDO_Resource_file);
+OprIev_file			return(RDO_OprIev_file);
+opriev_file			return(RDO_OprIev_file);
+Frame_file			return(RDO_Frame_file);	
+frame_file			return(RDO_Frame_file);	
+Statistic_file		return(RDO_Statistic_file);
+statistic_file		return(RDO_Statistic_file);
+Results_file		return(RDO_Results_file);
+results_file		return(RDO_Results_file);
+Trace_file			return(RDO_Trace_file);
+trace_file			return(RDO_Trace_file);
+Show_mode			return(RDO_Show_mode);
+show_mode			return(RDO_Show_mode);
+Frame_number		return(RDO_Frame_number);
+frame_number		return(RDO_Frame_number);
+Show_rate			return(RDO_Show_rate);
+show_rate			return(RDO_Show_rate);
+Run_StartTime		return(RDO_Run_StartTime);
+run_starttime		return(RDO_Run_StartTime);
+Trace_StartTime		return(RDO_Trace_StartTime);
+trace_starttime		return(RDO_Trace_StartTime);
+Trace_EndTime		return(RDO_Trace_EndTime);
+trace_endtime		return(RDO_Trace_EndTime);
+Terminate_if		return(RDO_Terminate_if);
+terminate_if		return(RDO_Terminate_if);
+Break_point			return(RDO_Break_point);
+break_point			return(RDO_Break_point);
+Seed				return(RDO_Seed);
+seed				return(RDO_Seed);
+NoShow				return(RDO_NoShow);
+noshow				return(RDO_NoShow);
+Monitor 			return(RDO_Monitor);
+monitor 			return(RDO_Monitor);
+Animation			return(RDO_Animation);
+animation			return(RDO_Animation);
 
-$Decision_point		return(Decision_point);
-$decision_point		return(Decision_point);
-search				return(search_keyword);
-trace_stat			return(trace_stat);
-trace_tops			return(trace_tops);
-trace_all			return(trace_all);
-$Condition			return(Condition_keyword);
-$condition			return(Condition_keyword);
-$Term_condition		return(Term_condition);
-$term_condition		return(Term_condition);
-$Evaluate_by		return(Evaluate_by);
-$evaluate_by		return(Evaluate_by);
-$Compare_tops		return(Compare_tops);
-$compare_tops		return(Compare_tops);
-NO					return(NO);
-no					return(NO);
-YES					return(YES);
-yes					return(YES);
-$Activities			return(Activities);
-$activities			return(Activities);
-$Process			return(Process);
-$process			return(Process);
-SEIZE				return(SEIZE);
-seize				return(SEIZE);
-GENERATE			return(GENERATE);
-generate			return(GENERATE);
-ADVANCE				return(ADVANCE);
-advance				return(ADVANCE);
-RELEASE				return(RELEASE);
-release				return(RELEASE);
-TERMINATE			return(TERMINATE);
-terminate			return(TERMINATE);
-value[\r\n\t ]+before	return(value_before);
-value[\r\n\t ]+after	return(value_after);
-value_before		return(value_before);
-value_after			return(value_after);
-some				return(some);
+$Decision_point		return(RDO_Decision_point);
+$decision_point		return(RDO_Decision_point);
+search				return(RDO_search);
+trace_stat			return(RDO_trace_stat);
+trace_tops			return(RDO_trace_tops);
+trace_all			return(RDO_trace_all);
+$Condition			return(RDO_Condition);
+$condition			return(RDO_Condition);
+$Term_condition		return(RDO_Term_condition);
+$term_condition		return(RDO_Term_condition);
+$Evaluate_by		return(RDO_Evaluate_by);
+$evaluate_by		return(RDO_Evaluate_by);
+$Compare_tops		return(RDO_Compare_tops);
+$compare_tops		return(RDO_Compare_tops);
+NO					return(RDO_NO);
+no					return(RDO_NO);
+YES					return(RDO_YES);
+yes					return(RDO_YES);
+$Activities			return(RDO_Activities);
+$activities			return(RDO_Activities);
+$Process			return(RDO_Process);
+$process			return(RDO_Process);
+SEIZE				return(RDO_SEIZE);
+seize				return(RDO_SEIZE);
+GENERATE			return(RDO_GENERATE);
+generate			return(RDO_GENERATE);
+ADVANCE				return(RDO_ADVANCE);
+advance				return(RDO_ADVANCE);
+RELEASE				return(RDO_RELEASE);
+release				return(RDO_RELEASE);
+TERMINATE			return(RDO_TERMINATE);
+terminate			return(RDO_TERMINATE);
+value[\r\n\t ]+before	return(RDO_value_before);
+value[\r\n\t ]+after	return(RDO_value_after);
+value_before		return(RDO_value_before);
+value_after			return(RDO_value_after);
+some				return(RDO_some);
 
-$Frame				return(Frame);
-$frame				return(Frame);
-Show_if				return(Show_if);
-show_if				return(Show_if);
-$Back_picture		return(Back_picture);
-$back_picture		return(Back_picture);
-Show				return(Show);
-show				return(Show);
-frm_cell			return(frm_cell);
-text				return(text);
-bitmap				return(bitmap);
-s_bmp				return(s_bmp);
-rect				return(rect_keyword);
-r_rect				return(r_rect);
-line				return(line);
-ellipse				return(ellipse);
-triang				return(triang);
-active				return(active);
-ruler				return(ruler);
-space				return(space_kw);
-transparent			return(color_transparent_kw);
-white				return(color_white_kw);
-black				return(color_black_kw);
-red					return(color_red_kw);
-green				return(color_green_kw);
-blue				return(color_blue_kw);
-cyan				return(color_cyan_kw);
-magenta				return(color_magenta_kw);
-yellow				return(color_yellow_kw);
-gray				return(color_gray_kw);
-last				return(color_last_kw);
+$Frame				return(RDO_Frame);
+$frame				return(RDO_Frame);
+Show_if				return(RDO_Show_if);
+show_if				return(RDO_Show_if);
+$Back_picture		return(RDO_Back_picture);
+$back_picture		return(RDO_Back_picture);
+Show				return(RDO_Show);
+show				return(RDO_Show);
+frm_cell			return(RDO_frm_cell);
+text				return(RDO_text);
+bitmap				return(RDO_bitmap);
+s_bmp				return(RDO_s_bmp);
+rect				return(RDO_rect);
+r_rect				return(RDO_r_rect);
+line				return(RDO_line);
+ellipse				return(RDO_ellipse);
+triang				return(RDO_triang);
+active				return(RDO_active);
+ruler				return(RDO_ruler);
+space				return(RDO_space);
+transparent			return(RDO_color_transparent);
+white				return(RDO_color_white);
+black				return(RDO_color_black);
+red					return(RDO_color_red);
+green				return(RDO_color_green);
+blue				return(RDO_color_blue);
+cyan				return(RDO_color_cyan);
+magenta				return(RDO_color_magenta);
+yellow				return(RDO_color_yellow);
+gray				return(RDO_color_gray);
+last				return(RDO_color_last);
 
-Select				return(Select);
-select				return(Select);
-Size				return(Size_kw);
-size				return(Size_kw);
-empty				return(Empty_kw);
-Empty				return(Empty_kw);
+Select				return(RDO_Select);
+select				return(RDO_Select);
+Size				return(RDO_Size);
+size				return(RDO_Size);
+empty				return(RDO_Empty);
+Empty				return(RDO_Empty);
 
 
 (\'[^\']*\')		{
@@ -261,7 +264,7 @@ Empty				return(Empty_kw);
 						RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
 						LEXER->setvalue((int)name);
-						return QUOTED_IDENTIF;
+						return RDO_QUOTED_IDENTIF;
 					}
 
 (\'[^\']*\n\r)		{
@@ -269,7 +272,7 @@ Empty				return(Empty_kw);
 						RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
 						LEXER->setvalue((int)name);
-						return QUOTED_IDENTIF_BAD;
+						return RDO_QUOTED_IDENTIF_BAD;
 					}
 
 "{"						BEGIN(comment_rdo);
@@ -299,19 +302,19 @@ Empty				return(Empty_kw);
 						unput('.');
 						unput('.');
 						LEXER->loc_delta_pos( -2 );
-						return INT_CONST;
+						return RDO_INT_CONST;
 					}
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 						double *val = PARSER->addDouble(new double(atof(YYText())));
 						RUNTIME->memory_insert( sizeof(double) );
 						LEXER->setvalue((int)val);
-						return REAL_CONST;
+						return RDO_REAL_CONST;
 					}
 
 [+-]?[0-9]+			{
 						LEXER->setvalue(atoi(YYText()));
-						return INT_CONST;
+						return RDO_INT_CONST;
 					}
 
 ([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*	{
@@ -319,7 +322,7 @@ Empty				return(Empty_kw);
 						RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
 						LEXER->setvalue((int)name);
-						return IDENTIF_BAD;
+						return RDO_IDENTIF_BAD;
 					}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+set[\r\n\t ]  {       
@@ -329,7 +332,7 @@ Empty				return(Empty_kw);
 					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
-					return IDENTIF_set;
+					return RDO_IDENTIF_set;
 				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange  {       
@@ -339,7 +342,7 @@ Empty				return(Empty_kw);
 					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
-					return IDENTIF_NoChange_NoChange;
+					return RDO_IDENTIF_NoChange_NoChange;
 				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+NoChange  {       
@@ -349,7 +352,7 @@ Empty				return(Empty_kw);
 					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
-					return IDENTIF_NoChange;
+					return RDO_IDENTIF_NoChange;
 				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]*\:  {       
@@ -359,7 +362,7 @@ Empty				return(Empty_kw);
 					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
-					return IDENTIF_COLON;
+					return RDO_IDENTIF_COLON;
 				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {       
@@ -367,7 +370,7 @@ Empty				return(Empty_kw);
 					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
-					return IDENTIF;
+					return RDO_IDENTIF;
 				}
 
 %%

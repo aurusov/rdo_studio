@@ -2,6 +2,8 @@
 #define RDORUNTIME_OBJECT_H
 
 #include <rdocommon.h>
+#include <vector>
+#include <algorithm>
 
 // ----------------------------------------------------------------------------
 // ---------- toString
@@ -402,7 +404,7 @@ public:
 	{
 		switch ( m_type ) {
 			case rvt_int : return m_value.i_value;
-			case rvt_real: return m_value.d_value;
+			case rvt_real: return (int)m_value.d_value;
 			case rvt_enum: return m_value.i_value;
 			default      : throw RDORuntimeRDOValue("");
 		}
@@ -411,7 +413,7 @@ public:
 	{
 		switch ( m_type ) {
 			case rvt_int : return m_value.i_value;
-			case rvt_real: return m_value.d_value;
+			case rvt_real: return (int)m_value.d_value;
 			case rvt_enum: return m_value.i_value;
 			default      : throw RDORuntimeRDOValue("");
 		}
@@ -700,56 +702,5 @@ inline bool operator< ( const RDOValue& rdovalue1, const RDOValue& rdovalue2 )
 }
 
 } // namespace rdoRuntime
-
-namespace std
-{
-
-template <class _Ret, class _Tp>
-class const_mem_fun_t: public unary_function<const _Tp*,_Ret> {
-public:
-	explicit const_mem_fun_t(_Ret (_Tp::*__pf)() const) : _M_f(__pf) {}
-	_Ret operator()(const _Tp* __p) const { return (__p->*_M_f)(); }
-private:
-	_Ret (_Tp::*_M_f)() const;
-};
-
-template <class _Ret, class _Tp, class _Arg>
-class const_mem_fun1_t: public binary_function<const _Tp*,_Arg,_Ret> {
-public:
-	explicit const_mem_fun1_t(_Ret (_Tp::*__pf)(_Arg) const) : _M_f(__pf) {}
-	_Ret operator()(const _Tp* __p, _Arg __x) const { return (__p->*_M_f)(__x); }
-private:
-	_Ret (_Tp::*_M_f)(_Arg) const;
-};
-
-template <class _Ret, class _Tp>
-inline const_mem_fun_t<_Ret,_Tp> mem_fun(_Ret (_Tp::*__f)() const)
-{
-	return const_mem_fun_t<_Ret,_Tp>(__f);
-}
-
-template <class _Ret, class _Tp, class _Arg>
-inline const_mem_fun1_t<_Ret,_Tp,_Arg> mem_fun(_Ret (_Tp::*__f)(_Arg) const)
-{
-	return const_mem_fun1_t<_Ret,_Tp,_Arg>(__f);
-}
-
-template <class _Ret, class _Tp, class _Arg>
-inline const_mem_fun1_t<_Ret,_Tp,_Arg> mem_fun1(_Ret (_Tp::*__f)(_Arg) const)
-{
-	return const_mem_fun1_t<_Ret,_Tp,_Arg>(__f);
-}
-
-} // namespace std
-
-inline std::string operator+ ( char* str1, std::string& str2 )
-{
-	return std::string(str1).append(str2);
-}
-
-inline std::string operator+ ( std::string& str1, char* str2 )
-{
-	return std::string(str1).append(str2);
-}
 
 #endif // RDORUNTIME_OBJECT_H

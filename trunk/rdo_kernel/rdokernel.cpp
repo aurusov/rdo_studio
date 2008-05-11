@@ -22,7 +22,8 @@ RDOKernel::RDOKernel():
 	thread_runtime( NULL ),
 	thread_simulator( NULL ),
 	thread_codecomp( NULL ),
-	thread_repository( NULL )
+	thread_repository( NULL ),
+	thread_corba( NULL )
 {
 	notifies.push_back( RT_THREAD_CONNECTION );
 	notifies.push_back( RT_THREAD_DISCONNECTION );
@@ -180,6 +181,7 @@ void RDOKernel::registration( RDOThread* thread )
 	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdoSimulator::RDOThreadSimulator*>(thread);
 	if ( !thread_codecomp   && thread->getName() == "RDOThreadCodeComp"   ) thread_codecomp   = static_cast<rdoSimulator::RDOThreadCodeComp*>(thread);
 	if ( !thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
+	if ( !thread_corba      && thread->getName() == "RDOThreadCorba"      ) thread_corba      = static_cast<rdoCorba::RDOThreadCorba*>(thread);
 #ifdef RDO_MT
 	threads_mutex.Unlock();
 #endif
@@ -205,8 +207,9 @@ void RDOKernel::unregistered( RDOThread* thread )
 	}
 	if ( thread_runtime    && thread->getName() == "RDOThreadRunTime"    ) thread_runtime    = NULL;
 	if ( thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = NULL;
-	if ( thread_codecomp   && thread->getName() == "RDOThreadCodeComp"  )  thread_codecomp   = NULL;
+	if ( thread_codecomp   && thread->getName() == "RDOThreadCodeComp"   ) thread_codecomp   = NULL;
 	if ( thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = NULL;
+	if ( thread_corba      && thread->getName() == "RDOThreadCorba"      ) thread_corba      = NULL;
 #ifdef RDO_MT
 	threads_mutex.Unlock();
 #endif

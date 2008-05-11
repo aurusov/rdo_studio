@@ -27,7 +27,7 @@ public:
 	std::string Name;
 	RDOTracerResParamType getParamType() const { return paramType; };
 	int addEnumValue( const std::string& value );
-	std::string getEnumValue( const int index ) const;
+	std::string getEnumValue( unsigned int index ) const;
 	int getEnumCount() const { return enumValues ? enumValues->size() : 0; };
 };
 
@@ -51,7 +51,7 @@ public:
 	std::string Name;
 	RDOTracerResTypeKind getResTypeKind() const { return restypeKind; };
 	int addParamInfo( RDOTracerResParamInfo* const value );
-	RDOTracerResParamInfo* getParamInfo( const int index ) const;
+	RDOTracerResParamInfo* getParamInfo( unsigned int index ) const;
 	const int getParamsCount() const { return paramsInfo.size(); };
 };
 
