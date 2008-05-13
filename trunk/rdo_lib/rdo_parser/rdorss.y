@@ -215,7 +215,7 @@ rss_resources:	/* empty */
 rss_res_descr:	rss_res_type rss_trace rss_start_vals {
 					RDORSSResource* res = reinterpret_cast<RDORSSResource*>($1);
 					if ( res->currParam != res->getType()->getParams().end() ) {
-						PARSER->error( @3, rdo::format("Заданы не все параметры ресурса: %s", res->getName().c_str()) );
+						PARSER->error( @3, rdo::format("Заданы не все параметры ресурса: %s", res->name().c_str()) );
 					}
 					res->setTrace( $2 != 0 );
 				};
@@ -267,8 +267,8 @@ rss_value:	'*' {
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch ( RDOSyntaxException& err ) {
-					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->getName().c_str(), err.mess.c_str()) );
-//					throw RDOSyntaxException( err.mess + " for parameter " + (*(PARSER->getLastRSSResource()->currParam))->getName().c_str() );
+					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->name().c_str(), err.message().c_str()) );
+//					throw RDOSyntaxException( err.message() + " for parameter " + (*(PARSER->getLastRSSResource()->currParam))->name().c_str() );
 				}
 			}
 			| RDO_IDENTIF {
@@ -282,7 +282,7 @@ rss_value:	'*' {
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException& err ) {
-					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->getName().c_str(), err.mess.c_str()) );
+					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->name().c_str(), err.message().c_str()) );
 				}
 			}
 			| RDO_INT_CONST {
@@ -296,7 +296,7 @@ rss_value:	'*' {
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException& err ) {
-					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->getName().c_str(), err.mess.c_str()) );
+					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->name().c_str(), err.message().c_str()) );
 				}
 			}
 			| RDO_REAL_CONST {
@@ -310,7 +310,7 @@ rss_value:	'*' {
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch ( RDOSyntaxException& err ) {
-					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->getName().c_str(), err.mess.c_str()) );
+					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->name().c_str(), err.message().c_str()) );
 				}
 			}
 			| error {

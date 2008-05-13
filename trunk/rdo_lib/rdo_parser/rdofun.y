@@ -194,10 +194,10 @@ namespace rdoParse
 
 fun_list:	fun_consts fun_func_seq;
 			| error {
-				if ( PARSER->hasConstant() ) {
-					PARSER->error( @1, "ќжидаетс€ описание функции или последовательности" );
-				} else {
+				if ( PARSER->getFUNConstants().empty() ) {
 					PARSER->error( @1, "ќжидаетс€ описание функции, последовательности или константы" );
+				} else {
+					PARSER->error( @1, "ќжидаетс€ описание функции или последовательности" );
 				}
 			};
 
@@ -267,25 +267,25 @@ param_type:		RDO_integer param_int_diap param_int_default_val {
 				| param_such_as {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( src_info );
 				}
 				| param_such_as '=' RDO_INT_CONST {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( (int)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' RDO_REAL_CONST {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( *(double*)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' RDO_IDENTIF {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( *(std::string*)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' error {
@@ -522,7 +522,7 @@ param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 				}
 				| RDO_such_as RDO_IDENTIF {
 					std::string constName = *reinterpret_cast<std::string*>($2);
-					const RDOFUNConstant* const cons = PARSER->findFUNConst( constName );
+					const RDOFUNConstant* const cons = PARSER->findFUNConstant( constName );
 					if ( !cons ) {
 						PARSER->error( @2, rdo::format("—сылка на несуществующую константу: %s", constName.c_str()) );
 					}
@@ -576,7 +576,7 @@ fun_func_seq:	/* empty */
 fun_func_descr:	fun_func_header fun_func_footer
 				| fun_func_header error {
 					RDOFUNFunction* fun = reinterpret_cast<RDOFUNFunction*>($1);
-					PARSER->error( @2, rdo::format("ќжидаетс€ ключевое слово $Type с указанием типа функции '%s'", fun->getName().c_str()) );
+					PARSER->error( @2, rdo::format("ќжидаетс€ ключевое слово $Type с указанием типа функции '%s'", fun->name().c_str()) );
 				};
 
 fun_func_header:	RDO_Function RDO_IDENTIF_COLON param_type {
@@ -669,8 +669,8 @@ fun_func_calc_name:	RDO_result {
 					}
 					| RDO_IDENTIF {
 						std::string name = *reinterpret_cast<std::string*>($1);
-						if ( name != PARSER->getLastFUNFunction()->getName() ) {
-							PARSER->error( @1, rdo::format("ќжидаетс€ им€ функции '%s'", PARSER->getLastFUNFunction()->getName().c_str()) );
+						if ( name != PARSER->getLastFUNFunction()->name() ) {
+							PARSER->error( @1, rdo::format("ќжидаетс€ им€ функции '%s'", PARSER->getLastFUNFunction()->name().c_str()) );
 						}
 					};
 

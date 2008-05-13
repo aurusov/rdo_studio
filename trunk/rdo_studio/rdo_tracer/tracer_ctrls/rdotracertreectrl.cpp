@@ -1,5 +1,5 @@
 #include "stdafx.h"
- #include "rdotracertreectrl.h"
+#include "rdotracertreectrl.h"
 #include "../rdotracer.h"
 #include "../rdotracerrestype.h"
 #include "../rdotracerresource.h"

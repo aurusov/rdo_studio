@@ -148,7 +148,7 @@ void RDOParserSrcInfo::init()
 {
 	setSrcFileType( RDOParser::getFileToParse() );
 	rdoRuntime::RDOSrcInfo::Position pos = src_pos();
-	pos.last_line = RDOParser::lexer_loc_line();
+	pos.m_last_line = RDOParser::lexer_loc_line();
 	RDOSrcInfo::setSrcPos( pos );
 }
 

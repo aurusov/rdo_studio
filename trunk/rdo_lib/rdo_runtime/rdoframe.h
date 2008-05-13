@@ -176,14 +176,13 @@ public:
 	const RDOFRMShow* getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
 	void addItem( RDOFRMItem* item );
 	void addRulet( RDOFRMRulet* rulet );
-	void end();
 	bool checkCondition( RDORuntime* sim );
 	rdoSimulator::RDOFrame* createFrame( RDORuntime* sim ) {
 		rdoSimulator::RDOFrame* frame = new rdoSimulator::RDOFrame();
 		return prepareFrame( frame, sim );
 	}
 	rdoSimulator::RDOFrame* prepareFrame( rdoSimulator::RDOFrame* frame, RDORuntime* sim );
-	const std::string& getName() const { return src_text(); }
+	const std::string& name() const { return src_text(); }
 	void getBitmaps( std::list< std::string >& list ) const;
 
 	void setColorLastBG( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_bg );

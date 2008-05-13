@@ -3,6 +3,11 @@
 
 #include "rdodpt.h"
 
+namespace rdoRuntime
+{
+class RDOOperations;
+}
+
 namespace rdoParse 
 {
 
@@ -15,8 +20,18 @@ void oprerror( char* mes );
 // ----------------------------------------------------------------------------
 class RDOOPROperation: public RDODPTActivityHotKey
 {
+friend class RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>;
+private:
+	RDOOPROperation( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOOperations
+// ----------------------------------------------------------------------------
+class RDOOperations: public RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>
+{
 public:
-	RDOOPROperation( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDOOperations( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 };
 
 } // namespace rdoParse 

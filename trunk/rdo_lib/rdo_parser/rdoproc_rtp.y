@@ -268,7 +268,7 @@ dpt_process_line:	RDO_IDENTIF	{
 						// Имя ресурса
 						std::string res_name       = *reinterpret_cast<std::string*>($2);
 						// Сформировать имя типа по имени ресурса
-						std::string rtp_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
+						std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
 						// "Состояние"
 						std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
 						// "Свободен"

@@ -38,7 +38,7 @@ public:
 
 	virtual rdoRuntime::RDOCalc* createCalc();
 
-	const std::string&         getName() const { return src_info().src_text(); }
+	const std::string&         name() const    { return src_info().src_text(); }
 	const RDORTPResType* const getType() const { return resType; }
 
 	int getNumber() const                      { return number;  }
@@ -46,7 +46,7 @@ public:
 	const std::vector< rdoRuntime::RDOValue >& getValues() const { return values;  }
 	void addValue( const rdoRuntime::RDOValue& val )             { values.push_back( val ); }
 
-	int writeModelStructure();
+	void writeModelStructure( std::ostream& stream ) const;
 
 	bool getTrace() const       { return trace;  }
 	void setTrace( bool value ) { trace = value; }

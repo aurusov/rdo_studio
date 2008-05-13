@@ -26,7 +26,7 @@ protected:
 public:
 	RDOPMDPokaz( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 	virtual ~RDOPMDPokaz() {}
-	const std::string& getName() const { return src_text(); }
+	const std::string& name() const { return src_text(); }
 };
 
 // ----------------------------------------------------------------------------

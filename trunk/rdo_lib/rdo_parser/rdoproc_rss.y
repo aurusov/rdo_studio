@@ -251,7 +251,7 @@ dpt_process_line:	RDO_IDENTIF	{
 	{
 		// Ресурс не наден, проверим наличие типа
 		// Сформировать имя типа по имени ресурса
-		std::string rtp_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
+		std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
 		// Нашли тип ресурса
 		if ( !rtpList[rtp_name].exist() )
 		{

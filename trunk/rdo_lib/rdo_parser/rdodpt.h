@@ -2,14 +2,18 @@
 #define RDODPT_DPT
 
 #include "rdoparser_object.h"
+#include "rdoparser_logic.h"
 #include "rdofun.h"
 #include "rdopat.h"
-#include <rdodptrtime.h>
+#include <rdo_activity.h>
+#include <searchtrace.h>
 
 namespace rdoRuntime
 {
 class RDOCalc;
+class RDODPTFree;
 class RDODPTSome;
+class RDODPTSearchRuntime;
 class RDOPROCProcess;
 class RDOPROCGenerate;
 class RDOPROCSeize;
@@ -43,12 +47,11 @@ void proc_opr_error( char* mes );
 class RDODPTActivity: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDODPTActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 	RDODPTActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
-	const std::string&       getName() const     { return src_info().src_text(); }
-	const RDOPATPattern*     getType() const     { return m_pattern;             }
-	rdoRuntime::RDOActivity* getActivity() const { return m_activity;            }
+	const std::string&       name() const     { return src_info().src_text(); }
+	rdoRuntime::RDOActivity* activity() const { return m_activity;            }
+	const RDOPATPattern*     pattern() const  { return m_pattern;             }
 
 	void addParam( const std::string& _param, const YYLTYPE& _param_pos );
 	void addParam( int _param, const YYLTYPE& _param_pos );
@@ -57,96 +60,11 @@ public:
 	void endParam( const YYLTYPE& _param_pos );
 
 protected:
-	const RDOPATPattern*     m_pattern;
-	unsigned int             m_currParam;
 	rdoRuntime::RDOActivity* m_activity;
 
 private:
-	void init( const RDOParserSrcInfo& _pattern_src_info );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
-// ----------------------------------------------------------------------------
-class RDODPTSearch: public RDOParserObject, public RDOParserSrcInfo
-{
-private:
-	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag m_trace;
-	RDOFUNLogic*   conditon;
-	RDOFUNLogic*   termConditon;
-	RDOFUNArithm*  evalBy;
-	bool compTops;
-	std::vector< RDODPTSearchActivity* > activities;
-
-public:
-	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace );
-	const std::string& getName() const                         { return src_info().src_text(); }
-	void setCondition( RDOFUNLogic* _conditon = NULL )         { conditon     = _conditon;     }
-	void setTermCondition( RDOFUNLogic* _termConditon = NULL ) { termConditon = _termConditon; }
-	void setEvaluateBy( RDOFUNArithm* _evalBy )                { evalBy       = _evalBy;       }
-	void setCompareTops( bool _compTops )                      { compTops     = _compTops;     }
-
-	RDODPTSearchActivity* addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info );
-	RDODPTSearchActivity* getLastActivity() const {
-		return !activities.empty() ? activities.back() : NULL;
-	}
-	const std::vector< RDODPTSearchActivity* >& getActivities() const { return activities; }
-
-	void end();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearchActivity
-// ----------------------------------------------------------------------------
-class RDODPTSearchActivity: public RDODPTActivity
-{
-private:
-	rdoRuntime::RDODPTSearch::Activity::ValueTime value;
-	RDOFUNArithm* ruleCost;
-
-public:
-	RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
-
-	rdoRuntime::RDODPTSearch::Activity::ValueTime getValue() const { return value; }
-	void setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos );
-
-	RDOFUNArithm* getRuleCost() const { return ruleCost; }
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSome
-// ----------------------------------------------------------------------------
-class RDODPTSome: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
-
-	const std::string& getName() const                { return src_info().src_text(); }
-
-	RDOFUNLogic* getConditon() const                  { return m_conditon;             }
-	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon;         }
-
-	RDODPTSomeActivity* addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info );
-	RDODPTSomeActivity* getLastActivity() const
-	{
-		return !m_activities.empty() ? m_activities.back() : NULL;
-	}
-	const std::vector< RDODPTSomeActivity* >& getActivities() const { return m_activities; }
-	void end();
-
-private:
-	rdoRuntime::RDODPTSome*            m_dpt;
-	RDOFUNLogic*                       m_conditon;
-	std::vector< RDODPTSomeActivity* > m_activities;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSomeActivity
-// ----------------------------------------------------------------------------
-class RDODPTSomeActivity: public RDODPTActivity
-{
-public:
-	RDODPTSomeActivity( const RDODPTSome* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	unsigned int             m_currParam;
+	const RDOPATPattern*     m_pattern;
 };
 
 // ----------------------------------------------------------------------------
@@ -155,8 +73,10 @@ public:
 class RDODPTActivityHotKey: public RDODPTActivity
 {
 public:
-	RDODPTActivityHotKey( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 	void addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos );
+
+protected:
+	RDODPTActivityHotKey( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 };
 
 // ----------------------------------------------------------------------------
@@ -164,8 +84,89 @@ public:
 // ----------------------------------------------------------------------------
 class RDODPTFreeActivity: public RDODPTActivityHotKey
 {
+friend class RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>;
+private:
+	RDODPTFreeActivity( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTFree
+// ----------------------------------------------------------------------------
+class RDODPTFree: public RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>
+{
 public:
-	RDODPTFreeActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDODPTFree( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSomeActivity
+// ----------------------------------------------------------------------------
+class RDODPTSomeActivity: public RDODPTActivityHotKey
+{
+friend class RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>;
+private:
+	RDODPTSomeActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSome
+// ----------------------------------------------------------------------------
+class RDODPTSome: public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
+{
+public:
+	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+
+	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
+	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
+
+	void end();
+
+private:
+	RDOFUNLogic* m_conditon;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSearchActivity
+// ----------------------------------------------------------------------------
+class RDODPTSearchActivity: public RDODPTActivity
+{
+friend class RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>;
+public:
+	rdoRuntime::RDODPTSearch::Activity::ValueTime getValue() const { return m_value; }
+	void setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos );
+
+	RDOFUNArithm* getRuleCost() const { return m_ruleCost; }
+
+private:
+	RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+
+	rdoRuntime::RDODPTSearch::Activity::ValueTime  m_value;
+	RDOFUNArithm*                                  m_ruleCost;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSearch
+// ----------------------------------------------------------------------------
+class RDODPTSearch: public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
+{
+public:
+	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace );
+
+	void setCondition( RDOFUNLogic* conditon = NULL )         { m_conditon     = conditon;     }
+	void setTermCondition( RDOFUNLogic* termConditon = NULL ) { m_termConditon = termConditon; }
+	void setEvaluateBy( RDOFUNArithm* evalBy )                { m_evalBy       = evalBy;       }
+	void setCompareTops( bool compTops )                      { m_compTops     = compTops;     }
+
+	void end();
+	bool closed() const { return m_closed; }
+
+private:
+	RDOFUNLogic*   m_conditon;
+	RDOFUNLogic*   m_termConditon;
+	RDOFUNArithm*  m_evalBy;
+	bool           m_compTops;
+	bool           m_closed;
+	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
 };
 
 // ----------------------------------------------------------------------------
@@ -175,26 +176,26 @@ class RDOPROCProcess: public RDOParserObject
 {
 friend class RDOPROCOperator;
 
-protected:
-	std::string                   name;
-	bool                          m_end;
-	RDOPROCProcess*               parent;
-	std::list< RDOPROCProcess* >  child;
-	std::list< RDOPROCOperator* > operations;
-	rdoRuntime::RDOPROCProcess*   runtime;
-
 public:
-	static std::string name_prefix;
-	static std::string name_sufix;
+	static std::string s_name_prefix;
+	static std::string s_name_sufix;
 
-	RDOPROCProcess( RDOParser* _parser, const std::string& _name );
+	RDOPROCProcess( RDOParser* _parser, const std::string& name );
 
 	void end();
-	bool isend() const { return m_end; }
+	bool closed() const { return m_closed; }
 
 	void insertChild( RDOPROCProcess* value );
 
-	rdoRuntime::RDOPROCProcess* getRunTime() const { return runtime; }
+	rdoRuntime::RDOPROCProcess* getRunTime() const { return m_runtime; }
+
+protected:
+	std::string                   m_name;
+	bool                          m_closed;
+	RDOPROCProcess*               m_parent;
+	std::list< RDOPROCProcess* >  m_child;
+	std::list< RDOPROCOperator* > m_operations;
+	rdoRuntime::RDOPROCProcess*   m_runtime;
 };
 
 // ----------------------------------------------------------------------------

@@ -67,7 +67,7 @@ public:
 	const RDORelevantResource* findRelevantResource( const std::string& resName ) const;
 	int findRelevantResourceNum( const std::string& resName ) const;
 	virtual void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos ) = 0;
-	const std::string& getName() const { return src_text(); }
+	const std::string& name() const { return src_text(); }
 
 	void setCommonChoiceFirst();
 	void setCommonChoiceWithMin( RDOFUNArithm* arithm );
@@ -78,7 +78,7 @@ public:
 	void addRelResConvert( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos, const YYLTYPE& trace_pos );
 	void end();
 
-	int writeModelStructure() const;
+	void writeModelStructure( std::ostream& stream ) const;
 	virtual char getModelStructureLetter() const = 0;
 	std::string getPatternId() const;
 
@@ -241,7 +241,7 @@ public:
 	{
 	}
 
-	const std::string& getName() const  { return src_text(); };
+	const std::string& name() const  { return src_text(); };
 	virtual const RDORTPResType* const getType() const                 = 0;
 
 	virtual rdoRuntime::RDOCalc*                 createPreSelectRelResCalc()            = 0; // Предварительный выбор ресурсов в самом списке рел. ресурсов

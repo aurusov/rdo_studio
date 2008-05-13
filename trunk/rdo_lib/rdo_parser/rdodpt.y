@@ -476,62 +476,65 @@ dpt_some_end:			dpt_some_header RDO_End {
 // ----------------------------------------------------------------------------
 // ---------- DPT Free
 // ----------------------------------------------------------------------------
-dpt_free:				RDO_Activities {
-						}
-						| dpt_free_descr_param {
-							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
-							activity->endParam( @1 );
-						};
+dpt_free_header:			RDO_Activities {
+								$$ = (int)new RDODPTFree( PARSER, @1 );
+							};
 
-dpt_free_descr:			dpt_free RDO_IDENTIF_COLON RDO_IDENTIF {
-							std::string name    = *reinterpret_cast<std::string*>($2);
-							std::string pattern = *reinterpret_cast<std::string*>($3);
-							$$ = (int)new RDODPTFreeActivity( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, pattern) );
-						}
-						| dpt_free RDO_IDENTIF_COLON error {
-							PARSER->error( @2, @3, "Ожидается имя образца" );
-						}
-						| dpt_free error {
-							PARSER->error( @2, "Ожидается имя активности" );
-						};
+dpt_free_activity:			/* empty */
+							| dpt_free_activity dpt_free_activity_name dpt_free_activity_param dpt_free_activity_keys {
+							};
 
-dpt_free_descr_activ:	dpt_free_descr
-						| dpt_free_descr_activ RDO_QUOTED_IDENTIF {
-							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
-							std::string         key      = *reinterpret_cast<std::string*>($2);
-							activity->addHotKey( key, @2 );
-						}
-						| dpt_free_descr_activ '+' RDO_QUOTED_IDENTIF {
-							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
-							std::string         key      = *reinterpret_cast<std::string*>($3);
-							activity->addHotKey( key, @3 );
-						};
+dpt_free_activity_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
+								RDODPTFree* dpt     = PARSER->getLastDPTFree();
+								std::string name    = *reinterpret_cast<std::string*>($1);
+								std::string pattern = *reinterpret_cast<std::string*>($2);
+								$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
+							}
+							| RDO_IDENTIF_COLON error {
+								PARSER->error( @1, @2, "Ожидается имя образца" );
+							};
 
-dpt_free_descr_param:	dpt_free_descr_param RDO_IDENTIF {
-							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
-							std::string         param    = *reinterpret_cast<std::string*>($2);
-							activity->addParam( param, @2 );
-						}
-						| dpt_free_descr_param RDO_INT_CONST {
-							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
-							int                 param    = $2;
-							activity->addParam( param, @2 );
-						}
-						| dpt_free_descr_param RDO_REAL_CONST {
-							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
-							double              param    = *reinterpret_cast<double*>($2);
-							activity->addParam( param, @2 );
-						}
-						| dpt_free_descr_param '*' {
-							RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
-							activity->addParam( @2 );
-						}
-						| dpt_free_descr_activ;
+dpt_free_activity_param:	/* empty */
+							| dpt_free_activity_param RDO_IDENTIF {
+								RDODPTFree*  dpt   = PARSER->getLastDPTFree();
+								std::string  param = *reinterpret_cast<std::string*>($2);
+								dpt->getLastActivity()->addParam( param, @2 );
+							}
+							| dpt_free_activity_param RDO_INT_CONST {
+								RDODPTFree*  dpt   = PARSER->getLastDPTFree();
+								int          param = $2;
+								dpt->getLastActivity()->addParam( param, @2 );
+							}
+							| dpt_free_activity_param RDO_REAL_CONST {
+								RDODPTFree*  dpt   = PARSER->getLastDPTFree();
+								double       param = *reinterpret_cast<double*>($2);
+								dpt->getLastActivity()->addParam( param, @2 );
+							}
+							| dpt_free_activity_param '*' {
+								RDODPTFree*  dpt = PARSER->getLastDPTFree();
+								dpt->getLastActivity()->addParam( @2 );
+							}
+							| dpt_free_activity_param error {
+								PARSER->error( @1, @2, "Ошибка описания параметра образца" )
+							};
 
-dpt_free_end:			dpt_free RDO_End
-						| dpt_free {
-							PARSER->error( @1, "Ожидается ключевое слово $End" );
-						};
+dpt_free_activity_keys:		/* empty */
+							| dpt_free_activity_keys RDO_QUOTED_IDENTIF {
+								RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
+								std::string         key      = *reinterpret_cast<std::string*>($2);
+								activity->addHotKey( key, @2 );
+							}
+							| dpt_free_activity_keys '+' RDO_QUOTED_IDENTIF {
+								RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
+								std::string         key      = *reinterpret_cast<std::string*>($3);
+								activity->addHotKey( key, @3 );
+							};
+
+dpt_free_end:				dpt_free_header dpt_free_activity RDO_End {
+							}
+							| dpt_free_header error {
+								PARSER->error( @1, "Ожидается ключевое слово $End" );
+							};
 
 // ----------------------------------------------------------------------------
 // ---------- $Process

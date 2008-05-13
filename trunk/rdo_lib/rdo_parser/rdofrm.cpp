@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "rdofrm.h"
+#include "rdofun.h"
+#include "rdoparser.h"
 #include "rdoparser_lexer.h"
 
 #ifdef _DEBUG
@@ -19,6 +21,18 @@ int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void frmerror( char* mes )
 {
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFRMFrame
+// ----------------------------------------------------------------------------
+RDOFRMFrame::RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNLogic* logic ):
+	RDOParserObject( _parser ),
+	RDOParserSrcInfo( _src_info ),
+	m_frame( NULL )
+{
+	m_frame = new rdoRuntime::RDOFRMFrame( parser()->runtime(), _src_info, logic ? logic->createCalc() : NULL );
+	parser()->insertFRMFrame( this );
 }
 
 } // namespace rdoParse

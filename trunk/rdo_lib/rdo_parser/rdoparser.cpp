@@ -2,6 +2,7 @@
 #include "rdoparser.h"
 #include "rdoparser_rdo.h"
 #include "rdortp.h"
+#include "rdofrm.h"
 #include "rdofun.h"
 #include "rdoopr.h"
 #include "rdorss.h"
@@ -19,149 +20,100 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-std::list< RDOParser* > RDOParser::parserStack;
+// ----------------------------------------------------------------------------
+// ---------- RDOParser
+// ----------------------------------------------------------------------------
+std::list< RDOParser* > RDOParser::s_parserStack;
+
+#define DECLARE_SIMPLE_OBJECT_CONTAINER_NONAME( Name ) \
+void RDOParser::insert##Name( RDO##Name* value ) \
+{ \
+	m_all##Name.push_back( value ); \
+} \
+
+#define DECLARE_PARSER_OBJECT_CONTAINER_NONAME( Name ) \
+void RDOParser::insert##Name( RDO##Name* value ) \
+{ \
+	m_parsing_object = (RDOParserObject*)value; \
+	m_all##Name.push_back( value ); \
+} \
+
+#define DECLARE_PARSER_OBJECT_CONTAINER( Name ) \
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME( Name ) \
+const RDO##Name* RDOParser::find##Name( const std::string& name ) const \
+{ \
+	std::vector< RDO##Name* >::const_iterator it = std::find_if( m_all##Name.begin(), m_all##Name.end(), compareName<RDO##Name>(name) ); \
+	return it != m_all##Name.end() ? *it : NULL; \
+}
+
+DECLARE_PARSER_OBJECT_CONTAINER( PATPattern      );
+DECLARE_PARSER_OBJECT_CONTAINER( RTPResType      );
+DECLARE_PARSER_OBJECT_CONTAINER( RSSResource     );
+DECLARE_PARSER_OBJECT_CONTAINER( OPROperation    );
+DECLARE_PARSER_OBJECT_CONTAINER( FRMFrame        );
+DECLARE_PARSER_OBJECT_CONTAINER( FUNConstant     );
+DECLARE_PARSER_OBJECT_CONTAINER( FUNFunction     );
+DECLARE_PARSER_OBJECT_CONTAINER( FUNSequence     );
+DECLARE_PARSER_OBJECT_CONTAINER( DPTSearch       );
+DECLARE_PARSER_OBJECT_CONTAINER( DPTSome         );
+DECLARE_PARSER_OBJECT_CONTAINER( DPTFreeActivity );
+DECLARE_PARSER_OBJECT_CONTAINER( PMDPokaz        );
+
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME( FUNGroup    );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME( DPTFree     );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME( PROCProcess );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME( Operations  );
+
+DECLARE_SIMPLE_OBJECT_CONTAINER_NONAME( RTPEnumParamType );
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
-	return !parserStack.empty() && parserStack.back()->parser_item ? parserStack.back()->parser_item->m_type : rdoModelObjects::PAT;
+	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjects::PAT;
 }
 
 int RDOParser::lexer_loc_line()
 {
-	return !parserStack.empty() && parserStack.back()->parser_item ? parserStack.back()->parser_item->lexer_loc_line() : -1;
+	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_line() : -1;
 }
 
 int RDOParser::lexer_loc_pos()
 {
-	return parser_item ? parser_item->lexer_loc_pos() : 0;
+	return m_parser_item ? m_parser_item->lexer_loc_pos() : 0;
 }
 
 RDOParser::RDOParser():
-	parsing_object( NULL ),
-	parser_item( NULL ),
-	have_kw_Resources( false ),
-	have_kw_ResourcesEnd( false ),
-	have_kw_Operations( false ),
-	have_kw_OperationsEnd( false ),
-	lastDPTSearch( NULL ),
-	lastDPTSome( NULL ),
-	smr( NULL )
+	m_parsing_object( NULL ),
+	m_parser_item( NULL ),
+	m_have_kw_Resources( false ),
+	m_have_kw_ResourcesEnd( false ),
+	m_smr( NULL )
 {
-	parserStack.push_back( this );
-//	runtime = new rdoRuntime::RDORuntime();
+	s_parserStack.push_back( this );
 	m_runtime.memory_insert( sizeof(RDOParser) );
 	m_runtime.memory_insert( sizeof(rdoRuntime::RDORuntime) );
 }
 
 RDOParser::~RDOParser()
 {
-	DeleteAllObjects( allNames );
-	DeleteAllObjects( allDoubles );
-	std::vector< RDODeletable* >::reverse_iterator it = allDeletables.rbegin();
-	while ( it != allDeletables.rend() ) {
+	DeleteAllObjects( m_allNames );
+	DeleteAllObjects( m_allDoubles );
+	std::vector< RDODeletable* >::reverse_iterator it = m_allDeletables.rbegin();
+	while ( it != m_allDeletables.rend() ) {
 		delete *it;
-		it = allDeletables.rbegin();
+		it = m_allDeletables.rbegin();
 	}
-	TRACE( "PARSER : allDeletables.size() = %d\n",allDeletables.size() );
-	parserStack.remove( this );
+	TRACE( "PARSER : m_allDeletables.size() = %d\n",m_allDeletables.size() );
+	s_parserStack.remove( this );
 }
 
-void RDOParser::insertRTPResType( RDORTPResType* value )
+bool RDOParser::isCurrentDPTSearch()
 {
-	parsing_object = value;
-	allRTPResType.push_back( value );
-}
-
-void RDOParser::insertEnum( RDORTPEnumParamType* value )
-{
-	allEnums.push_back( value );
-}
-
-void RDOParser::insertRSSResource( RDORSSResource* value )
-{
-	parsing_object = value;
-	allRSSResource.push_back( value );
-}
-
-void RDOParser::insertPATPattern( RDOPATPattern* value )
-{
-	parsing_object = value;
-	allPATPatterns.push_back( value );
-}
-
-void RDOParser::insertOPROperation( RDOOPROperation* value )
-{
-	allOPROperations.push_back( value );
-}
-
-void RDOParser::insertFRMFrame( rdoRuntime::RDOFRMFrame* value )
-{
-	allFRMFrame.push_back( value );
-}
-
-void RDOParser::insertFUNConstant( RDOFUNConstant* value )
-{
-	parsing_object = value;
-	allFUNConstant.push_back( value );
-}
-
-void RDOParser::insertFUNFunction( RDOFUNFunction* value )
-{
-	parsing_object = value;
-	allFUNFunctions.push_back( value );
-}
-
-void RDOParser::insertFUNSequences( RDOFUNSequence* value )
-{
-	parsing_object = value;
-	allFUNSequences.push_back( value );
-}
-
-void RDOParser::insertFUNGroup( RDOFUNGroup* value )
-{
-	parsing_object = value;
-	allFUNGroupStack.push_back( value );
-}
-
-void RDOParser::insertDPTSearch( RDODPTSearch* value )
-{
-	parsing_object = value;
-	allDPTSearch.push_back( value ); 
-	lastDPTSearch = value;
-	lastDPTSome   = NULL;
-}
-
-void RDOParser::insertDPTSome( RDODPTSome* value )
-{
-	parsing_object = value;
-	allDPTSome.push_back( value );
-	lastDPTSearch = NULL;
-	lastDPTSome   = value;
-}
-
-void RDOParser::insertDPTFreeActivity( RDODPTFreeActivity* value )
-{
-	parsing_object = value;
-	allDPTFreeActivity.push_back( value );
-	lastDPTSearch = NULL;
-	lastDPTSome   = NULL;
-}
-
-void RDOParser::insertPMDPokaz( RDOPMDPokaz* value )
-{
-//	parsing_object = value;
-	allPMDPokaz.push_back( value );
-}
-
-void RDOParser::insertDPTProcess( RDOPROCProcess* value )
-{
-	parsing_object = value;
-	allDPTProcess.push_back( value );
+	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
 void RDOParser::insertChanges( const std::string& name, const std::string& value )
 {
-	changes.push_back( Changes( name, value ) );
+	m_changes.push_back( Changes( name, value ) );
 }
 
 std::string RDOParser::getChanges() const
@@ -169,84 +121,95 @@ std::string RDOParser::getChanges() const
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
 	unsigned int changes_max_length = 0;
-	std::vector< Changes >::const_iterator change_it = changes.begin();
-	while ( change_it != changes.end() ) {
-		if ( change_it->name.length() > changes_max_length ) {
-			changes_max_length = change_it->name.length();
+	std::vector< Changes >::const_iterator change_it = m_changes.begin();
+	while ( change_it != m_changes.end() ) {
+		if ( change_it->m_name.length() > changes_max_length ) {
+			changes_max_length = change_it->m_name.length();
 		}
 		change_it++;
 	}
-	change_it = changes.begin();
-	while ( change_it != changes.end() ) {
-		stream << "  " << change_it->name;
-		for ( unsigned int i = change_it->name.length(); i < changes_max_length; i++ ) {
+	change_it = m_changes.begin();
+	while ( change_it != m_changes.end() ) {
+		stream << "  " << change_it->m_name;
+		for ( unsigned int i = change_it->m_name.length(); i < changes_max_length; i++ ) {
 			stream << " ";
 		}
-		stream << "  = " << change_it->value << std::endl;
+		stream << "  = " << change_it->m_value << std::endl;
 		change_it++;
 	}
 	return stream.str();
 }
 
-std::stringstream& RDOParser::getModelStructure()
+std::string RDOParser::getModelStructure()
 {
-	modelStructure.str("");
-	modelStructure.clear();
+	std::stringstream modelStructure;
 
-	if ( modelStructure.str().empty() ) {
+	// $Changes
+	modelStructure << getChanges();
 
-		// $Changes
-		modelStructure << getChanges();
+	// RTP
+	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
+	std::vector< RDORTPResType* >::const_iterator rtp_it = m_allRTPResType.begin();
+	while ( rtp_it != m_allRTPResType.end() )
+	{
+		(*rtp_it)->writeModelStructure( modelStructure );
+		rtp_it++;
+	}
 
-		// RTP
-		modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
-		std::for_each( allRTPResType.begin(), allRTPResType.end(), std::mem_fun(&RDORTPResType::writeModelStructure) );
+	// RSS
+	modelStructure << std::endl << "$Resources" << std::endl;
+	std::vector< RDORSSResource* >::const_iterator rss_it = m_allRSSResource.begin();
+	while ( rss_it != m_allRSSResource.end() )
+	{
+		(*rss_it)->writeModelStructure( modelStructure );
+		rss_it++;
+	}
 
-		// RSS
-		modelStructure << std::endl << "$Resources" << std::endl;
-		std::for_each( allRSSResource.begin(), allRSSResource.end(), std::mem_fun(&RDORSSResource::writeModelStructure) );
+	// PAT
+	modelStructure << std::endl << "$Pattern" << std::endl;
+	std::vector< RDOPATPattern* >::const_iterator pat_it = m_allPATPattern.begin();
+	while ( pat_it != m_allPATPattern.end() )
+	{
+		(*pat_it)->writeModelStructure( modelStructure );
+		pat_it++;
+	}
 
-		// PAT
-		modelStructure << std::endl << "$Pattern" << std::endl;
-		std::for_each( allPATPatterns.begin(), allPATPatterns.end(), std::mem_fun(&RDOPATPattern::writeModelStructure) );
+	// OPR/DPT
+	int counter = 1;
+	modelStructure << std::endl << "$Activities" << std::endl;
+	modelStructure << m_runtime.writeActivitiesStructure( counter );
 
-		// OPR/DPT
-		int counter = 1;
-		modelStructure << std::endl << "$Activities" << std::endl;
-		modelStructure << m_runtime.writeActivitiesStructure( counter );
-
-		// DPT only
-		for( unsigned int i = 0; i < allDPTSearch.size(); i++ ) {
-			for( unsigned int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++ ) {
-				RDODPTSearchActivity* curr = allDPTSearch.at(i)->getActivities().at(j);
-				modelStructure << counter++ << " " << curr->getName() << " " << curr->getType()->getPatternId() << std::endl;
-			}
-		}
-
-		// PMD
-		modelStructure << std::endl << "$Watching" << std::endl;
-		unsigned int watching_max_length = 0;
-		std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = m_runtime.getPokaz().begin();
-		while ( watching_it != m_runtime.getPokaz().end() ) {
-			if ( (*watching_it)->traceable() && (*watching_it)->getName().length() > watching_max_length ) {
-				watching_max_length = (*watching_it)->getName().length();
-			}
-			watching_it++;
-		}
-		watching_it = m_runtime.getPokaz().begin();
-		while ( watching_it != m_runtime.getPokaz().end() ) {
-			if ( (*watching_it)->traceable() ) {
-				modelStructure << "  " << (*watching_it)->getName();
-				for ( unsigned int i = (*watching_it)->getName().length(); i < watching_max_length + 2; i++ ) {
-					modelStructure << " ";
-				}
-				(*watching_it)->writePokazStructure( modelStructure );
-			}
-			watching_it++;
+	// DPT only
+	for( unsigned int i = 0; i < m_allDPTSearch.size(); i++ ) {
+		for( unsigned int j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++ ) {
+			RDODPTSearchActivity* curr = m_allDPTSearch.at(i)->getActivities().at(j);
+			modelStructure << counter++ << " " << curr->name() << " " << curr->pattern()->getPatternId() << std::endl;
 		}
 	}
 
-	return modelStructure;
+	// PMD
+	modelStructure << std::endl << "$Watching" << std::endl;
+	unsigned int watching_max_length = 0;
+	std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = m_runtime.getPokaz().begin();
+	while ( watching_it != m_runtime.getPokaz().end() ) {
+		if ( (*watching_it)->traceable() && (*watching_it)->name().length() > watching_max_length ) {
+			watching_max_length = (*watching_it)->name().length();
+		}
+		watching_it++;
+	}
+	watching_it = m_runtime.getPokaz().begin();
+	while ( watching_it != m_runtime.getPokaz().end() ) {
+		if ( (*watching_it)->traceable() ) {
+			modelStructure << "  " << (*watching_it)->name();
+			for ( unsigned int i = (*watching_it)->name().length(); i < watching_max_length + 2; i++ ) {
+				modelStructure << " ";
+			}
+			(*watching_it)->writePokazStructure( modelStructure );
+		}
+		watching_it++;
+	}
+
+	return modelStructure.str();
 }
 
 void RDOParser::parse()
@@ -255,9 +218,9 @@ void RDOParser::parse()
 
 	RDOParserContainer::CIterator it = begin();
 	while ( it != end() ) {
-		parser_item = it->second;
+		m_parser_item = it->second;
 		it->second->parse();
-		parser_item = NULL;
+		m_parser_item = NULL;
 		it++;
 	}
 
@@ -272,9 +235,9 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 	RDOParserContainer::CIterator it = find( min );
 	while ( it != end() ) {
 		if ( it->first <= max ) {
-			parser_item = it->second;
+			m_parser_item = it->second;
 			it->second->parse();
-			parser_item = NULL;
+			m_parser_item = NULL;
 		} else {
 			break;
 		}
@@ -286,9 +249,9 @@ void RDOParser::parse( std::istream& stream )
 {
 	RDOParserContainer::CIterator it = begin();
 	while ( it != end() ) {
-		parser_item = it->second;
+		m_parser_item = it->second;
 		it->second->parse( stream );
-		parser_item = NULL;
+		m_parser_item = NULL;
 		it++;
 	}
 }
@@ -332,45 +295,45 @@ void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, rdoSimulator
 void RDOParser::error( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
 	error_push_only( _message, _error_code );
-	throw rdoParse::RDOSyntaxException( errors.back().message );
+	throw rdoParse::RDOSyntaxException( m_errors.back().message );
 }
 
 void RDOParser::error_push_only( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
-	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, lexer_loc_line(), lexer_loc_pos(), getFileToParse() ) );
+	m_errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, lexer_loc_line(), lexer_loc_pos(), getFileToParse() ) );
 }
 
 void RDOParser::error( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
 	error_push_only( _src_info, _message, _error_code );
-	throw rdoParse::RDOSyntaxException( errors.back().message );
+	throw rdoParse::RDOSyntaxException( m_errors.back().message );
 }
 
 void RDOParser::error( const RDOParserSrcInfo& _src_info1, const RDOParserSrcInfo& _src_info2, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
-	error_push_only( _src_info1.src_pos().last_line != _src_info2.src_pos().last_line ? _src_info1 : _src_info2, _message, _error_code );
-	throw rdoParse::RDOSyntaxException( errors.back().message );
+	error_push_only( _src_info1.src_pos().m_last_line != _src_info2.src_pos().m_last_line ? _src_info1 : _src_info2, _message, _error_code );
+	throw rdoParse::RDOSyntaxException( m_errors.back().message );
 }
 
 void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
-	if ( _src_info.src_pos().last_line != -1 && _src_info.src_pos().last_pos != -1 )
+	if ( _src_info.src_pos().m_last_line != -1 && _src_info.src_pos().m_last_pos != -1 )
 	{
-		errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype() ) );
+		m_errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().m_last_line, _src_info.src_pos().m_last_pos, _src_info.src_filetype() ) );
 	}
 }
 
 void RDOParser::error_push_done()
 {
-	if ( !errors.empty() ) {
-		throw rdoParse::RDOSyntaxException( errors.back().message );
+	if ( !m_errors.empty() ) {
+		throw rdoParse::RDOSyntaxException( m_errors.back().message );
 	}
 }
 
 void RDOParser::error_modify( const std::string& _message )
 {
-	if ( !errors.empty() ) {
-		errors.back().message = _message;
+	if ( !m_errors.empty() ) {
+		m_errors.back().message = _message;
 		throw rdoParse::RDOSyntaxException( "" );
 	}
 }
@@ -386,41 +349,30 @@ void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ..
 
 void RDOParser::warning( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code ) 
 {
-	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
+	m_errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
 }
 
 void RDOParser::warning( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code ) 
 {
-	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype(), true ) );
-}
-
-const RDOFUNConstant* RDOParser::findFUNConst( const std::string& name ) const
-{
-	std::vector<RDOFUNConstant *>::const_iterator it = 
-		std::find_if(allFUNConstant.begin(), allFUNConstant.end(), compareName<RDOFUNConstant>(name));
-
-	if(it == allFUNConstant.end())
-		return NULL;
-
-	return (*it);
+	m_errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().m_last_line, _src_info.src_pos().m_last_pos, _src_info.src_filetype(), true ) );
 }
 
 void RDOParser::checkFunctionName( const RDOParserSrcInfo& _src_info )
 {
-	const RDOFUNConstant* _const = findFUNConst( _src_info.src_text() );
+	const RDOFUNConstant* _const = findFUNConstant( _src_info.src_text() );
 	if ( _const ) {
 		error_push_only( _src_info, rdo::format("Константа '%s' уже существует", _src_info.src_text().c_str()) );
 //		parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
 		error_push_only( _const->src_info(), "См. первое определение" );
 		error_push_done();
 	}
-	const RDOFUNSequence* _seq = findSequence( _src_info.src_text() );
+	const RDOFUNSequence* _seq = findFUNSequence( _src_info.src_text() );
 	if ( _seq ) {
 		error_push_only( _src_info, rdo::format( "Последовательность '%s' уже существует", _src_info.src_text().c_str() ) );
 		error_push_only( _seq->src_info(), "См. первое определение" );
 		error_push_done();
 	}
-	const RDOFUNFunction* _fun = findFunction( _src_info.src_text() );
+	const RDOFUNFunction* _fun = findFUNFunction( _src_info.src_text() );
 	if ( _fun ) {
 		error_push_only( _src_info, rdo::format( "Функция '%s' уже существует", _src_info.src_text().c_str() ) );
 		error_push_only( _fun->src_info(), "См. первое определение" );
@@ -430,8 +382,8 @@ void RDOParser::checkFunctionName( const RDOParserSrcInfo& _src_info )
 
 void RDOParser::checkActivityName( const RDOParserSrcInfo& _src_info )
 {
-	std::vector< RDODPTSearch* >::const_iterator it_search = getDPTSearch().begin();
-	while ( it_search != getDPTSearch().end() ) {
+	std::vector< RDODPTSearch* >::const_iterator it_search = getDPTSearchs().begin();
+	while ( it_search != getDPTSearchs().end() ) {
 		std::vector< RDODPTSearchActivity* >::const_iterator it_search_act = std::find_if( (*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(_src_info.src_text()) );
 		if ( it_search_act != (*it_search)->getActivities().end() ) {
 			error_push_only( _src_info, rdo::format("Активность '%s' уже существует", _src_info.src_text().c_str()) );
@@ -441,8 +393,8 @@ void RDOParser::checkActivityName( const RDOParserSrcInfo& _src_info )
 		}
 		it_search++;
 	}
-	std::vector< RDODPTSome* >::const_iterator it_some = getDPTSome().begin();
-	while ( it_some != getDPTSome().end() ) {
+	std::vector< RDODPTSome* >::const_iterator it_some = getDPTSomes().begin();
+	while ( it_some != getDPTSomes().end() ) {
 		std::vector< RDODPTSomeActivity* >::const_iterator it_some_act = std::find_if( (*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(_src_info.src_text()) );
 		if ( it_some_act != (*it_some)->getActivities().end() ) {
 			error_push_only( _src_info, rdo::format("Активность '%s' уже существует", _src_info.src_text().c_str()) );
@@ -451,14 +403,14 @@ void RDOParser::checkActivityName( const RDOParserSrcInfo& _src_info )
 		}
 		it_some++;
 	}
-	const RDODPTFreeActivity* free_act = findFreeActivity( _src_info.src_text() );
+	const RDODPTFreeActivity* free_act = findDPTFreeActivity( _src_info.src_text() );
 	if ( free_act ) {
 		error_push_only( _src_info, rdo::format("Активность '%s' уже существует", _src_info.src_text().c_str()) );
 		error_push_only( free_act->src_info(), "См. первое определение" );
 		error_push_done();
 //		error("Free activity name: " + *_name + " already defined");
 	}
-	const RDOOPROperation* opr = findOperation( _src_info.src_text() );
+	const RDOOPROperation* opr = findOPROperation( _src_info.src_text() );
 	if ( opr ) {
 		error_push_only( _src_info, rdo::format("Операция '%s' уже существует", _src_info.src_text().c_str()) );
 		error_push_only( opr->src_info(), "См. первое определение" );
@@ -468,67 +420,24 @@ void RDOParser::checkActivityName( const RDOParserSrcInfo& _src_info )
 
 void RDOParser::checkDPTName( const RDOParserSrcInfo& _src_info )
 {
-	std::vector< RDODPTSearch* >::const_iterator search_it = std::find_if(getDPTSearch().begin(), getDPTSearch().end(), compareName<RDODPTSearch>(_src_info.src_text()));
-	if ( search_it != getDPTSearch().end() ) {
+	if ( _src_info.src_text().empty() )
+	{
+		// Актуально для операций и свободных блоков активностей
+		return;
+	}
+	std::vector< RDODPTSearch* >::const_iterator search_it = std::find_if(getDPTSearchs().begin(), getDPTSearchs().end(), compareName<RDODPTSearch>(_src_info.src_text()));
+	if ( search_it != getDPTSearchs().end() ) {
 		error_push_only( _src_info, rdo::format("Точка '%s' уже существует", _src_info.src_text().c_str()) );
 		error_push_only( (*search_it)->src_info(), "См. первое определение" );
 		error_push_done();
 //		error( _src_info, "DPT name: " + _src_info.src_text() + " already defined" );
 	}
-	std::vector< RDODPTSome* >::const_iterator some_it = std::find_if(getDPTSome().begin(), getDPTSome().end(), compareName<RDODPTSome>(_src_info.src_text()));
-	if ( some_it != getDPTSome().end() ) {
+	std::vector< RDODPTSome* >::const_iterator some_it = std::find_if(getDPTSomes().begin(), getDPTSomes().end(), compareName<RDODPTSome>(_src_info.src_text()));
+	if ( some_it != getDPTSomes().end() ) {
 		error_push_only( _src_info, rdo::format("Точка '%s' уже существует", _src_info.src_text().c_str()) );
 		error_push_only( (*some_it)->src_info(), "См. первое определение" );
 		error_push_done();
 	}
-}
-
-const RDORTPResType* RDOParser::findRTPResType( const std::string& name ) const
-{
-	std::vector< RDORTPResType* >::const_iterator it = std::find_if( allRTPResType.begin(), allRTPResType.end(), compareName<RDORTPResType>(name) );
-	return it != allRTPResType.end() ? *it : NULL;
-}
-
-const RDORSSResource* RDOParser::findRSSResource( const std::string& name ) const
-{
-	std::vector< RDORSSResource* >::const_iterator it = std::find_if( allRSSResource.begin(), allRSSResource.end(), compareName<RDORSSResource>(name) );
-	return it != allRSSResource.end() ? *it : NULL;
-}
-
-const RDOFUNFunction* RDOParser::findFunction( const std::string& name ) const
-{
-	std::vector< RDOFUNFunction* >::const_iterator it = std::find_if( allFUNFunctions.begin(), allFUNFunctions.end(), compareName<RDOFUNFunction>(name) );
-	return it != allFUNFunctions.end() ? *it : NULL;
-}
-
-const RDOFUNSequence* RDOParser::findSequence( const std::string& name ) const
-{
-	std::vector< RDOFUNSequence* >::const_iterator it = std::find_if( allFUNSequences.begin(), allFUNSequences.end(), compareName<RDOFUNSequence>(name) );
-	return it != allFUNSequences.end() ? *it : NULL;
-}
-
-const RDOPATPattern* RDOParser::findPattern( const std::string& name ) const
-{
-	std::vector<RDOPATPattern *>::const_iterator it = std::find_if( allPATPatterns.begin(), allPATPatterns.end(), compareName<RDOPATPattern>(name) );
-	return it != allPATPatterns.end() ? *it : NULL;
-}
-
-const RDOOPROperation* RDOParser::findOperation( const std::string& name ) const
-{
-	std::vector< RDOOPROperation* >::const_iterator it = std::find_if( allOPROperations.begin(), allOPROperations.end(), compareName<RDOOPROperation>(name) );
-	return it != allOPROperations.end() ? *it : NULL;
-}
-
-const RDODPTFreeActivity* RDOParser::findFreeActivity( const std::string& name ) const
-{
-	std::vector< RDODPTFreeActivity* >::const_iterator it = std::find_if( allDPTFreeActivity.begin(), allDPTFreeActivity.end(), compareName<RDODPTFreeActivity>(name) );
-	return it != allDPTFreeActivity.end() ? *it : NULL;
-}
-
-const RDOPMDPokaz* RDOParser::findPMDPokaz( const std::string& name ) const
-{
-	std::vector< RDOPMDPokaz* >::const_iterator it = std::find_if( allPMDPokaz.begin(), allPMDPokaz.end(), compareName<RDOPMDPokaz>(name) );
-	return it != allPMDPokaz.end() ? *it : NULL;
 }
 
 } // namespace rdoParse 

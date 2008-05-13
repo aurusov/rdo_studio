@@ -23,6 +23,7 @@
 #include <rdoparser.h>
 #include <rdosmr.h>
 #include <rdofrm.h>
+#include <rdortp.h>
 #include <rdo_resources.h>
 
 #ifdef _DEBUG
@@ -238,22 +239,25 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		pman->activate();
 
 		g_orb_inited = true;
-		
+
 		g_orb->run();
 	}
-	catch(CORBA::SystemException& ex) {
+	catch (CORBA::SystemException& ex)
+	{
 		trace( rdo::format("Caught CORBA::%s", ex._name()) );
 	}
-	catch(CORBA::Exception& ex) {
+	catch (CORBA::Exception& ex)
+	{
 		std::cerr << "Caught CORBA::Exception: " << ex._name() << std::endl;
-	}	
-	catch(omniORB::fatalException& fe) {
+	}
+	catch (omniORB::fatalException& fe)
+	{
 		std::cerr << "Caught omniORB::fatalException:" << std::endl;
 		std::cerr << " file: " << fe.file() << std::endl;
 		std::cerr << " line: " << fe.line() << std::endl;
 		std::cerr << " mesg: " << fe.errmsg() << std::endl;
 	}
-	
+
 	return 0;
 }
 
@@ -580,7 +584,7 @@ void RDOThreadRunTime::start()
 	catch ( rdoRuntime::RDORuntimeException& ex ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
-		std::string mess = ex.getType() + " : " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.message();
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 
@@ -614,7 +618,7 @@ void RDOThreadRunTime::idle()
 	catch ( rdoRuntime::RDORuntimeException& ex ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
-		std::string mess = ex.getType() + " : " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.message();
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 //	catch (...) {
@@ -697,7 +701,7 @@ void RDOThreadRunTime::stop()
 	catch ( rdoRuntime::RDORuntimeException& ex ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
-		std::string mess = ex.getType() + " : " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.message();
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 
@@ -765,7 +769,7 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		}
 		case RT_SIMULATOR_GET_MODEL_STRUCTURE: {
 			msg.lock();
-			*static_cast<std::stringstream*>(msg.param) << parser->getModelStructure().str();
+			*static_cast<std::stringstream*>(msg.param) << parser->getModelStructure();
 			msg.unlock();
 			break;
 		}
@@ -825,7 +829,7 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 					if ( runtime ) {
 						int size = runtime->allFrames.size();
 						for ( int i = 0; i < size; i++ ) {
-							getlist->list->push_back( runtime->allFrames.at(i)->getName() );
+							getlist->list->push_back( runtime->allFrames.at(i)->name() );
 						}
 					}
 					break;
@@ -898,7 +902,7 @@ bool RDOThreadSimulator::parseModel()
 		return false;
 	}
 	catch ( rdoRuntime::RDORuntimeException& ex ) {
-		std::string mess = ex.getType() + " : " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.message();
 		broadcastMessage( RT_SIMULATOR_PARSE_STRING, &mess );
 		exitCode = rdoSimulator::EC_ParserError;
 		broadcastMessage( RT_SIMULATOR_PARSE_ERROR );
@@ -917,7 +921,7 @@ bool RDOThreadSimulator::parseModel()
 void RDOThreadSimulator::runModel()
 {
 	if ( parseModel() ) {
-		parser->errors.clear();
+		parser->m_errors.clear();
 		exitCode = rdoSimulator::EC_OK;
 		thread_runtime = new rdoRuntime::RDOThreadRunTime();
 	}
@@ -1005,7 +1009,7 @@ void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjec
 		info.error = true;
 	}
 	catch ( rdoRuntime::RDORuntimeException& ex ) {
-		std::string mess = ex.getType() + " : " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.message();
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &mess );
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
 		info.error = true;
@@ -1032,7 +1036,7 @@ std::vector< RDOSyntaxError > RDOThreadSimulator::getErrors()
 
 	if ( !parser ) return res;
 
-	res = parser->errors;
+	res = parser->m_errors;
 	res.insert( res.end(), runtime->errors.begin(), runtime->errors.end() );
 	return res;
 }
@@ -1255,13 +1259,13 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 //			rdo::binarystream stream;
 //			sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( data->file, stream ) );
 //			data->result = stream.data();
-			const std::vector< rdoParse::RDORTPResType* >& rtp_list = parser->getRTPResType(); 
+			const std::vector< rdoParse::RDORTPResType* >& rtp_list = parser->getRTPResTypes(); 
 			std::vector< rdoParse::RDORTPResType* >::const_iterator rtp_it = rtp_list.begin();
 			while ( rtp_it != rtp_list.end() ) {
 				const std::vector< const rdoParse::RDORTPParam* >& param_list = (*rtp_it)->getParams();
 				std::vector< const rdoParse::RDORTPParam* >::const_iterator param_it = param_list.begin();
 				while ( param_it != param_list.end() ) {
-					data->result += (*param_it)->getName() + ' ';
+					data->result += (*param_it)->name() + ' ';
 					param_it++;
 				}
 				rtp_it++;

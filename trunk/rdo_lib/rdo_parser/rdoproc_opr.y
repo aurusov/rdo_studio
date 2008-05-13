@@ -204,8 +204,8 @@ dptrtp_main:
 dpt_process:		dpt_process_begin dpt_process_input;
 
 dpt_process_begin:	RDO_Process {
-						RDOPROCProcess* proc = PARSER->getLastDPTProcess();
-						if ( proc && !proc->isend() ) {
+						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
+						if ( proc && !proc->closed() ) {
 							PARSER->error( "Íåçàêğûò ïğåäûäóùèé áëîê $Process" );
 						}
 						proc = new RDOPROCProcess( PARSER, "Process" );
@@ -219,18 +219,18 @@ dpt_process_line:	RDO_IDENTIF	{
 						PARSER->error( rdo::format("Íåèçâåñòíûé îïåğàòîğ '%s'", ((std::string *)$1)->c_str()) );
 					}
 					| RDO_GENERATE fun_arithm {
-						RDOPROCGenerate* generate = new RDOPROCGenerate( PARSER->getLastDPTProcess(), "GENERATE", ((RDOFUNArithm*)$2)->createCalc() );
+						RDOPROCGenerate* generate = new RDOPROCGenerate( PARSER->getLastPROCProcess(), "GENERATE", ((RDOFUNArithm*)$2)->createCalc() );
 						$$ = int(generate);
 					}
 					| RDO_GENERATE error {
 						PARSER->error( @2, "Îøèáêà â àğèôìåòè÷åñêîì âûğàæåíèè" )
 					}
 					| RDO_TERMINATE {
-						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastDPTProcess(), "TERMINATE" );
+						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE" );
 						$$ = int(terminate);
 					}
 					| RDO_ADVANCE fun_arithm {
-						RDOPROCAdvance* advance = new RDOPROCAdvance( PARSER->getLastDPTProcess(), "ADVANCE", ((RDOFUNArithm*)$2)->createCalc() );
+						RDOPROCAdvance* advance = new RDOPROCAdvance( PARSER->getLastPROCProcess(), "ADVANCE", ((RDOFUNArithm*)$2)->createCalc() );
 						$$ = int(advance);
 					}
 					| RDO_ADVANCE error {
@@ -240,16 +240,16 @@ dpt_process_line:	RDO_IDENTIF	{
 						PARSER->error( std::string(_T("Îæèäàåòñÿ èìÿ ğåñóğñà")).c_str() );
 					}
 					| RDO_SEIZE RDO_IDENTIF {
-						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastDPTProcess(), "SEIZE", *(std::string*)$2 );
+						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE", *(std::string*)$2 );
 						$$ = int(seize);
 					}
 					| RDO_RELEASE RDO_IDENTIF {
-						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastDPTProcess(), "RELEASE", *(std::string*)$2 );
+						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE", *(std::string*)$2 );
 						$$ = int(release);
 					};
 
 dpt_process_end:	dpt_process RDO_End	{
-						PARSER->getLastDPTProcess()->end();
+						PARSER->getLastPROCProcess()->end();
 					};
 
 // ----------------------------------------------------------------------------

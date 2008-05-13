@@ -127,7 +127,7 @@ void RDOSMR::setTerminateIf( RDOFUNLogic* logic )
 
 void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm )
 {
-	const RDOFUNConstant* const cons = parser()->findFUNConst( const_info.src_text() );
+	const RDOFUNConstant* const cons = parser()->findFUNConstant( const_info.src_text() );
 	if ( !cons ) {
 		parser()->error( const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()) );
 	}
@@ -161,7 +161,7 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 
 void RDOSMR::setSeed( const RDOParserSrcInfo& seq_info, int base )
 {
-	const RDOFUNSequence* seq = parser()->findSequence( seq_info.src_text() );
+	const RDOFUNSequence* seq = parser()->findFUNSequence( seq_info.src_text() );
 	if ( !seq ) {
 		parser()->error( seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()) );
 //		parser()->error( "Undefined sequence: " + seqName );

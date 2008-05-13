@@ -9,7 +9,9 @@
 #include <rdo_operation.h>
 #include <rdo_keyboard.h>
 #include <rdoprocess.h>
+#include <rdo_logic_dptfree.h>
 #include <rdo_logic_dptsome.h>
+#include <rdodptrtime.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -63,16 +65,6 @@ void proc_opr_error( char* mes )
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivity
 // ----------------------------------------------------------------------------
-RDODPTActivity::RDODPTActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	m_pattern( NULL ),
-	m_currParam( 0 ),
-	m_activity( NULL )
-{
-	init( _pattern_src_info );
-}
-
 RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
 	RDOParserObject( _parent ),
 	RDOParserSrcInfo( _src_info ),
@@ -80,13 +72,8 @@ RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserS
 	m_currParam( 0 ),
 	m_activity( NULL )
 {
-	init( _pattern_src_info );
-}
-
-void RDODPTActivity::init( const RDOParserSrcInfo& _pattern_src_info )
-{
 	parser()->checkActivityName( src_info() );
-	m_pattern = parser()->findPattern( _pattern_src_info.src_text() );
+	m_pattern = parser()->findPATPattern( _pattern_src_info.src_text() );
 	if ( !m_pattern ) {
 		parser()->error( _pattern_src_info, rdo::format("Не найден образец: %s", _pattern_src_info.src_text().c_str()) );
 	}
@@ -95,11 +82,11 @@ void RDODPTActivity::init( const RDOParserSrcInfo& _pattern_src_info )
 void RDODPTActivity::addParam( const std::string& _param, const YYLTYPE& _param_pos )
 {
 	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( _param_pos.first_line == src_pos().first_line ) {
+		if ( _param_pos.first_line == src_pos().m_first_line ) {
 			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
 			} else {
-				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
 			}
 			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
 			parser()->error_push_done();
@@ -120,7 +107,7 @@ void RDODPTActivity::addParam( const std::string& _param, const YYLTYPE& _param_
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( _param, _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %s", m_pattern->getName().c_str(), param->getName().c_str(), _param.c_str())) );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), param->name().c_str(), _param.c_str())) );
 	m_activity->addParamCalc( calc );
 	m_currParam++;
 }
@@ -129,9 +116,9 @@ void RDODPTActivity::addParam( int _param, const YYLTYPE& _param_pos )
 {
 	if ( m_pattern->params.size() <= m_currParam ) {
 		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
 		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
 		}
 		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
 		parser()->error_push_done();
@@ -145,7 +132,7 @@ void RDODPTActivity::addParam( int _param, const YYLTYPE& _param_pos )
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( _param, _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %d", m_pattern->getName().c_str(), param->getName().c_str(), _param)) );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %d", m_pattern->name().c_str(), param->name().c_str(), _param)) );
 	m_activity->addParamCalc( calc );
 	m_currParam++;
 }
@@ -154,9 +141,9 @@ void RDODPTActivity::addParam( double _param, const YYLTYPE& _param_pos )
 {
 	if ( m_pattern->params.size() <= m_currParam ) {
 		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
 		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
 		}
 		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
 		parser()->error_push_done();
@@ -170,7 +157,7 @@ void RDODPTActivity::addParam( double _param, const YYLTYPE& _param_pos )
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( _param, _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %f", m_pattern->getName().c_str(), param->getName().c_str(), _param)) );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %f", m_pattern->name().c_str(), param->name().c_str(), _param)) );
 	m_activity->addParamCalc( calc );
 	m_currParam++;
 }
@@ -179,9 +166,9 @@ void RDODPTActivity::addParam( const YYLTYPE& _param_pos )
 {
 	if ( m_pattern->params.size() <= m_currParam ) {
 		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
 		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->getName().c_str(), getName().c_str()) );
+			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
 		}
 		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
 		parser()->error_push_done();
@@ -194,7 +181,7 @@ void RDODPTActivity::addParam( const YYLTYPE& _param_pos )
 	}
 	rdoRuntime::RDOValue val = param->getType()->getDefaultValue( _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = *", m_pattern->getName().c_str(), param->getName().c_str())) );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = *", m_pattern->name().c_str(), param->name().c_str())) );
 	m_activity->addParamCalc( calc );
 	m_currParam++;
 }
@@ -206,7 +193,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 		parser()->error_push_only( _param_pos, rdo::format("Указаны не все параметра образца '%s':", m_pattern->src_text().c_str()) );
 		for ( unsigned int i = m_currParam; i < m_pattern->params.size(); i++ ) {
 			param = m_pattern->params.at( i );
-			parser()->error_push_only( param->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", param->getName().c_str(), param->getType()->src_text().c_str()) );
+			parser()->error_push_only( param->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", param->name().c_str(), param->getType()->src_text().c_str()) );
 		}
 		parser()->error_push_done();
 	}
@@ -222,145 +209,50 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
+// ---------- RDODPTActivityHotKey
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace ):
-	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	m_trace( trace )
+RDODPTActivityHotKey::RDODPTActivityHotKey( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivity( parent, _src_info, _pattern_src_info )
 {
-	parser()->checkDPTName( src_info() );
-	parser()->insertDPTSearch( this );
-}
-
-RDODPTSearchActivity* RDODPTSearch::addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info )
-{
-	RDODPTSearchActivity* activity = new RDODPTSearchActivity( this, _activity_src_info, _pattern_src_info );
-	activities.push_back( activity );
-	return activity;
-}
-
-void RDODPTSearch::end()
-{
-	rdoRuntime::RDOCalc* condCalc = conditon ? conditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
-	rdoRuntime::RDOCalc* termCalc = termConditon ? termConditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
-
-	rdoRuntime::RDODPTSearchRuntime* dpt = new rdoRuntime::RDODPTSearchRuntime( parser()->runtime(),
-		condCalc,
-		termCalc,
-		evalBy->createCalc(),
-		compTops );
-
-	dpt->traceFlag = m_trace;
-
-	int size = activities.size();
-	for ( int i = 0; i < size; i++ ) {
-		RDODPTSearchActivity* activity = activities.at(i);
-		rdoRuntime::RDOSearchActivityRuntime* act = new rdoRuntime::RDOSearchActivityRuntime(
-			dynamic_cast<rdoRuntime::RDORule*>(activity->getActivity()),
-			activity->getValue(),
-			activity->getRuleCost()->createCalc());
-		dpt->addActivity( act );
-	}
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearchActivity
-// ----------------------------------------------------------------------------
-RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivity( _parent, _src_info, _pattern_src_info ),
-	value( rdoRuntime::RDODPTSearch::Activity::vt_before ),
-	ruleCost( NULL )
-{
-	if ( m_pattern->getType() != RDOPATPattern::PT_Rule ) {
-		parser()->error_push_only( src_info(), "Только продукционные правила могут быть использованы в точке принятия решений типа search" );
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
-	}
-	for ( std::vector< RDORelevantResource* >::const_iterator i = m_pattern->rel_res_begin(); i != m_pattern->rel_res_end(); i++ ) {
-		if ( ((*i)->begin == rdoRuntime::RDOResource::CS_Create) || ((*i)->begin == rdoRuntime::RDOResource::CS_Erase) ) {
-			parser()->error_push_only( src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()) );
-			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-			parser()->error_push_only( (*i)->src_info(), "См. релевантный ресурс" );
-			parser()->error_push_done();
-//			parser()->error( "Rule: " + getName() + " Cannot be used in search activity because of bad converter status" );
+	switch ( pattern()->getType() )
+	{
+		case RDOPATPattern::PT_IE:
+		{
+			m_activity = static_cast<rdoRuntime::RDOPatternIrregEvent*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
+			break;
 		}
-	}
-	m_activity = new rdoRuntime::RDORule( parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(m_pattern->getPatRuntime()), true, getName() );
-}
-
-void RDODPTSearchActivity::setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos )
-{
-	endParam( _param_pos );
-	value    = _value;
-	ruleCost = _ruleCost;
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSome
-// ----------------------------------------------------------------------------
-RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
-	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	m_dpt( NULL )
-{
-	parser()->checkDPTName( src_info() );
-	m_dpt = new rdoRuntime::RDODPTSome( parser()->runtime() );
-	parser()->insertDPTSome( this );
-}
-
-RDODPTSomeActivity* RDODPTSome::addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info )
-{
-	RDODPTSomeActivity* activity = new RDODPTSomeActivity( this, _activity_src_info, _pattern_src_info );
-	m_activities.push_back( activity );
-	return activity;
-}
-
-void RDODPTSome::end()
-{
-	if ( getConditon() )
-	{
-		m_dpt->setCondition( getConditon()->createCalc() );
-	}
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSomeActivity
-// ----------------------------------------------------------------------------
-RDODPTSomeActivity::RDODPTSomeActivity( const RDODPTSome* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivity( _parent, _src_info, _pattern_src_info )
-{
-	switch ( m_pattern->getType() )
-	{
 		case RDOPATPattern::PT_Rule:
 		{
-			m_activity = static_cast<rdoRuntime::RDOPatternRule*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
+			m_activity = static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
 			break;
 		}
 		case RDOPATPattern::PT_Operation:
 		{
-			m_activity = static_cast<rdoRuntime::RDOPatternOperation*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
+			m_activity = static_cast<rdoRuntime::RDOPatternOperation*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
+			break;
+		}
+		case RDOPATPattern::PT_Keyboard:
+		{
+			m_activity = static_cast<rdoRuntime::RDOPatternKeyboard*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
 			break;
 		}
 		default:
 		{
-			parser()->error_push_only( src_info(), "Только продукционные правила и операции могут быть использованы в точке типа some" );
-			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
+			parser()->error_push_only( src_info(), "Неизвестный тип образца" );
+			parser()->error_push_only( pattern()->src_info(), "См. образец" );
 			parser()->error_push_done();
 		}
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTActivityHotKey
-// ----------------------------------------------------------------------------
-RDODPTActivityHotKey::RDODPTActivityHotKey( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivity( _parser, _src_info, _pattern_src_info )
-{
-}
-
 void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos )
 {
+	if ( pattern()->getType() != RDOPATPattern::PT_Keyboard )
+	{
+		parser()->error_push_only( hotkey_pos, "Горячие клавиши используются только в клавиатурных операциях" );
+		parser()->error_push_only( pattern()->src_info(), "См. образец" );
+		parser()->error_push_done();
+	}
 	switch ( static_cast<rdoRuntime::RDOKeyboard*>(m_activity)->addHotKey( parser()->runtime(), hotKey ) ) {
 		case rdoRuntime::RDOKeyboard::addhk_ok      : {
 			break;
@@ -379,7 +271,7 @@ void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& 
 		}
 		case rdoRuntime::RDOKeyboard::addhk_dont    : {
 			parser()->error_push_only( src_info(), rdo::format("Операция '%s' не является клавиатурной", src_text().c_str()) );
-			parser()->error_push_only( getType()->src_info(), "См. образец" );
+			parser()->error_push_only( pattern()->src_info(), "См. образец" );
 			parser()->error_push_done();
 			break;
 		}
@@ -392,58 +284,146 @@ void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTFreeActivity
 // ----------------------------------------------------------------------------
-RDODPTFreeActivity::RDODPTFreeActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivityHotKey( _parser, _src_info, _pattern_src_info )
+RDODPTFreeActivity::RDODPTFreeActivity( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( parent, _src_info, _pattern_src_info )
 {
-	switch ( m_pattern->getType() )
+	parser()->insertDPTFreeActivity( this );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTFree
+// ----------------------------------------------------------------------------
+RDODPTFree::RDODPTFree( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+	RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>( _parser, _src_info )
+{
+	parser()->checkDPTName( src_info() );
+	m_rt_logic = new rdoRuntime::RDODPTFree( parser()->runtime() );
+	parser()->insertDPTFree( this );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSomeActivity
+// ----------------------------------------------------------------------------
+RDODPTSomeActivity::RDODPTSomeActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( _parent, _src_info, _pattern_src_info )
+{
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSome
+// ----------------------------------------------------------------------------
+RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+	RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>( _parser, _src_info )
+{
+	parser()->checkDPTName( src_info() );
+	m_rt_logic = new rdoRuntime::RDODPTSome( parser()->runtime() );
+	parser()->insertDPTSome( this );
+}
+
+void RDODPTSome::end()
+{
+	if ( getConditon() )
 	{
-		case RDOPATPattern::PT_IE:
-		{
-			m_activity = static_cast<rdoRuntime::RDOPatternIrregEvent*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
-			break;
-		}
-		case RDOPATPattern::PT_Keyboard:
-		{
-			m_activity = static_cast<rdoRuntime::RDOPatternKeyboard*>(m_pattern->getPatRuntime())->createActivity( parser()->runtime(), getName() );
-			break;
-		}
-		default:
-		{
-			parser()->error_push_only( src_info(), "Только нерегулярные события и клавиатурные операции могут быть использованы в списке свободных активностей" );
-			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
+		m_rt_logic->setCondition( getConditon()->createCalc() );
+	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSearchActivity
+// ----------------------------------------------------------------------------
+RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivity( _parent, _src_info, _pattern_src_info ),
+	m_value( rdoRuntime::RDODPTSearch::Activity::vt_before ),
+	m_ruleCost( NULL )
+{
+	if ( pattern()->getType() != RDOPATPattern::PT_Rule ) {
+		parser()->error_push_only( src_info(), "Только продукционные правила могут быть использованы в точке принятия решений типа search" );
+		parser()->error_push_only( pattern()->src_info(), "См. образец" );
+		parser()->error_push_done();
+	}
+	for ( std::vector< RDORelevantResource* >::const_iterator i = pattern()->rel_res_begin(); i != pattern()->rel_res_end(); i++ ) {
+		if ( ((*i)->begin == rdoRuntime::RDOResource::CS_Create) || ((*i)->begin == rdoRuntime::RDOResource::CS_Erase) ) {
+			parser()->error_push_only( src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()) );
+			parser()->error_push_only( pattern()->src_info(), "См. образец" );
+			parser()->error_push_only( (*i)->src_info(), "См. релевантный ресурс" );
 			parser()->error_push_done();
+//			parser()->error( "Rule: " + name() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
-	parser()->insertDPTFreeActivity( this );
+	m_activity = new rdoRuntime::RDORule( parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime()), true, name() );
+}
+
+void RDODPTSearchActivity::setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos )
+{
+	endParam( _param_pos );
+	m_value    = value;
+	m_ruleCost = ruleCost;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSearch
+// ----------------------------------------------------------------------------
+RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace ):
+	RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>( _parser, _src_info ),
+	m_trace( trace ),
+	m_closed( false )
+{
+	parser()->checkDPTName( src_info() );
+	parser()->insertDPTSearch( this );
+}
+
+void RDODPTSearch::end()
+{
+	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+
+	m_rt_logic = new rdoRuntime::RDODPTSearchRuntime( parser()->runtime(),
+		condCalc,
+		termCalc,
+		m_evalBy->createCalc(),
+		m_compTops );
+
+	m_rt_logic->traceFlag = m_trace;
+
+	int size = getActivities().size();
+	for ( int i = 0; i < size; i++ ) {
+		const RDODPTSearchActivity* activity = getActivities().at(i);
+		rdoRuntime::RDOSearchActivityRuntime* act = new rdoRuntime::RDOSearchActivityRuntime(
+			dynamic_cast<rdoRuntime::RDORule*>(activity->activity()),
+			activity->getValue(),
+			activity->getRuleCost()->createCalc());
+		m_rt_logic->addActivity( act );
+	}
+	m_closed = true;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-std::string RDOPROCProcess::name_prefix = "";
-std::string RDOPROCProcess::name_sufix  = "s";
+std::string RDOPROCProcess::s_name_prefix = "";
+std::string RDOPROCProcess::s_name_sufix  = "s";
 
-RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& _name ):
+RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& name ):
 	RDOParserObject( _parser ),
-	name( _name ),
-	m_end( false ),
-	parent( NULL ),
-	runtime( NULL )
+	m_name( name ),
+	m_closed( false ),
+	m_parent( NULL ),
+	m_runtime( NULL )
 {
-	parser()->insertDPTProcess( this );
-	runtime = new rdoRuntime::RDOPROCProcess( name, parser()->runtime() );
+	parser()->insertPROCProcess( this );
+	m_runtime = new rdoRuntime::RDOPROCProcess( m_name, parser()->runtime() );
 }
 
 void RDOPROCProcess::end()
 {
-	m_end = true;
+	m_closed = true;
 }
 
 void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 {
 	if ( value ) {
-		child.push_back( value );
-		value->parent = this;
+		m_child.push_back( value );
+		value->m_parent = this;
 	}
 }
 
@@ -455,7 +435,7 @@ RDOPROCOperator::RDOPROCOperator( RDOPROCProcess* _process, const std::string& _
 	name( _name ),
 	process( _process )
 {
-	process->operations.push_back( this );
+	process->m_operations.push_back( this );
 }
 
 // ----------------------------------------------------------------------------
@@ -465,7 +445,7 @@ RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _
 	RDOPROCOperator( _process, _name ),
 	runtime( NULL )
 {
-	runtime = new rdoRuntime::RDOPROCGenerate( parser()->getLastDPTProcess()->getRunTime(), time );
+	runtime = new rdoRuntime::RDOPROCGenerate( parser()->getLastPROCProcess()->getRunTime(), time );
 }
 
 // ----------------------------------------------------------------------------
@@ -476,7 +456,7 @@ RDOPROCSeize::RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, 
 {
 	const RDORSSResource* rss = parser()->findRSSResource( res_name );
 	if ( rss ) {
-		runtime = new rdoRuntime::RDOPROCSeize( parser()->getLastDPTProcess()->getRunTime(), rss->getNumber() );
+		runtime = new rdoRuntime::RDOPROCSeize( parser()->getLastPROCProcess()->getRunTime(), rss->getNumber() );
 	} else {
 		parser()->error( "Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс" );
 	}
@@ -490,7 +470,7 @@ RDOPROCRelease::RDOPROCRelease( RDOPROCProcess* _process, const std::string& _na
 {
 	const RDORSSResource* rss = parser()->findRSSResource( res_name );
 	if ( rss ) {
-		runtime = new rdoRuntime::RDOPROCRelease( parser()->getLastDPTProcess()->getRunTime(), rss->getNumber() );
+		runtime = new rdoRuntime::RDOPROCRelease( parser()->getLastPROCProcess()->getRunTime(), rss->getNumber() );
 	} else {
 		// error: не нашли parser-ресурс
 	}
@@ -502,7 +482,7 @@ RDOPROCRelease::RDOPROCRelease( RDOPROCProcess* _process, const std::string& _na
 RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time ):
 	RDOPROCOperator( _process, _name )
 {
-	runtime = new rdoRuntime::RDOPROCAdvance( parser()->getLastDPTProcess()->getRunTime(), time );
+	runtime = new rdoRuntime::RDOPROCAdvance( parser()->getLastPROCProcess()->getRunTime(), time );
 }
 
 // ----------------------------------------------------------------------------
@@ -511,7 +491,7 @@ RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _na
 RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name ):
 	RDOPROCOperator( _process, _name )
 {
-	runtime = new rdoRuntime::RDOPROCTerminate( parser()->getLastDPTProcess()->getRunTime() );
+	runtime = new rdoRuntime::RDOPROCTerminate( parser()->getLastPROCProcess()->getRunTime() );
 }
 
 } // namespace rdoParse

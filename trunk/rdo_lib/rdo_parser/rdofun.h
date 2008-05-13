@@ -146,7 +146,7 @@ class RDOFUNConstant: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	RDOFUNConstant( RDOParser* _parser, RDOFUNConst* _const );
-	const std::string&           getName() const   { return m_const->getName(); }
+	const std::string&           name() const      { return m_const->name();    }
 	const RDORTPParamType* const getType() const   { return m_const->getType(); }
 	const RDOFUNConst* const     getDescr() const  { return m_const;            }
 	int                          getNumber() const { return m_number;           }
@@ -219,7 +219,7 @@ protected:
 	void initCalcSrcInfo();
 
 public:
-	const std::string& getName() const  { return header->src_text(); }
+	const std::string& name() const  { return header->src_text(); }
 	virtual void createCalcs() = 0;
 	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const = 0;
 };
@@ -434,7 +434,7 @@ public:
 		type( _type )
 	{
 	}
-	const std::string& getName() const           { return src_info().src_text(); }
+	const std::string& name() const              { return src_info().src_text(); }
 	const RDORTPParamType* const getType() const { return type;                  }
 };
 
@@ -543,7 +543,7 @@ public:
 	void createListCalc();
 	void createTableCalc( const YYLTYPE& _elements_pos );
 	void createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_info );
-	const std::string& getName() const                                { return src_info().src_text(); }
+	const std::string& name() const                                   { return src_info().src_text(); }
 	const std::vector< const RDOFUNFunctionParam* > getParams() const { return params;                }
 
 	void setFunctionCalc( rdoRuntime::RDOFunCalc* calc );

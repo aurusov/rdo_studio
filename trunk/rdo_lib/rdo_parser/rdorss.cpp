@@ -39,10 +39,9 @@ RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src
 	currParam = resType->getParams().begin();
 }
 
-int RDORSSResource::writeModelStructure()
+void RDORSSResource::writeModelStructure( std::ostream& stream ) const
 {
-	parser()->modelStructure << (number + 1) << " " << getName() << " " << getType()->getNumber() << std::endl;
-	return 0;
+	stream << (number + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
 rdoRuntime::RDOCalc* RDORSSResource::createCalc()

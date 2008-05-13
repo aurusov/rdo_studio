@@ -237,7 +237,7 @@ pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
 				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
 				pattern->add( param );
 				if ( param_type->getType() == rdoRuntime::RDOValue::rvt_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->getName().c_str(), param_name.c_str() );
+					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name.c_str() );
 				}
 			}
 			| pat_params RDO_IDENTIF_COLON param_type {
@@ -247,7 +247,7 @@ pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
 				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
 				pattern->add( param );
 				if ( param_type->getType() == rdoRuntime::RDOValue::rvt_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->getName().c_str(), param_name.c_str() );
+					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name.c_str() );
 				}
 			}
 			| pat_params_begin error {
@@ -913,19 +913,19 @@ pat_convert:	pat_res_usage {
 					}
 					if ( rel_res->begin != rdoRuntime::RDOResource::CS_NoChange && rel_res->begin != rdoRuntime::RDOResource::CS_Erase && rel_res->begin != rdoRuntime::RDOResource::CS_NonExist ) {
 						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
-							case RDOPATPattern::PT_Rule     : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
+							case RDOPATPattern::PT_IE       : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
+							case RDOPATPattern::PT_Rule     : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
 						}
-//						PARSER->error( "Converter needed for \"" + *rel_res->getName() + "\" relevant resource in pattern \"" + getName() + "\"" );
+//						PARSER->error( "Converter needed for \"" + *rel_res->name() + "\" relevant resource in pattern \"" + getName() + "\"" );
 					}
 					if ( rel_res->end != rdoRuntime::RDOResource::CS_NoChange && rel_res->end != rdoRuntime::RDOResource::CS_Erase && rel_res->end != rdoRuntime::RDOResource::CS_NonExist ) {
 						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : PARSER->error( @1, "Внутренняя ошибка" ); break;
 							case RDOPATPattern::PT_Rule     : PARSER->error( @1, "Внутренняя ошибка" ); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error( @1, rdo::format("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
 						}
 					}
 				}
@@ -937,7 +937,7 @@ pat_convert:	pat_res_usage {
 							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 						}
-						PARSER->error( @2, rdo::format("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->getName().c_str()) );
+						PARSER->error( @2, rdo::format("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
 					}
 					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
 					par_set->setSrcPos( @4 );
@@ -951,7 +951,7 @@ pat_convert:	pat_res_usage {
 							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 						}
-						PARSER->error( @3, rdo::format("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->getName().c_str()) );
+						PARSER->error( @3, rdo::format("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
 					}
 					pattern->currRelRes->deleteParamSetBegin();
 					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($5);
@@ -966,7 +966,7 @@ pat_convert:	pat_res_usage {
 							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 						}
-						PARSER->error( @2, rdo::format("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->getName().c_str()) );
+						PARSER->error( @2, rdo::format("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
 					}
 					RDOPATParamSet* par_set_begin = reinterpret_cast<RDOPATParamSet*>($4);
 					par_set_begin->setSrcPos( @4 );
@@ -983,7 +983,7 @@ pat_convert:	pat_res_usage {
 							case RDOPATPattern::PT_Operation: type = "операции"; break;
 							case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;
 						}
-						PARSER->error( @2, rdo::format("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'", type.c_str(), pattern->getName().c_str()) );
+						PARSER->error( @2, rdo::format("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
 					}
 					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
 					par_set->setSrcPos( @4 );
@@ -998,7 +998,7 @@ pat_convert:	pat_res_usage {
 							case RDOPATPattern::PT_Operation: type = "операции"; break;
 							case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;
 						}
-						PARSER->error( @2, rdo::format("Ключевое слово Convert_event может быть использовано в нерегулярном событии, но не в %s '%s'", type.c_str(), pattern->getName().c_str()) );
+						PARSER->error( @2, rdo::format("Ключевое слово Convert_event может быть использовано в нерегулярном событии, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
 					}
 					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
 					par_set->setSrcPos( @4 );
@@ -1083,25 +1083,25 @@ param_type:		RDO_integer param_int_diap param_int_default_val {
 				| param_such_as {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( src_info );
 				}
 				| param_such_as '=' RDO_INT_CONST {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( (int)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' RDO_REAL_CONST {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( *(double*)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' RDO_IDENTIF {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( *(std::string*)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' error {
@@ -1338,7 +1338,7 @@ param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 				}
 				| RDO_such_as RDO_IDENTIF {
 					std::string constName = *reinterpret_cast<std::string*>($2);
-					const RDOFUNConstant* const cons = PARSER->findFUNConst( constName );
+					const RDOFUNConstant* const cons = PARSER->findFUNConstant( constName );
 					if ( !cons ) {
 						PARSER->error( @2, rdo::format("Ссылка на несуществующую константу: %s", constName.c_str()) );
 					}

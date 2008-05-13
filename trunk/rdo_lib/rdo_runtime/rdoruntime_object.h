@@ -36,30 +36,34 @@ namespace rdoRuntime {
 class RDOException
 {
 public:
-	std::string mess;
+	RDOException( const std::string& message ): m_message( message ) {}
 	virtual std::string getType() const = 0;
-	RDOException( const std::string& str ): mess( str ) {}
+	
+	const std::string& message() const { return m_message; }
+
+private:
+	std::string m_message;
 };
 
 class RDORuntimeException: public RDOException
 {
 public:
-	std::string getType() const { return "RDO Runtime Error"; }
-	RDORuntimeException( const std::string& str ): RDOException( str ) {}
+	RDORuntimeException( const std::string& message ): RDOException( message ) {}
+	virtual std::string getType() const { return "RDO Runtime Error"; }
 };
 
 class RDORuntimeRDOValue: public RDOException
 {
 public:
-	std::string getType() const { return "RDOValue Error"; }
-	RDORuntimeRDOValue( const std::string& str ): RDOException( str ) {}
+	RDORuntimeRDOValue( const std::string& message ): RDOException( message ) {}
+	virtual std::string getType() const { return "RDOValue Error"; }
 };
 
 class RDOInternalException: public RDORuntimeException
 {
 public:
-	std::string getType() const { return "RDO Internal Error"; }
-	RDOInternalException( const std::string& str ): RDORuntimeException( str ) {}
+	RDOInternalException( const std::string& message ): RDORuntimeException( message ) {}
+	virtual std::string getType() const { return "RDO Internal Error"; }
 };
 
 // ----------------------------------------------------------------------------
@@ -165,83 +169,82 @@ class RDOSrcInfo
 {
 public:
 	struct Position {
-		int first_line;
-		int first_pos;
-		int last_line;
-		int last_pos;
+		int m_first_line;
+		int m_first_pos;
+		int m_last_line;
+		int m_last_pos;
 		Position::Position():
-			first_line( -1 ),
-			first_pos( -1 ),
-			last_line( -1 ),
-			last_pos( -1 )
+			m_first_line( -1 ),
+			m_first_pos( -1 ),
+			m_last_line( -1 ),
+			m_last_pos( -1 )
 		{
 		}
-		Position::Position( int _first_line, int _first_pos, int _last_line, int _last_pos ):
-			first_line( _first_line ),
-			first_pos( _first_pos ),
-			last_line( _last_line ),
-			last_pos( _last_pos )
+		Position::Position( int first_line, int first_pos, int last_line, int last_pos ):
+			m_first_line( first_line ),
+			m_first_pos( first_pos ),
+			m_last_line( last_line ),
+			m_last_pos( last_pos )
 		{
 		}
 		bool empty() const
 		{
-			return first_line == -1 && first_pos == -1 && last_line == -1 && last_pos == -1;
+			return m_first_line == -1 && m_first_pos == -1 && m_last_line == -1 && m_last_pos == -1;
 		}
 	};
 
-private:
-	Position                     position;
-	std::string                  text_data;
-	rdoModelObjects::RDOFileType file_type;
-
-public:
 	RDOSrcInfo():
-		text_data( "" ),
-		file_type( rdoModelObjects::TRC )
+		m_text_data( "" ),
+		m_file_type( rdoModelObjects::TRC )
 	{
 	}
-	void setSrcInfo( const RDOSrcInfo& _info ) {
-		setSrcPos( _info.position );
-		setSrcText( _info.text_data );
-		setSrcFileType( _info.file_type );
+	void setSrcInfo( const RDOSrcInfo& info ) {
+		setSrcPos( info.m_position );
+		setSrcText( info.m_text_data );
+		setSrcFileType( info.m_file_type );
 	}
 	void setSrcInfo( const RDOSrcInfo& begin, const std::string& delim, const RDOSrcInfo& end ) {
-		setSrcPos( begin.src_pos().first_line, begin.src_pos().first_pos, end.src_pos().last_line, end.src_pos().last_pos );
+		setSrcPos( begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos );
 		setSrcText( begin.src_text() + delim + end.src_text() );
 		setSrcFileType( begin.src_filetype() );
 	}
-	void setSrcPos( const Position& _position ) {
-		position.first_line = _position.first_line;
-		position.first_pos  = _position.first_pos;
-		position.last_line  = _position.last_line;
-		position.last_pos   = _position.last_pos;
+	void setSrcPos( const Position& position ) {
+		m_position.m_first_line = position.m_first_line;
+		m_position.m_first_pos  = position.m_first_pos;
+		m_position.m_last_line  = position.m_last_line;
+		m_position.m_last_pos   = position.m_last_pos;
 	}
-	void setSrcPos( const Position& _position_begin, const Position& _position_end ) {
-		position.first_line = _position_begin.first_line;
-		position.first_pos  = _position_begin.first_pos;
-		position.last_line  = _position_end.last_line;
-		position.last_pos   = _position_end.last_pos;
+	void setSrcPos( const Position& position_begin, const Position& position_end ) {
+		m_position.m_first_line = position_begin.m_first_line;
+		m_position.m_first_pos  = position_begin.m_first_pos;
+		m_position.m_last_line  = position_end.m_last_line;
+		m_position.m_last_pos   = position_end.m_last_pos;
 	}
 	void setSrcPos( int first_line, int first_pos, int last_line, int last_pos ) {
-		position.first_line = first_line;
-		position.first_pos  = first_pos;
-		position.last_line  = last_line;
-		position.last_pos   = last_pos;
+		m_position.m_first_line = first_line;
+		m_position.m_first_pos  = first_pos;
+		m_position.m_last_line  = last_line;
+		m_position.m_last_pos   = last_pos;
 	}
 	virtual void setSrcText( const std::string& value ) {
-		text_data = value;
+		m_text_data = value;
 	}
 	void setSrcFileType( rdoModelObjects::RDOFileType value ) {
-		file_type = value;
+		m_file_type = value;
 	}
-	const RDOSrcInfo&                  src_info() const     { return *this;     }
-	const Position&                    src_pos()  const     { return position;  }
-	const std::string&                 src_text() const     { return text_data; }
-	const rdoModelObjects::RDOFileType src_filetype() const { return file_type; }
+	const RDOSrcInfo&                  src_info() const     { return *this;       }
+	const Position&                    src_pos()  const     { return m_position;  }
+	const std::string&                 src_text() const     { return m_text_data; }
+	const rdoModelObjects::RDOFileType src_filetype() const { return m_file_type; }
 	bool                               src_empty() const
 	{
-		return position.empty() && text_data.empty() && file_type == rdoModelObjects::TRC;
+		return m_position.empty() && m_text_data.empty() && m_file_type == rdoModelObjects::TRC;
 	}
+
+private:
+	Position                     m_position;
+	std::string                  m_text_data;
+	rdoModelObjects::RDOFileType m_file_type;
 };
 
 // ----------------------------------------------------------------------------

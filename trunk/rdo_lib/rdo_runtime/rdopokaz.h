@@ -16,7 +16,7 @@ public:
 	virtual ~RDOPMDPokaz() {}
 	virtual bool checkResourceErased(RDOResource *res) { return false; }
 	virtual void writePokazStructure( std::ostream& stream ) const = 0;
-	const std::string& getName() const { return m_name; }
+	const std::string& name() const { return m_name; }
 
 protected:
 	std::string m_name;

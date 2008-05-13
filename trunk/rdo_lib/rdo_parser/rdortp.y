@@ -193,7 +193,7 @@ rtp_list:	/* empty */
 rtp_res_type:	rtp_res_type_hdr RDO_Parameters rtp_body RDO_End {
 					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
 					if ( $3 == 0 ) {
-						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->getName().c_str() ) );
+						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
 					}
 				}
 				| rtp_res_type_hdr RDO_Parameters rtp_body {
@@ -242,7 +242,7 @@ rtp_param: RDO_IDENTIF_COLON param_type {
 					RDORTPParam* param = new RDORTPParam( PARSER->getLastRTPResType(), par_src_info, parType );
 					parType->reparent( param );
 					if ( parType->getType() == rdoRuntime::RDOValue::rvt_enum ) {
-						static_cast<RDORTPEnumParamType*>(parType)->enum_name = rdo::format( "%s.%s", PARSER->getLastRTPResType()->getName().c_str(), par_src_info.src_text().c_str() );
+						static_cast<RDORTPEnumParamType*>(parType)->enum_name = rdo::format( "%s.%s", PARSER->getLastRTPResType()->name().c_str(), par_src_info.src_text().c_str() );
 					}
 					$$ = (int)param;
 				}
@@ -286,25 +286,25 @@ param_type:		RDO_integer param_int_diap param_int_default_val {
 				| param_such_as {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( src_info );
 				}
 				| param_such_as '=' RDO_INT_CONST {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( (int)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' RDO_REAL_CONST {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( *(double*)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' RDO_IDENTIF {
 					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
 					$$ = (int)param->getType()->constructSuchAs( *(std::string*)$3, src_info, RDOParserSrcInfo( @3 ) );
 				}
 				| param_such_as '=' error {
@@ -541,7 +541,7 @@ param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 				}
 				| RDO_such_as RDO_IDENTIF {
 					std::string constName = *reinterpret_cast<std::string*>($2);
-					const RDOFUNConstant* const cons = PARSER->findFUNConst( constName );
+					const RDOFUNConstant* const cons = PARSER->findFUNConstant( constName );
 					if ( !cons ) {
 						PARSER->error( @2, rdo::format("Ссылка на несуществующую константу: %s", constName.c_str()) );
 					}

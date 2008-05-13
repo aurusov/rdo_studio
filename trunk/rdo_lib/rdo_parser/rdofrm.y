@@ -178,7 +178,6 @@ static char THIS_FILE[] = __FILE__;
 #include "rdopat.h"
 #include "rdoopr.h"
 #include "rdodpt.h"
-#include <rdoframe.h>
 #include <rdocalc.h>
 
 #define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
@@ -213,26 +212,22 @@ frm_main:	/* empty */
 // ---------- Фрейм
 // ----------------------------------------------------------------------------
 frm_begin:			RDO_Frame RDO_IDENTIF {
-						rdoRuntime::RDOFRMFrame* frame = new rdoRuntime::RDOFRMFrame( RUNTIME, RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)).src_info() );
-						PARSER->insertFRMFrame( frame );
-						$$ = (int)frame;
+						$$ = (int)new RDOFRMFrame( PARSER, RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)).src_info() );;
 					}
 					| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic {
-						rdoRuntime::RDOFRMFrame* frame = new rdoRuntime::RDOFRMFrame( RUNTIME, RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)).src_info(), ((RDOFUNLogic *)$4)->createCalc() );
-						PARSER->insertFRMFrame( frame );
-						$$ = (int)frame;
+						$$ = (int)new RDOFRMFrame( PARSER, RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)).src_info(), reinterpret_cast<RDOFUNLogic*>($4) );;
 					}
 					| RDO_Frame RDO_IDENTIF RDO_Show_if error {
 						PARSER->error( @4, "Ошибка в логическом выражении" )
 					};
 
 frm_background:		frm_begin RDO_Back_picture '=' frm_color {
-						rdoRuntime::RDOFRMFrame* frame                 = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
+						RDOFRMFrame* frame                             = reinterpret_cast<RDOFRMFrame*>($1);
 						rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMColor*>($4);
 						if ( bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent && bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_rgb ) {
 							PARSER->error( @4, "Цвет фона не может быть указан ссылкой на последнее значение" );
 						}
-						frame->setBackgroundColor( bg_color );
+						frame->frame()->setBackgroundColor( bg_color );
 					}
 					| frm_begin RDO_Back_picture '=' {
 					}
@@ -244,12 +239,12 @@ frm_background:		frm_begin RDO_Back_picture '=' frm_color {
 					};
 
 frm_backpicture:	frm_background RDO_IDENTIF {
-						rdoRuntime::RDOFRMFrame* frame = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
-						frame->setBackPicture( *reinterpret_cast<std::string*>($2) );
+						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
+						frame->frame()->setBackPicture( *reinterpret_cast<std::string*>($2) );
 					}
 					| frm_background RDO_INT_CONST RDO_INT_CONST {
-						rdoRuntime::RDOFRMFrame* frame = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
-						frame->setBackPicture( $2, $3 );
+						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
+						frame->frame()->setBackPicture( $2, $3 );
 					}
 					| frm_background RDO_INT_CONST RDO_INT_CONST error {
 						PARSER->error( @4, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
@@ -266,15 +261,15 @@ frm_backpicture:	frm_background RDO_IDENTIF {
 
 /*
 frm_show:			frm_backpicture {
-						rdoRuntime::RDOFRMFrame* frame = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
+						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
 						frame->startShow();
 					}
 					| frm_backpicture RDO_Show {
-						rdoRuntime::RDOFRMFrame* frame = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
+						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
 						frame->startShow();
 					}
 					| frm_backpicture RDO_Show_if fun_logic {
-						rdoRuntime::RDOFRMFrame* frame = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
+						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
 						frame->startShow( reinterpret_cast<RDOFUNLogic*>($3)->calc );
 					}
 					| frm_backpicture RDO_Show_if error {
@@ -283,12 +278,12 @@ frm_show:			frm_backpicture {
 */
 
 frm_show:	RDO_Show {
-				rdoRuntime::RDOFRMFrame* frame = PARSER->getLastFRMFrame();
-				frame->startShow();
+				RDOFRMFrame* frame = PARSER->getLastFRMFrame();
+				frame->frame()->startShow();
 			}
 			| RDO_Show_if fun_logic {
-				rdoRuntime::RDOFRMFrame* frame = PARSER->getLastFRMFrame();
-				frame->startShow( reinterpret_cast<RDOFUNLogic*>($2)->createCalc() );
+				RDOFRMFrame* frame = PARSER->getLastFRMFrame();
+				frame->frame()->startShow( reinterpret_cast<RDOFUNLogic*>($2)->createCalc() );
 			}
 			| RDO_Show_if error {
 				PARSER->error( @2, "Ошибка в логическом выражении" )
@@ -296,22 +291,21 @@ frm_show:	RDO_Show {
 
 frm_item:	/* empty */
 			| frm_item frm_show
-			| frm_item frm_text    { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMText *)$2); }
-			| frm_item frm_bitmap  { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMBitmap *)$2); }
-			| frm_item frm_rect    { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMRect *)$2); }
-			| frm_item frm_line    { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMLine *)$2); }
-			| frm_item frm_ellipse { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMEllipse *)$2); }
-			| frm_item frm_r_rect  { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMRectRound *)$2); }
-			| frm_item frm_triang  { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMTriang *)$2); }
-			| frm_item frm_s_bmp   { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMBitmapStretch *)$2); }
-			| frm_item frm_active  { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMActive *)$2); }
-			| frm_item frm_ruler   { PARSER->getLastFRMFrame()->addRulet((rdoRuntime::RDOFRMFrame::RDOFRMRulet*)$2); }
-			| frm_item frm_space   { PARSER->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMSpace*)$2); };
+			| frm_item frm_text    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMText *)$2); }
+			| frm_item frm_bitmap  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMBitmap *)$2); }
+			| frm_item frm_rect    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMRect *)$2); }
+			| frm_item frm_line    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMLine *)$2); }
+			| frm_item frm_ellipse { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMEllipse *)$2); }
+			| frm_item frm_r_rect  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMRectRound *)$2); }
+			| frm_item frm_triang  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMTriang *)$2); }
+			| frm_item frm_s_bmp   { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMBitmapStretch *)$2); }
+			| frm_item frm_active  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMActive *)$2); }
+			| frm_item frm_ruler   { PARSER->getLastFRMFrame()->frame()->addRulet((rdoRuntime::RDOFRMFrame::RDOFRMRulet*)$2); }
+			| frm_item frm_space   { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMSpace*)$2); };
 
 frm_header:	frm_backpicture frm_item;
 
 frm_end:	frm_header RDO_End {
-				reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1)->end();
 			};
 
 // ----------------------------------------------------------------------------
@@ -1012,24 +1006,24 @@ frm_triang:	RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_
 
 frm_active:	RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']' {
 				std::string opr_name = *reinterpret_cast<std::string*>($2);
-				const RDOOPROperation* opr = PARSER->findOperation( opr_name );
+				const RDOOPROperation* opr = PARSER->findOPROperation( opr_name );
 				if ( !opr ) {
-					const RDODPTFreeActivity* activity = PARSER->findFreeActivity( opr_name );
+					const RDODPTFreeActivity* activity = PARSER->findDPTFreeActivity( opr_name );
 					if ( !activity ) {
 						PARSER->error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
 					} else {
-						if ( activity->getType()->getType() != RDOPATPattern::PT_Keyboard ) {
-							PARSER->error_push_only( @2, rdo::format("Активность '%s' должна быть клавиатурной", activity->getName().c_str()) );
+						if ( activity->pattern()->getType() != RDOPATPattern::PT_Keyboard ) {
+							PARSER->error_push_only( @2, rdo::format("Активность '%s' должна быть клавиатурной", activity->name().c_str()) );
 							PARSER->error_push_only( activity->src_info(), "См. акивность" );
-							PARSER->error_push_only( activity->getType()->src_info(), "См. образец" );
+							PARSER->error_push_only( activity->pattern()->src_info(), "См. образец" );
 							PARSER->error_push_done();
 						}
 					}
 				} else {
-					if ( opr->getType()->getType() != RDOPATPattern::PT_Keyboard ) {
-						PARSER->error_push_only( @2, rdo::format("Операция '%s' должна быть клавиатурной", opr->getName().c_str()) );
+					if ( opr->pattern()->getType() != RDOPATPattern::PT_Keyboard ) {
+						PARSER->error_push_only( @2, rdo::format("Операция '%s' должна быть клавиатурной", opr->name().c_str()) );
 						PARSER->error_push_only( opr->src_info(), "См. операцию" );
-						PARSER->error_push_only( opr->getType()->src_info(), "См. образец" );
+						PARSER->error_push_only( opr->pattern()->src_info(), "См. образец" );
 						PARSER->error_push_done();
 					}
 				}

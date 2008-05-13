@@ -182,34 +182,34 @@ namespace rdoParse
 
 %%
 
-opr_main:	opr_end
+opr_main:	/* empty */
+			| opr_end
 			| error {
-				if ( !PARSER->isHaveKWOperations() ) {
+				if ( !PARSER->getLastOperations() ) {
 					PARSER->error( @1, "Ожидается ключевое слово $Operations" );
-				} else if ( PARSER->isHaveKWOperationsEnd() ) {
-					PARSER->error( @1, "Операции уже определены" );
 				} else {
 					PARSER->error( @1, rdoSimulator::RDOSyntaxError::UNKNOWN );
 				}
 			};
 
 opr_header:	RDO_Operations {
-				PARSER->setHaveKWOperations( true );
-				new rdoRuntime::RDOOperations( RUNTIME );
+				$$ = (int)new RDOOperations( PARSER, @1 );
 			};
 
 opr_body:	opr_header RDO_IDENTIF_COLON RDO_IDENTIF {
+				RDOOperations* oprs = PARSER->getLastOperations();
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				RDOOPROperation* opr = new RDOOPROperation( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				RDOOPROperation* opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
 			| opr_param RDO_IDENTIF_COLON RDO_IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endParam( @1 );
+				RDOOperations* oprs = PARSER->getLastOperations();
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				opr = new RDOOPROperation( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
 			| opr_header RDO_IDENTIF_COLON error {
@@ -258,7 +258,6 @@ opr_param:	opr_param RDO_IDENTIF {
 opr_end:	opr_param RDO_End {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endParam( @1 );
-//				PARSER->setHaveKWOperationsEnd( true );
 			};
 
 %%

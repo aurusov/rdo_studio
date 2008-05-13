@@ -212,10 +212,6 @@ void RDOFRMFrame::addRulet( RDOFRMRulet* rulet )
 	rulets.push_back( rulet );
 }
 
-void RDOFRMFrame::end()
-{
-}
-
 bool RDOFRMFrame::checkCondition( RDORuntime* sim )
 {
 	if ( !conditionCalc ) return true;

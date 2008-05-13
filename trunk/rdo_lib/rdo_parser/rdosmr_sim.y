@@ -326,7 +326,7 @@ smr_cond:	/* empty */
 				if ( res ) {
 					PARSER->error( @3, @4, "Ожидается параметр" );
 				} else {
-					const RDOFUNSequence* seq = PARSER->findSequence( name );
+					const RDOFUNSequence* seq = PARSER->findFUNSequence( name );
 					if ( seq ) {
 						PARSER->error( @3, @4, "Ожидается ключевое слово Seed" );
 					} else {

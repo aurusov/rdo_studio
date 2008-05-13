@@ -59,17 +59,6 @@ private:
 // ----------------------------------------------------------------------------
 class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo
 {
-private:
-	void init();
-	void setSrcPosAndTextByLength( const YYLTYPE& _pos, const std::string& _text ) {
-		RDOSrcInfo::Position pos( _pos.first_line, _pos.first_column, _pos.last_line, _pos.last_column );
-		if ( pos.first_line == pos.last_line ) {
-			pos.last_pos = pos.first_pos + _text.length();
-		}
-		setSrcPos( pos );
-		setSrcText( _text );
-	}
-
 public:
 	enum PSI {
 		psi_align_none,
@@ -91,7 +80,7 @@ public:
 	}
 	 void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
 		RDOParserSrcInfo src_info;
-		src_info.setSrcPos( begin.src_pos().first_line, begin.src_pos().first_pos, end.src_pos().last_line, end.src_pos().last_pos );
+		src_info.setSrcPos( begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos );
 		src_info.setSrcText( begin.src_text() + delim + end.src_text() );
 		src_info.setSrcFileType( begin.src_filetype() );
 		setSrcInfo( src_info );
@@ -115,14 +104,25 @@ public:
 	YYLTYPE getPosAsYY() const {
 		YYLTYPE pos1;
 		rdoRuntime::RDOSrcInfo::Position pos2 = src_pos();
-		pos1.first_line   = pos2.first_line;
-		pos1.first_column = pos2.first_pos;
-		pos1.last_line    = pos2.last_line;
-		pos1.last_column  = pos2.last_pos;
+		pos1.first_line   = pos2.m_first_line;
+		pos1.first_column = pos2.m_first_pos;
+		pos1.last_line    = pos2.m_last_line;
+		pos1.last_column  = pos2.m_last_pos;
 		return pos1;
 	}
 	static int getPosByLength( int _pos, const std::string& _text ) {
 		return _pos + _text.length();
+	}
+
+private:
+	void init();
+	void setSrcPosAndTextByLength( const YYLTYPE& _pos, const std::string& _text ) {
+		RDOSrcInfo::Position pos( _pos.first_line, _pos.first_column, _pos.last_line, _pos.last_column );
+		if ( pos.m_first_line == pos.m_last_line ) {
+			pos.m_last_pos = pos.m_first_pos + _text.length();
+		}
+		setSrcPos( pos );
+		setSrcText( _text );
 	}
 };
 
@@ -130,7 +130,7 @@ template <class T> class compareName
 {
 public:
 	compareName( const std::string& name ): m_name(name) {}
-	bool operator() (const T* obj) { return obj->getName() == m_name; }
+	bool operator() (const T* obj) { return obj->name() == m_name; }
 
 private:
 	const std::string& m_name;

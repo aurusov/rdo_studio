@@ -12,7 +12,7 @@ namespace rdoMBuilder
 // ---- Собирает все параметры существующего в памяти типа ресурса
 // --------------------------------------------------------------------
 RDOResType::RDOResType( const rdoParse::RDORTPResType& rtp ):
-	m_name( rtp.getName() ),
+	m_name( rtp.name() ),
 	m_type( rtp.isPermanent() ? rt_permanent : rt_temporary ),
 	m_exist( true ),
 	m_id( rtp.getNumber() )
@@ -28,7 +28,7 @@ RDOResType::RDOResType( const rdoParse::RDORTPResType& rtp ):
 }
 
 RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
-	m_name( param.getName() ),
+	m_name( param.name() ),
 	m_id( -1 )
 {
 	switch ( param.getType()->getType() ) {
@@ -179,8 +179,8 @@ bool RDOResType::Param::operator== (const Param& param ) const
 RDOResTypeList::RDOResTypeList( rdoParse::RDOParser* parser ):
 	RDOList<RDOResType>( parser )
 {
-	std::vector< rdoParse::RDORTPResType* >::const_iterator rtp_it = m_parser->getRTPResType().begin();
-	while ( rtp_it != m_parser->getRTPResType().end() ) {
+	std::vector< rdoParse::RDORTPResType* >::const_iterator rtp_it = m_parser->getRTPResTypes().begin();
+	while ( rtp_it != m_parser->getRTPResTypes().end() ) {
 		RDOResType rtp( **rtp_it );
 		m_list.push_back( rtp );
 		rtp_it++;
@@ -298,7 +298,7 @@ bool RDOResTypeList::append( RDOResType& rtp )
 // ---- Собирает все параметры существующего в памяти ресурса
 // --------------------------------------------------------------------
 RDOResource::RDOResource( const rdoParse::RDORSSResource& rss ):
-	m_name( rss.getName() ),
+	m_name( rss.name() ),
 	m_rtp( *rss.getType() ),
 	m_exist( true )
 {

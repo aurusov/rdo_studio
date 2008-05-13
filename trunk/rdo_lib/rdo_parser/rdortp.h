@@ -33,7 +33,7 @@ public:
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual int getDiapTableFunc() const = 0;
 	virtual rdoRuntime::RDOValue::Type getType() const = 0;
-	virtual int writeModelStructure() const = 0;
+	virtual void writeModelStructure( std::ostream& stream ) const = 0;
 
 	void checkParamType( const RDOFUNArithm* const action, bool warning = true ) const;
 	void checkParamType( const rdoRuntime::RDOValue& value, const RDOParserSrcInfo& value_info ) const;
@@ -78,10 +78,10 @@ class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	RDORTPParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
-	const std::string&           getName() const    { return src_info().src_text(); }
+	const std::string&           name() const       { return src_info().src_text(); }
 	const RDORTPParamType* const getType() const    { return m_parType; }
 	const RDORTPResType* const   getResType() const { return m_resType; }
-	int writeModelStructure() const;
+	void writeModelStructure( std::ostream& stream ) const;
 
 protected:
 	RDORTPParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
@@ -106,7 +106,7 @@ class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent );
-	const std::string& getName() const       { return src_text();   };
+	const std::string& name() const          { return src_text();   };
 	int getNumber() const                    { return m_number;     };
 	bool isPermanent() const                 { return m_permanent;  };
 	bool isTemporary() const                 { return !m_permanent; };
@@ -117,7 +117,7 @@ public:
 	int getRTPParamNumber( const std::string& param ) const;
 	const std::vector< const RDORTPParam* >& getParams() const { return m_params; }
 
-	int writeModelStructure() const;
+	void writeModelStructure( std::ostream& stream ) const;
 
 private:
 	const int                         m_number;
@@ -295,7 +295,7 @@ public:
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual int getDiapTableFunc() const;
 	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_int; }
-	virtual int writeModelStructure() const;
+	virtual void writeModelStructure( std::ostream& stream ) const;
 
 	const RDORTPIntDiap& getDiap() const { return *m_diap; }
 
@@ -369,7 +369,7 @@ public:
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info )const ; 	// the function also check range if exist
 	virtual int getDiapTableFunc() const;
 	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_real; }
-	virtual int writeModelStructure() const;
+	virtual void writeModelStructure( std::ostream& stream ) const;
 	const RDORTPRealDiap& getDiap() const { return *m_diap; }
 
 private:
@@ -464,7 +464,7 @@ public:
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual int getDiapTableFunc() const;
 	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_enum; }
-	virtual int writeModelStructure() const;
+	virtual void writeModelStructure( std::ostream& stream ) const;
 
 private:
 	void init_src_info();

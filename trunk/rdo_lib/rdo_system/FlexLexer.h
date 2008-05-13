@@ -1,4 +1,4 @@
-// $Header$
+// $Header: /var/cvs/rdo_studio/rdo_lib/rdo_system/FlexLexer.h,v 1.1 2006/06/11 17:00:43 drobus Exp $
 
 // FlexLexer.h -- define interfaces for lexical analyzer classes generated
 //		  by flex

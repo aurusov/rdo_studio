@@ -4,6 +4,7 @@
 #include "rdortp.h"
 #include "rdorss.h"
 #include "rdopat.h"
+#include "rdofrm.h"
 #include "rdo_random_distribution.h"
 #include "rdodpt.h"
 #include "rdoparser_lexer.h"
@@ -203,7 +204,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 		return;
 	}
 	// Это не ресурс, но возможно релевантный ресурс или ресурс, внутри групповой функции
-	else if ( !parser()->getFUNGroupStack().empty() && parser()->getFUNGroupStack().back()->resType->getName() == res_name_src_info.src_text() )
+	else if ( !parser()->getFUNGroupStack().empty() && parser()->getFUNGroupStack().back()->resType->name() == res_name_src_info.src_text() )
 	{
 		// Это ресурс внутри групповой функции
 		RDOFUNGroup* currGroup = parser()->getFUNGroupStack().back();
@@ -233,20 +234,20 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 					if ( !pat->currRelRes ) {
 						// Внутри with_min-common-choice или $Time
 						if ( rel->begin == rdoRuntime::RDOResource::CS_NonExist || rel->begin == rdoRuntime::RDOResource::CS_Create ) {
-							parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName().c_str()) );
+							parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->name().c_str()) );
 						}
 					} else {
 						// Внутри $Body
 						// Проверяем использование неинициализированного рел.ресурса (rel) в Choice from другом рел.ресурсе (pat->currRelRes)
 						if ( pat->currRelRes->isChoiceFromState() ) {
 							if ( !rel->alreadyHaveConverter && !rel->isDirect() ) {
-								parser()->error( res_name_src_info, rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName().c_str()) );
+								parser()->error( res_name_src_info, rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->name().c_str()) );
 							}
 							if ( rel->begin == rdoRuntime::RDOResource::CS_NonExist ) {
-								parser()->error( res_name_src_info, rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName().c_str()) );
+								parser()->error( res_name_src_info, rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->name().c_str()) );
 							}
 							if ( rel->begin == rdoRuntime::RDOResource::CS_Create ) {
-								parser()->error( res_name_src_info, rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", rel->getName().c_str()) );
+								parser()->error( res_name_src_info, rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", rel->name().c_str()) );
 							}
 						}
 						// Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
@@ -254,31 +255,31 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 							// В конверторе начала
 							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
 								if ( rel->begin == rdoRuntime::RDOResource::CS_Create && !rel->alreadyHaveConverter ) {
-									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
+									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->name().c_str()) );
 								}
 								if ( rel->begin == rdoRuntime::RDOResource::CS_Erase && rel->alreadyHaveConverter ) {
-									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
+									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->name().c_str()) );
 								}
 								if ( rel->begin == rdoRuntime::RDOResource::CS_NonExist ) {
-									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
+									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->name().c_str()) );
 								}
 							}
 							// В конверторе конца
 							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
 								if ( rel->end == rdoRuntime::RDOResource::CS_Create && !rel->alreadyHaveConverter ) {
-									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
+									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->name().c_str()) );
 								}
 								if ( rel->end == rdoRuntime::RDOResource::CS_Erase && rel->alreadyHaveConverter ) {
-									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
+									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->name().c_str()) );
 								}
 								if ( rel->end == rdoRuntime::RDOResource::CS_NonExist ) {
-									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
+									parser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->name().c_str()) );
 								}
 							}
 						}
 						// Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
 						const RDORTPParam* param = pat->currRelRes->getType()->findRTPParam( par_name_src_info.src_text() );
-						if ( param && pat->currRelRes->getName() == res_name_src_info.src_text() ) {
+						if ( param && pat->currRelRes->name() == res_name_src_info.src_text() ) {
 							// В конверторе начала
 							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResource::CS_Create) {
 								if ( !pat->currRelRes->getParamSetBegin()->isExist( par_name_src_info.src_text() ) ) {
@@ -315,9 +316,9 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			}
 			case rdoModelObjects::DPT:
 			{
-				if ( rdoModelObjects::DPT && parser()->getLastDPTSearch() && parser()->getLastDPTSearch()->getLastActivity() )
+				if ( parser()->isCurrentDPTSearch() && parser()->getLastDPTSearch()->getLastActivity() )
 				{
-					const RDOPATPattern* rule = parser()->getLastDPTSearch()->getLastActivity()->getType();
+					const RDOPATPattern* rule = parser()->getLastDPTSearch()->getLastActivity()->pattern();
 					if ( rule && rule->findRelevantResource( res_name_src_info.src_text() ) ) {
 						// Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
 						const RDORelevantResource* const rel = rule->findRelevantResource( res_name_src_info.src_text() );
@@ -340,7 +341,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			}
 			case rdoModelObjects::FRM:
 			{
-				if ( parser()->getLastFRMFrame() && parser()->getLastFRMFrame()->getLastShow() && parser()->getLastFRMFrame()->getLastShow()->isShowIf() )
+				if ( parser()->getLastFRMFrame() && parser()->getLastFRMFrame()->frame()->getLastShow() && parser()->getLastFRMFrame()->frame()->getLastShow()->isShowIf() )
 				{
 					calc = new rdoRuntime::RDOCalcGetUnknowResParam( parser()->runtime(), res_name_src_info.src_text(), par_name_src_info.src_text() );
 					calc->setSrcInfo( src_info() );
@@ -445,7 +446,7 @@ void RDOFUNArithm::init( const std::string& value, const YYLTYPE& _pos )
 	}
 
 	// Ищем константы по имени
-	const RDOFUNConstant* cons = parser()->findFUNConst( value );
+	const RDOFUNConstant* cons = parser()->findFUNConstant( value );
 
 	if ( cons && param ) {
 		parser()->error( src_info(), rdo::format("Имя параметра образца совпадает с именем константы: %s", value.c_str()) );
@@ -463,7 +464,7 @@ void RDOFUNArithm::init( const std::string& value, const YYLTYPE& _pos )
 	}
 
 	// Ищем последовательность по имени
-	const RDOFUNSequence* seq = parser()->findSequence( value );
+	const RDOFUNSequence* seq = parser()->findFUNSequence( value );
 	if ( seq && param ) {
 		parser()->error( src_info(), rdo::format("Имя параметра образца совпадает с именем последовательности: %s", value.c_str()) );
 //		parser()->error("Ambiguity: sequence or parameter usage: " + *value + " ?");
@@ -495,8 +496,8 @@ void RDOFUNArithm::init( const std::string& value, const YYLTYPE& _pos )
 		return;
 	} else {
 		// Возможно, что это значение перечислимого типа
-		std::vector< RDORTPEnumParamType* >::const_iterator it = parser()->getEnums().begin();
-		while ( it != parser()->getEnums().end() ) {
+		std::vector< RDORTPEnumParamType* >::const_iterator it = parser()->getRTPEnumParamTypes().begin();
+		while ( it != parser()->getRTPEnumParamTypes().end() ) {
 			if ( (*it)->enu->getEnums().findEnum( value ) != -1 ) {
 				// Да, это перечислимый тип, только одно и тоже значение может встречаться в разных
 				// перечислимых типах, поэтому какой именно из них выбрать - вопрос
@@ -911,7 +912,7 @@ RDOFUNConstant::RDOFUNConstant( RDOParser* _parser, RDOFUNConst* _const ):
 // ----------------------------------------------------------------------------
 RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 {
-	const RDOFUNFunction* const func = parser()->findFunction( funName );
+	const RDOFUNFunction* const func = parser()->findFUNFunction( funName );
 	if ( !func ) {
 		return createSeqCall( funName );
 	}
@@ -983,7 +984,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 
 RDOFUNArithm* RDOFUNParams::createSeqCall( const std::string& seqName ) const
 {
-	const RDOFUNSequence* const seq = parser()->findSequence( seqName );
+	const RDOFUNSequence* const seq = parser()->findFUNSequence( seqName );
 	if ( !seq ) {
 		parser()->error( funseq_name, rdo::format("Неопределенная функция или последовательность: %s", seqName.c_str()) );
 //		parser()->error( "Undefined function or sequence: " + *seqName );
@@ -1006,7 +1007,7 @@ RDOFUNSequence::RDOFUNSequence( RDOParser* _parser, RDOFUNSequenceHeader* _heade
 	base( _base )
 {
 	header->reparent( this );
-	parser()->insertFUNSequences( this );
+	parser()->insertFUNSequence( this );
 }
 
 void RDOFUNSequence::initResult()
@@ -1069,7 +1070,7 @@ void RDOFUNSequenceUniform::createCalcs()
 RDOFUNArithm* RDOFUNSequenceUniform::createCallCalc( const RDOFUNParams* const param, const RDOParserSrcInfo& _src_info ) const
 {
 	if ( param->params.size() != 2 ) {
-		parser()->error( _src_info, rdo::format("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона", getName().c_str()) );
+		parser()->error( _src_info, rdo::format("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона", name().c_str()) );
 //		parser()->error("Wrong parameters number in uniform sequence call: " + *header->name);
 	}
 
@@ -1114,7 +1115,7 @@ void RDOFUNSequenceExponential::createCalcs()
 RDOFUNArithm* RDOFUNSequenceExponential::createCallCalc( const RDOFUNParams* const param, const RDOParserSrcInfo& _src_info ) const
 {
 	if ( param->params.size() != 1 ) {
-		parser()->error( _src_info, rdo::format("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание", getName().c_str()) );
+		parser()->error( _src_info, rdo::format("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание", name().c_str()) );
 //		parser()->error("Wrong parameters number in exponential sequence call: " + *header->name);
 	}
 
@@ -1158,7 +1159,7 @@ void RDOFUNSequenceNormal::createCalcs()
 RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* const param, const RDOParserSrcInfo& _src_info ) const
 {
 	if ( param->params.size() != 2 ) {
-		parser()->error( _src_info, rdo::format("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение", getName().c_str()) );
+		parser()->error( _src_info, rdo::format("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение", name().c_str()) );
 //		parser()->error("Wrong parameters number in normal sequence call: " + *header->name);
 	}
 
@@ -1189,7 +1190,7 @@ RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* const pa
 RDOFUNArithm* RDOFUNSequenceByHist::createCallCalc( const RDOFUNParams* const param, const RDOParserSrcInfo& _src_info ) const
 {
 	if ( param->params.size() != 0 ) {
-		parser()->error( _src_info, rdo::format("Гистограмма '%s' должна вызываться без параметров", getName().c_str()) );
+		parser()->error( _src_info, rdo::format("Гистограмма '%s' должна вызываться без параметров", name().c_str()) );
 //		parser()->error("Wrong parameters number in by_hist sequence call: " + *header->name);
 	}
 
@@ -1280,7 +1281,7 @@ void RDOFUNSequenceByHistEnum::createCalcs()
 RDOFUNArithm* RDOFUNSequenceEnumerative::createCallCalc( const RDOFUNParams* const param, const RDOParserSrcInfo& _src_info ) const
 {
 	if ( param->params.size() != 0 ) {
-		parser()->error( _src_info, rdo::format("Перечисление '%s' должно вызываться без параметров", getName().c_str()) );
+		parser()->error( _src_info, rdo::format("Перечисление '%s' должно вызываться без параметров", name().c_str()) );
 //		parser()->error("Wrong parameters number in enumerative sequence call: " + *header->name);
 	}
 
@@ -1463,12 +1464,12 @@ int RDOFUNFunction::findFUNFunctionParamNum( const std::string& paramName ) cons
 
 void RDOFUNFunction::add( const RDOFUNFunctionParam* const _param )
 { 
-	const RDOFUNFunctionParam* const param = findFUNFunctionParam( _param->getName() );
+	const RDOFUNFunctionParam* const param = findFUNFunctionParam( _param->name() );
 	if ( param ) {
-		parser()->error_push_only( _param->src_info(), rdo::format("Параметр уже существует: %s", _param->getName().c_str()) );
+		parser()->error_push_only( _param->src_info(), rdo::format("Параметр уже существует: %s", _param->name().c_str()) );
 		parser()->error_push_only( param->src_info(), "См. первое определение" );
 		parser()->error_push_done();
-//		parser()->error("Second appearance of the same parameter name: " + *(_param->getName()));
+//		parser()->error("Second appearance of the same parameter name: " + *(_param->name()));
 	}
 	params.push_back( _param ); 
 }
@@ -1486,14 +1487,14 @@ void RDOFUNFunction::add( const RDOFUNCalculateIf* const _calculateIf )
 void RDOFUNFunction::createListCalc()
 {
 	if ( !getType()->getDV().isExist() ) {
-		parser()->error( getType()->getDV().src_info(), rdo::format("Функция '%s' должна иметь значение по-умолчанию", getName().c_str()) );
+		parser()->error( getType()->getDV().src_info(), rdo::format("Функция '%s' должна иметь значение по-умолчанию", name().c_str()) );
 //		parser()->error(("list function " + *name + " must have default result value").c_str());
 	}
 	if ( params.empty() ) {
-		parser()->error( src_info(), rdo::format("Функция '%s' должна иметь параметры, т.к. её тип list", getName().c_str()) );
+		parser()->error( src_info(), rdo::format("Функция '%s' должна иметь параметры, т.к. её тип list", name().c_str()) );
 	}
 	if ( elements.empty() ) {
-		parser()->warning( src_info(), rdo::format("Функция '%s' не содержит списка", getName().c_str()) );
+		parser()->warning( src_info(), rdo::format("Функция '%s' не содержит списка", name().c_str()) );
 	}
 
 	rdoRuntime::RDOCalcConst* default_value_calc = new rdoRuntime::RDOCalcConst( parser()->runtime(), getType()->getDefaultValue( getType()->getDV().src_info() ) );
@@ -1511,12 +1512,12 @@ void RDOFUNFunction::createListCalc()
 			const RDOFUNFunctionParam* const param = *param_it;
 			if ( elem_it == elements.end() ) {
 				elem_it--;
-				parser()->error( (*elem_it)->src_info(), rdo::format("Ожидается значение для параметра '%s'", param->getName().c_str()) );
+				parser()->error( (*elem_it)->src_info(), rdo::format("Ожидается значение для параметра '%s'", param->name().c_str()) );
 			}
 			const RDOFUNFunctionListElement* elem = *elem_it;
 			if ( elem->isEquivalence() ) {
 				if ( (param_it + 1) == params.end() ) {
-					parser()->error( elem->src_info(), rdo::format("Перед знаком равенства ожидается значение для параметра: %s",param->getName().c_str()) );
+					parser()->error( elem->src_info(), rdo::format("Перед знаком равенства ожидается значение для параметра: %s",param->name().c_str()) );
 				} else {
 					std::string str = (*param_it)->src_text();
 					param_it++;
@@ -1539,7 +1540,7 @@ void RDOFUNFunction::createListCalc()
 		if ( elem_it == elements.end() ) {
 			elem_it--;
 			param_it--;
-			parser()->error( (*elem_it)->src_info(), rdo::format("После значения для параметра '%s' ожидается знак равенства", (*param_it)->getName().c_str()) );
+			parser()->error( (*elem_it)->src_info(), rdo::format("После значения для параметра '%s' ожидается знак равенства", (*param_it)->name().c_str()) );
 		}
 		if ( !(*elem_it)->isEquivalence() ) {
 			parser()->error( (*elem_it)->src_info(), rdo::format("Слишком много значений, вместо '%s' ожидается знак равенства", (*elem_it)->src_text().c_str()) );
@@ -1547,7 +1548,7 @@ void RDOFUNFunction::createListCalc()
 		elem_it++;
 		if ( elem_it == elements.end() ) {
 			elem_it--;
-			parser()->error( (*elem_it)->src_info(), rdo::format("После знака равенства ожидается значение функции '%s'", getName().c_str()) );
+			parser()->error( (*elem_it)->src_info(), rdo::format("После знака равенства ожидается значение функции '%s'", name().c_str()) );
 		}
 		rdoRuntime::RDOCalcConst* result_calc = (*elem_it)->createResultCalc( getType(), (*elem_it)->src_info() );
 		fun_calc->addCase( case_calc, result_calc );
@@ -1589,7 +1590,7 @@ void RDOFUNFunction::createTableCalc( const YYLTYPE& _elements_pos )
 	}
 
 	if ( elements.size() != range ) {
-		parser()->error( _elements_pos, rdo::format("Неверное количество элементов табличной функции '%s': %d, требуется %d", getName().c_str(), elements.size(), range) );
+		parser()->error( _elements_pos, rdo::format("Неверное количество элементов табличной функции '%s': %d, требуется %d", name().c_str(), elements.size(), range) );
 //		parser()->error(("wrong number of value in table function " + *name).c_str());
 	}
 
@@ -1651,7 +1652,7 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 		}
 	}
 	if ( !cnt ) {
-		parser()->warning( src_info(), rdo::format("Отсутствует тело функции '%s'", getName().c_str()) );
+		parser()->warning( src_info(), rdo::format("Отсутствует тело функции '%s'", name().c_str()) );
 	}
 	if ( !true_const ) {
 		if ( getType()->getDV().isExist() ) {
@@ -1691,7 +1692,7 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 		calc_cond->setSrcInfo( getType()->src_info() );
 		calc_act->setSrcInfo( getType()->src_info() );
 		fun_calc->addCalcIf( calc_cond, calc_act );
-		parser()->warning( src_info(), rdo::format("Для функции '%s' неопределено значение по-умолчанию", getName().c_str()) );
+		parser()->warning( src_info(), rdo::format("Для функции '%s' неопределено значение по-умолчанию", name().c_str()) );
 	}
 	setFunctionCalc( fun_calc );
 }
@@ -1729,10 +1730,10 @@ RDOFUNLogic* RDOFUNGroupLogic::createFunLogic( RDOFUNLogic* cond )
 {
 	rdoRuntime::RDOFunCalcGroup* calc;
 	switch ( funType ) {
-		case fgt_exist    : setSrcText( "Exist(" + resType->getName() + ": " + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcExist    ( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
-		case fgt_notexist : setSrcText( "NotExist(" + resType->getName() + ": " + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcNotExist ( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
-		case fgt_forall   : setSrcText( "ForAll(" + resType->getName() + ": " + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcForAll   ( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
-		case fgt_notforall: setSrcText( "NotForAll(" + resType->getName() + ": " + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcNotForAll( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
+		case fgt_exist    : setSrcText( "Exist(" + resType->name() + ": " + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcExist    ( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
+		case fgt_notexist : setSrcText( "NotExist(" + resType->name() + ": " + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcNotExist ( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
+		case fgt_forall   : setSrcText( "ForAll(" + resType->name() + ": " + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcForAll   ( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
+		case fgt_notforall: setSrcText( "NotForAll(" + resType->name() + ": " + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcNotForAll( parser()->runtime(), resType->getNumber(), cond->createCalc() ); break;
 		default: parser()->error( src_info(), "Внутренная ошибка: несуществующий тип функции" );
 	}
 	parser()->getFUNGroupStack().pop_back();

@@ -295,6 +295,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdo_logic_dptfree.cpp"
+				>
+			</File>
+			<File
 				RelativePath="rdo_logic_dptsearch.cpp"
 				>
 				<FileConfiguration
@@ -743,6 +747,10 @@
 			</File>
 			<File
 				RelativePath="rdo_logic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_logic_dptfree.h"
 				>
 			</File>
 			<File
