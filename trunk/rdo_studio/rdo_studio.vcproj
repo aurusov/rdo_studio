@@ -49,7 +49,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common"
+				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common;../thirdparty/corba/include"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common"
+				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common;../thirdparty/corba/include"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
