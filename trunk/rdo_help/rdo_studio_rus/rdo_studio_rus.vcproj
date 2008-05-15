@@ -80,6 +80,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\help_tools\Hhc.bat $(SolutionDir) $(InputPath)"
 						Outputs="RAO-studio.chm"
 					/>
@@ -89,6 +90,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\help_tools\Hhc.bat $(SolutionDir) $(InputPath)"
 						Outputs="RAO-studio.chm"
 					/>
