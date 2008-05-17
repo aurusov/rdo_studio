@@ -256,7 +256,7 @@ dpt_seize_param:    // empty
 					|	RDO_IDENTIF {
 						std::string res_name       = *reinterpret_cast<std::string*>($1);
 						TRACE( "%s _good\n", res_name.c_str());
-						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastDPTProcess(), "SEIZE");
+						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE");
 						seize->add_Seize_Resourse(res_name);
 						$$ = (int)seize;
                     }
@@ -274,7 +274,7 @@ dpt_release_param:    // empty
 					|	RDO_IDENTIF {
 						std::string res_name       = *reinterpret_cast<std::string*>($1);
 						TRACE( "%s _good\n", res_name.c_str());
-						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastDPTProcess(), "RELEASE");
+						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE");
 						release->add_Release_Resourse(res_name);
 						$$ = (int)release;
                     }
