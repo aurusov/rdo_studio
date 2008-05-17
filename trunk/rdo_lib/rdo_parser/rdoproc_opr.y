@@ -236,17 +236,55 @@ dpt_process_line:	RDO_IDENTIF	{
 					| RDO_ADVANCE error {
 						PARSER->error( @2, "Ошибка в арифметическом выражении" )
 					}
-					| RDO_SEIZE {
-						PARSER->error( std::string(_T("Ожидается имя ресурса")).c_str() );
+					
+					| RDO_SEIZE dpt_seize_param {
+						TRACE("SEIZE dpt_seize_param\n");
+						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($2);
+						seize->create_runtime_Seize( PARSER );
 					}
-					| RDO_SEIZE RDO_IDENTIF {
-						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE", *(std::string*)$2 );
-						$$ = int(seize);
-					}
-					| RDO_RELEASE RDO_IDENTIF {
-						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE", *(std::string*)$2 );
-						$$ = int(release);
+
+					| RDO_RELEASE dpt_release_param {
+						TRACE("RELEASE dpt_release_param\n");
+						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($2);
+						release->create_runtime_Release( PARSER );
 					};
+
+
+dpt_seize_param:    // empty 
+					{
+					}   
+					|	RDO_IDENTIF {
+						std::string res_name       = *reinterpret_cast<std::string*>($1);
+						TRACE( "%s _good\n", res_name.c_str());
+						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastDPTProcess(), "SEIZE");
+						seize->add_Seize_Resourse(res_name);
+						$$ = (int)seize;
+                    }
+                    |   dpt_seize_param ',' RDO_IDENTIF {
+						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($1);
+						std::string res_name = *reinterpret_cast<std::string*>($3);
+						TRACE( "%s _good\n", res_name.c_str(), res_name);
+						seize->add_Seize_Resourse(res_name);
+						$$ = $1;
+                    };
+
+dpt_release_param:    // empty 
+					{
+					}   
+					|	RDO_IDENTIF {
+						std::string res_name       = *reinterpret_cast<std::string*>($1);
+						TRACE( "%s _good\n", res_name.c_str());
+						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastDPTProcess(), "RELEASE");
+						release->add_Release_Resourse(res_name);
+						$$ = (int)release;
+                    }
+                    |   dpt_release_param ',' RDO_IDENTIF {
+						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($1);
+						std::string res_name = *reinterpret_cast<std::string*>($3);
+						TRACE( "%s _good\n", res_name.c_str(), res_name);
+						release->add_Release_Resourse(res_name);
+						$$ = $1;
+                    };								
 
 dpt_process_end:	dpt_process RDO_End	{
 						PARSER->getLastPROCProcess()->end();

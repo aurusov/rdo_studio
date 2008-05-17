@@ -30,7 +30,7 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 
 void RDOPROCProcess::next( RDOPROCTransact* transact )
 {
-	Iterator it = std::find( begin(), end(), transact->block );
+/*	Iterator it = std::find( begin(), end(), transact->block );
 	if ( it != end() ) {
 		RDOPROCBlock* block = static_cast<RDOPROCBlock*>(*it);
 		std::list< RDOPROCTransact* >::iterator it_res = std::find( block->transacts.begin(), block->transacts.end(), transact );
@@ -47,6 +47,40 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 	} else {
 		// run-time error
 	}
+*/
+	if ( transact->block )
+	{
+	Iterator it = std::find( begin(), end(), transact->block );
+	if ( it != end() ) {
+		RDOPROCBlock* block = static_cast<RDOPROCBlock*>(*it);
+		std::list< RDOPROCTransact* >::iterator it_res = std::find( block->transacts.begin(), block->transacts.end(), transact );
+		if ( it_res != block->transacts.end() ) {
+		block->TransactGoOut( *it_res );
+		}
+		it++;
+			if ( it != end() ) 
+			{
+			transact->block = static_cast<RDOPROCBlock*>(*it);
+			static_cast<RDOPROCBlock*>(*it)->TransactGoIn( transact );
+			} 
+			else 
+			{
+			//getRuntime()->error( "Внутренняя ошибка: block_it == blocks.end()" );
+			//run-time error
+			}
+		} 
+		else 
+		{
+		//getRuntime()->error( "Внутренняя ошибка: block_it == blocks.end()" );
+		//run-time error
+		}
+	} 
+	else 
+	{
+	//getRuntime()->error( "Внутренняя ошибка: transact->block == NULL" );
+	//run-time error
+	}
+
 }
 
 // ----------------------------------------------------------------------------
@@ -70,6 +104,20 @@ void RDOPROCTransact::next()
 	block->process->next( this );
 }
 
+void RDOPROCTransact::addRes (RDOPROCResource* res){
+resources.push_back( res );
+}
+
+void RDOPROCTransact::removeRes (RDOPROCResource* res){
+resources.remove( res );
+}
+
+bool RDOPROCTransact::findRes(RDOPROCResource* res)
+{
+//Ищем ресурс в списке освобождаемых ресурсов транзакта			
+std::list< RDOPROCResource* >::iterator it_res = std::find( this->resources.begin(), this->resources.end(), res );
+return it_res != this->resources.end() ? true : false; 
+}
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
@@ -86,6 +134,17 @@ RDOPROCBlock::RDOPROCBlock( RDOPROCProcess* _process ):
 	process( _process )
 {
 	process->append( this );
+}
+
+
+void RDOPROCBlock::TransactGoIn( RDOPROCTransact* _transact )
+{
+	transacts.push_back( _transact );
+}
+
+void RDOPROCBlock::TransactGoOut( RDOPROCTransact* _transact )
+{
+	transacts.remove( _transact );
 }
 
 // ----------------------------------------------------------------------------
@@ -122,74 +181,139 @@ void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
-RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, int _rss_id ):
+RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ):
 	RDOPROCBlock( _process ),
-	rss( NULL ),
-	rss_id( _rss_id )
-{
+//	rss( NULL ),
+	from_par( From_Par )
+{	
 }
 
 void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
 {
 	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
-	// как при DPT search, то инициализацию атрибутов надо будет делать в onCheckCondition
-	rss = static_cast<RDORuntime*>(sim)->getResourceByID( rss_id );
-	enum_free = RDOValue( rss->getParam(0).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
-	enum_buzy = RDOValue( rss->getParam(0).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
+	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
+	int size = from_par.size();
+	std::vector < parser_for_Seize >::iterator it1 = from_par.begin();
+	while ( it1 != from_par.end() ) {
+		int Id_res = (*it1).Id_res;
+		int Id_param = (*it1).Id_param;
+		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
+		runtime_for_Seize bbb;
+		bbb.rss = static_cast<RDOPROCResource*>(res);
+		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
+		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
+		from_run.push_back(bbb);
+		it1++;
+	}
 }
+
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
+
 bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-		if ( !tracer->isNull() ) {
-			tracer->getOStream() << rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+	int Size_Seize = from_run.size();
+	int aaa = transacts.front()->getTraceID();	
+			for(int i=0; i<Size_Seize; i++)
+			{
+			int bbb = from_run[i].rss->transacts.front()->getTraceID();
+				if(aaa == bbb){
+				RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+					if ( !tracer->isNull() ) {
+					tracer->getOStream() << from_run[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+					}
+					// Занимаем все, что свободно
+					if ( from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_free ) {
+					Busy_Res++;
+					from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_buzy);			
+					//Записываем в транзакт, какие ресурсы он занимает
+					transacts.front()->addRes(from_run[i].rss);
+					} 
+					else {
+					}
+				}
+				else
+				{
+				int t=0;
+				}		
+			}	
+		if ( Busy_Res == Size_Seize){
+		Busy_Res = 0;
+		return true;
 		}
-		// Свободен
-		if ( rss->getParam(0) == enum_free ) {
-			return true;
-		} else {
-			TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
+		else {
+		TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
 		}
 	}
-	return false;
+return false;
 }
 
 RDOBaseOperation::BOResult RDOPROCSeize::onDoOperation( RDOSimulator* sim )
 {
 	TRACE( "%7.1f SEIZE\n", sim->getCurrentTime() );
-	rss->setParam(0, enum_buzy);
+	//from_run[0].rss->setParam(from_par[0].Id_param, from_run[0].enum_buzy);
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }
 
+void RDOPROCSeize::TransactGoIn( RDOPROCTransact* _transact )
+{
+int Size_Seize = from_run.size();
+	for(int i=0;i<Size_Seize; i++){
+	from_run[i].rss->transacts.push_back( _transact );
+	}
+	RDOPROCBlockForSeize::TransactGoIn( _transact );
+}
+
+void RDOPROCSeize::TransactGoOut( RDOPROCTransact* _transact )
+{
+int Size_Seize = from_run.size();
+	for(int i=0;i<Size_Seize; i++){
+	from_run[i].rss->transacts.remove( _transact );
+	}
+	RDOPROCBlockForSeize::TransactGoOut( _transact );
+}
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCRelease
 // ----------------------------------------------------------------------------
 bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-		if ( !tracer->isNull() ) {
-			tracer->getOStream() << rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+	int Size_Seize = from_run.size();
+		for(int i=0; i<Size_Seize; i++)
+		{
+			RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+			if ( !tracer->isNull() ) {
+				tracer->getOStream() << from_run[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+			}
+			// Занят
+			if ( from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_buzy ) {
+				//Ищем ресурс в списке освобождаемых ресурсов транзакта			
+				if ( transacts.front()->findRes(from_run[i].rss) ) {
+				from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_free);
+				transacts.front()->removeRes(from_run[i].rss);
+				}
+				else{
+				//Модель составлена неправильно
+				TRACE( "неправильно составлена модель\n", sim->getCurrentTime() );
+				}
+			}
+			else{
+			TRACE( "%7.1f RELEASE %s\n", sim->getCurrentTime(), from_par[i].Id_res);
+			}
 		}
-		// Занят
-		if ( rss->getParam(0) == enum_buzy ) {
-			return true;
-		} else {
-			TRACE( "%7.1f RELEASE CANNOT\n", sim->getCurrentTime() );
-		}
+	return true;
 	}
-	return false;
+return false;
 }
 
 RDOBaseOperation::BOResult RDOPROCRelease::onDoOperation( RDOSimulator* sim )
 {
 	TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
-	rss->setParam(0, enum_free);
+	//from_run[0].rss->setParam(from_par[0].Id_param, from_run[0].enum_free);
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }

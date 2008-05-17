@@ -258,58 +258,45 @@ dpt_process_line:	RDO_IDENTIF	{
 					| RDO_ADVANCE error {
 						PARSER->error( @2, "Ошибка в арифметическом выражении" )
 					}
-					| RDO_RELEASE RDO_IDENTIF {
+					| RDO_RELEASE dpt_release_param {
 					}
-					| RDO_SEIZE {
-						PARSER->error( @1, "Ожидается имя ресурса" );
+					| RDO_SEIZE dpt_seize_param {
+					};
+					
+dpt_release_param:    // empty 
+					{
+					PARSER->error(rdo::format("ожидается имя ресурса")); }   
+
+					| RDO_IDENTIF {
+					// Имя ресурса
+					std::string res_name	= *reinterpret_cast<std::string*>($1);
+					const RDOParserSrcInfo& info	= @1;		
+					RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
 					}
-					| RDO_SEIZE RDO_IDENTIF {
 
-						// Имя ресурса
-						std::string res_name       = *reinterpret_cast<std::string*>($2);
-						// Сформировать имя типа по имени ресурса
-						std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
-						// "Состояние"
-						std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-						// "Свободен"
-						std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
-						// "Занят"
-						std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
+					| dpt_release_param ',' RDO_IDENTIF {
+					// Имя ресурса
+					std::string res_name       = *reinterpret_cast<std::string*>($3);
+					const RDOParserSrcInfo& info	= @3;		
+					RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
+					};
 
-						// Получили список всех типов ресурсов
-						rdoMBuilder::RDOResTypeList rtpList( PARSER );
-						// Найти тип ресурса, если его нет, то создать тип
-						if ( !rtpList[rtp_name].exist() )
-						{
-							// Создадим тип ресурса
-							rdoMBuilder::RDOResType rtp(rtp_name);
-							// Создадим параметр перечислимого типа
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnum(RUNTIME, rdoRuntime::RDOEnum::EnumArray(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
-							// Добавим тип ресурса
-							if ( !rtpList.append( rtp ) )
-							{
-								PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
-							}
-						}
-						else
-						{
-							// Тип найден, проверим его на наличие перечислимого параметра
-							const rdoMBuilder::RDOResType& rtp = rtpList[rtp_name];
-							if ( !rtp.m_params[rtp_param_name].exist() ) {
-								PARSER->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
-							}
-							const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
-							// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
-							// Для начала проверим тип параметра
-							if ( param.getType() != rdoRuntime::RDOValue::rvt_enum ) {
-								PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str() ) );
-							}
-							// Теперь проверим сами значения
-							if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) )
-							{
-								PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
-							}
-						}
+dpt_seize_param:    // empty 
+					{
+					PARSER->error(rdo::format("ожидается имя ресурса")); }   
+					
+					| RDO_IDENTIF {
+					// Имя ресурса
+					std::string res_name	= *reinterpret_cast<std::string*>($1);
+					const RDOParserSrcInfo& info	= @1;		
+					RDOPROCSeize::makeSeizeType( PARSER, res_name, info );
+					}
+
+					| dpt_seize_param ',' RDO_IDENTIF {
+					// Имя ресурса
+					std::string res_name       = *reinterpret_cast<std::string*>($3);
+					const RDOParserSrcInfo& info	= @3;		
+					RDOPROCSeize::makeSeizeType( PARSER, res_name, info );
 					};
 
 dpt_process_end:	dpt_process RDO_End	{

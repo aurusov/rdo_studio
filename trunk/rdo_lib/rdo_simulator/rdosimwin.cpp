@@ -36,7 +36,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoCorba
 {
-
+/*
 CORBA::ORB_var g_orb;
 bool           g_orb_inited = false;
 
@@ -100,9 +100,8 @@ void RDOCorba_i::getRDORTPlist(rdoParse::RDOCorba::GetRTP& my_rtpList, const rdo
 	my_rtpList[1].m_param[0].m_name="Param_1_new_List_2";
 
 
-/*	printf("\nmy_rtpList[0].m_name = %s \n", my_rtpList[0].m_name);
-	printf("\nmy_rtpList[0].m_param[0].m_default_int = %d \n", my_rtpList[0].m_param[0].m_default_int );
-*/
+//	printf("\nmy_rtpList[0].m_name = %s \n", my_rtpList[0].m_name);
+//	printf("\nmy_rtpList[0].m_param[0].m_default_int = %d \n", my_rtpList[0].m_param[0].m_default_int );
 }
 
 static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr g_orb, CORBA::Object_ptr objref)
@@ -260,7 +259,7 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 
 	return 0;
 }
-
+*/
 RDOThreadCorba::RDOThreadCorba():
 	RDOThreadMT( "RDOThreadCorba" ),
 	thread_corbaRunThreadFun( NULL )
@@ -281,9 +280,9 @@ void RDOThreadCorba::start()
 #endif
 
 	// Место для запуска корбы
-	thread_corbaRunThreadFun = AfxBeginThread( corbaRunThreadFun, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED );
-	thread_corbaRunThreadFun->m_bAutoDelete = false;
-	thread_corbaRunThreadFun->ResumeThread();
+//	thread_corbaRunThreadFun = AfxBeginThread( corbaRunThreadFun, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED );
+//	thread_corbaRunThreadFun->m_bAutoDelete = false;
+//	thread_corbaRunThreadFun->ResumeThread();
 
 #ifdef TR_TRACE
 	trace( thread_name + " corba end" );
@@ -306,7 +305,7 @@ void RDOThreadCorba::stop()
 #ifdef TR_TRACE
 	trace( thread_name + " stop begin" );
 #endif
-
+/*
 	try
 	{
 		// Место для остановки корбы
@@ -346,7 +345,7 @@ void RDOThreadCorba::stop()
 		delete thread_corbaRunThreadFun;
 		thread_corbaRunThreadFun = NULL;
 	}
-
+*/
 	RDOThread::stop();
 #ifdef TR_TRACE
 	trace( thread_name + " stop end" );
