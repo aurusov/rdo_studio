@@ -476,7 +476,7 @@ std::list< std::string >::iterator it = Resourses.begin();
 		std::string aaa = *it;
 	const RDORSSResource* rss = parser->findRSSResource((*it));
 		if( rss ){
-		const std::string res_name = rss->getName();
+		const std::string res_name = rss->name();
 		// Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList( parser );
 		// Создадим тип ресурса
@@ -500,7 +500,7 @@ std::list< std::string >::iterator it = Resourses.begin();
 
 int aaa = parser_for_runtime.size();
 if( aaa>0 )
-runtime = new rdoRuntime::RDOPROCSeize( parser->getLastDPTProcess()->getRunTime(), parser_for_runtime );
+runtime = new rdoRuntime::RDOPROCSeize( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
 else
 parser->error( "Внутренняя ошибка: блок Seize ресурсов" );
 }
@@ -554,7 +554,7 @@ if ( rssMustCreate )
 		const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
 		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 			// Для начала проверим тип параметра
-			if ( param.getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
+			if ( param.getType() != rdoRuntime::RDOValue::rvt_enum ) {
 			parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str() ) );
 			}
 		// Теперь проверим сами значения
@@ -582,7 +582,7 @@ else
 	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 	// Для начала проверим тип параметра
-	if ( param.getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
+	if ( param.getType() != rdoRuntime::RDOValue::rvt_enum ) {
 		// Параметр Состояние есть, но он не перечислимого типа
 		parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
 	}
@@ -632,7 +632,7 @@ void RDOPROCSeize::makeSeizeResourse	(  RDOParser *parser, const std::string& re
 	{
 		// Ресурс не наден, проверим наличие типа
 		// Сформировать имя типа по имени ресурса
-		std::string rtp_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
+		std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
 		// Нашли тип ресурса
 		if ( !rtpList[rtp_name].exist() )
 		{
@@ -677,7 +677,7 @@ void RDOPROCSeize::makeSeizeResourse	(  RDOParser *parser, const std::string& re
 void RDOPROCSeize::makeSeizeType	(  RDOParser *parser, const std::string &resName, const RDOParserSrcInfo& info  )
 {
 // Сформировать имя типа по имени ресурса
-std::string rtp_name( RDOPROCProcess::name_prefix + resName + RDOPROCProcess::name_sufix );
+std::string rtp_name( RDOPROCProcess::s_name_prefix + resName + RDOPROCProcess::s_name_sufix );
 // "Состояние"
 std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
 // "Свободен"
@@ -757,7 +757,7 @@ std::list< std::string >::iterator it = Resourses.begin();
 		std::string aaa = *it;
 	const RDORSSResource* rss = parser->findRSSResource((*it));
 		if( rss ){
-		const std::string res_name = rss->getName();
+		const std::string res_name = rss->name();
 		// Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList( parser );
 		// Создадим тип ресурса
@@ -781,7 +781,7 @@ std::list< std::string >::iterator it = Resourses.begin();
 
 int aaa = parser_for_runtime.size();
 if( parser_for_runtime.size()>0 )
-runtime = new rdoRuntime::RDOPROCRelease( parser->getLastDPTProcess()->getRunTime(), parser_for_runtime );
+runtime = new rdoRuntime::RDOPROCRelease( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
 else
 parser->error( "Внутренняя ошибка: блок Release не имеет ресурсов" );
 }
@@ -823,7 +823,7 @@ if ( !rtpList[rtp_name].exist() )
 	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 		// Для начала проверим тип параметра
-		if ( param.getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
+		if ( param.getType() != rdoRuntime::RDOValue::rvt_enum ) {
 		parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str() ) );
 		}
 	// Теперь проверим сами значения
@@ -871,7 +871,7 @@ bool rssMustCreate = !rssList[res_name].exist();
 	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 	// Для начала проверим тип параметра
-	if ( param.getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
+	if ( param.getType() != rdoRuntime::RDOValue::rvt_enum ) {
 		// Параметр Состояние есть, но он не перечислимого типа
 		parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
 	}
