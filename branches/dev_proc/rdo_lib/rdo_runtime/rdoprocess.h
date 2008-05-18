@@ -63,6 +63,7 @@ protected:
 //	int id;
 //	static int ID;
 public:
+	RDOPROCBlock* getBlock();
 	static int typeID;
 	void addRes (RDOPROCResource* res);
 	void removeRes (RDOPROCResource* res);
@@ -79,6 +80,7 @@ class RDOPROCResource: public RDOResource
 {
 public:
 	std::list<RDOPROCTransact*> transacts;
+	bool AreYouReady(RDOPROCTransact* transact);
 public:
 	RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace );
 };
@@ -140,11 +142,14 @@ class RDOPROCSeize: public RDOPROCBlockForSeize
 private:
 	virtual bool     onCheckCondition( RDOSimulator* sim );
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-	int Busy_Res;
+	
+
 public:
-	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeize( _process, From_Par ) {Busy_Res=0;}
+	bool AllResFree ();
+	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeize( _process, From_Par ) {}
 	virtual void TransactGoIn( RDOPROCTransact* _transact );
 	virtual void TransactGoOut( RDOPROCTransact* _transact );
+
 };
 
 // ----------------------------------------------------------------------------
