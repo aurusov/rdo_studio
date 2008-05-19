@@ -63,6 +63,7 @@ protected:
 //	int id;
 //	static int ID;
 public:
+	RDOPROCBlock* getBlock();
 	static int typeID;
 	void addRes (RDOPROCResource* res);
 	void removeRes (RDOPROCResource* res);
@@ -75,10 +76,21 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
+enum  forResource{turn_On = 1, turn_Off = 2, not_Seize = 3, free = 4 };
+
 class RDOPROCResource: public RDOResource
 {
+protected: 
+	bool turnOn;
+	RDOPROCBlock* block;
 public:
 	std::list<RDOPROCTransact*> transacts;
+	forResource AreYouReady(RDOPROCTransact* transact);
+	bool BuzyInAnotherBlock (RDOPROCTransact* transact);
+	bool whoYou();
+	void youIs(forResource _this);
+	RDOPROCBlock* getBlock();
+	void setBlock(RDOPROCBlock* _block);
 public:
 	RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace );
 };
@@ -138,13 +150,17 @@ public:
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 private:
+	int Busy_Res;
 	virtual bool     onCheckCondition( RDOSimulator* sim );
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-	int Busy_Res;
+	std::map < int, forResource > for_turn;
 public:
-	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeize( _process, From_Par ) {Busy_Res=0;}
+	bool AllResFree ();
+	bool BuzyInAnotherBlockTurnOn ();
+	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeize( _process, From_Par ) {Busy_Res = 0;}
 	virtual void TransactGoIn( RDOPROCTransact* _transact );
 	virtual void TransactGoOut( RDOPROCTransact* _transact );
+
 };
 
 // ----------------------------------------------------------------------------
