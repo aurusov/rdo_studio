@@ -287,24 +287,6 @@ int Size_Seize = from_run.size();
 	}
 return true;
 }
-/*
-bool RDOPROCSeize::BuzyInAnotherBlockTurnOn ()
-{
-int Size_Seize = from_run.size();
-	for (int i=0;i<Size_Seize;i++)
-	{
-		//Если ресурс занят
-		if ( (from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_buzy) ){
-			//Если ресурс занят не в этом блоке, но по своей очереди
-			if((from_run[i].rss->getBlock() != this) && from_run[i].rss->whoIm() == turnOn )
-			{
-				return false;
-			}
-		}
-	}
-return true;
-}
-*/
 
 //Функция возвращает true, когда находит ресурс, занятый в другом блоке но по своей очереди
 bool RDOPROCSeize::BuzyInAnotherBlockTurnOn ()
@@ -329,42 +311,49 @@ return false;
 bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		if( !BuzyInAnotherBlockTurnOn ())
-		{
-		int Size_Seize = from_run.size();
-		//Идем по всем ресурсам не занятым в этом блоке, проверяя, готов ли каждый взять транзакт из очереди перед Сизом
+		if( !BuzyInAnotherBlockTurnOn ()){
+			int Size_Seize = from_run.size();
+			//Идем по всем ресурсам не занятым в этом блоке, проверяя, готов ли каждый взять транзакт из очереди перед Сизом
 			for_turn.clear();
-			for(int i=0; i<Size_Seize;i++)
-			{
-			RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-				if ( !tracer->isNull() ) 
-				tracer->getOStream() << from_run[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-				
-				//Не учитываем ресурс, занятый в этом сизе, по своей очереди
-				if( !(from_run[i].rss->getBlock() == this && from_run[i].rss->whoYou() == true) )
+				for(int i=0; i<Size_Seize;i++)
 				{
-					for_turn[i] = from_run[i].rss->AreYouReady(transacts.front());
-					if( for_turn[i] == not_Seize )
-					return false;
+				RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+					if ( !tracer->isNull() ) 
+					tracer->getOStream() << from_run[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+					
+					//Не учитываем ресурс, занятый в этом сизе, в "свою" очередь
+					if( !(from_run[i].rss->getBlock() == this && from_run[i].rss->whoYou() == true) )
+					{
+						for_turn[i] = from_run[i].rss->AreYouReady(transacts.front());
+						if( for_turn[i] == not_Seize )
+						return false;
+					}
 				}
-			for(int i=0; i<Size_Seize;i++)	
-			{
-				// Занимаем все, но на всякий случай проверяем
-				if ( from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_free ){
-				from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_buzy);		
-				from_run[i].rss->setBlock(this);
-				from_run[i].rss->youIs(for_turn[i]);
-				Busy_Res++;
-				//Записываем в транзакт, какие ресурсы он занимает
-				transacts.front()->addRes(from_run[i].rss);
-				}
-				else
+				for(int i=0; i<Size_Seize;i++)	
 				{
+					// Занимаем все, но на всякий случай проверяем
+					if ( from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_free ){
+					from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_buzy);		
+					from_run[i].rss->setBlock(this);
+					from_run[i].rss->youIs(for_turn[i]);
+					Busy_Res++;
+					//Записываем в транзакт, какие ресурсы он занимает
+					transacts.front()->addRes(from_run[i].rss);
+					}
+					else
+					{
+					}
 				}
+			if(Busy_Res == Size_Seize)
+			{
+			Busy_Res = 0;
+			return true;
 			}
-		}
-		if(Busy_Res == Size_Seize)
-		return true;
+			else
+			{
+			TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
+			return false;
+			}
 		}
 		else
 		{
@@ -425,7 +414,7 @@ return false;
 
 RDOBaseOperation::BOResult RDOPROCSeize::onDoOperation( RDOSimulator* sim )
 {
-	int Size_Seize = from_run.size();
+int Size_Seize = from_run.size();
 TRACE( "%7.1f SEIZE-%d\n", sim->getCurrentTime(), Size_Seize );
 transacts.front()->next();
 return RDOBaseOperation::BOR_done;

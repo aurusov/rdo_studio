@@ -76,8 +76,8 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-enum  forResource{turn_On = 1, turn_Off = 2, not_Seize = 3, free = 4 };
 
+enum  forResource{turn_On = 1, turn_Off = 2, not_Seize = 3, free = 4 };
 class RDOPROCResource: public RDOResource
 {
 protected: 
