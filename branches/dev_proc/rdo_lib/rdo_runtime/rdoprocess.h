@@ -15,6 +15,7 @@ class RDOPROCBlock: public RDOBaseOperation
 {
 friend class RDOPROCTransact;
 friend class RDOPROCProcess;
+friend class RDOPROCResource;
 
 protected:
 	RDOPROCProcess* process;
@@ -157,6 +158,7 @@ private:
 public:
 	bool AllResFree ();
 	bool BuzyInAnotherBlockTurnOn ();
+	bool AllBuzyInThisBlockn ();
 	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeize( _process, From_Par ) {Busy_Res = 0;}
 	virtual void TransactGoIn( RDOPROCTransact* _transact );
 	virtual void TransactGoOut( RDOPROCTransact* _transact );
