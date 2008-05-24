@@ -160,6 +160,10 @@
 %token RDO_not							436
 %token RDO_UMINUS						437
 
+%token RDO_Fuzzy_Parameters				438
+%token RDO_Fuzzy_Term					439
+%token RDO_Enum							440
+
 %{
 #include "pch.h"
 #ifdef _DEBUG
@@ -190,12 +194,25 @@ rtp_list:	/* empty */
 				PARSER->error( "Ожидается ключевое слово $Resource_type" );
 			};
 
-rtp_res_type:	rtp_res_type_hdr RDO_Parameters rtp_body RDO_End {
+rtp_res_type:	rtp_res_type_hdr RDO_Parameters rtp_body RDO_Fuzzy_Parameters rtp_fuzzy_body RDO_End {
+					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
+					if ( $3 == 0 ) {
+						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
+					}
+					//Случай четких и нечетких параметров ресурса
+				}
+				| rtp_res_type_hdr RDO_Parameters rtp_body RDO_End {
 					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
 					if ( $3 == 0 ) {
 						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
 					}
 				}
+				| rtp_res_type_hdr RDO_Fuzzy_Parameters rtp_fuzzy_body RDO_End {
+					//Случай только нечетких параметров ресурса
+				};
+				| rtp_res_type_hdr RDO_Parameters rtp_body RDO_Fuzzy_Parameters rtp_fuzzy_body {
+					PARSER->error( @5, "Не найдено ключевое слово $End" );
+				};
 				| rtp_res_type_hdr RDO_Parameters rtp_body {
 					PARSER->error( @3, "Не найдено ключевое слово $End" );
 				}
@@ -235,7 +252,61 @@ rtp_body:	/* empty */ {
 				PARSER->getLastRTPResType()->addParam( param );
 				$$ = 1; // no warning
 			};
-
+//-------------------------------------- FOR FUZZY LOGIC --------------------------------------	
+rtp_fuzzy_body:	/* empty */ {
+				$$ = 0; // warning
+			}
+			| rtp_fuzzy_body rtp_fuzzy_param {
+				//Выделен нечеткий параметр
+			};
+rtp_fuzzy_param: RDO_IDENTIF_COLON fuzzy_param_type fuzzy_param_terms {	
+				//Тип четкого значения нечеткого параметра			
+				}
+				| RDO_IDENTIF_COLON error {					
+				}
+				| error {
+					PARSER->error( @1, "Неверное описание нечеткого параметра" );
+				};
+fuzzy_param_type: RDO_integer param_int_diap param_int_default_val {
+				//Случай целочисленного четкого значения	
+				}
+				| RDO_real param_real_diap param_real_default_val {
+				//Случай вещественного четкого значения
+				}
+				| RDO_Enum {
+				//Случай перечислимого четкого значения	
+				}				
+fuzzy_param_terms: /* empty */ {
+					$$ = 0; // warning
+					}
+					| fuzzy_param_terms RDO_Fuzzy_Term RDO_IDENTIF fuzzy_membershift_fun {					
+					}
+fuzzy_membershift_fun: /* empty */ {
+					$$ = 0; // warning
+					}
+					| RDO_REAL_CONST {					
+					//Функция принадлежности для перечисляемого нечеткого типа
+					}
+					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')'{					
+					//Функция принадлежности по 4-ем точкам для вещественного четкого числа
+					}
+					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
+					//Функция принадлежности по 3-ем точкам для вещественного четкого числа
+					}
+					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
+					//Функция принадлежности по 2-ум точкам для вещественного четкого числа
+					}
+					| '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_INT_CONST ',' RDO_REAL_CONST ')'{					
+					//Функция принадлежности по 4-ем точкам для целочисленного четкого числа
+					}
+					| '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' {					
+					//Функция принадлежности по 3-ем точкам для целочисленного четкого числа
+					}
+					| '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' ',' '(' RDO_INT_CONST ',' RDO_REAL_CONST ')' {					
+					//Функция принадлежности по 2-ум точкам для целочисленного четкого числа
+					}				
+//---------------------------------------------------------------------------------------------		
+	
 rtp_param: RDO_IDENTIF_COLON param_type {
 					RDOParserSrcInfo par_src_info(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext);
 					RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
