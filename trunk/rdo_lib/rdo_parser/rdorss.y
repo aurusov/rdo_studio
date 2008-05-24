@@ -159,6 +159,7 @@
 %token RDO_Empty						435
 %token RDO_not							436
 %token RDO_UMINUS						437
+%token RDO_string						438
 
 %{
 #include "pch.h"
@@ -279,6 +280,20 @@ rss_value:	'*' {
 				}
 				try {
 					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getRSSEnumValue(*(std::string *)$1, @1);
+					PARSER->getLastRSSResource()->addValue( val );
+					PARSER->getLastRSSResource()->currParam++;
+				} catch( RDOSyntaxException& err ) {
+					PARSER->error_modify( rdo::format("Для параметра '%s': %s", (*(PARSER->getLastRSSResource()->currParam))->name().c_str(), err.message().c_str()) );
+				}
+			}
+			| RDO_QUOTED_IDENTIF {
+				if ( PARSER->getLastRSSResource()->currParam == PARSER->getLastRSSResource()->getType()->getParams().end() ) {
+					PARSER->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %s", ((std::string*)$1)->c_str()) );
+					PARSER->error_push_only( PARSER->getLastRSSResource()->getType()->src_info(), "См. тип ресурса" );
+					PARSER->error_push_done();
+				}
+				try {
+					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getRSSStringValue(*(std::string *)$1, @1);
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException& err ) {

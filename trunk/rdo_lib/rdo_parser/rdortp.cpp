@@ -70,6 +70,14 @@ const std::string& RDORTPDefVal::getEnumValue() const
 #pragma warning( default: 4172 )
 }
 
+const std::string& RDORTPDefVal::getStringValue() const
+{
+	parser()->error( src_info(), "Неверное значение по-умолчанию" );
+#pragma warning( disable: 4172 )
+	return "";	// unreachable code...
+#pragma warning( default: 4172 )
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParamType
 // ----------------------------------------------------------------------------
@@ -371,6 +379,11 @@ rdoRuntime::RDOValue RDORTPIntParamType::getRSSEnumValue( const std::string& val
 	return 0; // Не выполняется из-за checkRSSEnumValue
 }
 
+rdoRuntime::RDOValue RDORTPIntParamType::getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const
+{
+	return getRSSEnumValue( val, _src_info );
+}
+
 rdoRuntime::RDOValue RDORTPIntParamType::getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const 
 {
 	checkRSSIntValue( val, _src_info );
@@ -531,6 +544,11 @@ rdoRuntime::RDOValue RDORTPRealParamType::getRSSEnumValue( const std::string& va
 {
 	checkRSSEnumValue( val, _src_info );
 	return 0; // Не выполняется из-за checkRSSEnumValue
+}
+
+rdoRuntime::RDOValue RDORTPRealParamType::getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const
+{
+	return getRSSEnumValue( val, _src_info );
 }
 
 rdoRuntime::RDOValue RDORTPRealParamType::getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const
@@ -704,6 +722,12 @@ rdoRuntime::RDOValue RDORTPEnumParamType::getRSSEnumValue( const std::string& va
 	return enu->findEnumValueWithThrow( _src_info, val );
 }
 
+rdoRuntime::RDOValue RDORTPEnumParamType::getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const
+{
+	parser()->error( _src_info, rdo::format("Ожидается перечислимый тип, найдена строка '%s'", val.c_str()) );
+	return 0; // Не выполняется из-за checkRSSIntValue
+}
+
 rdoRuntime::RDOValue RDORTPEnumParamType::getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const 
 {
 	checkRSSIntValue( val, _src_info );
@@ -719,6 +743,108 @@ rdoRuntime::RDOValue RDORTPEnumParamType::getRSSRealValue( double val, const RDO
 int RDORTPEnumParamType::getDiapTableFunc() const 
 {
 	return enu->getEnums().getValues().size();
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPStringParamType
+// ----------------------------------------------------------------------------
+RDORTPStringParamType::RDORTPStringParamType( const RDOParserObject* _parent, RDORTPStringDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+	RDORTPParamType( _parent, _dv )
+{
+}
+
+const RDORTPParamType* RDORTPStringParamType::constructSuchAs( const RDOParserSrcInfo& _src_info ) const 
+{ 
+	RDORTPStringDefVal*    _dv   = new RDORTPStringDefVal( *static_cast<RDORTPStringDefVal*>(m_dv) );
+	RDORTPStringParamType* _type = new RDORTPStringParamType( parent(), _dv, _src_info );
+	_dv->setSrcInfo( _src_info );
+	_dv->setSrcPos( _src_info.src_pos().m_last_line, _src_info.src_pos().m_last_pos, _src_info.src_pos().m_last_line, _src_info.src_pos().m_last_pos );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+const RDORTPParamType* RDORTPStringParamType::constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	parser()->error( defVal_info, rdo::format("Неверное значение по-умолчанию для параметра строчного типа: %d", defVal) );
+	return NULL;
+}
+
+const RDORTPParamType* RDORTPStringParamType::constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	parser()->error( defVal_info, rdo::format("Неверное значение по-умолчанию для параметра строчного типа: %f", defVal) );
+	return NULL;
+}
+
+const RDORTPParamType* RDORTPStringParamType::constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	RDORTPStringDefVal*    _dv   = new RDORTPStringDefVal( parser(), defVal );
+	RDORTPStringParamType* _type = new RDORTPStringParamType( parent(), _dv, _src_info );
+	_dv->setSrcInfo( _src_info );
+	_dv->setSrcPos( _src_info.src_pos().m_last_line, _src_info.src_pos().m_last_pos, _src_info.src_pos().m_last_line, _src_info.src_pos().m_last_pos );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+void RDORTPStringParamType::checkRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const
+{
+}
+
+void RDORTPStringParamType::checkRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const
+{
+	parser()->error( _src_info, rdo::format("Ожидается строка, найдено '%d'", val) );
+}
+
+void RDORTPStringParamType::checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const
+{
+	parser()->error( _src_info, rdo::format("Ожидается строка, найдено '%f'", val) );
+}
+
+rdoRuntime::RDOValue RDORTPStringParamType::getDefaultValue( const RDOParserSrcInfo& _src_info ) const 
+{
+	if ( !m_dv->isExist() ) {
+		parser()->error( _src_info, "Нет значения по-умолчанию" );
+	}
+	return m_dv->getStringValue();
+}
+
+rdoRuntime::RDOValue RDORTPStringParamType::getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const
+{
+	parser()->error( _src_info, rdo::format("Ожидается строка, найдено перечисление '%s'", val.c_str()) );
+	return 0;
+}
+
+rdoRuntime::RDOValue RDORTPStringParamType::getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const
+{
+	return rdoRuntime::RDOValue(val);
+}
+
+rdoRuntime::RDOValue RDORTPStringParamType::getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const 
+{
+	checkRSSIntValue( val, _src_info );
+	return 0; // Не выполняется из-за checkRSSIntValue
+}
+
+rdoRuntime::RDOValue RDORTPStringParamType::getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const
+{
+	checkRSSRealValue( val, _src_info );
+	return 0; // Не выполняется из-за checkRSSRealValue
+}
+
+int RDORTPStringParamType::getDiapTableFunc() const
+{
+	parser()->error( src_info(), "Параметр табличной функции может быть целого или перечислимого типа" );
+	return 0;		// unreachable code...
+}
+
+void RDORTPStringParamType::writeModelStructure( std::ostream& stream ) const
+{
+	stream << "S" << std::endl;
 }
 
 } // namespace rdoParse

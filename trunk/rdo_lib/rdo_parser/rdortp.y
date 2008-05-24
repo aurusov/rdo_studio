@@ -159,6 +159,7 @@
 %token RDO_Empty						435
 %token RDO_not							436
 %token RDO_UMINUS						437
+%token RDO_string						438
 
 %{
 #include "pch.h"
@@ -281,6 +282,11 @@ param_type:		RDO_integer param_int_diap param_int_default_val {
 						enu->findEnumValueWithThrow( dv->src_pos(), dv->getEnumValue() ); // ≈сли не найдено, то будет сообщение об ошибке, т.е. throw
 					}
 					RDORTPEnumParamType* rp = new RDORTPEnumParamType( PARSER->getLastParsingObject(), enu, dv, RDOParserSrcInfo( @1, @2 ) );
+					$$ = (int)rp;
+				}
+				| RDO_string param_string_default_val {
+					RDORTPStringDefVal* dv = reinterpret_cast<RDORTPStringDefVal*>($2);
+					RDORTPStringParamType* rp = new RDORTPStringParamType( PARSER->getLastParsingObject(), dv, RDOParserSrcInfo( @1, @2 ) );
 					$$ = (int)rp;
 				}
 				| param_such_as {
@@ -524,6 +530,22 @@ param_enum_default_val:	/* empty */ {
 					}
 					| '=' error {
 						PARSER->error( @2, "Ќеверное значение по-умолчанию дл€ перечислимого типа" );
+					};
+
+param_string_default_val:	/* empty */ {
+						YYLTYPE pos = @0;
+						pos.first_line   = pos.last_line;
+						pos.first_column = pos.last_column;
+						$$ = (int)(new RDORTPStringDefVal(PARSER, pos));
+					}
+					| '=' RDO_QUOTED_IDENTIF {
+						$$ = (int)(new RDORTPStringDefVal( PARSER, *(std::string*)$2, RDOParserSrcInfo( @1, @2 ) ));
+					}
+					| '=' {
+						PARSER->error( @1, "Ќе указано значение по-умолчанию дл€ строчного типа" );
+					}
+					| '=' error {
+						PARSER->error( @2, "Ќеверное значение по-умолчанию дл€ строчного типа" );
 					};
 
 param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
