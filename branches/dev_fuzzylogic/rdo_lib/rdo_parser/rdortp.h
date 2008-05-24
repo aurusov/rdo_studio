@@ -29,6 +29,7 @@ public:
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const = 0;
+	virtual rdoRuntime::RDOValue getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual int getDiapTableFunc() const = 0;
@@ -142,6 +143,7 @@ public:
 	virtual int getIntValue() const;
 	virtual double getRealValue() const;
 	virtual const std::string& getEnumValue() const;
+	virtual const std::string& getStringValue() const;
 	bool isExist() const { return exist; }
 };
 
@@ -291,6 +293,7 @@ public:
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;					// the function also check range if exist
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual int getDiapTableFunc() const;
@@ -365,6 +368,7 @@ public:
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;				// this function too
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info )const ; 	// the function also check range if exist
 	virtual int getDiapTableFunc() const;
@@ -460,6 +464,7 @@ public:
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual int getDiapTableFunc() const;
@@ -470,6 +475,76 @@ private:
 	void init_src_info();
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDORTPStringDefVal
+// ----------------------------------------------------------------------------
+class RDORTPStringDefVal: public RDORTPDefVal
+{
+public:
+	RDORTPStringDefVal( RDOParser* _parser ):
+		RDORTPDefVal( _parser, false ),
+		m_val( "" )
+	{
+	}
+	RDORTPStringDefVal( RDOParser* _parser, const RDORTPStringDefVal& copy ):
+		RDORTPDefVal( _parser, copy ),
+		m_val( copy.m_val )
+	{
+		setSrcText( m_val );
+	}
+	RDORTPStringDefVal( const RDORTPStringDefVal& copy ):
+		RDORTPDefVal( copy.parser(), copy ),
+		m_val( copy.m_val )
+	{
+		setSrcText( m_val );
+	}
+	RDORTPStringDefVal( RDOParser* _parser, const std::string& _val ):
+		RDORTPDefVal( _parser, true ),
+		m_val( _val )
+	{
+		setSrcText( m_val );
+	}
+	RDORTPStringDefVal( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, false, _src_info ),
+		m_val( "" )
+	{
+	}
+	RDORTPStringDefVal( RDOParser* _parser, const std::string& _val, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, true, _src_info ),
+		m_val( _val )
+	{
+		setSrcText( m_val );
+	}
+	virtual const std::string& getStringValue() const { return m_val; }
+
+private:
+	std::string m_val;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPStringParamType
+// ----------------------------------------------------------------------------
+class RDORTPStringParamType: public RDORTPParamType
+{
+public:
+	RDORTPStringParamType( const RDOParserObject* _parent, RDORTPStringDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	virtual const RDORTPParamType* constructSuchAs( const RDOParserSrcInfo& _src_info ) const;
+	virtual const RDORTPParamType* constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
+	virtual const RDORTPParamType* constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
+	virtual const RDORTPParamType* constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
+	virtual void checkRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
+	virtual void checkRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;
+	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getRSSStringValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
+	virtual int getDiapTableFunc() const;
+	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_string; }
+	virtual void writeModelStructure( std::ostream& stream ) const;
+};
+
 class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
 {
 public:
@@ -478,13 +553,12 @@ public:
 	const RDORTPParamType* const getType() const    { return m_parType; }
 	const RDORTPResType* const   getResType() const { return m_resType; }
 	void writeModelStructure( std::ostream& stream ) const;
-
 protected:
 	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
-
 	const RDORTPParamType* const m_parType;
 	const RDORTPResType*   const m_resType;
 };
+
 } // namespace rdoParse
 
 #endif // RDORTP_H

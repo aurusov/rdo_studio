@@ -336,9 +336,10 @@ class RDOValue
 public:
 	enum Type {
 		rvt_unknow = 0,
-		rvt_int    = 1,
-		rvt_real   = 2,
-		rvt_enum   = 3
+		rvt_int,
+		rvt_real,
+		rvt_enum,
+		rvt_string
 	};
 
 	RDOValue():
@@ -348,21 +349,36 @@ public:
 	}
 	~RDOValue()
 	{
+		switch ( m_type )
+		{
+			case rvt_string: {
+				delete __string();
+				break;
+			}
+		}
 	}
 	RDOValue( const RDOValue& rdovalue ):
 		m_type( rdovalue.m_type ),
 		m_value( rdovalue.m_value ),
 		m_data( rdovalue.m_data )
 	{
+		switch ( m_type )
+		{
+			case rvt_string: {
+				m_data = new std::string( *rdovalue.__string() );
+				break;
+			}
+		}
 	}
 	RDOValue( Type type ):
 		m_type( type )
 	{
 		switch ( m_type ) {
-			case rvt_int : m_value.i_value = 0; break;
-			case rvt_real: m_value.d_value = 0; break;
-			case rvt_enum: m_value.i_value = 0; m_data = NULL; break;
-			default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : m_value.i_value = 0; break;
+			case rvt_real  : m_value.d_value = 0; break;
+			case rvt_enum  : m_value.i_value = 0; m_data = NULL; break;
+			case rvt_string: m_value.i_value = 0; m_data = new std::string(""); break;
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	RDOValue( int value ):
@@ -400,6 +416,11 @@ public:
 			RDORuntimeRDOValue("");
 		}
 	}
+	RDOValue( const std::string& value ):
+		m_type( rvt_string )
+	{
+		m_data = new std::string( value );
+	}
 	
 	Type getType() const { return m_type; }
 	
@@ -424,7 +445,7 @@ public:
 	RDOEnum& getEnum() const
 	{
 		switch ( m_type ) {
-			case rvt_enum: return *reinterpret_cast<RDOEnum*>(m_data);
+			case rvt_enum: return *__enum();
 			default      : throw RDORuntimeRDOValue("");
 		}
 	}
@@ -446,22 +467,31 @@ public:
 			default      : throw RDORuntimeRDOValue("");
 		}
 	}
+	const std::string& getString() const
+	{
+		switch ( m_type ) {
+			case rvt_string: return *__string();
+			default        : throw RDORuntimeRDOValue("");
+		}
+	}
 	std::string getAsString() const
 	{
 		switch ( m_type ) {
-			case rvt_int : return rdo::format( "%d", m_value.i_value );
-			case rvt_real: return toString( m_value.d_value );
-			case rvt_enum: return reinterpret_cast<RDOEnum*>(m_data)->getValues().at( m_value.i_value );
-			default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : return rdo::format( "%d", m_value.i_value );
+			case rvt_real  : return toString( m_value.d_value );
+			case rvt_enum  : return __enum()->getValues().at( m_value.i_value );
+			case rvt_string: return *__string();
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	std::string getAsStringForTrace() const
 	{
 		switch ( m_type ) {
-			case rvt_int : return rdo::format( "%d", m_value.i_value );
-			case rvt_real: return toString( m_value.d_value );
-			case rvt_enum: return rdo::format( "%d", m_value.i_value );
-			default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : return rdo::format( "%d", m_value.i_value );
+			case rvt_real  : return toString( m_value.d_value );
+			case rvt_enum  : return rdo::format( "%d", m_value.i_value );
+			case rvt_string: return *__string();
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	std::string getTypeAsString() const
@@ -470,119 +500,158 @@ public:
 			case rvt_unknow: return "unknow";
 			case rvt_int   : return "int";
 			case rvt_real  : return "double";
-			case rvt_enum  : return reinterpret_cast<RDOEnum*>(m_data)->str();
+			case rvt_enum  : return __enum()->str();
+			case rvt_string: return "string";
 			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	RDOValue& operator= ( const RDOValue& rdovalue )
 	{
+		switch ( m_type )
+		{
+			case rvt_string: {
+				if ( __string() ) delete __string();
+				break;
+			}
+		}
 		m_type  = rdovalue.m_type;
 		m_value = rdovalue.m_value;
 		m_data  = rdovalue.m_data;
+		switch ( m_type )
+		{
+			case rvt_string: {
+				m_data = new std::string( *rdovalue.__string() );
+				break;
+			}
+		}
 		return *this;
 	}
-	bool operator< ( const RDOValue& rdovalue )
+	bool operator== ( const RDOValue& rdovalue ) const
 	{
 		switch ( m_type ) {
-			case rvt_int : switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.i_value < rdovalue.m_value.i_value;
-								case rvt_real: return m_value.i_value < rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.i_value == rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.i_value == rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_real: switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.d_value < rdovalue.m_value.i_value;
-								case rvt_real: return m_value.d_value < rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_real  : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.d_value  == rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.d_value  == rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			default      : throw RDORuntimeRDOValue("");
-		}
-	}
-	bool operator> ( const RDOValue& rdovalue )
-	{
-		switch ( m_type ) {
-			case rvt_int : switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.i_value > rdovalue.m_value.i_value;
-								case rvt_real: return m_value.i_value > rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_enum  : switch ( rdovalue.m_type ) {
+								case rvt_enum  : return m_data == rdovalue.m_data && m_value.i_value == rdovalue.m_value.i_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_real: switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.d_value > rdovalue.m_value.i_value;
-								case rvt_real: return m_value.d_value > rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_string: switch ( rdovalue.m_type ) {
+								case rvt_string: return __string() == rdovalue.__string();
+								default        : throw RDORuntimeRDOValue("");
 							}
-			default      : throw RDORuntimeRDOValue("");
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	bool operator!= ( const RDOValue& rdovalue ) const
 	{
 		switch ( m_type ) {
-			case rvt_int : switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.i_value != rdovalue.m_value.i_value;
-								case rvt_real: return m_value.i_value != rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.i_value != rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.i_value != rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_real: switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.d_value != rdovalue.m_value.i_value;
-								case rvt_real: return m_value.d_value != rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_real  : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.d_value != rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.d_value != rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_enum: switch ( rdovalue.m_type ) {
-								case rvt_enum: return m_value.i_value != rdovalue.m_value.i_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_enum  : switch ( rdovalue.m_type ) {
+								case rvt_enum  : return m_value.i_value != rdovalue.m_value.i_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			default      : throw RDORuntimeRDOValue("");
+			case rvt_string: switch ( rdovalue.m_type ) {
+								case rvt_string: return __string() != rdovalue.__string();
+								default        : throw RDORuntimeRDOValue("");
+							}
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
-	bool operator== ( const RDOValue& rdovalue ) const
+	bool operator< ( const RDOValue& rdovalue )
 	{
 		switch ( m_type ) {
-			case rvt_int : switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.i_value == rdovalue.m_value.i_value;
-								case rvt_real: return m_value.i_value == rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.i_value < rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.i_value < rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_real: switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.d_value  == rdovalue.m_value.i_value;
-								case rvt_real: return m_value.d_value  == rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_real  : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.d_value < rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.d_value < rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_enum: switch ( rdovalue.m_type ) {
-								case rvt_enum: return m_data == rdovalue.m_data && m_value.i_value == rdovalue.m_value.i_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_string: switch ( rdovalue.m_type ) {
+								case rvt_string: return __string() < rdovalue.__string();
+								default        : throw RDORuntimeRDOValue("");
 							}
-			default      : throw RDORuntimeRDOValue("");
+			default        : throw RDORuntimeRDOValue("");
+		}
+	}
+	bool operator> ( const RDOValue& rdovalue )
+	{
+		switch ( m_type ) {
+			case rvt_int   : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.i_value > rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.i_value > rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
+							}
+			case rvt_real  : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.d_value > rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.d_value > rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
+							}
+			case rvt_string: switch ( rdovalue.m_type ) {
+								case rvt_string: return __string() > rdovalue.__string();
+								default        : throw RDORuntimeRDOValue("");
+							}
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	bool operator<= ( const RDOValue& rdovalue ) const
 	{
 		switch ( m_type ) {
-			case rvt_int : switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.i_value <= rdovalue.m_value.i_value;
-								case rvt_real: return m_value.i_value <= rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.i_value <= rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.i_value <= rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_real: switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.d_value <= rdovalue.m_value.i_value;
-								case rvt_real: return m_value.d_value <= rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_real  : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.d_value <= rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.d_value <= rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			default      : throw RDORuntimeRDOValue("");
+			case rvt_string: switch ( rdovalue.m_type ) {
+								case rvt_string: return __string() <= rdovalue.__string();
+								default        : throw RDORuntimeRDOValue("");
+							}
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	bool operator>= ( const RDOValue& rdovalue ) const
 	{
 		switch ( m_type ) {
-			case rvt_int : switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.i_value >= rdovalue.m_value.i_value;
-								case rvt_real: return m_value.i_value >= rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.i_value >= rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.i_value >= rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_real: switch ( rdovalue.m_type ) {
-								case rvt_int : return m_value.d_value >= rdovalue.m_value.i_value;
-								case rvt_real: return m_value.d_value >= rdovalue.m_value.d_value;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_real  : switch ( rdovalue.m_type ) {
+								case rvt_int   : return m_value.d_value >= rdovalue.m_value.i_value;
+								case rvt_real  : return m_value.d_value >= rdovalue.m_value.d_value;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			default      : throw RDORuntimeRDOValue("");
+			case rvt_string: switch ( rdovalue.m_type ) {
+								case rvt_string: return __string() >= rdovalue.__string();
+								default        : throw RDORuntimeRDOValue("");
+							}
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	RDOValue operator- () const
@@ -598,17 +667,21 @@ public:
 	void operator+= ( const RDOValue& rdovalue )
 	{
 		switch ( m_type ) {
-			case rvt_int : switch ( rdovalue.m_type ) {
-								case rvt_int :
-								case rvt_real: m_value.i_value += rdovalue.getInt(); return;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_int   : switch ( rdovalue.m_type ) {
+								case rvt_int   :
+								case rvt_real  : m_value.i_value += rdovalue.getInt(); return;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			case rvt_real: switch ( rdovalue.m_type ) {
-								case rvt_int :
-								case rvt_real: m_value.d_value += rdovalue.getDouble(); return;
-								default      : throw RDORuntimeRDOValue("");
+			case rvt_real  : switch ( rdovalue.m_type ) {
+								case rvt_int   :
+								case rvt_real  : m_value.d_value += rdovalue.getDouble(); return;
+								default        : throw RDORuntimeRDOValue("");
 							}
-			default      : throw RDORuntimeRDOValue("");
+			case rvt_string: switch ( rdovalue.m_type ) {
+								case rvt_string: *__string() += *rdovalue.__string();
+								default        : throw RDORuntimeRDOValue("");
+							}
+			default        : throw RDORuntimeRDOValue("");
 		}
 	}
 	void operator-= ( const RDOValue& rdovalue )
@@ -691,6 +764,9 @@ private:
 	}                       m_value;
 	Type                    m_type;
 	void*                   m_data;
+
+	RDOEnum*     __enum()   const { return reinterpret_cast<RDOEnum*>(m_data);     }
+	std::string* __string() const { return reinterpret_cast<std::string*>(m_data); }
 };
 
 inline std::ostream& operator<< ( std::ostream& stream, const RDOValue& rdovalue )

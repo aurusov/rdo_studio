@@ -39,6 +39,17 @@ public:
 		m_parser( parser )
 	{
 	}
+	void operator= ( const RDOList<T>& obj )
+	{
+		m_parser = obj.m_parser;
+		m_list.clear();
+		CIterator it = obj.begin();
+		while ( it != obj.end() )
+		{
+			m_list.push_back( *it );
+			it++;
+		}
+	}
 
 	CIterator     begin() const { return m_list.begin(); }
 	CIterator     end  () const { return m_list.end();   }
@@ -79,9 +90,11 @@ class Class                                                \
 friend class Class##List;                                  \
 public:                                                    \
 	Class(): m_exist( false ), m_name("") {}               \
+	Class( const Class& obj );                             \
                                                            \
 	const std::string& name() const    { return m_name;  } \
 	bool               exist() const   { return m_exist; } \
+	void operator= (const Class& copy );                   \
                                                            \
 private:                                                   \
 	std::string m_name;                                    \
