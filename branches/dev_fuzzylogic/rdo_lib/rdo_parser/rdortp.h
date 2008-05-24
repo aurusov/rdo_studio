@@ -470,6 +470,21 @@ private:
 	void init_src_info();
 };
 
+class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	RDORTPFuzzyParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+	const std::string&           name() const       { return src_info().src_text(); }
+	const RDORTPParamType* const getType() const    { return m_parType; }
+	const RDORTPResType* const   getResType() const { return m_resType; }
+	void writeModelStructure( std::ostream& stream ) const;
+
+protected:
+	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+
+	const RDORTPParamType* const m_parType;
+	const RDORTPResType*   const m_resType;
+};
 } // namespace rdoParse
 
 #endif // RDORTP_H

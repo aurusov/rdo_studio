@@ -805,9 +805,12 @@ BEGIN
             MENUITEM "permanent",                   ID_INSERT_RTP_PERMANENT
             MENUITEM "temporary",                   ID_INSERT_RTP_TEMPORARY
             MENUITEM "$Parameters",                 ID_INSERT_RTP_PARAMETERS
+			MENUITEM "$Fuzzy_Parameters",           ID_INSERT_RTP_FUZZY_PARAMETERS
+			MENUITEM "Term",						ID_INSERT_RTP_FUZZY_TERM
             MENUITEM "integer",                     ID_INSERT_RTP_INTEGER
             MENUITEM "longint",                     ID_INSERT_RTP_LONGINT
             MENUITEM "real",                        ID_INSERT_RTP_REAL
+			MENUITEM "enum",                        ID_INSERT_RTP_ENUM
             MENUITEM "such_as",                     ID_INSERT_RTP_SUCHAS
             MENUITEM "$End",                        ID_INSERT_RTP_END
         END
@@ -4307,9 +4310,12 @@ BEGIN
             MENUITEM "permanent",                   ID_INSERT_RTP_PERMANENT
             MENUITEM "temporary",                   ID_INSERT_RTP_TEMPORARY
             MENUITEM "$Parameters",                 ID_INSERT_RTP_PARAMETERS
+			MENUITEM "$Fuzzy_Parameters",           ID_INSERT_RTP_FUZZY_PARAMETERS
+			MENUITEM "Term",						ID_INSERT_RTP_FUZZY_TERM
             MENUITEM "integer",                     ID_INSERT_RTP_INTEGER
             MENUITEM "longint",                     ID_INSERT_RTP_LONGINT
             MENUITEM "real",                        ID_INSERT_RTP_REAL
+			MENUITEM "enum",                        ID_INSERT_RTP_ENUM
             MENUITEM "such_as",                     ID_INSERT_RTP_SUCHAS
             MENUITEM "$End",                        ID_INSERT_RTP_END
         END
