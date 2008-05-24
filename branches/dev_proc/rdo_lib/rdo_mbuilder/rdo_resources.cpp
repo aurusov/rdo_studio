@@ -6,6 +6,58 @@ namespace rdoMBuilder
 {
 
 // --------------------------------------------------------------------
+// ----------  онструкторы копий и операторы присваивани€
+// --------------------------------------------------------------------
+RDOResType::RDOResType( const RDOResType& obj )
+{
+	operator=( obj );
+}
+
+RDOResType::Param::Param( const RDOResType::Param& obj )
+{
+	operator=( obj );
+}
+
+RDOResource::RDOResource( const RDOResource& obj )
+{
+	operator=( obj );
+}
+
+void RDOResType::operator= (const RDOResType& obj )
+{
+	m_name   = obj.m_name;
+	m_exist  = obj.m_exist;
+	m_type   = obj.m_type;
+	m_id     = obj.m_id;
+	m_params = obj.m_params;
+}
+
+void RDOResType::Param::operator= (const RDOResType::Param& obj )
+{
+	m_name    = obj.m_name;
+	m_exist   = obj.m_exist;
+	m_type    = obj.m_type;
+	m_id      = obj.m_id;
+	m_min     = obj.m_min;
+	m_max     = obj.m_max;
+	m_default = obj.m_default;
+}
+
+void RDOResource::operator= (const RDOResource& obj )
+{
+	m_name   = obj.m_name;
+	m_exist  = obj.m_exist;
+	m_rtp    = obj.m_rtp;
+	m_params.clear();
+	Params::const_iterator it = obj.m_params.begin();
+	while ( it != obj.m_params.end() )
+	{
+		m_params[ it->first ] = it->second;
+		it++;
+	}
+}
+
+// --------------------------------------------------------------------
 // ---------- RDOResType
 // --------------------------------------------------------------------
 // ---- »нициализаци€ типа ресурса по существующему в пам€ти
