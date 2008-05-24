@@ -119,12 +119,12 @@ RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, unsigned in
 forResource RDOPROCResource::AreYouReady(RDOPROCTransact* transact)
 {
 std::list< RDOPROCTransact* >::iterator it = this->transacts.begin();
-int flagOutput = 0;
+bool flagOutput = false;
 	//Идем по всем транзактам в списке ресурса
 	while(it!=transacts.end())
 	{
 		//Если у блока сиз в котором находится транзакт "*it" нет ресурсов занятых другим блоком по своей очереди, идем дальше
-		if(! (static_cast<RDOPROCSeize*>((*it)->getBlock())->BuzyInAnotherBlockTurnOn())  )
+		if(! (static_cast<RDOPROCSeize*>((*it)->getBlock())->BuzyInAnotherBlockTurnOn()))
 		{
 		//Номер транзакта, который просится в блок
 		int aaa = transact->getTraceID();
@@ -134,7 +134,7 @@ int flagOutput = 0;
 			if(transact->getTraceID() == (*it)->getBlock()->transacts.front()->getTraceID())
 			{
 				//Если этот транзакт не первый в очереди к ресурсу, он идет "внеочереди"
-				return flagOutput==0 ? turn_On : turn_Off;
+				return flagOutput == false ? turn_On : turn_Off;
 			}
 			else
 			{
@@ -142,14 +142,14 @@ int flagOutput = 0;
 			}
 		}
 		else
-		flagOutput++ ;
+		flagOutput = true;
 	it++;
 	}
 return not_Seize;
 }
 
 
-bool RDOPROCResource::whoYou()
+bool RDOPROCResource::whoAreYou()
 {
 	return this->turnOn;
 }
@@ -261,18 +261,6 @@ void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
-bool RDOPROCSeize::AllResFree ()
-{
-int Size_Seize = from_run.size();
-	for (int i=0;i<Size_Seize;i++)
-	{	
-
-		if ( from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_buzy )
-		return false;
-	}
-return true;
-}
-
 //Функция возвращает true, когда находит ресурс, занятый в другом блоке но по своей очереди
 bool RDOPROCSeize::BuzyInAnotherBlockTurnOn ()
 {
@@ -282,7 +270,7 @@ int Size_Seize = from_run.size();
 		//Если ресурс занят
 		if ( (from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_buzy) ){
 			//Если ресурс занят не в этом блоке, но по своей очереди
-			if((from_run[i].rss->getBlock() != this) && from_run[i].rss->whoYou() == true )
+			if((from_run[i].rss->getBlock() != this) && from_run[i].rss->whoAreYou() == true )
 			{
 				return true;
 			}
@@ -316,8 +304,8 @@ bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
 					if ( !tracer->isNull() ) 
 					tracer->getOStream() << from_run[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 					
-					//Не учитываем ресурс, занятый в этом сизе, в "свою" очередь
-					if( !(from_run[i].rss->getBlock() == this && from_run[i].rss->whoYou() == true) )
+					//Не учитываем ресурс, уже занятый в этом сизе
+					if( !(from_run[i].rss->getBlock() == this)) //&& from_run[i].rss->whoAreYou() == true) )
 					{
 						for_turn[i] = from_run[i].rss->AreYouReady(transacts.front());
 						if( for_turn[i] == not_Seize )
@@ -349,13 +337,13 @@ bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
 			}
 			else
 			{
-			TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
+		//	TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
 			return false;
 			}
 		}
 		else
 		{
-		TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
+		//TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
 		return false;
 		}
 	}
@@ -410,7 +398,7 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 				if ( transacts.front()->findRes(from_run[i].rss) ) {
 				from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_free);
 				from_run[i].rss->setBlock(NULL);
-				from_run[i].rss->youIs(free);
+				//from_run[i].rss->youIs(free);
 				transacts.front()->removeRes(from_run[i].rss);
 				}
 				else{
@@ -419,7 +407,7 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 				}
 			}
 			else{
-			TRACE( "%7.1f RELEASE %s\n", sim->getCurrentTime(), from_par[i].Id_res);
+			//TRACE( "%7.1f RELEASE %s\n", sim->getCurrentTime(), from_par[i].Id_res);
 			}
 		}
 	return true;

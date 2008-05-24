@@ -271,14 +271,14 @@ dpt_release_param:    // empty
 					// Имя ресурса
 					std::string res_name	= *reinterpret_cast<std::string*>($1);
 					const RDOParserSrcInfo& info	= @1;		
-					RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
+					//RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
 					}
 
 					| dpt_release_param ',' RDO_IDENTIF {
 					// Имя ресурса
 					std::string res_name       = *reinterpret_cast<std::string*>($3);
 					const RDOParserSrcInfo& info	= @3;		
-					RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
+					//RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
 					};
 
 dpt_seize_param:    // empty 

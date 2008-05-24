@@ -230,33 +230,16 @@ class RDOPROCSeize: public RDOPROCOperator
 {
 protected:
 	rdoRuntime::RDOPROCSeize* runtime;
-	std::list< std::string > Resourses;
+	std::list< std::string > Resources;
 	std::vector< rdoRuntime::parser_for_Seize > parser_for_runtime;
-	//std::vector< int > res_Numbers;
 public:
-	void create_runtime_Seize( RDOParser *parser );
-	void add_Seize_Resourse			( std::string res_name){Resourses.push_back( res_name );}	
-	/*std::string  show_first_res ()							
-	{
-		std::string aaa;
-		aaa=Resourses.front();
-		return aaa;}	
-	*/
 	static void makeSeizeType		(  RDOParser *parser, const std::string& res_name, const RDOParserSrcInfo& info );
-//	static int ID = 0;
 	static void makeSeizeResourse	(  RDOParser *parser, const std::string& res_name, const RDOParserSrcInfo& info );
+	void add_Seize_Resourse			( std::string res_name){Resources.push_back( res_name );}	
+	void create_runtime_Seize( RDOParser *parser );
 	RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name );
 };
-/*
-class RDOPROCSeize: public RDOPROCOperator
-{
-protected:
-	rdoRuntime::RDOPROCSeize* runtime;
 
-public:
-	RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, const std::string& res_name );
-};
-*/
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCRelease
 // ----------------------------------------------------------------------------
@@ -264,25 +247,17 @@ class RDOPROCRelease: public RDOPROCOperator
 {
 protected:
 	rdoRuntime::RDOPROCRelease* runtime;
-	std::list< std::string > Resourses;
+	std::list< std::string > Resources;
 	std::vector < rdoRuntime::parser_for_Seize > parser_for_runtime;
 	
 public:
 	void create_runtime_Release( RDOParser *parser );
-	void add_Release_Resourse			( std::string res_name){Resourses.push_back( res_name );}	
+	void add_Release_Resourse			( std::string res_name){Resources.push_back( res_name );}	
 	static void checkReleaseType		(  RDOParser *parser, const std::string& res_name, const RDOParserSrcInfo& info );
 	static void checkReleaseResourse	(  RDOParser *parser, const std::string& res_name, const RDOParserSrcInfo& info );
 	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name);
 };
 
-/*class RDOPROCRelease: public RDOPROCOperator
-{
-protected:
-	rdoRuntime::RDOPROCRelease* runtime;
-
-public:
-	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name, const std::string& res_name );
-};*/
 
 
 // ----------------------------------------------------------------------------

@@ -466,13 +466,12 @@ RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _
 RDOPROCSeize::RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name ):
 	RDOPROCOperator( _process, _name )
 {
-//	parser()->insertDPTSeize( this );
 }
 
 void RDOPROCSeize::create_runtime_Seize( RDOParser *parser )
 {
-std::list< std::string >::iterator it = Resourses.begin();
-	while ( it != Resourses.end() ) {
+std::list< std::string >::iterator it = Resources.begin();
+	while ( it != Resources.end() ) {
 		std::string aaa = *it;
 	const RDORSSResource* rss = parser->findRSSResource((*it));
 		if( rss ){
@@ -514,12 +513,17 @@ void RDOPROCSeize::makeSeizeType	(  RDOParser *parser, const std::string &resNam
 void RDOPROCSeize::makeSeizeResourse	(  RDOParser *parser, const std::string& res_name, const RDOParserSrcInfo& info )
 {
 TRACE( "%s SEIZE_good\n", res_name.c_str());
+
+// Сформировать имя типа по имени ресурса
+std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
 // "Состояние"
 std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
 // "Свободен"
 std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
 // "Занят"
 std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
+
+
 
 // Получили список всех типов ресурсов
 rdoMBuilder::RDOResTypeList rtpList( parser );
@@ -528,12 +532,13 @@ rdoMBuilder::RDOResourceList rssList( parser );
 
 rdoMBuilder::RDOResType rtp;
 bool rssMustCreate = !rssList[res_name].exist();
-if ( rssMustCreate )
-{
+
+	if ( rssMustCreate )
+	{
 		// Ресурс не наден, проверим наличие типа
 		// Сформировать имя типа по имени ресурса
-		std::string rtp_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
-		// Нашли тип ресурса
+		//std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+		// Не нашли тип ресурса
 		if ( !rtpList[rtp_name].exist() )
 		{
 		//	parser->error( info, rdo::format("Не найден тип ресурса: %s", rtp_name.c_str()) );
@@ -542,7 +547,17 @@ if ( rssMustCreate )
 		// Создадим параметр перечислимого типа
 		rtp_.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnum(parser->runtime(), rdoRuntime::RDOEnum::EnumArray(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
 		rtp = rtp_;
+			// Добавим тип ресурса	
+			if ( !rtpList.append( rtp ) )
+			{
+			parser->error( info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+			}
+		// Создадим ресурс
+		rdoMBuilder::RDOResource rss( rtp, res_name );
+		// Добавим его в систему
+		rssList.append<rdoParse::RDOPROCResource>(rss );
 		}
+	
 		else
 		{
 		rtp = rtpList[rtp_name];
@@ -562,51 +577,18 @@ if ( rssMustCreate )
 			{
 			parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
 			}
-		}
-	// Добавим тип ресурса	
-	if ( !rtpList.append( rtp ) )
-	{
-	parser->error( info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
-	}
-}
-else
-{
-		// Ресурсе найден, взяли его тип
-		rtp = rssList[res_name].getType();
-}
 
-	// Проверить тип на наличие перечислимого параметра
-	if ( !rtp.m_params[rtp_param_name].exist() ) {
-		parser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
-	}
-	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
-	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
-	// Для начала проверим тип параметра
-	if ( param.getType() != rdoRuntime::RDOValue::rvt_enum ) {
-		// Параметр Состояние есть, но он не перечислимого типа
-		parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
-	}
-	// Теперь проверим сами значения
-	if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) )
-	{
-		parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
-	}
-
-	if ( rssMustCreate )
-	{
 		// Создадим ресурс
 		rdoMBuilder::RDOResource rss( rtp, res_name );
-//		res->setTrace( true );
 		// Добавим его в систему
-		rssList.append( rss );
+		rssList.append<rdoParse::RDOPROCResource>(rss );
+		}
 	}
+
 }
+
+
 */
-
-
-
-
-
 
 
 
@@ -752,8 +734,8 @@ RDOPROCRelease::RDOPROCRelease( RDOPROCProcess* _process, const std::string& _na
 
 void RDOPROCRelease::create_runtime_Release( RDOParser *parser )
 {
-std::list< std::string >::iterator it = Resourses.begin();
-	while ( it != Resourses.end() ) {
+std::list< std::string >::iterator it = Resources.begin();
+	while ( it != Resources.end() ) {
 		std::string aaa = *it;
 	const RDORSSResource* rss = parser->findRSSResource((*it));
 		if( rss ){
@@ -788,6 +770,7 @@ parser->error( "Внутренняя ошибка: блок Release не имеет ресурсов" );
 
 void RDOPROCRelease::checkReleaseType	(  RDOParser *parser, const std::string &resName, const RDOParserSrcInfo& info  )
 {
+}
 	/*
 // Сформировать имя типа по имени ресурса
 std::string rtp_name( rdoParse::RDOPROCProcess::name_prefix + resName + rdoParse::RDOPROCProcess::name_sufix );
@@ -834,7 +817,7 @@ if ( !rtpList[rtp_name].exist() )
 	}
 TRACE( "%s SEIZE_good\n", resName.c_str());
 */
-}
+
 
 
 
