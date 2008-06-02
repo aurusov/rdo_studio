@@ -264,8 +264,6 @@ $Fuzzy_parameters   return(RDO_Fuzzy_Parameters);
 $fuzzy_Parameters   return(RDO_Fuzzy_Parameters);
 Term				return(RDO_Fuzzy_Term);
 term				return(RDO_Fuzzy_Term);
-Enum				return(RDO_Enum);
-enum				return(RDO_Enum);
 
 (\'[^\']*\')		{
 						std::string n1(YYText());
