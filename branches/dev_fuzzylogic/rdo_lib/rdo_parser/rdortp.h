@@ -67,6 +67,16 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
+// ------fuzzy------ RDORTPFuzzyParamType
+// ----------------------------------------------------------------------------
+/*class RDORTPFuzzyParamType: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+
+protected:
+	
+};*/
+// ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
 // Параметр ресурса (RDORTPParam) или константа(RDOFUNConst)
@@ -90,7 +100,23 @@ protected:
 	const RDORTPParamType* const m_parType;
 	const RDORTPResType*   const m_resType;
 };
+// ----------------------------------------------------------------------------
+// ------fuzzy------ RDORTPFuzzyParam
+// ----------------------------------------------------------------------------
+/*class RDORTPFuzzyParam: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	RDORTPFuzzyParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPFuzzyParamType* const _fuzzy_parType );
+	const std::string&           name() const       { return src_info().src_text(); }
+	const RDORTPFuzzyParamType* const getFuzzyType() const    { return m_fuzzy_parType; }
+	const RDORTPResType* const   getResType() const { return m_resType; }
+	void writeModelStructure( std::ostream& stream ) const;
 
+protected:
+	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPFuzzyParamType* const _fuzzy_parType );
+	const RDORTPFuzzyParamType* const m_fuzzy_parType;
+	const RDORTPResType*   const m_resType;
+};*/
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNConst
 // ----------------------------------------------------------------------------
@@ -115,15 +141,22 @@ public:
 	void addParam( const RDORTPParam* const param );
 	void addParam( const std::string param_name, rdoRuntime::RDOValue::Type param_type );
 	const RDORTPParam* findRTPParam( const std::string& param ) const;
+
 	int getRTPParamNumber( const std::string& param ) const;
 	const std::vector< const RDORTPParam* >& getParams() const { return m_params; }
 
+
 	void writeModelStructure( std::ostream& stream ) const;
 
+//	const std::vector< const RDORTPFuzzyParam* >& getFuzzyParams() const { return m_fuzzy_params; }
+//	void addFuzzyParam( const RDORTPFuzzyParam* const fuzzy_param );
+//	int getRTPFuzzyParamNumber( const std::string& fuzzy_param ) const;
+//	const RDORTPFuzzyParam* findRTPFuzzyParam( const std::string& fuzzy_param ) const;
 private:
 	const int                         m_number;
 	const bool                        m_permanent;
 	std::vector< const RDORTPParam* > m_params;
+//	std::vector< const RDORTPFuzzyParam* > m_fuzzy_params;
 };
 
 // ----------------------------------------------------------------------------
@@ -274,6 +307,24 @@ typedef RDORTPDiap<int>    RDORTPIntDiap;
 // ----------------------------------------------------------------------------
 typedef RDORTPDiap<double> RDORTPRealDiap;
 
+// ----------------------------------------------------------------------------
+// ------fuzzy------ RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма
+// ----------------------------------------------------------------------------
+/*class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	RDORTPFuzzyMembershiftPoint( RDOParser* _parser, double x_value, double y_value ):
+		RDOParserObject( _parser ),
+		m_x_value( x_value ),
+		m_y_value( y_value )
+
+	double  getX() const { return x_value; }
+	double  getY() const { return y_value; }
+
+private:
+	double    x_value;
+	double    y_value;
+};*/
 // ----------------------------------------------------------------------------
 // ---------- RDORTPIntParamType
 // ----------------------------------------------------------------------------
@@ -478,7 +529,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDORTPStringDefVal
 // ----------------------------------------------------------------------------
-class RDORTPStringDefVal: public RDORTPDefVal
+class RDORTPStringDefVal : public RDORTPDefVal
 {
 public:
 	RDORTPStringDefVal( RDOParser* _parser ):
