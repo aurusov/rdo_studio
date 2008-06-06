@@ -274,10 +274,9 @@ public:
 class RDOEnum: public RDORuntimeObject
 {
 public:
-	typedef std::string             EnumItem;
-	typedef std::vector< EnumItem > Enums;
-	typedef Enums::const_iterator   CIterator;
-	typedef RDOStdVector<EnumItem>  EnumArray;
+	typedef std::string              EnumItem;
+	typedef RDOStdVector< EnumItem > Enums;
+	typedef Enums::const_iterator    CIterator;
 
 	RDOEnum( RDORuntimeParent* parent ):
 		RDORuntimeObject( parent )
