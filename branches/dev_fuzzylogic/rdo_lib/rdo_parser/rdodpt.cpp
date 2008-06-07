@@ -693,7 +693,7 @@ if ( !rtpList[rtp_name].exist() )
 	// Создадим тип ресурса
 	rdoMBuilder::RDOResType rtp(rtp_name);
 	// Создадим параметр перечислимого типа
-	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnum(parser->runtime(), rdoRuntime::RDOEnum::EnumArray(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
+	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnum(parser->runtime(), rdoRuntime::RDOEnum::Enums(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
 	// Добавим тип ресурса
 		if ( !rtpList.append( rtp ) )
 		{
