@@ -264,16 +264,16 @@ rtp_fuzzy_body:	/* empty */ {
 				$$ = 0; // warning
 			}
 			| rtp_fuzzy_body rtp_fuzzy_param {
-				RDORTPFuzzyParam* fuzzy_param = reinterpret_cast<RDORTPFuzzyParam*>($2);
-				PARSER->getLastRTPResType()->addFuzzyParam( fuzzy_param );
+//				RDORTPFuzzyParam* fuzzy_param = reinterpret_cast<RDORTPFuzzyParam*>($2);
+//				PARSER->getLastRTPResType()->addFuzzyParam( fuzzy_param );
 				$$ = 1; // no warning
 			};
 rtp_fuzzy_param: RDO_IDENTIF_COLON fuzzy_param_type fuzzy_param_terms {	
-					RDOParserSrcInfo par_src_info(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext);
-					RDORTPFuzzyParamType* fuzzy_parType = reinterpret_cast<RDORTPFuzzyParamType*>($2);
-					RDORTPFuzzyParam* fuzzy_param = new RDORTPFuzzyParam( PARSER->getLastRTPResType(), par_src_info, fuzzy_parType );
-					fuzzy_parType->reparent( fuzzy_param );
-					$$ = (int)fuzzy_param;		
+//					RDOParserSrcInfo par_src_info(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext);
+//					RDORTPFuzzyParamType* fuzzy_parType = reinterpret_cast<RDORTPFuzzyParamType*>($2);
+//					RDORTPFuzzyParam* fuzzy_param = new RDORTPFuzzyParam( PARSER->getLastRTPResType(), par_src_info, fuzzy_parType );
+//					fuzzy_parType->reparent( fuzzy_param );
+//					$$ = (int)fuzzy_param;
 				}
 				| RDO_IDENTIF_COLON error {
 					if ( PARSER->lexer_loc_line() == @1.last_line ) {
@@ -281,16 +281,16 @@ rtp_fuzzy_param: RDO_IDENTIF_COLON fuzzy_param_type fuzzy_param_terms {
 						PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
 					} else {
 						PARSER->error( @1, "Ожидается тип параметра" );
-					}					
+					}				
 				}
 				| error {
 					PARSER->error( @1, "Неверное описание нечеткого параметра" );
 				};
 fuzzy_param_type: RDO_real param_real_diap param_real_default_val {
-					RDORTPRealDiap* diap = reinterpret_cast<RDORTPRealDiap*>($2);
-					RDORTPRealDefVal* dv = reinterpret_cast<RDORTPRealDefVal*>($3);
-					RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
-					$$ = (int)rp;
+//					RDORTPRealDiap* diap = reinterpret_cast<RDORTPRealDiap*>($2);
+//					RDORTPRealDefVal* dv = reinterpret_cast<RDORTPRealDefVal*>($3);
+//					RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
+//					$$ = (int)rp;
 					//Случай вещественного четкого значения
 				};
 				
@@ -298,38 +298,54 @@ fuzzy_param_terms: /* empty */ {
 					$$ = 0; // warning
 				}
 				| fuzzy_param_terms fuzzy_term {
-					RDORTPFuzzyTerm* fuzzy_term = reinterpret_cast<RDORTPFuzzyTerm*>($2);
-					PARSER->getLastRTPFuzzyParam()->addTerm( fuzzy_term );
-					$$ = 1; // no warning				
+//					RDORTPFuzzyTerm* fuzzy_term = reinterpret_cast<RDORTPFuzzyTerm*>($2);
+//					PARSER->getLastRTPFuzzyParam()->addTerm( fuzzy_term );
+					$$ = 1; // no warning			
 				};
 				
 fuzzy_term: RDO_Fuzzy_Term RDO_IDENTIF fuzzy_membershift_fun {
-					RDOParserSrcInfo par_src_info(@2, *reinterpret_cast<std::string*>($2), RDOParserSrcInfo::psi_align_bytext);
-					RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
-					RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER->getLastRTPFuzzyParam(), par_src_info, fuzzy_membershift_fun );
-					fuzzy_membershift_fun->reparent( fuzzy_term );
-					$$ = (int)fuzzy_term;				
+//					RDOParserSrcInfo par_src_info(@2, *reinterpret_cast<std::string*>($2), RDOParserSrcInfo::psi_align_bytext);
+//					RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
+//					RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER->getLastRTPFuzzyParam(), par_src_info, fuzzy_membershift_fun );
+//					fuzzy_membershift_fun->reparent( fuzzy_term );
+//					$$ = (int)fuzzy_term;				
 				};
 								
 fuzzy_membershift_fun: /* empty */ {
-					$$ = 0; // warning
+//					RDORTPFuzzyMembershiftFun fun = new RDORTPFuzzyMembershiftFun( PARSER );
+//					$$ = (new)fun;
 				}
 				| fuzzy_membershift_fun membershift_point {					
-					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
-					PARSER->getLastRTPFuzzyMembershiftFun()->addMembershiftPoint( fuzzy_membershift_point );
-					$$ = 1; // no warning
+//					RDORTPFuzzyMembershiftFun* fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
+//					RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
+//					fun->addMembershiftPoint( point );
+//					$$ = $1;					
 					//Задание функции принадлежности точками - вершинами ломанных кривых
 				};
 membershift_point: '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
 					double x_value = *reinterpret_cast<double*>($2);
 					double y_value = *reinterpret_cast<double*>($4);
-					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, x_value, y_value );
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, x_value, y_value);
 					$$ = (int)fuzzy_membershift_point;
 				}
 				| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {					
 					double x_value = *reinterpret_cast<double*>($2);
 					double y_value = *reinterpret_cast<double*>($4);
-					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, x_value, y_value );
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, x_value, y_value);
+					$$ = (int)fuzzy_membershift_point;
+				}
+				| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {					
+					double x_value = *reinterpret_cast<double*>($2);
+					double y_value = $4;
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, x_value, y_value);
+					$$ = (int)fuzzy_membershift_point;
+//					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, *((double *)$2), *((double *)$4) );
+//					$$ = (int)(new RDORTPFuzzyMembershiftPoint( PARSER, *((double *)$2), *((double *)$4)) );
+				}
+				| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' {					
+					double x_value = *reinterpret_cast<double*>($2);
+					double y_value = $4;
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, x_value, y_value);
 					$$ = (int)fuzzy_membershift_point;
 				};							
 //---------------------------------------------------------------------------------------------		

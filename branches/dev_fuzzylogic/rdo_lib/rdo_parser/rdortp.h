@@ -67,16 +67,6 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ------fuzzy------ RDORTPFuzzyParamType
-// ----------------------------------------------------------------------------
-/*class RDORTPFuzzyParamType: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-
-protected:
-	
-};*/
-// ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
 // Параметр ресурса (RDORTPParam) или константа(RDOFUNConst)
@@ -100,23 +90,7 @@ protected:
 	const RDORTPParamType* const m_parType;
 	const RDORTPResType*   const m_resType;
 };
-// ----------------------------------------------------------------------------
-// ------fuzzy------ RDORTPFuzzyParam
-// ----------------------------------------------------------------------------
-/*class RDORTPFuzzyParam: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPFuzzyParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPFuzzyParamType* const _fuzzy_parType );
-	const std::string&           name() const       { return src_info().src_text(); }
-	const RDORTPFuzzyParamType* const getFuzzyType() const    { return m_fuzzy_parType; }
-	const RDORTPResType* const   getResType() const { return m_resType; }
-	void writeModelStructure( std::ostream& stream ) const;
 
-protected:
-	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPFuzzyParamType* const _fuzzy_parType );
-	const RDORTPFuzzyParamType* const m_fuzzy_parType;
-	const RDORTPResType*   const m_resType;
-};*/
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNConst
 // ----------------------------------------------------------------------------
@@ -307,24 +281,6 @@ typedef RDORTPDiap<int>    RDORTPIntDiap;
 // ----------------------------------------------------------------------------
 typedef RDORTPDiap<double> RDORTPRealDiap;
 
-// ----------------------------------------------------------------------------
-// ------fuzzy------ RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма
-// ----------------------------------------------------------------------------
-/*class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPFuzzyMembershiftPoint( RDOParser* _parser, double x_value, double y_value ):
-		RDOParserObject( _parser ),
-		m_x_value( x_value ),
-		m_y_value( y_value )
-
-	double  getX() const { return x_value; }
-	double  getY() const { return y_value; }
-
-private:
-	double    x_value;
-	double    y_value;
-};*/
 // ----------------------------------------------------------------------------
 // ---------- RDORTPIntParamType
 // ----------------------------------------------------------------------------
@@ -595,8 +551,40 @@ public:
 	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_string; }
 	virtual void writeModelStructure( std::ostream& stream ) const;
 };
+// ----------------------------------------------------------------------------
+//------------------------------ FOR FUZZY LOGIC ------------------------------	
+// ----------------------------------------------------------------------------
 
-class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
+// ----------------------------------------------------------------------------
+// ---------- RDORTPFuzzyParamType
+// ----------------------------------------------------------------------------
+/*class RDORTPFuzzyParamType: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+
+protected:
+	
+};*/
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPFuzzyParam
+// ----------------------------------------------------------------------------
+/*class RDORTPFuzzyParam: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	RDORTPFuzzyParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPFuzzyParamType* const _fuzzy_parType );
+	const std::string&           name() const       { return src_info().src_text(); }
+	const RDORTPFuzzyParamType* const getFuzzyType() const    { return m_fuzzy_parType; }
+	const RDORTPResType* const   getResType() const { return m_resType; }
+	void writeModelStructure( std::ostream& stream ) const;
+
+protected:
+	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPFuzzyParamType* const _fuzzy_parType );
+	const RDORTPFuzzyParamType* const m_fuzzy_parType;
+	const RDORTPResType*   const m_resType;
+};*/
+
+/*class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	RDORTPFuzzyParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
@@ -608,6 +596,43 @@ protected:
 	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
 	const RDORTPParamType* const m_parType;
 	const RDORTPResType*   const m_resType;
+};*/
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
+// ----------------------------------------------------------------------------
+/*class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
+		RDOParserObject( _parser )
+		{
+		}
+	void addMembershiftPoint ( const RDORTPFuzzyMembershiftPoint& point);
+	double getMembersfiftVal ();
+private:
+	double    m_val;
+	const RDORTPFuzzyTerm& m_Term;
+};*/
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма
+// ----------------------------------------------------------------------------
+class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	RDORTPFuzzyMembershiftPoint( RDOParser* _parser, double x_value, double y_value ):
+		RDOParserObject( _parser ),
+		m_x_value( x_value ),
+		m_y_value( y_value )
+		{
+		}
+	double  getX() const { return m_x_value; }
+	double  getY() const { return m_y_value; }
+
+private:
+	double    m_x_value;
+	double    m_y_value;
 };
 
 } // namespace rdoParse
