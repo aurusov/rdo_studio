@@ -601,19 +601,24 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
 // ----------------------------------------------------------------------------
-/*class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
+class RDORTPFuzzyMembershiftPoint;
+
+class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
-		RDOParserObject( _parser )
-		{
-		}
-	void addMembershiftPoint ( const RDORTPFuzzyMembershiftPoint& point);
-	double getMembersfiftVal ();
+	RDORTPFuzzyMembershiftFun( RDOParser* _parser );
+
+	typedef RDORTPFuzzyMembershiftPoint* Item;
+	typedef std::vector< Item >          Items;
+
+	void add( Item point )
+	{
+		m_points.push_back( point );
+	}
+
 private:
-	double    m_val;
-	const RDORTPFuzzyTerm& m_Term;
-};*/
+	Items m_points;
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма

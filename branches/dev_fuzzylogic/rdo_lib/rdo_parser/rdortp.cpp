@@ -847,4 +847,23 @@ void RDORTPStringParamType::writeModelStructure( std::ostream& stream ) const
 	stream << "S" << std::endl;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
+// ----------------------------------------------------------------------------
+RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
+	RDOParserObject( _parser )
+{
+	for ( unsigned int i = 0; i < m_points.size(); i++ )
+	{
+//		double x = m_points[i]->getX();
+	}
+
+	Items::iterator it = m_points.begin();
+	while ( it != m_points.end() )
+	{
+		double x = (*it)->getX();
+		it++;
+	}
+}
+
 } // namespace rdoParse

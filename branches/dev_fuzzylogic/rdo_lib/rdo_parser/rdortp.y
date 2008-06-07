@@ -312,14 +312,14 @@ fuzzy_term: RDO_Fuzzy_Term RDO_IDENTIF fuzzy_membershift_fun {
 				};
 								
 fuzzy_membershift_fun: /* empty */ {
-//					RDORTPFuzzyMembershiftFun fun = new RDORTPFuzzyMembershiftFun( PARSER );
-//					$$ = (new)fun;
+					RDORTPFuzzyMembershiftFun* fun = new RDORTPFuzzyMembershiftFun( PARSER );
+					$$ = (int)fun;
 				}
 				| fuzzy_membershift_fun membershift_point {					
-//					RDORTPFuzzyMembershiftFun* fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
-//					RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
-//					fun->addMembershiftPoint( point );
-//					$$ = $1;					
+					RDORTPFuzzyMembershiftFun*   fun   = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
+					RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
+					fun->add( point );
+					$$ = $1;					
 					//Задание функции принадлежности точками - вершинами ломанных кривых
 				};
 membershift_point: '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
