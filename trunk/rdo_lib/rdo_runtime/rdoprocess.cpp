@@ -30,24 +30,6 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 
 void RDOPROCProcess::next( RDOPROCTransact* transact )
 {
-/*	Iterator it = std::find( begin(), end(), transact->block );
-	if ( it != end() ) {
-		RDOPROCBlock* block = static_cast<RDOPROCBlock*>(*it);
-		std::list< RDOPROCTransact* >::iterator it_res = std::find( block->transacts.begin(), block->transacts.end(), transact );
-		if ( it_res != block->transacts.end() ) {
-			block->transacts.erase( it_res );
-		}
-		it++;
-		if ( it != end() ) {
-			transact->block = static_cast<RDOPROCBlock*>(*it);
-			static_cast<RDOPROCBlock*>(*it)->transacts.push_back( transact );
-		} else {
-			// run-time error
-		}
-	} else {
-		// run-time error
-	}
-*/
 	if ( transact->block )
 	{
 	Iterator it = std::find( begin(), end(), transact->block );
@@ -118,12 +100,80 @@ bool RDOPROCTransact::findRes(RDOPROCResource* res)
 std::list< RDOPROCResource* >::iterator it_res = std::find( this->resources.begin(), this->resources.end(), res );
 return it_res != this->resources.end() ? true : false; 
 }
+
+RDOPROCBlock* RDOPROCTransact::getBlock()
+{
+return this->block;
+}
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
 RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace ):
 	RDOResource( _runtime, _number, type, _trace )
 {
+	turnOn = true;
+	block = NULL;
+}
+	
+
+forResource RDOPROCResource::AreYouReady(RDOPROCTransact* transact)
+{
+std::list< RDOPROCTransact* >::iterator it = this->transacts.begin();
+bool flagOutput = false;
+	//Идем по всем транзактам в списке ресурса
+	while(it!=transacts.end())
+	{
+		//Если у блока сиз в котором находится транзакт "*it" нет ресурсов занятых другим блоком по своей очереди, идем дальше
+		if(! (static_cast<RDOPROCSeize*>((*it)->getBlock())->BuzyInAnotherBlockTurnOn()))
+		{
+		//Номер транзакта, который просится в блок
+		int aaa = transact->getTraceID();
+		//Номер транзакта, который войдет в блок следующим
+		int bbb = (*it)->getBlock()->transacts.front()->getTraceID();
+			//Если они равны, ресурс готов принять транзакт
+			if(transact->getTraceID() == (*it)->getBlock()->transacts.front()->getTraceID())
+			{
+				//Если этот транзакт не первый в очереди к ресурсу, он идет "внеочереди"
+				return flagOutput == false ? turn_On : turn_Off;
+			}
+			else
+			{
+			return not_Seize;
+			}
+		}
+		else
+		flagOutput = true;
+	it++;
+	}
+return not_Seize;
+}
+
+
+bool RDOPROCResource::whoAreYou()
+{
+	return this->turnOn;
+}
+
+void RDOPROCResource::youIs(forResource _this)
+{
+	switch (_this){
+	case turn_On:
+		turnOn = true;
+		break;
+	case turn_Off:
+		turnOn = false;
+		break;
+	}
+}
+
+RDOPROCBlock* RDOPROCResource::getBlock()
+{
+return block;
+}
+
+void RDOPROCResource::setBlock(RDOPROCBlock* _block)
+{
+block = _block;
 }
 
 // ----------------------------------------------------------------------------
@@ -211,52 +261,105 @@ void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
-
-bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
+//Функция возвращает true, когда находит ресурс, занятый в другом блоке но по своей очереди
+bool RDOPROCSeize::BuzyInAnotherBlockTurnOn ()
 {
-	if ( !transacts.empty() ) {
-	int Size_Seize = from_run.size();
-	int aaa = transacts.front()->getTraceID();	
-			for(int i=0; i<Size_Seize; i++)
+int Size_Seize = from_run.size();
+	for (int i=0;i<Size_Seize;i++)
+	{
+		//Если ресурс занят
+		if ( (from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_buzy) ){
+			//Если ресурс занят не в этом блоке, но по своей очереди
+			if((from_run[i].rss->getBlock() != this) && from_run[i].rss->whoAreYou() == true )
 			{
-			int bbb = from_run[i].rss->transacts.front()->getTraceID();
-				if(aaa == bbb){
-				RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-					if ( !tracer->isNull() ) {
-					tracer->getOStream() << from_run[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-					}
-					// Занимаем все, что свободно
-					if ( from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_free ) {
-					Busy_Res++;
-					from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_buzy);			
-					//Записываем в транзакт, какие ресурсы он занимает
-					transacts.front()->addRes(from_run[i].rss);
-					} 
-					else {
-					}
-				}
-				else
-				{
-				int t=0;
-				}		
-			}	
-		if ( Busy_Res == Size_Seize){
-		Busy_Res = 0;
-		return true;
-		}
-		else {
-		TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
+				return true;
+			}
 		}
 	}
 return false;
 }
 
+bool RDOPROCSeize::AllBuzyInThisBlockn ()
+{
+int Size_Seize = from_run.size();
+	for (int i=0;i<Size_Seize;i++)
+	{
+		if ( (from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_free) )
+		return false;
+	}
+return true;
+}
+
+
+bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
+{
+	if ( !transacts.empty() ) {
+	int Size_Seize = from_run.size();
+		if( !BuzyInAnotherBlockTurnOn () && !AllBuzyInThisBlockn ()){
+			//Идем по всем ресурсам не занятым в этом блоке, проверяя, готов ли каждый взять транзакт из очереди перед Сизом
+			for_turn.clear();
+				for(int i=0; i<Size_Seize;i++)
+				{
+				RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+					if ( !tracer->isNull() ) 
+					tracer->getOStream() << from_run[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+					
+					//Не учитываем ресурс, уже занятый в этом сизе
+					if( !(from_run[i].rss->getBlock() == this)) //&& from_run[i].rss->whoAreYou() == true) )
+					{
+						for_turn[i] = from_run[i].rss->AreYouReady(transacts.front());
+						if( for_turn[i] == not_Seize )
+						return false;
+					}
+				}
+				std::map < int, forResource >::iterator it = for_turn.begin();
+				while( it!= for_turn.end())
+				{
+				int i = it->first;
+					// Занимаем все, но на всякий случай проверяем//можно ускорить,если идти только по собранным номерам i в предыдущем блоке
+					if ( from_run[i].rss->getParam(from_par[i].Id_param) == from_run[i].enum_free ){
+					from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_buzy);		
+					from_run[i].rss->setBlock(this);
+					from_run[i].rss->youIs(for_turn[i]);
+					Busy_Res++;
+					//Записываем в транзакт, какие ресурсы он занимает
+					transacts.front()->addRes(from_run[i].rss);
+					}
+					else
+					{
+					}
+				it++;
+				}
+			if(Busy_Res == Size_Seize)
+			{
+			Busy_Res = 0;
+			return true;
+			}
+			else
+			{
+		//	TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
+			return false;
+			}
+		}
+		else
+		{
+		//TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
+		return false;
+		}
+	}
+	else
+	{
+	//Список транзактов перед блоком пуст
+	}
+return false;
+}
+		
 RDOBaseOperation::BOResult RDOPROCSeize::onDoOperation( RDOSimulator* sim )
 {
-	TRACE( "%7.1f SEIZE\n", sim->getCurrentTime() );
-	//from_run[0].rss->setParam(from_par[0].Id_param, from_run[0].enum_buzy);
-	transacts.front()->next();
-	return RDOBaseOperation::BOR_done;
+int Size_Seize = from_run.size();
+TRACE( "%7.1f SEIZE-%d\n", sim->getCurrentTime(), Size_Seize );
+transacts.front()->next();
+return RDOBaseOperation::BOR_done;
 }
 
 void RDOPROCSeize::TransactGoIn( RDOPROCTransact* _transact )
@@ -294,6 +397,8 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 				//Ищем ресурс в списке освобождаемых ресурсов транзакта			
 				if ( transacts.front()->findRes(from_run[i].rss) ) {
 				from_run[i].rss->setParam(from_par[i].Id_param, from_run[i].enum_free);
+				from_run[i].rss->setBlock(NULL);
+				//from_run[i].rss->youIs(free);
 				transacts.front()->removeRes(from_run[i].rss);
 				}
 				else{
@@ -302,7 +407,7 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 				}
 			}
 			else{
-			TRACE( "%7.1f RELEASE %s\n", sim->getCurrentTime(), from_par[i].Id_res);
+			//TRACE( "%7.1f RELEASE %s\n", sim->getCurrentTime(), from_par[i].Id_res);
 			}
 		}
 	return true;
