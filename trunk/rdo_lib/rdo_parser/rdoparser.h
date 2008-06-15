@@ -37,6 +37,7 @@ class RDOPMDPokaz;
 class RDOPROCProcess;
 class RDORTPEnumParamType;
 
+class RDORTPFuzzyParam;
 // ----------------------------------------------------------------------------
 // ---------- RDOSyntaxException
 // ----------------------------------------------------------------------------

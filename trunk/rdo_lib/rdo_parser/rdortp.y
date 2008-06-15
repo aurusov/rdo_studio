@@ -161,6 +161,9 @@
 %token RDO_UMINUS						437
 %token RDO_string						438
 
+%token RDO_Fuzzy_Parameters				439
+%token RDO_Fuzzy_Term					440
+
 %{
 #include "pch.h"
 #ifdef _DEBUG
@@ -191,11 +194,31 @@ rtp_list:	/* empty */
 				PARSER->error( "Ожидается ключевое слово $Resource_type" );
 			};
 
-rtp_res_type:	rtp_res_type_hdr RDO_Parameters rtp_body RDO_End {
+rtp_res_type:	rtp_res_type_hdr RDO_Parameters rtp_body RDO_Fuzzy_Parameters rtp_fuzzy_body RDO_End {
 					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
 					if ( $3 == 0 ) {
 						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
 					}
+					if ( $5 == 0 ) {
+						PARSER->warning( @4, rdo::format( "Тип ресурса '%s' не содежит нечетких параметров", res_type->name().c_str() ) );
+					}
+					//Случай четких и нечетких параметров ресурса
+				}
+				| rtp_res_type_hdr RDO_Parameters rtp_body RDO_End {
+					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
+					if ( $3 == 0 ) {
+						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
+					}
+				}
+				| rtp_res_type_hdr RDO_Fuzzy_Parameters rtp_fuzzy_body RDO_End {
+					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
+					if ( $3 == 0 ) {
+						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит нечетких параметров", res_type->name().c_str() ) );
+					}
+					//Случай только нечетких параметров ресурса
+				}
+				| rtp_res_type_hdr RDO_Parameters rtp_body RDO_Fuzzy_Parameters rtp_fuzzy_body {
+					PARSER->error( @5, "Не найдено ключевое слово $End" );
 				}
 				| rtp_res_type_hdr RDO_Parameters rtp_body {
 					PARSER->error( @3, "Не найдено ключевое слово $End" );
@@ -236,7 +259,102 @@ rtp_body:	/* empty */ {
 				PARSER->getLastRTPResType()->addParam( param );
 				$$ = 1; // no warning
 			};
-
+//-------------------------------------- FOR FUZZY LOGIC --------------------------------------	
+rtp_fuzzy_body:	/* empty */ {
+				$$ = 0; // warning
+			}
+			| rtp_fuzzy_body rtp_fuzzy_param {
+//				RDORTPFuzzyParam* fuzzy_param = reinterpret_cast<RDORTPFuzzyParam*>($2);
+//				PARSER->getLastRTPResType()->addFuzzyParam( fuzzy_param );
+				$$ = 1; // no warning
+			};
+rtp_fuzzy_param: RDO_IDENTIF_COLON fuzzy_param_type fuzzy_param_terms {	
+					RDOParserSrcInfo par_src_info(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext);
+//					RDORTPFuzzyParamType* fuzzy_parType = reinterpret_cast<RDORTPFuzzyParamType*>($2);
+					RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($3);
+					RDORTPFuzzyParam* fuzzy_param = new RDORTPFuzzyParam( PARSER, par_src_info, terms_set );
+					$$ = (int)fuzzy_param;
+				}
+				| RDO_IDENTIF_COLON fuzzy_param_type error {
+					PARSER->error( @2, rdo::format( "Ожидаются термины нечеткого параметра" ) );
+				}
+				| RDO_IDENTIF_COLON error {
+					if ( PARSER->lexer_loc_line() == @1.last_line ) {
+						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+						PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
+					} else {
+						PARSER->error( @1, "Ожидается тип параметра" );
+					}				
+				}
+				| error {
+					PARSER->error( @1, "Неверное описание нечеткого параметра" );
+				};
+fuzzy_param_type: RDO_real param_real_diap param_real_default_val {
+					RDORTPRealDiap* diap = reinterpret_cast<RDORTPRealDiap*>($2);
+					RDORTPRealDefVal* dv = reinterpret_cast<RDORTPRealDefVal*>($3);
+//					RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
+//					$$ = (int)rp;
+					$$ = 1
+				};
+				
+fuzzy_param_terms: /* empty */ {
+					RDORTPFuzzyTermsSet* terms_set = new RDORTPFuzzyTermsSet( PARSER );
+					$$ = (int)terms_set;
+				}
+				| fuzzy_param_terms fuzzy_term {
+					RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($1);
+					RDORTPFuzzyTerm* term = reinterpret_cast<RDORTPFuzzyTerm*>($2);
+					terms_set->add( term );
+					$$ = $1;				
+				};
+				
+fuzzy_term: RDO_Fuzzy_Term RDO_IDENTIF fuzzy_membershift_fun {
+					RDOParserSrcInfo par_src_info(@2, *reinterpret_cast<std::string*>($2), RDOParserSrcInfo::psi_align_bytext);
+					RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
+					RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER, par_src_info, fuzzy_membershift_fun );
+//					fuzzy_membershift_fun->reparent( fuzzy_term );
+					$$ = (int)fuzzy_term;				
+				};
+								
+fuzzy_membershift_fun: /* empty */ {
+					RDORTPFuzzyMembershiftFun* fun = new RDORTPFuzzyMembershiftFun( PARSER );
+					$$ = (int)fun;
+				}
+				| fuzzy_membershift_fun membershift_point {					
+					RDORTPFuzzyMembershiftFun*   fun   = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
+					RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
+					fun->add( point );
+					$$ = $1;					
+					//Задание функции принадлежности точками - вершинами ломанных кривых
+				};
+membershift_point: '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
+					double x_value = *reinterpret_cast<double*>($2);
+					double y_value = *reinterpret_cast<double*>($4);
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+					$$ = (int)fuzzy_membershift_point;
+				}
+				| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {					
+					double x_value = *reinterpret_cast<double*>($2);
+					double y_value = *reinterpret_cast<double*>($4);
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+					$$ = (int)fuzzy_membershift_point;
+				}
+				| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {					
+					double x_value = *reinterpret_cast<double*>($2);
+					double y_value = $4;
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+					$$ = (int)fuzzy_membershift_point;
+//					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, *((double *)$2), *((double *)$4) );
+//					$$ = (int)(new RDORTPFuzzyMembershiftPoint( PARSER, *((double *)$2), *((double *)$4)) );
+				}
+				| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' {					
+					double x_value = *reinterpret_cast<double*>($2);
+					double y_value = $4;
+					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+					$$ = (int)fuzzy_membershift_point;
+				};							
+//---------------------------------------------------------------------------------------------		
+	
 rtp_param: RDO_IDENTIF_COLON param_type {
 					RDOParserSrcInfo par_src_info(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext);
 					RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);

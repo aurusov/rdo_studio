@@ -482,6 +482,9 @@
 #define ID_MODEL_RUNTIME_SYNC           33186
 #define ID_MODEL_RUNTIME_PAUSE          33187
 #define ID_SEARCH_GOTO_LINE             33192
+#define ID_RTP_STRING                   33193
+#define ID_INSERT_RTP_STRING            33194
+#define ID_RTP_STRING33195              33195
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define IDS_ER_RTP_SECOND_RES_TYPE      35001
@@ -685,6 +688,9 @@
 #define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN2 60007
 #define ID_MSG_MODELCLOSE_QUERY         60007
 #define ID_MSG_MODELCLOSE_QUERY2        60008
+#define ID_INSERT_RTP_FUZZY_PARAMETERS  60009
+#define ID_INSERT_RTP_FUZZY_TERM        60010
+#define ID_INSERT_RTP_ENUM              60011
 
 // Next default values for new objects
 // 
@@ -692,7 +698,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        223
-#define _APS_NEXT_COMMAND_VALUE         33193
+#define _APS_NEXT_COMMAND_VALUE         33196
 #define _APS_NEXT_CONTROL_VALUE         1134
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
