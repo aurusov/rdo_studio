@@ -551,6 +551,7 @@ public:
 	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_string; }
 	virtual void writeModelStructure( std::ostream& stream ) const;
 };
+
 // ----------------------------------------------------------------------------
 //------------------------------ FOR FUZZY LOGIC ------------------------------	
 // ----------------------------------------------------------------------------
@@ -661,7 +662,6 @@ public:
 private:
 	RDORTPFuzzyTermsSet* m_set; // набор терминов параметра
 };
-
 
 } // namespace rdoParse
 
