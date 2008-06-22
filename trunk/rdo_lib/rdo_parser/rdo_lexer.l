@@ -269,8 +269,8 @@ term				return(RDO_Fuzzy_Term);
 (\'[^\']*\')		{
 						std::string n1(YYText());
 						int len = n1.length();
-						std::string* name = new std::string(n1, 1, len-2);
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(*name, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, *name) : rdoParse::RDOParserSrcInfo(*name))) );
+						std::string name(n1, 1, len-2);
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(name, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, name) : rdoParse::RDOParserSrcInfo(name))) );
 						return RDO_QUOTED_IDENTIF;
 					}
 
