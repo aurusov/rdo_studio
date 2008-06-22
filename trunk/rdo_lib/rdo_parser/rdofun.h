@@ -103,13 +103,13 @@ public:
 	RDOFUNArithm( RDOParser* parser, rdoRuntime::RDOType::ID typeID, rdoRuntime::RDOCalc* calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( RDOParser* _parser, int value, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( RDOParser* _parser, double value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, const std::string& value, const YYLTYPE& _pos );
 
 	RDOFUNArithm( const RDOParserObject* parent, rdoRuntime::RDOType::ID typeID, rdoRuntime::RDOCalc* calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, int value, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( const RDOFUNArithm* _parent, double* value, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( const RDOFUNArithm* _parent, double value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, const std::string& value, const YYLTYPE& _pos );
 
 	RDOFUNArithm* operator +( RDOFUNArithm& second );

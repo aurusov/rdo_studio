@@ -94,8 +94,7 @@ RDOParser::RDOParser():
 
 RDOParser::~RDOParser()
 {
-	rdo::deleteAllObjects( m_allNames );
-	rdo::deleteAllObjects( m_allDoubles );
+	rdo::deleteAllObjects( m_allValues );
 	std::vector< RDODeletable* >::reverse_iterator it = m_allDeletables.rbegin();
 	while ( it != m_allDeletables.rend() ) {
 		delete *it;

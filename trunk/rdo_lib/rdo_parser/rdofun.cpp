@@ -377,25 +377,25 @@ RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* parent, int value, const RDOPars
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* parser, double* value, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* parser, double value, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( parser ),
 	m_typeID( rdoRuntime::RDOType::t_real ),
 	enu( NULL ),
 	str( "" ),
 	m_calc( NULL )
 {
-	m_calc = new rdoRuntime::RDOCalcConst( this->parser()->runtime(), *value );
+	m_calc = new rdoRuntime::RDOCalcConst( this->parser()->runtime(), value );
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* parent, double* value, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* parent, double value, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( parent ),
 	m_typeID( rdoRuntime::RDOType::t_real ),
 	enu( NULL ),
 	str( "" ),
 	m_calc( NULL )
 {
-	m_calc = new rdoRuntime::RDOCalcConst( this->parser()->runtime(), *value );
+	m_calc = new rdoRuntime::RDOCalcConst( this->parser()->runtime(), value );
 	setSrcInfo( src_info );
 }
 

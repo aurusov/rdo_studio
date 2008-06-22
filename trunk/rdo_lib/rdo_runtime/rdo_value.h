@@ -167,6 +167,14 @@ public:
 		}
 		throw RDOValueException();
 	}
+	const std::string& getIdentificator() const
+	{
+		switch ( typeID() )
+		{
+			case RDOType::t_identificator: return *m_value.s_value;
+		}
+		throw RDOValueException();
+	}
 	std::string getAsString() const
 	{
 		switch ( typeID() )

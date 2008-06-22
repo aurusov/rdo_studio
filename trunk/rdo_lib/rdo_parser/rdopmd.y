@@ -206,17 +206,17 @@ pmd_trace:	/* empty */ {
 			};
 
 pmd_pokaz_watch_quant_begin: RDO_IDENTIF_COLON pmd_trace RDO_watch_quant RDO_IDENTIF {
-				RDOPMDWatchQuant* pmd = new RDOPMDWatchQuant( PARSER, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
+				RDOPMDWatchQuant* pmd = new RDOPMDWatchQuant( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOValue*>($4)->src_info() );
 				$$ = (int)pmd;
 			};
 
 pmd_pokaz_watch_value_begin: RDO_IDENTIF_COLON pmd_trace RDO_watch_value RDO_IDENTIF {
-				RDOPMDWatchValue* pmd = new RDOPMDWatchValue( PARSER, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
+				RDOPMDWatchValue* pmd = new RDOPMDWatchValue( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOValue*>($4)->src_info() );
 				$$ = (int)pmd;
 			};
 
 pmd_pokaz:	RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)(new RDOPMDWatchPar( PARSER, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)), RDOParserSrcInfo(@6, *reinterpret_cast<std::string*>($6)) ));
+				$$ = (int)(new RDOPMDWatchPar( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOValue*>($4)->src_info(), reinterpret_cast<RDOValue*>($6)->src_info() ));
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error {
 				PARSER->error( @5, @6, "Ожидается имя параметра" );
@@ -240,7 +240,7 @@ pmd_pokaz:	RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 				PARSER->error( @1, "Ожидается имя показателя" );
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic {
-				$$ = (int)(new RDOPMDWatchState( PARSER, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, reinterpret_cast<RDOFUNLogic*>($4) ));
+				$$ = (int)(new RDOPMDWatchState( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOFUNLogic*>($4) ));
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error {
 				PARSER->error( @3, @4, "После ключевого слова watch_state ожидается логическое выражение" );
@@ -276,7 +276,7 @@ pmd_pokaz:	RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 				PARSER->error( @3, @4, "После ключевого слова watch_value ожидается тип ресурса" );
 			}
 			| RDO_IDENTIF_COLON RDO_get_value fun_arithm {
-				$$ = (int)(new RDOPMDGetValue( PARSER, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), reinterpret_cast<RDOFUNArithm*>($3) ));
+				$$ = (int)(new RDOPMDGetValue( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), reinterpret_cast<RDOFUNArithm*>($3) ));
 			}
 			| RDO_IDENTIF_COLON RDO_get_value error {
 				PARSER->error( @2, @3, "После ключевого слова get_value ожидается арифметическое выражение" );
@@ -352,11 +352,11 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_select_arithm {
 			}
 			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator() ), RDOParserSrcInfo( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() ) );
 			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
+			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getInt(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );    }
+			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getDouble(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), @1 );                                                            }
 			| '-' fun_arithm %prec RDO_UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
@@ -369,7 +369,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							RDOFUNParams* fun = new RDOFUNParams( PARSER );
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @3 );
 							fun->setSrcText( fun_name + "()" );
@@ -378,7 +378,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 						}
 						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
 							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
@@ -419,7 +419,7 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
@@ -456,7 +456,7 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
 						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;

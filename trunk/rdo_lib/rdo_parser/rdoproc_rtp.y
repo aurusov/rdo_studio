@@ -211,7 +211,7 @@ dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;
 
 dpt_process_line:	RDO_IDENTIF	{
-						PARSER->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
+						PARSER->error( rdo::format("Неизвестный оператор '%s'", reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
 					}
 					| RDO_GENERATE fun_arithm {
 
@@ -269,15 +269,15 @@ dpt_release_param:    // empty
 
 					| RDO_IDENTIF {
 					// Имя ресурса
-					std::string res_name	= *reinterpret_cast<std::string*>($1);
-					const RDOParserSrcInfo& info	= @1;		
+					std::string res_name	     = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+					const RDOParserSrcInfo& info = @1;
 					//RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
 					}
 
 					| dpt_release_param ',' RDO_IDENTIF {
 					// Имя ресурса
-					std::string res_name       = *reinterpret_cast<std::string*>($3);
-					const RDOParserSrcInfo& info	= @3;		
+					std::string res_name         = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
+					const RDOParserSrcInfo& info = @3;
 					//RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
 					};
 
@@ -287,15 +287,15 @@ dpt_seize_param:    // empty
 					
 					| RDO_IDENTIF {
 					// Имя ресурса
-					std::string res_name	= *reinterpret_cast<std::string*>($1);
-					const RDOParserSrcInfo& info	= @1;		
+					std::string res_name	     = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+					const RDOParserSrcInfo& info = @1;
 					RDOPROCSeize::makeSeizeType( PARSER, res_name, info );
 					}
 
 					| dpt_seize_param ',' RDO_IDENTIF {
 					// Имя ресурса
-					std::string res_name       = *reinterpret_cast<std::string*>($3);
-					const RDOParserSrcInfo& info	= @3;		
+					std::string res_name         = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
+					const RDOParserSrcInfo& info = @3;
 					RDOPROCSeize::makeSeizeType( PARSER, res_name, info );
 					};
 
@@ -361,11 +361,11 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_select_arithm {
 			}
 			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator() ), RDOParserSrcInfo( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() ) );
 			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
+			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getInt(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );    }
+			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getDouble(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), @1 );                                                            }
 			| '-' fun_arithm %prec RDO_UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
@@ -378,7 +378,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							RDOFUNParams* fun = new RDOFUNParams( PARSER );
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @3 );
 							fun->setSrcText( fun_name + "()" );
@@ -387,7 +387,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 						}
 						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
 							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
@@ -428,7 +428,7 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
@@ -465,7 +465,7 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
 						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;

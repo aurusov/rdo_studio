@@ -198,8 +198,8 @@ opr_header:	RDO_Operations {
 
 opr_body:	opr_header RDO_IDENTIF_COLON RDO_IDENTIF {
 				RDOOperations* oprs = PARSER->getLastOperations();
-				std::string name = *reinterpret_cast<std::string*>($2);
-				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
+				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
+				RDOParserSrcInfo pattern( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() );
 				RDOOPROperation* opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
@@ -207,8 +207,8 @@ opr_body:	opr_header RDO_IDENTIF_COLON RDO_IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endParam( @1 );
 				RDOOperations* oprs = PARSER->getLastOperations();
-				std::string name = *reinterpret_cast<std::string*>($2);
-				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
+				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
+				RDOParserSrcInfo pattern( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() );
 				opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
@@ -236,17 +236,17 @@ opr_keyb:	opr_body
 
 opr_param:	opr_param RDO_IDENTIF {
 				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      param = *reinterpret_cast<std::string*>($2);
+				std::string      param = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				opr->addParam( param, @2 );
 			}
 			| opr_param RDO_INT_CONST {
 				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
-				int              param = $2;
+				int              param = reinterpret_cast<RDOValue*>($2)->value().getInt();
 				opr->addParam( param, @2 );
 			}
 			| opr_param RDO_REAL_CONST {
 				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
-				double           param = *reinterpret_cast<double*>($2);
+				double           param = reinterpret_cast<RDOValue*>($2)->value().getDouble();
 				opr->addParam( param, @2 );
 			}
 			| opr_param '*' {

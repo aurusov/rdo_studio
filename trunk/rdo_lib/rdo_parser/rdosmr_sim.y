@@ -222,7 +222,7 @@ smr_cond:	/* empty */
 			}
 			| smr_cond RDO_Frame_number '=' RDO_INT_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setFrameNumber( $4, @4 );
+				smr->setFrameNumber( reinterpret_cast<RDOValue*>($4)->value().getInt(), @4 );
 			}
 			| smr_cond RDO_Frame_number '=' error {
 				PARSER->error( @3, @4, "Ожидается начальный номер кадра" );
@@ -232,11 +232,11 @@ smr_cond:	/* empty */
 			}
 			| smr_cond RDO_Show_rate '=' RDO_REAL_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setShowRate( *reinterpret_cast<double*>($4), @4 );
+				smr->setShowRate( reinterpret_cast<RDOValue*>($4)->value().getDouble(), @4 );
 			}
 			| smr_cond RDO_Show_rate '=' RDO_INT_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setShowRate( $4, @4 );
+				smr->setShowRate( reinterpret_cast<RDOValue*>($4)->value().getInt(), @4 );
 			}
 			| smr_cond RDO_Show_rate '=' error {
 				PARSER->error( @3, @4, "Ожидается масштабный коэффициент" );
@@ -246,11 +246,11 @@ smr_cond:	/* empty */
 			}
 			| smr_cond RDO_Run_StartTime '=' RDO_REAL_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setRunStartTime( *reinterpret_cast<double*>($4), @4 );
+				smr->setRunStartTime( reinterpret_cast<RDOValue*>($4)->value().getDouble(), @4 );
 			}
 			| smr_cond RDO_Run_StartTime '=' RDO_INT_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setRunStartTime( $4, @4 );
+				smr->setRunStartTime( reinterpret_cast<RDOValue*>($4)->value().getInt(), @4 );
 			}
 			| smr_cond RDO_Run_StartTime '=' error {
 				PARSER->error( @3, @4, "Ожидается начальное модельное время" );
@@ -260,11 +260,11 @@ smr_cond:	/* empty */
 			}
 			| smr_cond RDO_Trace_StartTime '=' RDO_REAL_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setTraceStartTime( *reinterpret_cast<double*>($4), @4 );
+				smr->setTraceStartTime( reinterpret_cast<RDOValue*>($4)->value().getDouble(), @4 );
 			}
 			| smr_cond RDO_Trace_StartTime '=' RDO_INT_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setTraceStartTime( $4, @4 );
+				smr->setTraceStartTime( reinterpret_cast<RDOValue*>($4)->value().getInt(), @4 );
 			}
 			| smr_cond RDO_Trace_StartTime '=' error {
 				PARSER->error( @3, @4, "Ожидается начальное время трассировки" );
@@ -274,11 +274,11 @@ smr_cond:	/* empty */
 			}
 			| smr_cond RDO_Trace_EndTime '=' RDO_REAL_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setTraceEndTime( *reinterpret_cast<double*>($4), @4 );
+				smr->setTraceEndTime( reinterpret_cast<RDOValue*>($4)->value().getDouble(), @4 );
 			}
 			| smr_cond RDO_Trace_EndTime '=' RDO_INT_CONST {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->setTraceEndTime( $4, @4 );
+				smr->setTraceEndTime( reinterpret_cast<RDOValue*>($4)->value().getInt(), @4 );
 			}
 			| smr_cond RDO_Trace_EndTime '=' error {
 				PARSER->error( @3, @4, "Ожидается конечное время трассировки" );
@@ -294,7 +294,7 @@ smr_cond:	/* empty */
 			}
 			| smr_cond RDO_Break_point RDO_IDENTIF fun_logic {
 				RDOSMR* smr = PARSER->getSMR();
-				smr->insertBreakPoint( RDOParserSrcInfo(@3, *reinterpret_cast<std::string*>($3)), reinterpret_cast<RDOFUNLogic*>($4) );
+				smr->insertBreakPoint( reinterpret_cast<RDOValue*>($3)->src_info(), reinterpret_cast<RDOFUNLogic*>($4) );
 			}
 			| smr_cond RDO_Break_point RDO_IDENTIF error {
 				PARSER->error( @4, "Ошибка логического выражения в точке останова" );
@@ -303,7 +303,7 @@ smr_cond:	/* empty */
 				PARSER->error( @2, @3, "Ожидается имя точки останова" );
 			}
 			| smr_cond RDO_IDENTIF '=' fun_arithm {
-				PARSER->getSMR()->setConstValue( RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)), reinterpret_cast<RDOFUNArithm*>($4) );
+				PARSER->getSMR()->setConstValue( reinterpret_cast<RDOValue*>($2)->src_info(), reinterpret_cast<RDOFUNArithm*>($4) );
 			}
 			| smr_cond RDO_IDENTIF '=' error {
 				PARSER->error( @3, @4, "Ошибка в арифметическом выражении" );
@@ -312,7 +312,7 @@ smr_cond:	/* empty */
 				PARSER->error( @2, "Ожидается '='" );
 			}
 			| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm {
-				PARSER->getSMR()->setResParValue( RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)), RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)), reinterpret_cast<RDOFUNArithm*>($6) );
+				PARSER->getSMR()->setResParValue( reinterpret_cast<RDOValue*>($2)->src_info(), reinterpret_cast<RDOValue*>($4)->src_info(), reinterpret_cast<RDOFUNArithm*>($6) );
 			}
 			| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' error {
 				PARSER->error( @5, @6, "Ошибка в арифметическом выражении" );
@@ -321,7 +321,7 @@ smr_cond:	/* empty */
 				PARSER->error( @4, "Ожидается '='" );
 			}
 			| smr_cond RDO_IDENTIF '.' error {
-				std::string name = *reinterpret_cast<std::string*>($2);
+				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				const RDORSSResource* res = PARSER->findRSSResource( name );
 				if ( res ) {
 					PARSER->error( @3, @4, "Ожидается параметр" );
@@ -335,7 +335,7 @@ smr_cond:	/* empty */
 				}
 			}
 			| smr_cond RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST {
-				PARSER->getSMR()->setSeed( RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)), $6 );
+				PARSER->getSMR()->setSeed( reinterpret_cast<RDOValue*>($2)->src_info(), reinterpret_cast<RDOValue*>($6)->value().getInt() );
 			}
 			| smr_cond RDO_IDENTIF '.' RDO_Seed '=' error {
 				PARSER->error( @5, @6, "Ожидается база генератора" );
@@ -407,11 +407,11 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_select_arithm {
 			}
 			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator() ), RDOParserSrcInfo( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() ) );
 			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
+			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getInt(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );    }
+			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getDouble(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), @1 );                                                            }
 			| '-' fun_arithm %prec RDO_UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
@@ -424,7 +424,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							RDOFUNParams* fun = new RDOFUNParams( PARSER );
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @3 );
 							fun->setSrcText( fun_name + "()" );
@@ -433,7 +433,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 						}
 						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
 							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
@@ -474,7 +474,7 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
@@ -511,7 +511,7 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
 						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;

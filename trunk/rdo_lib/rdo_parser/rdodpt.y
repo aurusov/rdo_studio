@@ -228,7 +228,7 @@ dpt_search_trace:		/* empty */ {
 						};
 
 dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace {
-							std::string name = *reinterpret_cast<std::string*>($2);
+							std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 							$$ = (int)new RDODPTSearch( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
 						}
 						| RDO_Decision_point RDO_IDENTIF_COLON error {
@@ -303,17 +303,17 @@ dp_searcht_compare:		dpt_search_evaluate RDO_Compare_tops '=' RDO_NO {
 dpt_search_descr_param:	/* empty */
 						| dpt_search_descr_param RDO_IDENTIF {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							std::string param = *reinterpret_cast<std::string*>($2);
+							std::string param = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
 						| dpt_search_descr_param RDO_INT_CONST {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							int         param = $2;
+							int         param = reinterpret_cast<RDOValue*>($2)->value().getInt();
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
 						| dpt_search_descr_param RDO_REAL_CONST {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							double      param = *reinterpret_cast<double*>($2);
+							double      param = reinterpret_cast<RDOValue*>($2)->value().getDouble();
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
 						| dpt_search_descr_param '*' {
@@ -338,8 +338,8 @@ dpt_search_descr_value:	RDO_value_before fun_arithm {
 
 dpt_search_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
 							RDODPTSearch* dpt   = PARSER->getLastDPTSearch();
-							std::string name    = *reinterpret_cast<std::string*>($1);
-							std::string pattern = *reinterpret_cast<std::string*>($2);
+							std::string name    = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+							std::string pattern = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
 						}
 						| RDO_IDENTIF_COLON error {
@@ -399,7 +399,7 @@ dpt_some_trace:			/* empty */ {
 
 dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace {
 							// TODO: а где признак трассировки для some ?
-							std::string name = *reinterpret_cast<std::string*>($2);
+							std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 							$$ = (int)new RDODPTSome( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext) );
 						};
 
@@ -421,8 +421,8 @@ dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic {
 
 dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
 							RDODPTSome* dpt     = PARSER->getLastDPTSome();
-							std::string name    = *reinterpret_cast<std::string*>($1);
-							std::string pattern = *reinterpret_cast<std::string*>($2);
+							std::string name    = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+							std::string pattern = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
 						}
 						| RDO_IDENTIF_COLON error {
@@ -432,17 +432,17 @@ dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
 dpt_some_descr_param:	/* empty */
 						| dpt_some_descr_param RDO_IDENTIF {
 							RDODPTSome*  dpt   = PARSER->getLastDPTSome();
-							std::string  param = *reinterpret_cast<std::string*>($2);
+							std::string  param = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
 						| dpt_some_descr_param RDO_INT_CONST {
 							RDODPTSome* dpt   = PARSER->getLastDPTSome();
-							int         param = $2;
+							int         param = reinterpret_cast<RDOValue*>($2)->value().getInt();
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
 						| dpt_some_descr_param RDO_REAL_CONST {
 							RDODPTSome* dpt   = PARSER->getLastDPTSome();
-							double      param = *reinterpret_cast<double*>($2);
+							double      param = reinterpret_cast<RDOValue*>($2)->value().getDouble();
 							dpt->getLastActivity()->addParam( param, @2 );
 						}
 						| dpt_some_descr_param '*' {
@@ -486,8 +486,8 @@ dpt_free_activity:			/* empty */
 
 dpt_free_activity_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
 								RDODPTFree* dpt     = PARSER->getLastDPTFree();
-								std::string name    = *reinterpret_cast<std::string*>($1);
-								std::string pattern = *reinterpret_cast<std::string*>($2);
+								std::string name    = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+								std::string pattern = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 								$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
 							}
 							| RDO_IDENTIF_COLON error {
@@ -497,17 +497,17 @@ dpt_free_activity_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
 dpt_free_activity_param:	/* empty */
 							| dpt_free_activity_param RDO_IDENTIF {
 								RDODPTFree*  dpt   = PARSER->getLastDPTFree();
-								std::string  param = *reinterpret_cast<std::string*>($2);
+								std::string  param = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 								dpt->getLastActivity()->addParam( param, @2 );
 							}
 							| dpt_free_activity_param RDO_INT_CONST {
 								RDODPTFree*  dpt   = PARSER->getLastDPTFree();
-								int          param = $2;
+								int          param = reinterpret_cast<RDOValue*>($2)->value().getInt();
 								dpt->getLastActivity()->addParam( param, @2 );
 							}
 							| dpt_free_activity_param RDO_REAL_CONST {
 								RDODPTFree*  dpt   = PARSER->getLastDPTFree();
-								double       param = *reinterpret_cast<double*>($2);
+								double       param = reinterpret_cast<RDOValue*>($2)->value().getDouble();
 								dpt->getLastActivity()->addParam( param, @2 );
 							}
 							| dpt_free_activity_param '*' {
@@ -600,11 +600,11 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_select_arithm {
 			}
 			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator() ), RDOParserSrcInfo( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() ) );
 			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
+			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getInt(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );    }
+			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getDouble(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), @1 );                                                            }
 			| '-' fun_arithm %prec RDO_UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
@@ -617,7 +617,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							RDOFUNParams* fun = new RDOFUNParams( PARSER );
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @3 );
 							fun->setSrcText( fun_name + "()" );
@@ -626,7 +626,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 						}
 						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
 							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
@@ -667,7 +667,7 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
@@ -704,7 +704,7 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
+						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
 						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
 						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;
