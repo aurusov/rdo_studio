@@ -595,7 +595,7 @@ frm_text:	frm_text_common frm_text_align fun_arithm ']' {
 				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, ((RDOFUNArithm *)$3)->createCalc() );
 			}
 			| frm_text_common frm_text_align RDO_QUOTED_IDENTIF ']' {
-				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, (std::string *)$3);
+				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, reinterpret_cast<RDOValue*>($3)->value().getString() );
 			}
 			| frm_text_common frm_text_align fun_arithm error {
 				PARSER->error( @3, "Ожидается ']'" );

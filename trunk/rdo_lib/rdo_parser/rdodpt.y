@@ -521,12 +521,12 @@ dpt_free_activity_param:	/* empty */
 dpt_free_activity_keys:		/* empty */
 							| dpt_free_activity_keys RDO_QUOTED_IDENTIF {
 								RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
-								std::string         key      = *reinterpret_cast<std::string*>($2);
+								std::string         key      = reinterpret_cast<RDOValue*>($2)->value().getString();
 								activity->addHotKey( key, @2 );
 							}
 							| dpt_free_activity_keys '+' RDO_QUOTED_IDENTIF {
 								RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
-								std::string         key      = *reinterpret_cast<std::string*>($3);
+								std::string         key      = reinterpret_cast<RDOValue*>($3)->value().getString();
 								activity->addHotKey( key, @3 );
 							};
 

@@ -225,12 +225,12 @@ opr_body:	opr_header RDO_IDENTIF_COLON RDO_IDENTIF {
 opr_keyb:	opr_body
 			| opr_keyb RDO_QUOTED_IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      key = *reinterpret_cast<std::string*>($2);
+				std::string      key = reinterpret_cast<RDOValue*>($2)->value().getString();
 				opr->addHotKey( key, @2 );
 			}
 			| opr_keyb '+' RDO_QUOTED_IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      key = *reinterpret_cast<std::string*>($3);
+				std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
 				opr->addHotKey( key, @3 );
 			};
 

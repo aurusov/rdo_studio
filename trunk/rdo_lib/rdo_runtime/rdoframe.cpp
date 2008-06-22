@@ -301,10 +301,10 @@ void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDO
 	isTextString = false;
 }
 
-void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, std::string* _txt )
+void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, const std::string& _txt )
 {
 	align = _align;
-	txt   = *_txt;
+	txt   = _txt;
 	isTextString = true;
 }
 
