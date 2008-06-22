@@ -34,8 +34,8 @@ void RDOParserCorbaRTP::parse()
 		// Создали новый тип ресурса
 		rdoMBuilder::RDOResType rtp( "MyRTP" );
 		// Наполнили его параметрами
-		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::RDOValue::rvt_int) );
-		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::RDOValue::rvt_int) );
+		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::g_int) );
+		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::g_int) );
 		// Добавили его к списку существующих
 		if ( rtpList.append( rtp ) )
 		{

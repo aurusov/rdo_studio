@@ -43,7 +43,7 @@ void RDOPMDWatchPar::notify( RDORuntimeObject* from, unsigned int message, void*
 
 std::string RDOPMDWatchPar::traceValue()
 {
-	return toString( m_currValue );
+	return rdo::toString( m_currValue );
 }
 
 bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
@@ -199,7 +199,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bo
 
 std::string RDOPMDWatchQuant::traceValue()
 {
-	return toString( m_currValue );
+	return rdo::toString( m_currValue );
 }
 
 bool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
@@ -295,7 +295,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bo
 
 std::string RDOPMDWatchValue::traceValue()
 {
-	return toString( m_currValue );
+	return rdo::toString( m_currValue );
 }
 
 bool RDOPMDWatchValue::resetPokaz(RDOSimulator *sim)

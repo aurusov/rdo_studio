@@ -19,6 +19,44 @@ void trimRight( std::string& str );
 std::string extractFilePath( const std::string& fileName );
 bool isFileExists( const std::string& fileName );
 
+template < class Arg > inline std::string toString( Arg value )
+{
+   std::ostringstream str;
+   str << value;
+   return str.str();
+}
+
+template < class Stor > void deleteAllObjects( Stor& storage )
+{
+	Stor::reverse_iterator it = storage.rbegin();
+	while ( it != storage.rend() ) {
+		delete *it;
+		it++;
+	}
+	storage.clear();
+}
+
+// ----------------------------------------------------------------------------
+// ---------- vector
+// ----------------------------------------------------------------------------
+template <class T>
+class vector: public std::vector<T>
+{
+public:
+	vector()
+	{
+	}
+	vector( const T& item )
+	{
+		push_back( item );
+	}
+	vector& operator() ( const T& item )
+	{
+		push_back( item );
+		return *this;
+	}
+};
+
 } // namespace rdo
 
 namespace rdoModelObjects {

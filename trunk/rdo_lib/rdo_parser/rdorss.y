@@ -274,12 +274,12 @@ rss_value:	'*' {
 			}
 			| RDO_IDENTIF {
 				if ( PARSER->getLastRSSResource()->currParam == PARSER->getLastRSSResource()->getType()->getParams().end() ) {
-					PARSER->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %s", ((std::string*)$1)->c_str()) );
+					PARSER->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %s", reinterpret_cast<std::string*>($1)->c_str()) );
 					PARSER->error_push_only( PARSER->getLastRSSResource()->getType()->src_info(), "См. тип ресурса" );
 					PARSER->error_push_done();
 				}
 				try {
-					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getRSSEnumValue(*(std::string *)$1, @1);
+					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getValue( RDOValue(RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1))) );
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException& err ) {
@@ -288,12 +288,12 @@ rss_value:	'*' {
 			}
 			| RDO_QUOTED_IDENTIF {
 				if ( PARSER->getLastRSSResource()->currParam == PARSER->getLastRSSResource()->getType()->getParams().end() ) {
-					PARSER->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %s", ((std::string*)$1)->c_str()) );
+					PARSER->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %s", reinterpret_cast<std::string*>($1)->c_str()) );
 					PARSER->error_push_only( PARSER->getLastRSSResource()->getType()->src_info(), "См. тип ресурса" );
 					PARSER->error_push_done();
 				}
 				try {
-					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getRSSStringValue(*(std::string *)$1, @1);
+					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getValue( RDOValue(*reinterpret_cast<std::string*>($1), @1) );
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException& err ) {
@@ -307,7 +307,7 @@ rss_value:	'*' {
 					PARSER->error_push_done();
 				}
 				try {
-					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getRSSIntValue($1, @1);
+					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getValue( RDOValue($1, @1) );
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException& err ) {
@@ -321,7 +321,7 @@ rss_value:	'*' {
 					PARSER->error_push_done();
 				}
 				try {
-					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getRSSRealValue(*(double *)$1, @1);
+					rdoRuntime::RDOValue val = (*(PARSER->getLastRSSResource()->currParam))->getType()->getValue( RDOValue(*reinterpret_cast<double*>($1), @1) );
 					PARSER->getLastRSSResource()->addValue( val );
 					PARSER->getLastRSSResource()->currParam++;
 				} catch ( RDOSyntaxException& err ) {

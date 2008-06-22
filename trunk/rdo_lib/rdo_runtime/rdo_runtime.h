@@ -77,12 +77,19 @@ public:
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const std::string& message, const RDOCalc* calc = NULL );
 
-	class RDOHotKeyToolkit {
-	private:
-		std::map< std::string, int > keys;
+	class RDOHotKeyToolkit
+	{
 	public:
+		typedef unsigned int                     KeyCode;
+		typedef std::map< std::string, KeyCode > KeySet;
+		typedef KeySet::const_iterator           CIterator;
+		enum    { UNDEFINED_KEY = ~0 };
+
 		RDOHotKeyToolkit();
-		int codeFromString( const std::string& key );
+		KeyCode codeFromString( const std::string& key ) const;
+
+	private:
+		KeySet m_keys;
 	};
 	RDOHotKeyToolkit rdoHotKeyToolkit;
 

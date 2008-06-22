@@ -119,37 +119,39 @@ public:
 	friend class RDOResType;
 	public:
 		Param( const rdoParse::RDORTPParam& param );
-		Param( const std::string& name, rdoRuntime::RDOValue::Type type );
-		Param( const std::string& name, rdoRuntime::RDOValue::Type type, const rdoRuntime::RDOValue& def );
-		Param( const std::string& name, const rdoRuntime::RDOValue& type );
-		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::RDOValue::rvt_unknow );
-		Param( const std::string& name, rdoRuntime::RDOEnum* enums );
-		Param( const std::string& name, rdoRuntime::RDOEnum* enums, const rdoRuntime::RDOEnum::EnumItem& defaultValue );
+		Param( const std::string& name, const rdoRuntime::RDOType* type, const rdoRuntime::RDOValue& def = rdoRuntime::RDOType::t_unknow );
+		Param( const std::string& name, const rdoRuntime::RDOValue& def );
+		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::RDOType::t_unknow );
 
-		rdoRuntime::RDOValue        getTypeObject() const { return m_type;                   }
-		rdoRuntime::RDOValue::Type  getType() const       { return m_type.getType();         }
-		std::string                 getTypeStr() const    { return m_type.getTypeAsString(); }
-		int                         id() const            { return m_id;                     }
+		const rdoRuntime::RDOType*     type() const       { return m_type;             }
+		const rdoRuntime::RDOType::ID  typeID() const     { return m_type->id();       }
+		std::string                    typeStr() const    { return m_type->asString(); }
 
-		bool                        hasDiap() const    { return m_min.getType() != rdoRuntime::RDOValue::rvt_unknow && m_max.getType() != rdoRuntime::RDOValue::rvt_unknow; }
+		int                         id() const         { return m_id;  }
+
+		bool                        hasDiap() const    { return m_min.typeID() != rdoRuntime::RDOType::t_unknow && m_max.typeID() != rdoRuntime::RDOType::t_unknow; }
 		const rdoRuntime::RDOValue& getMin() const     { return m_min; }
 		const rdoRuntime::RDOValue& getMax() const     { return m_max; }
 		void                        setDiap( const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max );
 
-		bool                        hasDefault() const { return m_default.getType() != rdoRuntime::RDOValue::rvt_unknow; }
+		bool                        hasDefault() const { return m_default.typeID() != rdoRuntime::RDOType::t_unknow; }
 		const rdoRuntime::RDOValue& getDefault() const { return m_default; }
 		void                        setDefault( const rdoRuntime::RDOValue& def );
 
-		const rdoRuntime::RDOEnum&  getEnum() const    { return m_type.getEnum(); }
+		const rdoRuntime::RDOEnumType&  getEnum() const
+		{
+			_ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
+			return *static_cast<const rdoRuntime::RDOEnumType*>(m_type);
+		}
 
 		bool operator== ( const Param& param ) const;
 
 	private:
-		rdoRuntime::RDOValue   m_type;
-		rdoRuntime::RDOValue   m_min;
-		rdoRuntime::RDOValue   m_max;
-		rdoRuntime::RDOValue   m_default;
-		int                    m_id;
+		const rdoRuntime::RDOType* m_type;
+		rdoRuntime::RDOValue       m_min;
+		rdoRuntime::RDOValue       m_max;
+		rdoRuntime::RDOValue       m_default;
+		int                        m_id;
 	};
 	class ParamList: public RDOList<Param>
 	{

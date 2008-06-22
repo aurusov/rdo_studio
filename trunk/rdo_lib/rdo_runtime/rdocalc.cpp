@@ -80,7 +80,7 @@ RDOValue& RDOCalcGetTempResParamFRM::doCalc( RDORuntime* runtime )
 	if ( m_resID >= 0 ) {
 		m_value = runtime->getResParamVal( m_resID, m_paramID );
 	} else if ( m_resID == -1 ) {
-		RDOEnum* _enum = new RDOEnum( runtime );
+		RDOEnumType* _enum = new RDOEnumType( runtime );
 		_enum->add( "Удален" );
 		m_value = RDOValue( *_enum );
 		m_resID = -2;
@@ -133,7 +133,7 @@ RDOValue& RDOSetRelParamDiapCalc::doCalc( RDORuntime* runtime )
 {
 	m_value = m_calc->calcValue( runtime );
 	if ( m_value < m_min_value || m_value > m_max_value ) {
-		if ( m_value.getType() == RDOValue::rvt_int && m_min_value.getType() == RDOValue::rvt_int && m_max_value.getType() == RDOValue::rvt_int ) {
+		if ( m_value.typeID() == RDOType::t_int && m_min_value.typeID() == RDOType::t_int && m_max_value.typeID() == RDOType::t_int ) {
 			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_min_value.getInt(), m_max_value.getInt(), m_value.getInt()), this );
 		} else {
 			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_min_value.getDouble(), m_max_value.getDouble(), m_value.getDouble()), this );
@@ -223,7 +223,7 @@ RDOValue& RDOFunAlgorithmicDiapCalc::doCalc( RDORuntime* runtime )
 		if ( m_conditions[i]->calcValue( runtime ).getBool() ) {
 			m_value = m_actions[i]->calcValue( runtime );
 			if ( m_value < m_min_value || m_value > m_max_value ) {
-				if ( m_value.getType() == RDOValue::rvt_int && m_min_value.getType() == RDOValue::rvt_int && m_max_value.getType() == RDOValue::rvt_int ) {
+				if ( m_value.typeID() == RDOType::t_int && m_min_value.typeID() == RDOType::t_int && m_max_value.typeID() == RDOType::t_int ) {
 					runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_min_value.getInt(), m_max_value.getInt(), m_value.getInt()), m_actions[i] );
 				} else {
 					runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_min_value.getDouble(), m_max_value.getDouble(), m_value.getDouble()), m_actions[i] );
@@ -596,7 +596,7 @@ RDOValue& RDOCalcCheckDiap::doCalc( RDORuntime* runtime )
 {
 	m_value = m_oper->calcValue( runtime );
 	if ( m_value < m_min_value || m_value > m_max_value ) {
-		if ( m_value.getType() == RDOValue::rvt_int && m_min_value.getType() == RDOValue::rvt_int && m_max_value.getType() == RDOValue::rvt_int ) {
+		if ( m_value.typeID() == RDOType::t_int && m_min_value.typeID() == RDOType::t_int && m_max_value.typeID() == RDOType::t_int ) {
 			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_min_value.getInt(), m_max_value.getInt(), m_value.getInt()), this );
 		} else {
 			runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_min_value.getDouble(), m_max_value.getDouble(), m_value.getDouble()), this );

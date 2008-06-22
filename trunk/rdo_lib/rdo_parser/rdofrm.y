@@ -348,7 +348,7 @@ frm_color:	RDO_color_transparent {
 				RDOFUNArithm* red   = new RDOFUNArithm( PARSER, $2, RDOParserSrcInfo(@2, rdo::format("%d", $2)) );
 				RDOFUNArithm* green = new RDOFUNArithm( PARSER, $3, RDOParserSrcInfo(@3, rdo::format("%d", $3)) );
 				RDOFUNArithm* blue  = new RDOFUNArithm( PARSER, $4, RDOParserSrcInfo(@4, rdo::format("%d", $4)) );
-				RDORTPIntParamType intType( PARSER, new RDORTPIntDiap( PARSER, 0, 255, @1, @1 ), new RDORTPIntDefVal(PARSER) );
+				RDORTPIntParamType intType( PARSER, new RDORTPIntDiap( PARSER, 0, 255, @1, @1 ), new RDORTPDefVal(PARSER) );
 				intType.checkParamType( red );
 				intType.checkParamType( green );
 				intType.checkParamType( blue );
@@ -367,7 +367,7 @@ frm_color:	RDO_color_transparent {
 				RDOFUNArithm* red   = reinterpret_cast<RDOFUNArithm*>($2);
 				RDOFUNArithm* green = reinterpret_cast<RDOFUNArithm*>($4);
 				RDOFUNArithm* blue  = reinterpret_cast<RDOFUNArithm*>($6);
-				RDORTPIntParamType intType( PARSER, new RDORTPIntDiap( PARSER, 0, 255, @1, @1 ), new RDORTPIntDefVal(PARSER) );
+				RDORTPIntParamType intType( PARSER, new RDORTPIntDiap( PARSER, 0, 255, @1, @1 ), new RDORTPDefVal(PARSER) );
 				intType.checkParamType( red );
 				intType.checkParamType( green );
 				intType.checkParamType( blue );
@@ -1132,7 +1132,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->typeID(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			};
 
 // ----------------------------------------------------------------------------

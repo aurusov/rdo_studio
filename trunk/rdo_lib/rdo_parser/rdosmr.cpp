@@ -44,8 +44,8 @@ RDOSMR::RDOSMR( RDOParser* _parser, const std::string& _modelName ):
 	frameNumber( 1 ),
 	showRate( 60 ),
 	runStartTime( 0 ),
-	traceStartTime( -1 ),
-	traceEndTime( -1 ),
+	traceStartTime( rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME ),
+	traceEndTime  ( rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME ),
 	showMode( rdoSimulator::SM_NoShow ),
 	terminateIf( NULL )
 {
@@ -90,7 +90,7 @@ void RDOSMR::setTraceStartTime( double value, const YYLTYPE& pos )
 	if ( value < 0 ) {
 		parser()->error( pos, "Ќачальное врем€ трассировки должно быть больше нул€" );
 	}
-	if ( getTraceEndTime() != -1 && getTraceEndTime() <= value ) {
+	if ( getTraceEndTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value ){
 		parser()->error_push_only( pos, "Ќачальное врем€ трассировки должно быть меньше конечного" );
 		parser()->error_push_only( traceEndTime_pos, "—м. конечное врем€ трассировки" );
 		parser()->error_push_done();
@@ -104,7 +104,7 @@ void RDOSMR::setTraceEndTime( double value, const YYLTYPE& pos )
 	if ( value < 0 ) {
 		parser()->error( pos, " онечное врем€ трассировки должно быть больше нул€" );
 	}
-	if ( getTraceStartTime() != -1 && getTraceStartTime() >= value ) {
+	if ( getTraceStartTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value ) {
 		parser()->error_push_only( pos, " онечное врем€ трассировки должно быть больше начального" );
 		parser()->error_push_only( traceStartTime_pos, "—м. начальное врем€ трассировки" );
 		parser()->error_push_done();

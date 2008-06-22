@@ -1,6 +1,8 @@
 #ifndef RDO_RANDOM_DISTRIBUTION_H
 #define RDO_RANDOM_DISTRIBUTION_H
 
+#include "rdo_value.h"
+
 namespace rdoRuntime
 {
 

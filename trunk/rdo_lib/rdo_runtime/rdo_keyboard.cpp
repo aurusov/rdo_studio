@@ -18,7 +18,7 @@ RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool
 	RDOOperation( runtime, pattern, trace, name ),
 	m_shift( false ),
 	m_control( false ),
-	m_scan_code( -1 )
+	m_scan_code( RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY )
 {
 }
 
@@ -26,7 +26,7 @@ RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool
 	RDOOperation( runtime, pattern, trace, condition, name ),
 	m_shift( false ),
 	m_control( false ),
-	m_scan_code( -1 )
+	m_scan_code( RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY )
 {
 }
 
@@ -36,9 +36,9 @@ RDOKeyboard::~RDOKeyboard()
 
 RDOKeyboard::AddHotKey RDOKeyboard::addHotKey( RDORuntime* runtime, const std::string& hotKey )
 {
-	unsigned int scan_code = runtime->rdoHotKeyToolkit.codeFromString( hotKey );
-	if ( scan_code == -1 ) return RDOKeyboard::addhk_notfound;
-	if ( m_scan_code != -1 && scan_code != VK_SHIFT && scan_code != VK_CONTROL ) return RDOKeyboard::addhk_already;
+	RDORuntime::RDOHotKeyToolkit::KeyCode scan_code = runtime->rdoHotKeyToolkit.codeFromString( hotKey );
+	if ( scan_code == RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY ) return RDOKeyboard::addhk_notfound;
+	if ( m_scan_code != RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY && scan_code != VK_SHIFT && scan_code != VK_CONTROL ) return RDOKeyboard::addhk_already;
 	switch ( scan_code ) {
 		case VK_SHIFT  : m_shift     = true; runtime->using_scan_codes.push_back( VK_SHIFT   ); break;
 		case VK_CONTROL: m_control   = true; runtime->using_scan_codes.push_back( VK_CONTROL ); break;

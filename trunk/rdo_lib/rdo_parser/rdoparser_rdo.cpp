@@ -71,9 +71,14 @@ RDOLexer* RDOParserRDOItem::getLexer( std::istream* in_stream, std::ostream* out
 
 int RDOParserRDOItem::lexer_loc_line()
 {
-	if ( m_lexer ) {
+	if ( m_lexer )
+	{
 		return m_lexer->m_lploc ? m_lexer->m_lploc->first_line : m_lexer->lineno();
-	} else return -1;
+	}
+	else
+	{
+		return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE;
+	}
 }
 
 int RDOParserRDOItem::lexer_loc_pos()
@@ -128,8 +133,8 @@ void RDOParserRSSPost::parse()
 // ----------------------------------------------------------------------------
 void RDOParserSTDFUN::parse()
 {
-	RDORTPIntParamType* intType   = new RDORTPIntParamType( m_parser, new RDORTPIntDiap(m_parser), new RDORTPIntDefVal(m_parser) );
-	RDORTPRealParamType* realType = new RDORTPRealParamType( m_parser, new RDORTPRealDiap(m_parser), new RDORTPRealDefVal(m_parser) );
+	RDORTPIntParamType* intType   = new RDORTPIntParamType( m_parser, new RDORTPIntDiap(m_parser), new RDORTPDefVal(m_parser) );
+	RDORTPRealParamType* realType = new RDORTPRealParamType( m_parser, new RDORTPRealDiap(m_parser), new RDORTPDefVal(m_parser) );
 
 	RDOFUNFunction* fun = new RDOFUNFunction( m_parser, "Abs", realType );
 	RDOFUNFunctionParam* param = new RDOFUNFunctionParam( fun, "p1", realType );

@@ -18,7 +18,7 @@
 #include <rdobinarystream.h>
 #include <rdoplugin.h>
 #include <rdothread.h>
-#include <rdoruntime_object.h>
+#include <rdo_exception.h>
 #include <limits>
 
 using namespace rdoEditor;

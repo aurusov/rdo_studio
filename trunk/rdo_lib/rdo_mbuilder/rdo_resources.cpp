@@ -81,11 +81,14 @@ RDOResType::RDOResType( const rdoParse::RDORTPResType& rtp ):
 
 RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 	m_name( param.name() ),
+	m_type( param.getType()->type() ),
+	m_exist( true ),
 	m_id( -1 )
 {
-	switch ( param.getType()->getType() ) {
-		case rdoRuntime::RDOValue::rvt_int: {
-			m_type = rdoRuntime::RDOValue( rdoRuntime::RDOValue::rvt_int );
+	switch ( typeID() )
+	{
+		case rdoRuntime::RDOType::t_int:
+		{
 			const rdoParse::RDORTPIntParamType* param_type = static_cast<const rdoParse::RDORTPIntParamType*>(param.getType());
 			if ( param_type->getDiap().isExist() ) {
 				m_min = param_type->getDiap().getMin();
@@ -93,8 +96,8 @@ RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 			}
 			break;
 		}
-		case rdoRuntime::RDOValue::rvt_real: {
-			m_type = rdoRuntime::RDOValue( rdoRuntime::RDOValue::rvt_real );
+		case rdoRuntime::RDOType::t_real:
+		{
 			const rdoParse::RDORTPRealParamType* param_type = static_cast<const rdoParse::RDORTPRealParamType*>(param.getType());
 			if ( param_type->getDiap().isExist() ) {
 				m_min = param_type->getDiap().getMin();
@@ -102,15 +105,10 @@ RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 			}
 			break;
 		}
-		case rdoRuntime::RDOValue::rvt_enum: {
-			const rdoParse::RDORTPEnumParamType* enumParamType = static_cast<const rdoParse::RDORTPEnumParamType*>(param.getType());
-			m_type = rdoRuntime::RDOValue( enumParamType->enu->getEnums() );
-			break;
-		}
 	}
 	if ( param.getType()->getDV().isExist() )
 	{
-		m_default = param.getType()->getDefaultValue( param.getType()->getDV().src_info() );
+		m_default = param.getType()->getDefaultValue( param.getType()->getDV().value().src_info() );
 	}
 }
 
@@ -138,26 +136,19 @@ bool RDOResType::ParamList::append( Param& param )
 	}
 }
 
-RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOValue::Type type ):
+RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOType* type, const rdoRuntime::RDOValue& def ):
 	m_name( name ),
 	m_type( type ),
-	m_exist( true ),
-	m_id( -1 )
-{
-}
-
-RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOValue::Type type, const rdoRuntime::RDOValue& def ):
-	m_name( name ),
-	m_type( def ),
 	m_default( def ),
 	m_exist( true ),
 	m_id( -1 )
 {
 }
 
-RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& type ):
+RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& def ):
 	m_name( name ),
-	m_type( type ),
+	m_type( &def.type() ),
+	m_default( def ),
 	m_exist( true ),
 	m_id( -1 )
 {
@@ -165,46 +156,13 @@ RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& t
 
 RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def ):
 	m_name( name ),
-	m_type( min.getType() ),
+	m_type( &rdoRuntime::RDOType::getTypeByID(min.typeID()) ),
 	m_min( min ),
 	m_max( max ),
 	m_default( def ),
 	m_exist( true ),
 	m_id( -1 )
 {
-}
-
-RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOEnum* enums ):
-	m_name( name ),
-	m_exist( true ),
-	m_id( -1 )
-{
-	if ( enums )
-	{
-		m_type = *enums;
-	}
-	else
-	{
-		m_exist = false;
-		m_type  = rdoRuntime::RDOValue::rvt_enum;
-	}
-}
-
-RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOEnum* enums, const rdoRuntime::RDOEnum::EnumItem& defaultValue ):
-	m_name( name ),
-	m_exist( true ),
-	m_id( -1 )
-{
-	if ( enums )
-	{
-		m_type = *enums;
-		setDefault( rdoRuntime::RDOValue(*enums, defaultValue) );
-	}
-	else
-	{
-		m_exist = false;
-		m_type  = rdoRuntime::RDOValue::rvt_enum;
-	}
 }
 
 void RDOResType::Param::setDiap( const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max )
@@ -251,9 +209,10 @@ bool RDOResTypeList::append( RDOResType& rtp )
 		while ( param != rtp.m_params.end() )
 		{
 			rdoParse::RDORTPParamType* pParamType = NULL;
-			switch ( param->getType() )
+			switch ( param->typeID() )
 			{
-				case rdoRuntime::RDOValue::rvt_int: {
+				case rdoRuntime::RDOType::t_int:
+				{
 					rdoParse::RDORTPIntDiap* pDiap;
 					if ( param->hasDiap() )
 					{
@@ -263,19 +222,20 @@ bool RDOResTypeList::append( RDOResType& rtp )
 					{
 						pDiap = new rdoParse::RDORTPIntDiap( m_parser );
 					}
-					rdoParse::RDORTPIntDefVal* pDef;
+					rdoParse::RDORTPDefVal* pDef;
 					if ( param->hasDefault() )
 					{
-						pDef = new rdoParse::RDORTPIntDefVal( m_parser, param->getDefault().getInt() );
+						pDef = new rdoParse::RDORTPDefVal( m_parser, param->getDefault() );
 					}
 					else
 					{
-						pDef = new rdoParse::RDORTPIntDefVal( m_parser );
+						pDef = new rdoParse::RDORTPDefVal( m_parser );
 					}
 					pParamType = new rdoParse::RDORTPIntParamType( m_parser, pDiap, pDef );
 					break;
 				}
-				case rdoRuntime::RDOValue::rvt_real: {
+				case rdoRuntime::RDOType::t_real:
+				{
 					rdoParse::RDORTPRealDiap* pDiap;
 					if ( param->hasDiap() )
 					{
@@ -285,21 +245,22 @@ bool RDOResTypeList::append( RDOResType& rtp )
 					{
 						pDiap = new rdoParse::RDORTPRealDiap( m_parser );
 					}
-					rdoParse::RDORTPRealDefVal* pDef;
+					rdoParse::RDORTPDefVal* pDef;
 					if ( param->hasDefault() )
 					{
-						pDef = new rdoParse::RDORTPRealDefVal( m_parser, param->getDefault().getDouble() );
+						pDef = new rdoParse::RDORTPDefVal( m_parser, param->getDefault() );
 					}
 					else
 					{
-						pDef = new rdoParse::RDORTPRealDefVal( m_parser );
+						pDef = new rdoParse::RDORTPDefVal( m_parser );
 					}
 					pParamType = new rdoParse::RDORTPRealParamType( m_parser, pDiap, pDef );
 					break;
 				}
-				case rdoRuntime::RDOValue::rvt_enum: {
+				case rdoRuntime::RDOType::t_enum:
+				{
 					rdoParse::RDORTPEnum* pEnum = NULL;
-					rdoRuntime::RDOEnum::CIterator enum_it = param->getEnum().begin();
+					rdoRuntime::RDOEnumType::CIterator enum_it = param->getEnum().begin();
 					while ( enum_it != param->getEnum().end() )
 					{
 						if ( !pEnum )
@@ -312,19 +273,20 @@ bool RDOResTypeList::append( RDOResType& rtp )
 						}
 						enum_it++;
 					}
-					rdoParse::RDORTPEnumDefVal* pEnumDefValue;
+					rdoParse::RDORTPDefVal* pEnumDefValue;
 					if ( param->hasDefault() )
 					{
-						pEnumDefValue = new rdoParse::RDORTPEnumDefVal( m_parser, param->getDefault().getAsString() );
+						pEnumDefValue = new rdoParse::RDORTPDefVal( m_parser, param->getDefault() );
 					}
 					else
 					{
-						pEnumDefValue = new rdoParse::RDORTPEnumDefVal( m_parser );
+						pEnumDefValue = new rdoParse::RDORTPDefVal( m_parser );
 					}
 					pParamType = new rdoParse::RDORTPEnumParamType( pRTP, pEnum, pEnumDefValue, rtp.name() );
 					break;
 				}
-				default: {
+				default:
+				{
 					delete pRTP;
 					return false;
 				}
@@ -397,7 +359,7 @@ RDOResource::RDOResource( const RDOResType& rtp, const std::string& name ):
 	RDOResType::ParamList::List::const_iterator param_it = m_rtp.m_params.begin();
 	while ( param_it != m_rtp.m_params.end() )
 	{
-		rdoRuntime::RDOValue value( param_it->getTypeObject() );
+		rdoRuntime::RDOValue value( *param_it->type() );
 		if ( param_it->hasDefault() )
 		{
 			value = param_it->getDefault();

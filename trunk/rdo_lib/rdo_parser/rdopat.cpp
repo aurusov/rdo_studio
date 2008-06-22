@@ -143,22 +143,22 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			const RDORTPParam* param = parSet->getRelRes()->getType()->getParams().at(parNumb);
 			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
 			rdoRuntime::RDOCalc* calc = NULL;
-			switch ( param->getType()->getType() ) {
-				case rdoRuntime::RDOValue::rvt_int: {
+			switch ( param->getType()->typeID() ) {
+				case rdoRuntime::RDOType::t_int: {
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
 					if ( param_type->getDiap().isExist() ) {
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
 					break;
 				}
-				case rdoRuntime::RDOValue::rvt_real: {
+				case rdoRuntime::RDOType::t_real: {
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
 					if ( param_type->getDiap().isExist() ) {
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
 					break;
 				}
-				case rdoRuntime::RDOValue::rvt_enum: {
+				case rdoRuntime::RDOType::t_enum: {
 					break;
 				}
 				default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
@@ -523,7 +523,7 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 				parser()->error( parSet->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", (*it)->name().c_str()));
 			}
 		} else {
-			params_default.push_back( (*it)->getType()->getDefaultValue( (*it)->getType()->getDV().src_info() ) );
+			params_default.push_back( (*it)->getType()->getDefaultValue( (*it)->getType()->getDV().value().src_info() ) );
 		}
 		it++;
 	}
@@ -791,7 +791,7 @@ void RDORelevantResource::deleteParamSetBegin()
 rdoRuntime::RDOCalc* RDORelevantResource::getChoiceCalc() const
 {
 	if ( choice_from && choice_from->type == rdoParse::RDOPATChoiceFrom::ch_from ) {
-		return choice_from->logic->createCalc( rdoRuntime::RDOValue::rvt_int );
+		return choice_from->logic->createCalc( rdoRuntime::RDOType::t_int );
 	}
 	return NULL;
 }

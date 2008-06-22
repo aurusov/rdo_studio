@@ -31,21 +31,24 @@ void funerror( char* mes );
 // ----------------------------------------------------------------------------
 class RDOFUNDoubleToIntByResult
 {
-private:
-	std::vector< rdoRuntime::RDOCalcDoubleToIntByResult* > int_or_double;
-
 public:
 	void initCalc( bool round );
-	void push_back( rdoRuntime::RDOCalcDoubleToIntByResult* calc ) {
-		int_or_double.push_back( calc );
+	void push_back( rdoRuntime::RDOCalcDoubleToIntByResult* calc )
+	{
+		m_int_or_double.push_back( calc );
 	}
-	void insert( const RDOFUNDoubleToIntByResult& first ) {
-		int_or_double.insert( int_or_double.end(), first.int_or_double.begin(), first.int_or_double.end() );
+	void insert( const RDOFUNDoubleToIntByResult& first )
+	{
+		m_int_or_double.insert( m_int_or_double.end(), first.m_int_or_double.begin(), first.m_int_or_double.end() );
 	}
-	void insert( const RDOFUNDoubleToIntByResult& first, const RDOFUNDoubleToIntByResult& second ) {
-		int_or_double.insert( int_or_double.end(), first.int_or_double.begin(), first.int_or_double.end() );
-		int_or_double.insert( int_or_double.end(), second.int_or_double.begin(), second.int_or_double.end() );
+	void insert( const RDOFUNDoubleToIntByResult& first, const RDOFUNDoubleToIntByResult& second )
+	{
+		m_int_or_double.insert( m_int_or_double.end(), first.m_int_or_double.begin(), first.m_int_or_double.end() );
+		m_int_or_double.insert( m_int_or_double.end(), second.m_int_or_double.begin(), second.m_int_or_double.end() );
 	}
+
+private:
+	std::vector< rdoRuntime::RDOCalcDoubleToIntByResult* > m_int_or_double;
 };
 
 // ----------------------------------------------------------------------------
@@ -55,12 +58,8 @@ class RDOFUNLogic: public RDOParserObject, public RDOParserSrcInfo
 {
 friend class RDOFUNArithm;
 
-private:
-	rdoRuntime::RDOCalc* calc;
-	RDOFUNDoubleToIntByResult int_or_double;
-
 public:
-	rdoRuntime::RDOCalc* createCalc( rdoRuntime::RDOValue::Type _type = rdoRuntime::RDOValue::rvt_real );
+	rdoRuntime::RDOCalc* createCalc( rdoRuntime::RDOType::ID _id = rdoRuntime::RDOType::t_real );
 
 	RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
 
@@ -77,6 +76,10 @@ public:
 	void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ) {
 		RDOParserSrcInfo::setSrcPos( _pos_begin, _pos_end );
 	}
+
+private:
+	rdoRuntime::RDOCalc*      m_calc;
+	RDOFUNDoubleToIntByResult m_int_or_double;
 };
 
 // ----------------------------------------------------------------------------
@@ -89,21 +92,21 @@ public:
 	std::string str; // for type == unknow
 
 private:
-	rdoRuntime::RDOValue::Type  type;
-	rdoRuntime::RDOCalc*        calc;
-	RDOFUNDoubleToIntByResult int_or_double;
+	rdoRuntime::RDOType::ID   m_typeID;
+	rdoRuntime::RDOCalc*      m_calc;
+	RDOFUNDoubleToIntByResult m_int_or_double;
 
 	void init( const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	void init( const std::string& value, const YYLTYPE& _pos );
 
 public:
-	RDOFUNArithm( RDOParser* _parser, rdoRuntime::RDOValue::Type _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( RDOParser* _parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
+	RDOFUNArithm( RDOParser* parser, rdoRuntime::RDOType::ID typeID, rdoRuntime::RDOCalc* calc, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( RDOParser* parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( RDOParser* _parser, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, const std::string& value, const YYLTYPE& _pos );
 
-	RDOFUNArithm( const RDOParserObject* _parent, rdoRuntime::RDOValue::Type _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( const RDOParserObject* parent, rdoRuntime::RDOType::ID typeID, rdoRuntime::RDOCalc* calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, double* value, const RDOParserSrcInfo& src_info );
@@ -121,20 +124,23 @@ public:
 	RDOFUNLogic* operator <=( RDOFUNArithm& second );
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 
-	rdoRuntime::RDOCalc* createCalc( const RDORTPParamType* const forType = NULL );
-	rdoRuntime::RDOCalc* getCalc() const            { return calc; }
-	rdoRuntime::RDOValue::Type getType() const { return type; }
+	rdoRuntime::RDOCalc*    createCalc( const RDORTPParamType* const forType = NULL );
+	rdoRuntime::RDOCalc*    getCalc() const   { return m_calc;   }
+	rdoRuntime::RDOType::ID typeID() const    { return m_typeID; }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
 	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
 	virtual void setSrcText( const std::string& value );
-	void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
+	void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end )
+	{
 		RDOParserSrcInfo::setSrcInfo( begin, delim, end );
 	}
-	void setSrcPos( const YYLTYPE& _error_pos ) {
+	void setSrcPos( const YYLTYPE& _error_pos )
+	{
 		RDOParserSrcInfo::setSrcPos( _error_pos );
 	}
-	void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ) {
+	void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end )
+	{
 		RDOParserSrcInfo::setSrcPos( _pos_begin, _pos_end );
 	}
 };

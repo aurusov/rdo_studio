@@ -16,6 +16,8 @@ class RDODPTSearchTrace;
 class RDOSimulatorTrace: public RDOSimulator
 {
 public:
+	enum { UNDEFINE_TIME = -1 };
+
 	virtual void rdoInit();
 
 	RDOTrace* getTracer() const            { return m_tracer;                }
@@ -71,8 +73,8 @@ protected:
 	RDOSimulatorTrace():
 		RDOSimulator(),
 		m_tracer( NULL ),
-		traceStartTime( -1 ),
-		traceEndTime( -1 ),
+		traceStartTime( UNDEFINE_TIME ),
+		traceEndTime( UNDEFINE_TIME ),
 		m_ieCounter( 1 ),
 		m_activityCounter( 1 ),
 		m_dptCounter( 1 ),
@@ -119,9 +121,10 @@ private:
 	unsigned int memory_current;
 	unsigned int memory_max;
 
-	bool timeForTrace() const {
-		if ( getTraceStartTime() != -1 && getTraceStartTime() > getCurrentTime() ) return false;
-		if ( getTraceEndTime() != -1 && getTraceEndTime() < getCurrentTime() ) return false;
+	bool timeForTrace() const
+	{
+		if ( getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime() ) return false;
+		if ( getTraceEndTime()   != UNDEFINE_TIME && getTraceEndTime()   < getCurrentTime() ) return false;
 		return true;
 	}
 };

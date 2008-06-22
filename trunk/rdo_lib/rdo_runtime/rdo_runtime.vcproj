@@ -497,6 +497,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdo_type.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_value.cpp"
+				>
+			</File>
+			<File
 				RelativePath="rdobase.cpp"
 				>
 				<FileConfiguration
@@ -738,6 +746,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_enum.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_exception.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_fuzzy.h"
+				>
+			</File>
+			<File
 				RelativePath="rdo_ie.h"
 				>
 			</File>
@@ -791,6 +811,14 @@
 			</File>
 			<File
 				RelativePath="rdo_simulator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_type.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_value.h"
 				>
 			</File>
 			<File

@@ -1,6 +1,7 @@
 #ifndef RDOCALC_H
 #define RDOCALC_H
 
+#include "rdo_value.h"
 #include "rdoruntime_object.h"
 #include "rdo_random_distribution.h"
 

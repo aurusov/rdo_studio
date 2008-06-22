@@ -43,7 +43,7 @@ RDORuntime::~RDORuntime()
 {
 	connected.clear();
 	onDestroy();
-	DeleteAllObjects( allPokaz );
+	rdo::deleteAllObjects( allPokaz );
 }
 
 void RDORuntime::connect( RDORuntimeObject* to, UINT message )
@@ -414,7 +414,7 @@ void RDORuntime::onInit()
 
 void RDORuntime::onDestroy()
 {                    
-	DeleteAllObjects( allResourcesByID );
+	rdo::deleteAllObjects( allResourcesByID );
 
 	if ( results ) {
 		delete results;
@@ -543,65 +543,66 @@ void RDORuntime::postProcess()
 
 RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
 {														   
-	keys.insert(std::map<std::string, int>::value_type("ESCAPE", VK_ESCAPE));
-	keys.insert(std::map<std::string, int>::value_type("TAB", VK_TAB));
-	keys.insert(std::map<std::string, int>::value_type("SHIFT", VK_SHIFT));
-	keys.insert(std::map<std::string, int>::value_type("CONTROL", VK_CONTROL));
-	keys.insert(std::map<std::string, int>::value_type("BACK", VK_BACK));
-	keys.insert(std::map<std::string, int>::value_type("RETURN", VK_RETURN));
-	keys.insert(std::map<std::string, int>::value_type("INSERT", VK_INSERT));
-	keys.insert(std::map<std::string, int>::value_type("HOME", VK_HOME));
-	keys.insert(std::map<std::string, int>::value_type("PRIOR", VK_PRIOR));
-	keys.insert(std::map<std::string, int>::value_type("DELETE", VK_DELETE));
-	keys.insert(std::map<std::string, int>::value_type("END", VK_END));
-	keys.insert(std::map<std::string, int>::value_type("NEXT", VK_NEXT));
-	keys.insert(std::map<std::string, int>::value_type("UP", VK_UP));
-	keys.insert(std::map<std::string, int>::value_type("LEFT", VK_LEFT));
-	keys.insert(std::map<std::string, int>::value_type("DOWN", VK_DOWN));
-	keys.insert(std::map<std::string, int>::value_type("RIGHT", VK_RIGHT));
-	keys.insert(std::map<std::string, int>::value_type("DIVIDE", VK_DIVIDE));
-	keys.insert(std::map<std::string, int>::value_type("MULTIPLY", VK_MULTIPLY));
-	keys.insert(std::map<std::string, int>::value_type("SUBTRACT", VK_SUBTRACT));
-	keys.insert(std::map<std::string, int>::value_type("ADD", VK_ADD));
-	keys.insert(std::map<std::string, int>::value_type("CLEAR", VK_CLEAR));
-	keys.insert(std::map<std::string, int>::value_type("SPACE", VK_SPACE));
-	keys.insert(std::map<std::string, int>::value_type("DECIMAL", VK_DECIMAL));
-	keys.insert(std::map<std::string, int>::value_type("F2", VK_F2));
-	keys.insert(std::map<std::string, int>::value_type("F3", VK_F3));
-	keys.insert(std::map<std::string, int>::value_type("F4", VK_F4));
-	keys.insert(std::map<std::string, int>::value_type("F5", VK_F5));
-	keys.insert(std::map<std::string, int>::value_type("F6", VK_F6));
-	keys.insert(std::map<std::string, int>::value_type("F7", VK_F7));
-	keys.insert(std::map<std::string, int>::value_type("F8", VK_F8));
-	keys.insert(std::map<std::string, int>::value_type("F9", VK_F9));
-	keys.insert(std::map<std::string, int>::value_type("F10", VK_F10));
-	keys.insert(std::map<std::string, int>::value_type("F11", VK_F11));
-	keys.insert(std::map<std::string, int>::value_type("F12", VK_F12));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD0", VK_NUMPAD0));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD1", VK_NUMPAD1));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD2", VK_NUMPAD2));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD3", VK_NUMPAD3));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD4", VK_NUMPAD4));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD5", VK_NUMPAD5));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD6", VK_NUMPAD6));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD7", VK_NUMPAD7));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD8", VK_NUMPAD8));
-	keys.insert(std::map<std::string, int>::value_type("NUMPAD9", VK_NUMPAD9));
-	keys.insert(std::map<std::string, int>::value_type("NOKEY", 0));
+	m_keys.insert(KeySet::value_type("ESCAPE", VK_ESCAPE));
+	m_keys.insert(KeySet::value_type("TAB", VK_TAB));
+	m_keys.insert(KeySet::value_type("SHIFT", VK_SHIFT));
+	m_keys.insert(KeySet::value_type("CONTROL", VK_CONTROL));
+	m_keys.insert(KeySet::value_type("BACK", VK_BACK));
+	m_keys.insert(KeySet::value_type("RETURN", VK_RETURN));
+	m_keys.insert(KeySet::value_type("INSERT", VK_INSERT));
+	m_keys.insert(KeySet::value_type("HOME", VK_HOME));
+	m_keys.insert(KeySet::value_type("PRIOR", VK_PRIOR));
+	m_keys.insert(KeySet::value_type("DELETE", VK_DELETE));
+	m_keys.insert(KeySet::value_type("END", VK_END));
+	m_keys.insert(KeySet::value_type("NEXT", VK_NEXT));
+	m_keys.insert(KeySet::value_type("UP", VK_UP));
+	m_keys.insert(KeySet::value_type("LEFT", VK_LEFT));
+	m_keys.insert(KeySet::value_type("DOWN", VK_DOWN));
+	m_keys.insert(KeySet::value_type("RIGHT", VK_RIGHT));
+	m_keys.insert(KeySet::value_type("DIVIDE", VK_DIVIDE));
+	m_keys.insert(KeySet::value_type("MULTIPLY", VK_MULTIPLY));
+	m_keys.insert(KeySet::value_type("SUBTRACT", VK_SUBTRACT));
+	m_keys.insert(KeySet::value_type("ADD", VK_ADD));
+	m_keys.insert(KeySet::value_type("CLEAR", VK_CLEAR));
+	m_keys.insert(KeySet::value_type("SPACE", VK_SPACE));
+	m_keys.insert(KeySet::value_type("DECIMAL", VK_DECIMAL));
+	m_keys.insert(KeySet::value_type("F2", VK_F2));
+	m_keys.insert(KeySet::value_type("F3", VK_F3));
+	m_keys.insert(KeySet::value_type("F4", VK_F4));
+	m_keys.insert(KeySet::value_type("F5", VK_F5));
+	m_keys.insert(KeySet::value_type("F6", VK_F6));
+	m_keys.insert(KeySet::value_type("F7", VK_F7));
+	m_keys.insert(KeySet::value_type("F8", VK_F8));
+	m_keys.insert(KeySet::value_type("F9", VK_F9));
+	m_keys.insert(KeySet::value_type("F10", VK_F10));
+	m_keys.insert(KeySet::value_type("F11", VK_F11));
+	m_keys.insert(KeySet::value_type("F12", VK_F12));
+	m_keys.insert(KeySet::value_type("NUMPAD0", VK_NUMPAD0));
+	m_keys.insert(KeySet::value_type("NUMPAD1", VK_NUMPAD1));
+	m_keys.insert(KeySet::value_type("NUMPAD2", VK_NUMPAD2));
+	m_keys.insert(KeySet::value_type("NUMPAD3", VK_NUMPAD3));
+	m_keys.insert(KeySet::value_type("NUMPAD4", VK_NUMPAD4));
+	m_keys.insert(KeySet::value_type("NUMPAD5", VK_NUMPAD5));
+	m_keys.insert(KeySet::value_type("NUMPAD6", VK_NUMPAD6));
+	m_keys.insert(KeySet::value_type("NUMPAD7", VK_NUMPAD7));
+	m_keys.insert(KeySet::value_type("NUMPAD8", VK_NUMPAD8));
+	m_keys.insert(KeySet::value_type("NUMPAD9", VK_NUMPAD9));
+	m_keys.insert(KeySet::value_type("NOKEY", 0));
 
 	for ( char i = '0'; i <= '9'; i++ ) {
-		keys.insert( std::map< std::string, int >::value_type( std::string(1, i), (int)i ) );
+		m_keys.insert( KeySet::value_type( std::string(1, i), (KeyCode)i ) );
 	}
 	for ( char i = 'A'; i <= 'Z'; i++ ) {
-		keys.insert( std::map< std::string, int >::value_type( std::string(1, i), (int)i ) );
+		m_keys.insert( KeySet::value_type( std::string(1, i), (KeyCode)i ) );
 	}
 }
 
-int RDORuntime::RDOHotKeyToolkit::codeFromString( const std::string& key )
+RDORuntime::RDOHotKeyToolkit::KeyCode RDORuntime::RDOHotKeyToolkit::codeFromString( const std::string& key ) const
 {
-	std::map< std::string, int >::iterator it = keys.find( key );
-	if ( it == keys.end() ) {
-		return -1;
+	CIterator it = m_keys.find( key );
+	if ( it == m_keys.end() )
+	{
+		return UNDEFINED_KEY;
 //		throw RDORuntimeException( "Unknown key name: " + key );
 	}
 	return (*it).second;

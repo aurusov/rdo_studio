@@ -226,7 +226,7 @@ dpt_process_line:	RDO_IDENTIF	{
 							// Создадим тип ресурса
 							rdoMBuilder::RDOResType rtp(rtp_name);
 							// Добавим параметр Время_создания
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, rdoRuntime::RDOValue::rvt_real ) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, rdoRuntime::g_real) );
 							// Добавим тип ресурса
 							if ( !rtpList.append( rtp ) )
 							{
@@ -242,7 +242,7 @@ dpt_process_line:	RDO_IDENTIF	{
 								PARSER->error( rdo::format( "У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
 							}
 							// Параметр есть, надо проверить на тип
-							if ( rtp.m_params[rtp_param_name].getType() != rdoRuntime::RDOValue::rvt_real ) {
+							if ( rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real ) {
 								PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
 							}
 							rdoRuntime::RDOPROCTransact::typeID = rtp.id();
@@ -370,7 +370,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->typeID(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			};
 
 // ----------------------------------------------------------------------------
