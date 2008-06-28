@@ -28,7 +28,7 @@ void rtperror( char* mes )
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParamType
 // ----------------------------------------------------------------------------
-void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool warning ) const
+void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 {
 	switch ( typeID() )
 	{
@@ -36,11 +36,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 		{
 			if ( action->typeID() == rdoRuntime::RDOType::t_real )
 			{
-//				if ( warning ) {
-					parser()->warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
-//				} else {
-//					parser()->error( action->src_info(), "Ожидается целое число" );
-//				}
+				parser()->warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
 			}
 			else if ( action->typeID() != rdoRuntime::RDOType::t_int )
 			{
@@ -71,6 +67,14 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			}
 			break;
 		}
+		case rdoRuntime::RDOType::t_bool:
+		{
+			if ( action->typeID() != rdoRuntime::RDOType::t_bool )
+			{
+				parser()->error( action->src_info(), "Несоответствие типов. Ожидается булевское значение" );
+			}
+			break;
+		}
 		case rdoRuntime::RDOType::t_enum:
 		{
 			if ( action->typeID() == rdoRuntime::RDOType::t_identificator )
@@ -90,7 +94,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			else if ( action->typeID() != rdoRuntime::RDOType::t_enum )
 			{
 				parser()->error_push_only( action->src_info(), rdo::format("Несоответствие типов. Ожидается перечислимый тип: %s", src_text().c_str()) );
-				parser()->error_push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), rdo::format("Возможные значения: %s", static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text().c_str()) );
+				parser()->error_push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), rdo::format("Возможные значения: %s", static_cast<const RDORTPEnumParamType*>(this)->m_enum->getEnums().asString().c_str()) );
 				parser()->error_push_done();
 			}
 			else if ( &action->enumType() != static_cast<const RDORTPEnumParamType*>(this)->m_enum )
@@ -114,27 +118,12 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			}
 			break;
 		}
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
-	}
-}
-
-void RDORTPParamType::checkParamType( const RDOValue& value ) const
-{
-	switch ( typeID() )
-	{
-		case rdoRuntime::RDOType::t_int:
+		case rdoRuntime::RDOType::t_string:
 		{
-			checkValue( value );
-			break;
-		}
-		case rdoRuntime::RDOType::t_real:
-		{
-			checkValue( value );
-			break;
-		}
-		case rdoRuntime::RDOType::t_enum:
-		{
-			checkValue( value );
+			if ( action->typeID() != rdoRuntime::RDOType::t_string )
+			{
+				parser()->error( action->src_info(), "Несоответствие типов. Ожидается строка" );
+			}
 			break;
 		}
 		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
@@ -205,8 +194,9 @@ RDORTPResType::RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_i
 
 void RDORTPResType::addParam( const RDORTPParam* const param )
 {
-	if ( findRTPParam( param->name() ) ) {
-		parser()->error( param->src_info(), rdoSimulator::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->name().c_str() );
+	if ( findRTPParam( param->name() ) )
+	{
+		parser()->error( param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()) );
 	}
 	m_params.push_back( param );
 }
@@ -586,7 +576,7 @@ unsigned int RDORTPEnumParamType::getDiapTableFunc() const
 // ---------- RDORTPStringParamType
 // ----------------------------------------------------------------------------
 RDORTPStringParamType::RDORTPStringParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
-	RDORTPParamType( _parent, _dv )
+	RDORTPParamType( _parent, _dv, _src_info )
 {
 }
 
@@ -630,12 +620,68 @@ void RDORTPStringParamType::checkValue( const RDOValue& value ) const
 rdoRuntime::RDOValue RDORTPStringParamType::getValue( const RDOValue& value ) const
 {
 	checkValue( value );
-	return rdoRuntime::RDOValue( value.value().getAsString() );
+	return rdoRuntime::RDOValue( value.value().getString() );
 }
 
 void RDORTPStringParamType::writeModelStructure( std::ostream& stream ) const
 {
 	stream << "S" << std::endl;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPBoolParamType
+// ----------------------------------------------------------------------------
+RDORTPBoolParamType::RDORTPBoolParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+	RDORTPParamType( _parent, _dv, _src_info )
+{
+}
+
+RDORTPParamType* RDORTPBoolParamType::constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue ) const
+{
+	if ( defValue.defined() && defValue.value().typeID() != rdoRuntime::RDOType::t_bool)
+	{
+		parser()->error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра булевского типа: %s", defValue.value().getAsString().c_str()) );
+	}
+	RDORTPDefVal* dv;
+	if ( defValue.defined() )
+	{
+		dv = new RDORTPDefVal( parser(), defValue );
+	}
+	else
+	{
+		dv = new RDORTPDefVal( *m_dv );
+		dv->setSrcInfo( such_as_src_info );
+		dv->setSrcPos( such_as_src_info.src_pos().m_last_line, such_as_src_info.src_pos().m_last_pos, such_as_src_info.src_pos().m_last_line, such_as_src_info.src_pos().m_last_pos );
+	}
+	RDORTPBoolParamType* type = new RDORTPBoolParamType( parent(), dv, such_as_src_info );
+	type->setSrcText( such_as_src_info.src_text() );
+	if ( dv->isExist() )
+	{
+		type->setSrcText( type->src_text() + " = " + dv->value().src_text() );
+	}
+	return type;
+}
+
+void RDORTPBoolParamType::checkValue( const RDOValue& value ) const
+{
+	if ( value.value().typeID() == rdoRuntime::RDOType::t_bool )
+	{
+	}
+	else
+	{
+		parser()->error( value.src_info(), rdo::format("Ожидается булевское значение, найдено '%s'", value.value().getAsString().c_str()) );
+	}
+}
+
+rdoRuntime::RDOValue RDORTPBoolParamType::getValue( const RDOValue& value ) const
+{
+	checkValue( value );
+	return rdoRuntime::RDOValue( value.value().getBool() );
+}
+
+void RDORTPBoolParamType::writeModelStructure( std::ostream& stream ) const
+{
+	stream << "B" << std::endl;
 }
 
 /*

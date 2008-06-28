@@ -54,10 +54,7 @@ public:
 	rdoRuntime::RDOActivity* activity() const { return m_activity;            }
 	const RDOPATPattern*     pattern() const  { return m_pattern;             }
 
-	void addParam( const std::string& _param, const YYLTYPE& _param_pos );
-	void addParam( int _param, const YYLTYPE& _param_pos );
-	void addParam( double _param, const YYLTYPE& _param_pos );
-	void addParam( const YYLTYPE& _param_pos );
+	void addParam( const RDOValue& param  );
 	void endParam( const YYLTYPE& _param_pos );
 
 protected:

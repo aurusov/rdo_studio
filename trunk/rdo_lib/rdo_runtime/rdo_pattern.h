@@ -56,7 +56,7 @@ protected:
 		std::vector< RDOCalc* >::iterator it = calcs.begin();
 		while ( it != calcs.end() )
 		{
-			if ( !(*it)->calcValue( runtime ).getBool() ) return false;
+			if ( !(*it)->calcValue( runtime ).getAsBool() ) return false;
 			it++;
 		}
 		return true;

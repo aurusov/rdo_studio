@@ -37,15 +37,14 @@ public:
 	virtual const RDOType&     type() const = 0;
 	rdoRuntime::RDOType::ID  typeID() const { return type()->id(); }
 
-	void checkParamType( const RDOFUNArithm* const action, bool warning = true ) const;
-	void checkParamType( const RDOValue& value ) const;
+	void checkParamType( const RDOFUNArithm* const action ) const;
 
 	const RDORTPDefVal& getDV() const { return *m_dv; }
 
 protected:
 	RDORTPDefVal* m_dv;
 
-	// Для глобальный типов, напрмиер, для параметров стандартных фыункций
+	// Для глобальный типов, напримиер, для параметров стандартных функций
 	RDORTPParamType( RDOParser* _parser, RDORTPDefVal* _dv ):
 		RDOParserObject( _parser ),
 		RDOParserSrcInfo(),
@@ -358,6 +357,23 @@ public:
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
 	virtual const RDOType& type() const { return rdoParse::g_string; }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPBoolParamType
+// ----------------------------------------------------------------------------
+class RDORTPBoolParamType: public RDORTPParamType
+{
+public:
+	RDORTPBoolParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+
+	virtual void                  checkValue( const RDOValue& value ) const;
+	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
+
+	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
+
+	virtual void writeModelStructure( std::ostream& stream ) const;
+	virtual const RDOType& type() const { return rdoParse::g_bool; }
 };
 
 // ----------------------------------------------------------------------------

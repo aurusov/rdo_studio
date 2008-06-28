@@ -59,6 +59,7 @@ public:
 		return
 			m_value.typeID() == rdoRuntime::RDOType::t_int ||
 			m_value.typeID() == rdoRuntime::RDOType::t_real ||
+			m_value.typeID() == rdoRuntime::RDOType::t_bool ||
 			m_value.typeID() == rdoRuntime::RDOType::t_string;
 	}
 

@@ -231,7 +231,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if(m_logicCalc->calcValue( runtime ).getBool())
+		if(m_logicCalc->calcValue( runtime ).getAsBool())
 			newValue++;
 
 		runtime->popGroupFunc();
@@ -348,7 +348,7 @@ bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 		return false;
 	}
 	getRuntime()->pushGroupFunc(res);
-	if ( m_logicCalc->calcValue( getRuntime() ).getBool() ) {
+	if ( m_logicCalc->calcValue( getRuntime() ).getAsBool() ) {
 		m_currValue = m_arithmCalc->calcValue( getRuntime() );
 		tracePokaz();
 //		runtime->getTracer()->writePokaz(runtime, this);

@@ -51,6 +51,7 @@ public:
 			case RDOType::t_int          : m_value.i_value = 0; break;
 			case RDOType::t_real         : m_value.d_value = 0; break;
 			case RDOType::t_enum         : m_value.i_value = 0; break;
+			case RDOType::t_bool         : m_value.b_value = false; break;
 			case RDOType::t_string       : m_value.s_value = new std::string(""); break;
 			case RDOType::t_identificator: m_value.s_value = new std::string(""); break;
 			default                      : throw RDOValueException();
@@ -70,6 +71,11 @@ public:
 		m_type( &g_real )
 	{
 		m_value.d_value = value;
+	}
+	RDOValue( bool value ):
+		m_type( &g_bool )
+	{
+		m_value.b_value = value;
 	}
 	RDOValue( RDOEnumType& enums ):
 		m_type( &enums )
@@ -116,6 +122,7 @@ public:
 			case RDOType::t_int : return m_value.i_value;
 			case RDOType::t_real: return (int)m_value.d_value;
 			case RDOType::t_enum: return m_value.i_value;
+			case RDOType::t_bool: return m_value.b_value ? 1 : 0;
 		}
 		throw RDOValueException();
 	}
@@ -126,6 +133,7 @@ public:
 			case RDOType::t_int : return m_value.i_value;
 			case RDOType::t_real: return (int)m_value.d_value;
 			case RDOType::t_enum: return m_value.i_value;
+			case RDOType::t_bool: return m_value.b_value ? 1 : 0;
 		}
 		throw RDOValueException();
 	}
@@ -144,6 +152,7 @@ public:
 			case RDOType::t_int : return m_value.i_value;
 			case RDOType::t_real: return m_value.d_value;
 			case RDOType::t_enum: return m_value.i_value;
+			case RDOType::t_bool: return m_value.b_value ? 1 : 0;
 		}
 		throw RDOValueException();
 	}
@@ -151,10 +160,19 @@ public:
 	{
 		switch ( typeID() )
 		{
+			case RDOType::t_bool  : return m_value.b_value;
+		}
+		throw RDOValueException();
+	}
+	bool getAsBool() const
+	{
+		switch ( typeID() )
+		{
 			case RDOType::t_int   : return m_value.i_value           ? true : false;
 			case RDOType::t_real  : return m_value.d_value           ? true : false;
 			case RDOType::t_enum  : return m_value.i_value           ? true : false;
 			case RDOType::t_string: return !m_value.s_value->empty() ? true : false;
+			case RDOType::t_bool  : return m_value.b_value;
 		}
 		throw RDOValueException();
 	}
@@ -181,6 +199,7 @@ public:
 			case RDOType::t_int          : return rdo::format( "%d", m_value.i_value );
 			case RDOType::t_real         : return rdo::toString( m_value.d_value );
 			case RDOType::t_enum         : return __enum()->getValues().at( m_value.i_value );
+			case RDOType::t_bool         : return m_value.b_value ? "true" : "false";
 			case RDOType::t_string       : return *m_value.s_value;
 			case RDOType::t_identificator: return *m_value.s_value;
 		}
@@ -193,6 +212,7 @@ public:
 			case RDOType::t_int   : return rdo::format( "%d", m_value.i_value );
 			case RDOType::t_real  : return rdo::toString( m_value.d_value );
 			case RDOType::t_enum  : return rdo::format( "%d", m_value.i_value );
+			case RDOType::t_bool  : return m_value.b_value ? "true" : "false";
 			case RDOType::t_string: return *m_value.s_value;
 		}
 		throw RDOValueException();
@@ -240,6 +260,14 @@ public:
 				{
 					case RDOType::t_int : return m_value.d_value  == rdovalue.m_value.i_value;
 					case RDOType::t_real: return m_value.d_value  == rdovalue.m_value.d_value;
+				}
+				break;
+			}
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value == rdovalue.m_value.b_value;
 				}
 				break;
 			}
@@ -292,6 +320,14 @@ public:
 				}
 				break;
 			}
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value != rdovalue.m_value.b_value;
+				}
+				break;
+			}
 			case RDOType::t_enum:
 			{
 				switch ( rdovalue.typeID() )
@@ -340,6 +376,14 @@ public:
 				}
 				break;
 			}
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value < rdovalue.m_value.b_value;
+				}
+				break;
+			}
 			case RDOType::t_string:
 			{
 				switch ( rdovalue.typeID() )
@@ -376,6 +420,14 @@ public:
 				}
 				break;
 			}
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value > rdovalue.m_value.b_value;
+				}
+				break;
+			}
 			case RDOType::t_string:
 			{
 				switch ( rdovalue.typeID() )
@@ -409,6 +461,14 @@ public:
 				}
 				break;
 			}
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value <= rdovalue.m_value.b_value;
+				}
+				break;
+			}
 			case RDOType::t_string:
 			{
 				switch ( rdovalue.typeID() )
@@ -439,6 +499,14 @@ public:
 				{
 					case RDOType::t_int : return m_value.d_value >= rdovalue.m_value.i_value;
 					case RDOType::t_real: return m_value.d_value >= rdovalue.m_value.d_value;
+				}
+				break;
+			}
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value >= rdovalue.m_value.b_value;
 				}
 				break;
 			}
@@ -609,6 +677,7 @@ private:
 	union {
 		int          i_value;
 		double       d_value;
+		bool         b_value;
 		std::string* s_value;
 	} m_value;
 };

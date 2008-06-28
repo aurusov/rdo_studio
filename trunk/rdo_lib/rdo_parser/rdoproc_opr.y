@@ -151,14 +151,19 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
-%token RDO_QUOTED_IDENTIF				430
-%token RDO_QUOTED_IDENTIF_BAD			431
+%token RDO_STRING_CONST					430
+%token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
 %token RDO_Select						433
 %token RDO_Size							434
 %token RDO_Empty						435
 %token RDO_not							436
 %token RDO_UMINUS						437
+%token RDO_string						438
+%token RDO_bool							439
+%token RDO_BOOL_CONST					440
+%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy_Term					442
 
 %{
 #include "pch.h"
@@ -293,68 +298,69 @@ dpt_process_end:	dpt_process RDO_End	{
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_neq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
-			| fun_arithm '<' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
-			| fun_arithm '>' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_leq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_geq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| fun_logic RDO_and fun_logic     { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
-			| fun_logic RDO_or fun_logic      { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
-			| '[' fun_logic ']' {
+fun_logic:	  fun_arithm  '='      fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) == *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_neq  fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) != *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  '<'      fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <  *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  '>'      fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >  *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_leq  fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <= *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_geq  fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >= *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_logic   RDO_and  fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) && *reinterpret_cast<RDOFUNLogic*>($3));   }
+			| fun_logic   RDO_or   fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) || *reinterpret_cast<RDOFUNLogic*>($3));   }
+			| fun_group 
+			| fun_select_logic
+			| '[' fun_logic ']'
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "[" + logic->src_text() + "]" );
 				$$ = $2;
 			}
-			| '(' fun_logic ')' {
+			| '(' fun_logic ')'
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "(" + logic->src_text() + ")" );
 				$$ = $2;
 			}
-			| '[' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			}
-			| '(' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			}
-			| RDO_not fun_logic {
+			| RDO_not  fun_logic
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				RDOFUNLogic* logic_not = logic->operator_not();
 				logic_not->setSrcPos( @1, @2 );
 				logic_not->setSrcText( "not " + logic->src_text() );
 				$$ = (int)logic_not;
 			}
-			| fun_group {
+			| '[' fun_logic error {
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			}
-			| fun_select_logic {
+			| '(' fun_logic error {
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			};
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
+fun_arithm:	  RDO_INT_CONST                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_REAL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_BOOL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_STRING_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF                   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF '.' RDO_IDENTIF   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
+			| fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| '(' fun_arithm ')' {
+			| fun_arithm_func_call
+			| fun_select_arithm
+			| '(' fun_arithm ')'
+			{
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
 				arithm->setSrcPos( @1, @3 );
 				arithm->setSrcText( "(" + arithm->src_text() + ")" );
 				$$ = $2;
 			}
-			| fun_arithm_func_call {
-			}
-			| fun_select_arithm {
-			}
-			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) );
-			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| '-' fun_arithm %prec RDO_UMINUS {
+			| '-' fun_arithm %prec RDO_UMINUS
+			{
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );

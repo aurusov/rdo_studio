@@ -80,109 +80,42 @@ RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserS
 	}
 }
 
-void RDODPTActivity::addParam( const std::string& _param, const YYLTYPE& _param_pos )
+void RDODPTActivity::addParam( const RDOValue& param )
 {
 	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( _param_pos.first_line == src_pos().m_first_line ) {
+		if ( param.src_pos().m_first_line == src_pos().m_first_line ) {
 			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
+				parser()->error_push_only( param, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
 			} else {
-				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
+				parser()->error_push_only( param, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
 			}
 			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
 			parser()->error_push_done();
 		} else {
 			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error( _param_pos, "Имя операции должно заканчиваться двоеточием" );
+				parser()->error( param, "Имя операции должно заканчиваться двоеточием" );
 			} else {
-				parser()->error( _param_pos, "Имя активности должно заканчиваться двоеточием" );
+				parser()->error( param, "Имя активности должно заканчиваться двоеточием" );
 			}
 		}
 	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	switch ( param->getType()->typeID() ) {
-		case rdoRuntime::RDOType::t_int : parser()->error( _param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
-		case rdoRuntime::RDOType::t_real: parser()->error( _param_pos, rdo::format("Ожидается параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
-		case rdoRuntime::RDOType::t_enum: break;
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
-	}
-	rdoRuntime::RDOValue val = param->getType()->getValue( RDOValue(RDOParserSrcInfo(_param_pos, _param)) );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), param->name().c_str(), _param.c_str())) );
-	m_activity->addParamCalc( calc );
-	m_currParam++;
-}
-
-void RDODPTActivity::addParam( int _param, const YYLTYPE& _param_pos ) 
-{
-	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
-		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
+	rdoRuntime::RDOValue val;
+	RDOFUNFunctionParam* pat_param = m_pattern->params.at( m_currParam );
+	if ( param->getAsString() == "*" )
+	{
+		if ( !pat_param->getType()->getDV().isExist() ) {
+			parser()->error_push_only( param, rdo::format("Нет значения по-умолчанию для параметра '%s'", pat_param->src_text().c_str()) );
+			parser()->error_push_only( pat_param->src_info(), rdo::format("См. параметр '%s', тип '%s'", pat_param->src_text().c_str(), pat_param->getType()->src_text().c_str()) );
+			parser()->error_push_done();
 		}
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
+		val = pat_param->getType()->getDefaultValue( param );
 	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	switch ( param->getType()->typeID() ) {
-		case rdoRuntime::RDOType::t_int :
-		case rdoRuntime::RDOType::t_real: break;
-		case rdoRuntime::RDOType::t_enum: parser()->error( _param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
+	else
+	{
+		val = pat_param->getType()->getValue( param );
 	}
-	rdoRuntime::RDOValue val = param->getType()->getValue( RDOValue(_param, _param_pos) );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %d", m_pattern->name().c_str(), param->name().c_str(), _param)) );
-	m_activity->addParamCalc( calc );
-	m_currParam++;
-}
-
-void RDODPTActivity::addParam( double _param, const YYLTYPE& _param_pos ) 
-{
-	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
-		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
-		}
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
-	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	switch ( param->getType()->typeID() ) {
-		case rdoRuntime::RDOType::t_int : parser()->error( _param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
-		case rdoRuntime::RDOType::t_real: break;
-		case rdoRuntime::RDOType::t_enum: parser()->error( _param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
-	}
-	rdoRuntime::RDOValue val = param->getType()->getValue( RDOValue(_param, _param_pos) );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %f", m_pattern->name().c_str(), param->name().c_str(), _param)) );
-	m_activity->addParamCalc( calc );
-	m_currParam++;
-}
-
-void RDODPTActivity::addParam( const YYLTYPE& _param_pos ) 
-{
-	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
-		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
-		}
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
-	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	if ( !param->getType()->getDV().isExist() ) {
-		parser()->error_push_only( _param_pos, rdo::format("Нет значения по-умолчанию для параметра '%s'", param->src_text().c_str()) );
-		parser()->error_push_only( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
-		parser()->error_push_done();
-	}
-	rdoRuntime::RDOValue val = param->getType()->getDefaultValue( RDOValue(RDOParserSrcInfo(_param_pos, "*")) );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = *", m_pattern->name().c_str(), param->name().c_str())) );
+	calc->setSrcInfo( RDOParserSrcInfo(param.getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), pat_param->name().c_str(), param->getAsString().c_str())) );
 	m_activity->addParamCalc( calc );
 	m_currParam++;
 }

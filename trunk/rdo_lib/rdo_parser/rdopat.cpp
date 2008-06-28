@@ -143,27 +143,30 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			const RDORTPParam* param = parSet->getRelRes()->getType()->getParams().at(parNumb);
 			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
 			rdoRuntime::RDOCalc* calc = NULL;
-			switch ( param->getType()->typeID() ) {
-				case rdoRuntime::RDOType::t_int: {
+			// ‘ильтр перед присваиванием
+			switch ( param->getType()->typeID() )
+			{
+				case rdoRuntime::RDOType::t_int:
+				{
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
-					if ( param_type->getDiap().isExist() ) {
+					if ( param_type->getDiap().isExist() )
+					{
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
 					break;
 				}
-				case rdoRuntime::RDOType::t_real: {
+				case rdoRuntime::RDOType::t_real:
+				{
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
-					if ( param_type->getDiap().isExist() ) {
+					if ( param_type->getDiap().isExist() )
+					{
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
 					break;
 				}
-				case rdoRuntime::RDOType::t_enum: {
-					break;
-				}
-				default: parser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 			}
-			if ( !calc ) {
+			if ( !calc )
+			{
 				calc = new rdoRuntime::RDOSetRelParamCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue );
 			}
 			calc->setSrcText( parSet->params.at(i).name + " set " + rightValue->src_text() );

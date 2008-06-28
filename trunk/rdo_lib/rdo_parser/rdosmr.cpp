@@ -131,7 +131,7 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 	if ( !cons ) {
 		parser()->error( const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()) );
 	}
-	cons->getType()->checkParamType( arithm, false );
+	cons->getType()->checkParamType( arithm );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( cons->getType() );
 	parser()->runtime()->addInitCalc( new rdoRuntime::RDOCalcSetConst( parser()->runtime(), cons->getNumber(), calc ) );
 	parser()->insertChanges( cons->src_text(), arithm->src_text() );
@@ -152,7 +152,7 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 		parser()->error_push_done();
 //		parser()->error( par_info.src_info(), "Undefined resource parameter name: " + parName);
 	}
-	param->getType()->checkParamType( arithm, false );
+	param->getType()->checkParamType( arithm );
 	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( param->getType() );
 	parser()->runtime()->addInitCalc( new rdoRuntime::RDOSetResourceParamCalc( parser()->runtime(), res->getNumber(), parNumb, calc ) );

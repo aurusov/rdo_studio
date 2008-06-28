@@ -41,10 +41,11 @@ public: \
 extern RDOType__##Class g_##Class;
 
 DEFINE_ATOM_TYPE_PARSER( unknow        );
+DEFINE_ATOM_TYPE_PARSER( identificator );
 DEFINE_ATOM_TYPE_PARSER( int           );
 DEFINE_ATOM_TYPE_PARSER( real          );
+DEFINE_ATOM_TYPE_PARSER( bool          );
 DEFINE_ATOM_TYPE_PARSER( string        );
-DEFINE_ATOM_TYPE_PARSER( identificator );
 
 } // namespace rdoParse
 

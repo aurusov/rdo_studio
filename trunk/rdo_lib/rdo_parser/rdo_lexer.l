@@ -46,6 +46,7 @@ integer				return(RDO_integer);
 longint				return(RDO_integer);
 real				return(RDO_real);
 string				return(RDO_string);
+bool				return(RDO_bool);
 $End				return(RDO_End);
 $end				return(RDO_End);
 temporary			return(RDO_temporary);
@@ -258,10 +259,10 @@ size				return(RDO_Size);
 empty				return(RDO_Empty);
 Empty				return(RDO_Empty);
 
-$Fuzzy_Parameters   return(RDO_Fuzzy_Parameters);
-$fuzzy_parameters   return(RDO_Fuzzy_Parameters);
-$Fuzzy_parameters   return(RDO_Fuzzy_Parameters);
-$fuzzy_Parameters   return(RDO_Fuzzy_Parameters);
+$Fuzzy_Parameters	return(RDO_Fuzzy_Parameters);
+$fuzzy_parameters	return(RDO_Fuzzy_Parameters);
+$Fuzzy_parameters	return(RDO_Fuzzy_Parameters);
+$fuzzy_Parameters	return(RDO_Fuzzy_Parameters);
 Term				return(RDO_Fuzzy_Term);
 term				return(RDO_Fuzzy_Term);
 
@@ -270,12 +271,12 @@ term				return(RDO_Fuzzy_Term);
 						int len = n1.length();
 						std::string name(n1, 1, len-2);
 						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(name, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, name) : rdoParse::RDOParserSrcInfo(name))) );
-						return RDO_QUOTED_IDENTIF;
+						return RDO_STRING_CONST;
 					}
 
 (\'[^\']*\n\r)		{
 						LEXER->setvalue(NULL);
-						return RDO_QUOTED_IDENTIF_BAD;
+						return RDO_STRING_CONST_BAD;
 					}
 
 "{"						BEGIN(comment_rdo);
@@ -318,6 +319,16 @@ term				return(RDO_Fuzzy_Term);
 [+-]?[0-9]+			{
 						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
 						return RDO_INT_CONST;
+					}
+
+true				{
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(true, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						return RDO_BOOL_CONST;
+					}
+
+false				{
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(false, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						return RDO_BOOL_CONST;
 					}
 
 ([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*	{

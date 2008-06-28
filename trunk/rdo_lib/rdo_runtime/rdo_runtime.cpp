@@ -108,7 +108,7 @@ bool RDORuntime::breakPoints()
 {
 	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
 	while ( it != breakPointsCalcs.end() ) {
-		if ( (*it)->calc->calcValue( this ).getBool() ) {
+		if ( (*it)->calc->calcValue( this ).getAsBool() ) {
 			lastActiveBreakPoint = *it;
 			return true;
 		}

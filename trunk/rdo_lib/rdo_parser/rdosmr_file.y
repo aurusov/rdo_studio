@@ -151,14 +151,19 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
-%token RDO_QUOTED_IDENTIF				430
-%token RDO_QUOTED_IDENTIF_BAD			431
+%token RDO_STRING_CONST					430
+%token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
 %token RDO_Select						433
 %token RDO_Size							434
 %token RDO_Empty						435
 %token RDO_not							436
 %token RDO_UMINUS						437
+%token RDO_string						438
+%token RDO_bool							439
+%token RDO_BOOL_CONST					440
+%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy_Term					442
 
 %{
 #include "pch.h"

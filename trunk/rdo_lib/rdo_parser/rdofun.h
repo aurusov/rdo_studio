@@ -350,68 +350,23 @@ private:
 class RDOFUNSequenceEnumerative: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceEnumerative( RDOParser* _parser, RDOFUNSequenceHeader* _header ):
+	RDOFUNSequenceEnumerative( RDOParser* _parser, RDOFUNSequenceHeader* _header, const RDOValue& value ):
 		RDOFUNSequence( _parser, _header, 0 )
 	{
+		addValue( value );
+	}
+	virtual ~RDOFUNSequenceEnumerative()
+	{
+	}
+	void addValue( const RDOValue& value )
+	{
+		m_values.push_back( header->getType()->getValue(value) );
 	}
 	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
-};
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceEnumerativeInt
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceEnumerativeInt: public RDOFUNSequenceEnumerative
-{
 private:
+	std::vector< RDOValue > m_values;
 	virtual void createCalcs();
-
-public:
-	std::vector< int > val;
-
-	RDOFUNSequenceEnumerativeInt( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _val ):
-		RDOFUNSequenceEnumerative( _parser, _header )
-	{
-		addInt( _val );
-	}
-	void addInt( int val );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceEnumerativeReal
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceEnumerativeReal: public RDOFUNSequenceEnumerative
-{
-private:
-	virtual void createCalcs();
-
-public:
-	std::vector< double > val;
-
-	RDOFUNSequenceEnumerativeReal( RDOParser* _parser, RDOFUNSequenceHeader* _header, double _val ):
-		RDOFUNSequenceEnumerative( _parser, _header )
-	{
-		addReal( _val );
-	}
-	void addReal( double _val );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceEnumerativeEnum
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
-{
-private:
-	virtual void createCalcs();
-
-public:
-	std::vector< rdoRuntime::RDOValue > val;
-
-	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceHeader* _header, const RDOParserSrcInfo& _value_info ):
-		RDOFUNSequenceEnumerative( _parser, _header )
-	{
-		addEnum( _value_info );
-	}
-	void addEnum( const RDOParserSrcInfo& _value_info );
 };
 
 // ----------------------------------------------------------------------------

@@ -14,6 +14,7 @@ public:
 		t_identificator,
 		t_int,
 		t_real,
+		t_bool,
 		t_string,
 		t_enum,
 		t_fuzzy
@@ -51,10 +52,11 @@ public: \
 extern RDOType__##Class g_##Class;
 
 DEFINE_ATOM_TYPE( unknow,        "unknow"        );
+DEFINE_ATOM_TYPE( identificator, "identificator" );
 DEFINE_ATOM_TYPE( int,           "integer"       );
 DEFINE_ATOM_TYPE( real,          "real"          );
+DEFINE_ATOM_TYPE( bool,          "bool"          );
 DEFINE_ATOM_TYPE( string,        "string"        );
-DEFINE_ATOM_TYPE( identificator, "identificator" );
 
 } // namespace rdoRuntime
 

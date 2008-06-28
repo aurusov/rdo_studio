@@ -102,11 +102,14 @@ public:
 // ----------------------------------------------------------------------------
 class RandGeneratorCommonNext
 {
+public:
+	virtual ~RandGeneratorCommonNext()
+	{
+	}
+	virtual RDOValue next() = 0;
+
 protected:
 	RandGeneratorCommonNext() {}
-
-public:
-	virtual RDOValue next() = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -198,6 +201,9 @@ public:
 	RandGeneratorEnumerative():
 		RandGeneratorCommonNext(),
 		m_curr( 0 )
+	{
+	}
+	virtual ~RandGeneratorEnumerative()
 	{
 	}
 

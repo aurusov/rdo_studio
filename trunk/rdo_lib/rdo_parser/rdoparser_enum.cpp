@@ -39,7 +39,7 @@ void RDORTPEnum::add( const RDOValue& next )
 {
 	if ( __enum()->findEnum( next->getIdentificator() ) != rdoRuntime::RDOEnumType::END )
 	{
-		parser()->error( next.src_info(), rdoSimulator::RDOSyntaxError::RTP_SECOND_ENUM_VALUE, next.src_text().c_str() );
+		parser()->error( next.src_info(), rdo::format("«начение перечислимого типа уже существует: %s", next.src_text().c_str()) );
 	}
 	__enum()->add( next->getIdentificator() );
 }
@@ -49,7 +49,7 @@ rdoRuntime::RDOValue RDORTPEnum::findEnumValueWithThrow( const RDOParserSrcInfo&
 	unsigned int result = __enum()->findEnum( val );
 	if ( result == rdoRuntime::RDOEnumType::END )
 	{
-		parser()->error_push_only( val_src_info, rdoSimulator::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val.c_str() );
+		parser()->error_push_only( val_src_info, rdo::format("Ќеверное значение параметра перечислимого типа: %s", val.c_str()) );
 		parser()->error_push_only( src_info(), rdo::format("¬озможные значени€: %s", __enum()->asString().c_str()) );
 		parser()->error_push_done();
 	}
