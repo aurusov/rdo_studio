@@ -215,7 +215,7 @@ void RDOFRMFrame::addRulet( RDOFRMRulet* rulet )
 bool RDOFRMFrame::checkCondition( RDORuntime* sim )
 {
 	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValue( sim ) != 0;
+	return conditionCalc->calcValue( sim ).getAsBool();
 }
 
 rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame, RDORuntime* sim )
@@ -635,7 +635,7 @@ void RDOFRMShow::getBitmaps( std::list< std::string >& list )
 bool RDOFRMShow::checkCondition( RDORuntime* sim )
 {
 	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValue( sim ) != 0;
+	return conditionCalc->calcValue( sim ).getAsBool();
 }
 
 } // namespace rdoRuntime
