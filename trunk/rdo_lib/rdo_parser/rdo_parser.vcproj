@@ -352,6 +352,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdoparser_enum.cpp"
+				>
+			</File>
+			<File
 				RelativePath="rdoparser_lexer.cpp"
 				>
 				<FileConfiguration
@@ -426,6 +430,14 @@
 						PrecompiledHeaderThrough="pch.h"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdoparser_type.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoparser_value.cpp"
+				>
 			</File>
 			<File
 				RelativePath="rdopat.cpp"
@@ -585,6 +597,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdoparser_enum.h"
+				>
+			</File>
+			<File
 				RelativePath="rdoparser_lexer.h"
 				>
 			</File>
@@ -598,6 +614,10 @@
 			</File>
 			<File
 				RelativePath="rdoparser_rdo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoparser_type.h"
 				>
 			</File>
 			<File

@@ -180,7 +180,7 @@ void RDODPTActivity::addParam( const YYLTYPE& _param_pos )
 		parser()->error_push_only( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
 		parser()->error_push_done();
 	}
-	rdoRuntime::RDOValue val = param->getType()->getDefaultValue( _param_pos );
+	rdoRuntime::RDOValue val = param->getType()->getDefaultValue( RDOValue(RDOParserSrcInfo(_param_pos, "*")) );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = *", m_pattern->name().c_str(), param->name().c_str())) );
 	m_activity->addParamCalc( calc );

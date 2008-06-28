@@ -3,6 +3,8 @@
 
 #include "rdoparser_object.h"
 #include "rdoparser_value.h"
+#include "rdoparser_type.h"
+#include "rdoparser_enum.h"
 #include <rdoruntime_object.h>
 #include <rdo_value.h>
 
@@ -22,21 +24,21 @@ class RDORTPDefVal;
 class RDORTPParamType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	virtual void                  checkValue       ( const RDOValue& value ) const = 0;
-	virtual rdoRuntime::RDOValue  getValue         ( const RDOValue& value ) const = 0;
-	virtual rdoRuntime::RDOValue  getDefaultValue  ( const RDOParserSrcInfo& _src_info ) const;
+	virtual void                  checkValue         ( const RDOValue& value ) const = 0;
+	virtual rdoRuntime::RDOValue  getValue           ( const RDOValue& value ) const = 0;
+	virtual rdoRuntime::RDOValue  getDefaultValue    ( const RDOValue& value ) const;
 
-	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const = 0;
+	virtual RDORTPParamType*      constructorSuchAs  ( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const = 0;
 
-	virtual unsigned int getDiapTableFunc() const;
+	virtual unsigned int          getDiapTableFunc   () const;
 
-	virtual void writeModelStructure( std::ostream& stream ) const = 0;
+	virtual void                  writeModelStructure( std::ostream& stream ) const = 0;
 
-	virtual const rdoRuntime::RDOType*   type() const = 0;
-	rdoRuntime::RDOType::ID            typeID() const { return type()->id(); }
+	virtual const RDOType&     type() const = 0;
+	rdoRuntime::RDOType::ID  typeID() const { return type()->id(); }
 
 	void checkParamType( const RDOFUNArithm* const action, bool warning = true ) const;
-	void checkParamType( const rdoRuntime::RDOValue& value, const RDOParserSrcInfo& value_info ) const;
+	void checkParamType( const RDOValue& value ) const;
 
 	const RDORTPDefVal& getDV() const { return *m_dv; }
 
@@ -105,6 +107,8 @@ public:
 class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
+	enum { UNDEFINED_PARAM = ~0 };
+
 	RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent );
 	const std::string& name() const          { return src_text();   };
 	int getNumber() const                    { return m_number;     };
@@ -115,9 +119,8 @@ public:
 	void addParam( const std::string param_name, rdoRuntime::RDOType::ID param_typeID );
 	const RDORTPParam* findRTPParam( const std::string& param ) const;
 
-	int getRTPParamNumber( const std::string& param ) const;
+	unsigned int getRTPParamNumber( const std::string& param ) const;
 	const std::vector< const RDORTPParam* >& getParams() const { return m_params; }
-
 
 	void writeModelStructure( std::ostream& stream ) const;
 
@@ -280,7 +283,7 @@ public:
 	virtual unsigned int getDiapTableFunc() const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const rdoRuntime::RDOType* type() const { return &rdoRuntime::g_int; }
+	virtual const RDOType& type() const { return rdoParse::g_int; }
 
 	const RDORTPIntDiap& getDiap() const { return *m_diap; }
 
@@ -306,30 +309,12 @@ public:
 	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const rdoRuntime::RDOType* type() const { return &rdoRuntime::g_real; }
+	virtual const RDOType& type() const { return rdoParse::g_real; }
 	const RDORTPRealDiap& getDiap() const { return *m_diap; }
 
 private:
 	RDORTPRealDiap* m_diap;
 	void init();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPEnum
-// ----------------------------------------------------------------------------
-class RDORTPEnum: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPEnum( const RDOParserObject* _parent, const std::string& first );
-	virtual ~RDORTPEnum();
-
-	void add( const RDOParserSrcInfo& next );
-	rdoRuntime::RDOValue     findEnumValueWithThrow( const RDOParserSrcInfo& val_src_info, const std::string& val ) const;
-	rdoRuntime::RDOValue     getFirstValue() const;
-	rdoRuntime::RDOEnumType& getEnums() { return *m_enums; }
-
-private:
-	rdoRuntime::RDOEnumType* m_enums;
 };
 
 // ----------------------------------------------------------------------------
@@ -345,14 +330,14 @@ public:
 
 	virtual void                  checkValue       ( const RDOValue& value ) const;
 	virtual rdoRuntime::RDOValue  getValue         ( const RDOValue& value ) const;
-	virtual rdoRuntime::RDOValue  getDefaultValue  ( const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue  getDefaultValue  ( const RDOValue& value ) const;
 
 	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
 
 	virtual unsigned int getDiapTableFunc() const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const rdoRuntime::RDOType* type() const { return &m_enum->getEnums(); }
+	virtual const RDOType& type() const { return *m_enum; }
 
 private:
 	void init_src_info();
@@ -372,7 +357,7 @@ public:
 	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const rdoRuntime::RDOType* type() const { return &rdoRuntime::g_string; }
+	virtual const RDOType& type() const { return rdoParse::g_string; }
 };
 
 // ----------------------------------------------------------------------------

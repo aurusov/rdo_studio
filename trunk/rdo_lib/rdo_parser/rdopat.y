@@ -1246,7 +1246,7 @@ param_real_default_val:	/* empty */ {
 param_enum:	'(' param_enum_list ')' {
 				RDORTPEnum* enu = reinterpret_cast<RDORTPEnum*>($2);
 				enu->setSrcPos( @1, @3 );
-				enu->setSrcText( enu->src_text() + ")" );
+				enu->setSrcText( enu->getEnums().asString() );
 				$$ = $2;
 			}
 			| '(' param_enum_list {
@@ -1254,27 +1254,25 @@ param_enum:	'(' param_enum_list ')' {
 			};
 
 param_enum_list: RDO_IDENTIF {
-					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), reinterpret_cast<RDOValue*>($1)->value().getIdentificator() );
-					enu->setSrcText( "(" + reinterpret_cast<RDOValue*>($1)->value().getIdentificator() );
+					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
+					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
 					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 1;
 					$$ = (int)enu;
 				}
 				| param_enum_list ',' RDO_IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
-						std::string next = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						enu->add( RDOParserSrcInfo(@3, next) );
-						enu->setSrcText( enu->src_text() + ", " + next );
+						enu->add( *reinterpret_cast<RDOValue*>($3) );
 						$$ = (int)enu;
 					} else {
-						PARSER->error( "Ошибка в описании значений перечислимого типа" );
+						PARSER->error( @3, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list RDO_IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
-						PARSER->error( rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
+						PARSER->error( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
 					} else {
-						PARSER->error( "Ошибка в описании значений перечислимого типа" );
+						PARSER->error( @2, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list error {
@@ -1411,10 +1409,10 @@ fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 ==
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
+fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| '(' fun_arithm ')' {
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
 				arithm->setSrcPos( @1, @3 );
@@ -1426,16 +1424,16 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_select_arithm {
 			}
 			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator() ), RDOParserSrcInfo( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() ) );
+				$$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) );
 			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getInt(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );    }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getDouble(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), @1 );                                                            }
+			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
 			| '-' fun_arithm %prec RDO_UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->typeID(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOValue(reinterpret_cast<RDOFUNArithm*>($2)->type(), info), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ) );
 			};
 
 // ----------------------------------------------------------------------------

@@ -81,7 +81,7 @@ RDOResType::RDOResType( const rdoParse::RDORTPResType& rtp ):
 
 RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 	m_name( param.name() ),
-	m_type( param.getType()->type() ),
+	m_type( &param.getType()->type().type() ),
 	m_exist( true ),
 	m_id( -1 )
 {
@@ -108,7 +108,7 @@ RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 	}
 	if ( param.getType()->getDV().isExist() )
 	{
-		m_default = param.getType()->getDefaultValue( param.getType()->getDV().value().src_info() );
+		m_default = param.getType()->getDefaultValue( param.getType()->getDV().value() );
 	}
 }
 
@@ -265,11 +265,11 @@ bool RDOResTypeList::append( RDOResType& rtp )
 					{
 						if ( !pEnum )
 						{
-							pEnum = new rdoParse::RDORTPEnum( pRTP, *enum_it );
+							pEnum = new rdoParse::RDORTPEnum( pRTP, rdoParse::RDOValue::getIdentificator(*enum_it) );
 						}
 						else
 						{
-							pEnum->add( *enum_it );
+							pEnum->add( rdoParse::RDOValue::getIdentificator(*enum_it) );
 						}
 						enum_it++;
 					}
@@ -316,13 +316,13 @@ RDOResource::RDOResource( const rdoParse::RDORSSResource& rss ):
 	m_rtp( *rss.getType() ),
 	m_exist( true )
 {
-	if ( m_rtp.m_params.size() == rss.getValues().size() )
+	if ( m_rtp.m_params.size() == rss.params().size() )
 	{
 		unsigned int index = 0;
 		RDOResType::ParamList::List::const_iterator param_it = m_rtp.m_params.begin();
 		while ( param_it != m_rtp.m_params.end() )
 		{
-			m_params[param_it->name()] = rss.getValues()[index];
+			m_params[param_it->name()] = rss.params()[index];
 			index++;
 			param_it++;
 		}

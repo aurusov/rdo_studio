@@ -119,9 +119,9 @@ public:
 	friend class RDOResType;
 	public:
 		Param( const rdoParse::RDORTPParam& param );
-		Param( const std::string& name, const rdoRuntime::RDOType* type, const rdoRuntime::RDOValue& def = rdoRuntime::RDOType::t_unknow );
+		Param( const std::string& name, const rdoRuntime::RDOType* type, const rdoRuntime::RDOValue& def = rdoRuntime::g_unknow );
 		Param( const std::string& name, const rdoRuntime::RDOValue& def );
-		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::RDOType::t_unknow );
+		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::g_unknow );
 
 		const rdoRuntime::RDOType*     type() const       { return m_type;             }
 		const rdoRuntime::RDOType::ID  typeID() const     { return m_type->id();       }
@@ -234,7 +234,7 @@ public:
 					delete pRSS;
 					return false;
 				}
-				pRSS->addValue( value_it->second );
+				pRSS->addParam( value_it->second );
 				param_it++;
 			}
 			rss.m_exist = true;

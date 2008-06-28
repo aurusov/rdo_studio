@@ -11,11 +11,11 @@ class RDOType
 public:
 	enum ID {
 		t_unknow = 0,
+		t_identificator,
 		t_int,
 		t_real,
-		t_enum,
 		t_string,
-		t_identificator,
+		t_enum,
 		t_fuzzy
 	};
 

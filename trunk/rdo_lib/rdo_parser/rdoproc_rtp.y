@@ -346,10 +346,10 @@ fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 ==
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
+fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| '(' fun_arithm ')' {
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
 				arithm->setSrcPos( @1, @3 );
@@ -361,16 +361,16 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_select_arithm {
 			}
 			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator() ), RDOParserSrcInfo( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() ) );
+				$$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) );
 			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getInt(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );    }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getDouble(), RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), @1 );                                                            }
+			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
 			| '-' fun_arithm %prec RDO_UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->typeID(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOValue(reinterpret_cast<RDOFUNArithm*>($2)->type(), info), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ) );
 			};
 
 // ----------------------------------------------------------------------------

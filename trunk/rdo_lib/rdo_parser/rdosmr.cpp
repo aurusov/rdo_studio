@@ -153,7 +153,7 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 //		parser()->error( par_info.src_info(), "Undefined resource parameter name: " + parName);
 	}
 	param->getType()->checkParamType( arithm, false );
-	int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
+	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( param->getType() );
 	parser()->runtime()->addInitCalc( new rdoRuntime::RDOSetResourceParamCalc( parser()->runtime(), res->getNumber(), parNumb, calc ) );
 	parser()->insertChanges( res_info.src_text() + "." + par_info.src_text(), arithm->src_text() );

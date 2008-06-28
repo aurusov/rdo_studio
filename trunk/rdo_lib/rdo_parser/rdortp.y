@@ -570,7 +570,7 @@ param_real_default_val:	/* empty */ {
 param_enum:	'(' param_enum_list ')' {
 				RDORTPEnum* enu = reinterpret_cast<RDORTPEnum*>($2);
 				enu->setSrcPos( @1, @3 );
-				enu->setSrcText( enu->src_text() + ")" );
+				enu->setSrcText( enu->getEnums().asString() );
 				$$ = $2;
 			}
 			| '(' param_enum_list {
@@ -578,27 +578,25 @@ param_enum:	'(' param_enum_list ')' {
 			};
 
 param_enum_list: RDO_IDENTIF {
-					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), reinterpret_cast<RDOValue*>($1)->value().getIdentificator() );
-					enu->setSrcText( "(" + reinterpret_cast<RDOValue*>($1)->value().getIdentificator() );
+					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
+					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
 					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 1;
 					$$ = (int)enu;
 				}
 				| param_enum_list ',' RDO_IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
-						std::string next = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						enu->add( RDOParserSrcInfo(@3, next) );
-						enu->setSrcText( enu->src_text() + ", " + next );
+						enu->add( *reinterpret_cast<RDOValue*>($3) );
 						$$ = (int)enu;
 					} else {
-						PARSER->error( "Ошибка в описании значений перечислимого типа" );
+						PARSER->error( @3, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list RDO_IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
-						PARSER->error( rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
+						PARSER->error( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
 					} else {
-						PARSER->error( "Ошибка в описании значений перечислимого типа" );
+						PARSER->error( @2, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list error {

@@ -323,15 +323,17 @@ void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, const std::s
 
 void RDOParser::error_push_done()
 {
-	if ( !m_errors.empty() ) {
+	if ( !m_errors.empty() )
+	{
 		throw rdoParse::RDOSyntaxException( m_errors.back().message );
 	}
 }
 
 void RDOParser::error_modify( const std::string& _message )
 {
-	if ( !m_errors.empty() ) {
-		m_errors.back().message = _message;
+	if ( !m_errors.empty() )
+	{
+		m_errors.front().message = _message + m_errors.front().message;
 		throw rdoParse::RDOSyntaxException( "" );
 	}
 }

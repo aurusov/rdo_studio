@@ -523,7 +523,7 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 				parser()->error( parSet->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", (*it)->name().c_str()));
 			}
 		} else {
-			params_default.push_back( (*it)->getType()->getDefaultValue( (*it)->getType()->getDV().value().src_info() ) );
+			params_default.push_back( (*it)->getType()->getDefaultValue( (*it)->getType()->getDV().value() ) );
 		}
 		it++;
 	}

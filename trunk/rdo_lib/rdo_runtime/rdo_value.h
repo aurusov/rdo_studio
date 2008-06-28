@@ -18,7 +18,6 @@ class RDOValue
 public:
 	RDOValue(): m_type( &g_unknow )
 	{
-		m_value.i_value = 0;
 	}
 	~RDOValue()
 	{
@@ -320,7 +319,7 @@ public:
 		}
 		throw RDOValueException();
 	}
-	bool operator< ( const RDOValue& rdovalue )
+	bool operator< ( const RDOValue& rdovalue ) const
 	{
 		switch ( typeID() ) {
 			case RDOType::t_int:
@@ -352,7 +351,11 @@ public:
 		}
 		throw RDOValueException();
 	}
-	bool operator> ( const RDOValue& rdovalue )
+	bool operator< ( const RDOValue& rdovalue )
+	{
+		return static_cast<const RDOValue*>(this)->operator< ( rdovalue );
+	}
+	bool operator> ( const RDOValue& rdovalue ) const
 	{
 		switch ( typeID() ) {
 			case RDOType::t_int:
@@ -614,11 +617,6 @@ inline std::ostream& operator<< ( std::ostream& stream, const RDOValue& rdovalue
 {
 	stream << rdovalue.getAsStringForTrace();
 	return stream;
-}
-
-inline bool operator< ( const RDOValue& rdovalue1, const RDOValue& rdovalue2 )
-{
-	return const_cast<RDOValue&>(rdovalue1).operator<( rdovalue2 );
 }
 
 } // namespace rdoRuntime
