@@ -1019,7 +1019,6 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							Optimization="4"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
@@ -1044,7 +1043,6 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
 							StructMemberAlignment="4"
@@ -1098,7 +1096,6 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
