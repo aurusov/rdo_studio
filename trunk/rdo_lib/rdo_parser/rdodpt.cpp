@@ -258,7 +258,7 @@ void RDODPTSome::end()
 {
 	if ( getConditon() )
 	{
-		m_rt_logic->setCondition( getConditon()->createCalc() );
+		m_rt_logic->setCondition( getConditon()->getCalc() );
 	}
 }
 
@@ -308,8 +308,8 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
-	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 
 	m_rt_logic = new rdoRuntime::RDODPTSearchRuntime( parser()->runtime(),
 		condCalc,

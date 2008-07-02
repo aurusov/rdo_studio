@@ -794,7 +794,7 @@ void RDORelevantResource::deleteParamSetBegin()
 rdoRuntime::RDOCalc* RDORelevantResource::getChoiceCalc() const
 {
 	if ( choice_from && choice_from->type == rdoParse::RDOPATChoiceFrom::ch_from ) {
-		return choice_from->logic->createCalc( rdoRuntime::RDOType::t_int );
+		return choice_from->logic->getCalc( rdoRuntime::RDOType::t_int );
 	}
 	return NULL;
 }

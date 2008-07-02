@@ -345,11 +345,9 @@ unsigned int RDORTPIntParamType::getDiapTableFunc() const
 {
 	if ( !m_diap->isExist() ) {
 		parser()->error( src_info(), "Для параметра табличной функции должен быть задан допустимый диапазон" );
-//		parser()->error("integer table function parameter must have range");
 	}
 	if ( m_diap->getMin() != 1 ) {
 		parser()->error( src_info(), rdo::format("Минимальное значение диапазона должно быть 1, текущий диапазон [%d..%d]", m_diap->getMin(), m_diap->getMax()) );
-//		parser()->error("integer table function parameter must have minimum value = 1");
 	}
 	return m_diap->getMax() - m_diap->getMin() + 1;
 }
@@ -455,7 +453,6 @@ void RDORTPRealParamType::checkValue( const RDOValue& value ) const
 					parser()->error_push_only( m_diap->src_info(), rdo::format("См. описание диапазона") );
 					parser()->error_push_done();
 				}
-//				parser()->error(("real value " + toString(*val) + " out of range[" + toString(m_diap->min_value) + ", " + toString(m_diap->max_value) + "]").c_str());
 			}
 		}
 	}

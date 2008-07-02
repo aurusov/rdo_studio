@@ -275,7 +275,7 @@ public:
 			{
 				switch ( rdovalue.typeID() )
 				{
-					case RDOType::t_enum: return m_type == rdovalue.m_type && m_value.i_value == rdovalue.m_value.i_value;
+					case RDOType::t_enum: if (m_type == rdovalue.m_type) return m_value.i_value == rdovalue.m_value.i_value; break;
 				}
 				break;
 			}
@@ -332,7 +332,7 @@ public:
 			{
 				switch ( rdovalue.typeID() )
 				{
-					case RDOType::t_enum: return m_value.i_value != rdovalue.m_value.i_value;
+					case RDOType::t_enum: if (m_type == rdovalue.m_type) return m_value.i_value != rdovalue.m_value.i_value; break;
 				}
 				break;
 			}
@@ -528,6 +528,7 @@ public:
 		{
 			case RDOType::t_int : rdovalue.m_value.i_value = -m_value.i_value; break;
 			case RDOType::t_real: rdovalue.m_value.d_value = -m_value.d_value; break;
+			case RDOType::t_bool: rdovalue.m_value.b_value = !m_value.b_value; break;
 			default             : throw RDOValueException();
 		}
 		return rdovalue;

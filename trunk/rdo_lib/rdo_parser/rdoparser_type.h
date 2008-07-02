@@ -20,6 +20,7 @@ public:
 	const rdoRuntime::RDOType&        type() const { return *m_type; }
 	const rdoRuntime::RDOType* operator-> () const { return  m_type; }
 
+	virtual std::string    name() const = 0;
 	virtual const RDOType* cast( const RDOType& toType ) const = 0;
 
 	static const RDOType& getTypeByID( rdoRuntime::RDOType::ID id );
@@ -36,6 +37,7 @@ class RDOType__##Class: public RDOType \
 { \
 public: \
 	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {} \
+	virtual std::string    name() const { return "" #Class ""; } \
 	virtual const RDOType* cast( const RDOType& toType ) const; \
 }; \
 extern RDOType__##Class g_##Class;

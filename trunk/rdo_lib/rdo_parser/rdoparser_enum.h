@@ -32,6 +32,7 @@ public:
 		return !operator==( enums );
 	}
 
+	virtual std::string    name() const { return "enum"; }
 	virtual const RDOType* cast( const RDOType& toType ) const;
 
 private:

@@ -164,6 +164,7 @@
 %token RDO_BOOL_CONST					440
 %token RDO_Fuzzy_Parameters				441
 %token RDO_Fuzzy_Term					442
+%token RDO_eq							443
 
 %{
 #include "pch.h"

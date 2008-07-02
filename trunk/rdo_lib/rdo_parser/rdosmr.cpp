@@ -122,7 +122,7 @@ void RDOSMR::setTerminateIf( RDOFUNLogic* logic )
 		parser()->error_push_done();
 	}
 	terminateIf = logic;
-	parser()->runtime()->setTerminateIf( logic->createCalc() );
+	parser()->runtime()->setTerminateIf( logic->getCalc() );
 }
 
 void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm )
@@ -188,7 +188,7 @@ RDOSMR::BreakPoint::BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, 
 	RDOParserObject( smr ),
 	RDOParserSrcInfo( _src_info )
 {
-	parser()->runtime()->insertBreakPoint( src_text(), _logic->createCalc() );
+	parser()->runtime()->insertBreakPoint( src_text(), _logic->getCalc() );
 }
 
 } // namespace rdoParse 

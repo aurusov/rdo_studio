@@ -61,8 +61,9 @@ class RDOFUNLogic: public RDOParserObject, public RDOParserSrcInfo
 friend class RDOFUNArithm;
 
 public:
-	rdoRuntime::RDOCalc* createCalc( rdoRuntime::RDOType::ID _id = rdoRuntime::RDOType::t_real );
+	rdoRuntime::RDOCalc* getCalc( rdoRuntime::RDOType::ID _id = rdoRuntime::RDOType::t_real );
 
+	RDOFUNLogic( const RDOFUNArithm& arithm );
 	RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
 
 	RDOFUNLogic* operator &&( const RDOFUNLogic& second );

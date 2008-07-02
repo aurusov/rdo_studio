@@ -92,7 +92,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, RDOFUNLogic* _logic ):
 	RDOPMDPokaz( _parser, _src_info )
 {
-	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser()->runtime(), src_text(), _trace, _logic->createCalc() ) );
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser()->runtime(), src_text(), _trace, _logic->getCalc() ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const RDOParserSrcInfo& 
 
 void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
 {
-	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( _logic->createCalc() );
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( _logic->getCalc() );
 	parser()->getFUNGroupStack().pop_back();
 }
 
@@ -148,7 +148,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const RDOParserSrcInfo& 
 
 void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 {
-	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( _logic->createCalc() );
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( _logic->getCalc() );
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setArithmCalc( _arithm->createCalc() );
 	parser()->getFUNGroupStack().pop_back();
 }

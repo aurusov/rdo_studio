@@ -47,11 +47,10 @@ public:
 	{
 	}
 
-	const RDOType&                     type() const { return *m_type;  }
-	const rdoRuntime::RDOValue&       value() const {
-		return  m_value;
-	}
-	const rdoRuntime::RDOValue* operator-> () const { return &m_value; }
+	const RDOType&                     type() const { return *m_type;      }
+	rdoRuntime::RDOType::ID          typeID() const { return type()->id(); }
+	const rdoRuntime::RDOValue&       value() const { return  m_value;     }
+	const rdoRuntime::RDOValue* operator-> () const { return &m_value;     }
 
 	bool defined()  const { return m_value.typeID() != rdoRuntime::RDOType::t_unknow; }
 	bool constant() const

@@ -404,7 +404,6 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности для нечеткого терма
 // ----------------------------------------------------------------------------
-
 class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
