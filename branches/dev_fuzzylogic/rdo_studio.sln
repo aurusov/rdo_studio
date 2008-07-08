@@ -162,11 +162,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. studio", "5. studio", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".common", ".common", "{7E6FF9CE-DDC6-43B2-A981-DE3555905A10}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{5CA2ECC6-67F9-43FB-AC8A-B5684B0DEA7A}"
-	ProjectSection(SolutionItems) = preProject
-		..\rdo_studio.vsd = ..\rdo_studio.vsd
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
