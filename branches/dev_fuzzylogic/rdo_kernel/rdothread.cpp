@@ -155,9 +155,22 @@ bool RDOThread::processMessages()
 			was_close = true;
 			messages_mutex.Unlock();
 			if ( this != getKernel() ) sendMessage( getKernel(), RT_THREAD_DISCONNECTION );
+			// Отпускаем вызывающие треды
+			messages_mutex.Lock();
 			if ( msg.type == RDOThread::RDOMessageInfo::send || msg.type == RDOThread::RDOMessageInfo::manual ) {
 				msg.send_event->SetEvent();
 			}
+			std::list< RDOMessageInfo >::iterator it = messages.begin();
+			while ( it != messages.end() )
+			{
+				if ( it->type == RDOThread::RDOMessageInfo::send || it->type == RDOThread::RDOMessageInfo::manual )
+				{
+					it->send_event->SetEvent();
+				}
+				it++;
+			}
+			messages.clear();
+			messages_mutex.Unlock();
 			return false;
 		}
 		if ( msg.type == RDOThread::RDOMessageInfo::send || msg.type == RDOThread::RDOMessageInfo::manual ) {
@@ -207,6 +220,7 @@ CEvent* RDOThread::manualMessageFrom( RDOTreadMessage message, void* param )
 void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, bool lock )
 {
 #ifdef RDO_MT
+	if ( param ) lock = true;
 	broadcast_cnt++;
 	if ( broadcast_data.size() < broadcast_cnt + 1 ) {
 		broadcast_data.push_back( BroadcastData(10) );

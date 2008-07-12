@@ -111,13 +111,13 @@ public:
 	void setTraceID( unsigned int id, unsigned int str_id )
 	{
 		m_id     = id;
-		m_str_id = toString( str_id );
+		m_str_id = rdo::toString( str_id );
 	}
 
 	std::string& traceId() const
 	{
 		if ( m_str_id.empty() ) {
-			m_str_id = toString( m_id );
+			m_str_id = rdo::toString( m_id );
 		}
 		return m_str_id;
 	}

@@ -3,6 +3,7 @@
 
 #include "rdoparser_object.h"
 #include "rdoparser_base.h"
+#include "rdoparser_value.h"
 #include <rdoruntime_object.h>
 #include <rdocommon.h>
 #include <rdo_runtime.h>
@@ -146,26 +147,10 @@ public:
 	void warning( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void warning( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 
-	std::string* registerName( const char* name ) {
-		std::vector< std::string* >::iterator it = m_allNames.begin();
-		while ( it != m_allNames.end() ) {
-			if ( (*(*it)) == name ) break;
-			it++;
-		}
-		if ( it == m_allNames.end() ) {
-			std::string* newName = new std::string( name );
-			m_allNames.push_back( newName );
-			return newName;
-		} else {
-			return *it;
-		}
-	}
-	void addName( std::string* name ) {
-		m_allNames.push_back( name );
-	}
-	double* addDouble( double* val ) {
-		m_allDoubles.push_back( val );
-		return val;
+	RDOValue* addValue( RDOValue* value ) {
+		runtime()->memory_insert( sizeof(rdoParse::RDOValue) );
+		m_allValues.push_back( value );
+		return value;
 	}
 
 	static rdoModelObjects::RDOFileType getFileToParse();
@@ -188,9 +173,8 @@ protected:
 		return getContainer()->find( index );
 	}
 
-	std::vector< std::string* >   m_allNames;
-	std::vector< double* >        m_allDoubles;
 	std::vector< RDODeletable* >  m_allDeletables;
+	std::vector< RDOValue* >      m_allValues;
 
 	rdoRuntime::RDORuntime m_runtime;
 

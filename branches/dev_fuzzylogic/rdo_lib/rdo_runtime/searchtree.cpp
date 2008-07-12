@@ -69,7 +69,7 @@ int TreeNode::getActivityID() const
 void TreeNode::ExpandChildren()
 {
 	m_root->m_sizeof_dpt -= (m_sim->getSizeofSim() + sizeof(TreeNode)) * m_children.size();
-	DeleteAllObjects( m_children );
+	rdo::deleteAllObjects( m_children );
 
 	// Вывели статистику
 	onSearchOpenNode( m_root->m_theRealSimulator );

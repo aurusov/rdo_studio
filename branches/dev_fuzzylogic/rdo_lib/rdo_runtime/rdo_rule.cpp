@@ -35,7 +35,7 @@ bool RDORule::choiceFrom( RDORuntime* runtime )
 { 
 	runtime->setCurrentActivity( this );
 	if ( haveAdditionalCondition ) {
-		if ( !additionalCondition->calcValue( runtime ).getBool() ) {
+		if ( !additionalCondition->calcValue( runtime ).getAsBool() ) {
 			return false;
 		}
 	}

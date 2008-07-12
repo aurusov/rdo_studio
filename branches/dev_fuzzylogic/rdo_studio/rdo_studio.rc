@@ -805,12 +805,16 @@ BEGIN
             MENUITEM "permanent",                   ID_INSERT_RTP_PERMANENT
             MENUITEM "temporary",                   ID_INSERT_RTP_TEMPORARY
             MENUITEM "$Parameters",                 ID_INSERT_RTP_PARAMETERS
-			MENUITEM "$Fuzzy_Parameters",           ID_INSERT_RTP_FUZZY_PARAMETERS
-			MENUITEM "Term",						ID_INSERT_RTP_FUZZY_TERM
+            MENUITEM "$Fuzzy_Parameters",           ID_INSERT_RTP_FUZZY_PARAMETERS
+            MENUITEM "Term",                        ID_INSERT_RTP_FUZZY_TERM
             MENUITEM "integer",                     ID_INSERT_RTP_INTEGER
             MENUITEM "longint",                     ID_INSERT_RTP_LONGINT
             MENUITEM "real",                        ID_INSERT_RTP_REAL
-			MENUITEM "enum",                        ID_INSERT_RTP_ENUM
+            MENUITEM "enum",                        ID_INSERT_RTP_ENUM
+            MENUITEM "string",                      ID_INSERT_RTP_STRING
+            MENUITEM "bool",                        ID_INSERT_RTP_BOOL
+            MENUITEM "true",                        ID_INSERT_RTP_TRUE
+            MENUITEM "false",                       ID_INSERT_RTP_FALSE
             MENUITEM "such_as",                     ID_INSERT_RTP_SUCHAS
             MENUITEM "$End",                        ID_INSERT_RTP_END
         END
@@ -1052,7 +1056,7 @@ END
 IDR_MAINFRAME ACCELERATORS 
 BEGIN
     "0",            ID_VIEW_WORKSPACE,      VIRTKEY, ALT, NOINVERT
-    "0",            ID_VIEW_TOGGLE_ALLFOLDS, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "0",            ID_EMPTYCOMMAND_11,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     27,             ID_EMPTYCOMMAND_13,     ASCII,  NOINVERT
     28,             ID_EMPTYCOMMAND_15,     ASCII,  NOINVERT
     29,             ID_EMPTYCOMMAND_14,     ASCII,  NOINVERT
@@ -1158,8 +1162,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,685
- PRODUCTVERSION 1,0,0,685
+ FILEVERSION 1,0,0,689
+ PRODUCTVERSION 1,0,0,689
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1175,12 +1179,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "RAO studio"
-            VALUE "FileVersion", "1, 0, 0, 685"
+            VALUE "FileVersion", "1, 0, 0, 689"
             VALUE "InternalName", "RAO-Studio"
             VALUE "LegalCopyright", "Copyright (C) 2003-2008"
             VALUE "OriginalFilename", "RAO-Studio.exe"
             VALUE "ProductName", "RAO-Studio"
-            VALUE "ProductVersion", "1, 0, 0, 685"
+            VALUE "ProductVersion", "1, 0, 0, 689"
         END
     END
     BLOCK "VarFileInfo"
@@ -3429,14 +3433,20 @@ STRINGTABLE
 BEGIN
     ID_MODEL_RUN            "\nЗапустить (F5)"
     ID_MODEL_STOP           "\nОстановить (Shift+F5)"
+    ID_FILE_MODEL_SAVE      "\nЗаписать (Ctrl+S)"
+    ID_VIEW_ZOOMIN          "\nУвеличить масштаб (Ctrl+Num+)"
+    ID_VIEW_ZOOMOUT         "\nУменьшить масштаб (Ctrl+Num-)"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_FILE_MODEL_SAVE      "\nЗаписать (Ctrl+S)"
-    ID_VIEW_ZOOMIN          "\nУвеличить масштаб (Ctrl+Num+)"
-    ID_VIEW_ZOOMOUT         "\nУменьшить масштаб (Ctrl+Num-)"
     ID_VIEW_ZOOMRESET       "\nВосстаносить мастшаб (Ctrl+Num/)"
+    ID_VIEW_ZOOMAUTO        "\nАвтоматический масштаб (Ctrl+Num*)"
+    ID_MODEL_SHOWRATE_INC   "\nУвеличить масштаб (Alt+Num+)"
+    ID_MODEL_SHOWRATE_INCFOUR "\nУвеличить масштаб в 4-ре раза"
+    ID_MODEL_SHOWRATE_DECFOUR "\nУменьшить масштаб в 4-ре раза"
+    ID_MODEL_SHOWRATE_DEC   "\nУменьшить масштаб (Alt+Num-)"
+    ID_MODEL_FRAME_PREV     "\nПред. кадр анимации"
 END
 
 STRINGTABLE 
@@ -3525,12 +3535,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_VIEW_ZOOMAUTO        "\nАвтоматический масштаб (Ctrl+Num*)"
-    ID_MODEL_SHOWRATE_INC   "\nУвеличить масштаб (Alt+Num+)"
-    ID_MODEL_SHOWRATE_INCFOUR "\nУвеличить масштаб в 4-ре раза"
-    ID_MODEL_SHOWRATE_DECFOUR "\nУменьшить масштаб в 4-ре раза"
-    ID_MODEL_SHOWRATE_DEC   "\nУменьшить масштаб (Alt+Num-)"
-    ID_MODEL_FRAME_PREV     "\nПред. кадр анимации"
     ID_MODEL_FRAME_NEXT     "\nСлед. кадр анимации"
     IDS_ERROR               "ошибка C%04d"
     IDS_WARNING             "предупреждение C%04d"
@@ -3609,50 +3613,15 @@ END
 STRINGTABLE 
 BEGIN
     IDS_ER_UNKNOWN          "Неизвестная синтаксическая ошибка. Пример с ошибкой  можно высылать на http://rdo.rk9.bmstu.ru/bugs в категорию rdo-parser."
-    IDS_ER_RTP_SECOND_RES_TYPE "Тип ресурса уже существует: %s"
-    IDS_ER_RTP_WAITING_FOR_PARAMS_KW "Ожидается ключевое слово $Parameters"
-    IDS_ER_RTP_INVALID_SUCHAS_RES_TYPE "Ссылка на неизвестный тип ресурса: %s"
-    IDS_ER_RTP_INVALID_SUCHAS_PARAM 
-                            "Ссылка на неизвестный параметр ресурса: %s.%s"
-    IDS_ER_RTP_SECOND_ENUM_VALUE 
-                            "Значение перечислимого типа уже существует: %s"
-    IDS_ER_RTP_WRONG_ENUM_PARAM_VALUE 
-                            "Неверное значение параметра перечислимого типа: %s"
-    IDS_ER_RTP_SECOND_PARAM_NAME "Параметр уже существует: %s"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_ER_RTP_INVALID_DEFVALUE_INT "Неверное значение по-умолчанию"
-    IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL 
-                            "Целое число инициализируется вещественным: %f"
-    IDS_ER_RTP_INVALID_DEFVALUE_REAL "Неверное значение по-умолчанию"
-    IDS_ER_RTP_INVALID_DEFVALUE_ENUM "Неверное значение по-умолчанию"
-    IDS_ER_RTP_INVALID_RANGE "Диапазон задан неверно"
-    IDS_ER_RTP_INVALID_INT_RANGE_REAL 
-                            "Требуется целочисленный диапазон, указан вещественный"
-    IDS_ER_RTP_WAITING_FOR_INT_PARAM_END 
-                            "Ожидается окончание описания целочисленного параметра, например, зачение по-умолчанию"
-    IDS_ER_RTP_WAITING_FOR_REAL_PARAM_END 
-                            "Ожидается окончание описания вещественного параметра, например, зачение по-умолчанию"
-    IDS_ER_RTP_WAITING_FOR_ENUM_PARAM_END 
-                            "Ожидается окончание описания перечислимого параметра, например, зачение по-умолчанию"
-    IDS_ER_RTP_INVALID_PARAM_TYPE "____Неправильное описание типа параметра"
-    IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION 
-                            "Ожидается описание параметра ресурса"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_MODEL_RUNTIME_MAXSPEED "\nБез анимации, максимальная скорость"
-    ID_MODEL_RUNTIME_JUMP   "\nДискретная имитация"
-    ID_MODEL_RUNTIME_SYNC   "\nСинхронная имитация"
-    ID_MODEL_RUNTIME_PAUSE  "\nПауза"
 END
 
 STRINGTABLE 
 BEGIN
     ID_MODEL_SPEED_SLIDER   "\nСкорость имитатора"
+    ID_MODEL_RUNTIME_MAXSPEED "\nБез анимации, максимальная скорость"
+    ID_MODEL_RUNTIME_JUMP   "\nДискретная имитация"
+    ID_MODEL_RUNTIME_SYNC   "\nСинхронная имитация"
+    ID_MODEL_RUNTIME_PAUSE  "\nПауза"
 END
 
 #endif    // Russian resources
@@ -4310,13 +4279,16 @@ BEGIN
             MENUITEM "permanent",                   ID_INSERT_RTP_PERMANENT
             MENUITEM "temporary",                   ID_INSERT_RTP_TEMPORARY
             MENUITEM "$Parameters",                 ID_INSERT_RTP_PARAMETERS
-			MENUITEM "$Fuzzy_Parameters",           ID_INSERT_RTP_FUZZY_PARAMETERS
-			MENUITEM "Term",						ID_INSERT_RTP_FUZZY_TERM
+            MENUITEM "$Fuzzy_Parameters",           ID_INSERT_RTP_FUZZY_PARAMETERS
+            MENUITEM "Term",                        ID_INSERT_RTP_FUZZY_TERM
             MENUITEM "integer",                     ID_INSERT_RTP_INTEGER
             MENUITEM "longint",                     ID_INSERT_RTP_LONGINT
             MENUITEM "real",                        ID_INSERT_RTP_REAL
-			MENUITEM "enum",                        ID_INSERT_RTP_ENUM
-            MENUITEM "such_as",                     ID_INSERT_RTP_SUCHAS
+            MENUITEM "enum",                        ID_INSERT_RTP_ENUM
+            MENUITEM "string",                      ID_INSERT_RTP_STRING
+            MENUITEM "bool",                        ID_INSERT_RTP_BOOL
+            MENUITEM "true",                        ID_INSERT_RTP_TRUE
+            MENUITEM "false",                       ID_INSERT_RTP_FALSE
             MENUITEM "$End",                        ID_INSERT_RTP_END
         END
         POPUP "RSS"
@@ -4802,14 +4774,20 @@ STRINGTABLE
 BEGIN
     ID_MODEL_RUN            "\nExecute (F5)"
     ID_MODEL_STOP           "\nStop (Shift+F5)"
+    ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
+    ID_VIEW_ZOOMIN          "\nZoom &In (Ctrl+Num+)"
+    ID_VIEW_ZOOMOUT         "\nZoom Out (Ctrl+Num-)"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
-    ID_VIEW_ZOOMIN          "\nZoom &In (Ctrl+Num+)"
-    ID_VIEW_ZOOMOUT         "\nZoom Out (Ctrl+Num-)"
     ID_VIEW_ZOOMRESET       "\nReset Zoom (Ctrl+Num/)"
+    ID_VIEW_ZOOMAUTO        "\nZoom Auto (Ctrl+Num*)"
+    ID_MODEL_SHOWRATE_INC   "\nIncrease Tempo (Alt+Num+)"
+    ID_MODEL_SHOWRATE_INCFOUR "\nIncrease Tempo by 4 Times"
+    ID_MODEL_SHOWRATE_DECFOUR "\nDecrease Tempo by 4 Times"
+    ID_MODEL_SHOWRATE_DEC   "\nDecrease Tempo (Alt+Num-)"
+    ID_MODEL_FRAME_PREV     "\nPrevious Frame"
 END
 
 STRINGTABLE 
@@ -4898,12 +4876,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_VIEW_ZOOMAUTO        "\nZoom Auto (Ctrl+Num*)"
-    ID_MODEL_SHOWRATE_INC   "\nIncrease Tempo (Alt+Num+)"
-    ID_MODEL_SHOWRATE_INCFOUR "\nIncrease Tempo by 4 Times"
-    ID_MODEL_SHOWRATE_DECFOUR "\nDecrease Tempo by 4 Times"
-    ID_MODEL_SHOWRATE_DEC   "\nDecrease Tempo (Alt+Num-)"
-    ID_MODEL_FRAME_PREV     "\nPrevious Frame"
     ID_MODEL_FRAME_NEXT     "\nNext Frame"
     IDS_ERROR               "error С%04d"
     IDS_WARNING             "warning С%04d"
@@ -4982,36 +4954,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_ER_UNKNOWN          "Parser error. Tell us about it using http://rdo.rk9.bmstu.ru/bugs."
-    IDS_ER_RTP_SECOND_RES_TYPE 
-                            "Second appearance of the same resource type: %s"
-    IDS_ER_RTP_WAITING_FOR_PARAMS_KW "Waiting for $Parameters keyword"
-    IDS_ER_RTP_INVALID_SUCHAS_RES_TYPE "Invalid resource type in such_as: %s"
-    IDS_ER_RTP_INVALID_SUCHAS_PARAM 
-                            "Invalid resource parameter in such_as: %s.%s"
-    IDS_ER_RTP_SECOND_ENUM_VALUE 
-                            "Second appearance of the same value name: %s"
-    IDS_ER_RTP_WRONG_ENUM_PARAM_VALUE "Wrong enumerate parameter value: %s"
-    IDS_ER_RTP_SECOND_PARAM_NAME 
-                            "Second appearance of the same parameter name: %s"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_ER_RTP_INVALID_DEFVALUE_INT "Invalid default value"
-    IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL "Invalid default value"
-    IDS_ER_RTP_INVALID_DEFVALUE_REAL "Invalid default value"
-    IDS_ER_RTP_INVALID_DEFVALUE_ENUM "Invalid default value"
-    IDS_ER_RTP_INVALID_RANGE "Invalid range"
-    IDS_ER_RTP_INVALID_INT_RANGE_REAL 
-                            "Invalid integer range: using real values"
-    IDS_ER_RTP_WAITING_FOR_INT_PARAM_END 
-                            "Ending of description of integer parameter is expected"
-    IDS_ER_RTP_WAITING_FOR_REAL_PARAM_END 
-                            "Ending of description of real parameter is expected"
-    IDS_ER_RTP_WAITING_FOR_ENUM_PARAM_END 
-                            "Ending of description of enumerate parameter is expected"
-    IDS_ER_RTP_INVALID_PARAM_TYPE "Invalid param type definition"
-    IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION "Waiting for param definition"
 END
 
 STRINGTABLE 

@@ -53,6 +53,7 @@
 				EnableFunctionLevelLinking="true"
 				BrowseInformation="1"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -68,6 +69,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)\rdo_studio\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
 			/>

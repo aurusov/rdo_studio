@@ -215,7 +215,7 @@ void RDOFRMFrame::addRulet( RDOFRMRulet* rulet )
 bool RDOFRMFrame::checkCondition( RDORuntime* sim )
 {
 	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValue( sim ) != 0;
+	return conditionCalc->calcValue( sim ).getAsBool();
 }
 
 rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame, RDORuntime* sim )
@@ -301,10 +301,10 @@ void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDO
 	isTextString = false;
 }
 
-void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, std::string* _txt )
+void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, const std::string& _txt )
 {
 	align = _align;
-	txt   = *_txt;
+	txt   = _txt;
 	isTextString = true;
 }
 
@@ -635,7 +635,7 @@ void RDOFRMShow::getBitmaps( std::list< std::string >& list )
 bool RDOFRMShow::checkCondition( RDORuntime* sim )
 {
 	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValue( sim ) != 0;
+	return conditionCalc->calcValue( sim ).getAsBool();
 }
 
 } // namespace rdoRuntime

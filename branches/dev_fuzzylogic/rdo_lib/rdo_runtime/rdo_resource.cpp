@@ -33,10 +33,13 @@ RDOResource::RDOResource( RDORuntime* rt, int id, unsigned int type, bool trace 
 	m_referenceCount( 0 )
 {
 	unsigned int newID;
-	if ( id == -1 ) {
+	if ( id == -1 )
+	{
 		// Для временного ресурса ищем дырку в нумерации
 		newID = getRuntime()->getFreeResourceId();
-	} else {
+	}
+	else
+	{
 		// Вызываем для увеличения счетчика maxResourcesId постоянных ресурсов
 		getRuntime()->getFreeResourceId( id );
 		newID = id;

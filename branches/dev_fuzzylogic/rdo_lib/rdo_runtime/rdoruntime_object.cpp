@@ -53,19 +53,7 @@ void RDORuntimeObject::reparent( RDORuntimeParent* parent )
 		}
 	}
 }
-
 /*
-RDORuntime* RDORuntimeObject::getRuntime() const
-{
-	if ( !m_parent ) return const_cast<RDORuntime*>(static_cast<const RDORuntime*>(this));
-	RDORuntimeObject* parent = m_parent;
-	while ( parent->m_parent ) {
-		parent = parent->m_parent;
-	}
-	return static_cast<RDORuntime*>(parent);
-}
-*/
-
 #ifndef _DEBUG
 void* RDORuntimeObject::operator new( size_t sz )
 {
@@ -82,7 +70,7 @@ void RDORuntimeObject::operator delete( void* v )
 	::operator delete( v );
 }
 #endif
-
+*/
 // ----------------------------------------------------------------------------
 // ---------- RDORuntimeParent
 // ----------------------------------------------------------------------------

@@ -31,7 +31,7 @@ RDOFRMFrame::RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info,
 	RDOParserSrcInfo( _src_info ),
 	m_frame( NULL )
 {
-	m_frame = new rdoRuntime::RDOFRMFrame( parser()->runtime(), _src_info, logic ? logic->createCalc() : NULL );
+	m_frame = new rdoRuntime::RDOFRMFrame( parser()->runtime(), _src_info, logic ? logic->getCalc() : NULL );
 	parser()->insertFRMFrame( this );
 }
 

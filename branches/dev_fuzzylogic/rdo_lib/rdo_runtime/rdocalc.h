@@ -1,6 +1,7 @@
 #ifndef RDOCALC_H
 #define RDOCALC_H
 
+#include "rdo_value.h"
 #include "rdoruntime_object.h"
 #include "rdo_random_distribution.h"
 
@@ -375,7 +376,7 @@ private:
 		int size = m_cases.size();
 		for ( int i = 0; i < size; i++ ) {
 			RDOCalc* cas = m_cases[i];
-			if ( cas->calcValue( runtime ).getBool() ) {
+			if ( cas->calcValue( runtime ).getAsBool() ) {
 				return m_results[i]->calcValue( runtime );
 			}
 		}
@@ -864,6 +865,10 @@ public:
 		RDOCalcSeqNext( parent ),
 		m_gen( gen )
 	{
+	}
+	virtual ~RDOCalcRandomDistribution()
+	{
+		delete m_gen;
 	}
 
 protected:

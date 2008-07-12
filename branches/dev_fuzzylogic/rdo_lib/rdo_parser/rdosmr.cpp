@@ -44,8 +44,8 @@ RDOSMR::RDOSMR( RDOParser* _parser, const std::string& _modelName ):
 	frameNumber( 1 ),
 	showRate( 60 ),
 	runStartTime( 0 ),
-	traceStartTime( -1 ),
-	traceEndTime( -1 ),
+	traceStartTime( rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME ),
+	traceEndTime  ( rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME ),
 	showMode( rdoSimulator::SM_NoShow ),
 	terminateIf( NULL )
 {
@@ -90,7 +90,7 @@ void RDOSMR::setTraceStartTime( double value, const YYLTYPE& pos )
 	if ( value < 0 ) {
 		parser()->error( pos, "Ќачальное врем€ трассировки должно быть больше нул€" );
 	}
-	if ( getTraceEndTime() != -1 && getTraceEndTime() <= value ) {
+	if ( getTraceEndTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value ){
 		parser()->error_push_only( pos, "Ќачальное врем€ трассировки должно быть меньше конечного" );
 		parser()->error_push_only( traceEndTime_pos, "—м. конечное врем€ трассировки" );
 		parser()->error_push_done();
@@ -104,7 +104,7 @@ void RDOSMR::setTraceEndTime( double value, const YYLTYPE& pos )
 	if ( value < 0 ) {
 		parser()->error( pos, " онечное врем€ трассировки должно быть больше нул€" );
 	}
-	if ( getTraceStartTime() != -1 && getTraceStartTime() >= value ) {
+	if ( getTraceStartTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value ) {
 		parser()->error_push_only( pos, " онечное врем€ трассировки должно быть больше начального" );
 		parser()->error_push_only( traceStartTime_pos, "—м. начальное врем€ трассировки" );
 		parser()->error_push_done();
@@ -122,7 +122,7 @@ void RDOSMR::setTerminateIf( RDOFUNLogic* logic )
 		parser()->error_push_done();
 	}
 	terminateIf = logic;
-	parser()->runtime()->setTerminateIf( logic->createCalc() );
+	parser()->runtime()->setTerminateIf( logic->getCalc() );
 }
 
 void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm )
@@ -131,7 +131,7 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 	if ( !cons ) {
 		parser()->error( const_info, rdo::format(" онстанта '%s' не найдена", const_info.src_text().c_str()) );
 	}
-	cons->getType()->checkParamType( arithm, false );
+	cons->getType()->checkParamType( arithm );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( cons->getType() );
 	parser()->runtime()->addInitCalc( new rdoRuntime::RDOCalcSetConst( parser()->runtime(), cons->getNumber(), calc ) );
 	parser()->insertChanges( cons->src_text(), arithm->src_text() );
@@ -152,8 +152,8 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 		parser()->error_push_done();
 //		parser()->error( par_info.src_info(), "Undefined resource parameter name: " + parName);
 	}
-	param->getType()->checkParamType( arithm, false );
-	int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
+	param->getType()->checkParamType( arithm );
+	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( param->getType() );
 	parser()->runtime()->addInitCalc( new rdoRuntime::RDOSetResourceParamCalc( parser()->runtime(), res->getNumber(), parNumb, calc ) );
 	parser()->insertChanges( res_info.src_text() + "." + par_info.src_text(), arithm->src_text() );
@@ -188,7 +188,7 @@ RDOSMR::BreakPoint::BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, 
 	RDOParserObject( smr ),
 	RDOParserSrcInfo( _src_info )
 {
-	parser()->runtime()->insertBreakPoint( src_text(), _logic->createCalc() );
+	parser()->runtime()->insertBreakPoint( src_text(), _logic->getCalc() );
 }
 
 } // namespace rdoParse 

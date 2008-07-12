@@ -32,6 +32,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifndef DISABLE_CORBA
+
 #include <omniORB4/CORBA.h>
 
 namespace rdoCorba
@@ -354,6 +356,8 @@ void RDOThreadCorba::stop()
 
 } // namespace rdoCorba
 
+#endif
+
 namespace rdoSimulator
 {
 // --------------------------------------------------------------------
@@ -374,7 +378,7 @@ public:
 		{
 			std::string::size_type next = trace_str.find( '\n', pos );
 			std::string str = trace_str.substr( pos, next-pos );
-			m_simulator->thread_runtime->broadcastMessage( RDOThread::RT_RUNTIME_TRACE_STRING, &str );
+			m_simulator->thread_runtime->broadcastMessage( RDOThread::RT_RUNTIME_TRACE_STRING, &str, true );
 			if ( next == std::string::npos ) break;
 			pos = next + 1;
 			if ( pos >= trace_str.length() ) break;
@@ -809,15 +813,19 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			break;
 		}
 		case RT_CORBA_PARSER_GET_RTP_COUNT: {
+#ifndef DISABLE_CORBA
 			msg.lock();
 			corbaGetRTPcount( *static_cast<::CORBA::Long*>(msg.param) );
 			msg.unlock();
+#endif
 			break;
 		}
 		case RT_CORBA_PARSER_GET_RTP_PAR_COUNT: {
+#ifndef DISABLE_CORBA
 			msg.lock();
 			corbaGetRTPParamscount( *static_cast<rdoParse::RDOCorba::PARAM_count*>(msg.param) );
 			msg.unlock();
+#endif
 			break;
 		}
 		case RT_SIMULATOR_GET_LIST: {
@@ -1103,7 +1111,7 @@ void RDOThreadSimulator::corbaGetRTP( GetRTP* RTPList )
 			rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
 			while ( param_it != rtp_it->m_params.end() )
 			{
-				std::string info = rdo::format("  param: %s: %s", param_it->name().c_str(), param_it->getTypeStr().c_str());
+				std::string info = rdo::format("  param: %s: %s", param_it->name().c_str(), param_it->typeStr().c_str());
 				if ( param_it->hasDiap() )
 				{
 					info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
@@ -1114,9 +1122,9 @@ void RDOThreadSimulator::corbaGetRTP( GetRTP* RTPList )
 				}
 				TRACE( "%s\n", info.c_str() );
 
-				if ( param_it->getType() == rdoRuntime::RDOValue::rvt_enum )
+				if ( param_it->typeID() == rdoRuntime::RDOType::t_enum )
 				{
-					rdoRuntime::RDOEnum::CIterator enum_it = param_it->getEnum().begin();
+					rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum().begin();
 					while ( enum_it != param_it->getEnum().end() )
 					{
 						TRACE( "  - enum - %s\n", enum_it->c_str() );
@@ -1172,6 +1180,7 @@ void RDOThreadSimulator::corbaGetRSS( GetRSS* RSSList )
 	}
 }
 
+#ifndef DISABLE_CORBA
 void RDOThreadSimulator::corbaGetRTPcount(::CORBA::Long& rtp_count)
 {
 	rtp_count = 0;
@@ -1231,6 +1240,7 @@ void RDOThreadSimulator::corbaGetRTPParamscount(rdoParse::RDOCorba::PARAM_count&
 		rtp_it++;
 	}
 }
+#endif
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadCodeComp

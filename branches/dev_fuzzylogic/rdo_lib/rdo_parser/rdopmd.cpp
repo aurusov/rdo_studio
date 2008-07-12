@@ -76,8 +76,8 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 		parser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
 		parser()->error_push_done();
 	}
-	rdoRuntime::RDOValue::Type type = par->getType()->getType();
-	if ( type != rdoRuntime::RDOValue::rvt_int && type != rdoRuntime::RDOValue::rvt_real ) {
+	rdoRuntime::RDOType::ID typeID = par->getType()->typeID();
+	if ( typeID != rdoRuntime::RDOType::t_int && typeID != rdoRuntime::RDOType::t_real ) {
 		parser()->error_push_only( _par_src_info, "Наблюдать можно только за параметром целого или вещественного типа" );
 		parser()->error_push_only( par->getType()->src_info(), "См. тип параметра" );
 		parser()->error_push_done();
@@ -92,7 +92,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, RDOFUNLogic* _logic ):
 	RDOPMDPokaz( _parser, _src_info )
 {
-	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser()->runtime(), src_text(), _trace, _logic->createCalc() ) );
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser()->runtime(), src_text(), _trace, _logic->getCalc() ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const RDOParserSrcInfo& 
 
 void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
 {
-	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( _logic->createCalc() );
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( _logic->getCalc() );
 	parser()->getFUNGroupStack().pop_back();
 }
 
@@ -148,7 +148,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const RDOParserSrcInfo& 
 
 void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 {
-	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( _logic->createCalc() );
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( _logic->getCalc() );
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setArithmCalc( _arithm->createCalc() );
 	parser()->getFUNGroupStack().pop_back();
 }

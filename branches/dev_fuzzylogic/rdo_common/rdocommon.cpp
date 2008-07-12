@@ -138,26 +138,9 @@ namespace rdoSimulator
 std::string RDOSyntaxError::getMessage( ErrorCode _error_code, va_list& params )
 {
 	int res_id = -1;
-	switch ( _error_code ) {
-		case rdoSimulator::RDOSyntaxError::UNKNOWN                         : res_id = IDS_ER_UNKNOWN; break;
-		case rdoSimulator::RDOSyntaxError::RTP_SECOND_RES_TYPE             : res_id = IDS_ER_RTP_SECOND_RES_TYPE; break;
-		case rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_PARAMS_KW       : res_id = IDS_ER_RTP_WAITING_FOR_PARAMS_KW; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE     : res_id = IDS_ER_RTP_INVALID_SUCHAS_RES_TYPE; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM        : res_id = IDS_ER_RTP_INVALID_SUCHAS_PARAM; break;
-		case rdoSimulator::RDOSyntaxError::RTP_SECOND_ENUM_VALUE           : res_id = IDS_ER_RTP_SECOND_ENUM_VALUE; break;
-		case rdoSimulator::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE      : res_id = IDS_ER_RTP_WRONG_ENUM_PARAM_VALUE; break;
-		case rdoSimulator::RDOSyntaxError::RTP_SECOND_PARAM_NAME           : res_id = IDS_ER_RTP_SECOND_PARAM_NAME; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT        : res_id = IDS_ER_RTP_INVALID_DEFVALUE_INT; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL: res_id = IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL       : res_id = IDS_ER_RTP_INVALID_DEFVALUE_REAL; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM       : res_id = IDS_ER_RTP_INVALID_DEFVALUE_ENUM; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE               : res_id = IDS_ER_RTP_INVALID_RANGE; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL      : res_id = IDS_ER_RTP_INVALID_INT_RANGE_REAL; break;
-		case rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END   : res_id = IDS_ER_RTP_WAITING_FOR_INT_PARAM_END; break;
-		case rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_REAL_PARAM_END  : res_id = IDS_ER_RTP_WAITING_FOR_REAL_PARAM_END; break;
-		case rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END  : res_id = IDS_ER_RTP_WAITING_FOR_ENUM_PARAM_END; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_PARAM_TYPE          : res_id = IDS_ER_RTP_INVALID_PARAM_TYPE; break;
-		case rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_PARAM_DEFINITION: res_id = IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION; break;
+	switch ( _error_code )
+	{
+		case rdoSimulator::RDOSyntaxError::UNKNOWN: res_id = IDS_ER_UNKNOWN; break;
 	}
 	return rdo::format( res_id, params );
 }

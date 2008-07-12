@@ -44,11 +44,11 @@ class RDOParserObject: public RDODeletable
 public:
 	const RDOParserObject* parent() const { return m_parent; }
 	void reparent( const RDOParserObject* parent );
+	virtual ~RDOParserObject();
 
 protected:
 	RDOParserObject( RDOParser* parser );
 	RDOParserObject( const RDOParserObject* parent );
-	virtual ~RDOParserObject();
 
 private:
 	const RDOParserObject* m_parent;
@@ -78,7 +78,7 @@ public:
 		setSrcText( copy.src_text() );
 		setSrcFileType( copy.src_filetype() );
 	}
-	 void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
+	void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
 		RDOParserSrcInfo src_info;
 		src_info.setSrcPos( begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos );
 		src_info.setSrcText( begin.src_text() + delim + end.src_text() );

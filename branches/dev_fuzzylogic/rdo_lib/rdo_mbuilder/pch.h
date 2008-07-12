@@ -4,6 +4,8 @@
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
 #endif
 
+#include <memcheck.h> // rdo_runtime.lib
+
 #include <windows.h>
 #include <algorithm>
 #include <vector>
