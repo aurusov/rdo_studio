@@ -408,6 +408,8 @@ public:
 		m_y_value( y_value )
 		{
 		}
+	virtual ~RDORTPFuzzyMembershiftPoint() {}
+
 	double  getX() const { return m_x_value; }
 	double  getY() const { return m_y_value; }
 
@@ -427,6 +429,8 @@ public:
 		RDOParserObject( _parser )
 		{
 		}
+	virtual ~RDORTPFuzzyMembershiftFun() {}
+
 	typedef RDORTPFuzzyMembershiftPoint* Item;
 	typedef std::vector< Item >          Items;
 
@@ -455,7 +459,8 @@ public:
 		m_fun (membersfift_fun)
 		{
 		}
-	
+	virtual ~RDORTPFuzzyTerm() {}
+
 	const	std::string& name()	const	{ return src_info().src_text(); }
 	double  MemberShift()			const	{ return m_fun->getVal(); }
 
@@ -472,6 +477,8 @@ class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
 		RDOParserObject( _parser )
 		{
 		}
+	virtual ~RDORTPFuzzyTermsSet() {}
+
 	typedef RDORTPFuzzyTerm*	Item;
 	typedef std::vector< Item >	Items;
 
@@ -496,6 +503,8 @@ public:
 		m_set (terms_set)
 		{
 		}
+	virtual ~RDORTPFuzzyParam() {}
+
 	const std::string&           name() const       { return src_info().src_text(); }
 
 private:
