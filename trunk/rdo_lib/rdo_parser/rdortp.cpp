@@ -1,4 +1,3 @@
-¹רעסהדגף Ýחסנ‏נÝ
 #include "pch.h"
 #include "rdortp.h"
 #include "rdoparser.h"
