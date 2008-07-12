@@ -22,12 +22,12 @@ public:
 	RDORuntimeParent* getParent() const { return m_parent;  }
 
 	void detach();
-
+/*
 #ifndef _DEBUG
 	void* operator new( size_t sz );
 	void operator delete( void* v );
 #endif
-
+*/
 protected:
 	RDORuntimeParent* m_parent;
 

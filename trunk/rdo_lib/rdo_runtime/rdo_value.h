@@ -521,6 +521,36 @@ public:
 		}
 		throw RDOValueException();
 	}
+	bool operator&& ( const RDOValue& rdovalue ) const
+	{
+		switch ( typeID() )
+		{
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value && rdovalue.m_value.b_value;
+				}
+				break;
+			}
+		}
+		throw RDOValueException();
+	}
+	bool operator|| ( const RDOValue& rdovalue ) const
+	{
+		switch ( typeID() )
+		{
+			case RDOType::t_bool:
+			{
+				switch ( rdovalue.typeID() )
+				{
+					case RDOType::t_bool: return m_value.b_value || rdovalue.m_value.b_value;
+				}
+				break;
+			}
+		}
+		throw RDOValueException();
+	}
 	RDOValue operator- () const
 	{
 		RDOValue rdovalue( *this );

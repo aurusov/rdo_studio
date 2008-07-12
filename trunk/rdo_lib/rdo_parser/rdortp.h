@@ -64,6 +64,7 @@ protected:
 		m_dv( _dv )
 	{
 	}
+	virtual ~RDORTPParamType() {};
 };
 
 // ----------------------------------------------------------------------------
@@ -79,6 +80,7 @@ class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	RDORTPParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+	virtual ~RDORTPParam() {}
 	const std::string&           name() const       { return src_info().src_text(); }
 	const RDORTPParamType* const getType() const    { return m_parType; }
 	const RDORTPResType* const   getResType() const { return m_resType; }
@@ -98,6 +100,7 @@ class RDOFUNConst: public RDORTPParam
 {
 public:
 	RDOFUNConst( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+	virtual ~RDOFUNConst() {}
 };
 
 // ----------------------------------------------------------------------------
@@ -109,6 +112,7 @@ public:
 	enum { UNDEFINED_PARAM = ~0 };
 
 	RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent );
+	virtual ~RDORTPResType();
 	const std::string& name() const          { return src_text();   };
 	int getNumber() const                    { return m_number;     };
 	bool isPermanent() const                 { return m_permanent;  };
@@ -154,6 +158,9 @@ public:
 	RDORTPDefVal( const RDORTPDefVal& copy ):
 		RDOParserObject( copy.parser() ),
 		m_value( copy.m_value )
+	{
+	}
+	virtual ~RDORTPDefVal()
 	{
 	}
 
@@ -236,6 +243,8 @@ public:
 	{
 		init( NULL );
 	}
+	virtual ~RDORTPDiap() {}
+
 	bool isExist() const { return m_exist;     }
 	T  getMin() const    { return m_min_value; }
 	T  getMax() const    { return m_max_value; }
@@ -273,6 +282,7 @@ public:
 	RDORTPIntParamType( const RDOParserObject* _parent );
 	RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPDefVal* _dv );
 	RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	virtual ~RDORTPIntParamType() {}
 
 	virtual void                  checkValue( const RDOValue& value ) const;
 	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
@@ -301,6 +311,7 @@ public:
 	RDORTPRealParamType( const RDOParserObject* _parent );
 	RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPDefVal* _dv );
 	RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	virtual ~RDORTPRealParamType() {}
 
 	virtual void                  checkValue( const RDOValue& value ) const;
 	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
@@ -325,7 +336,9 @@ public:
 	RDORTPEnum* m_enum;
 	std::string enum_name; // Используется в сообщениях об ошибках
 	bool        enum_fun;  // Используется в сообщениях об ошибках
+
 	RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	virtual ~RDORTPEnumParamType() {}
 
 	virtual void                  checkValue       ( const RDOValue& value ) const;
 	virtual rdoRuntime::RDOValue  getValue         ( const RDOValue& value ) const;
@@ -349,6 +362,7 @@ class RDORTPStringParamType: public RDORTPParamType
 {
 public:
 	RDORTPStringParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	virtual ~RDORTPStringParamType() {}
 
 	virtual void                  checkValue( const RDOValue& value ) const;
 	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
@@ -366,6 +380,7 @@ class RDORTPBoolParamType: public RDORTPParamType
 {
 public:
 	RDORTPBoolParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	virtual ~RDORTPBoolParamType() {}
 
 	virtual void                  checkValue( const RDOValue& value ) const;
 	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
@@ -393,6 +408,8 @@ public:
 		m_y_value( y_value )
 		{
 		}
+	virtual ~RDORTPFuzzyMembershiftPoint() {}
+
 	double  getX() const { return m_x_value; }
 	double  getY() const { return m_y_value; }
 
@@ -411,6 +428,8 @@ public:
 		RDOParserObject( _parser )
 		{
 		}
+	virtual ~RDORTPFuzzyMembershiftFun() {}
+
 	typedef RDORTPFuzzyMembershiftPoint* Item;
 	typedef std::vector< Item >          Items;
 
@@ -439,7 +458,8 @@ public:
 		m_fun (membersfift_fun)
 		{
 		}
-	
+	virtual ~RDORTPFuzzyTerm() {}
+
 	const	std::string& name()	const	{ return src_info().src_text(); }
 	double  MemberShift()			const	{ return m_fun->getVal(); }
 
@@ -456,6 +476,8 @@ class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
 		RDOParserObject( _parser )
 		{
 		}
+	virtual ~RDORTPFuzzyTermsSet() {}
+
 	typedef RDORTPFuzzyTerm*	Item;
 	typedef std::vector< Item >	Items;
 
@@ -480,6 +502,8 @@ public:
 		m_set (terms_set)
 		{
 		}
+	virtual ~RDORTPFuzzyParam() {}
+
 	const std::string&           name() const       { return src_info().src_text(); }
 
 private:

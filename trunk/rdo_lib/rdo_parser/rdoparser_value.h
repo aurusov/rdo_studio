@@ -20,6 +20,12 @@ public:
 		m_type( &RDOType::getTypeByID(value.type().id()) )
 	{
 	}
+	RDOValue( const rdoRuntime::RDOValue& value, const RDOType& type, const RDOParserSrcInfo& src_info ):
+		RDOParserSrcInfo( src_info ),
+		m_value( value ),
+		m_type( &type )
+	{
+	}
 	RDOValue( const RDOValue& value ):
 		RDOParserSrcInfo( value.src_info() ),
 		m_value( value.value() ),

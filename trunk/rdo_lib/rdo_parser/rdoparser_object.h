@@ -44,11 +44,11 @@ class RDOParserObject: public RDODeletable
 public:
 	const RDOParserObject* parent() const { return m_parent; }
 	void reparent( const RDOParserObject* parent );
+	virtual ~RDOParserObject();
 
 protected:
 	RDOParserObject( RDOParser* parser );
 	RDOParserObject( const RDOParserObject* parent );
-	virtual ~RDOParserObject();
 
 private:
 	const RDOParserObject* m_parent;

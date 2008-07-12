@@ -53,7 +53,7 @@ void RDORuntimeObject::reparent( RDORuntimeParent* parent )
 		}
 	}
 }
-
+/*
 #ifndef _DEBUG
 void* RDORuntimeObject::operator new( size_t sz )
 {
@@ -70,7 +70,7 @@ void RDORuntimeObject::operator delete( void* v )
 	::operator delete( v );
 }
 #endif
-
+*/
 // ----------------------------------------------------------------------------
 // ---------- RDORuntimeParent
 // ----------------------------------------------------------------------------

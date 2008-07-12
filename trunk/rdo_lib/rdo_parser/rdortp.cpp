@@ -1,3 +1,4 @@
+єштсдгву ЁзсрюрЁ
 #include "pch.h"
 #include "rdortp.h"
 #include "rdoparser.h"
@@ -42,7 +43,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 			{
 				parser()->error( action->src_info(), "Ќесоответствие типов. ќжидаетс€ целочисленное значение" );
 			}
-			rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->getCalc());
+			rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->calc());
 			if ( calc_const )
 			{
 				rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
@@ -58,7 +59,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 			}
 			else
 			{
-				rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->getCalc());
+				rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->calc());
 				if ( calc_const )
 				{
 					rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
@@ -190,6 +191,10 @@ RDORTPResType::RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_i
 	m_permanent( _permanent )
 {
 	parser()->insertRTPResType( this );
+}
+
+RDORTPResType::~RDORTPResType()
+{
 }
 
 void RDORTPResType::addParam( const RDORTPParam* const param )

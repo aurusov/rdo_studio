@@ -26,15 +26,15 @@
 // --------------------------------------------------------------------
 // Используется для компиляции (одно/много)-тредовой версии РДО
 // Если определена в дефайнах проекта
-#if defined(RDO_SP)
+#if defined(RDO_ST)
 	#undef RDO_MT
 // Если определена в дефайнах проекта
 #elif defined(RDO_MT)
-	#undef RDO_SP
+	#undef RDO_ST
 // Если НЕ определена в дефайнах проекта
 #else
 	#define RDO_MT
-//	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
+	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
 
 	// RDO_ST автоматически выставляется для однотредовой версии РДО
 	#ifndef RDO_MT
@@ -265,7 +265,10 @@ public:
 		msg.send_event = &event;
 
 		to->messages_mutex.Lock();
-		to->messages.push_back( msg );
+		if ( !to->was_close )
+		{
+			to->messages.push_back( msg );
+		}
 		to->messages_mutex.Unlock();
 
 		while ( ::WaitForSingleObject( event.m_hObject, 0 ) == WAIT_TIMEOUT ) {
