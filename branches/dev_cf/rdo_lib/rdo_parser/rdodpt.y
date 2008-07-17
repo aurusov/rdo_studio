@@ -453,8 +453,16 @@ dpt_some_descr_param:	/* empty */
 							PARSER->error( @1, @2, "Ошибка описания параметра образца" )
 						};
 
+dpt_some_descr_prior:	/* empty */
+						| '=' fun_arithm {
+							PARSER->error( @1, @2, "А теперь должна проходить обработка приоритета операций" )
+						}
+						| '=' error {
+							PARSER->error( @1, @2, "Ошибка описания приоритета операции" )
+						};
+
 dpt_some_activity:		/* empty */
-						| dpt_some_activity dpt_some_name dpt_some_descr_param {
+						| dpt_some_activity dpt_some_name dpt_some_descr_param dpt_some_descr_prior {
 							RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
 							activity->endParam( @3 );
 						};
