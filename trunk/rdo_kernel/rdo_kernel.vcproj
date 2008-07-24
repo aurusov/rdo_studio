@@ -44,12 +44,11 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".,../rdo_studio,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_common;../thirdparty/corba/include"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
 				BrowseInformation="1"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -110,7 +109,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".,../rdo_studio,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_common;../thirdparty/corba/include"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BrowseInformation="1"

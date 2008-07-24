@@ -18,6 +18,11 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse()
 {
+	rdoRuntime::RDOFuzzyType  fuzzy_type;
+	rdoRuntime::RDOFuzzyValue fuzzy_value( fuzzy_type  );
+	rdoRuntime::RDOValue      rdo_value  ( fuzzy_value );
+	int i = rdo_value.getInt();
+/*
 	// Тут надо запросить все типы ресурсов у парного РДО,
 	// вызвав с помощью корбы некий метод, который вернёт кучу структур
 	// с описанием RTP и насоздавать этих типов
@@ -46,6 +51,7 @@ void RDOParserCorbaRTP::parse()
 			// Неудача, возможно, тип с таким именем уже есть
 		}
 	}
+*/
 }
 
 // ----------------------------------------------------------------------------

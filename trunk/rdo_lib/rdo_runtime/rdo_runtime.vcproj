@@ -44,14 +44,13 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".,../rdo_parser,../../rdo_common"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -113,7 +112,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".,../rdo_parser,../../rdo_common"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -502,10 +501,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdo_value.cpp"
-				>
-			</File>
-			<File
 				RelativePath="rdobase.cpp"
 				>
 				<FileConfiguration
@@ -755,10 +750,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdo_fuzzy.h"
-				>
-			</File>
-			<File
 				RelativePath="rdo_ie.h"
 				>
 			</File>
@@ -819,10 +810,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdo_value.h"
-				>
-			</File>
-			<File
 				RelativePath="rdobase.h"
 				>
 			</File>
@@ -864,6 +851,34 @@
 			</File>
 			<File
 				RelativePath="simtrace.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".rdovalue"
+			>
+			<File
+				RelativePath=".\rdo_value.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_value.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_value.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".rdofuzzy"
+			>
+			<File
+				RelativePath=".\rdo_fuzzy.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_fuzzy.h"
 				>
 			</File>
 		</Filter>

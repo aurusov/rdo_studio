@@ -1,59 +1,52 @@
 #ifndef RDO_FUZZY_H
 #define RDO_FUZZY_H
 
+#include "rdo_type.h"
+
 namespace rdoRuntime {
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFuzzyType
+// ----------------------------------------------------------------------------
+class RDOValue;
+class RDOFuzzyValue;
+
+class RDOFuzzyType: public RDOType
+{
+public:
+	RDOFuzzyType();
+	virtual std::string asString() const;
+
+	typedef std::map   < std::string, RDOFuzzyValue > Terms;
+	typedef std::vector< RDOValue >                   ValidRange;
+
+	bool inRange() const;
+
+private:
+	Terms      m_terms;
+	ValidRange m_range;
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyValue
 // ----------------------------------------------------------------------------
+struct RDOFuzzyValueItem;
+
 class RDOFuzzyValue
 {
 public:
-	struct FuzzySetItem
-	{
-		RDOValue m_value;
-		double   m_appertain;
-		
-		FuzzySetItem():
-			m_value(RDOValue),
-			m_appertain(0)
-		{
-		}
-		FuzzySetItem( RDOValue value, double appertain ):
-			m_value(value),
-			m_appertain(appertain)
-		{
-			if ( appertain < 0 )
-			{
-				m_appertain = 0;
-			}
-			else if ( appertain > 1 )
-			{
-				m_appertain = 1;
-			}
-			
-		}
-	};
-	typedef std::vector< FuzzySetItem > FuzzySet;
-	RDOFuzzyValue();
+	RDOFuzzyValue( const RDOFuzzyType& type );
+	RDOFuzzyValue( const RDOFuzzyValue& value );
 
-	// А есть ли
-	virtual bool isDefined( const RDOValue& value ) = 0;
+	typedef std::vector< RDOFuzzyValueItem > FuzzySet;
+
+	const RDOFuzzyType& type() const { return *m_type; }
+
+	RDOValue defuzzyfication();
+
 private:
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyValueContinuous
-// ----------------------------------------------------------------------------
-class RDOFuzzyValueContinuous: public RDOFuzzyValue
-{
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyValueInterrupted
-// ----------------------------------------------------------------------------
-class RDOFuzzyValueInterrupted: public RDOFuzzyValue
-{
+	FuzzySet*           m_set;
+	const RDOFuzzyType* m_type;
 };
 
 } // namespace rdoRuntime
