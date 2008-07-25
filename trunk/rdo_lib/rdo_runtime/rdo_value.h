@@ -17,17 +17,17 @@ class RDOValue
 public:
 	RDOValue();
 	~RDOValue();
-	RDOValue( const RDOValue& rdovalue );
-	RDOValue( const RDOType&     type  );
-	RDOValue( int                value );
-	RDOValue( unsigned int       value );
-	RDOValue( double             value );
-	RDOValue( bool               value );
-	RDOValue( RDOEnumType&       enums );
-	RDOValue( const RDOEnumType& enums, const std::string& value );
-	RDOValue( RDOFuzzyValue&     fuzzy );
-	RDOValue( const std::string& value );
-	RDOValue( const std::string& value, const RDOType& type );
+	RDOValue( const RDOValue&   rdovalue );
+	RDOValue( const RDOType&       type  );
+	RDOValue( int                  value );
+	RDOValue( unsigned int         value );
+	RDOValue( double               value );
+	RDOValue( bool                 value );
+	RDOValue( RDOEnumType&         enums );
+	RDOValue( const RDOEnumType&   enums, const std::string& value );
+	RDOValue( const RDOFuzzyValue& fuzzy );
+	RDOValue( const std::string&   value );
+	RDOValue( const std::string&   value, const RDOType& type );
 
 	int                getInt()           const;
 	int                getEnumAsInt()     const;

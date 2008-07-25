@@ -12,24 +12,6 @@ namespace rdoRuntime
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOFuzzyType
-// ----------------------------------------------------------------------------
-RDOFuzzyType::RDOFuzzyType()
-	: RDOType( t_fuzzy )
-{
-}
-
-std::string RDOFuzzyType::asString() const
-{
-	return "RDOFuzzyType";
-}
-
-bool RDOFuzzyType::inRange() const
-{
-	return true;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOFuzzyValueItem
 // ----------------------------------------------------------------------------
 struct RDOFuzzyValueItem
@@ -42,7 +24,7 @@ struct RDOFuzzyValueItem
 		, m_appertain(0         )
 	{
 	}
-	RDOFuzzyValueItem( RDOValue value, double appertain )
+	RDOFuzzyValueItem( const RDOValue& value, double appertain )
 		: m_value    (value    )
 		, m_appertain(appertain)
 	{
@@ -58,19 +40,87 @@ struct RDOFuzzyValueItem
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFuzzyType
+// ----------------------------------------------------------------------------
+RDOFuzzyType::RDOFuzzyType( RDOFuzzySetDefinition* setDefinition )
+	: RDORuntimeObject( setDefinition->getParent() )
+	, RDOType         ( t_fuzzy       )
+	, m_setDefinition ( setDefinition )
+{
+}
+
+std::string RDOFuzzyType::asString() const
+{
+	return "RDOFuzzyType";
+}
+
+bool RDOFuzzyType::inRange( const RDOValue& value ) const
+{
+	return m_setDefinition->inRange( value );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFuzzySetDefinition
+// ----------------------------------------------------------------------------
+RDOFuzzySetDefinition::RDOFuzzySetDefinition( RDORuntimeParent* parent )
+	: RDORuntimeObject( parent )
+{
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFuzzyValidSet
+// ----------------------------------------------------------------------------
+RDOFuzzyFixedSet::RDOFuzzyFixedSet( RDORuntimeParent* parent )
+	: RDOFuzzySetDefinition( parent )
+	, m_set( NULL )
+{
+	m_set = new FuzzySet();
+}
+
+RDOFuzzyFixedSet::~RDOFuzzyFixedSet()
+{
+	if ( m_set )
+	{
+		delete m_set;
+		m_set = NULL;
+	}
+}
+
+void RDOFuzzyFixedSet::append( const RDOValue& value, double appertain )
+{
+	m_set->push_back( RDOFuzzyValueItem(value, appertain) );
+}
+
+bool RDOFuzzyFixedSet::inRange( const RDOValue& value ) const
+{
+	return true;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFuzzyValue
 // ----------------------------------------------------------------------------
 RDOFuzzyValue::RDOFuzzyValue( const RDOFuzzyType& type )
 	: m_type( &type )
+	, m_set ( NULL  )
 {
-	m_set = new FuzzySet;
+	m_set = new FuzzySet();
 }
 
 RDOFuzzyValue::RDOFuzzyValue( const RDOFuzzyValue& value )
 	: m_type( value.m_type )
+	, m_set ( NULL         )
 {
-	m_set = new FuzzySet;
+	m_set = new FuzzySet();
 	*m_set = *value.m_set;
+}
+
+RDOFuzzyValue::~RDOFuzzyValue()
+{
+	if ( m_set )
+	{
+		delete m_set;
+		m_set = NULL;
+	}
 }
 
 RDOValue RDOFuzzyValue::defuzzyfication()

@@ -16,8 +16,14 @@ inline RDOValue::~RDOValue()
 	switch ( typeID() )
 	{
 		case RDOType::t_string       :
-		case RDOType::t_identificator: {
+		case RDOType::t_identificator:
+		{
 			delete m_value.s_value;
+			break;
+		}
+		case RDOType::t_fuzzy:
+		{
+			delete __fuzzyV();
 			break;
 		}
 	}
@@ -30,8 +36,14 @@ inline RDOValue::RDOValue( const RDOValue& rdovalue ):
 	switch ( typeID() )
 	{
 		case RDOType::t_string       :
-		case RDOType::t_identificator: {
+		case RDOType::t_identificator:
+		{
 			m_value.s_value = new std::string( *rdovalue.m_value.s_value );
+			break;
+		}
+		case RDOType::t_fuzzy:
+		{
+			m_value.p_data = new RDOFuzzyValue( *const_cast<RDOValue&>(rdovalue).__fuzzyV() );
 			break;
 		}
 	}
@@ -40,7 +52,8 @@ inline RDOValue::RDOValue( const RDOValue& rdovalue ):
 inline RDOValue::RDOValue( const RDOType& type ):
 	m_type( &type )
 {
-	switch ( typeID() ) {
+	switch ( typeID() )
+	{
 		case RDOType::t_unknow       : break;
 		case RDOType::t_int          : m_value.i_value = 0; break;
 		case RDOType::t_real         : m_value.d_value = 0; break;
@@ -96,9 +109,10 @@ inline RDOValue::RDOValue( const RDOEnumType& enums, const std::string& value ):
 	}
 }
 
-inline RDOValue::RDOValue( RDOFuzzyValue& fuzzy ):
+inline RDOValue::RDOValue( const RDOFuzzyValue& fuzzy ):
 	m_type( &fuzzy.type() )
 {
+	m_value.p_data = new RDOFuzzyValue( fuzzy );
 }
 
 inline RDOValue::RDOValue( const std::string& value ):

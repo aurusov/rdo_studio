@@ -18,10 +18,15 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse()
 {
-	rdoRuntime::RDOFuzzyType  fuzzy_type;
-	rdoRuntime::RDOFuzzyValue fuzzy_value( fuzzy_type  );
-	rdoRuntime::RDOValue      rdo_value  ( fuzzy_value );
-	int i = rdo_value.getInt();
+	rdoRuntime::RDOFuzzyFixedSet fuzzy_fixedSet1( m_parser->runtime() );
+	fuzzy_fixedSet1.append( rdoRuntime::RDOValue(0), 1.0 );
+	fuzzy_fixedSet1.append( rdoRuntime::RDOValue(1), 1.0 );
+	fuzzy_fixedSet1.append( rdoRuntime::RDOValue(2), 0.0 );
+	rdoRuntime::RDOFuzzyType  fuzzy_type1 ( &fuzzy_fixedSet1 );
+	rdoRuntime::RDOFuzzyValue fuzzy_value1( fuzzy_type1  );
+	rdoRuntime::RDOValue      rdo_value1  ( fuzzy_value1 );
+	rdoRuntime::RDOValue      rdo_value2  ( rdo_value1 );
+	int i = rdo_value2.getInt();
 /*
 	// Тут надо запросить все типы ресурсов у парного РДО,
 	// вызвав с помощью корбы некий метод, который вернёт кучу структур
