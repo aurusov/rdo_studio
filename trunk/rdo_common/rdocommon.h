@@ -8,6 +8,18 @@
 
 namespace rdo {
 
+template< class T >
+T rmin( T v1, T v2 )
+{
+	return v1 <= v2 ? v1 : v2;
+}
+
+template< class T >
+T rmax( T v1, T v2 )
+{
+	return v1 >= v2 ? v1 : v2;
+}
+
 std::string format( const char* str, ... );
 std::string format( const char* str, va_list& params );
 std::string format( unsigned int resource, ... );

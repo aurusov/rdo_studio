@@ -49,8 +49,8 @@ public:
 	bool      operator>  ( const RDOValue& rdovalue ) const;
 	bool      operator<= ( const RDOValue& rdovalue ) const;
 	bool      operator>= ( const RDOValue& rdovalue ) const;
-	bool      operator&& ( const RDOValue& rdovalue ) const;
-	bool      operator|| ( const RDOValue& rdovalue ) const;
+	RDOValue  operator&& ( const RDOValue& rdovalue ) const;
+	RDOValue  operator|| ( const RDOValue& rdovalue ) const;
 	RDOValue  operator-  () const;
 	void      operator+= ( const RDOValue& rdovalue );
 	void      operator-= ( const RDOValue& rdovalue );
@@ -67,8 +67,11 @@ public:
 private:
 	const RDOType* m_type;
 
-	const RDOEnumType*   __enum() const;
-	      RDOFuzzyValue* __fuzzyV();
+	const RDOEnumType&   __enumT  () const;
+	      std::string&   __stringV();
+	const std::string&   __stringV() const;
+	      RDOFuzzyValue& __fuzzyV ();
+	const RDOFuzzyValue& __fuzzyV () const;
 
 	union {
 		int          i_value;

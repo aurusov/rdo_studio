@@ -1,5 +1,5 @@
 #include "rdo_enum.h"
-#include "rdo_fuzzy.h"
+#include "rdo_fuzzy_def.h"
 #include "rdo_exception.h"
 
 namespace rdoRuntime {
@@ -18,12 +18,12 @@ inline RDOValue::~RDOValue()
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			delete m_value.s_value;
+			delete &__stringV();
 			break;
 		}
 		case RDOType::t_fuzzy:
 		{
-			delete __fuzzyV();
+			delete &__fuzzyV();
 			break;
 		}
 	}
@@ -38,12 +38,12 @@ inline RDOValue::RDOValue( const RDOValue& rdovalue ):
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			m_value.s_value = new std::string( *rdovalue.m_value.s_value );
+			m_value.s_value = new std::string( rdovalue.__stringV() );
 			break;
 		}
 		case RDOType::t_fuzzy:
 		{
-			m_value.p_data = new RDOFuzzyValue( *const_cast<RDOValue&>(rdovalue).__fuzzyV() );
+			m_value.p_data = new RDOFuzzyValue( rdovalue.__fuzzyV() );
 			break;
 		}
 	}
@@ -139,7 +139,7 @@ inline int RDOValue::getInt() const
 		case RDOType::t_real : return (int)m_value.d_value;
 		case RDOType::t_enum : return m_value.i_value;
 		case RDOType::t_bool : return m_value.b_value ? 1 : 0;
-		case RDOType::t_fuzzy: return const_cast<RDOValue*>(this)->__fuzzyV()->defuzzyfication().getInt();
+		case RDOType::t_fuzzy: return const_cast<RDOValue*>(this)->__fuzzyV().defuzzyfication().getInt();
 	}
 	throw RDOValueException();
 }
@@ -160,7 +160,7 @@ inline const RDOEnumType& RDOValue::getEnum() const
 {
 	switch ( typeID() )
 	{
-		case RDOType::t_enum: return *__enum();
+		case RDOType::t_enum: return __enumT();
 	}
 	throw RDOValueException();
 }
@@ -190,10 +190,10 @@ inline bool RDOValue::getAsBool() const
 {
 	switch ( typeID() )
 	{
-		case RDOType::t_int   : return m_value.i_value           ? true : false;
-		case RDOType::t_real  : return m_value.d_value           ? true : false;
-		case RDOType::t_enum  : return m_value.i_value           ? true : false;
-		case RDOType::t_string: return !m_value.s_value->empty() ? true : false;
+		case RDOType::t_int   : return m_value.i_value      ? true : false;
+		case RDOType::t_real  : return m_value.d_value      ? true : false;
+		case RDOType::t_enum  : return m_value.i_value      ? true : false;
+		case RDOType::t_string: return !__stringV().empty() ? true : false;
 		case RDOType::t_bool  : return m_value.b_value;
 	}
 	throw RDOValueException();
@@ -203,7 +203,7 @@ inline const std::string& RDOValue::getString() const
 {
 	switch ( typeID() )
 	{
-		case RDOType::t_string: return *m_value.s_value;
+		case RDOType::t_string: return __stringV();
 	}
 	throw RDOValueException();
 }
@@ -212,7 +212,7 @@ inline const std::string& RDOValue::getIdentificator() const
 {
 	switch ( typeID() )
 	{
-		case RDOType::t_identificator: return *m_value.s_value;
+		case RDOType::t_identificator: return __stringV();
 	}
 	throw RDOValueException();
 }
@@ -223,10 +223,11 @@ inline std::string RDOValue::getAsString() const
 	{
 		case RDOType::t_int          : return rdo::format( "%d", m_value.i_value );
 		case RDOType::t_real         : return rdo::toString( m_value.d_value );
-		case RDOType::t_enum         : return __enum()->getValues().at( m_value.i_value );
+		case RDOType::t_enum         : return __enumT().getValues().at( m_value.i_value );
 		case RDOType::t_bool         : return m_value.b_value ? "true" : "false";
-		case RDOType::t_string       : return *m_value.s_value;
-		case RDOType::t_identificator: return *m_value.s_value;
+		case RDOType::t_string       : return __stringV();
+		case RDOType::t_identificator: return __stringV();
+		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
 	}
 	throw RDOValueException();
 }
@@ -239,7 +240,7 @@ inline std::string RDOValue::getAsStringForTrace() const
 		case RDOType::t_real  : return rdo::toString( m_value.d_value );
 		case RDOType::t_enum  : return rdo::format( "%d", m_value.i_value );
 		case RDOType::t_bool  : return m_value.b_value ? "true" : "false";
-		case RDOType::t_string: return *m_value.s_value;
+		case RDOType::t_string: return __stringV();
 	}
 	throw RDOValueException();
 }
@@ -251,7 +252,7 @@ inline RDOValue& RDOValue::operator= ( const RDOValue& rdovalue )
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			delete m_value.s_value;
+			delete &__stringV();
 			break;
 		}
 	}
@@ -262,7 +263,7 @@ inline RDOValue& RDOValue::operator= ( const RDOValue& rdovalue )
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			m_value.s_value = new std::string( *rdovalue.m_value.s_value );
+			m_value.s_value = new std::string( rdovalue.__stringV() );
 			break;
 		}
 	}
@@ -311,7 +312,7 @@ inline bool RDOValue::operator== ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_string: return *m_value.s_value == *rdovalue.m_value.s_value;
+				case RDOType::t_string: return __stringV() == rdovalue.__stringV();
 			}
 			break;
 		}
@@ -319,7 +320,7 @@ inline bool RDOValue::operator== ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_identificator: return *m_value.s_value == *rdovalue.m_value.s_value;
+				case RDOType::t_identificator: return __stringV() == rdovalue.__stringV();
 			}
 			break;
 		}
@@ -369,7 +370,7 @@ inline bool RDOValue::operator!= ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_string: return *m_value.s_value != *rdovalue.m_value.s_value;
+				case RDOType::t_string: return __stringV() != rdovalue.__stringV();
 			}
 			break;
 		}
@@ -377,7 +378,7 @@ inline bool RDOValue::operator!= ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_identificator: return *m_value.s_value != *rdovalue.m_value.s_value;
+				case RDOType::t_identificator: return __stringV() != rdovalue.__stringV();
 			}
 			break;
 		}
@@ -418,7 +419,7 @@ inline bool RDOValue::operator< ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_string: return *m_value.s_value < *rdovalue.m_value.s_value;
+				case RDOType::t_string: return __stringV() < rdovalue.__stringV();
 			}
 			break;
 		}
@@ -464,7 +465,7 @@ inline bool RDOValue::operator> ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_string: return *m_value.s_value > *rdovalue.m_value.s_value;
+				case RDOType::t_string: return __stringV() > rdovalue.__stringV();
 			}
 			break;
 		}
@@ -506,7 +507,7 @@ inline bool RDOValue::operator<= ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_string: return *m_value.s_value <= *rdovalue.m_value.s_value;
+				case RDOType::t_string: return __stringV() <= rdovalue.__stringV();
 			}
 			break;
 		}
@@ -548,7 +549,7 @@ inline bool RDOValue::operator>= ( const RDOValue& rdovalue ) const
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_string: return *m_value.s_value >= *rdovalue.m_value.s_value;
+				case RDOType::t_string: return __stringV() >= rdovalue.__stringV();
 			}
 			break;
 		}
@@ -556,7 +557,7 @@ inline bool RDOValue::operator>= ( const RDOValue& rdovalue ) const
 	throw RDOValueException();
 }
 
-inline bool RDOValue::operator&& ( const RDOValue& rdovalue ) const
+inline RDOValue RDOValue::operator&& ( const RDOValue& rdovalue ) const
 {
 	switch ( typeID() )
 	{
@@ -568,11 +569,19 @@ inline bool RDOValue::operator&& ( const RDOValue& rdovalue ) const
 			}
 			break;
 		}
+		case RDOType::t_fuzzy:
+		{
+			switch ( rdovalue.typeID() )
+			{
+				case RDOType::t_fuzzy: return __fuzzyV() && rdovalue.__fuzzyV();
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
 }
 
-inline bool RDOValue::operator|| ( const RDOValue& rdovalue ) const
+inline RDOValue RDOValue::operator|| ( const RDOValue& rdovalue ) const
 {
 	switch ( typeID() )
 	{
@@ -581,6 +590,14 @@ inline bool RDOValue::operator|| ( const RDOValue& rdovalue ) const
 			switch ( rdovalue.typeID() )
 			{
 				case RDOType::t_bool: return m_value.b_value || rdovalue.m_value.b_value;
+			}
+			break;
+		}
+		case RDOType::t_fuzzy:
+		{
+			switch ( rdovalue.typeID() )
+			{
+				case RDOType::t_fuzzy: return __fuzzyV() || rdovalue.__fuzzyV();
 			}
 			break;
 		}
@@ -593,10 +610,11 @@ inline RDOValue RDOValue::operator- () const
 	RDOValue rdovalue( *this );
 	switch ( typeID() )
 	{
-		case RDOType::t_int : rdovalue.m_value.i_value = -m_value.i_value; break;
-		case RDOType::t_real: rdovalue.m_value.d_value = -m_value.d_value; break;
-		case RDOType::t_bool: rdovalue.m_value.b_value = !m_value.b_value; break;
-		default             : throw RDOValueException();
+		case RDOType::t_int  : rdovalue.m_value.i_value = -m_value.i_value; break;
+		case RDOType::t_real : rdovalue.m_value.d_value = -m_value.d_value; break;
+		case RDOType::t_bool : rdovalue.m_value.b_value = !m_value.b_value; break;
+		case RDOType::t_fuzzy: rdovalue.__fuzzyV()      = __fuzzyV().u_minus(); break;
+		default              : throw RDOValueException();
 	}
 	return rdovalue;
 }
@@ -627,7 +645,15 @@ inline void RDOValue::operator+= ( const RDOValue& rdovalue )
 		{
 			switch ( rdovalue.typeID() )
 			{
-				case RDOType::t_string: *m_value.s_value += *rdovalue.m_value.s_value; return;
+				case RDOType::t_string: __stringV() += rdovalue.__stringV(); return;
+			}
+			break;
+		}
+		case RDOType::t_fuzzy:
+		{
+			switch ( rdovalue.typeID() )
+			{
+				case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() + rdovalue.__fuzzyV(); return;
 			}
 			break;
 		}
@@ -657,6 +683,14 @@ inline void RDOValue::operator-= ( const RDOValue& rdovalue )
 			}
 			break;
 		}
+		case RDOType::t_fuzzy:
+		{
+			switch ( rdovalue.typeID() )
+			{
+				case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() - rdovalue.__fuzzyV(); return;
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
 }
@@ -683,6 +717,14 @@ inline void RDOValue::operator*= ( const RDOValue& rdovalue )
 			}
 			break;
 		}
+		case RDOType::t_fuzzy:
+		{
+			switch ( rdovalue.typeID() )
+			{
+				case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() * rdovalue.__fuzzyV(); return;
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
 }
@@ -706,6 +748,14 @@ inline void RDOValue::operator/= ( const RDOValue& rdovalue )
 			{
 				case RDOType::t_int :
 				case RDOType::t_real: m_value.d_value = m_value.d_value / rdovalue.getDouble(); return;
+			}
+			break;
+		}
+		case RDOType::t_fuzzy:
+		{
+			switch ( rdovalue.typeID() )
+			{
+				case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() / rdovalue.__fuzzyV(); return;
 			}
 			break;
 		}
@@ -751,14 +801,29 @@ inline RDOType::ID RDOValue::typeID() const
 	return type().id();
 }
 
-inline const RDOEnumType* RDOValue::__enum() const
+inline const RDOEnumType& RDOValue::__enumT() const
 {
-	return static_cast<const RDOEnumType*>(m_type);
+	return *static_cast<const RDOEnumType*>(m_type);
 }
 
-inline RDOFuzzyValue* RDOValue::__fuzzyV()
+inline std::string& RDOValue::__stringV()
 {
-	return static_cast<RDOFuzzyValue*>(m_value.p_data);
+	return *m_value.s_value;
+}
+
+inline const std::string& RDOValue::__stringV() const
+{
+	return *m_value.s_value;
+}
+
+inline RDOFuzzyValue& RDOValue::__fuzzyV()
+{
+	return *static_cast<RDOFuzzyValue*>(m_value.p_data);
+}
+
+inline const RDOFuzzyValue& RDOValue::__fuzzyV() const
+{
+	return *static_cast<const RDOFuzzyValue*>(m_value.p_data);
 }
 
 inline std::ostream& operator<< ( std::ostream& stream, const RDOValue& rdovalue )

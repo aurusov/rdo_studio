@@ -881,6 +881,10 @@
 				RelativePath=".\rdo_fuzzy.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdo_fuzzy_def.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

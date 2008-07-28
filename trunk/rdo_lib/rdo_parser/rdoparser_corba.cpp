@@ -18,15 +18,36 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse()
 {
-	rdoRuntime::RDOFuzzyFixedSet fuzzy_fixedSet1( m_parser->runtime() );
-	fuzzy_fixedSet1.append( rdoRuntime::RDOValue(0), 1.0 );
-	fuzzy_fixedSet1.append( rdoRuntime::RDOValue(1), 1.0 );
-	fuzzy_fixedSet1.append( rdoRuntime::RDOValue(2), 0.0 );
-	rdoRuntime::RDOFuzzyType  fuzzy_type1 ( &fuzzy_fixedSet1 );
-	rdoRuntime::RDOFuzzyValue fuzzy_value1( fuzzy_type1  );
-	rdoRuntime::RDOValue      rdo_value1  ( fuzzy_value1 );
-	rdoRuntime::RDOValue      rdo_value2  ( rdo_value1 );
-	int i = rdo_value2.getInt();
+	rdoRuntime::RDOFuzzySetDefinitionRangeDiscret* fuzzy_setDefinition1 = new rdoRuntime::RDOFuzzySetDefinitionRangeDiscret( m_parser->runtime() );
+	fuzzy_setDefinition1->append(10, 50);
+	rdoRuntime::RDOFuzzyType* fuzzy_type1  = new rdoRuntime::RDOFuzzyType( fuzzy_setDefinition1 );
+
+	rdoRuntime::RDOFuzzyValue fuzzy_value1(*fuzzy_type1);
+	fuzzy_value1.append(10, 0.7)(20, 1.0)(50, 0.6);
+
+	rdoRuntime::RDOValue rdo_value1( fuzzy_value1 );
+	rdoRuntime::RDOValue rdo_value2( fuzzy_value1.u_minus() );
+	rdoRuntime::RDOValue rdo_value3( fuzzy_value1.u_obr() );
+
+	std::string str1 = (rdo_value1 + rdo_value2).getAsString();
+	std::string str2 = (rdo_value1 * rdo_value3).getAsString();
+
+/*
+	rdoRuntime::RDOFuzzySetDefinitionRangeDiscret* fuzzy_setDefinition1 = new rdoRuntime::RDOFuzzySetDefinitionRangeDiscret( m_parser->runtime() );
+	fuzzy_setDefinition1->append(1, 7);
+	rdoRuntime::RDOFuzzyType* fuzzy_type1  = new rdoRuntime::RDOFuzzyType( fuzzy_setDefinition1 );
+
+	rdoRuntime::RDOFuzzyValue fuzzy_value1(*fuzzy_type1);
+	fuzzy_value1.append(3, 0.9)(4, 1.0)(6, 0.6);
+
+	rdoRuntime::RDOFuzzyValue fuzzy_value2(*fuzzy_type1);
+	fuzzy_value2.append(3, 0.7)(5, 1.0)(6, 0.4);
+
+	rdoRuntime::RDOValue rdo_value1( fuzzy_value1 );
+	rdoRuntime::RDOValue rdo_value2( fuzzy_value2 );
+	rdoRuntime::RDOValue rdo_value3 = rdo_value1 && rdo_value2;
+*/
+	int i = 1;
 /*
 	// Тут надо запросить все типы ресурсов у парного РДО,
 	// вызвав с помощью корбы некий метод, который вернёт кучу структур
