@@ -19,18 +19,20 @@ namespace rdoParse
 void RDOParserCorbaRTP::parse()
 {
 	rdoRuntime::RDOFuzzySetDefinitionRangeDiscret* fuzzy_setDefinition1 = new rdoRuntime::RDOFuzzySetDefinitionRangeDiscret( m_parser->runtime() );
-	fuzzy_setDefinition1->append(10, 50);
+	fuzzy_setDefinition1->append(0, 50);
 	rdoRuntime::RDOFuzzyType* fuzzy_type1  = new rdoRuntime::RDOFuzzyType( fuzzy_setDefinition1 );
 
 	rdoRuntime::RDOFuzzyValue fuzzy_value1(*fuzzy_type1);
-	fuzzy_value1.append(10, 0.7)(20, 1.0)(50, 0.6);
+	fuzzy_value1.append(1, 1.0)(2, 1.0)(3, 1.0)(4, 1.0)(5, 1.0)(6, 1.0)(7, 1.0)(8, 1.0)(9, 1.0);
 
-	rdoRuntime::RDOValue rdo_value1( fuzzy_value1 );
-	rdoRuntime::RDOValue rdo_value2( fuzzy_value1.u_minus() );
-	rdoRuntime::RDOValue rdo_value3( fuzzy_value1.u_obr() );
+	rdoRuntime::RDOFuzzyValue fuzzy_value2(*fuzzy_type1);
+	fuzzy_value2.append(10, 1.0);
 
-	std::string str1 = (rdo_value1 + rdo_value2).getAsString();
-	std::string str2 = (rdo_value1 * rdo_value3).getAsString();
+	fuzzy_value1 = fuzzy_value1 + fuzzy_value2;
+
+	std::string str1 = fuzzy_value1.defuzzyfication().getAsString();
+
+	int i = 1;
 
 /*
 	rdoRuntime::RDOFuzzySetDefinitionRangeDiscret* fuzzy_setDefinition1 = new rdoRuntime::RDOFuzzySetDefinitionRangeDiscret( m_parser->runtime() );
@@ -47,7 +49,6 @@ void RDOParserCorbaRTP::parse()
 	rdoRuntime::RDOValue rdo_value2( fuzzy_value2 );
 	rdoRuntime::RDOValue rdo_value3 = rdo_value1 && rdo_value2;
 */
-	int i = 1;
 /*
 	// Тут надо запросить все типы ресурсов у парного РДО,
 	// вызвав с помощью корбы некий метод, который вернёт кучу структур

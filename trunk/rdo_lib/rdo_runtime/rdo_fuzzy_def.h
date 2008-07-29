@@ -1,6 +1,10 @@
 #ifndef RDO_FUZZY_DEF_H
 #define RDO_FUZZY_DEF_H
 
+#ifndef RDO_VALUE_H
+#error include "rdo_value.h" first (и вообще, вместо "rdo_fuzzy_def.h" лучше юзать "rdo_fuzzy.h")
+#endif
+
 //
 // Напрямую этот файл инклюдить не надо, юзайте
 // #include "rdo_fuzzy.h"
@@ -67,7 +71,7 @@ public:
 
 	FuzzySet::const_iterator  begin() const { return m_fuzzySet.begin(); }
 	FuzzySet::const_iterator  end  () const { return m_fuzzySet.end();   }
-	
+
 	/* 3.37  */  RDOFuzzyValue operator&& ( const RDOFuzzyValue& fuzzy_value ) const;
 	/* 3.40  */  RDOFuzzyValue operator|| ( const RDOFuzzyValue& fuzzy_value ) const;
 	/* 3.102 */  RDOFuzzyValue operator+  ( const RDOFuzzyValue& fuzzy_value ) const;
@@ -77,6 +81,8 @@ public:
 
 	/* 3.116 */  RDOFuzzyValue u_minus() const;
 	/* 3.117 */  RDOFuzzyValue u_obr  () const;
+	/* 3.118 */  RDOFuzzyValue u_scale( double scale ) const;
+	/* 3.119 */  RDOFuzzyValue u_log  () const;
 
 	/* 3.39  */  RDOFuzzyValue a_mult( const RDOFuzzyValue& fuzzy_value ) const;
 	/* 3.48  */  RDOFuzzyValue alpha( double appertain ) const;
@@ -84,7 +90,7 @@ public:
 	/* 3.78  */  RDOFuzzyValue a_con() const;
 	/* 3.79  */  RDOFuzzyValue a_dil() const;
 
-	RDOValue defuzzyfication();
+	/* 3.272 */ RDOValue defuzzyfication();
 
 	std::string getAsString() const;
 

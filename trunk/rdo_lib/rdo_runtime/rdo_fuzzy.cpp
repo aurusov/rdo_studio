@@ -183,8 +183,10 @@ RDOFuzzyValue RDOFuzzyValue::operator/ ( const RDOFuzzyValue& fuzzy_value ) cons
 	return ext_binary(fun_div, fuzzy_value);
 }
 
-RDOValue fun_u_minus( const RDOValue& value ) { return -value;  }
-RDOValue fun_u_obr  ( const RDOValue& value ) { return RDOValue(1)/value; }
+RDOValue fun_u_minus( const RDOValue& value              ) { return -value;                                 }
+RDOValue fun_u_obr  ( const RDOValue& value              ) { return RDOValue(1)/value;                      }
+RDOValue fun_u_scale( const RDOValue& value, void* scale ) { return value * (*static_cast<double*>(scale)); }
+RDOValue fun_u_log  ( const RDOValue& value              ) { return value > 0 ? log(value.getDouble()) : 0; }
 
 //! Преобразование элементов через произвольную функцию fun
 RDOFuzzyValue RDOFuzzyValue::ext_unary( ExtUnaryFun fun ) const
@@ -226,6 +228,45 @@ RDOFuzzyValue RDOFuzzyValue::ext_unary( ExtUnaryFun fun ) const
 	}
 }
 
+RDOFuzzyValue RDOFuzzyValue::ext_unary( ExtUnaryFunP fun, void* param ) const
+{
+	typedef std::map< RDOValue, double > Values;
+	Values values;
+	FuzzySet::const_iterator it = m_fuzzySet.begin();
+	while ( it != m_fuzzySet.end() )
+	{
+		RDOValue rdo_value = fun(it->m_rdovalue, param);
+		Values::iterator val = values.find(rdo_value);
+		if ( val == values.end() )
+		{
+			values[rdo_value] = it->m_appertain;
+		}
+		else
+		{
+			values[rdo_value] = rdo::rmax(val->second, it->m_appertain);
+		}
+		it++;
+	}
+	if ( !values.empty() )
+	{
+		RDOFuzzySetDefinitionRangeDiscret* fuzzy_setDefinition = new RDOFuzzySetDefinitionRangeDiscret( type().getParent() );
+		fuzzy_setDefinition->append(values.begin()->first, values.rbegin()->first);
+		RDOFuzzyType* fuzzy_type  = new RDOFuzzyType( fuzzy_setDefinition );
+		RDOFuzzyValue fuzzy_result( *fuzzy_type );
+		Values::const_iterator val = values.begin();
+		while ( val != values.end() )
+		{
+			fuzzy_result.append(val->first, val->second);
+			val++;
+		}
+		return fuzzy_result;
+	}
+	else
+	{
+		return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance(type().getParent()));
+	}
+}
+
 RDOFuzzyValue RDOFuzzyValue::u_minus() const
 {
 	return ext_unary(fun_u_minus);
@@ -234,6 +275,16 @@ RDOFuzzyValue RDOFuzzyValue::u_minus() const
 RDOFuzzyValue RDOFuzzyValue::u_obr() const
 {
 	return ext_unary(fun_u_obr);
+}
+
+RDOFuzzyValue RDOFuzzyValue::u_scale( double scale ) const
+{
+	return ext_unary(fun_u_scale, &scale);
+}
+
+RDOFuzzyValue RDOFuzzyValue::u_log() const
+{
+	return ext_unary(fun_u_log);
 }
 
 RDOFuzzyValue RDOFuzzyValue::suppliment() const
@@ -311,7 +362,44 @@ RDOFuzzyValue RDOFuzzyValue::a_pow( double power ) const
 
 RDOValue RDOFuzzyValue::defuzzyfication()
 {
-	return 1;
+	FuzzySet::const_iterator it = m_fuzzySet.begin();
+	if ( it == m_fuzzySet.end() )
+	{
+		return RDOValue();
+	}
+	FuzzySet::const_iterator it_next = it;
+	it_next++;
+	if ( it_next == m_fuzzySet.end() )
+	{
+		return it->m_rdovalue;
+	}
+	double g      = 0;
+	double f      = 0;
+	double x      = it->m_rdovalue.getDouble();
+	double x_next = it_next->m_rdovalue.getDouble();
+	double a      = it->m_appertain;
+	double b      = it_next->m_appertain;
+	double h      = x_next - x;
+	while ( true )
+	{
+		double t = h*(a+b)/2.0;
+		g += t*(x_next + x)/2.0;
+		f += t;
+
+		it++;
+		it_next++;
+		if ( it_next == m_fuzzySet.end() )
+		{
+			break;
+		}
+
+		x      = x_next;
+		a      = b;
+		x_next = it_next->m_rdovalue.getDouble();
+		b      = it_next->m_appertain;
+		h      = x_next - x;
+	}
+	return g / f;
 }
 
 std::string RDOFuzzyValue::getAsString() const
@@ -535,7 +623,7 @@ bool RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::inRange( const RDOValue& rdo
 
 RDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSuppliment( const RDOFuzzyValue& value ) const
 {
-	return value;
+	return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance(value.type().getParent()));
 }
 
 } // namespace rdoRuntime
