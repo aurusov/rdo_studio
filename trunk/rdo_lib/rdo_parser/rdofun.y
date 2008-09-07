@@ -162,7 +162,7 @@
 %token RDO_string						438
 %token RDO_bool							439
 %token RDO_BOOL_CONST					440
-%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 
@@ -226,17 +226,16 @@ fun_const_body:	/* empty */
 
 fun_const_param_desc:	RDO_IDENTIF_COLON param_type
 						{
-							std::string name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-							RDOParserSrcInfo src_info = RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext);
-							PARSER->checkFunctionName( src_info );
+							RDOValue* name = reinterpret_cast<RDOValue*>($1);
+							PARSER->checkFunctionName( name->src_info() );
 							RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
 							if ( !parType->getDV().isExist() )
 							{
 								PARSER->error( @2, "Константа должна иметь значение" );
 							}
-							RDOFUNConst* param = new RDOFUNConst( PARSER, src_info, parType );
+							RDOFUNConst* param = new RDOFUNConst( PARSER, name->src_info(), parType );
 							RDOFUNConstant* newConst = new RDOFUNConstant( PARSER, param );
-							newConst->setSrcInfo( src_info );
+							newConst->setSrcInfo( name->src_info() );
 							RUNTIME->setConstValue( newConst->getNumber(), newConst->getType()->getDefaultValue( RDOParserSrcInfo(param->src_info()) ) );
 							$$ = (int)newConst;
 						}
@@ -628,13 +627,12 @@ fun_func_descr:	fun_func_header fun_func_footer
 				};
 
 fun_func_header:	RDO_Function RDO_IDENTIF_COLON param_type {
-						std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-						RDOParserSrcInfo src_info = RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext);
-						PARSER->checkFunctionName( src_info );
+						RDOValue* name = reinterpret_cast<RDOValue*>($2);
+						PARSER->checkFunctionName( name->src_info() );
 						RDORTPParamType* retType = reinterpret_cast<RDORTPParamType*>($3);
-						RDOFUNFunction* fun = new RDOFUNFunction( PARSER, src_info, retType );
+						RDOFUNFunction* fun = new RDOFUNFunction( PARSER, name->src_info(), retType );
 						if ( retType->typeID() == rdoRuntime::RDOType::t_enum && static_cast<RDORTPEnumParamType*>(retType)->enum_name.empty() ) {
-							static_cast<RDORTPEnumParamType*>(retType)->enum_name = name;
+							static_cast<RDORTPEnumParamType*>(retType)->enum_name = name->value().getIdentificator();
 							static_cast<RDORTPEnumParamType*>(retType)->enum_fun  = true;
 						}
 						$$ = (int)fun;
@@ -653,9 +651,9 @@ fun_func_parameters:	/* empty */
 
 fun_func_params:	/* empty */
 				| fun_func_params RDO_IDENTIF_COLON param_type {
-					std::string      name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
+					RDOValue*        name = reinterpret_cast<RDOValue*>($2);
 					RDORTPParamType* type = reinterpret_cast<RDORTPParamType*>($3);
-					RDOFUNFunctionParam* param = new RDOFUNFunctionParam( PARSER->getLastFUNFunction(), RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), type );
+					RDOFUNFunctionParam* param = new RDOFUNFunctionParam( PARSER->getLastFUNFunction(), name->src_info(), type );
 					PARSER->getLastFUNFunction()->add( param );
 				}
 				| fun_func_params RDO_IDENTIF_COLON error {
@@ -797,10 +795,9 @@ fun_seq_descr:		fun_seq_uniform
 					| fun_seq_enumerative;
 
 fun_seq_header:		RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '=' {
-						std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-						RDOParserSrcInfo src_info = RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext);
-						PARSER->checkFunctionName( src_info );
-						$$ = (int)(new RDOFUNSequence::RDOFUNSequenceHeader( PARSER, reinterpret_cast<RDORTPParamType*>($3), src_info ));
+						RDOValue* name = reinterpret_cast<RDOValue*>($2);
+						PARSER->checkFunctionName( name->src_info() );
+						$$ = (int)(new RDOFUNSequence::RDOFUNSequenceHeader( PARSER, reinterpret_cast<RDORTPParamType*>($3), name->src_info() ));
 					}
 					| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '=' error {
 						PARSER->error( @6, "После знака равенства ожидается тип последовательности" );
@@ -1327,8 +1324,8 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->value().getIdentificator() ));
 					}
 					| fun_group_keyword '(' error {
 						PARSER->error( @3, "Ожидается имя типа" );
@@ -1364,9 +1361,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
-						select->setSrcText( "Select(" + type_name + ": " );
+						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
+						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {

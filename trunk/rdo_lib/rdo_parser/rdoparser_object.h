@@ -60,17 +60,13 @@ private:
 class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo
 {
 public:
-	enum PSI {
-		psi_align_none,
-		psi_align_bytext
-	};
 	RDOParserSrcInfo();
 	RDOParserSrcInfo( const YYLTYPE& _pos );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos );
 	RDOParserSrcInfo( const std::string& _text );
-	RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text, PSI psi = psi_align_none );
-	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end );
+	RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text );
+	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, bool first_align = false );
 	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, const std::string& _text );
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& copy ) {
@@ -116,14 +112,6 @@ public:
 
 private:
 	void init();
-	void setSrcPosAndTextByLength( const YYLTYPE& _pos, const std::string& _text ) {
-		RDOSrcInfo::Position pos( _pos.first_line, _pos.first_column, _pos.last_line, _pos.last_column );
-		if ( pos.m_first_line == pos.m_last_line ) {
-			pos.m_last_pos = pos.m_first_pos + _text.length();
-		}
-		setSrcPos( pos );
-		setSrcText( _text );
-	}
 };
 
 template <class T> class compareName

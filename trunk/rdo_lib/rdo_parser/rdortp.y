@@ -162,7 +162,7 @@
 %token RDO_string						438
 %token RDO_bool							439
 %token RDO_BOOL_CONST					440
-%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 
@@ -189,196 +189,185 @@ namespace rdoParse
 
 %%
 
-rtp_list:		/* empty */
-				| rtp_list rtp_res_type
-				| error {
-					PARSER->error( "Ожидается ключевое слово $Resource_type" );
-				};
+rtp_list:			/* empty */
+					| rtp_list rtp_res_type
+					| error {
+						PARSER->error( "Ожидается ключевое слово $Resource_type" );
+					};
 
-rtp_res_type:	rtp_res_type_hdr RDO_Parameters rtp_body RDO_Fuzzy_Parameters rtp_fuzzy_body RDO_End {
-					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
-					if ( $3 == 0 ) {
-						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
+rtp_res_type:		rtp_header rtp_clear_param_list rtp_fuzzy_param_list RDO_End
+					{
+						RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
+						if ( res_type->getParams().empty() )
+						{
+							PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
+						}
 					}
-					if ( $5 == 0 ) {
-						PARSER->warning( @4, rdo::format( "Тип ресурса '%s' не содежит нечетких параметров", res_type->name().c_str() ) );
+					| rtp_header rtp_clear_param_list rtp_fuzzy_param_list {
+						PARSER->error( @3, "Не найдено ключевое слово $End" );
 					}
-					//Случай четких и нечетких параметров ресурса
-				}
-				| rtp_res_type_hdr RDO_Parameters rtp_body RDO_End {
-					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
-					if ( $3 == 0 ) {
-						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
-					}
-				}
-				| rtp_res_type_hdr RDO_Fuzzy_Parameters rtp_fuzzy_body RDO_End {
-					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
-					if ( $3 == 0 ) {
-						PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит нечетких параметров", res_type->name().c_str() ) );
-					}
-					//Случай только нечетких параметров ресурса
-				}
-				| rtp_res_type_hdr RDO_Parameters rtp_body RDO_Fuzzy_Parameters rtp_fuzzy_body {
-					PARSER->error( @5, "Не найдено ключевое слово $End" );
-				}
-				| rtp_res_type_hdr RDO_Parameters rtp_body {
-					PARSER->error( @3, "Не найдено ключевое слово $End" );
-				}
-				| rtp_res_type_hdr error {
-					PARSER->error( @2, "Не найдено ключевое слово $Parameters" );
-				};
+					| rtp_header error {
+						PARSER->error( @2, "Не найдено ключевое слово $Parameters" );
+					};
 
-rtp_res_type_hdr:	RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res {
+rtp_header:			RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
+					{
 						reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 0;
-						std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-						RDOParserSrcInfo src_info(@2, name, RDOParserSrcInfo::psi_align_bytext);
-						const RDORTPResType* _rtp = PARSER->findRTPResType( name );
+						RDOValue*            type_name = reinterpret_cast<RDOValue*>($2);
+						std::string          name      = type_name->value().getIdentificator();
+						const RDORTPResType* _rtp      = PARSER->findRTPResType( name );
 						if ( _rtp ) {
-							PARSER->error_push_only( src_info, rdo::format("Тип ресурса уже существует: %s", name.c_str()) );
+							PARSER->error_push_only( type_name->src_info(), rdo::format("Тип ресурса уже существует: %s", name.c_str()) );
 							PARSER->error_push_only( _rtp->src_info(), "См. первое определение" );
 							PARSER->error_push_done();
 						}
-						RDORTPResType* rtp = new RDORTPResType( PARSER, src_info, $3 != 0 );
+						RDORTPResType* rtp = new RDORTPResType( PARSER, type_name->src_info(), $3 != 0 );
 						$$ = (int)rtp;
+					}
+					| RDO_Resource_type RDO_IDENTIF_COLON error {
+						PARSER->error( @2, "Не указан вид ресурса" );
 					}
 					| RDO_Resource_type error {
 						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
 						PARSER->error( @2, rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()) );
-					}
-					| RDO_Resource_type RDO_IDENTIF_COLON error {
-						PARSER->error( @2, "Не указан вид ресурса" );
 					};
 
-rtp_vid_res:	RDO_permanent	{ $$ = 1; }
-				| RDO_temporary	{ $$ = 0; };
+rtp_vid_res:		RDO_permanent	{ $$ = 1; }
+					| RDO_temporary	{ $$ = 0; };
 
-rtp_body:		/* empty */ {
-					$$ = 0; // warning
-				}
-				| rtp_body rtp_param {
-					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($2);
-					PARSER->getLastRTPResType()->addParam( param );
-					$$ = 1; // no warning
-				};
+rtp_clear_param_list:	/* empty */
+					{
+					}
+					| RDO_Parameters rtp_clear_body {
+					};
 
-//-------------------------------------- FOR FUZZY LOGIC --------------------------------------	
-rtp_fuzzy_body:	/* empty */ {
-				$$ = 0; // warning
-			}
-			| rtp_fuzzy_body rtp_fuzzy_param {
-//				RDORTPFuzzyParam* fuzzy_param = reinterpret_cast<RDORTPFuzzyParam*>($2);
-//				PARSER->getLastRTPResType()->addFuzzyParam( fuzzy_param );
-				$$ = 1; // no warning
-			};
+rtp_fuzzy_param_list:	/*empty*/
+					{
+					}
+					|
+					RDO_Fuzzy rtp_fuzzy_body {
+					};
 
-rtp_fuzzy_param: RDO_IDENTIF_COLON fuzzy_param_type fuzzy_param_terms {	
-					RDOParserSrcInfo par_src_info(@1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), RDOParserSrcInfo::psi_align_bytext);
-//					RDORTPFuzzyParamType* fuzzy_parType = reinterpret_cast<RDORTPFuzzyParamType*>($2);
-					RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($3);
-					RDORTPFuzzyParam* fuzzy_param = new RDORTPFuzzyParam( PARSER, par_src_info, terms_set );
-					$$ = (int)fuzzy_param;
-				}
-				| RDO_IDENTIF_COLON fuzzy_param_type error {
-					PARSER->error( @2, rdo::format( "Ожидаются термины нечеткого параметра" ) );
-				}
-				| RDO_IDENTIF_COLON error {
-					if ( PARSER->lexer_loc_line() == @1.last_line ) {
-						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-						PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
-					} else {
-						PARSER->error( @1, "Ожидается тип параметра" );
-					}				
-				}
-				| error {
-					PARSER->error( @1, "Неверное описание нечеткого параметра" );
-				};
+rtp_clear_body:		/* empty */ {
+					}
+					| rtp_clear_body rtp_clear_param {
+						RDORTPParam* param = reinterpret_cast<RDORTPParam*>($2);
+						PARSER->getLastRTPResType()->addParam( param );
+					};
 
-fuzzy_param_type: RDO_real param_real_diap param_real_default_val {
-					RDORTPRealDiap*    diap = reinterpret_cast<RDORTPRealDiap*>($2);
-					RDORTPDefVal*        dv = reinterpret_cast<RDORTPDefVal*>($3);
-//					RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
-//					$$ = (int)rp;
-					$$ = 1
-				};
+rtp_fuzzy_body:		/* empty */ {
+					}
+					| rtp_fuzzy_body rtp_fuzzy_param {
+//						RDORTPFuzzyParam* fuzzy_param = reinterpret_cast<RDORTPFuzzyParam*>($2);
+//						PARSER->getLastRTPResType()->addFuzzyParam( fuzzy_param );
+					};
 
-fuzzy_param_terms: /* empty */ {
-					RDORTPFuzzyTermsSet* terms_set = new RDORTPFuzzyTermsSet( PARSER );
-					$$ = (int)terms_set;
-				}
-				| fuzzy_param_terms fuzzy_term {
-					RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($1);
-					RDORTPFuzzyTerm* term = reinterpret_cast<RDORTPFuzzyTerm*>($2);
-					terms_set->add( term );
-					$$ = $1;				
-				};
+rtp_clear_param:	RDO_IDENTIF_COLON param_type {
+						RDOValue*        param_name = reinterpret_cast<RDOValue*>($1);
+						RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($2);
+						RDORTPParam* param = new RDORTPParam( PARSER->getLastRTPResType(), param_name->src_info(), param_type );
+						param_type->reparent( param );
+						if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
+							static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", PARSER->getLastRTPResType()->name().c_str(), param_name->src_info().src_text().c_str() );
+						}
+						$$ = (int)param;
+					}
+					| RDO_IDENTIF_COLON error {
+						if ( PARSER->lexer_loc_line() == @1.last_line ) {
+							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+							PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
+						} else {
+							PARSER->error( @1, "Ожидается тип параметра" );
+						}
+					}
+					| error {
+						PARSER->error( @1, "Неправильное описание параметра" );
+					};
 
-fuzzy_term: RDO_Fuzzy_Term RDO_IDENTIF fuzzy_membershift_fun {
-					RDOParserSrcInfo par_src_info(@2, reinterpret_cast<RDOValue*>($2)->value().getIdentificator(), RDOParserSrcInfo::psi_align_bytext);
-					RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
-					RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER, par_src_info, fuzzy_membershift_fun );
-//					fuzzy_membershift_fun->reparent( fuzzy_term );
-					$$ = (int)fuzzy_term;				
-				};
+rtp_fuzzy_param:	RDO_IDENTIF_COLON fuzzy_param_type fuzzy_terms_list {	
+						RDOValue* param_name = reinterpret_cast<RDOValue*>($1);
+//						RDORTPFuzzyParamType* fuzzy_parType = reinterpret_cast<RDORTPFuzzyParamType*>($2);
+						RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($3);
+						RDORTPFuzzyParam* fuzzy_param = new RDORTPFuzzyParam( PARSER, param_name->src_info(), terms_set );
+						$$ = (int)fuzzy_param;
+//						PARSER->error( @2, rdo::format( "Ожидаются термины нечеткого параметра" ) );
+					}
+					| RDO_IDENTIF_COLON error {
+						if ( PARSER->lexer_loc_line() == @1.last_line ) {
+							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+							PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
+						} else {
+							PARSER->error( @1, "Ожидается тип параметра" );
+						}				
+					}
+					| error {
+						PARSER->error( @1, "Неверное описание нечеткого параметра" );
+					};
+
+fuzzy_param_type:	RDO_real param_real_diap param_real_default_val {
+						RDORTPRealDiap*    diap = reinterpret_cast<RDORTPRealDiap*>($2);
+						RDORTPDefVal*        dv = reinterpret_cast<RDORTPDefVal*>($3);
+//						RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
+//						$$ = (int)rp;
+						$$ = 1
+					};
+
+fuzzy_terms_list:	/* empty */ {
+						RDORTPFuzzyTermsSet* terms_set = new RDORTPFuzzyTermsSet( PARSER );
+						$$ = (int)terms_set;
+					}
+					| fuzzy_terms_list fuzzy_term {
+						RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($1);
+						RDORTPFuzzyTerm* term = reinterpret_cast<RDORTPFuzzyTerm*>($2);
+						terms_set->add( term );
+						$$ = $1;				
+					};
+
+fuzzy_term:			RDO_Fuzzy_Term RDO_IDENTIF fuzzy_membershift_fun {
+						RDOValue* param_name = reinterpret_cast<RDOValue*>($2);
+						RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
+						RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER, param_name->src_info(), fuzzy_membershift_fun );
+//						fuzzy_membershift_fun->reparent( fuzzy_term );
+						$$ = (int)fuzzy_term;				
+					};
 
 fuzzy_membershift_fun: /* empty */ {
-					RDORTPFuzzyMembershiftFun* fun = new RDORTPFuzzyMembershiftFun( PARSER );
-					$$ = (int)fun;
-				}
-				| fuzzy_membershift_fun membershift_point {					
-					RDORTPFuzzyMembershiftFun*   fun   = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
-					RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
-					fun->add( point );
-					$$ = $1;					
-					//Задание функции принадлежности точками - вершинами ломанных кривых
-				};
+						RDORTPFuzzyMembershiftFun* fun = new RDORTPFuzzyMembershiftFun( PARSER );
+						$$ = (int)fun;
+					}
+					| fuzzy_membershift_fun membershift_point {					
+						RDORTPFuzzyMembershiftFun*   fun   = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
+						RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
+						fun->add( point );
+						$$ = $1;					
+						//Задание функции принадлежности точками - вершинами ломанных кривых
+					};
 
-membershift_point: '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
-					double x_value = *reinterpret_cast<double*>($2);
-					double y_value = *reinterpret_cast<double*>($4);
-					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
-					$$ = (int)fuzzy_membershift_point;
-				}
-				| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {					
-					double x_value = *reinterpret_cast<double*>($2);
-					double y_value = *reinterpret_cast<double*>($4);
-					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
-					$$ = (int)fuzzy_membershift_point;
-				}
-				| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {					
-					double x_value = reinterpret_cast<RDOValue*>($2)->value().getDouble();
-					double y_value = reinterpret_cast<RDOValue*>($4)->value().getDouble();
-					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
-					$$ = (int)fuzzy_membershift_point;
-				}
-				| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' {					
-					double x_value = reinterpret_cast<RDOValue*>($2)->value().getDouble();
-					double y_value = reinterpret_cast<RDOValue*>($4)->value().getDouble();
-					RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
-					$$ = (int)fuzzy_membershift_point;
-				};							
+membershift_point:	'(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
+						double x_value = *reinterpret_cast<double*>($2);
+						double y_value = *reinterpret_cast<double*>($4);
+						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+						$$ = (int)fuzzy_membershift_point;
+					}
+					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {					
+						double x_value = *reinterpret_cast<double*>($2);
+						double y_value = *reinterpret_cast<double*>($4);
+						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+						$$ = (int)fuzzy_membershift_point;
+					}
+					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {					
+						double x_value = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+						double y_value = reinterpret_cast<RDOValue*>($4)->value().getDouble();
+						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+						$$ = (int)fuzzy_membershift_point;
+					}
+					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' {					
+						double x_value = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+						double y_value = reinterpret_cast<RDOValue*>($4)->value().getDouble();
+						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
+						$$ = (int)fuzzy_membershift_point;
+					};							
 //---------------------------------------------------------------------------------------------		
-	
-rtp_param: RDO_IDENTIF_COLON param_type {
-					RDOParserSrcInfo par_src_info(@1, reinterpret_cast<RDOValue*>($1)->value().getIdentificator(), RDOParserSrcInfo::psi_align_bytext);
-					RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
-					RDORTPParam* param = new RDORTPParam( PARSER->getLastRTPResType(), par_src_info, parType );
-					parType->reparent( param );
-					if ( parType->typeID() == rdoRuntime::RDOType::t_enum ) {
-						static_cast<RDORTPEnumParamType*>(parType)->enum_name = rdo::format( "%s.%s", PARSER->getLastRTPResType()->name().c_str(), par_src_info.src_text().c_str() );
-					}
-					$$ = (int)param;
-				}
-				| RDO_IDENTIF_COLON error {
-					if ( PARSER->lexer_loc_line() == @1.last_line ) {
-						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-						PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
-					} else {
-						PARSER->error( @1, "Ожидается тип параметра" );
-					}
-				}
-				| error {
-					PARSER->error( @1, "Неправильное описание параметра" );
-				};
 
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
@@ -452,10 +441,6 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 				| param_such_as '=' error
 				{
 					PARSER->error( "Ожидается зачение по-умолчанию" );
-				}
-				| param_such_as error
-				{
-					PARSER->error( "Ожидается окончание описания параметра-ссылки, например, зачение по-умолчанию" );
 				};
 /*
 				| RDO_integer error {
@@ -560,11 +545,16 @@ param_int_default_val:	/* empty */ {
 					| '=' RDO_REAL_CONST {
 						PARSER->error( @2, rdo::format("Целое число инициализируется вещественным: %f", reinterpret_cast<RDOValue*>($2)->value().getDouble()) );
 					}
-					| '=' {
-						PARSER->error( @1, "Не указано значение по-умолчанию для целого типа" );
-					}
 					| '=' error {
-						PARSER->error( @2, "Неверное значение по-умолчанию для целого типа" );
+						RDOParserSrcInfo _src_info(@1, @2, true);
+						if ( _src_info.src_pos().point() )
+						{
+							PARSER->error( _src_info, "Не указано значение по-умолчанию для целого типа" );
+						}
+						else
+						{
+							PARSER->error( _src_info, "Неверное значение по-умолчанию для целого типа" );
+						}
 					};
 
 param_real_default_val:	/* empty */ {
@@ -576,11 +566,16 @@ param_real_default_val:	/* empty */ {
 					| '=' RDO_INT_CONST {
 						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
 					}
-					| '=' {
-						PARSER->error( @1, "Не указано значение по-умолчанию для вещественного типа" );
-					}
 					| '=' error {
-						PARSER->error( @2, "Неверное значение по-умолчанию для вещественного типа" );
+						RDOParserSrcInfo _src_info(@1, @2, true);
+						if ( _src_info.src_pos().point() )
+						{
+							PARSER->error( _src_info, "Не указано значение по-умолчанию для вещественного типа" );
+						}
+						else
+						{
+							PARSER->error( _src_info, "Неверное значение по-умолчанию для вещественного типа" );
+						}
 					};
 
 param_string_default_val:	/* empty */
@@ -591,13 +586,17 @@ param_string_default_val:	/* empty */
 					{
 						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
 					}
-					| '='
-					{
-						PARSER->error( @1, "Не указано значение по-умолчанию для строчного типа" );
-					}
 					| '=' error
 					{
-						PARSER->error( @2, "Неверное значение по-умолчанию для строчного типа" );
+						RDOParserSrcInfo _src_info(@1, @2, true);
+						if ( _src_info.src_pos().point() )
+						{
+							PARSER->error( _src_info, "Не указано значение по-умолчанию для строчного типа" );
+						}
+						else
+						{
+							PARSER->error( _src_info, "Неверное значение по-умолчанию для строчного типа" );
+						}
 					};
 
 param_bool_default_val:	/* empty */
@@ -608,13 +607,17 @@ param_bool_default_val:	/* empty */
 					{
 						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
 					}
-					| '='
-					{
-						PARSER->error( @1, "Не указано значение по-умолчанию для булевского типа" );
-					}
 					| '=' error
 					{
-						PARSER->error( @2, "Неверное значение по-умолчанию для булевского типа" );
+						RDOParserSrcInfo _src_info(@1, @2, true);
+						if ( _src_info.src_pos().point() )
+						{
+							PARSER->error( _src_info, "Не указано значение по-умолчанию для булевского типа" );
+						}
+						else
+						{
+							PARSER->error( _src_info, "Неверное значение по-умолчанию для булевского типа" );
+						}
 					};
 
 param_enum:	'(' param_enum_list ')' {
@@ -623,7 +626,7 @@ param_enum:	'(' param_enum_list ')' {
 				enu->setSrcText( enu->getEnums().asString() );
 				$$ = $2;
 			}
-			| '(' param_enum_list {
+			| '(' param_enum_list error {
 				PARSER->error( @2, "Перечисление должно заканчиваться скобкой" );
 			};
 
@@ -644,33 +647,31 @@ param_enum_list: RDO_IDENTIF {
 				}
 				| param_enum_list RDO_IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
-						PARSER->error( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
+						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
+						enu->add( *reinterpret_cast<RDOValue*>($2) );
+						$$ = (int)enu;
+						PARSER->warning( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
 					} else {
 						PARSER->error( @2, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
-				| param_enum_list error {
-					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-					if ( str.empty() ) {
-						PARSER->error( @1, "Ошибка в описании значений перечислимого типа" );
-					} else {
-						PARSER->error( @2, rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
-					}
-				}
 				| param_enum_list ',' RDO_INT_CONST {
-					PARSER->error( @3, "Значение перечислимого типа не может начинаться с цифры" );
+					PARSER->error( @3, "Значение перечислимого типа не может быть цифрой" );
 				}
 				| param_enum_list ',' RDO_REAL_CONST {
-					PARSER->error( @3, "Значение перечислимого типа не может начинаться с цифры" );
+					PARSER->error( @3, "Значение перечислимого типа не может быть цифрой" );
+				}
+				| param_enum_list RDO_INT_CONST {
+					PARSER->error( @2, "Значение перечислимого типа не может быть цифрой" );
+				}
+				| param_enum_list RDO_REAL_CONST {
+					PARSER->error( @2, "Значение перечислимого типа не может быть цифрой" );
 				}
 				| RDO_INT_CONST {
 					PARSER->error( @1, "Значение перечислимого типа не может начинаться с цифры" );
 				}
 				| RDO_REAL_CONST {
 					PARSER->error( @1, "Значение перечислимого типа не может начинаться с цифры" );
-				}
-				| error {
-					PARSER->error( @1, "Ошибка в описании значений перечислимого типа" );
 				};
 
 param_enum_default_val:	/* empty */ {
@@ -679,11 +680,16 @@ param_enum_default_val:	/* empty */ {
 					| '=' RDO_IDENTIF {
 						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
 					}
-					| '=' {
-						PARSER->error( @1, "Не указано значение по-умолчанию для перечислимого типа" );
-					}
 					| '=' error {
-						PARSER->error( @2, "Неверное значение по-умолчанию для перечислимого типа" );
+						RDOParserSrcInfo _src_info(@1, @2, true);
+						if ( _src_info.src_pos().point() )
+						{
+							PARSER->error( _src_info, "Не указано значение по-умолчанию для перечислимого типа" );
+						}
+						else
+						{
+							PARSER->error( _src_info, "Неверное значение по-умолчанию для перечислимого типа" );
+						}
 					};
 
 param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
@@ -707,15 +713,6 @@ param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 					}
 					$$ = (int)cons->getDescr();
 				}
-				| RDO_such_as RDO_IDENTIF '.' {
-					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					const RDORTPResType* const rt = PARSER->findRTPResType( type );
-					if ( !rt ) {
-						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
-					} else {
-						PARSER->error( @3, "Не указан параметер" );
-					}
-				}
 				| RDO_such_as RDO_IDENTIF '.' error {
 					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					const RDORTPResType* const rt = PARSER->findRTPResType( type );
@@ -723,15 +720,6 @@ param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
 					} else {
 						PARSER->error( @4, "Ошибка при указании параметра" );
-					}
-				}
-				| RDO_such_as RDO_IDENTIF error {
-					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					const RDORTPResType* const rt = PARSER->findRTPResType( type );
-					if ( !rt ) {
-						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
-					} else {
-						PARSER->error( @2, "После имени типа должен быть указан параметер через точку" );
 					}
 				}
 				| RDO_such_as error {

@@ -162,7 +162,7 @@
 %token RDO_string						438
 %token RDO_bool							439
 %token RDO_BOOL_CONST					440
-%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 
@@ -204,20 +204,20 @@ pat_main:
 			};
 
 pat_header:	RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace {
-				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-				$$ = (int)(new RDOPatternOperation( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternOperation( PARSER, name->src_info(), $4 != 0 );
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {
-				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-				$$ = (int)(new RDOPatternIrregEvent( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternIrregEvent( PARSER, name->src_info(), $4 != 0 );
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace {
-				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-				$$ = (int)(new RDOPatternRule( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternRule( PARSER, name->src_info(), $4 != 0 );
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace {
-				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-				$$ = (int)(new RDOPatternKeyboard( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternKeyboard( PARSER, name->src_info(), $4 != 0 );
 			};
 			| RDO_Pattern error {
 				PARSER->error( @2, "Ожидается имя образца" );
@@ -238,22 +238,22 @@ pat_params_begin: pat_header RDO_Parameters { $$ = $1; };
 
 pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
 				RDOPATPattern*   pattern    = reinterpret_cast<RDOPATPattern*>($1);
-				std::string      param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
+				RDOValue*        param_name = reinterpret_cast<RDOValue*>($2);
 				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, param_name->src_info(), param_type );
 				pattern->add( param );
 				if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name.c_str() );
+					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name->value().getIdentificator().c_str() );
 				}
 			}
 			| pat_params RDO_IDENTIF_COLON param_type {
 				RDOPATPattern*   pattern    = reinterpret_cast<RDOPATPattern*>($1);
-				std::string      param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
+				RDOValue*        param_name = reinterpret_cast<RDOValue*>($2);
 				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, param_name->src_info(), param_type );
 				pattern->add( param );
 				if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name.c_str() );
+					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name->value().getIdentificator().c_str() );
 				}
 			}
 			| pat_params_begin error {
@@ -311,9 +311,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -332,9 +332,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -358,9 +358,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
 							break;
 						}
 					}
@@ -376,9 +376,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
 							break;
 						}
 					}
@@ -389,15 +389,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -416,15 +413,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -443,11 +437,8 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_begin_pos = @3;
 							std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
 							rdo::toLower( str );
@@ -468,7 +459,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -487,11 +478,8 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_begin_pos = @3;
 							std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
 							rdo::toLower( str );
@@ -512,7 +500,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -536,15 +524,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
 							break;
 						}
 					}
@@ -560,15 +545,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
 							break;
 						}
 					}
@@ -579,8 +561,8 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name      = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name     = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							std::string convert_begin = reinterpret_cast<RDOValue*>($4)->value().getIdentificator();
 							YYLTYPE convertor_begin_pos = @4;
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
@@ -588,7 +570,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -607,8 +589,8 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name      = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							std::string type_name     = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							std::string convert_begin = reinterpret_cast<RDOValue*>($4)->value().getIdentificator();
 							YYLTYPE convertor_begin_pos = @4;
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
@@ -616,7 +598,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -1551,8 +1533,8 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						RDOValue* type_name  = reinterpret_cast<RDOValue*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
 						PARSER->error( @3, "Ожидается имя типа" );
@@ -1588,9 +1570,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
-						select->setSrcText( "Select(" + type_name + ": " );
+						RDOValue* type_name  = reinterpret_cast<RDOValue*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
+						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {

@@ -134,6 +134,10 @@ public:
 		{
 			return m_first_line == UNDEFINE_LINE && m_first_pos == UNDEFINE_POS && m_last_line == UNDEFINE_LINE && m_last_pos == UNDEFINE_POS;
 		}
+		bool point() const
+		{
+			return m_first_line == m_last_line && m_first_pos == m_last_pos;
+		}
 	};
 
 	RDOSrcInfo():

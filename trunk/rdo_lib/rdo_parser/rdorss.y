@@ -162,7 +162,7 @@
 %token RDO_string						438
 %token RDO_bool							439
 %token RDO_BOOL_CONST					440
-%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 
@@ -239,22 +239,19 @@ rss_res_descr:	rss_res_type rss_trace rss_values
 
 rss_res_type:	RDO_IDENTIF_COLON RDO_IDENTIF
 				{
-					std::string name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					const RDORTPResType* const resType = PARSER->findRTPResType( type );
+					RDOValue* name = reinterpret_cast<RDOValue*>($1);
+					RDOValue* type = reinterpret_cast<RDOValue*>($2);
+					const RDORTPResType* const resType = PARSER->findRTPResType( type->value().getIdentificator() );
 					if ( !resType ) {
-						PARSER->error( @2, rdo::format("Неизвестный тип ресурса: %s", type.c_str()) );
-//						PARSER->error(("Invalid resource type: " + *type).c_str());
+						PARSER->error( @2, rdo::format("Неизвестный тип ресурса: %s", type->value().getIdentificator().c_str()) );
 					}
-					RDOParserSrcInfo src_info(@1, name, RDOParserSrcInfo::psi_align_bytext);
-					const RDORSSResource* res = PARSER->findRSSResource( name );
+					const RDORSSResource* res = PARSER->findRSSResource( name->value().getIdentificator() );
 					if ( res ) {
-						PARSER->error_push_only( src_info, rdo::format( "Ресурс '%s' уже существует", name.c_str()) );
+						PARSER->error_push_only( name->src_info(), rdo::format( "Ресурс '%s' уже существует", name->value().getIdentificator().c_str()) );
 						PARSER->error_push_only( res->src_info(), "См. первое определение" );
 						PARSER->error_push_done();
-//						PARSER->error( ("Double resource name: " + *name).c_str() );
 					}
-					$$ = (int)new RDORSSResource( PARSER, src_info, resType );
+					$$ = (int)new RDORSSResource( PARSER, name->src_info(), resType );
 				}
 				| RDO_IDENTIF_COLON error
 				{

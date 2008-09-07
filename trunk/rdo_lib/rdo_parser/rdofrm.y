@@ -162,7 +162,7 @@
 %token RDO_string						438
 %token RDO_bool							439
 %token RDO_BOOL_CONST					440
-%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 
@@ -1201,8 +1201,8 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
 						PARSER->error( @3, "Ожидается имя типа" );
@@ -1238,9 +1238,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
-						select->setSrcText( "Select(" + type_name + ": " );
+						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
+						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {

@@ -931,7 +931,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe --defines=rdogramma.h -prtp --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramrtp.cpp $(InputPath)&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -v --defines=rdogramma.h -prtp --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramrtp.cpp $(InputPath)&#x0D;&#x0A;"
 						Outputs="rdogramrtp.cpp;rdogramma.h"
 					/>
 				</FileConfiguration>

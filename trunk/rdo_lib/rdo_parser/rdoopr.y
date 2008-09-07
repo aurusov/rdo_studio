@@ -162,7 +162,7 @@
 %token RDO_string						438
 %token RDO_bool							439
 %token RDO_BOOL_CONST					440
-%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 
@@ -203,19 +203,19 @@ opr_header:	RDO_Operations {
 			};
 
 opr_body:	opr_header RDO_IDENTIF_COLON RDO_IDENTIF {
-				RDOOperations* oprs = PARSER->getLastOperations();
-				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-				RDOParserSrcInfo pattern( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() );
-				RDOOPROperation* opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				RDOOperations* oprs    = PARSER->getLastOperations();
+				RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
+				RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
+				RDOOPROperation* opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
 				$$ = (int)opr;
 			}
 			| opr_param RDO_IDENTIF_COLON RDO_IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endParam( @1 );
-				RDOOperations* oprs = PARSER->getLastOperations();
-				std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-				RDOParserSrcInfo pattern( @3, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() );
-				opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				RDOOperations* oprs    = PARSER->getLastOperations();
+				RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
+				RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
+				opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
 				$$ = (int)opr;
 			}
 			| opr_header RDO_IDENTIF_COLON error {

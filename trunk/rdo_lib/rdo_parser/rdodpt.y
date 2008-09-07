@@ -162,7 +162,7 @@
 %token RDO_string						438
 %token RDO_bool							439
 %token RDO_BOOL_CONST					440
-%token RDO_Fuzzy_Parameters				441
+%token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 
@@ -234,8 +234,8 @@ dpt_search_trace:		/* empty */ {
 						};
 
 dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace {
-							std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							$$ = (int)new RDODPTSearch( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
+							RDOValue* identificator = reinterpret_cast<RDOValue*>($2);
+							$$ = (int)new RDODPTSearch( PARSER, identificator->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
 						}
 						| RDO_Decision_point RDO_IDENTIF_COLON error {
 							PARSER->error( @2, @3, "ќжидаетс€ тип точки" );
@@ -331,9 +331,9 @@ dpt_search_descr_value:	RDO_value_before fun_arithm {
 
 dpt_search_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
 							RDODPTSearch* dpt   = PARSER->getLastDPTSearch();
-							std::string name    = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-							std::string pattern = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
+							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
+							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
+							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
 						}
 						| RDO_IDENTIF_COLON error {
 							PARSER->error( @1, @2, "ќжидаетс€ им€ образца" );
@@ -392,8 +392,8 @@ dpt_some_trace:			/* empty */ {
 
 dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace {
 							// TODO: а где признак трассировки дл€ some ?
-							std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							$$ = (int)new RDODPTSome( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext) );
+							RDOValue* name = reinterpret_cast<RDOValue*>($2);
+							$$ = (int)new RDODPTSome( PARSER, name->src_info() );
 						};
 
 dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic {
@@ -413,10 +413,10 @@ dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic {
 						};
 
 dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
-							RDODPTSome* dpt     = PARSER->getLastDPTSome();
-							std::string name    = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-							std::string pattern = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
+							RDODPTSome* dpt   = PARSER->getLastDPTSome();
+							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
+							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
+							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
 						}
 						| RDO_IDENTIF_COLON error {
 							PARSER->error( @1, @2, "ќжидаетс€ им€ образца" );
@@ -468,9 +468,9 @@ dpt_free_activity:			/* empty */
 
 dpt_free_activity_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
 								RDODPTFree* dpt     = PARSER->getLastDPTFree();
-								std::string name    = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-								std::string pattern = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-								$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
+								RDOValue*   name    = reinterpret_cast<RDOValue*>($1);
+								RDOValue*   pattern = reinterpret_cast<RDOValue*>($2);
+								$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
 							}
 							| RDO_IDENTIF_COLON error {
 								PARSER->error( @1, @2, "ќжидаетс€ им€ образца" );
@@ -643,8 +643,8 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
 						PARSER->error( @3, "ќжидаетс€ им€ типа" );
@@ -680,9 +680,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
-						select->setSrcText( "Select(" + type_name + ": " );
+						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
+						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {
