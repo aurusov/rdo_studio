@@ -489,6 +489,7 @@ void RDOThreadRepository::save( rdoModelObjects::RDOFileType type, rdo::binaryst
 	}
 }
 
+
 void RDOThreadRepository::loadBMP( const std::string& name, rdo::binarystream& stream ) const
 {
 	std::string file_name = modelPath + name + ".bmp";

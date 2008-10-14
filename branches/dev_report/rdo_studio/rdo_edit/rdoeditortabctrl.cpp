@@ -112,6 +112,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	insertItem( page7, "DPT" );
 	insertItem( page8, "SMR" );
 	insertItem( page9, "PMD" );
+	
 
 	setCurrentRDOItem( rdoModelObjects::PAT );
 

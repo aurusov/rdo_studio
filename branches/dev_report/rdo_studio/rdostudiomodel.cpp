@@ -30,6 +30,32 @@ using namespace rdoSimulator;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// Подключаем Fastreports
+#if _MSC_VER < 1300
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	// Use this for MS Visual Studio 6
+	//
+	//////////////////////////////////////////////////////////////////////////
+	#import "..\\..\\..\\bin\\FastReport3.dll" named_guids
+	#import "..\\..\\..\\frxCOM\\frxCOM.dll" named_guids
+
+#else
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	// This code preffered for MS Visual Studio.NET
+	//
+	//////////////////////////////////////////////////////////////////////////
+	#import "libid:d3c6fb9b-9edf-48f3-9a02-6d8320eaa9f5" named_guids
+
+#endif
+
+using namespace FastReport;
+
+
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
 // ----------------------------------------------------------------------------
@@ -427,6 +453,17 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 
 void RDOStudioModel::show_result()
 {
+	HRESULT					hr;
+	// Инициализация объектов FastReport
+	IfrxComponent		*	pReportComponent = NULL;
+	IfrxComponent		*	pReportPageComponent = NULL;
+	IfrxComponent		*	pMemoViewComponent = NULL;
+	IfrxMemoView	    *	pMemoView = NULL;
+    IfrxCustomMemoView  *   pCustomMemoView = NULL;
+	// Инициализация библиотек COM
+	CoInitialize(NULL);
+	
+	// 
 	std::stringstream model_results;
 	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
 	std::string str = model_results.str();
@@ -440,6 +477,50 @@ void RDOStudioModel::show_result()
 		output->showResults();
 		output->appendStringToResults( str );
 	}
+    //
+
+    // 10.10
+    try 
+	{
+
+		IfrxReportPtr		pReport(__uuidof(TfrxReport)) ;
+		hr = pReport->QueryInterface(__uuidof(IfrxComponent), (PVOID*) &pReportComponent);
+		if (FAILED(hr)) _com_issue_errorex(hr, pReport, __uuidof(pReport));
+        
+		pReportPageComponent = pReport->CreateReportObject( pReportComponent, __uuidof(IfrxReportPage), "Page1");
+
+		pMemoViewComponent = pReport->CreateReportObject( pReportPageComponent, __uuidof(IfrxMemoView), "Memo1");
+       	pMemoViewComponent->put_Left(60);
+		pMemoViewComponent->put_Top(40);
+		pMemoViewComponent->put_Width(690);
+		
+
+		hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxMemoView), (PVOID*) &pMemoView);
+		if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));     
+        pMemoView->StretchMode = sm_MaxHeight;    
+		
+		hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxCustomMemoView), (PVOID*) &pCustomMemoView);
+		if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));
+		pCustomMemoView->Text = _bstr_t(str.c_str()) ;
+	
+		pReport->ShowReport();
+
+		pReport->SaveReportToFile("Report.fr3");
+
+	} 
+	catch(_com_error e) 
+	{
+		MessageBox(NULL, e.ErrorMessage(), "Component Object Model error", MB_OK | MB_ICONERROR);
+		hr = e.Error();
+	}
+
+	if(pMemoView) pMemoView->Release();
+	if(pCustomMemoView) pCustomMemoView->Release();
+	if(pMemoViewComponent) pMemoViewComponent->Release();
+	if(pReportComponent) pReportComponent->Release();	
+	if(pReportPageComponent) pReportPageComponent->Release();
+	CoUninitialize();
+
 }
 
 bool RDOStudioModel::newModel( std::string _model_name, std::string _model_path, const int _useTemplate  )
