@@ -13,6 +13,12 @@
 #include "rdo_tracer/rdotracer.h"
 #include "resource.h"
 
+#include <rdocommon.h>
+#include <istream>
+#include <string>
+#include <iostream>
+
+
 #include <rdokernel.h>
 #include <rdorepository.h>
 #include <rdobinarystream.h>
@@ -23,6 +29,7 @@
 
 using namespace rdoEditor;
 using namespace rdoSimulator;
+using namespace std ;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -453,6 +460,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 
 void RDOStudioModel::show_result()
 {
+	
 	HRESULT					hr;
 	// Инициализация объектов FastReport
 	IfrxComponent		*	pReportComponent = NULL;
@@ -463,10 +471,23 @@ void RDOStudioModel::show_result()
 	// Инициализация библиотек COM
 	CoInitialize(NULL);
 	
-	// 
-	std::stringstream model_results;
-	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
-	std::string str = model_results.str();
+    char buf_PMD[] = " " ;
+	_bstr_t bstr_PMD = "" ;
+
+	rdoModelObjects::RDOFileType m_type_1(rdoModelObjects::PMD);
+    rdo::binarystream in_stream_1;
+	kernel->sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( m_type_1, in_stream_1 ) );
+	
+
+	while(in_stream_1.good()) 
+	{
+      in_stream_1.get(buf_PMD[0]) ;
+	  bstr_PMD += _bstr_t(buf_PMD) ;
+	}
+	
+	std::stringstream model_results ;
+	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results ) ;
+	std::string str = model_results.str() ;
 	if ( !str.empty() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV );
@@ -478,8 +499,6 @@ void RDOStudioModel::show_result()
 		output->appendStringToResults( str );
 	}
     //
-
-    // 10.10
     try 
 	{
 
@@ -501,8 +520,9 @@ void RDOStudioModel::show_result()
 		
 		hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxCustomMemoView), (PVOID*) &pCustomMemoView);
 		if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));
-		pCustomMemoView->Text = _bstr_t(str.c_str()) ;
-	
+		//pCustomMemoView->Text = _bstr_t(str.c_str()) ;
+	    pCustomMemoView->Text = bstr_PMD ;
+
 		pReport->ShowReport();
 
 		pReport->SaveReportToFile("Report.fr3");
