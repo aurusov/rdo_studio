@@ -59,10 +59,30 @@ void RDORule::onAfterRule( RDOSimulator* sim, bool inSearch )
 }
 
 bool RDORule::onCheckCondition( RDOSimulator* sim )
+/*
+Дата внесения изменений: 02.11.08
+Автор: Лущан Дмитрий
+Смысл изменений: не запускать патерн (рул), если после его выполнения состояние системы не изменилось	
+*/
 {
 	onBeforeChoiceFrom( sim );
 	sim->inc_cnt_choice_from();
-	return choiceFrom( static_cast<RDORuntime*>(sim) );
+	bool result = choiceFrom( static_cast<RDORuntime*>(sim) );
+	if ( result )
+	{
+// Сохраняем состояние системы в копию clone и в ней запускаем соответствующий рул
+		RDOSimulator* clone = sim->clone();
+		onBeforeRule( clone );
+		convertRule( static_cast<RDORuntime*>(clone) );
+		onAfterRule( clone );
+// Сравниваем состояние системы до запуска рула и после
+		if ( *clone == *sim )
+		{
+			result = false;
+		}
+		delete clone;
+	}
+	return result;
 }
 
 RDOBaseOperation::BOResult RDORule::onDoOperation( RDOSimulator* sim )
