@@ -12,6 +12,8 @@
 #include "edit_ctrls/rdodebugedit.h"
 #include "rdo_tracer/rdotracer.h"
 #include "resource.h"
+// Заголовочный файл системы генерации отчетов 
+#include "report.h"
 
 #include <rdocommon.h>
 #include <istream>
@@ -36,31 +38,6 @@ using namespace std ;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-// Подключаем Fastreports
-#if _MSC_VER < 1300
-
-	//////////////////////////////////////////////////////////////////////////
-	//
-	// Use this for MS Visual Studio 6
-	//
-	//////////////////////////////////////////////////////////////////////////
-	#import "..\\..\\..\\bin\\FastReport3.dll" named_guids
-	#import "..\\..\\..\\frxCOM\\frxCOM.dll" named_guids
-
-#else
-
-	//////////////////////////////////////////////////////////////////////////
-	//
-	// This code preffered for MS Visual Studio.NET
-	//
-	//////////////////////////////////////////////////////////////////////////
-	#import "libid:d3c6fb9b-9edf-48f3-9a02-6d8320eaa9f5" named_guids
-
-#endif
-
-using namespace FastReport;
-
 
 
 // ----------------------------------------------------------------------------
@@ -473,6 +450,7 @@ void RDOStudioModel::show_result()
 	
     char buf_PMD[] = " " ;
 	_bstr_t bstr_PMD = "" ;
+    _bstr_t bstr_PMV = "" ;
 
 	rdoModelObjects::RDOFileType m_type_1(rdoModelObjects::PMD);
     rdo::binarystream in_stream_1;
@@ -489,17 +467,22 @@ void RDOStudioModel::show_result()
 	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results ) ;
 	std::string str = model_results.str() ;
 	if ( !str.empty() ) {
-		RDOStudioOutput* output = &studioApp.mainFrame->output;
-		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV );
-		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
+		RDOStudioOutput* output = &studioApp.mainFrame->output ;
+		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV ) ;
+		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data ) ;
 		if ( !data.described ) {
 			output->appendStringToDebug( "Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n" );
 		}
 		output->showResults();
 		output->appendStringToResults( str );
 	}
-    //
-    try 
+    // 
+    
+	
+	//bstr_PMV = _bstr_t(str) ;
+	
+	
+	try 
 	{
 
 		IfrxReportPtr		pReport(__uuidof(TfrxReport)) ;
@@ -521,10 +504,19 @@ void RDOStudioModel::show_result()
 		hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxCustomMemoView), (PVOID*) &pCustomMemoView);
 		if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));
 		//pCustomMemoView->Text = _bstr_t(str.c_str()) ;
-	    pCustomMemoView->Text = bstr_PMD ;
+	    pCustomMemoView->Text = bstr_PMD + _bstr_t(str.c_str());
+        
+		vector <std::string> ListTest ;
+		//str.
+		StringToList(str, &ListTest) ;
 
+		//char *test ;
+		//bstr_PMV = _bstr_t(str.c_str()) ;
+
+		//test = new char[bstr_PMV.length()] ;
+		//test = (char *) bstr_PMV  ;
+        		
 		pReport->ShowReport();
-
 		pReport->SaveReportToFile("Report.fr3");
 
 	} 

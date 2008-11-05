@@ -2927,6 +2927,26 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="8. RDO-Report"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\report.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\report.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\Changes.txt"
 			>
