@@ -448,22 +448,16 @@ void RDOStudioModel::show_result()
 	// Инициализация библиотек COM
 	CoInitialize(NULL);
 	
-    char buf_PMD[] = " " ;
-	_bstr_t bstr_PMD = "" ;
-    _bstr_t bstr_PMV = "" ;
-
 	rdoModelObjects::RDOFileType m_type_1(rdoModelObjects::PMD);
-    rdo::binarystream in_stream_1;
+    
+	rdo::binarystream in_stream_1;
 	kernel->sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( m_type_1, in_stream_1 ) );
 	
-
-	while(in_stream_1.good()) 
-	{
-      in_stream_1.get(buf_PMD[0]) ;
-	  bstr_PMD += _bstr_t(buf_PMD) ;
-	}
-	
+	// Строка с исходным текстом
+	std::string PMDStr = in_stream_1.str() ;
+	// Строка с результатами
 	std::stringstream model_results ;
+
 	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results ) ;
 	std::string str = model_results.str() ;
 	if ( !str.empty() ) {
@@ -476,12 +470,7 @@ void RDOStudioModel::show_result()
 		output->showResults();
 		output->appendStringToResults( str );
 	}
-    // 
-    
-	
-	//bstr_PMV = _bstr_t(str) ;
-	
-	
+
 	try 
 	{
 
@@ -503,22 +492,50 @@ void RDOStudioModel::show_result()
 		
 		hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxCustomMemoView), (PVOID*) &pCustomMemoView);
 		if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));
-		//pCustomMemoView->Text = _bstr_t(str.c_str()) ;
-	    pCustomMemoView->Text = bstr_PMD + _bstr_t(str.c_str());
+		
+		pCustomMemoView->Text = _bstr_t(PMDStr.c_str()) + _bstr_t(str.c_str());
         
+		
+		std::string PMDStr_wo_comments ;
+		// Функция удаления комментов
+		DeleteComments(PMDStr, &PMDStr_wo_comments) ;
+		
+		// Функция преобразования в список
 		vector <std::string> ListTest ;
-		//str.
-		StringToList(str, &ListTest) ;
+		StringToList(PMDStr_wo_comments, &ListTest) ;
+		
+		int WhatWord, t = 0;
+		vector <Groop> Groops ;
+		
+		do 
+		{
+			t = FindKeyWord(ListTest, t, &WhatWord) ;
+			switch (WhatWord)
+			{
+			case 0: AddGroop(&Groops, ListTest.at(t), 1) ;
+				break ;
+			case 1: AddGroop(&Groops, ListTest.at(t), 0) ;
+				break ;
+			case 2: if (t > 2)  InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+				break ;
+			case 3: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+				break ;
+			case 4: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+				break ;
+			case 5: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+				break ;
+			case 6: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+				break ;
+			default: break ;
+			}
+		} while (t >= 0) ;
+		
+		
 
-		//char *test ;
-		//bstr_PMV = _bstr_t(str.c_str()) ;
 
-		//test = new char[bstr_PMV.length()] ;
-		//test = (char *) bstr_PMV  ;
-        		
+
 		pReport->ShowReport();
 		pReport->SaveReportToFile("Report.fr3");
-
 	} 
 	catch(_com_error e) 
 	{
