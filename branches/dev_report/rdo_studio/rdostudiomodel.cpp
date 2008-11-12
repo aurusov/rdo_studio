@@ -15,6 +15,10 @@
 // Заголовочный файл системы генерации отчетов 
 #include "report.h"
 
+#include <atlbase.h>
+CComModule _Module;
+#include <atlcom.h>
+
 #include <rdocommon.h>
 #include <istream>
 #include <string>
@@ -435,26 +439,41 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 	}
 }
 
+
+
+
 void RDOStudioModel::show_result()
 {
-	
 	HRESULT					hr;
+	
 	// Инициализация объектов FastReport
 	IfrxComponent		*	pReportComponent = NULL;
 	IfrxComponent		*	pReportPageComponent = NULL;
 	IfrxComponent		*	pMemoViewComponent = NULL;
 	IfrxMemoView	    *	pMemoView = NULL;
     IfrxCustomMemoView  *   pCustomMemoView = NULL;
+	IfrxReportPtr		pReport(__uuidof(TfrxReport)) ;
+	
+	
+
 	// Инициализация библиотек COM
 	CoInitialize(NULL);
-	
+	CComObject<CfrxUserDataSetEvents> * pEventHandler ;
+	IfrxUserDataSetPtr		pDataSet(__uuidof(TfrxUserDataSet));
+	pDataSet->Name = "DemoUserDataSet" ;
+	pDataSet->Fields = "Field_1\nField_2\n" ;
+
+	hr = CComObject<CfrxUserDataSetEvents>::CreateInstance(&pEventHandler);
+	pEventHandler->AddRef();
+
+
 	rdoModelObjects::RDOFileType m_type_1(rdoModelObjects::PMD);
-    
-	rdo::binarystream in_stream_1;
+    rdo::binarystream in_stream_1;
 	kernel->sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( m_type_1, in_stream_1 ) );
 	
 	// Строка с исходным текстом
 	std::string PMDStr = in_stream_1.str() ;
+	std::string PMVStr ;
 	// Строка с результатами
 	std::stringstream model_results ;
 
@@ -467,75 +486,86 @@ void RDOStudioModel::show_result()
 		if ( !data.described ) {
 			output->appendStringToDebug( "Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n" );
 		}
-		output->showResults();
-		output->appendStringToResults( str );
+		output->showResults() ;
+		output->appendStringToResults( str ) ;
 	}
 
 	try 
 	{
-
-		IfrxReportPtr		pReport(__uuidof(TfrxReport)) ;
-		hr = pReport->QueryInterface(__uuidof(IfrxComponent), (PVOID*) &pReportComponent);
-		if (FAILED(hr)) _com_issue_errorex(hr, pReport, __uuidof(pReport));
+		pReport->LoadReportFromFile("UserDataSet demo.fr3");
+		//hr = pReport->QueryInterface(__uuidof(IfrxComponent), (PVOID*) &pReportComponent);
+		//if (FAILED(hr)) _com_issue_errorex(hr, pReport, __uuidof(pReport));
         
-		pReportPageComponent = pReport->CreateReportObject( pReportComponent, __uuidof(IfrxReportPage), "Page1");
+		//pReportPageComponent = pReport->CreateReportObject( pReportComponent, __uuidof(IfrxReportPage), "Page1");
 
-		pMemoViewComponent = pReport->CreateReportObject( pReportPageComponent, __uuidof(IfrxMemoView), "Memo1");
-       	pMemoViewComponent->put_Left(60);
-		pMemoViewComponent->put_Top(40);
-		pMemoViewComponent->put_Width(690);
+		//pMemoViewComponent = pReport->CreateReportObject( pReportPageComponent, __uuidof(IfrxMemoView), "Memo1");
+       	//pMemoViewComponent->put_Left(60);
+		//pMemoViewComponent->put_Top(40);
+		//pMemoViewComponent->put_Width(690);
 		
 
-		hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxMemoView), (PVOID*) &pMemoView);
-		if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));     
-        pMemoView->StretchMode = sm_MaxHeight;    
+		//hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxMemoView), (PVOID*) &pMemoView);
+		//if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));     
+        //pMemoView->StretchMode = sm_MaxHeight;    
 		
-		hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxCustomMemoView), (PVOID*) &pCustomMemoView);
-		if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));
+		//hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxCustomMemoView), (PVOID*) &pCustomMemoView);
+		//if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));
 		
-		pCustomMemoView->Text = _bstr_t(PMDStr.c_str()) + _bstr_t(str.c_str());
+		//pCustomMemoView->Text = _bstr_t(PMDStr.c_str()) + _bstr_t(str.c_str());
         
+		//pCustomMemoView->Text = "[DemoUserDataSet.\"Field_1\"]" ;
 		
+		
+		PMVStr = str ;
 		std::string PMDStr_wo_comments ;
+		std::string PMVStr_wo_comments ;
 		// Функция удаления комментов
+		DeleteComments(PMVStr, &PMVStr_wo_comments) ;
 		DeleteComments(PMDStr, &PMDStr_wo_comments) ;
 		
 		// Функция преобразования в список
-		vector <std::string> ListTest ;
-		StringToList(PMDStr_wo_comments, &ListTest) ;
+		vector <std::string> List_PMD ;
+		vector <std::string> List_PMV ;
+		StringToList(PMDStr_wo_comments, &List_PMD) ;
+		StringToList(PMVStr_wo_comments, &List_PMV) ;
 		
 		int WhatWord, t = 0;
 		vector <Groop> Groops ;
 		
 		do 
 		{
-			t = FindKeyWord(ListTest, t, &WhatWord) ;
+			t = FindKeyWord(List_PMD, t, &WhatWord) ;
 			switch (WhatWord)
 			{
-			case 0: AddGroop(&Groops, ListTest.at(t), 1) ;
+			case 0: AddGroop(&Groops, List_PMD.at(t), 1) ;
 				break ;
-			case 1: AddGroop(&Groops, ListTest.at(t), 0) ;
+			case 1: AddGroop(&Groops, List_PMD.at(t), 0) ;
 				break ;
-			case 2: if (t > 2)  InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+			case 2: if (t > 2)  InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
 				break ;
-			case 3: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+			case 3: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
 				break ;
-			case 4: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+			case 4: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
 				break ;
-			case 5: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+			case 5: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
 				break ;
-			case 6: if (t > 2) InsertVar(&Groops, ListTest.at(t-3), WhatWord) ;
+			case 6: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
 				break ;
 			default: break ;
 			}
 		} while (t >= 0) ;
 		
+		GetParam(&Groops, List_PMV) ;
+
+					
 		
-
-
-
-		pReport->ShowReport();
-		pReport->SaveReportToFile("Report.fr3");
+		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet));
+		hr = pEventHandler->Advise(pDataSet, &Groops);
+		
+		
+		
+		pReport->ShowReport() ;
+		pReport->SaveReportToFile("Report.fr3") ;
 	} 
 	catch(_com_error e) 
 	{
@@ -543,11 +573,17 @@ void RDOStudioModel::show_result()
 		hr = e.Error();
 	}
 
+	hr = pEventHandler->Unadvise(pDataSet);
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(pDataSet));
+	/////////hr = pReport->ClearReport();
+	hr = pEventHandler->Release();
+	pEventHandler = NULL;
+	
 	if(pMemoView) pMemoView->Release();
 	if(pCustomMemoView) pCustomMemoView->Release();
 	if(pMemoViewComponent) pMemoViewComponent->Release();
 	if(pReportComponent) pReportComponent->Release();	
-	if(pReportPageComponent) pReportPageComponent->Release();
+	//if(pReportPageComponent) pReportPageComponent->Release();
 	CoUninitialize();
 
 }
