@@ -450,6 +450,7 @@ void RDOStudioModel::show_result()
 	IfrxComponent		*	pReportComponent = NULL;
 	IfrxComponent		*	pReportPageComponent = NULL;
 	IfrxComponent		*	pMemoViewComponent = NULL;
+	IfrxComponent		*   MasterData2 ;
 	IfrxMemoView	    *	pMemoView = NULL;
     IfrxCustomMemoView  *   pCustomMemoView = NULL;
 	IfrxReportPtr		pReport(__uuidof(TfrxReport)) ;
@@ -461,7 +462,7 @@ void RDOStudioModel::show_result()
 	CComObject<CfrxUserDataSetEvents> * pEventHandler ;
 	IfrxUserDataSetPtr		pDataSet(__uuidof(TfrxUserDataSet));
 	pDataSet->Name = "DemoUserDataSet" ;
-	pDataSet->Fields = "Field_1\nField_2\n" ;
+	pDataSet->Fields = "Groops\nVariables\n" ;
 
 	hr = CComObject<CfrxUserDataSetEvents>::CreateInstance(&pEventHandler);
 	pEventHandler->AddRef();
@@ -493,9 +494,10 @@ void RDOStudioModel::show_result()
 	try 
 	{
 		pReport->LoadReportFromFile("UserDataSet demo.fr3");
+		MasterData2 = pReport->FindObject("MasterData2") ;
 		//hr = pReport->QueryInterface(__uuidof(IfrxComponent), (PVOID*) &pReportComponent);
 		//if (FAILED(hr)) _com_issue_errorex(hr, pReport, __uuidof(pReport));
-        
+        //bstr_t x = MasterData2->Description ;
 		//pReportPageComponent = pReport->CreateReportObject( pReportComponent, __uuidof(IfrxReportPage), "Page1");
 
 		//pMemoViewComponent = pReport->CreateReportObject( pReportPageComponent, __uuidof(IfrxMemoView), "Memo1");
@@ -514,7 +516,6 @@ void RDOStudioModel::show_result()
 		//pCustomMemoView->Text = _bstr_t(PMDStr.c_str()) + _bstr_t(str.c_str());
         
 		//pCustomMemoView->Text = "[DemoUserDataSet.\"Field_1\"]" ;
-		
 		
 		PMVStr = str ;
 		std::string PMDStr_wo_comments ;
@@ -539,7 +540,7 @@ void RDOStudioModel::show_result()
 			{
 			case 0: AddGroop(&Groops, List_PMD.at(t), 1) ;
 				break ;
-			case 1: AddGroop(&Groops, List_PMD.at(t), 0) ;
+			case 1: AddGroop(&Groops, List_PMD.at(t), false) ;
 				break ;
 			case 2: if (t > 2)  InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
 				break ;
@@ -558,10 +559,8 @@ void RDOStudioModel::show_result()
 		GetParam(&Groops, List_PMV) ;
 
 					
-		
 		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet));
 		hr = pEventHandler->Advise(pDataSet, &Groops);
-		
 		
 		
 		pReport->ShowReport() ;
