@@ -1875,26 +1875,6 @@
 				>
 			</File>
 			<File
-				RelativePath="res\bin00004.bin"
-				>
-			</File>
-			<File
-				RelativePath="res\bin00005.bin"
-				>
-			</File>
-			<File
-				RelativePath="res\bin00008.bin"
-				>
-			</File>
-			<File
-				RelativePath="res\buildToolbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\buildToolbar_d.bmp"
-				>
-			</File>
-			<File
 				RelativePath="res\editToolbar.bmp"
 				>
 			</File>
@@ -1915,10 +1895,6 @@
 				>
 			</File>
 			<File
-				RelativePath="res\framesoptionsctrl.bmp"
-				>
-			</File>
-			<File
 				RelativePath="res\framestreectrl.bmp"
 				>
 			</File>
@@ -1927,23 +1903,11 @@
 				>
 			</File>
 			<File
-				RelativePath="res\model_tm.bin"
-				>
-			</File>
-			<File
 				RelativePath="res\modelToolbar_d.bmp"
 				>
 			</File>
 			<File
 				RelativePath="res\modeToolbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\projectToolbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\projectToolbar_d.bmp"
 				>
 			</File>
 			<File
