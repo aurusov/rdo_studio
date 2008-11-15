@@ -537,7 +537,7 @@ void RDOStudioModel::show_result()
 		StringToList(PMDStr_wo_comments, &List_PMD) ;
 		StringToList(PMVStr_wo_comments, &List_PMV) ;
 		
-		int WhatWord, t = 0;
+		int WhatWord, t = 0, r = -1 ;
 		vector <Groop> Groops ;
 		
 		do 
@@ -569,8 +569,8 @@ void RDOStudioModel::show_result()
 		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet));
 		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet_1));
 
-		hr = pEventHandler->Advise(pDataSet, &Groops);
-		hr = pEventHandler_1->Advise(pDataSet_1, &Groops);
+		hr = pEventHandler->Advise(pDataSet, &Groops,&r);
+		hr = pEventHandler_1->Advise(pDataSet_1, &Groops,&r);
 		
 		pReport->ShowReport() ;
 		pReport->SaveReportToFile("Report.fr3") ;
