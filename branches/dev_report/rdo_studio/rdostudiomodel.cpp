@@ -459,14 +459,20 @@ void RDOStudioModel::show_result()
 
 	// Инициализация библиотек COM
 	CoInitialize(NULL);
-	CComObject<CfrxUserDataSetEvents> * pEventHandler ;
+	CComObject<CfrxUserDataSetEvents1> * pEventHandler ;
+	CComObject<CfrxUserDataSetEvents2> * pEventHandler_1 ;
 	IfrxUserDataSetPtr		pDataSet(__uuidof(TfrxUserDataSet));
-	pDataSet->Name = "DemoUserDataSet" ;
-	pDataSet->Fields = "Groops\nVariables\n" ;
-
-	hr = CComObject<CfrxUserDataSetEvents>::CreateInstance(&pEventHandler);
+	pDataSet->Name = "Groops" ;
+	pDataSet->Fields = "GroopName\n" ;
+	
+	IfrxUserDataSetPtr		pDataSet_1(__uuidof(TfrxUserDataSet));
+	pDataSet_1->Name = "Vars" ;
+	pDataSet_1->Fields = "GroopName\n" ;
+	
+	hr = CComObject<CfrxUserDataSetEvents1>::CreateInstance(&pEventHandler);
+	hr = CComObject<CfrxUserDataSetEvents2>::CreateInstance(&pEventHandler_1);
 	pEventHandler->AddRef();
-
+	pEventHandler_1->AddRef();
 
 	rdoModelObjects::RDOFileType m_type_1(rdoModelObjects::PMD);
     rdo::binarystream in_stream_1;
@@ -494,7 +500,8 @@ void RDOStudioModel::show_result()
 	try 
 	{
 		pReport->LoadReportFromFile("UserDataSet demo.fr3");
-		MasterData2 = pReport->FindObject("MasterData2") ;
+		//MasterData2 = pReport->FindObject("MasterData2") ;
+		
 		//hr = pReport->QueryInterface(__uuidof(IfrxComponent), (PVOID*) &pReportComponent);
 		//if (FAILED(hr)) _com_issue_errorex(hr, pReport, __uuidof(pReport));
         //bstr_t x = MasterData2->Description ;
@@ -560,8 +567,10 @@ void RDOStudioModel::show_result()
 
 					
 		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet));
+		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet_1));
+
 		hr = pEventHandler->Advise(pDataSet, &Groops);
-		
+		hr = pEventHandler_1->Advise(pDataSet_1, &Groops);
 		
 		pReport->ShowReport() ;
 		pReport->SaveReportToFile("Report.fr3") ;
@@ -573,10 +582,13 @@ void RDOStudioModel::show_result()
 	}
 
 	hr = pEventHandler->Unadvise(pDataSet);
+	hr = pEventHandler_1->Unadvise(pDataSet_1);
 	hr = pReport->SelectDataset(false, IfrxDataSetPtr(pDataSet));
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(pDataSet_1));
 	/////////hr = pReport->ClearReport();
 	hr = pEventHandler->Release();
-	pEventHandler = NULL;
+	hr = pEventHandler_1->Release();
+	pEventHandler_1 = NULL;
 	
 	if(pMemoView) pMemoView->Release();
 	if(pCustomMemoView) pCustomMemoView->Release();
