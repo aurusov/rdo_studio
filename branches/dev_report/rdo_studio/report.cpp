@@ -117,32 +117,47 @@ int AddGroop(vector <Groop> *Groops, std::string GroopName_, bool ActivityFlag)
   return 0 ;
 }
 
-int InsertVar(vector <Groop> *Groops, std::string VarName, int VarType_)
+int InsertVar(vector <Groop> *Groops, std::string VarName, ReportVar::Type type)
 {
   int i = 0 ;
   ReportVar Buffer ;
-  Buffer.Name = VarName ;
-  Buffer.VarType = VarType_ ;
+  Buffer.Name   = VarName ;
+  Buffer.m_type = type;
   for (i = 0; i < Groops->size(); i++)
+  {
     if (Groops -> at(i).IsActive)
 	  Groops -> at(i).Variables.push_back(Buffer) ;
+  }
 
   return 0 ;
 }
 
 
-int FindKeyWord(vector <std::string> List, int StartIndex ,int *WhatWord) 
+int FindKeyWord(vector <std::string> List, int StartIndex, int& WhatWord)
 {
-  int i, j ;
+  int i, j;
+/*
+  std::map<int, ReportVar::Type> reportKeyWords;
+  reportKeyWords[2] = ReportVar::WATCH_STATE;
+  reportKeyWords[3] = ReportVar::WATCH_PAR;
+  reportKeyWords[4] = ReportVar::GET_VALUE;
+  reportKeyWords[5] = ReportVar::WATCH_QUANT;
+  reportKeyWords[6] = ReportVar::WATCH_VALUE;
+*/
   for (i = StartIndex; i < List.size(); i++)
+  {
 	for (j = 0; j < KEYWORDS_QUANTITY; j++)
-		if (List.at(i) == KeyWords[j])
+	{
+		std::string kw = KeyWords[j];
+		if (List.at(i) == kw)
 		{
-			*WhatWord = j ;
-			return i + 1 ;
+			WhatWord = j; //! TODO: завести таблицу преобразований KEYWORDS_QUANTITY -> ReportVar::Type
+			return i + 1;
 		}
-	*WhatWord = -1 ;
-	return -1 ;
+	}
+  }
+	WhatWord = UNDEFINED;
+	return UNDEFINED;
 }
 
 int GetParam(vector <Groop> *Groops, vector <std::string> List)
@@ -158,7 +173,7 @@ int GetParam(vector <Groop> *Groops, vector <std::string> List)
 		  {
 				if(List.at(k) == VarBuf.Name)
 				{
-				  switch (VarBuf.VarType)
+				  switch (VarBuf.m_type)
 				  {
 				  case 4: Groops->at(i).Variables.at(j).Parameters.push_back(List.at(k+1)) ;
 						  Groops->at(i).Variables.at(j).Parameters.push_back("") ;

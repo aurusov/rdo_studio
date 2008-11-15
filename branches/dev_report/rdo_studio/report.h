@@ -37,30 +37,35 @@ class ReportVar
 {
 public:
 	// Имя переменной
-	std::string Name ;
+	std::string Name;
 	// Тип переменной
-	enum VarTypeValues {WATCH_STATE = 2, WATCH_PAR = 3, GET_VALUE = 4, WATCH_QUANT = 5, WATCH_VALUE = 6} ;
-    // Как сделать enum??????
-	int VarType ;
+	enum Type
+	{
+		NONE        = 1,
+		WATCH_STATE = 2,
+		WATCH_PAR   = 3,
+		GET_VALUE   = 4,
+		WATCH_QUANT = 5,
+		WATCH_VALUE = 6
+	};
+	Type m_type;
 	// Список собранных параметров по переменной
 	vector <std::string> Parameters ;
 } ;
-
-
 
 class Groop
 {
 public:
 	// Имя группы
-	std::string GroopName ;
+	std::string GroopName;
 	// Тип отображения группы
 	enum GroopType {GR_NORMAL = 0, GR_CHART} ;
 	//Список переменных, образующих группу
-	vector<ReportVar> Variables ;
+	vector<ReportVar> Variables;
+
 	// Является ли группа активной
 	bool IsActive ;
-} ;
-
+};
 
 // Количество ключевых слов
 #define KEYWORDS_QUANTITY 7
@@ -70,6 +75,7 @@ public:
 #define LONGCOMMENT 3
 #define ENDLINECOMMENT 4
 #define ENDLONGCOMMENT 5
+#define UNDEFINED -1
 
 // Функция преобразует текст в список слов   !!!будет в классе - парсер :)
 int StringToList(std::string, vector <std::string> *) ;
@@ -81,10 +87,10 @@ int DeleteComments(std::string, std::string *) ;
 int AddGroop(vector <Groop> *, std::string, bool ) ;
 
 // Функция ищет ключевые слова в списке и возвращает значение на следующий элемент !!!будет в классе - парсер)
-int FindKeyWord(vector <std::string> List, int StartIndex, int *WhatWord) ;
+int FindKeyWord(vector <std::string> List, int StartIndex, int& WhatWord);
 
 // Функция добавляет переменные в активные группы !!! будет в классе группс
-int InsertVar(vector <Groop> *Groops, std::string VarName, int VarType_) ;
+int InsertVar(vector <Groop> *Groops, std::string VarName, ReportVar::Type type);
 
 // Функция сопоставляет переменные с соответствующими им параметрами !!! будет в классе группс
 int GetParam(vector <Groop> *Groops, vector <std::string> List) ;

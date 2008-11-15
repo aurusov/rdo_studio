@@ -539,25 +539,24 @@ void RDOStudioModel::show_result()
 		
 		int WhatWord, t = 0, r = -1 ;
 		vector <Groop> Groops ;
-		
 		do 
 		{
-			t = FindKeyWord(List_PMD, t, &WhatWord) ;
+			t = FindKeyWord(List_PMD, t, WhatWord) ;
 			switch (WhatWord)
 			{
 			case 0: AddGroop(&Groops, List_PMD.at(t), 1) ;
 				break ;
 			case 1: AddGroop(&Groops, List_PMD.at(t), false) ;
 				break ;
-			case 2: if (t > 2)  InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
+			case 2: if (t > 2)  InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
 				break ;
-			case 3: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
+			case 3: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
 				break ;
-			case 4: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
+			case 4: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
 				break ;
-			case 5: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
+			case 5: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
 				break ;
-			case 6: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), WhatWord) ;
+			case 6: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
 				break ;
 			default: break ;
 			}
