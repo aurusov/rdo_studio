@@ -1,4 +1,4 @@
-Results_file   = mymodel07.pmv    Сб ноя 01 19:51:56 2008
+Results_file   = mymodel07.pmv    Сб ноя 22 22:30:35 2008
 Run_file       = mymodel07.smr
 Model_name     = mymodel07
 Resource_file  = mymodel07.rss
@@ -7,16 +7,13 @@ OprIev_file    = mymodel07.opr
 $Changes
 
 
-$Status = NORMAL_TERMINATION
-$Result_values  0  5051.16  3.476
-  EventCount           303  0.0599862  87
-  OperRuleCheckCounter 454  0.0898804  130
-  AExpCalcCounter      2  0.000395949  0
-  BExpCalcCounter      3050  0.603822  877
+$Status = NO_MORE_EVENTS
+$Result_values  0  0  0.063
+  EventCount           0  -1.#IND  0
+  OperRuleCheckCounter 3  1.#INF  47
+  AExpCalcCounter      0  -1.#IND  0
+  BExpCalcCounter      11  1.#INF  174
 
-Занятость_парикмахера         	FALSE	150	0.877315	136115	20.0211	39.9958
-Длина_очереди                 	3	303	2.75699	1.56872e+006	0	9
-Всего_обслужено               	150
-Пропускная_способность        	1.78177
-Длительность_работы           	84.186
+Занятость_парикмахера         	TRUE	0	-1.#IND	0	1.79769e+308	2.22507e-308
+Длина_очереди                 	1	0	-1.#IND	0	1	1
 
