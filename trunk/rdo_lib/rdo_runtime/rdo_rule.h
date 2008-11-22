@@ -24,11 +24,14 @@ public:
 	virtual ~RDORule() {}
 
 private:
+	void init();
 	virtual bool     onCheckCondition( RDOSimulator* sim );
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
-	bool     haveAdditionalCondition;
-	RDOCalc* additionalCondition;
+	RDOCalc* m_additionalCondition;
+
+	bool m_traceOFF;
+	void trace();
 
 	void onBeforeChoiceFrom( RDOSimulator* sim   )    { setPatternParameters(sim); }
 	bool choiceFrom        ( RDORuntime* runtime );

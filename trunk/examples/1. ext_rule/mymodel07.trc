@@ -1,0 +1,39 @@
+Results_file   = mymodel07.pmv    Сб ноя 22 22:30:35 2008
+Run_file       = mymodel07.smr
+Model_name     = mymodel07
+Resource_file  = mymodel07.rss
+OprIev_file    = mymodel07.opr
+
+$Changes
+
+
+$Resource_type
+1 Парикмахерские 2
+  1 состояние_парикмахера E 2
+    0 Свободен
+    1 Занят
+  2 количество_в_очереди I
+
+$Resources
+1 Парикмахерская 1
+
+$Pattern
+1 фиктивный_патерн R 1 1
+
+$Activities
+
+1 фиктивная_операция 1
+
+
+$Watching
+
+$Tracing
+ES 0 1
+RK 0 1 1 0 1
+ES 0 3
+ER 0 1 1 1 1  1
+RK 0 1 1 1 1
+ES 0 2
+$Status = NO_MORE_EVENTS 0
+
+DPS_MM 4210761435
