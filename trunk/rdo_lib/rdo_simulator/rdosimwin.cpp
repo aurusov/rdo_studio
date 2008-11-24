@@ -19,7 +19,6 @@
 #include <rdotrace.h>
 #include <rdo_runtime.h>
 #include <rdoframe.h>
-#include <memcheck.h>
 #include <rdoparser.h>
 #include <rdosmr.h>
 #include <rdofrm.h>

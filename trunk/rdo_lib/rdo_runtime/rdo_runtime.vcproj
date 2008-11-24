@@ -913,10 +913,6 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="memcheck.h"
-			>
-		</File>
-		<File
 			RelativePath="pch.cpp"
 			>
 			<FileConfiguration
