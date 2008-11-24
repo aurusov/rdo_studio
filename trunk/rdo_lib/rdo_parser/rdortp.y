@@ -179,7 +179,9 @@ static char THIS_FILE[] = __FILE__;
 #include "rdortp.h"
 #include "rdofun.h"
 
-#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define LEXER   reinterpret_cast<rdoParse::RDOLexer*>(lexer)
+#define PARSER  LEXER->m_parser
+#define RUNTIME PARSER->runtime()
 
 namespace rdoParse
 {
@@ -195,7 +197,7 @@ rtp_list:			/* empty */
 						PARSER->error( "Ожидается ключевое слово $Resource_type" );
 					};
 
-rtp_res_type:		rtp_header rtp_clear_param_list rtp_fuzzy_param_list RDO_End
+rtp_res_type:		rtp_header RDO_Parameters rtp_body RDO_End
 					{
 						RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
 						if ( res_type->getParams().empty() )
@@ -203,8 +205,8 @@ rtp_res_type:		rtp_header rtp_clear_param_list rtp_fuzzy_param_list RDO_End
 							PARSER->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->name().c_str() ) );
 						}
 					}
-					| rtp_header rtp_clear_param_list rtp_fuzzy_param_list {
-						PARSER->error( @3, "Не найдено ключевое слово $End" );
+					| rtp_header RDO_Parameters rtp_body {
+						PARSER->error( @2, "Не найдено ключевое слово $End" );
 					}
 					| rtp_header error {
 						PARSER->error( @2, "Не найдено ключевое слово $Parameters" );
@@ -212,7 +214,7 @@ rtp_res_type:		rtp_header rtp_clear_param_list rtp_fuzzy_param_list RDO_End
 
 rtp_header:			RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 					{
-						reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 0;
+						LEXER->m_enum_param_cnt = 0;
 						RDOValue*            type_name = reinterpret_cast<RDOValue*>($2);
 						std::string          name      = type_name->value().getIdentificator();
 						const RDORTPResType* _rtp      = PARSER->findRTPResType( name );
@@ -228,53 +230,44 @@ rtp_header:			RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 						PARSER->error( @2, "Не указан вид ресурса" );
 					}
 					| RDO_Resource_type error {
-						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+						std::string str( LEXER->YYText() );
 						PARSER->error( @2, rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()) );
 					};
 
 rtp_vid_res:		RDO_permanent	{ $$ = 1; }
 					| RDO_temporary	{ $$ = 0; };
 
-rtp_clear_param_list:	/* empty */
-					{
+rtp_body:			/* empty */ {
 					}
-					| RDO_Parameters rtp_clear_body {
-					};
-
-rtp_fuzzy_param_list:	/*empty*/
-					{
-					}
-					|
-					RDO_Fuzzy rtp_fuzzy_body {
-					};
-
-rtp_clear_body:		/* empty */ {
-					}
-					| rtp_clear_body rtp_clear_param {
+					| rtp_body rtp_param {
 						RDORTPParam* param = reinterpret_cast<RDORTPParam*>($2);
 						PARSER->getLastRTPResType()->addParam( param );
 					};
 
-rtp_fuzzy_body:		/* empty */ {
-					}
-					| rtp_fuzzy_body rtp_fuzzy_param {
-//						RDORTPFuzzyParam* fuzzy_param = reinterpret_cast<RDORTPFuzzyParam*>($2);
-//						PARSER->getLastRTPResType()->addFuzzyParam( fuzzy_param );
-					};
-
-rtp_clear_param:	RDO_IDENTIF_COLON param_type {
-						RDOValue*        param_name = reinterpret_cast<RDOValue*>($1);
-						RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($2);
-						RDORTPParam* param = new RDORTPParam( PARSER->getLastRTPResType(), param_name->src_info(), param_type );
-						param_type->reparent( param );
-						if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
-							static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", PARSER->getLastRTPResType()->name().c_str(), param_name->src_info().src_text().c_str() );
+rtp_param:			RDO_IDENTIF_COLON param_type fuzzy_terms_list
+					{
+						RDOValue*            param_name = reinterpret_cast<RDOValue*>($1);
+						RDORTPParamType*     param_type = reinterpret_cast<RDORTPParamType*>($2);
+						RDORTPFuzzyTermsSet* terms_set  = reinterpret_cast<RDORTPFuzzyTermsSet*>($3);
+						if ( terms_set->empty() )
+						{
+							RDORTPParam* param = new RDORTPParam( PARSER->getLastRTPResType(), param_name->src_info(), param_type );
+							param_type->reparent( param );
+							if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
+								static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", PARSER->getLastRTPResType()->name().c_str(), param_name->src_info().src_text().c_str() );
+							}
+							$$ = (int)param;
 						}
-						$$ = (int)param;
+						else
+						{
+							RDORTPFuzzyParam* param = new RDORTPFuzzyParam( PARSER, param_name->src_info(), terms_set );
+							param_type->reparent( param );
+							$$ = (int)param;
+						}
 					}
 					| RDO_IDENTIF_COLON error {
 						if ( PARSER->lexer_loc_line() == @1.last_line ) {
-							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+							std::string str( LEXER->YYText() );
 							PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
 						} else {
 							PARSER->error( @1, "Ожидается тип параметра" );
@@ -284,51 +277,23 @@ rtp_clear_param:	RDO_IDENTIF_COLON param_type {
 						PARSER->error( @1, "Неправильное описание параметра" );
 					};
 
-rtp_fuzzy_param:	RDO_IDENTIF_COLON fuzzy_param_type fuzzy_terms_list {	
-						RDOValue* param_name = reinterpret_cast<RDOValue*>($1);
-//						RDORTPFuzzyParamType* fuzzy_parType = reinterpret_cast<RDORTPFuzzyParamType*>($2);
-						RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($3);
-						RDORTPFuzzyParam* fuzzy_param = new RDORTPFuzzyParam( PARSER, param_name->src_info(), terms_set );
-						$$ = (int)fuzzy_param;
-//						PARSER->error( @2, rdo::format( "Ожидаются термины нечеткого параметра" ) );
-					}
-					| RDO_IDENTIF_COLON error {
-						if ( PARSER->lexer_loc_line() == @1.last_line ) {
-							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-							PARSER->error( @2, rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
-						} else {
-							PARSER->error( @1, "Ожидается тип параметра" );
-						}				
-					}
-					| error {
-						PARSER->error( @1, "Неверное описание нечеткого параметра" );
-					};
-
-fuzzy_param_type:	RDO_real param_real_diap param_real_default_val {
-						RDORTPRealDiap*    diap = reinterpret_cast<RDORTPRealDiap*>($2);
-						RDORTPDefVal*        dv = reinterpret_cast<RDORTPDefVal*>($3);
-//						RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
-//						$$ = (int)rp;
-						$$ = 1
-					};
-
 fuzzy_terms_list:	/* empty */ {
 						RDORTPFuzzyTermsSet* terms_set = new RDORTPFuzzyTermsSet( PARSER );
 						$$ = (int)terms_set;
 					}
 					| fuzzy_terms_list fuzzy_term {
-						RDORTPFuzzyTermsSet*   terms_set   = reinterpret_cast<RDORTPFuzzyTermsSet*>($1);
-						RDORTPFuzzyTerm* term = reinterpret_cast<RDORTPFuzzyTerm*>($2);
+						RDORTPFuzzyTermsSet* terms_set = reinterpret_cast<RDORTPFuzzyTermsSet*>($1);
+						RDORTPFuzzyTerm*     term      = reinterpret_cast<RDORTPFuzzyTerm*>($2);
 						terms_set->add( term );
 						$$ = $1;				
 					};
 
-fuzzy_term:			RDO_Fuzzy_Term RDO_IDENTIF fuzzy_membershift_fun {
+fuzzy_term:			RDO_Fuzzy_Term RDO_IDENTIF {
 						RDOValue* param_name = reinterpret_cast<RDOValue*>($2);
-						RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
-						RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER, param_name->src_info(), fuzzy_membershift_fun );
+//						RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
+//						RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER, param_name->src_info(), fuzzy_membershift_fun );
 //						fuzzy_membershift_fun->reparent( fuzzy_term );
-						$$ = (int)fuzzy_term;				
+//						$$ = (int)fuzzy_term;				
 					};
 
 fuzzy_membershift_fun: /* empty */ {
@@ -344,14 +309,14 @@ fuzzy_membershift_fun: /* empty */ {
 					};
 
 membershift_point:	'(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
-						double x_value = *reinterpret_cast<double*>($2);
-						double y_value = *reinterpret_cast<double*>($4);
+						double x_value = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+						double y_value = reinterpret_cast<RDOValue*>($4)->value().getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
 					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {					
-						double x_value = *reinterpret_cast<double*>($2);
-						double y_value = *reinterpret_cast<double*>($4);
+						double x_value = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+						double y_value = reinterpret_cast<RDOValue*>($4)->value().getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
@@ -367,7 +332,6 @@ membershift_point:	'(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					};							
-//---------------------------------------------------------------------------------------------		
 
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
@@ -400,7 +364,7 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 				}
 				| param_enum param_enum_default_val
 				{
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 0;
+					LEXER->m_enum_param_cnt = 0;
 					RDORTPEnum*  enu = reinterpret_cast<RDORTPEnum*>($1);
 					RDORTPDefVal* dv = reinterpret_cast<RDORTPDefVal*>($2);
 					if ( dv->isExist() )
@@ -633,11 +597,11 @@ param_enum:	'(' param_enum_list ')' {
 param_enum_list: RDO_IDENTIF {
 					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
 					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 1;
+					LEXER->m_enum_param_cnt = 1;
 					$$ = (int)enu;
 				}
 				| param_enum_list ',' RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
+					if ( LEXER->m_enum_param_cnt >= 1 ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
 						enu->add( *reinterpret_cast<RDOValue*>($3) );
 						$$ = (int)enu;
@@ -646,7 +610,7 @@ param_enum_list: RDO_IDENTIF {
 					}
 				}
 				| param_enum_list RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
+					if ( LEXER->m_enum_param_cnt >= 1 ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
 						enu->add( *reinterpret_cast<RDOValue*>($2) );
 						$$ = (int)enu;

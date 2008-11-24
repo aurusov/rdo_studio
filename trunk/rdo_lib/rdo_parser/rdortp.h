@@ -471,11 +471,11 @@ private:
 // ----------------------------------------------------------------------------
 class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
 {
-	public:
-	RDORTPFuzzyTermsSet( RDOParser* _parser ):
-		RDOParserObject( _parser )
-		{
-		}
+public:
+	RDORTPFuzzyTermsSet( RDOParser* _parser )
+		: RDOParserObject( _parser )
+	{
+	}
 	virtual ~RDORTPFuzzyTermsSet() {}
 
 	typedef RDORTPFuzzyTerm*	Item;
@@ -485,11 +485,15 @@ class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
 	{
 		m_terms.push_back( term );
 	}
+	bool empty() const
+	{
+		return m_terms.empty();
+	}
 
 private:
-	Items m_terms;	// набор терминов одного параметра
-
+	Items m_terms; // набор терминов одного параметра
 };
+
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyParam
 // ----------------------------------------------------------------------------
