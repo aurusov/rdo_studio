@@ -15,7 +15,7 @@ const std::string KeyWords[] =
     "watch_value"		// шесть показателей - после переменной
 } ;
 
-int StringToList(std::string Str, vector <std::string> *List)
+int StringToList(std::string Str, std::vector <std::string> *List)
 {
     int i = 0 ;
 	std::string ListBuffer = "" ;
@@ -85,7 +85,7 @@ int DeleteComments(std::string Source, std::string *Result)
 }
 
 
-int AddGroop(vector <Groop> *Groops, std::string GroopName_, bool ActivityFlag)
+int AddGroop(std::vector <Groop> *Groops, std::string GroopName_, bool ActivityFlag)
 {
   //vector <Groop>::iterator Groop_Iter ;
   Groop Buffer ;
@@ -109,58 +109,45 @@ int AddGroop(vector <Groop> *Groops, std::string GroopName_, bool ActivityFlag)
   {
     Buffer.GroopName = GroopName_ ;
     Buffer.Variables.clear() ;
-	
 	Buffer.IsActive = ActivityFlag ;
-    Groops->push_back(Buffer) ;
+	if (GroopName_ == "Chart") 
+		Buffer.GroopType = Buffer.CHART ;
+    
+	Groops->push_back(Buffer) ;
   }
  
   return 0 ;
 }
 
-int InsertVar(vector <Groop> *Groops, std::string VarName, ReportVar::Type type)
+int InsertVar(std::vector <Groop> *Groops, std::string VarName, int VarType_)
 {
   int i = 0 ;
   ReportVar Buffer ;
-  Buffer.Name   = VarName ;
-  Buffer.m_type = type;
+  Buffer.Name = VarName ;
+  Buffer.VarType = VarType_ ;
   for (i = 0; i < Groops->size(); i++)
-  {
     if (Groops -> at(i).IsActive)
 	  Groops -> at(i).Variables.push_back(Buffer) ;
-  }
 
   return 0 ;
 }
 
 
-int FindKeyWord(vector <std::string> List, int StartIndex, int& WhatWord)
+int FindKeyWord(std::vector <std::string> List, int StartIndex ,int *WhatWord) 
 {
-  int i, j;
-/*
-  std::map<int, ReportVar::Type> reportKeyWords;
-  reportKeyWords[2] = ReportVar::WATCH_STATE;
-  reportKeyWords[3] = ReportVar::WATCH_PAR;
-  reportKeyWords[4] = ReportVar::GET_VALUE;
-  reportKeyWords[5] = ReportVar::WATCH_QUANT;
-  reportKeyWords[6] = ReportVar::WATCH_VALUE;
-*/
+  int i, j ;
   for (i = StartIndex; i < List.size(); i++)
-  {
 	for (j = 0; j < KEYWORDS_QUANTITY; j++)
-	{
-		std::string kw = KeyWords[j];
-		if (List.at(i) == kw)
+		if (List.at(i) == KeyWords[j])
 		{
-			WhatWord = j; //! TODO: завести таблицу преобразований KEYWORDS_QUANTITY -> ReportVar::Type
-			return i + 1;
+			*WhatWord = j ;
+			return i + 1 ;
 		}
-	}
-  }
-	WhatWord = UNDEFINED;
-	return UNDEFINED;
+	*WhatWord = -1 ;
+	return -1 ;
 }
 
-int GetParam(vector <Groop> *Groops, vector <std::string> List)
+int GetParam(std::vector <Groop> *Groops, std::vector <std::string> List)
 {
   int i, j, k ;
   ReportVar VarBuf ;
@@ -173,7 +160,7 @@ int GetParam(vector <Groop> *Groops, vector <std::string> List)
 		  {
 				if(List.at(k) == VarBuf.Name)
 				{
-				  switch (VarBuf.m_type)
+				  switch (VarBuf.VarType)
 				  {
 				  case 4: Groops->at(i).Variables.at(j).Parameters.push_back(List.at(k+1)) ;
 						  Groops->at(i).Variables.at(j).Parameters.push_back("") ;

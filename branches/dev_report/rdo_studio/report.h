@@ -1,9 +1,9 @@
+#if !defined (REPORT_H)
+#define REPORT_H
+
 #define _ATL_ATTRIBUTES
-
 #include <atlbase.h>
-//CComModule _Module;
 #include <atlcom.h>
-
 #include <string>
 #include <vector>
 
@@ -30,42 +30,38 @@
 #endif
 
 using namespace FastReport;
-using namespace std ;
+
 
 // Написать функцию добавления параметра
 class ReportVar
 {
 public:
 	// Имя переменной
-	std::string Name;
+	std::string Name ;
 	// Тип переменной
-	enum Type
-	{
-		NONE        = 1,
-		WATCH_STATE = 2,
-		WATCH_PAR   = 3,
-		GET_VALUE   = 4,
-		WATCH_QUANT = 5,
-		WATCH_VALUE = 6
-	};
-	Type m_type;
+	enum VarTypeValues {WATCH_STATE = 2, WATCH_PAR = 3, GET_VALUE = 4, WATCH_QUANT = 5, WATCH_VALUE = 6} ;
+    // Как сделать enum??????
+	int VarType ;
 	// Список собранных параметров по переменной
-	vector <std::string> Parameters ;
+	std::vector <std::string> Parameters ;
 } ;
+
+
 
 class Groop
 {
 public:
 	// Имя группы
-	std::string GroopName;
+	std::string GroopName ;
 	// Тип отображения группы
-	enum GroopType {GR_NORMAL = 0, GR_CHART} ;
+	enum GrType {DATA = 0, CHART} ;
+	GrType GroopType ;
 	//Список переменных, образующих группу
-	vector<ReportVar> Variables;
-
+	std::vector <ReportVar> Variables ;
 	// Является ли группа активной
 	bool IsActive ;
-};
+} ;
+
 
 // Количество ключевых слов
 #define KEYWORDS_QUANTITY 7
@@ -75,29 +71,28 @@ public:
 #define LONGCOMMENT 3
 #define ENDLINECOMMENT 4
 #define ENDLONGCOMMENT 5
-#define UNDEFINED -1
 
 // Функция преобразует текст в список слов   !!!будет в классе - парсер :)
-int StringToList(std::string, vector <std::string> *) ;
+int StringToList(std::string, std::vector <std::string> *) ;
 
 // Функция удаляет комментарии из текста     !!!будет в классе - парсер :)
 int DeleteComments(std::string, std::string *) ;
 
 // Функция добавляет группу к списку групп, делает ее активной или неактивной  !!!будет в классе групс
-int AddGroop(vector <Groop> *, std::string, bool ) ;
+int AddGroop(std::vector <Groop> *, std::string, bool ) ;
 
 // Функция ищет ключевые слова в списке и возвращает значение на следующий элемент !!!будет в классе - парсер)
-int FindKeyWord(vector <std::string> List, int StartIndex, int& WhatWord);
+int FindKeyWord(std::vector <std::string> List, int StartIndex, int *WhatWord) ;
 
 // Функция добавляет переменные в активные группы !!! будет в классе группс
-int InsertVar(vector <Groop> *Groops, std::string VarName, ReportVar::Type type);
+int InsertVar(std::vector <Groop> *Groops, std::string VarName, int VarType_) ;
 
 // Функция сопоставляет переменные с соответствующими им параметрами !!! будет в классе группс
-int GetParam(vector <Groop> *Groops, vector <std::string> List) ;
+int GetParam(std::vector <Groop> *Groops, std::vector <std::string> List) ;
 
 
 // Обертка к датасету для вывода данных
-class CfrxUserDataSetEvents1 : 
+class CfrxGroopsDataSetEvents : 
 	public CComObjectRoot,
 	public IDispatchImpl< 
 		IfrxUserDataSetEvents, 
@@ -106,12 +101,12 @@ class CfrxUserDataSetEvents1 :
 {
 	
 	int						idx ;
-	int                     *int_counter ;
-	vector <Groop> *Groops_output ;
+	int                     *Master_Detail_counter ;
+	std::vector <Groop> *Groops_output ;
 
 	DWORD					dwCookie ;
 
-	BEGIN_COM_MAP(CfrxUserDataSetEvents1)
+	BEGIN_COM_MAP(CfrxGroopsDataSetEvents)
 		COM_INTERFACE_ENTRY(IDispatch)
 		COM_INTERFACE_ENTRY(IfrxUserDataSetEvents)
 	END_COM_MAP()
@@ -144,23 +139,10 @@ class CfrxUserDataSetEvents1 :
 			_variant_t		v(Groops_output->at(idx).GroopName.c_str()) ;
 			VariantCopy(Value, &v) ;
 			v.Clear() ;				
-		    (*int_counter)++ ;
+		    // Сообщить дочернему датасету, что счетчик увеличился на 1
+			(*Master_Detail_counter)++ ;
 		}
-		
-		//if (_variant_t("VarName") == ColumnName) 
-		//{
-	//		if (flag)
-	//		{
-	//			flag = false ;
-	//			idxx = 0 ;
-	//		}
-	//		_variant_t		v(Groops_output->at(idx).Variables.at(idxx++).Name.c_str());
-	//		VariantCopy(Value, &v) ;
-	//		v.Clear() ;	
-	//	    if (idxx  == Groops_output->at(idx).Variables.size()) 
-	//			EOFflag = false ;
-	//	}
-
+	
 		return S_OK;
 	}
 
@@ -171,19 +153,19 @@ class CfrxUserDataSetEvents1 :
 	}
 
 public:
-	HRESULT Advise(IfrxUserDataSet	*	pDataSet, vector <Groop> *Groops, int *counter)
+	HRESULT Advise(IfrxUserDataSet	*	GroopsDataSet, std::vector <Groop> *Groops, int *counter)
 	{
 		HRESULT								hr;
 		IConnectionPointContainerPtr		pCPC;
 		IConnectionPointPtr					pCP;
 		CComPtr<IUnknown> pUnk;
-		int_counter = counter ;
+		Master_Detail_counter = counter ;
 		Groops_output = Groops ;
 
 		do {
 
 			// Check that this is a connectable object.
-			hr = pDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
+			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
 			if(FAILED(hr)) break;
 
 			hr = pCPC->FindConnectionPoint(__uuidof(IfrxUserDataSetEvents), &pCP);
@@ -200,7 +182,7 @@ public:
 		return hr;
 	}
 
-	HRESULT Unadvise(IfrxUserDataSet	*	pDataSet)
+	HRESULT Unadvise(IfrxUserDataSet	*	GroopsDataSet)
 	{
 		HRESULT								hr;
 		IConnectionPointContainerPtr		pCPC;
@@ -209,7 +191,7 @@ public:
 		
 		do {
 
-			hr = pDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
+			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
 			if(FAILED(hr)) break;
 
 			hr = pCPC->FindConnectionPoint(__uuidof(IfrxUserDataSetEvents), &pCP);
@@ -228,7 +210,7 @@ public:
 }; 
 
 
-class CfrxUserDataSetEvents2 : 
+class CfrxVarsDataSetEvents : 
 	public CComObjectRoot,
 	public IDispatchImpl< 
 		IfrxUserDataSetEvents, 
@@ -237,12 +219,169 @@ class CfrxUserDataSetEvents2 :
 {
 	
 	int						idx ;
-	int                     *int_counter ;
-	vector <Groop> *Groops_output ;
+	int*  Master_Detail_counter ;
+	std::vector <Groop> *Groops_output ;
 
 	DWORD					dwCookie ;
 
-	BEGIN_COM_MAP(CfrxUserDataSetEvents2)
+	BEGIN_COM_MAP(CfrxVarsDataSetEvents)
+		COM_INTERFACE_ENTRY(IDispatch)
+		COM_INTERFACE_ENTRY(IfrxUserDataSetEvents)
+	END_COM_MAP()
+
+    STDMETHODIMP raw_OnFirst ( ) 
+	{ 
+		idx = 0;
+	    return S_OK; 
+	}
+    
+	STDMETHODIMP raw_OnNext ( ) 
+	{ 
+	    idx++;
+		return S_OK; 
+	}
+
+    STDMETHODIMP raw_OnPrior( ) 
+	{ 
+		idx--;
+		return S_OK; 
+	}
+
+	STDMETHODIMP raw_OnGetValue ( VARIANT ColumnName, VARIANT*  Value ) 
+	{ 
+		if ( _variant_t( "VarName" ) == ColumnName ) 
+		{
+			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Name.c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();	
+			return S_OK;
+		}
+		if ( _variant_t( "Par_1" ) == ColumnName ) 
+		{
+			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(0).c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();	
+			return S_OK;
+		}
+		if ( _variant_t( "Par_2" ) == ColumnName ) 
+		{
+			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(1).c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();	
+			return S_OK;
+		}
+		if ( _variant_t( "Par_3" ) == ColumnName ) 
+		{
+			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(2).c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();	
+			return S_OK;
+		}
+		if ( _variant_t( "Par_4" ) == ColumnName ) 
+		{
+			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(3).c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();	
+			return S_OK;
+		}
+		if ( _variant_t( "Par_5" ) == ColumnName ) 
+		{
+			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(4).c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();	
+			return S_OK;
+		}
+		if ( _variant_t( "Par_6" ) == ColumnName ) 
+		{
+			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(5).c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();	
+			return S_OK;
+		}
+	}
+
+    STDMETHODIMP raw_OnCheckEOF (VARIANT_BOOL * IsEOF ) 
+	{ 
+			if ( *Master_Detail_counter == -1 )
+				*IsEOF = ! ( idx < Groops_output->at(0).Variables.size()) ;
+			else
+		    *IsEOF = ! ( idx < Groops_output->at(*Master_Detail_counter).Variables.size()) ;
+			return S_OK ; 
+	}
+
+public:
+	HRESULT Advise(IfrxUserDataSet*	GroopsDataSet, std::vector <Groop> *Groops, int *counter)
+	{
+		HRESULT								hr;
+		IConnectionPointContainerPtr		pCPC;
+		IConnectionPointPtr					pCP;
+		CComPtr<IUnknown> pUnk;
+		Master_Detail_counter = counter ;
+		Groops_output = Groops ;
+
+		do {
+
+			// Check that this is a connectable object.
+			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
+			if(FAILED(hr)) break;
+
+			hr = pCPC->FindConnectionPoint(__uuidof(IfrxUserDataSetEvents), &pCP);
+			if(FAILED(hr)) break;
+
+			hr = QueryInterface(IID_IUnknown, (void**)&pUnk);
+			if(FAILED(hr)) break;
+
+			hr = pCP->Advise( pUnk, &dwCookie);
+			if(FAILED(hr)) break;
+
+		} while(false);
+
+		return hr;
+	}
+
+	HRESULT Unadvise(IfrxUserDataSet*	GroopsDataSet)
+	{
+		HRESULT								hr;
+		IConnectionPointContainerPtr		pCPC;
+		IConnectionPointPtr					pCP;
+		CComPtr<IUnknown> pUnk;
+		
+		do {
+
+			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
+			if(FAILED(hr)) break;
+
+			hr = pCPC->FindConnectionPoint(__uuidof(IfrxUserDataSetEvents), &pCP);
+			if(FAILED(hr)) break;
+
+			hr = QueryInterface(IID_IUnknown, (void**)&pUnk);
+			if(FAILED(hr)) break;
+
+			hr = pCP->Unadvise( dwCookie);
+			if(FAILED(hr)) break;
+
+		} while(false);
+		
+		return hr;
+	}
+}; 
+
+// Обертка к датасету для вывода данных
+class CfrxChartDataSetEvents : 
+	public CComObjectRoot,
+	public IDispatchImpl< 
+		IfrxUserDataSetEvents, 
+		&__uuidof(IfrxUserDataSetEvents), 
+		&LIBID_FastReport>
+{
+	
+	int						idx, i ;
+	
+	Groop ChartGroop ;
+
+	DWORD					dwCookie ;
+
+	BEGIN_COM_MAP(CfrxChartDataSetEvents)
 		COM_INTERFACE_ENTRY(IDispatch)
 		COM_INTERFACE_ENTRY(IfrxUserDataSetEvents)
 	END_COM_MAP()
@@ -255,71 +394,58 @@ class CfrxUserDataSetEvents2 :
     
 	STDMETHODIMP raw_OnNext ( ) 
 	{ 
-	
 	    idx++ ;
-	
-	return S_OK; 
+		return S_OK; 
 	}
 
     STDMETHODIMP raw_OnPrior( ) 
 	{ 
-	
 		idx-- ;
-	
-	return S_OK ; 
+		return S_OK ; 
 	}
 	STDMETHODIMP raw_OnGetValue ( VARIANT ColumnName, VARIANT * Value ) 
 	{ 
-		//if (_variant_t("GroopName") == ColumnName) 
-		//{		
-	//		_variant_t		v(Groops_output->at(idx).GroopName.c_str()) ;
-	//		VariantCopy(Value, &v) ;
-//			v.Clear() ;				
-//		}
-		
-		if (_variant_t("GroopName") == ColumnName) 
-		{
-	//		if (flag)
-	//		{
-	//			flag = false ;
-	//			idxx = 0 ;
-	//		}
-			_variant_t		v(Groops_output->at(*int_counter).Variables.at(idx).Name.c_str());
-			VariantCopy(Value, &v) ;
-			v.Clear() ;	
-	
-			//_variant_t value = pReport->GetVariable(_bstr_t("second_var")) ;
-
-//			if (idxx  == Groops_output->at(idx).Variables.size()) 
-	//			EOFflag = false ;
+		if ( _variant_t("Name") == ColumnName ) 
+		{		
+			_variant_t		v( ChartGroop.Variables.at( idx ).Name.c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();				
+			return S_OK;
 		}
-
-		return S_OK;
+		if ( _variant_t("Par") == ColumnName ) 
+		{		
+			_variant_t		v( ChartGroop.Variables.at( idx ).Parameters.at(2).c_str() );
+			VariantCopy( Value, &v );
+			v.Clear();				
+			return S_OK;
+		}
 	}
 
     STDMETHODIMP raw_OnCheckEOF (VARIANT_BOOL * IsEOF ) 
 	{ 
-			if (*int_counter==-1)
-				*IsEOF = ! ( idx < Groops_output->at(0).Variables.size()) ;
-			else
-		    *IsEOF = ! ( idx < Groops_output->at(*int_counter).Variables.size()) ;
+			*IsEOF = ! ( idx < ChartGroop.Variables.size()) ;
 			return S_OK ; 
 	}
 
 public:
-	HRESULT Advise(IfrxUserDataSet	*	pDataSet, vector <Groop> *Groops, int *counter)
+	HRESULT Advise(IfrxUserDataSet	*	GroopsDataSet, std::vector <Groop> *Groops)
 	{
 		HRESULT								hr;
 		IConnectionPointContainerPtr		pCPC;
 		IConnectionPointPtr					pCP;
 		CComPtr<IUnknown> pUnk;
-		int_counter = counter ;
-		Groops_output = Groops ;
-
+		
+		for ( i = 0; i < Groops->size(); i++ )
+			if ( Groops->at( i ).GroopType == Groops->at( i ).CHART )
+				break;
+			
+		if ( i < Groops->size() )
+			ChartGroop = Groops->at( i );
+		
 		do {
 
 			// Check that this is a connectable object.
-			hr = pDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
+			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
 			if(FAILED(hr)) break;
 
 			hr = pCPC->FindConnectionPoint(__uuidof(IfrxUserDataSetEvents), &pCP);
@@ -336,7 +462,7 @@ public:
 		return hr;
 	}
 
-	HRESULT Unadvise(IfrxUserDataSet	*	pDataSet)
+	HRESULT Unadvise(IfrxUserDataSet	*	GroopsDataSet)
 	{
 		HRESULT								hr;
 		IConnectionPointContainerPtr		pCPC;
@@ -345,7 +471,7 @@ public:
 		
 		do {
 
-			hr = pDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
+			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
 			if(FAILED(hr)) break;
 
 			hr = pCPC->FindConnectionPoint(__uuidof(IfrxUserDataSetEvents), &pCP);
@@ -362,3 +488,5 @@ public:
 		return hr;
 	}
 }; 
+
+#endif
