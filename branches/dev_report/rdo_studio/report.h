@@ -10,7 +10,7 @@
 // Подключаем Fastreports
 #if _MSC_VER < 1300
 
-	//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 	//
 	// Use this for MS Visual Studio 6
 	//
@@ -25,71 +25,100 @@
 	// This code preffered for MS Visual Studio.NET
 	//
 	//////////////////////////////////////////////////////////////////////////
-	#import "libid:d3c6fb9b-9edf-48f3-9a02-6d8320eaa9f5" named_guids
+	
+#import "libid:d3c6fb9b-9edf-48f3-9a02-6d8320eaa9f5" named_guids
 
 #endif
 
 using namespace FastReport;
 
+const int ReportParserKeyWordsQuantity = 7;
 
-// Написать функцию добавления параметра
+const std::string ReportParserKeyWords[] = 
+{
+	"//#groop", 
+	"//#endgroop",
+	"watch_state",      
+	"watch_par",        
+	"get_value",		
+	"watch_quant",      
+	"watch_value"	
+};
+
+class ReportParser
+{
+private: 
+	std::string StringToParse;  
+	enum DeleteCommentsFlagType   { DC_NOCOMMENT, DC_LINECOMMENT, DC_LONGCOMMENT, DC_ENDLINECOMMENT, DC_ENDLONGCOMMENT };
+	enum ReportParserStatus       { RPS_COMMENTSNOTDELETED, RPS_COMMENTSDELETED, RPS_LISTCREATED };
+		 
+public:  
+	enum ReportParserKeyWordType  { RPKWT_GROOP, RPKWT_ENDGROOP, RPKWT_WATCHSTATE, RPKWT_WATCHPAR, RPKWT_GETVALUE, RPKWT_WATCHQUANT, RPKWT_WATCHVALUE, RPKWT_END};
+	// Статус парсера     
+	ReportParserStatus ParserStatus;     
+	// Строка не содержащая комментариев
+	std::string StringToParse_wo_Comments; 
+	// Список слов, которые содержит строка
+	std::vector <std::string> ListToParse;
+	// Тип текущего ключевого слова
+	ReportParserKeyWordType KeyWordType;
+	// Текущее слово
+	std::string CurrentWord;
+	// Индекс текущего слова в списке
+	int CurrentWordIndex;
+	// Удаление комментариев
+	int DeleteComments();
+	// Функция преобразования строку в список слов
+	int StringToList();
+	// Функция поиска ключевых слов
+	int FindNextKeyWord();
+	// Конструктор класса
+	ReportParser( std::string UserString );
+};
+
+// Класс описывающий показатель моделирования
 class ReportVar
 {
 public:
-	// Имя переменной
-	std::string Name ;
-	// Тип переменной
-	enum VarTypeValues {WATCH_STATE = 2, WATCH_PAR = 3, GET_VALUE = 4, WATCH_QUANT = 5, WATCH_VALUE = 6} ;
-    // Как сделать enum??????
-	int VarType ;
-	// Список собранных параметров по переменной
-	std::vector <std::string> Parameters ;
-} ;
+	// Имя показателя
+	std::string Name;
+	// Тип показателя
+	enum VarTypeValues { WATCH_STATE = 2, WATCH_PAR = 3, GET_VALUE = 4, WATCH_QUANT = 5, WATCH_VALUE = 6 };
+	VarTypeValues VarType;
+	// Список параметров собранных по показателю
+	std::vector <std::string> Parameters;
+};
 
-
-
+// Класс описывающий группу показателей
 class Groop
 {
 public:
 	// Имя группы
-	std::string GroopName ;
+	std::string GroopName;
 	// Тип отображения группы
-	enum GrType {DATA = 0, CHART} ;
-	GrType GroopType ;
+	enum GroopType { GR_DATA, GR_CHART };
+	GroopType Type;
 	//Список переменных, образующих группу
-	std::vector <ReportVar> Variables ;
-	// Является ли группа активной
-	bool IsActive ;
-} ;
+	std::vector < ReportVar > Variables;
+};
 
-
-// Количество ключевых слов
-#define KEYWORDS_QUANTITY 7
-
-#define NOCOMMENT  1
-#define LINECOMMENT 2
-#define LONGCOMMENT 3
-#define ENDLINECOMMENT 4
-#define ENDLONGCOMMENT 5
-
-// Функция преобразует текст в список слов   !!!будет в классе - парсер :)
-int StringToList(std::string, std::vector <std::string> *) ;
-
-// Функция удаляет комментарии из текста     !!!будет в классе - парсер :)
-int DeleteComments(std::string, std::string *) ;
-
-// Функция добавляет группу к списку групп, делает ее активной или неактивной  !!!будет в классе групс
-int AddGroop(std::vector <Groop> *, std::string, bool ) ;
-
-// Функция ищет ключевые слова в списке и возвращает значение на следующий элемент !!!будет в классе - парсер)
-int FindKeyWord(std::vector <std::string> List, int StartIndex, int *WhatWord) ;
-
-// Функция добавляет переменные в активные группы !!! будет в классе группс
-int InsertVar(std::vector <Groop> *Groops, std::string VarName, int VarType_) ;
-
-// Функция сопоставляет переменные с соответствующими им параметрами !!! будет в классе группс
-int GetParam(std::vector <Groop> *Groops, std::vector <std::string> List) ;
-
+// Класс описывающий работу с группами
+class GroopManager
+{
+public:
+	// Список с результатами моделирования
+	std::vector <std::string> List;
+	// Список групп входящих в отчет
+	std::vector < Groop > GroopsVector;
+	// Список указывающий на активные группы
+	std::vector < bool > ActivityPattern;
+	// Функция добавляющая новую группу к списку
+	int AddGroop ( std::string GroopName, bool Activity );
+	// Функция добавляющая переменную в группу
+	int InsertVar(std::string VarName, ReportVar::VarTypeValues VarType_);
+	// Функция сопоставляющая показателям переменные их характеризующие
+	int GetParam();
+};
 
 // Обертка к датасету для вывода данных
 class CfrxGroopsDataSetEvents : 
@@ -100,11 +129,10 @@ class CfrxGroopsDataSetEvents :
 		&LIBID_FastReport>
 {
 	
-	int						idx ;
-	int                     *Master_Detail_counter ;
-	std::vector <Groop> *Groops_output ;
-
-	DWORD					dwCookie ;
+	int			   idx;
+	int*           Master_Detail_counter;
+	GroopManager*  Groops_output;
+	DWORD		   dwCookie;
 
 	BEGIN_COM_MAP(CfrxGroopsDataSetEvents)
 		COM_INTERFACE_ENTRY(IDispatch)
@@ -113,62 +141,57 @@ class CfrxGroopsDataSetEvents :
 
     STDMETHODIMP raw_OnFirst ( ) 
 	{ 
-		idx = 0 ;
-	    return S_OK ; 
+		idx = 0;
+	    return S_OK;
 	}
     
 	STDMETHODIMP raw_OnNext ( ) 
 	{ 
-	
-	    idx++ ;
-	
-	return S_OK; 
+	    idx++;	
+		return S_OK; 
 	}
 
     STDMETHODIMP raw_OnPrior( ) 
 	{ 
-	
-		idx-- ;
-	
-	return S_OK ; 
+		idx--;
+		return S_OK; 
 	}
 	STDMETHODIMP raw_OnGetValue ( VARIANT ColumnName, VARIANT * Value ) 
 	{ 
 		if (_variant_t("GroopName") == ColumnName) 
 		{		
-			_variant_t		v(Groops_output->at(idx).GroopName.c_str()) ;
-			VariantCopy(Value, &v) ;
-			v.Clear() ;				
+			_variant_t		v(Groops_output->GroopsVector.at(idx).GroopName.c_str());
+			VariantCopy(Value, &v);
+			v.Clear();				
 		    // Сообщить дочернему датасету, что счетчик увеличился на 1
-			(*Master_Detail_counter)++ ;
-		}
-	
+			(*Master_Detail_counter)++;
+		}	
 		return S_OK;
 	}
 
     STDMETHODIMP raw_OnCheckEOF (VARIANT_BOOL * IsEOF ) 
 	{ 
-			*IsEOF = ! ( idx < Groops_output->size()) ;
-			return S_OK ; 
+		*IsEOF = ! ( idx < Groops_output->GroopsVector.size() );
+		return S_OK; 
 	}
 
 public:
-	HRESULT Advise(IfrxUserDataSet	*	GroopsDataSet, std::vector <Groop> *Groops, int *counter)
+	HRESULT Advise(IfrxUserDataSet	*	GroopsDataSet, GroopManager *GroopManagerBuffer, int *counter)
 	{
 		HRESULT								hr;
 		IConnectionPointContainerPtr		pCPC;
 		IConnectionPointPtr					pCP;
 		CComPtr<IUnknown> pUnk;
-		Master_Detail_counter = counter ;
-		Groops_output = Groops ;
+		Master_Detail_counter = counter;
+		Groops_output = GroopManagerBuffer;
 
 		do {
 
 			// Check that this is a connectable object.
-			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
+			hr = GroopsDataSet->QueryInterface( __uuidof( IConnectionPointContainer ), ( void** )&pCPC );
 			if(FAILED(hr)) break;
 
-			hr = pCPC->FindConnectionPoint(__uuidof(IfrxUserDataSetEvents), &pCP);
+			hr = pCPC->FindConnectionPoint( __uuidof(IfrxUserDataSetEvents), &pCP );
 			if(FAILED(hr)) break;
 
 			hr = QueryInterface(IID_IUnknown, (void**)&pUnk);
@@ -177,7 +200,7 @@ public:
 			hr = pCP->Advise( pUnk, &dwCookie);
 			if(FAILED(hr)) break;
 
-		} while(false);
+		} while( false );
 
 		return hr;
 	}
@@ -189,8 +212,8 @@ public:
 		IConnectionPointPtr					pCP;
 		CComPtr<IUnknown> pUnk;
 		
-		do {
-
+		do 
+		{
 			hr = GroopsDataSet->QueryInterface(__uuidof(IConnectionPointContainer), (void**)&pCPC);
 			if(FAILED(hr)) break;
 
@@ -203,8 +226,8 @@ public:
 			hr = pCP->Unadvise( dwCookie);
 			if(FAILED(hr)) break;
 
-		} while(false);
-		
+		}
+		while(false);
 		return hr;
 	}
 }; 
@@ -220,7 +243,7 @@ class CfrxVarsDataSetEvents :
 	
 	int						idx ;
 	int*  Master_Detail_counter ;
-	std::vector <Groop> *Groops_output ;
+	GroopManager* Groops_output ; 
 
 	DWORD					dwCookie ;
 
@@ -229,19 +252,19 @@ class CfrxVarsDataSetEvents :
 		COM_INTERFACE_ENTRY(IfrxUserDataSetEvents)
 	END_COM_MAP()
 
-    STDMETHODIMP raw_OnFirst ( ) 
+    STDMETHODIMP raw_OnFirst () 
 	{ 
 		idx = 0;
 	    return S_OK; 
 	}
     
-	STDMETHODIMP raw_OnNext ( ) 
+	STDMETHODIMP raw_OnNext () 
 	{ 
 	    idx++;
 		return S_OK; 
 	}
 
-    STDMETHODIMP raw_OnPrior( ) 
+    STDMETHODIMP raw_OnPrior() 
 	{ 
 		idx--;
 		return S_OK; 
@@ -251,49 +274,49 @@ class CfrxVarsDataSetEvents :
 	{ 
 		if ( _variant_t( "VarName" ) == ColumnName ) 
 		{
-			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Name.c_str() );
+			_variant_t		v( Groops_output->GroopsVector.at( *Master_Detail_counter ).Variables.at( idx ).Name.c_str() );
 			VariantCopy( Value, &v );
 			v.Clear();	
 			return S_OK;
 		}
 		if ( _variant_t( "Par_1" ) == ColumnName ) 
 		{
-			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(0).c_str() );
+			_variant_t		v( Groops_output->GroopsVector.at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(0).c_str() );
 			VariantCopy( Value, &v );
 			v.Clear();	
 			return S_OK;
 		}
 		if ( _variant_t( "Par_2" ) == ColumnName ) 
 		{
-			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(1).c_str() );
+			_variant_t		v( Groops_output->GroopsVector.at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(1).c_str() );
 			VariantCopy( Value, &v );
 			v.Clear();	
 			return S_OK;
 		}
 		if ( _variant_t( "Par_3" ) == ColumnName ) 
 		{
-			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(2).c_str() );
+			_variant_t		v( Groops_output->GroopsVector.at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(2).c_str() );
 			VariantCopy( Value, &v );
 			v.Clear();	
 			return S_OK;
 		}
 		if ( _variant_t( "Par_4" ) == ColumnName ) 
 		{
-			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(3).c_str() );
+			_variant_t		v( Groops_output->GroopsVector.at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(3).c_str() );
 			VariantCopy( Value, &v );
 			v.Clear();	
 			return S_OK;
 		}
 		if ( _variant_t( "Par_5" ) == ColumnName ) 
 		{
-			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(4).c_str() );
+			_variant_t		v( Groops_output->GroopsVector.at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(4).c_str() );
 			VariantCopy( Value, &v );
 			v.Clear();	
 			return S_OK;
 		}
 		if ( _variant_t( "Par_6" ) == ColumnName ) 
 		{
-			_variant_t		v( Groops_output->at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(5).c_str() );
+			_variant_t		v( Groops_output->GroopsVector.at( *Master_Detail_counter ).Variables.at( idx ).Parameters.at(5).c_str() );
 			VariantCopy( Value, &v );
 			v.Clear();	
 			return S_OK;
@@ -303,21 +326,21 @@ class CfrxVarsDataSetEvents :
     STDMETHODIMP raw_OnCheckEOF (VARIANT_BOOL * IsEOF ) 
 	{ 
 			if ( *Master_Detail_counter == -1 )
-				*IsEOF = ! ( idx < Groops_output->at(0).Variables.size()) ;
+				*IsEOF = ! ( idx < Groops_output->GroopsVector.at(0).Variables.size()) ;
 			else
-		    *IsEOF = ! ( idx < Groops_output->at(*Master_Detail_counter).Variables.size()) ;
+		    *IsEOF = ! ( idx < Groops_output->GroopsVector.at(*Master_Detail_counter).Variables.size()) ;
 			return S_OK ; 
 	}
 
 public:
-	HRESULT Advise(IfrxUserDataSet*	GroopsDataSet, std::vector <Groop> *Groops, int *counter)
+	HRESULT Advise(IfrxUserDataSet*	GroopsDataSet, GroopManager* GroopManagerBuffer, int *counter)
 	{
 		HRESULT								hr;
 		IConnectionPointContainerPtr		pCPC;
 		IConnectionPointPtr					pCP;
 		CComPtr<IUnknown> pUnk;
 		Master_Detail_counter = counter ;
-		Groops_output = Groops ;
+		Groops_output = GroopManagerBuffer ;
 
 		do {
 
@@ -428,19 +451,19 @@ class CfrxChartDataSetEvents :
 	}
 
 public:
-	HRESULT Advise(IfrxUserDataSet	*	GroopsDataSet, std::vector <Groop> *Groops)
+	HRESULT Advise(IfrxUserDataSet	*	GroopsDataSet, GroopManager* GroopManagerBuffer)
 	{
 		HRESULT								hr;
 		IConnectionPointContainerPtr		pCPC;
 		IConnectionPointPtr					pCP;
 		CComPtr<IUnknown> pUnk;
 		
-		for ( i = 0; i < Groops->size(); i++ )
-			if ( Groops->at( i ).GroopType == Groops->at( i ).CHART )
+		for ( i = 0; i < GroopManagerBuffer->GroopsVector.size(); i++ )
+			if ( GroopManagerBuffer->GroopsVector.at( i ).Type == GroopManagerBuffer->GroopsVector.at( i ).GR_CHART )
 				break;
 			
-		if ( i < Groops->size() )
-			ChartGroop = Groops->at( i );
+		if ( i < GroopManagerBuffer->GroopsVector.size() )
+			ChartGroop = GroopManagerBuffer->GroopsVector.at( i );
 		
 		do {
 

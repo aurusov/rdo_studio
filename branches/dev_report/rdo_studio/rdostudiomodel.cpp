@@ -440,162 +440,137 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 }
 
 
-
-
 void RDOStudioModel::show_result()
 {
 	HRESULT					hr;
-	
+
 	// Инициализация объектов FastReport
-	IfrxComponent		*	pReportComponent = NULL;
-	IfrxComponent		*	pReportPageComponent = NULL;
-	IfrxComponent		*	pMemoViewComponent = NULL;
-	IfrxComponent		*   MasterData2 ;
-	IfrxMemoView	    *	pMemoView = NULL;
-    IfrxCustomMemoView  *   pCustomMemoView = NULL;
-	IfrxReportPtr		pReport(__uuidof(TfrxReport)) ;
+	IfrxComponent*      pReportComponent = NULL;
+	IfrxReportPtr  		pReport(__uuidof(TfrxReport));
 	
-	
-
-	// Инициализация библиотек COM
 	CoInitialize(NULL);
-	CComObject<CfrxUserDataSetEvents1> * pEventHandler ;
-	CComObject<CfrxUserDataSetEvents2> * pEventHandler_1 ;
-	IfrxUserDataSetPtr		pDataSet(__uuidof(TfrxUserDataSet));
-	pDataSet->Name = "Groops" ;
-	pDataSet->Fields = "GroopName\n" ;
-	
-	IfrxUserDataSetPtr		pDataSet_1(__uuidof(TfrxUserDataSet));
-	pDataSet_1->Name = "Vars" ;
-	pDataSet_1->Fields = "GroopName\n" ;
-	
-	hr = CComObject<CfrxUserDataSetEvents1>::CreateInstance(&pEventHandler);
-	hr = CComObject<CfrxUserDataSetEvents2>::CreateInstance(&pEventHandler_1);
-	pEventHandler->AddRef();
-	pEventHandler_1->AddRef();
+	// Описание датасетов
+	CComObject<CfrxGroopsDataSetEvents>* GroopsDataSet_EventHandler;
+	CComObject<CfrxVarsDataSetEvents>* VarsDataSet_EventHandler;
+	CComObject<CfrxChartDataSetEvents>* ChartDataSet_EventHandler;
+	IfrxUserDataSetPtr	GroopsDataSet(__uuidof(TfrxUserDataSet));
+	IfrxUserDataSetPtr	VarsDataSet(__uuidof(TfrxUserDataSet));
+	IfrxUserDataSetPtr	ChartDataSet(__uuidof(TfrxUserDataSet));
 
-	rdoModelObjects::RDOFileType m_type_1(rdoModelObjects::PMD);
-    rdo::binarystream in_stream_1;
-	kernel->sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( m_type_1, in_stream_1 ) );
+	GroopsDataSet->Name = "Groops";
+	GroopsDataSet->Fields = "GroopName\n";
+	VarsDataSet->Name = "Vars";
+	VarsDataSet->Fields = "VarName\nPar_1\Par_2\Par_3\Par_4\Par_5\Par_6";
+	ChartDataSet->Name = "Chart" ;
+	VarsDataSet->Fields = "Name\nPar" ;
+
+	hr = CComObject<CfrxGroopsDataSetEvents>::CreateInstance( &GroopsDataSet_EventHandler );
+	hr = CComObject<CfrxVarsDataSetEvents>::CreateInstance( &VarsDataSet_EventHandler );
+	hr = CComObject<CfrxChartDataSetEvents>::CreateInstance( &ChartDataSet_EventHandler );
+
+	GroopsDataSet_EventHandler->AddRef();
+	VarsDataSet_EventHandler->AddRef();
+	ChartDataSet_EventHandler->AddRef();
+
+	rdoModelObjects::RDOFileType RDOFileType_Buffer( rdoModelObjects::PMD );
+    rdo::binarystream binarystream_Buffer;
+	kernel->sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( RDOFileType_Buffer, binarystream_Buffer ) );
 	
-	// Строка с исходным текстом
-	std::string PMDStr = in_stream_1.str() ;
-	std::string PMVStr ;
-	// Строка с результатами
+	// PMDStr и PMVStr - исходные данные для парсера
+	std::string PMDStr = binarystream_Buffer.str() ;
+	std::string PMVStr;
+	
 	std::stringstream model_results ;
-
 	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results ) ;
-	std::string str = model_results.str() ;
-	if ( !str.empty() ) {
+	PMVStr = model_results.str() ;
+	
+	if ( !PMVStr.empty() ) 
+	   {
 		RDOStudioOutput* output = &studioApp.mainFrame->output ;
 		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV ) ;
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data ) ;
 		if ( !data.described ) {
 			output->appendStringToDebug( "Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n" );
 		}
-		output->showResults() ;
-		output->appendStringToResults( str ) ;
+		output->showResults();
+		output->appendStringToResults( PMVStr );
 	}
 
 	try 
 	{
-		pReport->LoadReportFromFile("UserDataSet demo.fr3");
-		//MasterData2 = pReport->FindObject("MasterData2") ;
+		// Загрузка шаблона отчета
+		pReport->LoadReportFromFile("Report_template.fr3");
+		std::vector <std::string> List_PMD;
+		std::vector <std::string> List_PMV;
 		
-		//hr = pReport->QueryInterface(__uuidof(IfrxComponent), (PVOID*) &pReportComponent);
-		//if (FAILED(hr)) _com_issue_errorex(hr, pReport, __uuidof(pReport));
-        //bstr_t x = MasterData2->Description ;
-		//pReportPageComponent = pReport->CreateReportObject( pReportComponent, __uuidof(IfrxReportPage), "Page1");
+		ReportParser PMDParser( PMDStr );
+		PMDParser.DeleteComments() ;
+			
+		if ( !PMDParser.StringToList() )
+			List_PMD = PMDParser.ListToParse;
 
-		//pMemoViewComponent = pReport->CreateReportObject( pReportPageComponent, __uuidof(IfrxMemoView), "Memo1");
-       	//pMemoViewComponent->put_Left(60);
-		//pMemoViewComponent->put_Top(40);
-		//pMemoViewComponent->put_Width(690);
-		
-
-		//hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxMemoView), (PVOID*) &pMemoView);
-		//if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));     
-        //pMemoView->StretchMode = sm_MaxHeight;    
-		
-		//hr = pMemoViewComponent->QueryInterface(__uuidof(IfrxCustomMemoView), (PVOID*) &pCustomMemoView);
-		//if (FAILED(hr)) _com_issue_errorex(hr, pMemoViewComponent, __uuidof(pMemoViewComponent));
-		
-		//pCustomMemoView->Text = _bstr_t(PMDStr.c_str()) + _bstr_t(str.c_str());
+		ReportParser PMVParser( PMVStr );
+		if ( !PMVParser.DeleteComments() )
+			
+		if ( !PMVParser.StringToList() )
+			List_PMV = PMVParser.ListToParse;
         
-		//pCustomMemoView->Text = "[DemoUserDataSet.\"Field_1\"]" ;
+		// Переменная для связи Мастер-Детейл датабэндов
+		int Master_Detail_Counter = -1;
 		
-		PMVStr = str ;
-		std::string PMDStr_wo_comments ;
-		std::string PMVStr_wo_comments ;
-		// Функция удаления комментов
-		DeleteComments(PMVStr, &PMVStr_wo_comments) ;
-		DeleteComments(PMDStr, &PMDStr_wo_comments) ;
-		
-		// Функция преобразования в список
-		vector <std::string> List_PMD ;
-		vector <std::string> List_PMV ;
-		StringToList(PMDStr_wo_comments, &List_PMD) ;
-		StringToList(PMVStr_wo_comments, &List_PMV) ;
-		
-		int WhatWord, t = 0, r = -1 ;
-		vector <Groop> Groops ;
-		do 
+		GroopManager Groops;
+		Groops.List = PMVParser.ListToParse;
+
+		while(!PMDParser.FindNextKeyWord())
 		{
-			t = FindKeyWord(List_PMD, t, WhatWord) ;
-			switch (WhatWord)
+			switch ( PMDParser.KeyWordType )
 			{
-			case 0: AddGroop(&Groops, List_PMD.at(t), 1) ;
-				break ;
-			case 1: AddGroop(&Groops, List_PMD.at(t), false) ;
-				break ;
-			case 2: if (t > 2)  InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
-				break ;
-			case 3: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
-				break ;
-			case 4: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
-				break ;
-			case 5: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
-				break ;
-			case 6: if (t > 2) InsertVar(&Groops, List_PMD.at(t-3), (ReportVar::Type)WhatWord) ;
-				break ;
-			default: break ;
+			case PMDParser.RPKWT_GROOP:    Groops.AddGroop( PMDParser.ListToParse.at(PMDParser.CurrentWordIndex), true );  
+				break;
+			case PMDParser.RPKWT_ENDGROOP: Groops.AddGroop( PMDParser.ListToParse.at(PMDParser.CurrentWordIndex), false );	
+				break;
+			default: if ( PMDParser.CurrentWordIndex > 2 && PMDParser.KeyWordType != PMDParser.RPKWT_END ) 
+				Groops.InsertVar( PMDParser.ListToParse.at( PMDParser.CurrentWordIndex - 3), (ReportVar::VarTypeValues) (int) PMDParser.KeyWordType );
+			break;
 			}
-		} while (t >= 0) ;
+		} 
 		
-		GetParam(&Groops, List_PMV) ;
-
-					
-		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet));
-		pReport->SelectDataset(true, IfrxDataSetPtr(pDataSet_1));
-
-		hr = pEventHandler->Advise(pDataSet, &Groops,&r);
-		hr = pEventHandler_1->Advise(pDataSet_1, &Groops,&r);
+		// Получить параметры для показателей
+		Groops.GetParam();
 		
-		pReport->ShowReport() ;
-		pReport->SaveReportToFile("Report.fr3") ;
+		pReport->SelectDataset( true, IfrxDataSetPtr(GroopsDataSet) );
+		pReport->SelectDataset( true, IfrxDataSetPtr( VarsDataSet ) );
+		pReport->SelectDataset( true, IfrxDataSetPtr( ChartDataSet ) );
+
+		hr = GroopsDataSet_EventHandler -> Advise( GroopsDataSet, &Groops, &Master_Detail_Counter );
+		hr = VarsDataSet_EventHandler   -> Advise( VarsDataSet, &Groops, &Master_Detail_Counter);
+		hr = ChartDataSet_EventHandler  -> Advise( ChartDataSet, &Groops);
+		
+		// Вывод отчета
+		pReport->ShowReport();
+		pReport->SaveReportToFile( "Report.fr3" );
 	} 
-	catch(_com_error e) 
+	catch( _com_error e ) 
 	{
 		MessageBox(NULL, e.ErrorMessage(), "Component Object Model error", MB_OK | MB_ICONERROR);
 		hr = e.Error();
 	}
 
-	hr = pEventHandler->Unadvise(pDataSet);
-	hr = pEventHandler_1->Unadvise(pDataSet_1);
-	hr = pReport->SelectDataset(false, IfrxDataSetPtr(pDataSet));
-	hr = pReport->SelectDataset(false, IfrxDataSetPtr(pDataSet_1));
-	/////////hr = pReport->ClearReport();
-	hr = pEventHandler->Release();
-	hr = pEventHandler_1->Release();
-	pEventHandler_1 = NULL;
-	
-	if(pMemoView) pMemoView->Release();
-	if(pCustomMemoView) pCustomMemoView->Release();
-	if(pMemoViewComponent) pMemoViewComponent->Release();
-	if(pReportComponent) pReportComponent->Release();	
-	//if(pReportPageComponent) pReportPageComponent->Release();
-	CoUninitialize();
+	hr = GroopsDataSet_EventHandler->Unadvise(GroopsDataSet);
+	hr = VarsDataSet_EventHandler->Unadvise(VarsDataSet);
+	hr = ChartDataSet_EventHandler->Unadvise(ChartDataSet);
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(GroopsDataSet));
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(VarsDataSet));
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(ChartDataSet));
+	hr = GroopsDataSet_EventHandler->Release();
+	hr = VarsDataSet_EventHandler->Release();
+	hr = ChartDataSet_EventHandler->Release();
+	VarsDataSet_EventHandler = NULL;
+	GroopsDataSet_EventHandler = NULL;
+	ChartDataSet_EventHandler = NULL;
 
+	if(pReportComponent) pReportComponent->Release();	
+	CoUninitialize();
 }
 
 bool RDOStudioModel::newModel( std::string _model_name, std::string _model_path, const int _useTemplate  )
