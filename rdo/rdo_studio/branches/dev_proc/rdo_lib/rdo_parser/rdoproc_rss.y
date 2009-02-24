@@ -216,54 +216,89 @@ dpt_process_line:	RDO_IDENTIF	{
 					| RDO_GENERATE fun_arithm {
 					}
 					| RDO_GENERATE error {
-						PARSER->error( @2, "Ошибка в арифметическом выражении" )
+						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
 					| RDO_TERMINATE {
 					}
 					| RDO_ADVANCE fun_arithm {
 					}
 					| RDO_ADVANCE error {
-						PARSER->error( @2, "Ошибка в арифметическом выражении" )
-					}
-					| RDO_RELEASE dpt_release_param {
+						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
 					| RDO_SEIZE dpt_seize_param {
+					}
+					| RDO_RELEASE dpt_release_param {
 					};
-				
-dpt_release_param:      // empty 
-					{
-					}   
-					
+dpt_seize_param:    // empty { PARSER->error(rdo::format("ожидается имя ресурса")); }   
 					| RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name       = *(std::string*)$1;
-	const RDOParserSrcInfo& info	= @1;		
-	RDOPROCRelease::checkReleaseResourse( PARSER, res_name, info );
-	}
-					| dpt_release_param ',' RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name       = *(std::string*)$3;
-	const RDOParserSrcInfo& info	= @3;		
-	RDOPROCRelease::checkReleaseResourse( PARSER, res_name, info );
-	};
-	
-dpt_seize_param:      // empty 
-					{
-					}   
+					// Имя ресурса
+					std::string res_name	= *reinterpret_cast<std::string*>($1);
+					const RDOParserSrcInfo& info	= @1;	
+					// Получили список всех ресурсов
+					rdoMBuilder::RDOResourceList rssList( PARSER );
+					rdoMBuilder::RDOResType rtp;
+						//Если ресурс существует берем его тип и проверяем
+						if (rssList[res_name].exist()) {
+						rtp = rssList[res_name].getType();
+						RDOPROCBlockForSeize::checkType( PARSER, rtp, info);
+						}
+						else{
+						//Ресурс не найден, сформировать имя типа по имени ресурса
+						// Сформировать имя типа по имени ресурса
+						std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+						// Получили список всех типов ресурсов
+						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса 
+							if ( rtpList[rtp_name].exist() )	{
+							rdoMBuilder::RDOResType rtp_(rtp_name);
+							RDOPROCBlockForSeize::checkType( PARSER, rtp_, info);
+							RDOPROCBlockForSeize::createRes( PARSER, rtp_, res_name);
+							}
+							else{
+							rtp = RDOPROCBlockForSeize::createType( PARSER, rtp_name, info);
+							RDOPROCBlockForSeize::createRes( PARSER, rtp, res_name);
+							}
+						}
+					}
+					| RDO_IDENTIF error {
+					PARSER->error( @2, "Ошибка в Имени ресурса" );
+					};
 					
+dpt_release_param:  // empty { PARSER->error(rdo::format("ожидается имя ресурса")); }   
 					| RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name       = *(std::string*)$1;
-	const RDOParserSrcInfo& info	= @1;		
-	RDOPROCSeize::makeSeizeResourse( PARSER, res_name, info );
-	}
-					| dpt_seize_param ',' RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name       = *(std::string*)$3;
-	const RDOParserSrcInfo& info	= @3;		
-	RDOPROCSeize::makeSeizeResourse( PARSER, res_name, info );
-	};
-
+					// Имя ресурса
+					std::string res_name	= *reinterpret_cast<std::string*>($1);
+					const RDOParserSrcInfo& info	= @1;	
+					// Получили список всех ресурсов
+					rdoMBuilder::RDOResourceList rssList( PARSER );
+					rdoMBuilder::RDOResType rtp;
+						//Если ресурс существует берем его тип и проверяем
+						if (rssList[res_name].exist()) {
+						rtp = rssList[res_name].getType();
+						RDOPROCBlockForSeize::checkType( PARSER, rtp, info);
+						}
+						else{
+						//Ресурс не найден, сформировать имя типа по имени ресурса
+						// Сформировать имя типа по имени ресурса
+						std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+						// Получили список всех типов ресурсов
+						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса 
+							if ( rtpList[rtp_name].exist() )	{
+							rdoMBuilder::RDOResType rtp_(rtp_name);
+							RDOPROCBlockForSeize::checkType( PARSER, rtp_, info);
+							RDOPROCBlockForSeize::createRes( PARSER, rtp_, res_name);
+							}
+							else{
+							rtp = RDOPROCBlockForSeize::createType( PARSER, rtp_name, info);
+							RDOPROCBlockForSeize::createRes( PARSER, rtp, res_name);
+							}
+						}
+					}
+					| RDO_IDENTIF error {
+					PARSER->error( @2, "Ошибка в Имени ресурса" );
+					};
+			
 dpt_process_end:	dpt_process RDO_End	{
 					};
 

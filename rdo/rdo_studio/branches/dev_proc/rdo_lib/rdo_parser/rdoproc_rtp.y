@@ -249,55 +249,29 @@ dpt_process_line:	RDO_IDENTIF	{
 						}
 					}
 					| RDO_GENERATE error {
-						PARSER->error( @2, "Ошибка в арифметическом выражении" )
+						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
 					| RDO_TERMINATE {
 					}
 					| RDO_ADVANCE fun_arithm {
 					}
 					| RDO_ADVANCE error {
-						PARSER->error( @2, "Ошибка в арифметическом выражении" )
+						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
+	
 					| RDO_RELEASE dpt_release_param {
 					}
 					| RDO_SEIZE dpt_seize_param {
 					};
+
+dpt_release_param:  // empty { PARSER->error(rdo::format("ожидается имя ресурса")); }   
+					| RDO_IDENTIF {}
+					| RDO_IDENTIF error { PARSER->error( @2, "Ошибка в Имени ресурса" )	};
+
+dpt_seize_param:    // empty { PARSER->error(rdo::format("ожидается имя ресурса")); }   
+					| RDO_IDENTIF {}
+					| RDO_IDENTIF error{ PARSER->error( @2, "Ошибка в Имени ресурса" ) };
 					
-dpt_release_param:    // empty 
-					{
-					PARSER->error(rdo::format("ожидается имя ресурса")); }   
-
-					| RDO_IDENTIF {
-					// Имя ресурса
-					std::string res_name	= *reinterpret_cast<std::string*>($1);
-					const RDOParserSrcInfo& info	= @1;		
-					//RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
-					}
-
-					| dpt_release_param ',' RDO_IDENTIF {
-					// Имя ресурса
-					std::string res_name       = *reinterpret_cast<std::string*>($3);
-					const RDOParserSrcInfo& info	= @3;		
-					//RDOPROCRelease::checkReleaseType( PARSER, res_name, info );
-					};
-
-dpt_seize_param:    // empty 
-					{
-					PARSER->error(rdo::format("ожидается имя ресурса")); }   
-					
-					| RDO_IDENTIF {
-					// Имя ресурса
-					std::string res_name	= *reinterpret_cast<std::string*>($1);
-					const RDOParserSrcInfo& info	= @1;		
-					RDOPROCSeize::makeSeizeType( PARSER, res_name, info );
-					}
-
-					| dpt_seize_param ',' RDO_IDENTIF {
-					// Имя ресурса
-					std::string res_name       = *reinterpret_cast<std::string*>($3);
-					const RDOParserSrcInfo& info	= @3;		
-					RDOPROCSeize::makeSeizeType( PARSER, res_name, info );
-					};
 
 dpt_process_end:	dpt_process RDO_End	{
 					};

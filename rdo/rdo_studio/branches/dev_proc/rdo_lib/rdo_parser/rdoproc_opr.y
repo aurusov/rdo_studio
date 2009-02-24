@@ -223,7 +223,7 @@ dpt_process_line:	RDO_IDENTIF	{
 						$$ = int(generate);
 					}
 					| RDO_GENERATE error {
-						PARSER->error( @2, "Ошибка в арифметическом выражении" )
+						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
 					| RDO_TERMINATE {
 						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE" );
@@ -234,7 +234,7 @@ dpt_process_line:	RDO_IDENTIF	{
 						$$ = int(advance);
 					}
 					| RDO_ADVANCE error {
-						PARSER->error( @2, "Ошибка в арифметическом выражении" )
+						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
 					
 					| RDO_SEIZE dpt_seize_param {
@@ -260,13 +260,9 @@ dpt_seize_param:    // empty
 						seize->add_Seize_Resourse(res_name);
 						$$ = (int)seize;
                     }
-                    |   dpt_seize_param ',' RDO_IDENTIF {
-						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($1);
-						std::string res_name = *reinterpret_cast<std::string*>($3);
-						TRACE( "%s _good\n", res_name.c_str(), res_name);
-						seize->add_Seize_Resourse(res_name);
-						$$ = $1;
-                    };
+                    |   RDO_IDENTIF error {
+						PARSER->error( @2, "Ошибка в миени ресурса" )};
+     
 
 dpt_release_param:    // empty 
 					{
@@ -278,13 +274,8 @@ dpt_release_param:    // empty
 						release->add_Release_Resourse(res_name);
 						$$ = (int)release;
                     }
-                    |   dpt_release_param ',' RDO_IDENTIF {
-						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($1);
-						std::string res_name = *reinterpret_cast<std::string*>($3);
-						TRACE( "%s _good\n", res_name.c_str(), res_name);
-						release->add_Release_Resourse(res_name);
-						$$ = $1;
-                    };								
+					|   RDO_IDENTIF error {
+						PARSER->error( @2, "Ошибка в миени ресурса" )};						
 
 dpt_process_end:	dpt_process RDO_End	{
 						PARSER->getLastPROCProcess()->end();
