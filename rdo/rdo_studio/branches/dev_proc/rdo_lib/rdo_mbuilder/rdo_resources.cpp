@@ -123,6 +123,7 @@ RDOResType::RDOResType( const std::string& name, Type type ):
 	m_exist( false ),
 	m_id( -1 )
 {
+
 }
 
 bool RDOResType::ParamList::append( Param& param )

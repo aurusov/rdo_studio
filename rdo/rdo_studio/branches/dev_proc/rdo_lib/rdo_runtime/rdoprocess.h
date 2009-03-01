@@ -74,9 +74,7 @@ class RDOPROCResource: public RDOResource
 {
 friend class RDOPROCSeize;
 protected: 
-	RDOPROCBlock* block;
 	std::list<RDOPROCTransact*> transacts;
-
 public:
 	RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace );
 };
@@ -106,6 +104,7 @@ public:
 	
 struct runtime_for_Seize{
 RDOPROCResource* rss; 
+int Id_param;
 RDOValue     enum_free;
 RDOValue     enum_buzy;
 };
@@ -120,8 +119,8 @@ int Id_param;
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 protected:
-parser_for_Seize from_par;
-runtime_for_Seize from_run;
+runtime_for_Seize forRes;
+parser_for_Seize  fromParser;
 virtual void onStart( RDOSimulator* sim );
 
 public:

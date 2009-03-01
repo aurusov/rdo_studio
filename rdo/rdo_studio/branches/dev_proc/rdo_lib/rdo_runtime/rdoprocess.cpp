@@ -33,8 +33,6 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 	if ( transact->block )
 	{
 	Iterator it = std::find( begin(), end(), transact->block );
-	//------------как определить в каком списке он ищет????std::find( begin(), end(), transact->block )??????
-	//------------или, что it - это итератор именно того списка блоков, который нам необходим???????????
 	//Если у транзакта есть блок
 		if ( it != end() ) {
 		//Берем этот блок
@@ -52,13 +50,14 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 			}
 			//Переходим к следующему блоку
 			it++;
-				
+			//Берем этот блок
+			block = static_cast<RDOPROCBlock*>(*it);	
 				
 			//Если следующий блок существует
 			if ( it != end() ) {
-			transact->block = static_cast<RDOPROCBlock*>(*it);
+			transact->block = block;
 			//Записываем в конец списка этого блока перемещаемый транзакт
-			static_cast<RDOPROCBlock*>(*it)->TransactGoIn( transact );
+			block->TransactGoIn( transact );
 			}
 			//Блок в из которого нужно было переместить транзакт был последним
 			else {
@@ -108,7 +107,6 @@ return this->block;
 RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace ):
 	RDOResource( _runtime, _number, type, _trace )
 {
-	block = NULL;
 }
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
@@ -146,7 +144,6 @@ bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
 
 RDOBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
 {
-
 	TRACE( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval( sim );
 	RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
@@ -169,20 +166,22 @@ void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par ):
 	RDOPROCBlock( _process ),
-	from_par( From_Par )
+	fromParser ( From_Par)
 {
+
 }
 
 void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
 {
 	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
-	int Id_res = from_par.Id_res;
-	int Id_param = from_par.Id_param;
+	int Id_res = fromParser.Id_res;
+	int Id_param = fromParser.Id_param;
 	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
-	from_run.rss = static_cast<RDOPROCResource*>(res);
-	from_run.enum_free = RDOValue( from_run.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
-	from_run.enum_buzy = RDOValue( from_run.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
+	forRes.Id_param = Id_param;
+	forRes.rss = static_cast<RDOPROCResource*>(res);
+	forRes.enum_free = RDOValue( forRes.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
+	forRes.enum_buzy = RDOValue( forRes.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
 }
 
 
@@ -193,16 +192,15 @@ bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 	int idBlocksTransact = transacts.front()->getTraceID();	
-	int idRespurcesTransact = from_run.rss->transacts.front()->getTraceID();
-		if( idBlocksTransact == idRespurcesTransact ){
+	int idResourcesTransact = forRes.rss->transacts.front()->getTraceID();
+		if( idBlocksTransact == idResourcesTransact ){
 		RDOTrace* tracer = static_cast<RDORuntime*>( sim)->getTracer();
 			if ( !tracer->isNull() ) {
-			tracer->getOStream() << from_run.rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-			//---------------что это?
+			tracer->getOStream() << forRes.rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 			}
 			// Занимаем ресурс, если свободен
-			if ( from_run.rss->getParam(from_par.Id_param) == from_run.enum_free ) {
-			from_run.rss->setParam(from_par.Id_param, from_run.enum_buzy);	
+			if ( forRes.rss->getParam(forRes.Id_param) == forRes.enum_free ) {
+			forRes.rss->setParam(forRes.Id_param, forRes.enum_buzy);	
 			TRACE( "%7.1f SEIZE-%d\n", sim->getCurrentTime() ,index );
 			return true;
 			} 
@@ -225,13 +223,13 @@ return RDOBaseOperation::BOR_done;
 
 void RDOPROCSeize::TransactGoIn( RDOPROCTransact* _transact )
 {
-	from_run.rss->transacts.push_back( _transact );
+	forRes.rss->transacts.push_back( _transact );
 	RDOPROCBlockForSeize::TransactGoIn( _transact );
 }
 
 void RDOPROCSeize::TransactGoOut( RDOPROCTransact* _transact )
 {
-	from_run.rss->transacts.remove( _transact );
+	forRes.rss->transacts.remove( _transact );
 	RDOPROCBlockForSeize::TransactGoOut( _transact );
 }
 // ----------------------------------------------------------------------------
@@ -242,12 +240,11 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 	if ( !transacts.empty() ) {
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 		if ( !tracer->isNull() ) {
-		tracer->getOStream() << from_run.rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+		tracer->getOStream() << forRes.rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 		}
 		// Занят
-		if ( from_run.rss->getParam(from_par.Id_param) == from_run.enum_buzy ) {
-		//Ищем ресурс в списке освобождаемых ресурсов транзакта			
-		from_run.rss->setParam(from_par.Id_param, from_run.enum_free);
+		if ( forRes.rss->getParam(forRes.Id_param) == forRes.enum_buzy ) {
+		forRes.rss->setParam(forRes.Id_param, forRes.enum_free);
 		return true;
 		}
 	}

@@ -219,8 +219,40 @@ dpt_process_line:	RDO_IDENTIF	{
 						PARSER->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
 					}
 					| RDO_GENERATE fun_arithm {
-						RDOPROCGenerate* generate = new RDOPROCGenerate( PARSER->getLastPROCProcess(), "GENERATE", ((RDOFUNArithm*)$2)->createCalc() );
-						$$ = int(generate);
+						std::string rtp_name       = "Транзакты";
+						std::string rtp_param_name = "Время_создания";
+
+						// Получили список всех типов ресурсов
+						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+						// Найти тип ресурса, если его нет, то создать
+						if ( !rtpList[rtp_name].exist() )
+						{
+							// Создадим тип ресурса
+							rdoMBuilder::RDOResType rtp(rtp_name);
+							// Добавим параметр Время_создания
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, rdoRuntime::RDOValue::rvt_real ) );
+							// Добавим тип ресурса
+							if ( !rtpList.append( rtp ) )
+							{
+								PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+							}
+							rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+						}
+						else
+						{
+							// Тип найден, проверим его на наличие вещественного параметра
+							const rdoMBuilder::RDOResType& rtp = rtpList[rtp_name];
+							if ( !rtp.m_params[rtp_param_name].exist() ) {
+								PARSER->error( rdo::format( "У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+							}
+							// Параметр есть, надо проверить на тип
+							if ( rtp.m_params[rtp_param_name].getType() != rdoRuntime::RDOValue::rvt_real ) {
+								PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
+							}
+							rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+						}
+					RDOPROCGenerate* generate = new RDOPROCGenerate( PARSER->getLastPROCProcess(), "GENERATE", ((RDOFUNArithm*)$2)->createCalc() );
+					$$ = int(generate);
 					}
 					| RDO_GENERATE error {
 						PARSER->error( @2, "Ошибка в арифметическом выражении" );
