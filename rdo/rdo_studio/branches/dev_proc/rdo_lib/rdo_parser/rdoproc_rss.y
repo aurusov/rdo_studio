@@ -255,7 +255,7 @@ dpt_seize_param:    // empty { PARSER->error(rdo::format("ожидается имя ресурса"
 					};
 					
 dpt_release_param:  // empty { PARSER->error(rdo::format("ожидается имя ресурса")); }   
-					| RDO_IDENTIF {
+					| RDO_IDENTIF { 
 					// Имя ресурса
 					std::string res_name	= *reinterpret_cast<std::string*>($1);
 					const RDOParserSrcInfo& info	= @1;	
@@ -288,6 +288,7 @@ dpt_release_param:  // empty { PARSER->error(rdo::format("ожидается имя ресурса"
 					| RDO_IDENTIF error {
 					PARSER->error( @2, "Ошибка в Имени ресурса" );
 					};
+			
 			
 dpt_process_end:	dpt_process RDO_End	{
 					};
