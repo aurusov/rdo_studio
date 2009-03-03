@@ -1,0 +1,23 @@
+Results_file   = mymodel_1.pmv    Пт фев 27 18:54:56 2009
+Run_file       = model3.smr
+Model_name     = model3
+Resource_file  = mymodel_1.rss
+OprIev_file    = model3.opr
+
+$Changes
+
+
+$Status = NORMAL_TERMINATION
+$Result_values  0  1036  1.39
+  EventCount           0  0  0
+  OperRuleCheckCounter 0  0  0
+  AExpCalcCounter      1  0.000965251  0
+  BExpCalcCounter      791  0.763514  569
+
+Занятость_Робота              	FALSE	0	0	0	1.79769e+308	2.22507e-308
+Занятость_Станка_1            	FALSE	0	0	0	1.79769e+308	2.22507e-308
+Занятость_Станка_2            	FALSE	0	0	0	1.79769e+308	2.22507e-308
+Длина_очереди                 	0	0	0	0	0	0
+Всего_обслужено               	0
+Длительность_работы           	17.2667
+
