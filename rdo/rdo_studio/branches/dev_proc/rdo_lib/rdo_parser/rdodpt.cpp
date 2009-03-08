@@ -485,6 +485,18 @@ rdoMBuilder::RDOResource rss( rtp, res_name );
 // Добавим его в систему
 rssList.append<rdoParse::RDOPROCResource>(rss );
 }
+void RDOPROCBlockForSeize::reobjectRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name )
+{
+// Получили список всех ресурсов
+rdoMBuilder::RDOResourceList rssList( parser );
+
+// Создадим ресурс
+rdoMBuilder::RDOResource rssNew( rtp, res_name );
+// Добавим его в систему
+rssList.append<rdoParse::RDOPROCResource>(rssNew );
+
+}
+
 
 rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, const std::string& rtp_name, const RDOParserSrcInfo& info )
 {

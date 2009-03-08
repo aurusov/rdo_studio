@@ -147,7 +147,7 @@ RDOBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
 	TRACE( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval( sim );
 	RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
-	this->TransactGoIn(transact);
+	//this->TransactGoIn(transact);
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) {
 		tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();

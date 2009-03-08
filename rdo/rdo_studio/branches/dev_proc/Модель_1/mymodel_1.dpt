@@ -1,5 +1,5 @@
 $Process
-	generate 150
+	generate 200
 
 	SEIZE	 ROBOT
 	ADVANCE  20
@@ -7,6 +7,8 @@ $Process
 	TERMINATE
 $End
 
+
+////////
 /*
 GENERATE	(exponential(2,0,150))	; Прибытие заготовки
 

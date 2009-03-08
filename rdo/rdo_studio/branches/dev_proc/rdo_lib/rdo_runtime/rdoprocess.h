@@ -77,6 +77,7 @@ protected:
 	std::list<RDOPROCTransact*> transacts;
 public:
 	RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace );
+	std::string whoAreYou() {return "procRes";	}
 };
 
 // ----------------------------------------------------------------------------
@@ -135,6 +136,11 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
+private:
+	unsigned int index;
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+
 public:
 	RDOPROCSeize( RDOPROCProcess* _process, parser_for_Seize From_Par ): 
 		RDOPROCBlockForSeize( _process, From_Par )
@@ -144,11 +150,6 @@ public:
 	}
 	virtual void TransactGoIn ( RDOPROCTransact* _transact );
 	virtual void TransactGoOut( RDOPROCTransact* _transact );
-
-private:
-	unsigned int index;
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 };
 
 // ----------------------------------------------------------------------------
