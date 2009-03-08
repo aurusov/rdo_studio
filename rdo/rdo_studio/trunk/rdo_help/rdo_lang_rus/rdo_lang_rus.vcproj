@@ -37,7 +37,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(InputDir)RAO-language.chm $(SolutionDir)$(ConfigurationName)\RAO-language.chm"
+				CommandLine="copy &quot;$(InputDir)\RAO-language.chm&quot; &quot;$(SolutionDir)\$(ConfigurationName)\RAO-language.chm&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(InputDir)RAO-language.chm $(SolutionDir)$(ConfigurationName)\RAO-language.chm"
+				CommandLine="copy &quot;$(InputDir)\RAO-language.chm&quot; &quot;$(SolutionDir)\$(ConfigurationName)\RAO-language.chm&quot;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -81,7 +81,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\help_tools\Hhc.bat $(SolutionDir) $(InputPath)"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
 						Outputs="RAO-language.chm"
 					/>
 				</FileConfiguration>
@@ -90,7 +90,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\help_tools\Hhc.bat $(SolutionDir) $(InputPath)"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
 						Outputs="RAO-language.chm"
 					/>
 				</FileConfiguration>
