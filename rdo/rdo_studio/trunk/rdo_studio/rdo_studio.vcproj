@@ -1911,6 +1911,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\RAO-studio.manifest"
+				>
+			</File>
+			<File
 				RelativePath="res\rdo_studio.ico"
 				>
 			</File>

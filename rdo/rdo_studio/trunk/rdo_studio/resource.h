@@ -68,13 +68,14 @@
 #define IDR_MODEL_TMP7_OPR              217
 #define IDR_MODEL_TMP7_PMD              218
 #define IDR_MODEL_TMP6_PAT              219
-#define IDR_MODEL_TMP6_RTP              221
-#define IDR_MODEL_TMP6_RSS              222
-#define IDD_GOTO_LINE_DIALOG            222
-#define IDR_MODEL_TMP6_PMD              223
-#define IDR_MODEL_TMP6_FUN              225
-#define IDR_MODEL_TMP6_SMR              226
-#define IDR_MODEL_TMP6_OPR              227
+#define IDR_MODEL_TMP6_RTP              220
+#define IDR_MODEL_TMP6_RSS              221
+#define IDR_MODEL_TMP6_PMD              222
+#define IDR_RT_MANIFEST1                223
+#define IDR_MODEL_TMP6_FUN              224
+#define IDR_MODEL_TMP6_SMR              225
+#define IDR_MODEL_TMP6_OPR              226
+#define IDD_GOTO_LINE_DIALOG            227
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -676,7 +677,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        223
+#define _APS_NEXT_RESOURCE_VALUE        228
 #define _APS_NEXT_COMMAND_VALUE         33293
 #define _APS_NEXT_CONTROL_VALUE         1134
 #define _APS_NEXT_SYMED_VALUE           101
