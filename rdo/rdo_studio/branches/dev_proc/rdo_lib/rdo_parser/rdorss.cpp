@@ -28,12 +28,12 @@ void rsserror( char* mes )
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType ):
-	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	resType( _resType ),
-	number( _parser->getRSS_id() ),
-	trace( false )
+RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType )
+	: RDOParserObject (_parser             )
+	, RDOParserSrcInfo(_src_info           )
+	, resType         (_resType            )
+	, m_id            (_parser->getRSS_id())
+	, trace           (false               )
 {
 	parser()->insertRSSResource( this );
 	m_currParam = resType->getParams().begin();
@@ -41,7 +41,7 @@ RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src
 
 void RDORSSResource::writeModelStructure( std::ostream& stream ) const
 {
-	stream << (number + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
+	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
 void RDORSSResource::addParam( const RDOValue& param )
@@ -78,7 +78,7 @@ bool RDORSSResource::defined() const
 
 rdoRuntime::RDOCalc* RDORSSResource::createCalc()
 {
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateNumberedResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getNumber(), getType()->isPermanent() );
+	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateNumberedResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getID(), getType()->isPermanent() );
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;
@@ -94,7 +94,7 @@ RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _s
 
 rdoRuntime::RDOCalc* RDOPROCResource::createCalc()
 {
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateProcessResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getNumber(), getType()->isPermanent() );
+	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateProcessResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getID(), getType()->isPermanent() );
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;

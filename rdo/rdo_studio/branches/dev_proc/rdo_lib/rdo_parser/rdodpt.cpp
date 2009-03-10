@@ -467,7 +467,7 @@ const RDORSSResource* rss = parser->findRSSResource(Res);
 		// "Состояние"
 		std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
 	
-		parser_for_runtime.Id_res = rss->getNumber();
+		parser_for_runtime.Id_res = rss->getID();
 		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}	
 	else {
@@ -491,7 +491,7 @@ const RDORSSResource* rss = parser->findRSSResource(Res);
 		// "Состояние"
 		std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
 	
-		parser_for_runtime.Id_res = rss->getNumber();
+		parser_for_runtime.Id_res = rss->getID();
 		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}
 	else {

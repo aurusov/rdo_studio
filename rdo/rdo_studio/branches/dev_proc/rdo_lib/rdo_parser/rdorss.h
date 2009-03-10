@@ -33,9 +33,9 @@ public:
 	virtual rdoRuntime::RDOCalc* createCalc();
 
 	const std::string&         name() const    { return src_info().src_text(); }
-	const RDORTPResType* const getType() const { return resType; }
+	const RDORTPResType* const getType() const { return resType;  }
 
-	int getNumber() const                      { return number;  }
+	int getID() const                          { return m_id;     }
 
 	const Params& params() const { return m_params;  }
 	void addParam( const RDOValue& param );
@@ -49,7 +49,7 @@ public:
 
 protected:
 	const RDORTPResType* const resType;
-	const int                  number;  // in system
+	const int                  m_id;        // in system
 	Params                     m_params;
 	bool                       trace;
 
