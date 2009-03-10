@@ -247,11 +247,14 @@ dpt_seize_param:	// empty
 						// ѕолучили список всех ресурсов
 						rdoMBuilder::RDOResourceList rssList( PARSER );
 						rdoMBuilder::RDOResType rtp;
-						//≈сли ресурс существует берем его тип и провер€ем
-						if (rssList[res_name].exist()) {
+						// ≈сли ресурс существует, берем его тип и провер€ем
+						if (rssList[res_name].exist() && !rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+						{
 							rtp = rssList[res_name].getType();
-							RDOPROCBlockForSeize::checkType(PARSER, rtp, info);
-							//RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							if (RDOPROCBlockForSeize::checkType(PARSER, rtp, info))
+							{
+								RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							}
 						}
 						else
 						{
@@ -264,8 +267,10 @@ dpt_seize_param:	// empty
 							if ( rtpList[rtp_name].exist() )
 							{
 								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-								RDOPROCBlockForSeize::checkType(PARSER, rtp_, info);
-								RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								if (RDOPROCBlockForSeize::checkType(PARSER, rtp_, info))
+								{
+									RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								}
 							}
 							else
 							{
@@ -290,12 +295,14 @@ dpt_release_param:	// empty
 						// ѕолучили список всех ресурсов
 						rdoMBuilder::RDOResourceList rssList( PARSER );
 						rdoMBuilder::RDOResType rtp;
-						//≈сли ресурс существует берем его тип и провер€ем
-						if (rssList[res_name].exist())
+						// ≈сли ресурс существует берем его тип и провер€ем
+						if (rssList[res_name].exist() && !rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
 						{
 							rtp = rssList[res_name].getType();
-							RDOPROCBlockForSeize::checkType(PARSER, rtp, info);
-							//RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							if (RDOPROCBlockForSeize::checkType(PARSER, rtp, info))
+							{
+								RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							}
 						}
 						else
 						{
@@ -308,8 +315,10 @@ dpt_release_param:	// empty
 							if ( rtpList[rtp_name].exist() )
 							{
 								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-								RDOPROCBlockForSeize::checkType(PARSER, rtp_, info);
-								RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								if (RDOPROCBlockForSeize::checkType(PARSER, rtp_, info))
+								{
+									RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								}
 							}
 							else
 							{

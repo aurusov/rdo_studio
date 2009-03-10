@@ -28,12 +28,12 @@ void rsserror( char* mes )
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType )
-	: RDOParserObject (_parser             )
-	, RDOParserSrcInfo(_src_info           )
-	, resType         (_resType            )
-	, m_id            (_parser->getRSS_id())
-	, trace           (false               )
+RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id )
+	: RDOParserObject (_parser                                       )
+	, RDOParserSrcInfo(_src_info                                     )
+	, resType         (_resType                                      )
+	, m_id            (id == UNDEFINED_ID ? _parser->getRSS_id() : id)
+	, trace           (false                                         )
 {
 	parser()->insertRSSResource( this );
 	m_currParam = resType->getParams().begin();
@@ -87,8 +87,8 @@ rdoRuntime::RDOCalc* RDORSSResource::createCalc()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType ):
-	RDORSSResource( _parser, _src_info, _resType )
+RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id ):
+	RDORSSResource( _parser, _src_info, _resType, id )
 {
 }
 

@@ -27,8 +27,9 @@ class RDORSSResource: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	typedef std::vector< rdoRuntime::RDOValue > Params;
+	enum { UNDEFINED_ID = ~0 };
 
-	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType );
+	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id = UNDEFINED_ID );
 
 	virtual rdoRuntime::RDOCalc* createCalc();
 
@@ -62,11 +63,11 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCResource: public RDORSSResource
 {
+public:
+	RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id = UNDEFINED_ID );
+
 private:
 	virtual rdoRuntime::RDOCalc* createCalc();
-
-public:
-	RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType );
 };
 
 } // namespace rdoParse

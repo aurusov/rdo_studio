@@ -385,7 +385,7 @@ RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
-void RDOPROCBlockForSeize::checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info )
+bool RDOPROCBlockForSeize::checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info )
 {
 // "Состояние"
 std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
@@ -407,6 +407,8 @@ std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy(
 	// Теперь проверим сами значения
 	if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) )
 	parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
+
+	return true;
 }
 
 void RDOPROCBlockForSeize::createRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name )
@@ -426,7 +428,7 @@ void RDOPROCBlockForSeize::reobjectRes( RDOParser *parser, rdoMBuilder::RDOResTy
 	// Создадим ресурс
 	rdoMBuilder::RDOResource rssNew(rtp, res_name);
 	// Добавим его в систему
-	rssList.append<rdoParse::RDOPROCResource>(rssNew);
+	rssList.replace<rdoParse::RDOPROCResource>(rssNew);
 }
 
 rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, const std::string& rtp_name, const RDOParserSrcInfo& info )
