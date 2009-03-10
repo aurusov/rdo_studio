@@ -18,6 +18,38 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse()
 {
+	rdoRuntime::RDOFuzzySetDefinitionRangeDiscret* fuzzy_setDefinition1 = new rdoRuntime::RDOFuzzySetDefinitionRangeDiscret( m_parser->runtime() );
+	fuzzy_setDefinition1->append(0, 50);
+	rdoRuntime::RDOFuzzyType* fuzzy_type1  = new rdoRuntime::RDOFuzzyType( fuzzy_setDefinition1 );
+
+	rdoRuntime::RDOFuzzyValue fuzzy_value1(*fuzzy_type1);
+	fuzzy_value1.append(1, 1.0)(2, 1.0)(3, 1.0)(4, 1.0)(5, 1.0)(6, 1.0)(7, 1.0)(8, 1.0)(9, 1.0);
+
+	rdoRuntime::RDOFuzzyValue fuzzy_value2(*fuzzy_type1);
+	fuzzy_value2.append(10, 1.0);
+
+	fuzzy_value1 = fuzzy_value1 + fuzzy_value2;
+
+	std::string str1 = fuzzy_value1.defuzzyfication().getAsString();
+
+	int i = 1;
+
+/*
+	rdoRuntime::RDOFuzzySetDefinitionRangeDiscret* fuzzy_setDefinition1 = new rdoRuntime::RDOFuzzySetDefinitionRangeDiscret( m_parser->runtime() );
+	fuzzy_setDefinition1->append(1, 7);
+	rdoRuntime::RDOFuzzyType* fuzzy_type1  = new rdoRuntime::RDOFuzzyType( fuzzy_setDefinition1 );
+
+	rdoRuntime::RDOFuzzyValue fuzzy_value1(*fuzzy_type1);
+	fuzzy_value1.append(3, 0.9)(4, 1.0)(6, 0.6);
+
+	rdoRuntime::RDOFuzzyValue fuzzy_value2(*fuzzy_type1);
+	fuzzy_value2.append(3, 0.7)(5, 1.0)(6, 0.4);
+
+	rdoRuntime::RDOValue rdo_value1( fuzzy_value1 );
+	rdoRuntime::RDOValue rdo_value2( fuzzy_value2 );
+	rdoRuntime::RDOValue rdo_value3 = rdo_value1 && rdo_value2;
+*/
+/*
 	// Тут надо запросить все типы ресурсов у парного РДО,
 	// вызвав с помощью корбы некий метод, который вернёт кучу структур
 	// с описанием RTP и насоздавать этих типов
@@ -34,8 +66,8 @@ void RDOParserCorbaRTP::parse()
 		// Создали новый тип ресурса
 		rdoMBuilder::RDOResType rtp( "MyRTP" );
 		// Наполнили его параметрами
-		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::RDOValue::rvt_int) );
-		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::RDOValue::rvt_int) );
+		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::g_int) );
+		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::g_int) );
 		// Добавили его к списку существующих
 		if ( rtpList.append( rtp ) )
 		{
@@ -46,6 +78,7 @@ void RDOParserCorbaRTP::parse()
 			// Неудача, возможно, тип с таким именем уже есть
 		}
 	}
+*/
 }
 
 // ----------------------------------------------------------------------------

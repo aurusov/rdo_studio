@@ -1,6 +1,8 @@
 #ifndef RDO_RANDOM_DISTRIBUTION_H
 #define RDO_RANDOM_DISTRIBUTION_H
 
+#include "rdo_value.h"
+
 namespace rdoRuntime
 {
 
@@ -100,11 +102,14 @@ public:
 // ----------------------------------------------------------------------------
 class RandGeneratorCommonNext
 {
+public:
+	virtual ~RandGeneratorCommonNext()
+	{
+	}
+	virtual RDOValue next() = 0;
+
 protected:
 	RandGeneratorCommonNext() {}
-
-public:
-	virtual RDOValue next() = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -196,6 +201,9 @@ public:
 	RandGeneratorEnumerative():
 		RandGeneratorCommonNext(),
 		m_curr( 0 )
+	{
+	}
+	virtual ~RandGeneratorEnumerative()
 	{
 	}
 

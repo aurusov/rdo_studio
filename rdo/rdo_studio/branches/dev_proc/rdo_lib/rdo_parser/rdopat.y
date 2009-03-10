@@ -151,14 +151,20 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
-%token RDO_QUOTED_IDENTIF				430
-%token RDO_QUOTED_IDENTIF_BAD			431
+%token RDO_STRING_CONST					430
+%token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
 %token RDO_Select						433
 %token RDO_Size							434
 %token RDO_Empty						435
 %token RDO_not							436
 %token RDO_UMINUS						437
+%token RDO_string						438
+%token RDO_bool							439
+%token RDO_BOOL_CONST					440
+%token RDO_Fuzzy						441
+%token RDO_Fuzzy_Term					442
+%token RDO_eq							443
 
 %{
 #include "pch.h"
@@ -198,20 +204,20 @@ pat_main:
 			};
 
 pat_header:	RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace {
-				std::string name = *reinterpret_cast<std::string*>($2);
-				$$ = (int)(new RDOPatternOperation( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternOperation( PARSER, name->src_info(), $4 != 0 );
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {
-				std::string name = *reinterpret_cast<std::string*>($2);
-				$$ = (int)(new RDOPatternIrregEvent( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternIrregEvent( PARSER, name->src_info(), $4 != 0 );
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace {
-				std::string name = *reinterpret_cast<std::string*>($2);
-				$$ = (int)(new RDOPatternRule( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternRule( PARSER, name->src_info(), $4 != 0 );
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace {
-				std::string name = *reinterpret_cast<std::string*>($2);
-				$$ = (int)(new RDOPatternKeyboard( PARSER, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), $4 != 0 ));
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternKeyboard( PARSER, name->src_info(), $4 != 0 );
 			};
 			| RDO_Pattern error {
 				PARSER->error( @2, "Ожидается имя образца" );
@@ -232,22 +238,22 @@ pat_params_begin: pat_header RDO_Parameters { $$ = $1; };
 
 pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
 				RDOPATPattern*   pattern    = reinterpret_cast<RDOPATPattern*>($1);
-				std::string      param_name = *reinterpret_cast<std::string*>($2);
+				RDOValue*        param_name = reinterpret_cast<RDOValue*>($2);
 				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, param_name->src_info(), param_type );
 				pattern->add( param );
-				if ( param_type->getType() == rdoRuntime::RDOValue::rvt_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name.c_str() );
+				if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
+					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name->value().getIdentificator().c_str() );
 				}
 			}
 			| pat_params RDO_IDENTIF_COLON param_type {
 				RDOPATPattern*   pattern    = reinterpret_cast<RDOPATPattern*>($1);
-				std::string      param_name = *reinterpret_cast<std::string*>($2);
+				RDOValue*        param_name = reinterpret_cast<RDOValue*>($2);
 				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, param_name->src_info(), param_type );
 				pattern->add( param );
-				if ( param_type->getType() == rdoRuntime::RDOValue::rvt_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name.c_str() );
+				if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
+					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name->value().getIdentificator().c_str() );
 				}
 			}
 			| pat_params_begin error {
@@ -305,9 +311,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -326,9 +332,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -352,9 +358,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
 							break;
 						}
 					}
@@ -370,9 +376,9 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
 							break;
 						}
 					}
@@ -383,15 +389,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -410,15 +413,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -437,11 +437,8 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_begin_pos = @3;
 							std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
 							rdo::toLower( str );
@@ -462,7 +459,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -481,11 +478,8 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_begin_pos = @3;
 							std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
 							rdo::toLower( str );
@@ -506,7 +500,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -530,15 +524,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
 							break;
 						}
 					}
@@ -554,15 +545,12 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_IE  : 
 						case RDOPATPattern::PT_Rule: {
-							std::string rel_name  = *reinterpret_cast<std::string*>($2);
-							std::string type_name = *reinterpret_cast<std::string*>($3);
-							YYLTYPE type_pos = @3;
-							type_pos.last_line   = type_pos.first_line;
-							type_pos.last_column = type_pos.first_column + type_name.length();
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							pattern->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(type_pos, type_name), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
+							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
 							break;
 						}
 					}
@@ -573,16 +561,16 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string  rel_name      = *reinterpret_cast<std::string*>($2);
-							std::string  type_name     = *reinterpret_cast<std::string*>($3);
-							std::string* convert_begin = reinterpret_cast<std::string*>($4);
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							std::string convert_begin = reinterpret_cast<RDOValue*>($4)->value().getIdentificator();
 							YYLTYPE convertor_begin_pos = @4;
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
-							convertor_begin_pos.last_column = convertor_begin_pos.first_column + convert_begin->length();
+							convertor_begin_pos.last_column = convertor_begin_pos.first_column + convert_begin.length();
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( *convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -601,16 +589,16 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							std::string  rel_name      = *reinterpret_cast<std::string*>($2);
-							std::string  type_name     = *reinterpret_cast<std::string*>($3);
-							std::string* convert_begin = reinterpret_cast<std::string*>($4);
+							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
+							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+							std::string convert_begin = reinterpret_cast<RDOValue*>($4)->value().getIdentificator();
 							YYLTYPE convertor_begin_pos = @4;
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
-							convertor_begin_pos.last_column = convertor_begin_pos.first_column + convert_begin->length();
+							convertor_begin_pos.last_column = convertor_begin_pos.first_column + convert_begin.length();
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( RDOParserSrcInfo(@2, rel_name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, type_name), pattern->StrToStatus( *convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
 							break;
 						}
 						case RDOPATPattern::PT_IE: {
@@ -817,12 +805,12 @@ pat_time:	pat_common_choice RDO_Body {
 
 pat_body:	pat_time RDO_IDENTIF {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				std::string    name    = *reinterpret_cast<std::string*>($2);
+				std::string    name    = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
 			}
 			| pat_convert RDO_IDENTIF {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				std::string    name    = *reinterpret_cast<std::string*>($2);
+				std::string    name    = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
 			}
 			| pat_time error {
@@ -1032,7 +1020,7 @@ pat_params_set:	/* empty */	{
 				|	pat_params_set RDO_IDENTIF_set fun_arithm {
 					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
 					RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($3);
-					std::string     param_name = *reinterpret_cast<std::string*>($2);
+					std::string     param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					YYLTYPE param_name_pos = @2;
 					param_name_pos.last_line   = param_name_pos.first_line;
 					param_name_pos.last_column = param_name_pos.first_column + param_name.length();
@@ -1043,7 +1031,7 @@ pat_params_set:	/* empty */	{
 				}
 				|	pat_params_set RDO_IDENTIF_NoChange {
 					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
-					std::string     param_name = *reinterpret_cast<std::string*>($2);
+					std::string     param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					YYLTYPE param_name_pos = @2;
 					param_name_pos.last_line   = param_name_pos.first_line;
 					param_name_pos.last_column = param_name_pos.first_column + param_name.length();
@@ -1058,70 +1046,89 @@ pat_pattern:	pat_convert RDO_End {
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
-param_type:		RDO_integer param_int_diap param_int_default_val {
-					RDORTPIntDiap* diap = reinterpret_cast<RDORTPIntDiap*>($2);
-					RDORTPIntDefVal* dv = reinterpret_cast<RDORTPIntDefVal*>($3);
+param_type:		RDO_integer param_int_diap param_int_default_val
+				{
+					RDORTPIntDiap*    diap = reinterpret_cast<RDORTPIntDiap*>($2);
+					RDORTPDefVal*       dv = reinterpret_cast<RDORTPDefVal*>($3);
 					RDORTPIntParamType* rp = new RDORTPIntParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
 					$$ = (int)rp;
 				}
-				| RDO_real param_real_diap param_real_default_val {
-					RDORTPRealDiap* diap = reinterpret_cast<RDORTPRealDiap*>($2);
-					RDORTPRealDefVal* dv = reinterpret_cast<RDORTPRealDefVal*>($3);
+				| RDO_real param_real_diap param_real_default_val
+				{
+					RDORTPRealDiap*    diap = reinterpret_cast<RDORTPRealDiap*>($2);
+					RDORTPDefVal*        dv = reinterpret_cast<RDORTPDefVal*>($3);
 					RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
 					$$ = (int)rp;
 				}
-				| param_enum param_enum_default_val {
+				| RDO_string param_string_default_val
+				{
+					RDORTPDefVal*          dv = reinterpret_cast<RDORTPDefVal*>($2);
+					RDORTPStringParamType* rp = new RDORTPStringParamType( PARSER->getLastParsingObject(), dv, RDOParserSrcInfo( @1, @2 ) );
+					$$ = (int)rp;
+				}
+				| RDO_bool param_bool_default_val
+				{
+					RDORTPDefVal*        dv = reinterpret_cast<RDORTPDefVal*>($2);
+					RDORTPBoolParamType* rp = new RDORTPBoolParamType( PARSER->getLastParsingObject(), dv, RDOParserSrcInfo( @1, @2 ) );
+					$$ = (int)rp;
+				}
+				| param_enum param_enum_default_val
+				{
 					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 0;
-					RDORTPEnum* enu      = reinterpret_cast<RDORTPEnum*>($1);
-					RDORTPEnumDefVal* dv = reinterpret_cast<RDORTPEnumDefVal*>($2);
-					if ( dv->isExist() ) {
-						enu->findEnumValueWithThrow( dv->src_pos(), dv->getEnumValue() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
+					RDORTPEnum*  enu = reinterpret_cast<RDORTPEnum*>($1);
+					RDORTPDefVal* dv = reinterpret_cast<RDORTPDefVal*>($2);
+					if ( dv->isExist() )
+					{
+						enu->findEnumValueWithThrow( dv->value().src_pos(), dv->value().value().getAsString() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
 					}
 					RDORTPEnumParamType* rp = new RDORTPEnumParamType( PARSER->getLastParsingObject(), enu, dv, RDOParserSrcInfo( @1, @2 ) );
 					$$ = (int)rp;
 				}
-				| param_such_as {
-					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+				| param_such_as
+				{
+					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1 );
 					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructSuchAs( src_info );
+					$$ = (int)param->getType()->constructorSuchAs( src_info );
 				}
-				| param_such_as '=' RDO_INT_CONST {
-					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+				| param_such_as '=' RDO_INT_CONST
+				{
+					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
 					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructSuchAs( (int)$3, src_info, RDOParserSrcInfo( @3 ) );
+					$$ = (int)param->getType()->constructorSuchAs( src_info, *reinterpret_cast<RDOValue*>($3) );
 				}
-				| param_such_as '=' RDO_REAL_CONST {
-					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+				| param_such_as '=' RDO_REAL_CONST
+				{
+					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
 					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructSuchAs( *(double*)$3, src_info, RDOParserSrcInfo( @3 ) );
+					$$ = (int)param->getType()->constructorSuchAs( src_info, *reinterpret_cast<RDOValue*>($3) );
 				}
-				| param_such_as '=' RDO_IDENTIF {
-					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+				| param_such_as '=' RDO_IDENTIF
+				{
+					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
 					RDOParserSrcInfo src_info( @1, @3 );
 					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructSuchAs( *(std::string*)$3, src_info, RDOParserSrcInfo( @3 ) );
+					$$ = (int)param->getType()->constructorSuchAs( src_info, *reinterpret_cast<RDOValue*>($3) );
 				}
-				| param_such_as '=' error {
+				| param_such_as '=' error
+				{
 					PARSER->error( "Ожидается зачение по-умолчанию" );
 				}
-				| param_such_as error {
+				| param_such_as error
+				{
 					PARSER->error( "Ожидается окончание описания параметра-ссылки, например, зачение по-умолчанию" );
 				};
 /*
 				| RDO_integer error {
 					PARSER->error( @2, "Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию." );
-//					PARSER->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END );
 				}
 				| RDO_real error {
 					PARSER->error( @2, "Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию." );
-//					PARSER->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_REAL_PARAM_END );
 				}
 				| param_enum error {
 					PARSER->error( @2, "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
-//					PARSER->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END );
 				};
 */
 param_int_diap:	/* empty */ {
@@ -1132,17 +1139,17 @@ param_int_diap:	/* empty */ {
 					$$ = (int)diap;
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					RDORTPIntDiap* diap = new RDORTPIntDiap( PARSER, $2, $4, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPIntDiap* diap = new RDORTPIntDiap( PARSER, reinterpret_cast<RDOValue*>($2)->value().getInt(), reinterpret_cast<RDOValue*>($4)->value().getInt(), RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST {
-					PARSER->error( @2, rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+					PARSER->error( @2, "Требуется целочисленный диапазон, указан вещественный" );
 				}
 				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST {
-					PARSER->error( @2, rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+					PARSER->error( @2, "Требуется целочисленный диапазон, указан вещественный" );
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST {
-					PARSER->error( @4, rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+					PARSER->error( @4, "Требуется целочисленный диапазон, указан вещественный" );
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error {
 					PARSER->error( @4, "Диапазон задан неверно" );
@@ -1152,37 +1159,36 @@ param_int_diap:	/* empty */ {
 				}
 				| '[' error {
 					PARSER->error( @2, "Диапазон задан неверно" );
-//					PARSER->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 param_real_diap:	/* empty */ {
 					YYLTYPE pos = @0;
 					pos.first_line   = pos.last_line;
 					pos.first_column = pos.last_column;
-					RDORTPRealDiap* diap = new RDORTPRealDiap(PARSER, pos );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, pos );
 					$$ = (int)diap;
 				}
 				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					double min = *reinterpret_cast<double*>($2);
-					double max = *reinterpret_cast<double*>($4);
+					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
 					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					double min = *reinterpret_cast<double*>($2);
-					double max = $4;
+					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
 					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					double min = $2;
-					double max = *reinterpret_cast<double*>($4);
+					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
 					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					double min = $2;
-					double max = $4;
+					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
+					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
 					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
@@ -1206,21 +1212,16 @@ param_real_diap:	/* empty */ {
 				}
 				| '[' error {
 					PARSER->error( @2, "Диапазон задан неверно" );
-//					PARSER->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 param_int_default_val:	/* empty */ {
-						YYLTYPE pos = @0;
-						pos.first_line   = pos.last_line;
-						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPIntDefVal(PARSER, pos));
+						$$ = (int)new RDORTPDefVal(PARSER);
 					}
 					| '=' RDO_INT_CONST {
-						$$ = (int)(new RDORTPIntDefVal(PARSER, $2, RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2) );
 					}
 					| '=' RDO_REAL_CONST {
-						// Целое число инициализируется вещественным: %f
-						PARSER->error( @2, rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
+						PARSER->error( @2, rdo::format("Целое число инициализируется вещественным: %f", reinterpret_cast<RDOValue*>($2)->value().getDouble()) );
 					}
 					| '=' {
 						PARSER->error( @1, "Не указано значение по-умолчанию для целого типа" );
@@ -1230,16 +1231,13 @@ param_int_default_val:	/* empty */ {
 					};
 
 param_real_default_val:	/* empty */ {
-						YYLTYPE pos = @0;
-						pos.first_line   = pos.last_line;
-						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPRealDefVal(PARSER, pos));
+						$$ = (int)new RDORTPDefVal(PARSER);
 					}
 					| '=' RDO_REAL_CONST {
-						$$ = (int)(new RDORTPRealDefVal(PARSER, *((double *)$2), RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
 					}
 					| '=' RDO_INT_CONST {
-						$$ = (int)(new RDORTPRealDefVal(PARSER, $2, RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
 					}
 					| '=' {
 						PARSER->error( @1, "Не указано значение по-умолчанию для вещественного типа" );
@@ -1248,10 +1246,44 @@ param_real_default_val:	/* empty */ {
 						PARSER->error( @2, "Неверное значение по-умолчанию для вещественного типа" );
 					};
 
+param_string_default_val:	/* empty */
+					{
+						$$ = (int)new RDORTPDefVal(PARSER);
+					}
+					| '=' RDO_STRING_CONST
+					{
+						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
+					}
+					| '='
+					{
+						PARSER->error( @1, "Не указано значение по-умолчанию для строчного типа" );
+					}
+					| '=' error
+					{
+						PARSER->error( @2, "Неверное значение по-умолчанию для строчного типа" );
+					};
+
+param_bool_default_val:	/* empty */
+					{
+						$$ = (int)new RDORTPDefVal(PARSER);
+					}
+					| '=' RDO_BOOL_CONST
+					{
+						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
+					}
+					| '='
+					{
+						PARSER->error( @1, "Не указано значение по-умолчанию для булевского типа" );
+					}
+					| '=' error
+					{
+						PARSER->error( @2, "Неверное значение по-умолчанию для булевского типа" );
+					};
+
 param_enum:	'(' param_enum_list ')' {
 				RDORTPEnum* enu = reinterpret_cast<RDORTPEnum*>($2);
 				enu->setSrcPos( @1, @3 );
-				enu->setSrcText( enu->src_text() + ")" );
+				enu->setSrcText( enu->getEnums().asString() );
 				$$ = $2;
 			}
 			| '(' param_enum_list {
@@ -1259,28 +1291,25 @@ param_enum:	'(' param_enum_list ')' {
 			};
 
 param_enum_list: RDO_IDENTIF {
-					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *(std::string *)$1 );
-					std::string* first = reinterpret_cast<std::string*>($1);
-					enu->setSrcText( "(" + *first );
+					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
+					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
 					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 1;
 					$$ = (int)enu;
 				}
 				| param_enum_list ',' RDO_IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
-						std::string next = *reinterpret_cast<std::string*>($3);
-						enu->add( RDOParserSrcInfo(@3, next) );
-						enu->setSrcText( enu->src_text() + ", " + next );
+						enu->add( *reinterpret_cast<RDOValue*>($3) );
 						$$ = (int)enu;
 					} else {
-						PARSER->error( "Ошибка в описании значений перечислимого типа" );
+						PARSER->error( @3, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list RDO_IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
-						PARSER->error( rdo::format("Пропущена запятая перед: %s", ((std::string*)$2)->c_str()) );
+						PARSER->error( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
 					} else {
-						PARSER->error( "Ошибка в описании значений перечислимого типа" );
+						PARSER->error( @2, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list error {
@@ -1308,13 +1337,10 @@ param_enum_list: RDO_IDENTIF {
 				};
 
 param_enum_default_val:	/* empty */ {
-						YYLTYPE pos = @0;
-						pos.first_line   = pos.last_line;
-						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPEnumDefVal(PARSER, pos));
+						$$ = (int)new RDORTPDefVal(PARSER);
 					}
 					| '=' RDO_IDENTIF {
-						$$ = (int)(new RDORTPEnumDefVal( PARSER, *(std::string*)$2, RDOParserSrcInfo( @1, @2 ) ));
+						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
 					}
 					| '=' {
 						PARSER->error( @1, "Не указано значение по-умолчанию для перечислимого типа" );
@@ -1324,20 +1350,20 @@ param_enum_default_val:	/* empty */ {
 					};
 
 param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
-					std::string type  = *reinterpret_cast<std::string*>($2);
-					std::string param = *reinterpret_cast<std::string*>($4);
+					std::string type  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
+					std::string param = reinterpret_cast<RDOValue*>($4)->value().getIdentificator();
 					const RDORTPResType* const rt = PARSER->findRTPResType( type );
 					if ( !rt ) {
-						PARSER->error( @2, rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
+						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
 					}
 					const RDORTPParam* const rp = rt->findRTPParam( param );
 					if ( !rp ) {
-						PARSER->error( @4, rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type.c_str(), param.c_str() );
+						PARSER->error( @4, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", type.c_str(), param.c_str()) );
 					}
 					$$ = (int)rp;
 				}
 				| RDO_such_as RDO_IDENTIF {
-					std::string constName = *reinterpret_cast<std::string*>($2);
+					std::string constName = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					const RDOFUNConstant* const cons = PARSER->findFUNConstant( constName );
 					if ( !cons ) {
 						PARSER->error( @2, rdo::format("Ссылка на несуществующую константу: %s", constName.c_str()) );
@@ -1345,28 +1371,28 @@ param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 					$$ = (int)cons->getDescr();
 				}
 				| RDO_such_as RDO_IDENTIF '.' {
-					std::string type = *reinterpret_cast<std::string*>($2);
+					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					const RDORTPResType* const rt = PARSER->findRTPResType( type );
 					if ( !rt ) {
-						PARSER->error( @2, rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
+						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
 					} else {
 						PARSER->error( @3, "Не указан параметер" );
 					}
 				}
 				| RDO_such_as RDO_IDENTIF '.' error {
-					std::string type = *reinterpret_cast<std::string*>($2);
+					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					const RDORTPResType* const rt = PARSER->findRTPResType( type );
 					if ( !rt ) {
-						PARSER->error( @2, rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
+						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
 					} else {
 						PARSER->error( @4, "Ошибка при указании параметра" );
 					}
 				}
 				| RDO_such_as RDO_IDENTIF error {
-					std::string type = *reinterpret_cast<std::string*>($2);
+					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					const RDORTPResType* const rt = PARSER->findRTPResType( type );
 					if ( !rt ) {
-						PARSER->error( @2, rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
+						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
 					} else {
 						PARSER->error( @2, "После имени типа должен быть указан параметер через точку" );
 					}
@@ -1379,72 +1405,77 @@ param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_neq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
-			| fun_arithm '<' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
-			| fun_arithm '>' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_leq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_geq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| fun_logic RDO_and fun_logic     { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
-			| fun_logic RDO_or fun_logic      { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
-			| '[' fun_logic ']' {
+fun_logic_eq: '='    { $1 = RDO_eq; }
+			| RDO_eq { $1 = RDO_eq; };
+
+fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) == *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) != *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  '<'           fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <  *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  '>'           fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >  *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <= *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >= *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_logic   RDO_and       fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) && *reinterpret_cast<RDOFUNLogic*>($3));   }
+			| fun_logic   RDO_or        fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) || *reinterpret_cast<RDOFUNLogic*>($3));   }
+			| fun_arithm                             { $$ = (int)new RDOFUNLogic( *reinterpret_cast<RDOFUNArithm*>($1) );                        }
+			| fun_group
+			| fun_select_logic
+			| '[' fun_logic ']'
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "[" + logic->src_text() + "]" );
 				$$ = $2;
 			}
-			| '(' fun_logic ')' {
+			| '(' fun_logic ')'
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "(" + logic->src_text() + ")" );
 				$$ = $2;
 			}
-			| '[' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			}
-			| '(' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			}
-			| RDO_not fun_logic {
+			| RDO_not fun_logic
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				RDOFUNLogic* logic_not = logic->operator_not();
 				logic_not->setSrcPos( @1, @2 );
 				logic_not->setSrcText( "not " + logic->src_text() );
 				$$ = (int)logic_not;
 			}
-			| fun_group {
+			| '[' fun_logic error {
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			}
-			| fun_select_logic {
+			| '(' fun_logic error {
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			};
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			| '(' fun_arithm ')' {
+fun_arithm:	  RDO_INT_CONST                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_REAL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_BOOL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_STRING_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF                   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF '.' RDO_IDENTIF   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
+			| fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm_func_call
+			| fun_select_arithm
+			| '(' fun_arithm ')'
+			{
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
 				arithm->setSrcPos( @1, @3 );
 				arithm->setSrcText( "(" + arithm->src_text() + ")" );
 				$$ = $2;
 			}
-			| fun_arithm_func_call {
-			}
-			| fun_select_arithm {
-			}
-			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
-			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
-			| '-' fun_arithm %prec RDO_UMINUS {
+			| '-' fun_arithm %prec RDO_UMINUS
+			{
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOValue(reinterpret_cast<RDOFUNArithm*>($2)->type(), info), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ) );
 			};
 
 // ----------------------------------------------------------------------------
@@ -1452,7 +1483,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							RDOFUNParams* fun = new RDOFUNParams( PARSER );
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @3 );
 							fun->setSrcText( fun_name + "()" );
@@ -1461,7 +1492,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 						}
 						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
 							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
@@ -1502,8 +1533,8 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						RDOValue* type_name  = reinterpret_cast<RDOValue*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
 						PARSER->error( @3, "Ожидается имя типа" );
@@ -1539,9 +1570,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
-						select->setSrcText( "Select(" + type_name + ": " );
+						RDOValue* type_name  = reinterpret_cast<RDOValue*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
+						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {

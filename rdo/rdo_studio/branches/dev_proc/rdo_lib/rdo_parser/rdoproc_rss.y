@@ -151,14 +151,20 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
-%token RDO_QUOTED_IDENTIF				430
-%token RDO_QUOTED_IDENTIF_BAD			431
+%token RDO_STRING_CONST					430
+%token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
 %token RDO_Select						433
 %token RDO_Size							434
 %token RDO_Empty						435
 %token RDO_not							436
 %token RDO_UMINUS						437
+%token RDO_string						438
+%token RDO_bool							439
+%token RDO_BOOL_CONST					440
+%token RDO_Fuzzy						441
+%token RDO_Fuzzy_Term					442
+%token RDO_eq							443
 
 %{
 #include "pch.h"
@@ -210,162 +216,191 @@ dpt_process_begin:	RDO_Process;
 dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	RDO_GENERATE RDO_INT_CONST 
-					{int i=0;}
+dpt_process_line:	RDO_IDENTIF {
+						PARSER->error( rdo::format("Неизвестный оператор '%s'", reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+					}
+					| RDO_GENERATE fun_arithm {
+					}
+					| RDO_GENERATE error
+					{
+						PARSER->error( @2, "Ошибка в арифметическом выражении" )
+					}
 					| RDO_TERMINATE {
 					}
 					| RDO_ADVANCE RDO_INT_CONST
-					{int i=0;}
+					{
+						int i=0;
+					}
 					| RDO_RELEASE dpt_release_param {
 					}
 					| RDO_SEIZE dpt_seize_param {
 					};
-dpt_seize_param:    // empty { PARSER->error(rdo::format("ожидается имя ресурса")); }   
+
+dpt_seize_param:	// empty
+					{
+						PARSER->error(rdo::format("Ожидается имя ресурса"));
+					}
 					| RDO_IDENTIF {
-					// Имя ресурса
-					std::string res_name	= *reinterpret_cast<std::string*>($1);
-					const RDOParserSrcInfo& info	= @1;	
-					// Получили список всех ресурсов
-					rdoMBuilder::RDOResourceList rssList( PARSER );
-					rdoMBuilder::RDOResType rtp;
+						// Имя ресурса
+						std::string res_name         = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						const RDOParserSrcInfo& info = @1;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
+						rdoMBuilder::RDOResType rtp;
 						//Если ресурс существует берем его тип и проверяем
 						if (rssList[res_name].exist()) {
-						rtp = rssList[res_name].getType();
-						RDOPROCBlockForSeize::checkType( PARSER, rtp, info);
-						//RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							rtp = rssList[res_name].getType();
+							RDOPROCBlockForSeize::checkType(PARSER, rtp, info);
+							//RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
 						}
-						else{
-						//Ресурс не найден, сформировать имя типа по имени ресурса
-						// Сформировать имя типа по имени ресурса
-						std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
-						// Получили список всех типов ресурсов
-						rdoMBuilder::RDOResTypeList rtpList( PARSER );
-							// Нашли тип ресурса 
-							if ( rtpList[rtp_name].exist() )	{
-							rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-							RDOPROCBlockForSeize::checkType( PARSER, rtp_, info);
-							RDOPROCBlockForSeize::createRes( PARSER, rtp_, res_name);
+						else
+						{
+							//Ресурс не найден, сформировать имя типа по имени ресурса
+							// Сформировать имя типа по имени ресурса
+							std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+							// Получили список всех типов ресурсов
+							rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса
+							if ( rtpList[rtp_name].exist() )
+							{
+								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+								RDOPROCBlockForSeize::checkType(PARSER, rtp_, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
 							}
-							else{
-							rtp = RDOPROCBlockForSeize::createType( PARSER, rtp_name, info);
-							RDOPROCBlockForSeize::createRes( PARSER, rtp, res_name);
+							else
+							{
+								rtp = RDOPROCBlockForSeize::createType(PARSER, rtp_name, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp, res_name);
 							}
 						}
 					}
-					| RDO_IDENTIF error {
-					PARSER->error( @2, "Ошибка в Имени ресурса" );
-					};
-					
-dpt_release_param:  // empty { PARSER->error(rdo::format("ожидается имя ресурса")); }   
-					| RDO_IDENTIF { 
-					// Имя ресурса
-					std::string res_name	= *reinterpret_cast<std::string*>($1);
-					const RDOParserSrcInfo& info	= @1;	
-					// Получили список всех ресурсов
-					rdoMBuilder::RDOResourceList rssList( PARSER );
-					rdoMBuilder::RDOResType rtp;
-						//Если ресурс существует берем его тип и проверяем
-						if (rssList[res_name].exist()) {
-						rtp = rssList[res_name].getType();
-						RDOPROCBlockForSeize::checkType( PARSER, rtp, info);
-						//RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
-						}
-						else{
-						//Ресурс не найден, сформировать имя типа по имени ресурса
-						// Сформировать имя типа по имени ресурса
-						std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
-						// Получили список всех типов ресурсов
-						rdoMBuilder::RDOResTypeList rtpList( PARSER );
-							// Нашли тип ресурса 
-							if ( rtpList[rtp_name].exist() )	{
-							rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-							RDOPROCBlockForSeize::checkType( PARSER, rtp_, info);
-							RDOPROCBlockForSeize::createRes( PARSER, rtp_, res_name);
-							}
-							else{
-							rtp = RDOPROCBlockForSeize::createType( PARSER, rtp_name, info);
-							RDOPROCBlockForSeize::createRes( PARSER, rtp, res_name);
-							}
-						}
-					}
-					| RDO_IDENTIF error {
-					PARSER->error( @2, "Ошибка в Имени ресурса" );
-					};
-			
-			
-dpt_process_end:	dpt_process RDO_End	{
+					| RDO_IDENTIF error
+					{
+						PARSER->error( @2, "Ошибка в имени ресурса" );
 					};
 
+dpt_release_param:	// empty
+					{
+						PARSER->error(rdo::format("Ожидается имя ресурса"));
+					}
+					| RDO_IDENTIF {
+						// Имя ресурса
+						std::string res_name          = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						const RDOParserSrcInfo& info  = @1;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
+						rdoMBuilder::RDOResType rtp;
+						//Если ресурс существует берем его тип и проверяем
+						if (rssList[res_name].exist())
+						{
+							rtp = rssList[res_name].getType();
+							RDOPROCBlockForSeize::checkType(PARSER, rtp, info);
+							//RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+						}
+						else
+						{
+							//Ресурс не найден, сформировать имя типа по имени ресурса
+							// Сформировать имя типа по имени ресурса
+							std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+							// Получили список всех типов ресурсов
+							rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса
+							if ( rtpList[rtp_name].exist() )
+							{
+								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+								RDOPROCBlockForSeize::checkType(PARSER, rtp_, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+							}
+							else
+							{
+								rtp = RDOPROCBlockForSeize::createType(PARSER, rtp_name, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp, res_name);
+							}
+						}
+					}
+					| RDO_IDENTIF error
+					{
+						PARSER->error(@2, "Ошибка в имени ресурса");
+					};
+
+dpt_process_end:	dpt_process RDO_End
+					{
+					};
 
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_neq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
-			| fun_arithm '<' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
-			| fun_arithm '>' fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_leq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| fun_arithm RDO_geq fun_arithm   { $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| fun_logic RDO_and fun_logic     { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
-			| fun_logic RDO_or fun_logic      { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
-			| '[' fun_logic ']' {
+fun_logic_eq: '='    { $1 = RDO_eq; }
+			| RDO_eq { $1 = RDO_eq; };
+
+fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) == *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) != *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  '<'           fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <  *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  '>'           fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >  *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <= *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >= *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_logic   RDO_and       fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) && *reinterpret_cast<RDOFUNLogic*>($3));   }
+			| fun_logic   RDO_or        fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) || *reinterpret_cast<RDOFUNLogic*>($3));   }
+			| fun_arithm                             { $$ = (int)new RDOFUNLogic( *reinterpret_cast<RDOFUNArithm*>($1) );                        }
+			| fun_group
+			| fun_select_logic
+			| '[' fun_logic ']'
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "[" + logic->src_text() + "]" );
 				$$ = $2;
 			}
-			| '(' fun_logic ')' {
+			| '(' fun_logic ')'
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "(" + logic->src_text() + ")" );
 				$$ = $2;
 			}
-			| '[' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			}
-			| '(' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			}
-			| RDO_not fun_logic {
+			| RDO_not fun_logic
+			{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				RDOFUNLogic* logic_not = logic->operator_not();
 				logic_not->setSrcPos( @1, @2 );
 				logic_not->setSrcText( "not " + logic->src_text() );
 				$$ = (int)logic_not;
 			}
-			| fun_group {
+			| '[' fun_logic error {
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			}
-			| fun_select_logic {
+			| '(' fun_logic error {
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			};
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			| '(' fun_arithm ')' {
+fun_arithm:	  RDO_INT_CONST                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_REAL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_BOOL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_STRING_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF                   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF '.' RDO_IDENTIF   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
+			| fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm_func_call
+			| fun_select_arithm
+			| '(' fun_arithm ')'
+			{
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
 				arithm->setSrcPos( @1, @3 );
 				arithm->setSrcText( "(" + arithm->src_text() + ")" );
 				$$ = $2;
 			}
-			| fun_arithm_func_call {
-			}
-			| fun_select_arithm {
-			}
-			| RDO_IDENTIF '.' RDO_IDENTIF {
-				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
-			}
-			| RDO_INT_CONST               { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| RDO_REAL_CONST              { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| RDO_IDENTIF                 { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
-			| '-' fun_arithm %prec RDO_UMINUS {
+			| '-' fun_arithm %prec RDO_UMINUS
+			{
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOValue(reinterpret_cast<RDOFUNArithm*>($2)->type(), info), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ) );
 			};
 
 // ----------------------------------------------------------------------------
@@ -373,7 +408,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							RDOFUNParams* fun = new RDOFUNParams( PARSER );
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @3 );
 							fun->setSrcText( fun_name + "()" );
@@ -382,7 +417,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 						}
 						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
 							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
-							std::string fun_name = *reinterpret_cast<std::string*>($1);
+							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
@@ -423,8 +458,8 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
 						PARSER->error( @3, "Ожидается имя типа" );
@@ -460,9 +495,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						std::string type_name = *reinterpret_cast<std::string*>($3);
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
-						select->setSrcText( "Select(" + type_name + ": " );
+						RDOValue* type_name  = reinterpret_cast<RDOValue*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
+						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {

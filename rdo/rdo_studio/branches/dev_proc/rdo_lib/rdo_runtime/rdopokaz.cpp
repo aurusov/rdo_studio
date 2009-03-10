@@ -43,7 +43,7 @@ void RDOPMDWatchPar::notify( RDORuntimeObject* from, unsigned int message, void*
 
 std::string RDOPMDWatchPar::traceValue()
 {
-	return toString( m_currValue );
+	return rdo::toString( m_currValue );
 }
 
 bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
@@ -199,7 +199,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bo
 
 std::string RDOPMDWatchQuant::traceValue()
 {
-	return toString( m_currValue );
+	return rdo::toString( m_currValue );
 }
 
 bool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
@@ -231,7 +231,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if(m_logicCalc->calcValue( runtime ).getBool())
+		if(m_logicCalc->calcValue( runtime ).getAsBool())
 			newValue++;
 
 		runtime->popGroupFunc();
@@ -295,7 +295,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bo
 
 std::string RDOPMDWatchValue::traceValue()
 {
-	return toString( m_currValue );
+	return rdo::toString( m_currValue );
 }
 
 bool RDOPMDWatchValue::resetPokaz(RDOSimulator *sim)
@@ -348,7 +348,7 @@ bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 		return false;
 	}
 	getRuntime()->pushGroupFunc(res);
-	if ( m_logicCalc->calcValue( getRuntime() ).getBool() ) {
+	if ( m_logicCalc->calcValue( getRuntime() ).getAsBool() ) {
 		m_currValue = m_arithmCalc->calcValue( getRuntime() );
 		tracePokaz();
 //		runtime->getTracer()->writePokaz(runtime, this);

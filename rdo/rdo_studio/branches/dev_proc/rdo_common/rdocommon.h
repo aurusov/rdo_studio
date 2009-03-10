@@ -8,6 +8,18 @@
 
 namespace rdo {
 
+template< class T >
+T rmin( T v1, T v2 )
+{
+	return v1 <= v2 ? v1 : v2;
+}
+
+template< class T >
+T rmax( T v1, T v2 )
+{
+	return v1 >= v2 ? v1 : v2;
+}
+
 std::string format( const char* str, ... );
 std::string format( const char* str, va_list& params );
 std::string format( unsigned int resource, ... );
@@ -18,6 +30,44 @@ void trimLeft( std::string& str );
 void trimRight( std::string& str );
 std::string extractFilePath( const std::string& fileName );
 bool isFileExists( const std::string& fileName );
+
+template < class Arg > inline std::string toString( Arg value )
+{
+   std::ostringstream str;
+   str << value;
+   return str.str();
+}
+
+template < class Stor > void deleteAllObjects( Stor& storage )
+{
+	Stor::reverse_iterator it = storage.rbegin();
+	while ( it != storage.rend() ) {
+		delete *it;
+		it++;
+	}
+	storage.clear();
+}
+
+// ----------------------------------------------------------------------------
+// ---------- vector
+// ----------------------------------------------------------------------------
+template <class T>
+class vector: public std::vector<T>
+{
+public:
+	vector()
+	{
+	}
+	vector( const T& item )
+	{
+		push_back( item );
+	}
+	vector& operator() ( const T& item )
+	{
+		push_back( item );
+		return *this;
+	}
+};
 
 } // namespace rdo
 
@@ -92,26 +142,7 @@ enum RDOExitCode {
 struct RDOSyntaxError
 {
 	enum ErrorCode {
-		UNKNOWN                          = 1,
-		RTP_SECOND_RES_TYPE              = 1001, // Second appearance of the same resource type: %s-type_name
-		RTP_WAITING_FOR_PARAMS_KW        = 1002, // Waiting for $Parameters keyword
-		RTP_INVALID_SUCHAS_RES_TYPE      = 1003, // Invalid resource type in such_as: %s-type_name
-		RTP_INVALID_SUCHAS_PARAM         = 1004, // Invalid resource parameter in such_as: %s-type_name.%s-param_name
-		RTP_SECOND_ENUM_VALUE            = 1005, // Second appearance of the same value name: %s-enum_value
-		RTP_WRONG_ENUM_PARAM_VALUE       = 1006, // Wrong enumerate parameter value: %s-param_value
-		RTP_SECOND_PARAM_NAME            = 1007, // Second appearance of the same parameter name: %s-param_name
-		RTP_INVALID_DEFVAULT_INT         = 1008, // Invalid default value
-		RTP_INVALID_DEFVAULT_INT_AS_REAL = 1009, // Invalid default value
-		RTP_INVALID_DEFVAULT_REAL        = 1010, // Invalid default value
-		RTP_INVALID_DEFVAULT_ENUM        = 1011, // Invalid default value
-		RTP_INVALID_RANGE                = 1015, // Invalid range
-		RTP_INVALID_INT_RANGE_REAL       = 1016, // Invalid integer range: using real values
-		RTP_WAITING_FOR_INT_PARAM_END    = 1017, // Ending of description of integer parameter is expected
-		RTP_WAITING_FOR_REAL_PARAM_END   = 1018, // Ending of description of integer parameter is expected
-		RTP_WAITING_FOR_ENUM_PARAM_END   = 1019, // Ending of description of integer parameter is expected
-		RTP_INVALID_PARAM_TYPE           = 1020, // Invalid param type definition
-		RTP_WAITING_FOR_PARAM_DEFINITION = 1021, // Waiting for param definition
-		qq
+		UNKNOWN = 1,
 	};
 	ErrorCode   error_code;
 	std::string message;

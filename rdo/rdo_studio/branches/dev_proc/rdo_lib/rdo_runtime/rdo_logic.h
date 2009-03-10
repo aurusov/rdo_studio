@@ -220,7 +220,7 @@ private:
 	{
 		if ( m_condition )
 		{
-			return m_condition->calcValue( (RDORuntime*)sim ).getBool();
+			return m_condition->calcValue( (RDORuntime*)sim ).getAsBool();
 		}
 		else
 		{

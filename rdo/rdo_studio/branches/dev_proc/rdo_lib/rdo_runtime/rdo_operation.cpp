@@ -75,7 +75,7 @@ bool RDOOperation::choiceFrom( RDOSimulator* sim )
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	if ( haveAdditionalCondition ) {
-		if ( !additionalCondition->calcValue( static_cast<RDORuntime*>(sim) ).getBool() ) {
+		if ( !additionalCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool() ) {
 			return false;
 		}
 	}

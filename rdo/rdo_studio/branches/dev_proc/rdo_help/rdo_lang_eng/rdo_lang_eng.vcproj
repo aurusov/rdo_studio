@@ -82,7 +82,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\help_tools\hhc.bat $(SolutionDir) $(InputPath)&#x0D;&#x0A;"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
 						Outputs="RAO-language.chm"
 					/>
 				</FileConfiguration>
@@ -91,7 +91,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\help_tools\hhc.bat $(SolutionDir) $(InputPath)&#x0D;&#x0A;"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
 						Outputs="RAO-language.chm"
 					/>
 				</FileConfiguration>

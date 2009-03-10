@@ -1,6 +1,5 @@
 $Process
-	generate 200
-
+	generate 10
 	SEIZE	 ROBOT
 	ADVANCE  20
 	RELEASE  ROBOT 

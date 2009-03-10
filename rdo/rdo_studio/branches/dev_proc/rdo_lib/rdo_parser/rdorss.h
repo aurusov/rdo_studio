@@ -2,6 +2,7 @@
 #define RDORSS_RSS
 
 #include "rdoparser_object.h"
+#include "rdoparser_value.h"
 #include <rdoruntime_object.h>
 
 namespace rdoRuntime
@@ -24,16 +25,9 @@ class RDORTPParam;
 
 class RDORSSResource: public RDOParserObject, public RDOParserSrcInfo
 {
-protected:
-	const RDORTPResType* const resType;
-	const int                  number;  // in system
-	std::vector< rdoRuntime::RDOValue > values;
-	bool trace;
-
 public:
-	std::vector< const RDORTPParam* >::const_iterator currParam;
+	typedef std::vector< rdoRuntime::RDOValue > Params;
 
-public:
 	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType );
 
 	virtual rdoRuntime::RDOCalc* createCalc();
@@ -43,13 +37,24 @@ public:
 
 	int getNumber() const                      { return number;  }
 
-	const std::vector< rdoRuntime::RDOValue >& getValues() const { return values;  }
-	void addValue( const rdoRuntime::RDOValue& val )             { values.push_back( val ); }
+	const Params& params() const { return m_params;  }
+	void addParam( const RDOValue& param );
 
 	void writeModelStructure( std::ostream& stream ) const;
 
 	bool getTrace() const       { return trace;  }
 	void setTrace( bool value ) { trace = value; }
+	
+	bool defined() const;
+
+protected:
+	const RDORTPResType* const resType;
+	const int                  number;  // in system
+	Params                     m_params;
+	bool                       trace;
+
+private:
+	std::vector< const RDORTPParam* >::const_iterator m_currParam;
 };
 
 // ----------------------------------------------------------------------------

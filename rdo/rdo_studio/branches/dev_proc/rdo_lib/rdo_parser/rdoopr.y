@@ -151,14 +151,20 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
-%token RDO_QUOTED_IDENTIF				430
-%token RDO_QUOTED_IDENTIF_BAD			431
+%token RDO_STRING_CONST					430
+%token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
 %token RDO_Select						433
 %token RDO_Size							434
 %token RDO_Empty						435
 %token RDO_not							436
 %token RDO_UMINUS						437
+%token RDO_string						438
+%token RDO_bool							439
+%token RDO_BOOL_CONST					440
+%token RDO_Fuzzy						441
+%token RDO_Fuzzy_Term					442
+%token RDO_eq							443
 
 %{
 #include "pch.h"
@@ -197,19 +203,19 @@ opr_header:	RDO_Operations {
 			};
 
 opr_body:	opr_header RDO_IDENTIF_COLON RDO_IDENTIF {
-				RDOOperations* oprs = PARSER->getLastOperations();
-				std::string name = *reinterpret_cast<std::string*>($2);
-				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				RDOOPROperation* opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				RDOOperations* oprs    = PARSER->getLastOperations();
+				RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
+				RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
+				RDOOPROperation* opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
 				$$ = (int)opr;
 			}
 			| opr_param RDO_IDENTIF_COLON RDO_IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endParam( @1 );
-				RDOOperations* oprs = PARSER->getLastOperations();
-				std::string name = *reinterpret_cast<std::string*>($2);
-				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				opr = oprs->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				RDOOperations* oprs    = PARSER->getLastOperations();
+				RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
+				RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
+				opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
 				$$ = (int)opr;
 			}
 			| opr_header RDO_IDENTIF_COLON error {
@@ -223,36 +229,23 @@ opr_body:	opr_header RDO_IDENTIF_COLON RDO_IDENTIF {
 			};
 
 opr_keyb:	opr_body
-			| opr_keyb RDO_QUOTED_IDENTIF {
+			| opr_keyb RDO_STRING_CONST {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      key = *reinterpret_cast<std::string*>($2);
+				std::string      key = reinterpret_cast<RDOValue*>($2)->value().getString();
 				opr->addHotKey( key, @2 );
 			}
-			| opr_keyb '+' RDO_QUOTED_IDENTIF {
+			| opr_keyb '+' RDO_STRING_CONST {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      key = *reinterpret_cast<std::string*>($3);
+				std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
 				opr->addHotKey( key, @3 );
 			};
 
-opr_param:	opr_param RDO_IDENTIF {
-				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      param = *reinterpret_cast<std::string*>($2);
-				opr->addParam( param, @2 );
-			}
-			| opr_param RDO_INT_CONST {
-				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
-				int              param = $2;
-				opr->addParam( param, @2 );
-			}
-			| opr_param RDO_REAL_CONST {
-				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
-				double           param = *reinterpret_cast<double*>($2);
-				opr->addParam( param, @2 );
-			}
-			| opr_param '*' {
-				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				opr->addParam( @2 );
-			}
+opr_param:	  opr_param  '*'                 { reinterpret_cast<RDOOPROperation*>($1)->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
+			| opr_param  RDO_INT_CONST       { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+			| opr_param  RDO_REAL_CONST      { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+			| opr_param  RDO_BOOL_CONST      { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+			| opr_param  RDO_STRING_CONST    { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+			| opr_param  RDO_IDENTIF         { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
 			| opr_keyb;
 
 opr_end:	opr_param RDO_End {

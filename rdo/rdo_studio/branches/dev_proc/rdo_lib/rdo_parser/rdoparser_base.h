@@ -55,8 +55,8 @@ public:
 	virtual void parse() = 0;
 	virtual void parse( std::istream& in_stream ) {};
 
-	virtual int  lexer_loc_line()  { return -1; };
-	virtual int  lexer_loc_pos()   { return 0;  };
+	virtual int  lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
+	virtual int  lexer_loc_pos()  { return 0;                                               };
 
 protected:
 	StreamFrom m_from;

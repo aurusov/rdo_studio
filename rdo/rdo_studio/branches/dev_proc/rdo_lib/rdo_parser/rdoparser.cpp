@@ -8,8 +8,7 @@
 #include "rdorss.h"
 #include "rdodpt.h"
 #include "rdopmd.h"
-#include "rdocommon.h"
-#include <rdopokaz.h>
+#include <rdocommon.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,14 +28,14 @@ std::list< RDOParser* > RDOParser::s_parserStack;
 void RDOParser::insert##Name( RDO##Name* value ) \
 { \
 	m_all##Name.push_back( value ); \
-} \
+}
 
 #define DECLARE_PARSER_OBJECT_CONTAINER_NONAME( Name ) \
 void RDOParser::insert##Name( RDO##Name* value ) \
 { \
 	m_parsing_object = (RDOParserObject*)value; \
 	m_all##Name.push_back( value ); \
-} \
+}
 
 #define DECLARE_PARSER_OBJECT_CONTAINER( Name ) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME( Name ) \
@@ -95,8 +94,7 @@ RDOParser::RDOParser():
 
 RDOParser::~RDOParser()
 {
-	DeleteAllObjects( m_allNames );
-	DeleteAllObjects( m_allDoubles );
+	rdo::deleteAllObjects( m_allValues );
 	std::vector< RDODeletable* >::reverse_iterator it = m_allDeletables.rbegin();
 	while ( it != m_allDeletables.rend() ) {
 		delete *it;
@@ -317,7 +315,7 @@ void RDOParser::error( const RDOParserSrcInfo& _src_info1, const RDOParserSrcInf
 
 void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
-	if ( _src_info.src_pos().m_last_line != -1 && _src_info.src_pos().m_last_pos != -1 )
+	if ( _src_info.src_pos().m_last_line != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE && _src_info.src_pos().m_last_pos != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_POS )
 	{
 		m_errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().m_last_line, _src_info.src_pos().m_last_pos, _src_info.src_filetype() ) );
 	}
@@ -325,15 +323,17 @@ void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, const std::s
 
 void RDOParser::error_push_done()
 {
-	if ( !m_errors.empty() ) {
+	if ( !m_errors.empty() )
+	{
 		throw rdoParse::RDOSyntaxException( m_errors.back().message );
 	}
 }
 
 void RDOParser::error_modify( const std::string& _message )
 {
-	if ( !m_errors.empty() ) {
-		m_errors.back().message = _message;
+	if ( !m_errors.empty() )
+	{
+		m_errors.front().message = _message + m_errors.front().message;
 		throw rdoParse::RDOSyntaxException( "" );
 	}
 }

@@ -1,3 +1,4 @@
+¹רעסהדגף Ýחסנ‏נÝ
 #include "pch.h"
 #include "rdoparser_object.h"
 #include "rdoparser.h"
@@ -117,23 +118,36 @@ RDOParserSrcInfo::RDOParserSrcInfo( const std::string& _text ):
 	setSrcText( _text );
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text, PSI psi ):
+RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text ):
 	RDOSrcInfo()
 {
 	init();
-	if ( psi == psi_align_none ) {
-		setSrcPos( _pos );
-		setSrcText( _text );
-	} else {
-		setSrcPosAndTextByLength( _pos, _text );
-	}
+	setSrcPos( _pos );
+	setSrcText( _text );
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ):
+RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, bool first_align ):
 	RDOSrcInfo()
 {
 	init();
-	setSrcPos( _pos_begin, _pos_end );
+	if ( !first_align )
+	{
+		setSrcPos( _pos_begin, _pos_end );
+	}
+	else
+	{
+		if ( _pos_begin.first_line == _pos_end.last_line )
+		{
+			setSrcPos( _pos_begin, _pos_end );
+		}
+		else
+		{
+			YYLTYPE _pos(_pos_begin);
+			_pos.first_line   = _pos.last_line;
+			_pos.first_column = _pos.last_column;
+			setSrcPos( _pos );
+		}
+	}
 }
 
 RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, const std::string& _text ):

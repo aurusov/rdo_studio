@@ -4,7 +4,7 @@
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
 #endif
 
-#include "memcheck.h"
+#include <afx.h>
 #include <algorithm>
 #include <list>
 #include <vector>
@@ -16,3 +16,4 @@
 #include <fstream>
 #include <map>
 #include <functional>
+#include <rdocommon.h>

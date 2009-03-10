@@ -80,109 +80,42 @@ RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserS
 	}
 }
 
-void RDODPTActivity::addParam( const std::string& _param, const YYLTYPE& _param_pos )
+void RDODPTActivity::addParam( const RDOValue& param )
 {
 	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( _param_pos.first_line == src_pos().m_first_line ) {
+		if ( param.src_pos().m_first_line == src_pos().m_first_line ) {
 			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
+				parser()->error_push_only( param, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
 			} else {
-				parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
+				parser()->error_push_only( param, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
 			}
 			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
 			parser()->error_push_done();
 		} else {
 			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error( _param_pos, "Имя операции должно заканчиваться двоеточием" );
+				parser()->error( param, "Имя операции должно заканчиваться двоеточием" );
 			} else {
-				parser()->error( _param_pos, "Имя активности должно заканчиваться двоеточием" );
+				parser()->error( param, "Имя активности должно заканчиваться двоеточием" );
 			}
 		}
 	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	switch ( param->getType()->getType() ) {
-		case rdoRuntime::RDOValue::rvt_int : parser()->error( _param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
-		case rdoRuntime::RDOValue::rvt_real: parser()->error( _param_pos, rdo::format("Ожидается параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
-		case rdoRuntime::RDOValue::rvt_enum: break;
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
-	}
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( _param, _param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), param->name().c_str(), _param.c_str())) );
-	m_activity->addParamCalc( calc );
-	m_currParam++;
-}
-
-void RDODPTActivity::addParam( int _param, const YYLTYPE& _param_pos ) 
-{
-	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
-		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
+	rdoRuntime::RDOValue val;
+	RDOFUNFunctionParam* pat_param = m_pattern->params.at( m_currParam );
+	if ( param->getAsString() == "*" )
+	{
+		if ( !pat_param->getType()->getDV().isExist() ) {
+			parser()->error_push_only( param, rdo::format("Нет значения по-умолчанию для параметра '%s'", pat_param->src_text().c_str()) );
+			parser()->error_push_only( pat_param->src_info(), rdo::format("См. параметр '%s', тип '%s'", pat_param->src_text().c_str(), pat_param->getType()->src_text().c_str()) );
+			parser()->error_push_done();
 		}
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
+		val = pat_param->getType()->getDefaultValue( param );
 	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	switch ( param->getType()->getType() ) {
-		case rdoRuntime::RDOValue::rvt_int :
-		case rdoRuntime::RDOValue::rvt_real: break;
-		case rdoRuntime::RDOValue::rvt_enum: parser()->error( _param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
+	else
+	{
+		val = pat_param->getType()->getValue( param );
 	}
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( _param, _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %d", m_pattern->name().c_str(), param->name().c_str(), _param)) );
-	m_activity->addParamCalc( calc );
-	m_currParam++;
-}
-
-void RDODPTActivity::addParam( double _param, const YYLTYPE& _param_pos ) 
-{
-	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
-		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
-		}
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
-	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	switch ( param->getType()->getType() ) {
-		case rdoRuntime::RDOValue::rvt_int : parser()->error( _param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
-		case rdoRuntime::RDOValue::rvt_real: break;
-		case rdoRuntime::RDOValue::rvt_enum: parser()->error( _param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
-	}
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( _param, _param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %f", m_pattern->name().c_str(), param->name().c_str(), _param)) );
-	m_activity->addParamCalc( calc );
-	m_currParam++;
-}
-
-void RDODPTActivity::addParam( const YYLTYPE& _param_pos ) 
-{
-	if ( m_pattern->params.size() <= m_currParam ) {
-		if ( dynamic_cast<RDOOPROperation*>(this) ) {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
-		} else {
-			parser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
-		}
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
-	}
-	RDOFUNFunctionParam* param = m_pattern->params.at( m_currParam );
-	if ( !param->getType()->getDV().isExist() ) {
-		parser()->error_push_only( _param_pos, rdo::format("Нет значения по-умолчанию для параметра '%s'", param->src_text().c_str()) );
-		parser()->error_push_only( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
-		parser()->error_push_done();
-	}
-	rdoRuntime::RDOValue val = param->getType()->getDefaultValue( _param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = *", m_pattern->name().c_str(), param->name().c_str())) );
+	calc->setSrcInfo( RDOParserSrcInfo(param.getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), pat_param->name().c_str(), param->getAsString().c_str())) );
 	m_activity->addParamCalc( calc );
 	m_currParam++;
 }
@@ -325,7 +258,7 @@ void RDODPTSome::end()
 {
 	if ( getConditon() )
 	{
-		m_rt_logic->setCondition( getConditon()->createCalc() );
+		m_rt_logic->setCondition( getConditon()->getCalc() );
 	}
 }
 
@@ -375,8 +308,8 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
-	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 
 	m_rt_logic = new rdoRuntime::RDODPTSearchRuntime( parser()->runtime(),
 		condCalc,
@@ -468,7 +401,7 @@ std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy(
 	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 	// Для начала проверим тип параметра
-	if ( param.getType() != rdoRuntime::RDOValue::rvt_enum ) 
+	if ( param.typeID() != rdoRuntime::RDOType::t_enum ) 
 	parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str() ) );
 
 	// Теперь проверим сами значения
@@ -478,46 +411,45 @@ std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy(
 
 void RDOPROCBlockForSeize::createRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name )
 {
-// Получили список всех ресурсов
-rdoMBuilder::RDOResourceList rssList( parser );
-// Создадим ресурс
-rdoMBuilder::RDOResource rss( rtp, res_name );
-// Добавим его в систему
-rssList.append<rdoParse::RDOPROCResource>(rss );
+	// Получили список всех ресурсов
+	rdoMBuilder::RDOResourceList rssList(parser);
+	// Создадим ресурс
+	rdoMBuilder::RDOResource rss(rtp, res_name);
+	// Добавим его в систему
+	rssList.append<rdoParse::RDOPROCResource>(rss);
 }
+
 void RDOPROCBlockForSeize::reobjectRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name )
 {
-// Получили список всех ресурсов
-rdoMBuilder::RDOResourceList rssList( parser );
-
-// Создадим ресурс
-rdoMBuilder::RDOResource rssNew( rtp, res_name );
-// Добавим его в систему
-rssList.append<rdoParse::RDOPROCResource>(rssNew );
-
+	// Получили список всех ресурсов
+	rdoMBuilder::RDOResourceList rssList(parser);
+	// Создадим ресурс
+	rdoMBuilder::RDOResource rssNew(rtp, res_name);
+	// Добавим его в систему
+	rssList.append<rdoParse::RDOPROCResource>(rssNew);
 }
-
 
 rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, const std::string& rtp_name, const RDOParserSrcInfo& info )
 {
-// "Состояние"
-std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-// "Свободен"
-std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
-// "Занят"
-std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
-// Получили список всех типов ресурсов
-rdoMBuilder::RDOResTypeList rtpList( parser );
+	// "Состояние"
+	std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+	// "Свободен"
+	std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+	// "Занят"
+	std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
+	// Получили список всех типов ресурсов
+	rdoMBuilder::RDOResTypeList rtpList( parser );
 	// Создадим тип ресурса
 	rdoMBuilder::RDOResType rtp(rtp_name);
 	// Создадим параметр перечислимого типа
-	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnum(parser->runtime(), rdoRuntime::RDOEnum::EnumArray(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
+	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnumType(parser->runtime(), rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
 	// Добавим тип ресурса
-	if ( !rtpList.append( rtp ) )	{
-	parser->error( info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+	if ( !rtpList.append( rtp ) )
+	{
+		parser->error( info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
 	}
-return rtp;
+	return rtp;
 }
 
 // ----------------------------------------------------------------------------

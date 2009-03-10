@@ -45,7 +45,7 @@ private:
 
 	double getNextTimeInterval(RDOSimulator *sim);
 
-	std::string traceOperId() { return toString(m_operId); }
+	std::string traceOperId() { return rdo::toString(m_operId); }
 
 	int m_operId;
 

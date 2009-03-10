@@ -44,11 +44,11 @@ class RDOParserObject: public RDODeletable
 public:
 	const RDOParserObject* parent() const { return m_parent; }
 	void reparent( const RDOParserObject* parent );
+	virtual ~RDOParserObject();
 
 protected:
 	RDOParserObject( RDOParser* parser );
 	RDOParserObject( const RDOParserObject* parent );
-	virtual ~RDOParserObject();
 
 private:
 	const RDOParserObject* m_parent;
@@ -60,17 +60,13 @@ private:
 class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo
 {
 public:
-	enum PSI {
-		psi_align_none,
-		psi_align_bytext
-	};
 	RDOParserSrcInfo();
 	RDOParserSrcInfo( const YYLTYPE& _pos );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos );
 	RDOParserSrcInfo( const std::string& _text );
-	RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text, PSI psi = psi_align_none );
-	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end );
+	RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text );
+	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, bool first_align = false );
 	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, const std::string& _text );
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& copy ) {
@@ -78,7 +74,7 @@ public:
 		setSrcText( copy.src_text() );
 		setSrcFileType( copy.src_filetype() );
 	}
-	 void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
+	void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
 		RDOParserSrcInfo src_info;
 		src_info.setSrcPos( begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos );
 		src_info.setSrcText( begin.src_text() + delim + end.src_text() );
@@ -116,14 +112,6 @@ public:
 
 private:
 	void init();
-	void setSrcPosAndTextByLength( const YYLTYPE& _pos, const std::string& _text ) {
-		RDOSrcInfo::Position pos( _pos.first_line, _pos.first_column, _pos.last_line, _pos.last_column );
-		if ( pos.m_first_line == pos.m_last_line ) {
-			pos.m_last_pos = pos.m_first_pos + _text.length();
-		}
-		setSrcPos( pos );
-		setSrcText( _text );
-	}
 };
 
 template <class T> class compareName
