@@ -78,7 +78,7 @@ bool RDORule::onCheckCondition( RDOSimulator* sim )
 	if ( result )
 	{
 		m_traceOFF = true;
-		std::auto_ptr<RDOSimulator> clone( sim->clone() );
+		std::auto_ptr<RDOSimulator> clone (sim->clone());
 		if (onDoOperation(clone.get()) != RDOBaseOperation::BOR_done)
 		{
 			//! Реакция на плохой onDoOperation - это вообще-то спортный вопрос

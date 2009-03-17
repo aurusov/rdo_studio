@@ -84,7 +84,9 @@ protected:
 		memory_max( 0 )
 	{
 	}
-	~RDOSimulatorTrace();
+	virtual ~RDOSimulatorTrace();
+
+	virtual void operator= (const RDOSimulatorTrace& other);
 
 	RDOTrace* m_tracer;
 

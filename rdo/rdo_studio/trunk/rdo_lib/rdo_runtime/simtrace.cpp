@@ -25,6 +25,12 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 	}
 }
 
+void RDOSimulatorTrace::operator= (const RDOSimulatorTrace& other)
+{
+	freeResourcesIds = other.freeResourcesIds;
+	maxResourcesId   = other.maxResourcesId;
+}
+
 void RDOSimulatorTrace::rdoInit()
 {
 	maxResourcesId = 0;
