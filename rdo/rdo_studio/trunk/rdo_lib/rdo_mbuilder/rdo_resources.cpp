@@ -54,6 +54,7 @@ void RDOResource::operator= (const RDOResource& obj )
 	m_name   = obj.m_name;
 	m_exist  = obj.m_exist;
 	m_rtp    = obj.m_rtp;
+	m_id     = obj.m_id;
 	m_params.clear();
 	Params::const_iterator it = obj.m_params.begin();
 	while ( it != obj.m_params.end() )
@@ -127,6 +128,7 @@ RDOResType::RDOResType( const std::string& name, Type type ):
 	m_exist( false ),
 	m_id( -1 )
 {
+
 }
 
 bool RDOResType::ParamList::append( Param& param )
@@ -317,10 +319,11 @@ bool RDOResTypeList::append( RDOResType& rtp )
 // ---- »нициализаци€ ресурса по существующему в пам€ти
 // ---- —обирает все параметры существующего в пам€ти ресурса
 // --------------------------------------------------------------------
-RDOResource::RDOResource( const rdoParse::RDORSSResource& rss ):
-	m_name( rss.name() ),
-	m_rtp( *rss.getType() ),
-	m_exist( true )
+RDOResource::RDOResource( const rdoParse::RDORSSResource& rss )
+	: m_name (rss.name()    )
+	, m_rtp  (*rss.getType())
+	, m_exist(true          )
+	, m_id   (rss.getID()   )
 {
 	if ( m_rtp.m_params.size() == rss.params().size() )
 	{
@@ -328,6 +331,8 @@ RDOResource::RDOResource( const rdoParse::RDORSSResource& rss ):
 		RDOResType::ParamList::List::const_iterator param_it = m_rtp.m_params.begin();
 		while ( param_it != m_rtp.m_params.end() )
 		{
+//			const rdoRuntime::RDOValue& value = rss.params()[index];
+//			m_params[param_it->name()] = rdoParse::RDOValue(value, rdoParse::RDOType(value.type()));
 			m_params[param_it->name()] = rss.params()[index];
 			index++;
 			param_it++;
@@ -340,7 +345,7 @@ RDOResource::Params::const_iterator RDOResource::operator[] ( const std::string&
 	return m_params.find(param);
 }
 
-rdoRuntime::RDOValue& RDOResource::operator[] ( const std::string& param )
+RDOResource::Params::mapped_type& RDOResource::operator[] ( const std::string& param )
 {
 	RDOResource::Params::iterator param_it = m_params.find(param);
 	if ( param_it != m_params.end() )
@@ -349,7 +354,7 @@ rdoRuntime::RDOValue& RDOResource::operator[] ( const std::string& param )
 	}
 	else
 	{
-		static rdoRuntime::RDOValue tmpValue;
+		static Params::mapped_type tmpValue;
 		return tmpValue;
 	}
 }
@@ -357,10 +362,11 @@ rdoRuntime::RDOValue& RDOResource::operator[] ( const std::string& param )
 // --------------------------------------------------------------------
 // ---- »нициализаци€ *нового* ресурса
 // --------------------------------------------------------------------
-RDOResource::RDOResource( const RDOResType& rtp, const std::string& name ):
-	m_name( name ),
-	m_rtp( rtp ),
-	m_exist( false )
+RDOResource::RDOResource( const RDOResType& rtp, const std::string& name )
+	: m_name (name                                  )
+	, m_rtp  (rtp                                   )
+	, m_exist(false                                 )
+	, m_id   (rdoParse::RDORSSResource::UNDEFINED_ID)
 {
 	RDOResType::ParamList::List::const_iterator param_it = m_rtp.m_params.begin();
 	while ( param_it != m_rtp.m_params.end() )

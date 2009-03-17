@@ -60,14 +60,9 @@ friend class RDOPROCProcess;
 
 protected:
 	RDOPROCBlock* block;
-	std::list< RDOPROCResource* > resources;
-
 public:
 	RDOPROCBlock* getBlock();
 	static int typeID;
-	void addRes (RDOPROCResource* res);
-	void removeRes (RDOPROCResource* res);
-	bool findRes (RDOPROCResource* res);
 	RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block );
 	void next();
 };
@@ -75,27 +70,14 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-enum  forResource{
-	turn_On = 1, //ресурс может быть занят транзактом по своей очереди
-	turn_Off = 2, //ресурс может быть занят транзактом не по своей очереди
-	not_Seize = 3 //ресурс не может быть занят транзактом
-};
-
 class RDOPROCResource: public RDOResource
 {
 friend class RDOPROCSeize;
 protected: 
-	bool turnOn;		//Указывает как занят ресурс транзактом - по своей очереди или вне очереди
-	RDOPROCBlock* block;
 	std::list<RDOPROCTransact*> transacts;
-
 public:
-	forResource AreYouReady(RDOPROCTransact* transact);
-	bool whoAreYou();
-	void youIs(forResource _this);
-	RDOPROCBlock* getBlock();
-	void setBlock(RDOPROCBlock* _block);
 	RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace );
+	std::string whoAreYou() {return "procRes";	}
 };
 
 // ----------------------------------------------------------------------------
@@ -123,26 +105,27 @@ public:
 	
 struct runtime_for_Seize{
 RDOPROCResource* rss; 
+int Id_param;
 RDOValue     enum_free;
 RDOValue     enum_buzy;
 };
 
-struct parser_for_Seize
-{
+struct parser_for_Seize{
 int Id_res;
 int Id_param;
 };
 
+
+
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 protected:
-std::vector < parser_for_Seize > from_par;
-std::vector < runtime_for_Seize > from_run;
+runtime_for_Seize forRes;
+parser_for_Seize  fromParser;
 virtual void onStart( RDOSimulator* sim );
 
 public:
-	RDOPROCBlockForSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par  );
-	
+	RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par  );
 	static std::string getStateParamName() { return "Состояние"; }
 	static std::string getStateEnumFree()  { return "Свободен";  }
 	static std::string getStateEnumBuzy()  { return "Занят";     }
@@ -154,21 +137,19 @@ public:
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 private:
-	int Busy_Res;
-	
-	//Список, каждый элемент которого содержит порядковый номер ресурса в списке ресурсов SEIZE, 
-	//который возможно будет зданиматься в этом блоке и связанный с ним элемент перечислимого типа forResource, 
-	//который указывает каким образом будет занят ресурс этим блоком (по очереди или вне очреди)
-	std::map < int, forResource > for_turn; 
+	unsigned int index;
 	virtual bool     onCheckCondition( RDOSimulator* sim );
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-public:
-	bool BuzyInAnotherBlockTurnOn ();
-	bool AllBuzyInThisBlockn ();
-	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeize( _process, From_Par ) {Busy_Res = 0;}
-	virtual void TransactGoIn( RDOPROCTransact* _transact );
-	virtual void TransactGoOut( RDOPROCTransact* _transact );
 
+public:
+	RDOPROCSeize( RDOPROCProcess* _process, parser_for_Seize From_Par ): 
+		RDOPROCBlockForSeize( _process, From_Par )
+	{
+		static unsigned int g_index = 1;
+		index = g_index++;
+	}
+	virtual void TransactGoIn ( RDOPROCTransact* _transact );
+	virtual void TransactGoOut( RDOPROCTransact* _transact );
 };
 
 // ----------------------------------------------------------------------------
@@ -181,7 +162,8 @@ private:
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
-	RDOPROCRelease( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeize( _process, From_Par ) {}
+	RDOPROCRelease( RDOPROCProcess* _process, parser_for_Seize From_Par ): 
+	  RDOPROCBlockForSeize( _process, From_Par ) {}
 };
 
 

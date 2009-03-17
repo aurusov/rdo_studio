@@ -353,11 +353,11 @@ void RDOFUNArithm::init( const RDOValue& res_name, const RDOValue& par_name )
 		}
 		if ( res->getType()->isPermanent() )
 		{
-			m_calc = new rdoRuntime::RDOCalcGetResParam( parser()->runtime(), res->getNumber(), parNumb );
+			m_calc = new rdoRuntime::RDOCalcGetResParam( parser()->runtime(), res->getID(), parNumb );
 		}
 		else if ( res->getType()->isTemporary() && parser()->getFileToParse() == rdoModelObjects::FRM )
 		{
-			m_calc = new rdoRuntime::RDOCalcGetTempResParamFRM( parser()->runtime(), res->getNumber(), parNumb );
+			m_calc = new rdoRuntime::RDOCalcGetTempResParamFRM( parser()->runtime(), res->getID(), parNumb );
 		}
 		else
 		{

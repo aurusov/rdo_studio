@@ -298,7 +298,7 @@ $term				return(RDO_Fuzzy_Term);
 					}
 
 [\r\n\t ]+						;
-[#`~@$%^&|:(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
+[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText());

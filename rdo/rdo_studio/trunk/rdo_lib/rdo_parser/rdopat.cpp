@@ -817,7 +817,7 @@ rdoRuntime::RDOSelectResourceCalc::Type RDORelevantResource::getSelectType() con
 // ----------------------------------------------------------------------------
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createPreSelectRelResCalc()
 {
-	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser()->runtime(), rel_res_id, res->getNumber(), NULL, NULL );
+	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser()->runtime(), rel_res_id, res->getID(), NULL, NULL );
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Предварительный выбор рел. ресурса " + calc->src_text() );
 	return calc;
@@ -825,19 +825,19 @@ rdoRuntime::RDOCalc* RDORelevantResourceDirect::createPreSelectRelResCalc()
 
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectResourceChoiceCalc()
 {
-	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser()->runtime(), rel_res_id, res->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
+	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser()->runtime(), rel_res_id, res->getID(), getChoiceCalc(), getSelectCalc(), getSelectType() );
 	calc->setSrcInfo( choice_from->src_info() );
 	return calc;
 }
 
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectFirstResourceChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCalc( parser()->runtime(), rel_res_id, res->getNumber(), getChoiceCalc() );
+	return new rdoRuntime::RDOSelectResourceDirectCalc( parser()->runtime(), rel_res_id, res->getID(), getChoiceCalc() );
 }
 
 rdoRuntime::RDOSelectResourceCommon* RDORelevantResourceDirect::createSelectResourceCommonChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCommonCalc( parser()->runtime(), rel_res_id, res->getNumber(), getChoiceCalc() );
+	return new rdoRuntime::RDOSelectResourceDirectCommonCalc( parser()->runtime(), rel_res_id, res->getID(), getChoiceCalc() );
 }
 
 const RDORTPResType* const RDORelevantResourceDirect::getType() const 
