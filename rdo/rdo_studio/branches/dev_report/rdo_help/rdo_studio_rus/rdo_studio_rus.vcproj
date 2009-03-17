@@ -37,7 +37,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(InputDir)RAO-studio.chm $(SolutionDir)$(ConfigurationName)\RAO-studio.chm"
+				CommandLine="copy &quot;$(InputDir)\RAO-studio.chm&quot; &quot;$(SolutionDir)\$(ConfigurationName)\RAO-studio.chm&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(InputDir)RAO-studio.chm $(SolutionDir)$(ConfigurationName)\RAO-studio.chm"
+				CommandLine="copy &quot;$(InputDir)\RAO-studio.chm&quot; &quot;$(SolutionDir)\$(ConfigurationName)\RAO-studio.chm&quot;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -81,7 +81,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\help_tools\Hhc.bat $(SolutionDir) $(InputPath)"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
 						Outputs="RAO-studio.chm"
 					/>
 				</FileConfiguration>
@@ -91,7 +91,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\help_tools\Hhc.bat $(SolutionDir) $(InputPath)"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
 						Outputs="RAO-studio.chm"
 					/>
 				</FileConfiguration>

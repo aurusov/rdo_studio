@@ -159,6 +159,8 @@ Results_file		return(RDO_Results_file);
 results_file		return(RDO_Results_file);
 Trace_file			return(RDO_Trace_file);
 trace_file			return(RDO_Trace_file);
+External_Model      return(RDO_External_Model);
+external_model      return(RDO_External_Model);
 Show_mode			return(RDO_Show_mode);
 show_mode			return(RDO_Show_mode);
 Frame_number		return(RDO_Frame_number);
@@ -298,7 +300,7 @@ $term				return(RDO_Fuzzy_Term);
 					}
 
 [\r\n\t ]+						;
-[#`~@$%^&|:(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
+[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText());

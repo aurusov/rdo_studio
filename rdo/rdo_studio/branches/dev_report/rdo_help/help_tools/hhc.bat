@@ -1,2 +1,2 @@
-%1\rdo_help\help_tools\hhc.exe %2
+hhc.exe "%1"
 exit 0

@@ -398,7 +398,7 @@ void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResult
 	results      = customResults;
 	results_info = customResultsInfo;
 	currFuncTop  = 0;
-	RDOSimulatorTrace::rdoInit();
+	Parent::rdoInit();
 }
 
 void RDORuntime::onInit()
@@ -435,24 +435,37 @@ RDOSimulator* RDORuntime::clone()
 {
 	RDORuntime* other = new RDORuntime();
 	other->m_sizeof_sim = sizeof( RDORuntime );
-	int size = allResourcesByID.size();
-	for ( int i = 0; i < size; i++ ) {
-		if ( allResourcesByID.at(i) == NULL ) {
-			other->allResourcesByID.push_back( NULL );
-		} else {
-			RDOResource* res = new RDOResource( *allResourcesByID.at(i) );
-			res->setTraceID( res->getTraceID(), res->getTraceID() + 1 );
-			other->m_sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
-			other->allResourcesByID.push_back( res );
-			other->allResourcesByTime.push_back( res );
-		}
-	}
-	other->allConstants = allConstants;
+
+	*other = *this;
 
 	return other;
 }
 
-bool RDORuntime::operator== ( RDOSimulator& other )
+void RDORuntime::operator= (const RDORuntime& other)
+{
+	int size = other.allResourcesByID.size();
+	for ( int i = 0; i < size; i++ )
+	{
+		if ( other.allResourcesByID.at(i) == NULL )
+		{
+			allResourcesByID.push_back(NULL);
+		}
+		else
+		{
+			RDOResource* res = new RDOResource( *other.allResourcesByID.at(i) );
+			res->setRuntime(this);
+			res->setTraceID( res->getTraceID(), res->getTraceID() + 1 );
+			m_sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
+			allResourcesByID.push_back( res );
+			allResourcesByTime.push_back( res );
+		}
+	}
+	allConstants = other.allConstants;
+
+	Parent::operator= (*static_cast<const Parent*>(&other));
+}
+
+bool RDORuntime::operator== (RDOSimulator& other)
 {
 	RDORuntime* otherRuntime = dynamic_cast<RDORuntime*>(&other);
 
@@ -486,7 +499,7 @@ void RDORuntime::onAfterCheckPokaz()
 void RDORuntime::error( const std::string& message, const RDOCalc* calc )
 {
 	if ( !message.empty() ) {
-		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), calc->src_pos().m_last_line, calc->src_pos().m_last_pos, calc->src_filetype() ) );
+		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), calc ? calc->src_pos().m_last_line : 0, calc ? calc->src_pos().m_last_pos : 0, calc ? calc->src_filetype() : rdoModelObjects::PAT ) );
 	}
 	throw RDORuntimeException( "" );
 }
@@ -531,7 +544,7 @@ void RDORuntime::postProcess()
 	} catch ( RDORuntimeException& ) {
 	}
 	try {
-		RDOSimulatorTrace::postProcess();
+		Parent::postProcess();
 		writeExitCode();
 		getTracer()->stopWriting();
 	} catch ( RDORuntimeException& e ) {

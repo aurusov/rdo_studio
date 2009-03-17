@@ -37,6 +37,9 @@ public:
 	RDOResource( const RDOResource& copy );
 	virtual ~RDOResource();
 
+	void setRuntime(RDORuntime* runtime) { RDORuntimeContainer::setRuntime(runtime); }
+
+	virtual std::string whoAreYou()      { return "rdoRes";     }
 	void makeTemporary( bool value )     { m_temporary = value; }
 	ConvertStatus getState() const       { return m_state;      }
 	void setState( ConvertStatus value ) { m_state = value;     }

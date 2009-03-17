@@ -165,6 +165,7 @@
 %token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
+%token RDO_External_Model				444
 
 %{
 #include "pch.h"
@@ -216,61 +217,124 @@ dpt_process_begin:	RDO_Process;
 dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	RDO_IDENTIF	{
+dpt_process_line:	RDO_IDENTIF {
 						PARSER->error( rdo::format("Неизвестный оператор '%s'", reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
 					}
 					| RDO_GENERATE fun_arithm {
 					}
-					| RDO_GENERATE error {
+					| RDO_GENERATE error
+					{
 						PARSER->error( @2, "Ошибка в арифметическом выражении" )
 					}
 					| RDO_TERMINATE {
 					}
-					| RDO_ADVANCE fun_arithm {
-					}
-					| RDO_ADVANCE error {
-						PARSER->error( @2, "Ошибка в арифметическом выражении" )
+					| RDO_ADVANCE RDO_INT_CONST
+					{
+						int i=0;
 					}
 					| RDO_RELEASE dpt_release_param {
 					}
 					| RDO_SEIZE dpt_seize_param {
 					};
-				
-dpt_release_param:      // empty 
-					{
-					}   
-					
-					| RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name         = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-	const RDOParserSrcInfo& info = @1;
-	RDOPROCRelease::checkReleaseResourse( PARSER, res_name, info );
-	}
-					| dpt_release_param ',' RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name         = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-	const RDOParserSrcInfo& info = @3;
-	RDOPROCRelease::checkReleaseResourse( PARSER, res_name, info );
-	};
-	
-dpt_seize_param:      // empty 
-					{
-					}   
-					
-					| RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name         = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-	const RDOParserSrcInfo& info = @1;
-	RDOPROCSeize::makeSeizeResourse( PARSER, res_name, info );
-	}
-					| dpt_seize_param ',' RDO_IDENTIF {
-	// Имя ресурса
-	std::string res_name         = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
-	const RDOParserSrcInfo& info = @3;
-	RDOPROCSeize::makeSeizeResourse( PARSER, res_name, info );
-	};
 
-dpt_process_end:	dpt_process RDO_End	{
+dpt_seize_param:	// empty
+					{
+						PARSER->error(rdo::format("Ожидается имя ресурса"));
+					}
+					| RDO_IDENTIF {
+						// Имя ресурса
+						std::string res_name         = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						const RDOParserSrcInfo& info = @1;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
+						rdoMBuilder::RDOResType rtp;
+						// Если ресурс существует, берем его тип и проверяем
+						if (rssList[res_name].exist() && !rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+						{
+							rtp = rssList[res_name].getType();
+							if (RDOPROCBlockForSeize::checkType(PARSER, rtp, info))
+							{
+								RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							}
+						}
+						else
+						{
+							//Ресурс не найден, сформировать имя типа по имени ресурса
+							// Сформировать имя типа по имени ресурса
+							std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+							// Получили список всех типов ресурсов
+							rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса
+							if ( rtpList[rtp_name].exist() )
+							{
+								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+								if (RDOPROCBlockForSeize::checkType(PARSER, rtp_, info))
+								{
+									RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								}
+							}
+							else
+							{
+								rtp = RDOPROCBlockForSeize::createType(PARSER, rtp_name, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp, res_name);
+							}
+						}
+					}
+					| RDO_IDENTIF error
+					{
+						PARSER->error( @2, "Ошибка в имени ресурса" );
+					};
+
+dpt_release_param:	// empty
+					{
+						PARSER->error(rdo::format("Ожидается имя ресурса"));
+					}
+					| RDO_IDENTIF {
+						// Имя ресурса
+						std::string res_name          = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						const RDOParserSrcInfo& info  = @1;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
+						rdoMBuilder::RDOResType rtp;
+						// Если ресурс существует берем его тип и проверяем
+						if (rssList[res_name].exist() && !rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+						{
+							rtp = rssList[res_name].getType();
+							if (RDOPROCBlockForSeize::checkType(PARSER, rtp, info))
+							{
+								RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							}
+						}
+						else
+						{
+							//Ресурс не найден, сформировать имя типа по имени ресурса
+							// Сформировать имя типа по имени ресурса
+							std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+							// Получили список всех типов ресурсов
+							rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса
+							if ( rtpList[rtp_name].exist() )
+							{
+								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+								if (RDOPROCBlockForSeize::checkType(PARSER, rtp_, info))
+								{
+									RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								}
+							}
+							else
+							{
+								rtp = RDOPROCBlockForSeize::createType(PARSER, rtp_name, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp, res_name);
+							}
+						}
+					}
+					| RDO_IDENTIF error
+					{
+						PARSER->error(@2, "Ошибка в имени ресурса");
+					};
+
+dpt_process_end:	dpt_process RDO_End
+					{
 					};
 
 // ----------------------------------------------------------------------------

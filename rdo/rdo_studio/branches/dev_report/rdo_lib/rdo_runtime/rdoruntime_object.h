@@ -45,12 +45,12 @@ private:
 class RDORuntimeContainer
 {
 protected:
-	RDORuntimeContainer( RDORuntime* runtime ):
-		m_runtime( runtime )
-	{
-	}
+	RDORuntimeContainer(RDORuntime* runtime)
+		: m_runtime(runtime)
+	{}
 
-	RDORuntime* getRuntime() const { return m_runtime; }
+	RDORuntime* getRuntime() const              { return m_runtime;    }
+	void        setRuntime(RDORuntime* runtime) { m_runtime = runtime; }
 
 private:
 	RDORuntime* m_runtime;

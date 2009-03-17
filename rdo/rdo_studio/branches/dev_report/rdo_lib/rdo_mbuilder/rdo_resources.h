@@ -29,6 +29,7 @@ class RDOList
 {
 public:
 	typedef std::list< T >                List;
+	typedef typename List::iterator       Iterator;
 	typedef typename List::const_iterator CIterator;
 
 	RDOList():
@@ -51,6 +52,8 @@ public:
 		}
 	}
 
+	 Iterator     begin()       { return m_list.begin(); }
+	 Iterator     end  ()       { return m_list.end();   }
 	CIterator     begin() const { return m_list.begin(); }
 	CIterator     end  () const { return m_list.end();   }
 	unsigned int  size () const { return m_list.size();  }
@@ -179,19 +182,41 @@ public:
 	// Создать новый ресурс
 	RDOResource( const RDOResType& rtp, const std::string& name );
 
-	const RDOResType&  getType() const { return m_rtp;  }
-
+	const RDOResType&  getType() const { return m_rtp; }
+	int                getID  () const { return m_id;  }
+	
 	typedef std::map< std::string, rdoRuntime::RDOValue > Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
 	Params::const_iterator end  () const { return m_params.end();   }
 	unsigned int           size () const { return m_params.size();  }
-	rdoRuntime::RDOValue&  operator[] ( const std::string& param );
+	Params::mapped_type&   operator[] ( const std::string& param );
 	Params::const_iterator operator[] ( const std::string& param ) const;
 
+	template <class T>
+	bool checkParserResourceType(const rdoParse::RDOParser& parser) const
+	{
+		if (!exist())
+			return false;
+
+		return dynamic_cast<const T*>(parser.findRSSResource(name())) != NULL;
+	}
+
+	template <class T>
+	rdoParse::RDORSSResource* createParserResource(rdoParse::RDOParser& parser, int id = rdoParse::RDORSSResource::UNDEFINED_ID) const
+	{
+		const rdoParse::RDORTPResType* pRTP = parser.findRTPResType(getType().name());
+		if ( !pRTP )
+			return NULL;
+
+		return new T(&parser, name(), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
+	}
+	bool fillParserResourceParams(rdoParse::RDORSSResource* pRSS) const;
+
 private:
-	RDOResType m_rtp;
-	Params     m_params;
+	RDOResType  m_rtp;
+	Params      m_params;
+	int         m_id;
 };
 
 // --------------------------------------------------------------------
@@ -217,34 +242,47 @@ public:
 	// --------------------------------------------------------------------
 	template<class T> bool append( RDOResource& rss )
 	{
-		if ( std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResource>(rss.name())) == end() )
+		if ( exist(rss.name()) )
+			return false;
+
+		rdoParse::RDORSSResource* pRSS = rss.createParserResource<T>(*m_parser);
+		if (!rss.fillParserResourceParams(pRSS))
 		{
-			const rdoParse::RDORTPResType* pRTP = m_parser->findRTPResType(rss.getType().name());
-			if ( !pRTP )
-			{
-				return false;
-			}
-			rdoParse::RDORSSResource* pRSS = new T( m_parser, rss.name(), pRTP );
-			RDOResType::ParamList::List::const_iterator param_it = rss.getType().m_params.begin();
-			while ( param_it != rss.getType().m_params.end() )
-			{
-				RDOResource::Params::const_iterator value_it = const_cast<const RDOResource&>(rss)[param_it->name()];
-				if ( value_it == rss.end() )
-				{
-					delete pRSS;
-					return false;
-				}
-				pRSS->addParam( value_it->second );
-				param_it++;
-			}
-			rss.m_exist = true;
-			m_list.push_back( rss );
-			return true;
-		}
-		else
-		{
+			delete pRSS;
 			return false;
 		}
+
+		rss.m_exist = true;
+		m_list.push_back(rss);
+		return true;
+	}
+	// --------------------------------------------------------------------
+	// ---- Замена существующего ресурса новым
+	// --------------------------------------------------------------------
+	template<class T> bool replace( RDOResource& rssNew )
+	{
+		Iterator itRSSOld = begin();
+		while (itRSSOld != end())
+		{
+			if (itRSSOld->name() == rssNew.name())
+			{
+				break;
+			}
+			++itRSSOld;
+		}
+		if (itRSSOld == end())
+			return false;
+
+		rdoParse::RDORSSResource* pRSS = rssNew.createParserResource<T>(*m_parser, itRSSOld->getID());
+		if (!itRSSOld->fillParserResourceParams(pRSS))
+		{
+			delete pRSS;
+			return false;
+		}
+		rssNew.m_exist = true;
+		m_list.push_back(rssNew);
+		m_list.erase(itRSSOld);
+		return true;
 	}
 };
 
