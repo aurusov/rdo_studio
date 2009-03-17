@@ -32,35 +32,35 @@ class RDOFUNSequence;
 
 class RDOSMR: public RDOParserObject
 {
-private:
-	std::map< std::string, std::string > files;
-	rdoSimulator::ShowMode showMode;
-	int    frameNumber;
-	double showRate;
-	double runStartTime;
-	double traceStartTime;
-	double traceEndTime;
-	YYLTYPE traceStartTime_pos;
-	YYLTYPE traceEndTime_pos;
-	RDOFUNLogic* terminateIf;
-
-	class BreakPoint: public RDOParserObject, public RDOParserSrcInfo {
-	public:
-		BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
-	};
-	std::vector< BreakPoint* > breakPoints;
-
 public:
+	typedef std::map<std::string, std::string> StringTable;
+
 	RDOSMR( RDOParser* _parser, const std::string& _modelName );
 
-	void setFile( const std::string& file_type, const std::string& file_name ) {
+	void setFile( const std::string& file_type, const std::string& file_name )
+	{
 		files[ file_type ] = file_name;
 	}
-	bool hasFile( const std::string& file_type ) {
+	bool hasFile( const std::string& file_type )
+	{
 		return files.find( file_type ) != files.end();
 	}
-	std::string getFile( const std::string& file_type ) {
+	std::string getFile( const std::string& file_type )
+	{
 		return hasFile( file_type ) ? files[ file_type ] : "";
+	}
+	void setExternalModelName(const std::string& alias, const std::string& modelID )
+	{
+		m_extModelList[alias] = modelID;
+	}
+	std::string getExternalModelName( const std::string& alias ) const
+	{
+		StringTable::const_iterator it = m_extModelList.find(alias);
+		return it != m_extModelList.end() ? it->second : "";
+	}
+	const StringTable& getExternalModelList() const
+	{
+		return m_extModelList;
 	}
 
 	rdoSimulator::ShowMode getShowMode() const { return showMode;       }
@@ -82,6 +82,25 @@ public:
 	void setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, RDOFUNArithm* arithm );
 	void setSeed( const RDOParserSrcInfo& seq_info, int base );
 	void insertBreakPoint( const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
+
+private:
+	StringTable  files;
+	StringTable  m_extModelList;
+	rdoSimulator::ShowMode showMode;
+	int    frameNumber;
+	double showRate;
+	double runStartTime;
+	double traceStartTime;
+	double traceEndTime;
+	YYLTYPE traceStartTime_pos;
+	YYLTYPE traceEndTime_pos;
+	RDOFUNLogic* terminateIf;
+
+	class BreakPoint: public RDOParserObject, public RDOParserSrcInfo {
+	public:
+		BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
+	};
+	std::vector< BreakPoint* > breakPoints;
 };
 
 } // namespace rdoParse
