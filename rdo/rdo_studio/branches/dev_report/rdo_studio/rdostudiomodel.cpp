@@ -12,6 +12,18 @@
 #include "edit_ctrls/rdodebugedit.h"
 #include "rdo_tracer/rdotracer.h"
 #include "resource.h"
+// Заголовочный файл системы генерации отчетов 
+#include "report.h"
+
+#include <atlbase.h>
+CComModule _Module;
+#include <atlcom.h>
+
+#include <rdocommon.h>
+#include <istream>
+#include <string>
+#include <iostream>
+
 
 #include <rdokernel.h>
 #include <rdorepository.h>
@@ -23,12 +35,14 @@
 
 using namespace rdoEditor;
 using namespace rdoSimulator;
+using namespace std ;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
@@ -427,19 +441,135 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 
 void RDOStudioModel::show_result()
 {
-	std::stringstream model_results;
-	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
-	std::string str = model_results.str();
-	if ( !str.empty() ) {
-		RDOStudioOutput* output = &studioApp.mainFrame->output;
-		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV );
-		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
+	HRESULT hr;
+	IfrxReportPtr pReport( __uuidof( TfrxReport ) );
+	CoInitialize( NULL );
+	// Описание датасетов
+	CComObject<CfrxGroupsDataSetEvents>* GroupsDataSet_EventHandler;
+	CComObject<CfrxVarsDataSetEvents>* VarsDataSet_EventHandler;
+	CComObject<CfrxChartsNamesDataSetEvents>* ChartsNamesDataSet_EventHandler;
+	CComObject<CfrxChartsVarsDataSetEvents>* ChartsVarsDataSet_EventHandler;
+	IfrxUserDataSetPtr GroupsDataSet( __uuidof( TfrxUserDataSet ) );
+	IfrxUserDataSetPtr VarsDataSet( __uuidof( TfrxUserDataSet ) );
+	IfrxUserDataSetPtr ChartsNamesDataSet( __uuidof( TfrxUserDataSet ) );
+	IfrxUserDataSetPtr ChartsVarsDataSet( __uuidof( TfrxUserDataSet ) );
+	GroupsDataSet->Name = "Groups";
+	GroupsDataSet->Fields = "GroupName\n";
+	VarsDataSet->Name = "Vars";
+	VarsDataSet->Fields = "VarName\nPar_1\Par_2\Par_3\Par_4\Par_5\Par_6";
+	ChartsNamesDataSet->Name = "Charts";
+	ChartsNamesDataSet->Fields = "ChartName\n";
+	ChartsVarsDataSet->Name = "ChartsVars";
+	ChartsVarsDataSet->Fields = "Name\nVar";
+	hr = CComObject<CfrxGroupsDataSetEvents>::CreateInstance( &GroupsDataSet_EventHandler );
+	hr = CComObject<CfrxVarsDataSetEvents>::CreateInstance( &VarsDataSet_EventHandler );
+	hr = CComObject<CfrxChartsNamesDataSetEvents>::CreateInstance( &ChartsNamesDataSet_EventHandler );
+	hr = CComObject<CfrxChartsVarsDataSetEvents>::CreateInstance( &ChartsVarsDataSet_EventHandler );
+	GroupsDataSet_EventHandler->AddRef();
+	VarsDataSet_EventHandler->AddRef();
+	ChartsNamesDataSet_EventHandler->AddRef();
+	ChartsVarsDataSet_EventHandler->AddRef();
+
+	rdoModelObjects::RDOFileType RDOFileType_Buffer( rdoModelObjects::PMD );
+    rdo::binarystream binarystream_Buffer;
+	kernel->sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( RDOFileType_Buffer, binarystream_Buffer ) );
+	
+	// PMDStr и PMVStr - исходные данные для парсера
+	std::string PMDStr = binarystream_Buffer.str() ;
+	std::string PMVStr;
+	
+	std::stringstream model_results ;
+	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results ) ;
+	PMVStr = model_results.str() ;
+	
+	if ( !PMVStr.empty() ) {
+		RDOStudioOutput* output = &studioApp.mainFrame->output ;
+		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV ) ;
+		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data ) ;
 		if ( !data.described ) {
 			output->appendStringToDebug( "Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n" );
 		}
 		output->showResults();
-		output->appendStringToResults( str );
+		output->appendStringToResults( PMVStr );
 	}
+
+	try {
+		// Загрузка шаблона отчета
+		pReport->LoadReportFromFile("Report_template.fr3");
+		std::vector <std::string> List_PMD;
+		std::vector <std::string> List_PMV;
+		ReportParser PMDParser( PMDStr );
+		PMDParser.DeleteComments();
+		PMDParser.StringToList();
+		List_PMD = PMDParser.ListToParse;
+		ReportParser PMVParser( PMVStr );
+		PMVParser.DeleteComments() ;
+		PMVParser.StringToList() ;
+		List_PMV = PMVParser.ListToParse;
+        // Переменная для связи Мастер-Детейл датабэндов
+		int Master_Detail_Counter_for_groups = -1;
+		int Master_Detail_Counter_for_charts = -1;
+		
+		GroupManager Groups;
+		ChartManager Charts;
+		Charts.List = Groups.List = PMVParser.ListToParse;
+	
+		while( !PMDParser.FindNextKeyWord() )
+		{
+			switch ( PMDParser.KeyWordType )
+			{
+			case PMDParser.RPKWT_GROUP:    Groups.AddGroup( PMDParser.ListToParse.at( PMDParser.CurrentWordIndex ), true );  
+				break;
+			case PMDParser.RPKWT_ENDGROUP: Groups.AddGroup( PMDParser.ListToParse.at( PMDParser.CurrentWordIndex ), false );	
+				break;
+			case PMDParser.RPKWT_CHART:    Charts.AddChart( PMDParser.ListToParse.at( PMDParser.CurrentWordIndex ), true );  
+				break;
+			case PMDParser.RPKWT_ENDCHART: Charts.AddChart( PMDParser.ListToParse.at( PMDParser.CurrentWordIndex ), false );	
+				break;
+			default: if ( PMDParser.CurrentWordIndex > 2 && PMDParser.KeyWordType != PMDParser.RPKWT_END ) {
+						Groups.InsertVar( PMDParser.ListToParse.at( PMDParser.CurrentWordIndex - 3), ( ReportVar::VarTypeValues ) ( int ) PMDParser.KeyWordType );
+						Charts.InsertVar( PMDParser.ListToParse.at( PMDParser.CurrentWordIndex - 3), ( ReportVar::VarTypeValues ) ( int ) PMDParser.KeyWordType );
+					 }
+			break;
+			}
+		} 
+		// Получить параметры для показателей
+		Groups.GetParam();
+		Charts.GetParam();
+		pReport->SelectDataset( true, IfrxDataSetPtr(GroupsDataSet) );
+		pReport->SelectDataset( true, IfrxDataSetPtr( VarsDataSet ) );
+		pReport->SelectDataset( true, IfrxDataSetPtr( ChartsNamesDataSet ) );
+		pReport->SelectDataset( true, IfrxDataSetPtr( ChartsVarsDataSet ) );
+		hr = GroupsDataSet_EventHandler->Advise( GroupsDataSet, Groups, &Master_Detail_Counter_for_groups );
+		hr = VarsDataSet_EventHandler->Advise( VarsDataSet, Groups, &Master_Detail_Counter_for_groups );
+		hr = ChartsNamesDataSet_EventHandler->Advise( ChartsNamesDataSet, Charts, &Master_Detail_Counter_for_charts );
+		hr = ChartsVarsDataSet_EventHandler->Advise( ChartsVarsDataSet, Charts, &Master_Detail_Counter_for_charts );
+		// Вывод отчета
+		pReport->ShowReport();
+		pReport->SaveReportToFile( "Report.fr3" );
+		} 
+	catch( _com_error e ) 
+	{
+		MessageBox( NULL, e.ErrorMessage(), "Component Object Model error", MB_OK | MB_ICONERROR );
+		hr = e.Error();
+	}
+	hr = GroupsDataSet_EventHandler->Unadvise(GroupsDataSet);
+	hr = VarsDataSet_EventHandler->Unadvise(VarsDataSet);
+	hr = ChartsNamesDataSet_EventHandler->Unadvise(ChartsNamesDataSet);
+	hr = ChartsVarsDataSet_EventHandler->Unadvise(ChartsVarsDataSet);
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(GroupsDataSet));
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(VarsDataSet));
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(ChartsNamesDataSet));
+	hr = pReport->SelectDataset(false, IfrxDataSetPtr(ChartsVarsDataSet));
+	hr = GroupsDataSet_EventHandler->Release();
+	hr = VarsDataSet_EventHandler->Release();
+	hr = ChartsNamesDataSet_EventHandler->Release();
+	hr = ChartsVarsDataSet_EventHandler->Release();
+	VarsDataSet_EventHandler = NULL;
+	GroupsDataSet_EventHandler = NULL;
+	ChartsNamesDataSet_EventHandler = NULL;
+	ChartsVarsDataSet_EventHandler = NULL;
+	CoUninitialize();
 }
 
 bool RDOStudioModel::newModel( std::string _model_name, std::string _model_path, const int _useTemplate  )
@@ -1023,3 +1153,4 @@ void RDOStudioModel::setGUIContinue()
 		setRuntimeMode( runtimeMode_prev );
 	}
 }
+
