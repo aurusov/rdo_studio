@@ -486,7 +486,7 @@ void RDORuntime::onAfterCheckPokaz()
 void RDORuntime::error( const std::string& message, const RDOCalc* calc )
 {
 	if ( !message.empty() ) {
-		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), calc->src_pos().m_last_line, calc->src_pos().m_last_pos, calc->src_filetype() ) );
+		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), calc ? calc->src_pos().m_last_line : 0, calc ? calc->src_pos().m_last_pos : 0, calc ? calc->src_filetype() : rdoModelObjects::PAT ) );
 	}
 	throw RDORuntimeException( "" );
 }
