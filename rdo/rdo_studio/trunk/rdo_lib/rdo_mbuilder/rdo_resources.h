@@ -211,21 +211,7 @@ public:
 
 		return new T(&parser, name(), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
-	bool fillParserResourceParams(rdoParse::RDORSSResource* pRSS) const
-	{
-		RDOResType::ParamList::List::const_iterator param_it = getType().m_params.begin();
-		while ( param_it != getType().m_params.end() )
-		{
-			RDOResource::Params::const_iterator value_it = operator[](param_it->name());
-			if ( value_it == end() )
-			{
-				return false;
-			}
-			pRSS->addParam( value_it->second );
-			param_it++;
-		}
-		return true;
-	}
+	bool fillParserResourceParams(rdoParse::RDORSSResource* pRSS) const;
 
 private:
 	RDOResType  m_rtp;

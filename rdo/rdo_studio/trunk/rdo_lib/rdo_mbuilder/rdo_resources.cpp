@@ -151,6 +151,10 @@ RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOType* ty
 	m_exist( true ),
 	m_id( -1 )
 {
+	if (type->id() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
+	{
+		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
+	}
 }
 
 RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& def ):
@@ -357,6 +361,22 @@ RDOResource::Params::mapped_type& RDOResource::operator[] ( const std::string& p
 		static Params::mapped_type tmpValue;
 		return tmpValue;
 	}
+}
+
+bool RDOResource::fillParserResourceParams(rdoParse::RDORSSResource* pRSS) const
+{
+	RDOResType::ParamList::List::const_iterator param_it = getType().m_params.begin();
+	while ( param_it != getType().m_params.end() )
+	{
+		RDOResource::Params::const_iterator value_it = operator[](param_it->name());
+		if ( value_it == end() )
+		{
+			return false;
+		}
+		pRSS->addParam( value_it->second );
+		param_it++;
+	}
+	return true;
 }
 
 // --------------------------------------------------------------------
