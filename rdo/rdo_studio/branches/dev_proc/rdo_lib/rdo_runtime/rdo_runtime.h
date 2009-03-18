@@ -206,6 +206,7 @@ public:
 	}
 
 private:
+	typedef RDOSimulatorTrace Parent;
 	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
@@ -254,7 +255,7 @@ private:
 	time_t physic_time;
 	virtual void preProcess()
 	{
-		RDOSimulatorTrace::preProcess();
+		Parent::preProcess();
 		physic_time = time(NULL);
 	}
 
@@ -265,7 +266,8 @@ private:
 	std::vector< RDOValue > allConstants;
 
 	virtual RDOSimulator* clone();
-	virtual bool operator== ( RDOSimulator& other );
+	virtual void operator=  (const RDORuntime& other);
+	virtual bool operator== (RDOSimulator& other);
 
 	void writeExitCode();
 

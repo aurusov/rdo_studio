@@ -165,6 +165,7 @@
 %token RDO_Fuzzy						441
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
+%token RDO_External_Model				444
 
 %{
 #include "pch.h"
@@ -260,6 +261,21 @@ smr_descr:	/* empty */
 			}
 			| smr_descr RDO_Trace_file error {
 				PARSER->error( @2, "ќжидаетс€ '='" );
+			}
+			| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF {
+				std::string alias = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
+				std::string model = reinterpret_cast<RDOValue*>($5)->value().getIdentificator();
+				RDOSMR* smr = PARSER->getSMR();
+				smr->setExternalModelName(alias, model);
+			}
+			| smr_descr RDO_External_Model RDO_IDENTIF '=' error {
+				PARSER->error( @4, @5, "ќжидаетс€ путь и название внешней модели" );
+			}
+			| smr_descr RDO_External_Model RDO_IDENTIF error {
+				PARSER->error( @3, "ќжидаетс€ '='" );
+			}
+			| smr_descr RDO_External_Model error {
+				PARSER->error( @2, "ќжидаетс€ псевдоним внешей модели" );
 			}
 			| smr_descr error {
 			};
