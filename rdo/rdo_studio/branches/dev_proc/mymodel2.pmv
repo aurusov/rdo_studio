@@ -1,0 +1,20 @@
+Results_file   = mymodel2.pmv    Вт мар 17 13:53:06 2009
+Run_file       = mymodel2.smr
+Model_name     = mymodel2
+Resource_file  = mymodel2.rss
+OprIev_file    = mymodel2.opr
+
+$Changes
+
+
+$Status = NORMAL_TERMINATION
+$Result_values  0  639.769  1.281
+  EventCount           0  0  0
+  OperRuleCheckCounter 0  0  0
+  AExpCalcCounter      0  0  0
+  BExpCalcCounter      327  0.511122  255
+
+Занятость_робота              	FALSE	4	0.107952	1223.66	13.7586	20.715
+Занятость_станка_1            	TRUE	1	0.196592	7915.48	61.1531	61.1531
+Занятость_станка_2            	TRUE	1	0.196592	7915.48	61.1531	61.1531
+
