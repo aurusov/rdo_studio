@@ -210,7 +210,8 @@ dptrtp_main:
 
 dpt_process:		dpt_process_begin dpt_process_input;
 
-dpt_process_begin:	RDO_Process {
+dpt_process_begin:	RDO_Process 
+					{
 						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
 						if ( proc && !proc->closed() ) {
 							PARSER->error( "Незакрыт предыдущий блок $Process" );
@@ -222,67 +223,73 @@ dpt_process_begin:	RDO_Process {
 dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	RDO_IDENTIF	{
+dpt_process_line:	RDO_IDENTIF	
+					{
 						PARSER->error( rdo::format("Неизвестный оператор '%s'", reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
 					}
-					| RDO_GENERATE fun_arithm {
+					| RDO_GENERATE fun_arithm 
+					{
 						std::string rtp_name       = "Транзакты";
 						std::string rtp_param_name = "Время_создания";
 
 						// Получили список всех типов ресурсов
 						rdoMBuilder::RDOResTypeList rtpList( PARSER );
 						// Найти тип ресурса, если его нет, то создать
-						if ( !rtpList[rtp_name].exist() )
-						{
-							// Создадим тип ресурса
-							rdoMBuilder::RDOResType rtp(rtp_name);
-							// Добавим параметр Время_создания
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, rdoRuntime::RDOType::t_real) );
-							// Добавим тип ресурса
-							if ( !rtpList.append( rtp ) )
+							if ( !rtpList[rtp_name].exist() )
 							{
-								PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+								// Создадим тип ресурса
+								rdoMBuilder::RDOResType rtp(rtp_name);
+								// Добавим параметр Время_создания
+								rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, rdoRuntime::RDOType::t_real) );
+								// Добавим тип ресурса
+								if ( !rtpList.append( rtp ) )
+								{
+									PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+								}
+								rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 							}
-							rdoRuntime::RDOPROCTransact::typeID = rtp.id();
-						}
-						else
-						{
-							// Тип найден, проверим его на наличие вещественного параметра
-							const rdoMBuilder::RDOResType& rtp = rtpList[rtp_name];
-							if ( !rtp.m_params[rtp_param_name].exist() ) {
-								PARSER->error( rdo::format( "У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+							else
+							{
+								// Тип найден, проверим его на наличие вещественного параметра
+								const rdoMBuilder::RDOResType& rtp = rtpList[rtp_name];
+								if ( !rtp.m_params[rtp_param_name].exist() ) {
+									PARSER->error( rdo::format( "У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+								}
+								// Параметр есть, надо проверить на тип
+								if ( rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real ) {
+									PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
+								}
+								rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 							}
-							// Параметр есть, надо проверить на тип
-							if ( rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real ) {
-								PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
-							}
-							rdoRuntime::RDOPROCTransact::typeID = rtp.id();
-						}
-					RDOPROCGenerate* generate = new RDOPROCGenerate( PARSER->getLastPROCProcess(), "GENERATE", ((RDOFUNArithm*)$2)->createCalc() );
-					$$ = int(generate);
+						RDOPROCGenerate* generate = new RDOPROCGenerate( PARSER->getLastPROCProcess(), "GENERATE", ((RDOFUNArithm*)$2)->createCalc() );
+						$$ = int(generate);
 					}
-					| RDO_GENERATE error {
+					| RDO_GENERATE error 
+					{
 						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
-					| RDO_TERMINATE {
+					| RDO_TERMINATE 
+					{
 						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE" );
 						$$ = int(terminate);
 					}
-					| RDO_ADVANCE fun_arithm {
+					| RDO_ADVANCE fun_arithm 
+					{
 						RDOPROCAdvance* advance = new RDOPROCAdvance( PARSER->getLastPROCProcess(), "ADVANCE", ((RDOFUNArithm*)$2)->createCalc() );
 						$$ = int(advance);
 					}
-					| RDO_ADVANCE error {
+					| RDO_ADVANCE error 
+					{
 						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
-					
-					| RDO_SEIZE dpt_seize_param {
+					| RDO_SEIZE dpt_seize_param 
+					{
 						TRACE("SEIZE dpt_seize_param\n");
 						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($2);
 						seize->create_runtime_Seize( PARSER );
 					}
-
-					| RDO_RELEASE dpt_release_param {
+					| RDO_RELEASE dpt_release_param 
+					{
 						TRACE("RELEASE dpt_release_param\n");
 						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($2);
 						release->create_runtime_Release( PARSER );
@@ -292,26 +299,35 @@ dpt_process_line:	RDO_IDENTIF	{
 dpt_seize_param:    // empty 
 					{
 					}   
-					|	RDO_IDENTIF {
+					| RDO_IDENTIF 
+					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
 						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE");
 						seize->add_Seize_Resourse(res_name);
 						$$ = (int)seize;
-                    }
-                    |   RDO_IDENTIF error {						PARSER->error( @2, "Ошибка в миени ресурса" )};     
-dpt_release_param:    // empty 
+					}
+                    | RDO_IDENTIF error 
+                    {
+						PARSER->error( @2, "Ошибка в миени ресурса" )
+					};     
+dpt_release_param:  //empty 
 					{
 					}   
-					|	RDO_IDENTIF {
+					| RDO_IDENTIF 
+					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
 						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE");
 						release->add_Release_Resourse(res_name);
 						$$ = (int)release;
-                    }
-					|   RDO_IDENTIF error {						PARSER->error( @2, "Ошибка в миени ресурса" )};						
-dpt_process_end:	dpt_process RDO_End	{
+					}
+					| RDO_IDENTIF error 
+					{	
+						PARSER->error( @2, "Ошибка в миени ресурса" )
+					};						
+dpt_process_end:	dpt_process RDO_End	
+					{
 						PARSER->getLastPROCProcess()->end();
 					};
 
