@@ -160,16 +160,16 @@ void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 {
 	sim->addTimePoint( timeNext = timeCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime(), process, this );
 }
-
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCQueue
+// ---------- RDOPROCBlockForQueue
 // ----------------------------------------------------------------------------
-RDOPROCQueue::RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par):
+RDOPROCBlockForQueue::RDOPROCBlockForQueue( RDOPROCProcess* _process, parser_for_Queue From_Par ):
 	RDOPROCBlock( _process ),
-	fromParser  ( From_Par )
+	fromParser ( From_Par)
 {
 }
-void RDOPROCQueue::onStart( RDOSimulator* sim )
+
+void RDOPROCBlockForQueue::onStart( RDOSimulator* sim )
 {
 	int Id_res = fromParser.Id_res;
 	int Id_param = fromParser.Id_param;
@@ -179,6 +179,9 @@ void RDOPROCQueue::onStart( RDOSimulator* sim )
 	forRes.defaultValue = RDOValue( RDOPROCQueue::getDefaultValue() );
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCQueue
+// ----------------------------------------------------------------------------
 bool RDOPROCQueue::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) 

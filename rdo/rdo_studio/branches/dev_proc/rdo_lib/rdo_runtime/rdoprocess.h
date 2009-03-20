@@ -98,9 +98,8 @@ public:
 	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
 	void calcNextTimeInterval( RDOSimulator* sim );
 };
-
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCQueue
+// ---------- RDOPROCBlockForQueue
 // ----------------------------------------------------------------------------
 struct runtime_for_Queue
 {
@@ -113,17 +112,30 @@ struct parser_for_Queue
 	int Id_res;
 	int Id_param;
 };
-class RDOPROCQueue: public RDOPROCBlock
+class RDOPROCBlockForQueue: public RDOPROCBlock
 {
 protected:
 	parser_for_Queue  fromParser;
 	runtime_for_Queue forRes;
 	virtual void onStart		  ( RDOSimulator* sim );
+
+public:
+	RDOPROCBlockForQueue( RDOPROCProcess* _process, parser_for_Queue From_Par );
+	static int getDefaultValue()  { return 0; }
+};
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCQueue
+// ----------------------------------------------------------------------------
+class RDOPROCQueue: public RDOPROCBlockForQueue
+{
+protected:
 	virtual bool onCheckCondition ( RDOSimulator* sim );
 	virtual BOResult onDoOperation( RDOSimulator* sim );
+
 public:
 	static int getDefaultValue()  { return 0; }
-	RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par );
+	RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par ): 
+		RDOPROCBlockForQueue( _process, From_Par ){}
 	static std::string getQueueParamName(){ return "длина_очереди"; }
 };
 
@@ -147,7 +159,7 @@ class RDOPROCBlockForSeize: public RDOPROCBlock
 protected:
 	runtime_for_Seize forRes;
 	parser_for_Seize  fromParser;
-virtual void onStart( RDOSimulator* sim );
+	virtual void onStart( RDOSimulator* sim );
 
 public:
 	RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par );
@@ -163,8 +175,8 @@ class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 private:
 	unsigned int index;
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+	virtual bool onCheckCondition ( RDOSimulator* sim );
+	virtual BOResult onDoOperation( RDOSimulator* sim );
 
 public:
 	RDOPROCSeize( RDOPROCProcess* _process, parser_for_Seize From_Par ): 
