@@ -1,0 +1,4 @@
+$Resource_type  QDEPART: permanent
+$Parameters
+длина_очереди: integer
+$End
