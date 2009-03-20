@@ -292,6 +292,9 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_DEPART dpt_depart_param 
 					{
+						TRACE("DEPART dpt_depart_param\n");
+						RDOPROCDepart* depart  = reinterpret_cast<RDOPROCDepart*>($2);
+						depart->create_runtime_Depart( PARSER );
 					}
 					| RDO_SEIZE dpt_seize_param 
 					{
@@ -308,24 +311,36 @@ dpt_process_line:	RDO_IDENTIF
 								
 dpt_queue_param:	// empty
 					{
-						PARSER->error( rdo::format("ќжидаетс€ им€ ресурса") );
+						PARSER->error( rdo::format("ќжидаетс€ им€ очереди") );
 					}
 					| RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
-						RDOPROCQueue* queue = new RDOPROCQueue( PARSER->getLastPROCProcess(), "SEIZE" );
-						queue->add_Queue_Resourse( res_name );
+						RDOPROCQueue* queue = new RDOPROCQueue( PARSER->getLastPROCProcess(), "QUEUE" );
+						queue->add_Queue_Resource( res_name );
 						$$ = int( queue );
-					};
+					}
+					| RDO_IDENTIF error 
+                    {
+						PARSER->error( @2, "ќшибка в миени очереди" )
+					};     
 dpt_depart_param:	// empty
 					{
-						PARSER->error( rdo::format("ќжидаетс€ им€ ресурса") );
+						PARSER->error( rdo::format("ќжидаетс€ им€ очереди") );
 					}
 					| RDO_IDENTIF 
 					{
-						int i=0;
-					};
+						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+						TRACE( "%s _good\n", res_name.c_str());
+						RDOPROCDepart* depart = new RDOPROCDepart( PARSER->getLastPROCProcess(), "DEPART" );
+						depart->add_Depart_Resource( res_name );
+						$$ = int( depart );
+					}
+					| RDO_IDENTIF error 
+                    {
+						PARSER->error( @2, "ќшибка в имени ресурса" )
+					};     
 dpt_seize_param:    // empty 
 					{
 						PARSER->error( rdo::format("ќжидаетс€ им€ ресурса") );
@@ -335,7 +350,7 @@ dpt_seize_param:    // empty
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
 						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE");
-						seize->add_Seize_Resourse(res_name);
+						seize->add_Seize_Resource(res_name);
 						$$ = (int)seize;
 					}
                     | RDO_IDENTIF error 
@@ -351,7 +366,7 @@ dpt_release_param:  //empty
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
 						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE");
-						release->add_Release_Resourse(res_name);
+						release->add_Release_Resource(res_name);
 						$$ = (int)release;
 					}
 					| RDO_IDENTIF error 

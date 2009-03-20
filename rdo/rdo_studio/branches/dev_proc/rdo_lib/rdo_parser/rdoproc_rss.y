@@ -231,7 +231,7 @@ dpt_process_line:	  RDO_IDENTIF					{		}
 
 dpt_queue_param:	// empty
 					{
-						PARSER->error(rdo::format("Ожидается имя ресурса"));
+						PARSER->error(rdo::format("Ожидается имя очереди"));
 					}
 					| RDO_IDENTIF 
 					{
@@ -256,11 +256,28 @@ dpt_queue_param:	// empty
 					};
 dpt_depart_param:	// empty
 					{
-						PARSER->error( rdo::format("Ожидается имя ресурса") );
+						PARSER->error( rdo::format("Ожидается имя очереди") );
 					}
 					| RDO_IDENTIF 
 					{
-						int i=0;
+						// Имя ресурса
+						std::string res_name         = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						const RDOParserSrcInfo& info = @1;
+						// Получили список всех типов ресурсов
+						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+						std::string rtp_name = "QDEPART";
+							if ( rtpList[rtp_name].exist() )
+							{
+							rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+								if( RDOPROCDepart::checkType(PARSER, rtp_, info) )
+								{
+								RDOPROCDepart::createRes( PARSER, rtp_, res_name );
+								}
+							}
+							else
+							{
+							PARSER->error( rdo::format("Для сбора статистики по очереди '%s'необходимо завести тип QDEPART с параметром integer - длина очереди",reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+							}
 					};
 dpt_seize_param:	// empty
 					{

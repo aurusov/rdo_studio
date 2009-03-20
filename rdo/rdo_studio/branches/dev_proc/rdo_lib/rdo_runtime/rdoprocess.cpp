@@ -205,6 +205,30 @@ RDOBaseOperation::BOResult RDOPROCQueue::onDoOperation( RDOSimulator* sim )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCDepart
+// ----------------------------------------------------------------------------
+bool RDOPROCDepart::onCheckCondition( RDOSimulator* sim )
+{
+	if ( !transacts.empty() ) 
+	{
+		RDOValue i = forRes.rss->getParam( forRes.Id_param );
+		RDOValue j = RDOValue( int (1) );
+		forRes.rss->setParam( forRes.Id_param, i - j );	
+		return true;
+	}
+	else
+	{
+	return false;
+	}
+}
+
+RDOBaseOperation::BOResult RDOPROCDepart::onDoOperation( RDOSimulator* sim )
+{
+	TRACE( "%7.1f DEPART\n", sim->getCurrentTime() );
+	transacts.front()->next();
+	return RDOBaseOperation::BOR_done;
+}
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
 RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par ):

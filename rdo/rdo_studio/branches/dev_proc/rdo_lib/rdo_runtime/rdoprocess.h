@@ -121,8 +121,8 @@ protected:
 
 public:
 	RDOPROCBlockForQueue( RDOPROCProcess* _process, parser_for_Queue From_Par );
-	static int getDefaultValue()  { return 0; }
 };
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCQueue
 // ----------------------------------------------------------------------------
@@ -133,10 +133,26 @@ protected:
 	virtual BOResult onDoOperation( RDOSimulator* sim );
 
 public:
-	static int getDefaultValue()  { return 0; }
 	RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par ): 
 		RDOPROCBlockForQueue( _process, From_Par ){}
+	static int getDefaultValue()  { return 0; }
 	static std::string getQueueParamName(){ return "длина_очереди"; }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCDepart
+// ----------------------------------------------------------------------------
+class RDOPROCDepart: public RDOPROCBlockForQueue
+{
+protected:
+	virtual bool onCheckCondition ( RDOSimulator* sim );
+	virtual BOResult onDoOperation( RDOSimulator* sim );
+
+public:
+	RDOPROCDepart( RDOPROCProcess* _process, parser_for_Queue From_Par ): 
+		RDOPROCBlockForQueue( _process, From_Par ){}
+	static int getDefaultValue()  { return 0; }
+	static std::string getDepartParamName(){ return "длина_очереди"; }
 };
 
 // ----------------------------------------------------------------------------

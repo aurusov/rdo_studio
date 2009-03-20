@@ -229,7 +229,7 @@ class RDOPROCBlockForQueue: public RDOPROCOperator
 {
 protected:
 	// элемент parser_for_runtime служит для передачи информации о параметре "Состояние" ресурса  
-	rdoRuntime::parser_for_Queue parser_for_queue;
+	rdoRuntime::parser_for_Queue parser_for_runtime;
 public:
 	RDOPROCBlockForQueue ( RDOPROCProcess* _process, const std::string& _name ): RDOPROCOperator( _process, _name ){	}
 	static bool checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info );
@@ -246,7 +246,20 @@ protected:
 public:
 	RDOPROCQueue( RDOPROCProcess* _process, const std::string& _name) : RDOPROCBlockForQueue( _process, _name ){}
 	void create_runtime_Queue( RDOParser *parser );
-	void add_Queue_Resourse( std::string res_name)	{Res = res_name;}
+	void add_Queue_Resource( std::string res_name)	{Res = res_name;}
+};
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCDepart
+// ----------------------------------------------------------------------------
+class RDOPROCDepart: public RDOPROCBlockForQueue
+{
+protected:
+	std::string Res;
+	rdoRuntime::RDOPROCDepart* runtime;
+public:
+	RDOPROCDepart( RDOPROCProcess* _process, const std::string& _name) : RDOPROCBlockForQueue( _process, _name ){}
+	void create_runtime_Depart( RDOParser *parser );
+	void add_Depart_Resource( std::string res_name)	{Res = res_name;}
 };
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
@@ -274,7 +287,7 @@ protected:
 public:
 	RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name ): RDOPROCBlockForSeize( _process, _name ){}
 	void create_runtime_Seize( RDOParser *parser );
-	void add_Seize_Resourse	( std::string res_name)		{Res = res_name;}
+	void add_Seize_Resource	( std::string res_name)		{Res = res_name;}
 };
 
 // ----------------------------------------------------------------------------
@@ -288,7 +301,7 @@ protected:
 public:
 	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name) : RDOPROCBlockForSeize( _process, _name ){}
 	void create_runtime_Release( RDOParser *parser );
-	void add_Release_Resourse	( std::string res_name)		{Res = res_name;}
+	void add_Release_Resource	( std::string res_name)		{Res = res_name;}
 };
 
 // ----------------------------------------------------------------------------

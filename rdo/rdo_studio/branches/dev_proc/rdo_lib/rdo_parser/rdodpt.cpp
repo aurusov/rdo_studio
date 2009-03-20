@@ -423,13 +423,35 @@ const RDORSSResource* rss = parser->findRSSResource( Res );
 		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
 		// "длина_очереди"
 		std::string rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
-		parser_for_queue.Id_res = rss->getID();
-		parser_for_queue.Id_param = rtp.m_params[rtp_param_name].id(); 
+		parser_for_runtime.Id_res = rss->getID();
+		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}	
 	else {
 	parser->error( "¬нутренн€€ ошибка RDOPROCQueue: не нашли parser-ресурс" );
 	}
-runtime = new rdoRuntime::RDOPROCQueue( parser->getLastPROCProcess()->getRunTime(), parser_for_queue );
+runtime = new rdoRuntime::RDOPROCQueue( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
+}
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCDepart
+// ----------------------------------------------------------------------------
+void RDOPROCDepart::create_runtime_Depart( RDOParser *parser )
+{
+const RDORSSResource* rss = parser->findRSSResource( Res );
+	if( rss ){
+		const std::string res_name = rss->name();
+		// ѕолучили список всех ресурсов
+		rdoMBuilder::RDOResourceList rssList( parser );
+		// —оздадим тип ресурса
+		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+		// "длина_очереди"
+		std::string rtp_param_name = rdoRuntime::RDOPROCDepart::getDepartParamName();
+		parser_for_runtime.Id_res = rss->getID();
+		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
+	}	
+	else {
+	parser->error( "¬нутренн€€ ошибка RDOPROCQueue: не нашли parser-ресурс" );
+	}
+runtime = new rdoRuntime::RDOPROCDepart( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
 }
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
