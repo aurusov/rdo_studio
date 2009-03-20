@@ -183,7 +183,10 @@ bool RDOPROCQueue::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) 
 	{
-	return true;
+		RDOValue i = forRes.rss->getParam( forRes.Id_param );
+		RDOValue j = RDOValue( int (1) );
+		forRes.rss->setParam( forRes.Id_param, i + j );	
+		return true;
 	}
 	else
 	{
@@ -197,7 +200,6 @@ RDOBaseOperation::BOResult RDOPROCQueue::onDoOperation( RDOSimulator* sim )
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }
-
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize

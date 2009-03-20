@@ -308,7 +308,7 @@ dpt_process_line:	RDO_IDENTIF
 								
 dpt_queue_param:	// empty
 					{
-						PARSER->error(rdo::format("Ожидается имя ресурса"));
+						PARSER->error( rdo::format("Ожидается имя ресурса") );
 					}
 					| RDO_IDENTIF 
 					{
@@ -328,6 +328,7 @@ dpt_depart_param:	// empty
 					};
 dpt_seize_param:    // empty 
 					{
+						PARSER->error( rdo::format("Ожидается имя ресурса") );
 					}   
 					| RDO_IDENTIF 
 					{
@@ -343,6 +344,7 @@ dpt_seize_param:    // empty
 					};     
 dpt_release_param:  //empty 
 					{
+						PARSER->error( rdo::format("Ожидается имя ресурса") );
 					}   
 					| RDO_IDENTIF 
 					{
