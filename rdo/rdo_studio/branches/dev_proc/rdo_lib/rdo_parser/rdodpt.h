@@ -23,6 +23,7 @@ class RDOPROCTerminate;
 class RDOPROCAdvance;
 class RDOPROCRelease;
 struct parser_for_Seize;
+struct parser_for_Queue;
 }
 
 namespace rdoParse 
@@ -223,17 +224,30 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCSeize
+// ---------- RDOPROCQueue
 // ----------------------------------------------------------------------------
-
-
+class RDOPROCQueue: public RDOPROCOperator
+{
+protected:
+	std::string Res;
+	rdoRuntime::parser_for_Queue parser_for_queue;
+	rdoRuntime::RDOPROCQueue* runtime;
+public:
+	RDOPROCQueue( RDOPROCProcess* _process, const std::string& _name);
+	static void createRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name );
+	static bool checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info );
+	void create_runtime_Queue( RDOParser *parser );
+	void add_Queue_Resourse	( std::string res_name)		{Res = res_name;}
+};
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCBlockForSeize
+// ----------------------------------------------------------------------------
 class RDOPROCBlockForSeize: public RDOPROCOperator
 {
 protected:
 	// элемент parser_for_runtime служит для передачи информации о параметре "Состояние" ресурса  
 	rdoRuntime::parser_for_Seize parser_for_runtime;
 public:
-	
 	RDOPROCBlockForSeize( RDOPROCProcess* _process, const std::string& _name ): RDOPROCOperator( _process, _name ){	}
 	static bool checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info );
 	static void createRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name );
@@ -261,7 +275,6 @@ protected:
 	std::string Res;
 	rdoRuntime::RDOPROCRelease* runtime;
 public:
-
 	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name) : RDOPROCBlockForSeize( _process, _name ){}
 	void create_runtime_Release( RDOParser *parser );
 	void add_Release_Resourse	( std::string res_name)		{Res = res_name;}

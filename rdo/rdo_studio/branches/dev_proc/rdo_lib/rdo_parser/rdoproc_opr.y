@@ -166,6 +166,8 @@
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 %token RDO_External_Model				444
+%token RDO_QUEUE						445
+%token RDO_DEPART						446
 
 %{
 #include "pch.h"
@@ -282,6 +284,15 @@ dpt_process_line:	RDO_IDENTIF
 					{
 						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
+					| RDO_QUEUE dpt_queue_param 
+					{
+						TRACE("QUEUE dpt_queue_param\n");
+						RDOPROCQueue* queue  = reinterpret_cast<RDOPROCQueue*>($2);
+						queue->create_runtime_Queue( PARSER );
+					}
+					| RDO_DEPART dpt_depart_param 
+					{
+					}
 					| RDO_SEIZE dpt_seize_param 
 					{
 						TRACE("SEIZE dpt_seize_param\n");
@@ -294,8 +305,27 @@ dpt_process_line:	RDO_IDENTIF
 						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($2);
 						release->create_runtime_Release( PARSER );
 					};
-
-
+								
+dpt_queue_param:	// empty
+					{
+						PARSER->error(rdo::format("Ожидается имя ресурса"));
+					}
+					| RDO_IDENTIF 
+					{
+						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+						TRACE( "%s _good\n", res_name.c_str());
+						RDOPROCQueue* queue = new RDOPROCQueue( PARSER->getLastPROCProcess(), "SEIZE" );
+						queue->add_Queue_Resourse( res_name );
+						$$ = int( queue );
+					};
+dpt_depart_param:	// empty
+					{
+						PARSER->error( rdo::format("Ожидается имя ресурса") );
+					}
+					| RDO_IDENTIF 
+					{
+						int i=0;
+					};
 dpt_seize_param:    // empty 
 					{
 					}   

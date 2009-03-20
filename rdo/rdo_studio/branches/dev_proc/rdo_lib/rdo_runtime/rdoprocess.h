@@ -100,35 +100,60 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCQueue
+// ----------------------------------------------------------------------------
+struct runtime_for_Queue
+{
+	RDOResource* rss; 
+	int Id_param;
+	RDOValue defaultValue;
+};
+struct parser_for_Queue
+{
+	int Id_res;
+	int Id_param;
+};
+class RDOPROCQueue: public RDOPROCBlock
+{
+protected:
+	parser_for_Queue  fromParser;
+	runtime_for_Queue forRes;
+	virtual void onStart		  ( RDOSimulator* sim );
+	virtual bool onCheckCondition ( RDOSimulator* sim );
+	virtual BOResult onDoOperation( RDOSimulator* sim );
+public:
+	static int getDefaultValue()  { return 0; }
+	RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par );
+	static std::string getQueueParamName(){ return "длина_очереди"; }
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
-	
-struct runtime_for_Seize{
-RDOPROCResource* rss; 
-int Id_param;
-RDOValue     enum_free;
-RDOValue     enum_buzy;
+struct runtime_for_Seize
+{
+	RDOPROCResource* rss; 
+	int Id_param;
+	RDOValue     enum_free;
+	RDOValue     enum_buzy;
 };
-
-struct parser_for_Seize{
-int Id_res;
-int Id_param;
+struct parser_for_Seize
+{
+	int Id_res;
+	int Id_param;
 };
-
-
-
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 protected:
-runtime_for_Seize forRes;
-parser_for_Seize  fromParser;
+	runtime_for_Seize forRes;
+	parser_for_Seize  fromParser;
 virtual void onStart( RDOSimulator* sim );
 
 public:
-	RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par  );
-	static std::string getStateParamName() { return "Состояние"; }
-	static std::string getStateEnumFree()  { return "Свободен";  }
-	static std::string getStateEnumBuzy()  { return "Занят";     }
+	RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par );
+	static std::string getStateParamName() {return "Состояние";}
+	static std::string getStateEnumFree()  {return "Свободен"; }
+	static std::string getStateEnumBuzy()  {return "Занят";    }
 };
 
 // ----------------------------------------------------------------------------
@@ -179,7 +204,7 @@ protected:
 		RDOPROCTransact* transact;
 		double           timeLeave;
 		LeaveTr( RDOPROCTransact* _transact, double _timeLeave ):
-			transact( _transact ),
+			transact ( _transact ),
 			timeLeave( _timeLeave )
 		{
 		}
@@ -200,7 +225,7 @@ class RDOPROCTerminate: public RDOPROCBlock
 {
 protected:
 	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation( RDOSimulator* sim );
+	virtual BOResult onDoOperation	 ( RDOSimulator* sim );
 
 public:
 	RDOPROCTerminate( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}

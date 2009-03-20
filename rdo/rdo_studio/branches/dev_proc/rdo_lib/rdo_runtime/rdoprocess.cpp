@@ -162,13 +162,50 @@ void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCQueue
+// ----------------------------------------------------------------------------
+RDOPROCQueue::RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par):
+	RDOPROCBlock( _process ),
+	fromParser  ( From_Par )
+{
+}
+void RDOPROCQueue::onStart( RDOSimulator* sim )
+{
+	int Id_res = fromParser.Id_res;
+	int Id_param = fromParser.Id_param;
+	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
+	forRes.Id_param = Id_param;
+	forRes.rss = static_cast<RDOPROCResource*>(res);
+	forRes.defaultValue = RDOValue( RDOPROCQueue::getDefaultValue() );
+}
+
+bool RDOPROCQueue::onCheckCondition( RDOSimulator* sim )
+{
+	if ( !transacts.empty() ) 
+	{
+	return true;
+	}
+	else
+	{
+	return false;
+	}
+}
+
+RDOBaseOperation::BOResult RDOPROCQueue::onDoOperation( RDOSimulator* sim )
+{
+	TRACE( "%7.1f QUEUE\n", sim->getCurrentTime() );
+	transacts.front()->next();
+	return RDOBaseOperation::BOR_done;
+}
+
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
 RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par ):
 	RDOPROCBlock( _process ),
 	fromParser ( From_Par)
 {
-
 }
 
 void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
