@@ -236,22 +236,34 @@ dpt_queue_param:	// empty
 					| RDO_IDENTIF 
 					{
 						// Имя ресурса
-						std::string res_name         = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
 						const RDOParserSrcInfo& info = @1;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
 						// Получили список всех типов ресурсов
 						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+						rdoMBuilder::RDOResType rtp;
 						std::string rtp_name = "QDEPART";
-							if ( rtpList[rtp_name].exist() )
+						// Если ресурс существует, берем его тип и проверяем
+							if (rssList[res_name].exist())
 							{
-							rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-								if( RDOPROCQueue::checkType(PARSER, rtp_, info) )
-								{
-								RDOPROCQueue::createRes( PARSER, rtp_, res_name );
-								}
+								rtp = rssList[res_name].getType();
+								RDOPROCBlockForQueue::checkType(PARSER, rtp, info);
 							}
 							else
 							{
-							PARSER->error( rdo::format("Для сбора статистики по очереди '%s'необходимо завести тип QDEPART с параметром integer - длина очереди",reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+								if ( rtpList[rtp_name].exist() )
+								{
+									rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+										if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
+										{
+											RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
+										}
+								}
+								else
+								{
+								PARSER->error( rdo::format("Для сбора статистики по очереди '%s'необходимо завести тип QDEPART с параметром integer - длина очереди",reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+								}
 							}
 					};
 dpt_depart_param:	// empty
@@ -261,22 +273,34 @@ dpt_depart_param:	// empty
 					| RDO_IDENTIF 
 					{
 						// Имя ресурса
-						std::string res_name         = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
 						const RDOParserSrcInfo& info = @1;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
 						// Получили список всех типов ресурсов
 						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+						rdoMBuilder::RDOResType rtp;
 						std::string rtp_name = "QDEPART";
-							if ( rtpList[rtp_name].exist() )
+						// Если ресурс существует, берем его тип и проверяем
+							if (rssList[res_name].exist())
 							{
-							rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-								if( RDOPROCDepart::checkType(PARSER, rtp_, info) )
-								{
-								RDOPROCDepart::createRes( PARSER, rtp_, res_name );
-								}
+								rtp = rssList[res_name].getType();
+								RDOPROCBlockForQueue::checkType(PARSER, rtp, info);
 							}
 							else
 							{
-							PARSER->error( rdo::format("Для сбора статистики по очереди '%s'необходимо завести тип QDEPART с параметром integer - длина очереди",reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+								if ( rtpList[rtp_name].exist() )
+								{
+									rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+										if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
+										{
+											RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
+										}
+								}
+								else
+								{
+								PARSER->error( rdo::format("Для сбора статистики по очереди '%s'необходимо завести тип QDEPART с параметром integer - длина очереди",reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+								}
 							}
 					};
 dpt_seize_param:	// empty
