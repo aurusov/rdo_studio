@@ -391,6 +391,9 @@ RDOBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 	}
 	static_cast<RDORuntime*>(sim)->onEraseRes( transact->getTraceID(), NULL );
 	transacts.erase( transacts.begin() );
+	int termNow = static_cast<RDORuntime*>(sim)->getCurrentTerm();
+	termNow += getTerm();
+	static_cast<RDORuntime*>(sim)->setCurrentTerm(termNow);
 	return RDOBaseOperation::BOR_done;
 }
 

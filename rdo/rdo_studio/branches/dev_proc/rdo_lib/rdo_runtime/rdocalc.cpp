@@ -198,6 +198,15 @@ RDOValue& RDOCalcGetSeconds::doCalc( RDORuntime* runtime )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcGetTermNow
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetTermNow::doCalc( RDORuntime* runtime )
+{
+	m_value = runtime->getCurrentTerm();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunAlgorithmicCalc
 // ----------------------------------------------------------------------------
 RDOValue& RDOFunAlgorithmicCalc::doCalc( RDORuntime* runtime )

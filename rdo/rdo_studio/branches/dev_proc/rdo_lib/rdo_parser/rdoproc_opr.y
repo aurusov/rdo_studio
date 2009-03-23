@@ -270,10 +270,8 @@ dpt_process_line:	RDO_IDENTIF
 					{
 						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
-					| RDO_TERMINATE 
+					| RDO_TERMINATE dpt_term_param
 					{
-						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE" );
-						$$ = int(terminate);
 					}
 					| RDO_ADVANCE fun_arithm 
 					{
@@ -372,7 +370,23 @@ dpt_release_param:  //empty
 					| RDO_IDENTIF error 
 					{	
 						PARSER->error( @2, "Ошибка в миени ресурса" )
-					};						
+					};					
+dpt_term_param:		//empty 
+					{
+						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE", 0 );
+						$$ = int(terminate);					
+					}   
+					| RDO_INT_CONST
+					{
+						int term = reinterpret_cast<RDOValue*>($1)->value().getInt();
+						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE", term );
+						$$ = int(terminate);					
+					}
+					| RDO_INT_CONST error 
+					{	
+						PARSER->error( @2, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
+					};				
+										
 dpt_process_end:	dpt_process RDO_End	
 					{
 						PARSER->getLastPROCProcess()->end();

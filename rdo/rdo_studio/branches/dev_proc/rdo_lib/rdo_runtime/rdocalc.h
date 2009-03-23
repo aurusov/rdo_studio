@@ -306,6 +306,18 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcGetTermNow
+// ----------------------------------------------------------------------------
+class RDOCalcGetTermNow: public RDOCalc
+{
+public:
+	RDOCalcGetTermNow( RDORuntimeParent* parent ): RDOCalc( parent ) {}
+
+private:
+	virtual RDOValue& doCalc( RDORuntime* runtime );
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 class RDOFunCalc: public RDOCalc

@@ -325,7 +325,7 @@ protected:
 	rdoRuntime::RDOPROCTerminate* runtime;
 
 public:
-	RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name );
+	RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name, const unsigned int& _term);
 };
 
 } // namespace rdoParse

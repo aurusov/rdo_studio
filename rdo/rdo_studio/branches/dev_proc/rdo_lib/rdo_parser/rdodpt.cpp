@@ -584,10 +584,10 @@ RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _na
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
-RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name ):
+RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name, const unsigned int& _term):
 	RDOPROCOperator( _process, _name )
 {
-	runtime = new rdoRuntime::RDOPROCTerminate( parser()->getLastPROCProcess()->getRunTime() );
+	runtime = new rdoRuntime::RDOPROCTerminate( parser()->getLastPROCProcess()->getRunTime(), _term );
 }
 
 } // namespace rdoParse

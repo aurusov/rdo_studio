@@ -260,7 +260,13 @@ void RDOFUNArithm::init( const RDOValue& value )
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
-
+	if ( value->getIdentificator() == "Term_now" || value->getIdentificator() == "term_now" )
+	{
+		m_value = g_int;
+		m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );
+		m_calc->setSrcInfo( src_info() );
+		return;
+	}
 	if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
 	{
 		m_value = g_real;

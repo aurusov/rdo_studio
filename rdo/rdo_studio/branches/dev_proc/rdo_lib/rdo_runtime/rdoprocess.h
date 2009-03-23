@@ -254,9 +254,10 @@ class RDOPROCTerminate: public RDOPROCBlock
 protected:
 	virtual bool     onCheckCondition( RDOSimulator* sim );
 	virtual BOResult onDoOperation	 ( RDOSimulator* sim );
-
+	const unsigned int term; 
 public:
-	RDOPROCTerminate( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
+	int getTerm(){return term;}
+	RDOPROCTerminate( RDOPROCProcess* _process, const unsigned int& _term ): RDOPROCBlock( _process ), term(_term) {}
 };
 
 } // namespace rdoRuntime
