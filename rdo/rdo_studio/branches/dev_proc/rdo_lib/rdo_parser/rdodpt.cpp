@@ -409,6 +409,25 @@ bool RDOPROCBlockForQueue::checkType( RDOParser *parser, rdoMBuilder::RDOResType
 
 	return true;
 }
+rdoMBuilder::RDOResType RDOPROCBlockForQueue::createType( RDOParser *parser, const std::string& rtp_name, const RDOParserSrcInfo& info )
+{
+	// "длина_очереди"
+	std::string rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
+	// значение длины очереди по умолчанию
+	rdoRuntime::RDOValue def = rdoRuntime::RDOValue( int (rdoRuntime::RDOPROCQueue::getDefaultValue()) );
+	// Получили список всех типов ресурсов
+	rdoMBuilder::RDOResTypeList rtpList( parser );
+	// Создадим тип ресурса
+	rdoMBuilder::RDOResType rtp( rtp_name );
+	// Создадим параметр типа integer
+	rtp.m_params.append( rdoMBuilder::RDOResType::Param( rtp_param_name, def ));
+	// Добавим тип ресурса
+	if ( !rtpList.append( rtp ) )
+	{
+		parser->error( info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+	}
+	return rtp;
+}
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCQueue
 // ----------------------------------------------------------------------------

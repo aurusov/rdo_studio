@@ -262,7 +262,11 @@ dpt_queue_param:	// empty
 								}
 								else
 								{
-								PARSER->error( rdo::format("Для сбора статистики по очереди '%s'необходимо завести тип QDEPART с параметром integer - длина очереди",reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+									rdoMBuilder::RDOResType rtp_ = RDOPROCBlockForQueue::createType( PARSER, rtp_name, info );
+									if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
+									{
+										RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
+									}
 								}
 							}
 					};
@@ -298,8 +302,12 @@ dpt_depart_param:	// empty
 										}
 								}
 								else
-								{
-								PARSER->error( rdo::format("Для сбора статистики по очереди '%s'необходимо завести тип QDEPART с параметром integer - длина очереди",reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+								{	
+									rdoMBuilder::RDOResType rtp_ = RDOPROCBlockForQueue::createType( PARSER, rtp_name, info );
+									if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
+									{
+										RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
+									}
 								}
 							}
 					};
