@@ -42,6 +42,19 @@ RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser, const RDOParserSrcInfo& _src_info 
 	}
 }
 
+RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser, const std::string & _info ):
+	RDOParserObject( _parser ),
+	RDOParserSrcInfo( _info ),
+	pokaz_runtime( NULL )
+{
+	const RDOPMDPokaz* pokaz = parser()->findPMDPokaz( src_text() );
+	if ( pokaz ) {
+		parser()->error_push_only( src_info(), rdo::format("Показатель '%s' уже существует", src_text().c_str()) );
+		parser()->error_push_only( pokaz->src_info(), "См. первое определение" );
+		parser()->error_push_done();
+	}
+}
+
 void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 {
 	pokaz_runtime = _pokaz_runtime;
@@ -86,6 +99,16 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 	endOfCreation( pokaz );
 }
 
+RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const std::string& _info, bool _trace, const std::string& _res_info, const std::string& _par_info ):
+	RDOPMDPokaz( _parser, _info )
+{
+	const RDORSSResource* const res = parser()->findRSSResource( _res_info );
+	const RDORTPParam* const par = res->getType()->findRTPParam( _par_info );
+	rdoRuntime::RDOType::ID typeID = par->getType()->typeID();
+	
+	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser()->runtime(), _info, _trace, _res_info, _par_info, res->getID(), res->getType()->getRTPParamNumber( _par_info ));
+	endOfCreation( pokaz );
+}
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------

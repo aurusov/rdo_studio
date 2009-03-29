@@ -183,6 +183,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdodpt.h"
 #include "rdortp.h"
 #include "rdorss.h"
+#include "rdopmd.h"
 #include <rdoprocess.h>
 #include <rdo_resources.h>
 
@@ -244,20 +245,24 @@ dpt_queue_param:	// empty
 						rdoMBuilder::RDOResTypeList rtpList( PARSER );
 						rdoMBuilder::RDOResType rtp;
 						std::string rtp_name = "QDEPART";
-						// ≈сли ресурс существует, берем его тип и провер€ем
+						std::string q_name = "ƒлина_очереди_"  + res_name;
+							// ≈сли ресурс существует, берем его тип и провер€ем
 							if (rssList[res_name].exist())
 							{
 								rtp = rssList[res_name].getType();
 								RDOPROCBlockForQueue::checkType(PARSER, rtp, info);
+								new RDOPMDWatchPar( PARSER, q_name, 0, res_name, "длина_очереди" );
 							}
 							else
 							{
+								//≈сли тип "QDEPART" существует
 								if ( rtpList[rtp_name].exist() )
 								{
 									rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
 										if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
 										{
 											RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
+											new RDOPMDWatchPar( PARSER, q_name, 0, res_name, "длина_очереди" );
 										}
 								}
 								else
@@ -266,6 +271,7 @@ dpt_queue_param:	// empty
 									if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
 									{
 										RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
+										new RDOPMDWatchPar( PARSER, q_name, 0, res_name, "длина_очереди" );
 									}
 								}
 							}

@@ -25,6 +25,7 @@ protected:
 
 public:
 	RDOPMDPokaz( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+	RDOPMDPokaz( RDOParser* _parser, const std::string& _info );
 	virtual ~RDOPMDPokaz() {}
 	const std::string& name() const { return src_text(); }
 };
@@ -36,6 +37,7 @@ class RDOPMDWatchPar: public RDOPMDPokaz
 {
 public:
 	RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_src_info, const RDOParserSrcInfo& _par_src_info );
+	RDOPMDWatchPar( RDOParser* _parser, const std::string& _info, bool _trace, const std::string& _res_info, const std::string& _par_info );
 };
 
 // ----------------------------------------------------------------------------
