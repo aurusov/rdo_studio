@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="rdo_repository"
 	ProjectGUID="{FF8088D9-472E-4480-901D-009B51311853}"
+	RootNamespace="rdo_repository"
 	Keyword="MFCProj"
 	>
 	<Platforms>
@@ -43,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;../rdo_lib/rdo_simulator;../rdo_kernel;../rdo_common;../thirdparty/corba/include"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -111,7 +112,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".;../rdo_lib/rdo_simulator;../rdo_kernel;../rdo_common;../thirdparty/corba/include"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
 				BrowseInformation="1"

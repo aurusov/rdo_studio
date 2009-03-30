@@ -181,7 +181,7 @@ void RDOKernel::registration( RDOThread* thread )
 	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdoSimulator::RDOThreadSimulator*>(thread);
 	if ( !thread_codecomp   && thread->getName() == "RDOThreadCodeComp"   ) thread_codecomp   = static_cast<rdoSimulator::RDOThreadCodeComp*>(thread);
 	if ( !thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
-//	if ( !thread_corba      && thread->getName() == "RDOThreadCorba"      ) thread_corba      = static_cast<rdoCorba::RDOThreadCorba*>(thread);
+	if ( !thread_corba      && thread->getName() == "RDOThreadCorba"      ) thread_corba      = static_cast<rdoCorba::RDOThreadCorba*>(thread);
 #ifdef RDO_MT
 	threads_mutex.Unlock();
 #endif

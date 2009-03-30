@@ -111,7 +111,7 @@ _CORBA_MODULE_BEG
     static _core_attr const char* _PD_repoId;
 
     // Other IDL defined within this scope.
-    enum TypeRTP { rtp_permanent, rtp_temporary /*, __max_TypeRTP=0xffffffff */ };
+    enum TypeRTP { rt_permanent, rt_temporary /*, __max_TypeRTP=0xffffffff */ };
     typedef TypeRTP& TypeRTP_out;
 
     enum TypeParam { int_type, double_type, enum_type /*, __max_TypeParam=0xffffffff */ };
@@ -236,23 +236,41 @@ _CORBA_MODULE_BEG
 
       ::CORBA::Boolean m_exist;
 
+      ::CORBA::Boolean m_exist_ch;
+
       ::CORBA::Long m_id;
+
+      ::CORBA::Boolean m_id_ch;
 
       ::CORBA::Long m_min_int;
 
       ::CORBA::Long m_max_int;
 
+      ::CORBA::Boolean m_diap_int;
+
       ::CORBA::Long m_default_int;
+
+      ::CORBA::Boolean m_default_int_ch;
 
       ::CORBA::Double m_min_double;
 
       ::CORBA::Double m_max_double;
 
+      ::CORBA::Boolean m_diap_double;
+
       ::CORBA::Double m_default_double;
+
+      ::CORBA::Boolean m_default_double_ch;
 
       my_enum m_var_enum;
 
+      ::CORBA::Boolean m_var_enum_ch;
+
+      ::CORBA::Long m_var_enum_count;
+
       ::CORBA::String_member m_default_enum;
+
+      ::CORBA::Boolean m_default_enum_ch;
 
     
 
@@ -382,6 +400,12 @@ _CORBA_MODULE_BEG
       TypeRTP m_type;
 
       ::CORBA::Boolean m_exist;
+
+      ::CORBA::Boolean m_exist_ch;
+
+      ::CORBA::Long m_id;
+
+      ::CORBA::Boolean m_id_ch;
 
       Params m_param;
 
@@ -713,7 +737,7 @@ inline void operator >>=(rdoParse::RDOCorba::TypeRTP _e, cdrStream& s) {
 inline void operator <<= (rdoParse::RDOCorba::TypeRTP& _e, cdrStream& s) {
   ::CORBA::ULong _0RL_e;
   ::operator<<=(_0RL_e,s);
-  if (_0RL_e <= rdoParse::RDOCorba::rtp_temporary) {
+  if (_0RL_e <= rdoParse::RDOCorba::rt_temporary) {
     _e = (rdoParse::RDOCorba::TypeRTP) _0RL_e;
   }
   else {
