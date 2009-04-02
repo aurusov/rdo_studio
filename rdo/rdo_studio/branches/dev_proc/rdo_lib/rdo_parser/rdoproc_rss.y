@@ -251,7 +251,7 @@ dpt_queue_param:	// empty
 							{
 								rtp = rssList[res_name].getType();
 								RDOPROCBlockForQueue::checkType(PARSER, rtp, info);
-								new RDOPMDWatchPar( PARSER, q_name, 0, res_name, "длина_очереди" );
+								new RDOPMDWatchPar( PARSER, q_name, 0, res_name, std::string( "длина_очереди" ) );
 							}
 							else
 							{
@@ -262,7 +262,7 @@ dpt_queue_param:	// empty
 										if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
 										{
 											RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
-											new RDOPMDWatchPar( PARSER, q_name, 0, res_name, "длина_очереди" );
+											new RDOPMDWatchPar( PARSER, q_name, 0, res_name, std::string( "длина_очереди" ) );
 										}
 								}
 								else
@@ -271,7 +271,7 @@ dpt_queue_param:	// empty
 									if( RDOPROCBlockForQueue::checkType(PARSER, rtp_, info) )
 									{
 										RDOPROCBlockForQueue::createRes( PARSER, rtp_, res_name );
-										new RDOPMDWatchPar( PARSER, q_name, 0, res_name, "длина_очереди" );
+										new RDOPMDWatchPar( PARSER, q_name, 0, res_name, std::string( "длина_очереди" ) );
 									}
 								}
 							}
