@@ -19,7 +19,6 @@
 #include <rdotrace.h>
 #include <rdo_runtime.h>
 #include <rdoframe.h>
-//#include <memcheck.h>
 #include <rdoparser.h>
 #include <rdosmr.h>
 #include <rdofrm.h>
@@ -39,7 +38,7 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoCorba
 {
 
-CORBA::ORB_var orb;
+CORBA::ORB_var g_orb;
 
 class RDOCorba_i : public POA_rdoParse::RDOCorba
 {
@@ -178,9 +177,9 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 {
 	try {
 		int argc = 0;
-		orb = CORBA::ORB_init(argc, NULL);
+		g_orb = CORBA::ORB_init(argc, NULL);
 		
-		CORBA::Object_var obj = orb->resolve_initial_references("RootPOA");
+		CORBA::Object_var obj = g_orb->resolve_initial_references("RootPOA");
 		PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
 		
 		RDOCorba_i* myrdocorba = new RDOCorba_i();
@@ -195,7 +194,7 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		//x = orb->object_to_string(obj);
 		//cout << x << std::endl;
 
-		if( !bindObjectToName(orb, obj) )
+		if( !bindObjectToName(g_orb, obj) )
 			return 1;
 
 		myrdocorba->_remove_ref();
@@ -204,7 +203,7 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		
 		pman->activate();
 		
-		orb->run();
+		g_orb->run();
 	}
 	catch(CORBA::SystemException& ex) {
 		//trace( rdo::format("Caught CORBA::%s", ex._name()) );
@@ -273,10 +272,10 @@ void RDOThreadCorba::stop()
 	trace( thread_name + " stop begin" );
 #endif
 	// Место для остановки корбы
-	if ( orb != CORBA::ORB::_nil() )
+	if ( g_orb != CORBA::ORB::_nil() )
 	{
-		orb->shutdown( true );
-		orb->destroy();
+		g_orb->shutdown( true );
+		g_orb->destroy();
 	}
 
 	if ( thread_corbaRunThreadFun )
