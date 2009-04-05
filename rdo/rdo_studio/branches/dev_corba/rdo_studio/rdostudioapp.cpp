@@ -196,7 +196,18 @@ BOOL RDOStudioApp::InitInstance()
 	new rdoSimulator::RDOThreadSimulator();
 	new rdoSimulator::RDOThreadCodeComp();
 	new rdoRepository::RDOThreadRepository();
+	
+
+
+
+//#define CORBA_ENABLE
+#ifdef CORBA_ENABLE
 	new rdoCorba::RDOThreadCorba();
+#endif
+
+
+
+
 #ifdef RDO_MT
 	studioMT = new RDOThreadStudio();
 #endif

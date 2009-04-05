@@ -33,6 +33,10 @@ static char THIS_FILE[] = __FILE__;
 
 //#ifndef DISABLE_CORBA
 
+//#define CORBA_ENABLE
+
+#ifdef CORBA_ENABLE
+
 #include <omniORB4/CORBA.h>
 
 namespace rdoCorba
@@ -173,6 +177,7 @@ static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr obj
 	return 1;
 }
 
+
 unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 {
 	try {
@@ -312,7 +317,7 @@ void RDOThreadCorba::stop()
 
 } // namespace rdoCorba
 
-//#endif
+#endif
 
 
 
@@ -758,6 +763,9 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			codeCompletion();
 			break;
 		}
+		
+#ifdef CORBA_ENABLE
+
 		case RT_CORBA_PARSER_GET_RTP_COUNT: {
 			msg.lock();
 			corbaGetRTPcount( *static_cast<::CORBA::Long*>(msg.param) );
@@ -776,6 +784,8 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
+#endif
+	
 		case RT_CORBA_PARSER_GET_RSS: {
 			msg.lock();
 			corbaGetRSS( static_cast<GetRSS*>(msg.param) );
@@ -1021,6 +1031,8 @@ void RDOThreadSimulator::codeCompletion()
 {
 }
 
+#ifdef CORBA_ENABLE
+
 void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 {
 	// ѕропарсели типы и ресурсы текста модели (текущие, а не записанные)
@@ -1185,48 +1197,6 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 	*/
 }
 
-void RDOThreadSimulator::corbaGetRSS( GetRSS* RSSList )
-{
-	// ѕропарсели типы и ресурсы текста модели (текущие, а не записанные)
-	rdoParse::RDOParserCorba parser;
-	try {
-		parser.parse();
-	}
-	catch ( rdoParse::RDOSyntaxException& ) {
-	}
-	catch ( rdoRuntime::RDORuntimeException& ) {
-	}
-	// ѕробежались по всем ресурсам и переписали в RSSList
-	rdoMBuilder::RDOResourceList rssList( &parser );
-	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
-	while ( rss_it != rssList.end() )
-	{
-		// —оздаем текстовую структуру
-		RSS rss;
-		rss.m_name = rss_it->name();
-		// «апоминаем в списке
-		RSSList->push_back( rss );
-		rss_it++;
-	}
-
-	{
-		// ¬ывели все ресурсы
-		rdoMBuilder::RDOResourceList rssList( &parser );
-		rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
-		while ( rss_it != rssList.end() )
-		{
-			TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
-			rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
-			while ( param_it != rss_it->end() )
-			{
-				TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
-				param_it++;
-			}
-			rss_it++;
-		}
-	}
-}
-
 void RDOThreadSimulator::corbaGetRTPcount(::CORBA::Long& rtp_count)
 {
 	rtp_count = 0;
@@ -1286,6 +1256,51 @@ void RDOThreadSimulator::corbaGetRTPParamscount(rdoParse::RDOCorba::PARAM_count&
 		rtp_it++;
 	}
 }
+
+#endif
+
+void RDOThreadSimulator::corbaGetRSS( GetRSS* RSSList )
+{
+	// ѕропарсели типы и ресурсы текста модели (текущие, а не записанные)
+	rdoParse::RDOParserCorba parser;
+	try {
+		parser.parse();
+	}
+	catch ( rdoParse::RDOSyntaxException& ) {
+	}
+	catch ( rdoRuntime::RDORuntimeException& ) {
+	}
+	// ѕробежались по всем ресурсам и переписали в RSSList
+	rdoMBuilder::RDOResourceList rssList( &parser );
+	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
+	while ( rss_it != rssList.end() )
+	{
+		// —оздаем текстовую структуру
+		RSS rss;
+		rss.m_name = rss_it->name();
+		// «апоминаем в списке
+		RSSList->push_back( rss );
+		rss_it++;
+	}
+
+	{
+		// ¬ывели все ресурсы
+		rdoMBuilder::RDOResourceList rssList( &parser );
+		rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
+		while ( rss_it != rssList.end() )
+		{
+			TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
+			rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
+			while ( param_it != rss_it->end() )
+			{
+				TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
+				param_it++;
+			}
+			rss_it++;
+		}
+	}
+}
+
 // --------------------------------------------------------------------
 // ---------- RDOThreadCodeComp
 // --------------------------------------------------------------------

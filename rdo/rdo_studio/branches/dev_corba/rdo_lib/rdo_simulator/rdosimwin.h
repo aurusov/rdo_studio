@@ -20,6 +20,9 @@
 
 //#ifndef DISABLE_CORBA
 
+//#define CORBA_ENABLE
+#ifdef CORBA_ENABLE
+
 #ifndef __WIN32__
 #define __WIN32__
 #endif
@@ -68,6 +71,7 @@ private:
 
 } // namespace rdoCorba
 
+#endif
 
 namespace rdoSimulator {
 class RDOThreadSimulator;
@@ -168,16 +172,14 @@ private:
 	std::stringstream resultString;
 	std::stringstream resultInfoString;
 
-/*
-#ifndef DISABLE_CORBA
-	void corbaGetRTPcount(::CORBA::Long& rtp_count);
-	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
-#endif
-*/
+	
+#ifdef CORBA_ENABLE
+
 	void corbaGetRTPcount(::CORBA::Long& rtp_count);
 	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
 	void corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList );
 
+#endif
 
 protected:
 	virtual ~RDOThreadSimulator(); // „тобы нельз€ было удалить через delete помещаем его в protected
