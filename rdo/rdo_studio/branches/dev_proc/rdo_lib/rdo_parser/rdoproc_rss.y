@@ -223,7 +223,7 @@ dpt_process_input:	/* empty */
 
 dpt_process_line:	  RDO_IDENTIF					{		}
 					| RDO_GENERATE					{		}
-					| RDO_TERMINATE	dpt_term_param	{		}
+					| RDO_TERMINATE					{		}
 					| RDO_ADVANCE					{		}
 					| RDO_QUEUE dpt_queue_param		{		}
 					| RDO_DEPART dpt_depart_param	{		}
@@ -414,17 +414,6 @@ dpt_release_param:	// empty
 					{
 						PARSER->error(@2, "Ошибка в имени ресурса");
 					};
-dpt_term_param:		//empty 
-					{
-					}   
-					| RDO_INT_CONST
-					{
-					}
-					| RDO_INT_CONST error 
-					{	
-						PARSER->error( @2, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
-					};				
-
 
 dpt_process_end:	dpt_process RDO_End
 					{

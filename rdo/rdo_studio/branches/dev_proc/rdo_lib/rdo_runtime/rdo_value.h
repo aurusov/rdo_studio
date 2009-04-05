@@ -63,7 +63,10 @@ public:
 
 	const RDOType&  type() const;
 	RDOType::ID     typeID() const;
-
+	const RDOType* getType() 
+	{
+	return m_type;
+	}
 private:
 	const RDOType* m_type;
 

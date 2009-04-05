@@ -231,6 +231,7 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_GENERATE fun_arithm 
 					{
+						int time = ((RDOFUNArithm*)$2)->createCalc()->calcValue(RUNTIME).getInt();
 						std::string rtp_name       = "Транзакты";
 						std::string rtp_param_name = "Время_создания";
 
@@ -376,13 +377,20 @@ dpt_term_param:		//empty
 						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE", 0 );
 						$$ = int(terminate);					
 					}   
-					| RDO_INT_CONST
+					| fun_arithm 
 					{
-						int term = reinterpret_cast<RDOValue*>($1)->value().getInt();
-						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE", term );
-						$$ = int(terminate);					
+						if(((RDOFUNArithm*)$1)->createCalc()->calcValue(RUNTIME).getType()->id()==rdoRuntime::RDOType::t_int)
+						{
+							int term = ((RDOFUNArithm*)$1)->createCalc()->calcValue(RUNTIME).getInt();
+							RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE", term );
+							$$ = int(terminate);					
+						}
+						else
+						{
+							PARSER->error( @1, "Ошибка, для оператора TERMINATE можно использовать только целое значение" );
+						}
 					}
-					| RDO_INT_CONST error 
+					| fun_arithm  error 
 					{	
 						PARSER->error( @2, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
 					};				
