@@ -113,7 +113,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;..;../rdo_system;../rdo_runtime;../rdo_mbuilder;../../rdo_common;../../rdo_kernel;../../rdo_repository;../../thirdparty/bison_flex"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__ ;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -133,6 +133,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="COS4d.lib COSDynamic4d.lib omniCodeSets4d.lib omniDynamic4d.lib omniORB4d.lib omnisslTP4d.lib omnithreadd.lib ws2_32.lib mswsock.lib advapi32.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -182,6 +183,10 @@
 						PrecompiledHeaderThrough="pch.h"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\RDOCorbaSK.cc"
+				>
 			</File>
 			<File
 				RelativePath="rdodpt.cpp"
@@ -566,6 +571,10 @@
 			>
 			<File
 				RelativePath="pch.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RDOCorba.hh"
 				>
 			</File>
 			<File
