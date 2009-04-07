@@ -185,7 +185,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\RDOCorbaSK.cc"
+				RelativePath="..\rdo_simulator\RDOCorbaSK.cc"
 				>
 			</File>
 			<File
@@ -574,7 +574,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\RDOCorba.hh"
+				RelativePath="..\rdo_simulator\RDOCorba.hh"
 				>
 			</File>
 			<File
