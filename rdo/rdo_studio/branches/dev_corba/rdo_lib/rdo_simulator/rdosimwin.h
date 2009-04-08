@@ -16,8 +16,6 @@
 #include <rdocommon.h>
 
 //#define DISABLE_CORBA
-
-
 //#ifndef DISABLE_CORBA
 
 //#define CORBA_ENABLE
