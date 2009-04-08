@@ -69,7 +69,7 @@ void RDOParserCorbaRTP::parse()
 	{
 
 		// Создаем новый тип ресурса
-		rdoMBuilder::RDOResType rtp( my_rtpList[i].m_name );
+		rdoMBuilder::RDOResType rtp( my_rtpList[i].m_name.in() );
 		// Наполняем его параметрами
 
 		for (CORBA::Long j = 0; j < params_count[i]; j++)
@@ -94,19 +94,19 @@ void RDOParserCorbaRTP::parse()
 
 					switch (fl){
 						case 0:{//Нет ни диапазона, ни значения по умолчанию
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , rdoRuntime::g_int) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_int) );
 							break;
 						}
    						case 1:{//Есть и диапазон, и значение по умолчанию
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , my_rtpList[i].m_param[j].m_min_int , my_rtpList[i].m_param[j].m_max_int , my_rtpList[i].m_param[j].m_default_int ) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , my_rtpList[i].m_param[j].m_min_int , my_rtpList[i].m_param[j].m_max_int , my_rtpList[i].m_param[j].m_default_int ) );
 							break;
 						}
 						case 2:{//Есть только дипапазон значений
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , my_rtpList[i].m_param[j].m_min_int , my_rtpList[i].m_param[j].m_max_int ) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , my_rtpList[i].m_param[j].m_min_int , my_rtpList[i].m_param[j].m_max_int ) );
 							break;
 						}
    						case 3:{//Есть толко значение по умолчанию
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , rdoRuntime::g_int , my_rtpList[i].m_param[j].m_default_int ) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_int , my_rtpList[i].m_param[j].m_default_int ) );
 							break;
 						}
 						default: break;
@@ -132,19 +132,19 @@ void RDOParserCorbaRTP::parse()
 
 					switch (fl){
 						case 0:{//Нет ни диапазона, ни значения по умолчанию
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , rdoRuntime::g_real) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_real) );
 							break;
 						}
    						case 1:{//Есть и диапазон, и значение по умолчанию
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , my_rtpList[i].m_param[j].m_min_double , my_rtpList[i].m_param[j].m_max_double , my_rtpList[i].m_param[j].m_default_double ) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , my_rtpList[i].m_param[j].m_min_double , my_rtpList[i].m_param[j].m_max_double , my_rtpList[i].m_param[j].m_default_double ) );
 							break;
 						}
 						case 2:{//Есть только дипапазон значений
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , my_rtpList[i].m_param[j].m_min_double , my_rtpList[i].m_param[j].m_max_double ) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , my_rtpList[i].m_param[j].m_min_double , my_rtpList[i].m_param[j].m_max_double ) );
 							break;
 						}
    						case 3:{//Есть толко значение по умолчанию
-							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name , rdoRuntime::g_real , my_rtpList[i].m_param[j].m_default_double ) );
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_real , my_rtpList[i].m_param[j].m_default_double ) );
 							break;
 						}
 						default: break;
