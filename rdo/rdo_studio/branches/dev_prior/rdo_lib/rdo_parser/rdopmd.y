@@ -122,6 +122,7 @@
 %token RDO_RELEASE						368
 %token RDO_if							369
 %token RDO_result						370
+%token RDO_CF							371
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
