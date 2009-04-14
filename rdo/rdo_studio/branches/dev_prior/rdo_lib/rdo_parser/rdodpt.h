@@ -60,7 +60,7 @@ public:
 	void endParam( const YYLTYPE& _param_pos );
 
 
-	void setPrior( const RDOFUNArithm* prior ) { m_prior = prior; }
+	void setPrior( RDOFUNArithm* prior ) { m_prior = prior; }
 
 protected:
 	rdoRuntime::RDOActivity* m_activity;
