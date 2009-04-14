@@ -63,6 +63,7 @@ protected:
 	rdoRuntime::RDOActivity* m_activity;
 
 private:
+	RDOFUNArithm*            m_prior;
 	unsigned int             m_currParam;
 	const RDOPATPattern*     m_pattern;
 };
