@@ -60,7 +60,7 @@ public:
 	void endParam( const YYLTYPE& _param_pos );
 
 
-	void setPrior( RDOFUNArithm* prior ) { m_prior = prior; m_activity->setPrior( m_prior->createCalc() ); }
+	void setPrior( RDOFUNArithm* prior );
 
 protected:
 	rdoRuntime::RDOActivity* m_activity;

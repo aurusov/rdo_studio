@@ -142,6 +142,14 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 	}
 }
 
+void RDODPTActivity::setPrior( RDOFUNArithm* prior )
+{
+	m_prior = prior;
+	m_activity->m_prior_runtime = m_prior->createCalc();
+//	rdoRuntime::RDOCalc* calcPrior = m_prior->createCalc();
+//	m_activity->setPriorCalc( calcPrior );
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivityHotKey
 // ----------------------------------------------------------------------------

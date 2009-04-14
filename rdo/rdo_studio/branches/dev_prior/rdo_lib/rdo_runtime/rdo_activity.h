@@ -12,6 +12,7 @@ namespace rdoRuntime {
 class RDOActivity: public RDOBaseOperation, public RDOTraceableObject
 {
 public:
+	RDOCalc*                  m_prior_runtime;
 	void addParamCalc( RDOCalc* calc )
 	{
 		m_paramsCalcs.push_back( calc );
@@ -30,7 +31,7 @@ public:
 		}
 		m_relResID[rel_res_id] = res_id; 
 	}
-	void setPrior( RDOCalc* prior )
+	void setPriorCalc( RDOCalc* prior )
 	{
 		m_prior_runtime = prior;
 	}
@@ -48,7 +49,6 @@ protected:
 	std::list< RDOResource* > m_relevantResources; // Список релевантных ресурсов
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector< RDOCalc* >   m_paramsCalcs;
-	RDOCalc*                  m_prior_runtime;
 
 	void setPatternParameters( RDOSimulator* sim );
 	void getRelevantResources( RDOSimulator* sim, std::list< RDOResource* >& rel_res_list );
