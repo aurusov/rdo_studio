@@ -44,6 +44,7 @@ protected:
 	std::list< RDOResource* > m_relevantResources; // Список релевантных ресурсов
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector< RDOCalc* >   m_paramsCalcs;
+	RDOCalc*                  m_prior_runtime;
 
 	void setPatternParameters( RDOSimulator* sim );
 	void getRelevantResources( RDOSimulator* sim, std::list< RDOResource* >& rel_res_list );
