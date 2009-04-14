@@ -30,6 +30,10 @@ public:
 		}
 		m_relResID[rel_res_id] = res_id; 
 	}
+	void setPrior( RDOCalc* prior )
+	{
+		m_prior_runtime = prior;
+	}
 
 protected:
 	RDOActivity( RDORuntimeParent* parent, bool trace, const std::string& name ):
