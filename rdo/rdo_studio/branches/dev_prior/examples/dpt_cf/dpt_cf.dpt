@@ -1,0 +1,9 @@
+$Activities
+	Приход_клиента      : Образец_прихода_клиента
+$End
+
+$Decision_point A: some
+$Condition NoCheck
+$Activities
+	Обслуживание_клиента: Образец_обслуживания_клиента cf = 0.75
+$End
