@@ -267,7 +267,7 @@ dpt_process_line:	RDO_IDENTIF
 						RDOPROCGenerate* generate = new RDOPROCGenerate( PARSER->getLastPROCProcess(), "GENERATE", ((RDOFUNArithm*)$2)->createCalc() );
 						$$ = int(generate);
 					}
-					| RDO_GENERATE error 
+					| RDO_GENERATE fun_arithm error 
 					{
 						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
@@ -279,7 +279,7 @@ dpt_process_line:	RDO_IDENTIF
 						RDOPROCAdvance* advance = new RDOPROCAdvance( PARSER->getLastPROCProcess(), "ADVANCE", ((RDOFUNArithm*)$2)->createCalc() );
 						$$ = int(advance);
 					}
-					| RDO_ADVANCE error 
+					| RDO_ADVANCE fun_arithm error 
 					{
 						PARSER->error( @2, "Ошибка в арифметическом выражении" );
 					}
