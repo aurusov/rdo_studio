@@ -73,22 +73,22 @@ text    [ x3- 20, y3 - 5, 90, 25, <127 127 127>, <100 255 0>, QROBOT1.длина_очер
 
 //-------------------Очередь к роботу на перемещение ко второму---------------------------------------
 
-rect	[x4, y4, hag*10, h, <127 127 127>, <100 255 0> ]
+rect	[x4, y4, hag*10, h2, <127 127 127>, <100 255 0> ]
 show_if QROBOT2.длина_очереди <= 10
-rect	[x4 + hag*10 - QROBOT2.длина_очереди*hag - 1, y4, QROBOT2.длина_очереди*hag, h, <127 0 127>, <100 255 0>]
+rect	[x4 + hag*10 - QROBOT2.длина_очереди*hag - 1, y4, QROBOT2.длина_очереди*hag, h2, <127 0 127>, <100 255 0>]
 show_if QROBOT2.длина_очереди > 10
 rect	[x4, y4, hag*10, h, <127 0 127>, <100 255 0>]
 
 show
-line	[x4 + hag*10 - hag, y4 + 1, x4 + hag*10 - hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 2*hag, y4 + 1, x4 + hag*10 - 2*hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 3*hag, y4 + 1, x4 + hag*10 - 3*hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 4*hag, y4 + 1, x4 + hag*10 - 4*hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 5*hag, y4 + 1, x4 + hag*10 - 5*hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 6*hag, y4 + 1, x4 + hag*10 - 6*hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 7*hag, y4 + 1, x4 + hag*10 - 7*hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 8*hag, y4 + 1, x4 + hag*10 - 8*hag, y4 + h - 1, <0  0 127>]
-line	[x4 + hag*10 - 9*hag, y4 + 1, x4 + hag*10 - 9*hag, y4 + h - 1, <0  0 127>]
+line	[x4 + hag*10 - hag, y4 + 1, x4 + hag*10 - hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 2*hag, y4 + 1, x4 + hag*10 - 2*hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 3*hag, y4 + 1, x4 + hag*10 - 3*hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 4*hag, y4 + 1, x4 + hag*10 - 4*hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 5*hag, y4 + 1, x4 + hag*10 - 5*hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 6*hag, y4 + 1, x4 + hag*10 - 6*hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 7*hag, y4 + 1, x4 + hag*10 - 7*hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 8*hag, y4 + 1, x4 + hag*10 - 8*hag, y4 + h2 - 1, <0  0 127>]
+line	[x4 + hag*10 - 9*hag, y4 + 1, x4 + hag*10 - 9*hag, y4 + h2 - 1, <0  0 127>]
 
 text    [ x4- 20, y4 - 5, 90, 25, <127 127 127>, <100 255 0>, QROBOT2.длина_очереди ]
 

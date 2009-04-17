@@ -15,6 +15,8 @@ $Constant
 	h  		: integer = 10
 	hag		: integer = 7
 	
+	h2		: integer = 15
+	
 	x2		: integer = 400 
 	y2 		: integer = 150
 	
