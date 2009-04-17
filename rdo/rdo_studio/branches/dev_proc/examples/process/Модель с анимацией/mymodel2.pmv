@@ -1,0 +1,26 @@
+Results_file   = mymodel2.pmv    Чт апр 16 09:41:54 2009
+Run_file       = mymodel2.smr
+Model_name     = mymodel2
+Resource_file  = mymodel2.rss
+OprIev_file    = mymodel2.opr
+
+$Changes
+
+
+$Status = USER_BREAK
+$Result_values  0  1424.51  508.109
+  EventCount           0  0  0
+  OperRuleCheckCounter 0  0  0
+  AExpCalcCounter      0  0  0
+  BExpCalcCounter      5880376  4128  11573
+
+Длина_очереди_QROBOT1         	17	111	7.69725	2.03714e+006	0	17
+Длина_очереди_QSTANOK1        	11	83	5.55607	1.36699e+006	0	11
+Длина_очереди_QROBOT2         	8	62	4.31972	1.04254e+006	0	9
+Длина_очереди_QSTANOK2        	0	52	0.376259	21853.3	0	3
+Длина_очереди_QROBOT3         	9	43	3.57025	1.16855e+006	0	9
+Длина_очереди_QEXIT           	17	17	7.71463	1.30161e+007	0	17
+Занятость_робота              	TRUE	90	0.978041	22271.6	8.51555	21.1
+Занятость_станка_1            	TRUE	35	0.970014	57999.6	12.5316	59.3884
+Занятость_станка_2            	TRUE	35	0.970014	57999.6	12.5316	59.3884
+
