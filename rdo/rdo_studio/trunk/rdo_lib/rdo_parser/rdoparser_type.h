@@ -23,7 +23,7 @@ public:
 	virtual std::string    name() const = 0;
 	virtual const RDOType* cast( const RDOType& toType ) const = 0;
 
-	static const RDOType& getTypeByID( rdoRuntime::RDOType::ID id );
+	static const RDOType& getTypeByID( rdoRuntime::RDOType::TypeID typeID );
 
 protected:
 	const rdoRuntime::RDOType* m_type;

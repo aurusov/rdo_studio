@@ -149,7 +149,7 @@ RDOFUNLogic::RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _
 	}
 }
 
-rdoRuntime::RDOCalc* RDOFUNLogic::getCalc( rdoRuntime::RDOType::ID _id )
+rdoRuntime::RDOCalc* RDOFUNLogic::getCalc( rdoRuntime::RDOType::TypeID _id )
 {
 	if ( _id != rdoRuntime::RDOType::t_real )
 	{
@@ -599,14 +599,14 @@ RDOFUNArithm* RDOFUNArithm::operator/ ( RDOFUNArithm& second )
 	GENERATE_ARITHM_CALC( Div, /, "Ќельз€ %s разделить на %s" );
 	// TODO: перевод вещественного в целое при делении. ј что делать с умножением и т.д. ?
 	// ќтвет: с умножением надо делать тоже самое, только непон€тно как
-	if ( newType->type().id() == rdoRuntime::RDOType::t_int )
+	if ( newType->type().typeID() == rdoRuntime::RDOType::t_int )
 	{
 		rdoRuntime::RDOCalc* newCalc_div = newCalc;
 		newCalc = new rdoRuntime::RDOCalcDoubleToIntByResult( parser()->runtime(), newCalc_div );
 		newCalc->setSrcInfo( newCalc_div->src_info() );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(*newType, newCalc->src_info()), newCalc );
-	if ( newType->type().id() == rdoRuntime::RDOType::t_int )
+	if ( newType->type().typeID() == rdoRuntime::RDOType::t_int )
 	{
 		arithm->m_int_or_double.push_back( reinterpret_cast<rdoRuntime::RDOCalcDoubleToIntByResult*>(newCalc) );
 	}

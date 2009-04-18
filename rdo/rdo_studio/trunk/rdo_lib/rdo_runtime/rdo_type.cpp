@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "rdo_type.h"
-#include "rdo_exception.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,9 +12,9 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
-const RDOType& RDOType::getTypeByID( ID id )
+CREF(RDOType) RDOType::getTypeByID(RDOType::TypeID typeID)
 {
-	switch ( id )
+	switch (typeID)
 	{
 		case t_unknow       : return g_unknow;
 		case t_identificator: return g_identificator;

@@ -13,9 +13,9 @@ namespace rdoParse {
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
-const RDOType& RDOType::getTypeByID( rdoRuntime::RDOType::ID id )
+const RDOType& RDOType::getTypeByID( rdoRuntime::RDOType::TypeID typeID )
 {
-	switch ( id )
+	switch ( typeID )
 	{
 		case rdoRuntime::RDOType::t_unknow       : return g_unknow;
 		case rdoRuntime::RDOType::t_int          : return g_int;
@@ -34,7 +34,7 @@ const RDOType* RDOType__unknow::cast( const RDOType& toType ) const
 
 const RDOType* RDOType__int::cast( const RDOType& toType ) const
 {
-	switch ( toType->id() )
+	switch ( toType->typeID() )
 	{
 		case rdoRuntime::RDOType__int::t_int : return &g_int;
 		case rdoRuntime::RDOType__int::t_real: return &g_real;
@@ -44,7 +44,7 @@ const RDOType* RDOType__int::cast( const RDOType& toType ) const
 
 const RDOType* RDOType__real::cast( const RDOType& toType ) const
 {
-	switch ( toType->id() )
+	switch ( toType->typeID() )
 	{
 		case rdoRuntime::RDOType__int::t_int :
 		case rdoRuntime::RDOType__int::t_real: return &g_real;
@@ -54,7 +54,7 @@ const RDOType* RDOType__real::cast( const RDOType& toType ) const
 
 const RDOType* RDOType__string::cast( const RDOType& toType ) const
 {
-	switch ( toType->id() )
+	switch ( toType->typeID() )
 	{
 		case rdoRuntime::RDOType__int::t_string: return &g_string;
 	}
@@ -68,7 +68,7 @@ const RDOType* RDOType__identificator::cast( const RDOType& toType ) const
 
 const RDOType* RDOType__bool::cast( const RDOType& toType ) const
 {
-	switch ( toType->id() )
+	switch ( toType->typeID() )
 	{
 		case rdoRuntime::RDOType__int::t_bool: return &g_bool;
 	}

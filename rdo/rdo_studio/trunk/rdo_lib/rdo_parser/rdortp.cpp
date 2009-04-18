@@ -205,7 +205,7 @@ void RDORTPResType::addParam( const RDORTPParam* const param )
 	m_params.push_back( param );
 }
 
-void RDORTPResType::addParam( const std::string param_name, rdoRuntime::RDOType::ID param_typeID )
+void RDORTPResType::addParam( const std::string param_name, rdoRuntime::RDOType::TypeID param_typeID )
 {
 }
 

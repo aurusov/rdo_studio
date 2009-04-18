@@ -17,7 +17,7 @@ public:
 	RDOValue( const rdoRuntime::RDOValue& value, const RDOParserSrcInfo& src_info = RDOParserSrcInfo() ):
 		RDOParserSrcInfo( src_info ),
 		m_value( value ),
-		m_type( &RDOType::getTypeByID(value.type().id()) )
+		m_type( &RDOType::getTypeByID(value.type().typeID()) )
 	{
 	}
 	RDOValue( const rdoRuntime::RDOValue& value, const RDOType& type, const RDOParserSrcInfo& src_info ):
@@ -53,10 +53,10 @@ public:
 	{
 	}
 
-	const RDOType&                     type() const { return *m_type;      }
-	rdoRuntime::RDOType::ID          typeID() const { return type()->id(); }
-	const rdoRuntime::RDOValue&       value() const { return  m_value;     }
-	const rdoRuntime::RDOValue* operator-> () const { return &m_value;     }
+	const RDOType&                     type() const { return *m_type;          }
+	rdoRuntime::RDOType::TypeID      typeID() const { return type()->typeID(); }
+	const rdoRuntime::RDOValue&       value() const { return  m_value;         }
+	const rdoRuntime::RDOValue* operator-> () const { return &m_value;         }
 
 	bool defined()  const { return m_value.typeID() != rdoRuntime::RDOType::t_unknow; }
 	bool constant() const

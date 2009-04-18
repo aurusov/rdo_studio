@@ -1,6 +1,9 @@
 #ifndef RDO_TYPE_H
 #define RDO_TYPE_H
 
+#include <rdomacros.h>
+#include <rdotypes.h>
+
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
@@ -9,7 +12,8 @@ namespace rdoRuntime {
 class RDOType
 {
 public:
-	enum ID {
+	enum TypeID
+	{
 		t_unknow = 0,
 		t_identificator,
 		t_int,
@@ -20,23 +24,17 @@ public:
 		t_fuzzy
 	};
 
-	RDOType( ID id ):
-		m_id( id )
-	{
-	}
+	RDOType(TypeID typeID);
 
-	ID id() const { return m_id; }
+	TypeID  typeID     () const;
+	rbool   operator!= (CREF(RDOType) type);
 
-	bool operator!= ( RDOType& type )
-	{
-		return m_id != type.m_id;
-	}
-	virtual std::string asString() const = 0;
+	virtual tstring asString() const = 0;
 
-	static const RDOType& getTypeByID( ID id );
+	static CREF(RDOType) getTypeByID(TypeID typeID);
 
 private:
-	ID m_id;
+	TypeID  m_typeID;
 };
 
 // ----------------------------------------------------------------------------
@@ -47,17 +45,19 @@ class RDOType__##Class: public RDOType \
 { \
 public: \
 	RDOType__##Class(): RDOType(t_##Class) {} \
-	virtual std::string asString() const { return ClassName; } \
+	virtual tstring asString() const { return ClassName; } \
 }; \
 extern RDOType__##Class g_##Class;
 
-DEFINE_ATOM_TYPE( unknow,        "unknow"        );
-DEFINE_ATOM_TYPE( identificator, "identificator" );
-DEFINE_ATOM_TYPE( int,           "integer"       );
-DEFINE_ATOM_TYPE( real,          "real"          );
-DEFINE_ATOM_TYPE( bool,          "bool"          );
-DEFINE_ATOM_TYPE( string,        "string"        );
+DEFINE_ATOM_TYPE( unknow,        _T("unknow")        );
+DEFINE_ATOM_TYPE( identificator, _T("identificator") );
+DEFINE_ATOM_TYPE( int,           _T("integer")       );
+DEFINE_ATOM_TYPE( real,          _T("real")          );
+DEFINE_ATOM_TYPE( bool,          _T("bool")          );
+DEFINE_ATOM_TYPE( string,        _T("string")        );
 
 } // namespace rdoRuntime
+
+#include "rdo_type.inl"
 
 #endif // RDO_TYPE_H

@@ -28,7 +28,7 @@ RDORTPEnum::~RDORTPEnum()
 
 const RDOType* RDORTPEnum::cast( const RDOType& toType ) const
 {
-	switch ( toType->id() )
+	switch ( toType->typeID() )
 	{
 		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<const RDORTPEnum&>(toType)) ? this : NULL;
 	}

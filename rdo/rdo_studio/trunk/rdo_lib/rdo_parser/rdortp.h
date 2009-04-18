@@ -34,8 +34,8 @@ public:
 
 	virtual void                  writeModelStructure( std::ostream& stream ) const = 0;
 
-	virtual const RDOType&     type() const = 0;
-	rdoRuntime::RDOType::ID  typeID() const { return type()->id(); }
+	virtual const RDOType&       type() const = 0;
+	rdoRuntime::RDOType::TypeID  typeID() const { return type()->typeID(); }
 
 	void checkParamType( const RDOFUNArithm* const action ) const;
 
@@ -119,7 +119,7 @@ public:
 	bool isTemporary() const                 { return !m_permanent; };
 
 	void addParam( const RDORTPParam* const param );
-	void addParam( const std::string param_name, rdoRuntime::RDOType::ID param_typeID );
+	void addParam( const std::string param_name, rdoRuntime::RDOType::TypeID param_typeID );
 	const RDORTPParam* findRTPParam( const std::string& param ) const;
 
 	unsigned int getRTPParamNumber( const std::string& param ) const;

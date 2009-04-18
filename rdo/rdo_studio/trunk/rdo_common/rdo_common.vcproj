@@ -171,6 +171,14 @@
 				RelativePath=".\rdocommon.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdomacros.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdotypes.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

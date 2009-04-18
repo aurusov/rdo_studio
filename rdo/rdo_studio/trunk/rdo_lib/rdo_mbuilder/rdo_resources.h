@@ -126,9 +126,9 @@ public:
 		Param( const std::string& name, const rdoRuntime::RDOValue& def );
 		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::g_unknow );
 
-		const rdoRuntime::RDOType*     type() const       { return m_type;             }
-		const rdoRuntime::RDOType::ID  typeID() const     { return m_type->id();       }
-		std::string                    typeStr() const    { return m_type->asString(); }
+		const rdoRuntime::RDOType*         type() const       { return m_type;             }
+		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->typeID();   }
+		std::string                        typeStr() const    { return m_type->asString(); }
 
 		int                         id() const         { return m_id;  }
 

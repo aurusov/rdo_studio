@@ -1,7 +1,7 @@
 #ifndef RDOCOMMON_H
 #define RDOCOMMON_H
 
-#pragma warning(disable : 4786)  
+#pragma warning(disable : 4786)
 
 #include <string>
 #include <vector>
@@ -33,9 +33,9 @@ bool isFileExists( const std::string& fileName );
 
 template < class Arg > inline std::string toString( Arg value )
 {
-   std::ostringstream str;
-   str << value;
-   return str.str();
+	std::ostringstream str;
+	str << value;
+	return str.str();
 }
 
 template < class Stor > void deleteAllObjects( Stor& storage )

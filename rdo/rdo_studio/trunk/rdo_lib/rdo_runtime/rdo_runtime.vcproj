@@ -183,6 +183,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\rdo_fuzzy.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\rdo_fuzzy_def.h"
 					>
 				</File>
@@ -192,6 +196,10 @@
 				>
 				<File
 					RelativePath=".\rdo_enum.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_enum.inl"
 					>
 				</File>
 			</Filter>
@@ -204,6 +212,10 @@
 				</File>
 				<File
 					RelativePath=".\rdo_type.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type.inl"
 					>
 				</File>
 			</Filter>

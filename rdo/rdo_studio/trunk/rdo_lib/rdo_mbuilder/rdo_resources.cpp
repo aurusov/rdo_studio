@@ -151,7 +151,7 @@ RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOType* ty
 	m_exist( true ),
 	m_id( -1 )
 {
-	if (type->id() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
+	if (type->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
 	{
 		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
 	}
