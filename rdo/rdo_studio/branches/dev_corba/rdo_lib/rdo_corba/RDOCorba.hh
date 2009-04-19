@@ -226,51 +226,43 @@ _CORBA_MODULE_BEG
       my_enum_out& operator=(const my_enum_var&);
     };
 
-    struct Param {
-      typedef _CORBA_ConstrType_Variable_Var<Param> _var_type;
+    struct ParamRTP {
+      typedef _CORBA_ConstrType_Variable_Var<ParamRTP> _var_type;
 
       
       ::CORBA::String_member m_name;
 
       TypeParam m_type;
 
-      ::CORBA::Boolean m_exist;
-
-      ::CORBA::Boolean m_exist_ch;
-
-      ::CORBA::Long m_id;
-
-      ::CORBA::Boolean m_id_ch;
+      ::CORBA::Boolean m_diap_int;
 
       ::CORBA::Long m_min_int;
 
       ::CORBA::Long m_max_int;
 
-      ::CORBA::Boolean m_diap_int;
+      ::CORBA::Boolean m_default_int_ch;
 
       ::CORBA::Long m_default_int;
 
-      ::CORBA::Boolean m_default_int_ch;
+      ::CORBA::Boolean m_diap_double;
 
       ::CORBA::Double m_min_double;
 
       ::CORBA::Double m_max_double;
 
-      ::CORBA::Boolean m_diap_double;
+      ::CORBA::Boolean m_default_double_ch;
 
       ::CORBA::Double m_default_double;
 
-      ::CORBA::Boolean m_default_double_ch;
-
-      my_enum m_var_enum;
+      ::CORBA::Long m_var_enum_count;
 
       ::CORBA::Boolean m_var_enum_ch;
 
-      ::CORBA::Long m_var_enum_count;
-
-      ::CORBA::String_member m_default_enum;
+      my_enum m_var_enum;
 
       ::CORBA::Boolean m_default_enum_ch;
+
+      ::CORBA::String_member m_default_enum;
 
     
 
@@ -278,52 +270,52 @@ _CORBA_MODULE_BEG
       void operator<<= (cdrStream &);
     };
 
-    typedef Param::_var_type Param_var;
+    typedef ParamRTP::_var_type ParamRTP_var;
 
-    typedef _CORBA_ConstrType_Variable_OUT_arg< Param,Param_var > Param_out;
+    typedef _CORBA_ConstrType_Variable_OUT_arg< ParamRTP,ParamRTP_var > ParamRTP_out;
 
-    class Params_var;
+    class ParamsRTP_var;
 
-    class Params : public _CORBA_Unbounded_Sequence< Param >  {
+    class ParamsRTP : public _CORBA_Unbounded_Sequence< ParamRTP >  {
     public:
-      typedef Params_var _var_type;
-      inline Params() {}
-      inline Params(const Params& _s)
-        : _CORBA_Unbounded_Sequence< Param > (_s) {}
+      typedef ParamsRTP_var _var_type;
+      inline ParamsRTP() {}
+      inline ParamsRTP(const ParamsRTP& _s)
+        : _CORBA_Unbounded_Sequence< ParamRTP > (_s) {}
 
-      inline Params(_CORBA_ULong _max)
-        : _CORBA_Unbounded_Sequence< Param > (_max) {}
-      inline Params(_CORBA_ULong _max, _CORBA_ULong _len, Param* _val, _CORBA_Boolean _rel=0)
-        : _CORBA_Unbounded_Sequence< Param > (_max, _len, _val, _rel) {}
+      inline ParamsRTP(_CORBA_ULong _max)
+        : _CORBA_Unbounded_Sequence< ParamRTP > (_max) {}
+      inline ParamsRTP(_CORBA_ULong _max, _CORBA_ULong _len, ParamRTP* _val, _CORBA_Boolean _rel=0)
+        : _CORBA_Unbounded_Sequence< ParamRTP > (_max, _len, _val, _rel) {}
 
     
 
-      inline Params& operator = (const Params& _s) {
-        _CORBA_Unbounded_Sequence< Param > ::operator=(_s);
+      inline ParamsRTP& operator = (const ParamsRTP& _s) {
+        _CORBA_Unbounded_Sequence< ParamRTP > ::operator=(_s);
         return *this;
       }
     };
 
-    class Params_out;
+    class ParamsRTP_out;
 
-    class Params_var {
+    class ParamsRTP_var {
     public:
-      inline Params_var() : _pd_seq(0) {}
-      inline Params_var(Params* _s) : _pd_seq(_s) {}
-      inline Params_var(const Params_var& _s) {
-        if( _s._pd_seq )  _pd_seq = new Params(*_s._pd_seq);
+      inline ParamsRTP_var() : _pd_seq(0) {}
+      inline ParamsRTP_var(ParamsRTP* _s) : _pd_seq(_s) {}
+      inline ParamsRTP_var(const ParamsRTP_var& _s) {
+        if( _s._pd_seq )  _pd_seq = new ParamsRTP(*_s._pd_seq);
         else              _pd_seq = 0;
       }
-      inline ~Params_var() { if( _pd_seq )  delete _pd_seq; }
+      inline ~ParamsRTP_var() { if( _pd_seq )  delete _pd_seq; }
         
-      inline Params_var& operator = (Params* _s) {
+      inline ParamsRTP_var& operator = (ParamsRTP* _s) {
         if( _pd_seq )  delete _pd_seq;
         _pd_seq = _s;
         return *this;
       }
-      inline Params_var& operator = (const Params_var& _s) {
+      inline ParamsRTP_var& operator = (const ParamsRTP_var& _s) {
         if( _s._pd_seq ) {
-          if( !_pd_seq )  _pd_seq = new Params;
+          if( !_pd_seq )  _pd_seq = new ParamsRTP;
           *_pd_seq = *_s._pd_seq;
         } else if( _pd_seq ) {
           delete _pd_seq;
@@ -331,64 +323,64 @@ _CORBA_MODULE_BEG
         }
         return *this;
       }
-      inline Param& operator [] (_CORBA_ULong _s) {
+      inline ParamRTP& operator [] (_CORBA_ULong _s) {
         return (*_pd_seq)[_s];
       }
 
     
 
-      inline Params* operator -> () { return _pd_seq; }
-      inline const Params* operator -> () const { return _pd_seq; }
+      inline ParamsRTP* operator -> () { return _pd_seq; }
+      inline const ParamsRTP* operator -> () const { return _pd_seq; }
 #if defined(__GNUG__)
-      inline operator Params& () const { return *_pd_seq; }
+      inline operator ParamsRTP& () const { return *_pd_seq; }
 #else
-      inline operator const Params& () const { return *_pd_seq; }
-      inline operator Params& () { return *_pd_seq; }
+      inline operator const ParamsRTP& () const { return *_pd_seq; }
+      inline operator ParamsRTP& () { return *_pd_seq; }
 #endif
         
-      inline const Params& in() const { return *_pd_seq; }
-      inline Params&       inout()    { return *_pd_seq; }
-      inline Params*&      out() {
+      inline const ParamsRTP& in() const { return *_pd_seq; }
+      inline ParamsRTP&       inout()    { return *_pd_seq; }
+      inline ParamsRTP*&      out() {
         if( _pd_seq ) { delete _pd_seq; _pd_seq = 0; }
         return _pd_seq;
       }
-      inline Params* _retn() { Params* tmp = _pd_seq; _pd_seq = 0; return tmp; }
+      inline ParamsRTP* _retn() { ParamsRTP* tmp = _pd_seq; _pd_seq = 0; return tmp; }
         
-      friend class Params_out;
+      friend class ParamsRTP_out;
       
     private:
-      Params* _pd_seq;
+      ParamsRTP* _pd_seq;
     };
 
-    class Params_out {
+    class ParamsRTP_out {
     public:
-      inline Params_out(Params*& _s) : _data(_s) { _data = 0; }
-      inline Params_out(Params_var& _s)
-        : _data(_s._pd_seq) { _s = (Params*) 0; }
-      inline Params_out(const Params_out& _s) : _data(_s._data) {}
-      inline Params_out& operator = (const Params_out& _s) {
+      inline ParamsRTP_out(ParamsRTP*& _s) : _data(_s) { _data = 0; }
+      inline ParamsRTP_out(ParamsRTP_var& _s)
+        : _data(_s._pd_seq) { _s = (ParamsRTP*) 0; }
+      inline ParamsRTP_out(const ParamsRTP_out& _s) : _data(_s._data) {}
+      inline ParamsRTP_out& operator = (const ParamsRTP_out& _s) {
         _data = _s._data;
         return *this;
       }
-      inline Params_out& operator = (Params* _s) {
+      inline ParamsRTP_out& operator = (ParamsRTP* _s) {
         _data = _s;
         return *this;
       }
-      inline operator Params*&()  { return _data; }
-      inline Params*& ptr()       { return _data; }
-      inline Params* operator->() { return _data; }
+      inline operator ParamsRTP*&()  { return _data; }
+      inline ParamsRTP*& ptr()       { return _data; }
+      inline ParamsRTP* operator->() { return _data; }
 
-      inline Param& operator [] (_CORBA_ULong _i) {
+      inline ParamRTP& operator [] (_CORBA_ULong _i) {
         return (*_data)[_i];
       }
 
     
 
-      Params*& _data;
+      ParamsRTP*& _data;
 
     private:
-      Params_out();
-      Params_out& operator=(const Params_var&);
+      ParamsRTP_out();
+      ParamsRTP_out& operator=(const ParamsRTP_var&);
     };
 
     struct MY_RTP {
@@ -399,15 +391,9 @@ _CORBA_MODULE_BEG
 
       TypeRTP m_type;
 
-      ::CORBA::Boolean m_exist;
+      ::CORBA::Long m_param_count;
 
-      ::CORBA::Boolean m_exist_ch;
-
-      ::CORBA::Long m_id;
-
-      ::CORBA::Boolean m_id_ch;
-
-      Params m_param;
+      ParamsRTP m_param;
 
     
 
@@ -528,48 +514,72 @@ _CORBA_MODULE_BEG
       GetRTP_out& operator=(const GetRTP_var&);
     };
 
-    class PARAM_count_var;
+    struct ParamRSS {
+      typedef _CORBA_ConstrType_Variable_Var<ParamRSS> _var_type;
 
-    class PARAM_count : public _CORBA_Unbounded_Sequence_w_FixSizeElement< ::CORBA::Long, 4, 4 >  {
-    public:
-      typedef PARAM_count_var _var_type;
-      inline PARAM_count() {}
-      inline PARAM_count(const PARAM_count& _s)
-        : _CORBA_Unbounded_Sequence_w_FixSizeElement< ::CORBA::Long, 4, 4 > (_s) {}
+      
+      ::CORBA::String_member m_name;
 
-      inline PARAM_count(_CORBA_ULong _max)
-        : _CORBA_Unbounded_Sequence_w_FixSizeElement< ::CORBA::Long, 4, 4 > (_max) {}
-      inline PARAM_count(_CORBA_ULong _max, _CORBA_ULong _len, ::CORBA::Long* _val, _CORBA_Boolean _rel=0)
-        : _CORBA_Unbounded_Sequence_w_FixSizeElement< ::CORBA::Long, 4, 4 > (_max, _len, _val, _rel) {}
+      TypeParam m_type;
+
+      ::CORBA::Long m_int;
+
+      ::CORBA::Double m_double;
+
+      ::CORBA::String_member m_enum;
 
     
 
-      inline PARAM_count& operator = (const PARAM_count& _s) {
-        _CORBA_Unbounded_Sequence_w_FixSizeElement< ::CORBA::Long, 4, 4 > ::operator=(_s);
+      void operator>>= (cdrStream &) const;
+      void operator<<= (cdrStream &);
+    };
+
+    typedef ParamRSS::_var_type ParamRSS_var;
+
+    typedef _CORBA_ConstrType_Variable_OUT_arg< ParamRSS,ParamRSS_var > ParamRSS_out;
+
+    class ParamsRSS_var;
+
+    class ParamsRSS : public _CORBA_Unbounded_Sequence< ParamRSS >  {
+    public:
+      typedef ParamsRSS_var _var_type;
+      inline ParamsRSS() {}
+      inline ParamsRSS(const ParamsRSS& _s)
+        : _CORBA_Unbounded_Sequence< ParamRSS > (_s) {}
+
+      inline ParamsRSS(_CORBA_ULong _max)
+        : _CORBA_Unbounded_Sequence< ParamRSS > (_max) {}
+      inline ParamsRSS(_CORBA_ULong _max, _CORBA_ULong _len, ParamRSS* _val, _CORBA_Boolean _rel=0)
+        : _CORBA_Unbounded_Sequence< ParamRSS > (_max, _len, _val, _rel) {}
+
+    
+
+      inline ParamsRSS& operator = (const ParamsRSS& _s) {
+        _CORBA_Unbounded_Sequence< ParamRSS > ::operator=(_s);
         return *this;
       }
     };
 
-    class PARAM_count_out;
+    class ParamsRSS_out;
 
-    class PARAM_count_var {
+    class ParamsRSS_var {
     public:
-      inline PARAM_count_var() : _pd_seq(0) {}
-      inline PARAM_count_var(PARAM_count* _s) : _pd_seq(_s) {}
-      inline PARAM_count_var(const PARAM_count_var& _s) {
-        if( _s._pd_seq )  _pd_seq = new PARAM_count(*_s._pd_seq);
+      inline ParamsRSS_var() : _pd_seq(0) {}
+      inline ParamsRSS_var(ParamsRSS* _s) : _pd_seq(_s) {}
+      inline ParamsRSS_var(const ParamsRSS_var& _s) {
+        if( _s._pd_seq )  _pd_seq = new ParamsRSS(*_s._pd_seq);
         else              _pd_seq = 0;
       }
-      inline ~PARAM_count_var() { if( _pd_seq )  delete _pd_seq; }
+      inline ~ParamsRSS_var() { if( _pd_seq )  delete _pd_seq; }
         
-      inline PARAM_count_var& operator = (PARAM_count* _s) {
+      inline ParamsRSS_var& operator = (ParamsRSS* _s) {
         if( _pd_seq )  delete _pd_seq;
         _pd_seq = _s;
         return *this;
       }
-      inline PARAM_count_var& operator = (const PARAM_count_var& _s) {
+      inline ParamsRSS_var& operator = (const ParamsRSS_var& _s) {
         if( _s._pd_seq ) {
-          if( !_pd_seq )  _pd_seq = new PARAM_count;
+          if( !_pd_seq )  _pd_seq = new ParamsRSS;
           *_pd_seq = *_s._pd_seq;
         } else if( _pd_seq ) {
           delete _pd_seq;
@@ -577,64 +587,195 @@ _CORBA_MODULE_BEG
         }
         return *this;
       }
-      inline ::CORBA::Long& operator [] (_CORBA_ULong _s) {
+      inline ParamRSS& operator [] (_CORBA_ULong _s) {
         return (*_pd_seq)[_s];
       }
 
     
 
-      inline PARAM_count* operator -> () { return _pd_seq; }
-      inline const PARAM_count* operator -> () const { return _pd_seq; }
+      inline ParamsRSS* operator -> () { return _pd_seq; }
+      inline const ParamsRSS* operator -> () const { return _pd_seq; }
 #if defined(__GNUG__)
-      inline operator PARAM_count& () const { return *_pd_seq; }
+      inline operator ParamsRSS& () const { return *_pd_seq; }
 #else
-      inline operator const PARAM_count& () const { return *_pd_seq; }
-      inline operator PARAM_count& () { return *_pd_seq; }
+      inline operator const ParamsRSS& () const { return *_pd_seq; }
+      inline operator ParamsRSS& () { return *_pd_seq; }
 #endif
         
-      inline const PARAM_count& in() const { return *_pd_seq; }
-      inline PARAM_count&       inout()    { return *_pd_seq; }
-      inline PARAM_count*&      out() {
+      inline const ParamsRSS& in() const { return *_pd_seq; }
+      inline ParamsRSS&       inout()    { return *_pd_seq; }
+      inline ParamsRSS*&      out() {
         if( _pd_seq ) { delete _pd_seq; _pd_seq = 0; }
         return _pd_seq;
       }
-      inline PARAM_count* _retn() { PARAM_count* tmp = _pd_seq; _pd_seq = 0; return tmp; }
+      inline ParamsRSS* _retn() { ParamsRSS* tmp = _pd_seq; _pd_seq = 0; return tmp; }
         
-      friend class PARAM_count_out;
+      friend class ParamsRSS_out;
       
     private:
-      PARAM_count* _pd_seq;
+      ParamsRSS* _pd_seq;
     };
 
-    class PARAM_count_out {
+    class ParamsRSS_out {
     public:
-      inline PARAM_count_out(PARAM_count*& _s) : _data(_s) { _data = 0; }
-      inline PARAM_count_out(PARAM_count_var& _s)
-        : _data(_s._pd_seq) { _s = (PARAM_count*) 0; }
-      inline PARAM_count_out(const PARAM_count_out& _s) : _data(_s._data) {}
-      inline PARAM_count_out& operator = (const PARAM_count_out& _s) {
+      inline ParamsRSS_out(ParamsRSS*& _s) : _data(_s) { _data = 0; }
+      inline ParamsRSS_out(ParamsRSS_var& _s)
+        : _data(_s._pd_seq) { _s = (ParamsRSS*) 0; }
+      inline ParamsRSS_out(const ParamsRSS_out& _s) : _data(_s._data) {}
+      inline ParamsRSS_out& operator = (const ParamsRSS_out& _s) {
         _data = _s._data;
         return *this;
       }
-      inline PARAM_count_out& operator = (PARAM_count* _s) {
+      inline ParamsRSS_out& operator = (ParamsRSS* _s) {
         _data = _s;
         return *this;
       }
-      inline operator PARAM_count*&()  { return _data; }
-      inline PARAM_count*& ptr()       { return _data; }
-      inline PARAM_count* operator->() { return _data; }
+      inline operator ParamsRSS*&()  { return _data; }
+      inline ParamsRSS*& ptr()       { return _data; }
+      inline ParamsRSS* operator->() { return _data; }
 
-      inline ::CORBA::Long& operator [] (_CORBA_ULong _i) {
+      inline ParamRSS& operator [] (_CORBA_ULong _i) {
         return (*_data)[_i];
       }
 
     
 
-      PARAM_count*& _data;
+      ParamsRSS*& _data;
 
     private:
-      PARAM_count_out();
-      PARAM_count_out& operator=(const PARAM_count_var&);
+      ParamsRSS_out();
+      ParamsRSS_out& operator=(const ParamsRSS_var&);
+    };
+
+    struct MY_RSS {
+      typedef _CORBA_ConstrType_Variable_Var<MY_RSS> _var_type;
+
+      
+      ::CORBA::String_member m_name;
+
+      ::CORBA::String_member m_type;
+
+      ::CORBA::Long m_param_count;
+
+      ParamsRSS m_param;
+
+    
+
+      void operator>>= (cdrStream &) const;
+      void operator<<= (cdrStream &);
+    };
+
+    typedef MY_RSS::_var_type MY_RSS_var;
+
+    typedef _CORBA_ConstrType_Variable_OUT_arg< MY_RSS,MY_RSS_var > MY_RSS_out;
+
+    class GetRSS_var;
+
+    class GetRSS : public _CORBA_Unbounded_Sequence< MY_RSS >  {
+    public:
+      typedef GetRSS_var _var_type;
+      inline GetRSS() {}
+      inline GetRSS(const GetRSS& _s)
+        : _CORBA_Unbounded_Sequence< MY_RSS > (_s) {}
+
+      inline GetRSS(_CORBA_ULong _max)
+        : _CORBA_Unbounded_Sequence< MY_RSS > (_max) {}
+      inline GetRSS(_CORBA_ULong _max, _CORBA_ULong _len, MY_RSS* _val, _CORBA_Boolean _rel=0)
+        : _CORBA_Unbounded_Sequence< MY_RSS > (_max, _len, _val, _rel) {}
+
+    
+
+      inline GetRSS& operator = (const GetRSS& _s) {
+        _CORBA_Unbounded_Sequence< MY_RSS > ::operator=(_s);
+        return *this;
+      }
+    };
+
+    class GetRSS_out;
+
+    class GetRSS_var {
+    public:
+      inline GetRSS_var() : _pd_seq(0) {}
+      inline GetRSS_var(GetRSS* _s) : _pd_seq(_s) {}
+      inline GetRSS_var(const GetRSS_var& _s) {
+        if( _s._pd_seq )  _pd_seq = new GetRSS(*_s._pd_seq);
+        else              _pd_seq = 0;
+      }
+      inline ~GetRSS_var() { if( _pd_seq )  delete _pd_seq; }
+        
+      inline GetRSS_var& operator = (GetRSS* _s) {
+        if( _pd_seq )  delete _pd_seq;
+        _pd_seq = _s;
+        return *this;
+      }
+      inline GetRSS_var& operator = (const GetRSS_var& _s) {
+        if( _s._pd_seq ) {
+          if( !_pd_seq )  _pd_seq = new GetRSS;
+          *_pd_seq = *_s._pd_seq;
+        } else if( _pd_seq ) {
+          delete _pd_seq;
+          _pd_seq = 0;
+        }
+        return *this;
+      }
+      inline MY_RSS& operator [] (_CORBA_ULong _s) {
+        return (*_pd_seq)[_s];
+      }
+
+    
+
+      inline GetRSS* operator -> () { return _pd_seq; }
+      inline const GetRSS* operator -> () const { return _pd_seq; }
+#if defined(__GNUG__)
+      inline operator GetRSS& () const { return *_pd_seq; }
+#else
+      inline operator const GetRSS& () const { return *_pd_seq; }
+      inline operator GetRSS& () { return *_pd_seq; }
+#endif
+        
+      inline const GetRSS& in() const { return *_pd_seq; }
+      inline GetRSS&       inout()    { return *_pd_seq; }
+      inline GetRSS*&      out() {
+        if( _pd_seq ) { delete _pd_seq; _pd_seq = 0; }
+        return _pd_seq;
+      }
+      inline GetRSS* _retn() { GetRSS* tmp = _pd_seq; _pd_seq = 0; return tmp; }
+        
+      friend class GetRSS_out;
+      
+    private:
+      GetRSS* _pd_seq;
+    };
+
+    class GetRSS_out {
+    public:
+      inline GetRSS_out(GetRSS*& _s) : _data(_s) { _data = 0; }
+      inline GetRSS_out(GetRSS_var& _s)
+        : _data(_s._pd_seq) { _s = (GetRSS*) 0; }
+      inline GetRSS_out(const GetRSS_out& _s) : _data(_s._data) {}
+      inline GetRSS_out& operator = (const GetRSS_out& _s) {
+        _data = _s._data;
+        return *this;
+      }
+      inline GetRSS_out& operator = (GetRSS* _s) {
+        _data = _s;
+        return *this;
+      }
+      inline operator GetRSS*&()  { return _data; }
+      inline GetRSS*& ptr()       { return _data; }
+      inline GetRSS* operator->() { return _data; }
+
+      inline MY_RSS& operator [] (_CORBA_ULong _i) {
+        return (*_data)[_i];
+      }
+
+    
+
+      GetRSS*& _data;
+
+    private:
+      GetRSS_out();
+      GetRSS_out& operator=(const GetRSS_var&);
     };
 
   
@@ -645,9 +786,8 @@ _CORBA_MODULE_BEG
     public virtual omniObjRef
   {
   public:
-    void getRDORTPcount(::CORBA::Long& rtp_count);
-    void getRDORTPParamscount(RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count);
-    void getRDORTPlist(RDOCorba::GetRTP& my_rtpList, const RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count);
+    RDOCorba::GetRTP* getRDORTPlist(::CORBA::Long& rtp_count);
+    RDOCorba::GetRSS* getRDORSSPlist(::CORBA::Long& rss_count);
 
     inline _objref_RDOCorba()  { _PR_setobj(0); }  // nil
     _objref_RDOCorba(omniIOR*, omniIdentity*);
@@ -681,9 +821,8 @@ _CORBA_MODULE_BEG
   public:
     virtual ~_impl_RDOCorba();
 
-    virtual void getRDORTPcount(::CORBA::Long& rtp_count) = 0;
-    virtual void getRDORTPParamscount(RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count) = 0;
-    virtual void getRDORTPlist(RDOCorba::GetRTP& my_rtpList, const RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count) = 0;
+    virtual RDOCorba::GetRTP* getRDORTPlist(::CORBA::Long& rtp_count) = 0;
+    virtual RDOCorba::GetRSS* getRDORSSPlist(::CORBA::Long& rss_count) = 0;
     
   public:  // Really protected, workaround for xlC
     virtual _CORBA_Boolean _dispatch(omniCallHandle&);

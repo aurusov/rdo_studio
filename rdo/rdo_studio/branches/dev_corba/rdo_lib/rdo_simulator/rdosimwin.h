@@ -173,9 +173,10 @@ private:
 	
 #ifdef CORBA_ENABLE
 
-	void corbaGetRTPcount(::CORBA::Long& rtp_count);
-	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
+//	void corbaGetRTPcount(::CORBA::Long& rtp_count);
+//	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
 	void corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList );
+	void corbaGetRSS( rdoParse::RDOCorba::GetRSS& my_rssList );
 
 #endif
 

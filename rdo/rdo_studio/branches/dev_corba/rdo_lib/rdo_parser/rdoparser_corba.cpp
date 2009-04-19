@@ -23,7 +23,7 @@ void RDOParserCorbaRTP::parse()
 	// вызвав с помощью корбы некий метод, который вернёт кучу структур
 	// с описанием RTP и насоздавать этих типов
 
-
+/*
 	//-------------------------Пока сделаю вручную без коннекта
 	//Количество новых типов ресурсов (только один пока для начала)
 	CORBA::Long rtp_count = 1;
@@ -31,6 +31,7 @@ void RDOParserCorbaRTP::parse()
 	//Массив из количества параметров ресурсов каждого типа ресурсов (2 разных пока для начала)
 	rdoParse::RDOCorba::PARAM_count params_count;
 	params_count.length( rtp_count );
+	params_count[0] = 2;
 
 	rdoParse::RDOCorba::GetRTP my_rtpList;
 	my_rtpList.length( rtp_count);
@@ -47,16 +48,16 @@ void RDOParserCorbaRTP::parse()
 		my_rtpList[i].m_param[0].m_type = rdoParse::RDOCorba::TypeParam::int_type;
 		my_rtpList[i].m_param[0].m_diap_int = 1;
 		my_rtpList[i].m_param[0].m_default_int_ch = 1;
-		my_rtpList[i].m_param[0].m_min_int = 10;
-		my_rtpList[i].m_param[0].m_max_int = 1;
+		my_rtpList[i].m_param[0].m_min_int = 1;
+		my_rtpList[i].m_param[0].m_max_int = 10;
 		my_rtpList[i].m_param[0].m_default_int = 5;
 
 		my_rtpList[i].m_param[1].m_name = "Вещественный";
 		my_rtpList[i].m_param[1].m_type = rdoParse::RDOCorba::TypeParam::double_type;
 		my_rtpList[i].m_param[1].m_diap_double = 1;
 		my_rtpList[i].m_param[1].m_default_double_ch = 1;
-		my_rtpList[i].m_param[1].m_min_double = 10;
-		my_rtpList[i].m_param[1].m_max_double = 1;
+		my_rtpList[i].m_param[1].m_min_double = 1;
+		my_rtpList[i].m_param[1].m_max_double = 10;
 		my_rtpList[i].m_param[1].m_default_double = 5;
 	}
 
@@ -176,11 +177,11 @@ void RDOParserCorbaRTP::parse()
 		}
 	}
 
-
-
-
+*/
 
 /*
+
+
 
 	// Количество полученных типов ресурсов
 	unsigned int rtp_count = 1;
@@ -199,12 +200,15 @@ void RDOParserCorbaRTP::parse()
 		if ( rtpList.append( rtp ) )
 		{
 			// Добавили успешно
+			unsigned int fl = 0;
+
 		}
 		else
 		{
 			// Неудача, возможно, тип с таким именем уже есть
 		}
 	}
+
 */
 
 }

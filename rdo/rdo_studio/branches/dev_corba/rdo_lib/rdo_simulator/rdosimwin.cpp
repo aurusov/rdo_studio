@@ -44,19 +44,21 @@ namespace rdoCorba
 
 CORBA::ORB_var g_orb;
 
-class RDOCorba_i : public POA_rdoParse::RDOCorba
+class RDOCorba_i: public POA_rdoParse::RDOCorba  //    ::RDOCorba //::_impl_RDOCorba
 {
 public:
 	inline RDOCorba_i() {}
 	virtual ~RDOCorba_i() {}
     
-	virtual void getRDORTPcount(::CORBA::Long& rtp_count);
-    virtual void getRDORTPParamscount(rdoParse::RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count);
-    virtual void getRDORTPlist(rdoParse::RDOCorba::GetRTP& my_rtpList, const rdoParse::RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count);
-   
+//	virtual void getRDORTPcount(::CORBA::Long& rtp_count);
+//  virtual void getRDORTPParamscount(rdoParse::RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count);
+
+	virtual rdoParse::RDOCorba::GetRTP* getRDORTPlist(::CORBA::Long& rtp_count);
+	virtual rdoParse::RDOCorba::GetRSS* getRDORSSPlist(::CORBA::Long& rss_count);
+
 };
 
-void RDOCorba_i::getRDORTPcount(::CORBA::Long& rtp_count)
+/*void RDOCorba_i::getRDORTPcount(::CORBA::Long& rtp_count)
 {
 	//Получаем количество типов ресурсов
 	kernel->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP_COUNT, &rtp_count );
@@ -67,15 +69,34 @@ void RDOCorba_i::getRDORTPParamscount(rdoParse::RDOCorba::PARAM_count& params_co
 	//Получаем последовательность из количества параметров ресурсов
 	kernel->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP_PAR_COUNT, &params_count );
 }
+*/
+//void RDOCorba_i::getRDORTPlist(rdoParse::RDOCorba::GetRTP& my_rtpList, const rdoParse::RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count)
 
-void RDOCorba_i::getRDORTPlist(rdoParse::RDOCorba::GetRTP& my_rtpList, const rdoParse::RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count)
+rdoParse::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(::CORBA::Long& rtp_count)
 {
+	//Создаем список структур для хранения информации об искомых типах ресурсов
+	rdoParse::RDOCorba::GetRTP_var my_rtpList_1 = new rdoParse::RDOCorba::GetRTP;
+
+	my_rtpList_1->length(5);
+	my_rtpList_1[0].m_name = CORBA::string_dup("Привет");
+
+	rdoParse::RDOCorba::GetRTP_var my_rtpList(my_rtpList_1); 
+
 	//Получаем необходимые нам данные о типах ресурсов РДО
 	kernel->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &my_rtpList );
+	
+	return my_rtpList._retn();
+}
 
-	//	my_rtpList[0].m_param[0].m_min_int=10;
-	//	my_rtpList[0].m_param[0].m_max_int=20;
-	//	my_rtpList[0].m_param[0].m_default_int=15;
+rdoParse::RDOCorba::GetRSS* RDOCorba_i::getRDORSSPlist(::CORBA::Long& rss_count)
+{
+	//Создаем список структур для хранения информации об искомых ресурсах
+	rdoParse::RDOCorba::GetRSS_var my_rssList = new rdoParse::RDOCorba::GetRSS;
+	
+	//Получаем необходимые нам данные о ресурсах РДО
+	kernel->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &my_rssList );
+	
+	return my_rssList._retn();
 }
 
 static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
@@ -707,8 +728,8 @@ RDOThreadSimulator::RDOThreadSimulator():
 	notifies.push_back( RT_CODECOMP_GET_DATA );
 	notifies.push_back( RT_CORBA_PARSER_GET_RTP );
 	notifies.push_back( RT_CORBA_PARSER_GET_RSS );
-	notifies.push_back( RT_CORBA_PARSER_GET_RTP_COUNT );
-	notifies.push_back( RT_CORBA_PARSER_GET_RTP_PAR_COUNT );
+	//notifies.push_back( RT_CORBA_PARSER_GET_RTP_COUNT );
+	//notifies.push_back( RT_CORBA_PARSER_GET_RTP_PAR_COUNT );
 	after_constructor();
 }
 
@@ -765,7 +786,7 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		}
 		
 #ifdef CORBA_ENABLE
-
+/*
 		case RT_CORBA_PARSER_GET_RTP_COUNT: {
 			msg.lock();
 			corbaGetRTPcount( *static_cast<::CORBA::Long*>(msg.param) );
@@ -778,20 +799,22 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
+*/
 		case RT_CORBA_PARSER_GET_RTP: {
 			msg.lock();
 			corbaGetRTP( *static_cast<rdoParse::RDOCorba::GetRTP*>(msg.param) );
 			msg.unlock();
 			break;
 		}
-#endif
-	
+
 		case RT_CORBA_PARSER_GET_RSS: {
 			msg.lock();
-			corbaGetRSS( static_cast<GetRSS*>(msg.param) );
+			corbaGetRSS( *static_cast<rdoParse::RDOCorba::GetRSS*>(msg.param) );
 			msg.unlock();
 			break;
 		}
+#endif
+
 		case RT_SIMULATOR_GET_LIST: {
 			msg.lock();
 			GetList* getlist = static_cast<GetList*>(msg.param);
@@ -1049,25 +1072,54 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 
 	// Пробежались по всем типам и переписали в RTPList
 	rdoMBuilder::RDOResTypeList rtpList( &parser );
+	
+	//Считаем количество типов ресурсов
 	rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 	
+	/**/::CORBA::Long rtp_count = 0;
+
+	while ( rtp_it != rtpList.end() )
+	{
+		rtp_count++;
+		rtp_it++;
+	}
+
+	//Выделяем пямять под последовательность
+	my_rtpList.length( rtp_count );
+
+	//Снова возвращаемся в начало списка типов ресурсов
+	rtp_it = rtpList.begin();
+
 	while ( rtp_it != rtpList.end() )
 	{
 		// Создаем текстовую структуру
 
-		my_rtpList[i].m_name = rtp_it->name().c_str();
+		my_rtpList[i].m_name = CORBA::string_dup(rtp_it->name().c_str());
+		
 		if ((rtp_it->getType()) == rdoMBuilder::RDOResType::rt_permanent )
 			my_rtpList[i].m_type=rdoParse::RDOCorba::TypeRTP::rt_permanent;
 		else
 			my_rtpList[i].m_type=rdoParse::RDOCorba::TypeRTP::rt_temporary;
 
-		//	my_rtpList[i].m_exist надо ли заполнять?;
-		//	my_rtpList[i].m_id надо ли заполнять?;
-		
+		//Считаем количество параметров i-го типа ресурса
 		rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
+		my_rtpList[i].m_param_count = 0;
+
 		while ( param_it != rtp_it->m_params.end() )
 		{
-			// Добавляем в структуру параметр
+			my_rtpList[i].m_param_count++;
+			param_it++;
+		}
+		
+		//Выделяем память под последовательность параметров i-го типа ресурсов
+		my_rtpList[i].m_param.length(my_rtpList[i].m_param_count);
+
+		//Снова возвращаемся в начало списка параметров i-го типа ресурсов
+		param_it = rtp_it->m_params.begin();
+
+		while ( param_it != rtp_it->m_params.end() )
+		{
+			// Добавляем в структуру параметр!!!!!!!!!!!!!!!!
 			my_rtpList[i].m_param[j].m_name = param_it->name().c_str();
 		
 			switch (param_it->typeID())
@@ -1112,11 +1164,22 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 				case rdoRuntime::RDOType::t_enum:{
 					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::TypeParam::enum_type;
 					
+					//Считаем количество значений перечислимого типа
 					rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum().begin();
-					
-					CORBA::Long k = 0;
+					my_rtpList[i].m_param[j].m_var_enum_count = 0;
 
-				/*	while ( enum_it != param_it->getEnum().end() )
+					while ( enum_it != param_it->getEnum().end() )
+					{
+						//my_rtpList[i].m_param[j].m_var_enum[k] = enum_it->c_str();
+						my_rtpList[i].m_param[j].m_var_enum_count++;					
+						enum_it++;
+						//k++;
+					}
+					
+					//Выделяем память под последовательность значений j-го параметра перечислимого типа i-го типа ресурсов
+					my_rtpList[i].m_param[j].m_var_enum.length(my_rtpList[i].m_param[j].m_var_enum_count);
+									
+					/*	while ( enum_it != param_it->getEnum().end() )
 					{
 						//my_rtpList[i].m_param[j].m_var_enum[k] = enum_it->c_str();
 						enum_it++;
@@ -1125,10 +1188,11 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 
 					my_rtpList[i].m_param[j].m_var_enum.length(k);
 					enum_it = param_it->getEnum().begin();
-					
-					//CORBA::Long 
-						k = 0;
+										
 				*/
+					CORBA::Long k = 0;
+					enum_it = param_it->getEnum().begin();
+
 					while ( enum_it != param_it->getEnum().end() )
 					{
 						my_rtpList[i].m_param[j].m_var_enum[k] = enum_it->c_str();
@@ -1138,14 +1202,14 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 					
 					if ( param_it->hasDefault() )
 					{
-						rdoRuntime::RDOValue   m_123;
+						//rdoRuntime::RDOValue   m_123;
 						//m_123 = param_it->getDefault().getEnum();
 						my_rtpList[i].m_param[j].m_default_enum = param_it->getDefault().getAsString().c_str();
 						my_rtpList[i].m_param[j].m_default_enum_ch = 1;
 					}
 
 					my_rtpList[i].m_param[j].m_var_enum_ch = 1;
-					my_rtpList[i].m_param[j].m_var_enum_count = k;
+					//my_rtpList[i].m_param[j].m_var_enum_count = k;
 					break;
 				}
 				default: break;
@@ -1196,6 +1260,9 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 	}
 	*/
 }
+
+
+/*
 
 void RDOThreadSimulator::corbaGetRTPcount(::CORBA::Long& rtp_count)
 {
@@ -1257,10 +1324,17 @@ void RDOThreadSimulator::corbaGetRTPParamscount(rdoParse::RDOCorba::PARAM_count&
 	}
 }
 
+*/
+
 #endif
 
-void RDOThreadSimulator::corbaGetRSS( GetRSS* RSSList )
+void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS& my_rssList )
 {
+	
+	//Здесь предстоит писать сбор инфы о ресурсах
+
+
+/*
 	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdoParse::RDOParserCorba parser;
 	try {
@@ -1299,6 +1373,10 @@ void RDOThreadSimulator::corbaGetRSS( GetRSS* RSSList )
 			rss_it++;
 		}
 	}
+
+
+*/
+
 }
 
 // --------------------------------------------------------------------

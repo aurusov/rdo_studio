@@ -15,56 +15,48 @@ static const char* _0RL_library_version = omniORB_4_1;
 
 
 void
-rdoParse::RDOCorba::Param::operator>>= (cdrStream &_n) const
+rdoParse::RDOCorba::ParamRTP::operator>>= (cdrStream &_n) const
 {
   _n.marshalString(m_name,0);
   m_type >>= _n;
-  _n.marshalBoolean(m_exist);
-  _n.marshalBoolean(m_exist_ch);
-  m_id >>= _n;
-  _n.marshalBoolean(m_id_ch);
+  _n.marshalBoolean(m_diap_int);
   m_min_int >>= _n;
   m_max_int >>= _n;
-  _n.marshalBoolean(m_diap_int);
-  m_default_int >>= _n;
   _n.marshalBoolean(m_default_int_ch);
+  m_default_int >>= _n;
+  _n.marshalBoolean(m_diap_double);
   m_min_double >>= _n;
   m_max_double >>= _n;
-  _n.marshalBoolean(m_diap_double);
-  m_default_double >>= _n;
   _n.marshalBoolean(m_default_double_ch);
-  (const my_enum&) m_var_enum >>= _n;
-  _n.marshalBoolean(m_var_enum_ch);
+  m_default_double >>= _n;
   m_var_enum_count >>= _n;
-  _n.marshalString(m_default_enum,0);
+  _n.marshalBoolean(m_var_enum_ch);
+  (const my_enum&) m_var_enum >>= _n;
   _n.marshalBoolean(m_default_enum_ch);
+  _n.marshalString(m_default_enum,0);
 
 }
 
 void
-rdoParse::RDOCorba::Param::operator<<= (cdrStream &_n)
+rdoParse::RDOCorba::ParamRTP::operator<<= (cdrStream &_n)
 {
   m_name = _n.unmarshalString(0);
   (TypeParam&)m_type <<= _n;
-  m_exist = _n.unmarshalBoolean();
-  m_exist_ch = _n.unmarshalBoolean();
-  (::CORBA::Long&)m_id <<= _n;
-  m_id_ch = _n.unmarshalBoolean();
+  m_diap_int = _n.unmarshalBoolean();
   (::CORBA::Long&)m_min_int <<= _n;
   (::CORBA::Long&)m_max_int <<= _n;
-  m_diap_int = _n.unmarshalBoolean();
-  (::CORBA::Long&)m_default_int <<= _n;
   m_default_int_ch = _n.unmarshalBoolean();
+  (::CORBA::Long&)m_default_int <<= _n;
+  m_diap_double = _n.unmarshalBoolean();
   (::CORBA::Double&)m_min_double <<= _n;
   (::CORBA::Double&)m_max_double <<= _n;
-  m_diap_double = _n.unmarshalBoolean();
-  (::CORBA::Double&)m_default_double <<= _n;
   m_default_double_ch = _n.unmarshalBoolean();
-  (my_enum&)m_var_enum <<= _n;
-  m_var_enum_ch = _n.unmarshalBoolean();
+  (::CORBA::Double&)m_default_double <<= _n;
   (::CORBA::Long&)m_var_enum_count <<= _n;
-  m_default_enum = _n.unmarshalString(0);
+  m_var_enum_ch = _n.unmarshalBoolean();
+  (my_enum&)m_var_enum <<= _n;
   m_default_enum_ch = _n.unmarshalBoolean();
+  m_default_enum = _n.unmarshalString(0);
 
 }
 
@@ -73,11 +65,8 @@ rdoParse::RDOCorba::MY_RTP::operator>>= (cdrStream &_n) const
 {
   _n.marshalString(m_name,0);
   m_type >>= _n;
-  _n.marshalBoolean(m_exist);
-  _n.marshalBoolean(m_exist_ch);
-  m_id >>= _n;
-  _n.marshalBoolean(m_id_ch);
-  (const Params&) m_param >>= _n;
+  m_param_count >>= _n;
+  (const ParamsRTP&) m_param >>= _n;
 
 }
 
@@ -86,11 +75,50 @@ rdoParse::RDOCorba::MY_RTP::operator<<= (cdrStream &_n)
 {
   m_name = _n.unmarshalString(0);
   (TypeRTP&)m_type <<= _n;
-  m_exist = _n.unmarshalBoolean();
-  m_exist_ch = _n.unmarshalBoolean();
-  (::CORBA::Long&)m_id <<= _n;
-  m_id_ch = _n.unmarshalBoolean();
-  (Params&)m_param <<= _n;
+  (::CORBA::Long&)m_param_count <<= _n;
+  (ParamsRTP&)m_param <<= _n;
+
+}
+
+void
+rdoParse::RDOCorba::ParamRSS::operator>>= (cdrStream &_n) const
+{
+  _n.marshalString(m_name,0);
+  m_type >>= _n;
+  m_int >>= _n;
+  m_double >>= _n;
+  _n.marshalString(m_enum,0);
+
+}
+
+void
+rdoParse::RDOCorba::ParamRSS::operator<<= (cdrStream &_n)
+{
+  m_name = _n.unmarshalString(0);
+  (TypeParam&)m_type <<= _n;
+  (::CORBA::Long&)m_int <<= _n;
+  (::CORBA::Double&)m_double <<= _n;
+  m_enum = _n.unmarshalString(0);
+
+}
+
+void
+rdoParse::RDOCorba::MY_RSS::operator>>= (cdrStream &_n) const
+{
+  _n.marshalString(m_name,0);
+  _n.marshalString(m_type,0);
+  m_param_count >>= _n;
+  (const ParamsRSS&) m_param >>= _n;
+
+}
+
+void
+rdoParse::RDOCorba::MY_RSS::operator<<= (cdrStream &_n)
+{
+  m_name = _n.unmarshalString(0);
+  m_type = _n.unmarshalString(0);
+  (::CORBA::Long&)m_param_count <<= _n;
+  (ParamsRSS&)m_param <<= _n;
 
 }
 
@@ -198,226 +226,118 @@ rdoParse::_objref_RDOCorba::_ptrToObjRef(const char* id)
 }
 
 // Proxy call descriptor class. Mangled signature:
-//  void_n_clong
-class _0RL_cd_0F93BA78401DC9EC_00000000
+//  _crdoParse_mRDOCorba_mGetRTP_o_clong
+class _0RL_cd_3765F01E8BABC70E_00000000
   : public omniCallDescriptor
 {
 public:
-  inline _0RL_cd_0F93BA78401DC9EC_00000000(LocalCallFn lcfn,const char* op_,size_t oplen,_CORBA_Boolean upcall=0):
+  inline _0RL_cd_3765F01E8BABC70E_00000000(LocalCallFn lcfn,const char* op_,size_t oplen,_CORBA_Boolean upcall=0):
      omniCallDescriptor(lcfn, op_, oplen, 0, 0, 0, upcall)
   {
     
   }
   
-  void marshalArguments(cdrStream&);
-  void unmarshalArguments(cdrStream&);
-
+  
   void unmarshalReturnedValues(cdrStream&);
   void marshalReturnedValues(cdrStream&);
   
   
-  ::CORBA::Long arg_0_;
-  ::CORBA::Long* arg_0;
+  ::CORBA::Long arg_0;
+  rdoParse::RDOCorba::GetRTP_var result;
 };
 
-void _0RL_cd_0F93BA78401DC9EC_00000000::marshalArguments(cdrStream& _n)
+void _0RL_cd_3765F01E8BABC70E_00000000::marshalReturnedValues(cdrStream& _n)
 {
-  *arg_0 >>= _n;
+  (const rdoParse::RDOCorba::GetRTP&) result >>= _n;
+  arg_0 >>= _n;
 
 }
 
-void _0RL_cd_0F93BA78401DC9EC_00000000::unmarshalArguments(cdrStream& _n)
+void _0RL_cd_3765F01E8BABC70E_00000000::unmarshalReturnedValues(cdrStream& _n)
 {
-  (::CORBA::Long&)arg_0_ <<= _n;
-  arg_0 = &arg_0_;
-
-}
-
-void _0RL_cd_0F93BA78401DC9EC_00000000::marshalReturnedValues(cdrStream& _n)
-{
-  *arg_0 >>= _n;
-
-}
-
-void _0RL_cd_0F93BA78401DC9EC_00000000::unmarshalReturnedValues(cdrStream& _n)
-{
-  (::CORBA::Long&)*arg_0 <<= _n;
+  result = new rdoParse::RDOCorba::GetRTP;
+  (rdoParse::RDOCorba::GetRTP&)result <<= _n;
+  (::CORBA::Long&)arg_0 <<= _n;
 
 }
 
 // Local call call-back function.
 static void
-_0RL_lcfn_0F93BA78401DC9EC_10000000(omniCallDescriptor* cd, omniServant* svnt)
+_0RL_lcfn_3765F01E8BABC70E_10000000(omniCallDescriptor* cd, omniServant* svnt)
 {
-  _0RL_cd_0F93BA78401DC9EC_00000000* tcd = (_0RL_cd_0F93BA78401DC9EC_00000000*)cd;
+  _0RL_cd_3765F01E8BABC70E_00000000* tcd = (_0RL_cd_3765F01E8BABC70E_00000000*)cd;
   rdoParse::_impl_RDOCorba* impl = (rdoParse::_impl_RDOCorba*) svnt->_ptrToInterface(rdoParse::RDOCorba::_PD_repoId);
-  impl->getRDORTPcount(*tcd->arg_0);
+  tcd->result = impl->getRDORTPlist(tcd->arg_0);
 
 
 }
 
-void rdoParse::_objref_RDOCorba::getRDORTPcount(::CORBA::Long& rtp_count)
+rdoParse::RDOCorba::GetRTP* rdoParse::_objref_RDOCorba::getRDORTPlist(::CORBA::Long& rtp_count)
 {
-  _0RL_cd_0F93BA78401DC9EC_00000000 _call_desc(_0RL_lcfn_0F93BA78401DC9EC_10000000, "getRDORTPcount", 15);
-  _call_desc.arg_0 = &(::CORBA::Long&) rtp_count;
+  _0RL_cd_3765F01E8BABC70E_00000000 _call_desc(_0RL_lcfn_3765F01E8BABC70E_10000000, "getRDORTPlist", 14);
+
 
   _invoke(_call_desc);
-
+  rtp_count = _call_desc.arg_0;
+  return _call_desc.result._retn();
 
 
 }
 // Proxy call descriptor class. Mangled signature:
-//  void_n_crdoParse_mRDOCorba_mPARAM__count_i_clong
-class _0RL_cd_0F93BA78401DC9EC_20000000
+//  _crdoParse_mRDOCorba_mGetRSS_o_clong
+class _0RL_cd_3765F01E8BABC70E_20000000
   : public omniCallDescriptor
 {
 public:
-  inline _0RL_cd_0F93BA78401DC9EC_20000000(LocalCallFn lcfn,const char* op_,size_t oplen,_CORBA_Boolean upcall=0):
+  inline _0RL_cd_3765F01E8BABC70E_20000000(LocalCallFn lcfn,const char* op_,size_t oplen,_CORBA_Boolean upcall=0):
      omniCallDescriptor(lcfn, op_, oplen, 0, 0, 0, upcall)
   {
     
   }
   
-  void marshalArguments(cdrStream&);
-  void unmarshalArguments(cdrStream&);
-
+  
   void unmarshalReturnedValues(cdrStream&);
   void marshalReturnedValues(cdrStream&);
   
   
-  rdoParse::RDOCorba::PARAM_count_var arg_0_;
-  rdoParse::RDOCorba::PARAM_count* arg_0;
-  ::CORBA::Long arg_1;
+  ::CORBA::Long arg_0;
+  rdoParse::RDOCorba::GetRSS_var result;
 };
 
-void _0RL_cd_0F93BA78401DC9EC_20000000::marshalArguments(cdrStream& _n)
+void _0RL_cd_3765F01E8BABC70E_20000000::marshalReturnedValues(cdrStream& _n)
 {
-  (const rdoParse::RDOCorba::PARAM_count&) *arg_0 >>= _n;
-  arg_1 >>= _n;
+  (const rdoParse::RDOCorba::GetRSS&) result >>= _n;
+  arg_0 >>= _n;
 
 }
 
-void _0RL_cd_0F93BA78401DC9EC_20000000::unmarshalArguments(cdrStream& _n)
+void _0RL_cd_3765F01E8BABC70E_20000000::unmarshalReturnedValues(cdrStream& _n)
 {
-  arg_0_ = new rdoParse::RDOCorba::PARAM_count;
-  (rdoParse::RDOCorba::PARAM_count&)arg_0_ <<= _n;
-  arg_0 = &arg_0_.inout();
-  (::CORBA::Long&)arg_1 <<= _n;
-
-}
-
-void _0RL_cd_0F93BA78401DC9EC_20000000::marshalReturnedValues(cdrStream& _n)
-{
-  (const rdoParse::RDOCorba::PARAM_count&) *arg_0 >>= _n;
-
-}
-
-void _0RL_cd_0F93BA78401DC9EC_20000000::unmarshalReturnedValues(cdrStream& _n)
-{
-  (rdoParse::RDOCorba::PARAM_count&)*arg_0 <<= _n;
+  result = new rdoParse::RDOCorba::GetRSS;
+  (rdoParse::RDOCorba::GetRSS&)result <<= _n;
+  (::CORBA::Long&)arg_0 <<= _n;
 
 }
 
 // Local call call-back function.
 static void
-_0RL_lcfn_0F93BA78401DC9EC_30000000(omniCallDescriptor* cd, omniServant* svnt)
+_0RL_lcfn_3765F01E8BABC70E_30000000(omniCallDescriptor* cd, omniServant* svnt)
 {
-  _0RL_cd_0F93BA78401DC9EC_20000000* tcd = (_0RL_cd_0F93BA78401DC9EC_20000000*)cd;
+  _0RL_cd_3765F01E8BABC70E_20000000* tcd = (_0RL_cd_3765F01E8BABC70E_20000000*)cd;
   rdoParse::_impl_RDOCorba* impl = (rdoParse::_impl_RDOCorba*) svnt->_ptrToInterface(rdoParse::RDOCorba::_PD_repoId);
-  impl->getRDORTPParamscount(*tcd->arg_0, tcd->arg_1);
+  tcd->result = impl->getRDORSSPlist(tcd->arg_0);
 
 
 }
 
-void rdoParse::_objref_RDOCorba::getRDORTPParamscount(RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count)
+rdoParse::RDOCorba::GetRSS* rdoParse::_objref_RDOCorba::getRDORSSPlist(::CORBA::Long& rss_count)
 {
-  _0RL_cd_0F93BA78401DC9EC_20000000 _call_desc(_0RL_lcfn_0F93BA78401DC9EC_30000000, "getRDORTPParamscount", 21);
-  _call_desc.arg_0 = &(RDOCorba::PARAM_count&) params_count;
-  _call_desc.arg_1 = rtp_count;
+  _0RL_cd_3765F01E8BABC70E_20000000 _call_desc(_0RL_lcfn_3765F01E8BABC70E_30000000, "getRDORSSPlist", 15);
+
 
   _invoke(_call_desc);
-
-
-
-}
-// Proxy call descriptor class. Mangled signature:
-//  void_n_crdoParse_mRDOCorba_mGetRTP_i_crdoParse_mRDOCorba_mPARAM__count_i_clong
-class _0RL_cd_0F93BA78401DC9EC_40000000
-  : public omniCallDescriptor
-{
-public:
-  inline _0RL_cd_0F93BA78401DC9EC_40000000(LocalCallFn lcfn,const char* op_,size_t oplen,_CORBA_Boolean upcall=0):
-     omniCallDescriptor(lcfn, op_, oplen, 0, 0, 0, upcall)
-  {
-    
-  }
-  
-  void marshalArguments(cdrStream&);
-  void unmarshalArguments(cdrStream&);
-
-  void unmarshalReturnedValues(cdrStream&);
-  void marshalReturnedValues(cdrStream&);
-  
-  
-  rdoParse::RDOCorba::GetRTP_var arg_0_;
-  rdoParse::RDOCorba::GetRTP* arg_0;
-  rdoParse::RDOCorba::PARAM_count_var arg_1_;
-  const rdoParse::RDOCorba::PARAM_count* arg_1;
-  ::CORBA::Long arg_2;
-};
-
-void _0RL_cd_0F93BA78401DC9EC_40000000::marshalArguments(cdrStream& _n)
-{
-  (const rdoParse::RDOCorba::GetRTP&) *arg_0 >>= _n;
-  (const rdoParse::RDOCorba::PARAM_count&) *arg_1 >>= _n;
-  arg_2 >>= _n;
-
-}
-
-void _0RL_cd_0F93BA78401DC9EC_40000000::unmarshalArguments(cdrStream& _n)
-{
-  arg_0_ = new rdoParse::RDOCorba::GetRTP;
-  (rdoParse::RDOCorba::GetRTP&)arg_0_ <<= _n;
-  arg_0 = &arg_0_.inout();
-  arg_1_ = new rdoParse::RDOCorba::PARAM_count;
-  (rdoParse::RDOCorba::PARAM_count&)arg_1_ <<= _n;
-  arg_1 = &arg_1_.in();
-  (::CORBA::Long&)arg_2 <<= _n;
-
-}
-
-void _0RL_cd_0F93BA78401DC9EC_40000000::marshalReturnedValues(cdrStream& _n)
-{
-  (const rdoParse::RDOCorba::GetRTP&) *arg_0 >>= _n;
-
-}
-
-void _0RL_cd_0F93BA78401DC9EC_40000000::unmarshalReturnedValues(cdrStream& _n)
-{
-  (rdoParse::RDOCorba::GetRTP&)*arg_0 <<= _n;
-
-}
-
-// Local call call-back function.
-static void
-_0RL_lcfn_0F93BA78401DC9EC_50000000(omniCallDescriptor* cd, omniServant* svnt)
-{
-  _0RL_cd_0F93BA78401DC9EC_40000000* tcd = (_0RL_cd_0F93BA78401DC9EC_40000000*)cd;
-  rdoParse::_impl_RDOCorba* impl = (rdoParse::_impl_RDOCorba*) svnt->_ptrToInterface(rdoParse::RDOCorba::_PD_repoId);
-  impl->getRDORTPlist(*tcd->arg_0, *tcd->arg_1, tcd->arg_2);
-
-
-}
-
-void rdoParse::_objref_RDOCorba::getRDORTPlist(RDOCorba::GetRTP& my_rtpList, const RDOCorba::PARAM_count& params_count, ::CORBA::Long rtp_count)
-{
-  _0RL_cd_0F93BA78401DC9EC_40000000 _call_desc(_0RL_lcfn_0F93BA78401DC9EC_50000000, "getRDORTPlist", 14);
-  _call_desc.arg_0 = &(RDOCorba::GetRTP&) my_rtpList;
-  _call_desc.arg_1 = &(RDOCorba::PARAM_count&) params_count;
-  _call_desc.arg_2 = rtp_count;
-
-  _invoke(_call_desc);
-
+  rss_count = _call_desc.arg_0;
+  return _call_desc.result._retn();
 
 
 }
@@ -450,25 +370,17 @@ rdoParse::_impl_RDOCorba::_dispatch(omniCallHandle& _handle)
 {
   const char* op = _handle.operation_name();
 
-  if( omni::strMatch(op, "getRDORTPcount") ) {
-
-    _0RL_cd_0F93BA78401DC9EC_00000000 _call_desc(_0RL_lcfn_0F93BA78401DC9EC_10000000, "getRDORTPcount", 15, 1);
-    
-    _handle.upcall(this,_call_desc);
-    return 1;
-  }
-
-  if( omni::strMatch(op, "getRDORTPParamscount") ) {
-
-    _0RL_cd_0F93BA78401DC9EC_20000000 _call_desc(_0RL_lcfn_0F93BA78401DC9EC_30000000, "getRDORTPParamscount", 21, 1);
-    
-    _handle.upcall(this,_call_desc);
-    return 1;
-  }
-
   if( omni::strMatch(op, "getRDORTPlist") ) {
 
-    _0RL_cd_0F93BA78401DC9EC_40000000 _call_desc(_0RL_lcfn_0F93BA78401DC9EC_50000000, "getRDORTPlist", 14, 1);
+    _0RL_cd_3765F01E8BABC70E_00000000 _call_desc(_0RL_lcfn_3765F01E8BABC70E_10000000, "getRDORTPlist", 14, 1);
+    
+    _handle.upcall(this,_call_desc);
+    return 1;
+  }
+
+  if( omni::strMatch(op, "getRDORSSPlist") ) {
+
+    _0RL_cd_3765F01E8BABC70E_20000000 _call_desc(_0RL_lcfn_3765F01E8BABC70E_30000000, "getRDORSSPlist", 15, 1);
     
     _handle.upcall(this,_call_desc);
     return 1;
