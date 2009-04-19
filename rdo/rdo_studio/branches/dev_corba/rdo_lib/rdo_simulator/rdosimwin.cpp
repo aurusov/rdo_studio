@@ -802,7 +802,7 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 */
 		case RT_CORBA_PARSER_GET_RTP: {
 			msg.lock();
-			corbaGetRTP( *static_cast<rdoParse::RDOCorba::GetRTP*>(msg.param) );
+			corbaGetRTP( *static_cast<rdoParse::RDOCorba::GetRTP_var*>(msg.param) );
 			msg.unlock();
 			break;
 		}
@@ -1056,7 +1056,7 @@ void RDOThreadSimulator::codeCompletion()
 
 #ifdef CORBA_ENABLE
 
-void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
+void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList )
 {
 	// ѕропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdoParse::RDOParserCorba parser;
@@ -1085,7 +1085,7 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 	}
 
 	//¬ыдел€ем п€м€ть под последовательность
-	my_rtpList.length( rtp_count );
+	my_rtpList->length( rtp_count );
 
 	//—нова возвращаемс€ в начало списка типов ресурсов
 	rtp_it = rtpList.begin();
@@ -1218,7 +1218,7 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP& my_rtpList )
 			j++;
 			param_it++;
 		}
-		
+		j = 0;
 		i++;		
 		rtp_it++;
 	}
