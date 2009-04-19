@@ -38,15 +38,14 @@ rect	[x2, y2, hag*10, h, <127 0 127>, <100 255 0>]
 
 show
 line	[x2 + hag*10 - hag, y2 + 1, x2 + hag*10 - hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 2*hag, y2 + 1, x2 + hag*10 - 2*hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 3*hag, y2 + 1, x2 + hag*10 - 3*hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 4*hag, y2 + 1, x2 + hag*10 - 4*hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 5*hag, y2 + 1, x2 + hag*10 - 5*hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 6*hag, y2 + 1, x2 + hag*10 - 6*hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 7*hag, y2 + 1, x2 + hag*10 - 7*hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 8*hag, y2 + 1, x2 + hag*10 - 8*hag, y2 + h - 1, <0  0 127>]
-line	[x2 + hag*10 - 9*hag, y2 + 1, x2 + hag*10 - 9*hag, y2 + h - 1, <0  0 127>]
-
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
+line	[-hag+,             y2 + 1, -hag+            , y2 + h - 1, last      ]
 text    [ x2- 20, y2 - 5, 90, 25, <127 127 127>, <100 255 0>, QSTANOK2.длина_очереди ]
 
 //-------------------Очередь ко роботу на входном накопителе---------------------------------------
