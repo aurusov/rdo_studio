@@ -316,7 +316,7 @@ void RDOThreadCorba::stop()
 
 } // namespace rdoCorba
 
-#endif
+#endif // CORBA_ENABLE
 
 
 
@@ -778,7 +778,7 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
-#endif
+#endif // CORBA_ENABLE
 
 		case RT_SIMULATOR_GET_LIST: {
 			msg.lock();
@@ -1354,7 +1354,7 @@ void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList
 		
 
 }
-#endif
+#endif // CORBA_ENABLE
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadCodeComp
