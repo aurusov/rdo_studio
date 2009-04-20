@@ -75,12 +75,14 @@ void RDOCorba_i::getRDORTPParamscount(rdoParse::RDOCorba::PARAM_count& params_co
 rdoParse::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(::CORBA::Long& rtp_count)
 {
 	//Создаем список структур для хранения информации об искомых типах ресурсов
-	rdoParse::RDOCorba::GetRTP_var my_rtpList_1 = new rdoParse::RDOCorba::GetRTP;
+	//rdoParse::RDOCorba::GetRTP_var my_rtpList_1 = new rdoParse::RDOCorba::GetRTP;
 
-	my_rtpList_1->length(5);
-	my_rtpList_1[0].m_name = CORBA::string_dup("Привет");
+	//my_rtpList_1->length(5);
+	//my_rtpList_1[0].m_name = CORBA::string_dup("Привет");
 
-	rdoParse::RDOCorba::GetRTP_var my_rtpList(my_rtpList_1); 
+	//rdoParse::RDOCorba::GetRTP_var my_rtpList(my_rtpList_1); 
+
+	rdoParse::RDOCorba::GetRTP_var my_rtpList = new rdoParse::RDOCorba::GetRTP;
 
 	//Получаем необходимые нам данные о типах ресурсов РДО
 	kernel->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &my_rtpList );
@@ -1094,7 +1096,7 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 	{
 		// Создаем текстовую структуру
 
-		my_rtpList[i].m_name = CORBA::string_dup(rtp_it->name().c_str());
+		my_rtpList[i].m_name = CORBA::string_dup( rtp_it->name().c_str() );
 		
 		if ((rtp_it->getType()) == rdoMBuilder::RDOResType::rt_permanent )
 			my_rtpList[i].m_type=rdoParse::RDOCorba::TypeRTP::rt_permanent;
@@ -1120,8 +1122,16 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 		while ( param_it != rtp_it->m_params.end() )
 		{
 			// Добавляем в структуру параметр!!!!!!!!!!!!!!!!
-			my_rtpList[i].m_param[j].m_name = param_it->name().c_str();
-		
+			my_rtpList[i].m_param[j].m_name = CORBA::string_dup( param_it->name().c_str() );
+			
+			my_rtpList[i].m_param[j].m_diap_int = 0;
+			my_rtpList[i].m_param[j].m_default_int_ch = 0;
+			my_rtpList[i].m_param[j].m_diap_double = 0;
+			my_rtpList[i].m_param[j].m_default_double_ch = 0;
+			my_rtpList[i].m_param[j].m_var_enum_ch = 0;	
+			my_rtpList[i].m_param[j].m_default_enum_ch = 0;
+			my_rtpList[i].m_param[j].m_var_enum_count = 0;
+
 			switch (param_it->typeID())
 			{
 				//case rdoRuntime::RDOValue::rvt_int{
@@ -1166,50 +1176,37 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					
 					//Считаем количество значений перечислимого типа
 					rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum().begin();
-					my_rtpList[i].m_param[j].m_var_enum_count = 0;
+					
+					CORBA::Long k = 0;
 
 					while ( enum_it != param_it->getEnum().end() )
 					{
 						//my_rtpList[i].m_param[j].m_var_enum[k] = enum_it->c_str();
-						my_rtpList[i].m_param[j].m_var_enum_count++;					
+						k++;					
 						enum_it++;
-						//k++;
 					}
 					
 					//Выделяем память под последовательность значений j-го параметра перечислимого типа i-го типа ресурсов
-					my_rtpList[i].m_param[j].m_var_enum.length(my_rtpList[i].m_param[j].m_var_enum_count);
-									
-					/*	while ( enum_it != param_it->getEnum().end() )
-					{
-						//my_rtpList[i].m_param[j].m_var_enum[k] = enum_it->c_str();
-						enum_it++;
-						k++;
-					}
-
 					my_rtpList[i].m_param[j].m_var_enum.length(k);
+					
 					enum_it = param_it->getEnum().begin();
-										
-				*/
-					CORBA::Long k = 0;
-					enum_it = param_it->getEnum().begin();
+					k = 0;
 
 					while ( enum_it != param_it->getEnum().end() )
 					{
-						my_rtpList[i].m_param[j].m_var_enum[k] = enum_it->c_str();
+						my_rtpList[i].m_param[j].m_var_enum[k] = CORBA::string_dup( enum_it->c_str() );
 						enum_it++;
 						k++;
 					}
 					
 					if ( param_it->hasDefault() )
 					{
-						//rdoRuntime::RDOValue   m_123;
-						//m_123 = param_it->getDefault().getEnum();
-						my_rtpList[i].m_param[j].m_default_enum = param_it->getDefault().getAsString().c_str();
+						my_rtpList[i].m_param[j].m_default_enum = CORBA::string_dup( param_it->getDefault().getAsString().c_str() );
 						my_rtpList[i].m_param[j].m_default_enum_ch = 1;
 					}
 
 					my_rtpList[i].m_param[j].m_var_enum_ch = 1;
-					//my_rtpList[i].m_param[j].m_var_enum_count = k;
+					my_rtpList[i].m_param[j].m_var_enum_count = k;
 					break;
 				}
 				default: break;
