@@ -176,7 +176,7 @@ private:
 //	void corbaGetRTPcount(::CORBA::Long& rtp_count);
 //	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
 	void corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList );
-	void corbaGetRSS( rdoParse::RDOCorba::GetRSS& my_rssList );
+	void corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList );
 
 #endif
 
