@@ -168,6 +168,8 @@
 %token RDO_External_Model				444
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
+%token RDO_SEIZES						447
+%token RDO_RELEASES						448
 
 %{
 #include "pch.h"

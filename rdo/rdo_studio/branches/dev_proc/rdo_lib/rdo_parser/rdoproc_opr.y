@@ -168,6 +168,8 @@
 %token RDO_External_Model				444
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
+%token RDO_SEIZES						447
+%token RDO_RELEASES						448
 
 %{
 #include "pch.h"
@@ -274,6 +276,10 @@ dpt_process_line:	RDO_IDENTIF
 					| RDO_TERMINATE dpt_term_param
 					{
 					}
+					| RDO_TERMINATE error
+					{
+						PARSER->error( @1, "Ошибка в параметре оператора TERMINATE" );
+					}
 					| RDO_ADVANCE fun_arithm 
 					{
 						RDOPROCAdvance* advance = new RDOPROCAdvance( PARSER->getLastPROCProcess(), "ADVANCE", ((RDOFUNArithm*)$2)->createCalc() );
@@ -289,11 +295,19 @@ dpt_process_line:	RDO_IDENTIF
 						RDOPROCQueue* queue  = reinterpret_cast<RDOPROCQueue*>($2);
 						queue->create_runtime_Queue( PARSER );
 					}
+					| RDO_QUEUE error 
+					{
+						PARSER->error( @1, "Ожидается имя ресурса для сбора статистики по очереди" );
+					}
 					| RDO_DEPART dpt_depart_param 
 					{
 						TRACE("DEPART dpt_depart_param\n");
 						RDOPROCDepart* depart  = reinterpret_cast<RDOPROCDepart*>($2);
 						depart->create_runtime_Depart( PARSER );
+					}
+					| RDO_DEPART error 
+					{
+						PARSER->error( @1, "Ожидается имя ресурса для сбора статистики по очереди" );
 					}
 					| RDO_SEIZE dpt_seize_param 
 					{
@@ -301,18 +315,38 @@ dpt_process_line:	RDO_IDENTIF
 						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($2);
 						seize->create_runtime_Seize( PARSER );
 					}
+					| RDO_SEIZE error				
+					{
+						PARSER->error(@1, rdo::format("Ожидается имя занимаемого ресурса"));
+					}
 					| RDO_RELEASE dpt_release_param 
 					{
 						TRACE("RELEASE dpt_release_param\n");
 						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($2);
 						release->create_runtime_Release( PARSER );
+					}
+					| RDO_RELEASE error				
+					{
+						PARSER->error(@1, rdo::format("Ожидается имя освобождаемого ресурса"));
+					}
+					| RDO_SEIZES dpt_seizes_param 
+					{
+						
+					}
+					| RDO_SEIZES error				
+					{
+						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
+					}
+					| RDO_RELEASES dpt_releases_param 
+					{
+						
+					}
+					| RDO_RELEASES error				
+					{
+						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 					};
 								
-dpt_queue_param:	// empty
-					{
-						PARSER->error( rdo::format("Ожидается имя очереди") );
-					}
-					| RDO_IDENTIF 
+dpt_queue_param:	RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
@@ -322,13 +356,9 @@ dpt_queue_param:	// empty
 					}
 					| RDO_IDENTIF error 
                     {
-						PARSER->error( @2, "Ошибка в миени очереди" )
+						PARSER->error( @1, "Ошибка в миени очереди" )
 					};     
-dpt_depart_param:	// empty
-					{
-						PARSER->error( rdo::format("Ожидается имя очереди") );
-					}
-					| RDO_IDENTIF 
+dpt_depart_param:	RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
@@ -338,13 +368,9 @@ dpt_depart_param:	// empty
 					}
 					| RDO_IDENTIF error 
                     {
-						PARSER->error( @2, "Ошибка в имени ресурса" )
+						PARSER->error( @1, "Ошибка в имени ресурса" )
 					};     
-dpt_seize_param:    // empty 
-					{
-						PARSER->error( rdo::format("Ожидается имя ресурса") );
-					}   
-					| RDO_IDENTIF 
+dpt_seize_param:    RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
@@ -354,13 +380,9 @@ dpt_seize_param:    // empty
 					}
                     | RDO_IDENTIF error 
                     {
-						PARSER->error( @2, "Ошибка в миени ресурса" )
+						PARSER->error( @1, "Ошибка в миени ресурса" )
 					};     
-dpt_release_param:  //empty 
-					{
-						PARSER->error( rdo::format("Ожидается имя ресурса") );
-					}   
-					| RDO_IDENTIF 
+dpt_release_param:  RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE( "%s _good\n", res_name.c_str());
@@ -370,7 +392,7 @@ dpt_release_param:  //empty
 					}
 					| RDO_IDENTIF error 
 					{	
-						PARSER->error( @2, "Ошибка в миени ресурса" )
+						PARSER->error( @1, "Ошибка в миени ресурса" )
 					};					
 dpt_term_param:		//empty 
 					{
@@ -392,9 +414,30 @@ dpt_term_param:		//empty
 					}
 					| fun_arithm  error 
 					{	
-						PARSER->error( @2, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
-					};				
-										
+						PARSER->error( @1, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
+					};	
+dpt_seizes_param:	RDO_IDENTIF
+					{
+					}
+					| dpt_seizes_param ',' RDO_IDENTIF
+					{
+
+					}
+					| dpt_seizes_param error
+					{
+						PARSER->error( @1, "Ошибка в имени ресурса" );
+					};
+dpt_releases_param:	RDO_IDENTIF
+					{
+					}
+					| dpt_releases_param ',' RDO_IDENTIF
+					{
+
+					}
+					| dpt_releases_param error
+					{
+						PARSER->error( @1, "Ошибка в имени ресурса" );
+					};		
 dpt_process_end:	dpt_process RDO_End	
 					{
 						PARSER->getLastPROCProcess()->end();
