@@ -50,15 +50,16 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 			}
 			//Переходим к следующему блоку
 			it++;
-			//Берем этот блок
-			block = static_cast<RDOPROCBlock*>(*it);	
-				
 			//Если следующий блок существует
-			if ( it != end() ) {
-			transact->block = block;
-			//Записываем в конец списка этого блока перемещаемый транзакт
-			block->TransactGoIn( transact );
-			}
+			if ( it != end() ) 
+			{
+				//Берем этот блок
+				block = static_cast<RDOPROCBlock*>(*it);	
+					
+				transact->block = block;
+				//Записываем в конец списка этого блока перемещаемый транзакт
+				block->TransactGoIn( transact );
+				}
 			//Блок в из которого нужно было переместить транзакт был последним
 			else {
 			//---------Вход в этот блок означает, что it-1 = последний блок для транзакта, 
@@ -309,7 +310,8 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 		tracer->getOStream() << forRes.rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 		}
 		// Занят
-		if ( forRes.rss->getParam(forRes.Id_param) == forRes.enum_buzy ) {
+		if ( forRes.rss->getParam(forRes.Id_param) == forRes.enum_buzy ) 
+		{
 		forRes.rss->setParam(forRes.Id_param, forRes.enum_free);
 		return true;
 		}
@@ -322,6 +324,71 @@ RDOBaseOperation::BOResult RDOPROCRelease::onDoOperation( RDOSimulator* sim )
 	TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
+}
+
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCBlockForSeizes
+// ----------------------------------------------------------------------------
+RDOPROCBlockForSeizes::RDOPROCBlockForSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ):
+	RDOPROCBlock( _process ),
+	fromParser( From_Par )
+{	
+}
+
+void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
+{
+	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
+	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
+	int size = fromParser.size();
+	std::vector < parser_for_Seize >::iterator it1 = fromParser.begin();
+	while ( it1 != fromParser.end() ) 
+	{
+		int Id_res = (*it1).Id_res;
+		int Id_param = (*it1).Id_param;
+		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
+		runtime_for_Seize bbb;
+		bbb.rss = static_cast<RDOPROCResource*>(res);
+		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumFree() );
+		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBuzy() );
+		forRes.push_back(bbb);
+		it1++;
+	}
+}
+
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeizes
+// ----------------------------------------------------------------------------
+bool RDOPROCSeizes::onCheckCondition( RDOSimulator* sim )
+{
+	if ( !transacts.empty() ) 
+	{
+		return true;
+	} 
+	else 
+	{
+	return false;			
+	}
+}
+		
+RDOBaseOperation::BOResult RDOPROCSeizes::onDoOperation( RDOSimulator* sim )
+{
+transacts.front()->next();
+return RDOBaseOperation::BOR_done;
+}
+
+void RDOPROCSeizes::TransactGoIn( RDOPROCTransact* _transact )
+{
+
+	//forRes.rss->transacts.push_back( _transact );
+	RDOPROCBlockForSeizes::TransactGoIn( _transact );
+}
+
+void RDOPROCSeizes::TransactGoOut( RDOPROCTransact* _transact )
+{
+	//forRes.rss->transacts.remove( _transact );
+	RDOPROCBlockForSeizes::TransactGoOut( _transact );
 }
 
 // ----------------------------------------------------------------------------

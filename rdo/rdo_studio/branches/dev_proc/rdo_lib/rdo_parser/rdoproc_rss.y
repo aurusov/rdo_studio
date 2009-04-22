@@ -419,10 +419,83 @@ dpt_release_param:	RDO_IDENTIF
 
 dpt_seizes_param:	RDO_IDENTIF
 					{
+						// Имя ресурса
+						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						const RDOParserSrcInfo& info = @1;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
+						rdoMBuilder::RDOResType rtp;
+						// Если ресурс существует, берем его тип и проверяем
+						if (rssList[res_name].exist() && !rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+						{
+							rtp = rssList[res_name].getType();
+							if (RDOPROCBlockForSeize::checkType(PARSER, rtp, info))
+							{
+								RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							}
+						}
+						else
+						{
+							//Ресурс не найден, сформировать имя типа по имени ресурса
+							// Сформировать имя типа по имени ресурса
+							std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+							// Получили список всех типов ресурсов
+							rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса
+							if ( rtpList[rtp_name].exist() )
+							{
+								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+								if (RDOPROCBlockForSeize::checkType(PARSER, rtp_, info))
+								{
+									RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								}
+							}
+							else
+							{
+								rtp = RDOPROCBlockForSeize::createType(PARSER, rtp_name, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp, res_name);
+							}
+						}
 					}
 					| dpt_seizes_param ',' RDO_IDENTIF
 					{
-
+						// Имя ресурса
+						std::string res_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator().c_str();
+						const RDOParserSrcInfo& info = @3;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
+						rdoMBuilder::RDOResType rtp;
+						// Если ресурс существует, берем его тип и проверяем
+						if (rssList[res_name].exist() && !rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+						{
+							rtp = rssList[res_name].getType();
+							if (RDOPROCBlockForSeize::checkType(PARSER, rtp, info))
+							{
+								RDOPROCBlockForSeize::reobjectRes( PARSER, rtp, res_name);
+							}
+						}
+						else
+						{
+							//Ресурс не найден, сформировать имя типа по имени ресурса
+							// Сформировать имя типа по имени ресурса
+							std::string rtp_name( RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix );
+							// Получили список всех типов ресурсов
+							rdoMBuilder::RDOResTypeList rtpList( PARSER );
+							// Нашли тип ресурса
+							if ( rtpList[rtp_name].exist() )
+							{
+								rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
+								if (RDOPROCBlockForSeize::checkType(PARSER, rtp_, info))
+								{
+									RDOPROCBlockForSeize::createRes(PARSER, rtp_, res_name);
+								}
+							}
+							else
+							{
+								rtp = RDOPROCBlockForSeize::createType(PARSER, rtp_name, info);
+								RDOPROCBlockForSeize::createRes(PARSER, rtp, res_name);
+							}
+						}
 					}
 					| dpt_seizes_param error
 					{

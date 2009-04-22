@@ -219,6 +219,37 @@ public:
 	  RDOPROCBlockForSeize( _process, From_Par ) {}
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCBlockForSeizes
+// ----------------------------------------------------------------------------
+
+class RDOPROCBlockForSeizes: public RDOPROCBlock
+{
+protected:
+	std::vector < runtime_for_Seize > forRes;
+	std::vector < parser_for_Seize > fromParser;
+	virtual void onStart( RDOSimulator* sim );
+
+public:
+	RDOPROCBlockForSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par );
+	static std::string getStateParamName() {return "Состояние";}
+	static std::string getStateEnumFree()  {return "Свободен"; }
+	static std::string getStateEnumBuzy()  {return "Занят";    }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeizes
+// ----------------------------------------------------------------------------
+class RDOPROCSeizes: public RDOPROCBlockForSeizes
+{
+public:
+	RDOPROCSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeizes( _process, From_Par ) {}
+	virtual void TransactGoIn( RDOPROCTransact* _transact );
+	virtual void TransactGoOut( RDOPROCTransact* _transact );
+private:
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance

@@ -331,7 +331,9 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_SEIZES dpt_seizes_param 
 					{
-						
+						TRACE("SEIZES dpt_seizes_param\n");
+						RDOPROCSeizes* seizes  = reinterpret_cast<RDOPROCSeizes*>($2);
+						seizes->create_runtime_Seizes( PARSER );	
 					}
 					| RDO_SEIZES error				
 					{
@@ -418,10 +420,17 @@ dpt_term_param:		//empty
 					};	
 dpt_seizes_param:	RDO_IDENTIF
 					{
+						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						RDOPROCSeizes* seizes = new RDOPROCSeizes( PARSER->getLastPROCProcess(), "SEIZES");
+						seizes->add_Seizes_Resourse(res_name);
+						$$ = (int)seizes;
 					}
 					| dpt_seizes_param ',' RDO_IDENTIF
 					{
-
+						RDOPROCSeizes* seizes  = reinterpret_cast<RDOPROCSeizes*>($1);
+						std::string res_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator().c_str();
+						seizes->add_Seizes_Resourse(res_name);
+						$$ = $1;
 					}
 					| dpt_seizes_param error
 					{
