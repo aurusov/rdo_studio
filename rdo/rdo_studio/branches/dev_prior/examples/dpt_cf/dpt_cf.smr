@@ -7,4 +7,4 @@ Trace_file     = dpt_cf
 Show_mode      = NoShow
 Show_rate      = 3600.0
 
-Terminate_if Time_now >= 12 * 7 * 60
+Terminate_if Парикмахерская.количество_обслуженных >= 1

@@ -78,6 +78,8 @@ RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserS
 	if ( !m_pattern ) {
 		parser()->error( _pattern_src_info, rdo::format("Не найден образец: %s", _pattern_src_info.src_text().c_str()) );
 	}
+
+	m_prior = 0;
 }
 
 void RDODPTActivity::addParam( const RDOValue& param )

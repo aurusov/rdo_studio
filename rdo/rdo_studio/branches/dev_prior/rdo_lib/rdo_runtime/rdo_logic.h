@@ -14,6 +14,7 @@ namespace rdoRuntime {
 template<class T>
 class RDOOprContainer: public RDOBaseOperation
 {
+	friend class RDODPTSome;
 public:
 	RDOOprContainer( RDORuntimeParent* parent ):
 		RDOBaseOperation( parent ),
@@ -144,6 +145,11 @@ public:
 		m_lastCondition = false;
 		stop( sim );
 	}
+	// RDODPTSome должен перекрыть метод newCheckCondition для сортировки операций по приоритетам
+	virtual bool newCheckCondition( RDOSimulator* sim )
+	{
+		return RDOOprContainer<RDOBaseOperation>::onCheckCondition( sim );
+	}
 	virtual bool onCheckCondition( RDOSimulator* sim )
 	{
 		bool condition = checkSelfCondition( sim );
@@ -163,7 +169,7 @@ public:
 		{
 			if ( !m_childLogic.onCheckCondition( sim ) )
 			{
-				return RDOOprContainer<RDOBaseOperation>::onCheckCondition( sim );
+				return newCheckCondition( sim );
 			}
 			else
 			{

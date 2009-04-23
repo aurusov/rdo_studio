@@ -12,6 +12,10 @@ namespace rdoRuntime {
 class RDOActivity: public RDOBaseOperation, public RDOTraceableObject
 {
 public:
+	double operator- ( const RDOActivity* right )
+	{
+		return ( this->m_prior_runtime - right->m_prior_runtime );
+	}
 	RDOCalc*                  m_prior_runtime;
 	void addParamCalc( RDOCalc* calc )
 	{
@@ -42,6 +46,7 @@ protected:
 		RDOTraceableObject( trace ),
 		m_oprName( name )
 	{
+		m_prior_runtime = 0;
 	}
 	virtual ~RDOActivity() {}
 
