@@ -73,6 +73,7 @@ public:
 class RDOPROCResource: public RDOResource
 {
 friend class RDOPROCSeize;
+friend class RDOPROCSeizes;
 protected: 
 	std::list<RDOPROCTransact*> transacts;
 public:
@@ -242,13 +243,20 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPROCSeizes: public RDOPROCBlockForSeizes
 {
-public:
-	RDOPROCSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): RDOPROCBlockForSeizes( _process, From_Par ) {}
-	virtual void TransactGoIn( RDOPROCTransact* _transact );
-	virtual void TransactGoOut( RDOPROCTransact* _transact );
 private:
+	unsigned int index;
 	virtual bool     onCheckCondition( RDOSimulator* sim );
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+
+public:
+	RDOPROCSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
+	  RDOPROCBlockForSeizes( _process, From_Par ) 
+	  {
+	  static unsigned int g_index = 1;
+	  index = g_index++;
+	  }
+	virtual void TransactGoIn( RDOPROCTransact* _transact );
+	virtual void TransactGoOut( RDOPROCTransact* _transact );
 };
 
 // ----------------------------------------------------------------------------

@@ -348,6 +348,7 @@ void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
 		int Id_param = (*it1).Id_param;
 		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
 		runtime_for_Seize bbb;
+		bbb.Id_param = Id_param;
 		bbb.rss = static_cast<RDOPROCResource*>(res);
 		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumFree() );
 		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBuzy() );
@@ -364,12 +365,30 @@ bool RDOPROCSeizes::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) 
 	{
-		return true;
+		int Size_Seizes = forRes.size();
+		for(int i=0;i<Size_Seizes; i++)
+		{
+			// если свободен
+			if ( forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_free ) 
+			{
+				int idBlocksTransact = transacts.front()->getTraceID();	
+				int idResourcesTransact = forRes[i].rss->transacts.front()->getTraceID();
+				if( idBlocksTransact == idResourcesTransact )
+				{
+					forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_buzy);	
+					TRACE( "%7.1f SEIZE-%d\n", sim->getCurrentTime() ,index );
+					return true;
+				}
+				else
+				return false;
+			}	
+		}
 	} 
 	else 
 	{
 	return false;			
 	}
+return false;
 }
 		
 RDOBaseOperation::BOResult RDOPROCSeizes::onDoOperation( RDOSimulator* sim )
@@ -380,14 +399,19 @@ return RDOBaseOperation::BOR_done;
 
 void RDOPROCSeizes::TransactGoIn( RDOPROCTransact* _transact )
 {
-
-	//forRes.rss->transacts.push_back( _transact );
+int Size_Seizes = forRes.size();
+	for(int i=0;i<Size_Seizes; i++){
+	forRes[i].rss->transacts.push_back( _transact );
+	}
 	RDOPROCBlockForSeizes::TransactGoIn( _transact );
 }
 
 void RDOPROCSeizes::TransactGoOut( RDOPROCTransact* _transact )
 {
-	//forRes.rss->transacts.remove( _transact );
+int Size_Seizes = forRes.size();
+	for(int i=0;i<Size_Seizes; i++){
+	forRes[i].rss->transacts.remove( _transact );
+	}
 	RDOPROCBlockForSeizes::TransactGoOut( _transact );
 }
 
