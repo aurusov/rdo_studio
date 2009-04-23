@@ -140,9 +140,16 @@ static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr obj
 		// Bind objref with name Echo to the testContext:
 		CosNaming::Name objectName;
 		objectName.length(1);
-		objectName[0].id = (const char*) "RDO1"; // string copied
-		objectName[0].kind = (const char*) "Object"; // string copied
-		
+		//objectName[0].id = (const char*) "RDO1"; // string copied
+
+		//**************************************
+		rdoParse::RDOParserSMRInfo parser;
+		parser.parse();
+
+		objectName[0].id = (const char*) "RDO2";//parser.getSMR()->modelName().c_str();
+		objectName[0].kind = (const char*) "Object";
+		//**************************************
+
 		try {
 			testContext->bind(objectName, objref);
 		}
