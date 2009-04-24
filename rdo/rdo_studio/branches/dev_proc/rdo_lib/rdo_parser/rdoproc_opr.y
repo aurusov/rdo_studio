@@ -341,7 +341,9 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_RELEASES dpt_releases_param 
 					{
-						
+						TRACE("RELEASES dpt_releases_param\n");
+						RDOPROCReleases* releases  = reinterpret_cast<RDOPROCReleases*>($2);
+						releases->create_runtime_Releases( PARSER );	
 					}
 					| RDO_RELEASES error				
 					{
@@ -437,11 +439,18 @@ dpt_seizes_param:	RDO_IDENTIF
 						PARSER->error( @1, "Ошибка в имени ресурса" );
 					};
 dpt_releases_param:	RDO_IDENTIF
-					{
+					{	
+						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
+						RDOPROCReleases* releases = new RDOPROCReleases( PARSER->getLastPROCProcess(), "RELEASES");
+						releases->add_Releases_Resourse(res_name);
+						$$ = (int)releases;
 					}
 					| dpt_releases_param ',' RDO_IDENTIF
 					{
-
+						RDOPROCReleases* releases  = reinterpret_cast<RDOPROCReleases*>($1);
+						std::string res_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator().c_str();
+						releases->add_Releases_Resourse(res_name);
+						$$ = $1;
 					}
 					| dpt_releases_param error
 					{

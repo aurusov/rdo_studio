@@ -58,11 +58,21 @@ class RDOPROCTransact: public RDOResource
 {
 friend class RDOPROCProcess;
 
+public:
+	static int typeID;
 protected:
 	RDOPROCBlock* block;
+	RDOPROCResource *res;
 public:
+	RDOPROCResource* getRes()
+	{
+		return res;
+	}
+	void setRes(RDOPROCResource *Res)
+	{
+		res = Res;
+	}
 	RDOPROCBlock* getBlock();
-	static int typeID;
 	RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block );
 	void next();
 };
@@ -96,7 +106,8 @@ protected:
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
-	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
+	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): 
+	  RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
 	void calcNextTimeInterval( RDOSimulator* sim );
 };
 // ----------------------------------------------------------------------------
@@ -259,6 +270,24 @@ public:
 	virtual void TransactGoOut( RDOPROCTransact* _transact );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCReleases
+// ----------------------------------------------------------------------------
+class RDOPROCReleases: public RDOPROCBlockForSeizes
+{
+private:
+	unsigned int index;
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+
+public:
+	RDOPROCReleases( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
+	  RDOPROCBlockForSeizes( _process, From_Par ) 
+	  {
+	  static unsigned int g_index = 1;
+	  index = g_index++;
+	  }
+};
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------

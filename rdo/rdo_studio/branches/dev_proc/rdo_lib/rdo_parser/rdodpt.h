@@ -23,6 +23,7 @@ class RDOPROCTerminate;
 class RDOPROCAdvance;
 class RDOPROCRelease;
 class RDOPROCSeizes;
+class RDOPROCReleases;
 struct parser_for_Seize;
 struct parser_for_Queue;
 }
@@ -321,6 +322,20 @@ public:
 	void add_Seizes_Resourse   ( std::string res_name){Resources.push_back( res_name );}	
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCReleases
+// ----------------------------------------------------------------------------
+class RDOPROCReleases: public RDOPROCBlockForSeize
+{
+protected:
+	std::list< std::string > Resources;
+	std::vector< rdoRuntime::parser_for_Seize > parser_for_runtime;
+	rdoRuntime::RDOPROCReleases * runtime;
+public:
+	RDOPROCReleases              ( RDOPROCProcess* _process, const std::string& _name ): RDOPROCBlockForSeize( _process, _name ){}
+	void create_runtime_Releases ( RDOParser *parser );
+	void add_Releases_Resourse   ( std::string res_name){Resources.push_back( res_name );}	
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance

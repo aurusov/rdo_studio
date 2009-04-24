@@ -636,6 +636,51 @@ while ( it != Resources.end() )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCReleases
+// ----------------------------------------------------------------------------
+void RDOPROCReleases::create_runtime_Releases ( RDOParser *parser )
+{
+std::list< std::string >::iterator it = Resources.begin();
+while ( it != Resources.end() ) 
+{
+	std::string aaa = *it;
+	const RDORSSResource* rss = parser->findRSSResource((*it));
+	if( rss )
+	{
+		const std::string res_name = rss->name();
+		// Получили список всех ресурсов
+		rdoMBuilder::RDOResourceList rssList( parser );
+		// Создадим тип ресурса
+		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+		// "Состояние"
+		std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeizes::getStateParamName();
+		// проверим его на наличие перечислимого параметра
+		if ( !rtp.m_params[rtp_param_name].exist() ) 
+		{
+			parser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+		}
+		rdoRuntime::parser_for_Seize bbb;
+		bbb.Id_res = rss->getID();
+		bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
+		parser_for_runtime.push_back(bbb);
+		}	else {
+		parser->error( "Внутренняя ошибка RDOPROCReleases: не нашли parser-ресурс" );
+		}
+	it++;
+	}
+
+	int ccc = parser_for_runtime.size();
+	if( ccc>0 )
+	{
+		runtime = new rdoRuntime::RDOPROCReleases( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
+	}
+	else
+	{
+		parser->error( "Внутренняя ошибка: блок Releases ресурсов" );
+	}
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
 RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time ):
