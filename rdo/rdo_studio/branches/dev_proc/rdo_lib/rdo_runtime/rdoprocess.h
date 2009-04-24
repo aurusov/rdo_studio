@@ -176,6 +176,7 @@ struct runtime_for_Seize
 	int Id_param;
 	RDOValue     enum_free;
 	RDOValue     enum_buzy;
+	RDOValue	 enum_break;
 };
 struct parser_for_Seize
 {
@@ -194,6 +195,7 @@ public:
 	static std::string getStateParamName() {return "Состояние";}
 	static std::string getStateEnumFree()  {return "Свободен"; }
 	static std::string getStateEnumBuzy()  {return "Занят";    }
+	static std::string getStateEnumBreak() {return "Сломан";    }
 };
 
 // ----------------------------------------------------------------------------
@@ -247,6 +249,7 @@ public:
 	static std::string getStateParamName() {return "Состояние";}
 	static std::string getStateEnumFree()  {return "Свободен"; }
 	static std::string getStateEnumBuzy()  {return "Занят";    }
+	static std::string getStateEnumBreak() {return "Сломан";    }
 };
 
 // ----------------------------------------------------------------------------

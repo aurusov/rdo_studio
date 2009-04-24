@@ -483,7 +483,8 @@ std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName
 std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
 // "Занят"
 std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
-
+// "Сломан"
+std::string rtp_state_break = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBreak();
 	// Тип найден, проверим его на наличие перечислимого параметра
 	if ( !rtp.m_params[rtp_param_name].exist() )
 	parser->error( info, rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
@@ -495,7 +496,7 @@ std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy(
 	parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str() ) );
 
 	// Теперь проверим сами значения
-	if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) )
+	if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) || !param.getEnum().exist(rtp_state_break) )
 	parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
 
 	return true;
@@ -527,13 +528,15 @@ rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, con
 	std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
 	// "Занят"
 	std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
+	// "Сломан"
+	std::string rtp_state_break = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBreak();
 
 	// Получили список всех типов ресурсов
 	rdoMBuilder::RDOResTypeList rtpList( parser );
 	// Создадим тип ресурса
 	rdoMBuilder::RDOResType rtp( rtp_name );
 	// Создадим параметр перечислимого типа
-	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnumType(parser->runtime(), rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
+	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnumType(parser->runtime(), rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy)(rtp_state_break)), rtp_state_free) );
 	// Добавим тип ресурса
 	if ( !rtpList.append( rtp ) )
 	{

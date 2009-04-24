@@ -249,6 +249,7 @@ void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
 	forRes.rss = static_cast<RDOPROCResource*>(res);
 	forRes.enum_free = RDOValue( forRes.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
 	forRes.enum_buzy = RDOValue( forRes.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
+	forRes.enum_break = RDOValue( forRes.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBreak() );
 }
 
 
@@ -352,6 +353,7 @@ void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
 		bbb.rss = static_cast<RDOPROCResource*>(res);
 		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumFree() );
 		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBuzy() );
+		bbb.enum_break = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBreak() );
 		forRes.push_back(bbb);
 		it1++;
 	}
@@ -440,6 +442,12 @@ bool RDOPROCReleases::onCheckCondition( RDOSimulator* sim )
 					forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_free);
 					return true;
 				}		
+				// Сломан
+				if ( forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_break )
+				{
+					//Удаляем транзакт
+					int i=0;
+				}
 			}
 		}
 	}
