@@ -42,6 +42,9 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoCorba
 {
 
+const char* TestName = "Client";
+//const char* TestName = "Server";
+
 CORBA::ORB_var g_orb;
 
 class RDOCorba_i: public POA_rdoParse::RDOCorba
@@ -52,6 +55,8 @@ public:
     
 	virtual rdoParse::RDOCorba::GetRTP* getRDORTPlist(::CORBA::Long& rtp_count);
 	virtual rdoParse::RDOCorba::GetRSS* getRDORSSPlist(::CORBA::Long& rss_count);
+
+	static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref);
 
 };
 
@@ -77,7 +82,7 @@ rdoParse::RDOCorba::GetRSS* RDOCorba_i::getRDORSSPlist(::CORBA::Long& rss_count)
 	return my_rssList._retn();
 }
 
-static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
+CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 {
 	CosNaming::NamingContext_var rootContext;
 	
@@ -146,7 +151,7 @@ static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr obj
 		rdoParse::RDOParserSMRInfo parser;
 		parser.parse();
 
-		objectName[0].id = (const char*) "RDO2";//parser.getSMR()->modelName().c_str();
+		objectName[0].id = TestName;//parser.getSMR()->modelName().c_str();
 		objectName[0].kind = (const char*) "Object";
 		//**************************************
 
@@ -1186,42 +1191,6 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 		rtp_it++;
 	}
 
-/*	{
-		// Вывели все типы ресурсов (исключительно для теста)
-		rdoMBuilder::RDOResTypeList rtpList( &parser );
-		rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
-		while ( rtp_it != rtpList.end() )
-		{
-			TRACE("rtp.name = %s\n", rtp_it->name().c_str());
-			rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
-			while ( param_it != rtp_it->m_params.end() )
-			{
-				std::string info = rdo::format("  param: %s: %s", param_it->name().c_str(), param_it->getTypeStr().c_str());
-				if ( param_it->hasDiap() )
-				{
-					info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
-				}
-				if ( param_it->hasDefault() )
-				{
-					info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
-				}
-				TRACE( "%s\n", info.c_str() );
-
-				if ( param_it->getType() == rdoRuntime::RDOValue::rvt_enum )
-				{
-					rdoRuntime::RDOEnum::CIterator enum_it = param_it->getEnum().begin();
-					while ( enum_it != param_it->getEnum().end() )
-					{
-						TRACE( "  - enum - %s\n", enum_it->c_str() );
-						enum_it++;
-					}
-				}
-				param_it++;
-			}
-			rtp_it++;
-		}
-	}
-	*/
 }
 
 void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList )
