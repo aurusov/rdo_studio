@@ -1,0 +1,22 @@
+Results_file   = mymodel.pmv    Сб апр 25 01:06:30 2009
+Run_file       = mymodel.smr
+Model_name     = mymodel
+Resource_file  = mymodel.rss
+OprIev_file    = mymodel.opr
+
+$Changes
+
+
+$Status = NORMAL_TERMINATION
+$Result_values  0  5055.59  0.141
+  EventCount           154  0.0304613  1092
+  OperRuleCheckCounter 155  0.0306591  1099
+  AExpCalcCounter      2  0.000395602  14
+  BExpCalcCounter      1086  0.214812  7702
+
+Занятость_парикмахера         	FALSE	0	0	0	1.79769e+308	2.22507e-308
+Длина_очереди                 	156	154	79.0807	2.36548e+009	2	156
+Всего_обслужено               	2
+Пропускная_способность        	0.0237361
+Длительность_работы           	84.2599
+
