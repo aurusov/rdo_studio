@@ -95,19 +95,17 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 		// Narrow the reference returned.
 		rootContext = CosNaming::NamingContext::_narrow(obj);
 		if( CORBA::is_nil(rootContext) ) {
-			std::cerr << "Failed to narrow the root naming context." << std::endl;
+			TRACE( "Failed to narrow the root naming context." );
 			return 0;
 		}
 	}
 	catch (CORBA::NO_RESOURCES&) {
-		std::cerr << "Caught NO_RESOURCES exception. You must configure omniORB "
-		<< "with the location" << std::endl
-		<< "of the naming service." << std::endl;
+		TRACE( "Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service.");
 		return 0;
 	}
 	catch (CORBA::ORB::InvalidName&) {
 		// This should not happen!
-		std::cerr << "Service required is invalid [does not exist]." << std::endl;
+		TRACE( "Service required is invalid [does not exist].");
 		return 0;
 	}
 
@@ -137,7 +135,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 			testContext = CosNaming::NamingContext::_narrow(obj);
 			
 			if( CORBA::is_nil(testContext) ) {
-				std::cerr << "Failed to narrow naming context." << std::endl;
+				TRACE( "Failed to narrow naming context.");
 			return 0;
 			}
 		}
@@ -173,15 +171,12 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 		// it should just bind].
 	}
 	catch(CORBA::TRANSIENT& ex) {
-		std::cerr << "Caught system exception TRANSIENT -- unable to contact the "
-		<< "naming service." << std::endl
-		<< "Make sure the naming server is running and that omniORB is "
-		<< "configured correctly." << std::endl;
+		TRACE( "Caught system exception TRANSIENT -- unable to contact the naming service.");
+		TRACE( "Make sure the naming server is running and that omniORB is configured correctly.");
 		return 0;
 	}
 	catch(CORBA::SystemException& ex) {
-		std::cerr << "Caught a CORBA::" << ex._name()
-		<< " while using the naming service." << std::endl;
+		TRACE( "Caught a CORBA:: %s while using the naming service.", ex._name() );
 		return 0;
 	}
 	
@@ -225,13 +220,10 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		//trace( rdo::format("Caught CORBA::%s", ex._name()) );
 	}
 	catch(CORBA::Exception& ex) {
-		std::cerr << "Caught CORBA::Exception: " << ex._name() << std::endl;
+		TRACE( "Caught CORBA::Exception: " );
 	}	
 	catch(omniORB::fatalException& fe) {
-		std::cerr << "Caught omniORB::fatalException:" << std::endl;
-		std::cerr << " file: " << fe.file() << std::endl;
-		std::cerr << " line: " << fe.line() << std::endl;
-		std::cerr << " mesg: " << fe.errmsg() << std::endl;
+		TRACE( "Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
 	}
 	
 	return 0;
@@ -1074,9 +1066,9 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 		my_rtpList[i].m_name = CORBA::string_dup( rtp_it->name().c_str() );
 		
 		if ((rtp_it->getType()) == rdoMBuilder::RDOResType::rt_permanent )
-			my_rtpList[i].m_type=rdoParse::RDOCorba::TypeRTP::rt_permanent;
+			my_rtpList[i].m_type=rdoParse::RDOCorba::rt_permanent;
 		else
-			my_rtpList[i].m_type=rdoParse::RDOCorba::TypeRTP::rt_temporary;
+			my_rtpList[i].m_type=rdoParse::RDOCorba::rt_temporary;
 
 		//Считаем количество параметров i-го типа ресурса
 		rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
@@ -1110,7 +1102,7 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 			switch (param_it->typeID())
 			{
 				case rdoRuntime::RDOType::t_int:{
-					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::TypeParam::int_type;
+					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::int_type;
 
 					if ( param_it->hasDiap() )
 					{
@@ -1127,7 +1119,7 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					break;
 				}
 				case rdoRuntime::RDOType::t_real:{
-					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::TypeParam::double_type;
+					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::double_type;
 
 					if ( param_it->hasDiap() )
 					{
@@ -1144,7 +1136,7 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					break;
 				}
 				case rdoRuntime::RDOType::t_enum:{
-					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::TypeParam::enum_type;
+					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::enum_type;
 					
 					//Считаем количество значений перечислимого типа
 					rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum().begin();
@@ -1256,21 +1248,21 @@ void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList
 				case rdoRuntime::RDOType::t_int:{
 					
 					my_rssList[i].m_param[j].m_int = param_it->second.getInt();
-					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::TypeParam::int_type;
+					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::int_type;
 
 					break;
 				}
 				case rdoRuntime::RDOType::t_real:{
 
 					my_rssList[i].m_param[j].m_double = param_it->second.getDouble();
-					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::TypeParam::double_type;
+					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::double_type;
 					
 					break;
 				}
 				case rdoRuntime::RDOType::t_enum:{
 
 					my_rssList[i].m_param[j].m_enum = param_it->second.getAsString().c_str();
-					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::TypeParam::enum_type;
+					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::enum_type;
 
 					break;
 				}
@@ -1308,23 +1300,6 @@ void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList
 		// Запоминаем в списке
 		RSSList->push_back( rss );
 		rss_it++;
-	}
-
-	{
-		// Вывели все ресурсы
-		rdoMBuilder::RDOResourceList rssList( &parser );
-		rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
-		while ( rss_it != rssList.end() )
-		{
-			TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
-			rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
-			while ( param_it != rss_it->end() )
-			{
-				TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
-				param_it++;
-			}
-			rss_it++;
-		}
 	}
 */
 		

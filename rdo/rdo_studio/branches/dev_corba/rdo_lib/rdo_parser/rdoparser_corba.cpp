@@ -12,7 +12,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-//#ifdef CORBA_ENABLE
+#ifdef CORBA_ENABLE
 
 #define file1 "C:\\RTP.txt"
 #define file2 "C:\\RSS.txt"
@@ -24,24 +24,24 @@ void print_RTP (rdoParse::RDOCorba::GetRTP_var &my_rtpList)
 		
 	FILE *f1;
 	f1=fopen(file1,"w");
-	for (CORBA::Long i = 0; i < my_rtpList->length(); i++)
+	for (unsigned int i = 0; i < my_rtpList->length(); i++)
 	{
 		fprintf(f1,"\nИнформация о типе ресурса №%d:\n", i+1);
 		fprintf(f1,"   Имя типа ресурса №%d: %s \n", i+1, my_rtpList[i].m_name);
 						
-		if (my_rtpList[i].m_type==rdoParse::RDOCorba::TypeRTP::rt_permanent)
+		if (my_rtpList[i].m_type==rdoParse::RDOCorba::rt_permanent)
 			fprintf(f1,"   Вид типа ресурса: tr_permanent\n");
 		else
 			fprintf(f1,"   Вид типа ресурса: tr_temporary\n");
 			
-		for (CORBA::Long j = 0; j < my_rtpList[i].m_param_count; j++)
+		for (unsigned int j = 0; j != my_rtpList[i].m_param_count; j++)
 		{
 			fprintf(f1,"\n   Информация о параметре №%d:\n", j+1);
 			fprintf(f1,"      Имя параметра:  %s \n", my_rtpList[i].m_param[j].m_name );
 				
 			switch (my_rtpList[i].m_param[j].m_type )
 			{
-			case rdoParse::RDOCorba::TypeParam::int_type:{
+			case rdoParse::RDOCorba::int_type:{
 					fprintf(f1,"      Тип параметра: integer\n");
 					if ( my_rtpList[i].m_param[j].m_diap_int == 1 )
 					{
@@ -54,7 +54,7 @@ void print_RTP (rdoParse::RDOCorba::GetRTP_var &my_rtpList)
 					}
 					break;
 			}
-			case rdoParse::RDOCorba::TypeParam::double_type:{
+			case rdoParse::RDOCorba::double_type:{
 					fprintf(f1,"      Тип параметра: real\n");
 
 					if ( my_rtpList[i].m_param[j].m_diap_double == 1 )
@@ -68,7 +68,7 @@ void print_RTP (rdoParse::RDOCorba::GetRTP_var &my_rtpList)
 					}
 					break;
 				}
-				case rdoParse::RDOCorba::TypeParam::enum_type:{
+				case rdoParse::RDOCorba::enum_type:{
 					fprintf(f1,"      Тип параметра: enum\n");
 					fprintf(f1,"      Значения параметра:");
 										
@@ -101,26 +101,26 @@ void print_RSS (rdoParse::RDOCorba::GetRSS_var &my_rssList)
 	FILE *f2;
 	f2=fopen(file2,"w");
 	
-	for (CORBA::Long i = 0; i < my_rssList->length(); i++)
+	for (unsigned int i = 0; i < my_rssList->length(); i++)
 	{
 		
 		fprintf(f2,"\nИнформация о ресурсе №%d:\n\n", i+1);
 		fprintf(f2,"Имя ресурса: %s/ Тип ресурса: %s\n", my_rssList[i].m_name, my_rssList[i].m_type);
 		
-		for (CORBA::Long j = 0; j < my_rssList[i].m_param_count; j++)
+		for (unsigned int j = 0; j != my_rssList[i].m_param_count; j++)
 		{
 			switch (my_rssList[i].m_param[j].m_type)
 			{
-			case rdoParse::RDOCorba::TypeParam::int_type:{
+			case rdoParse::RDOCorba::int_type:{
 			
 				fprintf(f2,"  Значение параметра: %s = %d\n", my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_int);
 				break;
 				}
-			case rdoParse::RDOCorba::TypeParam::double_type:{
+			case rdoParse::RDOCorba::double_type:{
 					fprintf(f2,"  Значение параметра: %s = %f\n", my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_double);
 					break;
 				}
-			case rdoParse::RDOCorba::TypeParam::enum_type:{
+			case rdoParse::RDOCorba::enum_type:{
 
 				fprintf(f2,"  Значение параметра: %s = %s\n", my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_enum);
 				break;
@@ -149,19 +149,17 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 
 
 		if( CORBA::is_nil(rootContext) ) {
-			cerr << "Failed to narrow the root naming context." << endl;
+			TRACE( "Failed to narrow the root naming context.\n" );
 			return CORBA::Object::_nil();
 		}
 	}
 	catch (CORBA::NO_RESOURCES&) {
-		cerr << "Caught NO_RESOURCES exception. You must configure omniORB "
-		<< "with the location" << endl
-		<< "of the naming service." << endl;
+		TRACE( "Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service.\n" );
 		return 0;
 	}
 	catch(CORBA::ORB::InvalidName& ex) {
 		// This should not happen!
-		cerr << "Service required is invalid [does not exist]." << endl;
+		TRACE( "Service required is invalid [does not exist].\n" );
 		return CORBA::Object::_nil();
 	}
 	
@@ -184,17 +182,13 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 	catch(CosNaming::NamingContext::NotFound& ex) {
 		// This exception is thrown if any of the components of the
 		// path [contexts or the object] aren’t found:
-		cerr << "Context not found." << endl;
+		TRACE( "Context not found." );
 	}
 	catch(CORBA::TRANSIENT& ex) {
-		cerr << "Caught system exception TRANSIENT -- unable to contact the "
-		<< "naming service." << endl
-		<< "Make sure the naming server is running and that omniORB is "
-		<< "configured correctly." << endl;
+		TRACE( "Caught system exception TRANSIENT -- unable to contact the naming service. Make sure the naming server is running and that omniORB is configured correctly. \n" );
 	}
 	catch(CORBA::SystemException& ex) {
-		cerr << "Caught a CORBA::" << ex._name()
-		<< " while using the naming service." << endl;
+		TRACE( "Caught a CORBA:: %s while using the naming service.\n" , ex._name() );
 		return 0;
 	}
 
@@ -239,7 +233,7 @@ void RDOParserCorbaRTP::parse()
 			rdoParse::RDOCorba::GetRTP_var tmp_rtp = rdocorbaref->getRDORTPlist( rtp_count );
 			rdoParse::RDOCorba::GetRTP_var my_rtpList ( tmp_rtp );
 
-			//Печатаем в файл на С
+			//Печатаем в файл на С для теста
 			print_RTP ( my_rtpList );
 			//*************************************************************
 			//Добавляем к существующим типам ресурсов и выводим в трассировке
@@ -247,17 +241,17 @@ void RDOParserCorbaRTP::parse()
 			// Получили список всех описанных типов ресурсов
 			rdoMBuilder::RDOResTypeList rtpList( m_parser );
 	
-			for (CORBA::Long i = 0; i < my_rtpList->length(); i++)
+			for (unsigned int i = 0; i < my_rtpList->length(); i++)
 			{
 				rdoMBuilder::RDOResType rtp( my_rtpList[i].m_name.in() );
 				// Наполняем его параметрами
 
-				for (CORBA::Long j = 0; j < my_rtpList[i].m_param_count; j++)
+				for (unsigned int j = 0; j != my_rtpList[i].m_param_count; j++)
 				{
 					switch ( my_rtpList[i].m_param[j].m_type ){
-						case rdoParse::RDOCorba::TypeParam::int_type:{
+						case rdoParse::RDOCorba::int_type:{
 			
-							rdoMBuilder::RDOResType::Param par_int( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::RDOType::t_int );
+							rdoMBuilder::RDOResType::Param par_int( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_int );
 								
 							if ( my_rtpList[i].m_param[j].m_diap_int == 1 )
 								par_int.setDiap (my_rtpList[i].m_param[j].m_min_int , my_rtpList[i].m_param[j].m_max_int);
@@ -268,9 +262,9 @@ void RDOParserCorbaRTP::parse()
 							rtp.m_params.append( par_int );
 							break;
 						}
-						case rdoParse::RDOCorba::TypeParam::double_type:{
+						case rdoParse::RDOCorba::double_type:{
 			
-							rdoMBuilder::RDOResType::Param par_double( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::RDOType::t_real );
+							rdoMBuilder::RDOResType::Param par_double( my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_real );
 								
 							if ( my_rtpList[i].m_param[j].m_diap_double == 1 )
 								par_double.setDiap (my_rtpList[i].m_param[j].m_min_double , my_rtpList[i].m_param[j].m_max_double);
@@ -281,7 +275,7 @@ void RDOParserCorbaRTP::parse()
 							rtp.m_params.append( par_double );
 							break;
 						}
-						case rdoParse::RDOCorba::TypeParam::enum_type:{
+						case rdoParse::RDOCorba::enum_type:{
 								
 							//Создадим список значений параметра перечислимого типа
 							rdoRuntime::RDOEnumType::Enums enumList;
@@ -295,10 +289,13 @@ void RDOParserCorbaRTP::parse()
 							rdoMBuilder::RDOResType::Param par_enum( my_rtpList[i].m_param[j].m_name.in() , new rdoRuntime::RDOEnumType( m_parser->runtime() , enumList) );
 
 							//Добавляем, если есть значение по умолчанию
-							if ( my_rtpList[i].m_param[j].m_var_enum_ch == 1)
-								par_enum.setDefault( my_rtpList[i].m_param[j].m_default_enum.in() );
-								
-							rtp.m_params.append( par_enum );
+							if ( my_rtpList[i].m_param[j].m_default_enum_ch == 1)
+							{
+								std::string temp_string;
+								temp_string = my_rtpList[i].m_param[j].m_default_enum.in();
+								par_enum.setDefault( temp_string );
+							}
+								rtp.m_params.append( par_enum );
 							break;
 						}
 						default: break;
@@ -314,7 +311,7 @@ void RDOParserCorbaRTP::parse()
 				else
 				{
 					// Неудача, возможно, тип с таким именем уже есть
-					TRACE( "Где-то есть ошибка!!!\n" );
+					TRACE( "Где-то есть ошибка или тип ресурса уже существует!!!\n" );
 				}
 			}
 
@@ -358,7 +355,7 @@ void RDOParserCorbaRTP::parse()
 			rdoParse::RDOCorba::GetRSS_var tmp_rss = rdocorbaref->getRDORSSPlist( rss_count );
 			rdoParse::RDOCorba::GetRSS_var my_rssList ( tmp_rss );
 		
-			//Печатаем в файл на С:
+			//Печатаем в файл на С для теста:
 			print_RSS ( my_rssList );
 				
 			//*************************************************************
@@ -367,24 +364,38 @@ void RDOParserCorbaRTP::parse()
 			// Переписали имеющиеся ресурсы в rssList
 			rdoMBuilder::RDOResourceList rssList( m_parser );
 			
-			for (CORBA::Long i = 0; i < my_rssList->length(); i++)
+			for (unsigned int i = 0; i < my_rssList->length(); i++)
 			{
-				// Нашли тип ресурса по известному имени
-				rdoMBuilder::RDOResType rtp_ = rtpList[my_rssList[i].m_type.in()];
-				
-				//Создали ресурс указанного типа
-				rdoMBuilder::RDOResource rss( rtp_ , my_rssList[i].m_name.in() );
+				// Нашли тип ресурса по известному имени и создали ресурс указанного типа
+				rdoMBuilder::RDOResType _rtp = rtpList[my_rssList[i].m_type.in()];
+				rdoMBuilder::RDOResource rss( _rtp , my_rssList[i].m_name.in() );
 				
 				//rdoMBuilder::RDOResource::Params::const_iterator it_param = rss.begin();
 	
-				for (CORBA::Long j = 0; j < my_rssList[i].m_param_count; j++)
+				for (unsigned int j = 0; j != my_rssList[i].m_param_count; j++)
 				{
-					//Тут надо записать начальные значения параметров ресурса как-то
-					//rss.begin().
-				}
-		
-		
-				//Добавляем к существующим типам ресурсов
+					//Записываем начальные значения параметров ресурса
+					switch ( my_rssList[i].m_param[j].m_type ){
+						case rdoParse::RDOCorba::int_type:{
+							rss[ my_rssList[i].m_param[j].m_name.in() ] = my_rssList[i].m_param[j].m_int;
+							break;
+						}
+						case rdoParse::RDOCorba::double_type:{
+							rss[ my_rssList[i].m_param[j].m_name.in() ] = my_rssList[i].m_param[j].m_double;
+							break;
+						}
+						case rdoParse::RDOCorba::enum_type:{
+							std::string temp_string;
+							temp_string = my_rssList[i].m_param[j].m_enum.in();
+							rss[ my_rssList[i].m_param[j].m_name.in() ] = temp_string;
+							break;
+						}
+						default: break;
+					}												 
+
+				 }
+			
+				//Добавляем к существующим ресурсам
 				if ( rssList.append<rdoParse::RDORSSResource>( rss ) )
 				{
 					// Добавили успешно
@@ -393,7 +404,7 @@ void RDOParserCorbaRTP::parse()
 				else
 				{
 					// Неудача
-					TRACE( "Где-то есть ошибка!!!\n" );
+					TRACE( "Где-то есть ошибка или ресурс уже существует!!!\n" );
 				} 
 		
 			}
@@ -418,62 +429,20 @@ void RDOParserCorbaRTP::parse()
 	
 		}	
 		catch(CORBA::TRANSIENT&) {
-			cerr << "Caught system exception TRANSIENT -- unable to contact the "
-			<< "server." << endl;
+			TRACE( "Caught system exception TRANSIENT -- unable to contact the server.\n" );
 		}
 		catch(CORBA::SystemException& ex) {
-			cerr << "Caught a CORBA::" << ex._name() << endl;
+			TRACE( "Caught a CORBA:: %s\n" , ex._name() );
 		}
 		catch(CORBA::Exception& ex) {
-			cerr << "Caught CORBA::Exception: " << ex._name() << endl;
+			TRACE( "Caught CORBA::Exception: %s\n" , ex._name() );
 		}
 		catch(omniORB::fatalException& fe) {
-			cerr << "Caught omniORB::fatalException:" << endl;
-			cerr << " file: " << fe.file() << endl;
-			cerr << " line: " << fe.line() << endl;
-			cerr << " mesg: " << fe.errmsg() << endl;
+			TRACE( "Caught omniORB::fatalException: file: %s line: %d mesg: %s\n" , fe.file() , fe.line() , fe.errmsg() ); 
 		}
 	
-		//Здесь будем добавлять к себе
-			
-			
-			
-			
-			
 		it++;
 	}
-			
-
-
-/*
-	// Количество полученных типов ресурсов
-	unsigned int rtp_count = 1;
-
-	// Получили список всех типов ресурсов
-	rdoMBuilder::RDOResTypeList rtpList( m_parser );
-
-	for ( unsigned int i = 0; i < rtp_count; i++ )
-	{
-		// Создали новый тип ресурса
-		rdoMBuilder::RDOResType rtp( "MyRTP" );
-		// Наполнили его параметрами
-		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::g_int) );
-		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::g_int) );
-		// Добавили его к списку существующих
-		if ( rtpList.append( rtp ) )
-		{
-			// Добавили успешно
-			unsigned int fl = 0;
-
-		}
-		else
-		{
-			// Неудача, возможно, тип с таким именем уже есть
-		}
-	}
-
-*/
-
 }
 
 // ----------------------------------------------------------------------------
@@ -517,4 +486,4 @@ void RDOParserCorbaRSS::parse()
 
 } // namespace rdoParse
 
-//#endif // CORBA_ENABLE
+#endif // CORBA_ENABLE
