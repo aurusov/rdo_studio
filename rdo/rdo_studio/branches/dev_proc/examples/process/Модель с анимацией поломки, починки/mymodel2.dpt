@@ -4,10 +4,10 @@ $Process
 	GENERATE 21 + 1//Интервал_прихода_заготовок(200) 
 
 //Перемещение заготовки из зоны приемки заготовок к первому станку
-	QUEUE	 QROBOT1
+	QUEUE	 QIN
 	SEIZES	 ROBOT
 //	ASSIGNE  ROBOT.Состояние_для_анимации = несет_к_станку_1
-	DEPART	 QROBOT1
+	DEPART	 QIN
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  10
 	ADVANCE  Время_отпуска(8,1)
@@ -19,14 +19,14 @@ $Process
 	QUEUE	 QSTANOK1
 	SEIZES	 ST11, ST12, ST13 
 	DEPART	 QSTANOK1
-	ADVANCE  Обработка_на_станке_1(80,10)
+	ADVANCE  Обработка_на_станке_1(180,10)
 	RELEASES ST11, ST12, ST13 
 	
 //Перемещение заготовки от перового станка ко второму
 
-	QUEUE	 QROBOT2
+	QUEUE	 QEXITST1
 	SEIZE	 ROBOT
-	DEPART	 QROBOT2
+	DEPART	 QEXITST1
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  7
 	ADVANCE  Время_отпуска(8,1)
@@ -40,15 +40,15 @@ $Process
 	RELEASE  STANOK2 
 
 //Перемещение заготовки от второго станка в зону готовых деталей
-	QUEUE	 QROBOT3
+	QUEUE	 QEXITST2
 	SEIZE	 ROBOT
-	DEPART	 QROBOT3
+	DEPART	 QEXITST2
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  15
 	ADVANCE  Время_отпуска(8,1)
 	RELEASE  ROBOT 
 	
-	QUEUE	 QEXIT
+	QUEUE	 QOUT
 	
 	TERMINATE 1 
 $End
