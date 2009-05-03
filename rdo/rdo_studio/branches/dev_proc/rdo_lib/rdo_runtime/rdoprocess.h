@@ -84,6 +84,7 @@ class RDOPROCResource: public RDOResource
 {
 friend class RDOPROCSeize;
 friend class RDOPROCSeizes;
+friend class RDOPROCReleases;
 protected: 
 	std::list<RDOPROCTransact*> transacts;
 public:

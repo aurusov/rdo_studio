@@ -446,7 +446,18 @@ bool RDOPROCReleases::onCheckCondition( RDOSimulator* sim )
 				if ( forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_break )
 				{
 					//Удаляем транзакт
-					int i=0;
+					TRACE( "%7.1f RELEASES_Bad-%d, resId = %d\n", sim->getCurrentTime() ,index, forRes[i].rss->getTraceID() );
+					RDOPROCTransact* transact = transacts.front();
+					transact->setState( RDOResource::CS_Erase );
+					RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+					if ( !tracer->isNull() )
+					{
+						tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+					}
+					transacts.remove( transact );
+					forRes[i].rss->transacts.remove( transact );
+					static_cast<RDORuntime*>(sim)->onEraseRes( transact->getTraceID(), NULL );
+					return false;
 				}
 			}
 		}
