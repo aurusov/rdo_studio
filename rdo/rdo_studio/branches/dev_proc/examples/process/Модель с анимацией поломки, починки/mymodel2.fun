@@ -29,15 +29,11 @@ $Constant
 	y_qo	: integer = 393
 	ao		: real	  = 0
 	
-	
-	
-	
-	
-	
-	x_st11 	: integer = 150
-	y_st11 	: integer = 100
-	gx_st11	: integer = 100
- 	gy_st11	: integer = 50
+	x_st11 	: integer = 350
+	y_st11 	: integer = 210
+	l_st11	: integer = 100
+ 	h_st11	: integer = 50
+	a_st11	: real	  = 0.785
 	
 	x_st12 	: integer = 150
 	y_st12 	: integer = 160
@@ -49,10 +45,11 @@ $Constant
 	gx_st13	: integer = 100
  	gy_st13	: integer = 50
 	
-	x_st2 	: integer = 400
-	y_st2 	: integer = 100
-	gx_st2	: integer = 80
- 	gy_st2	: integer = 30
+	x_st2 	: integer = 730
+	y_st2 	: integer = 210
+	l_st2	: integer = 200
+ 	h_st2	: integer = 30
+	a_st2	: real = 5.495
 	
 	x1		: integer = 50 
 	y1 		: integer = 160

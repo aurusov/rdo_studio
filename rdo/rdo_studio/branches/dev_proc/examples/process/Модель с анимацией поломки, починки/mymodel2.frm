@@ -4,12 +4,13 @@ Show
 
 text    [10, 5,  50, 25, <127 127 127>, <100 255 0>, 'Время:' ]
 text    [60, 5, 150, 25, <127 127 127>, <100 255 0>, Time_now ]
-rect	[x_st11, y_st11, gx_st11, gy_st11, <255 255 127>, <200 255 100> ]
+//rect	[x_st11, y_st11, gx_st11, gy_st11, <255 255 127>, <200 255 100> ]
 
-line	[0, y_mid, 1080, 400, <0  0 0>]
+//rect	[150,70,730,450, <255 255 255>]
+
+//line	[0, y_mid, 1080, 400, <0  0 0>]
 ellipse [x_mid - l_rob/2, y_mid - l_rob/2, l_rob, l_rob, <255 255 255>, <0 0 0>]
 ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <255 255 255>, <0 0 0>] 
-
 /*
 //----------------------повернутый прямоугольник------------------------------------
 triang	[x_st11, y_st11, x_st11 + l1*cos(a1), 
@@ -188,7 +189,7 @@ line	[x_qo + 4*h1*cos(ao), y_qo - 4*h1*sin(ao), x_qo + h1*sin(ao) + 4*h1*cos(ao)
 line	[x_qo + 5*h1*cos(ao), y_qo - 5*h1*sin(ao), x_qo + h1*sin(ao) + 5*h1*cos(ao), y_qo + h1*cos(ao) - 5*h1*sin(ao), <0 0 0>]
 line	[x_qo + 6*h1*cos(ao), y_qo - 6*h1*sin(ao), x_qo + h1*sin(ao) + 6*h1*cos(ao), y_qo + h1*cos(ao) - 6*h1*sin(ao), <0 0 0>]
 line	[x_qo + 7*h1*cos(ao), y_qo - 7*h1*sin(ao), x_qo + h1*sin(ao) + 7*h1*cos(ao), y_qo + h1*cos(ao) - 7*h1*sin(ao), <0 0 0>]
-//----------------------число в очереди накопитель - вход------------------------------------------------		 
+//----------------------число в очереди накопитель - выход------------------------------------------------		 
 text    [ x_qo , y_qi, 90, 25, <127 127 127>, <100 255 0>, QOUT.длина_очереди ]
 
 
@@ -328,7 +329,8 @@ line	[x_qi1 + 4*h1*cos(a1), y_qi1 - 4*h1*sin(a1), x_qi1 + h1*sin(a1) + 4*h1*cos(
 line	[x_qi1 + 5*h1*cos(a1), y_qi1 - 5*h1*sin(a1), x_qi1 + h1*sin(a1) + 5*h1*cos(a1), y_qi1 + h1*cos(a1) - 5*h1*sin(a1), <0 0 0>]
 line	[x_qi1 + 6*h1*cos(a1), y_qi1 - 6*h1*sin(a1), x_qi1 + h1*sin(a1) + 6*h1*cos(a1), y_qi1 + h1*cos(a1) - 6*h1*sin(a1), <0 0 0>]
 line	[x_qi1 + 7*h1*cos(a1), y_qi1 - 7*h1*sin(a1), x_qi1 + h1*sin(a1) + 7*h1*cos(a1), y_qi1 + h1*cos(a1) - 7*h1*sin(a1), <0 0 0>]
-
+//----------------------число в очереди - вход станок 1------------------------------------------------		 
+text    [ x_qi1 - 19, y_qi1 - 5, 90, 25, <127 127 127>, <100 255 0>, QSTANOK1.длина_очереди ]
 
 //----------------------очередь станка 2 - выход ------------------------------------
 triang	[x_qo2, 						 y_qo2, 
@@ -394,6 +396,8 @@ line	[x_qo2 + 4*h1*cos(a2), y_qo2 - 4*h1*sin(a2), x_qo2 + h1*sin(a2) + 4*h1*cos(
 line	[x_qo2 + 5*h1*cos(a2), y_qo2 - 5*h1*sin(a2), x_qo2 + h1*sin(a2) + 5*h1*cos(a2), y_qo2 + h1*cos(a2) - 5*h1*sin(a2), <0 0 0>]
 line	[x_qo2 + 6*h1*cos(a2), y_qo2 - 6*h1*sin(a2), x_qo2 + h1*sin(a2) + 6*h1*cos(a2), y_qo2 + h1*cos(a2) - 6*h1*sin(a2), <0 0 0>]
 line	[x_qo2 + 7*h1*cos(a2), y_qo2 - 7*h1*sin(a2), x_qo2 + h1*sin(a2) + 7*h1*cos(a2), y_qo2 + h1*cos(a2) - 7*h1*sin(a2), <0 0 0>]
+//----------------------число в очереди - вход станок 1------------------------------------------------		 
+text    [ x_qo2 + 20, y_qo2, 90, 25, <127 127 127>, <100 255 0>, QEXITST2.длина_очереди ]
 
 //----------------------очередь станка 2 - вход------------------------------------
 triang	[x_qi2, 						y_qi2, 
@@ -460,12 +464,184 @@ line	[x_qi2 + 4*h1*cos(a2), y_qi2 - 4*h1*sin(a2), x_qi2 + h1*sin(a2) + 4*h1*cos(
 line	[x_qi2 + 5*h1*cos(a2), y_qi2 - 5*h1*sin(a2), x_qi2 + h1*sin(a2) + 5*h1*cos(a2), y_qi2 + h1*cos(a2) - 5*h1*sin(a2), <0 0 0>]
 line	[x_qi2 + 6*h1*cos(a2), y_qi2 - 6*h1*sin(a2), x_qi2 + h1*sin(a2) + 6*h1*cos(a2), y_qi2 + h1*cos(a2) - 6*h1*sin(a2), <0 0 0>]
 line	[x_qi2 + 7*h1*cos(a2), y_qi2 - 7*h1*sin(a2), x_qi2 + h1*sin(a2) + 7*h1*cos(a2), y_qi2 + h1*cos(a2) - 7*h1*sin(a2), <0 0 0>]
+//----------------------число в очереди - вход станок 2------------------------------------------------		 
+text    [ x_qi2 - 10, y_qi2 - 25, 90, 25, <127 127 127>, <100 255 0>, QSTANOK2.длина_очереди ]
 
 
 
 
+//----------------------Станок 11------------------------------------
+triang	[x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 			  		
+		 y_st11 + 1.5*l_st11*sin(a_st11)- h_st11*cos(a_st11), 
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11), 
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11),
+		 <210 210 210>, <127 127 127>]
+triang	[x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11), 				
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11),
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 							
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11),
+		 <210 210 210>, <127 127 127>]
+line	[x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 			  		
+		 y_st11 + 1.5*l_st11*sin(a_st11)- h_st11*cos(a_st11), 
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11),
+		 <210 210 210>]
 
+line	[x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11),
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11), 
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11),
+		 <0  0 0>]
+line	[x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11), 
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11), 
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 <0  0 0>]
+		 
+line	[x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11), 
+		 <0  0 0>]
+line	[x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11), 
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 - 1.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 	
+		 y_st11 + 1.5*l_st11*sin(a_st11) - h_st11*cos(a_st11), 
+		 <0  0 0>]
 
+//----------------------Станок 12------------------------------------
+triang	[x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 			  		
+		 y_st11 + 0.5*l_st11*sin(a_st11)- h_st11*cos(a_st11), 
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11), 
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11),
+		 <210 210 210>, <127 127 127>]
+triang	[x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11), 				
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11),
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 							
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11),
+		 <210 210 210>, <127 127 127>]
+line	[x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 			  		
+		 y_st11 + 0.5*l_st11*sin(a_st11)- h_st11*cos(a_st11),  
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11),
+		 <210 210 210>]
+
+line	[x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11),
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11), 
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11),
+		 <0  0 0>]
+line	[x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11), 
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11), 
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 <0  0 0>]
+		 
+line	[x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11),
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11), 
+		 <0  0 0>]
+line	[x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11), 
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 - 0.5*l_st11*cos(a_st11) - h_st11*sin(a_st11), 	
+		 y_st11 + 0.5*l_st11*sin(a_st11) - h_st11*cos(a_st11), 
+		 <0  0 0>]
+//----------------------Станок 13------------------------------------
+triang	[x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11), 			  		
+		 y_st11 - 0.51*l_st11*sin(a_st11)- h_st11*cos(a_st11), 
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11), 
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11),
+		 <210 210 210>, <127 127 127>]
+triang	[x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11), 				
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11),
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11), 							
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11),
+		 <210 210 210>, <127 127 127>]
+line	[x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11), 			  		
+		 y_st11 - 0.51*l_st11*sin(a_st11)- h_st11*cos(a_st11), 
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11),
+		 <210 210 210>]
+
+line	[x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11),
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11), 
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11),
+		 <0  0 0>]
+line	[x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11), 
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11), 
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 <0  0 0>]
+		 
+line	[x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + l_st11*cos(a_st11) + h_st11*sin(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) - l_st11*sin(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11),
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11), 
+		 <0  0 0>]
+line	[x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11) + h_st11*sin(a_st11), 
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11) + h_st11*cos(a_st11), 
+		 x_st11 + 0.51*l_st11*cos(a_st11) - h_st11*sin(a_st11), 	
+		 y_st11 - 0.51*l_st11*sin(a_st11) - h_st11*cos(a_st11), 
+		 <0  0 0>]
+
+//----------------------Станок 2------------------------------------
+triang	[x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2), 			  		
+		 y_st2 + 0.51*l_st2*sin(a_st2)- h_st2*cos(a_st2), 
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2), 
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2) + h_st2*sin(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2) + h_st2*cos(a_st2),
+		 <210 210 210>, <127 127 127>]
+triang	[x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2) + h_st2*sin(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2) + h_st2*cos(a_st2), 
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + h_st2*sin(a_st2), 				
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) + h_st2*cos(a_st2),
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2), 							
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2),
+		 <210 210 210>, <127 127 127>]
+line	[x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2), 			  		
+		 y_st2 + 0.51*l_st2*sin(a_st2)- h_st2*cos(a_st2), 
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2) + h_st2*sin(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2) + h_st2*cos(a_st2),
+		 <210 210 210>]
+		 
+line	[x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2),
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2), 
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2),
+		 <0  0 0>]
+line	[x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2), 
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2), 
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2) + h_st2*sin(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2) + h_st2*cos(a_st2), 
+		 <0  0 0>]
+		 
+line	[x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + l_st2*cos(a_st2) + h_st2*sin(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) - l_st2*sin(a_st2) + h_st2*cos(a_st2), 
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + h_st2*sin(a_st2),
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) + h_st2*cos(a_st2), 
+		 <0  0 0>]
+line	[x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2) + h_st2*sin(a_st2), 
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2) + h_st2*cos(a_st2), 
+		 x_st2 - 0.51*l_st2*cos(a_st2) - h_st2*sin(a_st2), 	
+		 y_st2 + 0.51*l_st2*sin(a_st2) - h_st2*cos(a_st2), 
+		 <0  0 0>]
+
+/*
 //-------------------Очередь к первому станку---------------------------------------
 
 rect	[x1, y1, hag*10, h, <127 127 127>, <100 255 0> ]
@@ -486,6 +662,15 @@ line	[x1 + hag*10 - 8*hag, y1 + 1, x1 + hag*10 - 8*hag, y1 + h - 1, <0  0 127>]
 line	[x1 + hag*10 - 9*hag, y1 + 1, x1 + hag*10 - 9*hag, y1 + h - 1, <0  0 127>]
 
 text    [ x1 - 20, y1 - 5, 90, 25, <127 127 127>, <100 255 0>, QSTANOK1.длина_очереди ]
+
+*/
+
+
+
+
+
+
+
 
 /*
 //-------------------Очередь ко второму станку---------------------------------------
