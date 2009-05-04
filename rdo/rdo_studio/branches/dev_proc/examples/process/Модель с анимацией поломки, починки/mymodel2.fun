@@ -3,7 +3,7 @@ $Constant
 	y_mid	: integer = 400
 	r_rob	: integer = 18
 	l_rob	: integer = 240
-	
+	h_rob	: integer = 60
 	
 	l1		: integer = 120
 	h1		: integer = 15
@@ -40,54 +40,70 @@ $Constant
 	cosao	: real	  = 1
 	
 	
-	x_st11 	: integer = 350
-	y_st11 	: integer = 210
+	x_st11 	: integer = 335
+	y_st11 	: integer = 195
 	l_st11	: integer = 100
  	h_st11	: integer = 50
 	a_st11	: real	  = 0.785
 	sinast1 : real	  = 0.71
 	cosast1 : real	  = 0.71
-	
-	x_st12 	: integer = 150
-	y_st12 	: integer = 160
-	gx_st12	: integer = 100
- 	gy_st12	: integer = 50
-	
-	x_st13 	: integer = 150
-	y_st13 	: integer = 220
-	gx_st13	: integer = 100
- 	gy_st13	: integer = 50
-	
-	x_st2 	: integer = 730
-	y_st2 	: integer = 210
+
+	x_st2 	: integer = 745
+	y_st2 	: integer = 195
 	l_st2	: integer = 200
  	h_st2	: integer = 30
 	a_st2	: real = 5.495
 	sinast2	: real = -0.71
 	cosast2	: real = 0.71
 	
-	x1		: integer = 50 
-	y1 		: integer = 160
-	//l  : integer = 100
-	h  		: integer = 10
-	hag		: integer = 7
+	xs1		: integer = 250
+	ys1		: integer = 400
+	ls1		: integer = 20
+	bs1		: integer = 15
+	cs1		: integer = 8
+	sas1	: real = 0
+	cas1	: real = 1
 	
-	h2		: integer = 15
+
+	xs2		: integer = 357
+	ys2		: integer = 227
+	sas2	: real = 0.71
+	cas2	: real = -0.71
 	
-	x2		: integer = 400 
-	y2 		: integer = 160
 	
-	x3		: integer = 20 
-	y3 		: integer = 450
+	xs3		: integer = 342
+	ys3		: integer = 192
+	sas3	: real = -0.71
+	cas3	: real = 0.71
 	
-	x4		: integer = 300 
-	y4 		: integer = 450
+	xs4		: integer = 710
+	ys4		: integer = 215
+	sas4	: real = 0.71
+	cas4	: real = 0.71
 	
-	x5		: integer = 500 
-	y5 		: integer = 450
+	xs5		: integer = 745
+	ys5		: integer = 203
+	sas5	: real = -0.71
+	cas5	: real = -0.71
 	
-	//l  : integer = 100
+	xs6		: integer = 430
+	ys6		: integer = 400
+	ls6		: integer = 60
+	sas6	: real = 0.97
+	cas6	: real = 0.26
 	
+	xs7		: integer = 475
+	ys7		: integer = 305
+	ls7		: integer = 115
+	sas7	: real = 0
+	cas7	: real = 1
+	
+	xs8		: integer = 627
+	ys8		: integer = 325
+	ls8		: integer = 60
+	sas8	: real = -0.97
+	cas8	: real = 0.26
+
 $End
 
 
@@ -135,6 +151,16 @@ $Body
 		новое_состояние2 = Свободен
 $End
 
+$Function новое_состояние_робота : such_as ROBOTs.Состояние
+$Type = algorithmic
+$Parameters
+	текущее_состояние : such_as ROBOTs.Состояние
+$Body
+	Calculate_if текущее_состояние = Свободен or текущее_состояние = Занят
+		новое_состояние_робота = Сломан
+	Calculate_if текущее_состояние = Сломан 		
+		новое_состояние_робота = Свободен
+$End
 
 $Sequence Интервал_прихода_заготовок : real
 $Type = exponential 12347

@@ -45,6 +45,18 @@ $Body
 	Convert_begin
 		Состояние set новое_состояние2(STANOK2.Состояние)
 $End
+
+$Pattern  Образец_Поломка_Робота : keyboard
+$Relevant_resources
+	rel_ST11 : ROBOT	Keep NoChange
+$Time = 0.0
+$Body
+	rel_ST11
+	Choice from 0 = 0
+	first
+	Convert_begin
+		Состояние set новое_состояние_робота(ROBOT.Состояние)
+$End
 /*
 $Pattern  Образец_Починка : keyboard
 $Relevant_resources
