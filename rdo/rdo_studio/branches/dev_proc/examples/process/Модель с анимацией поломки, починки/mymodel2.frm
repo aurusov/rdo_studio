@@ -5,13 +5,17 @@ Show
 text    [10, 5,  50, 25, <127 127 127>, <100 255 0>, 'Время:' ]
 text    [60, 5, 150, 25, <127 127 127>, <100 255 0>, Time_now ]
 
+rect [100, 430, 40, 20, <255 255 0>, <0 0 0>]
+text [150, 430, 150, 20, <255 255 255>, <0 0 0>, 'Движение заготовки' ]		 
 
-		 
+rect [100, 460, 40, 20, <210 210 210>, <0 0 0>]
+text [150, 460, 150, 20, <255 255 255>, <0 0 0>, 'Ресурс свободен' ]		
 
+rect [100, 490, 40, 20, <0 255 0>, <0 0 0>]
+text [150, 490, 150, 20, <255 255 255>, <0 0 0>, 'Ресурс занят' ]	
 
-
-
-
+rect [100, 520, 40, 20, <255 0 0>, <0 0 0>]
+text [150, 520, 150, 20, <255 255 255>, <0 0 0>, 'Ресурс сломан' ]
 
 
 ellipse [x_mid - l_rob/2, y_mid - l_rob/2, l_rob, l_rob, <255 255 255>, <0 0 0>]
@@ -580,6 +584,9 @@ line	[x_st11 - 1.5*l_st11*cosast1 - h_st11*sinast1,
 		 x_st11 - 1.5*l_st11*cosast1 - h_st11*sinast1 + l_st11*cosast1 + h_st11*sinast1,
 		 y_st11 + 1.5*l_st11*sinast1 - h_st11*cosast1 - l_st11*sinast1 + h_st11*cosast1,
 		 <0 255 0>]
+		 
+ellipse [x_st11 - 0.5*h_st11*sinast1 - l_st11*cosast1, y_st11 - 0.5*h_st11*cosast1 + l_st11*sinast1, 18, 18, 
+		 <255 255 0>, <0 0 0>]
 
 line	[x_st11 - 1.5*l_st11*cosast1 - h_st11*sinast1,
 		 y_st11 + 1.5*l_st11*sinast1 - h_st11*cosast1,
@@ -720,6 +727,8 @@ line	[x_st11 - 0.5*l_st11*cosast1 - h_st11*sinast1,
 		 x_st11 - 0.5*l_st11*cosast1 - h_st11*sinast1 + l_st11*cosast1 + h_st11*sinast1,
 		 y_st11 + 0.5*l_st11*sinast1 - h_st11*cosast1 - l_st11*sinast1 + h_st11*cosast1,
 		 <0 255 0>]
+		 
+ellipse [x_st11 - 0.5*h_st11*sinast1, y_st11 - 0.5*h_st11*cosast1, 18, 18, <255 255 0>, <0 0 0>]
 
 line	[x_st11 - 0.5*l_st11*cosast1 - h_st11*sinast1,
 		 y_st11 + 0.5*l_st11*sinast1 - h_st11*cosast1,
@@ -859,6 +868,10 @@ line	[x_st11 + 0.51*l_st11*cosast1 - h_st11*sinast1,
 		 x_st11 + 0.51*l_st11*cosast1 - h_st11*sinast1 + l_st11*cosast1 + h_st11*sinast1,
 		 y_st11 - 0.51*l_st11*sinast1 - h_st11*cosast1 - l_st11*sinast1 + h_st11*cosast1,
 		 <0 255 0>]
+
+ellipse [x_st11 - 0.5*h_st11*sinast1 + l_st11*cosast1, y_st11 - 0.5*h_st11*cosast1 - l_st11*sinast1, 18, 18, 
+		 <255 255 0>, <0 0 0>]
+
 
 line	[x_st11 + 0.51*l_st11*cosast1 - h_st11*sinast1,
 		 y_st11 - 0.51*l_st11*sinast1 - h_st11*cosast1,
@@ -1020,6 +1033,10 @@ line	[x_st2 - 0.51*l_st2*cosast2 - h_st2*sinast2 + h_st2*sinast2,
 		 y_st2 + 0.51*l_st2*sinast2 - h_st2*cosast2, 
 		 <0  0 0>]
 
+ellipse [x_st2 - 0.5*h_st11*sinast1 + 18, y_st11 - 0.5*h_st11*cosast1 - 2, 18, 18, 
+		 <255 255 0>, <0 0 0>]
+
+
 //----------------------Станок 2 - сломан------------------------------------
 Show_if STANOK2.Состояние = Сломан
 triang	[x_st2 - 0.51*l_st2*cosast2 - h_st2*sinast2, 			  		
@@ -1063,6 +1080,6 @@ line	[x_st2 - 0.51*l_st2*cosast2 - h_st2*sinast2 + h_st2*sinast2,
 		 x_st2 - 0.51*l_st2*cosast2 - h_st2*sinast2, 	
 		 y_st2 + 0.51*l_st2*sinast2 - h_st2*cosast2, 
 		 <0  0 0>]
-		 
+	 
 
 $End
