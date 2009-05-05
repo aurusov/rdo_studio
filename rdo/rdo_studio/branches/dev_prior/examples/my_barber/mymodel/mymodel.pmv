@@ -1,0 +1,21 @@
+Results_file   = mymodel.pmv    Mon May 04 17:30:23 2009
+Run_file       = mymodel.smr
+Model_name     = mymodel
+Resource_file  = mymodel.rss
+OprIev_file    = mymodel.opr
+
+$Changes
+
+
+$Status = NORMAL_TERMINATION
+$Result_values  0  5055.59  0.062
+  EventCount           307  0.0607248  4951
+  OperRuleCheckCounter 1077  0.213031  17370
+  AExpCalcCounter      463  0.0915818  7467
+  BExpCalcCounter      2044  0.404305  32967
+
+Длина_очереди                 	1	307	0	0	0	1
+Всего_обслужено               	153
+Пропускная_способность        	1.81581
+Длительность_работы           	84.2599
+

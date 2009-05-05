@@ -1,0 +1,12 @@
+$Resource_type Парикмахерские: permanent
+$Parameters
+	количество_в_очереди  : integer
+	количество_обслуженных: integer
+$End
+
+$Resource_type Парикмахеры: permanent
+$Parameters
+	состояние_парикмахера : ( Свободен, Занят )
+	время_стрижки         : real
+	номер_парикмахера     : integer
+$End
