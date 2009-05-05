@@ -170,6 +170,7 @@
 %token RDO_DEPART						446
 %token RDO_SEIZES						447
 %token RDO_RELEASES						448
+%token RDO_ASSIGNE						449
 
 %{
 #include "pch.h"
@@ -348,8 +349,12 @@ dpt_process_line:	RDO_IDENTIF
 					| RDO_RELEASES error				
 					{
 						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
-					};
-								
+					}
+					| RDO_ASSIGNE dpt_assigne_param	  { 	}
+					| RDO_ASSIGNE error				  { PARSER->error(@1, rdo::format("Ожидается строка изменения параметра"));								};
+
+
+
 dpt_queue_param:	RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
@@ -456,6 +461,42 @@ dpt_releases_param:	RDO_IDENTIF
 					{
 						PARSER->error( @1, "Ошибка в имени ресурса" );
 					};		
+					
+dpt_assigne_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
+					{
+						std::string res = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
+						std::string param = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
+						const RDOParserSrcInfo& info = @1;
+						rdoMBuilder::RDOResType rtp;
+						// Получили список всех ресурсов
+						rdoMBuilder::RDOResourceList rssList( PARSER );
+						// Если ресурс существует, берем его тип и проверяем наличие параметра
+						if (rssList[res].exist())
+						{
+							rtp = rssList[res].getType();
+							if( !rtp.m_params[param].exist() )
+							{
+								PARSER->error( @1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()) );
+							}
+						
+							RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($5);
+							if ( arithm ) 
+							{
+								const RDORSSResource* rs = PARSER->findRSSResource( res );
+								const RDORTPResType* rt = rs->getType();
+								const RDORTPParam* pr = rt->findRTPParam( param );
+								pr->getType()->checkParamType( arithm );
+								RDOPROCAssigne* assigne = new RDOPROCAssigne( PARSER->getLastPROCProcess(), "ASSIGNE", arithm->createCalc( pr->getType() ), rs->getID(), rtp.m_params[param].id() );
+								$$ = int(assigne);
+							}
+
+						}
+						else
+						{
+							PARSER->error( @1, rdo::format("Ссылка на неизвестный ресурс: %s", res.c_str()) );
+						}
+					};
+
 dpt_process_end:	dpt_process RDO_End	
 					{
 						PARSER->getLastPROCProcess()->end();

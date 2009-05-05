@@ -545,4 +545,25 @@ RDOBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 	return RDOBaseOperation::BOR_done;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCAssigne
+// ----------------------------------------------------------------------------
+bool RDOPROCAssigne::onCheckCondition( RDOSimulator* sim )
+{
+	if ( !transacts.empty() ) 
+	{
+		return true;
+	} 
+return false;
+}
+
+RDOBaseOperation::BOResult RDOPROCAssigne::onDoOperation( RDOSimulator* sim )
+{
+	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( t_resId );
+	res->setParam( t_parId, paramValue->calcValue( static_cast<RDORuntime*>(sim) ) );	
+	TRACE( "%7.1f ASSIGNE\n", sim->getCurrentTime() );
+	transacts.front()->next();
+	return RDOBaseOperation::BOR_done;
+}
+
 } // rdoRuntime

@@ -170,6 +170,7 @@
 %token RDO_DEPART						446
 %token RDO_SEIZES						447
 %token RDO_RELEASES						448
+%token RDO_ASSIGNE						449
 
 %{
 #include "pch.h"
@@ -227,19 +228,20 @@ dpt_process_line:	  RDO_IDENTIF					  {		}
 					| RDO_GENERATE					  {		}
 					| RDO_TERMINATE					  {		}
 					| RDO_ADVANCE					  {		}
+					| RDO_ASSIGNE					  { 	}
 					| RDO_QUEUE dpt_queue_param		  {		}
-					| RDO_QUEUE error				  {	PARSER->error(@1, rdo::format("ќжидаетс€ им€ ресурса дл€ сбора статистики по очереди"));				}
+					| RDO_QUEUE error				  {	PARSER->error(@1, rdo::format("ќжидаетс€ им€ ресурса дл€ сбора статистики по очереди"));			}
 					| RDO_DEPART dpt_depart_param	  {		}
-					| RDO_DEPART error				  { PARSER->error(@1, rdo::format("ќжидаетс€ им€ ресурса дл€ сбора статистики по очереди"));				}
+					| RDO_DEPART error				  { PARSER->error(@1, rdo::format("ќжидаетс€ им€ ресурса дл€ сбора статистики по очереди"));			}
 					| RDO_RELEASE dpt_release_param   {		}
-					| RDO_RELEASE error				  { PARSER->error(@1, rdo::format("ќжидаетс€ им€ освобождаемого ресурса"));									}
+					| RDO_RELEASE error				  { PARSER->error(@1, rdo::format("ќжидаетс€ им€ освобождаемого ресурса"));								}
 					| RDO_SEIZE dpt_seize_param		  {		}
-					| RDO_SEIZE error				  { PARSER->error(@1, rdo::format("ќжидаетс€ им€ занимаемого ресурса"));									}
+					| RDO_SEIZE error				  { PARSER->error(@1, rdo::format("ќжидаетс€ им€ занимаемого ресурса"));								}
 					| RDO_SEIZES dpt_seizes_param	  {		}
 					| RDO_SEIZES error				  { PARSER->error(@1, rdo::format("ќжидаетс€ список ресурсов, объедин€емых в блок, через зап€тую"));	}
 					| RDO_RELEASES dpt_releases_param { 	}
 					| RDO_RELEASES error			  { PARSER->error(@1, rdo::format("ќжидаетс€ список ресурсов, объедин€емых в блок, через зап€тую"));	};
-
+					
 dpt_queue_param:	RDO_IDENTIF 
 					{
 						// »м€ ресурса
@@ -634,6 +636,7 @@ dpt_releases_param:	RDO_IDENTIF
 					{
 						PARSER->error( @1, "ќшибка в имени ресурса" );
 					};	
+
 
 dpt_process_end:	dpt_process RDO_End
 					{

@@ -226,6 +226,8 @@ RELEASES			return(RDO_RELEASES);
 releases			return(RDO_RELEASES);
 TERMINATE			return(RDO_TERMINATE);
 terminate			return(RDO_TERMINATE);
+ASSIGNE				return(RDO_ASSIGNE);
+assigne				return(RDO_ASSIGNE);
 value[\r\n\t ]+before	return(RDO_value_before);
 value[\r\n\t ]+after	return(RDO_value_after);
 value_before		return(RDO_value_before);

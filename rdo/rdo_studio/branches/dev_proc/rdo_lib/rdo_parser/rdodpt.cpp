@@ -531,12 +531,25 @@ rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, con
 	// "Сломан"
 	std::string rtp_state_break = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBreak();
 
+	// Временный параметр "Положение"
+	std::string rtp_param_p = "Положение";
+	// "state1"
+	std::string rtp_state1 = "state1";
+	// "state2"
+	std::string rtp_state2 = "state2";
+	// "state3"
+	std::string rtp_state3 = "state3";
+	// "state3"
+	std::string rtp_state4 = "state4";
+	
 	// Получили список всех типов ресурсов
 	rdoMBuilder::RDOResTypeList rtpList( parser );
 	// Создадим тип ресурса
 	rdoMBuilder::RDOResType rtp( rtp_name );
-	// Создадим параметр перечислимого типа
+	// Создадим параметр перечислимого типа - "Состояние"
 	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnumType(parser->runtime(), rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy)(rtp_state_break)), rtp_state_free) );
+	// Создадим параметр перечислимого типа - "Положение"
+	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_p, new rdoRuntime::RDOEnumType(parser->runtime(), rdoRuntime::RDOEnumType::Enums(rtp_state1)(rtp_state2)(rtp_state3)(rtp_state4)), rtp_state1) );
 	// Добавим тип ресурса
 	if ( !rtpList.append( rtp ) )
 	{
@@ -699,6 +712,16 @@ RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string&
 	RDOPROCOperator( _process, _name )
 {
 	runtime = new rdoRuntime::RDOPROCTerminate( parser()->getLastPROCProcess()->getRunTime(), _term );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCAssigne
+// ----------------------------------------------------------------------------
+RDOPROCAssigne::RDOPROCAssigne( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param ):
+	RDOPROCOperator( _process, _name ),
+	runtime		   ( NULL			 )
+{
+	runtime = new rdoRuntime::RDOPROCAssigne( parser()->getLastPROCProcess()->getRunTime(), value, Id_res, Id_param );
 }
 
 } // namespace rdoParse

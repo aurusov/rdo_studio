@@ -361,6 +361,18 @@ public:
 	RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name, const unsigned int& _term);
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCAssigne
+// ----------------------------------------------------------------------------
+class RDOPROCAssigne: public RDOPROCOperator
+{
+protected:
+	rdoRuntime::RDOPROCAssigne* runtime;
+
+public:
+	RDOPROCAssigne( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param );
+};
+
 } // namespace rdoParse
 
 #endif // RDODPT_DPT

@@ -170,6 +170,7 @@
 %token RDO_DEPART						446
 %token RDO_SEIZES						447
 %token RDO_RELEASES						448
+%token RDO_ASSIGNE						449
 
 %{
 #include "pch.h"

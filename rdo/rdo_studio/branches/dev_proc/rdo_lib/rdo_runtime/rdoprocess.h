@@ -332,6 +332,28 @@ public:
 	RDOPROCTerminate( RDOPROCProcess* _process, const unsigned int& _term ): RDOPROCBlock( _process ), term(_term) {}
 };
 
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCAssigne
+// ----------------------------------------------------------------------------
+class RDOPROCAssigne: public RDOPROCBlock
+{
+protected:
+	RDOCalc* paramValue;
+	int t_resId;
+	int t_parId;
+protected:
+	virtual bool     onCheckCondition( RDOSimulator* sim );
+	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+
+public:
+	RDOPROCAssigne( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param ): 
+	  RDOPROCBlock( _process ), paramValue( value ), t_resId( Id_res ), t_parId( Id_param ) 
+	  {
+		int i = 0;
+	  }
+};
+
 } // namespace rdoRuntime
 
 #endif // RDOPROCESS_H
