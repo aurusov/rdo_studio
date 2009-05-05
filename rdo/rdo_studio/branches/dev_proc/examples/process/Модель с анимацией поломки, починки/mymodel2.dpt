@@ -2,16 +2,18 @@
 $Process
 //Появление заготовок в системе каждые 150 секунд по экспоненциальному закону
 	GENERATE 120//Интервал_прихода_заготовок(200) 
-
+//	ASSIGNE  ROBOT.Состояние = Сломан
+//	ASSIGNE  ST11.Состояние = Сломан
 //Перемещение заготовки из зоны приемки заготовок к первому станку
 	QUEUE	 QIN
 	SEIZES	 ROBOT
-//	ASSIGNE  ROBOT.Состояние_для_анимации = несет_к_станку_1
+	ASSIGNE  ROBOT.Положение = state1
 	DEPART	 QIN
 	ADVANCE  Время_захвата(2,1)
 	ADVANCE  1
 	ADVANCE  Время_отпуска(2,1)
 	RELEASES ROBOT
+//	ASSIGNE  ROBOT.Положение = state4
 //	RELEASE  ROBOT 
 //	ASSIGNE  ROBOT.Состояние_для_анимации = деталь_на_станке_1
 
@@ -26,11 +28,13 @@ $Process
 
 	QUEUE	 QEXITST1
 	SEIZES	 ROBOT
+	ASSIGNE  ROBOT.Положение = state2
 	DEPART	 QEXITST1
 	ADVANCE  Время_захвата(2,1)
 	ADVANCE  1
 	ADVANCE  Время_отпуска(2,1)
 	RELEASES ROBOT 
+//	ASSIGNE  ROBOT.Положение = state4
 	
 //Обработка на втором станке
 	QUEUE	 QSTANOK2
@@ -42,11 +46,13 @@ $Process
 //Перемещение заготовки от второго станка в зону готовых деталей
 	QUEUE	 QEXITST2
 	SEIZES	 ROBOT
+	ASSIGNE  ROBOT.Положение = state3
 	DEPART	 QEXITST2
 	ADVANCE  Время_захвата(2,1)
 	ADVANCE  1
 	ADVANCE  Время_отпуска(2,1)
 	RELEASES  ROBOT 
+//	ASSIGNE  ROBOT.Положение = state4
 	
 	QUEUE	 QOUT
 	

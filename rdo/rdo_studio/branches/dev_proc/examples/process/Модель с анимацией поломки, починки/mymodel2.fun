@@ -3,7 +3,7 @@ $Constant
 	y_mid	: integer = 400
 	r_rob	: integer = 18
 	l_rob	: integer = 240
-	h_rob	: integer = 60
+	h_rob	: integer = 55
 	
 	l1		: integer = 120
 	h1		: integer = 15
@@ -103,7 +103,25 @@ $Constant
 	ls8		: integer = 60
 	sas8	: real = -0.97
 	cas8	: real = 0.26
-
+	
+	xr1		: integer = 535
+	yr1		: integer = 400
+	lr1		: integer = 58
+	hr1		: integer = 5
+	ar1		: real = 2.704
+	sinr1	: real = 0.424
+	cosr1	: real = -0.906
+	k		: integer = 30
+	
+	xr2		: integer = 535
+	yr2		: integer = 399
+	lr2		: integer = 63
+	hr2		: integer = 5
+	ar2		: real = 0.436
+	sinr2	: real = 0.424
+	cosr2	: real = 0.906
+	
+	
 $End
 
 

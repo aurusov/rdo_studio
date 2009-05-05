@@ -21,27 +21,172 @@ text [150, 520, 150, 20, <255 255 255>, <0 0 0>, 'Ресурс сломан' ]
 ellipse [x_mid - l_rob/2, y_mid - l_rob/2, l_rob, l_rob, <255 255 255>, <0 0 0>]
 //----------------------Робот - поломка------------------------------------
 show		 
-active  Операция_Поломка_Робота1[x_mid - 2 - 20, y_mid - h_rob - 20, 40, h_rob + 20]
-//rect	[x_mid - 2 - 20, y_mid - h_rob - 20, 40, h_rob + 20, <0 0 0>]
+active  Операция_Поломка_Робота1[x_mid - 2 - 40, y_mid - h_rob, 80, h_rob + 20 ]
+rect	[x_mid - 2 - 40, y_mid - h_rob + 20, 80, h_rob, <0 0 0>]
 //--------------------Робот----------------------------------------------------------
-show_if ROBOT.Состояние = Свободен
+show_if ROBOT.Состояние = Свободен and ROBOT.Положение = state2
 rect	[x_mid - 3, y_mid - h_rob, 6, h_rob + 2, <210 210 210>, <0 0 0> ]
 line	[x_mid, y_mid - h_rob, x_mid - 2 - 20, y_mid - h_rob - 20, <0 0 0> ]
 line	[x_mid, y_mid - h_rob, x_mid - 2 + 20, y_mid - h_rob - 20, <0 0 0> ]
 ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <210 210 210>, <0 0 0>] 
  
-show_if ROBOT.Состояние = Занят
+show_if ROBOT.Состояние = Занят and ROBOT.Положение = state2
 rect	[x_mid - 3, y_mid - h_rob, 6, h_rob + 2, <0 255 0>, <0 0 0> ]
 line	[x_mid, y_mid - h_rob, x_mid - 2 - 20, y_mid - h_rob - 20, <0 255 0> ]
 line	[x_mid, y_mid - h_rob, x_mid - 2 + 20, y_mid - h_rob - 20, <0 255 0> ]
 ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <0 255 0>, <0 0 0>]  
 ellipse [x_mid - r_rob/2, y_mid - h_rob - 25, 18, 18, <255 255 0>, <0 0 0>] 
 
-show_if ROBOT.Состояние = Сломан
+show_if ROBOT.Состояние = Сломан and ROBOT.Положение = state2
 rect	[x_mid - 3, y_mid - h_rob, 6, h_rob + 2, <255 0 0>, <0 0 0> ]
 line	[x_mid, y_mid - h_rob, x_mid - 2 - 20, y_mid - h_rob - 20, <255 0 0> ]
 line	[x_mid, y_mid - h_rob, x_mid - 2 + 20, y_mid - h_rob - 20, <255 0 0> ]
 ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <255 0 0>, <0 0 0>]  
+
+//-----------------------Роббот 1--------------------------------
+show_if ROBOT.Состояние = Свободен and ROBOT.Положение = state1
+triang	[xr1, 						 yr1, 
+		 xr1 + lr1*cosr1, 			 yr1 - lr1*sinr1,
+		 xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1,
+		 <210 210 210>, <0 0 0>]
+
+triang	[xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1, 
+		 xr1 + hr1*sinr1, 			 yr1 + hr1*cosr1,
+		 xr1, 						 yr1,
+		  <210 210 210>, <0 0 0>]
+line	[xr1, 											  yr1, 
+		 xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1,
+		 <210 210 210>]
+		 
+line	[xr1 + lr1*cosr1, 			 		   yr1 - lr1*sinr1,
+		 xr1 + lr1*cosr1 + k*sin(0.785 - ar1), yr1 - lr1*sinr1 - k*cos(0.785 - ar1),
+		 <0 0 0>]
+
+line	[xr1 + lr1*cosr1 + hr1*sinr1,	yr1 - lr1*sinr1 + hr1*cosr1,
+		 xr1 + lr1*cosr1 + hr1*sinr1 + k*sin(0.785 + ar1), yr1 - lr1*sinr1 + hr1*cosr1 + k*cos(0.785 + ar1),
+		 <0 0 0>]
+ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <210 210 210>, <0 0 0>] 
+
+show_if ROBOT.Состояние = Занят and ROBOT.Положение = state1
+triang	[xr1, 						 yr1, 
+		 xr1 + lr1*cosr1, 			 yr1 - lr1*sinr1,
+		 xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1,
+		 <0 255 0>, <0 0 0>]
+
+triang	[xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1, 
+		 xr1 + hr1*sinr1, 			 yr1 + hr1*cosr1,
+		 xr1, 						 yr1,
+		<0 255 0>, <0 0 0>]
+line	[xr1, 											  yr1, 
+		 xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1,
+		 <0 255 0>]
+		 
+line	[xr1 + lr1*cosr1, 			 		   yr1 - lr1*sinr1,
+		 xr1 + lr1*cosr1 + k*sin(0.785 - ar1), yr1 - lr1*sinr1 - k*cos(0.785 - ar1),
+		 <0 0 0>]
+
+line	[xr1 + lr1*cosr1 + hr1*sinr1,	yr1 - lr1*sinr1 + hr1*cosr1,
+		 xr1 + lr1*cosr1 + hr1*sinr1 + k*sin(0.785 + ar1), yr1 - lr1*sinr1 + hr1*cosr1 + k*cos(0.785 + ar1),
+		 <0 0 0>]
+ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <0 255 0>, <0 0 0>]
+ellipse [xr1 + lr1*cosr1 - 20, yr1 - lr1*sinr1 - 17, 18, 18, <255 255 0>, <0 0 0>] 
+
+show_if ROBOT.Состояние = Сломан and ROBOT.Положение = state1
+triang	[xr1, 						 yr1, 
+		 xr1 + lr1*cosr1, 			 yr1 - lr1*sinr1,
+		 xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1,
+		 <255 0 0>, <0 0 0>]
+
+triang	[xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1, 
+		 xr1 + hr1*sinr1, 			 yr1 + hr1*cosr1,
+		 xr1, 						 yr1,
+		<255 0 0>, <0 0 0>]
+line	[xr1, 											  yr1, 
+		 xr1 + lr1*cosr1 + hr1*sinr1,yr1 - lr1*sinr1 + hr1*cosr1,
+		 <255 0 0>]
+		 
+line	[xr1 + lr1*cosr1, 			 		   yr1 - lr1*sinr1,
+		 xr1 + lr1*cosr1 + k*sin(0.785 - ar1), yr1 - lr1*sinr1 - k*cos(0.785 - ar1),
+		 <0 0 0>]
+
+line	[xr1 + lr1*cosr1 + hr1*sinr1,	yr1 - lr1*sinr1 + hr1*cosr1,
+		 xr1 + lr1*cosr1 + hr1*sinr1 + k*sin(0.785 + ar1), yr1 - lr1*sinr1 + hr1*cosr1 + k*cos(0.785 + ar1),
+		 <0 0 0>]
+ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <255 0 0>, <0 0 0>]
+
+
+//-----------------------Роббот 2--------------------------------
+show_if ROBOT.Состояние = Свободен and ROBOT.Положение = state3
+triang	[xr2, 						 yr2, 
+		 xr2 + lr2*cosr2, 			 yr2 - lr2*sinr2,
+		 xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2,
+		 <210 210 210>, <0 0 0>]
+
+triang	[xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2, 
+		 xr2 + hr2*sinr2, 			 yr2 + hr2*cosr2,
+		 xr2, 						 yr2,
+		  <210 210 210>, <0 0 0>]
+line	[xr2, 											  yr2, 
+		 xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2,
+		 <210 210 210>]
+		 
+line	[xr2 + lr2*cosr2, 			 		   yr2 - lr2*sinr2,
+		 xr2 + lr2*cosr2 + k*sin(0.785 - ar2), yr2 - lr2*sinr2 - k*cos(0.785 - ar2),
+		 <0 0 0>]
+
+line	[xr2 + lr2*cosr2 + hr2*sinr2,	yr2 - lr2*sinr2 + hr2*cosr2,
+		 xr2 + lr2*cosr2 + hr2*sinr2 + k*sin(0.785 + ar2), yr2 - lr2*sinr2 + hr2*cosr2 + k*cos(0.785 + ar2),
+		 <0 0 0>]
+ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <210 210 210>, <0 0 0>] 
+
+show_if ROBOT.Состояние = Занят and ROBOT.Положение = state3
+triang	[xr2, 						 yr2, 
+		 xr2 + lr2*cosr2, 			 yr2 - lr2*sinr2,
+		 xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2,
+		 <0 255 0>, <0 0 0>]
+
+triang	[xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2, 
+		 xr2 + hr2*sinr2, 			 yr2 + hr2*cosr2,
+		 xr2, 						 yr2,
+		<0 255 0>, <0 0 0>]
+line	[xr2, 											  yr2, 
+		 xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2,
+		 <0 255 0>]
+		 
+line	[xr2 + lr2*cosr2, 			 		   yr2 - lr2*sinr2,
+		 xr2 + lr2*cosr2 + k*sin(0.785 - ar2), yr2 - lr2*sinr2 - k*cos(0.785 - ar2),
+		 <0 0 0>]
+
+line	[xr2 + lr2*cosr2 + hr2*sinr2,	yr2 - lr2*sinr2 + hr2*cosr2,
+		 xr2 + lr2*cosr2 + hr2*sinr2 + k*sin(0.785 + ar2), yr2 - lr2*sinr2 + hr2*cosr2 + k*cos(0.785 + ar2),
+		 <0 0 0>]
+ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <0 255 0>, <0 0 0>]
+ellipse [xr2 + lr2*cosr2 + 4, yr2 - lr2*sinr2 - 12, 18, 18, <255 255 0>, <0 0 0>] 
+
+show_if ROBOT.Состояние = Сломан and ROBOT.Положение = state3
+triang	[xr2, 						 yr2, 
+		 xr2 + lr2*cosr2, 			 yr2 - lr2*sinr2,
+		 xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2,
+		 <255 0 0>, <0 0 0>]
+
+triang	[xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2, 
+		 xr2 + hr2*sinr2, 			 yr2 + hr2*cosr2,
+		 xr2, 						 yr2,
+		<255 0 0>, <0 0 0>]
+line	[xr2, 											  yr2, 
+		 xr2 + lr2*cosr2 + hr2*sinr2,yr2 - lr2*sinr2 + hr2*cosr2,
+		 <255 0 0>]
+		 
+line	[xr2 + lr2*cosr2, 			 		   yr2 - lr2*sinr2,
+		 xr2 + lr2*cosr2 + k*sin(0.785 - ar2), yr2 - lr2*sinr2 - k*cos(0.785 - ar2),
+		 <0 0 0>]
+
+line	[xr2 + lr2*cosr2 + hr2*sinr2,	yr2 - lr2*sinr2 + hr2*cosr2,
+		 xr2 + lr2*cosr2 + hr2*sinr2 + k*sin(0.785 + ar2), yr2 - lr2*sinr2 + hr2*cosr2 + k*cos(0.785 + ar2),
+		 <0 0 0>]
+ellipse [x_mid - r_rob/2, y_mid - r_rob/2, r_rob, r_rob, <255 0 0>, <0 0 0>]
+
+
 
 
 
@@ -77,6 +222,7 @@ triang	[xs5 + (ls1 + bs1)*cas5, ys5 - (ls1 + bs1)*sas5,
 		 xs5 + ls1*cas5 - 0.5*cs1*sas5, ys5 - ls1*sas5 - 0.5*cs1*cas5,
 		 blue, <0 0 0>]
 
+show		 
 line	[xs6, ys6, xs6 + ls6*cas6, ys6 - ls6*sas6, <0 0 0>]
 triang	[xs6 + (ls6 + bs1)*cas6, ys6 - (ls6 + bs1)*sas6,
 		 xs6 + ls6*cas6 + 0.5*cs1*sas6, ys6 - ls6*sas6 + 0.5*cs1*cas6,
@@ -95,6 +241,30 @@ triang	[xs8 + (ls6 + bs1)*cas8, ys8 - (ls6 + bs1)*sas8,
 		 xs8 + ls6*cas8 - 0.5*cs1*sas8, ys8 - ls6*sas8 - 0.5*cs1*cas8,
 		 blue, <0 0 0>]
 
+/*
+show_if	ROBOT.Положение = state1 
+line	[xs6, ys6, xs6 + ls6*cas6, ys6 - ls6*sas6, <0 255 0>]
+triang	[xs6 + (ls6 + bs1)*cas6, ys6 - (ls6 + bs1)*sas6,
+		 xs6 + ls6*cas6 + 0.5*cs1*sas6, ys6 - ls6*sas6 + 0.5*cs1*cas6,
+		 xs6 + ls6*cas6 - 0.5*cs1*sas6, ys6 - ls6*sas6 - 0.5*cs1*cas6,
+		 <0 255 0>, <0 255 0>]
+show_if	ROBOT.Положение = state2
+line	[xs7, ys7, xs7 + ls7*cas7, ys7 - ls7*sas7, <0 255 0>]
+triang	[xs7 + (ls7 + bs1)*cas7, ys7 - (ls7 + bs1)*sas7,
+		 xs7 + ls7*cas7 + 0.5*cs1*sas7, ys7 - ls7*sas7 + 0.5*cs1*cas7,
+		 xs7 + ls7*cas7 - 0.5*cs1*sas7, ys7 - ls7*sas7 - 0.5*cs1*cas7,
+		 <0 255 0>, <0 255 0>]
+show_if	ROBOT.Положение = state3
+line	[xs8, ys8, xs8 + ls6*cas8, ys8 - ls6*sas8, <0 255 0>]
+triang	[xs8 + (ls6 + bs1)*cas8, ys8 - (ls6 + bs1)*sas8,
+		 xs8 + ls6*cas8 + 0.5*cs1*sas8, ys8 - ls6*sas8 + 0.5*cs1*cas8,
+		 xs8 + ls6*cas8 - 0.5*cs1*sas8, ys8 - ls6*sas8 - 0.5*cs1*cas8,
+		 <0 255 0>, <0 255 0>]		 
+
+*/
+
+
+show
 //----------------------очередь накопитель - вход------------------------------------
 triang	[x_qi, 							y_qi, 
 		 x_qi + l1*cosai, 			y_qi - l1*sinai,
@@ -1080,6 +1250,5 @@ line	[x_st2 - 0.51*l_st2*cosast2 - h_st2*sinast2 + h_st2*sinast2,
 		 x_st2 - 0.51*l_st2*cosast2 - h_st2*sinast2, 	
 		 y_st2 + 0.51*l_st2*sinast2 - h_st2*cosast2, 
 		 <0  0 0>]
-	 
 
 $End
