@@ -12,11 +12,6 @@ namespace rdoRuntime {
 class RDOActivity: public RDOBaseOperation, public RDOTraceableObject
 {
 public:
-	double operator- ( const RDOActivity* right )
-	{
-		return ( this->m_prior_runtime - right->m_prior_runtime );
-	}
-	RDOCalc*                  m_prior_runtime;
 	void addParamCalc( RDOCalc* calc )
 	{
 		m_paramsCalcs.push_back( calc );
@@ -34,10 +29,6 @@ public:
 			m_relResID.resize( rel_res_id + 1 );
 		}
 		m_relResID[rel_res_id] = res_id; 
-	}
-	void setPriorCalc( RDOCalc* prior )
-	{
-		m_prior_runtime = prior;
 	}
 
 protected:
