@@ -11,11 +11,16 @@ namespace rdoRuntime {
 class RDODPTActivityCompare
 {
 public:
-	RDODPTActivityCompare() {}
+	RDODPTActivityCompare(RDORuntime* runtime)
+		: m_runtime(runtime)
+	{}
 	bool operator() ( const RDOBaseOperation& bo1, const RDOBaseOperation& bo2 )
 	{
-		return bo1.m_prior_runtime->calcValue(  ) < bo2.m_prior_runtime->calcValue(  );
+		return bo1.m_prior_runtime->calcValue(m_runtime) < bo2.m_prior_runtime->calcValue(m_runtime);
 	}
+
+private:
+	RDORuntime* m_runtime;
 };
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
@@ -29,7 +34,7 @@ public:
 protected:
 	virtual bool newCheckCondition( RDOSimulator* sim )
 	{
-		std::sort( begin(), end(), RDODPTActivityCompare() );
+		std::sort( begin(), end(), RDODPTActivityCompare(reinterpret_cast<RDORuntime*>(sim)) );
 		Iterator it = begin();
 		while ( it != end() )
 		{
