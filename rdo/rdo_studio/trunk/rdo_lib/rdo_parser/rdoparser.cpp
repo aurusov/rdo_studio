@@ -10,12 +10,6 @@
 #include "rdopmd.h"
 #include <rdocommon.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoParse 
 {
 
@@ -100,7 +94,7 @@ RDOParser::~RDOParser()
 		delete *it;
 		it = m_allDeletables.rbegin();
 	}
-	TRACE( "PARSER : m_allDeletables.size() = %d\n",m_allDeletables.size() );
+	TRACE1(_T("PARSER : m_allDeletables.size() = %d\n"), m_allDeletables.size());
 	s_parserStack.remove( this );
 }
 
@@ -116,7 +110,7 @@ void RDOParser::insertChanges( const std::string& name, const std::string& value
 
 std::string RDOParser::getChanges() const
 {
-	std::stringstream stream;
+	rdo::textstream stream;
 	stream << "$Changes" << std::endl;
 	unsigned int changes_max_length = 0;
 	std::vector< Changes >::const_iterator change_it = m_changes.begin();
@@ -140,7 +134,7 @@ std::string RDOParser::getChanges() const
 
 std::string RDOParser::getModelStructure()
 {
-	std::stringstream modelStructure;
+	rdo::textstream modelStructure;
 
 	// $Changes
 	modelStructure << getChanges();

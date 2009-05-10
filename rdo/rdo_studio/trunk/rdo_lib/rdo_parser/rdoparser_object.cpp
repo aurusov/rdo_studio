@@ -4,12 +4,6 @@
 #include "rdoparser.h"
 #include <rdo_runtime.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoParse 
 {
 
@@ -38,7 +32,7 @@ void RDODeletable::noAutoDelete()
 		m_parser->removeDeletables( this );
 	}
 }
-
+/*
 #ifndef _DEBUG
 void* RDODeletable::operator new( size_t sz )
 {
@@ -56,7 +50,7 @@ void RDODeletable::operator delete( void* v )
 	::operator delete( v );
 }
 #endif
-
+*/
 // ----------------------------------------------------------------------------
 // ---------- RDOParserObject
 // ----------------------------------------------------------------------------

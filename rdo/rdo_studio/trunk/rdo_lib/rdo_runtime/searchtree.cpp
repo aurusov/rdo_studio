@@ -3,12 +3,7 @@
 #include "searchtrace.h"
 #include "rdo_runtime.h"
 #include "rdo_rule.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include <rdodebug.h>
 
 namespace rdoRuntime
 {
@@ -95,7 +90,7 @@ void TreeNode::ExpandChildren()
 		m_childSim = m_sim->createCopy();
 #ifdef _DEBUG
 		if ( static_cast<RDORuntime*>(m_childSim)->checkState() ) {
-			TRACE( "состояние, node = %d\n", m_number );
+			TRACE1("состояние, node = %d\n", m_number);
 		}
 #endif
 		m_root->m_sizeof_dpt += m_childSim->getSizeofSim();
@@ -150,9 +145,9 @@ void TreeNode::ExpandChildren()
 				} else if ( res == nfi_found_loser ) {
 #ifdef _DEBUG
 					if ( m_number == 294 ) {
-						TRACE( "loser->m_number = %d\n", loser->m_number );
-						TRACE( "loser->m_parent->m_number = %d\n", loser->m_parent->m_number );
-						TRACE( "loser->m_parent->m_children.size() = %d\n", loser->m_parent->m_children.size() );
+						TRACE1("loser->m_number = %d\n", loser->m_number);
+						TRACE1("loser->m_parent->m_number = %d\n", loser->m_parent->m_number);
+						TRACE1("loser->m_parent->m_children.size() = %d\n", loser->m_parent->m_children.size());
 						static_cast<RDORuntime*>(loser->m_sim)->showResources(loser->m_number);
 					}
 #endif
@@ -164,7 +159,7 @@ void TreeNode::ExpandChildren()
 					loser->m_parent->m_children.erase( std::find(loser->m_parent->m_children.begin(), loser->m_parent->m_children.end(), loser) );
 #ifdef _DEBUG
 					if ( m_number == 294 ) {
-						TRACE( "loser->m_parent->m_children.size() after erase = %d\n", loser->m_parent->m_children.size() );
+						TRACE1("loser->m_parent->m_children.size() after erase = %d\n", loser->m_parent->m_children.size());
 					}
 #endif
 					// Теперь пересчитываем стоимость этой вершины и всех её потомков

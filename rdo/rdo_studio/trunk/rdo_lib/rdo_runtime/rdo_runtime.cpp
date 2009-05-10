@@ -8,14 +8,9 @@
 #include "rdopokaz.h"
 #include "rdodptrtime.h"
 #include "rdocalc.h"
+#include <rdodebug.h>
 #include <limits>
 #include <iomanip>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #pragma warning(disable : 4786)  
 
@@ -46,7 +41,7 @@ RDORuntime::~RDORuntime()
 	rdo::deleteAllObjects( allPokaz );
 }
 
-void RDORuntime::connect( RDORuntimeObject* to, UINT message )
+void RDORuntime::connect( RDORuntimeObject* to, ruint message )
 {
 	Connected::iterator it = connected.find( message );
 	while ( it != connected.end() ) {
@@ -70,7 +65,7 @@ void RDORuntime::disconnect( RDORuntimeObject* to )
 	}
 }
 
-void RDORuntime::disconnect( RDORuntimeObject* to, UINT message )
+void RDORuntime::disconnect( RDORuntimeObject* to, ruint message )
 {
 	Connected::iterator it = connected.find( message );
 	while ( it != connected.end() ) {
@@ -82,7 +77,7 @@ void RDORuntime::disconnect( RDORuntimeObject* to, UINT message )
 	}
 }
 
-void RDORuntime::fireMessage( RDORuntimeObject* from, unsigned int message, void* param )
+void RDORuntime::fireMessage( RDORuntimeObject* from, ruint message, void* param )
 {
 	Connected::iterator it = connected.find( message );
 	while ( it != connected.end() ) {
@@ -190,19 +185,19 @@ bool RDORuntime::checkState()
 
 void RDORuntime::showResources( int node ) const
 {
-	TRACE( "------------- %d:\n", node );
+	TRACE1(_T("------------- %d:\n"), node);
 	int index = 0;
 	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();
 	while ( it != allResourcesByID.end() ) {
 		if ( *it ) {
-			TRACE( "%d. ", index );
+			TRACE1(_T("%d. "), index);
 			for ( unsigned int i = 0; i < (*it)->paramsCount(); i++ )
 			{
-				TRACE( "%s ", (*it)->getParam(i).getAsString().c_str() );
+				TRACE1(_T("%s "), (*it)->getParam(i).getAsString().c_str());
 			}
-			TRACE( "\n" );
+			TRACE(_T("\n"));
 		} else {
-			TRACE( "%d. NULL\n", index );
+			TRACE1(_T("%d. NULL\n"), index);
 		}
 		index++;
 		it++;

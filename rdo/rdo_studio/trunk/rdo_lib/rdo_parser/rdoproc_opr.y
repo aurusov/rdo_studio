@@ -169,11 +169,6 @@
 
 %{
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
@@ -288,30 +283,31 @@ dpt_process_line:	RDO_IDENTIF	{
 						release->create_runtime_Release( PARSER );
 					};
 
-
-dpt_seize_param:    // empty 
+dpt_seize_param:	//	empty
 					{
-					}   
+					}
 					|	RDO_IDENTIF {
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						TRACE( "%s _good\n", res_name.c_str());
+						TRACE1(_T("%s _good\n"), res_name.c_str());
 						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE");
 						seize->add_Seize_Resourse(res_name);
 						$$ = (int)seize;
-                    }
-                    |   RDO_IDENTIF error {						PARSER->error( @2, "Ошибка в миени ресурса" )};     
-dpt_release_param:    // empty 
+					}
+					|	RDO_IDENTIF error { PARSER->error( @2, "Ошибка в миени ресурса" ) };
+
+dpt_release_param:	//	empty
 					{
-					}   
+					}
 					|	RDO_IDENTIF {
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						TRACE( "%s _good\n", res_name.c_str());
+						TRACE1(_T("%s _good\n"), res_name.c_str());
 						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE");
 						release->add_Release_Resourse(res_name);
 						$$ = (int)release;
-                    }
-					|   RDO_IDENTIF error {						PARSER->error( @2, "Ошибка в миени ресурса" )};						
-dpt_process_end:	dpt_process RDO_End	{
+					}
+					|	RDO_IDENTIF error { PARSER->error( @2, "Ошибка в миени ресурса" ) };
+
+dpt_process_end:	dpt_process RDO_End {
 						PARSER->getLastPROCProcess()->end();
 					};
 

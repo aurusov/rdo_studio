@@ -61,7 +61,7 @@ public:
 		}
 		m_params.at( index ) = value;
 	}
-	virtual unsigned int paramsCount() const
+	virtual ruint paramsCount() const
 	{
 		return m_params.size();
 	}

@@ -4,6 +4,8 @@
 #include "rdoruntime_object.h"
 #include <rdocommon.h>
 
+#include <windows.h>
+
 namespace rdoRuntime
 {
 

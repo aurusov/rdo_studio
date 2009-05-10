@@ -51,7 +51,7 @@ private:
 
 	double    m_timeErase;
 
-	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL );
+	virtual void notify( RDORuntimeObject* from, ruint message, void* param = NULL );
 };
 
 // ----------------------------------------------------------------------------

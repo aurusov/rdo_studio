@@ -21,12 +21,12 @@ public:
 	RDOParser* parser() const { return m_parser; }
 
 	void noAutoDelete();
-
+/*
 #ifndef _DEBUG
 	void* operator new( size_t sz );
 	void operator delete( void* v );
 #endif
-
+*/
 protected:
 	RDOParser* m_parser;
 

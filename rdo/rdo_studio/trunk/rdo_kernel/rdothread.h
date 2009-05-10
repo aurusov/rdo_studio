@@ -10,7 +10,6 @@
 #include <string>
 #include <list>
 #include <vector>
-#include <afxmt.h>
 
 // --------------------------------------------------------------------
 // #define RDOSIM_COMPATIBLE
@@ -104,9 +103,9 @@ public:
 		RT_SIMULATOR_MODEL_STOP_BY_USER,
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR,
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY,
-		RT_SIMULATOR_GET_MODEL_STRUCTURE,      // param = result:std::stringstream*
-		RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:std::stringstream*
-		RT_SIMULATOR_GET_MODEL_RESULTS_INFO,   // param = result:std::stringstream*
+		RT_SIMULATOR_GET_MODEL_STRUCTURE,      // param = result:rdo::textstream*
+		RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:rdo::textstream*
+		RT_SIMULATOR_GET_MODEL_RESULTS_INFO,   // param = result:rdo::textstream*
 		RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdoSimulator::RDOExitCode*
 		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< std::string >* }
 		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >*

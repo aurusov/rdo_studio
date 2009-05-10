@@ -6,13 +6,13 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <afxwin.h>
+#include <windows.h>
 
 #include <rdocommon.h>
 #include <rdokernel.h>
 #include <rdothread.h>
 
-#include <rdobinarystream.h>
+#include <rdostream.h>
 #include <rdocommon.h>
 
 #define DISABLE_CORBA
@@ -166,8 +166,8 @@ private:
 	ShowMode showMode; // current show mode
 	double showRate; // current show mode
 
-	std::stringstream resultString;
-	std::stringstream resultInfoString;
+	rdo::textstream resultString;
+	rdo::textstream resultInfoString;
 
 #ifndef DISABLE_CORBA
 	void corbaGetRTPcount(::CORBA::Long& rtp_count);
@@ -192,7 +192,7 @@ protected:
 public:
 	RDOThreadSimulator();
 
-	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
+	void parseSMRFileInfo(rdo::textstream& smr, rdoModelObjects::RDOSMRFileInfo& info);
 
 	ShowMode getInitialShowMode();
 	int getInitialFrameNumber();

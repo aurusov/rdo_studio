@@ -13,21 +13,9 @@
 #include "rdo_type.h"
 #include "rdoruntime_object.h"
 
+#include <map>
+
 namespace rdoRuntime {
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyValueItem
-// ----------------------------------------------------------------------------
-struct RDOFuzzyValueItem
-{
-	RDOValue m_rdovalue;
-	double   m_appertain;
-
-	RDOFuzzyValueItem();
-	RDOFuzzyValueItem(CREF(RDOValue) rdovalue, double appertain);
-
-	rbool operator< (CREF(RDOFuzzyValueItem) value) const;
-};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyValue
@@ -37,22 +25,22 @@ class  RDOFuzzyType;
 class RDOFuzzyValue
 {
 public:
+	typedef std::pair<RDOValue, double>                              FuzzyItem;
+	typedef std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySet;
+
 	RDOFuzzyValue(CREF(RDOFuzzyType)  type );
 	RDOFuzzyValue(CREF(RDOFuzzyValue) value);
 	~RDOFuzzyValue();
 
-	typedef std::vector< RDOFuzzyValueItem > FuzzySet;
-
-	REF(RDOFuzzyValue) append     (CREF(RDOValue) rdovalue, double appertain);
-	REF(RDOFuzzyValue) operator() (CREF(RDOValue) rdovalue, double appertain)
-	{
-		return append(rdovalue, appertain);
-	}
-
-	CREF(RDOFuzzyType)        type () const;
-
-	FuzzySet::const_iterator  begin() const;
-	FuzzySet::const_iterator  end  () const;
+	REF(RDOFuzzyValue)         append     (CREF(RDOValue) rdovalue, double appertain);
+	REF(RDOFuzzyValue)         operator() (CREF(RDOValue) rdovalue, double appertain);
+	REF(double)                operator[] (CREF(RDOValue) rdovalue);
+	FuzzySet::const_iterator   find       (CREF(RDOValue) rdovalue) const;
+	FuzzyItem                  findValue  (CREF(RDOValue) rdovalue) const;
+	FuzzySet::const_iterator   begin      () const;
+	FuzzySet::const_iterator   end        () const;
+	rbool                      empty      () const;
+	CREF(RDOFuzzyType)         type       () const;
 
 	/* 3.37  */  RDOFuzzyValue operator&& (CREF(RDOFuzzyValue) fuzzy_value) const;
 	/* 3.40  */  RDOFuzzyValue operator|| (CREF(RDOFuzzyValue) fuzzy_value) const;
@@ -68,7 +56,7 @@ public:
 
 	/* 3.39  */  RDOFuzzyValue a_mult    (CREF(RDOFuzzyValue) fuzzy_value) const;
 	/* 3.48  */  RDOFuzzyValue alpha     (double appertain) const;
-	/* 3.62  */  RDOFuzzyValue suppliment() const;
+	/* 3.62  */  RDOFuzzyValue supplement() const;
 	/* 3.78  */  RDOFuzzyValue a_con     () const;
 	/* 3.79  */  RDOFuzzyValue a_dil     () const;
 
@@ -79,6 +67,9 @@ public:
 private:
 	FuzzySet            m_fuzzySet;
 	CPTR(RDOFuzzyType)  m_type;
+
+	FuzzySet::iterator  begin();
+	FuzzySet::iterator  end  ();
 
 	typedef RDOValue (*ExtUnaryFun )(CREF(RDOValue) value);
 	typedef RDOValue (*ExtUnaryFunP)(CREF(RDOValue) value, PTR(void) param);
@@ -106,7 +97,7 @@ public:
 	rbool operator!= (CREF(RDOFuzzyType) type) const;
 
 	rbool          inRange      (CREF(RDOValue) rdovalue  ) const;
-	RDOFuzzyValue  getSuppliment(CREF(RDOFuzzyValue) value) const;
+	RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 
 private:
 	typedef std::map< tstring, RDOFuzzyValue > Terms;
@@ -125,26 +116,26 @@ public:
 	virtual ~RDOFuzzySetDefinition();
 
 	virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const = 0;
-	virtual  RDOFuzzyValue  getSuppliment(CREF(RDOFuzzyValue) value) const = 0;
+	virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const = 0;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinitionFixed
 // ----------------------------------------------------------------------------
-class RDOFuzzySetDefinitionFixed: public RDOFuzzySetDefinition, private rdo::vector< RDOValue >
+class RDOFuzzySetDefinitionFixed: public RDOFuzzySetDefinition
 {
 public:
 	RDOFuzzySetDefinitionFixed(PTR(RDORuntimeParent) parent);
 	virtual ~RDOFuzzySetDefinitionFixed();
 
-	REF(RDOFuzzySetDefinitionFixed) append     (CREF(RDOValue) rdovalue);
-	REF(RDOFuzzySetDefinitionFixed) operator() (CREF(RDOValue) rdovalue);
+	REF(RDOFuzzySetDefinitionFixed) append     (CREF(RDOValue) value);
+	REF(RDOFuzzySetDefinitionFixed) operator() (CREF(RDOValue) value);
 
-	virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const;
-	virtual  RDOFuzzyValue  getSuppliment(CREF(RDOFuzzyValue) value) const;
+	virtual  rbool          inRange      (CREF(RDOValue)      value) const;
+	virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 
 private:
-	typedef rdo::vector< RDOValue > Range;
+	RDOFuzzyValue::FuzzySet  m_items;
 };
 
 // ----------------------------------------------------------------------------
@@ -153,26 +144,15 @@ private:
 class RDOFuzzySetDefinitionRangeDiscret: public RDOFuzzySetDefinition
 {
 public:
-	RDOFuzzySetDefinitionRangeDiscret(PTR(RDORuntimeParent) parent, CREF(RDOValue) step = 1);
+	RDOFuzzySetDefinitionRangeDiscret(PTR(RDORuntimeParent) parent, CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step = 1);
 	virtual ~RDOFuzzySetDefinitionRangeDiscret();
 
-	struct Range
-	{
-		RDOValue m_from;
-		RDOValue m_till;
-
-		Range(CREF(RDOValue) from, CREF(RDOValue) till);
-	};
-	typedef std::vector< Range > Ranges;
-
-	REF(RDOFuzzySetDefinitionRangeDiscret) append     (CREF(RDOValue) from, CREF(RDOValue) till);
-	REF(RDOFuzzySetDefinitionRangeDiscret) operator() (CREF(RDOValue) from, CREF(RDOValue) till);
-
-	virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const;
-	virtual  RDOFuzzyValue  getSuppliment(CREF(RDOFuzzyValue) value) const;
+	virtual  rbool          inRange      (CREF(RDOValue)      value) const;
+	virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 
 private:
-	Ranges    m_range;
+	RDOValue  m_from;
+	RDOValue  m_till;
 	RDOValue  m_step;
 };
 
@@ -197,7 +177,7 @@ private:
 		virtual ~RDOFuzzySetDefinitionEmpty();
 
 		virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const;
-		virtual  RDOFuzzyValue  getSuppliment(CREF(RDOFuzzyValue) value) const;
+		virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 	};
 
 	RDOFuzzyEmptyType(PTR(RDORuntimeParent) parent);

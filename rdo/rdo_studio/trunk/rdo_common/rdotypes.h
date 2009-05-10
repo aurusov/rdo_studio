@@ -1,10 +1,18 @@
 #ifndef RDOTYPES_H
 #define RDOTYPES_H
 
+// ====================================================================== INCLUDES
+#include <tchar.h>
+#include <string>
+// ====================================================================== SYNOPSIS
+// ===============================================================================
+
 typedef  char                       tchar;
 typedef  std::basic_string<tchar>   tstring;
 typedef  bool                       rbool;
 typedef  signed int                 rsint;
 typedef  unsigned int               ruint;
+typedef  signed long long int       rsint64;
+typedef  unsigned long long int     ruint64;
 
-#endif // RDOTYPES_H
+#endif //! RDOTYPES_H

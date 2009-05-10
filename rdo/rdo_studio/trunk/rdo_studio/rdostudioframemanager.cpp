@@ -12,7 +12,7 @@
 #include <rdokernel.h>
 #include <rdosimwin.h>
 #include <rdorepository.h>
-#include <rdobinarystream.h>
+#include <rdostream.h>
 #include <rdothread.h>
 
 #ifdef _DEBUG
@@ -400,7 +400,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 			int size = frame->elements.size();
 			for ( int i = 0; i < size; i++ ) {
 				rdoSimulator::RDOFrameElement* currElement = frame->elements.at(i);
-				switch( currElement->type ) {
+				switch( currElement->getType() ) {
 					case rdoSimulator::RDOFrameElement::text_type: {
 						rdoSimulator::RDOTextElement* element = static_cast<rdoSimulator::RDOTextElement*>(currElement);
 						if( !element->background.isTransparent ) {
@@ -564,7 +564,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						rdoSimulator::RDOBitmapElement* element = static_cast<rdoSimulator::RDOBitmapElement*>(currElement);
 						BMP* bmp = bitmaps[element->bmp];
 						if ( bmp ) {
-							BMP* mask = element->hasMask ? bitmaps[element->mask] : NULL;
+							BMP* mask = element->hasMask() ? bitmaps[element->mask] : NULL;
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
@@ -582,7 +582,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						rdoSimulator::RDOSBmpElement* element = static_cast<rdoSimulator::RDOSBmpElement*>(currElement);
 						BMP* bmp = bitmaps[element->bmp];
 						if ( bmp ) {
-							BMP* mask = element->hasMask ? bitmaps[element->mask] : NULL;
+							BMP* mask = element->hasMask() ? bitmaps[element->mask] : NULL;
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );

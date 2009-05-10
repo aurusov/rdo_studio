@@ -4,7 +4,7 @@
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
 #endif
 
-#include <afx.h>
+#include <windows.h>
 #include <algorithm>
 #include <list>
 #include <vector>
@@ -17,3 +17,6 @@
 #include <map>
 #include <functional>
 #include <rdocommon.h>
+#include <rdotypes.h>
+#include <rdomacros.h>
+#include <rdodebug.h>

@@ -5,6 +5,7 @@
 #include "../resource.h"
 #include <rdothread.h>
 #include <rdokernel.h>
+#include <rdostream.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerBase
@@ -36,17 +37,17 @@ private:
 	RDOTracerTreeCtrl*  tree;
 
 	std::vector <RDOTracerResType*> resTypes;
-	void addResourceType( std::string& s, std::stringstream& stream );
+	void addResourceType( std::string& s, rdo::textstream& stream );
 	std::vector <RDOTracerResource*> resources;
-	void addResource( std::string& s, std::stringstream& stream );
+	void addResource( std::string& s, rdo::textstream& stream );
 	std::vector <RDOTracerPattern*> patterns;
-	void addPattern( std::string& s, std::stringstream& stream );
+	void addPattern( std::string& s, rdo::textstream& stream );
 	std::vector <RDOTracerOperationBase*> operations;
 	std::vector <RDOTracerEvent*> irregularEvents;
-	void addOperation( std::string& s, std::stringstream& stream );
-	//void addIrregularEvent( std::string& s, std::stringstream& stream );
+	void addOperation( std::string& s, rdo::textstream& stream );
+	//void addIrregularEvent( std::string& s, rdo::textstream& stream );
 	std::vector <RDOTracerResult*> results;
-	void addResult( std::string& s, std::stringstream& stream );
+	void addResult( std::string& s, rdo::textstream& stream );
 	
 	void dispatchNextString( std::string& line );
 
@@ -92,7 +93,7 @@ public:
 	RDOTracerTreeCtrl* createTree();
 
 	void startTrace();
-	void getModelStructure( std::stringstream& stream );
+	void getModelStructure( rdo::textstream& stream );
 	void getTraceString( std::string trace_string );
 	std::string getNextValue( std::string& line );
 	void registerClipboardFormat() { clipboardFormat = ::RegisterClipboardFormat( rdo::format(ID_RAO_CLIPBRD).c_str() ); }

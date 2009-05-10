@@ -15,6 +15,7 @@
 #include <rdosimwin.h>
 #include <rdoplugin.h>
 #include <rdothread.h>
+#include <rdofile.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -246,7 +247,7 @@ BOOL RDOStudioApp::InitInstance()
 			}
 		} else {
 			openModelName = rdo::extractFilePath( RDOStudioApp::getFullFileName() ) + openModelName;
-			if ( rdo::isFileExists( openModelName ) && model->openModel( openModelName ) ) {
+			if ( rdo::File::exist( openModelName ) && model->openModel( openModelName ) ) {
 				autoRun          = true;
 				autoExitByModel  = true;
 				autoModel        = true;
@@ -257,7 +258,7 @@ BOOL RDOStudioApp::InitInstance()
 			}
 		}
 	} else {
-		if ( getOpenLastProject() && !getLastProjectName().empty() && rdo::isFileExists( getLastProjectName() ) ) {
+		if ( getOpenLastProject() && !getLastProjectName().empty() && rdo::File::exist( getLastProjectName() ) ) {
 			model->openModel( getLastProjectName() );
 			newModel = false;
 		}
@@ -583,7 +584,7 @@ std::string RDOStudioApp::getFullHelpFileName( std::string str )
 {
 	str.insert( 0, rdo::extractFilePath( RDOStudioApp::getFullFileName() ) );
 	
-	if ( !rdo::isFileExists( str ) ) {
+	if ( !rdo::File::exist( str ) ) {
 		::MessageBox( NULL, rdo::format( ID_MSG_NO_HELP_FILE, str.c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return "";
 	}

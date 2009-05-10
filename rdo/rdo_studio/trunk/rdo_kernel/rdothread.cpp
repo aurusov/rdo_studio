@@ -1,7 +1,7 @@
 #include "rdothread.h"
 #include "rdokernel.h"
 #include <rdocommon.h>
-#include <afxwin.h>
+#include <windows.h>
 #include <fstream>
 #include <algorithm>
 

@@ -24,12 +24,7 @@
 #include <rdofrm.h>
 #include <rdortp.h>
 #include <rdo_resources.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include <rdodebug.h>
 
 #ifndef DISABLE_CORBA
 
@@ -392,7 +387,7 @@ public:
 
 private:
 	RDOThreadSimulator* m_simulator;
-	std::stringstream   m_stream;
+	rdo::textstream   m_stream;
 };
 
 // --------------------------------------------------------------------
@@ -771,21 +766,21 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		}
 		case RT_SIMULATOR_GET_MODEL_STRUCTURE: {
 			msg.lock();
-			*static_cast<std::stringstream*>(msg.param) << parser->getModelStructure();
+			*static_cast<rdo::textstream*>(msg.param) << parser->getModelStructure();
 			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_MODEL_RESULTS: {
 			msg.lock();
-			*static_cast<std::stringstream*>(msg.param) << resultString.str();
+			*static_cast<rdo::textstream*>(msg.param) << resultString.str();
 			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_MODEL_RESULTS_INFO: {
 			msg.lock();
-			*static_cast<std::stringstream*>(msg.param) << parser->getChanges();
-			*static_cast<std::stringstream*>(msg.param) << std::endl << std::endl;
-			*static_cast<std::stringstream*>(msg.param) << resultInfoString.str();
+			*static_cast<rdo::textstream*>(msg.param) << parser->getChanges();
+			*static_cast<rdo::textstream*>(msg.param) << std::endl << std::endl;
+			*static_cast<rdo::textstream*>(msg.param) << resultInfoString.str();
 			msg.unlock();
 			break;
 		}
@@ -998,11 +993,11 @@ void RDOThreadSimulator::closeModel()
 		}
 	} catch (...) {
 		parser = NULL;
-		TRACE( "******************************** Ошибка удаления parser\n" );
+		TRACE(_T("******************************** Ошибка удаления parser\n"));
 	}
 }
 
-void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info )
+void RDOThreadSimulator::parseSMRFileInfo(rdo::textstream& smr, rdoModelObjects::RDOSMRFileInfo& info)
 {
 	rdoParse::RDOParserSMRInfo parser;
 
@@ -1106,7 +1101,7 @@ void RDOThreadSimulator::corbaGetRTP( GetRTP* RTPList )
 		rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 		while ( rtp_it != rtpList.end() )
 		{
-			TRACE("rtp.name = %s\n", rtp_it->name().c_str());
+			TRACE1(_T("rtp.name = %s\n"), rtp_it->name().c_str());
 			rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
 			while ( param_it != rtp_it->m_params.end() )
 			{
@@ -1119,14 +1114,14 @@ void RDOThreadSimulator::corbaGetRTP( GetRTP* RTPList )
 				{
 					info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
 				}
-				TRACE( "%s\n", info.c_str() );
+				TRACE1(_T("%s\n"), info.c_str());
 
 				if ( param_it->typeID() == rdoRuntime::RDOType::t_enum )
 				{
 					rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum().begin();
 					while ( enum_it != param_it->getEnum().end() )
 					{
-						TRACE( "  - enum - %s\n", enum_it->c_str() );
+						TRACE1(_T("  - enum - %s\n"), enum_it->c_str());
 						enum_it++;
 					}
 				}
@@ -1167,11 +1162,11 @@ void RDOThreadSimulator::corbaGetRSS( GetRSS* RSSList )
 		rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 		while ( rss_it != rssList.end() )
 		{
-			TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
+			TRACE2(_T("rss.name = %s: %s\n"), rss_it->name().c_str(), rss_it->getType().name().c_str());
 			rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
 			while ( param_it != rss_it->end() )
 			{
-				TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
+				TRACE2(_T("  %s = %s\n"), param_it->first.c_str(), param_it->second.getAsString().c_str());
 				param_it++;
 			}
 			rss_it++;

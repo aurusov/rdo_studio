@@ -2,12 +2,6 @@
 #include "rdoprocess.h"
 #include "rdocalc.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
@@ -144,7 +138,7 @@ bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
 
 RDOBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
 {
-	TRACE( "%7.1f GENERATE\n", sim->getCurrentTime() );
+//	TRACE( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval( sim );
 	RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
 	//this->TransactGoIn(transact);
@@ -201,7 +195,7 @@ bool RDOPROCSeize::onCheckCondition( RDOSimulator* sim )
 			// Занимаем ресурс, если свободен
 			if ( forRes.rss->getParam(forRes.Id_param) == forRes.enum_free ) {
 			forRes.rss->setParam(forRes.Id_param, forRes.enum_buzy);	
-			TRACE( "%7.1f SEIZE-%d\n", sim->getCurrentTime() ,index );
+//			TRACE( "%7.1f SEIZE-%d\n", sim->getCurrentTime() ,index );
 			return true;
 			} 
 			else {
@@ -253,7 +247,7 @@ return false;
 
 RDOBaseOperation::BOResult RDOPROCRelease::onDoOperation( RDOSimulator* sim )
 {
-	TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
+//	TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }
@@ -283,7 +277,7 @@ bool RDOPROCAdvance::onCheckCondition( RDOSimulator* sim )
 RDOBaseOperation::BOResult RDOPROCAdvance::onDoOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		TRACE( "%7.1f ADVANCE BEGIN\n", sim->getCurrentTime() );
+//		TRACE( "%7.1f ADVANCE BEGIN\n", sim->getCurrentTime() );
 		double timeLeave = delayCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime();
 		leave_list.push_back( LeaveTr(transacts.front(), timeLeave) );
 		transacts.erase( transacts.begin() );
@@ -295,7 +289,7 @@ RDOBaseOperation::BOResult RDOPROCAdvance::onDoOperation( RDOSimulator* sim )
 			std::list< LeaveTr >::iterator it = leave_list.begin();
 				while ( it != leave_list.end() ) {
 					if ( tnow >= it->timeLeave ) {
-						TRACE( "%7.1f ADVANCE END\n", it->timeLeave );
+//						TRACE( "%7.1f ADVANCE END\n", it->timeLeave );
 						it->transact->next();
 						leave_list.erase( it );
 						return RDOBaseOperation::BOR_planned_and_run;
@@ -316,7 +310,7 @@ bool RDOPROCTerminate::onCheckCondition( RDOSimulator* sim )
 
 RDOBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 {
-	TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
+//	TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
 	RDOPROCTransact* transact = transacts.front();
 	transact->setState( RDOResource::CS_Erase );
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
