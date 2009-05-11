@@ -91,7 +91,9 @@ class RDOFuzzyType: public RDOType, public RDORuntimeParent
 public:
 	RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition);
 	virtual ~RDOFuzzyType();
-	virtual tstring asString() const;
+
+	virtual tstring  asString()                    const;
+	virtual RDOValue cast    (CREF(RDOValue) from) const;
 
 	rbool operator== (CREF(RDOFuzzyType) type) const;
 	rbool operator!= (CREF(RDOFuzzyType) type) const;

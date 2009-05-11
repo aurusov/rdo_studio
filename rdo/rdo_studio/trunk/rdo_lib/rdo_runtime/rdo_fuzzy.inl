@@ -78,6 +78,11 @@ inline tstring RDOFuzzyType::asString() const
 	return _T("RDOFuzzyType");
 }
 
+inline RDOValue RDOFuzzyType::cast(CREF(RDOValue) from) const
+{
+	throw RDOTypeException();
+}
+
 inline rbool RDOFuzzyType::operator== (CREF(RDOFuzzyType) type) const
 {
 	return this == &type;

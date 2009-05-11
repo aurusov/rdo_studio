@@ -8,25 +8,30 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnum
 // ----------------------------------------------------------------------------
-RDORTPEnum::RDORTPEnum( const RDOParserObject* _parent, const RDOValue& first ):
-	RDOType( g_unknow ),
-	RDOParserObject( _parent )
+RDORTPEnum::RDORTPEnum(CPTR(RDOParserObject) _parent, CREF(RDOValue) first)
+	: RDOType        (g_unknow)
+	, RDOParserObject(_parent )
 {
-	m_type = new rdoRuntime::RDOEnumType( parser()->runtime() );
-	add( first );
+	m_type = new rdoRuntime::RDOEnumType(parser()->runtime());
+	add(first);
 }
 
 RDORTPEnum::~RDORTPEnum()
 {
 }
 
-const RDOType* RDORTPEnum::cast( const RDOType& toType ) const
+CPTR(RDOType) RDORTPEnum::cast(CREF(RDOType) toType) const
 {
-	switch ( toType->typeID() )
+	switch (toType->typeID())
 	{
-		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<const RDORTPEnum&>(toType)) ? this : NULL;
+		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<CREF(RDORTPEnum)>(toType)) ? this : NULL;
 	}
 	return NULL;
+}
+
+rdoRuntime::RDOValue RDORTPEnum::cast(CREF(rdoRuntime::RDOValue) from) const
+{
+	return m_type->cast(from);
 }
 
 void RDORTPEnum::add( const RDOValue& next )
@@ -40,14 +45,14 @@ void RDORTPEnum::add( const RDOValue& next )
 
 rdoRuntime::RDOValue RDORTPEnum::findEnumValueWithThrow( const RDOParserSrcInfo& val_src_info, const std::string& val ) const
 {
-	unsigned int result = __enum()->findEnum( val );
-	if ( result == rdoRuntime::RDOEnumType::END )
+	rdoRuntime::RDOValue result = cast(rdoRuntime::RDOValue(val, rdoRuntime::g_identificator));
+	if (result.typeID() == rdoRuntime::RDOType::t_unknow)
 	{
 		parser()->error_push_only( val_src_info, rdo::format("Неверное значение параметра перечислимого типа: %s", val.c_str()) );
 		parser()->error_push_only( src_info(), rdo::format("Возможные значения: %s", __enum()->asString().c_str()) );
 		parser()->error_push_done();
 	}
-	return rdoRuntime::RDOValue( *__enum(), val );
+	return result;
 }
 
 rdoRuntime::RDOValue RDORTPEnum::getFirstValue() const

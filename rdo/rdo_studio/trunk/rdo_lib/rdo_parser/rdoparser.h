@@ -39,15 +39,17 @@ class RDOPROCProcess;
 class RDORTPEnumParamType;
 
 class RDORTPFuzzyParam;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOSyntaxException
 // ----------------------------------------------------------------------------
 class RDOSyntaxException: public rdoRuntime::RDOException
 {
 public:
-   RDOSyntaxException( const std::string& message ): RDOException( message ) {}
-
-   virtual std::string getType() const { return "RDO Syntax Error"; }
+   RDOSyntaxException(CREF(tstring) message)
+	   : RDOException(message)
+   {}
+   virtual tstring getType() const { return _T("RDO Syntax Error"); }
 };
 
 // ----------------------------------------------------------------------------
@@ -55,11 +57,12 @@ public:
 // ----------------------------------------------------------------------------
 #define DEFINE_OBJECT_CONTAINER_NONAME( Name ) \
 public: \
-	void                             insert##Name ( RDO##Name* value ); \
-	RDO##Name*                       getLast##Name()       { return !m_all##Name.empty() ? m_all##Name.back() : NULL; } \
-	const std::vector< RDO##Name* >& get##Name##s () const { return m_all##Name; } \
+	typedef std::vector<PTR(RDO##Name)> Name##List; \
+	void                insert##Name ( RDO##Name* value ); \
+	PTR(RDO##Name)      getLast##Name()       { return !m_all##Name.empty() ? m_all##Name.back() : NULL; } \
+	CREF(Name##List)    get##Name##s () const { return m_all##Name; } \
 private: \
-	std::vector< RDO##Name* > m_all##Name;
+	Name##List m_all##Name;
 
 #define DEFINE_OBJECT_CONTAINER( Name ) \
 DEFINE_OBJECT_CONTAINER_NONAME( Name ) \

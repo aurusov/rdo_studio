@@ -9,6 +9,7 @@
 #include <rdoparser_object.h>
 #include <rdoparser.h>
 #include <rdorss.h>
+#include <rdodebug.h>
 #include <list>
 
 namespace rdoParse
@@ -32,43 +33,39 @@ public:
 	typedef typename List::iterator       Iterator;
 	typedef typename List::const_iterator CIterator;
 
-	RDOList():
-		m_parser( NULL )
-	{
-	}
-	RDOList( rdoParse::RDOParser* parser ):
-		m_parser( parser )
-	{
-	}
-	void operator= ( const RDOList<T>& obj )
+	RDOList()
+		: m_parser(NULL)
+	{}
+
+	RDOList(PTR(rdoParse::RDOParser) parser)
+		: m_parser(parser)
+	{}
+
+	void operator= (CREF(RDOList<T>) obj)
 	{
 		m_parser = obj.m_parser;
 		m_list.clear();
-		CIterator it = obj.begin();
-		while ( it != obj.end() )
-		{
-			m_list.push_back( *it );
-			it++;
-		}
+		for (CIterator it = obj.begin(); it != obj.end(); ++it)
+			m_list.push_back(*it);
 	}
 
 	 Iterator     begin()       { return m_list.begin(); }
 	 Iterator     end  ()       { return m_list.end();   }
 	CIterator     begin() const { return m_list.begin(); }
 	CIterator     end  () const { return m_list.end();   }
-	unsigned int  size () const { return m_list.size();  }
-	CIterator     found( const std::string& name ) const
+	ruint         size () const { return m_list.size();  }
+	CIterator     found(CREF(tstring) name) const
 	{
-		return std::find_if( begin(), end(), rdoParse::compareNameRef<T>(name) );
+		return std::find_if(begin(), end(), rdoParse::compareNameRef<T>(name));
 	}
-	bool exist( const std::string& name ) const
+	rbool exist(CREF(tstring) name) const
 	{
 		return found( name ) != end();
 	}
-	const T& operator[] ( const std::string& name ) const
+	CREF(T) operator[] (CREF(tstring) name) const
 	{
-		List::const_iterator it = found( name );
-		if ( it != end() )
+		List::const_iterator it = found(name);
+		if (it != end())
 		{
 			return *it;
 		}
@@ -80,28 +77,28 @@ public:
 	}
 
 protected:
-	List                 m_list;
-	rdoParse::RDOParser* m_parser;
+	List                      m_list;
+	PTR(rdoParse::RDOParser)  m_parser;
 };
 
 // --------------------------------------------------------------------
 // ---------- Базовая часть mbuilder-объекта
 // --------------------------------------------------------------------
-#define MBUILDER_OBJECT( Class )                           \
+#define MBUILDER_OBJECT(Class)                             \
 class Class                                                \
 {                                                          \
 friend class Class##List;                                  \
 public:                                                    \
-	Class(): m_exist( false ), m_name("") {}               \
-	Class( const Class& obj );                             \
+	Class(): m_exist( false ), m_name(_T("")) {}           \
+	Class(CREF(Class) obj);                                \
                                                            \
-	const std::string& name() const    { return m_name;  } \
-	bool               exist() const   { return m_exist; } \
-	void operator= (const Class& copy );                   \
+	CREF(tstring)  name () const       { return m_name;  } \
+	rbool          exist() const       { return m_exist; } \
+	void operator= (CREF(Class) copy);                     \
                                                            \
 private:                                                   \
-	std::string m_name;                                    \
-	bool        m_exist;
+	tstring  m_name;                                       \
+	rbool    m_exist;
 
 // --------------------------------------------------------------------
 // ---------- RDOResType
@@ -114,62 +111,62 @@ public:
 		rt_temporary
 	};
 	// Проинициализировать по существующему типу
-	RDOResType( const rdoParse::RDORTPResType& rtp );
+	RDOResType(CREF(rdoParse::RDORTPResType) rtp);
 	// Создать новый тип
-	RDOResType( const std::string& name, Type type = rt_permanent );
+	RDOResType(CREF(tstring) name, Type type = rt_permanent);
 
 	MBUILDER_OBJECT(Param)
 	friend class RDOResType;
 	public:
-		Param( const rdoParse::RDORTPParam& param );
-		Param( const std::string& name, const rdoRuntime::RDOType* type, const rdoRuntime::RDOValue& def = rdoRuntime::g_unknow );
-		Param( const std::string& name, const rdoRuntime::RDOValue& def );
-		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::g_unknow );
+		Param(CREF(rdoParse::RDORTPParam) param);
+		Param(CREF(tstring) name, CPTR(rdoRuntime::RDOType) type, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
+		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def);
+		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
 
-		const rdoRuntime::RDOType*         type() const       { return m_type;             }
+		CPTR(rdoRuntime::RDOType)          type() const       { return m_type;             }
 		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->typeID();   }
-		std::string                        typeStr() const    { return m_type->asString(); }
+		tstring                            typeStr() const    { return m_type->asString(); }
 
-		int                         id() const         { return m_id;  }
+		rsint                         id() const         { return m_id;  }
 
-		bool                        hasDiap() const    { return m_min.typeID() != rdoRuntime::RDOType::t_unknow && m_max.typeID() != rdoRuntime::RDOType::t_unknow; }
-		const rdoRuntime::RDOValue& getMin() const     { return m_min; }
-		const rdoRuntime::RDOValue& getMax() const     { return m_max; }
-		void                        setDiap( const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max );
+		rbool                       hasDiap() const     { return m_min.typeID() != rdoRuntime::RDOType::t_unknow && m_max.typeID() != rdoRuntime::RDOType::t_unknow; }
+		CREF(rdoRuntime::RDOValue)  getMin () const     { return m_min; }
+		CREF(rdoRuntime::RDOValue)  getMax () const     { return m_max; }
+		void                        setDiap(CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max);
 
-		bool                        hasDefault() const { return m_default.typeID() != rdoRuntime::RDOType::t_unknow; }
-		const rdoRuntime::RDOValue& getDefault() const { return m_default; }
-		void                        setDefault( const rdoRuntime::RDOValue& def );
+		rbool                       hasDefault() const { return m_default.typeID() != rdoRuntime::RDOType::t_unknow; }
+		CREF(rdoRuntime::RDOValue)  getDefault() const { return m_default; }
+		void                        setDefault(CREF(rdoRuntime::RDOValue) def);
 
-		const rdoRuntime::RDOEnumType&  getEnum() const
+		CREF(rdoRuntime::RDOEnumType)  getEnum() const
 		{
-			_ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
-			return *static_cast<const rdoRuntime::RDOEnumType*>(m_type);
+			ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
+			return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type);
 		}
 
-		bool operator== ( const Param& param ) const;
+		rbool operator== (CREF(Param) param) const;
 
 	private:
-		const rdoRuntime::RDOType* m_type;
+		CPTR(rdoRuntime::RDOType)  m_type;
 		rdoRuntime::RDOValue       m_min;
 		rdoRuntime::RDOValue       m_max;
 		rdoRuntime::RDOValue       m_default;
-		int                        m_id;
+		rsint                      m_id;
 	};
 	class ParamList: public RDOList<Param>
 	{
 	public:
-		bool append( Param& param );
+		rbool append(REF(Param) param);
 	};
 	ParamList m_params;
 
-	Type   getType()     const { return m_type;                 }
-	bool   isPermanent() const { return m_type == rt_permanent; }
-	int    id()          const { return m_id;                   }
+	Type   getType    () const { return m_type;                 }
+	rbool  isPermanent() const { return m_type == rt_permanent; }
+	rsint  id         () const { return m_id;                   }
 
 private:
 	Type   m_type;
-	int    m_id;
+	rsint  m_id;
 };
 
 // --------------------------------------------------------------------
@@ -178,45 +175,46 @@ private:
 MBUILDER_OBJECT(RDOResource)
 public:
 	// Проинициализировать по существующему ресурсу
-	RDOResource( const rdoParse::RDORSSResource& rss );
+	RDOResource(CREF(rdoParse::RDORSSResource) rss);
 	// Создать новый ресурс
-	RDOResource( const RDOResType& rtp, const std::string& name );
+	RDOResource(CREF(RDOResType) rtp, CREF(tstring) name);
 
-	const RDOResType&  getType() const { return m_rtp; }
-	int                getID  () const { return m_id;  }
+	CREF(RDOResType)  getType() const { return m_rtp; }
+	rsint             getID  () const { return m_id;  }
 	
-	typedef std::map< std::string, rdoRuntime::RDOValue > Params;
+	typedef std::map< tstring, rdoRuntime::RDOValue > Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
 	Params::const_iterator end  () const { return m_params.end();   }
-	unsigned int           size () const { return m_params.size();  }
-	Params::mapped_type&   operator[] ( const std::string& param );
-	Params::const_iterator operator[] ( const std::string& param ) const;
+	ruint                  size () const { return m_params.size();  }
+
+	REF(Params::mapped_type)   operator[] (CREF(tstring) param);
+	Params::const_iterator     operator[] (CREF(tstring) param) const;
 
 	template <class T>
-	bool checkParserResourceType(const rdoParse::RDOParser& parser) const
+	rbool checkParserResourceType(CREF(rdoParse::RDOParser) parser) const
 	{
 		if (!exist())
 			return false;
 
-		return dynamic_cast<const T*>(parser.findRSSResource(name())) != NULL;
+		return dynamic_cast<CPTR(T)>(parser.findRSSResource(name())) != NULL;
 	}
 
 	template <class T>
-	rdoParse::RDORSSResource* createParserResource(rdoParse::RDOParser& parser, int id = rdoParse::RDORSSResource::UNDEFINED_ID) const
+	PTR(rdoParse::RDORSSResource) createParserResource(REF(rdoParse::RDOParser) parser, rsint id = rdoParse::RDORSSResource::UNDEFINED_ID) const
 	{
-		const rdoParse::RDORTPResType* pRTP = parser.findRTPResType(getType().name());
-		if ( !pRTP )
+		CPTR(rdoParse::RDORTPResType) pRTP = parser.findRTPResType(getType().name());
+		if (!pRTP)
 			return NULL;
 
 		return new T(&parser, name(), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
-	bool fillParserResourceParams(rdoParse::RDORSSResource* pRSS) const;
+	rbool fillParserResourceParams(PTR(rdoParse::RDORSSResource) pRSS) const;
 
 private:
 	RDOResType  m_rtp;
 	Params      m_params;
-	int         m_id;
+	rsint       m_id;
 };
 
 // --------------------------------------------------------------------
@@ -225,8 +223,8 @@ private:
 class RDOResTypeList: public RDOList<RDOResType>
 {
 public:
-	RDOResTypeList( rdoParse::RDOParser* parser );
-	bool append( RDOResType& rtp );
+	RDOResTypeList(PTR(rdoParse::RDOParser) parser);
+	rbool append(REF(RDOResType) rtp);
 };
 
 // --------------------------------------------------------------------
@@ -235,17 +233,17 @@ public:
 class RDOResourceList: public RDOList<RDOResource>
 {
 public:
-	RDOResourceList( rdoParse::RDOParser* parser );
+	RDOResourceList(PTR(rdoParse::RDOParser) parser);
 
 	// --------------------------------------------------------------------
 	// ---- Добавление *нового* ресурса
 	// --------------------------------------------------------------------
-	template<class T> bool append( RDOResource& rss )
+	template<class T> rbool append(REF(RDOResource) rss)
 	{
-		if ( exist(rss.name()) )
+		if (exist(rss.name()))
 			return false;
 
-		rdoParse::RDORSSResource* pRSS = rss.createParserResource<T>(*m_parser);
+		PTR(rdoParse::RDORSSResource) pRSS = rss.createParserResource<T>(*m_parser);
 		if (!rss.fillParserResourceParams(pRSS))
 		{
 			delete pRSS;
@@ -259,21 +257,20 @@ public:
 	// --------------------------------------------------------------------
 	// ---- Замена существующего ресурса новым
 	// --------------------------------------------------------------------
-	template<class T> bool replace( RDOResource& rssNew )
+	template<class T> rbool replace(REF(RDOResource) rssNew)
 	{
 		Iterator itRSSOld = begin();
 		while (itRSSOld != end())
 		{
 			if (itRSSOld->name() == rssNew.name())
-			{
 				break;
-			}
 			++itRSSOld;
 		}
+
 		if (itRSSOld == end())
 			return false;
 
-		rdoParse::RDORSSResource* pRSS = rssNew.createParserResource<T>(*m_parser, itRSSOld->getID());
+		PTR(rdoParse::RDORSSResource) pRSS = rssNew.createParserResource<T>(*m_parser, itRSSOld->getID());
 		if (!itRSSOld->fillParserResourceParams(pRSS))
 		{
 			delete pRSS;

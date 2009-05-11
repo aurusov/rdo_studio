@@ -6,6 +6,8 @@
 
 namespace rdoRuntime {
 
+class RDOValue;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
@@ -29,7 +31,8 @@ public:
 	TypeID  typeID     () const;
 	rbool   operator!= (CREF(RDOType) type);
 
-	virtual tstring asString() const = 0;
+	virtual tstring  asString()                    const = 0;
+	virtual RDOValue cast    (CREF(RDOValue) from) const = 0;
 
 	static CREF(RDOType) getTypeByID(TypeID typeID);
 
@@ -45,7 +48,8 @@ class RDOType__##Class: public RDOType \
 { \
 public: \
 	RDOType__##Class(): RDOType(t_##Class) {} \
-	virtual tstring asString() const { return ClassName; } \
+	virtual tstring  asString() const { return ClassName; } \
+	virtual RDOValue cast    (CREF(RDOValue) from) const; \
 }; \
 extern RDOType__##Class g_##Class;
 

@@ -35,6 +35,25 @@ inline tstring RDOEnumType::asString() const
 	return str();
 }
 
+inline RDOValue RDOEnumType::cast(CREF(RDOValue) from) const
+{
+	switch (from.typeID())
+	{
+		case RDOType::t_identificator: {
+			return (findEnum(from.getIdentificator()) != END) ?
+				RDOValue(*this, from.getIdentificator()) :
+				RDOValue(g_unknow);
+			break;
+		}
+		case RDOType::t_enum: {
+			if (this == &from.type())
+				return from;
+			break;
+		}
+	}
+	throw RDOTypeException();
+}
+
 inline rbool                        RDOEnumType::empty    () const { return m_enum.empty(); }
 inline const RDOEnumType::CIterator RDOEnumType::begin    () const { return m_enum.begin(); }
 inline const RDOEnumType::CIterator RDOEnumType::end      () const { return m_enum.end();   }

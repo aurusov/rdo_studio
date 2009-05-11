@@ -162,54 +162,6 @@
 				RelativePath=".\rdo_value.inl"
 				>
 			</File>
-			<Filter
-				Name=".rdo_fuzzy"
-				>
-				<File
-					RelativePath=".\rdo_fuzzy.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_fuzzy.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_fuzzy.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_fuzzy_def.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name=".rdo_enum"
-				>
-				<File
-					RelativePath=".\rdo_enum.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_enum.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name=".rdo_type"
-				>
-				<File
-					RelativePath=".\rdo_type.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_type.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_type.inl"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name=".rdo_frame"
@@ -946,6 +898,54 @@
 				RelativePath="pch.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name=".rdo_type"
+			>
+			<File
+				RelativePath=".\rdo_type.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_type.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_type.inl"
+				>
+			</File>
+			<Filter
+				Name=".rdo_enum"
+				>
+				<File
+					RelativePath=".\rdo_enum.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_enum.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".rdo_fuzzy"
+				>
+				<File
+					RelativePath=".\rdo_fuzzy.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_fuzzy.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_fuzzy.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_fuzzy_def.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

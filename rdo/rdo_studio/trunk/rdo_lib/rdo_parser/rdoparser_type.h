@@ -3,6 +3,7 @@
 
 #include "rdoparser_object.h"
 #include <rdo_type.h>
+#include <rdo_value.h>
 
 namespace rdoParse 
 {
@@ -13,20 +14,20 @@ namespace rdoParse
 class RDOType
 {
 public:
-	RDOType( const rdoRuntime::RDOType& type ):
-		m_type( &type )
-	{
-	}
-	const rdoRuntime::RDOType&        type() const { return *m_type; }
-	const rdoRuntime::RDOType* operator-> () const { return  m_type; }
+	RDOType(CREF(rdoRuntime::RDOType) type)
+		: m_type(&type)
+	{}
+	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
+	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
 
-	virtual std::string    name() const = 0;
-	virtual const RDOType* cast( const RDOType& toType ) const = 0;
+	virtual tstring              name()                                const = 0;
+	virtual CPTR(RDOType)        cast(CREF(RDOType) toType)            const = 0;
+	virtual rdoRuntime::RDOValue cast(CREF(rdoRuntime::RDOValue) from) const = 0;
 
-	static const RDOType& getTypeByID( rdoRuntime::RDOType::TypeID typeID );
+	static CREF(RDOType) getTypeByID(rdoRuntime::RDOType::TypeID typeID);
 
 protected:
-	const rdoRuntime::RDOType* m_type;
+	CPTR(rdoRuntime::RDOType) m_type;
 };
 
 // ----------------------------------------------------------------------------
@@ -37,8 +38,9 @@ class RDOType__##Class: public RDOType \
 { \
 public: \
 	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {} \
-	virtual std::string    name() const { return "" #Class ""; } \
-	virtual const RDOType* cast( const RDOType& toType ) const; \
+	virtual tstring              name() const { return "" #Class ""; } \
+	virtual const RDOType*       cast(CREF(RDOType) toType) const; \
+	virtual rdoRuntime::RDOValue cast(CREF(rdoRuntime::RDOValue) from) const; \
 }; \
 extern RDOType__##Class g_##Class;
 

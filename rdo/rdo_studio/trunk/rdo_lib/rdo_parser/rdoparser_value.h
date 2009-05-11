@@ -68,14 +68,14 @@ public:
 			m_value.typeID() == rdoRuntime::RDOType::t_string;
 	}
 
-	static RDOValue getIdentificator( const std::string& identificator )
+	static RDOValue getIdentificator(CREF(tstring) identificator)
 	{
-		return RDOValue( RDOParserSrcInfo(identificator) );
+		return RDOValue(RDOParserSrcInfo(identificator));
 	}
 
 private:
 	rdoRuntime::RDOValue m_value;
-	const RDOType*       m_type;
+	CPTR(RDOType)        m_type;
 };
 
 } // namespace rdoParse
