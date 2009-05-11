@@ -60,13 +60,13 @@ rdoRuntime::RDOValue RDOType__bool::cast(CREF(rdoRuntime::RDOValue) from) const
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE
 // ----------------------------------------------------------------------------
-#define DECLARE_ATOM_TYPE( Class ) RDOType__##Class g_##Class;
+#define DECLARE_ATOM_TYPE(Class) RDOType__##Class g_##Class;
 
-DECLARE_ATOM_TYPE( unknow        );
-DECLARE_ATOM_TYPE( identificator );
-DECLARE_ATOM_TYPE( int           );
-DECLARE_ATOM_TYPE( real          );
-DECLARE_ATOM_TYPE( bool          );
-DECLARE_ATOM_TYPE( string        );
+DECLARE_ATOM_TYPE(unknow       );
+DECLARE_ATOM_TYPE(identificator);
+DECLARE_ATOM_TYPE(int          );
+DECLARE_ATOM_TYPE(real         );
+DECLARE_ATOM_TYPE(bool         );
+DECLARE_ATOM_TYPE(string       );
 
 } // namespace rdoRuntime

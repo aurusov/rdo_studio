@@ -65,7 +65,7 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 	}
 }
 
-inline RDOValue::RDOValue(int value)
+inline RDOValue::RDOValue(rsint value)
 	: m_type(&g_int)
 {
 	m_value.i_value = value;
@@ -106,6 +106,15 @@ inline RDOValue::RDOValue(CREF(RDOEnumType) enums, CREF(tstring) value)
 		RDOValueException();
 }
 
+inline RDOValue::RDOValue(CREF(RDOEnumType) enums, ruint index)
+	: m_type(&enums)
+{
+	if (index == RDOEnumType::END || index >= enums.getValues().size())
+		RDOValueException();
+
+	m_value.i_value = index;
+}
+
 inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
 	: m_type(&fuzzy.type())
 {
@@ -127,12 +136,12 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
 	m_value.s_value = new tstring(value);
 }
 
-inline int RDOValue::getInt() const
+inline rsint RDOValue::getInt() const
 {
 	switch (typeID())
 	{
 		case RDOType::t_int  : return m_value.i_value;
-		case RDOType::t_real : return (int)m_value.d_value;
+		case RDOType::t_real : return (rsint)m_value.d_value;
 		case RDOType::t_enum : return m_value.i_value;
 		case RDOType::t_bool : return m_value.b_value ? 1 : 0;
 		case RDOType::t_fuzzy: return const_cast<RDOValue*>(this)->__fuzzyV().defuzzyfication().getInt();
@@ -140,12 +149,12 @@ inline int RDOValue::getInt() const
 	throw RDOValueException();
 }
 
-inline int RDOValue::getEnumAsInt() const
+inline rsint RDOValue::getEnumAsInt() const
 {
 	switch (typeID())
 	{
 		case RDOType::t_int : return m_value.i_value;
-		case RDOType::t_real: return (int)m_value.d_value;
+		case RDOType::t_real: return (rsint)m_value.d_value;
 		case RDOType::t_enum: return m_value.i_value;
 		case RDOType::t_bool: return m_value.b_value ? 1 : 0;
 	}
@@ -177,7 +186,7 @@ inline rbool RDOValue::getBool() const
 {
 	switch (typeID())
 	{
-		case RDOType::t_bool  : return m_value.b_value;
+		case RDOType::t_bool: return m_value.b_value;
 	}
 	throw RDOValueException();
 }
@@ -326,60 +335,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator!= (CREF(RDOValue) rdovalue) const
 {
-	switch (typeID()) 
-	{
-		case RDOType::t_int:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.i_value != rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.i_value != rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_real:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.d_value != rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.d_value != rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_bool:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_bool: return m_value.b_value != rdovalue.m_value.b_value;
-			}
-			break;
-		}
-		case RDOType::t_enum:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_enum: if (m_type == rdovalue.m_type) return m_value.i_value != rdovalue.m_value.i_value; break;
-			}
-			break;
-		}
-		case RDOType::t_string:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_string: return __stringV() != rdovalue.__stringV();
-			}
-			break;
-		}
-		case RDOType::t_identificator:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_identificator: return __stringV() != rdovalue.__stringV();
-			}
-			break;
-		}
-	}
-	throw RDOValueException();
+	return !operator==(rdovalue);
 }
 
 inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
@@ -430,127 +386,17 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue)
 
 inline rbool RDOValue::operator> (CREF(RDOValue) rdovalue) const
 {
-	switch (typeID()) {
-		case RDOType::t_int:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.i_value > rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.i_value > rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_real:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.d_value > rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.d_value > rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_bool:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_bool: return m_value.b_value > rdovalue.m_value.b_value;
-			}
-			break;
-		}
-		case RDOType::t_string:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_string: return __stringV() > rdovalue.__stringV();
-			}
-			break;
-		}
-	}
-	throw RDOValueException();
+	return !operator<=(rdovalue);
 }
 
 inline rbool RDOValue::operator<= (CREF(RDOValue) rdovalue) const
 {
-	switch (typeID())
-	{
-		case RDOType::t_int:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.i_value <= rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.i_value <= rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_real:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.d_value <= rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.d_value <= rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_bool:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_bool: return m_value.b_value <= rdovalue.m_value.b_value;
-			}
-			break;
-		}
-		case RDOType::t_string:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_string: return __stringV() <= rdovalue.__stringV();
-			}
-			break;
-		}
-	}
-	throw RDOValueException();
+	return operator<(rdovalue) || operator==(rdovalue);
 }
 
 inline rbool RDOValue::operator>= (CREF(RDOValue) rdovalue) const
 {
-	switch (typeID())
-	{
-		case RDOType::t_int:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.i_value >= rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.i_value >= rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_real:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_int : return m_value.d_value >= rdovalue.m_value.i_value;
-				case RDOType::t_real: return m_value.d_value >= rdovalue.m_value.d_value;
-			}
-			break;
-		}
-		case RDOType::t_bool:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_bool: return m_value.b_value >= rdovalue.m_value.b_value;
-			}
-			break;
-		}
-		case RDOType::t_string:
-		{
-			switch (rdovalue.typeID())
-			{
-				case RDOType::t_string: return __stringV() >= rdovalue.__stringV();
-			}
-			break;
-		}
-	}
-	throw RDOValueException();
+	return operator>(rdovalue) || operator==(rdovalue);
 }
 
 inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const

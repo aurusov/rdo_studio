@@ -20,18 +20,19 @@ public:
 
 	RDOValue(CREF(RDOValue)      rdovalue);
 	RDOValue(CREF(RDOType)       type    );
-	RDOValue(int                 value   );
+	RDOValue(rsint               value   );
 	RDOValue(ruint               value   );
 	RDOValue(double              value   );
 	RDOValue(rbool               value   );
 	RDOValue(REF(RDOEnumType)    enums   );
 	RDOValue(CREF(RDOEnumType)   enums, CREF(tstring) value);
+	RDOValue(CREF(RDOEnumType)   enums, ruint index);
 	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
 
-	int               getInt          () const;
-	int               getEnumAsInt    () const;
+	rsint             getInt          () const;
+	rsint             getEnumAsInt    () const;
 	CREF(RDOEnumType) getEnum         () const;
 	double            getDouble       () const;
 	rbool             getBool         () const;

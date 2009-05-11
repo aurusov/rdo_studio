@@ -53,12 +53,12 @@ public: \
 }; \
 extern RDOType__##Class g_##Class;
 
-DEFINE_ATOM_TYPE( unknow,        _T("unknow")        );
-DEFINE_ATOM_TYPE( identificator, _T("identificator") );
-DEFINE_ATOM_TYPE( int,           _T("integer")       );
-DEFINE_ATOM_TYPE( real,          _T("real")          );
-DEFINE_ATOM_TYPE( bool,          _T("bool")          );
-DEFINE_ATOM_TYPE( string,        _T("string")        );
+DEFINE_ATOM_TYPE(unknow,        _T("unknow")       );
+DEFINE_ATOM_TYPE(identificator, _T("identificator"));
+DEFINE_ATOM_TYPE(int,           _T("integer")      );
+DEFINE_ATOM_TYPE(real,          _T("real")         );
+DEFINE_ATOM_TYPE(bool,          _T("bool")         );
+DEFINE_ATOM_TYPE(string,        _T("string")       );
 
 } // namespace rdoRuntime
 
