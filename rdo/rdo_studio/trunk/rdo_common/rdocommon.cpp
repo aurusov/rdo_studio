@@ -11,14 +11,6 @@
 #include "rdocommon.h"
 // ===============================================================================
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static tchar THIS_FILE[] = __FILE__;
-#endif
-
-#include "../rdo_studio/resource.h"
-
 namespace rdo {
 
 tstring format(CPTR(tchar) str, ...)
@@ -134,16 +126,6 @@ tstring extractFilePath( CREF(tstring) fileName )
 
 namespace rdoSimulator
 {
-
-tstring RDOSyntaxError::getMessage(ErrorCode _error_code, REF(va_list) params)
-{
-	int res_id = -1;
-	switch (_error_code)
-	{
-		case rdoSimulator::RDOSyntaxError::UNKNOWN: res_id = IDS_ER_UNKNOWN; break;
-	}
-	return rdo::format(res_id, params);
-}
 
 RDOColoredElement::RDOColoredElement(CREF(RDOColor) _background, CREF(RDOColor) _foreground)
 	: background(_background)

@@ -182,8 +182,6 @@ struct RDOSyntaxError
 		, file      (_file      )
 		, warning   (_warning   )
 	{}
-
-	static tstring getMessage(ErrorCode _error_code, REF(va_list) params);
 };
 
 struct RDOFrameElement

@@ -10,6 +10,8 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <rdomacros.h>
+#include <rdotypes.h>
 
 // --------------------------------------------------------------------
 // #define RDOSIM_COMPATIBLE
@@ -53,7 +55,7 @@
 // ---------- RDOThread
 // --------------------------------------------------------------------
 #ifdef RDO_MT
-typedef unsigned int (*RDOThreadFun)( void* param );
+typedef ruint (*RDOThreadFun)(PTR(void) param);
 #endif
 
 class RDOThread
@@ -133,75 +135,75 @@ public:
 		RT_CORBA_PARSER_GET_RTP_COUNT,
 		RT_CORBA_PARSER_GET_RTP_PAR_COUNT
 	};
-	std::string messageToString( RDOTreadMessage message ) {
+	std::string messageToString(RDOTreadMessage message) {
 		switch ( message ) {
-			case RT_THREAD_CLOSE                      : return "RT_THREAD_CLOSE";
-			case RT_THREAD_CONNECTION                 : return "RT_THREAD_CONNECTION";
-			case RT_THREAD_DISCONNECTION              : return "RT_THREAD_DISCONNECTION";
-			case RT_THREAD_REGISTERED                 : return "RT_THREAD_REGISTERED";
-			case RT_THREAD_UNREGISTERED               : return "RT_THREAD_UNREGISTERED";
-			case RT_THREAD_STOP_AFTER                 : return "RT_THREAD_STOP_AFTER";
-			case RT_STUDIO_MODEL_NEW                  : return "RT_STUDIO_MODEL_NEW";
-			case RT_STUDIO_MODEL_OPEN                 : return "RT_STUDIO_MODEL_OPEN";
-			case RT_STUDIO_MODEL_SAVE                 : return "RT_STUDIO_MODEL_SAVE";
-			case RT_STUDIO_MODEL_SAVE_AS              : return "RT_STUDIO_MODEL_SAVE_AS";
-			case RT_STUDIO_MODEL_CLOSE                : return "RT_STUDIO_MODEL_CLOSE";
-			case RT_STUDIO_MODEL_BUILD                : return "RT_STUDIO_MODEL_BUILD";
-			case RT_STUDIO_MODEL_RUN                  : return "RT_STUDIO_MODEL_RUN";
-			case RT_STUDIO_MODEL_STOP                 : return "RT_STUDIO_MODEL_STOP";
-			case RT_STUDIO_MODEL_GET_TEXT             : return "RT_STUDIO_MODEL_GET_TEXT";
-			case RT_REPOSITORY_MODEL_NEW              : return "RT_REPOSITORY_MODEL_NEW";
-			case RT_REPOSITORY_MODEL_OPEN             : return "RT_REPOSITORY_MODEL_OPEN";
-			case RT_REPOSITORY_MODEL_OPEN_ERROR       : return "RT_REPOSITORY_MODEL_OPEN_ERROR";
-			case RT_REPOSITORY_MODEL_SAVE             : return "RT_REPOSITORY_MODEL_SAVE";
-			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return "RT_REPOSITORY_MODEL_OPEN_GET_NAME";
-			case RT_REPOSITORY_MODEL_SAVE_GET_NAME    : return "RT_REPOSITORY_MODEL_SAVE_GET_NAME";
-			case RT_REPOSITORY_MODEL_CLOSE            : return "RT_REPOSITORY_MODEL_CLOSE";
-			case RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  : return "RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE";
-			case RT_REPOSITORY_MODEL_CLOSE_ERROR      : return "RT_REPOSITORY_MODEL_CLOSE_ERROR";
-			case RT_REPOSITORY_MODEL_GET_FILEINFO     : return "RT_REPOSITORY_MODEL_GET_FILEINFO";
-			case RT_REPOSITORY_LOAD                   : return "RT_REPOSITORY_LOAD";
-			case RT_REPOSITORY_SAVE                   : return "RT_REPOSITORY_SAVE";
-			case RT_REPOSITORY_LOAD_BINARY            : return "RT_REPOSITORY_LOAD_BINARY";
-			case RT_SIMULATOR_PARSE_OK                : return "RT_SIMULATOR_PARSE_OK";
-			case RT_SIMULATOR_PARSE_ERROR             : return "RT_SIMULATOR_PARSE_ERROR";
-			case RT_SIMULATOR_PARSE_ERROR_SMR         : return "RT_SIMULATOR_PARSE_ERROR_SMR";
-			case RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY   : return "RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY";
-			case RT_SIMULATOR_PARSE_STRING            : return "RT_SIMULATOR_PARSE_STRING";
-			case RT_SIMULATOR_MODEL_STOP_OK           : return "RT_SIMULATOR_MODEL_STOP_OK";
-			case RT_SIMULATOR_MODEL_STOP_BY_USER      : return "RT_SIMULATOR_MODEL_STOP_BY_USER";
-			case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: return "RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR";
-			case RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY: return "RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY";
-			case RT_SIMULATOR_GET_MODEL_STRUCTURE     : return "RT_SIMULATOR_GET_MODEL_STRUCTURE";
-			case RT_SIMULATOR_GET_MODEL_RESULTS       : return "RT_SIMULATOR_GET_MODEL_RESULTS";
-			case RT_SIMULATOR_GET_MODEL_RESULTS_INFO  : return "RT_SIMULATOR_GET_MODEL_RESULTS_INFO";
-			case RT_SIMULATOR_GET_MODEL_EXITCODE      : return "RT_SIMULATOR_GET_MODEL_EXITCODE";
-			case RT_SIMULATOR_GET_LIST                : return "RT_SIMULATOR_GET_LIST";
-			case RT_SIMULATOR_GET_ERRORS              : return "RT_SIMULATOR_GET_ERRORS";
-			case RT_RUNTIME_MODEL_START_BEFORE        : return "RT_RUNTIME_MODEL_START_BEFORE";
-			case RT_RUNTIME_MODEL_START_AFTER         : return "RT_RUNTIME_MODEL_START_AFTER";
-			case RT_RUNTIME_MODEL_STOP_BEFORE         : return "RT_RUNTIME_MODEL_STOP_BEFORE";
-			case RT_RUNTIME_MODEL_STOP_AFTER          : return "RT_RUNTIME_MODEL_STOP_AFTER";
-			case RT_RUNTIME_TRACE_STRING              : return "RT_RUNTIME_TRACE_STRING";
-			case RT_RUNTIME_GET_MODE                  : return "RT_RUNTIME_GET_MODE";
-			case RT_RUNTIME_SET_MODE                  : return "RT_RUNTIME_SET_MODE";
-			case RT_RUNTIME_GET_SPEED                 : return "RT_RUNTIME_GET_SPEED";
-			case RT_RUNTIME_SET_SPEED                 : return "RT_RUNTIME_SET_SPEED";
-			case RT_RUNTIME_GET_SHOWRATE              : return "RT_RUNTIME_GET_SHOWRATE";
-			case RT_RUNTIME_SET_SHOWRATE              : return "RT_RUNTIME_SET_SHOWRATE";
-			case RT_RUNTIME_GET_TIMENOW               : return "RT_RUNTIME_GET_TIMENOW";
-			case RT_RUNTIME_GET_FRAME                 : return "RT_RUNTIME_GET_FRAME";
-			case RT_RUNTIME_GET_LAST_BREAKPOINT       : return "RT_RUNTIME_GET_LAST_BREAKPOINT";
-			case RT_RUNTIME_KEY_DOWN                  : return "RT_RUNTIME_KEY_DOWN";
-			case RT_RUNTIME_KEY_UP                    : return "RT_RUNTIME_KEY_UP";
-			case RT_RUNTIME_FRAME_AREA_DOWN           : return "RT_RUNTIME_FRAME_AREA_DOWN";
-			case RT_CODECOMP_GET_DATA                 : return "RT_CODECOMP_GET_DATA";
-			case RT_DEBUG_STRING                      : return "RT_DEBUG_STRING";
-			case RT_CORBA_PARSER_GET_RTP              : return "RT_CORBA_PARSER_GET_RTP";
-			case RT_CORBA_PARSER_GET_RSS              : return "RT_CORBA_PARSER_GET_RSS";
-			case RT_CORBA_PARSER_GET_RTP_COUNT        : return "RT_CORBA_PARSER_GET_RTP_COUNT";
-			case RT_CORBA_PARSER_GET_RTP_PAR_COUNT    : return "RT_CORBA_PARSER_GET_RTP_PAR_COUNT";
-			default                                   : return "RT_UNKNOWN";
+			case RT_THREAD_CLOSE                      : return _T("RT_THREAD_CLOSE");
+			case RT_THREAD_CONNECTION                 : return _T("RT_THREAD_CONNECTION");
+			case RT_THREAD_DISCONNECTION              : return _T("RT_THREAD_DISCONNECTION");
+			case RT_THREAD_REGISTERED                 : return _T("RT_THREAD_REGISTERED");
+			case RT_THREAD_UNREGISTERED               : return _T("RT_THREAD_UNREGISTERED");
+			case RT_THREAD_STOP_AFTER                 : return _T("RT_THREAD_STOP_AFTER");
+			case RT_STUDIO_MODEL_NEW                  : return _T("RT_STUDIO_MODEL_NEW");
+			case RT_STUDIO_MODEL_OPEN                 : return _T("RT_STUDIO_MODEL_OPEN");
+			case RT_STUDIO_MODEL_SAVE                 : return _T("RT_STUDIO_MODEL_SAVE");
+			case RT_STUDIO_MODEL_SAVE_AS              : return _T("RT_STUDIO_MODEL_SAVE_AS");
+			case RT_STUDIO_MODEL_CLOSE                : return _T("RT_STUDIO_MODEL_CLOSE");
+			case RT_STUDIO_MODEL_BUILD                : return _T("RT_STUDIO_MODEL_BUILD");
+			case RT_STUDIO_MODEL_RUN                  : return _T("RT_STUDIO_MODEL_RUN");
+			case RT_STUDIO_MODEL_STOP                 : return _T("RT_STUDIO_MODEL_STOP");
+			case RT_STUDIO_MODEL_GET_TEXT             : return _T("RT_STUDIO_MODEL_GET_TEXT");
+			case RT_REPOSITORY_MODEL_NEW              : return _T("RT_REPOSITORY_MODEL_NEW");
+			case RT_REPOSITORY_MODEL_OPEN             : return _T("RT_REPOSITORY_MODEL_OPEN");
+			case RT_REPOSITORY_MODEL_OPEN_ERROR       : return _T("RT_REPOSITORY_MODEL_OPEN_ERROR");
+			case RT_REPOSITORY_MODEL_SAVE             : return _T("RT_REPOSITORY_MODEL_SAVE");
+			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return _T("RT_REPOSITORY_MODEL_OPEN_GET_NAME");
+			case RT_REPOSITORY_MODEL_SAVE_GET_NAME    : return _T("RT_REPOSITORY_MODEL_SAVE_GET_NAME");
+			case RT_REPOSITORY_MODEL_CLOSE            : return _T("RT_REPOSITORY_MODEL_CLOSE");
+			case RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  : return _T("RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE");
+			case RT_REPOSITORY_MODEL_CLOSE_ERROR      : return _T("RT_REPOSITORY_MODEL_CLOSE_ERROR");
+			case RT_REPOSITORY_MODEL_GET_FILEINFO     : return _T("RT_REPOSITORY_MODEL_GET_FILEINFO");
+			case RT_REPOSITORY_LOAD                   : return _T("RT_REPOSITORY_LOAD");
+			case RT_REPOSITORY_SAVE                   : return _T("RT_REPOSITORY_SAVE");
+			case RT_REPOSITORY_LOAD_BINARY            : return _T("RT_REPOSITORY_LOAD_BINARY");
+			case RT_SIMULATOR_PARSE_OK                : return _T("RT_SIMULATOR_PARSE_OK");
+			case RT_SIMULATOR_PARSE_ERROR             : return _T("RT_SIMULATOR_PARSE_ERROR");
+			case RT_SIMULATOR_PARSE_ERROR_SMR         : return _T("RT_SIMULATOR_PARSE_ERROR_SMR");
+			case RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY   : return _T("RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY");
+			case RT_SIMULATOR_PARSE_STRING            : return _T("RT_SIMULATOR_PARSE_STRING");
+			case RT_SIMULATOR_MODEL_STOP_OK           : return _T("RT_SIMULATOR_MODEL_STOP_OK");
+			case RT_SIMULATOR_MODEL_STOP_BY_USER      : return _T("RT_SIMULATOR_MODEL_STOP_BY_USER");
+			case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: return _T("RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR");
+			case RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY: return _T("RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY");
+			case RT_SIMULATOR_GET_MODEL_STRUCTURE     : return _T("RT_SIMULATOR_GET_MODEL_STRUCTURE");
+			case RT_SIMULATOR_GET_MODEL_RESULTS       : return _T("RT_SIMULATOR_GET_MODEL_RESULTS");
+			case RT_SIMULATOR_GET_MODEL_RESULTS_INFO  : return _T("RT_SIMULATOR_GET_MODEL_RESULTS_INFO");
+			case RT_SIMULATOR_GET_MODEL_EXITCODE      : return _T("RT_SIMULATOR_GET_MODEL_EXITCODE");
+			case RT_SIMULATOR_GET_LIST                : return _T("RT_SIMULATOR_GET_LIST");
+			case RT_SIMULATOR_GET_ERRORS              : return _T("RT_SIMULATOR_GET_ERRORS");
+			case RT_RUNTIME_MODEL_START_BEFORE        : return _T("RT_RUNTIME_MODEL_START_BEFORE");
+			case RT_RUNTIME_MODEL_START_AFTER         : return _T("RT_RUNTIME_MODEL_START_AFTER");
+			case RT_RUNTIME_MODEL_STOP_BEFORE         : return _T("RT_RUNTIME_MODEL_STOP_BEFORE");
+			case RT_RUNTIME_MODEL_STOP_AFTER          : return _T("RT_RUNTIME_MODEL_STOP_AFTER");
+			case RT_RUNTIME_TRACE_STRING              : return _T("RT_RUNTIME_TRACE_STRING");
+			case RT_RUNTIME_GET_MODE                  : return _T("RT_RUNTIME_GET_MODE");
+			case RT_RUNTIME_SET_MODE                  : return _T("RT_RUNTIME_SET_MODE");
+			case RT_RUNTIME_GET_SPEED                 : return _T("RT_RUNTIME_GET_SPEED");
+			case RT_RUNTIME_SET_SPEED                 : return _T("RT_RUNTIME_SET_SPEED");
+			case RT_RUNTIME_GET_SHOWRATE              : return _T("RT_RUNTIME_GET_SHOWRATE");
+			case RT_RUNTIME_SET_SHOWRATE              : return _T("RT_RUNTIME_SET_SHOWRATE");
+			case RT_RUNTIME_GET_TIMENOW               : return _T("RT_RUNTIME_GET_TIMENOW");
+			case RT_RUNTIME_GET_FRAME                 : return _T("RT_RUNTIME_GET_FRAME");
+			case RT_RUNTIME_GET_LAST_BREAKPOINT       : return _T("RT_RUNTIME_GET_LAST_BREAKPOINT");
+			case RT_RUNTIME_KEY_DOWN                  : return _T("RT_RUNTIME_KEY_DOWN");
+			case RT_RUNTIME_KEY_UP                    : return _T("RT_RUNTIME_KEY_UP");
+			case RT_RUNTIME_FRAME_AREA_DOWN           : return _T("RT_RUNTIME_FRAME_AREA_DOWN");
+			case RT_CODECOMP_GET_DATA                 : return _T("RT_CODECOMP_GET_DATA");
+			case RT_DEBUG_STRING                      : return _T("RT_DEBUG_STRING");
+			case RT_CORBA_PARSER_GET_RTP              : return _T("RT_CORBA_PARSER_GET_RTP");
+			case RT_CORBA_PARSER_GET_RSS              : return _T("RT_CORBA_PARSER_GET_RSS");
+			case RT_CORBA_PARSER_GET_RTP_COUNT        : return _T("RT_CORBA_PARSER_GET_RTP_COUNT");
+			case RT_CORBA_PARSER_GET_RTP_PAR_COUNT    : return _T("RT_CORBA_PARSER_GET_RTP_PAR_COUNT");
+			default                                   : return _T("RT_UNKNOWN");
 		}
 	}
 
@@ -211,31 +213,53 @@ public:
 #ifdef RDO_MT
 	private:
 		enum Type { post = 0, send, manual } type;
-		CEvent* send_event;
-		CMutex* param_lock;
+		PTR(CEvent) send_event;
+		PTR(CMutex) param_lock;
 #endif
 	public:
-		RDOThread*      from;
-		RDOTreadMessage message;
-		void*           param;
+		PTR(RDOThread)   from;
+		RDOTreadMessage  message;
+		PTR(void)        param;
 #ifdef RDO_MT
-		RDOMessageInfo( RDOThread* _from, RDOTreadMessage _message, void* _param, Type _type ): from( _from ), message( _message ), param( _param ), type( _type ), send_event( NULL ), param_lock( NULL ) {}
-		RDOMessageInfo( const RDOMessageInfo& copy ): type( copy.type ), send_event( copy.send_event ), from( copy.from ), message( copy.message ), param( copy.param ), param_lock( copy.param_lock ) {}
+		RDOMessageInfo(PTR(RDOThread) _from, RDOTreadMessage _message, PTR(void) _param, Type _type )
+			: from      (_from   )
+			, message   (_message)
+			, param     (_param  )
+			, type      (_type   )
+			, send_event(NULL    )
+			, param_lock(NULL    )
+		{}
+		RDOMessageInfo(CREF(RDOMessageInfo) copy)
+			: type      (copy.type      )
+			, send_event(copy.send_event)
+			, from      (copy.from      )
+			, message   (copy.message   )
+			, param     (copy.param     )
+			, param_lock(copy.param_lock)
+		{}
 		void lock()   { if ( param_lock ) param_lock->Lock();   }
 		void unlock() { if ( param_lock ) param_lock->Unlock(); }
 #else
-		RDOMessageInfo( RDOThread* _from, RDOTreadMessage _message, void* _param ): from( _from ), message( _message ), param( _param ) {}
-		RDOMessageInfo( const RDOMessageInfo& copy ): from( copy.from ), message( copy.message ), param( copy.param ) {}
+		RDOMessageInfo(PTR(RDOThread) _from, RDOTreadMessage _message, PTR(void) _param)
+			: from   (_from   )
+			, message(_message)
+			, param  (_param  )
+		{}
+		RDOMessageInfo(CREF(RDOMessageInfo) copy)
+			: from   (copy.from   )
+			, message(copy.message)
+			, param  (copy.param  )
+		{}
 		void lock()   {}
 		void unlock() {}
 #endif
 	};
 
-	std::string getName() const         { return thread_name;               }
-	int         getID() const           { return thread_id;                 }
+	tstring      getName        () const         { return thread_name;               }
+	ruint        getID          () const         { return thread_id;                 }
 #ifdef RDO_MT
-	bool        isGUI() const           { return thread_fun ? false : true; }
-	CEvent*     getDestroyEvent() const { return thread_destroy;            }
+	rbool        isGUI          () const         { return thread_fun ? false : true; }
+	PTR(CEvent)  getDestroyEvent() const         { return thread_destroy;            }
 #endif
 
 /*
@@ -257,38 +281,37 @@ public:
 	}
 */
 	// SEND: отправка сообщений с ожиданием выполнения
-	void sendMessage( RDOThread* to, RDOTreadMessage message, void* param = NULL ) {
+	void sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) param = NULL)
+	{
 #ifdef RDO_MT
-		RDOMessageInfo msg( this, message, param, RDOThread::RDOMessageInfo::send );
+		RDOMessageInfo msg(this, message, param, RDOThread::RDOMessageInfo::send);
 		CEvent event;
 		msg.send_event = &event;
 
 		to->messages_mutex.Lock();
-		if ( !to->was_close )
-		{
-			to->messages.push_back( msg );
-		}
+		if (!to->was_close)
+			to->messages.push_back(msg);
+
 		to->messages_mutex.Unlock();
 
-		while ( ::WaitForSingleObject( event.m_hObject, 0 ) == WAIT_TIMEOUT ) {
+		while (::WaitForSingleObject(event.m_hObject, 0) == WAIT_TIMEOUT)
 			processMessages();
-		}
 #else
-		to->processMessages( RDOMessageInfo( this, message, param ) );
+		to->processMessages(RDOMessageInfo(this, message, param));
 #endif
 	}
 
 #ifdef RDO_MT
 	// MANUAL: отправка сообщений с 'ручным' ожиданием выполнения для this
-	CEvent* manualMessageFrom( RDOTreadMessage message, void* param = NULL );
+	PTR(CEvent) manualMessageFrom(RDOTreadMessage message, PTR(void) param = NULL);
 #endif
 
 	// Рассылка уведомлений всем тредам с учетом их notifies
 	// Важно: должна вызываться только для this (в собственной треде)
-	void broadcastMessage( RDOTreadMessage message, void* param = NULL, bool lock = false );
+	void broadcastMessage(RDOTreadMessage message, PTR(void) param = NULL, rbool lock = false);
 
 #ifdef TR_TRACE
-	static void trace( const std::string& str );
+	static void trace(CREF(tstring) str);
 #endif
 
 protected:
@@ -298,93 +321,111 @@ protected:
 	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
 	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
 	// а вот как добавить сообщение - не совсем понрятно.
-	static unsigned int threadFun( void* param );
+	static ruint threadFun(PTR(void) param);
 	const RDOThreadFun thread_fun;
-	CWinThread*        thread_win;
+	PTR(CWinThread)    thread_win;
 	CEvent             proc_create;    // Вызывается из процедуры треды, конструктор должен его дождаться
 	CEvent             thread_create;  // Вызывается из конструктора объекта, процедура должна его дождаться
-	CEvent*            thread_destroy; // Вызывается из деструктора объекта
-	bool               broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
-	bool               was_start;         // Без мутекса, т.к. меняется только в одной треде
-	bool               was_close;
+	PTR(CEvent)        thread_destroy; // Вызывается из деструктора объекта
+	rbool              broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
+	rbool              was_start;         // Без мутекса, т.к. меняется только в одной треде
+	rbool              was_close;
 #endif
-	const std::string  thread_name;
-	int                thread_id;
-	int                idle_cnt;
+	const tstring      thread_name;
+	rsint              thread_id;
+	rsint              idle_cnt;
 
-	std::vector< RDOTreadMessage > notifies; // Список сообщений, на которые реагирует треда
-	                                         // Если он пуст, то обрабатываются все сообщения.
-											 // RT_THREAD_CLOSE обрабатывается в RDOThread::processMessages()
-	                                         // Если сообщение посылается не из kernel'а, а напрямую, то
-											 // то оно не будет проходить через этот фильтр, а сразу попадет в очередь.
+	typedef std::vector<RDOTreadMessage> NotifieList;
+
+	NotifieList        notifies; // Список сообщений, на которые реагирует треда
+	                             // Если он пуст, то обрабатываются все сообщения.
+	                             // RT_THREAD_CLOSE обрабатывается в RDOThread::processMessages()
+	                             // Если сообщение посылается не из kernel'а, а напрямую, то
+	                             // то оно не будет проходить через этот фильтр, а сразу попадет в очередь.
+
 #ifdef RDO_MT
 	CMutex                         notifies_mutex;
 
 	// Очередь сообщений
-	std::list< RDOMessageInfo > messages;
-	CMutex                      messages_mutex;
+	typedef std::list<RDOMessageInfo> MessageList;
+	MessageList      messages;
+	CMutex           messages_mutex;
 
 	class BroadcastData {
 	public:
-		int cnt;
-		std::vector< CEvent* > events;
-		HANDLE*                handles;
-		BroadcastData(): cnt( 0 ), handles( NULL ) {
-		}
-		BroadcastData( int _cnt ): cnt( _cnt ) {
-			for ( int i = 0; i < cnt; i++ ) {
-				events.push_back( new CEvent() );
-			}
+		typedef std::vector<PTR(CEvent)> EventList;
+		EventList    events;
+		ruint        cnt;
+		PTR(HANDLE)  handles;
+
+		BroadcastData()
+			: cnt    (0   )
+			, handles(NULL)
+		{}
+		BroadcastData(ruint _cnt)
+			: cnt(_cnt)
+		{
+			for (ruint i = 0; i < cnt; i++ )
+				events.push_back(new CEvent());
 			handles = new HANDLE[cnt];
 		}
-		BroadcastData( const BroadcastData& copy ): cnt( copy.cnt ), handles( copy.handles ) {
-			events.assign( copy.events.begin(), copy.events.end() );
+		BroadcastData(CREF(BroadcastData) copy)
+			: cnt    (copy.cnt    )
+			, handles(copy.handles)
+		{
+			events.assign(copy.events.begin(), copy.events.end());
 		}
-		~BroadcastData() {
-		}
-		void clear() {
-			for ( int i = 0; i < cnt; i++ ) {
+		~BroadcastData()
+		{}
+
+		void clear()
+		{
+			for (ruint i = 0; i < cnt; i++)
 				delete events[i];
-			}
 			delete[] handles;
 		}
-		void resize() {
-			if ( cnt ) {
-				events.resize( cnt * 2 );
-				HANDLE* handles_backup = handles;
-				handles = new HANDLE[ cnt * 2 ];
-				for ( int i = 0; i < cnt; i++ ) {
-					events.push_back( new CEvent() );
+		void resize()
+		{
+			if (cnt)
+			{
+				events.resize(cnt * 2);
+				PTR(HANDLE) handles_backup = handles;
+				handles = new HANDLE[cnt * 2];
+				for (ruint i = 0; i < cnt; i++)
+				{
+					events.push_back(new CEvent());
 					handles[i] = handles_backup[i];
 					handles[cnt+i] = new HANDLE;
 				}
 				delete[] handles_backup;
 				cnt *= 2;
-			} else {
+			}
+			else
+			{
 				cnt = 10;
-				for ( int i = 0; i < cnt; i++ ) {
-					events.push_back( new CEvent() );
-				}
+				for (ruint i = 0; i < cnt; i++)
+					events.push_back(new CEvent());
 				handles = new HANDLE[cnt];
 			}
 		}
 	};
-	std::vector< BroadcastData > broadcast_data;
-	unsigned int                 broadcast_cnt;
+	typedef std::vector<BroadcastData> BroadcastDataList;
+	BroadcastDataList  broadcast_data;
+	ruint              broadcast_cnt;
 
 #endif
 
 #ifdef RDO_MT
-	virtual RDOThread* getKernel();
+	virtual PTR(RDOThread) getKernel();
 #else
-	RDOThread* getKernel();
+	PTR(RDOThread) getKernel();
 #endif
 
 	// Создавать можно только через потомков
 #ifdef RDO_MT
-	RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun = NULL );
+	RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun = NULL);
 #else
-	RDOThread( const std::string& _thread_name );
+	RDOThread(CREF(tstring) _thread_name);
 #endif
 	// Удаляет объкты функция треды. kernel удаляется через статический метод
 	virtual ~RDOThread();                                                                          
@@ -392,20 +433,23 @@ protected:
 	// Надо обязательно вызвать из конструктора объекта, чтобы настроить правильно this для виртуальных функций,
 	void after_constructor();
 
-	virtual void proc( RDOMessageInfo& msg ) = 0;
-	virtual void idle();
-	virtual void start();
-	virtual void stop();
+	virtual void  proc (REF(RDOMessageInfo) msg) = 0;
+	virtual void  idle ();
+	virtual void  start();
+	virtual void  stop ();
 #ifdef RDO_MT
-	virtual bool processMessages();
+	virtual rbool processMessages();
 #else
-	void processMessages( RDOMessageInfo& msg ) {
+	void          processMessages(REF(RDOMessageInfo) msg)
+	{
 #ifdef TR_TRACE
-		RDOThread::trace( "---------------- " + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name );
+		RDOThread::trace(_T("---------------- ") + messageToString(msg.message) + _T(": ") + (msg.from ? msg.from->thread_name : _T("NULL")) + _T(" -> ") + thread_name);
 #endif
-		proc( msg );
-		if ( msg.message == RT_THREAD_CLOSE ) {
-			if ( this != getKernel() ) sendMessage( getKernel(), RT_THREAD_DISCONNECTION );
+		proc(msg);
+		if (msg.message == RT_THREAD_CLOSE)
+		{
+			if (this != getKernel())
+				sendMessage(getKernel(), RT_THREAD_DISCONNECTION);
 			stop();
 			delete this;
 			return;
@@ -423,9 +467,13 @@ class RDOThreadMT: public RDOThread
 {
 protected:
 #ifdef RDO_MT
-	RDOThreadMT( const std::string& _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun ): RDOThread( _thread_name, _thread_fun ) {}
+	RDOThreadMT(CREF(tstring) _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun)
+		: RDOThread(_thread_name, _thread_fun)
+	{}
 #else
-	RDOThreadMT( const std::string& _thread_name ): RDOThread( _thread_name ) {}
+	RDOThreadMT(CREF(tstring) _thread_name)
+		: RDOThread(_thread_name)
+	{}
 #endif
 };
 
@@ -440,18 +488,23 @@ class RDOThreadGUI: public RDOThread
 {
 friend class RDOKernelGUI;
 private:
-	RDOThread* kernel_gui;
+	PTR(RDOThread) kernel_gui;
 
 protected:
-	RDOThreadGUI( const std::string& _thread_name, RDOThread* _kernel_gui ): RDOThread( _thread_name ), kernel_gui( _kernel_gui ) {}
-	virtual RDOThread* getKernel();
-	virtual bool processMessages();
+	RDOThreadGUI(CREF(tstring) _thread_name, PTR(RDOThread) _kernel_gui)
+		: RDOThread (_thread_name)
+		, kernel_gui(_kernel_gui )
+	{}
+	virtual PTR(RDOThread) getKernel      ();
+	virtual rbool          processMessages();
 };
 #else
 class RDOThreadGUI: public RDOThread
 {
 protected:
-	RDOThreadGUI( const std::string& _thread_name, RDOThread* ): RDOThread( _thread_name ) {}
+	RDOThreadGUI(CREF(tstring) _thread_name, PTR(RDOThread))
+		: RDOThread(_thread_name)
+	{}
 };
 #endif
 
