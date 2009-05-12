@@ -252,7 +252,7 @@ void RDOParser::error( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... 
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error( str, _error_code );
 }
@@ -261,7 +261,7 @@ void RDOParser::error_push_only( rdoSimulator::RDOSyntaxError::ErrorCode _error_
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error_push_only( str, _error_code );
 }
@@ -270,7 +270,7 @@ void RDOParser::error( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSynta
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error( _src_info, str, _error_code );
 }
@@ -279,7 +279,7 @@ void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, rdoSimulator
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error_push_only( _src_info, str, _error_code );
 }
@@ -336,7 +336,7 @@ void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ..
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	warning( str, _error_code );
 }
