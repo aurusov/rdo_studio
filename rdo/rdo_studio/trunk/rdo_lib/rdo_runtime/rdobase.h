@@ -19,16 +19,18 @@ public:
 	virtual bool rdoNext();
 	virtual void rdoPostProcess();
 
-	void setStartTime( double value )       { m_startTime = value;  }
-	double getCurrentTime() const           { return m_currentTime; }
+	void setStartTime( double value )          { m_startTime = value;  }
+	double getCurrentTime() const              { return m_currentTime; }
 
-	RunTimeMode getMode() const             { return m_mode;        }
+	
+
+	RunTimeMode getMode() const                { return m_mode;        }
 	void setMode( RunTimeMode _mode );
 
-	double getSpeed() const                 { return m_speed;       }
+	double getSpeed() const                    { return m_speed;       }
 	void setSpeed( double persent );
 
-	double getShowRate() const              { return m_showRate;    }
+	double getShowRate() const                 { return m_showRate;    }
 	void setShowRate( double value );
 
 	void addTimePoint   ( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL );
@@ -108,6 +110,7 @@ private:
 	double m_startTime;
 	double m_currentTime;
 	double m_nextTime;
+
 
 	RunTimeMode  m_mode;
 

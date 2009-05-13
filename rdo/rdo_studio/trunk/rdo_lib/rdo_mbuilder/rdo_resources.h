@@ -244,11 +244,15 @@ public:
 			return false;
 
 		PTR(rdoParse::RDORSSResource) pRSS = rss.createParserResource<T>(*m_parser);
+		if (!pRSS)
+			return false;
+
 		if (!rss.fillParserResourceParams(pRSS))
 		{
 			delete pRSS;
 			return false;
 		}
+		pRSS->setTrace(true);
 
 		rss.m_exist = true;
 		m_list.push_back(rss);

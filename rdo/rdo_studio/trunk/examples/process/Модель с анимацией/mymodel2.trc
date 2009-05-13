@@ -1,0 +1,74 @@
+Results_file   = mymodel2.pmv    Чт апр 16 09:56:24 2009
+Run_file       = mymodel2.smr
+Model_name     = mymodel2
+Resource_file  = mymodel2.rss
+OprIev_file    = mymodel2.opr
+
+$Changes
+
+
+$Resource_type
+1 QDEPART 1
+  1 длина_очереди I
+2 ROBOTs 1
+  1 Состояние E 2
+    0 Свободен
+    1 Занят
+3 STANOK1s 1
+  1 Состояние E 2
+    0 Свободен
+    1 Занят
+4 STANOK2s 1
+  1 Состояние E 2
+    0 Свободен
+    1 Занят
+5 Транзакты 1
+  1 Время_создания I
+
+$Resources
+1 QROBOT1 1
+2 ROBOT 2
+3 QSTANOK1 1
+4 STANOK1 3
+5 QROBOT2 1
+6 QSTANOK2 1
+7 STANOK2 4
+8 QROBOT3 1
+9 QEXIT 1
+
+$Pattern
+
+$Activities
+
+
+
+$Watching
+
+$Tracing
+ES 0 1
+ES 0 3
+RC 22 5 10 22
+RC 44 5 11 44
+RC 66 5 12 66
+RC 88 5 13 88
+RC 110 5 14 110
+RC 132 5 15 132
+RC 154 5 16 154
+RC 176 5 17 176
+RC 198 5 18 198
+RC 220 5 19 220
+RE 224.97 5 10 22
+RE 236.344 5 11 44
+RC 242 5 11 242
+RC 264 5 10 264
+RC 286 5 20 286
+RC 308 5 21 308
+RC 330 5 22 330
+RE 344.766 5 12 66
+RC 352 5 12 352
+RC 374 5 23 374
+RC 396 5 24 396
+ES 411.52 2
+$Status = USER_BREAK 411.52
+
+DPS_MM 4278259405

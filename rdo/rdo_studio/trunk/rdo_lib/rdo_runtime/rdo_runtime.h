@@ -112,6 +112,9 @@ public:
 
 	double getTimeNow() { return getCurrentTime();                   }
 	double getSeconds() { return (double)(time(NULL) - physic_time); }
+	
+	unsigned int getCurrentTerm() const        {return m_currentTerm;  }
+	void setCurrentTerm( unsigned int value	)  {m_currentTerm = value; }
 
 	RDOActivity* getCurrentActivity() const                   { return m_currActivity;      }
 	void         setCurrentActivity( RDOActivity* activity )  { m_currActivity = activity;  }
@@ -215,7 +218,8 @@ private:
 	std::list  < RDOResource* > allResourcesByTime;    // ќни же, только упор€дочены по времени создани€ и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // ќни же, только упор€дочены по типу перед запуском
 	std::list  < RDOCalc*     > initCalcs;
-
+	
+	
 	class BreakPoint: public RDORuntimeObject
 	{
 	public:
@@ -284,6 +288,8 @@ private:
 	virtual void onResetPokaz();
 	virtual void onCheckPokaz();
 	virtual void onAfterCheckPokaz();
+
+	unsigned int m_currentTerm;
 };
 
 } // namespace rdoRuntime

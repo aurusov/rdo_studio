@@ -27,7 +27,8 @@ RDORuntime::RDORuntime():
 	results_info( NULL ),
 	lastActiveBreakPoint( NULL ),
 	whyStop( rdoSimulator::EC_OK ),
-	key_found( false )
+	key_found( false ),
+	m_currentTerm( 0 )
 {
 	m_parent = NULL;
 	detach();

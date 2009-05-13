@@ -139,7 +139,7 @@ RDOResType::Param::Param(CREF(tstring) name, CPTR(rdoRuntime::RDOType) type, CRE
 {
 	if (type->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
 	{
-		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
+//		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
 	}
 }
 
