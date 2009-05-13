@@ -62,10 +62,7 @@ public:
 	RDOValue      operator-  (CREF(RDOValue) rdovalue) const;
 	RDOValue      operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue      operator/  (CREF(RDOValue) rdovalue) const;
-	const RDOType* getType() 
-	{
-	return m_type;
-	}
+
 	CREF(RDOType)   type  () const;
 	RDOType::TypeID typeID() const;
 
