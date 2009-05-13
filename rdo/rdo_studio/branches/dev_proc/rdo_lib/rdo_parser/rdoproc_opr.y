@@ -377,7 +377,7 @@ dpt_depart_param:	RDO_IDENTIF
 dpt_seize_param:    RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						TRACE( "%s _good\n", res_name.c_str());
+						TRACE1(_T("%s _good\n"), res_name.c_str());
 						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE");
 						seize->add_Seize_Resource(res_name);
 						$$ = (int)seize;
