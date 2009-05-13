@@ -6,12 +6,6 @@
 #include "rdoparser_lexer.h"
 #include <rdocalc.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoParse 
 {
 
@@ -141,7 +135,7 @@ rdoRuntime::RDOValue RDORTPParamType::getDefaultValue( const RDOValue& value ) c
 	return m_dv->value().value();
 }
 
-unsigned int RDORTPParamType::getDiapTableFunc() const
+ruint RDORTPParamType::getDiapTableFunc() const
 {
 	parser()->error( src_info(), "Параметр табличной функции может быть целого или перечислимого типа" );
 	return 0;		// unreachable code...
@@ -183,7 +177,7 @@ RDOFUNConst::RDOFUNConst( RDOParser* _parser, const RDOParserSrcInfo& _src_info,
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-RDORTPResType::RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent ):
+RDORTPResType::RDORTPResType(PTR(RDOParser) _parser, CREF(RDOParserSrcInfo) _src_info, rbool _permanent):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _src_info ),
 	m_number( _parser->getRTP_id() ),
@@ -196,26 +190,26 @@ RDORTPResType::~RDORTPResType()
 {
 }
 
-void RDORTPResType::addParam( const RDORTPParam* const param )
+void RDORTPResType::addParam(CPTRC(RDORTPParam) param)
 {
-	if ( findRTPParam( param->name() ) )
+	if (findRTPParam(param->name()))
 	{
-		parser()->error( param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()) );
+		parser()->error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
 	}
-	m_params.push_back( param );
+	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam( const std::string param_name, rdoRuntime::RDOType::ID param_typeID )
+void RDORTPResType::addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID)
 {
 }
 
-const RDORTPParam* RDORTPResType::findRTPParam( const std::string& param ) const
+const RDORTPParam* RDORTPResType::findRTPParam(CREF(tstring) param) const
 {
 	std::vector< const RDORTPParam* >::const_iterator it = std::find_if( m_params.begin(), m_params.end(), compareName<RDORTPParam>(param) );
 	return it != m_params.end() ? *it : NULL;
 }
 
-unsigned int RDORTPResType::getRTPParamNumber( const std::string& param ) const
+ruint RDORTPResType::getRTPParamNumber(CREF(tstring) param) const
 {
 	std::vector< const RDORTPParam* >::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(param) );
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
@@ -224,7 +218,7 @@ unsigned int RDORTPResType::getRTPParamNumber( const std::string& param ) const
 void RDORTPResType::writeModelStructure( std::ostream& stream ) const
 {
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
-	for ( unsigned int i = 0; i < getParams().size(); i++ )
+	for ( ruint i = 0; i < getParams().size(); i++ )
 	{
 		stream << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure( stream );
@@ -341,11 +335,11 @@ void RDORTPIntParamType::checkValue( const RDOValue& value ) const
 
 rdoRuntime::RDOValue RDORTPIntParamType::getValue( const RDOValue& value ) const
 {
-	checkValue( value );
-	return rdoRuntime::RDOValue( value.value().getInt() );
+	checkValue(value);
+	return type().cast(value.value());
 }
 
-unsigned int RDORTPIntParamType::getDiapTableFunc() const 
+ruint RDORTPIntParamType::getDiapTableFunc() const 
 {
 	if ( !m_diap->isExist() ) {
 		parser()->error( src_info(), "Для параметра табличной функции должен быть задан допустимый диапазон" );
@@ -468,8 +462,8 @@ void RDORTPRealParamType::checkValue( const RDOValue& value ) const
 
 rdoRuntime::RDOValue RDORTPRealParamType::getValue( const RDOValue& value ) const
 {
-	checkValue( value );
-	return rdoRuntime::RDOValue( value.value().getDouble() );
+	checkValue(value);
+	return type().cast(value.value());
 }
 
 // ----------------------------------------------------------------------------
@@ -533,7 +527,7 @@ RDORTPParamType* RDORTPEnumParamType::constructorSuchAs( const RDOParserSrcInfo&
 void RDORTPEnumParamType::writeModelStructure( std::ostream& stream ) const
 {
 	stream << "E " << m_enum->getEnums().getValues().size() << std::endl;
-	for ( unsigned int i = 0; i < m_enum->getEnums().getValues().size(); i++ )
+	for ( ruint i = 0; i < m_enum->getEnums().getValues().size(); i++ )
 	{
 		stream << "    " << i << " " << m_enum->getEnums().getValues().at(i) << std::endl;
 	}
@@ -558,7 +552,7 @@ void RDORTPEnumParamType::checkValue( const RDOValue& value ) const
 
 rdoRuntime::RDOValue RDORTPEnumParamType::getValue( const RDOValue& value ) const
 {
-	checkValue( value );
+	checkValue(value);
 	return m_enum->findEnumValueWithThrow( value.src_info(), value.value().getAsString() );
 }
 
@@ -568,7 +562,7 @@ rdoRuntime::RDOValue RDORTPEnumParamType::getDefaultValue( const RDOValue& value
 	return m_enum->findEnumValueWithThrow( value, identificator.getAsString() );
 }
 
-unsigned int RDORTPEnumParamType::getDiapTableFunc() const 
+ruint RDORTPEnumParamType::getDiapTableFunc() const 
 {
 	return m_enum->getEnums().getValues().size();
 }
@@ -620,8 +614,8 @@ void RDORTPStringParamType::checkValue( const RDOValue& value ) const
 
 rdoRuntime::RDOValue RDORTPStringParamType::getValue( const RDOValue& value ) const
 {
-	checkValue( value );
-	return rdoRuntime::RDOValue( value.value().getString() );
+	checkValue(value);
+	return type().cast(value.value());
 }
 
 void RDORTPStringParamType::writeModelStructure( std::ostream& stream ) const
@@ -676,8 +670,8 @@ void RDORTPBoolParamType::checkValue( const RDOValue& value ) const
 
 rdoRuntime::RDOValue RDORTPBoolParamType::getValue( const RDOValue& value ) const
 {
-	checkValue( value );
-	return rdoRuntime::RDOValue( value.value().getBool() );
+	checkValue(value);
+	return type().cast(value.value());
 }
 
 void RDORTPBoolParamType::writeModelStructure( std::ostream& stream ) const
@@ -692,7 +686,7 @@ void RDORTPBoolParamType::writeModelStructure( std::ostream& stream ) const
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
 	RDOParserObject( _parser )
 {
-/*	for ( unsigned int i = 0; i < m_points.size(); i++ )
+/*	for ( ruint i = 0; i < m_points.size(); i++ )
 	{
 //		double x = m_points[i]->getX();
 	}

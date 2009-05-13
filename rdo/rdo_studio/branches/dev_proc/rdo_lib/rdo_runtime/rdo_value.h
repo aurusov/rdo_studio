@@ -17,71 +17,70 @@ class RDOValue
 public:
 	RDOValue();
 	~RDOValue();
-	RDOValue( const RDOValue&   rdovalue );
-	RDOValue( const RDOType&       type  );
-	RDOValue( int                  value );
-	RDOValue( unsigned int         value );
-	RDOValue( double               value );
-	RDOValue( bool                 value );
-	RDOValue( RDOEnumType&         enums );
-	RDOValue( const RDOEnumType&   enums, const std::string& value );
-	RDOValue( const RDOFuzzyValue& fuzzy );
-	RDOValue( const std::string&   value );
-	RDOValue( const std::string&   value, const RDOType& type );
 
-	int                getInt()           const;
-	int                getEnumAsInt()     const;
-	const RDOEnumType& getEnum()          const;
-	double             getDouble()        const;
-	bool               getBool()          const;
-	const std::string& getString()        const;
-	const std::string& getIdentificator() const;
+	RDOValue(CREF(RDOValue)      rdovalue);
+	RDOValue(CREF(RDOType)       type    );
+	RDOValue(rsint               value   );
+	RDOValue(ruint               value   );
+	RDOValue(double              value   );
+	RDOValue(rbool               value   );
+	RDOValue(REF(RDOEnumType)    enums   );
+	RDOValue(CREF(RDOEnumType)   enums, CREF(tstring) value);
+	RDOValue(CREF(RDOEnumType)   enums, ruint index);
+	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
+	RDOValue(CREF(tstring)       value   );
+	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
 
-	bool        getAsBool()           const;
-	std::string getAsString()         const;
-	std::string getAsStringForTrace() const;
+	rsint             getInt          () const;
+	rsint             getEnumAsInt    () const;
+	CREF(RDOEnumType) getEnum         () const;
+	double            getDouble       () const;
+	rbool             getBool         () const;
+	CREF(tstring)     getString       () const;
+	CREF(tstring)     getIdentificator() const;
 
-	RDOValue& operator=  ( const RDOValue& rdovalue );
-	bool      operator== ( const RDOValue& rdovalue ) const;
-	bool      operator!= ( const RDOValue& rdovalue ) const;
-	bool      operator<  ( const RDOValue& rdovalue ) const;
-	bool      operator<  ( const RDOValue& rdovalue );
-	bool      operator>  ( const RDOValue& rdovalue ) const;
-	bool      operator<= ( const RDOValue& rdovalue ) const;
-	bool      operator>= ( const RDOValue& rdovalue ) const;
-	RDOValue  operator&& ( const RDOValue& rdovalue ) const;
-	RDOValue  operator|| ( const RDOValue& rdovalue ) const;
-	RDOValue  operator-  () const;
-	void      operator+= ( const RDOValue& rdovalue );
-	void      operator-= ( const RDOValue& rdovalue );
-	void      operator*= ( const RDOValue& rdovalue );
-	void      operator/= ( const RDOValue& rdovalue );
-	RDOValue  operator+  ( const RDOValue& rdovalue ) const;
-	RDOValue  operator-  ( const RDOValue& rdovalue ) const;
-	RDOValue  operator*  ( const RDOValue& rdovalue ) const;
-	RDOValue  operator/  ( const RDOValue& rdovalue ) const;
+	rbool   getAsBool          () const;
+	tstring getAsString        () const;
+	tstring getAsStringForTrace() const;
 
-	const RDOType&  type() const;
-	RDOType::ID     typeID() const;
-	const RDOType* getType() 
-	{
-	return m_type;
-	}
+	REF(RDOValue) operator=  (CREF(RDOValue) rdovalue);
+	rbool         operator== (CREF(RDOValue) rdovalue) const;
+	rbool         operator!= (CREF(RDOValue) rdovalue) const;
+	rbool         operator<  (CREF(RDOValue) rdovalue) const;
+	rbool         operator<  (CREF(RDOValue) rdovalue);
+	rbool         operator>  (CREF(RDOValue) rdovalue) const;
+	rbool         operator<= (CREF(RDOValue) rdovalue) const;
+	rbool         operator>= (CREF(RDOValue) rdovalue) const;
+	RDOValue      operator&& (CREF(RDOValue) rdovalue) const;
+	RDOValue      operator|| (CREF(RDOValue) rdovalue) const;
+	RDOValue      operator-  () const;
+	void          operator+= (CREF(RDOValue) rdovalue);
+	void          operator-= (CREF(RDOValue) rdovalue);
+	void          operator*= (CREF(RDOValue) rdovalue);
+	void          operator/= (CREF(RDOValue) rdovalue);
+	RDOValue      operator+  (CREF(RDOValue) rdovalue) const;
+	RDOValue      operator-  (CREF(RDOValue) rdovalue) const;
+	RDOValue      operator*  (CREF(RDOValue) rdovalue) const;
+	RDOValue      operator/  (CREF(RDOValue) rdovalue) const;
+
+	CREF(RDOType)   type  () const;
+	RDOType::TypeID typeID() const;
+
 private:
-	const RDOType* m_type;
+	CPTR(RDOType) m_type;
 
-	const RDOEnumType&   __enumT  () const;
-	      std::string&   __stringV();
-	const std::string&   __stringV() const;
-	      RDOFuzzyValue& __fuzzyV ();
-	const RDOFuzzyValue& __fuzzyV () const;
+	CREF(RDOEnumType)   __enumT  () const;
+	 REF(tstring)       __stringV();
+	CREF(tstring)       __stringV() const;
+	 REF(RDOFuzzyValue) __fuzzyV ();
+	CREF(RDOFuzzyValue) __fuzzyV () const;
 
 	union {
 		int          i_value;
 		double       d_value;
-		bool         b_value;
-		std::string* s_value;
-		void*        p_data;
+		rbool        b_value;
+		PTR(tstring) s_value;
+		PTR(void)    p_data;
 	} m_value;
 };
 

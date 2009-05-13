@@ -29,9 +29,6 @@
 #if !defined(__SIZECBAR_H__)
 #define __SIZECBAR_H__
 
-#include <afxpriv.h>    // for CDockContext
-#include <afxtempl.h>   // for CTypedPtrArray
-
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000

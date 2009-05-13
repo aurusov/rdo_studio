@@ -4,12 +4,6 @@
 #include "rdo_rule.h"
 #include "rdo_runtime.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #pragma warning(disable : 4786)  
 
 namespace rdoRuntime {
@@ -56,14 +50,14 @@ RDOBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
 	if ( success ) {
 		// Ќашли решение, собрали путь
 		std::list< TreeNode* > bestPath;
-		TRACE( "решение... \n" );
+//		TRACE( "решение... \n" );
 		for ( TreeNode* i = treeRoot->m_targetNode; i->m_parent; i = i->m_parent ) {
 #ifdef _DEBUG
 			static_cast<RDORuntime*>(i->m_sim)->showResources(i->m_number);
 #endif
 			bestPath.push_front(i);
 		}
-		TRACE( "решение... done\n" );
+//		TRACE( "решение... done\n" );
 		// ќтработали предварительные действи€: вывели трассировку
 		onSearchDecisionHeader( treeRoot->m_theRealSimulator );
 		// ќтработали рулы

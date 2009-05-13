@@ -20,7 +20,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
@@ -44,7 +44,6 @@
 				Optimization="0"
 				AdditionalIncludeDirectories=".;../rdo_lib/rdo_simulator;../rdo_kernel;../rdo_common;../thirdparty/corba/include"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
-				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="3"
@@ -63,7 +62,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

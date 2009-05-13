@@ -51,7 +51,6 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common;../thirdparty/corba/include"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501"
-				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				BrowseInformation="1"
@@ -111,6 +110,7 @@
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -135,14 +135,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common;../thirdparty/corba/include"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
-				StringPooling="true"
-				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -161,7 +157,6 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
 			/>

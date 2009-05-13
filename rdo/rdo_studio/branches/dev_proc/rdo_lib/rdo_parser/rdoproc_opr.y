@@ -174,11 +174,6 @@
 
 %{
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
@@ -358,7 +353,7 @@ dpt_process_line:	RDO_IDENTIF
 dpt_queue_param:	RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						TRACE( "%s _good\n", res_name.c_str());
+						TRACE1(_T("%s _good\n"), res_name.c_str());
 						RDOPROCQueue* queue = new RDOPROCQueue( PARSER->getLastPROCProcess(), "QUEUE" );
 						queue->add_Queue_Resource( res_name );
 						$$ = int( queue );
@@ -370,7 +365,7 @@ dpt_queue_param:	RDO_IDENTIF
 dpt_depart_param:	RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						TRACE( "%s _good\n", res_name.c_str());
+						TRACE1(_T("%s _good\n"), res_name.c_str());
 						RDOPROCDepart* depart = new RDOPROCDepart( PARSER->getLastPROCProcess(), "DEPART" );
 						depart->add_Depart_Resource( res_name );
 						$$ = int( depart );
@@ -394,7 +389,7 @@ dpt_seize_param:    RDO_IDENTIF
 dpt_release_param:  RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						TRACE( "%s _good\n", res_name.c_str());
+						TRACE1(_T("%s _good\n"), res_name.c_str());
 						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE");
 						release->add_Release_Resource(res_name);
 						$$ = (int)release;
@@ -410,7 +405,7 @@ dpt_term_param:		//empty
 					}   
 					| fun_arithm 
 					{
-						if(((RDOFUNArithm*)$1)->createCalc()->calcValue(RUNTIME).getType()->id()==rdoRuntime::RDOType::t_int)
+						if(((RDOFUNArithm*)$1)->createCalc()->calcValue(RUNTIME).type().typeID()==rdoRuntime::RDOType::t_int)
 						{
 							int term = ((RDOFUNArithm*)$1)->createCalc()->calcValue(RUNTIME).getInt();
 							RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE", term );

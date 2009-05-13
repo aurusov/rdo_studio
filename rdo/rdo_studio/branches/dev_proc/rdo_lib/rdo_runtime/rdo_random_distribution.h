@@ -2,6 +2,7 @@
 #define RDO_RANDOM_DISTRIBUTION_H
 
 #include "rdo_value.h"
+#include <math.h>
 
 namespace rdoRuntime
 {

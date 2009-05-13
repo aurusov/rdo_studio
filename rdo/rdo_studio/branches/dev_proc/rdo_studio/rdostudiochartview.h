@@ -5,7 +5,6 @@
 #pragma once
 #endif
 
-#include <afxole.h>
 #include "rdostudioview.h"
 #include "rdo_tracer/rdotracervalues.h"
 #include "rdostudiochartdoc.h"

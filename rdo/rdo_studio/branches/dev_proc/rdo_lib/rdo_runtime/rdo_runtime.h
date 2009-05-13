@@ -3,10 +3,14 @@
 
 #pragma warning(disable : 4786)  
 
+// ====================================================================== INCLUDES
+#include <time.h>
+// ====================================================================== SYNOPSIS
 #include "rdotrace.h"
 #include "simtrace.h"
 #include "rdo_resource.h"
 #include <rdocommon.h>
+// ===============================================================================
 
 namespace rdoRuntime
 {
@@ -69,10 +73,10 @@ public:
 	enum Messages {
 		RO_BEFOREDELETE = 0
 	};
-	void connect( RDORuntimeObject* to, unsigned int message );
+	void connect( RDORuntimeObject* to, ruint message );
 	void disconnect( RDORuntimeObject* to );
-	void disconnect( RDORuntimeObject* to, unsigned int message );
-	void fireMessage( RDORuntimeObject* from, unsigned int message, void* param = NULL );
+	void disconnect( RDORuntimeObject* to, ruint message );
+	void fireMessage( RDORuntimeObject* from, ruint message, void* param = NULL );
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const std::string& message, const RDOCalc* calc = NULL );

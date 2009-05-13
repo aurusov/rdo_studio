@@ -5,12 +5,7 @@
 #include "rdo_rule.h"
 #include "rdo_operation.h"
 #include "rdo_resource.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include <rdodebug.h>
 
 #pragma warning(disable : 4786)  
 
@@ -35,7 +30,7 @@ void RDOSimulatorTrace::rdoInit()
 {
 	maxResourcesId = 0;
 	maxOperationId = 1;
-	ASSERT(m_tracer != NULL);
+//	ASSERT(m_tracer != NULL);
 	RDOSimulator::rdoInit();
 }
 
@@ -59,7 +54,7 @@ int RDOSimulatorTrace::getFreeResourceId( int _id )
 #ifdef _DEBUG
 		std::list< int >::const_iterator it = freeResourcesIds.begin();
 		while ( it != freeResourcesIds.end() ) {
-			TRACE( "getFreeResourceId: %d\n", *it );
+			TRACE1("getFreeResourceId: %d\n", *it);
 			it++;
 		}
 #endif
