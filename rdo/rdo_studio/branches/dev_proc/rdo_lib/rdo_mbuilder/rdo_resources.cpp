@@ -139,7 +139,7 @@ RDOResType::Param::Param(CREF(tstring) name, CPTR(rdoRuntime::RDOType) type, CRE
 {
 	if (type->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
 	{
-//		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
+		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
 	}
 }
 
@@ -252,7 +252,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 					enum_it++;
 				}
 				PTR(rdoParse::RDORTPDefVal) pEnumDefValue = param->hasDefault() ?
-					new rdoParse::RDORTPDefVal(m_parser, param->getDefault()) :
+					new rdoParse::RDORTPDefVal(m_parser, rdoParse::RDOValue(param->getDefault(), *pEnum, rdoParse::RDOParserSrcInfo())) :
 					new rdoParse::RDORTPDefVal(m_parser);
 
 				pParamType = new rdoParse::RDORTPEnumParamType(pRTP, pEnum, pEnumDefValue, rtp.name());
