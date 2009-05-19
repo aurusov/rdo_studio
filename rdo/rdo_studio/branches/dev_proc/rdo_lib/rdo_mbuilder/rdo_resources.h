@@ -275,13 +275,14 @@ public:
 		if (itRSSOld == end())
 			return false;
 
-		std::auto_ptr<rdoParse::RDORSSResource> pRSS(rssNew.createParserResource<T>(*m_parser, itRSSOld->getID()));
-		if (!itRSSOld->fillParserResourceParams(pRSS.get()))
+		std::auto_ptr<rdoParse::RDORSSResource> res(rssNew.createParserResource<T>(*m_parser, itRSSOld->getID()));
+		if (!itRSSOld->fillParserResourceParams(res.get()))
 			return false;
 		rssNew.m_exist = true;
 		m_list.push_back(rssNew);
 		ASSERT(itRSSOld->deleteParserResource(*m_parser));
 		m_list.erase(itRSSOld);
+		res.release();
 		return true;
 	}
 };
