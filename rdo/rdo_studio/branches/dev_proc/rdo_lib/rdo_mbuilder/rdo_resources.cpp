@@ -333,6 +333,17 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) pRSS) 
 	return true;
 }
 
+rbool RDOResource::deleteParserResource(REF(rdoParse::RDOParser) parser)
+{
+	if (!exist())
+		return false;
+
+	CPTR(rdoParse::RDORSSResource) res = parser.findRSSResource(name());
+	if (!res)
+		return false;
+	return parser.removeRSSResource(res);
+}
+
 // --------------------------------------------------------------------
 // ---- Инициализация *нового* ресурса
 // --------------------------------------------------------------------

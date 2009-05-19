@@ -210,6 +210,7 @@ public:
 		return new T(&parser, name(), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
 	rbool fillParserResourceParams(PTR(rdoParse::RDORSSResource) pRSS) const;
+	rbool deleteParserResource    (REF(rdoParse::RDOParser) parser);
 
 private:
 	RDOResType  m_rtp;
@@ -274,14 +275,12 @@ public:
 		if (itRSSOld == end())
 			return false;
 
-		PTR(rdoParse::RDORSSResource) pRSS = rssNew.createParserResource<T>(*m_parser, itRSSOld->getID());
-		if (!itRSSOld->fillParserResourceParams(pRSS))
-		{
-			delete pRSS;
+		std::auto_ptr<rdoParse::RDORSSResource> pRSS(rssNew.createParserResource<T>(*m_parser, itRSSOld->getID()));
+		if (!itRSSOld->fillParserResourceParams(pRSS.get()))
 			return false;
-		}
 		rssNew.m_exist = true;
 		m_list.push_back(rssNew);
+		ASSERT(itRSSOld->deleteParserResource(*m_parser));
 		m_list.erase(itRSSOld);
 		return true;
 	}

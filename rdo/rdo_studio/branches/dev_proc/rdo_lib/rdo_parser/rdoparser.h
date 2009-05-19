@@ -58,7 +58,7 @@ public:
 #define DEFINE_OBJECT_CONTAINER_NONAME( Name ) \
 public: \
 	typedef std::vector<PTR(RDO##Name)> Name##List; \
-	void                insert##Name ( RDO##Name* value ); \
+	void                insert##Name (PTR(RDO##Name) value); \
 	PTR(RDO##Name)      getLast##Name()       { return !m_all##Name.empty() ? m_all##Name.back() : NULL; } \
 	CREF(Name##List)    get##Name##s () const { return m_all##Name; } \
 private: \
@@ -67,7 +67,8 @@ private: \
 #define DEFINE_OBJECT_CONTAINER( Name ) \
 DEFINE_OBJECT_CONTAINER_NONAME( Name ) \
 public: \
-	const RDO##Name*                 find##Name   ( const std::string& name ) const;
+	CPTR(RDO##Name) find##Name  (CREF(tstring) name  ) const; \
+	rbool           remove##Name(CPTR(RDO##Name) item);
 
 class RDOParser
 {
