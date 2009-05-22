@@ -317,7 +317,15 @@ REF(RDOResource::Params::mapped_type) RDOResource::operator[] (CREF(tstring) par
 	}
 }
 
-rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) pRSS) const
+CPTR(rdoParse::RDORSSResource) RDOResource::getParserResource(CREF(rdoParse::RDOParser) parser) const
+{
+	if (!exist())
+		return NULL;
+
+	return parser.findRSSResource(name());
+}
+
+rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toParserRSS) const
 {
 	RDOResType::ParamList::List::const_iterator param_it = getType().m_params.begin();
 	while ( param_it != getType().m_params.end() )
@@ -327,21 +335,11 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) pRSS) 
 			return false;
 
 		rdoRuntime::RDOValue value = param_it->type()->cast(value_it->second);
-		pRSS->addParam(rdoParse::RDOValue(value, value.type(), pRSS->src_info()));
+		//! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
+		toParserRSS->addParam(rdoParse::RDOValue(value, value.type(), toParserRSS->src_info()));
 		param_it++;
 	}
 	return true;
-}
-
-rbool RDOResource::deleteParserResource(REF(rdoParse::RDOParser) parser)
-{
-	if (!exist())
-		return false;
-
-	CPTR(rdoParse::RDORSSResource) res = parser.findRSSResource(name());
-	if (!res)
-		return false;
-	return parser.removeRSSResource(res);
 }
 
 // --------------------------------------------------------------------
