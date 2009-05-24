@@ -1,24 +1,26 @@
 #include "pch.h"
 #include "rdoprocess.h"
 #include "rdocalc.h"
+#include <rdotypes.h>
+#include <rdomacros.h>
 
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-RDOPROCProcess::RDOPROCProcess( const std::string& _name, RDOSimulator* sim ):
-	RDOLogic( sim ),
-	name( _name ),
-	parent( NULL )
-{
-}
+RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, PTR(RDOSimulator) sim)
+	: RDOLogic(sim )
+	, m_name  (name)
+	, m_parent(NULL)
+{}
 
-void RDOPROCProcess::insertChild( RDOPROCProcess* value )
+void RDOPROCProcess::insertChild(PTR(RDOPROCProcess) value)
 {
-	if ( value ) {
-		child.push_back( value );
-		value->parent = this;
+	if (value)
+	{
+		m_child.push_back(value);
+		value->m_parent = this;
 	}
 }
 
@@ -33,7 +35,7 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 			//Берем этот блок
 			RDOPROCBlock* block = static_cast<RDOPROCBlock*>(*it);
 			//Находим перемещаемый транзакт в списке его транзактов
-			std::list< RDOPROCTransact* >::iterator it_res = std::find( block->transacts.begin(), block->transacts.end(), transact );
+			RDOPROCBlock::TransactList::iterator it_res = std::find( block->transacts.begin(), block->transacts.end(), transact );
 			//Если транзакт найден
 			if ( it_res != block->transacts.end() ) 
 			{
@@ -369,44 +371,35 @@ void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeizes
 // ----------------------------------------------------------------------------
-bool RDOPROCSeizes::onCheckCondition( RDOSimulator* sim )
+bool RDOPROCSeizes::onCheckCondition(PTR(RDOSimulator) sim)
 {
-	if ( !transacts.empty() ) 
+	if (transacts.empty())
+		return false;
+
+	ruint Size_Seizes = forRes.size();
+	for (ruint i = 0; i < Size_Seizes; i++)
 	{
-		int Size_Seizes = forRes.size();
-		for(int i=0;i<Size_Seizes; i++)
+		// если свободен
+		if (forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_free)
 		{
-			// если свободен
-			if ( forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_free ) 
-			{
-				int idBlocksTransact = transacts.front()->getTraceID();	
-				int idResourcesTransact = forRes[i].rss->transacts.front()->getTraceID();
-				if( idBlocksTransact == idResourcesTransact )
-				{
-					RDOTrace* tracer = static_cast<RDORuntime*>( sim)->getTracer();
-					forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_buzy);	
-					TRACE3(_T("%7.1f SEIZES-%d, resId = %d\n"), sim->getCurrentTime(), index, forRes[i].rss->getTraceID());
-						if ( !tracer->isNull() ) 
-						{
-							tracer->getOStream() << forRes[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-						}
-					transacts.front()->setRes( forRes[i].rss );
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}	
+			ruint idBlocksTransact    = transacts.front()->getTraceID();
+			ruint idResourcesTransact = forRes[i].rss->transacts.front()->getTraceID();
+			if (idBlocksTransact != idResourcesTransact)
+				return false;
+
+			PTR(RDOTrace) tracer = static_cast<PTR(RDORuntime)>(sim)->getTracer();
+			forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_buzy);
+			TRACE3(_T("%7.1f SEIZES-%d, resId = %d\n"), sim->getCurrentTime(), index, forRes[i].rss->getTraceID());
+			if (!tracer->isNull())
+				tracer->getOStream() << forRes[i].rss->traceResourceState(_T('\0'), static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+
+			transacts.front()->setRes(forRes[i].rss);
+			return true;
 		}
-	} 
-	else 
-	{
-		return false;			
 	}
 	return false;
 }
-		
+
 RDOBaseOperation::BOResult RDOPROCSeizes::onDoOperation( RDOSimulator* sim )
 {
 	transacts.front()->next();
