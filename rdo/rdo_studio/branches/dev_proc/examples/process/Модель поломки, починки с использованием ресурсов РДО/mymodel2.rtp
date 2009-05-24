@@ -5,6 +5,7 @@ $End
 
 $Resource_type Станки : permanent
 $Parameters
+	Индекс    : integer
 	Состояние : (Свободен, Занят, Сломан)
 $End
 

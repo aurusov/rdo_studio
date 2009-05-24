@@ -1,62 +1,36 @@
-$Pattern  Образец_Поломка_Станка11 : keyboard 
+$Pattern  Образец_Поломка_Станка : keyboard
+$Parameters
+	Индекс: integer
 $Relevant_resources
-	rel_ST11 : ST11 Keep NoChange
+	Станок : Станки Keep NoChange
 $Time = 0.0
 $Body
-	rel_ST11
-	Choice from 0 = 0
-	first
+Станок
+	Choice from Станок.Индекс = Индекс
 	Convert_begin
-		Состояние set новое_состояние11(ST11.Состояние)
-$End
-
-$Pattern  Образец_Поломка_Станка12 : keyboard
-$Relevant_resources
-	rel_ST11 : ST12	Keep NoChange
-$Time = 0.0
-$Body
-	rel_ST11
-	Choice from 0 = 0
-	first
-	Convert_begin
-		Состояние set новое_состояние11(ST12.Состояние)
-$End
-
-$Pattern  Образец_Поломка_Станка13 : keyboard
-$Relevant_resources
-	rel_ST11 : ST13	Keep NoChange
-$Time = 0.0
-$Body
-	rel_ST11
-	Choice from 0 = 0
-	first
-	Convert_begin
-		Состояние set новое_состояние11(ST13.Состояние)
+		Состояние set новое_состояние11(Станок.Состояние)
 $End
 
 $Pattern  Образец_Поломка_Станка2 : keyboard
 $Relevant_resources
-	rel_ST11 : STANOK2	Keep NoChange
+	Станок : STANOK2	Keep NoChange
 $Time = 0.0
 $Body
-	rel_ST11
-	Choice from 0 = 0
-	first
+Станок
 	Convert_begin
-		Состояние set новое_состояние2(STANOK2.Состояние)
+		Состояние set новое_состояние2(Станок.Состояние)
 $End
 
 $Pattern  Образец_Поломка_Робота : keyboard 
 $Relevant_resources
-	rel_ST11 : ROBOT	Keep NoChange
+	Робот : ROBOT	Keep NoChange
 $Time = 0.0
 $Body
-	rel_ST11
-	Choice from 0 = 0
-	first
+Робот
 	Convert_begin
-		Состояние set новое_состояние_робота(ROBOT.Состояние)
+		Состояние set новое_состояние_робота(Робот.Состояние)
 $End
+
 /*
 $Pattern  Образец_Починка : keyboard
 $Relevant_resources
