@@ -1,4 +1,4 @@
-$Pattern  Образец_Поломка_Станка11 : keyboard
+$Pattern  Образец_Поломка_Станка11 : keyboard 
 $Relevant_resources
 	rel_ST11 : ST11 Keep NoChange
 $Time = 0.0
@@ -46,7 +46,7 @@ $Body
 		Состояние set новое_состояние2(STANOK2.Состояние)
 $End
 
-$Pattern  Образец_Поломка_Робота : keyboard
+$Pattern  Образец_Поломка_Робота : keyboard 
 $Relevant_resources
 	rel_ST11 : ROBOT	Keep NoChange
 $Time = 0.0

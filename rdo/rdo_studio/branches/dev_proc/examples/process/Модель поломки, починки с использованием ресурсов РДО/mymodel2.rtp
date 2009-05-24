@@ -2,6 +2,7 @@ $Resource_type QDEPART : permanent
 $Parameters
 	длина_очереди : integer
 $End
+
 $Resource_type Станки : permanent
 $Parameters
 	Состояние : (Свободен, Занят, Сломан)
