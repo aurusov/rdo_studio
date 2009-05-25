@@ -1,0 +1,17 @@
+$Resource_type QDEPART : permanent
+$Parameters
+	длина_очереди : integer
+$End
+
+$Resource_type Станки : permanent
+$Parameters
+	Индекс    : integer
+	Состояние : (Свободен, Занят, Сломан)
+$End
+
+$Resource_type Роботы : permanent
+$Parameters
+	Состояние	: (Свободен, Занят, Сломан)
+	Положение	: (state1, state2, state3)
+$End
+
