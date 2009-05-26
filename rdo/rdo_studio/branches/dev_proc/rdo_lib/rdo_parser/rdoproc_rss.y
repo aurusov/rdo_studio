@@ -248,7 +248,7 @@ dpt_queue_param:	RDO_IDENTIF
 						rdoMBuilder::RDOResTypeList rtpList( PARSER );
 						rdoMBuilder::RDOResType rtp;
 						std::string rtp_name = "QDEPART";
-						std::string q_name = "Длина_очереди_"  + res_name;
+						std::string q_name = "Очередь_"  + res_name;
 							// Если ресурс существует, берем его тип и проверяем
 							if (rssList[res_name].exist())
 							{
