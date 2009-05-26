@@ -124,6 +124,27 @@ $Constant
 	
 $End
 
+$Function Новый_накопитель : such_as Накопители.Положение = ВхНак
+$Type = list
+$Parameters
+	текущее_положение : such_as Накопители.Положение
+$Body
+	ВхНак 	  = ВхНакСт1 
+	ВыхНакСт1 = ВхНакСт2 
+	ВыхНакСт2 = ВыхНак	
+$End
+
+$Function Новое_положение : such_as Детали.Положение = ВхНак
+$Type = list
+$Parameters
+	текущее_положение : such_as Детали.Положение
+$Body
+	ВхНак     = state1 
+	ВыхНакСт1 = state2 
+	ВыхНакСт2 = state3	
+$End
+
+
 
 $Function новое_состояние11 : such_as Станки.Состояние
 $Type = algorithmic
@@ -135,10 +156,10 @@ $Body
 	result = Свободен
 $End
 
-$Function новое_состояние2 : such_as STANOK2s.Состояние
+$Function новое_состояние2 : such_as Станки.Состояние
 $Type = algorithmic
 $Parameters
-	текущее_состояние : such_as STANOK2s.Состояние
+	текущее_состояние : such_as Станки.Состояние
 $Body
 	Calculate_if текущее_состояние = Свободен or текущее_состояние = Занят
 		новое_состояние2 = Сломан

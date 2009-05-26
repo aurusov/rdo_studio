@@ -27,4 +27,4 @@ Show_mode      = Animation
 Show_rate      = 10000.0
 
 // ”словие остановки модели. ѕосле Terminate_if можно указать любое логическое выражение
-Terminate_if Term_now >= 20
+Terminate_if QOUT.длина_очереди >= 20
