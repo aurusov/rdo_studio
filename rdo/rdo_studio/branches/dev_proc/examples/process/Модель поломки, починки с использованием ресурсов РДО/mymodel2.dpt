@@ -1,7 +1,7 @@
 
 $Process
 //Появление заготовок в системе каждые 150 секунд по экспоненциальному закону
-	GENERATE Интервал_прихода_заготовок(20) 
+	GENERATE Интервал_прихода_заготовок(150) 
 //	ASSIGNE  ROBOT.Состояние = Сломан
 //	ASSIGNE  ST11.Состояние = Сломан
 //Перемещение заготовки из зоны приемки заготовок к первому станку
@@ -9,9 +9,9 @@ $Process
 	SEIZES	 ROBOT
 	ASSIGNE  ROBOT.Положение = state1
 	DEPART	 QIN
-	ADVANCE  Время_захвата(2,1)
+	ADVANCE  Время_захвата(8,1)
 	ADVANCE  1
-	ADVANCE  Время_отпуска(2,1)
+	ADVANCE  Время_отпуска(8,1)
 	RELEASES ROBOT
 //	ASSIGNE  ROBOT.Положение = state4
 //	RELEASE  ROBOT 
@@ -21,7 +21,7 @@ $Process
 	QUEUE	 QSTANOK1
 	SEIZES	 ST11, ST12, ST13 
 	DEPART	 QSTANOK1
-	ADVANCE  Обработка_на_станке_1(40,10)
+	ADVANCE  Обработка_на_станке_1(60,10)
 	RELEASES ST11, ST12, ST13 
 	
 //Перемещение заготовки от перового станка ко второму
@@ -30,9 +30,9 @@ $Process
 	SEIZES	 ROBOT
 	ASSIGNE  ROBOT.Положение = state2
 	DEPART	 QEXITST1
-	ADVANCE  Время_захвата(2,1)
+	ADVANCE  Время_захвата(8,1)
 	ADVANCE  1
-	ADVANCE  Время_отпуска(2,1)
+	ADVANCE  Время_отпуска(8,1)
 	RELEASES ROBOT 
 //	ASSIGNE  ROBOT.Положение = state4
 	
@@ -40,7 +40,7 @@ $Process
 	QUEUE	 QSTANOK2
 	SEIZES	 STANOK2
 	DEPART	 QSTANOK2
-	ADVANCE  Обработка_на_станке_2(20)
+	ADVANCE  Обработка_на_станке_2(100)
 	RELEASES STANOK2 
 
 //Перемещение заготовки от второго станка в зону готовых деталей
@@ -48,9 +48,9 @@ $Process
 	SEIZES	 ROBOT
 	ASSIGNE  ROBOT.Положение = state3
 	DEPART	 QEXITST2
-	ADVANCE  Время_захвата(2,1)
+	ADVANCE  Время_захвата(8,1)
 	ADVANCE  1
-	ADVANCE  Время_отпуска(2,1)
+	ADVANCE  Время_отпуска(8,1)
 	RELEASES  ROBOT 
 //	ASSIGNE  ROBOT.Положение = state4
 	
