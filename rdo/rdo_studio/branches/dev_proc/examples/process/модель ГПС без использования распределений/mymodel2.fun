@@ -1,4 +1,3 @@
-
 $Sequence Интервал_прихода_заготовок : real
 $Type = exponential 12347
 $End
