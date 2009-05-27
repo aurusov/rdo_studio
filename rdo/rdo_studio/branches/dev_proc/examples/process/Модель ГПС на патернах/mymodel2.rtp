@@ -3,7 +3,6 @@ $Parameters
 	Положение : (ВхНак, ВхНакСт1, ВыхНакСт1, ВхНакСт2, ВыхНакСт2, ВыхНак, Ст11, Ст12, Ст13, Ст2, Робот, Нигде, state1, state2, state3)
 	Время	  : real
 $End
-
 $Resource_type Накопители : permanent
 $Parameters
 	Положение		: such_as Детали.Положение
@@ -12,7 +11,6 @@ $End
 
 $Resource_type Станки : permanent
 $Parameters
-	Индекс    	: integer
 	Состояние 	: (Свободен, Занят, Сломан)
 	Положение	: such_as Детали.Положение
 $End
