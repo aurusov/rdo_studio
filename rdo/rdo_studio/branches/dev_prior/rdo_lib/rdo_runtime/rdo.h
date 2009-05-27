@@ -22,7 +22,6 @@ public:
 		BOR_must_continue,
 		BOR_done
 	};
-	RDOCalc*                  m_prior_runtime;
 
 	// Вызывается перед стартом прогона и перед возобновление операции
 	// Например, условие DPT-some поменялось с false на true

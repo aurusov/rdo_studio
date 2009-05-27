@@ -37,7 +37,6 @@ protected:
 		RDOTraceableObject( trace ),
 		m_oprName( name )
 	{
-		m_prior_runtime = 0;
 	}
 	virtual ~RDOActivity() {}
 
@@ -86,6 +85,16 @@ protected:
 	virtual ~RDOActivityPattern() {}
 
 	T* m_pattern;
+};
+// ----------------------------------------------------------------------------
+// ---------- RDOPriorActivityPattern
+// ----------------------------------------------------------------------------
+template< class T >
+class RDOPriorActivityPattern: public RDOActivityPattern<T>
+{
+public:
+		RDOCalc*                  m_prior_runtime;
+
 };
 
 } // namespace rdoRuntime
