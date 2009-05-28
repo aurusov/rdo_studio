@@ -3,47 +3,47 @@ $Process
 	GENERATE Интервал_прихода_заготовок(50) 
 
 //Перемещение заготовки из зоны приемки заготовок к первому станку
-	QUEUE	 QIN
-	SEIZES	 ROBOT
-	DEPART	 QIN
+	QUEUE	 ВхНак
+	SEIZES	 Робот
+	DEPART	 ВхНак
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  6
 	ADVANCE  Время_захвата(8,1)
-	RELEASES ROBOT 
+	RELEASES Робот
 	
 //Обработка на первом станке
-	QUEUE	 QSTANOK1
-	SEIZES	 STANOK1
-	DEPART	 QSTANOK1
+	QUEUE	 ВхНакСт1
+	SEIZES	 Станок1
+	DEPART	 ВхНакСт1
 	ADVANCE  Обработка_на_станке_1(30,10)
-	RELEASES STANOK1 
+	RELEASES Станок1 
 	
 //Перемещение заготовки от перового станка ко второму
-	QUEUE	 QEXITST1
-	SEIZES	 ROBOT
-	DEPART	 QEXITST1
+	QUEUE	 ВыхНакСт1
+	SEIZES	 Робот
+	DEPART	 ВыхНакСт1
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  7
 	ADVANCE  Время_захвата(8,1)
-	RELEASES ROBOT 
+	RELEASES Робот 
 	
 //Обработка на втором станке
-	QUEUE	 QSTANOK2
-	SEIZES	 STANOK2
-	DEPART	 QSTANOK2
+	QUEUE	 ВхНакСт2
+	SEIZES	 Станок2
+	DEPART	 ВхНакСт2
 	ADVANCE  Обработка_на_станке_2(30)
-	RELEASES STANOK2 
+	RELEASES Станок2 
 
 //Перемещение заготовки от второго станка в зону готовых деталей
-	QUEUE	 QEXITST2
-	SEIZES	 ROBOT
-	DEPART	 QEXITST2
+	QUEUE	 ВыхНакСт2
+	SEIZES	 Робот
+	DEPART	 ВыхНакСт2
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  5
 	ADVANCE  Время_захвата(8,1)
-	RELEASES ROBOT
+	RELEASES Робот
 	
-	QUEUE	 QOUT
+	QUEUE	 Вых_нак
 	
 	TERMINATE 1
 $End
