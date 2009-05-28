@@ -40,3 +40,13 @@ $Body
 	ВыхНакСт1 = state2 
 	ВыхНакСт2 = state3	
 $End
+
+$Function Время_на_участке : integer = 0
+$Type = list
+$Parameters
+	положение_накопителя : such_as Накопители.Положение
+$Body
+	ВхНак     = 6
+	ВыхНакСт1 = 7
+	ВыхНакСт2 = 5	
+$End
