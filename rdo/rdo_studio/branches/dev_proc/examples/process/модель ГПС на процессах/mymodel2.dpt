@@ -1,6 +1,6 @@
 $Process
 //Появление заготовок в системе каждые 150 секунд по экспоненциальному закону
-	GENERATE Интервал_прихода_заготовок(150) 
+	GENERATE Интервал_прихода_заготовок(50) 
 
 //Перемещение заготовки из зоны приемки заготовок к первому станку
 	QUEUE	 QIN
@@ -15,7 +15,7 @@ $Process
 	QUEUE	 QSTANOK1
 	SEIZES	 STANOK1
 	DEPART	 QSTANOK1
-	ADVANCE  Обработка_на_станке_1(60,10)
+	ADVANCE  Обработка_на_станке_1(30,10)
 	RELEASES STANOK1 
 	
 //Перемещение заготовки от перового станка ко второму
@@ -31,7 +31,7 @@ $Process
 	QUEUE	 QSTANOK2
 	SEIZES	 STANOK2
 	DEPART	 QSTANOK2
-	ADVANCE  Обработка_на_станке_2(100)
+	ADVANCE  Обработка_на_станке_2(30)
 	RELEASES STANOK2 
 
 //Перемещение заготовки от второго станка в зону готовых деталей
@@ -42,6 +42,8 @@ $Process
 	ADVANCE  5
 	ADVANCE  Время_захвата(8,1)
 	RELEASES ROBOT
+	
+	QUEUE	 QOUT
 	
 	TERMINATE 1
 $End
