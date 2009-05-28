@@ -1,7 +1,7 @@
 
 $Process
 //Появление заготовок в системе каждые 150 секунд по экспоненциальному закону
-	GENERATE Интервал_прихода_заготовок(150) 
+	GENERATE Интервал_прихода_заготовок(100) 
 //	ASSIGNE  ROBOT.Состояние = Сломан
 //	ASSIGNE  ST11.Состояние = Сломан
 //Перемещение заготовки из зоны приемки заготовок к первому станку
@@ -10,8 +10,8 @@ $Process
 	ASSIGNE  ROBOT.Положение = state1
 	DEPART	 QIN
 	ADVANCE  Время_захвата(8,1)
-	ADVANCE  1
-	ADVANCE  Время_отпуска(8,1)
+	ADVANCE  6
+	ADVANCE  Время_захвата(8,1)
 	RELEASES ROBOT
 //	ASSIGNE  ROBOT.Положение = state4
 //	RELEASE  ROBOT 
@@ -31,8 +31,8 @@ $Process
 	ASSIGNE  ROBOT.Положение = state2
 	DEPART	 QEXITST1
 	ADVANCE  Время_захвата(8,1)
-	ADVANCE  1
-	ADVANCE  Время_отпуска(8,1)
+	ADVANCE  7
+	ADVANCE  Время_захвата(8,1)
 	RELEASES ROBOT 
 //	ASSIGNE  ROBOT.Положение = state4
 	
@@ -49,8 +49,8 @@ $Process
 	ASSIGNE  ROBOT.Положение = state3
 	DEPART	 QEXITST2
 	ADVANCE  Время_захвата(8,1)
-	ADVANCE  1
-	ADVANCE  Время_отпуска(8,1)
+	ADVANCE  5
+	ADVANCE  Время_захвата(8,1)
 	RELEASES  ROBOT 
 //	ASSIGNE  ROBOT.Положение = state4
 	
