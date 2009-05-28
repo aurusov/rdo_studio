@@ -58,6 +58,10 @@ public:
 	{
 		return std::find_if(begin(), end(), rdoParse::compareNameRef<T>(name));
 	}
+	Iterator      found(CREF(tstring) name)
+	{
+		return std::find_if(begin(), end(), rdoParse::compareNameRef<T>(name));
+	}
 	rbool exist(CREF(tstring) name) const
 	{
 		return found( name ) != end();
@@ -181,7 +185,7 @@ public:
 
 	CREF(RDOResType)  getType() const { return m_rtp; }
 	rsint             getID  () const { return m_id;  }
-	
+
 	typedef std::map< tstring, rdoRuntime::RDOValue > Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
@@ -191,13 +195,12 @@ public:
 	REF(Params::mapped_type)   operator[] (CREF(tstring) param);
 	Params::const_iterator     operator[] (CREF(tstring) param) const;
 
+	CPTR(rdoParse::RDORSSResource) getParserResource(CREF(rdoParse::RDOParser) parser) const;
+
 	template <class T>
 	rbool checkParserResourceType(CREF(rdoParse::RDOParser) parser) const
 	{
-		if (!exist())
-			return false;
-
-		return dynamic_cast<CPTR(T)>(parser.findRSSResource(name())) != NULL;
+		return dynamic_cast<CPTR(T)>(getParserResource(parser)) != NULL;
 	}
 
 	template <class T>
@@ -209,7 +212,8 @@ public:
 
 		return new T(&parser, name(), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
-	rbool fillParserResourceParams(PTR(rdoParse::RDORSSResource) pRSS) const;
+
+	rbool fillParserResourceParams(PTR(rdoParse::RDORSSResource) toParserRSS) const;
 
 private:
 	RDOResType  m_rtp;
@@ -238,51 +242,53 @@ public:
 	// --------------------------------------------------------------------
 	// ---- ƒобавление *нового* ресурса
 	// --------------------------------------------------------------------
-	template<class T> rbool append(REF(RDOResource) rss)
+	template<class T> rbool append(REF(RDOResource) mbuilderRSS)
 	{
-		if (exist(rss.name()))
+		if (exist(mbuilderRSS.name()))
 			return false;
 
-		PTR(rdoParse::RDORSSResource) pRSS = rss.createParserResource<T>(*m_parser);
-		if (!pRSS)
+		std::auto_ptr<rdoParse::RDORSSResource> parserRSS(mbuilderRSS.createParserResource<T>(*m_parser));
+		if (!parserRSS.get())
+			return false;
+		if (!mbuilderRSS.fillParserResourceParams(parserRSS.get()))
 			return false;
 
-		if (!rss.fillParserResourceParams(pRSS))
-		{
-			delete pRSS;
-			return false;
-		}
-		pRSS->setTrace(true);
+		parserRSS.get()->setTrace(true);
 
-		rss.m_exist = true;
-		m_list.push_back(rss);
+		mbuilderRSS.m_exist = true;
+		m_list.push_back(mbuilderRSS);
+
+		//! —нимаем моникер на парсер-ресурс, чтобы он не удалилс€ при выходе
+		parserRSS.release();
 		return true;
 	}
 	// --------------------------------------------------------------------
 	// ---- «амена существующего ресурса новым
 	// --------------------------------------------------------------------
-	template<class T> rbool replace(REF(RDOResource) rssNew)
+	template<class T> rbool replace(REF(RDOResource) mbuilderRSSNew)
 	{
-		Iterator itRSSOld = begin();
-		while (itRSSOld != end())
-		{
-			if (itRSSOld->name() == rssNew.name())
-				break;
-			++itRSSOld;
-		}
-
-		if (itRSSOld == end())
+		Iterator mbuilderRSSPrevIt = found(mbuilderRSSNew.name());
+		if (mbuilderRSSPrevIt == end())
 			return false;
 
-		PTR(rdoParse::RDORSSResource) pRSS = rssNew.createParserResource<T>(*m_parser, itRSSOld->getID());
-		if (!itRSSOld->fillParserResourceParams(pRSS))
-		{
-			delete pRSS;
+		CPTR(rdoParse::RDORSSResource) parserRSSPrev = mbuilderRSSPrevIt->getParserResource(*m_parser);
+		ASSERT(parserRSSPrev);
+
+		std::auto_ptr<rdoParse::RDORSSResource> parserRSSNew(mbuilderRSSNew.createParserResource<T>(*m_parser, mbuilderRSSPrevIt->getID()));
+		if (!parserRSSNew.get())
 			return false;
-		}
-		rssNew.m_exist = true;
-		m_list.push_back(rssNew);
-		m_list.erase(itRSSOld);
+		if (!mbuilderRSSPrevIt->fillParserResourceParams(parserRSSNew.get()))
+			return false;
+		parserRSSNew.get()->setTrace(parserRSSPrev->getTrace());
+		mbuilderRSSNew.m_exist = true;
+		m_list.push_back(mbuilderRSSNew);
+
+		//! ”далим старый
+		m_parser->removeRSSResource(parserRSSPrev);
+		m_list.erase(mbuilderRSSPrevIt);
+
+		//! —нимаем моникер на парсер-ресурс, чтобы он не удалилс€ при выходе
+		parserRSSNew.release();
 		return true;
 	}
 };

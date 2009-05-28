@@ -17,16 +17,18 @@ friend class RDOPROCTransact;
 friend class RDOPROCProcess;
 friend class RDOPROCResource;
 
+public:
+	typedef std::list<PTR(RDOPROCTransact)> TransactList;
+
+	virtual void TransactGoIn( RDOPROCTransact* _transact );
+	virtual void TransactGoOut( RDOPROCTransact* _transact );
+
 protected:
 	RDOPROCProcess* process;
-	std::list< RDOPROCTransact* > transacts;
+	TransactList    transacts;
 
 	RDOPROCBlock( RDOPROCProcess* _process );
 	virtual ~RDOPROCBlock() {}
-
-public:
-	virtual void TransactGoIn( RDOPROCTransact* _transact );
-	virtual void TransactGoOut( RDOPROCTransact* _transact );
 };
 
 // ----------------------------------------------------------------------------
@@ -38,16 +40,16 @@ class RDOPROCProcess: public RDOLogic
 {
 friend class RDOPROCBlock;
 
-protected:
-	std::string                  name;
-	RDOPROCProcess*              parent;
-	std::list< RDOPROCProcess* > child;
-
 public:
-	RDOPROCProcess( const std::string& _name, RDOSimulator* sim );
-	void insertChild( RDOPROCProcess* value );
+	RDOPROCProcess(CREF(tstring) _name, PTR(RDOSimulator) sim);
 
-	void next( RDOPROCTransact* transact );
+	void insertChild(PTR(RDOPROCProcess)  value   );
+	void next       (PTR(RDOPROCTransact) transact);
+
+protected:
+	tstring                         m_name;
+	PTR(RDOPROCProcess)             m_parent;
+	std::list<PTR(RDOPROCProcess)>  m_child;
 };
 
 // ----------------------------------------------------------------------------
@@ -326,10 +328,11 @@ class RDOPROCTerminate: public RDOPROCBlock
 protected:
 	virtual bool     onCheckCondition( RDOSimulator* sim );
 	virtual BOResult onDoOperation	 ( RDOSimulator* sim );
-	const unsigned int term; 
+	const ruint term; 
+
 public:
-	int getTerm(){return term;}
-	RDOPROCTerminate( RDOPROCProcess* _process, const unsigned int& _term ): RDOPROCBlock( _process ), term(_term) {}
+	int getTerm() {return term;}
+	RDOPROCTerminate(RDOPROCProcess* _process, ruint _term): RDOPROCBlock( _process ), term(_term) {}
 };
 
 

@@ -59,7 +59,8 @@ public:
 		if ( m_params.size() <= index ) {
 			m_params.resize( index + 1 );
 		}
-		m_params.at( index ) = value;
+		setState(CS_Keep);
+		m_params.at(index) = value;
 	}
 	virtual ruint paramsCount() const
 	{

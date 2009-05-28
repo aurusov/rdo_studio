@@ -35,8 +35,16 @@ void RDOParser::insert##Name( RDO##Name* value ) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME( Name ) \
 const RDO##Name* RDOParser::find##Name( const std::string& name ) const \
 { \
-	std::vector< RDO##Name* >::const_iterator it = std::find_if( m_all##Name.begin(), m_all##Name.end(), compareName<RDO##Name>(name) ); \
+	Name##List::const_iterator it = std::find_if( m_all##Name.begin(), m_all##Name.end(), compareName<RDO##Name>(name) ); \
 	return it != m_all##Name.end() ? *it : NULL; \
+} \
+rbool RDOParser::remove##Name(CPTR(RDO##Name) item) \
+{ \
+	Name##List::iterator it = std::find(m_all##Name.begin(), m_all##Name.end(), item); \
+	if (it == m_all##Name.end()) \
+		return false; \
+	m_all##Name.erase(it); \
+	return true; \
 }
 
 DECLARE_PARSER_OBJECT_CONTAINER( PATPattern      );
