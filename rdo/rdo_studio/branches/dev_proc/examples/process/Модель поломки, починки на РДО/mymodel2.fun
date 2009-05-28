@@ -144,7 +144,15 @@ $Body
 	ВыхНакСт2 = state3	
 $End
 
-
+$Function Время_на_участке : integer = 0
+$Type = list
+$Parameters
+	положение_накопителя : such_as Накопители.Положение
+$Body
+	ВхНак     = 6 
+	ВыхНакСт1 = 7 
+	ВыхНакСт2 = 5	
+$End
 
 $Function новое_состояние11 : such_as Станки.Состояние
 $Type = algorithmic
@@ -177,6 +185,8 @@ $Body
 	Calculate_if текущее_состояние = Сломан 		
 		новое_состояние_робота = Свободен
 $End
+
+
 
 $Sequence Интервал_прихода_заготовок : real
 $Type = exponential 12347
