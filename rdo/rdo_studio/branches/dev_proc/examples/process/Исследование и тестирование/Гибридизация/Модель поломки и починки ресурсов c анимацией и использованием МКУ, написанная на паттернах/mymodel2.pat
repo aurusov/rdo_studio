@@ -1,7 +1,7 @@
 $Pattern Образец_Прибытие_Заготовок : irregular_event trace
 $Relevant_resources
 	Новая_Заготовка		:Детали 	Create
-	Входной_Накопитель	:QIN	Keep
+	Входной_Накопитель	:ВхНак	Keep
 $Time = Интервал_прихода_заготовок(150)
 $Body
 Новая_Заготовка
@@ -136,7 +136,7 @@ $End
 
 $Pattern  Образец_Поломка_Станка2 : keyboard
 $Relevant_resources
-	Станок : STANOK2	Keep NoChange
+	Станок : Ст2	Keep NoChange
 $Time = 0.0
 $Body
 Станок
@@ -146,7 +146,7 @@ $End
 
 $Pattern  Образец_Поломка_Робота : keyboard 
 $Relevant_resources
-	Робот : ROBOT	Keep NoChange
+	Робот : Робот	Keep NoChange
 $Time = 0.0
 $Body
 Робот
