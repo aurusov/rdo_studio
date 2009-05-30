@@ -10,17 +10,10 @@ $Parameters
 	длина_очереди 	: integer 
 $End
 
-$Resource_type Станки : permanent
+$Resource_type Ресурсы : permanent
 $Parameters
-	Индекс    	: integer
+	Индекс    	: real
 	Состояние 	: (Свободен, Занят, Сломан)
 	Положение	: such_as Детали.Положение
-$End
-
-$Resource_type Роботы : permanent
-$Parameters
-	Состояние	: (Свободен, Занят, Сломан)
-	Положение	: such_as Детали.Положение
-
 $End
 

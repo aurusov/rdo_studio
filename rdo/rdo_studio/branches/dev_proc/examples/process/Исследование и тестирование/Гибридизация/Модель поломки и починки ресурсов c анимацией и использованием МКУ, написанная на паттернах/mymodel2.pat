@@ -19,7 +19,7 @@ $Relevant_resources
 	Деталь		: Детали	 NoChange	keep
 	Накопитель1	: Накопители keep 		NoChange
 	Накопитель2	: Накопители NoChange 	keep
-	Робот		: Роботы	 keep 		keep
+	Робот		: Ресурсы	 keep 		keep
 $Time = Время_захвата(8,1) + Время_на_участке(Накопитель1.Положение) + Время_захвата(8,1)
 $Body
 Деталь
@@ -40,7 +40,7 @@ $Body
 		длина_очереди set Накопитель2.длина_очереди + 1
 
 Робот	
-	Choice from Робот.Состояние = Свободен
+	Choice from Робот.Индекс = 5 and Робот.Состояние = Свободен
 	Convert_begin
 		Положение set Новое_положение(Деталь.Положение)
 		Состояние set Занят
@@ -50,14 +50,14 @@ $End
 
 $Pattern Образец_Работы_Ст1 : operation
 $Relevant_resources
-	Станок		: Станки	 keep 		keep
+	Станок		: Ресурсы	 keep 		keep
 	Накопитель1	: Накопители keep 		NoChange
 	Накопитель2	: Накопители NoChange 	keep
 	Деталь		: Детали	 keep 		keep
 $Time = Обработка_на_станке_1(60,10)
 $Body
 Станок	
-	Choice from Станок.Состояние = Свободен and (Станок.Положение = Ст11 or Станок.Положение = Ст12 or Станок.Положение = Ст13)
+	Choice from Станок.Состояние = Свободен and (Станок.Индекс = 1 or Станок.Индекс = 2 or Станок.Индекс = 3)
 	Convert_begin
 		Состояние set Занят
 	Convert_end
@@ -85,14 +85,14 @@ $End
 
 $Pattern Образец_Работы_Ст2 : operation
 $Relevant_resources
-	Станок		: Станки	 keep 		keep
+	Станок		: Ресурсы	 keep 		keep
 	Накопитель1	: Накопители keep 		NoChange
 	Накопитель2	: Накопители NoChange 	keep
 	Деталь		: Детали	 keep 		keep
 $Time = Обработка_на_станке_2(100)
 $Body
 Станок	
-	Choice from Станок.Состояние = Свободен and Станок.Положение = Ст2
+	Choice from Станок.Состояние = Свободен and Станок.Индекс = 4
 	Convert_begin
 		Состояние set Занят
 	Convert_end
@@ -125,7 +125,7 @@ $Pattern  Образец_Поломка_Станка : keyboard
 $Parameters
 	Индекс: integer
 $Relevant_resources
-	Станок : Станки Keep NoChange
+	Станок : Ресурсы Keep NoChange
 $Time = 0.0
 $Body
 Станок
