@@ -1,60 +1,47 @@
-
 $Process
-//Появление заготовок в системе каждые 150 секунд по экспоненциальному закону
-	GENERATE Интервал_прихода_заготовок(100) 
-//	ASSIGNE  ROBOT.Состояние = Сломан
-//	ASSIGNE  ST11.Состояние = Сломан
+//Появление заготовок в системе 
+	GENERATE Интервал_прихода_заготовок(150) 
 //Перемещение заготовки из зоны приемки заготовок к первому станку
-	QUEUE	 QIN
-	SEIZES	 ROBOT
-	ASSIGNE  ROBOT.Положение = state1
-	DEPART	 QIN
+	QUEUE	 ВхНак
+	SEIZES	 Робот
+	DEPART	 ВхНак
+	ASSIGNE  Робот.Положение = Положение1
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  6
 	ADVANCE  Время_захвата(8,1)
-	RELEASES ROBOT
-//	ASSIGNE  ROBOT.Положение = state4
-//	RELEASE  ROBOT 
-//	ASSIGNE  ROBOT.Состояние_для_анимации = деталь_на_станке_1
-
+	RELEASES Робот
 //Обработка на первом станке
-	QUEUE	 QSTANOK1
-	SEIZES	 ST11, ST12, ST13 
-	DEPART	 QSTANOK1
+	QUEUE	 ВхНакСт1
+	SEIZES	 Ст11, Ст12, Ст13 
+	DEPART	 ВхНакСт1
 	ADVANCE  Обработка_на_станке_1(60,10)
-	RELEASES ST11, ST12, ST13 
-	
+	RELEASES Ст11, Ст12, Ст13 
 //Перемещение заготовки от перового станка ко второму
-
-	QUEUE	 QEXITST1
-	SEIZES	 ROBOT
-	ASSIGNE  ROBOT.Положение = state2
-	DEPART	 QEXITST1
+	QUEUE	 ВыхНакСт1
+	SEIZES	 Робот
+	DEPART	 ВыхНакСт1
+	ASSIGNE  Робот.Положение = Положение2
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  7
 	ADVANCE  Время_захвата(8,1)
-	RELEASES ROBOT 
-//	ASSIGNE  ROBOT.Положение = state4
-	
+	RELEASES Робот
 //Обработка на втором станке
-	QUEUE	 QSTANOK2
-	SEIZES	 STANOK2
-	DEPART	 QSTANOK2
+	QUEUE	 ВхНакСт2
+	SEIZES	 Ст2
+	DEPART	 ВхНакСт2
 	ADVANCE  Обработка_на_станке_2(100)
-	RELEASES STANOK2 
-
+	RELEASES Ст2 
 //Перемещение заготовки от второго станка в зону готовых деталей
-	QUEUE	 QEXITST2
-	SEIZES	 ROBOT
-	ASSIGNE  ROBOT.Положение = state3
-	DEPART	 QEXITST2
+	QUEUE	 ВыхНакСт2
+	SEIZES	 Робот
+	DEPART	 ВыхНакСт2
+	ASSIGNE  Робот.Положение = Положение3
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  5
 	ADVANCE  Время_захвата(8,1)
-	RELEASES  ROBOT 
-//	ASSIGNE  ROBOT.Положение = state4
-	
-	QUEUE	 QOUT
-	
+	RELEASES Робот 
+//Подсчет количества деталей в выходном накопителе
+	QUEUE	 ВыхНак
+//Удаление транзактов	
 	TERMINATE 1 
 $End
