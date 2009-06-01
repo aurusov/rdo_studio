@@ -7,7 +7,7 @@ $End
 $Resource_type Накопители : permanent
 $Parameters
 	Положение		: such_as Детали.Положение
-	длина_очереди 	: integer 
+	Длина_очереди 	: integer 
 $End
 
 $Resource_type Ресурсы : permanent
