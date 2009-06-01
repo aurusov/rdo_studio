@@ -252,7 +252,6 @@ public:
 	static std::string getStateParamName() {return "Состояние";}
 	static std::string getStateEnumFree()  {return "Свободен"; }
 	static std::string getStateEnumBuzy()  {return "Занят";    }
-	static std::string getStateEnumBreak() {return "Сломан";    }
 };
 
 // ----------------------------------------------------------------------------

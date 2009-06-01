@@ -361,7 +361,6 @@ void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
 		bbb.rss = static_cast<RDOPROCResource*>(res);
 		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumFree() );
 		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBuzy() );
-		bbb.enum_break = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBreak() );
 		forRes.push_back(bbb);
 		it1++;
 	}
@@ -450,8 +449,8 @@ bool RDOPROCReleases::onCheckCondition( RDOSimulator* sim )
 						}				
 					return true;
 				}		
-				// Сломан
-				if ( forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_break )
+				// Не Занят и не свободен
+				if ( forRes[i].rss->getParam(forRes[i].Id_param) != forRes[i].enum_free )
 				{
 					//Удаляем транзакт
 					RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
