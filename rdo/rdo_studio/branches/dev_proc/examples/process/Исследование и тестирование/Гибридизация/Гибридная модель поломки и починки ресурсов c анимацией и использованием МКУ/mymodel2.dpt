@@ -5,7 +5,7 @@ $Process
 	QUEUE	 ВхНак
 	SEIZE	 Робот
 	DEPART	 ВхНак
-	ASSIGNE  Робот.Положение = Положение1
+	ASSIGN  Робот.Положение = Положение1
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  6
 	ADVANCE  Время_захвата(8,1)
@@ -20,7 +20,7 @@ $Process
 	QUEUE	 ВыхНакСт1
 	SEIZE	 Робот
 	DEPART	 ВыхНакСт1
-	ASSIGNE  Робот.Положение = Положение2
+	ASSIGN  Робот.Положение = Положение2
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  7
 	ADVANCE  Время_захвата(8,1)
@@ -35,7 +35,7 @@ $Process
 	QUEUE	 ВыхНакСт2
 	SEIZE	 Робот
 	DEPART	 ВыхНакСт2
-	ASSIGNE  Робот.Положение = Положение3
+	ASSIGN  Робот.Положение = Положение3
 	ADVANCE  Время_захвата(8,1)
 	ADVANCE  5
 	ADVANCE  Время_захвата(8,1)
