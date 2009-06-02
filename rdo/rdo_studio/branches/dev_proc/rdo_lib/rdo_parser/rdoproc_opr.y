@@ -168,7 +168,7 @@
 %token RDO_External_Model				444
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
-%token RDO_ASSIGNE						447
+%token RDO_ASSIGN						447
 
 %{
 #include "pch.h"
@@ -343,8 +343,8 @@ dpt_process_line:	RDO_IDENTIF
 					{
 						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 					}
-					| RDO_ASSIGNE dpt_assigne_param	  { 	}
-					| RDO_ASSIGNE error				  { PARSER->error(@1, rdo::format("Ожидается строка изменения параметра"));								};
+					| RDO_ASSIGN dpt_assign_param	  { 	}
+					| RDO_ASSIGN error				  { PARSER->error(@1, rdo::format("Ожидается строка изменения параметра"));								};
 
 
 
@@ -455,7 +455,7 @@ dpt_release_param:	RDO_IDENTIF
 						PARSER->error( @1, "Ошибка в имени ресурса" );
 					};		
 					
-dpt_assigne_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
+dpt_assign_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 					{
 						std::string res = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						std::string param = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
@@ -479,8 +479,8 @@ dpt_assigne_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 								const RDORTPResType* rt = rs->getType();
 								const RDORTPParam* pr = rt->findRTPParam( param );
 								pr->getType()->checkParamType( arithm );
-								RDOPROCAssigne* assigne = new RDOPROCAssigne( PARSER->getLastPROCProcess(), "ASSIGNE", arithm->createCalc( pr->getType() ), rs->getID(), rtp.m_params[param].id() );
-								$$ = int(assigne);
+								RDOPROCAssign* assign = new RDOPROCAssign( PARSER->getLastPROCProcess(), "ASSIGN", arithm->createCalc( pr->getType() ), rs->getID(), rtp.m_params[param].id() );
+								$$ = int(assign);
 							}
 
 						}

@@ -560,9 +560,9 @@ RDOBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCAssigne
+// ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-bool RDOPROCAssigne::onCheckCondition( RDOSimulator* sim )
+bool RDOPROCAssign::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) 
 	{
@@ -571,11 +571,11 @@ bool RDOPROCAssigne::onCheckCondition( RDOSimulator* sim )
 return false;
 }
 
-RDOBaseOperation::BOResult RDOPROCAssigne::onDoOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCAssign::onDoOperation( RDOSimulator* sim )
 {
 	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( t_resId );
 	res->setParam( t_parId, paramValue->calcValue( static_cast<RDORuntime*>(sim) ) );	
-	TRACE1(_T("%7.1f ASSIGNE\n"), sim->getCurrentTime());
+	TRACE1(_T("%7.1f ASSIGN\n"), sim->getCurrentTime());
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }

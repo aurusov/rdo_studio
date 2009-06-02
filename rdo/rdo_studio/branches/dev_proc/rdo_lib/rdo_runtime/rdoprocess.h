@@ -347,9 +347,9 @@ public:
 
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCAssigne
+// ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-class RDOPROCAssigne: public RDOPROCBlock
+class RDOPROCAssign: public RDOPROCBlock
 {
 protected:
 	RDOCalc* paramValue;
@@ -360,7 +360,7 @@ protected:
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
-	RDOPROCAssigne( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param ): 
+	RDOPROCAssign( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param ): 
 	  RDOPROCBlock( _process ), paramValue( value ), t_resId( Id_res ), t_parId( Id_param ) 
 	  {
 		int i = 0;

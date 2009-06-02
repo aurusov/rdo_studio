@@ -168,7 +168,7 @@
 %token RDO_External_Model				444
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
-%token RDO_ASSIGNE						447
+%token RDO_ASSIGN						447
 
 %{
 #include "pch.h"

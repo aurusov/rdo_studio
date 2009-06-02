@@ -361,15 +361,15 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCAssigne
+// ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-class RDOPROCAssigne: public RDOPROCOperator
+class RDOPROCAssign: public RDOPROCOperator
 {
 protected:
-	rdoRuntime::RDOPROCAssigne* runtime;
+	rdoRuntime::RDOPROCAssign* runtime;
 
 public:
-	RDOPROCAssigne( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param );
+	RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param );
 };
 
 } // namespace rdoParse

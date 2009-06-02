@@ -692,13 +692,13 @@ RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string&
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCAssigne
+// ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-RDOPROCAssigne::RDOPROCAssigne( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param ):
+RDOPROCAssign::RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param ):
 	RDOPROCOperator( _process, _name ),
 	runtime		   ( NULL			 )
 {
-	runtime = new rdoRuntime::RDOPROCAssigne( parser()->getLastPROCProcess()->getRunTime(), value, Id_res, Id_param );
+	runtime = new rdoRuntime::RDOPROCAssign( parser()->getLastPROCProcess()->getRunTime(), value, Id_res, Id_param );
 }
 
 } // namespace rdoParse

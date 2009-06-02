@@ -168,7 +168,7 @@
 %token RDO_External_Model				444
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
-%token RDO_ASSIGNE						447
+%token RDO_ASSIGN						447
 
 %{
 #include "pch.h"
@@ -221,7 +221,7 @@ dpt_process_line:	  RDO_IDENTIF					  {		}
 					| RDO_GENERATE					  {		}
 					| RDO_TERMINATE					  {		}
 					| RDO_ADVANCE					  {		}
-					| RDO_ASSIGNE					  { 	}
+					| RDO_ASSIGN					  { 	}
 					| RDO_QUEUE dpt_queue_param		  {		}
 					| RDO_QUEUE error				  {	PARSER->error(@1, rdo::format("Ожидается имя ресурса для сбора статистики по очереди"));			}
 					| RDO_DEPART dpt_depart_param	  {		}
