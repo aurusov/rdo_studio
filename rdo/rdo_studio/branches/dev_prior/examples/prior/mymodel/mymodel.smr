@@ -1,0 +1,11 @@
+Model_name     = mymodel
+
+Resource_file  = mymodel
+//OprIev_file    = mymodel
+Statistic_file = mymodel
+Results_file   = mymodel
+Trace_file     = mymodel
+Show_mode      = NoShow
+Show_rate      = 3600.0
+
+Terminate_if Time_now >= 12 * 7 * 60
