@@ -16,6 +16,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name ):
 	RDOActivityPattern<RDOPatternOperation>( runtime, pattern, trace, name ),
+	RDOActivityPatternPrior(),
 	m_clones( NULL ),
 	additionalCondition( NULL )
 {
@@ -27,6 +28,7 @@ RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, b
 
 RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, RDOCalc* condition, const std::string& name ):
 	RDOActivityPattern<RDOPatternOperation>( runtime, pattern, trace, name ),
+	RDOActivityPatternPrior(),
 	m_clones( NULL ),
 	additionalCondition( condition )
 {

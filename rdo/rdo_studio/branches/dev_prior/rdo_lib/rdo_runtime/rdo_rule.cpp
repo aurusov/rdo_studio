@@ -15,6 +15,7 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name )
 	: RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name )
+	, RDOActivityPatternPrior()
 	, RDORuntimeContainer  (runtime)
 	, m_additionalCondition(NULL   )
 {
@@ -23,6 +24,7 @@ RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, cons
 
 RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, RDOCalc* condition, const std::string& name )
 	: RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name )
+	, RDOActivityPatternPrior()
 	, RDORuntimeContainer  (runtime  )
 	, m_additionalCondition(condition)
 {

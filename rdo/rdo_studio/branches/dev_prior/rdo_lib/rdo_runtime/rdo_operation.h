@@ -13,7 +13,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation
 // ----------------------------------------------------------------------------
-class RDOOperation: public RDOActivityPattern<RDOPatternOperation>
+class RDOOperation: public RDOActivityPattern<RDOPatternOperation>, public RDOActivityPatternPrior
 {
 friend class RDOTrace;
 friend class RDOSimulatorTrace;

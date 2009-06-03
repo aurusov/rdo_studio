@@ -36,9 +36,7 @@ protected:
 		RDOBaseOperation( parent ),
 		RDOTraceableObject( trace ),
 		m_oprName( name )
-	{
-		m_prior_runtime = 0;
-	}
+	{}
 	virtual ~RDOActivity() {}
 
 	std::string               m_oprName;
@@ -86,6 +84,31 @@ protected:
 	virtual ~RDOActivityPattern() {}
 
 	T* m_pattern;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOActivityPatternPrior
+// ----------------------------------------------------------------------------
+class RDOActivityPatternPrior
+{
+public:
+	RDOActivityPatternPrior()
+		: m_prior(NULL)
+	{}
+	virtual ~RDOActivityPatternPrior()
+	{
+		if (m_prior)
+		{
+			delete m_prior;
+			m_prior = NULL;
+		}
+	}
+
+	RDOCalc* getPrior()               { return m_prior;  }
+	void     setPrior(RDOCalc* value) { m_prior = value; }
+
+private:
+	RDOCalc* m_prior;
 };
 
 } // namespace rdoRuntime

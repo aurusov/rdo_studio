@@ -11,7 +11,7 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDORule
 // ----------------------------------------------------------------------------
-class RDORule: public RDOActivityPattern<RDOPatternRule>, public RDORuntimeContainer
+class RDORule: public RDOActivityPattern<RDOPatternRule>, public RDORuntimeContainer, public RDOActivityPatternPrior
 {
 friend class RDOTrace;
 friend class RDODPTSearch;

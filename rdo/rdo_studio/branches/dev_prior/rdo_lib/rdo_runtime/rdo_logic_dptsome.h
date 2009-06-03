@@ -2,6 +2,7 @@
 #define RDO_LOGIC_DPTSOME_H
 
 #include "rdo_logic.h"
+#include "rdo_activity.h"
 
 namespace rdoRuntime {
 
@@ -14,14 +15,17 @@ public:
 	RDODPTActivityCompare(RDORuntime* runtime)
 		: m_runtime(runtime)
 	{}
-	bool operator() ( const RDOBaseOperation& bo1, const RDOBaseOperation& bo2 )
+	bool operator() ( const RDOBaseOperation* opr1, const RDOBaseOperation* opr2 )
 	{
-		return bo1.m_prior_runtime->calcValue(m_runtime) < bo2.m_prior_runtime->calcValue(m_runtime);
+		RDOActivityPatternPrior* proir1 = const_cast<RDOActivityPatternPrior*>(reinterpret_cast<const RDOActivityPatternPrior*>(opr1));
+		RDOActivityPatternPrior* proir2 = const_cast<RDOActivityPatternPrior*>(reinterpret_cast<const RDOActivityPatternPrior*>(opr2));
+		return proir1->getPrior()->calcValue(m_runtime) < proir2->getPrior()->calcValue(m_runtime);
 	}
 
 private:
 	RDORuntime* m_runtime;
 };
+
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
