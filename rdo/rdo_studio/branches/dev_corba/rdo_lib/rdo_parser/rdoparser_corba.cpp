@@ -166,8 +166,8 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 	// Create a name object, containing the name test/context:
 	CosNaming::Name name;
 	name.length(2);
-	name[0].id = (const char*) "test"; // string copied
-	name[0].kind = (const char*) "my_context"; // string copied
+	name[0].id = (const char*) "RDO"; // string copied
+	name[0].kind = (const char*) "RDO_context"; // string copied
 	name[1].id = (const char*) ObjectName;
 	name[1].kind = (const char*) "Object";
 	

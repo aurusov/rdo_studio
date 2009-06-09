@@ -41,10 +41,6 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoCorba
 {
-
-const char* TestName = "Client";
-//const char* TestName = "Server";
-
 CORBA::ORB_var g_orb;
 
 class RDOCorba_i: public POA_rdoParse::RDOCorba
@@ -82,7 +78,7 @@ rdoParse::RDOCorba::GetRSS* RDOCorba_i::getRDORSSPlist(::CORBA::Long& rss_count)
 	return my_rssList._retn();
 }
 
-CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
+CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, const char* ModelName)
 {
 	CosNaming::NamingContext_var rootContext;
 	
@@ -113,8 +109,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 		// Bind a context called "test" to the root context:
 		CosNaming::Name contextName;
 		contextName.length(1);
-		contextName[0].id = (const char*) "test"; // string copied
-		contextName[0].kind = (const char*) "my_context"; // string copied
+		contextName[0].id = (const char*) "RDO"; // string copied
+		contextName[0].kind = (const char*) "RDO_context"; // string copied
 	
 		// Note on kind: The kind field is used to indicate the type
 		// of the object. This is to avoid conventions such as that used
@@ -125,7 +121,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 			// Bind the context to root.
 			testContext = rootContext->bind_new_context(contextName);
 		}
-		catch(CosNaming::NamingContext::AlreadyBound& ex) {
+		catch(CosNaming::NamingContext::AlreadyBound&) {
 			// If the context already exists, this exception will be raised.
 			// In this case, just resolve the name and assign testContext
 			// to the object returned:
@@ -143,20 +139,17 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 		// Bind objref with name Echo to the testContext:
 		CosNaming::Name objectName;
 		objectName.length(1);
-		//objectName[0].id = (const char*) "RDO1"; // string copied
+		
+		//rdoParse::RDOParserSMRInfo parser;
+		//parser.parse();
 
-		//**************************************
-		rdoParse::RDOParserSMRInfo parser;
-		parser.parse();
-
-		objectName[0].id = TestName;//parser.getSMR()->modelName().c_str();
+		objectName[0].id = ModelName;
 		objectName[0].kind = (const char*) "Object";
-		//**************************************
 
 		try {
 			testContext->bind(objectName, objref);
 		}
-		catch(CosNaming::NamingContext::AlreadyBound& ex) {
+		catch(CosNaming::NamingContext::AlreadyBound&) {
 			testContext->rebind(objectName, objref);
 		}
 		
@@ -170,7 +163,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref)
 		// the Name has not already been bound. [This is incorrect behaviour -
 		// it should just bind].
 	}
-	catch(CORBA::TRANSIENT& ex) {
+	catch(CORBA::TRANSIENT&) {
 		TRACE( "Caught system exception TRANSIENT -- unable to contact the naming service.");
 		TRACE( "Make sure the naming server is running and that omniORB is configured correctly.");
 		return 0;
@@ -201,12 +194,14 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		// the naming service.
 		obj = myrdocorba->_this();
 
-		//CORBA::String_var x;
-		//x = orb->object_to_string(obj);
-		//cout << x << std::endl;
+		const char* ModelName = "ЦЕХ";
+		//const char* ModelName = "СКЛАД";
 
-		if( !bindObjectToName(g_orb, obj) )
+		if( !bindObjectToName(g_orb, obj, ModelName) )
+		{
+			delete myrdocorba;
 			return 1;
+		}
 
 		myrdocorba->_remove_ref();
 		
@@ -217,9 +212,9 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		g_orb->run();
 	}
 	catch(CORBA::SystemException& ex) {
-		//trace( rdo::format("Caught CORBA::%s", ex._name()) );
+		TRACE( "Caught CORBA::%s", ex._name());
 	}
-	catch(CORBA::Exception& ex) {
+	catch(CORBA::Exception&) {
 		TRACE( "Caught CORBA::Exception: " );
 	}	
 	catch(omniORB::fatalException& fe) {
@@ -241,10 +236,6 @@ RDOThreadCorba::RDOThreadCorba():
 void RDOThreadCorba::proc( RDOMessageInfo& msg )
 {
 	// Место для обработки сообщений корбе
-	switch ( msg.message )
-	{
-		default: break;
-	}
 }
 
 void RDOThreadCorba::start()
