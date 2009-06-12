@@ -18,4 +18,6 @@
 		::DebugBreak(); \
 	}
 
+#define NEVER_REACH_HERE ASSERT(false)
+
 #endif //! RDODEBUG_H
