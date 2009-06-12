@@ -346,7 +346,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 					show_fillrect = false;
 				}
 			}
-			if ( frame->bgColor.isTransparent ) {
+			if ( frame->bgColor.transparent ) {
 				view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
 			} else {
 				view->bgColor = RGB( frame->bgColor.r, frame->bgColor.g, frame->bgColor.b );
@@ -403,14 +403,14 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 				switch( currElement->getType() ) {
 					case rdoSimulator::RDOFrameElement::text_type: {
 						rdoSimulator::RDOTextElement* element = static_cast<rdoSimulator::RDOTextElement*>(currElement);
-						if( !element->background.isTransparent ) {
+						if( !element->background.transparent ) {
 							::SetBkMode( hdc, OPAQUE );
 							::SetBkColor( hdc, RGB(element->background.r, element->background.g, element->background.b) );
 						} else {
 							::SetBkMode( hdc, TRANSPARENT );
 						}
 
-						if( !element->foreground.isTransparent ) {
+						if( !element->foreground.transparent ) {
 							::SetTextColor( hdc, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 						}
 
@@ -429,7 +429,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						rdoSimulator::RDORectElement* element = static_cast<rdoSimulator::RDORectElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
-						if( !element->background.isTransparent ) {
+						if( !element->background.transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -437,7 +437,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.isTransparent ) {
+						if( !element->foreground.transparent ) {
 							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
@@ -457,7 +457,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						rdoSimulator::RDORRectElement* element = static_cast<rdoSimulator::RDORRectElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
-						if( !element->background.isTransparent ) {
+						if( !element->background.transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -465,7 +465,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.isTransparent ) {
+						if( !element->foreground.transparent ) {
 							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
@@ -484,7 +484,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 					}
 					case rdoSimulator::RDOFrameElement::line_type: {
 						rdoSimulator::RDOLineElement* element = static_cast<rdoSimulator::RDOLineElement*>(currElement);
-						if( !element->foreground.isTransparent ) {
+						if( !element->foreground.transparent ) {
 							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 							HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 
@@ -501,7 +501,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						rdoSimulator::RDOTriangElement* element = static_cast<rdoSimulator::RDOTriangElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
-						if( !element->background.isTransparent ) {
+						if( !element->background.transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -509,7 +509,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.isTransparent ) {
+						if( !element->foreground.transparent ) {
 							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
@@ -536,7 +536,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 						rdoSimulator::RDOEllipseElement* element = static_cast<rdoSimulator::RDOEllipseElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
-						if( !element->background.isTransparent ) {
+						if( !element->background.transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -544,7 +544,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.isTransparent ) {
+						if( !element->foreground.transparent ) {
 							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}

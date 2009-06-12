@@ -42,61 +42,20 @@ RDOFRMFrame::RDOFRMColor::~RDOFRMColor()
 {
 }
 
-rdoSimulator::RDOColor RDOFRMFrame::RDOFRMColor::getColor( RDORuntime* sim, RDOFRMFrame* frame ) const
+rdoSimulator::RDOColor RDOFRMFrame::RDOFRMColor::getColor(PTR(RDORuntime) sim, PTR(RDOFRMFrame) frame) const
 {
-	rdoSimulator::RDOColor color;
-	switch ( color_type ) {
-		case color_none: {
-			color.isTransparent = false;
-			color.r = 50;
-			color.g = 200;
-			color.b = 50;
-			break;
-		}
-		case color_rgb: {
-			color.isTransparent = false;
-			color.r = red_calc->calcValue( sim ).getInt();
-			color.g = green_calc->calcValue( sim ).getInt();
-			color.b = blue_calc->calcValue( sim ).getInt();
-			break;
-		}
-		case color_transparent: {
-			color.isTransparent = true;
-			color.r = 50;
-			color.g = 200;
-			color.b = 50;
-			break;
-		}
-		case color_last_bg: {
-			color.isTransparent = frame->color_last_bg.isTransparent;
-			color.r = frame->color_last_bg.r;
-			color.g = frame->color_last_bg.g;
-			color.b = frame->color_last_bg.b;
-			break;
-		}
-		case color_last_fg: {
-			color.isTransparent = frame->color_last_fg.isTransparent;
-			color.r = frame->color_last_fg.r;
-			color.g = frame->color_last_fg.g;
-			color.b = frame->color_last_fg.b;
-			break;
-		}
-		case color_last_bg_text: {
-			color.isTransparent = frame->color_last_bg_text.isTransparent;
-			color.r = frame->color_last_bg_text.r;
-			color.g = frame->color_last_bg_text.g;
-			color.b = frame->color_last_bg_text.b;
-			break;
-		}
-		case color_last_fg_text: {
-			color.isTransparent = frame->color_last_fg_text.isTransparent;
-			color.r = frame->color_last_fg_text.r;
-			color.g = frame->color_last_fg_text.g;
-			color.b = frame->color_last_fg_text.b;
-			break;
-		}
+	switch (color_type)
+	{
+		case color_none        : return rdoSimulator::RDOColor(50, 200, 50);
+		case color_rgb         : return rdoSimulator::RDOColor(red_calc->calcValue(sim).getInt(), green_calc->calcValue(sim).getInt(), blue_calc->calcValue(sim).getInt());
+		case color_transparent : return rdoSimulator::RDOColor();
+		case color_last_bg     : return frame->color_last_bg;
+		case color_last_fg     : return frame->color_last_fg;
+		case color_last_bg_text: return frame->color_last_bg_text;
+		case color_last_fg_text: return frame->color_last_fg_text;
+		default                : NEVER_REACH_HERE;
 	}
-	return color;
+	return rdoSimulator::RDOColor();
 }
 
 // ----------------------------------------------------------------------------
@@ -117,22 +76,10 @@ RDOFRMFrame::RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, RDO
 	last_height( 0 )
 {
 	_runtime->addRuntimeFrame( this );
-	color_last_bg.isTransparent = false;
-	color_last_bg.r = 50;
-	color_last_bg.g = 200;
-	color_last_bg.b = 50;
-	color_last_fg.isTransparent = false;
-	color_last_fg.r = 50;
-	color_last_fg.g = 200;
-	color_last_fg.b = 50;
-	color_last_bg_text.isTransparent = false;
-	color_last_bg_text.r = 50;
-	color_last_bg_text.g = 200;
-	color_last_bg_text.b = 50;
-	color_last_fg_text.isTransparent = false;
-	color_last_fg_text.r = 50;
-	color_last_fg_text.g = 200;
-	color_last_fg_text.b = 50;
+	color_last_bg      = rdoSimulator::RDOColor(50, 200, 50);
+	color_last_fg      = color_last_bg;
+	color_last_bg_text = color_last_bg;
+	color_last_fg_text = color_last_bg;
 }
 
 RDOFRMFrame::~RDOFRMFrame()
@@ -214,26 +161,26 @@ bool RDOFRMFrame::checkCondition( RDORuntime* sim )
 
 rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame, RDORuntime* sim )
 {
-	if ( background_color ) {
-		if ( background_color->getColorType() == RDOFRMColor::color_rgb ) {
-			rdoSimulator::RDOColor bg_color = background_color->getColor( sim, this );
+	if (background_color)
+	{
+		if (background_color->getColorType() == RDOFRMColor::color_rgb)
+		{
+			rdoSimulator::RDOColor bg_color = background_color->getColor(sim, this);
 			frame->bgColor = bg_color;
-		} else {
-			frame->bgColor.r = 50;
-			frame->bgColor.g = 200;
-			frame->bgColor.b = 50;
-			frame->bgColor.isTransparent = true;
 		}
-	} else {
-		frame->bgColor.r = 50;
-		frame->bgColor.g = 200;
-		frame->bgColor.b = 50;
-		frame->bgColor.isTransparent = true;
+		else
+		{
+			frame->bgColor = rdoSimulator::RDOColor();
+		}
+	}
+	else
+	{
+		frame->bgColor = rdoSimulator::RDOColor();
 	}
 	frame->hasBackPicture = hasBackPicture;
 	frame->picFileName    = picFileName;
-	frame->width  = width;
-	frame->height = height;
+	frame->width          = width;
+	frame->height         = height;
 
 	last_x      = 0;
 	last_y      = 0;

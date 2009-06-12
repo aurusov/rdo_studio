@@ -214,8 +214,12 @@ private:
 
 struct RDOColor
 {
-	rbool isTransparent;
-	int r, g, b;
+	RDOColor();
+	RDOColor(rbyte _r, rbyte _g, rbyte _b, rbool _transparent = false);
+	RDOColor(CREF(RDOColor) color);
+
+	rbyte r, g, b;
+	rbool transparent;
 };
 
 struct RDOColoredElement
@@ -225,7 +229,7 @@ public:
 	RDOColor foreground;
 
 protected:
-	RDOColoredElement( CREF(RDOColor) _background, CREF(RDOColor) _foreground );
+	RDOColoredElement(CREF(RDOColor) _background, CREF(RDOColor) _foreground);
 };
 
 struct RDOBoundedElement
@@ -319,6 +323,8 @@ struct RDOFrame
 
 	~RDOFrame();
 };
+
+#include "rdo_common.inl"
 
 } // namespace rdoSimulator
 

@@ -149,23 +149,6 @@ public:
 		}
 	};
 
-private:
-	RDOCalc* conditionCalc;
-	RDOFRMColor* background_color;
-	bool hasBackPicture;
-	std::string picFileName;     // back picture
-	int width, height;           // frame size
-	std::list< RDOFRMShow* > shows;
-	rdoSimulator::RDOColor color_last_bg;
-	rdoSimulator::RDOColor color_last_fg;
-	rdoSimulator::RDOColor color_last_bg_text;
-	rdoSimulator::RDOColor color_last_fg_text;
-	double last_x;
-	double last_y;
-	double last_width;
-	double last_height;
-	std::vector< RDOFRMRulet* > rulets;
-
 public:
 	RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, RDOCalc* _conditionCalc = NULL );
 	virtual ~RDOFRMFrame();
@@ -220,6 +203,27 @@ public:
 		}
 		return NULL;
 	}
+
+private:
+	typedef std::list  <PTR(RDOFRMShow) > ShowList;
+	typedef std::vector<PTR(RDOFRMRulet)> RuletList;
+
+	RDOCalc*     conditionCalc;
+	RDOFRMColor* background_color;
+	bool         hasBackPicture;
+	tstring      picFileName;     // back picture
+	ruint        width;
+	ruint        height;
+	ShowList     shows;
+	rdoSimulator::RDOColor color_last_bg;
+	rdoSimulator::RDOColor color_last_fg;
+	rdoSimulator::RDOColor color_last_bg_text;
+	rdoSimulator::RDOColor color_last_fg_text;
+	double       last_x;
+	double       last_y;
+	double       last_width;
+	double       last_height;
+	RuletList    rulets;
 };
 
 // ----------------------------------------------------------------------------
