@@ -14,6 +14,7 @@
 #include <rdorepository.h>
 #include <rdostream.h>
 #include <rdothread.h>
+#include <rdoanimation.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -290,7 +291,7 @@ void RDOStudioFrameManager::bmp_clear()
 	bitmaps.clear();
 }
 
-void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame, const int index )
+void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame, const int index )
 {
 	if ( index < count() ) {
 
@@ -306,8 +307,8 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 			RDOStudioFrameView* view = getFrameView( index );
 			if ( view->mustBeInit ) {
 				bool show_fillrect = true;
-				if ( frame->hasBackPicture ) {
-					BMP* bmp = bitmaps[frame->picFileName];
+				if ( frame->hasBgImage() ) {
+					BMP* bmp = bitmaps[frame->m_bgImageName];
 					if ( bmp ) {
 						view->frameBmpRect.right  = bmp->w;
 						view->frameBmpRect.bottom = bmp->h;
@@ -315,8 +316,8 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 					}
 				}
 				if ( show_fillrect ) {
-					view->frameBmpRect.right  = frame->width;
-					view->frameBmpRect.bottom = frame->height;
+					view->frameBmpRect.right  = (ruint)frame->m_size.m_width;
+					view->frameBmpRect.bottom = (ruint)frame->m_size.m_height;
 				}
 				view->points[0].x = 0;
 				view->points[0].y = 0;
@@ -337,8 +338,8 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 			HDC hdc = view->hmemdc;
 
 			bool show_fillrect = true;
-			if ( frame->hasBackPicture ) {
-				BMP* bmp = bitmaps[frame->picFileName];
+			if ( frame->hasBgImage() ) {
+				BMP* bmp = bitmaps[frame->m_bgImageName];
 				if ( bmp ) {
 					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
@@ -346,10 +347,10 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 					show_fillrect = false;
 				}
 			}
-			if ( frame->bgColor.transparent ) {
+			if ( frame->m_bgColor.m_transparent ) {
 				view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
 			} else {
-				view->bgColor = RGB( frame->bgColor.r, frame->bgColor.g, frame->bgColor.b );
+				view->bgColor = RGB( frame->m_bgColor.m_r, frame->m_bgColor.m_g, frame->m_bgColor.m_b );
 			}
 			if ( show_fillrect ) {
 				HBRUSH brush     = ::CreateSolidBrush( view->bgColor );
@@ -397,39 +398,43 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 				view->bgColor = RGB( frame->r, frame->g, frame->b );
 			}
 */
-			int size = frame->elements.size();
-			for ( int i = 0; i < size; i++ ) {
-				rdoSimulator::RDOFrameElement* currElement = frame->elements.at(i);
-				switch( currElement->getType() ) {
-					case rdoSimulator::RDOFrameElement::text_type: {
-						rdoSimulator::RDOTextElement* element = static_cast<rdoSimulator::RDOTextElement*>(currElement);
-						if( !element->background.transparent ) {
+			ruint size = frame->m_elements.size();
+			for (ruint i = 0; i < size; i++)
+			{
+				rdoAnimation::FrameItem* currElement = frame->m_elements.at(i);
+				switch( currElement->getType() )
+				{
+					case rdoAnimation::FrameItem::FIT_TEXT:
+					{
+						rdoAnimation::RDOTextElement* element = static_cast<rdoAnimation::RDOTextElement*>(currElement);
+						if( !element->m_background.m_transparent ) {
 							::SetBkMode( hdc, OPAQUE );
-							::SetBkColor( hdc, RGB(element->background.r, element->background.g, element->background.b) );
+							::SetBkColor( hdc, RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
 						} else {
 							::SetBkMode( hdc, TRANSPARENT );
 						}
 
-						if( !element->foreground.transparent ) {
-							::SetTextColor( hdc, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						if( !element->m_foreground.m_transparent ) {
+							::SetTextColor( hdc, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
 						}
 
 						UINT nFormat = DT_SINGLELINE | DT_VCENTER;
-						switch( element->align ) {
-							case rdoSimulator::RDOTextElement::left  : nFormat |= DT_LEFT; break;
-							case rdoSimulator::RDOTextElement::right : nFormat |= DT_RIGHT; break;
-							case rdoSimulator::RDOTextElement::center: nFormat |= DT_CENTER; break;
+						switch( element->m_align ) {
+							case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT; break;
+							case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT; break;
+							case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; break;
 						}
 
-						::DrawText( hdc, element->strText.c_str(), element->strText.length(), CRect( (int)element->x, (int)element->y, (int)(element->x + element->w), (int)(element->y + element->h) ), nFormat );
+						::DrawText( hdc, element->m_text.c_str(), element->m_text.length(), CRect( (int)element->m_point.m_x, (int)element->m_point.m_y, (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) ), nFormat );
 
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::rect_type: {
-						rdoSimulator::RDORectElement* element = static_cast<rdoSimulator::RDORectElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+					case rdoAnimation::FrameItem::FIT_RECT:
+					{
+						rdoAnimation::RDORectElement* element = static_cast<rdoAnimation::RDORectElement*>(currElement);
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
 						HBRUSH pOldBrush;
-						if( !element->background.transparent ) {
+						if( !element->m_background.m_transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -437,12 +442,12 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						if( !element->m_foreground.m_transparent ) {
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						::Rectangle( hdc, (int)element->x, (int)element->y, (int)(element->x + element->w), (int)(element->y + element->h) );
+						::Rectangle( hdc, (int)element->m_point.m_x, (int)element->m_point.m_y, (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) );
 
 						::SelectObject( hdc, pOldBrush );
 						::DeleteObject( brush );
@@ -453,11 +458,12 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::r_rect_type: {
-						rdoSimulator::RDORRectElement* element = static_cast<rdoSimulator::RDORRectElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+					case rdoAnimation::FrameItem::FIT_R_RECT:
+					{
+						rdoAnimation::RDORRectElement* element = static_cast<rdoAnimation::RDORRectElement*>(currElement);
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
 						HBRUSH pOldBrush;
-						if( !element->background.transparent ) {
+						if( !element->m_background.m_transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -465,13 +471,13 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						if( !element->m_foreground.m_transparent ) {
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						int w = (int)(std::min<double>( element->w, element->h ) / 3);
-						RoundRect( hdc, (int)(element->x), (int)(element->y), (int)(element->x + element->w), (int)(element->y + element->h), w, w );
+						int w = (int)(std::min<double>( element->m_size.m_width, element->m_size.m_height ) / 3);
+						RoundRect( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height), w, w );
 
 						::SelectObject( hdc, pOldBrush );
 						::DeleteObject( brush );
@@ -482,14 +488,15 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::line_type: {
-						rdoSimulator::RDOLineElement* element = static_cast<rdoSimulator::RDOLineElement*>(currElement);
-						if( !element->foreground.transparent ) {
-							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+					case rdoAnimation::FrameItem::FIT_LINE:
+					{
+						rdoAnimation::RDOLineElement* element = static_cast<rdoAnimation::RDOLineElement*>(currElement);
+						if( !element->m_color.m_transparent ) {
+							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_color.m_r, element->m_color.m_g, element->m_color.m_b) );
 							HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 
-							::MoveToEx( hdc, (int)(element->x), (int)(element->y), NULL );
-							::LineTo( hdc, (int)(element->w), (int)(element->h) );
+							::MoveToEx( hdc, (int)(element->m_point1.m_x), (int)(element->m_point1.m_y), NULL );
+							::LineTo( hdc, (int)(element->m_point2.m_x), (int)(element->m_point2.m_y) );
 
 							::SelectObject( hdc, pOldPen );
 							::DeleteObject( pen );
@@ -497,11 +504,12 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::triang_type: {
-						rdoSimulator::RDOTriangElement* element = static_cast<rdoSimulator::RDOTriangElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+					case rdoAnimation::FrameItem::FIT_TRIANG:
+					{
+						rdoAnimation::RDOTriangElement* element = static_cast<rdoAnimation::RDOTriangElement*>(currElement);
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
 						HBRUSH pOldBrush;
-						if( !element->background.transparent ) {
+						if( !element->m_background.m_transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -509,18 +517,18 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						if( !element->m_foreground.m_transparent ) {
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
 						CPoint pts[3];
-						pts[0].x = (int)(element->x1);
-						pts[0].y = (int)(element->y1);
-						pts[1].x = (int)(element->x2);
-						pts[1].y = (int)(element->y2);
-						pts[2].x = (int)(element->x3);
-						pts[2].y = (int)(element->y3);
+						pts[0].x = (int)(element->m_point1.m_x);
+						pts[0].y = (int)(element->m_point1.m_y);
+						pts[1].x = (int)(element->m_point2.m_x);
+						pts[1].y = (int)(element->m_point2.m_y);
+						pts[2].x = (int)(element->m_point3.m_x);
+						pts[2].y = (int)(element->m_point3.m_y);
 						::Polygon( hdc, pts, 3 );
 
 						::SelectObject( hdc, pOldBrush );
@@ -532,11 +540,12 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::ellipse_type: {
-						rdoSimulator::RDOEllipseElement* element = static_cast<rdoSimulator::RDOEllipseElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+					case rdoAnimation::FrameItem::FIT_ELLIPSE:
+					{
+						rdoAnimation::RDOEllipseElement* element = static_cast<rdoAnimation::RDOEllipseElement*>(currElement);
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
 						HBRUSH pOldBrush;
-						if( !element->background.transparent ) {
+						if( !element->m_background.m_transparent ) {
 							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
 							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
@@ -544,12 +553,12 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						HPEN pen     = NULL;
 						HPEN pOldPen = NULL;
-						if( !element->foreground.transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						if( !element->m_foreground.m_transparent ) {
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
 							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						::Ellipse( hdc, (int)(element->x), (int)(element->y), (int)(element->x + element->w), (int)(element->y + element->h) );
+						::Ellipse( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) );
 
 						::SelectObject( hdc, pOldBrush );
 						::DeleteObject( brush );
@@ -560,62 +569,65 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::bitmap_type: {
-						rdoSimulator::RDOBitmapElement* element = static_cast<rdoSimulator::RDOBitmapElement*>(currElement);
-						BMP* bmp = bitmaps[element->bmp];
+					case rdoAnimation::FrameItem::FIT_BMP:
+					{
+						rdoAnimation::RDOBmpElement* element = static_cast<rdoAnimation::RDOBmpElement*>(currElement);
+						BMP* bmp = bitmaps[element->m_bmp_name];
 						if ( bmp ) {
-							BMP* mask = element->hasMask() ? bitmaps[element->mask] : NULL;
+							BMP* mask = element->hasMask() ? bitmaps[element->m_mask_name] : NULL;
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::BitBlt( hdc, (int)(element->x), (int)(element->y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
-								::BitBlt( hdc, (int)(element->x), (int)(element->y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
+								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
+								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								::BitBlt( hdc, (int)(element->x), (int)(element->y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
+								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::s_bmp_type: {
-						rdoSimulator::RDOSBmpElement* element = static_cast<rdoSimulator::RDOSBmpElement*>(currElement);
-						BMP* bmp = bitmaps[element->bmp];
+					case rdoAnimation::FrameItem::FIT_S_BMP:
+					{
+						rdoAnimation::RDOSBmpElement* element = static_cast<rdoAnimation::RDOSBmpElement*>(currElement);
+						BMP* bmp = bitmaps[element->m_bmp_name];
 						if ( bmp ) {
-							BMP* mask = element->hasMask() ? bitmaps[element->mask] : NULL;
+							BMP* mask = element->hasMask() ? bitmaps[element->m_mask_name] : NULL;
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::StretchBlt( hdc, (int)(element->x), (int)(element->y), (int)(element->w), (int)(element->h), dcMask.m_hDC, 0, 0, mask->w, mask->h, SRCAND );
-								::StretchBlt( hdc, (int)(element->x), (int)(element->y), (int)(element->w), (int)(element->h), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCPAINT );
+								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcMask.m_hDC, 0, 0, mask->w, mask->h, SRCAND );
+								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								::StretchBlt( hdc, (int)(element->x), (int)(element->y), (int)(element->w), (int)(element->h), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCCOPY );
+								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
 						break;
 					}
-					case rdoSimulator::RDOFrameElement::active_type: {
-						rdoSimulator::RDOActiveElement* element = static_cast<rdoSimulator::RDOActiveElement*>(currElement);
+					case rdoAnimation::FrameItem::FIT_ACTIVE:
+					{
+						rdoAnimation::RDOActiveElement* element = static_cast<rdoAnimation::RDOActiveElement*>(currElement);
 						std::vector< Area* >::const_iterator it = frames[index]->areas_sim.begin();
 						while ( it != frames[index]->areas_sim.end() ) {
-							if ( (*it)->name == element->operName ) break;
+							if ( (*it)->name == element->m_opr_name ) break;
 							it++;
 						}
 						if ( it == frames[index]->areas_sim.end() ) {
 							Area* area = new Area;
-							area->name = element->operName;
-							area->x    = (int)(element->x);
-							area->y    = (int)(element->y);
-							area->w    = (int)(element->w);
-							area->h    = (int)(element->h);
+							area->name = element->m_opr_name;
+							area->x    = (int)(element->m_point.m_x);
+							area->y    = (int)(element->m_point.m_y);
+							area->w    = (int)(element->m_size.m_width);
+							area->h    = (int)(element->m_size.m_height);
 							frames[index]->areas_sim.push_back( area );
 						} else {
-							(*it)->x    = (int)(element->x);
-							(*it)->y    = (int)(element->y);
-							(*it)->w    = (int)(element->w);
-							(*it)->h    = (int)(element->h);
+							(*it)->x    = (int)(element->m_point.m_x);
+							(*it)->y    = (int)(element->m_point.m_y);
+							(*it)->w    = (int)(element->m_size.m_width);
+							(*it)->h    = (int)(element->m_size.m_height);
 						}
 						break;
 					}

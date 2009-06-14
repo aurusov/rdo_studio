@@ -155,11 +155,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\rdo_common.inl"
+				RelativePath=".\namespace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoanimation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoanimation.inl"
 				>
 			</File>
 			<File
 				RelativePath=".\rdocommon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdocommon.inl"
 				>
 			</File>
 			<File

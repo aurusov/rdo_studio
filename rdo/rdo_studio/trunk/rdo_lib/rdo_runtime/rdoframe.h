@@ -1,11 +1,24 @@
-#ifndef RDOFRAME_H
-#define RDOFRAME_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoframe.h
+ * author   : Урусов Андрей
+ * date     : 13.06.2009
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDOFRAME_H_
+#define _RDOFRAME_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include "namespace.h"
 #include "rdocalc.h"
 #include "rdoruntime_object.h"
+#include <rdoanimation.h>
+// ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
@@ -116,7 +129,7 @@ public:
 		RDOFRMColor( RDOFRMFrame* _parent, RDOCalc* _red_calc, RDOCalc* _green_calc, RDOCalc* _blue_calc );
 		~RDOFRMColor();
 
-		rdoSimulator::RDOColor getColor( RDORuntime* sim, RDOFRMFrame* frame ) const;
+		rdoAnimation::RDOColor getColor( RDORuntime* sim, RDOFRMFrame* frame ) const;
 
 		ColorType getColorType() const {
 			return color_type;
@@ -160,18 +173,18 @@ public:
 	void addItem( RDOFRMItem* item );
 	void addRulet( RDOFRMRulet* rulet );
 	bool checkCondition( RDORuntime* sim );
-	rdoSimulator::RDOFrame* createFrame( RDORuntime* sim ) {
-		rdoSimulator::RDOFrame* frame = new rdoSimulator::RDOFrame();
+	rdoAnimation::RDOFrame* createFrame( RDORuntime* sim ) {
+		rdoAnimation::RDOFrame* frame = new rdoAnimation::RDOFrame();
 		return prepareFrame( frame, sim );
 	}
-	rdoSimulator::RDOFrame* prepareFrame( rdoSimulator::RDOFrame* frame, RDORuntime* sim );
+	rdoAnimation::RDOFrame* prepareFrame( rdoAnimation::RDOFrame* frame, RDORuntime* sim );
 	const std::string& name() const { return src_text(); }
 	void getBitmaps( std::list< std::string >& list ) const;
 
-	void setColorLastBG( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_bg );
-	void setColorLastFG( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_fg );
-	void setColorLastBGText( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_bg_text );
-	void setColorLastFGText( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_fg_text );
+	void setColorLastBG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg );
+	void setColorLastFG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg );
+	void setColorLastBGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg_text );
+	void setColorLastFGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg_text );
 	void setLastXYWH( double _x, double _y, double _width, double _height ) {
 		last_x      = _x;
 		last_y      = _y;
@@ -210,15 +223,14 @@ private:
 
 	RDOCalc*     conditionCalc;
 	RDOFRMColor* background_color;
-	bool         hasBackPicture;
-	tstring      picFileName;     // back picture
+	tstring      picFileName;
 	ruint        width;
 	ruint        height;
 	ShowList     shows;
-	rdoSimulator::RDOColor color_last_bg;
-	rdoSimulator::RDOColor color_last_fg;
-	rdoSimulator::RDOColor color_last_bg_text;
-	rdoSimulator::RDOColor color_last_fg_text;
+	rdoAnimation::RDOColor color_last_bg;
+	rdoAnimation::RDOColor color_last_fg;
+	rdoAnimation::RDOColor color_last_bg_text;
+	rdoAnimation::RDOColor color_last_fg_text;
 	double       last_x;
 	double       last_y;
 	double       last_width;
@@ -305,8 +317,8 @@ protected:
 public:
 	const RDOFRMFrame::RDOFRMColor* getBgColor() const { return bgColor; }
 	const RDOFRMFrame::RDOFRMColor* getFgColor() const { return fgColor; }
-	rdoSimulator::RDOColor getBg( RDORuntime* sim, RDOFRMFrame* frame ) { return bgColor->getColor( sim, frame ); }
-	rdoSimulator::RDOColor getFg( RDORuntime* sim, RDOFRMFrame* frame ) { return fgColor->getColor( sim, frame ); }
+	rdoAnimation::RDOColor getBg( RDORuntime* sim, RDOFRMFrame* frame ) { return bgColor->getColor( sim, frame ); }
+	rdoAnimation::RDOColor getFg( RDORuntime* sim, RDOFRMFrame* frame ) { return fgColor->getColor( sim, frame ); }
 };
 
 // ----------------------------------------------------------------------------
@@ -332,7 +344,7 @@ protected:
 	virtual void getBitmaps( std::list< std::string >& list )
 	{
 	}
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim ) = 0;
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim ) = 0;
 	RDOFRMFrame* getFrame() const { return frame; }
 };
 
@@ -342,18 +354,18 @@ protected:
 class RDOFRMText: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 private:
-	rdoSimulator::RDOTextElement::RDOTextAlign align;
+	rdoAnimation::RDOTextElement::TextAlign align;
 	RDOCalc* value;
 	std::string          txt;
 	bool                 isTextString;
 
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-	void setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDOCalc* _value );
-	void setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, const std::string& _txt );
+	void setText( rdoAnimation::RDOTextElement::TextAlign _align, RDOCalc* _value );
+	void setText( rdoAnimation::RDOTextElement::TextAlign _align, const std::string& _txt );
 };
 
 // ----------------------------------------------------------------------------
@@ -391,7 +403,7 @@ private:
 	RDOFRMFrame::RDOFRMPosition* y;
 
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMBitmap( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, const std::string& _pict_filename, const std::string& _mask_filename = "" );
@@ -403,7 +415,7 @@ public:
 class RDOFRMBitmapStretch: public RDOFRMBitmapBase, public RDOFRMBoundingItem
 {
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMBitmapStretch( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, const std::string& _pict_filename, const std::string& _mask_filename = "" );
@@ -415,7 +427,7 @@ public:
 class RDOFRMRect: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMRect( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
@@ -427,7 +439,7 @@ public:
 class RDOFRMRectRound: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMRectRound( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
@@ -439,7 +451,7 @@ public:
 class RDOFRMEllipse: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMEllipse( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
@@ -454,7 +466,7 @@ private:
 	RDOFRMFrame::RDOFRMColor* color;
 
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMLine( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x1, RDOFRMFrame::RDOFRMPosition* _y1, RDOFRMFrame::RDOFRMPosition* _x2, RDOFRMFrame::RDOFRMPosition* _y2, RDOFRMFrame::RDOFRMColor* _color );
@@ -474,7 +486,7 @@ private:
 	RDOFRMFrame::RDOFRMPosition* y3;
 
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMTriang( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _x2, RDOFRMFrame::RDOFRMPosition* _y2, RDOFRMFrame::RDOFRMPosition* _x3, RDOFRMFrame::RDOFRMPosition* _y3, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
@@ -489,7 +501,7 @@ private:
 	std::string operName;
 
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMActive( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, const std::string& _operName );
@@ -501,7 +513,7 @@ public:
 class RDOFRMSpace: public RDOFRMItem, public RDOFRMBoundingItem
 {
 protected:
-	virtual rdoSimulator::RDOFrameElement* createElement( RDORuntime* sim );
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
 	RDOFRMSpace( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height );
@@ -531,6 +543,6 @@ public:
 	virtual void getBitmaps( std::list< std::string >& list );
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDOFRAME_H
+#endif //! _RDOFRAME_H_

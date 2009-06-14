@@ -42,20 +42,20 @@ RDOFRMFrame::RDOFRMColor::~RDOFRMColor()
 {
 }
 
-rdoSimulator::RDOColor RDOFRMFrame::RDOFRMColor::getColor(PTR(RDORuntime) sim, PTR(RDOFRMFrame) frame) const
+rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(PTR(RDORuntime) sim, PTR(RDOFRMFrame) frame) const
 {
 	switch (color_type)
 	{
-		case color_none        : return rdoSimulator::RDOColor(50, 200, 50);
-		case color_rgb         : return rdoSimulator::RDOColor(red_calc->calcValue(sim).getInt(), green_calc->calcValue(sim).getInt(), blue_calc->calcValue(sim).getInt());
-		case color_transparent : return rdoSimulator::RDOColor();
+		case color_none        : return rdoAnimation::RDOColor(50, 200, 50);
+		case color_rgb         : return rdoAnimation::RDOColor(red_calc->calcValue(sim).getInt(), green_calc->calcValue(sim).getInt(), blue_calc->calcValue(sim).getInt());
+		case color_transparent : return rdoAnimation::RDOColor();
 		case color_last_bg     : return frame->color_last_bg;
 		case color_last_fg     : return frame->color_last_fg;
 		case color_last_bg_text: return frame->color_last_bg_text;
 		case color_last_fg_text: return frame->color_last_fg_text;
 		default                : NEVER_REACH_HERE;
 	}
-	return rdoSimulator::RDOColor();
+	return rdoAnimation::RDOColor();
 }
 
 // ----------------------------------------------------------------------------
@@ -66,8 +66,7 @@ RDOFRMFrame::RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, RDO
 	RDOSrcInfo( _src_info ),
 	conditionCalc( _conditionCalc ),
 	background_color( NULL ),
-	hasBackPicture( false ),
-	picFileName( "" ),
+	picFileName(_T("")),
 	width( 800 ),
 	height( 600 ),
 	last_x( 0 ),
@@ -76,7 +75,7 @@ RDOFRMFrame::RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, RDO
 	last_height( 0 )
 {
 	_runtime->addRuntimeFrame( this );
-	color_last_bg      = rdoSimulator::RDOColor(50, 200, 50);
+	color_last_bg      = rdoAnimation::RDOColor(50, 200, 50);
 	color_last_fg      = color_last_bg;
 	color_last_bg_text = color_last_bg;
 	color_last_fg_text = color_last_bg;
@@ -91,28 +90,28 @@ RDOFRMFrame::~RDOFRMFrame()
 	}
 }
 
-void RDOFRMFrame::setColorLastBG( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_bg )
+void RDOFRMFrame::setColorLastBG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg )
 {
 	if ( type == RDOFRMColor::color_rgb ) {
 		color_last_bg = _last_bg;
 	}
 }
 
-void RDOFRMFrame::setColorLastFG( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_fg )
+void RDOFRMFrame::setColorLastFG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg )
 {
 	if ( type == RDOFRMColor::color_rgb ) {
 		color_last_fg = _last_fg;
 	}
 }
 
-void RDOFRMFrame::setColorLastBGText( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_bg_text )
+void RDOFRMFrame::setColorLastBGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg_text )
 {
 	if ( type == RDOFRMColor::color_rgb ) {
 		color_last_bg_text = _last_bg_text;
 	}
 }
 
-void RDOFRMFrame::setColorLastFGText( RDOFRMColor::ColorType type, const rdoSimulator::RDOColor& _last_fg_text )
+void RDOFRMFrame::setColorLastFGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg_text )
 {
 	if ( type == RDOFRMColor::color_rgb ) {
 		color_last_fg_text = _last_fg_text;
@@ -126,13 +125,12 @@ void RDOFRMFrame::setBackgroundColor( RDOFRMColor* _background_color )
 
 void RDOFRMFrame::setBackPicture( const std::string& _picFileName )
 {
-	hasBackPicture = true;
 	picFileName = _picFileName;
 }
 
 void RDOFRMFrame::setBackPicture( int _width, int _height )
 {
-	hasBackPicture = false;
+	picFileName = _T("");
 	width = _width;
 	height = _height;
 }
@@ -159,28 +157,27 @@ bool RDOFRMFrame::checkCondition( RDORuntime* sim )
 	return conditionCalc->calcValue( sim ).getAsBool();
 }
 
-rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame, RDORuntime* sim )
+rdoAnimation::RDOFrame* RDOFRMFrame::prepareFrame( rdoAnimation::RDOFrame* frame, RDORuntime* sim )
 {
 	if (background_color)
 	{
 		if (background_color->getColorType() == RDOFRMColor::color_rgb)
 		{
-			rdoSimulator::RDOColor bg_color = background_color->getColor(sim, this);
-			frame->bgColor = bg_color;
+			rdoAnimation::RDOColor bg_color = background_color->getColor(sim, this);
+			frame->m_bgColor = bg_color;
 		}
 		else
 		{
-			frame->bgColor = rdoSimulator::RDOColor();
+			frame->m_bgColor = rdoAnimation::RDOColor();
 		}
 	}
 	else
 	{
-		frame->bgColor = rdoSimulator::RDOColor();
+		frame->m_bgColor = rdoAnimation::RDOColor();
 	}
-	frame->hasBackPicture = hasBackPicture;
-	frame->picFileName    = picFileName;
-	frame->width          = width;
-	frame->height         = height;
+	frame->m_bgImageName   = picFileName;
+	frame->m_size.m_width  = width;
+	frame->m_size.m_height = height;
 
 	last_x      = 0;
 	last_y      = 0;
@@ -193,9 +190,9 @@ rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame
 			if ( (*it_show)->checkCondition(sim) ) {
 				std::vector< RDORuntimeObject* >::iterator it_obj = (*it_show)->m_objects.begin();
 				while ( it_obj != (*it_show)->m_objects.end() ) {
-					rdoSimulator::RDOFrameElement* element = static_cast<RDOFRMItem*>(*it_obj)->createElement(sim);
+					rdoAnimation::FrameItem* element = static_cast<RDOFRMItem*>(*it_obj)->createElement(sim);
 					if ( element ) {
-						frame->elements.push_back( element );
+						frame->m_elements.push_back( element );
 					}
 					it_obj++;
 				}
@@ -209,9 +206,9 @@ rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame
 
 void RDOFRMFrame::getBitmaps( std::list< std::string >& list ) const
 {
-	if ( hasBackPicture ) {
-		list.push_back( picFileName );
-	}
+	if (!picFileName.empty())
+		list.push_back(picFileName);
+
 	std::list< RDOFRMShow* >::const_iterator it = shows.begin();
 	while ( it != shows.end() ) {
 		(*it)->getBitmaps( list );
@@ -226,7 +223,7 @@ RDOFRMText::RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, R
 	RDOFRMItem( _parent ),
 	RDOFRMBoundingItem( _x, _y, _width, _height ),
 	RDOFRMColoredItem( bgColor, fgColor ),
-	align( rdoSimulator::RDOTextElement::left ),
+	align(rdoAnimation::RDOTextElement::TETA_LEFT),
 	value( NULL ),
 	txt( "" ),
 	isTextString( true )
@@ -234,7 +231,7 @@ RDOFRMText::RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, R
 	color_reparent( this );
 }
 
-void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDOCalc* _value )
+void RDOFRMText::setText( rdoAnimation::RDOTextElement::TextAlign _align, RDOCalc* _value )
 {
 	align = _align;
 	value = _value;
@@ -242,19 +239,19 @@ void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, RDO
 	isTextString = false;
 }
 
-void RDOFRMText::setText( rdoSimulator::RDOTextElement::RDOTextAlign _align, const std::string& _txt )
+void RDOFRMText::setText( rdoAnimation::RDOTextElement::TextAlign _align, const std::string& _txt )
 {
 	align = _align;
 	txt   = _txt;
 	isTextString = true;
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMText::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMText::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDOTextElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDOTextElement) );
 
-	rdoSimulator::RDOColor bg = getBg( sim, getFrame() );
-	rdoSimulator::RDOColor fg = getFg( sim, getFrame() );
+	rdoAnimation::RDOColor bg = getBg( sim, getFrame() );
+	rdoAnimation::RDOColor fg = getFg( sim, getFrame() );
 	getFrame()->setColorLastBGText( getBgColor()->getColorType(), bg );
 	getFrame()->setColorLastFGText( getFgColor()->getColorType(), fg );
 
@@ -272,11 +269,11 @@ rdoSimulator::RDOFrameElement* RDOFRMText::createElement( RDORuntime* sim )
 	int _height = getHeight( sim, getFrame() );
 	getFrame()->setLastXYWH( _x, _y, _width, _height );
 
-	return new rdoSimulator::RDOTextElement(
-		_x, _y, _width, _height,
-		bg, fg,
+	return new rdoAnimation::RDOTextElement(
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		rdoAnimation::RDOColoredElement(bg, fg),
 		t, align
-		);
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -289,23 +286,18 @@ RDOFRMBitmap::RDOFRMBitmap( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _
 {
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMBitmap::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMBitmap::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDOBitmapElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDOBmpElement) );
 
 	int _x = x->getX( sim, getFrame() );
 	int _y = y->getY( sim, getFrame() );
 	getFrame()->setLastXYWH( _x, _y, 0, 0 );
 
-	if ( mask_filename.empty() ) {
-		return new rdoSimulator::RDOBitmapElement(
-			_x, _y,
-			pict_filename);
-	} else {
-		return new rdoSimulator::RDOBitmapElement(
-			_x, _y,
-			pict_filename, mask_filename);
-	}
+	return new rdoAnimation::RDOBmpElement(
+		rdoAnimation::RDOPoint(_x, _y),
+		pict_filename, mask_filename
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -317,9 +309,9 @@ RDOFRMBitmapStretch::RDOFRMBitmapStretch( RDOFRMFrame* _parent, RDOFRMFrame::RDO
 {
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMBitmapStretch::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMBitmapStretch::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDOSBmpElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDOSBmpElement) );
 
 	int _x      = getX( sim, getFrame() );
 	int _y      = getY( sim, getFrame() );
@@ -327,15 +319,10 @@ rdoSimulator::RDOFrameElement* RDOFRMBitmapStretch::createElement( RDORuntime* s
 	int _height = getHeight( sim, getFrame() );
 	getFrame()->setLastXYWH( _x, _y, _width, _height );
 
-	if ( mask_filename.empty() ) {
-		return new rdoSimulator::RDOSBmpElement(
-			_x, _y, _width, _height,
-			pict_filename);
-	} else {
-		return new rdoSimulator::RDOSBmpElement(
-			_x, _y, _width, _height,
-			pict_filename, mask_filename);
-	}
+	return new rdoAnimation::RDOSBmpElement(
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		pict_filename, mask_filename
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -349,12 +336,12 @@ RDOFRMRect::RDOFRMRect( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, R
 	color_reparent( this );
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMRect::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMRect::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDORectElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDORectElement) );
 
-	rdoSimulator::RDOColor bg = getBg( sim, getFrame() );
-	rdoSimulator::RDOColor fg = getFg( sim, getFrame() );
+	rdoAnimation::RDOColor bg = getBg( sim, getFrame() );
+	rdoAnimation::RDOColor fg = getFg( sim, getFrame() );
 	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
 	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
 	int _x      = getX( sim, getFrame() );
@@ -363,9 +350,10 @@ rdoSimulator::RDOFrameElement* RDOFRMRect::createElement( RDORuntime* sim )
 	int _height = getHeight( sim, getFrame() );
 	getFrame()->setLastXYWH( _x, _y, _width, _height );
 
-	return new rdoSimulator::RDORectElement(
-		_x, _y, _width, _height,
-		bg, fg );
+	return new rdoAnimation::RDORectElement(
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		rdoAnimation::RDOColoredElement(bg, fg)
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -379,12 +367,12 @@ RDOFRMRectRound::RDOFRMRectRound( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosit
 	color_reparent( this );
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMRectRound::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMRectRound::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDORRectElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDORRectElement) );
 
-	rdoSimulator::RDOColor bg = getBg( sim, getFrame() );
-	rdoSimulator::RDOColor fg = getFg( sim, getFrame() );
+	rdoAnimation::RDOColor bg = getBg( sim, getFrame() );
+	rdoAnimation::RDOColor fg = getFg( sim, getFrame() );
 	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
 	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
 	int _x      = getX( sim, getFrame() );
@@ -393,9 +381,10 @@ rdoSimulator::RDOFrameElement* RDOFRMRectRound::createElement( RDORuntime* sim )
 	int _height = getHeight( sim, getFrame() );
 	getFrame()->setLastXYWH( _x, _y, _width, _height );
 
-	return new rdoSimulator::RDORRectElement(
-		_x, _y, _width, _height,
-		bg, fg );
+	return new rdoAnimation::RDORRectElement(
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		rdoAnimation::RDOColoredElement(bg, fg)
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -409,12 +398,12 @@ RDOFRMEllipse::RDOFRMEllipse( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition*
 	color_reparent( this );
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMEllipse::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMEllipse::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDOEllipseElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDOEllipseElement) );
 
-	rdoSimulator::RDOColor bg = getBg( sim, getFrame() );
-	rdoSimulator::RDOColor fg = getFg( sim, getFrame() );
+	rdoAnimation::RDOColor bg = getBg( sim, getFrame() );
+	rdoAnimation::RDOColor fg = getFg( sim, getFrame() );
 	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
 	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
 	int _x      = getX( sim, getFrame() );
@@ -423,9 +412,10 @@ rdoSimulator::RDOFrameElement* RDOFRMEllipse::createElement( RDORuntime* sim )
 	int _height = getHeight( sim, getFrame() );
 	getFrame()->setLastXYWH( _x, _y, _width, _height );
 
-	return new rdoSimulator::RDOEllipseElement(
-		_x, _y, _width, _height,
-		bg, fg );
+	return new rdoAnimation::RDOEllipseElement(
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		rdoAnimation::RDOColoredElement(bg, fg)
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -439,11 +429,11 @@ RDOFRMLine::RDOFRMLine( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x1, 
 	color->reparent( this );
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMLine::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMLine::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDOLineElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDOLineElement) );
 
-	rdoSimulator::RDOColor fg = color->getColor( sim, getFrame() );
+	rdoAnimation::RDOColor fg = color->getColor( sim, getFrame() );
 	getFrame()->setColorLastFG( color->getColorType(), fg );
 	int _x1 = getX( sim, getFrame() );
 	int _y1 = getY( sim, getFrame() );
@@ -451,9 +441,11 @@ rdoSimulator::RDOFrameElement* RDOFRMLine::createElement( RDORuntime* sim )
 	int _y2 = getHeightAsY( sim, getFrame() );
 	getFrame()->setLastXYWH( _x1, _y1, _x2 - _x1, _y2 - _y1 );
 
-	return new rdoSimulator::RDOLineElement(
-		_x1, _y1, _x2, _y2,
-		fg);
+	return new rdoAnimation::RDOLineElement(
+		rdoAnimation::RDOPoint(_x1, _y1),
+		rdoAnimation::RDOPoint(_x2, _y2),
+		fg
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -472,12 +464,12 @@ RDOFRMTriang::RDOFRMTriang( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _
 	color_reparent( this );
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMTriang::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMTriang::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDOTriangElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDOTriangElement) );
 
-	rdoSimulator::RDOColor bg = getBg( sim, getFrame() );
-	rdoSimulator::RDOColor fg = getFg( sim, getFrame() );
+	rdoAnimation::RDOColor bg = getBg( sim, getFrame() );
+	rdoAnimation::RDOColor fg = getFg( sim, getFrame() );
 	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
 	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
 	int _x1 = x1->getX( sim, getFrame() );
@@ -502,9 +494,12 @@ rdoSimulator::RDOFrameElement* RDOFRMTriang::createElement( RDORuntime* sim )
 	if ( max_y < _x3 ) max_y = _y3;
 	getFrame()->setLastXYWH( min_x, min_y, max_x - min_x, max_y - min_y );
 
-	return new rdoSimulator::RDOTriangElement(
-		_x1, _y1, _x2, _y2, _x3, _y3,
-		bg, fg);
+	return new rdoAnimation::RDOTriangElement(
+		rdoAnimation::RDOPoint(_x1, _y1),
+		rdoAnimation::RDOPoint(_x2, _y2),
+		rdoAnimation::RDOPoint(_x3, _y3),
+		rdoAnimation::RDOColoredElement(bg, fg)
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -517,9 +512,9 @@ RDOFRMActive::RDOFRMActive( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _
 {
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMActive::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMActive::createElement( RDORuntime* sim )
 {
-	sim->memory_insert( sizeof(rdoSimulator::RDOActiveElement) );
+	sim->memory_insert( sizeof(rdoAnimation::RDOActiveElement) );
 
 	int _x      = getX( sim, getFrame() );
 	int _y      = getY( sim, getFrame() );
@@ -527,9 +522,10 @@ rdoSimulator::RDOFrameElement* RDOFRMActive::createElement( RDORuntime* sim )
 	int _height = getHeight( sim, getFrame() );
 	getFrame()->setLastXYWH( _x, _y, _width, _height );
 
-	return new rdoSimulator::RDOActiveElement(
-		_x, _y, _width, _height,
-		operName);
+	return new rdoAnimation::RDOActiveElement(
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		operName
+	);
 }
 
 // ----------------------------------------------------------------------------
@@ -541,7 +537,7 @@ RDOFRMSpace::RDOFRMSpace( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x,
 {
 }
 
-rdoSimulator::RDOFrameElement* RDOFRMSpace::createElement( RDORuntime* sim )
+rdoAnimation::FrameItem* RDOFRMSpace::createElement( RDORuntime* sim )
 {
 	int _x      = getX( sim, getFrame() );
 	int _y      = getY( sim, getFrame() );

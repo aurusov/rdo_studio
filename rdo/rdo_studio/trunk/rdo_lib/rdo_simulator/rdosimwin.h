@@ -15,6 +15,11 @@
 #include <rdostream.h>
 #include <rdocommon.h>
 
+namespace rdoAnimation
+{
+struct RDOFrame;
+}
+
 #define DISABLE_CORBA
 
 
@@ -101,9 +106,9 @@ private:
 
 public:
 	struct GetFrame {
-		rdoSimulator::RDOFrame* frame;
+		rdoAnimation::RDOFrame* frame;
 		int                     frame_number;
-		GetFrame( rdoSimulator::RDOFrame* _frame, int _frame_number ): frame( _frame ), frame_number( _frame_number ) {}
+		GetFrame( rdoAnimation::RDOFrame* _frame, int _frame_number ): frame( _frame ), frame_number( _frame_number ) {}
 	};
 	struct FrameAreaDown {
 		int         frame_number;
