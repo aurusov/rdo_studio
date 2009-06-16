@@ -66,10 +66,12 @@ void RDOCatalogView::OnBeforeNavigate2( LPCTSTR lpszURL, DWORD nFlags, LPCTSTR l
 	url.MakeLower();
 	CString ext = url.Right( 4 );
 	ext.MakeLower();
-	if ( ext.Find( ".smr" ) == 0 ) {
+	if ( ext.Find( ".smr" ) != -1 ) {
 		TCHAR szExeName[ MAX_PATH + 1 ];
 		if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
 			int pos = url.ReverseFind( ' ' );
+			if ( pos == -1 )
+				pos = url.Find( "%20" );
 			if ( pos != -1 ) {
 				CString model = url.Mid( pos + 1, url.GetLength() - pos - 1 - 4 );
 				url.Delete( pos, url.GetLength() - pos );
