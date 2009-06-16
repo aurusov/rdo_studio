@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_catalog", "rdo_catalog.vcproj", "{02480F0C-9D0B-491D-9FDB-624A37B5F814}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9841827-D946-4745-8FC1-63598E498CF8} = {D9841827-D946-4745-8FC1-63598E498CF8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "rdo_ctrls\rdo_ctrls.vcproj", "{D9841827-D946-4745-8FC1-63598E498CF8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02480F0C-9D0B-491D-9FDB-624A37B5F814}.Debug|Win32.ActiveCfg = Debug|Win32
+		{02480F0C-9D0B-491D-9FDB-624A37B5F814}.Debug|Win32.Build.0 = Debug|Win32
+		{02480F0C-9D0B-491D-9FDB-624A37B5F814}.Release|Win32.ActiveCfg = Release|Win32
+		{02480F0C-9D0B-491D-9FDB-624A37B5F814}.Release|Win32.Build.0 = Release|Win32
+		{D9841827-D946-4745-8FC1-63598E498CF8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D9841827-D946-4745-8FC1-63598E498CF8}.Debug|Win32.Build.0 = Debug|Win32
+		{D9841827-D946-4745-8FC1-63598E498CF8}.Release|Win32.ActiveCfg = Release|Win32
+		{D9841827-D946-4745-8FC1-63598E498CF8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

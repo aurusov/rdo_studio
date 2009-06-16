@@ -84,13 +84,15 @@ void RDOCatalogView::OnBeforeNavigate2( LPCTSTR lpszURL, DWORD nFlags, LPCTSTR l
 					cmd.Delete( pos, url.GetLength() - pos );
 					cmd = "\"" + cmd + "rao-explorer\\data\\russian\\models\\" + model + "\\source\\" + model + ".smr\" -autorun";
 					::ShellExecute( GetSafeHwnd(), "open", url, cmd, NULL, SW_SHOWNORMAL );
-					*pbCancel = TRUE;
 				}
 			}
 		}
+		*pbCancel = TRUE;
+		return;
 	} else if ( ext.Find( "htm" ) == -1 ) {
 		::ShellExecute( GetSafeHwnd(), "open", lpszURL, NULL, NULL, SW_SHOWNORMAL );
 		*pbCancel = TRUE;
+		return;
 	}
 	CHtmlView::OnBeforeNavigate2( lpszURL, nFlags, lpszTargetFrameName, baPostedData, lpszHeaders, pbCancel );
 }
