@@ -15,11 +15,15 @@ public:
 	RDODPTActivityCompare(RDORuntime* runtime)
 		: m_runtime(runtime)
 	{}
-	bool operator() ( const RDOBaseOperation* opr1, const RDOBaseOperation* opr2 )
+	bool operator() ( RDOBaseOperation* opr1, RDOBaseOperation* opr2 )
 	{
-		RDOActivityPatternPrior* proir1 = const_cast<RDOActivityPatternPrior*>(reinterpret_cast<const RDOActivityPatternPrior*>(opr1));
-		RDOActivityPatternPrior* proir2 = const_cast<RDOActivityPatternPrior*>(reinterpret_cast<const RDOActivityPatternPrior*>(opr2));
-		return proir1->getPrior()->calcValue(m_runtime) < proir2->getPrior()->calcValue(m_runtime);
+		RDOActivityPatternPrior* proir1 = dynamic_cast<RDOActivityPatternPrior*>(opr1);
+		RDOActivityPatternPrior* proir2 = dynamic_cast<RDOActivityPatternPrior*>(opr2);
+		if (proir1 && proir2)
+		{
+			return proir1->getPrior()->calcValue(m_runtime) < proir2->getPrior()->calcValue(m_runtime);
+		}
+		return false;
 	}
 
 private:

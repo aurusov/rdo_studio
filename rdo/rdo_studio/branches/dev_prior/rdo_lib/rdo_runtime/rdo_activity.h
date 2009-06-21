@@ -104,8 +104,15 @@ public:
 		}
 	}
 
-	RDOCalc* getPrior()               { return m_prior;  }
-	void     setPrior(RDOCalc* value) { m_prior = value; }
+	RDOCalc* getPrior()
+	{
+		return m_prior; 
+	}
+	bool setPrior(RDOCalc* prior)
+	{
+		m_prior = prior;
+		return true;
+	}
 
 private:
 	RDOCalc* m_prior;

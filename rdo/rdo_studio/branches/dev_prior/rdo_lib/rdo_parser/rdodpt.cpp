@@ -78,8 +78,6 @@ RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserS
 	if ( !m_pattern ) {
 		parser()->error( _pattern_src_info, rdo::format("Не найден образец: %s", _pattern_src_info.src_text().c_str()) );
 	}
-
-	m_prior = 0;
 }
 
 void RDODPTActivity::addParam( const RDOValue& param )
@@ -144,12 +142,14 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 	}
 }
 
-void RDODPTActivity::setPrior( RDOFUNArithm* prior )
+bool RDODPTActivity::setPrior(RDOFUNArithm* prior)
 {
-	m_prior = prior;
-	reinterpret_cast<rdoRuntime::RDOActivityPatternPrior*>(m_activity)->setPrior(m_prior->createCalc());
-//	rdoRuntime::RDOCalc* calcPrior = m_prior->createCalc();
-//	m_activity->setPriorCalc( calcPrior );
+	rdoRuntime::RDOActivityPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOActivityPatternPrior*>(m_activity);
+	if (prior_activity)
+	{
+		return prior_activity->setPrior(prior->createCalc());
+	}
+	return false;
 }
 
 // ----------------------------------------------------------------------------
