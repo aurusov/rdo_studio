@@ -122,7 +122,7 @@ $Constant
 	cosr2	: real = 0.906
 $End
 
-$Function новое_состояние : such_as Ресурсы.Состояние
+$Function новое_состояние_ресурса : such_as Ресурсы.Состояние
 $Type = algorithmic
 $Parameters
 	текущее_состояние : such_as Ресурсы.Состояние
