@@ -456,7 +456,8 @@ void RDORuntime::operator= (const RDORuntime& other)
 			allResourcesByTime.push_back( res );
 		}
 	}
-	allConstants = other.allConstants;
+	allConstants      = other.allConstants;
+	patternParameters = other.patternParameters;
 
 	Parent::operator= (*static_cast<const Parent*>(&other));
 }
