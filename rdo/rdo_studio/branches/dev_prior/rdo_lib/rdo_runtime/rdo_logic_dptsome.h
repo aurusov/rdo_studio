@@ -21,7 +21,7 @@ public:
 		RDOActivityPatternPrior* proir2 = dynamic_cast<RDOActivityPatternPrior*>(opr2);
 		if (proir1 && proir2)
 		{
-			return proir1->getPrior()->calcValue(m_runtime) < proir2->getPrior()->calcValue(m_runtime);
+			return proir1->getPrior()->calcValue(m_runtime) > proir2->getPrior()->calcValue(m_runtime);
 		}
 		return false;
 	}
