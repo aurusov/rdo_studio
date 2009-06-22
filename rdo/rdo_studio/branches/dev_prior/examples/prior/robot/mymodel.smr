@@ -7,4 +7,4 @@ Trace_file     = mymodel
 Show_mode      = NoShow
 Show_rate      = 3600.0
 
-Terminate_if Time_now >= 100
+Terminate_if Система.количество_погруженных_деталей >= 100
