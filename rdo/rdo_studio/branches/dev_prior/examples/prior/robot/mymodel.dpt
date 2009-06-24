@@ -1,10 +1,7 @@
 $Decision_point Generation : some
 $Condition Система.количество_прибывших_деталей < 100
 $Activities
-	Поступление_детали     : Образец_поступления_новой_детали
-$End
-
-$Activities
+	Поступление_детали                           : Образец_поступления_новой_детали
 $End
 
 $Decision_point Simple : some
