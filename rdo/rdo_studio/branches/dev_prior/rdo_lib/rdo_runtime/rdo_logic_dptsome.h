@@ -40,21 +40,9 @@ public:
 	virtual ~RDODPTSome();
 
 protected:
-	virtual bool newCheckCondition( RDOSimulator* sim )
+	virtual void newCheckCondition( RDOSimulator* sim )
 	{
 		std::sort( begin(), end(), RDODPTActivityCompare(reinterpret_cast<RDORuntime*>(sim)) );
-		Iterator it = begin();
-		while ( it != end() )
-		{
-			if ( (*it)->onCheckCondition(sim) )
-			{
-				m_first = *it;
-				return true;
-			}
-			it++;
-		}
-		m_first = NULL;
-		return false;
 	}
 };
 

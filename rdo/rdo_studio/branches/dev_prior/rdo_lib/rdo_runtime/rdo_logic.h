@@ -145,10 +145,9 @@ public:
 		m_lastCondition = false;
 		stop( sim );
 	}
-	// RDODPTSome должен перекрыть метод newCheckCondition для сортировки операций по приоритетам
-	virtual bool newCheckCondition( RDOSimulator* sim )
-	{
-		return RDOOprContainer<RDOBaseOperation>::onCheckCondition( sim );
+	// в этом методе RDODPTSome будет сортировать список активностей внутри контейнера
+	virtual void newCheckCondition( RDOSimulator* sim )
+	{	
 	}
 	virtual bool onCheckCondition( RDOSimulator* sim )
 	{
@@ -169,7 +168,8 @@ public:
 		{
 			if ( !m_childLogic.onCheckCondition( sim ) )
 			{
-				return newCheckCondition( sim );
+				newCheckCondition( sim );
+				return RDOOprContainer<RDOBaseOperation>::onCheckCondition( sim );
 			}
 			else
 			{
