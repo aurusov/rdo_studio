@@ -17,11 +17,11 @@ public:
 	{}
 	bool operator() ( RDOBaseOperation* opr1, RDOBaseOperation* opr2 )
 	{
-		RDOActivityPatternPrior* proir1 = dynamic_cast<RDOActivityPatternPrior*>(opr1);
-		RDOActivityPatternPrior* proir2 = dynamic_cast<RDOActivityPatternPrior*>(opr2);
-		if (proir1 && proir2)
+		RDOActivityPatternPrior* prior1 = dynamic_cast<RDOActivityPatternPrior*>(opr1);
+		RDOActivityPatternPrior* prior2 = dynamic_cast<RDOActivityPatternPrior*>(opr2);
+		if (prior1 && prior2)
 		{
-			return proir1->getPrior()->calcValue(m_runtime) > proir2->getPrior()->calcValue(m_runtime);
+			return prior1->getPrior()->calcValue(m_runtime) > prior2->getPrior()->calcValue(m_runtime);
 		}
 		return false;
 	}
