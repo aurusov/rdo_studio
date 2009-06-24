@@ -40,7 +40,7 @@ public:
 	virtual ~RDODPTSome();
 
 protected:
-	virtual void newCheckCondition( RDOSimulator* sim )
+	virtual void actionWithRDOOprContainer( RDOSimulator* sim )
 	{
 		std::sort( begin(), end(), RDODPTActivityCompare(reinterpret_cast<RDORuntime*>(sim)) );
 	}

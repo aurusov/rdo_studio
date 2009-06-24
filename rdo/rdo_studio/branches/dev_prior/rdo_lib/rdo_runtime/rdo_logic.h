@@ -146,7 +146,7 @@ public:
 		stop( sim );
 	}
 	// в этом методе RDODPTSome будет сортировать список активностей внутри контейнера
-	virtual void newCheckCondition( RDOSimulator* sim )
+	virtual void actionWithRDOOprContainer( RDOSimulator* sim )
 	{	
 	}
 	virtual bool onCheckCondition( RDOSimulator* sim )
@@ -168,7 +168,7 @@ public:
 		{
 			if ( !m_childLogic.onCheckCondition( sim ) )
 			{
-				newCheckCondition( sim );
+				actionWithRDOOprContainer( sim );
 				return RDOOprContainer<RDOBaseOperation>::onCheckCondition( sim );
 			}
 			else
