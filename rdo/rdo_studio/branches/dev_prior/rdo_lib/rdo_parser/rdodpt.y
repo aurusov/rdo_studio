@@ -447,7 +447,7 @@ dpt_some_descr_prior:	/* empty */
 						}
 						| RDO_CF '=' error
 						{
-							PARSER->error( @1, @2, "Ошибка описания приоритета образца" )
+							PARSER->error( @1, @2, "Ошибка описания приоритета активности" )
 						}
 						| RDO_CF error
 						{
