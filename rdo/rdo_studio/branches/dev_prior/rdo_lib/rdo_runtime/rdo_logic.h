@@ -14,7 +14,6 @@ namespace rdoRuntime {
 template<class T>
 class RDOOprContainer: public RDOBaseOperation
 {
-	friend class RDODPTSome;
 public:
 	RDOOprContainer( RDORuntimeParent* parent ):
 		RDOBaseOperation( parent ),
