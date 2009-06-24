@@ -145,10 +145,6 @@ public:
 		m_lastCondition = false;
 		stop( sim );
 	}
-	// в этом методе RDODPTSome будет сортировать список активностей внутри контейнера
-	virtual void actionWithRDOOprContainer( RDOSimulator* sim )
-	{	
-	}
 	virtual bool onCheckCondition( RDOSimulator* sim )
 	{
 		bool condition = checkSelfCondition( sim );
@@ -222,6 +218,10 @@ private:
 	RDOCalc* m_condition;
 	bool     m_lastCondition;
 
+	// в этом методе RDODPTSome сортирует список активностей внутри контейнера
+	virtual void actionWithRDOOprContainer( RDOSimulator* sim )
+	{	
+	}
 	bool checkSelfCondition( RDOSimulator* sim )
 	{
 		if ( m_condition )

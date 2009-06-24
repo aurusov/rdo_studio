@@ -39,7 +39,7 @@ public:
 	RDODPTSome( RDOSimulator* sim );
 	virtual ~RDODPTSome();
 
-protected:
+private:
 	virtual void actionWithRDOOprContainer( RDOSimulator* sim )
 	{
 		std::sort( begin(), end(), RDODPTActivityCompare(reinterpret_cast<RDORuntime*>(sim)) );
