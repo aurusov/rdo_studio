@@ -3,6 +3,7 @@
 
 #include "rdo_logic.h"
 #include "rdo_activity.h"
+#include "rdo_runtime.h"
 
 namespace rdoRuntime {
 
@@ -42,6 +43,17 @@ public:
 private:
 	virtual void actionWithRDOOprContainer( RDOSimulator* sim )
 	{
+		RDORuntime* runtime = reinterpret_cast<RDORuntime*>(sim);
+		Iterator it = begin();
+		while ( it != end() )
+		{
+			RDOActivityPatternPrior* prior = dynamic_cast<RDOActivityPatternPrior*>(*it);
+			if ( prior->getPrior()->calcValue(runtime) > 1 || prior->getPrior()->calcValue(runtime) < 0 )
+			{
+				runtime->error("¬ процессе работы модели приоритет некоторой активности вышел за приделы диапазона [0;1]");
+			}
+			it++;
+		}
 		std::sort( begin(), end(), RDODPTActivityCompare(reinterpret_cast<RDORuntime*>(sim)) );
 	}
 };
