@@ -16,13 +16,17 @@ public:
 	RDODPTActivityCompare(RDORuntime* runtime)
 		: m_runtime(runtime)
 	{}
-	bool operator() ( RDOBaseOperation* opr1, RDOBaseOperation* opr2 )
+	bool operator() (RDOBaseOperation* opr1, RDOBaseOperation* opr2 )
 	{
-		RDOActivityPatternPrior* prior1 = dynamic_cast<RDOActivityPatternPrior*>(opr1);
-		RDOActivityPatternPrior* prior2 = dynamic_cast<RDOActivityPatternPrior*>(opr2);
-		if (prior1 && prior2)
+		RDOActivityPatternPrior* pattern1 = dynamic_cast<RDOActivityPatternPrior*>(opr1);
+		RDOActivityPatternPrior* pattern2 = dynamic_cast<RDOActivityPatternPrior*>(opr2);
+		if (pattern1 && pattern2)
 		{
-			return prior1->getPrior()->calcValue(m_runtime) > prior2->getPrior()->calcValue(m_runtime);
+			RDOCalc* prior1 = pattern1->getPrior();
+			RDOCalc* prior2 = pattern2->getPrior();
+			RDOValue value1 = prior1 ? prior1->calcValue(m_runtime) : RDOValue(0.0);
+			RDOValue value2 = prior2 ? prior2->calcValue(m_runtime) : RDOValue(0.0);
+			return value1 > value2;
 		}
 		return false;
 	}
@@ -37,24 +41,28 @@ private:
 class RDODPTSome: public RDOLogic
 {
 public:
-	RDODPTSome( RDOSimulator* sim );
+	RDODPTSome (RDOSimulator* sim);
 	virtual ~RDODPTSome();
 
 private:
-	virtual void actionWithRDOOprContainer( RDOSimulator* sim )
+	virtual void actionWithRDOOprContainer(RDOSimulator* sim)
 	{
 		RDORuntime* runtime = reinterpret_cast<RDORuntime*>(sim);
-		Iterator it = begin();
-		while ( it != end() )
+		for (CIterator it = begin(); it != end(); ++it)
 		{
-			RDOActivityPatternPrior* prior = dynamic_cast<RDOActivityPatternPrior*>(*it);
-			if ( prior->getPrior()->calcValue(runtime) > 1 || prior->getPrior()->calcValue(runtime) < 0 )
+			RDOActivityPatternPrior* pattern = dynamic_cast<RDOActivityPatternPrior*>(*it);
+			if (pattern)
 			{
-				runtime->error("¬ процессе работы модели приоритет некоторой активности вышел за приделы диапазона [0;1]");
+				RDOCalc* prior = pattern->getPrior();
+				if (prior)
+				{
+					RDOValue value = prior->calcValue(runtime);
+					if (value < 0 || value > 1)
+						runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
+				}
 			}
-			it++;
 		}
-		std::sort( begin(), end(), RDODPTActivityCompare(reinterpret_cast<RDORuntime*>(sim)) );
+		std::sort(begin(), end(), RDODPTActivityCompare(reinterpret_cast<RDORuntime*>(sim)));
 	}
 };
 
