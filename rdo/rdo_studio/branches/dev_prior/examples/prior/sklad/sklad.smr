@@ -1,9 +1,9 @@
-Model_name     = mymodel
+Model_name     = sklad
 
-Resource_file  = mymodel
-Statistic_file = mymodel
-Results_file   = mymodel
-Trace_file     = mymodel
+Resource_file  = sklad
+Statistic_file = sklad
+Results_file   = sklad
+Trace_file     = sklad
 Show_mode      = NoShow
 Show_rate      = 3600.0
 
