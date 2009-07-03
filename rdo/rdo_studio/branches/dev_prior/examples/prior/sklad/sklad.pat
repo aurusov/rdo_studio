@@ -2,7 +2,7 @@ $Pattern Образец_поступления_новой_детали : irregular_event trace
 $Relevant_resources
 	_Система       : Система  Keep
 	_Деталь        : Детали   Create
-$Time = Интервал_поступления( 1.5 )
+$Time = Интервал_поступления( 1.2)
 $Body
 _Система
 	Convert_event
