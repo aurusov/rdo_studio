@@ -3,10 +3,14 @@
 
 #pragma warning(disable : 4786)  
 
+// ====================================================================== INCLUDES
+#include <time.h>
+// ====================================================================== SYNOPSIS
 #include "rdotrace.h"
 #include "simtrace.h"
 #include "rdo_resource.h"
 #include <rdocommon.h>
+// ===============================================================================
 
 namespace rdoRuntime
 {
@@ -69,10 +73,10 @@ public:
 	enum Messages {
 		RO_BEFOREDELETE = 0
 	};
-	void connect( RDORuntimeObject* to, unsigned int message );
+	void connect( RDORuntimeObject* to, ruint message );
 	void disconnect( RDORuntimeObject* to );
-	void disconnect( RDORuntimeObject* to, unsigned int message );
-	void fireMessage( RDORuntimeObject* from, unsigned int message, void* param = NULL );
+	void disconnect( RDORuntimeObject* to, ruint message );
+	void fireMessage( RDORuntimeObject* from, ruint message, void* param = NULL );
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const std::string& message, const RDOCalc* calc = NULL );
@@ -108,6 +112,9 @@ public:
 
 	double getTimeNow() { return getCurrentTime();                   }
 	double getSeconds() { return (double)(time(NULL) - physic_time); }
+	
+	unsigned int getCurrentTerm() const        {return m_currentTerm;  }
+	void setCurrentTerm( unsigned int value	)  {m_currentTerm = value; }
 
 	RDOActivity* getCurrentActivity() const                   { return m_currActivity;      }
 	void         setCurrentActivity( RDOActivity* activity )  { m_currActivity = activity;  }
@@ -211,7 +218,8 @@ private:
 	std::list  < RDOResource* > allResourcesByTime;    // ќни же, только упор€дочены по времени создани€ и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // ќни же, только упор€дочены по типу перед запуском
 	std::list  < RDOCalc*     > initCalcs;
-
+	
+	
 	class BreakPoint: public RDORuntimeObject
 	{
 	public:
@@ -280,6 +288,8 @@ private:
 	virtual void onResetPokaz();
 	virtual void onCheckPokaz();
 	virtual void onAfterCheckPokaz();
+
+	unsigned int m_currentTerm;
 };
 
 } // namespace rdoRuntime

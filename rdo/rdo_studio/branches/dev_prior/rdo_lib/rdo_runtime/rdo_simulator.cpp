@@ -4,12 +4,6 @@
 #include "rdo_rule.h"
 #include "rdo_operation.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #pragma warning(disable : 4786)  
 
 namespace rdoRuntime {
@@ -90,7 +84,7 @@ RDOSimulator* RDOSimulator::createCopy()
 
 std::string writeActivitiesStructureRecurse( RDOLogic* logic, int& counter )
 {
-	std::stringstream stream;
+	rdo::textstream stream;
 	RDOLogic::CIterator it = logic->begin();
 	while ( it != logic->end() ) {
 		RDORule* rule = dynamic_cast<RDORule*>(*it);

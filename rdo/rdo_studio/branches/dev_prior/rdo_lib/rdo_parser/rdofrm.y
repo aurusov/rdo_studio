@@ -170,11 +170,6 @@
 
 %{
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #include <FlexLexer.h>
 
@@ -187,6 +182,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoopr.h"
 #include "rdodpt.h"
 #include <rdocalc.h>
+#include <rdoanimation.h>
 
 #define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 #define RUNTIME PARSER->runtime()
@@ -519,10 +515,10 @@ frm_space:	RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh
 				PARSER->error( @1, "Ожидается '['" );
 			};
 
-frm_text_align: /* empty */ { $$ = rdoSimulator::RDOTextElement::left;   }
-				| '<'       { $$ = rdoSimulator::RDOTextElement::left;   }
-				| '='       { $$ = rdoSimulator::RDOTextElement::center; }
-				| '>'       { $$ = rdoSimulator::RDOTextElement::right;  };
+frm_text_align: /* empty */ { $$ = rdoAnimation::RDOTextElement::TETA_LEFT;   }
+				| '<'       { $$ = rdoAnimation::RDOTextElement::TETA_LEFT;   }
+				| '='       { $$ = rdoAnimation::RDOTextElement::TETA_CENTER; }
+				| '>'       { $$ = rdoAnimation::RDOTextElement::TETA_RIGHT;  };
 
 frm_text_common:	RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ',' {
 						rdoRuntime::RDOFRMFrame::RDOFRMPosition* x      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($3);
@@ -600,10 +596,10 @@ frm_text_common:	RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_positi
 					};
 
 frm_text:	frm_text_common frm_text_align fun_arithm ']' {
-				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, ((RDOFUNArithm *)$3)->createCalc() );
+				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoAnimation::RDOTextElement::TextAlign)$2, ((RDOFUNArithm *)$3)->createCalc() );
 			}
 			| frm_text_common frm_text_align RDO_STRING_CONST ']' {
-				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoSimulator::RDOTextElement::RDOTextAlign)$2, reinterpret_cast<RDOValue*>($3)->value().getString() );
+				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoAnimation::RDOTextElement::TextAlign)$2, reinterpret_cast<RDOValue*>($3)->value().getString() );
 			}
 			| frm_text_common frm_text_align fun_arithm error {
 				PARSER->error( @3, "Ожидается ']'" );

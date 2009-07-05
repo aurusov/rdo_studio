@@ -15,10 +15,11 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
-#include <rdobinarystream.h>
+#include <rdostream.h>
 #include <rdoplugin.h>
 #include <rdothread.h>
 #include <rdo_exception.h>
+#include <rdoanimation.h>
 #include <limits>
 
 using namespace rdoEditor;
@@ -175,9 +176,9 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			rdoRepository::RDOThreadRepository::FileData* fdata = static_cast<rdoRepository::RDOThreadRepository::FileData*>(msg.param);
 			RDOEditorTabCtrl* tab = getTab();
 			if ( tab ) {
-				RDOEditorEdit* edit = tab->getItemEdit( fdata->type );
+				RDOEditorEdit* edit = tab->getItemEdit(fdata->m_type);
 				if ( edit ) {
-					edit->save( fdata->stream );
+					edit->save(fdata->m_stream);
 				}
 			}
 			msg.unlock();
@@ -207,9 +208,9 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			CString filter;
 			filter.LoadString( ID_MODEL_FILETYPE );
 			CFileDialog dlg( true, "smr", "", 0, filter, AfxGetMainWnd() );
-			data->result   = dlg.DoModal() == IDOK;
-			data->name     = dlg.GetPathName();
-			data->readonly = dlg.GetReadOnlyPref() == TRUE;
+			data->m_result   = dlg.DoModal() == IDOK;
+			data->m_name     = dlg.GetPathName();
+			data->m_readonly = dlg.GetReadOnlyPref() == TRUE;
 			msg.unlock();
 			break;
 		}
@@ -219,8 +220,8 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			CString filter;
 			filter.LoadString( ID_MODEL_FILETYPE );
 			CFileDialog dlg( false, "smr", "", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, AfxGetMainWnd() );
-			data->result = dlg.DoModal() == IDOK;
-			data->name   = dlg.GetPathName();
+			data->m_result = dlg.DoModal() == IDOK;
+			data->m_name   = dlg.GetPathName();
 			msg.unlock();
 			break;
 		}
@@ -427,14 +428,14 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 
 void RDOStudioModel::show_result()
 {
-	std::stringstream model_results;
+	rdo::textstream model_results;
 	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
 	std::string str = model_results.str();
 	if ( !str.empty() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV );
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
-		if ( !data.described ) {
+		if ( !data.m_described ) {
 			output->appendStringToDebug( "Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n" );
 		}
 		output->showResults();
@@ -452,8 +453,8 @@ bool RDOStudioModel::newModel( std::string _model_name, std::string _model_path,
 	output->clearResults();
 	output->clearFind();
 	rdoRepository::RDOThreadRepository::NewModel data;
-	data.name = _model_name;
-	data.path = _model_path;
+	data.m_name = _model_name;
+	data.m_path = _model_path;
 	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_NEW, &data );
 	output->updateLogConnection();
 	return true;
@@ -480,7 +481,7 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 	modelClosed   = false;
 	rdoRepository::RDOThreadRepository::OpenFile data( modelName );
 	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_OPEN, &data );
-	if ( data.result && !openError && !smrEmptyError ) {
+	if ( data.m_result && !openError && !smrEmptyError ) {
 		rdo::binarystream stream;
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
 		output->appendStringToResults( stream.str() );
@@ -496,7 +497,7 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 			output->appendStringToDebug( rdo::format( IDS_MODEL_LOADING_FAILD ) );
 		}
 	}
-	return data.result;
+	return data.m_result;
 }
 
 bool RDOStudioModel::saveModel() const
@@ -590,7 +591,7 @@ void RDOStudioModel::newModelFromRepository()
 		modelDocTemplate->OpenDocumentFile( NULL );
 		rdoRepository::RDOThreadRepository::FileInfo data_smr;
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr );
-		setName( data_smr.name );
+		setName( data_smr.m_name );
 
 		RDOEditorTabCtrl* tab = getTab();
 		if ( tab ) {
@@ -668,7 +669,7 @@ void RDOStudioModel::openModelFromRepository()
 		modelDocTemplate->OpenDocumentFile( NULL );
 		rdoRepository::RDOThreadRepository::FileInfo data_smr;
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr );
-		setName( data_smr.name );
+		setName( data_smr.m_name );
 
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		RDOEditorTabCtrl* tab = getTab();
@@ -695,9 +696,9 @@ void RDOStudioModel::openModelFromRepository()
 					bool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
 					if ( !stream_error ) {
 						edit->load( stream );
-						edit->setReadOnly( data.readonly );
-						if ( data.readonly ) {
-							output->appendStringToDebug( rdo::format( IDS_MODEL_FILE_READONLY, std::string( data.name + data.extention).c_str() ) );
+						edit->setReadOnly( data.m_readonly );
+						if ( data.m_readonly ) {
+							output->appendStringToDebug( rdo::format( IDS_MODEL_FILE_READONLY, std::string( data.m_name + data.m_extention).c_str() ) );
 						}
 					} else {
 						int obj = 0;
@@ -712,7 +713,7 @@ void RDOStudioModel::openModelFromRepository()
 							case rdoModelObjects::PMD: obj = IDS_MODEL_PMDS;          break;
 						}
 						if ( obj ) {
-							output->appendStringToDebug( rdo::format( IDS_MODEL_CANNOT_LOAD, rdo::format( obj ).c_str(), data.full_name.c_str() ) );
+							output->appendStringToDebug( rdo::format( IDS_MODEL_CANNOT_LOAD, rdo::format( obj ).c_str(), data.m_full_name.c_str() ) );
 							const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 						}
 						openError = true;
@@ -795,7 +796,7 @@ void RDOStudioModel::saveModelToRepository()
 	}
 	rdoRepository::RDOThreadRepository::FileInfo data;
 	studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
-	setName( data.name );
+	setName( data.m_name );
 
 	studioApp.insertReopenItem( getFullName() );
 
@@ -810,7 +811,7 @@ std::string RDOStudioModel::getFullName() const
 {
 	rdoRepository::RDOThreadRepository::FileInfo data;
 	studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
-	return data.full_name;
+	return data.m_full_name;
 }
 
 void RDOStudioModel::updateFrmDescribed()
@@ -993,7 +994,7 @@ void RDOStudioModel::update()
 			if ( dc->RectVisible( view->getClientRect() ) ) {
 				view->ReleaseDC( dc );
 				try {
-					RDOFrame frame;
+					rdoAnimation::RDOFrame frame;
 					sendMessage( kernel->runtime(), RT_RUNTIME_GET_FRAME, &rdoRuntime::RDOThreadRunTime::GetFrame(&frame, i) );
 					frameManager.showFrame( &frame, i );
 				} catch ( rdoRuntime::RDORuntimeException& ) {

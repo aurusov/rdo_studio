@@ -6,7 +6,6 @@
 #endif
 
 #include "rdostudioframeview.h"
-#include <afxwin.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameDoc

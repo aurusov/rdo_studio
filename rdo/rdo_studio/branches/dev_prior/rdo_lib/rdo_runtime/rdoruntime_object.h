@@ -2,6 +2,8 @@
 #define RDORUNTIME_OBJECT_H
 
 #include <rdocommon.h>
+#include <rdotypes.h>
+
 #include <vector>
 #include <algorithm>
 
@@ -32,7 +34,7 @@ protected:
 	RDORuntimeParent* m_parent;
 
 	RDORuntimeObject( RDORuntimeParent* parent );
-	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL ) {};
+	virtual void notify( RDORuntimeObject* from, ruint message, void* param = NULL ) {};
 
 private:
 	size_t        m_object_size; // Размер текущего объекта

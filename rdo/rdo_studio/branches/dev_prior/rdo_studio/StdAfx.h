@@ -22,6 +22,12 @@
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
+#include <afxole.h>
+#include <afxpriv.h>    // for CDockContext
+#include <afxtempl.h>   // for CTypedPtrArray
+#include <afxmt.h>
+#include <afxpriv.h>    // for CDockContext
+#include <afxtempl.h>   // for CTypedPtrArray
 
 #pragma warning( disable : 4786 )
 
@@ -31,9 +37,29 @@
 #include <map>
 #include <list>
 #include <algorithm>
-#include <afxmt.h>
 
+#ifdef ASSERT
+#undef ASSERT
+#endif
+
+#ifdef TRACE
+#undef TRACE
+#endif
+#ifdef TRACE1
+#undef TRACE1
+#endif
+#ifdef TRACE2
+#undef TRACE2
+#endif
+#ifdef TRACE3
+#undef TRACE3
+#endif
+
+#include <rdodebug.h>
 #include <rdocommon.h>
+#include <rdotypes.h>
+#include <rdomacros.h>
+#include <rdodebug.h>
 
 #include "sizecbar/sizecbar.h"
 #include "sizecbar/scbarg.h"

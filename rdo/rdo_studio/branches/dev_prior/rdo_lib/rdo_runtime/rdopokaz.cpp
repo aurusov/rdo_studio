@@ -3,12 +3,6 @@
 #include "rdocalc.h"
 #include <limits>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
@@ -32,7 +26,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDORuntime* sim, const std::string& name, bool t
 	static_cast<RDORuntime*>(sim)->connect( this, RDORuntime::RO_BEFOREDELETE );
 }
 
-void RDOPMDWatchPar::notify( RDORuntimeObject* from, unsigned int message, void* param )
+void RDOPMDWatchPar::notify( RDORuntimeObject* from, ruint message, void* param )
 {
 	if ( (int)param == m_resNumber )
 	{

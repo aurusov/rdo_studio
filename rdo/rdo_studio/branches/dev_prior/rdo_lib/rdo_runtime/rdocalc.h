@@ -5,6 +5,8 @@
 #include "rdoruntime_object.h"
 #include "rdo_random_distribution.h"
 
+#include <list>
+
 namespace rdoRuntime
 {
 
@@ -83,9 +85,9 @@ public:
 private:
 	virtual RDOValue& doCalc( RDORuntime* runtime );
 
-	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL )
+	virtual void notify( RDORuntimeObject* from, ruint message, void* param = NULL )
 	{
-		if ( (int)param == m_resID )
+		if (m_resID == *reinterpret_cast<int*>(param))
 		{
 			m_resID = -1;
 		}
@@ -306,6 +308,18 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcGetTermNow
+// ----------------------------------------------------------------------------
+class RDOCalcGetTermNow: public RDOCalc
+{
+public:
+	RDOCalcGetTermNow( RDORuntimeParent* parent ): RDOCalc( parent ) {}
+
+private:
+	virtual RDOValue& doCalc( RDORuntime* runtime );
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 class RDOFunCalc: public RDOCalc
@@ -373,8 +387,8 @@ private:
 
 	virtual RDOValue& doCalc( RDORuntime* runtime )
 	{
-		int size = m_cases.size();
-		for ( int i = 0; i < size; i++ ) {
+		size_t size = m_cases.size();
+		for ( ruint i = 0; i < size; i++ ) {
 			RDOCalc* cas = m_cases[i];
 			if ( cas->calcValue( runtime ).getAsBool() ) {
 				return m_results[i]->calcValue( runtime );

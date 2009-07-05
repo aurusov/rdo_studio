@@ -625,7 +625,7 @@ void RDOStudioPlugins::setModelRuntimeMode( rdoPlugin::ModelRuntimeMode runtimeM
 const char* RDOStudioPlugins::getModelStructure()
 {
 	if ( model->hasModel() ) {
-		std::stringstream model_structure;
+		rdo::textstream model_structure;
 		model->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
 		plugins->modelStructure = model_structure.str();
 	} else {
@@ -784,7 +784,7 @@ void RDOStudioPlugins::modelStop( bool model_no_error )
 	if ( plugins ) {
 		if ( model_no_error ) {
 			plugins->mutex.Lock();
-			std::stringstream model_results;
+			rdo::textstream model_results;
 			model->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
 			std::string str = model_results.str();
 			std::vector< RDOStudioPlugin* >::const_iterator it = plugins->results.begin();

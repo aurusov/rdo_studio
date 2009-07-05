@@ -3,6 +3,7 @@
 
 #include "rdo.h"
 #include "rdo_resource.h"
+#include <rdostream.h>
 
 namespace rdoRuntime {
 
@@ -66,7 +67,7 @@ template< class T >
 class RDOActivityPattern: public RDOActivity
 {
 public:
-	void writeModelStructure( std::stringstream& stream )
+	void writeModelStructure( rdo::textstream& stream )
 	{
 		stream << m_oprName << " " << tracePatternId() << std::endl;
 	}

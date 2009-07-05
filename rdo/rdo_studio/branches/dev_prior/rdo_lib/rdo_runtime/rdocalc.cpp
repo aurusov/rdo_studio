@@ -6,12 +6,6 @@
 #include <limits>
 #include <math.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoRuntime
 {
 // ----------------------------------------------------------------------------
@@ -194,6 +188,15 @@ RDOValue& RDOCalcGetTimeNow::doCalc( RDORuntime* runtime )
 RDOValue& RDOCalcGetSeconds::doCalc( RDORuntime* runtime )
 {
 	m_value = runtime->getSeconds();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetTermNow
+// ----------------------------------------------------------------------------
+RDOValue& RDOCalcGetTermNow::doCalc( RDORuntime* runtime )
+{
+	m_value = runtime->getCurrentTerm();
 	return m_value;
 }
 

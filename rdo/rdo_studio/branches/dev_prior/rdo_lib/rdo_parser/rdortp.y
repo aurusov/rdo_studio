@@ -167,14 +167,14 @@
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 %token RDO_External_Model				444
+%token RDO_QUEUE						445
+%token RDO_DEPART						446
+%token RDO_SEIZES						447
+%token RDO_RELEASES						448
+%token RDO_ASSIGNE						449
 
 %{
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
