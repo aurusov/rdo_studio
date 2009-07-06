@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <string>
 
 class IUnknow
 {
@@ -70,6 +71,7 @@ template<class T>
 class smart_ptr: public IUnknow
 {
 public:
+	typedef T            object_type;
 	typedef smart_ptr<T> this_type;
 
 	smart_ptr(T* obj)
@@ -184,18 +186,40 @@ public:
 	virtual void fun3() = 0;
 };
 
-#define QUERY_INTERFACE_NULL template<class T> LocalInterface<T> query() { return NULL;                  }
-#define QUERY_INTERFACE(A)   template<>        LocalInterface<A> query() { return static_cast<A*>(this); }
-#define RDO_IOBJECT(A) \
-typedef A this_class; \
-friend class Factory<this_class>;
-
-class MyClass: public IMy1, public IMy2
+class IMy4
 {
-RDO_IOBJECT(MyClass);
+public:
+	virtual void fun4() = 0;
+};
 
+#define QUERY_INTERFACE_NULL         template<class T> LocalInterface<T> query() { return NULL;                  }
+#define QUERY_INTERFACE_PARENT(A)    template<class T> LocalInterface<T> query() { return A::query<T>();         }
+#define QUERY_INTERFACE_PARENT2(A,B) template<class T> LocalInterface<T> query() { LocalInterface<T> lpintA = A::query<T>(); return lpintA ? lpintA : B::query<T>(); }
+#define QUERY_INTERFACE(A)           template<>        LocalInterface<A> query() { return static_cast<A*>(this); }
+
+#define DEFINE_THIS_TYPE(A)  typedef A this_type;
+#define DEFINE_FACTORY(A)    friend class Factory<A>;
+#define DEFINE_CLASS_NAME(A) static std::string className() { return #A; }
+
+#define RDO_IOBJECT(A, BASE) \
+protected: \
+DEFINE_THIS_TYPE(A) \
+DEFINE_FACTORY(A) \
+public: \
+DEFINE_CLASS_NAME(A) \
+QUERY_INTERFACE_PARENT(BASE)
+
+class IObjectBase
+{
 public:
 	QUERY_INTERFACE_NULL;
+};
+
+class MyClass: public IObjectBase, public IMy1, public IMy2
+{
+RDO_IOBJECT(MyClass, IObjectBase);
+
+public:
 	QUERY_INTERFACE(IMy1);
 	QUERY_INTERFACE(IMy2);
 
@@ -228,13 +252,15 @@ private:
 
 class MyClass2: public MyClass, public IMy3
 {
+RDO_IOBJECT(MyClass2, MyClass);
+
 public:
-	friend class Factory<MyClass2>;
-	template<class T> LocalInterface<T> query() { return MyClass::query<T>(); }
 	QUERY_INTERFACE(IMy3);
 
 private:
-	MyClass2(int i): MyClass(i) {}
+	MyClass2(int i)
+		: MyClass(i)
+	{}
 	void fun3()
 	{
 		std::cout << "void fun3()" << std::endl;
@@ -243,16 +269,14 @@ private:
 
 void main()
 {
-	std::cout << "1" << std::endl;
-	typedef smart_ptr<MyClass2> SmartMyClass;
-	std::vector<SmartMyClass> list;
+	typedef smart_ptr<MyClass2> SPMyClass;
+	std::cout << SPMyClass::object_type::className() << std::endl;
+	std::vector<SPMyClass> list;
 	list.push_back(Factory<MyClass2>::create(1));
 	list.push_back(Factory<MyClass2>::create(3));
 	list.push_back(Factory<MyClass2>::create(2));
 
-	Interface<IMy1> lpIMy2 = list.back().query<IMy1>();
+	Interface<IMy2> lpIMy2 = list.back().query<IMy2>();
 	if (lpIMy2)
-		lpIMy2->fun1();
-
-	std::cout << "2" << std::endl;
+		lpIMy2->fun2();
 }
