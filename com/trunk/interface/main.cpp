@@ -186,12 +186,15 @@ public:
 
 #define QUERY_INTERFACE_NULL template<class T> LocalInterface<T> query() { return NULL;                  }
 #define QUERY_INTERFACE(A)   template<>        LocalInterface<A> query() { return static_cast<A*>(this); }
+#define RDO_IOBJECT(A) \
+typedef A this_class; \
+friend class Factory<this_class>;
 
 class MyClass: public IMy1, public IMy2
 {
-public:
-	friend class Factory<MyClass>;
+RDO_IOBJECT(MyClass);
 
+public:
 	QUERY_INTERFACE_NULL;
 	QUERY_INTERFACE(IMy1);
 	QUERY_INTERFACE(IMy2);
@@ -227,7 +230,7 @@ class MyClass2: public MyClass, public IMy3
 {
 public:
 	friend class Factory<MyClass2>;
-	QUERY_INTERFACE_NULL;
+	template<class T> LocalInterface<T> query() { return MyClass::query<T>(); }
 	QUERY_INTERFACE(IMy3);
 
 private:
@@ -247,9 +250,9 @@ void main()
 	list.push_back(Factory<MyClass2>::create(3));
 	list.push_back(Factory<MyClass2>::create(2));
 
-	Interface<IMy2> lpIMy2 = list.back().query<IMy2>();
+	Interface<IMy1> lpIMy2 = list.back().query<IMy1>();
 	if (lpIMy2)
-		lpIMy2->fun2();
+		lpIMy2->fun1();
 
 	std::cout << "2" << std::endl;
 }
