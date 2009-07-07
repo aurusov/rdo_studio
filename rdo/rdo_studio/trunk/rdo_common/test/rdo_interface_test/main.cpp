@@ -5,24 +5,28 @@
 class IMy1
 {
 public:
+	enum {EIMy1};
 	virtual void fun1() = 0;
 };
 
 class IMy2
 {
 public:
+	enum {EIMy2};
 	virtual void fun2() = 0;
 };
 
 class IMy3
 {
 public:
+	enum {EIMy3};
 	virtual void fun3() = 0;
 };
 
 class IMy4
 {
 public:
+	enum {EIMy4};
 	virtual void fun4() = 0;
 };
 
@@ -68,6 +72,15 @@ RDO_IOBJECT(MyClass2, MyClass);
 public:
 	QUERY_INTERFACE(IMy3);
 
+	rdo::LocalInterface<void> queryInterface(ruint id)
+	{
+		switch (id)
+		{
+		case 3: return rdo::LocalInterface<void>(static_cast<IMy3*>(this));
+		}
+		return NULL;
+	}
+
 private:
 	MyClass2(int i)
 		: MyClass(i)
@@ -80,14 +93,13 @@ private:
 
 void main()
 {
-	typedef rdo::smart_ptr<MyClass2> SPMyClass;
-	std::cout << SPMyClass::object_type::className() << std::endl;
-	std::vector<SPMyClass> list;
-	list.push_back(rdo::Factory<MyClass2>::create(1));
-	list.push_back(rdo::Factory<MyClass2>::create(3));
-	list.push_back(rdo::Factory<MyClass2>::create(2));
+	std::vector< rdo::LPIUnknow > list;
+	rdo::smart_ptr<MyClass2> smptr = rdo::Factory<MyClass2>::create(1);
+	list.push_back(&smptr);
+	rdo::Interface<IMy3> ptr = list.back()->queryInterface(3);
+	int i = 1;
 
-	rdo::Interface<IMy2> lpIMy2 = list.back().query<IMy2>();
-	if (lpIMy2)
-		lpIMy2->fun2();
+//	rdo::Interface<IMy2> lpIMy2 = list.back().query<IMy2>();
+//	if (lpIMy2)
+//		lpIMy2->fun2();
 }

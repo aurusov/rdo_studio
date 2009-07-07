@@ -20,12 +20,7 @@
 
 OPEN_RDO_NAMESPACE
 
-class IUnknow
-{
-public:
-	virtual void AddRef () = 0;
-	virtual void Release() = 0;
-};
+class IUnknow;
 typedef PTR(IUnknow) LPIUnknow;
 
 template<class T>
@@ -60,6 +55,15 @@ private:
 	PTR(T)     m_interface;
 	LPIUnknow  m_counter;
 };
+
+class IUnknow
+{
+public:
+	virtual void  AddRef () = 0;
+	virtual void  Release() = 0;
+	virtual Interface<void> queryInterface(ruint id) = 0;
+};
+typedef PTR(IUnknow) LPIUnknow;
 
 template<class T>
 class LocalInterface
@@ -164,6 +168,16 @@ private:
 				m_object = NULL;
 			}
 		}
+	}
+	virtual Interface<void> queryInterface(ruint id)
+	{
+		if (get() != NULL)
+		{
+			LocalInterface<void> localInterface = get()->queryInterface(id);
+			if (localInterface)
+				return Interface<void>(localInterface.get(), this);
+		}
+		return Interface<void>();
 	}
 };
 
