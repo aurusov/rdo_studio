@@ -20,7 +20,7 @@
 #include "rdocommon.h"
 // ===============================================================================
 
-namespace rdo {
+OPEN_RDO_NAMESPACE
 
 tstring format(CPTR(tchar) str, ...)
 {
@@ -131,4 +131,4 @@ tstring extractFilePath( CREF(tstring) fileName )
 	return s;
 }
 
-} //! namespace rdo
+CLOSE_RDO_NAMESPACE
