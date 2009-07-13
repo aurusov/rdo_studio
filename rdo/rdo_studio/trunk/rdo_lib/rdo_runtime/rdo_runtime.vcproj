@@ -828,6 +828,10 @@
 				RelativePath="rdocalc.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdocalc.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".rdo_fun"
