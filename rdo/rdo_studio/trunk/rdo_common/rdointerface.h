@@ -14,8 +14,7 @@
 #include <string>
 // ====================================================================== SYNOPSIS
 #include "namespace.h"
-#include "rdomacros.h"
-#include "rdotypes.h"
+#include "rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -134,41 +133,21 @@ inline Interface<I> UnknowPointer::queryInterface()
 }
 
 template<class T>
-class smart_ptr: public IUnknow
+class UnknowObject: public smart_ptr<T>, public IUnknow
 {
 public:
-	typedef T            object_type;
-	typedef smart_ptr<T> this_type;
+	typedef UnknowObject<T> this_type;
 
-	smart_ptr(PTR(T) obj)
-		: m_object(obj)
+	UnknowObject(PTR(T) obj)
+		: smart_ptr(obj)
+	{}
+
+	UnknowObject(CREF(this_type) object)
+		: smart_ptr<T>(object)
+	{}
+
+	virtual ~UnknowObject()
 	{
-		allocateCounter();
-		counter() = 1;
-	}
-	smart_ptr(CREF(this_type) sptr)
-		: m_counter(sptr.m_counter)
-		, m_object (sptr.m_object )
-	{
-		AddRef();
-	}
-	~smart_ptr()
-	{
-		Release();
-		if (counter() == 0)
-			deallocateCounter();
-	}
-	PTR(T) get()
-	{
-		return m_object;
-	}
-	operator rbool () const
-	{
-		return get() != NULL;
-	}
-	PTR(T) operator-> ()
-	{
-		return get();
 	}
 	operator UnknowPointer ()
 	{
@@ -186,36 +165,13 @@ public:
 	}
 
 private:
-	PTR(unsigned int) m_counter;
-	PTR(T)            m_object;
-
-	void allocateCounter()
-	{
-		m_counter = new unsigned int;
-	}
-	void deallocateCounter()
-	{
-		delete m_counter;
-	}
-	REF(unsigned int) counter()
-	{
-		return *m_counter;
-	}
 	virtual void AddRef()
 	{
-		counter()++;
+		addref();
 	}
 	virtual void Release()
 	{
-		counter()--;
-		if (counter() == 0)
-		{
-			if (m_object)
-			{
-				Factory<T>::destroy(m_object);
-				m_object = NULL;
-			}
-		}
+		release();
 	}
 	virtual UnknowPointer queryInterface(ruint id)
 	{
@@ -226,25 +182,6 @@ private:
 				return UnknowPointer(pInterface, this);
 		}
 		return UnknowPointer();
-	}
-};
-
-template <class T>
-class Factory
-{
-public:
-	static smart_ptr<T> create()
-	{
-		return smart_ptr<T>(new T());
-	}
-	template <typename P1>
-	static smart_ptr<T> create(P1 p1)
-	{
-		return smart_ptr<T>(new T(p1));
-	}
-	static void destroy(PTR(T) obj)
-	{
-		delete obj;
 	}
 };
 

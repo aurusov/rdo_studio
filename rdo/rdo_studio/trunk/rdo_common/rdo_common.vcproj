@@ -227,6 +227,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".smart_ptr"
+			>
+			<File
+				RelativePath=".\rdosmart_ptr.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
