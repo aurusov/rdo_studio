@@ -31,6 +31,7 @@ template <class T> class GetInterface {};
 CLOSE_RDO_NAMESPACE
 
 #define INTERFACE_REGISTRATOR(I, ID) \
+class I; \
 typedef rdo::InterfaceRegistrator<I, ID> Registered##I; \
 template <> class rdo::GetInterface<I>: public Registered##I {}; \
 class ___InterfaceRegistrator___DoubleID___##ID {};
