@@ -56,8 +56,16 @@ public:
 	{
 		return get();
 	}
+	rbool owner() const
+	{
+		return counter() == 1;
+	}
 
 protected:
+	CREF(ruint) counter() const
+	{
+		return *m_counter;
+	}
 	REF(ruint) counter()
 	{
 		return *m_counter;
