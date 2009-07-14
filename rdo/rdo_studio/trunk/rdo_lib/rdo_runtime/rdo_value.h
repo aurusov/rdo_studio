@@ -1,9 +1,22 @@
-#ifndef RDO_VALUE_H
-#define RDO_VALUE_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_value.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_VALUE_H_
+#define _RDO_VALUE_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_type.h"
+#include <rdosmart_ptr.h>
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
@@ -75,17 +88,29 @@ private:
 	 REF(RDOFuzzyValue) __fuzzyV ();
 	CREF(RDOFuzzyValue) __fuzzyV () const;
 
+	class smart_tstring: public rdo::smart_ptr<tstring>
+	{
+	public:
+		typedef rdo::smart_ptr<tstring> parent_type;
+
+		smart_tstring(PTR(tstring) pString)
+			: parent_type(pString)
+		{}
+		void addref () { parent_type::addref (); }
+		void release() { parent_type::release(); }
+	};
+
 	union {
-		int          i_value;
-		double       d_value;
-		rbool        b_value;
-		PTR(tstring) s_value;
-		PTR(void)    p_data;
+		int                i_value;
+		double             d_value;
+		rbool              b_value;
+		PTR(smart_tstring) s_value;
+		PTR(void)          p_data;
 	} m_value;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_value.inl"
 
-#endif // RDO_VALUE_H
+#endif //! _RDO_VALUE_H_
