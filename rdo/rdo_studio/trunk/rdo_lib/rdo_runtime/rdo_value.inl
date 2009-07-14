@@ -31,9 +31,7 @@ inline RDOValue::~RDOValue()
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			ASSERT(m_value.s_value);
-			if (m_value.s_value->owner())
-				delete m_value.s_value;
+			deleteString();
 			break;
 		}
 		case RDOType::t_fuzzy:
@@ -45,24 +43,9 @@ inline RDOValue::~RDOValue()
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
-	: m_type (rdovalue.m_type )
-	, m_value(rdovalue.m_value)
+	: m_type(&g_unknow)
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			ASSERT(m_value.s_value);
-			m_value.s_value->addref();
-			break;
-		}
-		case RDOType::t_fuzzy:
-		{
-			m_value.p_data = new RDOFuzzyValue(rdovalue.__fuzzyV());
-			break;
-		}
-	}
+	set(rdovalue);
 }
 
 inline RDOValue::RDOValue(CREF(RDOType) type)
@@ -266,17 +249,27 @@ inline tstring RDOValue::getAsStringForTrace() const
 	throw RDOValueException();
 }
 
-inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
+inline void RDOValue::deleteString()
 {
-	PTR(smart_tstring) s_value = NULL;
+	ASSERT(m_value.s_value);
+	if (m_value.s_value->owner())
+	{
+		delete m_value.s_value;
+	}
+	else
+	{
+		m_value.s_value->release();
+	}
+}
+
+inline void RDOValue::set(CREF(RDOValue) rdovalue)
+{
 	switch (typeID())
 	{
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			ASSERT(m_value.s_value);
-			m_value.s_value->release();
-			s_value = m_value.s_value;
+			deleteString();
 			break;
 		}
 	}
@@ -286,19 +279,27 @@ inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			ASSERT(m_value.s_value);
-			*m_value.s_value = *rdovalue.m_value.s_value;
+			//! Заменяем указатель, а не вызываем rdo::smart_ptr operator=
+			m_value.s_value = rdovalue.m_value.s_value;
+			m_value.s_value->addref();
+			break;
+		}
+		case RDOType::t_fuzzy:
+		{
+			m_value.p_data = new RDOFuzzyValue(rdovalue.__fuzzyV());
 			break;
 		}
 		default:
 		{
-			if (s_value)
-				delete s_value;
-
 			m_value = rdovalue.m_value;
 			break;
 		}
 	}
+}
+
+inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
+{
+	set(rdovalue);
 	return *this;
 }
 

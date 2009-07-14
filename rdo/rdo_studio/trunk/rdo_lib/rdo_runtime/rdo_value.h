@@ -82,6 +82,8 @@ public:
 private:
 	CPTR(RDOType) m_type;
 
+	void set(CREF(RDOValue) rdovalue);
+
 	CREF(RDOEnumType)   __enumT  () const;
 	 REF(tstring)       __stringV();
 	CREF(tstring)       __stringV() const;
@@ -99,6 +101,7 @@ private:
 		void addref () { parent_type::addref (); }
 		void release() { parent_type::release(); }
 	};
+	void deleteString();
 
 	union {
 		int                i_value;
