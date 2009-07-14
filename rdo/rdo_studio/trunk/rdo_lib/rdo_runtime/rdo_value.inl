@@ -521,7 +521,17 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 		{
 			switch (rdovalue.typeID())
 			{
-				case RDOType::t_string: __stringV() += rdovalue.__stringV(); return;
+				case RDOType::t_string:
+				{
+					ASSERT(m_value.s_value);
+					if (!m_value.s_value->owner())
+					{
+						m_value.s_value->release();
+						m_value.s_value = new smart_tstring(new tstring(__stringV()));
+					}
+					__stringV() += rdovalue.__stringV();
+					return;
+				}
 			}
 			break;
 		}

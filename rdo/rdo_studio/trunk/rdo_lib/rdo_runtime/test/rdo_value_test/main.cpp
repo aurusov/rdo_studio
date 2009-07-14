@@ -17,8 +17,8 @@ using namespace rdoRuntime;
 
 void main()
 {
-	RDOValue value1(tstring("qqq"));
+	RDOValue value1("qqq");
 	RDOValue value2 = value1;
-	value2 = tstring("aaa");
+	value2 += "aaa";
 	int i = 1;
 }
