@@ -126,6 +126,12 @@ inline RDOValue::RDOValue(CREF(tstring) value)
 	m_value.s_value = new smart_tstring(new tstring(value));
 }
 
+inline RDOValue::RDOValue(CPTR(tchar) value)
+	: m_type(&g_string)
+{
+	m_value.s_value = new smart_tstring(new tstring(value));
+}
+
 inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
 	: m_type(&g_identificator)
 {

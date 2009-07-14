@@ -42,6 +42,7 @@ public:
 	RDOValue(CREF(RDOEnumType)   enums, ruint index);
 	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
 	RDOValue(CREF(tstring)       value   );
+	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
 
 	rsint             getInt          () const;
