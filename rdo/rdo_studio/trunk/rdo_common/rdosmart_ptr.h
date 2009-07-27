@@ -114,6 +114,11 @@ public:
 	{
 		return smart_ptr<T>(new T(p1));
 	}
+	template <typename P1, typename P2>
+	static smart_ptr<T> create(P1 p1, P2 p2)
+	{
+		return smart_ptr<T>(new T(p1, p2));
+	}
 	static void destroy(PTR(T) obj)
 	{
 		delete obj;

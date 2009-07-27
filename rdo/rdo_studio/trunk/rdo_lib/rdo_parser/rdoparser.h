@@ -6,6 +6,7 @@
 #include "rdoparser_value.h"
 #include <rdoruntime_object.h>
 #include <rdocommon.h>
+#include <rdosingletone.h>
 #include <rdo_runtime.h>
 
 #include <algorithm>
@@ -213,21 +214,16 @@ template <class Container>
 class RDOParserTemplate: public RDOParser
 {
 public:
-	RDOParserTemplate():
-		RDOParser(),
-		m_container( NULL )
-	{
-	}
+	RDOParserTemplate()
+		: RDOParser()
+	{}
 
 private:
-	Container* m_container;
+	rdo::SingleTone<Container> m_container;
+
 	virtual RDOParserContainer* getContainer()
 	{
-		if ( !m_container )
-		{
-			m_container = new Container( this ); 
-		}
-		return m_container;
+		return m_container.instance(this);
 	}
 };
 

@@ -228,8 +228,12 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".smart_ptr"
+			Name=".stuff"
 			>
+			<File
+				RelativePath=".\rdosingletone.h"
+				>
+			</File>
 			<File
 				RelativePath=".\rdosmart_ptr.h"
 				>

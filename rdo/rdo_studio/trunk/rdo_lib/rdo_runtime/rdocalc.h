@@ -49,7 +49,7 @@ protected:
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcConst
-// ----------------------------------------------	PTR(RDORuntimeParent) parent------------------------------
+// ----------------------------------------------------------------------------
 class RDOCalcConst: public RDOCalc
 {
 public:
@@ -91,7 +91,7 @@ protected:
 class RDOCalcGetTempResParamFRM: public RDOCalcGetResParam
 {
 public:
-	RDOCalcGetTempResParamFRM(PTR(RDORuntime) parent, int _resNumb, int _parNumb);
+	RDOCalcGetTempResParamFRM(PTR(RDORuntime) runtime, int _resNumb, int _parNumb);
 
 private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
