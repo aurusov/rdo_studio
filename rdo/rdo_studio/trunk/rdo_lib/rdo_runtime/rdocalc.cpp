@@ -25,9 +25,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
+RDOCalc::RDOCalc(PTR(RDORuntimeParent) parent)
+	: RDORuntimeObject(parent)
+{}
+
+RDOCalc::~RDOCalc()
+{}
+
 REF(RDOValue) RDOCalc::calcValue(PTR(RDORuntime) runtime)
 {
-	try {
+	try
+	{
 #ifdef _DEBUG
 /*
 		if (src_text().empty())
@@ -145,10 +153,10 @@ REF(RDOValue) RDOSetRelParamCalc::doCalc(PTR(RDORuntime) runtime)
 REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
 {
 	m_value = m_calc->calcValue(runtime);
-
 	if (m_value < m_min_value || m_value > m_max_value)
+	{
 		runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
-
+	}
 	runtime->setResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb, m_value);
 	return m_value;
 }
@@ -221,10 +229,14 @@ REF(RDOValue) RDOCalcGetTermNow::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(PTR(RDORuntime) runtime)
 {
-	for (ruint i = 0; i < m_conditions.size(); i++)
+	int size = m_conditions.size();
+	for (int i = 0; i < size; i++)
+	{
 		if (m_conditions[i]->calcValue(runtime).getAsBool())
+		{
 			return m_actions[i]->calcValue(runtime);
-
+		}
+	}
 	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
 	runtime->error(_T("Внутренная ошибка, RDOFunAlgorithmicCalc"), this);
 	return m_value;
@@ -235,19 +247,19 @@ REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOFunAlgorithmicDiapCalc::doCalc(PTR(RDORuntime) runtime)
 {
-	for (ruint i = 0; i < m_conditions.size(); i++)
+	int size = m_conditions.size();
+	for (int i = 0; i < size; i++)
 	{
 		if (m_conditions[i]->calcValue(runtime).getAsBool())
 		{
 			m_value = m_actions[i]->calcValue(runtime);
-
 			if (m_value < m_min_value || m_value > m_max_value)
-				runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), m_actions[i]);
-
+			{
+				runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
+			}
 			return m_value;
 		}
 	}
-
 	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
 	runtime->error(_T("Внутренная ошибка, RDOFunAlgorithmicDiapCalc"), this);
 	return m_value;
@@ -260,7 +272,7 @@ REF(RDOValue) RDOFunCalcExist::doCalc(PTR(RDORuntime) runtime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = runtime->res_end();
-	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && !res; ++it)
+	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && !res; it++)
 	{
 		if (*it == NULL)
 			continue;
@@ -269,10 +281,8 @@ REF(RDOValue) RDOFunCalcExist::doCalc(PTR(RDORuntime) runtime)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-
 		if (m_condition->calcValue(runtime).getAsBool())
 			res = true;
-
 		runtime->popGroupFunc();
 	}
 	m_value = res;
@@ -283,7 +293,7 @@ REF(RDOValue) RDOFunCalcNotExist::doCalc(PTR(RDORuntime) runtime)
 {
 	rbool res = true;
 	RDORuntime::ResCIterator end = runtime->res_end();
-	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && res; ++it)
+	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && res; it++)
 	{
 		if (*it == NULL)
 			continue;
@@ -292,10 +302,8 @@ REF(RDOValue) RDOFunCalcNotExist::doCalc(PTR(RDORuntime) runtime)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-
 		if (m_condition->calcValue(runtime).getAsBool())
 			res = false;
-
 		runtime->popGroupFunc();
 	}
 	m_value = res;
@@ -307,15 +315,15 @@ REF(RDOValue) RDOFunCalcForAll::doCalc(PTR(RDORuntime) runtime)
 	rbool first_found = false;
 	rbool res = true;
 	RDORuntime::ResCIterator end = runtime->res_end();
-	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && res; ++it)
+	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && res; it++)
 	{
-		if (*it == NULL) continue;
+		if (*it == NULL)
+			continue;
 
 		if (!(*it)->checkType(m_nResType))
 			continue;
 
 		runtime->pushGroupFunc(*it);
-
 		if (!m_condition->calcValue(runtime).getAsBool())
 		{
 			res = false;
@@ -324,7 +332,6 @@ REF(RDOValue) RDOFunCalcForAll::doCalc(PTR(RDORuntime) runtime)
 		{
 			first_found = true;
 		}
-
 		runtime->popGroupFunc();
 	}
 	m_value = first_found ? res : false;
@@ -335,7 +342,7 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(PTR(RDORuntime) runtime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = runtime->res_end();
-	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && !res; ++it)
+	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end && !res; it++)
 	{
 		if (*it == NULL)
 			continue;
@@ -344,10 +351,8 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(PTR(RDORuntime) runtime)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-
 		if (!m_condition->calcValue(runtime).getAsBool())
 			res = true;
-
 		runtime->popGroupFunc();
 	}
 	m_value = res;
@@ -361,7 +366,7 @@ void RDOFunCalcSelect::prepare(PTR(RDORuntime) runtime) const
 {
 	res_list.clear();
 	RDORuntime::ResCIterator end = runtime->res_end();
-	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end; ++it)
+	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end; it++)
 	{
 		if (*it == NULL)
 			continue;
@@ -370,10 +375,8 @@ void RDOFunCalcSelect::prepare(PTR(RDORuntime) runtime) const
 			continue;
 
 		runtime->pushGroupFunc(*it);
-
 		if (m_condition->calcValue(runtime).getAsBool())
 			res_list.push_back(*it);
-
 		runtime->popGroupFunc();
 	}
 }
@@ -396,7 +399,7 @@ REF(RDOValue) RDOFunCalcSelectExist::doCalc(PTR(RDORuntime) runtime)
 		if (m_condition->calcValue(runtime).getAsBool())
 			res = true;
 		runtime->popGroupFunc();
-		++it;
+		it++;
 	}
 	m_value = res;
 	return m_value;
@@ -414,7 +417,7 @@ REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(PTR(RDORuntime) runtime)
 		if (m_condition->calcValue(runtime).getAsBool())
 			res = false;
 		runtime->popGroupFunc();
-		++it;
+		it++;
 	}
 	m_value = res;
 	return m_value;
@@ -437,7 +440,7 @@ REF(RDOValue) RDOFunCalcSelectForAll::doCalc(PTR(RDORuntime) runtime)
 		if (!m_condition->calcValue(runtime).getAsBool())
 			res = false;
 		runtime->popGroupFunc();
-		++it;
+		it++;
 	}
 	m_value = res;
 	return m_value;
@@ -455,7 +458,7 @@ REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(PTR(RDORuntime) runtime)
 		if (!m_condition->calcValue(runtime).getAsBool())
 			res = true;
 		runtime->popGroupFunc();
-		++it;
+		it++;
 	}
 	m_value = res;
 	return m_value;
@@ -478,35 +481,35 @@ REF(RDOValue) RDOFunCalcSelectEmpty::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- Стандартные функции языка
 // ----------------------------------------------------------------------------
-#define DECLARE_RDO_STD_FUN_DOUBLE( CalcName, FunName ) \
+#define DECLARE_RDO_STD_FUN_DOUBLE(CalcName, FunName) \
 REF(RDOValue) RDOFunCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 { \
 	m_value = FunName(runtime->getFuncArgument(0).getDouble()); \
 	return m_value; \
 }
 
-#define DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( CalcName, FunName ) \
+#define DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE(CalcName, FunName) \
 REF(RDOValue) RDOFunCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 { \
 	m_value = FunName(runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble()); \
 	return m_value; \
 }
 
-#define DECLARE_RDO_STD_FUN_DOUBLE_INT( CalcName, FunName ) \
+#define DECLARE_RDO_STD_FUN_DOUBLE_INT(CalcName, FunName) \
 REF(RDOValue) RDOFunCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 { \
 	m_value = FunName(runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getInt()); \
 	return m_value; \
 }
 
-#define DECLARE_RDO_STD_FUN_INT( CalcName, FunName ) \
+#define DECLARE_RDO_STD_FUN_INT(CalcName, FunName) \
 REF(RDOValue) RDOFunCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 { \
 	m_value = FunName(runtime->getFuncArgument(0).getInt()); \
 	return m_value; \
 }
 
-#define DECLARE_RDO_STD_FUN_INT_INT( CalcName, FunName ) \
+#define DECLARE_RDO_STD_FUN_INT_INT(CalcName, FunName) \
 REF(RDOValue) RDOFunCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 { \
 	m_value = FunName(runtime->getFuncArgument(0).getInt(), runtime->getFuncArgument(1).getInt()); \
@@ -534,31 +537,31 @@ int round(double value)
 	return (int)floor(value + 0.5);
 }
 
-DECLARE_RDO_STD_FUN_DOUBLE       ( Sin     , sin       );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Cos     , cos       );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Tan     , tan       );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Cotan   , 1.0 / tan );
-DECLARE_RDO_STD_FUN_DOUBLE       ( ArcCos  , acos      );
-DECLARE_RDO_STD_FUN_DOUBLE       ( ArcSin  , asin      );
-DECLARE_RDO_STD_FUN_DOUBLE       ( ArcTan  , atan      );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Abs     , fabs      );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Sqrt    , sqrt      );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Round   , round     );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Exp     , exp       );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Floor   , floor     );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Frac    , modf      );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Ln      , log       );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Log10   , log10     );
-DECLARE_RDO_STD_FUN_DOUBLE       ( Log2    , log2      );
-DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( LogN    , logN      );
-DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Max     , max       );
-DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Min     , min       );
-DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE( Power   , pow       );
-DECLARE_RDO_STD_FUN_INT          ( IAbs    , abs       );
-DECLARE_RDO_STD_FUN_INT_INT      ( IMax    , max       );
-DECLARE_RDO_STD_FUN_INT_INT      ( IMin    , min       );
-DECLARE_RDO_STD_FUN_INT          ( Int     , int       );
-DECLARE_RDO_STD_FUN_DOUBLE_INT   ( IntPower, pow       );
+DECLARE_RDO_STD_FUN_DOUBLE       (Sin     , sin      );
+DECLARE_RDO_STD_FUN_DOUBLE       (Cos     , cos      );
+DECLARE_RDO_STD_FUN_DOUBLE       (Tan     , tan      );
+DECLARE_RDO_STD_FUN_DOUBLE       (Cotan   , 1.0 / tan);
+DECLARE_RDO_STD_FUN_DOUBLE       (ArcCos  , acos     );
+DECLARE_RDO_STD_FUN_DOUBLE       (ArcSin  , asin     );
+DECLARE_RDO_STD_FUN_DOUBLE       (ArcTan  , atan     );
+DECLARE_RDO_STD_FUN_DOUBLE       (Abs     , fabs     );
+DECLARE_RDO_STD_FUN_DOUBLE       (Sqrt    , sqrt     );
+DECLARE_RDO_STD_FUN_DOUBLE       (Round   , round    );
+DECLARE_RDO_STD_FUN_DOUBLE       (Exp     , exp      );
+DECLARE_RDO_STD_FUN_DOUBLE       (Floor   , floor    );
+DECLARE_RDO_STD_FUN_DOUBLE       (Frac    , modf     );
+DECLARE_RDO_STD_FUN_DOUBLE       (Ln      , log      );
+DECLARE_RDO_STD_FUN_DOUBLE       (Log10   , log10    );
+DECLARE_RDO_STD_FUN_DOUBLE       (Log2    , log2     );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE(LogN    , logN     );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE(Max     , max      );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE(Min     , min      );
+DECLARE_RDO_STD_FUN_DOUBLE_DOUBLE(Power   , pow      );
+DECLARE_RDO_STD_FUN_INT          (IAbs    , abs      );
+DECLARE_RDO_STD_FUN_INT_INT      (IMax    , max      );
+DECLARE_RDO_STD_FUN_INT_INT      (IMin    , min      );
+DECLARE_RDO_STD_FUN_INT          (Int     , int      );
+DECLARE_RDO_STD_FUN_DOUBLE_INT   (IntPower, pow      );
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcFuncParam
@@ -572,7 +575,7 @@ REF(RDOValue) RDOCalcFuncParam::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcBinary
 // ----------------------------------------------------------------------------
-#define DECLARE_BINARY_CALC( CalcName, CalcOpr ) \
+#define DECLARE_BINARY_CALC(CalcName, CalcOpr) \
 REF(RDOValue) RDOCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 { \
 	runtime->inc_cnt_calc_logic(); \
@@ -583,9 +586,9 @@ REF(RDOValue) RDOCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 // ----------------------------------------------------------------------------
 // ---------- Арифметические функции
 // ----------------------------------------------------------------------------
-DECLARE_BINARY_CALC( Plus , + );
-DECLARE_BINARY_CALC( Minus, - );
-DECLARE_BINARY_CALC( Mult , * );
+DECLARE_BINARY_CALC(Plus , +);
+DECLARE_BINARY_CALC(Minus, -);
+DECLARE_BINARY_CALC(Mult , *);
 
 REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
 {
@@ -650,12 +653,12 @@ REF(RDOValue) RDOCalcNot::doCalc(PTR(RDORuntime) runtime)
 	return m_value;
 }
 
-DECLARE_BINARY_CALC( IsEqual   , == );
-DECLARE_BINARY_CALC( IsNotEqual, != );
-DECLARE_BINARY_CALC( IsLess    , <  );
-DECLARE_BINARY_CALC( IsGreater , >  );
-DECLARE_BINARY_CALC( IsLEQ     , <= );
-DECLARE_BINARY_CALC( IsGEQ     , >= );
+DECLARE_BINARY_CALC(IsEqual   , ==);
+DECLARE_BINARY_CALC(IsNotEqual, !=);
+DECLARE_BINARY_CALC(IsLess    , < );
+DECLARE_BINARY_CALC(IsGreater , > );
+DECLARE_BINARY_CALC(IsLEQ     , <=);
+DECLARE_BINARY_CALC(IsGEQ     , >=);
 
 // ----------------------------------------------------------------------------
 // ---------- Унарные операции
@@ -663,10 +666,10 @@ DECLARE_BINARY_CALC( IsGEQ     , >= );
 REF(RDOValue) RDOCalcCheckDiap::doCalc(PTR(RDORuntime) runtime)
 {
 	m_value = m_oper->calcValue(runtime);
-
 	if (m_value < m_min_value || m_value > m_max_value)
+	{
 		runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
-
+	}
 	return m_value; 
 }
 
@@ -691,14 +694,16 @@ REF(RDOValue) RDOCalcSetConst::doCalc(PTR(RDORuntime) runtime)
 REF(RDOValue) RDOCalcFunctionCall::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->pushFuncTop();
-	for (ruint i = 0; i < m_parameters.size(); i++)
+	int size = m_parameters.size();
+	for (int i = 0; i < size; i++)
 	{
 		RDOValue arg = m_parameters[i]->calcValue(runtime);
 		runtime->pushFuncArgument(arg);
 	}
 	runtime->resetFuncTop(m_parameters.size());
 	m_value = m_function->calcValue(runtime);
-	for (ruint i = 0; i < m_parameters.size(); i++)
+	size = m_parameters.size();
+	for (int i = 0; i < size; i++)
 	{
 		runtime->popFuncArgument();
 	}
@@ -744,9 +749,24 @@ RDOValue RDOCalcSeqNextExponential::getNextValue(PTR(RDORuntime) runtime)
 	return m_gen->next(runtime->getFuncArgument(0).getDouble());
 }
 
+RDOValue RDOCalcSeqNextByHist::getNextValue(PTR(RDORuntime) runtime)
+{
+	return m_gen->next();
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateNumberedResource
 // ----------------------------------------------------------------------------
+RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: RDOCalc    (parent      )
+	, type       (_type       )
+	, traceFlag  (_traceFlag  )
+	, number     (_number     )
+	, isPermanent(_isPermanent)
+{
+	paramsCalcs.insert(paramsCalcs.begin(), _paramsCalcs.begin(), _paramsCalcs.end());
+}
+
 REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(PTR(RDORuntime) runtime)
 {
 	PTR(RDOResource) res = runtime->createNewResource(type, this);
@@ -766,6 +786,10 @@ PTR(RDOResource) RDOCalcCreateNumberedResource::createResource(PTR(RDORuntime) r
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateProcessResource
 // ----------------------------------------------------------------------------
+RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: RDOCalcCreateNumberedResource(parent, _type, _traceFlag, _paramsCalcs, _number, _isPermanent)
+{}
+
 PTR(RDOResource) RDOCalcCreateProcessResource::createResource(PTR(RDORuntime) runtime) const
 {
 	return new RDOPROCResource(runtime, number, type, traceFlag);
@@ -774,6 +798,15 @@ PTR(RDOResource) RDOCalcCreateProcessResource::createResource(PTR(RDORuntime) ru
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateEmptyResource
 // ----------------------------------------------------------------------------
+RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id)
+	: RDOCalc   (parent     )
+	, type      (_type      )
+	, traceFlag (_traceFlag )
+	, rel_res_id(_rel_res_id)
+{
+	params_default.insert(params_default.begin(), _params_default.begin(), _params_default.end());
+}
+
 REF(RDOValue) RDOCalcCreateEmptyResource::doCalc(PTR(RDORuntime) runtime)
 {
 	PTR(RDOResource) res = runtime->createNewResource(type, traceFlag);
@@ -785,6 +818,14 @@ REF(RDOValue) RDOCalcCreateEmptyResource::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- Выбор ресурсов
 // ----------------------------------------------------------------------------
+RDOSelectResourceCalc::RDOSelectResourceCalc(PTR(RDORuntimeParent) parent, int _rel_res_id, PTR(RDOCalc) _choice_calc, PTR(RDOCalc) _order_calc, Type _order_type)
+	: RDOCalc    (parent      )
+	, rel_res_id (_rel_res_id )
+	, choice_calc(_choice_calc)
+	, order_calc (_order_calc )
+	, order_type (_order_type )
+{}
+
 REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->getCurrentActivity()->setRelRes(rel_res_id, res_id);
@@ -804,14 +845,14 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(PTR(RDORuntime) runtime)
 	RDOValue minVal   = DBL_MAX;
 	int res_minmax_id = -1;
 	RDORuntime::ResCIterator end = runtime->res_end();
-	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end; ++it)
+	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end; it++)
 	{
-
 		if (*it && (*it)->checkType(resType))
 		{
 			int res_id = (*it)->getTraceID();
 
-			switch ( order_type ) {
+			switch (order_type)
+			{
 				case order_empty:
 				case order_first:
 				{
@@ -870,11 +911,11 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(PTR(RDORuntime) runtime)
 	return m_value;
 }
 
-void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, PTR(RDORuntime) runtime, REF(rbool) hasBest ) const
+void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, PTR(RDORuntime) runtime, REF(rbool) hasBest) const
 {
 	if (level >= allNumbs.size())
 	{
-		for (ruint i = 0; i < resSelectors.size(); i++ )
+		for (ruint i = 0; i < resSelectors.size(); i++)
 		{
 			if (!resSelectors.at(i)->callChoice(runtime))
 			{
@@ -882,8 +923,8 @@ void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) a
 			}
 		}
 		RDOValue newVal = choice_calc->calcValue(runtime);
-		if ( !hasBest || (useCommonWithMax && (newVal > bestVal)) ||
-			(!useCommonWithMax && (newVal < bestVal))) // found better value
+		if (!hasBest || (useCommonWithMax && (newVal > bestVal)) ||
+		   (!useCommonWithMax && (newVal < bestVal))) // found better value
 		{
 			for (ruint i = 0; i < resSelectors.size(); i++)
 			{
@@ -924,21 +965,21 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(std::vector< std::vector<int> >)
 	return false;
 }
 
-//rbool RDOSelectResourceCommonCalc::getFirst(REF(std::vector< std::vector<int> >) allNumbs, int level, PTR(RDORuntime) runtime) const
+//rbool RDOSelectResourceCommonCalc::getFirst(REF(std::vector< std::vector<int> >) allNumbs, int level,PTR(RDORuntime) runtime) const
 //{
-//	if ( level <= 0 ) {
-//		for ( int i = 0; i < resSelectors.size(); i++ ) {
-//			if( !resSelectors.at(i)->callChoice(runtime) ) {
+//	if (level <= 0) {
+//		for (int i = 0; i < resSelectors.size(); i++) {
+//			if (!resSelectors.at(i)->callChoice(runtime)) {
 //				return false;
 //			}
 //		}
 //		return true;
 //	} else {
 //		level--;
-//		std::vector<int>& ourLevel = allNumbs.at(level);
-//		for ( int i = 0; i < ourLevel.size(); i++ ) {
-//			runtime->setRelRes( level, ourLevel.at(i) );
-//			if ( getFirst( allNumbs, level, runtime ) ) return true;
+//		REF(std::vector<int>) ourLevel = allNumbs.at(level);
+//		for (int i = 0; i < ourLevel.size(); i++) {
+//			runtime->setRelRes(level, ourLevel.at(i));
+//			if (getFirst(allNumbs, level, runtime)) return true;
 //		}
 //	}
 //	return false;
@@ -959,7 +1000,7 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(PTR(RDORuntime) runtime)
 //		if (getFirst(allNumbs, allNumbs.size(), runtime)) {
 //			return true;
 //		}
-		if (getFirst(allNumbs, 0, runtime ))
+		if (getFirst(allNumbs, 0, runtime))
 		{
 			m_value = 1;
 			return m_value;
@@ -996,7 +1037,7 @@ std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(PTR(RDORu
 {
 	std::vector<int> res;
 	RDORuntime::ResCIterator end = runtime->res_end();
-	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end; ++it)
+	for (RDORuntime::ResCIterator it = runtime->res_begin(); it != end; it++)
 	{
 		if (*it == NULL)
 			continue;
@@ -1011,14 +1052,12 @@ std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(PTR(RDORu
 
 rbool RDOSelectResourceDirectCommonCalc::callChoice(PTR(RDORuntime) runtime) const
 {
-	if (choice_calc && !choice_calc->calcValue(runtime).getAsBool()) return false;
-	return true;
+	return (choice_calc && !choice_calc->calcValue(runtime).getAsBool()) ? false : true;
 }
 
 rbool RDOSelectResourceByTypeCommonCalc::callChoice(PTR(RDORuntime) runtime) const
 {
-	if (choice_calc && !choice_calc->calcValue(runtime).getAsBool()) return false;
-	return true;
+	return (choice_calc && !choice_calc->calcValue(runtime).getAsBool()) ? false : true;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
