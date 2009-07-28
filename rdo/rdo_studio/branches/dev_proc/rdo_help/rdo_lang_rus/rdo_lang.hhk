@@ -1595,6 +1595,17 @@
 			<param name="Local" value="html\rdo_obj_opr.htm#param_val">
 			</OBJECT>
 	</UL>
+   <LI> <OBJECT type="text/sitemap">
+      <param name="Name" value="&Icirc;&iuml;&egrave;&ntilde;&agrave;&iacute;&egrave;&aring; &iuml;&eth;&icirc;&ouml;&aring;&ntilde;&ntilde;&icirc;&acirc; &icirc;&aacute;&ntilde;&euml;&oacute;&aelig;&ucirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+      <param name="Name" value="Описание процессов обслуживания">
+      <param name="Local" value="html\rdo_obj_proc.htm">
+      </OBJECT>
+    </UL>
+  <LI> <OBJECT type="text/sitemap">
+      <param name="Name" value="&Iuml;&eth;&icirc;&ouml;&aring;&ntilde;&ntilde; &icirc;&aacute;&ntilde;&euml;&oacute;&aelig;&ucirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+      <param name="Name" value="Процесс обслуживания">
+      <param name="Local" value="html\rdo_obj_proc.htm">
+      </OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&iuml;&agrave;&eth;&agrave;&igrave;&aring;&ograve;&eth; &eth;&aring;&ntilde;&oacute;&eth;&ntilde;&agrave;">
 		<param name="Name" value="Типы ресурсов">

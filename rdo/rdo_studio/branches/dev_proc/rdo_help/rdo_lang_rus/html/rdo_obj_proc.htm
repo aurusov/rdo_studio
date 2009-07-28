@@ -79,7 +79,7 @@ $End
             
             <DL class="syntax">
 	    		<DT class="syntax"><A name="proc_queue"></A><I>Оператор QUEUE</I></DT>
-		    	<DD class="syntax">Это оператор при поступлении в блок транзакта увеличивает длину соответствующей очереди на единицу.
+		    	<DD class="syntax">Это оператор при поступлении в него транзакта увеличивает длину соответствующей очереди на единицу.
 		            <P>Оператор QUEUE (queue) имеет следующий формат:</P>
                     <PRE class="syntax">QUEUE <A class="syntax" href="#queue">&lt;очередь&gt;</A> </PRE> 
                          <DL class="syntax">
@@ -97,7 +97,7 @@ $End
             
             <DL class="syntax">
 	    		<DT class="syntax"><A name="proc_dep"></A><I>Оператор DEPART</I></DT>
-		    	<DD class="syntax">Это оператор при поступлении в блок транзакта уменьшает длину соответствующей очереди на единицу.
+		    	<DD class="syntax">Это оператор при поступлении в него транзакта уменьшает длину соответствующей очереди на единицу.
 		            <P>Оператор DEPART (depart) имеет следующий формат:</P>
                     <PRE class="syntax">DEPART <A class="syntax" href="#queue">&lt;очередь&gt;</A> </PRE> 
                     <P>	При поступлении транзакта в блок DEPART значение параметра «длина_очереди» ресурса «очередь» уменьшается на единицу, т.е. произойдет следующее:
@@ -112,28 +112,22 @@ $End
                     <PRE class="syntax">ASSIGN <A class="syntax" href="#res_name_assign">&lt;имя_ресурса&gt;</A>.<A class="syntax" href="#par_name">&lt;имя_параметра&gt;</A>=<A class="syntax" href="#ass_arifm">&lt;арифметическое_выражение&gt;</A></PRE> 
                          <DL class="syntax">
 	    		              <DT class="syntax"><a name="res_name_assign"></a><I>имя_ресурса</I></DT>
-		    	              <DD class="syntax">
-		    	              <P>Имя ресурса представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>.</P>
-		    	              </DD>
+		    	              <DD class="syntax">Имя ресурса представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>.</DD>
                          </DL>
                          <DL class="syntax">
-	    		              <DT class="syntax""><a  name="par_name></a><I>имя_параметра</I></DT>
-		    	              <DD class="syntax">
-		    	              <P>Имя параметра представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>.</P>
-		    	              </DD>
+	    		              <DT class="syntax""><a  name="par_name"></a><I>имя_параметра</I></DT>
+	    		              <DD class="syntax">Имя параметра представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>.</DD>
                          </DL>
                           <DL class="syntax">
 	    		              <DT class="syntax"><a name="ass_arifm"></a><I>арифметическое выражение</I></DT>
-		    	              <DD class="syntax">
-		    	              <P>Арифметическое выражение после оператора ASSIGNE определяет новое значение изменяемого параметра и его тип должен соответствовать типу параметра иначе будет выдано сообщение об ошибке.</P>
-		    	              </DD>
+		    	              <DD class="syntax">Арифметическое выражение после оператора ASSIGNE определяет новое значение изменяемого параметра и его тип должен соответствовать типу параметра иначе будет выдано сообщение об ошибке.</DD>
                          </DL>
                 </DD>
             </DL>
             
             <DL class="syntax">
 	    		<DT class="syntax"><A name="proc_term"></A><I>Оператор TERMINATE</I></DT>
-		    	<DD class="syntax">Это оператор при поступлении в блок транзакта увеличивает длину соответствующей очереди на единицу.
+		    	<DD class="syntax">Это оператор при поступлении в него транзакта увеличивает длину соответствующей очереди на единицу.
 		            <P>Оператор TERMINATE (termiate) имеет следующий формат:</P>
                     <PRE class="syntax">TERMINATE <A class="syntax" href="#term_arifm">&lt;очередь&gt;</A> </PRE> 
                          <DL class="syntax">
@@ -166,16 +160,13 @@ $Sequence Обработка_на_станке_1 : real
 $Type = normal 12346
 $End
 
-
 $Sequence Время_захвата : real
 $Type = uniform 67891
 $End
 
-
 $Sequence Время_отпуска : real
 $Type = uniform 67892
 $End
-
 
 $Sequence Обработка_на_станке_2 : real
 $Type = exponential 12345
