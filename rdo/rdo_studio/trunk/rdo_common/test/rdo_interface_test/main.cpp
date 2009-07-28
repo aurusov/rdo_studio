@@ -96,14 +96,15 @@ private:
 
 void main()
 {
-	std::vector< rdo::UnknowPointer > list;
-	rdo::smart_ptr<MyClass2> smptr = rdo::Factory<MyClass2>::create(1);
+	std::vector<rdo::UnknownPointer> list;
+	rdo::SmartPtr<MyClass2> smptr = rdo::IFactory<MyClass2>::create(1);
+	rdo::SmartPtr<MyClass2> smptr2;
 	list.push_back(smptr);
-	rdo::Interface<IMy1> ptr = list.back().queryInterface<IMy1>();
+	rdo::Interface<IMy1> ptr = list.back().query_cast<IMy1>();
 	if (ptr)
 	{
 		ptr->fun1();
-		rdo::Interface<IMy2> ptr2 = ptr.queryInterface<IMy2>();
+		rdo::Interface<IMy2> ptr2 = ptr.query_cast<IMy2>();
 		if (ptr2)
 			ptr2->fun2();
 	}

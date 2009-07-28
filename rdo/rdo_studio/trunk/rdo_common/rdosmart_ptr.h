@@ -26,11 +26,22 @@ public:
 	typedef T            object_type;
 	typedef smart_ptr<T> this_type;
 
+	smart_ptr()
+		: m_object (NULL)
+		, m_counter(NULL)
+	{}
 	smart_ptr(PTR(T) obj)
 		: m_object(obj)
 	{
-		allocateCounter();
-		counter() = 1;
+		if (m_object)
+		{
+			allocateCounter();
+			counter() = 1;
+		}
+		else
+		{
+			m_counter = NULL;
+		}
 	}
 	smart_ptr(CREF(this_type) sptr)
 		: m_counter(sptr.m_counter)
@@ -38,11 +49,20 @@ public:
 	{
 		addref();
 	}
+	REF(this_type) operator= (CREF(this_type) sptr)
+	{
+		if (get() != NULL)
+			clear();
+
+		m_counter = sptr.m_counter;
+		m_object  = sptr.m_object;
+		addref();
+		return *this;
+	}
 	~smart_ptr()
 	{
-		release();
-		if (counter() == 0)
-			deallocateCounter();
+		if (inited())
+			clear();
 	}
 	PTR(T) get()
 	{
@@ -58,24 +78,20 @@ public:
 	}
 	rbool owner() const
 	{
-		return counter() == 1;
+		return inited() ? (counter() == 1) : false;
 	}
 
 protected:
-	CREF(ruint) counter() const
-	{
-		return *m_counter;
-	}
-	REF(ruint) counter()
-	{
-		return *m_counter;
-	}
 	void addref()
 	{
-		counter()++;
+		if (inited())
+			counter()++;
 	}
 	void release()
 	{
+		if (!inited())
+			return;
+
 		counter()--;
 		if (counter() == 0)
 		{
@@ -91,6 +107,18 @@ private:
 	PTR(ruint) m_counter;
 	PTR(T)     m_object;
 
+	rbool inited() const
+	{
+		return m_counter != NULL;
+	}
+	CREF(ruint) counter() const
+	{
+		return *m_counter;
+	}
+	REF(ruint) counter()
+	{
+		return *m_counter;
+	}
 	void allocateCounter()
 	{
 		m_counter = new ruint;
@@ -98,6 +126,12 @@ private:
 	void deallocateCounter()
 	{
 		delete m_counter;
+	}
+	void clear()
+	{
+		release();
+		if (counter() == 0)
+			deallocateCounter();
 	}
 };
 
@@ -110,14 +144,39 @@ public:
 		return smart_ptr<T>(new T());
 	}
 	template <typename P1>
-	static smart_ptr<T> create(P1 p1)
+	static smart_ptr<T> create(CREF(P1) p1)
 	{
 		return smart_ptr<T>(new T(p1));
 	}
 	template <typename P1, typename P2>
-	static smart_ptr<T> create(P1 p1, P2 p2)
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2)
 	{
 		return smart_ptr<T>(new T(p1, p2));
+	}
+	template <typename P1, typename P2, typename P3>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3));
+	}
+	template <typename P1, typename P2, typename P3, typename P4>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4));
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4, p5));
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5, CREF(P2) p6)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6));
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5, CREF(P2) p6, CREF(P2) p7)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6, p7));
 	}
 	static void destroy(PTR(T) obj)
 	{
