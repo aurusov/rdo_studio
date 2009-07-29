@@ -126,6 +126,8 @@ public:
 
 	void end();
 
+	bool setPrior( RDOFUNArithm* prior );
+
 private:
 	RDOFUNLogic* m_conditon;
 };

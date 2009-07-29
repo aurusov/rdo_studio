@@ -258,6 +258,16 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	parser()->insertDPTSome( this );
 }
 
+bool RDODPTSome::setPrior(RDOFUNArithm* prior)
+{
+	rdoRuntime::RDOActivityPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOActivityPatternPrior*>(m_rt_logic);
+	if (prior_activity)
+	{
+		return prior_activity->setPrior(prior->createCalc());
+	}
+	return false;
+}
+
 void RDODPTSome::end()
 {
 	if ( getConditon() )

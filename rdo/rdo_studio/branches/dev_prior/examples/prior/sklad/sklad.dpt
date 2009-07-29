@@ -4,7 +4,7 @@ $Activities
 	Поступление_детали                           : Образец_поступления_новой_детали
 $End
 
-$Decision_point simple : some
+$Decision_point simple : some cf = 5
 $Condition NoCheck
 $Activities
 	Захват_детали                                : Образец_захвата_детали_роботом

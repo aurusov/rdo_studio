@@ -2,8 +2,8 @@
 #define RDO_LOGIC_DPTSOME_H
 
 #include "rdo_logic.h"
-#include "rdo_activity.h"
 #include "rdo_runtime.h"
+#include "rdo_activity.h"
 
 namespace rdoRuntime {
 
@@ -38,7 +38,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-class RDODPTSome: public RDOLogic
+class RDODPTSome: public RDOLogic, public RDOActivityPatternPrior
 {
 public:
 	RDODPTSome (RDOSimulator* sim);

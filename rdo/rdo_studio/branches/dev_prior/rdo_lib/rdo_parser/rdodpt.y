@@ -387,7 +387,24 @@ dpt_some_trace:			/* empty */ {
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа some" );
 						};
 
-dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace {
+dpt_some_prior:	        /* empty */
+						| RDO_CF '=' fun_arithm
+						{
+							if (!PARSER->getLastDPTSome()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+							{
+								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет :-("));
+							}
+						}
+						| RDO_CF '=' error
+						{
+							PARSER->error( @1, @2, "Ошибка описания приоритета активности" )
+						}
+						| RDO_CF error
+						{
+							PARSER->error( @1, @2, "Ошибка: ожидается знак равенства" )
+						};
+
+dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_prior dpt_some_trace {
 							// TODO: а где признак трассировки для some ?
 							RDOValue* name = reinterpret_cast<RDOValue*>($2);
 							$$ = (int)new RDODPTSome( PARSER, name->src_info() );
