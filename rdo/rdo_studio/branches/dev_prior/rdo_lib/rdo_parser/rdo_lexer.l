@@ -230,6 +230,8 @@ value_after			return(RDO_value_after);
 some				return(RDO_some);
 cf					return(RDO_CF);
 CF					return(RDO_CF);
+$Priority           return(RDO_Priority);
+$priority           return(RDO_Priority);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);
