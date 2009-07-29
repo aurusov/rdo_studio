@@ -87,38 +87,6 @@ protected:
 	T* m_pattern;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOActivityPatternPrior
-// ----------------------------------------------------------------------------
-class RDOActivityPatternPrior
-{
-public:
-	RDOActivityPatternPrior()
-		: m_prior(NULL)
-	{}
-	virtual ~RDOActivityPatternPrior()
-	{
-		if (m_prior)
-		{
-			delete m_prior;
-			m_prior = NULL;
-		}
-	}
-
-	RDOCalc* getPrior()
-	{
-		return m_prior; 
-	}
-	bool setPrior(RDOCalc* prior)
-	{
-		m_prior = prior;
-		return true;
-	}
-
-private:
-	RDOCalc* m_prior;
-};
-
 } // namespace rdoRuntime
 
 #endif // RDO_ACTIVITY_H

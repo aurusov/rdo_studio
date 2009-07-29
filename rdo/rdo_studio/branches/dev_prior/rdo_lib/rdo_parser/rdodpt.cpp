@@ -138,7 +138,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 
 bool RDODPTActivity::setPrior(RDOFUNArithm* prior)
 {
-	rdoRuntime::RDOActivityPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOActivityPatternPrior*>(m_activity);
+	rdoRuntime::RDOPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOPatternPrior*>(m_activity);
 	if (prior_activity)
 	{
 		return prior_activity->setPrior(prior->createCalc());
@@ -260,7 +260,7 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 
 bool RDODPTSome::setPrior(RDOFUNArithm* prior)
 {
-	rdoRuntime::RDOActivityPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOActivityPatternPrior*>(m_rt_logic);
+	rdoRuntime::RDOPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOPatternPrior*>(m_rt_logic);
 	if (prior_activity)
 	{
 		return prior_activity->setPrior(prior->createCalc());

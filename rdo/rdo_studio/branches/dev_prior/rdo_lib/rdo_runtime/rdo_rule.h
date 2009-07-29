@@ -5,13 +5,14 @@
 #include "rdotrace.h"
 #include "rdo_pattern.h"
 #include "rdo_activity.h"
+#include "rdo_priority.h"
 
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDORule
 // ----------------------------------------------------------------------------
-class RDORule: public RDOActivityPattern<RDOPatternRule>, public RDORuntimeContainer, public RDOActivityPatternPrior
+class RDORule: public RDOActivityPattern<RDOPatternRule>, public RDORuntimeContainer, public RDOPatternPrior
 {
 friend class RDOTrace;
 friend class RDODPTSearch;
