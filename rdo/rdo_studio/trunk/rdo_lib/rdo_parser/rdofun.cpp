@@ -254,7 +254,7 @@ void RDOFUNArithm::init( const RDOValue& value )
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
-	if ( value->getIdentificator() == "Term_now" || value->getIdentificator() == "term_now" )
+	if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
 	{
 		m_value = g_int;
 		m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );

@@ -85,8 +85,7 @@ public:
 class RDOPROCResource: public RDOResource
 {
 friend class RDOPROCSeize;
-friend class RDOPROCSeizes;
-friend class RDOPROCReleases;
+friend class RDOPROCRelease;
 protected: 
 	std::list<RDOPROCTransact*> transacts;
 public:
@@ -169,7 +168,7 @@ public:
 	static int getDefaultValue()  { return 0; }
 	static std::string getDepartParamName(){ return "длина_очереди"; }
 };
-
+/*
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
@@ -235,12 +234,24 @@ public:
 	RDOPROCRelease( RDOPROCProcess* _process, parser_for_Seize From_Par ): 
 	  RDOPROCBlockForSeize( _process, From_Par ) {}
 };
-
+*/
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeizes
 // ----------------------------------------------------------------------------
-
-class RDOPROCBlockForSeizes: public RDOPROCBlock
+struct runtime_for_Seize
+{
+	RDOPROCResource* rss; 
+	int Id_param;
+	RDOValue     enum_free;
+	RDOValue     enum_buzy;
+	RDOValue	 enum_break;
+};
+struct parser_for_Seize
+{
+	int Id_res;
+	int Id_param;
+};
+class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 protected:
 	std::vector < runtime_for_Seize > forRes;
@@ -248,17 +259,16 @@ protected:
 	virtual void onStart( RDOSimulator* sim );
 
 public:
-	RDOPROCBlockForSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par );
+	RDOPROCBlockForSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par );
 	static std::string getStateParamName() {return "Состояние";}
 	static std::string getStateEnumFree()  {return "Свободен"; }
 	static std::string getStateEnumBuzy()  {return "Занят";    }
-	static std::string getStateEnumBreak() {return "Сломан";    }
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeizes
 // ----------------------------------------------------------------------------
-class RDOPROCSeizes: public RDOPROCBlockForSeizes
+class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 private:
 	unsigned int index;
@@ -266,8 +276,8 @@ private:
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
-	RDOPROCSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
-	  RDOPROCBlockForSeizes( _process, From_Par ) 
+	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
+	  RDOPROCBlockForSeize( _process, From_Par ) 
 	  {
 	  static unsigned int g_index = 1;
 	  index = g_index++;
@@ -279,7 +289,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCReleases
 // ----------------------------------------------------------------------------
-class RDOPROCReleases: public RDOPROCBlockForSeizes
+class RDOPROCRelease: public RDOPROCBlockForSeize
 {
 private:
 	unsigned int index;
@@ -287,8 +297,8 @@ private:
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
-	RDOPROCReleases( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
-	  RDOPROCBlockForSeizes( _process, From_Par ) 
+	RDOPROCRelease( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
+	  RDOPROCBlockForSeize( _process, From_Par ) 
 	  {
 	  static unsigned int g_index = 1;
 	  index = g_index++;
@@ -337,9 +347,9 @@ public:
 
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCAssigne
+// ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-class RDOPROCAssigne: public RDOPROCBlock
+class RDOPROCAssign: public RDOPROCBlock
 {
 protected:
 	RDOCalc* paramValue;
@@ -350,7 +360,7 @@ protected:
 	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 public:
-	RDOPROCAssigne( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param ): 
+	RDOPROCAssign( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param ): 
 	  RDOPROCBlock( _process ), paramValue( value ), t_resId( Id_res ), t_parId( Id_param ) 
 	  {
 		int i = 0;

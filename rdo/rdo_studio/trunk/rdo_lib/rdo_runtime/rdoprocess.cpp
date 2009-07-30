@@ -229,6 +229,7 @@ RDOBaseOperation::BOResult RDOPROCDepart::onDoOperation( RDOSimulator* sim )
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }
+/*
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
@@ -334,18 +335,18 @@ RDOBaseOperation::BOResult RDOPROCRelease::onDoOperation( RDOSimulator* sim )
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }
-
+*/
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeizes
 // ----------------------------------------------------------------------------
-RDOPROCBlockForSeizes::RDOPROCBlockForSeizes( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ):
+RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ):
 	RDOPROCBlock( _process ),
 	fromParser( From_Par )
 {	
 }
 
-void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
+void RDOPROCBlockForSeize::onStart( RDOSimulator* sim )
 {
 	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
@@ -359,9 +360,8 @@ void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
 		runtime_for_Seize bbb;
 		bbb.Id_param = Id_param;
 		bbb.rss = static_cast<RDOPROCResource*>(res);
-		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumFree() );
-		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBuzy() );
-		bbb.enum_break = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeizes::getStateEnumBreak() );
+		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
+		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
 		forRes.push_back(bbb);
 		it1++;
 	}
@@ -371,7 +371,7 @@ void RDOPROCBlockForSeizes::onStart( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeizes
 // ----------------------------------------------------------------------------
-bool RDOPROCSeizes::onCheckCondition(PTR(RDOSimulator) sim)
+bool RDOPROCSeize::onCheckCondition(PTR(RDOSimulator) sim)
 {
 	if (transacts.empty())
 		return false;
@@ -400,36 +400,36 @@ bool RDOPROCSeizes::onCheckCondition(PTR(RDOSimulator) sim)
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOPROCSeizes::onDoOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCSeize::onDoOperation( RDOSimulator* sim )
 {
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }
 
-void RDOPROCSeizes::TransactGoIn( RDOPROCTransact* _transact )
+void RDOPROCSeize::TransactGoIn( RDOPROCTransact* _transact )
 {
 	int Size_Seizes = forRes.size();
 	for(int i=0;i<Size_Seizes; i++)
 	{
 		forRes[i].rss->transacts.push_back( _transact );
 	}
-	RDOPROCBlockForSeizes::TransactGoIn( _transact );
+	RDOPROCBlockForSeize::TransactGoIn( _transact );
 }
 
-void RDOPROCSeizes::TransactGoOut( RDOPROCTransact* _transact )
+void RDOPROCSeize::TransactGoOut( RDOPROCTransact* _transact )
 {
 	int Size_Seizes = forRes.size();
 	for(int i=0;i<Size_Seizes; i++)
 	{
 		forRes[i].rss->transacts.remove( _transact );
 	}
-	RDOPROCBlockForSeizes::TransactGoOut( _transact );
+	RDOPROCBlockForSeize::TransactGoOut( _transact );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCReleases
 // ----------------------------------------------------------------------------
-bool RDOPROCReleases::onCheckCondition( RDOSimulator* sim )
+bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) 
 	{
@@ -450,8 +450,8 @@ bool RDOPROCReleases::onCheckCondition( RDOSimulator* sim )
 						}				
 					return true;
 				}		
-				// Сломан
-				if ( forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_break )
+				// Не Занят и не свободен
+				if ( forRes[i].rss->getParam(forRes[i].Id_param) != forRes[i].enum_free )
 				{
 					//Удаляем транзакт
 					RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
@@ -473,7 +473,7 @@ bool RDOPROCReleases::onCheckCondition( RDOSimulator* sim )
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOPROCReleases::onDoOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCRelease::onDoOperation( RDOSimulator* sim )
 {
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
@@ -560,9 +560,9 @@ RDOBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCAssigne
+// ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-bool RDOPROCAssigne::onCheckCondition( RDOSimulator* sim )
+bool RDOPROCAssign::onCheckCondition( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) 
 	{
@@ -571,11 +571,11 @@ bool RDOPROCAssigne::onCheckCondition( RDOSimulator* sim )
 return false;
 }
 
-RDOBaseOperation::BOResult RDOPROCAssigne::onDoOperation( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDOPROCAssign::onDoOperation( RDOSimulator* sim )
 {
 	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( t_resId );
 	res->setParam( t_parId, paramValue->calcValue( static_cast<RDORuntime*>(sim) ) );	
-	TRACE1(_T("%7.1f ASSIGNE\n"), sim->getCurrentTime());
+	TRACE1(_T("%7.1f ASSIGN\n"), sim->getCurrentTime());
 	transacts.front()->next();
 	return RDOBaseOperation::BOR_done;
 }
