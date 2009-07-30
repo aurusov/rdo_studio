@@ -1162,8 +1162,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,696
- PRODUCTVERSION 1,0,0,696
+ FILEVERSION 1,0,0,697
+ PRODUCTVERSION 1,0,0,697
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1179,12 +1179,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "RAO studio"
-            VALUE "FileVersion", "1, 0, 0, 696"
+            VALUE "FileVersion", "1, 0, 0, 697"
             VALUE "InternalName", "RAO-Studio"
             VALUE "LegalCopyright", "Copyright (C) 2003-2008"
             VALUE "OriginalFilename", "RAO-Studio.exe"
             VALUE "ProductName", "RAO-Studio"
-            VALUE "ProductVersion", "1, 0, 0, 696"
+            VALUE "ProductVersion", "1, 0, 0, 697"
         END
     END
     BLOCK "VarFileInfo"
