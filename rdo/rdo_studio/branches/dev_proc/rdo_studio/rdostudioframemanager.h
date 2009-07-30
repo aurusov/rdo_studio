@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
-namespace rdoSimulator {
+namespace rdoAnimation {
 struct RDOFrame;
 }
 
@@ -157,7 +157,7 @@ public:
 	void setLastShowedFrame( const int value );
 	void setCurrentShowingFrame( const int value );
 	void resetCurrentShowingFrame( const int value );
-	void showFrame( const rdoSimulator::RDOFrame* const frame, const int index );
+	void showFrame( const rdoAnimation::RDOFrame* const frame, const int index );
 	void showNextFrame();
 	void showPrevFrame();
 	void showFrame( const int index );

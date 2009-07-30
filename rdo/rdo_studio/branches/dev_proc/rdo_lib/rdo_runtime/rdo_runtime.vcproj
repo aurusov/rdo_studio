@@ -222,6 +222,10 @@
 				RelativePath="rdopokaz.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdopokaz_interface.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".rdo_simulator"
@@ -331,7 +335,7 @@
 				>
 			</File>
 			<File
-				RelativePath="rdotrace.cpp"
+				RelativePath="simtrace.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -828,6 +832,10 @@
 				RelativePath="rdocalc.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdocalc.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".rdo_fun"
@@ -841,11 +849,7 @@
 			Name=".rdo_trace"
 			>
 			<File
-				RelativePath="rdotrace.h"
-				>
-			</File>
-			<File
-				RelativePath="simtrace.cpp"
+				RelativePath="rdotrace.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -865,6 +869,14 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdotrace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdotrace_interface.h"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -946,6 +958,18 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name=".interfaces"
+			>
+			<File
+				RelativePath=".\rdo_model_interface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_runtime_interface_registrator.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

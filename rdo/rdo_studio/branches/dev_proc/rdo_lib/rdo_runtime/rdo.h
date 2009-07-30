@@ -57,18 +57,6 @@ protected:
 	virtual ~RDOBaseOperation() {}
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPokaz - базовый класс для собираемых показателей
-// ----------------------------------------------------------------------------
-class RDOPokaz: public RDORuntimeObject
-{
-public:
-	RDOPokaz( RDORuntimeParent* runtime ): RDORuntimeObject( runtime ) {}
-	virtual bool resetPokaz( RDOSimulator* sim ) = 0;
-	virtual bool checkPokaz( RDOSimulator* sim ) = 0;
-	virtual bool calcStat  ( RDOSimulator* sim ) = 0;
-};
-
 } // namespace rdoRuntime
 
 #endif // RDO_H

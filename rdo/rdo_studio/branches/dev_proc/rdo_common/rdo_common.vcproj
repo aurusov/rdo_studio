@@ -140,28 +140,64 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name=".animation"
 			>
 			<File
-				RelativePath=".\rdocommon.cpp"
+				RelativePath=".\rdoanimation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoanimation.inl"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name=".interface"
 			>
+			<File
+				RelativePath=".\rdointerface.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".common"
+			>
+			<File
+				RelativePath=".\namespace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdocommon.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\rdocommon.h"
 				>
 			</File>
 			<File
+				RelativePath=".\rdocommon.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\rdomacros.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdotypes.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".debug"
+			>
+			<File
 				RelativePath=".\rdodebug.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name=".file"
+			>
 			<File
 				RelativePath=".\rdofile.h"
 				>
@@ -170,14 +206,10 @@
 				RelativePath=".\rdofile.inl"
 				>
 			</File>
-			<File
-				RelativePath=".\rdomacros.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdostream.h"
-				>
-			</File>
+		</Filter>
+		<Filter
+			Name=".time"
+			>
 			<File
 				RelativePath=".\rdotime.h"
 				>
@@ -186,8 +218,24 @@
 				RelativePath=".\rdotime.inl"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name=".stream"
+			>
 			<File
-				RelativePath=".\rdotypes.h"
+				RelativePath=".\rdostream.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".stuff"
+			>
+			<File
+				RelativePath=".\rdosingletone.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdosmart_ptr.h"
 				>
 			</File>
 		</Filter>

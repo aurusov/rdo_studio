@@ -19,6 +19,7 @@
 #include <rdoplugin.h>
 #include <rdothread.h>
 #include <rdo_exception.h>
+#include <rdoanimation.h>
 #include <limits>
 
 using namespace rdoEditor;
@@ -993,7 +994,7 @@ void RDOStudioModel::update()
 			if ( dc->RectVisible( view->getClientRect() ) ) {
 				view->ReleaseDC( dc );
 				try {
-					RDOFrame frame;
+					rdoAnimation::RDOFrame frame;
 					sendMessage( kernel->runtime(), RT_RUNTIME_GET_FRAME, &rdoRuntime::RDOThreadRunTime::GetFrame(&frame, i) );
 					frameManager.showFrame( &frame, i );
 				} catch ( rdoRuntime::RDORuntimeException& ) {

@@ -190,21 +190,37 @@ std::string RDOParser::getModelStructure()
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
 	unsigned int watching_max_length = 0;
-	std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = m_runtime.getPokaz().begin();
-	while ( watching_it != m_runtime.getPokaz().end() ) {
-		if ( (*watching_it)->traceable() && (*watching_it)->name().length() > watching_max_length ) {
-			watching_max_length = (*watching_it)->name().length();
+	rdoRuntime::RDORuntime::LPIPokazList::const_iterator watching_it = m_runtime.getPokaz().begin();
+	while (watching_it != m_runtime.getPokaz().end())
+	{
+		LPITrace          trace     = *watching_it;
+		LPIName           name      = trace;
+		LPIModelStructure structure = trace;
+		if (trace && name && structure)
+		{
+			if (trace->traceable() && name->name().length() > watching_max_length)
+			{
+				watching_max_length = name->name().length();
+			}
 		}
 		watching_it++;
 	}
 	watching_it = m_runtime.getPokaz().begin();
-	while ( watching_it != m_runtime.getPokaz().end() ) {
-		if ( (*watching_it)->traceable() ) {
-			modelStructure << "  " << (*watching_it)->name();
-			for ( unsigned int i = (*watching_it)->name().length(); i < watching_max_length + 2; i++ ) {
-				modelStructure << " ";
+	while (watching_it != m_runtime.getPokaz().end())
+	{
+		LPITrace          trace     = *watching_it;
+		LPIName           name      = trace;
+		LPIModelStructure structure = trace;
+		if (trace && name && structure)
+		{
+			if (trace->traceable())
+			{
+				modelStructure << _T("  ") << name->name();
+				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
+					modelStructure << _T(" ");
+
+				structure->writeModelStructure(modelStructure);
 			}
-			(*watching_it)->writePokazStructure( modelStructure );
 		}
 		watching_it++;
 	}

@@ -1,3 +1,12 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdocommon.cpp
+ * author   : Урусов Андрей
+ * date     : 13.06.2009
+ * bref     : 
+ * indent   : 4T
+ */
+
 #pragma warning(disable : 4786)  
 
 // ====================================================================== INCLUDES
@@ -11,7 +20,7 @@
 #include "rdocommon.h"
 // ===============================================================================
 
-namespace rdo {
+OPEN_RDO_NAMESPACE
 
 tstring format(CPTR(tchar) str, ...)
 {
@@ -122,93 +131,4 @@ tstring extractFilePath( CREF(tstring) fileName )
 	return s;
 }
 
-} // namespace rdo
-
-namespace rdoSimulator
-{
-
-RDOColoredElement::RDOColoredElement(CREF(RDOColor) _background, CREF(RDOColor) _foreground)
-	: background(_background)
-	, foreground(_foreground)
-{}
-
-RDOTextElement::RDOTextElement(double _x, double _y, double _w, double _h, CREF(RDOColor) _background, CREF(RDOColor) _foreground, CREF(tstring) _text, RDOTextAlign _align)
-	: RDOFrameElement  (text_type               )
-	, RDOBoundedElement(_x, _y, _w, _h          )
-	, RDOColoredElement(_background, _foreground)
-	, strText          (_text                   )
-	, align            (_align                  )
-{}
-
-RDOBoundedElement::RDOBoundedElement(double _x, double _y, double _w, double _h)
-	: x(_x)
-	, y(_y)
-	, w(_w)
-	, h(_h)
-{}
-
-RDORectElement::RDORectElement(double _x, double _y, double _w, double _h, CREF(RDOColor) _background, CREF(RDOColor) _foreground)
-	: RDOFrameElement  (rect_type               )
-	, RDOBoundedElement(_x, _y, _w, _h          )
-	, RDOColoredElement(_background, _foreground)
-{}
-
-RDOLineElement::RDOLineElement(double _x, double _y, double _w, double _h, CREF(RDOColor) _foreground)
-	: RDOFrameElement  (line_type     )
-	, RDOBoundedElement(_x, _y, _w, _h)
-	, foreground       (_foreground   )
-{}
-
-RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, CREF(tstring) _bmp, CREF(tstring) _mask)
-	: RDOFrameElement  (s_bmp_type    )
-	, RDOBoundedElement(_x, _y, _w, _h)
-	, bmp              (_bmp          )
-	, mask             (_mask         )
-{}
-
-RDOBitmapElement::RDOBitmapElement(double _x, double _y, CREF(tstring) _bmp, CREF(tstring) _mask)
-	: RDOFrameElement(bitmap_type)
-	, x              (_x         )
-	, y              (_y         )
-	, bmp            (_bmp       )
-	, mask           (_mask      )
-{}
-
-RDOActiveElement::RDOActiveElement(double _x, double _y, double _w, double _h, CREF(tstring) _operName)
-	: RDOFrameElement  (active_type   )
-	, RDOBoundedElement(_x, _y, _w, _h)
-	, operName         (_operName     )
-{}
-
-RDORRectElement::RDORRectElement(double _x, double _y, double _w, double _h, CREF(RDOColor) _background, CREF(RDOColor) _foreground)
-	: RDOFrameElement  (r_rect_type             )
-	, RDOBoundedElement(_x, _y, _w, _h          )
-	, RDOColoredElement(_background, _foreground)
-{}
-
-RDOEllipseElement::RDOEllipseElement(double _x, double _y, double _w, double _h, CREF(RDOColor) _background, CREF(RDOColor) _foreground)
-	: RDOFrameElement  (ellipse_type            )
-	, RDOBoundedElement(_x, _y, _w, _h          )
-	, RDOColoredElement(_background, _foreground)
-{}
-
-RDOTriangElement::RDOTriangElement(double _x1, double _y1, double _x2, double _y2, double _x3, double _y3, CREF(RDOColor) _background, CREF(RDOColor) _foreground)
-	: RDOFrameElement  (triang_type             )
-	, x1               (_x1                     )
-	, y1               (_y1                     )
-	, x2               (_x2                     )
-	, y2               (_y2                     )
-	, x3               (_x3                     )
-	, y3               (_y3                     )
-	, RDOColoredElement(_background, _foreground)
-{}
-
-RDOFrame::~RDOFrame()
-{
-	for(Elements::iterator it = elements.begin(); it != elements.end(); it++)
-		delete (*it);
-
-	elements.clear();
-}
-
-} // namespace rdoSimulator
+CLOSE_RDO_NAMESPACE

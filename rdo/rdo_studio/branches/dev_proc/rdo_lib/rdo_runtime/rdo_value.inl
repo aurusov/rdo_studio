@@ -1,8 +1,21 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_value.inl
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_enum.h"
 #include "rdo_fuzzy_def.h"
 #include "rdo_exception.h"
+#include <rdodebug.h>
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
@@ -18,7 +31,7 @@ inline RDOValue::~RDOValue()
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			delete &__stringV();
+			deleteString();
 			break;
 		}
 		case RDOType::t_fuzzy:
@@ -30,23 +43,9 @@ inline RDOValue::~RDOValue()
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
-	: m_type (rdovalue.m_type )
-	, m_value(rdovalue.m_value)
+	: m_type(&g_unknow)
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			m_value.s_value = new tstring(rdovalue.__stringV());
-			break;
-		}
-		case RDOType::t_fuzzy:
-		{
-			m_value.p_data = new RDOFuzzyValue(rdovalue.__fuzzyV());
-			break;
-		}
-	}
+	set(rdovalue);
 }
 
 inline RDOValue::RDOValue(CREF(RDOType) type)
@@ -59,8 +58,8 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 		case RDOType::t_real         : m_value.d_value = 0; break;
 		case RDOType::t_enum         : m_value.i_value = 0; break;
 		case RDOType::t_bool         : m_value.b_value = false; break;
-		case RDOType::t_string       : m_value.s_value = new tstring(_T("")); break;
-		case RDOType::t_identificator: m_value.s_value = new tstring(_T("")); break;
+		case RDOType::t_string       : m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
+		case RDOType::t_identificator: m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
 		default                      : throw RDOValueException();
 	}
 }
@@ -124,7 +123,13 @@ inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: m_type(&g_string)
 {
-	m_value.s_value = new tstring(value);
+	m_value.s_value = new smart_tstring(new tstring(value));
+}
+
+inline RDOValue::RDOValue(CPTR(tchar) value)
+	: m_type(&g_string)
+{
+	m_value.s_value = new smart_tstring(new tstring(value));
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
@@ -133,7 +138,7 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
 	if (type.typeID() != RDOType::t_identificator)
 		RDOValueException();
 
-	m_value.s_value = new tstring(value);
+	m_value.s_value = new smart_tstring(new tstring(value));
 }
 
 inline rsint RDOValue::getInt() const
@@ -250,28 +255,57 @@ inline tstring RDOValue::getAsStringForTrace() const
 	throw RDOValueException();
 }
 
-inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
+inline void RDOValue::deleteString()
+{
+	ASSERT(m_value.s_value);
+	if (m_value.s_value->owner())
+	{
+		delete m_value.s_value;
+	}
+	else
+	{
+		m_value.s_value->release();
+	}
+}
+
+inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
 	{
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			delete &__stringV();
+			deleteString();
 			break;
 		}
 	}
-	m_type  = rdovalue.m_type;
-	m_value = rdovalue.m_value;
+	m_type = rdovalue.m_type;
 	switch (typeID())
 	{
 		case RDOType::t_string       :
 		case RDOType::t_identificator:
 		{
-			m_value.s_value = new tstring(rdovalue.__stringV());
+			//! Заменяем указатель, а не вызываем rdo::smart_ptr operator=
+			m_value.s_value = rdovalue.m_value.s_value;
+			m_value.s_value->addref();
+			break;
+		}
+		case RDOType::t_fuzzy:
+		{
+			m_value.p_data = new RDOFuzzyValue(rdovalue.__fuzzyV());
+			break;
+		}
+		default:
+		{
+			m_value = rdovalue.m_value;
 			break;
 		}
 	}
+}
+
+inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
+{
+	set(rdovalue);
 	return *this;
 }
 
@@ -487,7 +521,17 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 		{
 			switch (rdovalue.typeID())
 			{
-				case RDOType::t_string: __stringV() += rdovalue.__stringV(); return;
+				case RDOType::t_string:
+				{
+					ASSERT(m_value.s_value);
+					if (!m_value.s_value->owner())
+					{
+						m_value.s_value->release();
+						m_value.s_value = new smart_tstring(new tstring(__stringV()));
+					}
+					__stringV() += rdovalue.__stringV();
+					return;
+				}
 			}
 			break;
 		}
@@ -650,12 +694,12 @@ inline CREF(RDOEnumType) RDOValue::__enumT() const
 
 inline REF(tstring) RDOValue::__stringV()
 {
-	return *m_value.s_value;
+	return *m_value.s_value->get();
 }
 
 inline CREF(tstring) RDOValue::__stringV() const
 {
-	return *m_value.s_value;
+	return *m_value.s_value->get();
 }
 
 inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
@@ -674,4 +718,4 @@ inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rd
 	return stream;
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
