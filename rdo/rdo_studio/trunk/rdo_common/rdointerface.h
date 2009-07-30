@@ -15,6 +15,7 @@
 // ====================================================================== SYNOPSIS
 #include "namespace.h"
 #include "rdosmart_ptr.h"
+#include "rdodebug.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -60,6 +61,7 @@ class UnknownPointer
 {
 public:
 	UnknownPointer ();
+	UnknownPointer (PTR(void) nullPointer);
 	UnknownPointer (PTR(void) aInterface, LPIUnknown smt_ptr);
 	UnknownPointer (CREF(UnknownPointer) unknowPointer);
 	~UnknownPointer();
@@ -136,6 +138,13 @@ inline UnknownPointer::UnknownPointer()
 	: m_interface(NULL)
 	, m_smt_ptr  (NULL)
 {}
+
+inline UnknownPointer::UnknownPointer(PTR(void) nullPointer)
+	: m_interface(NULL)
+	, m_smt_ptr  (NULL)
+{
+	ASSERT(nullPointer == NULL);
+}
 
 inline UnknownPointer::UnknownPointer(PTR(void) aInterface, LPIUnknown smt_ptr)
 	: m_interface(aInterface)

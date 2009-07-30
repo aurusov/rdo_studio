@@ -148,7 +148,7 @@ void main()
 		if (ptr2)
 			ptr2->fun2();
 
-		rdo::Interface<IMy3> ptr3 = ptr2;
+		rdo::Interface<IMy3> ptr3 = *it;
 		if (ptr3)
 			ptr3->fun3();
 
