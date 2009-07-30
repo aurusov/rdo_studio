@@ -58,8 +58,8 @@ RDOResource::RDOResource( const RDOResource& copy ):
 
 RDOResource::~RDOResource()
 {
-	getRuntime()->fireMessage( this, RDORuntime::RO_BEFOREDELETE, (void*)getTraceID() );
-	getRuntime()->onResourceErase( this );
+	getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
+	getRuntime()->onResourceErase(this);
 }
 
 bool RDOResource::operator!= (RDOResource &other)

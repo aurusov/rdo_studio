@@ -54,20 +54,21 @@ protected:
 		std::cout << "~MyClass(): " << m_i << std::endl;
 	}
 
-private:
+protected:
 	int m_i;
 
+private:
 	void unknow()
 	{
 		std::cout << "void unknow()" << std::endl;
 	}
 	void fun1()
 	{
-		std::cout << "void fun1()" << std::endl;
+		std::cout << "void fun1(): " << m_i << std::endl;
 	}
 	void fun2()
 	{
-		std::cout << "void fun2()" << std::endl;
+		std::cout << "void fun2(): " << m_i << std::endl;
 	}
 };
 
@@ -90,23 +91,68 @@ private:
 	}
 	void fun3()
 	{
-		std::cout << "void fun3()" << std::endl;
+		std::cout << "void fun3(): " << m_i << std::endl;
+	}
+};
+
+class MyClass3: public rdo::IObjectBase, public IMy3
+{
+RDO_IOBJECT(MyClass3, IObjectBase);
+
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IMy3)
+QUERY_INTERFACE_END
+
+protected:
+	MyClass3(int i)
+		: m_i(i)
+	{
+		std::cout << "MyClass3(int " << i << ");" << std::endl;
+	}
+	~MyClass3()
+	{
+		std::cout << "~MyClass3(): " << m_i << std::endl;
+	}
+
+protected:
+	int m_i;
+
+private:
+	void fun3()
+	{
+		std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };
 
 void main()
 {
-	std::vector<rdo::UnknownPointer> list;
-	rdo::SmartPtr<MyClass2> smptr = rdo::IFactory<MyClass2>::create(1);
-	rdo::SmartPtr<MyClass2> smptr2;
-	list.push_back(smptr);
-	rdo::Interface<IMy1> ptr = list.back().query_cast<IMy1>();
-	if (ptr)
+	typedef rdo::Interface<IMy3>     MyInterface;
+	typedef std::vector<MyInterface> MyInterfaceList;
+	MyInterfaceList list;
+	rdo::UnknownPointer smptr = F(MyClass2)::create(1);
+	MyInterface imy3 = smptr;
+	rdo::UnknownPointer smptr2;
+	smptr2 = F(MyClass2)::create(2);
+	list.push_back(F(MyClass3)::create(3));
+	list.push_back(smptr );
+	list.push_back(smptr2);
+	MyInterfaceList::iterator it = list.begin();
+	while (it != list.end())
 	{
-		ptr->fun1();
-		rdo::Interface<IMy2> ptr2 = ptr.query_cast<IMy2>();
+		rdo::Interface<IMy1> ptr1;
+		ptr1 = *it;
+		if (ptr1)
+			ptr1->fun1();
+
+		rdo::Interface<IMy2> ptr2 = *it;
 		if (ptr2)
 			ptr2->fun2();
+
+		rdo::Interface<IMy3> ptr3 = ptr2;
+		if (ptr3)
+			ptr3->fun3();
+
+		it++;
 	}
 	int i = 1;
 }

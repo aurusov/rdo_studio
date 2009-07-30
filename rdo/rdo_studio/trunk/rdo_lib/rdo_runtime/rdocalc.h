@@ -88,7 +88,7 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
 // ----------------------------------------------------------------------------
-class RDOCalcGetTempResParamFRM: public RDOCalcGetResParam
+class RDOCalcGetTempResParamFRM: public RDOCalcGetResParam, public INotify
 {
 public:
 	RDOCalcGetTempResParamFRM(PTR(RDORuntime) runtime, int _resNumb, int _parNumb);
@@ -96,7 +96,7 @@ public:
 private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 
-	virtual void notify(PTR(RDORuntimeObject) from, ruint message, PTR(void) param = NULL)
+	virtual void notify(ruint message, PTR(void) param)
 	{
 		if (m_resID == *reinterpret_cast<PTR(int)>(param))
 		{

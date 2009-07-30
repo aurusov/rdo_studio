@@ -68,6 +68,10 @@ public:
 	{
 		return m_object;
 	}
+	CPTR(T) get() const
+	{
+		return m_object;
+	}
 	operator rbool () const
 	{
 		return get() != NULL;
@@ -97,7 +101,7 @@ protected:
 		{
 			if (m_object)
 			{
-				Factory<T>::destroy(m_object);
+				delete m_object;
 				m_object = NULL;
 			}
 		}
@@ -132,55 +136,6 @@ private:
 		release();
 		if (counter() == 0)
 			deallocateCounter();
-	}
-};
-
-template <class T>
-class Factory
-{
-public:
-	static smart_ptr<T> create()
-	{
-		return smart_ptr<T>(new T());
-	}
-	template <typename P1>
-	static smart_ptr<T> create(CREF(P1) p1)
-	{
-		return smart_ptr<T>(new T(p1));
-	}
-	template <typename P1, typename P2>
-	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2)
-	{
-		return smart_ptr<T>(new T(p1, p2));
-	}
-	template <typename P1, typename P2, typename P3>
-	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3)
-	{
-		return smart_ptr<T>(new T(p1, p2, p3));
-	}
-	template <typename P1, typename P2, typename P3, typename P4>
-	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4)
-	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4));
-	}
-	template <typename P1, typename P2, typename P3, typename P4, typename P5>
-	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5)
-	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4, p5));
-	}
-	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5, CREF(P2) p6)
-	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6));
-	}
-	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5, CREF(P2) p6, CREF(P2) p7)
-	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6, p7));
-	}
-	static void destroy(PTR(T) obj)
-	{
-		delete obj;
 	}
 };
 

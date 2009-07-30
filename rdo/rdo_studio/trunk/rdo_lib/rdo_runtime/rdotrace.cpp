@@ -323,7 +323,6 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 void RDOTrace::writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok)
 {
 	if ( !canTrace() ) return;
-
 	getOStream() << "V  "  << sim->getCurrentTime() 
 		<< " " << pok->traceId() 
 		<< "  " << pok->traceValue() << std::endl << getEOL();
@@ -333,21 +332,20 @@ void RDOTrace::writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok)
 // ---------- RDOPokazTrace
 // ----------------------------------------------------------------------------
 RDOPokazTrace::RDOPokazTrace( RDORuntime* runtime, bool trace ):
-	RDOPokaz( runtime ),
 	RDOTraceableObject( trace ),
 	RDORuntimeContainer( runtime ),
 	m_wasChanged( true )
 {
 }
 
-bool RDOPokazTrace::tracePokaz()
+void RDOPokazTrace::tracePokaz()
 {
-	if ( !traceable() || !m_wasChanged ) {
-		return false;
-	}
+	if (!traceable() || !m_wasChanged)
+		return;
+
 	getRuntime()->getTracer()->writePokaz( getRuntime(), this );
 	m_wasChanged = false;
-	return true;
+	return;
 }
 
 } // namespace rdoRuntime;

@@ -1,24 +1,43 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdopokaz.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// =========================================================================== PCH
 #include "pch.h"
+// ====================================================================== INCLUDES
+#include <limits>
+// ====================================================================== SYNOPSIS
 #include "rdopokaz.h"
 #include "rdocalc.h"
-#include <limits>
+#include "rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz
 // ----------------------------------------------------------------------------
-RDOPMDPokaz::RDOPMDPokaz( RDORuntime* sim, const std::string& name, bool trace ):
+RDOPMDPokaz::RDOPMDPokaz( RDORuntime* sim, const tstring& name, rbool trace ):
 	RDOPokazTrace( sim, trace ),
 	m_name( name )
 {
 	setTrace( trace );
 }
 
+CREF(tstring) RDOPMDPokaz::name() const
+{
+	return m_name;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar( RDORuntime* sim, const std::string& name, bool trace, const std::string& resName, const std::string& parName, int resNumber, int parNumber ):
+RDOPMDWatchPar::RDOPMDWatchPar( RDORuntime* sim, const tstring& name, rbool trace, const tstring& resName, const tstring& parName, int resNumber, int parNumber ):
 	RDOPMDPokaz( sim, name, trace ),
 	m_resNumber( resNumber ),
 	m_parNumber( parNumber )
@@ -26,7 +45,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDORuntime* sim, const std::string& name, bool t
 	static_cast<RDORuntime*>(sim)->connect( this, RDORuntime::RO_BEFOREDELETE );
 }
 
-void RDOPMDWatchPar::notify( RDORuntimeObject* from, ruint message, void* param )
+void RDOPMDWatchPar::notify(ruint message, PTR(void) param)
 {
 	if ( (int)param == m_resNumber )
 	{
@@ -35,12 +54,12 @@ void RDOPMDWatchPar::notify( RDORuntimeObject* from, ruint message, void* param 
 	}
 };
 
-std::string RDOPMDWatchPar::traceValue()
+tstring RDOPMDWatchPar::traceValue() const
 {
 	return rdo::toString( m_currValue );
 }
 
-bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchPar::resetPokaz(PTR(RDOSimulator) sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -55,7 +74,7 @@ bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
 	return true;
 }
 
-bool RDOPMDWatchPar::checkPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchPar::checkPokaz(PTR(RDOSimulator) sim)
 {
 	if ( m_resNumber == -1 ) return false;
 	rdoRuntime::RDORuntime* runtime = static_cast< rdoRuntime::RDORuntime* >(sim);
@@ -80,7 +99,7 @@ bool RDOPMDWatchPar::checkPokaz(RDOSimulator *sim)
 	return false;
 }
 
-bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
+rbool RDOPMDWatchPar::calcStat(PTR(RDOSimulator) sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -92,13 +111,13 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 	double average = m_sum / (currTime - m_timeBegin);
 
 	runtime->getResults().width(30);
-	runtime->getResults() << std::left << m_name 
-		<< "\t" << traceValue()
-		<< "\t" << m_watchNumber
-		<< "\t" << average 
-		<< "\t" << m_sumSqr 
-		<< "\t" << m_minValue 
-		<< "\t" << m_maxValue << '\n'; 
+	runtime->getResults() << std::left << name() 
+		<< _T("\t") << traceValue()
+		<< _T("\t") << m_watchNumber
+		<< _T("\t") << average 
+		<< _T("\t") << m_sumSqr 
+		<< _T("\t") << m_minValue 
+		<< _T("\t") << m_maxValue << _T('\n');
 
 	return true;
 }
@@ -106,18 +125,18 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState( RDORuntime* sim, const std::string& name, bool trace, RDOCalc* logic ):
+RDOPMDWatchState::RDOPMDWatchState( RDORuntime* sim, const tstring& name, rbool trace, RDOCalc* logic ):
 	RDOPMDPokaz( sim, name, trace ),
 	m_logicCalc( logic )
 {
 }
 
-std::string RDOPMDWatchState::traceValue()
+tstring RDOPMDWatchState::traceValue() const
 {
-	return m_currValue ? "TRUE" : "FALSE";
+	return m_currValue ? _T("TRUE") : _T("FALSE");
 }
 
-bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -132,10 +151,10 @@ bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 	return true;
 }
 
-bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	bool newValue = fabs(m_logicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
+	rbool newValue = fabs(m_logicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
 	if ( newValue && !m_currValue ) { // from FALSE to TRUE
 		m_timePrev   = runtime->getCurrentTime();
 		m_wasChanged = true;
@@ -157,7 +176,7 @@ bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 	return true;
 }
 
-bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
+rbool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -170,13 +189,13 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 
 	runtime->getResults().width(30);
 	runtime->getResults() << std::left
-		<< m_name 
-		<< "\t" << traceValue() 
-		<< "\t" << m_watchNumber
-		<< "\t" << average 
-		<< "\t" << m_sumSqr 
-		<< "\t" << m_minValue 
-		<< "\t" << m_maxValue << '\n'; 
+		<< name() 
+		<< _T("\t") << traceValue() 
+		<< _T("\t") << m_watchNumber
+		<< _T("\t") << average 
+		<< _T("\t") << m_sumSqr 
+		<< _T("\t") << m_minValue 
+		<< _T("\t") << m_maxValue << _T('\n');
 
 	return true;
 }
@@ -184,19 +203,19 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id ):
+RDOPMDWatchQuant::RDOPMDWatchQuant( RDORuntime* sim, const tstring& name, rbool trace, const tstring& resTypeName, int rtp_id ):
 	RDOPMDPokaz( sim, name, trace ),
 	m_logicCalc( NULL ),
 	m_rtp_id( rtp_id )
 {
 }
 
-std::string RDOPMDWatchQuant::traceValue()
+tstring RDOPMDWatchQuant::traceValue() const
 {
 	return rdo::toString( m_currValue );
 }
 
-bool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -211,7 +230,7 @@ bool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
 	return true;
 }
 
-bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -253,7 +272,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 	return false;
 }
 
-bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
+rbool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -264,21 +283,26 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 	double average = m_sum / (currTime - m_timeBegin);
 
 	runtime->getResults().width(30);
-	runtime->getResults() << std::left << m_name 
-		<< "\t" << traceValue()
-		<< "\t" << m_watchNumber
-		<< "\t" << average 
-		<< "\t" << m_sumSqr 
-		<< "\t" << m_minValue 
-		<< "\t" << m_maxValue << '\n'; 
+	runtime->getResults() << std::left << name() 
+		<< _T("\t") << traceValue()
+		<< _T("\t") << m_watchNumber
+		<< _T("\t") << average 
+		<< _T("\t") << m_sumSqr 
+		<< _T("\t") << m_minValue 
+		<< _T("\t") << m_maxValue << _T('\n');
 
 	return true;
+}
+
+void RDOPMDWatchQuant::setLogicCalc(PTR(RDOCalc) logicCalc)
+{
+	m_logicCalc = logicCalc;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id ):
+RDOPMDWatchValue::RDOPMDWatchValue( RDORuntime* sim, const tstring& name, rbool trace, const tstring& resTypeName, int rtp_id ):
 	RDOPMDPokaz( sim, name, trace ),
 	m_logicCalc( NULL ),
 	m_arithmCalc( NULL ),
@@ -287,12 +311,12 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bo
 	m_wasChanged = false;
 }
 
-std::string RDOPMDWatchValue::traceValue()
+tstring RDOPMDWatchValue::traceValue() const
 {
 	return rdo::toString( m_currValue );
 }
 
-bool RDOPMDWatchValue::resetPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchValue::resetPokaz(RDOSimulator *sim)
 {
 	m_watchNumber = 0;
 	m_currValue   = 0;
@@ -304,12 +328,12 @@ bool RDOPMDWatchValue::resetPokaz(RDOSimulator *sim)
 	return true;
 }
 
-bool RDOPMDWatchValue::checkPokaz(RDOSimulator *sim)
+rbool RDOPMDWatchValue::checkPokaz(RDOSimulator *sim)
 {
 	return false;
 }
 
-bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
+rbool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
@@ -325,26 +349,27 @@ bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
 	}
 
 	runtime->getResults().width(30);
-	runtime->getResults() << std::left << m_name 
-		<< "\t" << m_watchNumber
-		<< "\t" << average 
-		<< "\t" << averageSqr
-		<< "\t" << deviation
-		<< "\t" << m_minValue 
-		<< "\t" << m_maxValue << '\n'; 
+	runtime->getResults() << std::left << name() 
+		<< _T("\t") << m_watchNumber
+		<< _T("\t") << average 
+		<< _T("\t") << averageSqr
+		<< _T("\t") << deviation
+		<< _T("\t") << m_minValue 
+		<< _T("\t") << m_maxValue << _T('\n');
 
 	return true;
 }
 
-bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
+void RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 {
-	if ( !res->checkType(m_rtp_id) ) {
-		return false;
+	if (!res->checkType(m_rtp_id))
+	{
+		return;
 	}
 	getRuntime()->pushGroupFunc(res);
 	if ( m_logicCalc->calcValue( getRuntime() ).getAsBool() ) {
 		m_currValue = m_arithmCalc->calcValue( getRuntime() );
-		tracePokaz();
+		tracePokaz(); // TODO: убрать отсюда ? (и перенести DECLARE_IPokazTrace в приват)
 //		runtime->getTracer()->writePokaz(runtime, this);
 		double curr = m_currValue.getDouble();
 		m_sum    += curr;
@@ -356,70 +381,80 @@ bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 		if ( m_maxValue < m_currValue ) {
 			m_maxValue = m_currValue;
 		}
-		return true;
+		return;
 	}
 	getRuntime()->popGroupFunc();
-	return true;
+	return;
+}
+
+void RDOPMDWatchValue::setLogicCalc(PTR(rdoRuntime::RDOCalc) logicCalc)
+{
+	m_logicCalc = logicCalc;
+}
+
+void RDOPMDWatchValue::setArithmCalc(PTR(rdoRuntime::RDOCalc) arithmCalc)
+{
+	m_arithmCalc = arithmCalc;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue( RDORuntime* sim, const std::string& name, RDOCalc* arithm ):
+RDOPMDGetValue::RDOPMDGetValue(PTR(RDORuntime) sim, const tstring& name, RDOCalc* arithm):
 	RDOPMDPokaz( sim, name, false ),
 	m_arithmCalc( arithm )
 {
 }
 
-std::string RDOPMDGetValue::traceValue()
+tstring RDOPMDGetValue::traceValue() const
 {
-	return "ERROR";
+	return _T("ERROR");
 }
 
-bool RDOPMDGetValue::resetPokaz(RDOSimulator *sim)
-{
-	return false;
-}
-
-bool RDOPMDGetValue::checkPokaz(RDOSimulator *sim)
+rbool RDOPMDGetValue::resetPokaz(PTR(RDOSimulator) sim)
 {
 	return false;
 }
 
-bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
+rbool RDOPMDGetValue::checkPokaz(PTR(RDOSimulator) sim)
+{
+	return false;
+}
+
+rbool RDOPMDGetValue::calcStat(PTR(RDOSimulator) sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	runtime->getResults().width(30);
-	runtime->getResults() << std::left << m_name 
-		<< "\t" << m_arithmCalc->calcValue( runtime ).getAsString() << '\n';
+	runtime->getResults() << std::left << name() 
+		<< _T("\t") << m_arithmCalc->calcValue( runtime ).getAsString() << _T('\n');
 
 	return true;
 }
 
-void RDOPMDWatchPar::writePokazStructure( std::ostream& stream ) const
+void RDOPMDWatchPar::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << traceId() << " watch_par" << std::endl;
+	stream << traceId() << _T(" watch_par") << std::endl;
 }
 
-void RDOPMDWatchState::writePokazStructure( std::ostream& stream ) const
+void RDOPMDWatchState::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << traceId() << " watch_state" << std::endl;
+	stream << traceId() << _T(" watch_state") << std::endl;
 }
 
-void RDOPMDWatchQuant::writePokazStructure( std::ostream& stream ) const
+void RDOPMDWatchQuant::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << traceId() << " watch_quant" << std::endl;
+	stream << traceId() << _T(" watch_quant") << std::endl;
 }
 
-void RDOPMDWatchValue::writePokazStructure( std::ostream& stream ) const
+void RDOPMDWatchValue::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << traceId() << " watch_value" << std::endl;
+	stream << traceId() << _T(" watch_value") << std::endl;
 }
 
-void RDOPMDGetValue::writePokazStructure( std::ostream& stream ) const
+void RDOPMDGetValue::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << traceId() << " get_value" << std::endl;
+	stream << traceId() << _T(" get_value") << std::endl;
 }
 
-} // rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

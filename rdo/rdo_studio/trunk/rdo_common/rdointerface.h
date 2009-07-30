@@ -27,6 +27,16 @@ public:
 };
 
 template <class T> class GetInterface {};
+
+class IObjectBase
+{
+public:
+	PTR(void) QueryInterface(ruint id)
+	{
+		return NULL;
+	}
+};
+
 CLOSE_RDO_NAMESPACE
 
 #define INTERFACE_REGISTRATOR(I, ID) \
@@ -54,10 +64,17 @@ public:
 	UnknownPointer (CREF(UnknownPointer) unknowPointer);
 	~UnknownPointer();
 
+	REF(UnknownPointer) operator= (CREF(UnknownPointer) pointer);
+
 	operator rbool() const;
 
-	UnknownPointer                  query_cast(ruint id);
-	template<class I> Interface<I>  query_cast();
+	UnknownPointer                  query_cast  (ruint id);
+	template<class I> Interface<I>  query_cast  ();
+	template<class I> operator      Interface<I>();
+
+	UnknownPointer                  query_cast  (ruint id) const;
+	template<class I> Interface<I>  query_cast  () const;
+	template<class I> operator      Interface<I>() const;
 
 protected:
 	PTR(void)   m_interface;
@@ -70,12 +87,24 @@ template<class T>
 class Interface: public UnknownPointer
 {
 public:
+	typedef Interface<T>   this_type;
+	typedef UnknownPointer parent_type;
+
+	Interface()
+		: UnknownPointer(NULL, NULL)
+	{}
 	Interface(PTR(void) aInterface, LPIUnknown smt_ptr)
 		: UnknownPointer(aInterface, smt_ptr)
 	{}
-	Interface(CREF(Interface<T>) unknowPointer)
-		: UnknownPointer(unknowPointer)
+	Interface(CREF(this_type) pInterface)
+		: UnknownPointer(pInterface)
 	{}
+	REF(this_type) operator= (CREF(this_type) pointer)
+	{
+		parent_type::operator= (pointer);
+		return *this;
+	}
+
 	PTR(T) get()
 	{
 		return static_cast<PTR(T)>(m_interface);
@@ -85,6 +114,10 @@ public:
 		return static_cast<PTR(T)>(m_interface);
 	}
 	PTR(T) operator-> ()
+	{
+		return get();
+	}
+	CPTR(T) operator-> () const
 	{
 		return get();
 	}
@@ -126,6 +159,19 @@ inline UnknownPointer::~UnknownPointer()
 		m_smt_ptr->Release();
 }
 
+inline REF(UnknownPointer) UnknownPointer::operator= (CREF(UnknownPointer) pointer)
+{
+	if (m_smt_ptr)
+		m_smt_ptr->Release();
+
+	m_interface = pointer.m_interface;
+	m_smt_ptr   = pointer.m_smt_ptr;
+	if (m_smt_ptr)
+		m_smt_ptr->AddRef();
+
+	return *this;
+}
+
 inline UnknownPointer::operator rbool () const
 {
 	return m_interface != NULL;
@@ -143,114 +189,126 @@ inline Interface<I> UnknownPointer::query_cast()
 	return Interface<I>(pointer.m_interface, pointer.m_smt_ptr);
 }
 
-template<class T>
-class SmartPtr: public smart_ptr<T>, public IUnknown
+template<class I>
+inline UnknownPointer::operator Interface<I> ()
 {
-public:
-	typedef SmartPtr<T> this_type;
+	return query_cast<I>();
+}
 
-	SmartPtr()
-		: smart_ptr()
-	{}
-	SmartPtr(PTR(T) obj)
-		: smart_ptr(obj)
-	{}
-	SmartPtr(CREF(this_type) object)
-		: smart_ptr<T>(object)
-	{}
-	virtual ~SmartPtr()
-	{}
+inline UnknownPointer UnknownPointer::query_cast(ruint id) const
+{
+	return m_smt_ptr ? m_smt_ptr->QueryInterface(id) : UnknownPointer();
+}
 
-	operator UnknownPointer ()
-	{
-		return get() ? UnknownPointer(NULL, this) : UnknownPointer();
-	}
-	template<class I> Interface<I> query_cast()
-	{
-		if (get() != NULL)
-		{
-			PTR(void) pInterface = get()->QueryInterface(GetInterface<I>::ID);
-			if (pInterface)
-				return Interface<I>(pInterface, this);
-		}
-		return Interface<I>(NULL, NULL);
-	}
+template<class I>
+inline Interface<I> UnknownPointer::query_cast() const
+{
+	UnknownPointer pointer = m_smt_ptr ? m_smt_ptr->QueryInterface(GetInterface<I>::ID) : UnknownPointer();
+	return Interface<I>(pointer.m_interface, pointer.m_smt_ptr);
+}
 
-private:
-	virtual void AddRef()
-	{
-		addref();
-	}
-	virtual void Release()
-	{
-		release();
-	}
-	virtual UnknownPointer QueryInterface(ruint id)
-	{
-		if (get() != NULL)
-		{
-			PTR(void) pInterface = get()->QueryInterface(id);
-			if (pInterface)
-				return UnknownPointer(pInterface, this);
-		}
-		return UnknownPointer();
-	}
-};
+template<class I>
+inline UnknownPointer::operator Interface<I> () const
+{
+	return query_cast<I>();
+}
 
 template <class T>
-class IFactory
+class Factory
 {
 public:
-	static SmartPtr<T> create()
+	static UnknownPointer create()
 	{
-		return SmartPtr<T>(new T());
+		return *(new Counter(new T()));
 	}
 	template <typename P1>
-	static SmartPtr<T> create(CREF(P1) p1)
+	static UnknownPointer create(CREF(P1) p1)
 	{
-		return SmartPtr<T>(new T(p1));
+		return *(new Counter(new T(p1)));
 	}
 	template <typename P1, typename P2>
-	static SmartPtr<T> create(CREF(P1) p1, CREF(P2) p2)
+	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2)
 	{
-		return SmartPtr<T>(new T(p1, p2));
+		return *(new Counter(new T(p1, p2)));
 	}
 	template <typename P1, typename P2, typename P3>
-	static SmartPtr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3)
+	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
 	{
-		return SmartPtr<T>(new T(p1, p2, p3));
+		return *(new Counter(new T(p1, p2, p3)));
 	}
 	template <typename P1, typename P2, typename P3, typename P4>
-	static SmartPtr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4)
+	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
 	{
-		return SmartPtr<T>(new T(p1, p2, p3, p4));
+		return *(new Counter(new T(p1, p2, p3, p4)));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
-	static SmartPtr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5)
+	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
 	{
-		return SmartPtr<T>(new T(p1, p2, p3, p4, p5));
+		return *(new Counter(new T(p1, p2, p3, p4, p5)));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-	static SmartPtr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5, CREF(P2) p6)
+	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
 	{
-		return SmartPtr<T>(new T(p1, p2, p3, p4, p5, p6));
+		return *(new Counter(new T(p1, p2, p3, p4, p5, p6)));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-	static SmartPtr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P2) p3, CREF(P2) p4, CREF(P2) p5, CREF(P2) p6, CREF(P2) p7)
+	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 	{
-		return SmartPtr<T>(new T(p1, p2, p3, p4, p5, p6, p7));
+		return *(new Counter(new T(p1, p2, p3, p4, p5, p6, p7)));
 	}
 	static void destroy(PTR(T) obj)
 	{
 		delete obj;
 	}
+
+private:
+	class Counter: public IUnknown
+	{
+	friend class Factory<T>;
+	private:
+		ruint  m_counter;
+		PTR(T) m_object;
+
+		Counter(PTR(T) object)
+			: m_object (object)
+			, m_counter(0     )
+		{}
+		operator UnknownPointer()
+		{
+			return UnknownPointer(NULL, this);
+		}
+
+		virtual void AddRef()
+		{
+			m_counter++;
+		}
+		virtual void Release()
+		{
+			m_counter--;
+			if (m_counter == 0)
+			{
+				if (m_object)
+				{
+					Factory<T>::destroy(m_object);
+					delete this;
+				}
+			}
+		}
+		virtual UnknownPointer QueryInterface(ruint id)
+		{
+			PTR(void) pInterface = m_object->QueryInterface(id);
+			return pInterface ? UnknownPointer(pInterface, this) : UnknownPointer();
+		}
+	};
 };
 
 CLOSE_RDO_NAMESPACE
 
+#define F(A) rdo::Factory<A>
+
 #define DEFINE_THIS_TYPE(A)    typedef A this_type;
 #define DEFINE_IPARENT_TYPE(P) typedef P iparent_type;
-#define DEFINE_FACTORY(A)      friend class rdo::Factory<A>; friend class rdo::IFactory<A>;
+#define DEFINE_FACTORY(A)      friend class rdo::Factory<A>;
 #define DEFINE_CLASS_NAME(A)   static std::string className() { return #A; }
 
 #define RDO_IOBJECT(A, BASE) \
@@ -277,16 +335,5 @@ PTR(void) QueryInterface(ruint id) \
 	} \
 	return NULL; \
 }
-
-OPEN_RDO_NAMESPACE
-class IObjectBase
-{
-public:
-	PTR(void) QueryInterface(ruint id)
-	{
-		return NULL;
-	}
-};
-CLOSE_RDO_NAMESPACE
 
 #endif //! _RDOINTERFACE_H_
