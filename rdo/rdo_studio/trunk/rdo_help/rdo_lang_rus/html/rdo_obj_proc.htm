@@ -33,7 +33,7 @@ $End
 					<DT class="syntax"><A name="res_name_seize"></A><I>имя_ресурса</I></DT>
 					<DD class="syntax">
 						<P>Если <A href="../html/rdo_base_resources.htm">ресурс</A> с таким именем уже заведен и имеет произвольный <A href="../html/rdo_base_res_types.htm">тип</A> с параметром – <FONT class="syntax">Состояние</FONT>, который является перечислимым со значениями <FONT class="syntax">Свободен</FONT> и <FONT class="syntax">Занят</FONT>, то блок будет работать с этим ресурсом.</P>
-						<P>Иначе будут автоматичеки созданы ресурс с указанным именем и тип для него с именем <FONT class="syntax">имя_ресурсаs</FONT> и параметром <FONT class="syntax">Состояние</FONT>, либо будет выдано сообщение об ошибке.</P>
+						<P>Иначе будут автоматически созданы ресурс с указанным именем и тип для него с именем <FONT class="syntax">имя_ресурсаs</FONT> и параметром <FONT class="syntax">Состояние</FONT>, либо будет выдано сообщение об ошибке.</P>
 						<P>Если после оператора определен список ресурсов, то в момент поступления транзакта в блок будет заниматься первый свободный.</P>
 					</DD>
 				</DL>
@@ -42,12 +42,12 @@ $End
 
 		<DL class="syntax">
 			<DT class="syntax"><A name="proc_release"></A>Оператор <FONT class="syntax">RELEASE</FONT></DT>
-			<DD class="syntax">Предназначен для освобождения ресурса в момент поступления в него транзакта. Другими словами, он описывапет окончания операции обслуживания. Работает в паре с <FONT class="syntax">SEIZE</FONT>. Оператор имеет следующий формат:
+			<DD class="syntax">Предназначен для освобождения ресурса в момент поступления в него транзакта. Другими словами, он описывает окончания операции обслуживания. Работает в паре с <FONT class="syntax">SEIZE</FONT>. Оператор имеет следующий формат:
 				<PRE class="syntax">RELEASE <A class="syntax" href="#res_name_release">&lt;имя_ресурса&gt;</A> {, <A class="syntax">&lt;имя_ресурса&gt;</A>}</PRE> 
 				<DL class="syntax">
 					<DT class="syntax"><A name="res_name_release"></A><I>имя_ресурса</I></DT>
 					<DD class="syntax">
-						<P>Описание имени соответсвует описанию такового оператора <A href="#res_name_seize">SEIZE</A>.</P>
+						<P>Описание имени соответствует описанию такового оператора <A href="#res_name_seize">SEIZE</A>.</P>
 						<P>Если после оператора определен список ресурсов, то во время поступления транзакта в блок будет освобождаться тот ресурс, который был занят этим транзактом выше.</P>
 					</DD>
 				</DL>
@@ -56,7 +56,7 @@ $End
 
 		<DL class="syntax">
 			<DT class="syntax"><A name="proc_adv"></A>Оператор <FONT class="syntax">ADVANCE</FONT></DT>
-			<DD class="syntax">Оператор осуществляет задержку в продвижении транзакта в течение некоторого интервала времени. Дркгими словани, с его помощью моделируется операция обслуживания. Формат оператора:
+			<DD class="syntax">Оператор осуществляет задержку в продвижении транзакта в течение некоторого интервала времени. Другими словами, с его помощью моделируется операция обслуживания. Формат оператора:
 				<PRE class="syntax">ADVANCE <A class="syntax" href="#adv_arifm">&lt;выражение_времени&gt;</A></PRE> 
 				<DL class="syntax">
 					<DT class="syntax"><A  name="adv_arifm"></A><I>выражение_времени</I></DT>
@@ -88,7 +88,7 @@ $End
 				<DL class="syntax">
 					<DT class="syntax""><A name="depart"></A><I>очередь</I></DT>
 					<DD class="syntax">
-						<P>Описание параметра соответсвует описанию такового оператора <A href="#queue">QUEUE</A>.</P>
+						<P>Описание параметра соответствует описанию такового оператора <A href="#queue">QUEUE</A>.</P>
 						<P>При поступлении транзакта в блок, значение параметра <FONT class="syntax">длина_очереди</FONT> уменьшается на единицу.</P>
 					</DD>
 				</DL>
@@ -116,7 +116,7 @@ $End
 
 		<DL class="syntax">
 			<DT class="syntax"><A name="proc_term"></A>Оператор <FONT class="syntax">TERMINATE</FONT></DT>
-			<DD class="syntax">Увеличивыет значение терминального счетчика <FONT class="syntax">Terminate_counter</FONT> (в отличии от языка GPSS, в котором похожий оператор его уменьшал). Имеет следующий формат:
+			<DD class="syntax">Увеличивает значение терминального счетчика <FONT class="syntax">Terminate_counter</FONT> (в отличии от языка GPSS, в котором похожий оператор его уменьшал). Имеет следующий формат:
 				<PRE class="syntax">TERMINATE <A class="syntax" href="#term_arifm">&lt;дельта&gt;</A> </PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="term_arifm"></A><I>дельта</I></DT>
