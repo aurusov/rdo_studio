@@ -6,6 +6,7 @@
 #include "simtrace.h"
 #include "rdo_pattern.h"
 #include "rdo_activity.h"
+#include "rdo_priority.h"
 
 namespace rdoRuntime
 {
@@ -13,7 +14,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation
 // ----------------------------------------------------------------------------
-class RDOOperation: public RDOActivityPattern<RDOPatternOperation>
+class RDOOperation: public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior
 {
 friend class RDOTrace;
 friend class RDOSimulatorTrace;

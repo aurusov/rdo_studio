@@ -60,12 +60,14 @@ public:
 	void addParam( const RDOValue& param  );
 	void endParam( const YYLTYPE& _param_pos );
 
+	bool setPrior( RDOFUNArithm* prior );
+
 protected:
 	rdoRuntime::RDOActivity* m_activity;
 
 private:
-	unsigned int             m_currParam;
-	const RDOPATPattern*     m_pattern;
+	unsigned int          m_currParam;
+	const RDOPATPattern*  m_pattern;
 };
 
 // ----------------------------------------------------------------------------
@@ -121,6 +123,8 @@ public:
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
 
 	void end();
+
+	bool setPrior( RDOFUNArithm* prior );
 
 private:
 	RDOFUNLogic* m_conditon;

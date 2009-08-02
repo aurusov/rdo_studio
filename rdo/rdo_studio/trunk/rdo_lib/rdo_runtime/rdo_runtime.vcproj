@@ -959,6 +959,10 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\rdo_priority.h"
+			>
+		</File>
 		<Filter
 			Name=".interfaces"
 			>

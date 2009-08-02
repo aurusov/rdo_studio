@@ -37,8 +37,7 @@ protected:
 		RDOBaseOperation( parent ),
 		RDOTraceableObject( trace ),
 		m_oprName( name )
-	{
-	}
+	{}
 	virtual ~RDOActivity() {}
 
 	std::string               m_oprName;

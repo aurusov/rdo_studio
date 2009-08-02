@@ -136,6 +136,16 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 	}
 }
 
+bool RDODPTActivity::setPrior(RDOFUNArithm* prior)
+{
+	rdoRuntime::RDOPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOPatternPrior*>(m_activity);
+	if (prior_activity)
+	{
+		return prior_activity->setPrior(prior->createCalc());
+	}
+	return false;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivityHotKey
 // ----------------------------------------------------------------------------
@@ -246,6 +256,16 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	parser()->checkDPTName( src_info() );
 	m_rt_logic = new rdoRuntime::RDODPTSome( parser()->runtime() );
 	parser()->insertDPTSome( this );
+}
+
+bool RDODPTSome::setPrior(RDOFUNArithm* prior)
+{
+	rdoRuntime::RDOPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOPatternPrior*>(m_rt_logic);
+	if (prior_activity)
+	{
+		return prior_activity->setPrior(prior->createCalc());
+	}
+	return false;
 }
 
 void RDODPTSome::end()

@@ -163,6 +163,7 @@ public:
 		{
 			if ( !m_childLogic.onCheckCondition( sim ) )
 			{
+				actionWithRDOOprContainer( sim );
 				return RDOOprContainer<RDOBaseOperation>::onCheckCondition( sim );
 			}
 			else
@@ -216,6 +217,7 @@ private:
 	RDOCalc* m_condition;
 	bool     m_lastCondition;
 
+	virtual void actionWithRDOOprContainer(RDOSimulator* sim);
 	bool checkSelfCondition( RDOSimulator* sim )
 	{
 		if ( m_condition )

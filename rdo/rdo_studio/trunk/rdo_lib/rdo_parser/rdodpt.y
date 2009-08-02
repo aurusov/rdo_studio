@@ -122,6 +122,8 @@
 %token RDO_RELEASE						368
 %token RDO_if							369
 %token RDO_result						370
+%token RDO_CF							371
+%token RDO_Priority                     372
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -408,6 +410,23 @@ dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic {
 							dpt->setCondition();
 						};
 
+dpt_some_prior:	        dpt_some_condition
+						| dpt_some_condition RDO_Priority fun_arithm
+						{
+							if (!PARSER->getLastDPTSome()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+							{
+								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет :-("));
+							}
+						}
+						| dpt_some_condition RDO_Priority error
+						{
+							PARSER->error( @1, @2, "Ошибка описания приоритета активности" )
+						}
+						| dpt_some_condition error
+						{
+							PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
+						};
+
 dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
 							RDODPTSome* dpt   = PARSER->getLastDPTSome();
 							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
@@ -431,15 +450,32 @@ dpt_some_descr_param:	/* empty */
 							PARSER->error( @1, @2, "Ошибка описания параметра образца" )
 						};
 
+dpt_some_activ_prior:	/* empty */
+						| RDO_CF '=' fun_arithm
+						{
+							if (!PARSER->getLastDPTSome()->getLastActivity()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+							{
+								PARSER->error(@3, _T("Активность не может иметь приоритет"));
+							}
+						}
+						| RDO_CF '=' error
+						{
+							PARSER->error( @1, @2, "Ошибка описания приоритета активности" )
+						}
+						| RDO_CF error
+						{
+							PARSER->error( @1, @2, "Ошибка: ожидается знак равенства" )
+						};
+
 dpt_some_activity:		/* empty */
-						| dpt_some_activity dpt_some_name dpt_some_descr_param {
+						| dpt_some_activity dpt_some_name dpt_some_descr_param dpt_some_activ_prior{
 							RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
 							activity->endParam( @3 );
 						};
 
-dpt_some_header:		dpt_some_condition RDO_Activities dpt_some_activity {
+dpt_some_header:		dpt_some_prior RDO_Activities dpt_some_activity {
 						}
-						| dpt_some_condition error {
+						| dpt_some_prior error {
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Activities" );
 						};
 
