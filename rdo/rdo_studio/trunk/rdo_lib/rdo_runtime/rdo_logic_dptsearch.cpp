@@ -21,7 +21,7 @@ RDODPTSearch::~RDODPTSearch()
 {
 }
 
-RDOBaseOperation::BOResult RDODPTSearch::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDODPTSearch::onDoOperation( RDOSimulator* sim )
 {
 	// Начало поиска: вывели трасировку, обновили статистику
 	onSearchBegin( sim );
@@ -31,7 +31,7 @@ RDOBaseOperation::BOResult RDODPTSearch::onDoOperation( RDOSimulator* sim )
 	return onContinue( sim );
 }
 
-RDOBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
+IBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
 {
 	DWORD time_begin = ::GetTickCount();
 	while ( true ) {
@@ -80,18 +80,15 @@ RDOBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
 	delete treeRoot->m_rootNode;
 	delete treeRoot;
 	treeRoot = NULL;
-	return success ? RDOBaseOperation::BOR_done : RDOBaseOperation::BOR_cant_run;
+	return success ? IBaseOperation::BOR_done : IBaseOperation::BOR_cant_run;
 }
 
-void RDODPTSearch::addActivity( Activity* act )
+void RDODPTSearch::addActivity(PTR(Activity) act)
 {
-	// Удалять активности из activities не надо, т.к. это делает объект-родитель
-	act->reparent( this );
-	activities.push_back( act ); 
+	m_activityList.push_back(act); 
 }
 
-RDODPTSearch::Activity::Activity( RDORule* rule, ValueTime valueTime ):
-	RDORuntimeObject( rule ),
+RDODPTSearch::Activity::Activity(CREF(LPIRule) rule, ValueTime valueTime):
 	m_rule( rule ),
 	m_valueTime( valueTime )
 {

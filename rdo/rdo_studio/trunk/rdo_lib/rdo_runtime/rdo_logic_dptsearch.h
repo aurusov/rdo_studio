@@ -24,7 +24,7 @@ public:
 	// ----------------------------------------------------------------------------
 	// ---------- Activity
 	// ----------------------------------------------------------------------------
-	class Activity: public RDORuntimeObject
+	class Activity
 	{
 	public:
 		enum ValueTime
@@ -33,13 +33,12 @@ public:
 			vt_after
 		};
 
-		Activity( RDORule* rule, ValueTime valueTime );
+		Activity(CREF(LPIRule) rule, ValueTime valueTime);
 		virtual ~Activity()
-		{
-		}
+		{}
 
-		RDORule*  rule()            { return m_rule;      }
-		ValueTime valueTime() const { return m_valueTime; }
+		REF(LPIRule)      rule()       { return m_rule;      }
+		ValueTime    valueTime() const { return m_valueTime; }
 
 		virtual double cost( RDOSimulator* sim ) = 0;
 
@@ -47,7 +46,7 @@ public:
 		ValueTime m_valueTime;
 
 	protected:
-		RDORule* m_rule;
+		LPIRule   m_rule;
 	};
 
 	virtual void addActivity( Activity* act );
@@ -56,7 +55,9 @@ protected:
 	RDODPTSearch( RDOSimulator* sim );
 	virtual ~RDODPTSearch();
 
-	std::list< Activity* > activities;
+	typedef std::list< rdo::smart_ptr<Activity> > ActivityList;
+	ActivityList   m_activityList;
+
 	virtual bool   TermCondition( RDOSimulator* sim )                              = 0;
 	virtual double EvaluateBy( RDOSimulator* sim )                                 = 0;
 	virtual void   onSearchBegin( RDOSimulator* sim )                              = 0;

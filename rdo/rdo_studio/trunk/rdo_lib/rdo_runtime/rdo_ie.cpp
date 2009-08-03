@@ -30,9 +30,9 @@ bool RDOIrregEvent::onCheckCondition(RDOSimulator *sim)
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOIrregEvent::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOIrregEvent::onDoOperation( RDOSimulator* sim )
 {
-	return RDOBaseOperation::BOR_cant_run;
+	return IBaseOperation::BOR_cant_run;
 }
 
 void RDOIrregEvent::onMakePlaned( RDOSimulator* sim, void* param )

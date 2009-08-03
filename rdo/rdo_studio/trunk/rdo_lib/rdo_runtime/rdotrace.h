@@ -97,9 +97,9 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOTraceableObject
 // ----------------------------------------------------------------------------
-class RDOTraceableObject: public rdo::IObjectBase, public ITrace
+class RDOTraceableObject: public ITrace
 {
-RDO_IOBJECT(RDOTraceableObject, rdo::IObjectBase);
+RDO_IOBJECT(RDOTraceableObject);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(ITrace)
 QUERY_INTERFACE_END
@@ -150,8 +150,9 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue, public RDORuntimeContainer
 {
-RDO_IOBJECT(RDOPokazTrace, RDOTraceableObject);
+RDO_IOBJECT(RDOPokazTrace);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOTraceableObject)
 	QUERY_INTERFACE(IPokazTrace)
 QUERY_INTERFACE_END
 

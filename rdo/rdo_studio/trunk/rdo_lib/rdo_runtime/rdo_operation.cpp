@@ -11,33 +11,28 @@ namespace rdoRuntime
 RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name ):
 	RDOActivityPattern<RDOPatternOperation>( runtime, pattern, trace, name ),
 	RDOPatternPrior(),
-	m_clones( NULL ),
 	additionalCondition( NULL )
 {
 	setTrace( trace );
 	haveAdditionalCondition = false;
 	setTraceID( runtime->getFreeActivityId() );
-	m_clones.reparent( this );
 }
 
 RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, RDOCalc* condition, const std::string& name ):
 	RDOActivityPattern<RDOPatternOperation>( runtime, pattern, trace, name ),
 	RDOPatternPrior(),
-	m_clones( NULL ),
 	additionalCondition( condition )
 {
 	setTrace( trace );
 	haveAdditionalCondition = true;
 	setTraceID( runtime->getFreeActivityId() );
-	m_clones.reparent( this );
 }
 
 RDOOperation::~RDOOperation()
 {
-	m_clones.deleteObjects();
 }
 
-bool RDOOperation::onCheckCondition( RDOSimulator* sim )
+bool RDOOperation::onCheckCondition(PTR(RDOSimulator) sim)
 {
 	// ≈сли операци€ может начатьс€, то создать еЄ клон и поместить его в список
 	onBeforeChoiceFrom( sim );
@@ -45,29 +40,26 @@ bool RDOOperation::onCheckCondition( RDOSimulator* sim )
 	return choiceFrom(sim);
 }
 
-RDOBaseOperation::BOResult RDOOperation::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOOperation::onDoOperation(PTR(RDOSimulator) sim)
 {
-	RDOOperation* newOp = clone( sim );
-	newOp->reparent( &m_clones );
-	newOp->onBeforeOperationBegin( sim );
-	newOp->convertBegin( sim );
-	sim->addTimePoint( newOp->getNextTimeInterval(sim) + sim->getCurrentTime(), this, newOp );
-	newOp->onAfterOperationBegin( sim );
-	return RDOBaseOperation::BOR_planned_and_run;
+	LPIOperation newOper = F(RDOOperation)::create(static_cast<PTR(RDORuntime)>(sim), *this);
+	newOper->onBeforeOperationBegin( sim );
+	newOper->convertBegin( sim );
+	sim->addTimePoint( newOper->getNextTimeInterval(sim) + sim->getCurrentTime(), newOper );
+	newOper->onAfterOperationBegin( sim );
+	return IBaseOperation::BOR_planned_and_run;
 }
 
 void RDOOperation::onMakePlaned( RDOSimulator* sim, void* param )
 {
 	// ¬ыполн€ем событие конца операции-клона
 	sim->inc_cnt_events();
-	RDOOperation* opr = static_cast<RDOOperation*>(param);
-	opr->onBeforeOperationEnd( sim );
-	opr->convertEnd( sim );
-	opr->onAfterOperationEnd( sim );
-	delete opr;
+	onBeforeOperationEnd( sim );
+	convertEnd( sim );
+	onAfterOperationEnd( sim );
 }
 
-bool RDOOperation::choiceFrom( RDOSimulator* sim ) 
+bool RDOOperation::choiceFrom(PTR(RDOSimulator) sim) 
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	if ( haveAdditionalCondition ) {
@@ -78,13 +70,13 @@ bool RDOOperation::choiceFrom( RDOSimulator* sim )
 	return m_pattern->choiceFrom( static_cast<RDORuntime*>(sim) ); 
 }
 
-void RDOOperation::convertBegin( RDOSimulator* sim )
+void RDOOperation::convertBegin(PTR(RDOSimulator) sim)
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	m_pattern->convertBegin( static_cast<RDORuntime*>(sim) );
 }
 
-void RDOOperation::convertEnd( RDOSimulator* sim )
+void RDOOperation::convertEnd(PTR(RDOSimulator) sim)
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	m_pattern->convertEnd( static_cast<RDORuntime*>(sim) );
@@ -100,7 +92,7 @@ void RDOOperation::onBeforeOperationEnd( RDOSimulator* sim)
 	setPatternParameters( sim );
 }
 
-void RDOOperation::onAfterOperationBegin( RDOSimulator* sim )
+void RDOOperation::onAfterOperationBegin(PTR(RDOSimulator) sim)
 {
 	updateConvertStatus( sim, m_pattern->m_convertorBeginStatus );
 	static_cast<RDOSimulatorTrace*>(sim)->getTracer()->writeAfterOperationBegin( this, static_cast<RDOSimulatorTrace*>(sim) );
@@ -111,7 +103,7 @@ void RDOOperation::onAfterOperationBegin( RDOSimulator* sim )
 	updateConvertStatus( sim, m_pattern->m_convertorBeginStatus );
 }
 
-void RDOOperation::onAfterOperationEnd( RDOSimulator* sim )
+void RDOOperation::onAfterOperationEnd(PTR(RDOSimulator) sim)
 {
 	updateConvertStatus( sim, m_pattern->m_convertorEndStatus );
 	decrementRelevantResourceReference( sim );
@@ -121,10 +113,24 @@ void RDOOperation::onAfterOperationEnd( RDOSimulator* sim )
 	updateRelRes( sim );
 }
 
-double RDOOperation::getNextTimeInterval( RDOSimulator* sim ) 
+double RDOOperation::getNextTimeInterval(PTR(RDOSimulator) sim) 
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	return m_pattern->getNextTimeInterval( static_cast<RDORuntime*>(sim) ); 
+}
+
+RDOOperation::RDOOperation(PTR(RDORuntime) runtime, CREF(RDOOperation) originForClone)
+	: RDOActivityPattern<RDOPatternOperation>(runtime, originForClone.m_pattern, originForClone.traceable(), originForClone.m_oprName)
+	, additionalCondition(NULL)
+{
+	setTrace( originForClone.traceable() );
+	haveAdditionalCondition = false;
+	setTraceID( runtime->getFreeActivityId() );
+
+	m_paramsCalcs.insert(m_paramsCalcs.begin(), originForClone.m_paramsCalcs.begin(), originForClone.m_paramsCalcs.end());
+	m_relResID   .insert(m_relResID   .begin(), originForClone.m_relResID   .begin(), originForClone.m_relResID   .end());
+	setTraceID(originForClone.getTraceID());
+	m_operId = runtime->getFreeOperationId();
 }
 
 } // namespace rdoRuntime

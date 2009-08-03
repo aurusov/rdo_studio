@@ -2,6 +2,7 @@
 #define RDOPARSER_LOGIC_H
 
 #include "rdoparser_object.h"
+#include <rdo_logic_interface.h>
 
 namespace rdoParse
 {
@@ -36,7 +37,7 @@ public:
 	const std::vector< Activity* >& getActivities() const { return m_activities; }
 
 protected:
-	RTLogic*                 m_rt_logic;
+	LPILogic                 m_rt_logic;
 
 private:
 	std::vector< Activity* > m_activities;

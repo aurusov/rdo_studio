@@ -231,6 +231,10 @@
 			Name=".rdo_simulator"
 			>
 			<File
+				RelativePath=".\rdo_exception.h"
+				>
+			</File>
+			<File
 				RelativePath="rdo_runtime.cpp"
 				>
 				<FileConfiguration
@@ -393,192 +397,6 @@
 			<Filter
 				Name=".rdo_kb"
 				>
-				<File
-					RelativePath="rdo.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_activity.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_activity.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_exception.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_ie.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_ie.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_keyboard.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_keyboard.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_operation.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_operation.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_pattern.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_pattern.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_rule.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_rule.h"
-					>
-				</File>
 				<Filter
 					Name=".rdo_logic"
 					>
@@ -611,6 +429,10 @@
 							RelativePath="rdoprocess.h"
 							>
 						</File>
+						<File
+							RelativePath=".\rdoprocess_interface.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="1. base"
@@ -639,6 +461,10 @@
 						</File>
 						<File
 							RelativePath="rdo_logic.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_logic_interface.h"
 							>
 						</File>
 					</Filter>
@@ -762,6 +588,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\searchtrace_interface.h"
+							>
+						</File>
+						<File
 							RelativePath="searchtree.cpp"
 							>
 							<FileConfiguration
@@ -797,6 +627,240 @@
 						</File>
 						<File
 							RelativePath=".\rdo_logic_dptfree.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name=".rdo_operations"
+					>
+					<Filter
+						Name="1. ie"
+						>
+						<File
+							RelativePath="rdo_ie.cpp"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="rdo_ie.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_ie_interface.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="3. operation"
+						>
+						<File
+							RelativePath="rdo_operation.cpp"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="rdo_operation.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_operation_interface.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="2. rule"
+						>
+						<File
+							RelativePath="rdo_rule.cpp"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="rdo_rule.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_rule_interface.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="4. keyboard"
+						>
+						<File
+							RelativePath="rdo_keyboard.cpp"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="rdo_keyboard.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_keyboard_interface.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="0. base"
+						>
+						<File
+							RelativePath="rdo.cpp"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="rdo.h"
+							>
+						</File>
+						<File
+							RelativePath="rdo_activity.cpp"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="rdo_activity.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_activity_interface.h"
+							>
+						</File>
+						<File
+							RelativePath="rdo_pattern.cpp"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="rdo_pattern.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_priority.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_priority_interface.h"
 							>
 						</File>
 					</Filter>
@@ -959,10 +1023,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\rdo_priority.h"
-			>
-		</File>
 		<Filter
 			Name=".interfaces"
 			>

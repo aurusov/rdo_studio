@@ -3,6 +3,7 @@
 
 #include "rdo.h"
 #include "rdo_runtime.h"
+#include "rdoprocess_interface.h"
 
 namespace rdoRuntime {
 
@@ -11,8 +12,13 @@ class RDOCalc;
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
-class RDOPROCBlock: public RDOBaseOperation
+class RDOPROCBlock: public IPROCBlock
 {
+RDO_IOBJECT(RDOPROCBlock);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IPROCBlock)
+QUERY_INTERFACE_END
+
 friend class RDOPROCTransact;
 friend class RDOPROCProcess;
 friend class RDOPROCResource;
@@ -20,15 +26,14 @@ friend class RDOPROCResource;
 public:
 	typedef std::list<PTR(RDOPROCTransact)> TransactList;
 
-	virtual void TransactGoIn( RDOPROCTransact* _transact );
-	virtual void TransactGoOut( RDOPROCTransact* _transact );
-
 protected:
 	RDOPROCProcess* process;
 	TransactList    transacts;
 
 	RDOPROCBlock( RDOPROCProcess* _process );
 	virtual ~RDOPROCBlock() {}
+
+	DECLARE_IPROCBlock;
 };
 
 // ----------------------------------------------------------------------------
@@ -58,14 +63,11 @@ protected:
 class RDOPROCResource;
 class RDOPROCTransact: public RDOResource
 {
-friend class RDOPROCProcess;
+//friend class RDOPROCProcess;
 
 public:
 	static int typeID;
-protected:
-	RDOPROCBlock* block;
-	RDOPROCResource *res;
-public:
+
 	RDOPROCResource* getRes()
 	{
 		return res;
@@ -74,9 +76,20 @@ public:
 	{
 		res = Res;
 	}
-	RDOPROCBlock* getBlock();
+	RDOPROCBlock* getBlock()
+	{
+		return block;
+	}
+	void setBlock(RDOPROCBlock* _block)
+	{
+		block = _block;
+	}
 	RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block );
 	void next();
+
+private:
+	RDOPROCBlock* block;
+	RDOPROCResource *res;
 };
 
 // ----------------------------------------------------------------------------
@@ -89,28 +102,32 @@ friend class RDOPROCRelease;
 protected: 
 	std::list<RDOPROCTransact*> transacts;
 public:
-	RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace );
+	RDOPROCResource( RDORuntime* _runtime, int _number, ruint type, bool _trace );
 	std::string whoAreYou() {return "procRes";	}
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-class RDOPROCGenerate: public RDOPROCBlock
+class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
 {
-protected:
-	double   timeNext;
-	RDOCalc* timeCalc;
-
-protected:
-	virtual void     onStart         ( RDOSimulator* sim );
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+RDO_IOBJECT(RDOPROCGenerate);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
 
 public:
-	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): 
-	  RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
 	void calcNextTimeInterval( RDOSimulator* sim );
+
+private:
+	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time )
+		: RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time )
+	{}
+
+	double       timeNext;
+	PTR(RDOCalc) timeCalc;
+
+	DECLARE_IBaseOperation;
 };
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForQueue
@@ -121,120 +138,67 @@ struct runtime_for_Queue
 	int Id_param;
 	RDOValue defaultValue;
 };
+
 struct parser_for_Queue
 {
 	int Id_res;
 	int Id_param;
 };
+
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
+public:
+	RDOPROCBlockForQueue( RDOPROCProcess* _process, parser_for_Queue From_Par );
+
 protected:
 	parser_for_Queue  fromParser;
 	runtime_for_Queue forRes;
 	virtual void onStart		  ( RDOSimulator* sim );
-
-public:
-	RDOPROCBlockForQueue( RDOPROCProcess* _process, parser_for_Queue From_Par );
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCQueue
 // ----------------------------------------------------------------------------
-class RDOPROCQueue: public RDOPROCBlockForQueue
+class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
-protected:
-	virtual bool onCheckCondition ( RDOSimulator* sim );
-	virtual BOResult onDoOperation( RDOSimulator* sim );
+RDO_IOBJECT(RDOPROCQueue);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
 
 public:
-	RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par ): 
-		RDOPROCBlockForQueue( _process, From_Par ){}
 	static int getDefaultValue()  { return 0; }
 	static std::string getQueueParamName(){ return "длина_очереди"; }
+
+private:
+	RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par )
+		: RDOPROCBlockForQueue( _process, From_Par )
+	{}
+
+	DECLARE_IBaseOperation;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCDepart
 // ----------------------------------------------------------------------------
-class RDOPROCDepart: public RDOPROCBlockForQueue
+class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
-protected:
-	virtual bool onCheckCondition ( RDOSimulator* sim );
-	virtual BOResult onDoOperation( RDOSimulator* sim );
+RDO_IOBJECT(RDOPROCDepart);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
 
 public:
-	RDOPROCDepart( RDOPROCProcess* _process, parser_for_Queue From_Par ): 
-		RDOPROCBlockForQueue( _process, From_Par ){}
 	static int getDefaultValue()  { return 0; }
 	static std::string getDepartParamName(){ return "длина_очереди"; }
-};
-/*
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCBlockForSeize
-// ----------------------------------------------------------------------------
-struct runtime_for_Seize
-{
-	RDOPROCResource* rss; 
-	int Id_param;
-	RDOValue     enum_free;
-	RDOValue     enum_buzy;
-	RDOValue	 enum_break;
-};
-struct parser_for_Seize
-{
-	int Id_res;
-	int Id_param;
-};
-class RDOPROCBlockForSeize: public RDOPROCBlock
-{
-protected:
-	runtime_for_Seize forRes;
-	parser_for_Seize  fromParser;
-	virtual void onStart( RDOSimulator* sim );
 
-public:
-	RDOPROCBlockForSeize( RDOPROCProcess* _process, parser_for_Seize From_Par );
-	static std::string getStateParamName() {return "Состояние";}
-	static std::string getStateEnumFree()  {return "Свободен"; }
-	static std::string getStateEnumBuzy()  {return "Занят";    }
-	static std::string getStateEnumBreak() {return "Сломан";    }
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCSeize
-// ----------------------------------------------------------------------------
-class RDOPROCSeize: public RDOPROCBlockForSeize
-{
 private:
-	unsigned int index;
-	virtual bool onCheckCondition ( RDOSimulator* sim );
-	virtual BOResult onDoOperation( RDOSimulator* sim );
-
-public:
-	RDOPROCSeize( RDOPROCProcess* _process, parser_for_Seize From_Par ): 
-		RDOPROCBlockForSeize( _process, From_Par )
-	{
-		static unsigned int g_index = 1;
-		index = g_index++;
-	}
-	virtual void TransactGoIn ( RDOPROCTransact* _transact );
-	virtual void TransactGoOut( RDOPROCTransact* _transact );
+	RDOPROCDepart( RDOPROCProcess* _process, parser_for_Queue From_Par )
+		: RDOPROCBlockForQueue( _process, From_Par )
+	{}
+	DECLARE_IBaseOperation;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCRelease
-// ----------------------------------------------------------------------------
-class RDOPROCRelease: public RDOPROCBlockForSeize
-{
-private:
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-
-public:
-	RDOPROCRelease( RDOPROCProcess* _process, parser_for_Seize From_Par ): 
-	  RDOPROCBlockForSeize( _process, From_Par ) {}
-};
-*/
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeizes
 // ----------------------------------------------------------------------------
@@ -246,69 +210,87 @@ struct runtime_for_Seize
 	RDOValue     enum_buzy;
 	RDOValue	 enum_break;
 };
+
 struct parser_for_Seize
 {
 	int Id_res;
 	int Id_param;
 };
+
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
-protected:
-	std::vector < runtime_for_Seize > forRes;
-	std::vector < parser_for_Seize > fromParser;
-	virtual void onStart( RDOSimulator* sim );
-
 public:
 	RDOPROCBlockForSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par );
 	static std::string getStateParamName() {return "Состояние";}
 	static std::string getStateEnumFree()  {return "Свободен"; }
 	static std::string getStateEnumBuzy()  {return "Занят";    }
+
+protected:
+	std::vector < runtime_for_Seize > forRes;
+	std::vector < parser_for_Seize > fromParser;
+	virtual void onStart( RDOSimulator* sim );
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeizes
 // ----------------------------------------------------------------------------
-class RDOPROCSeize: public RDOPROCBlockForSeize
+class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
-private:
-	unsigned int index;
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+RDO_IOBJECT(RDOPROCSeize);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
 
 public:
-	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
-	  RDOPROCBlockForSeize( _process, From_Par ) 
-	  {
-	  static unsigned int g_index = 1;
-	  index = g_index++;
-	  }
 	virtual void TransactGoIn( RDOPROCTransact* _transact );
 	virtual void TransactGoOut( RDOPROCTransact* _transact );
+
+private:
+	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par )
+		: RDOPROCBlockForSeize( _process, From_Par )
+	{
+		static ruint g_index = 1;
+		index = g_index++;
+	}
+
+	ruint index;
+
+	DECLARE_IBaseOperation;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCReleases
 // ----------------------------------------------------------------------------
-class RDOPROCRelease: public RDOPROCBlockForSeize
+class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
-private:
-	unsigned int index;
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
+RDO_IOBJECT(RDOPROCRelease);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
 
-public:
-	RDOPROCRelease( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par ): 
-	  RDOPROCBlockForSeize( _process, From_Par ) 
-	  {
-	  static unsigned int g_index = 1;
-	  index = g_index++;
-	  }
+private:
+	RDOPROCRelease( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par )
+		: RDOPROCBlockForSeize( _process, From_Par )
+	{
+		static ruint g_index = 1;
+		index = g_index++;
+	}
+
+	ruint index;
+
+	DECLARE_IBaseOperation;
 };
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-class RDOPROCAdvance: public RDOPROCBlock
+class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
+RDO_IOBJECT(RDOPROCAdvance);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
+
 protected:
 	RDOCalc* delayCalc;
 
@@ -323,48 +305,57 @@ protected:
 	};
 	std::list< LeaveTr > leave_list;
 
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-
-public:
-	RDOPROCAdvance( RDOPROCProcess* _process, RDOCalc* _delayCalc ): RDOPROCBlock( _process ), delayCalc( _delayCalc ) {}
+private:
+	RDOPROCAdvance( RDOPROCProcess* _process, RDOCalc* _delayCalc )
+		: RDOPROCBlock( _process ), delayCalc( _delayCalc )
+	{}
+	DECLARE_IBaseOperation;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
-class RDOPROCTerminate: public RDOPROCBlock
+class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {
-protected:
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation	 ( RDOSimulator* sim );
-	const ruint term; 
+RDO_IOBJECT(RDOPROCTerminate);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
 
 public:
 	int getTerm() {return term;}
-	RDOPROCTerminate(RDOPROCProcess* _process, ruint _term): RDOPROCBlock( _process ), term(_term) {}
+
+private:
+	RDOPROCTerminate(RDOPROCProcess* _process, ruint _term)
+		: RDOPROCBlock( _process ), term(_term)
+	{}
+	const ruint term; 
+	DECLARE_IBaseOperation;
 };
 
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-class RDOPROCAssign: public RDOPROCBlock
+class RDOPROCAssign: public RDOPROCBlock, public IBaseOperation
 {
-protected:
+RDO_IOBJECT(RDOPROCAssign);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IBaseOperation)
+QUERY_INTERFACE_END
+
+private:
+	RDOPROCAssign( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param )
+		: RDOPROCBlock( _process ), paramValue( value ), t_resId( Id_res ), t_parId( Id_param )
+	{
+		int i = 0;
+	}
+
 	RDOCalc* paramValue;
 	int t_resId;
 	int t_parId;
-protected:
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
-public:
-	RDOPROCAssign( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param ): 
-	  RDOPROCBlock( _process ), paramValue( value ), t_resId( Id_res ), t_parId( Id_param ) 
-	  {
-		int i = 0;
-	  }
+	DECLARE_IBaseOperation;
 };
 
 } // namespace rdoRuntime

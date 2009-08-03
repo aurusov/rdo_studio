@@ -190,7 +190,7 @@ void RDOSimulatorBase::rdoPostProcess()
 	}
 }
 
-void RDOSimulatorBase::addTimePoint( double timePoint, RDOBaseOperation* opr, void* param )
+void RDOSimulatorBase::addTimePoint(double timePoint, CREF(LPIBaseOperation) opr, void* param)
 {
 	BOPlannedItem* list = NULL;
 	if ( opr && (m_timePoints.find( timePoint ) == m_timePoints.end() || m_timePoints[timePoint] == NULL) ) {
@@ -202,7 +202,7 @@ void RDOSimulatorBase::addTimePoint( double timePoint, RDOBaseOperation* opr, vo
 	}
 }
 
-void RDOSimulatorBase::removeTimePoint( const RDOBaseOperation* opr )
+void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 {
 	BOPlannedMap::iterator it = m_timePoints.begin();
 	while ( it != m_timePoints.end() )

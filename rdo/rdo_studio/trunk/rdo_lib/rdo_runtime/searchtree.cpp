@@ -82,11 +82,11 @@ void TreeNode::ExpandChildren()
 	// Только для статистики
 	m_root->m_expandedNodesCount++;
 
-	int s = m_root->m_dp->activities.size();
+	int s = m_root->m_dp->m_activityList.size();
 
 	// Бегаем по всем активностям самой точки
-	for ( std::list< RDODPTSearch::Activity* >::iterator i = m_root->m_dp->activities.begin(); i != m_root->m_dp->activities.end(); i++ ) {
-		m_currAct  = (*i);
+	for ( RDODPTSearch::ActivityList::iterator i = m_root->m_dp->m_activityList.begin(); i != m_root->m_dp->m_activityList.end(); i++ ) {
+		m_currAct  = i->get();
 		m_childSim = m_sim->createCopy();
 #ifdef _DEBUG
 		if ( static_cast<RDORuntime*>(m_childSim)->checkState() ) {

@@ -9,6 +9,28 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOActivity
 // ----------------------------------------------------------------------------
+void RDOActivity::addParamCalc(PTR(rdoRuntime::RDOCalc) calc)
+{
+	m_paramsCalcs.push_back( calc );
+}
+
+int RDOActivity::getResByRelRes(ruint rel_res_id) const
+{
+	if ( m_relResID.size() <= rel_res_id ) {
+		return 0;
+	}
+	return m_relResID.at( rel_res_id ); 
+}
+
+void RDOActivity::setRelRes(ruint rel_res_id, ruint res_id)
+{
+	if ( m_relResID.size() <= rel_res_id )
+	{
+		m_relResID.resize( rel_res_id + 1 );
+	}
+	m_relResID[rel_res_id] = res_id; 
+}
+
 void RDOActivity::setPatternParameters(RDOSimulator *sim) 
 {
 	RDORuntime* runtime = static_cast<RDORuntime*>(sim);

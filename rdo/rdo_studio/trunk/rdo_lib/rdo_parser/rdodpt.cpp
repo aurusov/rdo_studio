@@ -125,10 +125,17 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 		}
 		parser()->error_push_done();
 	}
-	if ( m_pattern->getType() == RDOPATPattern::PT_Keyboard && !static_cast<rdoRuntime::RDOKeyboard*>(m_activity)->hasHotKey() ) {
-		if ( dynamic_cast<RDOOPROperation*>(this) ) {
+//todo: проверить работу с интерфейсом
+	LPIKeyboard keyboard = m_activity;
+	ASSERT(keyboard);
+	if (m_pattern->getType() == RDOPATPattern::PT_Keyboard && !keyboard->hasHotKey())
+	{
+		if (dynamic_cast<RDOOPROperation*>(this))
+		{
 			parser()->error_push_only( _param_pos, "Для клавиатурной операции должна быть указана клавиша" );
-		} else {
+		}
+		else
+		{
 			parser()->error_push_only( _param_pos, "Для активности должна быть указана клавиша" );
 		}
 		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
@@ -138,7 +145,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 
 bool RDODPTActivity::setPrior(RDOFUNArithm* prior)
 {
-	rdoRuntime::RDOPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOPatternPrior*>(m_activity);
+	LPIPriority prior_activity = m_activity;
 	if (prior_activity)
 	{
 		return prior_activity->setPrior(prior->createCalc());
@@ -191,7 +198,11 @@ void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& 
 		parser()->error_push_only( pattern()->src_info(), "См. образец" );
 		parser()->error_push_done();
 	}
-	switch ( static_cast<rdoRuntime::RDOKeyboard*>(m_activity)->addHotKey( parser()->runtime(), hotKey ) ) {
+//! todo: проверить работу с интерфейсами
+	LPIKeyboard keyboard = m_activity;
+	ASSERT(keyboard);
+	switch (keyboard->addHotKey(parser()->runtime(), hotKey))
+	{
 		case rdoRuntime::RDOKeyboard::addhk_ok      : {
 			break;
 		}
@@ -260,10 +271,11 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 
 bool RDODPTSome::setPrior(RDOFUNArithm* prior)
 {
-	rdoRuntime::RDOPatternPrior* prior_activity = dynamic_cast<rdoRuntime::RDOPatternPrior*>(m_rt_logic);
-	if (prior_activity)
+//0
+	LPIPriority priority = m_rt_logic;
+	if (priority)
 	{
-		return prior_activity->setPrior(prior->createCalc());
+		return priority->setPrior(prior->createCalc());
 	}
 	return false;
 }
@@ -325,13 +337,14 @@ void RDODPTSearch::end()
 	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 
-	m_rt_logic = new rdoRuntime::RDODPTSearchRuntime( parser()->runtime(),
+	m_rt_logic = F(rdoRuntime::RDODPTSearchRuntime)::create( parser()->runtime(),
 		condCalc,
 		termCalc,
 		m_evalBy->createCalc(),
-		m_compTops );
-
-	m_rt_logic->traceFlag = m_trace;
+		m_compTops,
+		m_trace );
+	//0
+	ASSERT(m_rt_logic);
 
 	int size = getActivities().size();
 	for ( int i = 0; i < size; i++ ) {

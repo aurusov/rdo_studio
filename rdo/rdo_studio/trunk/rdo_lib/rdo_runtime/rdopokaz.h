@@ -27,8 +27,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOPMDPokaz: public RDOPokazTrace, public IName
 {
-RDO_IOBJECT(RDOPMDPokaz, RDOPokazTrace);
+RDO_IOBJECT(RDOPMDPokaz);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPokazTrace)
 	QUERY_INTERFACE(IName)
 QUERY_INTERFACE_END
 
@@ -48,8 +49,9 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchPar: public RDOPMDPokaz, public IPokaz, public IModelStructure, public INotify
 {
-RDO_IOBJECT(RDOPMDWatchPar, RDOPMDPokaz);
+RDO_IOBJECT(RDOPMDWatchPar);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
 	QUERY_INTERFACE(IModelStructure)
 	QUERY_INTERFACE(IPokazTraceValue)
@@ -86,8 +88,9 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchState: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDWatchState, RDOPMDPokaz);
+RDO_IOBJECT(RDOPMDWatchState);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
 	QUERY_INTERFACE(IModelStructure)
 	QUERY_INTERFACE(IPokazTraceValue)
@@ -119,8 +122,9 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchQuant: public RDOPMDPokaz, public IPokaz, public IPokazWatchQuant, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDWatchQuant, RDOPMDPokaz);
+RDO_IOBJECT(RDOPMDWatchQuant);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
 	QUERY_INTERFACE(IPokazTraceValue)
 	QUERY_INTERFACE(IPokazWatchQuant)
@@ -155,8 +159,9 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchValue: public RDOPMDPokaz, public IPokaz, public IPokazWatchValue, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDWatchValue, RDOPMDPokaz);
+RDO_IOBJECT(RDOPMDWatchValue);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
 	QUERY_INTERFACE(IPokazTraceValue)
 	QUERY_INTERFACE(IPokazWatchValue)
@@ -189,8 +194,9 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDGetValue, RDOPMDPokaz);
+RDO_IOBJECT(RDOPMDGetValue);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
 	QUERY_INTERFACE(IModelStructure)
 	QUERY_INTERFACE(IPokazTraceValue)

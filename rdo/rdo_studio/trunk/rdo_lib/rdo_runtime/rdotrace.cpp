@@ -50,9 +50,9 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
 {
 	if ( !canTrace() ) return;
 
-	RDOSimulatorTrace* simTr  = (RDOSimulatorTrace*)sim;
-	RDOActivityTrace*  actTr  = (RDOActivityTrace*)node->m_activity;
-	RDORule*           ruleTr = (RDORule*)actTr->rule();
+	RDOSimulatorTrace*  simTr = (RDOSimulatorTrace*)sim;
+	RDOActivityTrace*   actTr = (RDOActivityTrace*)node->m_activity;
+	REF(LPIRule)       ruleTr = actTr->rule();
 
 	getOStream() << node->m_number
 	             << " " << actTr->traceId()
@@ -262,33 +262,38 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
-	RDOLogic::CIterator it = sim->m_logics.begin();
-	while ( it != sim->m_logics.end() ) {
-		RDODPTSearchTrace* dp = dynamic_cast<RDODPTSearchTrace*>(*it);
-		if ( dp ) {
+	IBaseOperationContainer::CIterator it = sim->m_metaLogic->begin();
+	while (it != sim->m_metaLogic->end())
+	{
+		LPIDPTSearchTraceStatistics dp_stat = (*it);
+		if (dp_stat)
+		{
+			LPITrace dp_trace = dp_stat;
+			ASSERT(dp_trace);
 			// Информация о точке
 			getOStream() << std::endl << getEOL();
 			getOStream() << "DPS_C"
-			             << "  " << dp->getTraceID()
-			             << "  " << dp->calc_cnt
-			             << "  " << dp->calc_res_found_cnt
+			             << "  " << dp_trace->getTraceID()
+			             << "  " << dp_stat->getCalcCnt()
+			             << "  " << dp_stat->getCalcResFoundCnt()
 			             << std::endl << getEOL();
-			if ( dp->calc_cnt ) {
+			if (dp_stat->getCalcCnt())
+			{
 				// Время поиска
 				double d_min = 0;
 				double d_max = 0;
 				double d_med = 0;
-				dp->getStats( dp->calc_times, d_min, d_max, d_med );
+				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_TIMES, d_min, d_max, d_med);
 				getOStream() << rdo::format( "DPS_TM %0.3f  %0.3f  %0.3f", d_med, d_min, d_max ) << std::endl << getEOL();
 
 				// Используемая память
 				unsigned int ui_min = 0;
 				unsigned int ui_max = 0;
-				dp->getStats( dp->calc_mems, ui_min, ui_max, d_med );
+				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_MEMORY, ui_min, ui_max, d_med);
 				getOStream() << rdo::format( "DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
 
 				// Стоимость решения
-				dp->getStats( dp->calc_cost, d_min, d_max, d_med );
+				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_COST, d_min, d_max, d_med);
 				getOStream() << "DPS_CO"
 				             << " "  << d_med
 				             << "  " << d_min
@@ -296,19 +301,19 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 				             << std::endl << getEOL();
 
 				// Количество раскрытых вершин
-				dp->getStats( dp->calc_nodes_expended, ui_min, ui_max, d_med );
+				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_EXPENDED, ui_min, ui_max, d_med);
 				getOStream() << rdo::format( "DPS_TO %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
 
 				// Количество вершин в графе
-				dp->getStats( dp->calc_nodes_in_graph, ui_min, ui_max, d_med );
+				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH, ui_min, ui_max, d_med);
 				getOStream() << rdo::format( "DPS_TT %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
 
 				// Количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути)
-				dp->getStats( dp->calc_nodes, ui_min, ui_max, d_med );
+				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES, ui_min, ui_max, d_med);
 				getOStream() << rdo::format( "DPS_TI %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
 
 				// Общее количество порожденных вершин-преемников
-				dp->getStats( dp->calc_nodes_full, ui_min, ui_max, d_med );
+				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_FULL, ui_min, ui_max, d_med);
 				getOStream() << rdo::format( "DPS_TG %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
 			}
 		}

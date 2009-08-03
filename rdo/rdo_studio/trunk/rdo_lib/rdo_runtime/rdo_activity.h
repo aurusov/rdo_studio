@@ -3,6 +3,8 @@
 
 #include "rdo.h"
 #include "rdo_resource.h"
+#include "rdo_model_interface.h"
+#include "rdo_activity_interface.h"
 #include <rdostream.h>
 
 namespace rdoRuntime {
@@ -10,31 +12,16 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOActivity
 // ----------------------------------------------------------------------------
-class RDOActivity: public RDOBaseOperation, public RDOTraceableObject
+class RDOActivity: public RDOTraceableObject, public IActivity
 {
-public:
-	void addParamCalc( RDOCalc* calc )
-	{
-		m_paramsCalcs.push_back( calc );
-	}
-	int getResByRelRes( unsigned int rel_res_id ) const
-	{
-		if ( m_relResID.size() <= rel_res_id ) {
-			return 0;
-		}
-		return m_relResID.at( rel_res_id ); 
-	}
-	void setRelRes( unsigned int rel_res_id, unsigned int res_id )
-	{
-		if ( m_relResID.size() <= rel_res_id ) {
-			m_relResID.resize( rel_res_id + 1 );
-		}
-		m_relResID[rel_res_id] = res_id; 
-	}
+RDO_IOBJECT(RDOActivity);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOTraceableObject)
+	QUERY_INTERFACE(IActivity)
+QUERY_INTERFACE_END
 
 protected:
-	RDOActivity( RDORuntimeParent* parent, bool trace, const std::string& name ):
-		RDOBaseOperation( parent ),
+	RDOActivity( RDORuntimeParent* parent, bool trace, CREF(tstring) name ):
 		RDOTraceableObject( trace ),
 		m_oprName( name )
 	{}
@@ -58,26 +45,36 @@ protected:
 
 	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim );
 	std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true );
+
+private:
+	DECLARE_IActivity;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOActivityPattern
 // ----------------------------------------------------------------------------
 template< class T >
-class RDOActivityPattern: public RDOActivity
+class RDOActivityPattern: public RDOActivity, public IModelStructure
 {
+typedef RDOActivityPattern<T> _this_type;
+RDO_IOBJECT(_this_type);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOActivity)
+	QUERY_INTERFACE(IModelStructure)
+QUERY_INTERFACE_END
+
 public:
-	void writeModelStructure( rdo::textstream& stream )
+	void writeModelStructure(REF(std::ostream) stream) const
 	{
 		stream << m_oprName << " " << tracePatternId() << std::endl;
 	}
-	const std::string& tracePatternId() const
+	CREF(tstring) tracePatternId() const
 	{
 		return m_pattern->traceId();
 	}
 
 protected:
-	RDOActivityPattern( RDORuntimeParent* parent, T* pattern, bool trace, const std::string& name ):
+	RDOActivityPattern( RDORuntimeParent* parent, T* pattern, bool trace, CREF(tstring) name ):
 		RDOActivity( parent, trace, name ),
 		m_pattern( pattern )
 	{

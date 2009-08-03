@@ -2,6 +2,7 @@
 #define RDOBASE_H
 
 #include "rdoruntime_object.h"
+#include "rdo_runtime_interface_registrator.h"
 #include <rdocommon.h>
 
 #include <windows.h>
@@ -33,8 +34,8 @@ public:
 	double getShowRate() const                 { return m_showRate;    }
 	void setShowRate( double value );
 
-	void addTimePoint   ( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL );
-	void removeTimePoint( const RDOBaseOperation* opr );
+	void addTimePoint   (double timePoint, CREF(LPIBaseOperation) opr, void* param = NULL);
+	void removeTimePoint(CREF(LPIBaseOperation) opr);
 
 	void inc_cnt_events()      { m_cnt_events++;      }
 	void inc_cnt_choice_from() { m_cnt_choice_from++; }
@@ -55,12 +56,13 @@ protected:
 	RDOSimulatorBase();
 	virtual ~RDOSimulatorBase() {}
 
-	struct BOPlanned {
-		RDOBaseOperation* m_opr;
+	struct BOPlanned
+	{
+		LPIBaseOperation  m_opr;
 		void*             m_param;
-		BOPlanned()                                           : m_opr( NULL )      , m_param( NULL )         {}
-		BOPlanned( const BOPlanned& copy )                    : m_opr( copy.m_opr ), m_param( copy.m_param ) {}
-		BOPlanned( RDOBaseOperation* opr, void* param = NULL ): m_opr( opr )       , m_param( param )        {}
+		BOPlanned()                                          : m_opr( NULL )      , m_param( NULL )         {}
+		BOPlanned( const BOPlanned& copy )                   : m_opr( copy.m_opr ), m_param( copy.m_param ) {}
+		BOPlanned( LPIBaseOperation opr, void* param = NULL ): m_opr( opr )       , m_param( param )        {}
 	};
 	typedef std::list< BOPlanned >              BOPlannedItem;
 	typedef std::map< double, BOPlannedItem* >  BOPlannedMap;

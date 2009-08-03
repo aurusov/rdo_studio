@@ -2,6 +2,7 @@
 #define RDO_KEYBOARD_H
 
 #include "rdo_operation.h"
+#include "rdo_keyboard_interface.h"
 
 namespace rdoRuntime
 {
@@ -9,21 +10,18 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOKeyboard
 // ----------------------------------------------------------------------------
-class RDOKeyboard: public RDOOperation
+class RDOKeyboard: public RDOOperation, public IKeyboard
 {
+RDO_IOBJECT(RDOKeyboard);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOOperation)
+	QUERY_INTERFACE(IKeyboard)
+QUERY_INTERFACE_END
+
 public:
 	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, const std::string& name );
 	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, RDOCalc* condition, const std::string& name );
 	virtual ~RDOKeyboard();
-
-	enum AddHotKey {
-		addhk_ok,
-		addhk_already,
-		addhk_notfound,
-		addhk_dont
-	};
-	AddHotKey addHotKey( RDORuntime* runtime, const std::string& hotKey );
-	bool hasHotKey() const { return m_scan_code != -1 ? true : false; }
 
 private:
 	bool m_shift;
@@ -31,6 +29,8 @@ private:
 	int  m_scan_code;
 
 	virtual bool choiceFrom( RDOSimulator* sim );
+
+	DECLARE_IKeyboard;
 };
 
 } // namespace rdoRuntime

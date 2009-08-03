@@ -54,7 +54,7 @@ public:
 	RDODPTActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
 	const std::string&       name() const     { return src_info().src_text(); }
-	rdoRuntime::RDOActivity* activity() const { return m_activity;            }
+	LPIBaseOperation         activity() const { return m_activity;            }
 	const RDOPATPattern*     pattern() const  { return m_pattern;             }
 
 	void addParam( const RDOValue& param  );
@@ -63,7 +63,7 @@ public:
 	bool setPrior( RDOFUNArithm* prior );
 
 protected:
-	rdoRuntime::RDOActivity* m_activity;
+	LPIActivity           m_activity;
 
 private:
 	unsigned int          m_currParam;

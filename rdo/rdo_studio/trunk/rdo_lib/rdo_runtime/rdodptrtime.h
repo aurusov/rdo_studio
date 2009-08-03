@@ -15,7 +15,7 @@ namespace rdoRuntime
 class RDOSearchActivityRuntime: public RDOActivityTrace
 {
 public:
-	RDOSearchActivityRuntime( RDORule* r, ValueTime valueTime, RDOCalc* cost ):
+	RDOSearchActivityRuntime(CREF(LPIRule) r, ValueTime valueTime, RDOCalc* cost ):
 		RDOActivityTrace( r, valueTime ),
 		m_cost( cost )
 	{
@@ -35,8 +35,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
-public:
-	RDODPTSearchRuntime( RDORuntime* runtime, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops ):
+private:
+	RDODPTSearchRuntime( RDORuntime* runtime, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
 		RDODPTSearchTrace( runtime ),
 		condition( _condition ),
 		termCondition( _termCondition ),
@@ -44,9 +44,9 @@ public:
 		compTops( _compTops )
 	{
 		setTraceID( runtime->getFreeDPTId() );
+		traceFlag = _traceFlag;
 	}
 
-private:
 	RDOCalc* condition;
 	RDOCalc* termCondition;
 	RDOCalc* evaluateBy;
