@@ -66,7 +66,7 @@ private:
 	}
 };
 
-class MyClass2: public MyClass, public IMy3, public rdo::IGetUnknown
+class MyClass2: public MyClass, public IMy3
 {
 RDO_IOBJECT(MyClass2);
 QUERY_INTERFACE_BEGIN
@@ -85,12 +85,12 @@ private:
 	}
 	void fun3()
 	{
-		rdo::Interface<IMy1> int1 = rdo::UnknownPointer(this);
+		rdo::Interface<IMy1> int1 = rdo::UnknownPointer(*this);
 		std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };
 
-class MyClass3: public IMy3, public rdo::IGetUnknown
+class MyClass3: public IMy3
 {
 RDO_IOBJECT(MyClass3);
 QUERY_INTERFACE_BEGIN

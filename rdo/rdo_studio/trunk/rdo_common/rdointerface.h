@@ -44,8 +44,6 @@ OPEN_RDO_NAMESPACE
 
 class IUnknown;
 typedef PTR(IUnknown) LPIUnknown;
-class IGetUnknown;
-typedef PTR(IGetUnknown) LPIGetUnknown;
 
 template<class T> class Interface;
 
@@ -53,8 +51,7 @@ class UnknownPointer
 {
 public:
 	UnknownPointer ();
-	UnknownPointer (REF(IUnknown) smt_ptr    );
-	UnknownPointer (LPIGetUnknown get_smt_ptr);
+	UnknownPointer (REF(IUnknown) smt_ptr);
 	UnknownPointer (PTR(void) aInterface, LPIUnknown smt_ptr);
 	UnknownPointer (CREF(UnknownPointer) unknowPointer);
 	~UnknownPointer();
@@ -131,13 +128,6 @@ public:
 };
 typedef PTR(IUnknown) LPIUnknown;
 
-class IGetUnknown
-{
-public:
-	virtual LPIUnknown GetUnknown() = 0;
-};
-typedef PTR(IGetUnknown) LPIGetUnknown;
-
 inline UnknownPointer::UnknownPointer()
 	: m_interface(NULL)
 	, m_smt_ptr  (NULL)
@@ -147,14 +137,6 @@ inline UnknownPointer::UnknownPointer(REF(IUnknown) smt_ptr)
 	: m_interface(NULL   )
 	, m_smt_ptr  (&smt_ptr)
 {
-	if (m_smt_ptr)
-		m_smt_ptr->AddRef();
-}
-
-inline UnknownPointer::UnknownPointer(LPIGetUnknown get_smt_ptr)
-	: m_interface(NULL)
-{
-	m_smt_ptr = get_smt_ptr ? get_smt_ptr->GetUnknown() : NULL;
 	if (m_smt_ptr)
 		m_smt_ptr->AddRef();
 }
@@ -244,85 +226,44 @@ template <class T>
 class Factory
 {
 public:
-	class Object: public T
-	{
-	public:
-		Object()                                                                                         : T()                           { create(); }
-
-		template <typename P1>
-		Object(CREF(P1) p1)                                                                              : T(p1)                         { create(); }
-
-		template <typename P1, typename P2>
-		Object(CREF(P1) p1, CREF(P2) p2)                                                                 : T(p1, p2)                     { create(); }
-
-		template <typename P1, typename P2, typename P3>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)                                                    : T(p1, p2, p3)                 { create(); }
-	
-		template <typename P1, typename P2, typename P3, typename P4>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)                                       : T(p1, p2, p3, p4)             { create(); }
-	
-		template <typename P1, typename P2, typename P3, typename P4, typename P5>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)                          : T(p1, p2, p3, p4, p5)         { create(); }
-	
-		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)             : T(p1, p2, p3, p4, p5, p6)     { create(); }
-	
-		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7): T(p1, p2, p3, p4, p5, p6, p7) { create(); }
-
-		virtual ~Object()
-		{}
-
-		virtual LPIUnknown GetUnknown()
-		{
-			return m_counter;
-		}
-	private:
-		void create()
-		{
-			m_counter = new Counter(this);
-		}
-		LPIUnknown m_counter;
-	};
-
 	static UnknownPointer create()
 	{
-		return new Object();
+		return _create(new T());
 	}
 	template <typename P1>
 	static UnknownPointer create(CREF(P1) p1)
 	{
-		return new Object(p1);
+		return _create(new T(p1));
 	}
 	template <typename P1, typename P2>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2)
 	{
-		return new Object(p1, p2);
+		return _create(new T(p1, p2));
 	}
 	template <typename P1, typename P2, typename P3>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
 	{
-		return new Object(p1, p2, p3);
+		return _create(new T(p1, p2, p3));
 	}
 	template <typename P1, typename P2, typename P3, typename P4>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
 	{
-		return new Object(p1, p2, p3, p4);
+		return _create(new T(p1, p2, p3, p4));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
 	{
-		return new Object(p1, p2, p3, p4, p5);
+		return _create(new T(p1, p2, p3, p4, p5));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
 	{
-		return new Object(p1, p2, p3, p4, p5, p6);
+		return _create(new T(p1, p2, p3, p4, p5, p6));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 	{
-		return new Object(p1, p2, p3, p4, p5, p6, p7);
+		return _create(new T(p1, p2, p3, p4, p5, p6, p7));
 	}
 	static void destroy(PTR(T) obj)
 	{
@@ -381,17 +322,14 @@ CLOSE_RDO_NAMESPACE
 #define F(A) rdo::Factory<A>
 
 #define DEFINE_THIS_TYPE(A)    typedef A this_type;
-#define DEFINE_FACTORY(A)      friend class rdo::Factory<A>; friend class rdo::Factory<A>::Object;
+#define DEFINE_FACTORY(A)      friend class rdo::Factory<A>;
 #define DEFINE_CLASS_NAME(A)   static std::string className() { return #A; }
 
-/*
+#define RDO_IOBJECT(A) \
 private: \
 rdo::LPIUnknown m_counter; \
 operator rdo::UnknownPointer()       { return rdo::UnknownPointer(NULL, m_counter); } \
 operator rdo::UnknownPointer() const { return rdo::UnknownPointer(NULL, m_counter); } \
-*/
-
-#define RDO_IOBJECT(A) \
 protected: \
 DEFINE_THIS_TYPE(A) \
 DEFINE_FACTORY(A) \
