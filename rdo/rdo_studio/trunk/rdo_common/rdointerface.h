@@ -325,12 +325,12 @@ CLOSE_RDO_NAMESPACE
 #define DEFINE_FACTORY(A)      friend class rdo::Factory<A>;
 #define DEFINE_CLASS_NAME(A)   static std::string className() { return #A; }
 
-//operator rdo::UnknownPointer       () { return rdo::UnknownPointer(NULL, m_counter); } \
-//operator rdo::UnknownPointer const () { return rdo::UnknownPointer(NULL, m_counter); } \
-
 #define RDO_IOBJECT(A) \
-protected: \
+private: \
 rdo::LPIUnknown m_counter; \
+operator rdo::UnknownPointer()       { return rdo::UnknownPointer(NULL, m_counter); } \
+operator rdo::UnknownPointer() const { return rdo::UnknownPointer(NULL, m_counter); } \
+protected: \
 DEFINE_THIS_TYPE(A) \
 DEFINE_FACTORY(A) \
 public: \

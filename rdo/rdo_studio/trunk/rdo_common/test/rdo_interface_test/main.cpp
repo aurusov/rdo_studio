@@ -75,9 +75,6 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-operator rdo::UnknownPointer () { return rdo::UnknownPointer(); }
-
-private:
 	MyClass2(int i): MyClass(i)
 	{
 		std::cout << "MyClass2(int " << i << ");" << std::endl;
@@ -88,7 +85,7 @@ private:
 	}
 	void fun3()
 	{
-		rdo::UnknownPointer(this);
+		rdo::Interface<IMy1> int1 = rdo::UnknownPointer(*this);
 		std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };
