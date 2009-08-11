@@ -11,7 +11,13 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 class RDODPTSome: public RDOLogic, public RDOPatternPrior
 {
-public:
+DEFINE_FACTORY(RDODPTSome);
+QUERY_INTERFACE_BEGIN
+QUERY_INTERFACE_PARENT(RDOLogic)
+QUERY_INTERFACE_PARENT(RDOPatternPrior)
+QUERY_INTERFACE_END
+
+private:
 	RDODPTSome (RDOSimulator* sim);
 	virtual ~RDODPTSome();
 };

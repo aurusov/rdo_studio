@@ -15,7 +15,7 @@ namespace rdoRuntime {
 class RDOIrregEvent: public IBaseOperation, public IIrregEvent, public RDOActivityPattern<RDOPatternIrregEvent>
 {
 typedef RDOActivityPattern<RDOPatternIrregEvent> pattern_type;
-RDO_IOBJECT(RDOIrregEvent);
+DEFINE_FACTORY(RDOIrregEvent);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(pattern_type)
 	QUERY_INTERFACE(IBaseOperation)
@@ -24,10 +24,9 @@ QUERY_INTERFACE_END
 
 friend class RDOTrace;
 
-public:
+private:
 	RDOIrregEvent( RDORuntime* runtime, RDOPatternIrregEvent* pattern, bool trace, const std::string& name );
 
-private:
 	double  m_time;
 
 	void convertEvent( RDOSimulator* sim );

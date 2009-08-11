@@ -15,19 +15,19 @@ class RDOSimulator: public RDOSimulatorBase
 friend class RDOTrace;
 
 public:
-	RDOSimulator():
-		RDOSimulatorBase(),
-		opr_must_continue( NULL ),
-		m_sizeof_sim( 0 )
+	RDOSimulator()
+		: RDOSimulatorBase( )
+		, m_sizeof_sim    (0)
 	{
+		m_metaLogic = F(RDOLogic)::create();
 	}
 	virtual ~RDOSimulator()
-	{
-	}
+	{}
 
 	void appendLogic(CREF(LPIBaseOperation) logic)
 	{
-		m_metaLogic->append(logic);
+		ASSERT(m_metaLogic);
+		m_metaLogic.query_cast<ILogic>()->appendLogic(logic);
 	}
 
 	LPIBaseOperation getMustContinueOpr() const           { return opr_must_continue;  }
@@ -44,7 +44,7 @@ public:
 	// 2. Сравнение двух симуляторов по ресурсам
 	virtual bool operator == ( RDOSimulator& other ) = 0;
 
-	unsigned int getSizeofSim() const
+	ruint getSizeofSim() const
 	{
 		return m_sizeof_sim;
 	}
@@ -66,7 +66,7 @@ protected:
 	virtual void onCheckPokaz()      = 0;
 	virtual void onAfterCheckPokaz() = 0;
 
-	unsigned int m_sizeof_sim;
+	ruint m_sizeof_sim;
 
 private:
 	LPIBaseOperationContainer m_metaLogic;

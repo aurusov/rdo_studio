@@ -16,7 +16,7 @@ namespace rdoRuntime {
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior, public RDORuntimeContainer
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
-RDO_IOBJECT(RDORule);
+DEFINE_FACTORY(RDORule);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(pattern_type)
 	QUERY_INTERFACE_PARENT(RDOPatternPrior)
@@ -28,13 +28,13 @@ friend class RDOTrace;
 friend class RDODPTSearch;
 friend class TreeNode;
 
-public:
+private:
 	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name );
 	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, RDOCalc* condition, const std::string& name );
 
-	virtual ~RDORule() {}
+	virtual ~RDORule()
+	{}
 
-private:
 	void init();
 
 	RDOCalc* m_additionalCondition;

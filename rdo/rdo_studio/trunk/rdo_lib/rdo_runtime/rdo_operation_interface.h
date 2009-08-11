@@ -39,4 +39,12 @@ public:
 	virtual void   onAfterOperationEnd   (PTR(rdoRuntime::RDOSimulator) sim); \
 	virtual double getNextTimeInterval   (PTR(rdoRuntime::RDOSimulator) sim)
 
+class IOperationTrace
+{
+public:
+	virtual tstring traceOperId() const = 0;
+};
+#define DECLARE_IOperationTrace \
+	virtual tstring traceOperId() const;
+
 #endif //! _RDO_OPERATION_INTERFACE_H_

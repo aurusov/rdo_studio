@@ -35,5 +35,11 @@ INTERFACE_REGISTRATOR(IBaseOperationContainer,   17);
 INTERFACE_REGISTRATOR(IPROCBlock,                18);
 INTERFACE_REGISTRATOR(IPriority,                 19);
 INTERFACE_REGISTRATOR(IActivity,                 20);
+INTERFACE_REGISTRATOR(IActivityTrace,            21);
+INTERFACE_REGISTRATOR(IActivityPatternTrace,     22);
+INTERFACE_REGISTRATOR(IOperationTrace,           23);
+INTERFACE_REGISTRATOR(IDPTSearchActivity,        24);
+INTERFACE_REGISTRATOR(IDPTSearchLogic,           25);
+INTERFACE_REGISTRATOR(IPROCProcess,              26);
 
 #endif //! _RDO_RUNTIME_INTERFACE_REGISTRATOR_H_

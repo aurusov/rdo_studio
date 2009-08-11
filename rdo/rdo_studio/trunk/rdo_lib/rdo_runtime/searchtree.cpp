@@ -28,8 +28,7 @@ TreeRoot::TreeRoot( RDOSimulator* sim, RDODPTSearch* _dp ):
 // ----------------------------------------------------------------------------
 // ---------- TreeNode - узел графа DPT
 // ----------------------------------------------------------------------------
-TreeNode::TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDODPTSearch::Activity* _activity, double cost, int cnt ):
-	m_currAct( NULL ),
+TreeNode::TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, LPIDPTSearchActivity _activity, double cost, int cnt ):
 	m_childSim( NULL ),
 	m_newCostPath( 0 ),
 	m_newCostRest( 0 ),
@@ -56,10 +55,13 @@ TreeNode::~TreeNode()
 	delete m_sim;
 }
 
+//0
+/*
 int TreeNode::getActivityID() const
 {
 	return ((RDOActivityTrace*)m_activity)->getTraceID();
 }
+*/
 
 void TreeNode::ExpandChildren()
 {
@@ -85,8 +87,9 @@ void TreeNode::ExpandChildren()
 	int s = m_root->m_dp->m_activityList.size();
 
 	// Бегаем по всем активностям самой точки
-	for ( RDODPTSearch::ActivityList::iterator i = m_root->m_dp->m_activityList.begin(); i != m_root->m_dp->m_activityList.end(); i++ ) {
-		m_currAct  = i->get();
+	for (RDODPTSearch::ActivityList::iterator i = m_root->m_dp->m_activityList.begin(); i != m_root->m_dp->m_activityList.end(); i++)
+	{
+		m_currAct  = *i;
 		m_childSim = m_sim->createCopy();
 #ifdef _DEBUG
 		if ( static_cast<RDORuntime*>(m_childSim)->checkState() ) {
@@ -109,7 +112,8 @@ void TreeNode::ExpandChildren()
 			// Только для статистики
 			m_root->m_fullNodesCount++;
 			// Расчитать стоимость применения правила (value before)
-			if ( m_currAct->valueTime() == RDODPTSearch::Activity::vt_before ) {
+			if ( m_currAct->valueTime() == IDPTSearchActivity::vt_before )
+			{
 				m_newCostRule = m_currAct->cost( m_childSim );
 			}
 			// Выполнить само правило (раскрыть вершину)
@@ -118,7 +122,8 @@ void TreeNode::ExpandChildren()
 			m_currAct->rule()->onAfterRule( m_childSim, true );
 
 			// Расчитать стоимость применения правила (value after)
-			if ( m_currAct->valueTime() == RDODPTSearch::Activity::vt_after ) {
+			if ( m_currAct->valueTime() == IDPTSearchActivity::vt_after )
+			{
 				m_newCostRule = m_currAct->cost( m_childSim );
 			}
 			// Расчитали стоимость пути до текущей вершины

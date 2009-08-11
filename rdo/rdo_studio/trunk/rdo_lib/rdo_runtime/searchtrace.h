@@ -10,19 +10,9 @@
 namespace rdoRuntime
 {
 
-class RDOActivityTrace: public RDODPTSearch::Activity, public RDOTraceableObject
-{
-friend class TreeNodeTrace;
-friend class RDODPTSearchTrace;
-friend class RDOTrace;
-
-public:
-	RDOActivityTrace(CREF(LPIRule) r, ValueTime valueTime );
-};
-
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
-RDO_IOBJECT(RDODPTSearchTrace);
+DEFINE_FACTORY(RDODPTSearchTrace);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDODPTSearch)
 	QUERY_INTERFACE_PARENT(RDOTraceableObject)
@@ -56,6 +46,8 @@ public:
 	std::list<ruint > calc_nodes_in_graph;
 
 	DPT_TraceFlag traceFlag;
+
+protected:
 	RDODPTSearchTrace( RDOSimulatorTrace* sim ):
 		RDODPTSearch( sim ),
 		RDOTraceableObject( false ),
@@ -90,7 +82,7 @@ private:
 	TreeNode* createChildTreeNode();
 
 public:
-	TreeNodeTrace( RDOSimulator* i_sim, TreeNode* i_parent, TreeRoot* i_root, RDODPTSearch::Activity* i_activity, double cost, int cnt ):
+	TreeNodeTrace( RDOSimulator* i_sim, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt ):
 		TreeNode( i_sim, i_parent, i_root, i_activity, cost, cnt )
 	{
 	}

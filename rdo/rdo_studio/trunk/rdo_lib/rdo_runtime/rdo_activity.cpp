@@ -72,9 +72,9 @@ void RDOActivity::updateConvertStatus( RDOSimulator* sim, const std::vector< RDO
 	}
 }
 
-std::string RDOActivity::traceResourcesList( char prefix, RDOSimulatorTrace* sim )
+tstring RDOActivity::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim)
 {
-	std::string res;
+	tstring res;
 	for ( std::list< RDOResource* >::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); i++ ) {
 		if ( *i ) {
 			res += (*i)->traceResourceState( prefix, sim );
@@ -83,7 +83,7 @@ std::string RDOActivity::traceResourcesList( char prefix, RDOSimulatorTrace* sim
 	return res;
 }
 
-std::string RDOActivity::traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index )
+tstring RDOActivity::traceResourcesListNumbers(PTR(RDOSimulatorTrace) sim, rbool show_create_index)
 {
 	std::ostringstream res;
 	res << m_relevantResources.size() << " ";

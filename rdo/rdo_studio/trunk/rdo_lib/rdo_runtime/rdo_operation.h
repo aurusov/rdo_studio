@@ -18,7 +18,7 @@ namespace rdoRuntime
 class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
-RDO_IOBJECT(RDOOperation);
+DEFINE_FACTORY(RDOOperation);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(pattern_type)
 	QUERY_INTERFACE_PARENT(RDOPatternPrior)
@@ -30,12 +30,10 @@ friend class RDOTrace;
 friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
-public:
+protected:
 	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name );
 	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, RDOCalc* condition, const std::string& name );
 	virtual ~RDOOperation();
-
-protected:
 	DECLARE_IOperation;
 
 private:
@@ -47,11 +45,10 @@ private:
 	bool     haveAdditionalCondition;
 	RDOCalc* additionalCondition;
 
-	std::string traceOperId() { return rdo::toString(m_operId); }
-
 	int m_operId;
 
 	DECLARE_IBaseOperation;
+	DECLARE_IOperationTrace;
 };
 
 } // namespace rdoRuntime

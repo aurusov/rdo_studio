@@ -18,20 +18,23 @@
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
+class RDOSimulator;
 class RDOCalc;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 class ILogic
 {
 public:
-	virtual void setCondition   (PTR (rdoRuntime::RDOCalc) calc ) = 0;
-	virtual void appendOperation(CREF(LPIBaseOperation)    opr  ) = 0;
-	virtual void appendLogic    (CREF(LPIBaseOperation)    logic) = 0;
+	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim  ) = 0;
+	virtual void setCondition   (PTR (rdoRuntime::RDOCalc)      calc ) = 0;
+	virtual void appendOperation(CREF(LPIBaseOperation)         opr  ) = 0;
+	virtual void appendLogic    (CREF(LPIBaseOperation)         logic) = 0;
 };
 #define DECLARE_ILogic \
-	virtual void setCondition   (PTR (rdoRuntime::RDOCalc) calc ); \
-	virtual void appendOperation(CREF(LPIBaseOperation)    opr  ); \
-	virtual void appendLogic    (CREF(LPIBaseOperation)    logic);
+	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim  ); \
+	virtual void setCondition   (PTR (rdoRuntime::RDOCalc)      calc ); \
+	virtual void appendOperation(CREF(LPIBaseOperation)         opr  ); \
+	virtual void appendLogic    (CREF(LPIBaseOperation)         logic);
 
 class IBaseOperationContainer
 {

@@ -89,8 +89,8 @@ public:
 	Interface()
 		: UnknownPointer(NULL, NULL)
 	{}
-	Interface(PTR(void) nullPointer)
-		: UnknownPointer(nullPointer)
+	Interface(LPIGetUnknown get_smt_ptr)
+		: UnknownPointer(get_smt_ptr)
 	{}
 	Interface(PTR(void) aInterface, LPIUnknown smt_ptr)
 		: UnknownPointer(aInterface, smt_ptr)
@@ -243,6 +243,49 @@ inline UnknownPointer::operator Interface<I> () const
 template <class T>
 class Factory
 {
+private:
+	class Counter: public IUnknown
+	{
+	friend class Factory<T>;
+	friend class Factory<T>::Object;
+	private:
+		ruint  m_counter;
+		PTR(T) m_object;
+
+		Counter()
+			: m_counter(0)
+		{}
+//		Counter(PTR(T) object)
+//			: m_object (object)
+//			, m_counter(0     )
+//		{}
+		operator UnknownPointer()
+		{
+			return UnknownPointer(NULL, this);
+		}
+
+		virtual void AddRef()
+		{
+			m_counter++;
+		}
+		virtual void Release()
+		{
+			m_counter--;
+			if (m_counter == 0)
+			{
+				if (m_object)
+				{
+					Factory<T>::destroy(m_object);
+				}
+			}
+		}
+		virtual UnknownPointer QueryInterface(ruint id)
+		{
+			PTR(void) pInterface = m_object->QueryInterface(id);
+			return pInterface ? UnknownPointer(pInterface, this) : UnknownPointer();
+		}
+	};
+
 public:
 	class Object: public T
 	{
@@ -275,54 +318,54 @@ public:
 
 		virtual LPIUnknown GetUnknown()
 		{
-			return m_counter;
+			return &m_counter;
 		}
 	private:
 		void create()
 		{
-			m_counter = new Counter(this);
+			m_counter.m_object = this;
 		}
-		LPIUnknown m_counter;
+		Counter m_counter;
 	};
 
 	static UnknownPointer create()
 	{
-		return new Object();
+		return *(new Object())->GetUnknown();
 	}
 	template <typename P1>
 	static UnknownPointer create(CREF(P1) p1)
 	{
-		return new Object(p1);
+		return *(new Object(p1))->GetUnknown();
 	}
 	template <typename P1, typename P2>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2)
 	{
-		return new Object(p1, p2);
+		return *(new Object(p1, p2))->GetUnknown();
 	}
 	template <typename P1, typename P2, typename P3>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
 	{
-		return new Object(p1, p2, p3);
+		return *(new Object(p1, p2, p3))->GetUnknown();
 	}
 	template <typename P1, typename P2, typename P3, typename P4>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
 	{
-		return new Object(p1, p2, p3, p4);
+		return *(new Object(p1, p2, p3, p4))->GetUnknown();
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
 	{
-		return new Object(p1, p2, p3, p4, p5);
+		return *(new Object(p1, p2, p3, p4, p5))->GetUnknown();
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
 	{
-		return new Object(p1, p2, p3, p4, p5, p6);
+		return *(new Object(p1, p2, p3, p4, p5, p6))->GetUnknown();
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 	{
-		return new Object(p1, p2, p3, p4, p5, p6, p7);
+		return *(new Object(p1, p2, p3, p4, p5, p6, p7))->GetUnknown();
 	}
 	static void destroy(PTR(T) obj)
 	{
@@ -336,67 +379,15 @@ private:
 		object->m_counter = counter;
 		return *counter;
 	}
-	class Counter: public IUnknown
-	{
-	friend class Factory<T>;
-	private:
-		ruint  m_counter;
-		PTR(T) m_object;
-
-		Counter(PTR(T) object)
-			: m_object (object)
-			, m_counter(0     )
-		{}
-		operator UnknownPointer()
-		{
-			return UnknownPointer(NULL, this);
-		}
-
-		virtual void AddRef()
-		{
-			m_counter++;
-		}
-		virtual void Release()
-		{
-			m_counter--;
-			if (m_counter == 0)
-			{
-				if (m_object)
-				{
-					Factory<T>::destroy(m_object);
-					delete this;
-				}
-			}
-		}
-		virtual UnknownPointer QueryInterface(ruint id)
-		{
-			PTR(void) pInterface = m_object->QueryInterface(id);
-			return pInterface ? UnknownPointer(pInterface, this) : UnknownPointer();
-		}
-	};
 };
 
 CLOSE_RDO_NAMESPACE
 
+#define CAST_TO_UNKNOWN public rdo::IGetUnknown
+
 #define F(A) rdo::Factory<A>
 
-#define DEFINE_THIS_TYPE(A)    typedef A this_type;
 #define DEFINE_FACTORY(A)      friend class rdo::Factory<A>; friend class rdo::Factory<A>::Object;
-#define DEFINE_CLASS_NAME(A)   static std::string className() { return #A; }
-
-/*
-private: \
-rdo::LPIUnknown m_counter; \
-operator rdo::UnknownPointer()       { return rdo::UnknownPointer(NULL, m_counter); } \
-operator rdo::UnknownPointer() const { return rdo::UnknownPointer(NULL, m_counter); } \
-*/
-
-#define RDO_IOBJECT(A) \
-protected: \
-DEFINE_THIS_TYPE(A) \
-DEFINE_FACTORY(A) \
-public: \
-DEFINE_CLASS_NAME(A)
 
 #define QUERY_INTERFACE_BEGIN \
 public: \

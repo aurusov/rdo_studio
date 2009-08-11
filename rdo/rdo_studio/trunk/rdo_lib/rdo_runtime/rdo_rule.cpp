@@ -106,4 +106,9 @@ IBaseOperation::BOResult RDORule::onDoOperation( RDOSimulator* sim )
 	return IBaseOperation::BOR_done;
 }
 
+void                     RDORule::onStart     (PTR(rdoRuntime::RDOSimulator) sim)                  {}
+void                     RDORule::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
+void                     RDORule::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
+IBaseOperation::BOResult RDORule::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+
 } // namespace rdoRuntime

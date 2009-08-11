@@ -12,12 +12,12 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOActivity
 // ----------------------------------------------------------------------------
-class RDOActivity: public RDOTraceableObject, public IActivity
+class RDOActivity: public RDOTraceableObject, public IActivity, public IActivityTrace, CAST_TO_UNKNOWN
 {
-RDO_IOBJECT(RDOActivity);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOTraceableObject)
 	QUERY_INTERFACE(IActivity)
+	QUERY_INTERFACE(IActivityTrace)
 QUERY_INTERFACE_END
 
 protected:
@@ -43,35 +43,22 @@ protected:
 	}
 	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResource::ConvertStatus >& status_list );
 
-	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim );
-	std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true );
-
 private:
 	DECLARE_IActivity;
+	DECLARE_IActivityTrace;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOActivityPattern
 // ----------------------------------------------------------------------------
 template< class T >
-class RDOActivityPattern: public RDOActivity, public IModelStructure
+class RDOActivityPattern: public RDOActivity, public IModelStructure, public IActivityPatternTrace
 {
-typedef RDOActivityPattern<T> _this_type;
-RDO_IOBJECT(_this_type);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOActivity)
 	QUERY_INTERFACE(IModelStructure)
+	QUERY_INTERFACE(IActivityPatternTrace)
 QUERY_INTERFACE_END
-
-public:
-	void writeModelStructure(REF(std::ostream) stream) const
-	{
-		stream << m_oprName << " " << tracePatternId() << std::endl;
-	}
-	CREF(tstring) tracePatternId() const
-	{
-		return m_pattern->traceId();
-	}
 
 protected:
 	RDOActivityPattern( RDORuntimeParent* parent, T* pattern, bool trace, CREF(tstring) name ):
@@ -82,6 +69,16 @@ protected:
 	virtual ~RDOActivityPattern() {}
 
 	T* m_pattern;
+
+private:
+	void writeModelStructure(REF(std::ostream) stream) const
+	{
+		stream << m_oprName << " " << tracePatternId() << std::endl;
+	}
+	CREF(tstring) tracePatternId() const
+	{
+		return m_pattern->traceId();
+	}
 };
 
 } // namespace rdoRuntime

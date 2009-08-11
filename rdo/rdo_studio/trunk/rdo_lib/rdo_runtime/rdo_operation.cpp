@@ -133,4 +133,14 @@ RDOOperation::RDOOperation(PTR(RDORuntime) runtime, CREF(RDOOperation) originFor
 	m_operId = runtime->getFreeOperationId();
 }
 
+tstring RDOOperation::traceOperId() const
+{
+	return rdo::toString(m_operId);
+}
+
+void                     RDOOperation::onBeforeOperationBegin(PTR(rdoRuntime::RDOSimulator) sim) {}
+void                     RDOOperation::onStart               (PTR(rdoRuntime::RDOSimulator) sim) {}
+void                     RDOOperation::onStop                (PTR(rdoRuntime::RDOSimulator) sim) {}
+IBaseOperation::BOResult RDOOperation::onContinue            (PTR(rdoRuntime::RDOSimulator) sim) { return IBaseOperation::BOR_cant_run; }
+
 } // namespace rdoRuntime

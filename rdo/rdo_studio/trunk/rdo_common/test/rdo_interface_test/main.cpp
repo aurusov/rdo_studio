@@ -34,7 +34,7 @@ INTERFACE_REGISTRATOR(IMy2, 2);
 INTERFACE_REGISTRATOR(IMy3, 3);
 INTERFACE_REGISTRATOR(IMy4, 4);
 
-class MyClass: public IMy1, public IMy2
+class MyClass: public rdo::IGetUnknown, public IMy1, public IMy2
 {
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IMy1)
@@ -66,9 +66,9 @@ private:
 	}
 };
 
-class MyClass2: public MyClass, public IMy3, public rdo::IGetUnknown
+class MyClass2: public MyClass, public IMy3
 {
-RDO_IOBJECT(MyClass2);
+DEFINE_FACTORY(MyClass2);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(MyClass)
 	QUERY_INTERFACE(IMy3)
@@ -92,7 +92,7 @@ private:
 
 class MyClass3: public IMy3, public rdo::IGetUnknown
 {
-RDO_IOBJECT(MyClass3);
+DEFINE_FACTORY(MyClass3);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IMy3)
 QUERY_INTERFACE_END

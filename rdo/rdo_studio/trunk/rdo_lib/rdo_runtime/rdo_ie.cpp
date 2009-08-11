@@ -69,4 +69,9 @@ double RDOIrregEvent::getNextTimeInterval( RDOSimulator* sim )
 	return m_pattern->getNextTimeInterval( static_cast<RDORuntime*>(sim) ); 
 }
 
+IBaseOperation::BOResult RDOIrregEvent::onContinue(PTR(rdoRuntime::RDOSimulator) sim)
+{
+	return IBaseOperation::BOR_cant_run;
+}
+
 } // namespace rdoRuntime

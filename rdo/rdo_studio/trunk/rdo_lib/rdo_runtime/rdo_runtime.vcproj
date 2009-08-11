@@ -558,6 +558,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdo_logic_dptsearch_interface.h"
+							>
+						</File>
+						<File
 							RelativePath="rdodptrtime.h"
 							>
 						</File>
@@ -861,6 +865,22 @@
 						</File>
 						<File
 							RelativePath=".\rdo_priority_interface.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="5. dptsearch_activity"
+						>
+						<File
+							RelativePath=".\rdo_dptsearch_activity.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_dptsearch_activity.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_dptsearch_activity_interface.h"
 							>
 						</File>
 					</Filter>

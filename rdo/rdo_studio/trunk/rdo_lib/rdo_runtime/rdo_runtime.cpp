@@ -271,19 +271,19 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimeIE( RDOIrregEvent* ie )
+void RDORuntime::addRuntimeIE(CREF(LPIIrregEvent) ie)
 {
-	appendBaseOperation( ie );
+	appendBaseOperation(ie);
 }
 
-void RDORuntime::addRuntimeRule( RDORule* rule )
+void RDORuntime::addRuntimeRule(CREF(LPIRule) rule)
 {
-	appendBaseOperation( rule );
+	appendBaseOperation(rule);
 }
 
-void RDORuntime::addRuntimeOperation( RDOOperation* opr )
+void RDORuntime::addRuntimeOperation(CREF(LPIOperation) opration)
 {
-	appendBaseOperation( opr );
+	appendBaseOperation(opration);
 }
 
 void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pokaz)
@@ -301,9 +301,9 @@ void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pokaz)
 	}
 }
 
-void RDORuntime::addRuntimeFrame( RDOFRMFrame* frame )
+void RDORuntime::addRuntimeFrame(PTR(RDOFRMFrame) frame)
 { 
-	allFrames.push_back( frame ); 
+	allFrames.push_back(frame);
 }
 
 RDOFRMFrame* RDORuntime::lastFrame() const

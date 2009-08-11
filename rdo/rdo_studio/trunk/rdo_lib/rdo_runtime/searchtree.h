@@ -2,11 +2,14 @@
 #define SEARCHTREE_H
 
 #include "rdo_logic_dptsearch.h"
+#include "rdo_dptsearch_activity_interface.h"
 
 namespace rdoRuntime
 {
 
 class TreeNode;
+
+#include "rdo_dptsearch_activity_interface.h"
 
 // ----------------------------------------------------------------------------
 // ---------- TreeRoot - корень дерева DPT
@@ -55,7 +58,7 @@ public:
 	std::vector< TreeNode* > m_children;
 	TreeNode*                m_parent;
 	TreeRoot*                m_root;
-	RDODPTSearch::Activity*  m_activity; // активность (currAct), которую применил предок при создании this
+	LPIDPTSearchActivity     m_activity; // активность (currAct), которую применил предок при создании this
 	double                   m_costRule;
 	double                   m_costPath;
 	double                   m_costRest;
@@ -71,14 +74,15 @@ public:
 
 	NodeFoundInfo CheckIfExistBetter( RDOSimulator* childSim, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
 	void ReCostSubTree( double cost );
-
+/*
+//0
 	int getActivityID() const;
-
+*/
 protected:
-	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDODPTSearch::Activity* _activity, double cost, int cnt );
+	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, LPIDPTSearchActivity _activity, double cost, int cnt );
 
-	RDODPTSearch::Activity* m_currAct; // вершина пытается применять различные активности
-	RDOSimulator*           m_childSim;
+	LPIDPTSearchActivity  m_currAct; // вершина пытается применять различные активности
+	RDOSimulator*         m_childSim;
 
 	double m_newCostPath;
 	double m_newCostRest;

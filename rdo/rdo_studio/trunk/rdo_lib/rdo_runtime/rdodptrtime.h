@@ -10,31 +10,12 @@ namespace rdoRuntime
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSearchActivityRuntime - активность внутри DPT (потомок RDODPTSearch::Activity)
-// ----------------------------------------------------------------------------
-class RDOSearchActivityRuntime: public RDOActivityTrace
-{
-public:
-	RDOSearchActivityRuntime(CREF(LPIRule) r, ValueTime valueTime, RDOCalc* cost ):
-		RDOActivityTrace( r, valueTime ),
-		m_cost( cost )
-	{
-	}
-
-private:
-	RDOCalc* m_cost;
-
-	virtual double cost( RDOSimulator* runtime )
-	{
-		return m_cost->calcValue( static_cast<RDORuntime*>(runtime) ).getDouble();
-	}
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDODPTSearchRuntime - DPT (потомок RDODPTSearch)
 // ----------------------------------------------------------------------------
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
+DEFINE_FACTORY(RDODPTSearchRuntime);
+
 private:
 	RDODPTSearchRuntime( RDORuntime* runtime, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
 		RDODPTSearchTrace( runtime ),

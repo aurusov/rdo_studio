@@ -26,9 +26,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOLogic
 // ----------------------------------------------------------------------------
-class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic
+class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic, CAST_TO_UNKNOWN
 {
-RDO_IOBJECT(RDOLogic)
+DEFINE_FACTORY(RDOLogic)
+
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 	QUERY_INTERFACE(IBaseOperationContainer)
@@ -36,6 +37,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
+	RDOLogic ();
 	RDOLogic (PTR(RDOSimulator) sim);
 	virtual ~RDOLogic()
 	{}

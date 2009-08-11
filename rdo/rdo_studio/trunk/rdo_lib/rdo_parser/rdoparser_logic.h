@@ -16,10 +16,8 @@ class RDOLogicActivity: public RDOParserObject, public RDOParserSrcInfo
 public:
 	RDOLogicActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 		RDOParserObject( _parser ),
-		RDOParserSrcInfo( _src_info ),
-		m_rt_logic( NULL )
-	{
-	}
+		RDOParserSrcInfo( _src_info )
+	{}
 
 	const std::string& name() const { return src_info().src_text(); }
 

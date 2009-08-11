@@ -26,7 +26,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOOprContainer: public IBaseOperation, public IBaseOperationContainer
 {
-RDO_IOBJECT(RDOOprContainer)
+DEFINE_FACTORY(RDOOprContainer)
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 	QUERY_INTERFACE(IBaseOperationContainer)
@@ -44,6 +44,11 @@ private:
 	DECLARE_IBaseOperation;
 	DECLARE_IBaseOperationContainer;
 };
+
+rbool RDOOprContainer::empty() const
+{
+	return m_items.empty();
+}
 
 RDOOprContainer::Iterator RDOOprContainer::begin()
 {
@@ -63,6 +68,11 @@ RDOOprContainer::CIterator RDOOprContainer::begin() const
 RDOOprContainer::CIterator RDOOprContainer::end() const
 {
 	return m_items.end();
+}
+
+REF(LPIBaseOperation) RDOOprContainer::back()
+{
+	return m_items.back();
 }
 
 void RDOOprContainer::append(CREF(Item) item)
@@ -131,6 +141,16 @@ IBaseOperation::BOResult RDOOprContainer::onContinue(PTR(RDOSimulator) sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOLogic
 // ----------------------------------------------------------------------------
+RDOLogic::RDOLogic()
+	: m_condition    (NULL)
+	, m_lastCondition(false)
+{
+	m_childLogicList = F(RDOOprContainer)::create();
+	m_childItemList  = F(RDOOprContainer)::create();
+	ASSERT(m_childLogicList);
+	ASSERT(m_childItemList);
+}
+
 RDOLogic::RDOLogic(PTR(RDOSimulator) sim)
 	: m_condition    (NULL)
 	, m_lastCondition(false)
@@ -139,8 +159,12 @@ RDOLogic::RDOLogic(PTR(RDOSimulator) sim)
 	m_childItemList  = F(RDOOprContainer)::create();
 	ASSERT(m_childLogicList);
 	ASSERT(m_childItemList);
-//1	if (sim)
-//1		sim->appendLogic(this);
+}
+
+void RDOLogic::init(PTR(RDOSimulator) sim)
+{
+	if (sim)
+		sim->appendLogic(this);
 }
 
 void RDOLogic::setCondition(PTR(RDOCalc) calc)
@@ -259,6 +283,11 @@ void RDOLogic::stop(PTR(RDOSimulator) sim)
 	m_childItemList->onStop(sim);
 }
 
+rbool RDOLogic::empty() const
+{
+	return m_childItemList.query_cast<IBaseOperationContainer>()->empty();
+}
+
 RDOLogic::Iterator RDOLogic::begin()
 {
 	return m_childItemList.query_cast<IBaseOperationContainer>()->begin();
@@ -277,6 +306,11 @@ RDOLogic::CIterator RDOLogic::begin() const
 RDOLogic::CIterator RDOLogic::end() const
 {
 	return m_childItemList.query_cast<IBaseOperationContainer>()->end();
+}
+
+REF(LPIBaseOperation) RDOLogic::back()
+{
+	return m_childItemList.query_cast<IBaseOperationContainer>()->back();
 }
 
 void RDOLogic::append(CREF(Item) item)

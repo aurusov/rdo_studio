@@ -13,7 +13,6 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 class RDOPatternPrior: public IPriority
 {
-RDO_IOBJECT(RDOPatternPrior);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IPriority)
 QUERY_INTERFACE_END

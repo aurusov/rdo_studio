@@ -30,4 +30,16 @@ public:
 	virtual void TransactGoIn (PTR(rdoRuntime::RDOPROCTransact) transact); \
 	virtual void TransactGoOut(PTR(rdoRuntime::RDOPROCTransact) transact);
 
+class IPROCProcess
+{
+public:
+	virtual void insertChild(LPIPROCProcess                   process ) = 0;
+	virtual void setParent  (LPIPROCProcess                   process ) = 0;
+	virtual void next       (PTR(rdoRuntime::RDOPROCTransact) transact) = 0;
+};
+#define DECLARE_IPROCProcess \
+	virtual void insertChild(LPIPROCProcess                   process ); \
+	virtual void setParent  (LPIPROCProcess                   process ); \
+	virtual void next       (PTR(rdoRuntime::RDOPROCTransact) transact);
+
 #endif //! _RDOPROCESS_INTERFACE_H_

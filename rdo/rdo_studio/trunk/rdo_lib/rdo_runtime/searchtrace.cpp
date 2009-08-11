@@ -7,16 +7,6 @@
 namespace rdoRuntime
 {
 
-RDOActivityTrace::RDOActivityTrace(CREF(LPIRule) r, ValueTime valueTime):
-	Activity( r, valueTime ),
-	RDOTraceableObject( false )
-{
-	LPITrace trace = r;
-	//0
-	ASSERT(trace);
-	setTraceID(trace->getTraceID());
-}
-
 void RDODPTSearchTrace::onSearchBegin( RDOSimulator* sim )
 {
 	RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;

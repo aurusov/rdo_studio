@@ -13,6 +13,7 @@
 #include <rdo_logic_dptsome.h>
 #include <rdodptrtime.h>
 #include <rdo_resources.h>
+#include <rdo_dptsearch_activity.h>
 
 namespace rdoParse 
 {
@@ -245,9 +246,10 @@ RDODPTFreeActivity::RDODPTFreeActivity( const RDOParserObject* parent, const RDO
 RDODPTFree::RDODPTFree( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>( _parser, _src_info )
 {
-	parser()->checkDPTName( src_info() );
-	m_rt_logic = new rdoRuntime::RDODPTFree( parser()->runtime() );
-	parser()->insertDPTFree( this );
+	parser()->checkDPTName(src_info());
+	m_rt_logic = F(rdoRuntime::RDODPTFree)::create(parser()->runtime());
+	m_rt_logic->init(parser()->runtime());
+	parser()->insertDPTFree(this);
 }
 
 // ----------------------------------------------------------------------------
@@ -264,9 +266,10 @@ RDODPTSomeActivity::RDODPTSomeActivity( const RDOParserObject* _parent, const RD
 RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>( _parser, _src_info )
 {
-	parser()->checkDPTName( src_info() );
-	m_rt_logic = new rdoRuntime::RDODPTSome( parser()->runtime() );
-	parser()->insertDPTSome( this );
+	parser()->checkDPTName(src_info());
+	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime());
+	m_rt_logic->init(parser()->runtime());
+	parser()->insertDPTSome(this);
 }
 
 bool RDODPTSome::setPrior(RDOFUNArithm* prior)
@@ -293,7 +296,7 @@ void RDODPTSome::end()
 // ----------------------------------------------------------------------------
 RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
 	RDODPTActivity( _parent, _src_info, _pattern_src_info ),
-	m_value( rdoRuntime::RDODPTSearch::Activity::vt_before ),
+	m_value( IDPTSearchActivity::vt_before ),
 	m_ruleCost( NULL )
 {
 	if ( pattern()->getType() != RDOPATPattern::PT_Rule ) {
@@ -310,10 +313,10 @@ RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, cons
 //			parser()->error( "Rule: " + name() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
-	m_activity = new rdoRuntime::RDORule( parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime()), true, name() );
+	m_activity = F(rdoRuntime::RDORule)::create(parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime()), true, name());
 }
 
-void RDODPTSearchActivity::setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos )
+void RDODPTSearchActivity::setValue( IDPTSearchActivity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos )
 {
 	endParam( _param_pos );
 	m_value    = value;
@@ -345,15 +348,21 @@ void RDODPTSearch::end()
 		m_trace );
 	//0
 	ASSERT(m_rt_logic);
+	m_rt_logic->init(parser()->runtime());
 
 	int size = getActivities().size();
-	for ( int i = 0; i < size; i++ ) {
+	for ( int i = 0; i < size; i++ )
+	{
 		const RDODPTSearchActivity* activity = getActivities().at(i);
-		rdoRuntime::RDOSearchActivityRuntime* act = new rdoRuntime::RDOSearchActivityRuntime(
-			dynamic_cast<rdoRuntime::RDORule*>(activity->activity()),
+		LPIDPTSearchActivity act = F(rdoRuntime::RDODPTSearchActivity)::create(
+			activity->activity(),
 			activity->getValue(),
-			activity->getRuleCost()->createCalc());
-		m_rt_logic->addActivity( act );
+			activity->getRuleCost()->createCalc()
+		);
+		LPIDPTSearchLogic searchLogic = m_rt_logic;
+		//0
+		ASSERT(searchLogic);
+		searchLogic->addActivity(act);
 	}
 	m_closed = true;
 }
@@ -368,11 +377,10 @@ RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& name ):
 	RDOParserObject( _parser ),
 	m_name( name ),
 	m_closed( false ),
-	m_parent( NULL ),
-	m_runtime( NULL )
+	m_parent( NULL )
 {
 	parser()->insertPROCProcess( this );
-	m_runtime = new rdoRuntime::RDOPROCProcess( m_name, parser()->runtime() );
+	m_runtime = F(rdoRuntime::RDOPROCProcess)::create(m_name, parser()->runtime());
 }
 
 void RDOPROCProcess::end()
@@ -402,11 +410,10 @@ RDOPROCOperator::RDOPROCOperator( RDOPROCProcess* _process, const std::string& _
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time ):
-	RDOPROCOperator( _process, _name ),
-	runtime		   ( NULL			 )
+RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time )
+	: RDOPROCOperator( _process, _name )
 {
-	runtime = new rdoRuntime::RDOPROCGenerate( parser()->getLastPROCProcess()->getRunTime(), time );
+	runtime = F(rdoRuntime::RDOPROCGenerate)::create(parser()->getLastPROCProcess()->getRunTime(), time);
 }
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForQueue
@@ -472,17 +479,18 @@ const RDORSSResource* rss = parser->findRSSResource( Res );
 		parser_for_runtime.Id_res = rss->getID();
 		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}	
-	else {
-	parser->error( "Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс" );
+	else
+	{
+		parser->error( "Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс" );
 	}
-runtime = new rdoRuntime::RDOPROCQueue( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
+	runtime = F(rdoRuntime::RDOPROCQueue)::create(parser->getLastPROCProcess()->getRunTime(), parser_for_runtime);
 }
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCDepart
 // ----------------------------------------------------------------------------
 void RDOPROCDepart::create_runtime_Depart( RDOParser *parser )
 {
-const RDORSSResource* rss = parser->findRSSResource( Res );
+	const RDORSSResource* rss = parser->findRSSResource( Res );
 	if( rss ){
 		const std::string res_name = rss->name();
 		// Получили список всех ресурсов
@@ -494,22 +502,23 @@ const RDORSSResource* rss = parser->findRSSResource( Res );
 		parser_for_runtime.Id_res = rss->getID();
 		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}	
-	else {
-	parser->error( "Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс" );
+	else
+	{
+		parser->error( "Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс" );
 	}
-runtime = new rdoRuntime::RDOPROCDepart( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
+	runtime = F(rdoRuntime::RDOPROCDepart)::create(parser->getLastPROCProcess()->getRunTime(), parser_for_runtime);
 }
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
 bool RDOPROCBlockForSeize::checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info )
 {
-// "Состояние"
-std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-// "Свободен"
-std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
-// "Занят"
-std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
+	// "Состояние"
+	std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+	// "Свободен"
+	std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+	// "Занят"
+	std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
 	// Тип найден, проверим его на наличие перечислимого параметра
 	if ( !rtp.m_params[rtp_param_name].exist() )
 	parser->error( info, rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
@@ -526,6 +535,7 @@ std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy(
 
 	return true;
 }
+
 void RDOPROCBlockForSeize::createRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name )
 {
 	// Получили список всех ресурсов
@@ -535,6 +545,7 @@ void RDOPROCBlockForSeize::createRes( RDOParser *parser, rdoMBuilder::RDOResType
 	// Добавим его в систему
 	rssList.append<rdoParse::RDOPROCResource>( rss );
 }
+
 void RDOPROCBlockForSeize::reobjectRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name )
 {
 	// Получили список всех ресурсов
@@ -567,93 +578,47 @@ rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, con
 	}
 	return rtp;
 }
-/*
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCSeize
-// ----------------------------------------------------------------------------
-void RDOPROCSeize::create_runtime_Seize( RDOParser *parser )
-{
-const RDORSSResource* rss = parser->findRSSResource( Res );
-	if( rss ){
-		const std::string res_name = rss->name();
-		// Получили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList( parser );
-		// Создадим тип ресурса
-		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
-		// "Состояние"
-		std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-	
-		parser_for_runtime.Id_res = rss->getID();
-		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
-	}	
-	else {
-	parser->error( "Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс" );
-	}
-runtime = new rdoRuntime::RDOPROCSeize( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
-}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCRelease
-// ----------------------------------------------------------------------------
-void RDOPROCRelease::create_runtime_Release( RDOParser *parser )
-{
-const RDORSSResource* rss = parser->findRSSResource( Res );
-	if( rss ){
-		const std::string res_name = rss->name();
-		// Получили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList( parser );
-		// Создадим тип ресурса
-		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
-		// "Состояние"
-		std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-	
-		parser_for_runtime.Id_res = rss->getID();
-		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
-	}
-	else {
-	parser->error( "Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс" );
-	}
-runtime = new rdoRuntime::RDOPROCRelease( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
-}
-*/
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
 void RDOPROCSeize::create_runtime_Seize ( RDOParser *parser )
 {
-std::list< std::string >::iterator it = Resources.begin();
-while ( it != Resources.end() ) 
-{
-	std::string aaa = *it;
-	const RDORSSResource* rss = parser->findRSSResource((*it));
-	if( rss )
+	std::list< std::string >::iterator it = Resources.begin();
+	while ( it != Resources.end() ) 
 	{
-		const std::string res_name = rss->name();
-		// Получили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList( parser );
-		// Создадим тип ресурса
-		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
-		// "Состояние"
-		std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-		// проверим его на наличие перечислимого параметра
-		if ( !rtp.m_params[rtp_param_name].exist() ) 
+		std::string aaa = *it;
+		const RDORSSResource* rss = parser->findRSSResource((*it));
+		if ( rss )
 		{
-			parser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+			const std::string res_name = rss->name();
+			// Получили список всех ресурсов
+			rdoMBuilder::RDOResourceList rssList( parser );
+			// Создадим тип ресурса
+			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+			// "Состояние"
+			std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+			// проверим его на наличие перечислимого параметра
+			if ( !rtp.m_params[rtp_param_name].exist() ) 
+			{
+				parser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+			}
+			rdoRuntime::parser_for_Seize bbb;
+			bbb.Id_res = rss->getID();
+			bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
+			parser_for_runtime.push_back(bbb);
 		}
-		rdoRuntime::parser_for_Seize bbb;
-		bbb.Id_res = rss->getID();
-		bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
-		parser_for_runtime.push_back(bbb);
-		}	else {
-		parser->error( "Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс" );
+		else
+		{
+			parser->error( "Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс" );
 		}
-	it++;
+		it++;
 	}
 
 	int ccc = parser_for_runtime.size();
 	if( ccc>0 )
 	{
-		runtime = new rdoRuntime::RDOPROCSeize( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
+		runtime = F(rdoRuntime::RDOPROCSeize)::create(parser->getLastPROCProcess()->getRunTime(), parser_for_runtime);
 	}
 	else
 	{
@@ -666,39 +631,41 @@ while ( it != Resources.end() )
 // ----------------------------------------------------------------------------
 void RDOPROCRelease::create_runtime_Release ( RDOParser *parser )
 {
-std::list< std::string >::iterator it = Resources.begin();
-while ( it != Resources.end() ) 
-{
-	std::string aaa = *it;
-	const RDORSSResource* rss = parser->findRSSResource((*it));
-	if( rss )
+	std::list< std::string >::iterator it = Resources.begin();
+	while ( it != Resources.end() ) 
 	{
-		const std::string res_name = rss->name();
-		// Получили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList( parser );
-		// Создадим тип ресурса
-		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
-		// "Состояние"
-		std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-		// проверим его на наличие перечислимого параметра
-		if ( !rtp.m_params[rtp_param_name].exist() ) 
+		std::string aaa = *it;
+		const RDORSSResource* rss = parser->findRSSResource((*it));
+		if ( rss )
 		{
-			parser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+			const std::string res_name = rss->name();
+			// Получили список всех ресурсов
+			rdoMBuilder::RDOResourceList rssList( parser );
+			// Создадим тип ресурса
+			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+			// "Состояние"
+			std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+			// проверим его на наличие перечислимого параметра
+			if ( !rtp.m_params[rtp_param_name].exist() ) 
+			{
+				parser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+			}
+			rdoRuntime::parser_for_Seize bbb;
+			bbb.Id_res = rss->getID();
+			bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
+			parser_for_runtime.push_back(bbb);
 		}
-		rdoRuntime::parser_for_Seize bbb;
-		bbb.Id_res = rss->getID();
-		bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
-		parser_for_runtime.push_back(bbb);
-		}	else {
-		parser->error( "Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс" );
+		else
+		{
+			parser->error( "Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс" );
 		}
-	it++;
+		it++;
 	}
 
 	int ccc = parser_for_runtime.size();
 	if( ccc>0 )
 	{
-		runtime = new rdoRuntime::RDOPROCRelease( parser->getLastPROCProcess()->getRunTime(), parser_for_runtime );
+		runtime = F(rdoRuntime::RDOPROCRelease)::create(parser->getLastPROCProcess()->getRunTime(), parser_for_runtime);
 	}
 	else
 	{
@@ -712,7 +679,7 @@ while ( it != Resources.end() )
 RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time ):
 	RDOPROCOperator( _process, _name )
 {
-	runtime = new rdoRuntime::RDOPROCAdvance( parser()->getLastPROCProcess()->getRunTime(), time );
+	runtime = F(rdoRuntime::RDOPROCAdvance)::create(parser()->getLastPROCProcess()->getRunTime(), time);
 }
 
 // ----------------------------------------------------------------------------
@@ -721,17 +688,16 @@ RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _na
 RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name, const unsigned int& _term):
 	RDOPROCOperator( _process, _name )
 {
-	runtime = new rdoRuntime::RDOPROCTerminate( parser()->getLastPROCProcess()->getRunTime(), _term );
+	runtime = F(rdoRuntime::RDOPROCTerminate)::create(parser()->getLastPROCProcess()->getRunTime(), _term);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
 RDOPROCAssign::RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param ):
-	RDOPROCOperator( _process, _name ),
-	runtime		   ( NULL			 )
+	RDOPROCOperator( _process, _name )
 {
-	runtime = new rdoRuntime::RDOPROCAssign( parser()->getLastPROCProcess()->getRunTime(), value, Id_res, Id_param );
+	runtime = F(rdoRuntime::RDOPROCAssign)::create(parser()->getLastPROCProcess()->getRunTime(), value, Id_res, Id_param);
 }
 
 } // namespace rdoParse

@@ -83,15 +83,9 @@ IBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
 	return success ? IBaseOperation::BOR_done : IBaseOperation::BOR_cant_run;
 }
 
-void RDODPTSearch::addActivity(PTR(Activity) act)
+void RDODPTSearch::addActivity(LPIDPTSearchActivity activity)
 {
-	m_activityList.push_back(act); 
-}
-
-RDODPTSearch::Activity::Activity(CREF(LPIRule) rule, ValueTime valueTime):
-	m_rule( rule ),
-	m_valueTime( valueTime )
-{
+	m_activityList.push_back(activity); 
 }
 
 } // namespace rdoRuntime

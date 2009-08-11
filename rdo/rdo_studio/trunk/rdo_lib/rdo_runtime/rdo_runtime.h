@@ -124,11 +124,11 @@ public:
 	REF(LPIActivity) getCurrentActivity()                           { return m_currActivity;      }
 	void             setCurrentActivity(CREF(LPIActivity) activity) { m_currActivity = activity;  }
 
-	void addRuntimeIE       ( RDOIrregEvent       *ie      );
-	void addRuntimeRule     ( RDORule             *rule    );
-	void addRuntimeOperation( RDOOperation        *opr     );
-	void addRuntimePokaz    (CREF(LPIPokaz)        pokaz   );
-	void addRuntimeFrame    ( RDOFRMFrame         *frame   );
+	void addRuntimeIE       (CREF(LPIIrregEvent) ie      );
+	void addRuntimeRule     (CREF(LPIRule)       rule    );
+	void addRuntimeOperation(CREF(LPIOperation)  opration);
+	void addRuntimePokaz    (CREF(LPIPokaz)      pokaz   );
+	void addRuntimeFrame    (PTR(RDOFRMFrame)    frame   );
 	
 	RDOFRMFrame* lastFrame() const;
 

@@ -27,17 +27,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOPMDPokaz: public RDOPokazTrace, public IName
 {
-RDO_IOBJECT(RDOPMDPokaz);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPokazTrace)
 	QUERY_INTERFACE(IName)
 QUERY_INTERFACE_END
 
-public:
+protected:
 	RDOPMDPokaz( RDORuntime* sim, const std::string& name, bool trace );
 	virtual ~RDOPMDPokaz() {}
-
-protected:
 	DECLARE_IName;
 
 private:
@@ -49,7 +46,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchPar: public RDOPMDPokaz, public IPokaz, public IModelStructure, public INotify
 {
-RDO_IOBJECT(RDOPMDWatchPar);
+DEFINE_FACTORY(RDOPMDWatchPar);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -58,10 +55,9 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(INotify)
 QUERY_INTERFACE_END
 
-public:
+private:
 	RDOPMDWatchPar( RDORuntime* sim, const std::string& name, bool trace, const std::string& resName, const std::string& parName, int resNumber, int parNumber );
 
-private:
 	int       m_resNumber;
 	int       m_parNumber;
 
@@ -88,7 +84,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchState: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDWatchState);
+DEFINE_FACTORY(RDOPMDWatchState);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -96,10 +92,9 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IPokazTraceValue)
 QUERY_INTERFACE_END
 
-public:
+private:
 	RDOPMDWatchState( RDORuntime* sim, const std::string& name, bool trace, RDOCalc* logic );
 
-private:
 	RDOCalc* m_logicCalc;
 
 	int      m_watchNumber;
@@ -122,7 +117,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchQuant: public RDOPMDPokaz, public IPokaz, public IPokazWatchQuant, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDWatchQuant);
+DEFINE_FACTORY(RDOPMDWatchQuant);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -131,10 +126,9 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IModelStructure)
 QUERY_INTERFACE_END
 
-public:
+private:
 	RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
 
-private:
 	RDOCalc* m_logicCalc;
 	int      m_rtp_id;
 
@@ -159,7 +153,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchValue: public RDOPMDPokaz, public IPokaz, public IPokazWatchValue, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDWatchValue);
+DEFINE_FACTORY(RDOPMDWatchValue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -168,10 +162,9 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IModelStructure)
 QUERY_INTERFACE_END
 
-public:
+private:
 	RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
 
-private:
 	PTR(RDOCalc)  m_logicCalc;
 	PTR(RDOCalc)  m_arithmCalc;
 	int           m_rtp_id;
@@ -194,7 +187,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-RDO_IOBJECT(RDOPMDGetValue);
+DEFINE_FACTORY(RDOPMDGetValue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -202,10 +195,9 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IPokazTraceValue)
 QUERY_INTERFACE_END
 
-public:
+private:
 	RDOPMDGetValue( RDORuntime* sim, const std::string& name, RDOCalc* arithm );
 
-private:
 	PTR(RDOCalc) m_arithmCalc;
 	DECLARE_IPokaz;
 	DECLARE_IPokazTraceValue;

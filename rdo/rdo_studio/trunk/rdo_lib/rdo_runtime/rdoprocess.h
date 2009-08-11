@@ -12,9 +12,8 @@ class RDOCalc;
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
-class RDOPROCBlock: public IPROCBlock
+class RDOPROCBlock: public IPROCBlock, CAST_TO_UNKNOWN
 {
-RDO_IOBJECT(RDOPROCBlock);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IPROCBlock)
 QUERY_INTERFACE_END
@@ -27,10 +26,10 @@ public:
 	typedef std::list<PTR(RDOPROCTransact)> TransactList;
 
 protected:
-	RDOPROCProcess* process;
-	TransactList    transacts;
+	LPIPROCProcess  m_process;
+	TransactList    m_transacts;
 
-	RDOPROCBlock( RDOPROCProcess* _process );
+	RDOPROCBlock(LPIPROCProcess process);
 	virtual ~RDOPROCBlock() {}
 
 	DECLARE_IPROCBlock;
@@ -41,20 +40,24 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCTransact;
 
-class RDOPROCProcess: public RDOLogic
+class RDOPROCProcess: public RDOLogic, public IPROCProcess
 {
+DEFINE_FACTORY(RDOPROCProcess)
+QUERY_INTERFACE_BEGIN
+QUERY_INTERFACE_PARENT(RDOLogic)
+QUERY_INTERFACE(IPROCProcess)
+QUERY_INTERFACE_END
 friend class RDOPROCBlock;
 
-public:
+protected:
+	tstring                    m_name;
+	LPIPROCProcess             m_parent;
+	std::list<LPIPROCProcess>  m_child;
+
+private:
 	RDOPROCProcess(CREF(tstring) _name, PTR(RDOSimulator) sim);
 
-	void insertChild(PTR(RDOPROCProcess)  value   );
-	void next       (PTR(RDOPROCTransact) transact);
-
-protected:
-	tstring                         m_name;
-	PTR(RDOPROCProcess)             m_parent;
-	std::list<PTR(RDOPROCProcess)>  m_child;
+	DECLARE_IPROCProcess;
 };
 
 // ----------------------------------------------------------------------------
@@ -99,11 +102,13 @@ class RDOPROCResource: public RDOResource
 {
 friend class RDOPROCSeize;
 friend class RDOPROCRelease;
-protected: 
-	std::list<RDOPROCTransact*> transacts;
+
 public:
 	RDOPROCResource( RDORuntime* _runtime, int _number, ruint type, bool _trace );
 	std::string whoAreYou() {return "procRes";	}
+
+protected: 
+	std::list<RDOPROCTransact*> transacts;
 };
 
 // ----------------------------------------------------------------------------
@@ -111,7 +116,7 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
 {
-RDO_IOBJECT(RDOPROCGenerate);
+DEFINE_FACTORY(RDOPROCGenerate);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
@@ -120,8 +125,10 @@ public:
 	void calcNextTimeInterval( RDOSimulator* sim );
 
 private:
-	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time )
-		: RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time )
+	RDOPROCGenerate(LPIPROCProcess process, PTR(RDOCalc) time)
+		: RDOPROCBlock(process)
+		, timeNext    (NULL   )
+		, timeCalc    (time   )
 	{}
 
 	double       timeNext;
@@ -147,13 +154,12 @@ struct parser_for_Queue
 
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
-public:
-	RDOPROCBlockForQueue( RDOPROCProcess* _process, parser_for_Queue From_Par );
-
 protected:
+	RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par );
+
 	parser_for_Queue  fromParser;
 	runtime_for_Queue forRes;
-	virtual void onStart		  ( RDOSimulator* sim );
+	void _onStart( RDOSimulator* sim );
 };
 
 // ----------------------------------------------------------------------------
@@ -161,7 +167,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
-RDO_IOBJECT(RDOPROCQueue);
+DEFINE_FACTORY(RDOPROCQueue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
@@ -171,8 +177,8 @@ public:
 	static std::string getQueueParamName(){ return "длина_очереди"; }
 
 private:
-	RDOPROCQueue( RDOPROCProcess* _process, parser_for_Queue From_Par )
-		: RDOPROCBlockForQueue( _process, From_Par )
+	RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par)
+		: RDOPROCBlockForQueue(process, From_Par)
 	{}
 
 	DECLARE_IBaseOperation;
@@ -183,7 +189,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
-RDO_IOBJECT(RDOPROCDepart);
+DEFINE_FACTORY(RDOPROCDepart);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
@@ -193,8 +199,8 @@ public:
 	static std::string getDepartParamName(){ return "длина_очереди"; }
 
 private:
-	RDOPROCDepart( RDOPROCProcess* _process, parser_for_Queue From_Par )
-		: RDOPROCBlockForQueue( _process, From_Par )
+	RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par)
+		: RDOPROCBlockForQueue(process, From_Par)
 	{}
 	DECLARE_IBaseOperation;
 };
@@ -220,15 +226,16 @@ struct parser_for_Seize
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 public:
-	RDOPROCBlockForSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par );
 	static std::string getStateParamName() {return "Состояние";}
 	static std::string getStateEnumFree()  {return "Свободен"; }
 	static std::string getStateEnumBuzy()  {return "Занят";    }
 
 protected:
+	RDOPROCBlockForSeize(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par);
+
 	std::vector < runtime_for_Seize > forRes;
 	std::vector < parser_for_Seize > fromParser;
-	virtual void onStart( RDOSimulator* sim );
+	void _onStart( RDOSimulator* sim );
 };
 
 // ----------------------------------------------------------------------------
@@ -236,7 +243,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
-RDO_IOBJECT(RDOPROCSeize);
+DEFINE_FACTORY(RDOPROCSeize);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
@@ -246,8 +253,8 @@ public:
 	virtual void TransactGoOut( RDOPROCTransact* _transact );
 
 private:
-	RDOPROCSeize( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par )
-		: RDOPROCBlockForSeize( _process, From_Par )
+	RDOPROCSeize(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par)
+		: RDOPROCBlockForSeize(process, From_Par)
 	{
 		static ruint g_index = 1;
 		index = g_index++;
@@ -263,14 +270,14 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
-RDO_IOBJECT(RDOPROCRelease);
+DEFINE_FACTORY(RDOPROCRelease);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCRelease( RDOPROCProcess* _process, std::vector < parser_for_Seize > From_Par )
-		: RDOPROCBlockForSeize( _process, From_Par )
+	RDOPROCRelease(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par)
+		: RDOPROCBlockForSeize(process, From_Par)
 	{
 		static ruint g_index = 1;
 		index = g_index++;
@@ -286,7 +293,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
-RDO_IOBJECT(RDOPROCAdvance);
+DEFINE_FACTORY(RDOPROCAdvance);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
@@ -306,8 +313,9 @@ protected:
 	std::list< LeaveTr > leave_list;
 
 private:
-	RDOPROCAdvance( RDOPROCProcess* _process, RDOCalc* _delayCalc )
-		: RDOPROCBlock( _process ), delayCalc( _delayCalc )
+	RDOPROCAdvance(LPIPROCProcess process, RDOCalc* _delayCalc)
+		: RDOPROCBlock(process   )
+		, delayCalc   (_delayCalc)
 	{}
 	DECLARE_IBaseOperation;
 };
@@ -317,7 +325,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {
-RDO_IOBJECT(RDOPROCTerminate);
+DEFINE_FACTORY(RDOPROCTerminate);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
@@ -326,8 +334,9 @@ public:
 	int getTerm() {return term;}
 
 private:
-	RDOPROCTerminate(RDOPROCProcess* _process, ruint _term)
-		: RDOPROCBlock( _process ), term(_term)
+	RDOPROCTerminate(LPIPROCProcess process, ruint _term)
+		: RDOPROCBlock(process)
+		, term        (_term  )
 	{}
 	const ruint term; 
 	DECLARE_IBaseOperation;
@@ -339,14 +348,17 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCAssign: public RDOPROCBlock, public IBaseOperation
 {
-RDO_IOBJECT(RDOPROCAssign);
+DEFINE_FACTORY(RDOPROCAssign);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCAssign( RDOPROCProcess* _process, RDOCalc* value, int Id_res, int Id_param )
-		: RDOPROCBlock( _process ), paramValue( value ), t_resId( Id_res ), t_parId( Id_param )
+	RDOPROCAssign(LPIPROCProcess process, RDOCalc* value, int Id_res, int Id_param)
+		: RDOPROCBlock(process )
+		, paramValue  (value   )
+		, t_resId     (Id_res  )
+		, t_parId     (Id_param)
 	{
 		int i = 0;
 	}
