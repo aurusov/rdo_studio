@@ -28,41 +28,43 @@ void RDOPROCProcess::setParent(LPIPROCProcess process)
 	m_parent = process;
 }
 
-void RDOPROCProcess::next( RDOPROCTransact* transact )
+void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 {
 	if ( transact->getBlock() )
 	{
-	Iterator it = std::find( begin(), end(), transact->getBlock() );
-	//Если у транзакта есть блок
-		if ( it != end() ) 
+		Iterator it = std::find(begin(), end(), transact->getBlock());
+		// Если у транзакта есть блок
+		if (it != end())
 		{
-			//Берем этот блок
-			RDOPROCBlock* block; //1 = static_cast<RDOPROCBlock*>(*it);
-			//Находим перемещаемый транзакт в списке его транзактов
-			RDOPROCBlock::TransactList::iterator it_res = std::find( block->m_transacts.begin(), block->m_transacts.end(), transact );
-			//Если транзакт найден
-			if ( it_res != block->m_transacts.end() ) 
+			// Берем этот блок
+			LPIPROCBlock block = *it;
+			ASSERT(block);
+			// Находим перемещаемый транзакт в списке его транзактов
+			RDOPROCBlock::TransactIt it_res = block->transactFind(transact);
+			// Если транзакт найден
+			if (it_res != block->transactEnd()) 
 			{
-				//Удаляем его из списка транзактов этого блока
-				block->TransactGoOut( *it_res );
+				// Удаляем его из списка транзактов этого блока
+				block->transactGoOut(*it_res);
 			}
 			else
 			{
-				//Скорее всего здесь не будет ошибки, поскольку advance удаляет транзакты из себя
+				// Скорее всего здесь не будет ошибки, поскольку advance удаляет транзакты из себя
 				//	getRuntime()->error( "Внутренняя ошибка: неучтенный транзакт (транзакт потерял свой блок)" );
 			}
-			//Переходим к следующему блоку
+			// Переходим к следующему блоку
 			it++;
-			//Если следующий блок существует
-			if ( it != end() ) 
+			// Если следующий блок существует
+			if (it != end())
 			{
-				//Берем этот блок
-				//1 block = static_cast<RDOPROCBlock*>(*it);	
+				// Берем этот блок
+				block = *it;
+				ASSERT(block);
 				transact->setBlock(block);
-				//Записываем в конец списка этого блока перемещаемый транзакт
-				block->TransactGoIn( transact );
+				// Записываем в конец списка этого блока перемещаемый транзакт
+				block->transactGoIn(transact);
 			}
-			//Блок в из которого нужно было переместить транзакт был последним
+			// Блок в из которого нужно было переместить транзакт был последним
 			else 
 			{
 				//---------Вход в этот блок означает, что it-1 = последний блок для транзакта, 
@@ -86,11 +88,11 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 // ----------------------------------------------------------------------------
 int RDOPROCTransact::typeID = -1;
 
-RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
-	RDOResource( static_cast<RDORuntime*>(sim), -1, typeID, true ),
-	block( _block )
+RDOPROCTransact::RDOPROCTransact(PTR(RDOSimulator) sim, CREF(LPIPROCBlock) block)
+	: RDOResource(static_cast<PTR(RDORuntime)>(sim), -1, typeID, true)
+	, m_block    (block                                              )
 {
-	static_cast<RDORuntime*>(sim)->insertNewResource( this );
+	static_cast<RDORuntime*>(sim)->insertNewResource(this);
 	setTrace( true );
 	m_temporary = true;
 	m_state     = RDOResource::CS_Create;
@@ -99,7 +101,7 @@ RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
 
 void RDOPROCTransact::next()
 {
-	block->m_process->next(this);
+	m_block->getProcess()->next(this);
 }
 
 // ----------------------------------------------------------------------------
@@ -118,14 +120,29 @@ RDOPROCBlock::RDOPROCBlock(LPIPROCProcess process):
 	m_process.query_cast<IBaseOperationContainer>()->append(this);
 }
 
-void RDOPROCBlock::TransactGoIn(PTR(RDOPROCTransact) transact)
+RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(PTR(Transact) transact)
+{
+	return std::find(m_transacts.begin(), m_transacts.end(), transact);
+}
+
+RDOPROCBlock::TransactIt RDOPROCBlock::transactEnd()
+{
+	return m_transacts.end();
+}
+
+void RDOPROCBlock::transactGoIn(PTR(Transact) transact)
 {
 	m_transacts.push_back(transact);
 }
 
-void RDOPROCBlock::TransactGoOut(PTR(RDOPROCTransact) transact)
+void RDOPROCBlock::transactGoOut(PTR(Transact) transact)
 {
 	m_transacts.remove(transact);
+}
+
+LPIPROCProcess RDOPROCBlock::getProcess() const
+{
+	return m_process;
 }
 
 // ----------------------------------------------------------------------------
@@ -323,24 +340,24 @@ IBaseOperation::BOResult RDOPROCSeize::onDoOperation( RDOSimulator* sim )
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCSeize::TransactGoIn( RDOPROCTransact* _transact )
+void RDOPROCSeize::transactGoIn( RDOPROCTransact* _transact )
 {
 	int Size_Seizes = forRes.size();
 	for(int i=0;i<Size_Seizes; i++)
 	{
 		forRes[i].rss->transacts.push_back( _transact );
 	}
-	RDOPROCBlockForSeize::TransactGoIn( _transact );
+	RDOPROCBlockForSeize::transactGoIn( _transact );
 }
 
-void RDOPROCSeize::TransactGoOut( RDOPROCTransact* _transact )
+void RDOPROCSeize::transactGoOut( RDOPROCTransact* _transact )
 {
 	int Size_Seizes = forRes.size();
 	for(int i=0;i<Size_Seizes; i++)
 	{
 		forRes[i].rss->transacts.remove( _transact );
 	}
-	RDOPROCBlockForSeize::TransactGoOut( _transact );
+	RDOPROCBlockForSeize::transactGoOut( _transact );
 }
 
 void                     RDOPROCSeize::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}

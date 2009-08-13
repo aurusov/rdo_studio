@@ -22,9 +22,6 @@ friend class RDOPROCTransact;
 friend class RDOPROCProcess;
 friend class RDOPROCResource;
 
-public:
-	typedef std::list<PTR(RDOPROCTransact)> TransactList;
-
 protected:
 	LPIPROCProcess  m_process;
 	TransactList    m_transacts;
@@ -66,33 +63,31 @@ private:
 class RDOPROCResource;
 class RDOPROCTransact: public RDOResource
 {
-//friend class RDOPROCProcess;
-
 public:
 	static int typeID;
 
-	RDOPROCResource* getRes()
+	PTR(RDOPROCResource) getRes()
 	{
-		return res;
+		return m_res;
 	}
-	void setRes(RDOPROCResource *Res)
+	void setRes(PTR(RDOPROCResource) res)
 	{
-		res = Res;
+		m_res = res;
 	}
-	RDOPROCBlock* getBlock()
+	REF(LPIPROCBlock) getBlock()
 	{
-		return block;
+		return m_block;
 	}
-	void setBlock(RDOPROCBlock* _block)
+	void setBlock(CREF(LPIPROCBlock) block)
 	{
-		block = _block;
+		m_block = block;
 	}
-	RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block );
+	RDOPROCTransact(PTR(RDOSimulator) sim, CREF(LPIPROCBlock) block);
 	void next();
 
 private:
-	RDOPROCBlock* block;
-	RDOPROCResource *res;
+	LPIPROCBlock         m_block;
+	PTR(RDOPROCResource) m_res;
 };
 
 // ----------------------------------------------------------------------------
@@ -248,10 +243,6 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 QUERY_INTERFACE_END
 
-public:
-	virtual void TransactGoIn( RDOPROCTransact* _transact );
-	virtual void TransactGoOut( RDOPROCTransact* _transact );
-
 private:
 	RDOPROCSeize(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par)
 		: RDOPROCBlockForSeize(process, From_Par)
@@ -261,6 +252,9 @@ private:
 	}
 
 	ruint index;
+
+	virtual void transactGoIn( RDOPROCTransact* _transact );
+	virtual void transactGoOut( RDOPROCTransact* _transact );
 
 	DECLARE_IBaseOperation;
 };

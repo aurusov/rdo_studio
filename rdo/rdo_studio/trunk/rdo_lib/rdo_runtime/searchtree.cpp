@@ -55,14 +55,6 @@ TreeNode::~TreeNode()
 	delete m_sim;
 }
 
-//0
-/*
-int TreeNode::getActivityID() const
-{
-	return ((RDOActivityTrace*)m_activity)->getTraceID();
-}
-*/
-
 void TreeNode::ExpandChildren()
 {
 	m_root->m_sizeof_dpt -= (m_sim->getSizeofSim() + sizeof(TreeNode)) * m_children.size();

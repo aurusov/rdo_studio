@@ -42,20 +42,14 @@ protected:
 	virtual ~RDOLogic()
 	{}
 
-	typedef  LPIBaseOperation      Item;
-	typedef  std::vector<Item>     List;
-	typedef  List::iterator        Iterator;
-	typedef  List::const_iterator  CIterator;
-
 protected:
 	DECLARE_IBaseOperationContainer;
 
-private:
-	PTR(RDOCalc)      m_condition;
-	rbool             m_lastCondition;
-	LPIBaseOperation  m_childLogicList;
-	LPIBaseOperation  m_childItemList;
+	PTR(RDOCalc)               m_condition;
+	rbool                      m_lastCondition;
+	LPIBaseOperationContainer  m_childList;
 
+private:
 	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
 
 	rbool checkSelfCondition(PTR(RDOSimulator) sim);

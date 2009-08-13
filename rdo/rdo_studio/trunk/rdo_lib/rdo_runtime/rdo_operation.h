@@ -15,7 +15,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation
 // ----------------------------------------------------------------------------
-class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior
+class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior, public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
 DEFINE_FACTORY(RDOOperation);
@@ -24,6 +24,7 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPatternPrior)
 	QUERY_INTERFACE(IBaseOperation)
 	QUERY_INTERFACE(IOperation)
+	QUERY_INTERFACE(IOperationTrace)
 QUERY_INTERFACE_END
 
 friend class RDOTrace;

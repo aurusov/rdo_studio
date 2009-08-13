@@ -23,12 +23,22 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IPROCBlock
 {
 public:
-	virtual void TransactGoIn (PTR(rdoRuntime::RDOPROCTransact) transact) = 0;
-	virtual void TransactGoOut(PTR(rdoRuntime::RDOPROCTransact) transact) = 0;
+	typedef  rdoRuntime::RDOPROCTransact  Transact;
+	typedef  std::list<PTR(Transact)>     TransactList;
+	typedef  TransactList::iterator       TransactIt;
+
+	virtual TransactIt     transactFind (PTR(Transact) transact) = 0;
+	virtual TransactIt     transactEnd  ()                       = 0;
+	virtual void           transactGoIn (PTR(Transact) transact) = 0;
+	virtual void           transactGoOut(PTR(Transact) transact) = 0;
+	virtual LPIPROCProcess getProcess   () const                 = 0;
 };
 #define DECLARE_IPROCBlock \
-	virtual void TransactGoIn (PTR(rdoRuntime::RDOPROCTransact) transact); \
-	virtual void TransactGoOut(PTR(rdoRuntime::RDOPROCTransact) transact);
+	virtual TransactIt     transactFind (PTR(Transact) transact); \
+	virtual TransactIt     transactEnd  ();                       \
+	virtual void           transactGoIn (PTR(Transact) transact); \
+	virtual void           transactGoOut(PTR(Transact) transact); \
+	virtual LPIPROCProcess getProcess   () const;
 
 class IPROCProcess
 {

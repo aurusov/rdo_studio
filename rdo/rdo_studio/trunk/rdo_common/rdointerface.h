@@ -79,18 +79,18 @@ private:
 	LPIUnknown  m_smt_ptr;
 };
 
-template<class T>
+template<class I>
 class Interface: public UnknownPointer
 {
 public:
-	typedef Interface<T>   this_type;
+	typedef Interface<I>   this_type;
 	typedef UnknownPointer parent_type;
 
 	Interface()
 		: UnknownPointer(NULL, NULL)
 	{}
 	Interface(LPIGetUnknown get_smt_ptr)
-		: UnknownPointer(get_smt_ptr)
+		: UnknownPointer(get_smt_ptr ? get_smt_ptr->GetUnknown()->QueryInterface(GetInterface<I>::ID) : UnknownPointer())
 	{}
 	Interface(PTR(void) aInterface, LPIUnknown smt_ptr)
 		: UnknownPointer(aInterface, smt_ptr)
@@ -104,19 +104,19 @@ public:
 		return *this;
 	}
 
-	PTR(T) get()
+	PTR(I) get()
 	{
-		return static_cast<PTR(T)>(m_interface);
+		return static_cast<PTR(I)>(m_interface);
 	}
-	CPTR(T) get() const
+	CPTR(I) get() const
 	{
-		return static_cast<PTR(T)>(m_interface);
+		return static_cast<PTR(I)>(m_interface);
 	}
-	PTR(T) operator-> ()
+	PTR(I) operator-> ()
 	{
 		return get();
 	}
-	CPTR(T) operator-> () const
+	CPTR(I) operator-> () const
 	{
 		return get();
 	}
@@ -255,10 +255,6 @@ private:
 		Counter()
 			: m_counter(0)
 		{}
-//		Counter(PTR(T) object)
-//			: m_object (object)
-//			, m_counter(0     )
-//		{}
 		operator UnknownPointer()
 		{
 			return UnknownPointer(NULL, this);
@@ -370,14 +366,6 @@ public:
 	static void destroy(PTR(T) obj)
 	{
 		delete obj;
-	}
-
-private:
-	static UnknownPointer _create(PTR(T) object)
-	{
-		PTR(Counter) counter = new Counter(object);
-		object->m_counter = counter;
-		return *counter;
 	}
 };
 

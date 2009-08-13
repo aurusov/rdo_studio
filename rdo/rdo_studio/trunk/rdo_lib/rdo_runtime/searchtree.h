@@ -74,10 +74,7 @@ public:
 
 	NodeFoundInfo CheckIfExistBetter( RDOSimulator* childSim, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
 	void ReCostSubTree( double cost );
-/*
-//0
-	int getActivityID() const;
-*/
+
 protected:
 	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, LPIDPTSearchActivity _activity, double cost, int cnt );
 

@@ -27,7 +27,7 @@ public:
 	void appendLogic(CREF(LPIBaseOperation) logic)
 	{
 		ASSERT(m_metaLogic);
-		m_metaLogic.query_cast<ILogic>()->appendLogic(logic);
+		m_metaLogic->append(logic);
 	}
 
 	LPIBaseOperation getMustContinueOpr() const           { return opr_must_continue;  }
@@ -54,9 +54,9 @@ protected:
 	{
 		ASSERT(op);
 		ASSERT(!m_metaLogic->empty());
-		LPILogic logic = m_metaLogic->back();
+		LPIBaseOperationContainer logic = m_metaLogic->back();
 		ASSERT(logic);
-		logic->appendOperation(op);
+		logic->append(op);
 	}
 
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания

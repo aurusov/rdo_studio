@@ -25,7 +25,6 @@ RDODPTSearchActivity::RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTi
 	, m_valueTime       (valueTime)
 {
 	LPITrace trace = m_rule;
-	//0
 	ASSERT(trace);
 	setTraceID(trace->getTraceID());
 }

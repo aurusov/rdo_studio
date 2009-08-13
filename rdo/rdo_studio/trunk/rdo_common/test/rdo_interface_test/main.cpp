@@ -66,6 +66,11 @@ private:
 	}
 };
 
+void fun(CREF(LPIMy1) my1)
+{
+	ASSERT(my1);
+}
+
 class MyClass2: public MyClass, public IMy3
 {
 DEFINE_FACTORY(MyClass2);
@@ -85,7 +90,10 @@ private:
 	}
 	void fun3()
 	{
-		rdo::Interface<IMy1> int1 = rdo::UnknownPointer(this);
+		fun(this);
+
+		LPIMy1 int1 = this;
+		ASSERT(int1)
 		std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };

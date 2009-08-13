@@ -145,43 +145,27 @@ RDOLogic::RDOLogic()
 	: m_condition    (NULL)
 	, m_lastCondition(false)
 {
-	m_childLogicList = F(RDOOprContainer)::create();
-	m_childItemList  = F(RDOOprContainer)::create();
-	ASSERT(m_childLogicList);
-	ASSERT(m_childItemList);
+	m_childList = F(RDOOprContainer)::create();
+	ASSERT(m_childList);
 }
 
 RDOLogic::RDOLogic(PTR(RDOSimulator) sim)
 	: m_condition    (NULL)
 	, m_lastCondition(false)
 {
-	m_childLogicList = F(RDOOprContainer)::create();
-	m_childItemList  = F(RDOOprContainer)::create();
-	ASSERT(m_childLogicList);
-	ASSERT(m_childItemList);
+	m_childList = F(RDOOprContainer)::create();
+	ASSERT(m_childList);
 }
 
 void RDOLogic::init(PTR(RDOSimulator) sim)
 {
 	if (sim)
-		sim->appendLogic(this);
+		sim->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>());
 }
 
 void RDOLogic::setCondition(PTR(RDOCalc) calc)
 {
 	m_condition = calc;
-}
-
-void RDOLogic::appendOperation(CREF(LPIBaseOperation) opr)
-{
-	if (opr)
-		m_childItemList.query_cast<IBaseOperationContainer>()->append(opr);
-}
-
-void RDOLogic::appendLogic(CREF(LPIBaseOperation) logic)
-{
-	if (logic)
-		m_childLogicList.query_cast<IBaseOperationContainer>()->append(logic);
 }
 
 void RDOLogic::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
@@ -230,13 +214,8 @@ rbool RDOLogic::onCheckCondition(PTR(RDOSimulator) sim)
 	}
 	if (condition)
 	{
-		if (!m_childLogicList->onCheckCondition(sim))
-		{
-			actionWithRDOOprContainer(sim);
-			return m_childItemList->onCheckCondition(sim);
-		}
-		else
-			return true;
+		actionWithRDOOprContainer(sim);
+		return m_childList.query_cast<IBaseOperation>()->onCheckCondition(sim);
 	}
 	return false;
 }
@@ -245,8 +224,7 @@ IBaseOperation::BOResult RDOLogic::onDoOperation(PTR(RDOSimulator) sim)
 {
 	if (m_lastCondition)
 	{
-		IBaseOperation::BOResult result = m_childLogicList->onDoOperation(sim);
-		return (result == BOR_cant_run) ? m_childItemList->onDoOperation(sim) : result;
+		return m_childList.query_cast<IBaseOperation>()->onDoOperation(sim);
 	}
 	else
 	{
@@ -256,14 +234,12 @@ IBaseOperation::BOResult RDOLogic::onDoOperation(PTR(RDOSimulator) sim)
 
 void RDOLogic::onMakePlaned(PTR(RDOSimulator) sim, PTR(void) param)
 {
-	m_childLogicList->onMakePlaned(sim, param);
-	m_childItemList->onMakePlaned(sim, param);
+	m_childList.query_cast<IBaseOperation>()->onMakePlaned(sim, param);
 }
 
 IBaseOperation::BOResult RDOLogic::onContinue(PTR(RDOSimulator) sim)
 {
-	IBaseOperation::BOResult result = m_childLogicList->onContinue(sim);
-	return (result != IBaseOperation::BOR_must_continue) ? m_childItemList->onContinue(sim) : result;
+	return m_childList.query_cast<IBaseOperation>()->onContinue(sim);
 }
 
 rbool RDOLogic::checkSelfCondition(PTR(RDOSimulator) sim)
@@ -273,49 +249,47 @@ rbool RDOLogic::checkSelfCondition(PTR(RDOSimulator) sim)
 
 void RDOLogic::start(PTR(RDOSimulator) sim)
 {
-	m_childLogicList->onStart(sim);
-	m_childItemList->onStart(sim);
+	m_childList.query_cast<IBaseOperation>()->onStart(sim);
 }
 
 void RDOLogic::stop(PTR(RDOSimulator) sim)
 {
-	m_childLogicList->onStop(sim);
-	m_childItemList->onStop(sim);
+	m_childList.query_cast<IBaseOperation>()->onStop(sim);
 }
 
 rbool RDOLogic::empty() const
 {
-	return m_childItemList.query_cast<IBaseOperationContainer>()->empty();
+	return m_childList->empty();
 }
 
 RDOLogic::Iterator RDOLogic::begin()
 {
-	return m_childItemList.query_cast<IBaseOperationContainer>()->begin();
+	return m_childList->begin();
 }
 
 RDOLogic::Iterator RDOLogic::end()
 {
-	return m_childItemList.query_cast<IBaseOperationContainer>()->end();
+	return m_childList->end();
 }
 
 RDOLogic::CIterator RDOLogic::begin() const
 {
-	return m_childItemList.query_cast<IBaseOperationContainer>()->begin();
+	return m_childList->begin();
 }
 
 RDOLogic::CIterator RDOLogic::end() const
 {
-	return m_childItemList.query_cast<IBaseOperationContainer>()->end();
+	return m_childList->end();
 }
 
 REF(LPIBaseOperation) RDOLogic::back()
 {
-	return m_childItemList.query_cast<IBaseOperationContainer>()->back();
+	return m_childList->back();
 }
 
 void RDOLogic::append(CREF(Item) item)
 {
-	appendOperation(item);
+	m_childList->append(item);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

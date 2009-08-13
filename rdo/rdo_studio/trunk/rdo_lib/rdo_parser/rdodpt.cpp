@@ -126,21 +126,23 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 		}
 		parser()->error_push_done();
 	}
-//todo: проверить работу с интерфейсом
-	LPIKeyboard keyboard = m_activity;
-	ASSERT(keyboard);
-	if (m_pattern->getType() == RDOPATPattern::PT_Keyboard && !keyboard->hasHotKey())
+	if (m_pattern->getType() == RDOPATPattern::PT_Keyboard)
 	{
-		if (dynamic_cast<RDOOPROperation*>(this))
+		LPIKeyboard keyboard = m_activity;
+		ASSERT(keyboard);
+		if (!keyboard->hasHotKey())
 		{
-			parser()->error_push_only( _param_pos, "Для клавиатурной операции должна быть указана клавиша" );
+			if (dynamic_cast<RDOOPROperation*>(this))
+			{
+				parser()->error_push_only( _param_pos, "Для клавиатурной операции должна быть указана клавиша" );
+			}
+			else
+			{
+				parser()->error_push_only( _param_pos, "Для активности должна быть указана клавиша" );
+			}
+			parser()->error_push_only( m_pattern->src_info(), "См. образец" );
+			parser()->error_push_done();
 		}
-		else
-		{
-			parser()->error_push_only( _param_pos, "Для активности должна быть указана клавиша" );
-		}
-		parser()->error_push_only( m_pattern->src_info(), "См. образец" );
-		parser()->error_push_done();
 	}
 }
 
@@ -199,7 +201,6 @@ void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& 
 		parser()->error_push_only( pattern()->src_info(), "См. образец" );
 		parser()->error_push_done();
 	}
-//! todo: проверить работу с интерфейсами
 	LPIKeyboard keyboard = m_activity;
 	ASSERT(keyboard);
 	switch (keyboard->addHotKey(parser()->runtime(), hotKey))
@@ -274,7 +275,6 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 
 bool RDODPTSome::setPrior(RDOFUNArithm* prior)
 {
-//0
 	LPIPriority priority = m_rt_logic;
 	if (priority)
 	{
@@ -346,7 +346,6 @@ void RDODPTSearch::end()
 		m_evalBy->createCalc(),
 		m_compTops,
 		m_trace );
-	//0
 	ASSERT(m_rt_logic);
 	m_rt_logic->init(parser()->runtime());
 
@@ -360,7 +359,6 @@ void RDODPTSearch::end()
 			activity->getRuleCost()->createCalc()
 		);
 		LPIDPTSearchLogic searchLogic = m_rt_logic;
-		//0
 		ASSERT(searchLogic);
 		searchLogic->addActivity(act);
 	}
