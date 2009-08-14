@@ -10,7 +10,9 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 class RDOOperations: public RDOLogic
 {
-public:
+DEFINE_FACTORY(RDOOperations);
+
+private:
 	RDOOperations( RDOSimulator* sim );
 	virtual ~RDOOperations();
 };

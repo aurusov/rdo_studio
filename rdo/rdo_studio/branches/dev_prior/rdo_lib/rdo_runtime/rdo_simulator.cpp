@@ -16,11 +16,11 @@ bool RDOSimulator::doOperation()
 	bool res;
 	if ( getMustContinueOpr() ) {
 		// Есть действие, которое необходимо продолжить. Используется в DPT
-		RDOBaseOperation::BOResult result = getMustContinueOpr()->onContinue( this );
-		if ( result != RDOBaseOperation::BOR_must_continue ) {
+		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue( this );
+		if ( result != IBaseOperation::BOR_must_continue ) {
 			setMustContinueOpr( NULL );
 		}
-		return result != RDOBaseOperation::BOR_cant_run;
+		return result != IBaseOperation::BOR_cant_run;
 	} else {
 		bool found_planed = false;
 		// Отработаем все запланированные на данный момент события
@@ -32,13 +32,13 @@ bool RDOSimulator::doOperation()
 				if ( list && !list->empty() ) {
 #ifdef RDOSIM_COMPATIBLE
 					// Дисциплина списка текущих событий LIFO
-					RDOBaseOperation* opr   = list->back().m_opr;
-					void*             param = list->back().m_param;
+					LPIBaseOperation opr   = list->back().m_opr;
+					void*            param = list->back().m_param;
 					list->pop_back();
 #else
 					// Дисциплина списка текущих событий FIFO
-					RDOBaseOperation* opr   = list->front().m_opr;
-					void*             param = list->front().m_param;
+					LPIBaseOperation opr   = list->front().m_opr;
+					void*            param = list->front().m_param;
 					list->pop_front();
 #endif
 					if ( list->empty() ) {
@@ -55,10 +55,10 @@ bool RDOSimulator::doOperation()
 		if ( !found_planed ) {
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
-			res = m_logics.onCheckCondition(this);
+			res = m_metaLogic.query_cast<IBaseOperation>()->onCheckCondition(this);
 			if ( res )
 			{
-				res = m_logics.onDoOperation(this) != RDOBaseOperation::BOR_cant_run;
+				res = m_metaLogic.query_cast<IBaseOperation>()->onDoOperation(this) != IBaseOperation::BOR_cant_run;
 			}
 			if ( !res ) m_check_operation = false;
 		}
@@ -70,7 +70,7 @@ bool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	m_logics.onStart( this );
+	m_metaLogic.query_cast<IBaseOperation>()->onStart( this );
 	onResetPokaz();
 }
 
@@ -82,21 +82,17 @@ RDOSimulator* RDOSimulator::createCopy()
 }
 
 
-std::string writeActivitiesStructureRecurse( RDOLogic* logic, int& counter )
+std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logic, REF(int) counter)
 {
 	rdo::textstream stream;
-	RDOLogic::CIterator it = logic->begin();
-	while ( it != logic->end() ) {
-		RDORule* rule = dynamic_cast<RDORule*>(*it);
-		if ( rule ) {
+	IBaseOperationContainer::CIterator it = logic->begin();
+	while (it != logic->end())
+	{
+		LPIModelStructure pModelStructure = *it;
+		if (pModelStructure && (pModelStructure.query_cast<IRule>() || pModelStructure.query_cast<IOperation>()))
+		{
 			stream << counter++ << " ";
-			rule->writeModelStructure( stream );
-		} else {
-			RDOOperation* opr = dynamic_cast<RDOOperation*>(*it);
-			if ( opr ) {
-				stream << counter++ << " ";
-				opr->writeModelStructure( stream );
-			}
+			pModelStructure->writeModelStructure(stream);
 		}
 		it++;
 	}
@@ -107,22 +103,25 @@ std::string writeActivitiesStructureRecurse( RDOLogic* logic, int& counter )
 
 	int _counter = 1;
 	it = logic->begin();
-	while ( it != logic->end() ) {
-		RDOIrregEvent* ie = dynamic_cast<RDOIrregEvent*>(*it);
-		if ( ie ) {
+	while ( it != logic->end() )
+	{
+		LPIModelStructure pModelStructure = *it;
+		if (pModelStructure && pModelStructure.query_cast<IIrregEvent>())
+		{
 			stream << _counter++ << " ";
 			counter++;
-			ie->writeModelStructure( stream );
+			pModelStructure->writeModelStructure(stream);
 		}
 		it++;
 	}
 
 	it = logic->begin();
-	while ( it != logic->end() ) {
-		RDOLogic* logic = dynamic_cast<RDOLogic*>(*it);
-		if ( logic )
+	while (it != logic->end())
+	{
+		LPILogic logic = *it;
+		if (logic)
 		{
-			stream << writeActivitiesStructureRecurse( logic, counter );
+			stream << writeActivitiesStructureRecurse(logic, counter);
 		}
 		it++;
 	}
@@ -130,9 +129,9 @@ std::string writeActivitiesStructureRecurse( RDOLogic* logic, int& counter )
 	return stream.str();
 }
 
-std::string RDOSimulator::writeActivitiesStructure( int& counter )
+std::string RDOSimulator::writeActivitiesStructure(REF(int) counter)
 {
-	return writeActivitiesStructureRecurse( &m_logics, counter );
+	return writeActivitiesStructureRecurse(m_metaLogic, counter);
 }
 
 } // namespace rdoRuntime

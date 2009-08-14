@@ -19,14 +19,14 @@ class RDOFUNArithm;
 // ----------------------------------------------------------------------------
 class RDOPMDPokaz: public RDOParserObject, public RDOParserSrcInfo
 {
-protected:
-	rdoRuntime::RDOPMDPokaz* pokaz_runtime;
-	void endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime );
-
 public:
 	RDOPMDPokaz( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 	virtual ~RDOPMDPokaz() {}
 	const std::string& name() const { return src_text(); }
+
+protected:
+	LPIPokaz m_pokaz;
+	void endOfCreation(CREF(LPIPokaz) pokaz);
 };
 
 // ----------------------------------------------------------------------------

@@ -314,11 +314,11 @@ dpt_search_descr_param:	/* empty */
 
 dpt_search_descr_value:	RDO_value_before fun_arithm {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							dpt->getLastActivity()->setValue( rdoRuntime::RDODPTSearch::Activity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
+							dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
 						| RDO_value_after fun_arithm {
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							dpt->getLastActivity()->setValue( rdoRuntime::RDODPTSearch::Activity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
+							dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
 						| RDO_value_before error {
 							PARSER->error( @1, @2, "Ошибка в арифметическом выражении" );

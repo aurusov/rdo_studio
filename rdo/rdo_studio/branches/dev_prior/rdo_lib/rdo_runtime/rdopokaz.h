@@ -1,41 +1,63 @@
-#ifndef RDOPOKAZ_H
-#define RDOPOKAZ_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdopokaz.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDOPOKAZ_H_
+#define _RDOPOKAZ_H_
+
+// =========================================================================== PCH
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include <namespace.h>
 #include "rdotrace.h"
-#include "rdo_runtime.h"
+#include "rdotrace_interface.h"
+#include "rdopokaz_interface.h"
+#include "rdo_model_interface.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz
 // ----------------------------------------------------------------------------
-class RDOPMDPokaz: public RDOPokazTrace
+class RDOPMDPokaz: public RDOPokazTrace, public IName
 {
-public:
-	RDOPMDPokaz( RDORuntime* sim, const std::string& name, bool trace );
-	virtual ~RDOPMDPokaz() {}
-	virtual bool checkResourceErased(RDOResource *res) { return false; }
-	virtual void writePokazStructure( std::ostream& stream ) const = 0;
-	const std::string& name() const { return m_name; }
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPokazTrace)
+	QUERY_INTERFACE(IName)
+QUERY_INTERFACE_END
 
 protected:
+	RDOPMDPokaz( RDORuntime* sim, const std::string& name, bool trace );
+	virtual ~RDOPMDPokaz() {}
+	DECLARE_IName;
+
+private:
 	std::string m_name;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-class RDOPMDWatchPar: public RDOPMDPokaz
+class RDOPMDWatchPar: public RDOPMDPokaz, public IPokaz, public IModelStructure, public INotify
 {
-public:
-	RDOPMDWatchPar( RDORuntime* sim, const std::string& name, bool trace, const std::string& resName, const std::string& parName, int resNumber, int parNumber );
-	std::string traceValue();
-	bool resetPokaz(RDOSimulator *sim);
-	bool checkPokaz(RDOSimulator *sim);
-	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure( std::ostream& stream ) const;
+DEFINE_FACTORY(RDOPMDWatchPar);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
+	QUERY_INTERFACE(IPokaz)
+	QUERY_INTERFACE(IModelStructure)
+	QUERY_INTERFACE(IPokazTraceValue)
+	QUERY_INTERFACE(INotify)
+QUERY_INTERFACE_END
 
 private:
+	RDOPMDWatchPar( RDORuntime* sim, const std::string& name, bool trace, const std::string& resName, const std::string& parName, int resNumber, int parNumber );
+
 	int       m_resNumber;
 	int       m_parNumber;
 
@@ -51,23 +73,28 @@ private:
 
 	double    m_timeErase;
 
-	virtual void notify( RDORuntimeObject* from, ruint message, void* param = NULL );
+	DECLARE_INotify;
+	DECLARE_IPokaz;
+	DECLARE_IPokazTraceValue;
+	DECLARE_IModelStructure;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-class RDOPMDWatchState: public RDOPMDPokaz
+class RDOPMDWatchState: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-public:
-	RDOPMDWatchState( RDORuntime* sim, const std::string& name, bool trace, RDOCalc* logic );
-	std::string traceValue();
-	bool resetPokaz(RDOSimulator *sim);
-	bool checkPokaz(RDOSimulator *sim);
-	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure( std::ostream& stream ) const;
+DEFINE_FACTORY(RDOPMDWatchState);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
+	QUERY_INTERFACE(IPokaz)
+	QUERY_INTERFACE(IModelStructure)
+	QUERY_INTERFACE(IPokazTraceValue)
+QUERY_INTERFACE_END
 
 private:
+	RDOPMDWatchState( RDORuntime* sim, const std::string& name, bool trace, RDOCalc* logic );
+
 	RDOCalc* m_logicCalc;
 
 	int      m_watchNumber;
@@ -79,23 +106,29 @@ private:
 
 	double   m_timeBegin;
 	double   m_timePrev;
+
+	DECLARE_IPokaz;
+	DECLARE_IPokazTraceValue;
+	DECLARE_IModelStructure;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-class RDOPMDWatchQuant: public RDOPMDPokaz
+class RDOPMDWatchQuant: public RDOPMDPokaz, public IPokaz, public IPokazWatchQuant, public IModelStructure
 {
-public:
-	RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
-	std::string traceValue();
-	bool resetPokaz(RDOSimulator *sim);
-	bool checkPokaz(RDOSimulator *sim);
-	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure( std::ostream& stream ) const;
-	void setLogicCalc( RDOCalc* logicCalc ) { m_logicCalc = logicCalc; }
+DEFINE_FACTORY(RDOPMDWatchQuant);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
+	QUERY_INTERFACE(IPokaz)
+	QUERY_INTERFACE(IPokazTraceValue)
+	QUERY_INTERFACE(IPokazWatchQuant)
+	QUERY_INTERFACE(IModelStructure)
+QUERY_INTERFACE_END
 
 private:
+	RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
+
 	RDOCalc* m_logicCalc;
 	int      m_rtp_id;
 
@@ -108,28 +141,33 @@ private:
 
 	double   m_timeBegin;
 	double   m_timePrev;
+
+	DECLARE_IPokaz;
+	DECLARE_IPokazTraceValue;
+	DECLARE_IPokazWatchQuant;
+	DECLARE_IModelStructure;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-class RDOPMDWatchValue: public RDOPMDPokaz
+class RDOPMDWatchValue: public RDOPMDPokaz, public IPokaz, public IPokazWatchValue, public IModelStructure
 {
-public:
-	RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
-	std::string traceValue();
-	bool resetPokaz(RDOSimulator *sim);
-	bool checkPokaz(RDOSimulator *sim);
-	bool calcStat(RDOSimulator *sim);
-	bool checkResourceErased(RDOResource *res);
-	void writePokazStructure( std::ostream& stream ) const;
-	void setLogicCalc ( RDOCalc* logicCalc )   { m_logicCalc  = logicCalc;  }
-	void setArithmCalc( RDOCalc* arithmCalc )  { m_arithmCalc = arithmCalc; }
+DEFINE_FACTORY(RDOPMDWatchValue);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
+	QUERY_INTERFACE(IPokaz)
+	QUERY_INTERFACE(IPokazTraceValue)
+	QUERY_INTERFACE(IPokazWatchValue)
+	QUERY_INTERFACE(IModelStructure)
+QUERY_INTERFACE_END
 
 private:
-	RDOCalc*  m_logicCalc;
-	RDOCalc*  m_arithmCalc;
-	int       m_rtp_id;
+	RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
+
+	PTR(RDOCalc)  m_logicCalc;
+	PTR(RDOCalc)  m_arithmCalc;
+	int           m_rtp_id;
 
 	int       m_watchNumber;
 	RDOValue  m_currValue;
@@ -137,25 +175,35 @@ private:
 	double    m_sumSqr;
 	RDOValue  m_minValue;
 	RDOValue  m_maxValue;
+
+	DECLARE_IPokaz;
+	DECLARE_IPokazTraceValue;
+	DECLARE_IPokazWatchValue;
+	DECLARE_IModelStructure;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-class RDOPMDGetValue: public RDOPMDPokaz
+class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-public:
-	RDOPMDGetValue( RDORuntime* sim, const std::string& name, RDOCalc* arithm );
-	std::string traceValue();
-	bool resetPokaz(RDOSimulator *sim);
-	bool checkPokaz(RDOSimulator *sim);
-	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure( std::ostream& stream ) const;
+DEFINE_FACTORY(RDOPMDGetValue);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
+	QUERY_INTERFACE(IPokaz)
+	QUERY_INTERFACE(IModelStructure)
+	QUERY_INTERFACE(IPokazTraceValue)
+QUERY_INTERFACE_END
 
 private:
-	RDOCalc*  m_arithmCalc;
+	RDOPMDGetValue( RDORuntime* sim, const std::string& name, RDOCalc* arithm );
+
+	PTR(RDOCalc) m_arithmCalc;
+	DECLARE_IPokaz;
+	DECLARE_IPokazTraceValue;
+	DECLARE_IModelStructure;
 };
 
-} // rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDOPOKAZ_H
+#endif //! _RDOPOKAZ_H_

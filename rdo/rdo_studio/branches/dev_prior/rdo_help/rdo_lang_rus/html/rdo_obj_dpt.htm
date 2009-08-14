@@ -6,7 +6,7 @@
 <BODY>
 	<DIV>
 		<H1>ОПИСАНИЕ ТОЧЕК ПРИНЯТИЯ РЕШЕНИЙ</H1>
-		<P><B>Точки принятия решений</B> в РДО-языке описывают способы использования <A href="../html/rdo_obj_pat.htm">образцов</A> для моделирования процесса и принятия решений на уровне событий, их описывают в отдельном <A href="../html/rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.dpt</FONT>). В РДО-модели может быть либо <A href="../html/rdo_obj_opr.htm">объект операций</A>, либо объект точек принятия решений. Их совместное использование не допускается.</P>
+		<P><B>Точки принятия решений</B> в РДО-языке описывают способы использования <A href="../html/rdo_obj_pat.htm">образцов</A> для моделирования процесса и принятия решений на уровне событий, их описывают в отдельном <A href="../html/rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.dpt</FONT>). Помимо точек принятия решений здесь же можно описывать <A href="../html/rdo_obj_proc.htm">процессы обслуживания</A>.</P>
 		<P>Объект точек принятия решений имеет следующий формат:</P>
 		<PRE class="syntax"><A class="syntax" href="#dpt_desc">&lt;описание_точки_принятия_решений&gt;</A> | <A class="syntax" href="#act_block">&lt;блок_активностей&gt;</A>
 { &lt;описание_точки_принятия_решений&gt; | &lt;блок_активностей&gt; }</PRE>
@@ -104,6 +104,10 @@ $End</PRE>
 				</DL>
 			</DD>
 		</DL>
+		</DL class="syntax">
+		    <DT class="syntax"><A name="dpt_desc"></A><I>описание_точки_принятия_решений</I></DT>
+			<DD class="syntax">Описание каждой точки принятия решений имеет следующий формат:</DD>    
+		</DL>
 		<H4>Примеры</H4>
 		<PRE class="samples">$Decision_point Точка_1 : search trace_stat
 $Condition
@@ -147,7 +151,7 @@ $End</PRE>
 	<A name="section_top;../html/rdo_obj_intro.htm;Конструкции языка">
 	<A name="section;Конструкции языка;">
 	<A name="prev_topic;../html/rdo_obj_opr.htm;Описание операций">
-	<A name="next_topic;../html/rdo_obj_frm.htm;Описание кадров">
+	<A name="next_topic;../html/rdo_obj_proc.htm;Описание процессов обслуживания">
 	<A name="title;Справка по языку РДО"><BR><SCRIPT src="../navbar.js"></SCRIPT>
 </BODY>
 </HTML>

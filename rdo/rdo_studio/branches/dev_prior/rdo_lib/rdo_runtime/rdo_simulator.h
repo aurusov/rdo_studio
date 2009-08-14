@@ -15,27 +15,23 @@ class RDOSimulator: public RDOSimulatorBase
 friend class RDOTrace;
 
 public:
-	RDOSimulator():
-		RDOSimulatorBase(),
-		m_logics( NULL ),
-		m_lastLogic( NULL ),
-		opr_must_continue( NULL ),
-		m_sizeof_sim( 0 )
+	RDOSimulator()
+		: RDOSimulatorBase( )
+		, m_sizeof_sim    (0)
 	{
-		m_logics.reparent( this );
+		m_metaLogic = F(RDOLogic)::create();
 	}
 	virtual ~RDOSimulator()
+	{}
+
+	void appendLogic(CREF(LPIBaseOperation) logic)
 	{
+		ASSERT(m_metaLogic);
+		m_metaLogic->append(logic);
 	}
 
-	void appendLogic( RDOLogic* logic )
-	{
-		m_lastLogic = logic;
-		m_logics.append( logic );
-	}
-
-	RDOBaseOperation* getMustContinueOpr() const       { return opr_must_continue;  }
-	void setMustContinueOpr( RDOBaseOperation* value ) { opr_must_continue = value; }
+	LPIBaseOperation getMustContinueOpr() const           { return opr_must_continue;  }
+	void setMustContinueOpr(CREF(LPIBaseOperation) value) { opr_must_continue = value; }
 
 	virtual void onPutToTreeNode() = 0;
 
@@ -48,15 +44,19 @@ public:
 	// 2. Сравнение двух симуляторов по ресурсам
 	virtual bool operator == ( RDOSimulator& other ) = 0;
 
-	unsigned int getSizeofSim() const
+	ruint getSizeofSim() const
 	{
 		return m_sizeof_sim;
 	}
 
 protected:
-	void appendBaseOperation( RDOBaseOperation* op )
+	void appendBaseOperation(CREF(LPIBaseOperation) op)
 	{
-		getLastLogic()->append( op );
+		ASSERT(op);
+		ASSERT(!m_metaLogic->empty());
+		LPIBaseOperationContainer logic = m_metaLogic->back();
+		ASSERT(logic);
+		logic->append(op);
 	}
 
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
@@ -66,18 +66,12 @@ protected:
 	virtual void onCheckPokaz()      = 0;
 	virtual void onAfterCheckPokaz() = 0;
 
-	unsigned int m_sizeof_sim;
+	ruint m_sizeof_sim;
 
 private:
-	RDOLogic  m_logics;
-	RDOLogic* m_lastLogic;
+	LPIBaseOperationContainer m_metaLogic;
 
-	RDOLogic* getLastLogic()
-	{
-		return m_lastLogic;
-	}
-
-	RDOBaseOperation* opr_must_continue;
+	LPIBaseOperation opr_must_continue;
 	virtual bool doOperation();
 };
 

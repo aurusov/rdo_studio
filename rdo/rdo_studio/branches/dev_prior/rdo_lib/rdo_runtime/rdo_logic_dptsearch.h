@@ -3,6 +3,8 @@
 
 #include "rdo_logic.h"
 #include "rdocalc.h"
+#include "rdo_dptsearch_activity_interface.h"
+#include "rdo_logic_dptsearch_interface.h"
 
 namespace rdoRuntime {
 
@@ -13,50 +15,23 @@ class TreeRoot;
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-class RDORule;
-
-class RDODPTSearch: public RDOLogic
+class RDODPTSearch: public RDOLogic, public IDPTSearchLogic
 {
+QUERY_INTERFACE_BEGIN
+QUERY_INTERFACE_PARENT(RDOLogic)
+QUERY_INTERFACE(IDPTSearchLogic)
+QUERY_INTERFACE_END
+
 friend class RDOSimulator;
 friend class TreeNode;
-
-public:
-	// ----------------------------------------------------------------------------
-	// ---------- Activity
-	// ----------------------------------------------------------------------------
-	class Activity: public RDORuntimeObject
-	{
-	public:
-		enum ValueTime
-		{
-			vt_before,
-			vt_after
-		};
-
-		Activity( RDORule* rule, ValueTime valueTime );
-		virtual ~Activity()
-		{
-		}
-
-		RDORule*  rule()            { return m_rule;      }
-		ValueTime valueTime() const { return m_valueTime; }
-
-		virtual double cost( RDOSimulator* sim ) = 0;
-
-	private:
-		ValueTime m_valueTime;
-
-	protected:
-		RDORule* m_rule;
-	};
-
-	virtual void addActivity( Activity* act );
 
 protected:
 	RDODPTSearch( RDOSimulator* sim );
 	virtual ~RDODPTSearch();
 
-	std::list< Activity* > activities;
+	typedef std::list<LPIDPTSearchActivity> ActivityList;
+	ActivityList   m_activityList;
+
 	virtual bool   TermCondition( RDOSimulator* sim )                              = 0;
 	virtual double EvaluateBy( RDOSimulator* sim )                                 = 0;
 	virtual void   onSearchBegin( RDOSimulator* sim )                              = 0;
@@ -71,6 +46,8 @@ protected:
 private:
 	TreeRoot* treeRoot;
 	virtual BOResult onDoOperation( RDOSimulator* sim );
+
+	DECLARE_IDPTSearchLogic;
 };
 
 } // namespace rdoRuntime

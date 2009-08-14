@@ -24,7 +24,7 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Agrave;&euml;&ocirc;&agrave;&acirc;&egrave;&ograve;">
 			<param name="Local" value="html\rdo_base_alpha.htm">
-			<param name="ImageNumber" value="12">
+			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Euml;&aring;&ecirc;&ntilde;&aring;&igrave;&ucirc; &egrave; &eth;&agrave;&ccedil;&auml;&aring;&euml;&egrave;&ograve;&aring;&euml;&egrave;">
@@ -45,7 +45,7 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="&Ntilde;&iuml;&aring;&ouml;&egrave;&agrave;&euml;&uuml;&iacute;&ucirc;&aring; &ntilde;&egrave;&igrave;&acirc;&icirc;&euml;&ucirc;">
 				<param name="Local" value="html\rdo_lex_div_spesial_symbols.htm">
-				<param name="ImageNumber" value="12">
+				<param name="ImageNumber" value="11">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="&times;&egrave;&ntilde;&euml;&aring;&iacute;&iacute;&ucirc;&aring; &ecirc;&icirc;&iacute;&ntilde;&ograve;&agrave;&iacute;&ograve;&ucirc;">
@@ -55,13 +55,13 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="&Egrave;&igrave;&aring;&iacute;&agrave;">
 				<param name="Local" value="html\rdo_lex_div_names.htm">
-				<param name="ImageNumber" value="12">
+				<param name="ImageNumber" value="11">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Ograve;&egrave;&iuml;&ucirc; &auml;&agrave;&iacute;&iacute;&ucirc;&otilde;. &Ntilde;&icirc;&icirc;&ograve;&acirc;&aring;&ograve;&ntilde;&ograve;&acirc;&egrave;&aring; &ograve;&egrave;&iuml;&icirc;&acirc;">
 			<param name="Local" value="html\rdo_base_types.htm">
-			<param name="ImageNumber" value="12">
+			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Agrave;&eth;&egrave;&ocirc;&igrave;&aring;&ograve;&egrave;&divide;&aring;&ntilde;&ecirc;&egrave;&aring; &egrave; &euml;&icirc;&atilde;&egrave;&divide;&aring;&ntilde;&ecirc;&egrave;&aring; &acirc;&ucirc;&eth;&agrave;&aelig;&aring;&iacute;&egrave;&yuml;">
@@ -108,7 +108,7 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Icirc;&iuml;&egrave;&ntilde;&agrave;&iacute;&egrave;&aring; &icirc;&aacute;&eth;&agrave;&ccedil;&ouml;&icirc;&acirc;">
 			<param name="Local" value="html\rdo_obj_pat.htm">
-			<param name="ImageNumber" value="12">
+			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Icirc;&iuml;&egrave;&ntilde;&agrave;&iacute;&egrave;&aring; &icirc;&iuml;&aring;&eth;&agrave;&ouml;&egrave;&eacute;">
@@ -118,7 +118,12 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Icirc;&iuml;&egrave;&ntilde;&agrave;&iacute;&egrave;&aring; &ograve;&icirc;&divide;&aring;&ecirc; &iuml;&eth;&egrave;&iacute;&yuml;&ograve;&egrave;&yuml; &eth;&aring;&oslash;&aring;&iacute;&egrave;&eacute;">
 			<param name="Local" value="html\rdo_obj_dpt.htm">
-			<param name="ImageNumber" value="11">
+			<param name="ImageNumber" value="12">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Icirc;&iuml;&egrave;&ntilde;&agrave;&iacute;&egrave;&aring; &iuml;&eth;&icirc;&ouml;&aring;&ntilde;&ntilde;&icirc;&acirc; &icirc;&aacute;&ntilde;&euml;&oacute;&aelig;&ucirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+			<param name="Local" value="html\rdo_obj_proc.htm">
+			<param name="ImageNumber" value="12">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Icirc;&iuml;&egrave;&ntilde;&agrave;&iacute;&egrave;&aring; &ecirc;&agrave;&auml;&eth;&icirc;&acirc;">

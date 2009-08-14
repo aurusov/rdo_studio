@@ -4,15 +4,20 @@
 #include "rdo.h"
 #include "rdocalc.h"
 #include "rdo_runtime.h"
+#include "rdo_priority_interface.h"
 
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternPrior
 // ----------------------------------------------------------------------------
-class RDOPatternPrior
+class RDOPatternPrior: public IPriority
 {
-public:
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IPriority)
+QUERY_INTERFACE_END
+
+protected:
 	RDOPatternPrior()
 		: m_prior(NULL)
 	{}
@@ -25,18 +30,18 @@ public:
 		}
 	}
 
-	RDOCalc* getPrior()
+private:
+	PTR(RDOCalc) m_prior;
+
+	virtual PTR(RDOCalc) getPrior()
 	{
 		return m_prior; 
 	}
-	bool setPrior(RDOCalc* prior)
+	virtual rbool setPrior(PTR(RDOCalc) prior)
 	{
 		m_prior = prior;
 		return true;
 	}
-
-private:
-	RDOCalc* m_prior;
 };
 
 // ----------------------------------------------------------------------------
@@ -45,17 +50,17 @@ private:
 class RDODPTActivityCompare
 {
 public:
-	RDODPTActivityCompare(RDORuntime* runtime)
+	RDODPTActivityCompare(PTR(RDORuntime) runtime)
 		: m_runtime(runtime)
 	{}
-	bool operator() (RDOBaseOperation* opr1, RDOBaseOperation* opr2 )
+	rbool operator() (CREF(LPIBaseOperation) opr1, CREF(LPIBaseOperation) opr2)
 	{
-		RDOPatternPrior* pattern1 = dynamic_cast<RDOPatternPrior*>(opr1);
-		RDOPatternPrior* pattern2 = dynamic_cast<RDOPatternPrior*>(opr2);
+		LPIPriority pattern1 = opr1;
+		LPIPriority pattern2 = opr2;
 		if (pattern1 && pattern2)
 		{
-			RDOCalc* prior1 = pattern1->getPrior();
-			RDOCalc* prior2 = pattern2->getPrior();
+			PTR(RDOCalc) prior1 = pattern1->getPrior();
+			PTR(RDOCalc) prior2 = pattern2->getPrior();
 			RDOValue value1 = prior1 ? prior1->calcValue(m_runtime) : RDOValue(0.0);
 			RDOValue value2 = prior2 ? prior2->calcValue(m_runtime) : RDOValue(0.0);
 			return value1 > value2;
@@ -64,7 +69,7 @@ public:
 	}
 
 private:
-	RDORuntime* m_runtime;
+	PTR(RDORuntime) m_runtime;
 };
 
 } // namespace rdoRuntime

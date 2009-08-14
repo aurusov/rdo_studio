@@ -10,7 +10,9 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 class RDODPTFree: public RDOLogic
 {
-public:
+DEFINE_FACTORY(RDODPTFree)
+
+private:
 	RDODPTFree( RDOSimulator* sim );
 	virtual ~RDODPTFree();
 };

@@ -19,4 +19,4 @@ Results_file   = mymodel2
 Trace_file     = mymodel2
 
 // Условие остановки модели. После Terminate_if можно указать любое логическое выражение
-Terminate_if QOUT.длина_очереди >= 20
+Terminate_if ВыхНак.длина_очереди >= 20

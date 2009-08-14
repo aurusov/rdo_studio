@@ -120,41 +120,16 @@ $Constant
 	ar2		: real = 0.436
 	sinr2	: real = 0.424
 	cosr2	: real = 0.906
-	
-	
 $End
 
-
-$Function новое_состояние11 : such_as Станки.Состояние
+$Function новое_состояние_ресурса : such_as Ресурсы.Состояние
 $Type = algorithmic
 $Parameters
-	текущее_состояние : such_as Станки.Состояние
+	текущее_состояние : such_as Ресурсы.Состояние
 $Body
-	if текущее_состояние = Свободен or текущее_состояние = Занят result = Сломан
-	
+	if текущее_состояние = Свободен 
+	or текущее_состояние = Занят result = Сломан
 	result = Свободен
-$End
-
-$Function новое_состояние2 : such_as STANOK2s.Состояние
-$Type = algorithmic
-$Parameters
-	текущее_состояние : such_as STANOK2s.Состояние
-$Body
-	Calculate_if текущее_состояние = Свободен or текущее_состояние = Занят
-		новое_состояние2 = Сломан
-	Calculate_if текущее_состояние = Сломан 		
-		новое_состояние2 = Свободен
-$End
-
-$Function новое_состояние_робота : such_as Роботы.Состояние = Свободен
-$Type = algorithmic
-$Parameters
-	текущее_состояние : such_as Роботы.Состояние
-$Body
-	Calculate_if текущее_состояние = Свободен or текущее_состояние = Занят
-		новое_состояние_робота = Сломан
-	Calculate_if текущее_состояние = Сломан 		
-		новое_состояние_робота = Свободен
 $End
 
 $Sequence Интервал_прихода_заготовок : real
@@ -165,16 +140,9 @@ $Sequence Обработка_на_станке_1 : real
 $Type = normal 12346
 $End
 
-
 $Sequence Время_захвата : real
 $Type = uniform 67891
 $End
-
-
-$Sequence Время_отпуска : real
-$Type = uniform 67892
-$End
-
 
 $Sequence Обработка_на_станке_2 : real
 $Type = exponential 12345

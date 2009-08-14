@@ -170,9 +170,7 @@
 %token RDO_External_Model				444
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
-%token RDO_SEIZES						447
-%token RDO_RELEASES						448
-%token RDO_ASSIGNE						449
+%token RDO_ASSIGN						447
 
 %{
 #include "pch.h"
@@ -307,7 +305,7 @@ dpt_process_line:	RDO_IDENTIF
 					{
 						PARSER->error( @1, "Ожидается имя ресурса для сбора статистики по очереди" );
 					}
-					| RDO_SEIZE dpt_seize_param 
+				/*	| RDO_SEIZE dpt_seize_param 
 					{
 						TRACE("SEIZE dpt_seize_param\n");
 						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($2);
@@ -326,29 +324,29 @@ dpt_process_line:	RDO_IDENTIF
 					| RDO_RELEASE error				
 					{
 						PARSER->error(@1, rdo::format("Ожидается имя освобождаемого ресурса"));
-					}
-					| RDO_SEIZES dpt_seizes_param 
+					}*/
+					| RDO_SEIZE dpt_seize_param 
 					{
-						TRACE("SEIZES dpt_seizes_param\n");
-						RDOPROCSeizes* seizes  = reinterpret_cast<RDOPROCSeizes*>($2);
-						seizes->create_runtime_Seizes( PARSER );	
+						TRACE("SEIZE dpt_seize_param\n");
+						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($2);
+						seize->create_runtime_Seize( PARSER );	
 					}
-					| RDO_SEIZES error				
-					{
-						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
-					}
-					| RDO_RELEASES dpt_releases_param 
-					{
-						TRACE("RELEASES dpt_releases_param\n");
-						RDOPROCReleases* releases  = reinterpret_cast<RDOPROCReleases*>($2);
-						releases->create_runtime_Releases( PARSER );	
-					}
-					| RDO_RELEASES error				
+					| RDO_SEIZE error				
 					{
 						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 					}
-					| RDO_ASSIGNE dpt_assigne_param	  { 	}
-					| RDO_ASSIGNE error				  { PARSER->error(@1, rdo::format("Ожидается строка изменения параметра"));								};
+					| RDO_RELEASE dpt_release_param 
+					{
+						TRACE("RELEASE dpt_release_param\n");
+						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($2);
+						release->create_runtime_Release( PARSER );	
+					}
+					| RDO_RELEASE error				
+					{
+						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
+					}
+					| RDO_ASSIGN dpt_assign_param	  { 	}
+					| RDO_ASSIGN error				  { PARSER->error(@1, rdo::format("Ожидается строка изменения параметра"));								};
 
 
 
@@ -376,7 +374,7 @@ dpt_depart_param:	RDO_IDENTIF
                     {
 						PARSER->error( @1, "Ошибка в имени ресурса" )
 					};     
-dpt_seize_param:    RDO_IDENTIF 
+/*dpt_seize_param:    RDO_IDENTIF 
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						TRACE1(_T("%s _good\n"), res_name.c_str());
@@ -399,7 +397,7 @@ dpt_release_param:  RDO_IDENTIF
 					| RDO_IDENTIF error 
 					{	
 						PARSER->error( @1, "Ошибка в миени ресурса" )
-					};					
+					};	*/				
 dpt_term_param:		//empty 
 					{
 						RDOPROCTerminate* terminate = new RDOPROCTerminate( PARSER->getLastPROCProcess(), "TERMINATE", 0 );
@@ -422,44 +420,44 @@ dpt_term_param:		//empty
 					{	
 						PARSER->error( @1, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
 					};	
-dpt_seizes_param:	RDO_IDENTIF
+dpt_seize_param:	RDO_IDENTIF
 					{
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
-						RDOPROCSeizes* seizes = new RDOPROCSeizes( PARSER->getLastPROCProcess(), "SEIZES");
-						seizes->add_Seizes_Resourse(res_name);
-						$$ = (int)seizes;
+						RDOPROCSeize* seize = new RDOPROCSeize( PARSER->getLastPROCProcess(), "SEIZE");
+						seize->add_Seize_Resourse(res_name);
+						$$ = (int)seize;
 					}
-					| dpt_seizes_param ',' RDO_IDENTIF
+					| dpt_seize_param ',' RDO_IDENTIF
 					{
-						RDOPROCSeizes* seizes  = reinterpret_cast<RDOPROCSeizes*>($1);
+						RDOPROCSeize* seize  = reinterpret_cast<RDOPROCSeize*>($1);
 						std::string res_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator().c_str();
-						seizes->add_Seizes_Resourse(res_name);
+						seize->add_Seize_Resourse(res_name);
 						$$ = $1;
 					}
-					| dpt_seizes_param error
+					| dpt_seize_param error
 					{
 						PARSER->error( @1, "Ошибка в имени ресурса" );
 					};
-dpt_releases_param:	RDO_IDENTIF
+dpt_release_param:	RDO_IDENTIF
 					{	
 						std::string res_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str();
-						RDOPROCReleases* releases = new RDOPROCReleases( PARSER->getLastPROCProcess(), "RELEASES");
-						releases->add_Releases_Resourse(res_name);
-						$$ = (int)releases;
+						RDOPROCRelease* release = new RDOPROCRelease( PARSER->getLastPROCProcess(), "RELEASE");
+						release->add_Release_Resourse(res_name);
+						$$ = (int)release;
 					}
-					| dpt_releases_param ',' RDO_IDENTIF
+					| dpt_release_param ',' RDO_IDENTIF
 					{
-						RDOPROCReleases* releases  = reinterpret_cast<RDOPROCReleases*>($1);
+						RDOPROCRelease* release  = reinterpret_cast<RDOPROCRelease*>($1);
 						std::string res_name = reinterpret_cast<RDOValue*>($3)->value().getIdentificator().c_str();
-						releases->add_Releases_Resourse(res_name);
+						release->add_Release_Resourse(res_name);
 						$$ = $1;
 					}
-					| dpt_releases_param error
+					| dpt_release_param error
 					{
 						PARSER->error( @1, "Ошибка в имени ресурса" );
 					};		
 					
-dpt_assigne_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
+dpt_assign_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 					{
 						std::string res = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
 						std::string param = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
@@ -483,8 +481,8 @@ dpt_assigne_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 								const RDORTPResType* rt = rs->getType();
 								const RDORTPParam* pr = rt->findRTPParam( param );
 								pr->getType()->checkParamType( arithm );
-								RDOPROCAssigne* assigne = new RDOPROCAssigne( PARSER->getLastPROCProcess(), "ASSIGNE", arithm->createCalc( pr->getType() ), rs->getID(), rtp.m_params[param].id() );
-								$$ = int(assigne);
+								RDOPROCAssign* assign = new RDOPROCAssign( PARSER->getLastPROCProcess(), "ASSIGN", arithm->createCalc( pr->getType() ), rs->getID(), rtp.m_params[param].id() );
+								$$ = int(assign);
 							}
 
 						}

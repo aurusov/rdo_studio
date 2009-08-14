@@ -81,7 +81,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;"
 						Outputs="RAO-language.chm"
 					/>
 				</FileConfiguration>
@@ -90,7 +90,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;"
 						Outputs="RAO-language.chm"
 					/>
 				</FileConfiguration>
@@ -601,6 +601,19 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\html\rdo_obj_proc.htm"
+				DeploymentContent="true"
+				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="true"

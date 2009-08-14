@@ -30,9 +30,9 @@ bool RDOIrregEvent::onCheckCondition(RDOSimulator *sim)
 	return false;
 }
 
-RDOBaseOperation::BOResult RDOIrregEvent::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOIrregEvent::onDoOperation( RDOSimulator* sim )
 {
-	return RDOBaseOperation::BOR_cant_run;
+	return IBaseOperation::BOR_cant_run;
 }
 
 void RDOIrregEvent::onMakePlaned( RDOSimulator* sim, void* param )
@@ -67,6 +67,11 @@ double RDOIrregEvent::getNextTimeInterval( RDOSimulator* sim )
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	return m_pattern->getNextTimeInterval( static_cast<RDORuntime*>(sim) ); 
+}
+
+IBaseOperation::BOResult RDOIrregEvent::onContinue(PTR(rdoRuntime::RDOSimulator) sim)
+{
+	return IBaseOperation::BOR_cant_run;
 }
 
 } // namespace rdoRuntime

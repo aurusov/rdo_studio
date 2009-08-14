@@ -9,6 +9,7 @@
 #include "rdotrace.h"
 #include "simtrace.h"
 #include "rdo_resource.h"
+#include "rdo_runtime_interface_registrator.h"
 #include <rdocommon.h>
 // ===============================================================================
 
@@ -60,7 +61,6 @@ class RDOPMDPokaz;
 class RDOPattern;
 class RDOCalcEraseRes;
 class RDOFRMFrame;
-class RDOActivity;
 class RDOCalcCreateNumberedResource;
 
 class RDORuntime: public RDOSimulatorTrace
@@ -69,14 +69,19 @@ public:
 	RDORuntime();
 	virtual ~RDORuntime();
 
+	typedef  std::vector<LPIPokaz>           LPIPokazList;
+	typedef  std::vector<LPIPokazTrace>      LPIPokazTraceList;
+	typedef  std::vector<LPIPokazWatchValue> LPIPokazWatchValueList;
+
 	// Работа с уведомлениями
-	enum Messages {
+	enum Messages
+	{
 		RO_BEFOREDELETE = 0
 	};
-	void connect( RDORuntimeObject* to, ruint message );
-	void disconnect( RDORuntimeObject* to );
-	void disconnect( RDORuntimeObject* to, ruint message );
-	void fireMessage( RDORuntimeObject* from, ruint message, void* param = NULL );
+	void connect    (PTR(INotify) to, ruint message);
+	void disconnect (PTR(INotify) to               );
+	void disconnect (PTR(INotify) to, ruint message);
+	void fireMessage(ruint message, PTR(void) param);
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const std::string& message, const RDOCalc* calc = NULL );
@@ -116,18 +121,18 @@ public:
 	unsigned int getCurrentTerm() const        {return m_currentTerm;  }
 	void setCurrentTerm( unsigned int value	)  {m_currentTerm = value; }
 
-	RDOActivity* getCurrentActivity() const                   { return m_currActivity;      }
-	void         setCurrentActivity( RDOActivity* activity )  { m_currActivity = activity;  }
+	REF(LPIActivity) getCurrentActivity()                           { return m_currActivity;      }
+	void             setCurrentActivity(CREF(LPIActivity) activity) { m_currActivity = activity;  }
 
-	void addRuntimeIE       ( RDOIrregEvent       *ie      );
-	void addRuntimeRule     ( RDORule             *rule    );
-	void addRuntimeOperation( RDOOperation        *opr     );
-	void addRuntimePokaz    ( RDOPMDPokaz         *pok     );
-	void addRuntimeFrame    ( RDOFRMFrame         *frame   );
+	void addRuntimeIE       (CREF(LPIIrregEvent) ie      );
+	void addRuntimeRule     (CREF(LPIRule)       rule    );
+	void addRuntimeOperation(CREF(LPIOperation)  opration);
+	void addRuntimePokaz    (CREF(LPIPokaz)      pokaz   );
+	void addRuntimeFrame    (PTR(RDOFRMFrame)    frame   );
 	
 	RDOFRMFrame* lastFrame() const;
 
-	const std::vector< RDOPMDPokaz* >& getPokaz() const { return allPokaz; }
+	CREF(LPIPokazList) getPokaz() const { return m_pokazAllList; }
 
 	void addInitCalc( RDOCalc* initCalc) { initCalcs.push_back( initCalc ); }
 
@@ -254,9 +259,11 @@ private:
 		return list;
 	}
 
-	std::vector< RDOPMDPokaz* > allPokaz;
+	LPIPokazList            m_pokazAllList;
+	LPIPokazTraceList       m_pokazTraceList;
+	LPIPokazWatchValueList  m_pokazWatchValueList;
 
-	RDOActivity* m_currActivity;
+	LPIActivity             m_currActivity;
 
 	std::vector<RDOValue> patternParameters;
 
@@ -282,8 +289,8 @@ private:
 	bool key_found;
 	virtual bool isKeyDown();
 
-	typedef std::multimap< UINT, RDORuntimeObject* > Connected;
-	Connected connected;
+	typedef std::multimap<ruint, PTR(INotify)> Connected;
+	Connected m_connected;
 
 	virtual void onResetPokaz();
 	virtual void onCheckPokaz();
