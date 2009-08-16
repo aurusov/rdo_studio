@@ -9,4 +9,4 @@ Show_mode      = Animation
 Show_rate      = 10000.0
 
 // Условие остановки модели. 
-Terminate_if Term_now >= 20
+Terminate_if Terminate_counter >= 20
