@@ -5,39 +5,45 @@
 #include "rdotrace.h"
 #include "rdo_pattern.h"
 #include "rdo_activity.h"
+#include "rdo_priority.h"
+#include "rdo_rule_interface.h"
 
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDORule
 // ----------------------------------------------------------------------------
-class RDORule: public RDOActivityPattern<RDOPatternRule>, public RDORuntimeContainer
+class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior, public RDORuntimeContainer
 {
+typedef RDOActivityPattern<RDOPatternRule> pattern_type;
+DEFINE_FACTORY(RDORule);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(pattern_type)
+	QUERY_INTERFACE_PARENT(RDOPatternPrior)
+	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE(IRule)
+QUERY_INTERFACE_END
+
 friend class RDOTrace;
 friend class RDODPTSearch;
 friend class TreeNode;
 
-public:
+private:
 	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name );
 	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, RDOCalc* condition, const std::string& name );
 
-	virtual ~RDORule() {}
+	virtual ~RDORule()
+	{}
 
-private:
 	void init();
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
 
 	RDOCalc* m_additionalCondition;
 
 	bool m_traceOFF;
 	void trace();
 
-	void onBeforeChoiceFrom( RDOSimulator* sim   )    { setPatternParameters(sim); }
-	bool choiceFrom        ( RDORuntime* runtime );
-	void onBeforeRule      ( RDOSimulator* sim   )    {                            }
-	void convertRule       ( RDORuntime* runtime );
-	void onAfterRule       ( RDOSimulator* sim, bool inSearch = false );
+	DECLARE_IBaseOperation;
+	DECLARE_IRule;
 };
 
 } // namespace rdoRuntime

@@ -65,10 +65,10 @@ public:
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
 	virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
 
-	virtual void writeIrregularEvent     ( RDOIrregEvent* ie  , RDOSimulatorTrace* sim );
-	virtual void writeRule               ( RDORule*       rule, RDOSimulatorTrace* sim );
-	virtual void writeAfterOperationBegin( RDOOperation*  op  , RDOSimulatorTrace* sim );
-	virtual void writeAfterOperationEnd  ( RDOOperation*  op  , RDOSimulatorTrace* sim );
+	virtual void writeIrregularEvent     (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeRule               (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 
 	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
 	virtual void writeModelBegin(RDOSimulatorTrace *sim);
@@ -97,9 +97,8 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOTraceableObject
 // ----------------------------------------------------------------------------
-class RDOTraceableObject: public rdo::IObjectBase, public ITrace
+class RDOTraceableObject: public ITrace
 {
-RDO_IOBJECT(RDOTraceableObject, rdo::IObjectBase);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(ITrace)
 QUERY_INTERFACE_END
@@ -150,8 +149,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue, public RDORuntimeContainer
 {
-RDO_IOBJECT(RDOPokazTrace, RDOTraceableObject);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOTraceableObject)
 	QUERY_INTERFACE(IPokazTrace)
 QUERY_INTERFACE_END
 

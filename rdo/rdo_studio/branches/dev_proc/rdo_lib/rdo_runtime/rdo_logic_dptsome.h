@@ -2,23 +2,24 @@
 #define RDO_LOGIC_DPTSOME_H
 
 #include "rdo_logic.h"
+#include "rdo_priority.h"
 
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-class RDODPTSome: public RDOLogic
+class RDODPTSome: public RDOLogic, public RDOPatternPrior
 {
-public:
-	RDODPTSome( RDOSimulator* sim );
-	virtual ~RDODPTSome();
+DEFINE_FACTORY(RDODPTSome);
+QUERY_INTERFACE_BEGIN
+QUERY_INTERFACE_PARENT(RDOLogic)
+QUERY_INTERFACE_PARENT(RDOPatternPrior)
+QUERY_INTERFACE_END
 
-protected:
-	// Для приоритетов надо перекрыть (переписать) этот виртуальный метод метод.
-	// Сейчас вызывается стандартный обработчик RDOLogic::onCheckCondition,
-	// который находит первую возможную операцию.
-	// virtual bool onCheckCondition( RDOSimulator* sim );
+private:
+	RDODPTSome (RDOSimulator* sim);
+	virtual ~RDODPTSome();
 };
 
 } // namespace rdoRuntime

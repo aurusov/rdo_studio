@@ -13,7 +13,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOPattern
 // ----------------------------------------------------------------------------
-RDOPattern::RDOPattern( RDORuntime* runtime, bool trace ):
+RDOPattern::RDOPattern( PTR(RDORuntime) runtime, bool trace ):
 	RDORuntimeParent( runtime ),
 	RDOTraceableObject( trace )
 {
@@ -22,13 +22,13 @@ RDOPattern::RDOPattern( RDORuntime* runtime, bool trace ):
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternIrregEvent
 // ----------------------------------------------------------------------------
-RDOPatternIrregEvent::RDOPatternIrregEvent( RDORuntime* rTime, bool trace ):
+RDOPatternIrregEvent::RDOPatternIrregEvent( PTR(RDORuntime) rTime, bool trace ):
 	RDOPattern( rTime, trace ),
 	m_timeCalc( NULL )
 {
 }
 
-double RDOPatternIrregEvent::getNextTimeInterval( RDORuntime* runtime )
+double RDOPatternIrregEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
 {
 	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
 	if ( time_next >= 0 ) return time_next;
@@ -36,45 +36,45 @@ double RDOPatternIrregEvent::getNextTimeInterval( RDORuntime* runtime )
 	return 0;
 }
 
-RDOIrregEvent* RDOPatternIrregEvent::createActivity( RDORuntime* runtime, const std::string& oprName )
+LPIIrregEvent RDOPatternIrregEvent::createActivity(PTR(RDORuntime) runtime, CREF(tstring) oprName)
 {
-	RDOIrregEvent* ie = new RDOIrregEvent( runtime, this, traceable(), oprName );
-	runtime->addRuntimeIE( ie );
+	LPIIrregEvent ie = F(RDOIrregEvent)::create(runtime, this, traceable(), oprName);
+	runtime->addRuntimeIE(ie);
 	return ie;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternRule
 // ----------------------------------------------------------------------------
-RDOPatternRule::RDOPatternRule( RDORuntime* rTime, bool trace ):
+RDOPatternRule::RDOPatternRule( PTR(RDORuntime) rTime, bool trace ):
 	RDOPattern( rTime, trace )
 {
 }
 
-RDORule* RDOPatternRule::createActivity( RDORuntime* runtime, const std::string& _oprName )
+LPIRule RDOPatternRule::createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName)
 {
-	RDORule* rule = new RDORule( runtime, this, traceable(), _oprName );
-	runtime->addRuntimeRule( rule );
+	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), _oprName);
+	runtime->addRuntimeRule(rule);
 	return rule;
 }
 
-RDORule* RDOPatternRule::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName )
+LPIRule RDOPatternRule::createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
 {
-	RDORule* rule = new RDORule( runtime, this, traceable(), condition, _oprName );
-	runtime->addRuntimeRule( rule );
+	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), condition, _oprName);
+	runtime->addRuntimeRule(rule);
 	return rule;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternOperation
 // ----------------------------------------------------------------------------
-RDOPatternOperation::RDOPatternOperation( RDORuntime* rTime, bool trace ):
+RDOPatternOperation::RDOPatternOperation( PTR(RDORuntime) rTime, bool trace ):
 	RDOPattern( rTime, trace ),
 	m_timeCalc( NULL )
 {
 }
 
-double RDOPatternOperation::getNextTimeInterval( RDORuntime* runtime )
+double RDOPatternOperation::getNextTimeInterval( PTR(RDORuntime) runtime )
 {
 	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
 	if ( time_next >= 0 ) return time_next;
@@ -82,40 +82,40 @@ double RDOPatternOperation::getNextTimeInterval( RDORuntime* runtime )
 	return 0;
 }
 
-RDOOperation* RDOPatternOperation::createActivity( RDORuntime* runtime, const std::string& _oprName )
+LPIOperation RDOPatternOperation::createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName)
 {
-	RDOOperation* oper = new RDOOperation( runtime, this, traceable(), _oprName );
-	runtime->addRuntimeOperation( oper );
-	return oper;
+	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), _oprName);
+	runtime->addRuntimeOperation(operation);
+	return operation;
 }
 
-RDOOperation* RDOPatternOperation::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName)
+LPIOperation RDOPatternOperation::createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
 {
-	RDOOperation* oper = new RDOOperation( runtime, this, traceable(), condition, _oprName );
-	runtime->addRuntimeOperation( oper );
-	return oper;
+	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), condition, _oprName);
+	runtime->addRuntimeOperation(operation);
+	return operation;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternKeyboard
 // ----------------------------------------------------------------------------
-RDOPatternKeyboard::RDOPatternKeyboard( RDORuntime* rTime, bool _trace ):
+RDOPatternKeyboard::RDOPatternKeyboard( PTR(RDORuntime) rTime, bool _trace ):
 	RDOPatternOperation( rTime, _trace )
 {
 }
 
-RDOKeyboard* RDOPatternKeyboard::createActivity( RDORuntime* runtime, const std::string& _oprName )
+LPIKeyboard RDOPatternKeyboard::createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName)
 {
-	RDOKeyboard* oper = new RDOKeyboard( runtime, this, traceable(), _oprName );
-	runtime->addRuntimeOperation( oper );
-	return oper;
+	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), _oprName);
+	runtime->addRuntimeOperation(keyboard);
+	return keyboard;
 }
 
-RDOKeyboard* RDOPatternKeyboard::createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName )
+LPIKeyboard RDOPatternKeyboard::createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
 {
-	RDOKeyboard* oper = new RDOKeyboard( runtime, this, traceable(), condition, _oprName );
-	runtime->addRuntimeOperation( oper );
-	return oper;
+	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), condition, _oprName);
+	runtime->addRuntimeOperation(keyboard);
+	return keyboard;
 }
 
 } // namespace rdoRuntime

@@ -34,13 +34,12 @@ INTERFACE_REGISTRATOR(IMy2, 2);
 INTERFACE_REGISTRATOR(IMy3, 3);
 INTERFACE_REGISTRATOR(IMy4, 4);
 
-class MyClass: public rdo::IObjectBase, public IMy1, public IMy2
+class MyClass: public rdo::IGetUnknown, public IMy1, public IMy2, public IInit
 {
-RDO_IOBJECT(MyClass, IObjectBase);
-
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IMy1)
 	QUERY_INTERFACE(IMy2)
+	QUERY_INTERFACE(IInit)
 QUERY_INTERFACE_END
 
 protected:
@@ -53,15 +52,15 @@ protected:
 	{
 		std::cout << "~MyClass(): " << m_i << std::endl;
 	}
+	rbool init()
+	{
+		return true;
+	}
 
 protected:
 	int m_i;
 
 private:
-	void unknow()
-	{
-		std::cout << "void unknow()" << std::endl;
-	}
 	void fun1()
 	{
 		std::cout << "void fun1(): " << m_i << std::endl;
@@ -72,11 +71,16 @@ private:
 	}
 };
 
+void fun(CREF(LPIMy1) my1)
+{
+	ASSERT(my1);
+}
+
 class MyClass2: public MyClass, public IMy3
 {
-RDO_IOBJECT(MyClass2, MyClass);
-
+DEFINE_FACTORY(MyClass2);
 QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(MyClass)
 	QUERY_INTERFACE(IMy3)
 QUERY_INTERFACE_END
 
@@ -91,14 +95,17 @@ private:
 	}
 	void fun3()
 	{
+		fun(this);
+
+		LPIMy1 int1 = this;
+		ASSERT(int1)
 		std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };
 
-class MyClass3: public rdo::IObjectBase, public IMy3
+class MyClass3: public IMy3, public rdo::IGetUnknown
 {
-RDO_IOBJECT(MyClass3, IObjectBase);
-
+DEFINE_FACTORY(MyClass3);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IMy3)
 QUERY_INTERFACE_END
@@ -130,9 +137,28 @@ void main()
 	typedef std::vector<MyInterface> MyInterfaceList;
 	MyInterfaceList list;
 	rdo::UnknownPointer smptr = F(MyClass2)::create(1);
+	ASSERT(smptr);
+	smptr.query_cast<IMy1>()->fun1();
+	smptr.query_cast<IMy3>()->fun3();
 	MyInterface imy3 = smptr;
 	rdo::UnknownPointer smptr2;
 	smptr2 = F(MyClass2)::create(2);
+	//! Проверка на operation==
+	{
+		rdo::UnknownPointer smptr2_2 = smptr2;
+		if (smptr2_2 == smptr)
+			std::cout << "smptr2_2 == smptr" << std::endl;
+		if (smptr2_2 == smptr2)
+			std::cout << "smptr2_2 == smptr2" << std::endl;
+		rdo::Interface<IMy1> int1_1 = smptr;
+		rdo::Interface<IMy1> int2_1 = smptr2;
+		rdo::Interface<IMy1> int1_2 = smptr;
+		if (int1_1 == int2_1)
+			std::cout << "int1_1 == int2_1" << std::endl;
+		if (int1_1 == int1_2)
+			std::cout << "int1_1 == int1_2" << std::endl;
+	}
+
 	list.push_back(F(MyClass3)::create(3));
 	list.push_back(smptr );
 	list.push_back(smptr2);
