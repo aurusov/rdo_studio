@@ -379,6 +379,7 @@ RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& name ):
 {
 	parser()->insertPROCProcess( this );
 	m_runtime = F(rdoRuntime::RDOPROCProcess)::create(m_name, parser()->runtime());
+	m_runtime.query_cast<ILogic>()->init(parser()->runtime());
 }
 
 void RDOPROCProcess::end()

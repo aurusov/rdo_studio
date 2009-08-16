@@ -34,11 +34,12 @@ INTERFACE_REGISTRATOR(IMy2, 2);
 INTERFACE_REGISTRATOR(IMy3, 3);
 INTERFACE_REGISTRATOR(IMy4, 4);
 
-class MyClass: public rdo::IGetUnknown, public IMy1, public IMy2
+class MyClass: public rdo::IGetUnknown, public IMy1, public IMy2, public IInit
 {
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IMy1)
 	QUERY_INTERFACE(IMy2)
+	QUERY_INTERFACE(IInit)
 QUERY_INTERFACE_END
 
 protected:
@@ -50,6 +51,10 @@ protected:
 	~MyClass()
 	{
 		std::cout << "~MyClass(): " << m_i << std::endl;
+	}
+	rbool init()
+	{
+		return true;
 	}
 
 protected:
@@ -132,6 +137,7 @@ void main()
 	typedef std::vector<MyInterface> MyInterfaceList;
 	MyInterfaceList list;
 	rdo::UnknownPointer smptr = F(MyClass2)::create(1);
+	ASSERT(smptr);
 	smptr.query_cast<IMy1>()->fun1();
 	smptr.query_cast<IMy3>()->fun3();
 	MyInterface imy3 = smptr;

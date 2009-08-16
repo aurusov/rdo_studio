@@ -103,6 +103,10 @@ public:
 		parent_type::operator= (pointer);
 		return *this;
 	}
+	operator rbool() const
+	{
+		return m_interface != NULL;
+	}
 
 	PTR(I) get()
 	{
@@ -201,7 +205,7 @@ inline REF(UnknownPointer) UnknownPointer::operator= (CREF(UnknownPointer) point
 
 inline UnknownPointer::operator rbool () const
 {
-	return m_interface != NULL;
+	return m_smt_ptr != NULL;
 }
 
 inline UnknownPointer UnknownPointer::query_cast(ruint id)
@@ -286,28 +290,60 @@ public:
 	class Object: public T
 	{
 	public:
-		Object()                                                                                         : T()                           { create(); }
+		Object()
+			: T()
+		{
+			create();
+		}
 
 		template <typename P1>
-		Object(CREF(P1) p1)                                                                              : T(p1)                         { create(); }
+		Object(CREF(P1) p1)
+			: T(p1)
+		{
+			create();
+		}
 
 		template <typename P1, typename P2>
-		Object(CREF(P1) p1, CREF(P2) p2)                                                                 : T(p1, p2)                     { create(); }
+		Object(CREF(P1) p1, CREF(P2) p2)
+			: T(p1, p2)
+		{
+			create();
+		}
 
 		template <typename P1, typename P2, typename P3>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)                                                    : T(p1, p2, p3)                 { create(); }
-	
+		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
+			: T(p1, p2, p3)
+		{
+			create();
+		}
+
 		template <typename P1, typename P2, typename P3, typename P4>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)                                       : T(p1, p2, p3, p4)             { create(); }
-	
+		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
+			: T(p1, p2, p3, p4)
+		{
+			create();
+		}
+
 		template <typename P1, typename P2, typename P3, typename P4, typename P5>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)                          : T(p1, p2, p3, p4, p5)         { create(); }
-	
+		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
+			: T(p1, p2, p3, p4, p5)
+		{
+			create();
+		}
+
 		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)             : T(p1, p2, p3, p4, p5, p6)     { create(); }
-	
+		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
+			: T(p1, p2, p3, p4, p5, p6)
+		{
+			create();
+		}
+
 		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7): T(p1, p2, p3, p4, p5, p6, p7) { create(); }
+		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
+			: T(p1, p2, p3, p4, p5, p6, p7)
+		{
+			create();
+		}
 
 		virtual ~Object()
 		{}
@@ -326,52 +362,69 @@ public:
 
 	static UnknownPointer create()
 	{
-		return *(new Object())->GetUnknown();
+		return init(new Object());
 	}
 	template <typename P1>
 	static UnknownPointer create(CREF(P1) p1)
 	{
-		return *(new Object(p1))->GetUnknown();
+		return init(new Object(p1));
 	}
 	template <typename P1, typename P2>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2)
 	{
-		return *(new Object(p1, p2))->GetUnknown();
+		return init(new Object(p1, p2));
 	}
 	template <typename P1, typename P2, typename P3>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
 	{
-		return *(new Object(p1, p2, p3))->GetUnknown();
+		return init(new Object(p1, p2, p3));
 	}
 	template <typename P1, typename P2, typename P3, typename P4>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
 	{
-		return *(new Object(p1, p2, p3, p4))->GetUnknown();
+		return init(new Object(p1, p2, p3, p4));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
 	{
-		return *(new Object(p1, p2, p3, p4, p5))->GetUnknown();
+		return init(new Object(p1, p2, p3, p4, p5));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
 	{
-		return *(new Object(p1, p2, p3, p4, p5, p6))->GetUnknown();
+		return init(new Object(p1, p2, p3, p4, p5, p6));
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 	{
-		return *(new Object(p1, p2, p3, p4, p5, p6, p7))->GetUnknown();
+		return init(new Object(p1, p2, p3, p4, p5, p6, p7));
 	}
-	static void destroy(PTR(T) obj)
+	static void destroy(PTR(T) object)
 	{
-		delete obj;
+		delete object;
+	}
+
+private:
+	static UnknownPointer init(PTR(Object) object)
+	{
+		UnknownPointer uPointer(object ? *object->GetUnknown() : UnknownPointer());
+		LPIInit iInit = uPointer;
+		if (iInit)
+		{
+			if (!iInit->init())
+			{
+				iInit    = 0;
+				uPointer = 0;
+				return UnknownPointer();
+			}
+		}
+		return uPointer;
 	}
 };
 
 CLOSE_RDO_NAMESPACE
 
-#define CAST_TO_UNKNOWN public rdo::IGetUnknown
+#define  CAST_TO_UNKNOWN  public rdo::IGetUnknown
 
 #define F(A) rdo::Factory<A>
 
@@ -392,5 +445,15 @@ PTR(void) QueryInterface(ruint id) \
 #define QUERY_INTERFACE_END \
 	return NULL; \
 }
+
+class IInit
+{
+public:
+	virtual rbool init() = 0;
+};
+#define DECLARE_IInit \
+	virtual rbool init();
+
+INTERFACE_REGISTRATOR(IInit, 0);
 
 #endif //! _RDOINTERFACE_H_
