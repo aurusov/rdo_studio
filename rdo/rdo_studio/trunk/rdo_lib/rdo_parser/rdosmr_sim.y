@@ -214,6 +214,7 @@ smr_cond:	/* empty */
 			| smr_cond RDO_Statistic_file '=' RDO_IDENTIF
 			| smr_cond RDO_Results_file '=' RDO_IDENTIF
 			| smr_cond RDO_Trace_file '=' RDO_IDENTIF;
+			| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF;
 			| smr_cond RDO_Show_mode '=' smr_show_mode {
 				RDOSMR* smr = PARSER->getSMR();
 				smr->setShowMode( (rdoSimulator::ShowMode)$4 );

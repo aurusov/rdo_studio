@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="rdo_mbuilder"
 	ProjectGUID="{14EF6EFF-2AAE-4E22-8293-8B2FEABA688F}"
+	RootNamespace="rdo_mbuilder"
 	Keyword="MFCProj"
 	>
 	<Platforms>
@@ -44,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".,..,../rdo_system,../rdo_runtime,../rdo_parser,../../rdo_common,../../rdo_kernel,../../rdo_repository"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="pch.h"
 				BrowseInformation="1"
@@ -109,7 +110,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".,..,../rdo_system,../rdo_runtime,../rdo_parser,../../rdo_common,../../rdo_kernel,../../rdo_repository"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="pch.h"

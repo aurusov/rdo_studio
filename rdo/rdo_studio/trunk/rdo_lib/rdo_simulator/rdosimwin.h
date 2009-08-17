@@ -15,6 +15,8 @@
 #include <rdostream.h>
 #include <rdocommon.h>
 
+//#define DISABLE_CORBA
+//#ifndef DISABLE_CORBA
 namespace rdoAnimation
 {
 struct RDOFrame;
@@ -22,8 +24,8 @@ struct RDOFrame;
 
 #define DISABLE_CORBA
 
-
-#ifndef DISABLE_CORBA
+//#define CORBA_ENABLE
+#ifdef CORBA_ENABLE
 
 #ifndef __WIN32__
 #define __WIN32__
@@ -174,9 +176,14 @@ private:
 	rdo::textstream resultString;
 	rdo::textstream resultInfoString;
 
-#ifndef DISABLE_CORBA
-	void corbaGetRTPcount(::CORBA::Long& rtp_count);
-	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
+	
+#ifdef CORBA_ENABLE
+
+//	void corbaGetRTPcount(::CORBA::Long& rtp_count);
+//	void corbaGetRTPParamscount( rdoParse::RDOCorba::PARAM_count& params_count );
+	void corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList );
+	void corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList );
+
 #endif
 
 protected:

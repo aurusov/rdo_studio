@@ -41,13 +41,18 @@ public:
 	{
 		files[ file_type ] = file_name;
 	}
-	bool hasFile( const std::string& file_type )
+	bool hasFile( const std::string& file_type ) const
 	{
 		return files.find( file_type ) != files.end();
 	}
-	std::string getFile( const std::string& file_type )
+	std::string getFile( const std::string& file_type ) const
 	{
-		return hasFile( file_type ) ? files[ file_type ] : "";
+		StringTable::const_iterator it = files.find(file_type);
+		return it != files.end() ? it->second : _T("");
+	}
+	std::string modelName() const
+	{
+		return getFile(_T("Model_name"));
 	}
 	void setExternalModelName(const std::string& alias, const std::string& modelID )
 	{
