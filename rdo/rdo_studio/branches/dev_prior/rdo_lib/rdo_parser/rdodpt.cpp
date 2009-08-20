@@ -262,6 +262,14 @@ RDODPTSomeActivity::RDODPTSomeActivity( const RDOParserObject* _parent, const RD
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDODPTPriorActivity
+// ----------------------------------------------------------------------------
+RDODPTPriorActivity::RDODPTPriorActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( _parent, _src_info, _pattern_src_info )
+{
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
 RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
@@ -284,6 +292,36 @@ bool RDODPTSome::setPrior(RDOFUNArithm* prior)
 }
 
 void RDODPTSome::end()
+{
+	if ( getConditon() )
+	{
+		m_rt_logic->setCondition( getConditon()->getCalc() );
+	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTPrior
+// ----------------------------------------------------------------------------
+RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+	RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>( _parser, _src_info )
+{
+	parser()->checkDPTName(src_info());
+	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime());
+	m_rt_logic->init(parser()->runtime());
+	parser()->insertDPTPrior(this);
+}
+
+bool RDODPTPrior::setPrior(RDOFUNArithm* prior)
+{
+	LPIPriority priority = m_rt_logic;
+	if (priority)
+	{
+		return priority->setPrior(prior->createCalc());
+	}
+	return false;
+}
+
+void RDODPTPrior::end()
 {
 	if ( getConditon() )
 	{

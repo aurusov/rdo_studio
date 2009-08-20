@@ -113,12 +113,41 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDODPTPriorActivity
+// ----------------------------------------------------------------------------
+class RDODPTPriorActivity: public RDODPTActivityHotKey
+{
+friend class RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>;
+private:
+	RDODPTPriorActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
 class RDODPTSome: public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 {
 public:
 	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+
+	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
+	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
+
+	void end();
+
+	bool setPrior( RDOFUNArithm* prior );
+
+private:
+	RDOFUNLogic* m_conditon;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTPrior
+// ----------------------------------------------------------------------------
+class RDODPTPrior: public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
+{
+public:
+	RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 
 	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
