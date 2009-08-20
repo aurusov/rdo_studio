@@ -11,6 +11,7 @@
 #include <rdoprocess.h>
 #include <rdo_logic_dptfree.h>
 #include <rdo_logic_dptsome.h>
+#include <rdo_logic_dptprior.h>
 #include <rdodptrtime.h>
 #include <rdo_resources.h>
 #include <rdo_dptsearch_activity.h>

@@ -16,6 +16,7 @@ namespace rdoRuntime
 class RDOCalc;
 class RDODPTFree;
 class RDODPTSome;
+class RDODPTPrior;
 class RDODPTSearchRuntime;
 class RDOPROCProcess;
 class RDOPROCGenerate;

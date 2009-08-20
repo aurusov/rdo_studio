@@ -33,6 +33,7 @@ class RDOSMR;
 class RDOOperations;
 class RDODPTSearch;
 class RDODPTSome;
+class RDODPTPrior;
 class RDODPTFree;
 class RDODPTFreeActivity;
 class RDOPMDPokaz;
@@ -84,6 +85,7 @@ DEFINE_OBJECT_CONTAINER( FUNFunction     );
 DEFINE_OBJECT_CONTAINER( FUNSequence     );
 DEFINE_OBJECT_CONTAINER( DPTSearch       );
 DEFINE_OBJECT_CONTAINER( DPTSome         );
+DEFINE_OBJECT_CONTAINER( DPTPrior        );
 DEFINE_OBJECT_CONTAINER( DPTFreeActivity );
 DEFINE_OBJECT_CONTAINER( PMDPokaz        );
 
