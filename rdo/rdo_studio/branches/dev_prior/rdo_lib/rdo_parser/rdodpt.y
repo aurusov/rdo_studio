@@ -204,6 +204,7 @@ namespace rdoParse
 dpt_main:
 		| dpt_main dpt_search_end
 		| dpt_main dpt_some_end
+		| dpt_main dpt_prior_end
 		| dpt_main dpt_free_end
 		| dpt_main dpt_process_end
 		| error {
@@ -485,6 +486,126 @@ dpt_some_end:			dpt_some_header RDO_End {
 							dpt->end();
 						}
 						| dpt_some_header {
+							PARSER->error( @1, "Ожидается ключевое слово $End" );
+						};
+
+// ----------------------------------------------------------------------------
+// ---------- DPT Prior
+// ----------------------------------------------------------------------------
+dpt_prior_trace:		/* empty */ {
+							$$ = 1;
+						}
+						| RDO_no_trace {
+							$$ = 1;
+						}
+						| RDO_trace {
+							$$ = 2;
+						}
+						| RDO_trace_stat {
+							PARSER->error( @1, "Данный признак трассировки не используется в точке типа prior" );
+						}
+						| RDO_trace_tops {
+							PARSER->error( @1, "Данный признак трассировки не используется в точке типа prior" );
+						}
+						| RDO_trace_all {
+							PARSER->error( @1, "Данный признак трассировки не используется в точке типа prior" );
+						};
+
+dpt_prior_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_trace {
+							RDOValue* name = reinterpret_cast<RDOValue*>($2);
+							$$ = (int)new RDODPTPrior( PARSER, name->src_info() );
+						};
+
+dpt_prior_condition:	dpt_prior_begin RDO_Condition fun_logic {
+							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+							dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
+						}
+						| dpt_prior_begin RDO_Condition RDO_NoCheck {
+							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+							dpt->setCondition();
+						}
+						| dpt_prior_begin RDO_Condition error {
+							PARSER->error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
+						}
+						| dpt_prior_begin {
+							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+							dpt->setCondition();
+						};
+
+dpt_prior_prior:		dpt_prior_condition
+						| dpt_prior_condition RDO_Priority fun_arithm
+						{
+							if (!PARSER->getLastDPTPrior()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+							{
+								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет :-("));
+							}
+						}
+						| dpt_prior_condition RDO_Priority error
+						{
+							PARSER->error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+						}
+						| dpt_some_condition error
+						{
+							PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
+						};
+
+dpt_prior_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
+							RDODPTPrior* dpt  = PARSER->getLastDPTPrior();
+							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
+							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
+							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+						}
+						| RDO_IDENTIF_COLON error {
+							PARSER->error( @1, @2, "Ожидается имя образца" );
+						};
+
+dpt_prior_descr_param:	/* empty */
+						| dpt_prior_descr_param  '*'               { PARSER->getLastDPTPrior()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
+						| dpt_prior_descr_param  RDO_INT_CONST     { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+						| dpt_prior_descr_param  RDO_REAL_CONST    { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+						| dpt_prior_descr_param  RDO_BOOL_CONST    { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+						| dpt_prior_descr_param  RDO_STRING_CONST  { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+						| dpt_prior_descr_param  RDO_IDENTIF       { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+
+						| dpt_prior_descr_param error
+						{
+							PARSER->error( @1, @2, "Ошибка описания параметра образца" )
+						};
+
+dpt_prior_activ_prior:	/* empty */
+						| RDO_CF '=' fun_arithm
+						{
+							if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+							{
+								PARSER->error(@3, _T("Активность не может иметь приоритет"));
+							}
+						}
+						| RDO_CF '=' error
+						{
+							PARSER->error( @1, @2, "Ошибка описания приоритета активности" )
+						}
+						| RDO_CF error
+						{
+							PARSER->error( @1, @2, "Ошибка: ожидается знак равенства" )
+						};
+
+dpt_prior_activity:		/* empty */
+						| dpt_prior_activity dpt_prior_name dpt_prior_descr_param dpt_prior_activ_prior{
+							RDODPTPriorActivity* activity = reinterpret_cast<RDODPTPriorActivity*>($2);
+							activity->endParam( @3 );
+						};
+
+dpt_prior_header:		dpt_prior_prior RDO_Activities dpt_prior_activity {
+						}
+						| dpt_prior_prior error {
+							PARSER->error( @1, @2, "Ожидается ключевое слово $Activities" );
+						};
+
+dpt_prior_end:			dpt_prior_header RDO_End {
+							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+							dpt->end();
+						}
+						| dpt_prior_header {
 							PARSER->error( @1, "Ожидается ключевое слово $End" );
 						};
 
