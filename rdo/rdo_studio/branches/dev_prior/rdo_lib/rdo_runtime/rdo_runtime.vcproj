@@ -1055,6 +1055,14 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\rdo_logic_dptprior.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rdo_logic_dptprior.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
