@@ -1,25 +1,25 @@
-$Decision_point dpt1 : some
+$Decision_point dpt1 : prior
 $Condition NoCheck
 $Priority (1.0-time_now/32)
 $Activities
 	Ориентирование_детали_против_часовой_стрелки : Образец_ориентирования_детали против_часовой_стрелки //CF = Как_ориентирована_деталь(Система.как_ориентированна_текущая_деталь)
 $End
 
-$Decision_point dpt2 : some
+$Decision_point dpt2 : prior
 $Condition NoCheck
 $Priority time_now/32
 $Activities
 	Ориентирование_детали_по_часовой_стрелке     : Образец_ориентирования_детали по_часовой_стрелке     //CF = 1 - Как_ориентирована_деталь(Система.как_ориентированна_текущая_деталь)
 $End
 
-$Decision_point dpt3 : some
+$Decision_point dpt3 : prior
 $Condition Система.количество_прибывших_деталей < 20
-//$Priority 0.3
+$Priority 0.3
 $Activities
 	Поступление_детали                           : Образец_поступления_новой_детали
 $End
 
-$Decision_point dpt4 : some
+$Decision_point dpt4 : prior
 $Condition NoCheck
 $Priority 0.4
 $Activities
