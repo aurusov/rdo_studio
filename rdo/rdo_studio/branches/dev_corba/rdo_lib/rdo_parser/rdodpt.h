@@ -9,6 +9,7 @@
 #include <rdo_activity.h>
 #include <searchtrace.h>
 #include <rdo_resources.h>
+#include <rdo_dptsearch_activity_interface.h>
 
 namespace rdoRuntime
 {
@@ -23,6 +24,7 @@ class RDOPROCTerminate;
 class RDOPROCAdvance;
 class RDOPROCRelease;
 struct parser_for_Seize;
+struct parser_for_Queue;
 }
 
 namespace rdoParse 
@@ -53,18 +55,20 @@ public:
 	RDODPTActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
 	const std::string&       name() const     { return src_info().src_text(); }
-	rdoRuntime::RDOActivity* activity() const { return m_activity;            }
+	CREF(LPIActivity)        activity() const { return m_activity;            }
 	const RDOPATPattern*     pattern() const  { return m_pattern;             }
 
 	void addParam( const RDOValue& param  );
 	void endParam( const YYLTYPE& _param_pos );
 
+	bool setPrior( RDOFUNArithm* prior );
+
 protected:
-	rdoRuntime::RDOActivity* m_activity;
+	LPIActivity           m_activity;
 
 private:
-	unsigned int             m_currParam;
-	const RDOPATPattern*     m_pattern;
+	unsigned int          m_currParam;
+	const RDOPATPattern*  m_pattern;
 };
 
 // ----------------------------------------------------------------------------
@@ -121,6 +125,8 @@ public:
 
 	void end();
 
+	bool setPrior( RDOFUNArithm* prior );
+
 private:
 	RDOFUNLogic* m_conditon;
 };
@@ -132,16 +138,16 @@ class RDODPTSearchActivity: public RDODPTActivity
 {
 friend class RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>;
 public:
-	rdoRuntime::RDODPTSearch::Activity::ValueTime getValue() const { return m_value; }
-	void setValue( rdoRuntime::RDODPTSearch::Activity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos );
+	IDPTSearchActivity::ValueTime getValue() const { return m_value; }
+	void setValue( IDPTSearchActivity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos );
 
 	RDOFUNArithm* getRuleCost() const { return m_ruleCost; }
 
 private:
 	RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
-	rdoRuntime::RDODPTSearch::Activity::ValueTime  m_value;
-	RDOFUNArithm*                                  m_ruleCost;
+	IDPTSearchActivity::ValueTime  m_value;
+	RDOFUNArithm*                  m_ruleCost;
 };
 
 // ----------------------------------------------------------------------------
@@ -187,7 +193,7 @@ public:
 
 	void insertChild( RDOPROCProcess* value );
 
-	rdoRuntime::RDOPROCProcess* getRunTime() const { return m_runtime; }
+	LPILogic getRunTime() const { return m_runtime; }
 
 protected:
 	std::string                   m_name;
@@ -195,7 +201,7 @@ protected:
 	RDOPROCProcess*               m_parent;
 	std::list< RDOPROCProcess* >  m_child;
 	std::list< RDOPROCOperator* > m_operations;
-	rdoRuntime::RDOPROCProcess*   m_runtime;
+	LPILogic                      m_runtime;
 };
 
 // ----------------------------------------------------------------------------
@@ -216,31 +222,70 @@ protected:
 class RDOPROCGenerate: public RDOPROCOperator
 {
 protected:
-	rdoRuntime::RDOPROCGenerate* runtime;
+	LPIPROCBlock runtime;
 
 public:
 	RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time );
 };
-
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCSeize
+// ---------- RDOPROCBlockForQueue
 // ----------------------------------------------------------------------------
-
-
+class RDOPROCBlockForQueue: public RDOPROCOperator
+{
+protected:
+	// элемент parser_for_runtime служит для передачи информации о параметре "Состояние" ресурса  
+	rdoRuntime::parser_for_Queue parser_for_runtime;
+public:
+	RDOPROCBlockForQueue ( RDOPROCProcess* _process, const std::string& _name ): RDOPROCOperator( _process, _name ){	}
+	static bool checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info );
+	static void createRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name );
+	static rdoMBuilder::RDOResType createType( RDOParser *parser, const std::string& rtp_name, const RDOParserSrcInfo& info );
+};
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCQueue
+// ----------------------------------------------------------------------------
+class RDOPROCQueue: public RDOPROCBlockForQueue
+{
+protected:
+	std::string Res;
+	LPIPROCBlock runtime;
+public:
+	RDOPROCQueue( RDOPROCProcess* _process, const std::string& _name) : RDOPROCBlockForQueue( _process, _name ){}
+	void create_runtime_Queue( RDOParser *parser );
+	void add_Queue_Resource( std::string res_name)	{Res = res_name;}
+};
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCDepart
+// ----------------------------------------------------------------------------
+class RDOPROCDepart: public RDOPROCBlockForQueue
+{
+protected:
+	std::string Res;
+	LPIPROCBlock runtime;
+public:
+	RDOPROCDepart( RDOPROCProcess* _process, const std::string& _name) : RDOPROCBlockForQueue( _process, _name ){}
+	void create_runtime_Depart( RDOParser *parser );
+	void add_Depart_Resource( std::string res_name)	{Res = res_name;}
+};
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCBlockForSeize
+// ----------------------------------------------------------------------------
 class RDOPROCBlockForSeize: public RDOPROCOperator
 {
 protected:
 	// элемент parser_for_runtime служит для передачи информации о параметре "Состояние" ресурса  
 	rdoRuntime::parser_for_Seize parser_for_runtime;
 public:
-	
 	RDOPROCBlockForSeize( RDOPROCProcess* _process, const std::string& _name ): RDOPROCOperator( _process, _name ){	}
 	static bool checkType( RDOParser *parser, rdoMBuilder::RDOResType rtp, const RDOParserSrcInfo& info );
 	static void createRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name );
 	static void reobjectRes( RDOParser *parser, rdoMBuilder::RDOResType rtp, const std::string& res_name );
 	static rdoMBuilder::RDOResType createType( RDOParser *parser, const std::string& rtp_name, const RDOParserSrcInfo& info );
 };
-
+/*
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeize
+// ----------------------------------------------------------------------------
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 protected:
@@ -249,7 +294,7 @@ protected:
 public:
 	RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name ): RDOPROCBlockForSeize( _process, _name ){}
 	void create_runtime_Seize( RDOParser *parser );
-	void add_Seize_Resourse	( std::string res_name)		{Res = res_name;}
+	void add_Seize_Resource	( std::string res_name)		{Res = res_name;}
 };
 
 // ----------------------------------------------------------------------------
@@ -261,14 +306,40 @@ protected:
 	std::string Res;
 	rdoRuntime::RDOPROCRelease* runtime;
 public:
-
 	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name) : RDOPROCBlockForSeize( _process, _name ){}
 	void create_runtime_Release( RDOParser *parser );
-	void add_Release_Resourse	( std::string res_name)		{Res = res_name;}
+	void add_Release_Resource	( std::string res_name)		{Res = res_name;}
+};
+*/
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeize
+// ----------------------------------------------------------------------------
+class RDOPROCSeize: public RDOPROCBlockForSeize
+{
+protected:
+	std::list< std::string > Resources;
+	std::vector< rdoRuntime::parser_for_Seize > parser_for_runtime;
+	LPIPROCBlock runtime;
+public:
+	RDOPROCSeize              ( RDOPROCProcess* _process, const std::string& _name ): RDOPROCBlockForSeize( _process, _name ){}
+	void create_runtime_Seize ( RDOParser *parser );
+	void add_Seize_Resourse   ( std::string res_name){Resources.push_back( res_name );}	
 };
 
-
-
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCRelease
+// ----------------------------------------------------------------------------
+class RDOPROCRelease: public RDOPROCBlockForSeize
+{
+protected:
+	std::list< std::string > Resources;
+	std::vector< rdoRuntime::parser_for_Seize > parser_for_runtime;
+	LPIPROCBlock runtime;
+public:
+	RDOPROCRelease              ( RDOPROCProcess* _process, const std::string& _name ): RDOPROCBlockForSeize( _process, _name ){}
+	void create_runtime_Release ( RDOParser *parser );
+	void add_Release_Resourse   ( std::string res_name){Resources.push_back( res_name );}	
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
@@ -276,7 +347,7 @@ public:
 class RDOPROCAdvance: public RDOPROCOperator
 {
 protected:
-	rdoRuntime::RDOPROCAdvance* runtime;
+	LPIPROCBlock runtime;
 
 public:
 	RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time );
@@ -288,10 +359,22 @@ public:
 class RDOPROCTerminate: public RDOPROCOperator
 {
 protected:
-	rdoRuntime::RDOPROCTerminate* runtime;
+	LPIPROCBlock runtime;
 
 public:
-	RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name );
+	RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name, const unsigned int& _term);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCAssign
+// ----------------------------------------------------------------------------
+class RDOPROCAssign: public RDOPROCOperator
+{
+protected:
+	LPIPROCBlock runtime;
+
+public:
+	RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param );
 };
 
 } // namespace rdoParse

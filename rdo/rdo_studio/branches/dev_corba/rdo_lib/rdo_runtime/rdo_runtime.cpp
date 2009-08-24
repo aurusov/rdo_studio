@@ -8,14 +8,9 @@
 #include "rdopokaz.h"
 #include "rdodptrtime.h"
 #include "rdocalc.h"
+#include <rdodebug.h>
 #include <limits>
 #include <iomanip>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #pragma warning(disable : 4786)  
 
@@ -32,7 +27,8 @@ RDORuntime::RDORuntime():
 	results_info( NULL ),
 	lastActiveBreakPoint( NULL ),
 	whyStop( rdoSimulator::EC_OK ),
-	key_found( false )
+	key_found( false ),
+	m_currentTerm( 0 )
 {
 	m_parent = NULL;
 	detach();
@@ -41,52 +37,55 @@ RDORuntime::RDORuntime():
 
 RDORuntime::~RDORuntime()
 {
-	connected.clear();
+	m_connected.clear();
 	onDestroy();
-	rdo::deleteAllObjects( allPokaz );
 }
 
-void RDORuntime::connect( RDORuntimeObject* to, UINT message )
+void RDORuntime::connect(PTR(INotify) to, ruint message)
 {
-	Connected::iterator it = connected.find( message );
-	while ( it != connected.end() ) {
-		if ( it->second == to ) break;
+	Connected::iterator it = m_connected.find(message);
+	while (it != m_connected.end())
+	{
+		if (it->second == to)
+			break;
 		it++;
 	}
-	if ( it == connected.end() ) {
-		connected.insert( Connected::value_type( message, to ) );
+	if (it == m_connected.end())
+	{
+		m_connected.insert(Connected::value_type(message, to));
 	}
 }
 
-void RDORuntime::disconnect( RDORuntimeObject* to )
+void RDORuntime::disconnect(PTR(INotify) to)
 {
-	Connected::iterator it = connected.begin();
-	while ( it != connected.end() ) {
+	Connected::iterator it = m_connected.begin();
+	while ( it != m_connected.end() ) {
 		if ( it->second == to ) {
-			it = connected.erase( it );
-			if ( it == connected.end() ) break;
+			it = m_connected.erase( it );
+			if ( it == m_connected.end() ) break;
 		}
 		it++;
 	}
 }
 
-void RDORuntime::disconnect( RDORuntimeObject* to, UINT message )
+void RDORuntime::disconnect(PTR(INotify) to, ruint message)
 {
-	Connected::iterator it = connected.find( message );
-	while ( it != connected.end() ) {
+	Connected::iterator it = m_connected.find( message );
+	while ( it != m_connected.end() ) {
 		if ( it->second == to ) {
-			it = connected.erase( it );
-			if ( it == connected.end() ) break;
+			it = m_connected.erase( it );
+			if ( it == m_connected.end() ) break;
 		}
 		it++;
 	}
 }
 
-void RDORuntime::fireMessage( RDORuntimeObject* from, unsigned int message, void* param )
+void RDORuntime::fireMessage(ruint message, PTR(void) param)
 {
-	Connected::iterator it = connected.find( message );
-	while ( it != connected.end() ) {
-		it->second->notify( from, message, param );
+	Connected::iterator it = m_connected.find(message);
+	while (it != m_connected.end())
+	{
+		it->second->notify(message, param);
 		it++;
 	}
 }
@@ -190,19 +189,19 @@ bool RDORuntime::checkState()
 
 void RDORuntime::showResources( int node ) const
 {
-	TRACE( "------------- %d:\n", node );
+	TRACE1(_T("------------- %d:\n"), node);
 	int index = 0;
 	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();
 	while ( it != allResourcesByID.end() ) {
 		if ( *it ) {
-			TRACE( "%d. ", index );
+			TRACE1(_T("%d. "), index);
 			for ( unsigned int i = 0; i < (*it)->paramsCount(); i++ )
 			{
-				TRACE( "%s ", (*it)->getParam(i).getAsString().c_str() );
+				TRACE1(_T("%s "), (*it)->getParam(i).getAsString().c_str());
 			}
-			TRACE( "\n" );
+			TRACE(_T("\n"));
 		} else {
-			TRACE( "%d. NULL\n", index );
+			TRACE1(_T("%d. NULL\n"), index);
 		}
 		index++;
 		it++;
@@ -220,7 +219,12 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
 //		error( "Try to erase used resource", fromCalc );
 	} else {
-		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&rdoRuntime::RDOPMDPokaz::checkResourceErased), res) );
+		LPIPokazWatchValueList::iterator it = m_pokazWatchValueList.begin();
+		while (it != m_pokazWatchValueList.end())
+		{
+			(*it)->checkResourceErased(res);
+			it++;
+		}
 		allResourcesByID.at( res_id ) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		allResourcesByTime.remove( res );
@@ -267,29 +271,39 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimeIE( RDOIrregEvent* ie )
+void RDORuntime::addRuntimeIE(CREF(LPIIrregEvent) ie)
 {
-	appendBaseOperation( ie );
+	appendBaseOperation(ie);
 }
 
-void RDORuntime::addRuntimeRule( RDORule* rule )
+void RDORuntime::addRuntimeRule(CREF(LPIRule) rule)
 {
-	appendBaseOperation( rule );
+	appendBaseOperation(rule);
 }
 
-void RDORuntime::addRuntimeOperation( RDOOperation* opr )
+void RDORuntime::addRuntimeOperation(CREF(LPIOperation) opration)
 {
-	appendBaseOperation( opr );
+	appendBaseOperation(opration);
 }
 
-void RDORuntime::addRuntimePokaz( RDOPMDPokaz* pok )
+void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pokaz)
 {
-	allPokaz.push_back( pok );
+	m_pokazAllList.push_back(pokaz);
+	LPIPokazTrace pokazTrace = pokaz;
+	LPITrace      trace      = pokaz;
+	if (pokazTrace && trace && trace->traceable())
+	{
+		m_pokazTraceList.push_back(pokazTrace);
+	}
+	if (pokaz.query_cast<IPokazWatchValue>())
+	{
+		m_pokazWatchValueList.push_back(pokaz);
+	}
 }
 
-void RDORuntime::addRuntimeFrame( RDOFRMFrame* frame )
+void RDORuntime::addRuntimeFrame(PTR(RDOFRMFrame) frame)
 { 
-	allFrames.push_back( frame ); 
+	allFrames.push_back(frame);
 }
 
 RDOFRMFrame* RDORuntime::lastFrame() const
@@ -460,7 +474,8 @@ void RDORuntime::operator= (const RDORuntime& other)
 			allResourcesByTime.push_back( res );
 		}
 	}
-	allConstants = other.allConstants;
+	allConstants      = other.allConstants;
+	patternParameters = other.patternParameters;
 
 	Parent::operator= (*static_cast<const Parent*>(&other));
 }
@@ -483,17 +498,32 @@ bool RDORuntime::operator== (RDOSimulator& other)
 
 void RDORuntime::onResetPokaz()
 {
-	std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::resetPokaz), this) );
+	LPIPokazList::iterator it = m_pokazAllList.begin();
+	while (it != m_pokazAllList.end())
+	{
+		(*it)->resetPokaz(this);
+		it++;
+	}
 }
 
 void RDORuntime::onCheckPokaz()
 {
-	std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::checkPokaz), this) );
+	LPIPokazList::iterator it = m_pokazAllList.begin();
+	while (it != m_pokazAllList.end())
+	{
+		(*it)->checkPokaz(this);
+		it++;
+	}
 }
 
 void RDORuntime::onAfterCheckPokaz()
 {
-	std::for_each( allPokaz.begin(), allPokaz.end(), std::mem_fun(&RDOPokazTrace::tracePokaz) );
+	LPIPokazTraceList::iterator it = m_pokazTraceList.begin();
+	while (it != m_pokazTraceList.end())
+	{
+		(*it)->tracePokaz();
+		it++;
+	}
 }
 
 void RDORuntime::error( const std::string& message, const RDOCalc* calc )
@@ -539,15 +569,26 @@ void RDORuntime::writeExitCode()
 void RDORuntime::postProcess()
 {
 	getTracer()->startWriting();
-	try {
-		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::calcStat), this) );
-	} catch ( RDORuntimeException& ) {
+	LPIPokazList::iterator it = m_pokazAllList.begin();
+	while (it != m_pokazAllList.end())
+	{
+		try
+		{
+			(*it)->calcStat(this);
+		}
+		catch (REF(RDORuntimeException))
+		{}
+		it++;
 	}
-	try {
+
+	try
+	{
 		Parent::postProcess();
 		writeExitCode();
 		getTracer()->stopWriting();
-	} catch ( RDORuntimeException& e ) {
+	}
+	catch (REF(RDORuntimeException) e)
+	{
 		writeExitCode();
 		getTracer()->stopWriting();
 		throw e;

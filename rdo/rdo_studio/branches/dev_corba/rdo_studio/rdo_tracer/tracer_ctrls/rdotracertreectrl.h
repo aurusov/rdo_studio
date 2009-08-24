@@ -2,8 +2,6 @@
 #define RDOTRACERTREECTRL_H
 #pragma once
 
-#include <afxole.h>
-
 #include <rdotreectrl.h>
 #include "rdotracertreeitem.h"
 

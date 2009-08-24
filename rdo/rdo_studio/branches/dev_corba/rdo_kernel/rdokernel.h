@@ -44,7 +44,8 @@ protected:
 	virtual void proc( RDOMessageInfo& msg );
 	virtual void start();
 
-	std::list< RDOThread* >     threads;
+	typedef std::list<PTR(RDOThread)> RDOThreadList;
+	RDOThreadList               threads;
 #ifdef RDO_MT
 	mutable CMutex              threads_mutex;
 #endif

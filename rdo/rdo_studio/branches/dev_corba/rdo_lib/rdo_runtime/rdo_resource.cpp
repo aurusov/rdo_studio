@@ -2,12 +2,6 @@
 #include "rdo_resource.h"
 #include "rdo_runtime.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoRuntime
 {
 
@@ -64,8 +58,8 @@ RDOResource::RDOResource( const RDOResource& copy ):
 
 RDOResource::~RDOResource()
 {
-	getRuntime()->fireMessage( this, RDORuntime::RO_BEFOREDELETE, (void*)getTraceID() );
-	getRuntime()->onResourceErase( this );
+	getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
+	getRuntime()->onResourceErase(this);
 }
 
 bool RDOResource::operator!= (RDOResource &other)

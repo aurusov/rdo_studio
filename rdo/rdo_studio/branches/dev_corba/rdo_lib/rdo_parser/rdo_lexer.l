@@ -1,10 +1,5 @@
 %{
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 // #include <iostream>
 // using namespace std;
@@ -208,6 +203,10 @@ $Activities			return(RDO_Activities);
 $activities			return(RDO_Activities);
 $Process			return(RDO_Process);
 $process			return(RDO_Process);
+QUEUE				return(RDO_QUEUE);
+queue				return(RDO_QUEUE);
+DEPART				return(RDO_DEPART);
+depart				return(RDO_DEPART);
 SEIZE				return(RDO_SEIZE);
 seize				return(RDO_SEIZE);
 GENERATE			return(RDO_GENERATE);
@@ -218,11 +217,17 @@ RELEASE				return(RDO_RELEASE);
 release				return(RDO_RELEASE);
 TERMINATE			return(RDO_TERMINATE);
 terminate			return(RDO_TERMINATE);
+ASSIGN				return(RDO_ASSIGN);
+assign				return(RDO_ASSIGN);
 value[\r\n\t ]+before	return(RDO_value_before);
 value[\r\n\t ]+after	return(RDO_value_after);
 value_before		return(RDO_value_before);
 value_after			return(RDO_value_after);
 some				return(RDO_some);
+cf					return(RDO_CF);
+CF					return(RDO_CF);
+$Priority           return(RDO_Priority);
+$priority           return(RDO_Priority);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);

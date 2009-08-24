@@ -3,6 +3,8 @@
 
 #include "rdo.h"
 #include "rdo_logic_dptsearch.h"
+#include "rdotrace_interface.h"
+#include "rdo_runtime_interface_registrator.h"
 
 #include <fstream>
 
@@ -63,10 +65,10 @@ public:
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
 	virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
 
-	virtual void writeIrregularEvent     ( RDOIrregEvent* ie  , RDOSimulatorTrace* sim );
-	virtual void writeRule               ( RDORule*       rule, RDOSimulatorTrace* sim );
-	virtual void writeAfterOperationBegin( RDOOperation*  op  , RDOSimulatorTrace* sim );
-	virtual void writeAfterOperationEnd  ( RDOOperation*  op  , RDOSimulatorTrace* sim );
+	virtual void writeIrregularEvent     (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeRule               (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 
 	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
 	virtual void writeModelBegin(RDOSimulatorTrace *sim);
@@ -95,29 +97,34 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOTraceableObject
 // ----------------------------------------------------------------------------
-class RDOTraceableObject
+class RDOTraceableObject: public ITrace
 {
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(ITrace)
+QUERY_INTERFACE_END
+
 public:
 	enum { NONE = 0xFFFFFFFF };
 
-	bool traceable() const                { return m_trace;  }
-	void setTrace( bool trace )           { m_trace = trace; }
+	rbool traceable() const        { return m_trace;  }
+	void  setTrace(rbool trace)    { m_trace = trace; }
 
-	unsigned int getTraceID() const       { return m_id;     }
-	void setTraceID( unsigned int id )
+	ruint getTraceID() const       { return m_id;     }
+	void  setTraceID(ruint id)
 	{
-		setTraceID( id, id );
+		setTraceID(id, id);
 	}
-	void setTraceID( unsigned int id, unsigned int str_id )
+	void setTraceID(ruint id, ruint str_id)
 	{
 		m_id     = id;
-		m_str_id = rdo::toString( str_id );
+		m_str_id = rdo::toString(str_id);
 	}
 
-	std::string& traceId() const
+	REF(std::string) traceId() const
 	{
-		if ( m_str_id.empty() ) {
-			m_str_id = rdo::toString( m_id );
+		if (m_str_id.empty())
+		{
+			m_str_id = rdo::toString(m_id);
 		}
 		return m_str_id;
 	}
@@ -126,12 +133,10 @@ protected:
 	RDOTraceableObject( bool trace ):
 		m_trace( trace ),
 		m_id( NONE ),
-		m_str_id( "" )
-	{
-	}
+		m_str_id(_T(""))
+	{}
 	virtual ~RDOTraceableObject()
-	{
-	}
+	{}
 
 private:
 	bool                m_trace;
@@ -142,16 +147,20 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOPokazTrace
 // ----------------------------------------------------------------------------
-class RDOPokazTrace: public RDOPokaz, public RDOTraceableObject, public RDORuntimeContainer
+class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue, public RDORuntimeContainer
 {
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(RDOTraceableObject)
+	QUERY_INTERFACE(IPokazTrace)
+QUERY_INTERFACE_END
+
 public:
 	RDOPokazTrace( RDORuntime* runtime, bool trace );
 
-	bool tracePokaz();
-	virtual std::string traceValue() = 0;
-
 protected:
-	bool m_wasChanged;
+	rbool m_wasChanged;
+
+	DECLARE_IPokazTrace;
 };
 
 } // namespace rdoRuntime

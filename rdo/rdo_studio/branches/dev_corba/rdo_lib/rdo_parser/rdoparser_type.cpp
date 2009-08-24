@@ -1,21 +1,16 @@
 #include "pch.h"
+#include "rdoparser.h"
 #include "rdoparser_type.h"
 #include <rdo_exception.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 namespace rdoParse {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
-const RDOType& RDOType::getTypeByID( rdoRuntime::RDOType::ID id )
+CREF(RDOType) RDOType::getTypeByID(rdoRuntime::RDOType::TypeID typeID)
 {
-	switch ( id )
+	switch (typeID)
 	{
 		case rdoRuntime::RDOType::t_unknow       : return g_unknow;
 		case rdoRuntime::RDOType::t_int          : return g_int;
@@ -27,52 +22,88 @@ const RDOType& RDOType::getTypeByID( rdoRuntime::RDOType::ID id )
 	throw rdoRuntime::RDOTypeException();
 }
 
-const RDOType* RDOType__unknow::cast( const RDOType& toType ) const
+//! RDOType__unknow
+CPTR(RDOType) RDOType__unknow::cast(CREF(RDOType) toType) const
 {
 	return NULL;
 }
 
-const RDOType* RDOType__int::cast( const RDOType& toType ) const
+rdoRuntime::RDOValue RDOType__unknow::cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	switch ( toType->id() )
+	throw rdoRuntime::RDOTypeException();
+}
+
+//! RDOType__int
+CPTR(RDOType) RDOType__int::cast(CREF(RDOType) toType) const
+{
+	switch (toType->typeID())
 	{
-		case rdoRuntime::RDOType__int::t_int : return &g_int;
-		case rdoRuntime::RDOType__int::t_real: return &g_real;
+		case rdoRuntime::RDOType::t_int : return &g_int;
+		case rdoRuntime::RDOType::t_real: return &g_real;
 	}
 	return NULL;
 }
 
-const RDOType* RDOType__real::cast( const RDOType& toType ) const
+rdoRuntime::RDOValue RDOType__int::cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	switch ( toType->id() )
+	return from.getInt();
+}
+
+//! RDOType__real
+CPTR(RDOType) RDOType__real::cast(CREF(RDOType) toType) const
+{
+	switch (toType->typeID())
 	{
-		case rdoRuntime::RDOType__int::t_int :
-		case rdoRuntime::RDOType__int::t_real: return &g_real;
+		case rdoRuntime::RDOType::t_int :
+		case rdoRuntime::RDOType::t_real: return &g_real;
 	}
 	return NULL;
 }
 
-const RDOType* RDOType__string::cast( const RDOType& toType ) const
+rdoRuntime::RDOValue RDOType__real::cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	switch ( toType->id() )
+	return from.getDouble();
+}
+
+//! RDOType__string
+CPTR(RDOType) RDOType__string::cast(CREF(RDOType) toType) const
+{
+	switch (toType->typeID())
 	{
-		case rdoRuntime::RDOType__int::t_string: return &g_string;
+		case rdoRuntime::RDOType::t_string: return &g_string;
 	}
 	return NULL;
 }
 
-const RDOType* RDOType__identificator::cast( const RDOType& toType ) const
+rdoRuntime::RDOValue RDOType__string::cast(CREF(rdoRuntime::RDOValue) from) const
+{
+	return from.getString();
+}
+
+//! RDOType__identificator
+CPTR(RDOType) RDOType__identificator::cast(CREF(RDOType) toType) const
 {
 	return NULL;
 }
 
-const RDOType* RDOType__bool::cast( const RDOType& toType ) const
+rdoRuntime::RDOValue RDOType__identificator::cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	switch ( toType->id() )
+	throw rdoRuntime::RDOTypeException();
+}
+
+//! RDOType__bool
+CPTR(RDOType) RDOType__bool::cast(CREF(RDOType) toType) const
+{
+	switch (toType->typeID())
 	{
-		case rdoRuntime::RDOType__int::t_bool: return &g_bool;
+		case rdoRuntime::RDOType::t_bool: return &g_bool;
 	}
 	return NULL;
+}
+
+rdoRuntime::RDOValue RDOType__bool::cast(CREF(rdoRuntime::RDOValue) from) const
+{
+	return from.getBool();
 }
 
 // ----------------------------------------------------------------------------

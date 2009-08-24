@@ -61,7 +61,7 @@ class RDOFUNLogic: public RDOParserObject, public RDOParserSrcInfo
 friend class RDOFUNArithm;
 
 public:
-	rdoRuntime::RDOCalc* getCalc( rdoRuntime::RDOType::ID _id = rdoRuntime::RDOType::t_real );
+	rdoRuntime::RDOCalc* getCalc( rdoRuntime::RDOType::TypeID _id = rdoRuntime::RDOType::t_real );
 
 	RDOFUNLogic( const RDOFUNArithm& arithm );
 	RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
@@ -117,11 +117,11 @@ public:
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 
 	rdoRuntime::RDOCalc*           createCalc( const RDORTPParamType* const forType = NULL );
-	rdoRuntime::RDOCalc*           calc() const     { return m_calc;         }
-	const RDOValue&                value() const    { return m_value;        }
-	const RDOType&                 type() const     { return m_value.type(); }
+	rdoRuntime::RDOCalc*           calc() const     { return m_calc;           }
+	const RDOValue&                value() const    { return m_value;          }
+	const RDOType&                 type() const     { return m_value.type();   }
 	const RDORTPEnum&              enumType() const { return static_cast<const RDORTPEnum&>(type()); }
-	rdoRuntime::RDOType::ID        typeID() const   { return type()->id();   }
+	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->typeID(); }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
 	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );

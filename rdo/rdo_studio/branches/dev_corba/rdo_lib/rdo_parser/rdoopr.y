@@ -122,6 +122,8 @@
 %token RDO_RELEASE						368
 %token RDO_if							369
 %token RDO_result						370
+%token RDO_CF							371
+%token RDO_Priority                     372
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -169,11 +171,6 @@
 
 %{
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #include "rdoopr.h"
 #include "rdopat.h"

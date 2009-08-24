@@ -6,6 +6,8 @@
 #include "simtrace.h"
 #include "rdo_pattern.h"
 #include "rdo_activity.h"
+#include "rdo_priority.h"
+#include "rdo_operation_interface.h"
 
 namespace rdoRuntime
 {
@@ -13,52 +15,41 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation
 // ----------------------------------------------------------------------------
-class RDOOperation: public RDOActivityPattern<RDOPatternOperation>
+class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior, public IOperationTrace
 {
+typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
+DEFINE_FACTORY(RDOOperation);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(pattern_type)
+	QUERY_INTERFACE_PARENT(RDOPatternPrior)
+	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE(IOperation)
+	QUERY_INTERFACE(IOperationTrace)
+QUERY_INTERFACE_END
+
 friend class RDOTrace;
 friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
-public:
+protected:
 	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name );
 	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, RDOCalc* condition, const std::string& name );
 	virtual ~RDOOperation();
-
-	        void onBeforeChoiceFrom    ( RDOSimulator* sim );
-	virtual bool choiceFrom            ( RDOSimulator* sim );
-	        void onBeforeOperationBegin( RDOSimulator* sim )  {}
-	        void convertBegin          ( RDOSimulator* sim );
-	        void onAfterOperationBegin ( RDOSimulator* sim );
-	        void onBeforeOperationEnd  ( RDOSimulator* sim );
-	        void convertEnd            ( RDOSimulator* sim );
-	        void onAfterOperationEnd   ( RDOSimulator* sim );
+	DECLARE_IOperation;
 
 private:
-	RDORuntimeParent m_clones;
+	RDOOperation(PTR(RDORuntime) runtime, CREF(RDOOperation) originForClone);
 
-	virtual bool     onCheckCondition( RDOSimulator* sim );
-	virtual BOResult onDoOperation   ( RDOSimulator* sim );
-	virtual void     onMakePlaned    ( RDOSimulator* sim, void* param = NULL );
+	typedef std::vector<LPIOperation> CloneList;
+	CloneList m_cloneList;
 
 	bool     haveAdditionalCondition;
 	RDOCalc* additionalCondition;
 
-	double getNextTimeInterval(RDOSimulator *sim);
-
-	std::string traceOperId() { return rdo::toString(m_operId); }
-
 	int m_operId;
 
-	RDOOperation* clone( RDOSimulator* sim )
-	{
-		RDORuntime* runtime = (RDORuntime *)sim;
-		RDOOperation* newOper = new RDOOperation( runtime, m_pattern, traceable(), m_oprName );
-		newOper->m_paramsCalcs.insert(newOper->m_paramsCalcs.begin(), m_paramsCalcs.begin(), m_paramsCalcs.end());
-		newOper->m_relResID.insert(newOper->m_relResID.begin(), m_relResID.begin(), m_relResID.end());
-		newOper->setTraceID( getTraceID() );
-		newOper->m_operId = static_cast<RDOSimulatorTrace*>(sim)->getFreeOperationId();
-		return newOper;
-	};
+	DECLARE_IBaseOperation;
+	DECLARE_IOperationTrace;
 };
 
 } // namespace rdoRuntime

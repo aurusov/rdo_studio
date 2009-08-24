@@ -4,12 +4,6 @@
 #include "rdoparser_lexer.h"
 #include <rdo_logic_opr.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoParse 
 {
 
@@ -38,7 +32,8 @@ RDOOPROperation::RDOOPROperation( const RDOParserObject* parent, const RDOParser
 RDOOperations::RDOOperations( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>( _parser, _src_info )
 {
-	m_rt_logic = new rdoRuntime::RDOOperations( parser()->runtime() );
+	m_rt_logic = F(rdoRuntime::RDOOperations)::create(parser()->runtime());
+	m_rt_logic->init(parser()->runtime());
 	parser()->insertOperations( this );
 }
 

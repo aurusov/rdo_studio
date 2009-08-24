@@ -2,6 +2,8 @@
 #define RDORUNTIME_OBJECT_H
 
 #include <rdocommon.h>
+#include <rdotypes.h>
+
 #include <vector>
 #include <algorithm>
 
@@ -32,7 +34,6 @@ protected:
 	RDORuntimeParent* m_parent;
 
 	RDORuntimeObject( RDORuntimeParent* parent );
-	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL ) {};
 
 private:
 	size_t        m_object_size; // Размер текущего объекта
@@ -195,5 +196,16 @@ private:
 };
 
 } // namespace rdoRuntime
+
+// ----------------------------------------------------------------------------
+// ---------- INotify
+// ----------------------------------------------------------------------------
+class INotify
+{
+public:
+	virtual void notify(ruint message, PTR(void) param) = 0;
+};
+#define DECLARE_INotify \
+	virtual void notify(ruint message, PTR(void) param);
 
 #endif // RDORUNTIME_OBJECT_H

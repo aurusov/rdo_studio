@@ -44,7 +44,7 @@ RDOTracerBase::~RDOTracerBase()
 	deleteTrace();
 }
 
-void RDOTracerBase::addResourceType( std::string& s, std::stringstream& stream )
+void RDOTracerBase::addResourceType( std::string& s, rdo::textstream& stream )
 {
 	RDOTracerResType* type = new RDOTracerResType( RDOTK_PERMANENT );
 	stream >> type->Name;
@@ -82,7 +82,7 @@ void RDOTracerBase::addResourceType( std::string& s, std::stringstream& stream )
 	tree->addResourceType( type );
 }
 
-void RDOTracerBase::addResource( std::string& s, std::stringstream& stream )
+void RDOTracerBase::addResource( std::string& s, rdo::textstream& stream )
 {
 	int rtp;
 	std::string res_name;
@@ -105,7 +105,7 @@ void RDOTracerBase::addResource( std::string& s, std::stringstream& stream )
 	tree->addResource( res );
 }
 
-void RDOTracerBase::addPattern( std::string& s, std::stringstream& stream )
+void RDOTracerBase::addPattern( std::string& s, rdo::textstream& stream )
 {
 	std::string pat_name;
 	stream >> pat_name;
@@ -148,7 +148,7 @@ void RDOTracerBase::addPattern( std::string& s, std::stringstream& stream )
 		stream >> dummy;
 }
 
-void RDOTracerBase::addOperation( std::string& s, std::stringstream& stream )
+void RDOTracerBase::addOperation( std::string& s, rdo::textstream& stream )
 {
 	std::string opr_name;
 	stream >> opr_name;
@@ -194,7 +194,7 @@ void RDOTracerBase::addOperation( std::string& s, std::stringstream& stream )
 	tree->addOperation( opr );*/
 }
 
-/*void RDOTracerBase::addIrregularEvent( string& s, stringstream& stream )
+/*void RDOTracerBase::addIrregularEvent( std::string& s, rdo::textstream& stream )
 {
 	int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
@@ -210,7 +210,7 @@ void RDOTracerBase::addOperation( std::string& s, std::stringstream& stream )
 	tree->addOperation( event );
 }*/
 
-void RDOTracerBase::addResult( std::string& s, std::stringstream& stream )
+void RDOTracerBase::addResult( std::string& s, rdo::textstream& stream )
 {
 	int resid;
 	stream >> resid;
@@ -552,7 +552,7 @@ RDOTracerTreeCtrl* RDOTracerBase::createTree()
 	return tree;
 }
 
-void RDOTracerBase::getModelStructure( std::stringstream& stream )
+void RDOTracerBase::getModelStructure( rdo::textstream& stream )
 {
 	mutex.Lock();
 

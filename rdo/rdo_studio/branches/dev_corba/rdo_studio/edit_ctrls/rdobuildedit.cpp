@@ -83,44 +83,44 @@ void RDOBuildEdit::showFirstError()
 {
 	current_line++;
 	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
-	TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 	int i;
 	for ( i = 0; i < current_line; i++ ) {
 		if ( it != lines.end() ) {
 			it++;
-			TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 		} else {
 			current_line = 0;
 			break;
 		}
 	}
 	it = lines.begin();
-	TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 	for ( i = 0; i < current_line; i++ ) {
 		it++;
-		TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 	}
 	while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning) ) {
 		it++;
 		if ( it != lines.end() ) {
-			TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 		}
 		current_line++;
 	}
 	if ( it == lines.end() ) {
 		it = lines.begin();
-		TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 		current_line = 0;
 		while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning) ) {
 			it++;
 			if ( it != lines.end() ) {
-				TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+				TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 			}
 			current_line++;
 		}
 	}
 	if ( it != lines.end() ) {
-		TRACE( "ln = %d, w = %d, msg = %s\n", (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
 	}
 	if ( it != lines.end() && (*it)->lineNumber != -1 && !static_cast<RDOBuildEditLineInfo*>(*it)->warning ) {
 		setSelectLine( current_line, *it, true );

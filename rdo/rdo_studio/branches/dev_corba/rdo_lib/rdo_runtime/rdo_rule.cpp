@@ -2,12 +2,6 @@
 #include "rdo_rule.h"
 #include "rdo_runtime.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
@@ -15,6 +9,7 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name )
 	: RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name )
+	, RDOPatternPrior()
 	, RDORuntimeContainer  (runtime)
 	, m_additionalCondition(NULL   )
 {
@@ -23,6 +18,7 @@ RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, cons
 
 RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, RDOCalc* condition, const std::string& name )
 	: RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name )
+	, RDOPatternPrior()
 	, RDORuntimeContainer  (runtime  )
 	, m_additionalCondition(condition)
 {
@@ -35,7 +31,12 @@ void RDORule::init()
 	m_traceOFF = false;
 }
 
-bool RDORule::choiceFrom( RDORuntime* runtime )
+void RDORule::onBeforeChoiceFrom(PTR(rdoRuntime::RDOSimulator) sim)
+{
+	setPatternParameters(sim);
+}
+
+rbool RDORule::choiceFrom(PTR(rdoRuntime::RDORuntime) runtime)
 { 
 	runtime->setCurrentActivity( this );
 	if ( m_additionalCondition && !m_additionalCondition->calcValue( runtime ).getAsBool() )
@@ -45,13 +46,17 @@ bool RDORule::choiceFrom( RDORuntime* runtime )
 	return m_pattern->choiceFrom( runtime ); 
 }
 
-void RDORule::convertRule( RDORuntime* runtime ) 
+void RDORule::onBeforeRule(PTR(rdoRuntime::RDOSimulator) sim)
+{
+}
+
+void RDORule::convertRule(PTR(rdoRuntime::RDORuntime) runtime)
 { 
 	runtime->setCurrentActivity( this );
 	m_pattern->convertRule( runtime ); 
 }
 
-void RDORule::onAfterRule( RDOSimulator* sim, bool inSearch )
+void RDORule::onAfterRule(PTR(rdoRuntime::RDOSimulator) sim, rbool inSearch)
 {
 	updateConvertStatus( sim, m_pattern->m_convertorStatus );
 	if ( !inSearch )
@@ -79,7 +84,7 @@ bool RDORule::onCheckCondition( RDOSimulator* sim )
 	{
 		m_traceOFF = true;
 		std::auto_ptr<RDOSimulator> clone (sim->clone());
-		if (onDoOperation(clone.get()) != RDOBaseOperation::BOR_done)
+		if (onDoOperation(clone.get()) != IBaseOperation::BOR_done)
 		{
 			//! Реакция на плохой onDoOperation - это вообще-то спортный вопрос
 			return false;
@@ -93,12 +98,17 @@ bool RDORule::onCheckCondition( RDOSimulator* sim )
 	return result;
 }
 
-RDOBaseOperation::BOResult RDORule::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDORule::onDoOperation( RDOSimulator* sim )
 {
 	onBeforeRule( sim );
 	convertRule( static_cast<RDORuntime*>(sim) );
-	onAfterRule( sim );
-	return RDOBaseOperation::BOR_done;
+	onAfterRule( sim, false );
+	return IBaseOperation::BOR_done;
 }
+
+void                     RDORule::onStart     (PTR(rdoRuntime::RDOSimulator) sim)                  {}
+void                     RDORule::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
+void                     RDORule::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
+IBaseOperation::BOResult RDORule::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
 
 } // namespace rdoRuntime

@@ -4,21 +4,8 @@
 #include "simtrace.h"
 #include "rdo_rule.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoRuntime
 {
-
-RDOActivityTrace::RDOActivityTrace( RDORule* r, ValueTime valueTime ):
-	Activity( r, valueTime ),
-	RDOTraceableObject( false )
-{
-	setTraceID( r->getTraceID() );
-}
 
 void RDODPTSearchTrace::onSearchBegin( RDOSimulator* sim )
 {
@@ -121,54 +108,64 @@ TreeRoot* RDODPTSearchTrace::createTreeRoot( RDOSimulator* sim )
 	return root;
 }
 
-void RDODPTSearchTrace::getStats( std::list< double >& list, double& min, double& max, double& med ) const
+ruint RDODPTSearchTrace::getCalcCnt() const
 {
-	double sum = 0;
-	int    cnt = 0;
-	std::list< double >::const_iterator it = list.begin();
-	while ( it != list.end() ) {
+	return calc_cnt;
+}
+
+ruint RDODPTSearchTrace::getCalcResFoundCnt() const
+{
+	return calc_res_found_cnt;
+}
+
+template <typename T>
+void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med)
+{
+	T      sum = 0;
+	ruint  cnt = 0;
+	std::list<T>::const_iterator it = list.begin();
+	while (it != list.end())
+	{
 		sum += *it;
-		if ( !cnt ) {
+		if (!cnt)
+		{
 			min = *it;
 			max = *it;
 		}
 		cnt++;
-		if ( min > *it ) {
+		if (min > *it)
 			min = *it;
-		}
-		if ( max < *it ) {
+		if (max < *it)
 			max = *it;
-		}
 		it++;
 	}
-	if ( cnt ) {
-		med = sum / cnt;
+	if (cnt)
+	{
+		med = (double)sum / cnt;
 	}
 }
 
-void RDODPTSearchTrace::getStats( std::list< unsigned int >& list, unsigned int& min, unsigned int& max, double& med ) const
+void RDODPTSearchTrace::getStatsDOUBLE(Type type, REF(double) min, REF(double) max, REF(double) med) const
 {
-	unsigned int sum = 0;
-	int          cnt = 0;
-	std::list< unsigned int >::const_iterator it = list.begin();
-	while ( it != list.end() ) {
-		sum += *it;
-		if ( !cnt ) {
-			min = *it;
-			max = *it;
-		}
-		cnt++;
-		if ( min > *it ) {
-			min = *it;
-		}
-		if ( max < *it ) {
-			max = *it;
-		}
-		it++;
+	switch (type)
+	{
+		case IDPTSearchTraceStatistics::ST_TIMES: return __getStats<double>(calc_times, min, max, med);
+		case IDPTSearchTraceStatistics::ST_COST : return __getStats<double>(calc_cost , min, max, med);
 	}
-	if ( cnt ) {
-		med = (double)sum / cnt;
+	NEVER_REACH_HERE;
+}
+
+void RDODPTSearchTrace::getStatsRUINT(Type type, REF(ruint) min, REF(ruint) max, REF(double) med) const
+{
+	switch (type)
+	{
+		case IDPTSearchTraceStatistics::ST_MEMORY        : return __getStats<ruint>(calc_mems          , min, max, med);
+		case IDPTSearchTraceStatistics::ST_NODES         : return __getStats<ruint>(calc_nodes_in_graph, min, max, med);
+		case IDPTSearchTraceStatistics::ST_NODES_FULL    : return __getStats<ruint>(calc_nodes_full    , min, max, med);
+		case IDPTSearchTraceStatistics::ST_NODES_EXPENDED: return __getStats<ruint>(calc_nodes_expended, min, max, med);
+		case IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH: return __getStats<ruint>(calc_mems          , min, max, med);
 	}
+	NEVER_REACH_HERE;
 }
 
 } // namespace rdoRuntime

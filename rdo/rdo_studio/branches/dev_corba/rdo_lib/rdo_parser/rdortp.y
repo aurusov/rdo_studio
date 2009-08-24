@@ -122,6 +122,8 @@
 %token RDO_RELEASE						368
 %token RDO_if							369
 %token RDO_result						370
+%token RDO_CF							371
+%token RDO_Priority                     372
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -166,14 +168,12 @@
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 %token RDO_External_Model				444
+%token RDO_QUEUE						445
+%token RDO_DEPART						446
+%token RDO_ASSIGN						447
 
 %{
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"

@@ -10,12 +10,6 @@
 #include "rdopmd.h"
 #include <rdocommon.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoParse 
 {
 
@@ -41,8 +35,16 @@ void RDOParser::insert##Name( RDO##Name* value ) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME( Name ) \
 const RDO##Name* RDOParser::find##Name( const std::string& name ) const \
 { \
-	std::vector< RDO##Name* >::const_iterator it = std::find_if( m_all##Name.begin(), m_all##Name.end(), compareName<RDO##Name>(name) ); \
+	Name##List::const_iterator it = std::find_if( m_all##Name.begin(), m_all##Name.end(), compareName<RDO##Name>(name) ); \
 	return it != m_all##Name.end() ? *it : NULL; \
+} \
+rbool RDOParser::remove##Name(CPTR(RDO##Name) item) \
+{ \
+	Name##List::iterator it = std::find(m_all##Name.begin(), m_all##Name.end(), item); \
+	if (it == m_all##Name.end()) \
+		return false; \
+	m_all##Name.erase(it); \
+	return true; \
 }
 
 DECLARE_PARSER_OBJECT_CONTAINER( PATPattern      );
@@ -100,7 +102,7 @@ RDOParser::~RDOParser()
 		delete *it;
 		it = m_allDeletables.rbegin();
 	}
-	TRACE( "PARSER : m_allDeletables.size() = %d\n",m_allDeletables.size() );
+	TRACE1(_T("PARSER : m_allDeletables.size() = %d\n"), m_allDeletables.size());
 	s_parserStack.remove( this );
 }
 
@@ -116,7 +118,7 @@ void RDOParser::insertChanges( const std::string& name, const std::string& value
 
 std::string RDOParser::getChanges() const
 {
-	std::stringstream stream;
+	rdo::textstream stream;
 	stream << "$Changes" << std::endl;
 	unsigned int changes_max_length = 0;
 	std::vector< Changes >::const_iterator change_it = m_changes.begin();
@@ -140,7 +142,7 @@ std::string RDOParser::getChanges() const
 
 std::string RDOParser::getModelStructure()
 {
-	std::stringstream modelStructure;
+	rdo::textstream modelStructure;
 
 	// $Changes
 	modelStructure << getChanges();
@@ -188,21 +190,37 @@ std::string RDOParser::getModelStructure()
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
 	unsigned int watching_max_length = 0;
-	std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = m_runtime.getPokaz().begin();
-	while ( watching_it != m_runtime.getPokaz().end() ) {
-		if ( (*watching_it)->traceable() && (*watching_it)->name().length() > watching_max_length ) {
-			watching_max_length = (*watching_it)->name().length();
+	rdoRuntime::RDORuntime::LPIPokazList::const_iterator watching_it = m_runtime.getPokaz().begin();
+	while (watching_it != m_runtime.getPokaz().end())
+	{
+		LPITrace          trace     = *watching_it;
+		LPIName           name      = trace;
+		LPIModelStructure structure = trace;
+		if (trace && name && structure)
+		{
+			if (trace->traceable() && name->name().length() > watching_max_length)
+			{
+				watching_max_length = name->name().length();
+			}
 		}
 		watching_it++;
 	}
 	watching_it = m_runtime.getPokaz().begin();
-	while ( watching_it != m_runtime.getPokaz().end() ) {
-		if ( (*watching_it)->traceable() ) {
-			modelStructure << "  " << (*watching_it)->name();
-			for ( unsigned int i = (*watching_it)->name().length(); i < watching_max_length + 2; i++ ) {
-				modelStructure << " ";
+	while (watching_it != m_runtime.getPokaz().end())
+	{
+		LPITrace          trace     = *watching_it;
+		LPIName           name      = trace;
+		LPIModelStructure structure = trace;
+		if (trace && name && structure)
+		{
+			if (trace->traceable())
+			{
+				modelStructure << _T("  ") << name->name();
+				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
+					modelStructure << _T(" ");
+
+				structure->writeModelStructure(modelStructure);
 			}
-			(*watching_it)->writePokazStructure( modelStructure );
 		}
 		watching_it++;
 	}
@@ -258,7 +276,7 @@ void RDOParser::error( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... 
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error( str, _error_code );
 }
@@ -267,7 +285,7 @@ void RDOParser::error_push_only( rdoSimulator::RDOSyntaxError::ErrorCode _error_
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error_push_only( str, _error_code );
 }
@@ -276,7 +294,7 @@ void RDOParser::error( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSynta
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error( _src_info, str, _error_code );
 }
@@ -285,7 +303,7 @@ void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, rdoSimulator
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	error_push_only( _src_info, str, _error_code );
 }
@@ -342,7 +360,7 @@ void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ..
 {
 	va_list params;
 	va_start( params, _error_code );
-	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	std::string str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
 	va_end( params );
 	warning( str, _error_code );
 }

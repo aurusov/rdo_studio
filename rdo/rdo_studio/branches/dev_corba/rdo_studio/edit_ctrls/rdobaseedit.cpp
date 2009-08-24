@@ -1138,7 +1138,7 @@ void RDOBaseEdit::horzScrollToCurrentPos() const
 	sendEditor( SCI_REPLACESEL, 0, 0 );
 }
 
-void RDOBaseEdit::load( rdo::binarystream& stream )
+void RDOBaseEdit::load( rdo::stream& stream )
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
@@ -1148,7 +1148,7 @@ void RDOBaseEdit::load( rdo::binarystream& stream )
 	setReadOnly( readOnly );
 }
 
-void RDOBaseEdit::save( rdo::binarystream& stream ) const
+void RDOBaseEdit::save( rdo::stream& stream ) const
 {
 	int len = getLength();
 	std::vector<char> str;

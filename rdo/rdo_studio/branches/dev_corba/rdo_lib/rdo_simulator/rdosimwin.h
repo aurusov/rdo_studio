@@ -6,17 +6,27 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#ifdef RDO_MT
 #include <afxwin.h>
+#else
+#include <windows.h>
+#endif
 
 #include <rdocommon.h>
 #include <rdokernel.h>
 #include <rdothread.h>
 
-#include <rdobinarystream.h>
+#include <rdostream.h>
 #include <rdocommon.h>
 
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
+namespace rdoAnimation
+{
+struct RDOFrame;
+}
+
+#define DISABLE_CORBA
 
 //#define CORBA_ENABLE
 #ifdef CORBA_ENABLE
@@ -102,9 +112,9 @@ private:
 
 public:
 	struct GetFrame {
-		rdoSimulator::RDOFrame* frame;
+		rdoAnimation::RDOFrame* frame;
 		int                     frame_number;
-		GetFrame( rdoSimulator::RDOFrame* _frame, int _frame_number ): frame( _frame ), frame_number( _frame_number ) {}
+		GetFrame( rdoAnimation::RDOFrame* _frame, int _frame_number ): frame( _frame ), frame_number( _frame_number ) {}
 	};
 	struct FrameAreaDown {
 		int         frame_number;
@@ -167,8 +177,8 @@ private:
 	ShowMode showMode; // current show mode
 	double showRate; // current show mode
 
-	std::stringstream resultString;
-	std::stringstream resultInfoString;
+	rdo::textstream resultString;
+	rdo::textstream resultInfoString;
 
 	
 #ifdef CORBA_ENABLE
@@ -198,7 +208,7 @@ protected:
 public:
 	RDOThreadSimulator();
 
-	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
+	void parseSMRFileInfo(rdo::textstream& smr, rdoModelObjects::RDOSMRFileInfo& info);
 
 	ShowMode getInitialShowMode();
 	int getInitialFrameNumber();

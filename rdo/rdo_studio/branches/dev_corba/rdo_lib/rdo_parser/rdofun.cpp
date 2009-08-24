@@ -12,12 +12,6 @@
 #include <rdoframe.h>
 #include <rdocalc.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace rdoParse 
 {
 
@@ -149,7 +143,7 @@ RDOFUNLogic::RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _
 	}
 }
 
-rdoRuntime::RDOCalc* RDOFUNLogic::getCalc( rdoRuntime::RDOType::ID _id )
+rdoRuntime::RDOCalc* RDOFUNLogic::getCalc( rdoRuntime::RDOType::TypeID _id )
 {
 	if ( _id != rdoRuntime::RDOType::t_real )
 	{
@@ -260,7 +254,13 @@ void RDOFUNArithm::init( const RDOValue& value )
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
-
+	if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
+	{
+		m_value = g_int;
+		m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );
+		m_calc->setSrcInfo( src_info() );
+		return;
+	}
 	if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
 	{
 		m_value = g_real;
@@ -599,14 +599,14 @@ RDOFUNArithm* RDOFUNArithm::operator/ ( RDOFUNArithm& second )
 	GENERATE_ARITHM_CALC( Div, /, "Ќельз€ %s разделить на %s" );
 	// TODO: перевод вещественного в целое при делении. ј что делать с умножением и т.д. ?
 	// ќтвет: с умножением надо делать тоже самое, только непон€тно как
-	if ( newType->type().id() == rdoRuntime::RDOType::t_int )
+	if ( newType->type().typeID() == rdoRuntime::RDOType::t_int )
 	{
 		rdoRuntime::RDOCalc* newCalc_div = newCalc;
 		newCalc = new rdoRuntime::RDOCalcDoubleToIntByResult( parser()->runtime(), newCalc_div );
 		newCalc->setSrcInfo( newCalc_div->src_info() );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(*newType, newCalc->src_info()), newCalc );
-	if ( newType->type().id() == rdoRuntime::RDOType::t_int )
+	if ( newType->type().typeID() == rdoRuntime::RDOType::t_int )
 	{
 		arithm->m_int_or_double.push_back( reinterpret_cast<rdoRuntime::RDOCalcDoubleToIntByResult*>(newCalc) );
 	}

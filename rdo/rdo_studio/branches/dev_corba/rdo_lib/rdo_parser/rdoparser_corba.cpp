@@ -1,18 +1,13 @@
 #include "pch.h"
+
+#ifdef CORBA_ENABLE
+
 #include "rdoparser_corba.h"
 #include "rdortp.h"
 #include <rdo_resources.h>
 #include <rdoruntime_object.h>
 #include "RDOCorba.hh"
 #include "rdosmr.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-#ifdef CORBA_ENABLE
 
 #define file1 "C:\\RTP.txt"
 #define file2 "C:\\RSS.txt"
@@ -188,7 +183,7 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 		TRACE( "Caught system exception TRANSIENT -- unable to contact the naming service. Make sure the naming server is running and that omniORB is configured correctly. \n" );
 	}
 	catch(CORBA::SystemException& ex) {
-		TRACE( "Caught a CORBA:: %s while using the naming service.\n" , ex._name() );
+		TRACE1( "Caught a CORBA:: %s while using the naming service.\n" , ex._name() );
 		return 0;
 	}
 
@@ -319,7 +314,7 @@ void RDOParserCorbaRTP::parse()
 			rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 			while ( rtp_it != rtpList.end() )
 			{
-				TRACE("rtp.name = %s\n", rtp_it->name().c_str());
+				TRACE1("rtp.name = %s\n", rtp_it->name().c_str());
 				rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
 							
 				while ( param_it != rtp_it->m_params.end() )
@@ -333,14 +328,14 @@ void RDOParserCorbaRTP::parse()
 					{
 						info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
 					}
-					TRACE( "%s\n", info.c_str() );
+					TRACE1( "%s\n", info.c_str() );
 
 					if ( param_it->typeID() ==  rdoRuntime::RDOType::t_enum )
 					{
 						rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum().begin();
 						while ( enum_it != param_it->getEnum().end() )
 						{
-							TRACE( "  - enum - %s\n", enum_it->c_str() );
+							TRACE1( "  - enum - %s\n", enum_it->c_str() );
 							enum_it++;
 						}
 					}
@@ -414,11 +409,11 @@ void RDOParserCorbaRTP::parse()
 			rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 			while ( rss_it != rssList.end() )
 			{
-				TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
+				TRACE2("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
 				rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
 				while ( param_it != rss_it->end() )
 				{
-					TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
+					TRACE2("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
 					param_it++;
 				}
 				rss_it++;
@@ -432,13 +427,13 @@ void RDOParserCorbaRTP::parse()
 			TRACE( "Caught system exception TRANSIENT -- unable to contact the server.\n" );
 		}
 		catch(CORBA::SystemException& ex) {
-			TRACE( "Caught a CORBA:: %s\n" , ex._name() );
+			TRACE1( "Caught a CORBA:: %s\n" , ex._name() );
 		}
 		catch(CORBA::Exception& ex) {
-			TRACE( "Caught CORBA::Exception: %s\n" , ex._name() );
+			TRACE1( "Caught CORBA::Exception: %s\n" , ex._name() );
 		}
 		catch(omniORB::fatalException& fe) {
-			TRACE( "Caught omniORB::fatalException: file: %s line: %d mesg: %s\n" , fe.file() , fe.line() , fe.errmsg() ); 
+			TRACE3( "Caught omniORB::fatalException: file: %s line: %d mesg: %s\n" , fe.file() , fe.line() , fe.errmsg() ); 
 		}
 	
 		it++;

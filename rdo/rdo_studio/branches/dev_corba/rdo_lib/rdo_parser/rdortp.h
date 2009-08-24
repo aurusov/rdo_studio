@@ -34,8 +34,8 @@ public:
 
 	virtual void                  writeModelStructure( std::ostream& stream ) const = 0;
 
-	virtual const RDOType&     type() const = 0;
-	rdoRuntime::RDOType::ID  typeID() const { return type()->id(); }
+	virtual const RDOType&       type() const = 0;
+	rdoRuntime::RDOType::TypeID  typeID() const { return type()->typeID(); }
 
 	void checkParamType( const RDOFUNArithm* const action ) const;
 
@@ -109,33 +109,30 @@ public:
 class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
+	typedef std::vector<CPTR(RDORTPParam)> ParamList;
+
 	enum { UNDEFINED_PARAM = ~0 };
 
-	RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent );
+	RDORTPResType(PTR(RDOParser) _parser, CREF(RDOParserSrcInfo) _src_info, rbool _permanent);
 	virtual ~RDORTPResType();
-	const std::string& name() const          { return src_text();   };
-	int getNumber() const                    { return m_number;     };
-	bool isPermanent() const                 { return m_permanent;  };
-	bool isTemporary() const                 { return !m_permanent; };
+	CREF(tstring) name       () const   { return src_text();   };
+	rsint         getNumber  () const   { return m_number;     };
+	rbool         isPermanent() const   { return m_permanent;  };
+	rbool         isTemporary() const   { return !m_permanent; };
 
-	void addParam( const RDORTPParam* const param );
-	void addParam( const std::string param_name, rdoRuntime::RDOType::ID param_typeID );
-	const RDORTPParam* findRTPParam( const std::string& param ) const;
+	void addParam(CPTRC(RDORTPParam) param);
+	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
+	CPTR(RDORTPParam) findRTPParam(CREF(tstring) param) const;
 
-	unsigned int getRTPParamNumber( const std::string& param ) const;
-	const std::vector< const RDORTPParam* >& getParams() const { return m_params; }
+	ruint           getRTPParamNumber(CREF(tstring) param) const;
+	CREF(ParamList) getParams        ()                    const { return m_params; }
 
-	void writeModelStructure( std::ostream& stream ) const;
+	void writeModelStructure(REF(std::ostream) stream) const;
 
-//	const std::vector< const RDORTPFuzzyParam* >& getFuzzyParams() const { return m_fuzzy_params; }
-//	void addFuzzyParam( const RDORTPFuzzyParam* const fuzzy_param );
-//	int getRTPFuzzyParamNumber( const std::string& fuzzy_param ) const;
-//	const RDORTPFuzzyParam* findRTPFuzzyParam( const std::string& fuzzy_param ) const;
 private:
-	const int                         m_number;
-	const bool                        m_permanent;
-	std::vector< const RDORTPParam* > m_params;
-//	std::vector< const RDORTPFuzzyParam* > m_fuzzy_params;
+	const rsint  m_number;
+	const rbool  m_permanent;
+	ParamList    m_params;
 };
 
 // ----------------------------------------------------------------------------
@@ -164,7 +161,7 @@ public:
 	{
 	}
 
-	bool isExist() const { return m_value.defined(); }
+	rbool isExist() const { return m_value.defined(); }
 
 	const RDOValue& value() const { return m_value; }
 
@@ -245,12 +242,12 @@ public:
 	}
 	virtual ~RDORTPDiap() {}
 
-	bool isExist() const { return m_exist;     }
+	rbool isExist() const { return m_exist;     }
 	T  getMin() const    { return m_min_value; }
 	T  getMax() const    { return m_max_value; }
 
 private:
-	bool m_exist;
+	rbool m_exist;
 	T    m_min_value;
 	T    m_max_value;
 
@@ -335,7 +332,7 @@ class RDORTPEnumParamType: public RDORTPParamType
 public:
 	RDORTPEnum* m_enum;
 	std::string enum_name; // Используется в сообщениях об ошибках
-	bool        enum_fun;  // Используется в сообщениях об ошибках
+	rbool        enum_fun;  // Используется в сообщениях об ошибках
 
 	RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
 	virtual ~RDORTPEnumParamType() {}
@@ -485,7 +482,7 @@ public:
 	{
 		m_terms.push_back( term );
 	}
-	bool empty() const
+	rbool empty() const
 	{
 		return m_terms.empty();
 	}

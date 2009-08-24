@@ -24,12 +24,7 @@
 #include <rdofrm.h>
 #include <rdortp.h>
 #include <rdo_resources.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include <rdodebug.h>
 
 //#ifndef DISABLE_CORBA
 
@@ -169,7 +164,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		return 0;
 	}
 	catch(CORBA::SystemException& ex) {
-		TRACE( "Caught a CORBA:: %s while using the naming service.", ex._name() );
+		TRACE1( "Caught a CORBA:: %s while using the naming service.", ex._name() );
 		return 0;
 	}
 	
@@ -212,13 +207,13 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		g_orb->run();
 	}
 	catch(CORBA::SystemException& ex) {
-		TRACE( "Caught CORBA::%s", ex._name());
+		TRACE1( "Caught CORBA::%s", ex._name());
 	}
 	catch(CORBA::Exception&) {
 		TRACE( "Caught CORBA::Exception: " );
 	}	
 	catch(omniORB::fatalException& fe) {
-		TRACE( "Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
+		TRACE3( "Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
 	}
 	
 	return 0;
@@ -350,7 +345,7 @@ public:
 
 private:
 	RDOThreadSimulator* m_simulator;
-	std::stringstream   m_stream;
+	rdo::textstream   m_stream;
 };
 
 // --------------------------------------------------------------------
@@ -729,21 +724,21 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		}
 		case RT_SIMULATOR_GET_MODEL_STRUCTURE: {
 			msg.lock();
-			*static_cast<std::stringstream*>(msg.param) << parser->getModelStructure();
+			*static_cast<rdo::textstream*>(msg.param) << parser->getModelStructure();
 			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_MODEL_RESULTS: {
 			msg.lock();
-			*static_cast<std::stringstream*>(msg.param) << resultString.str();
+			*static_cast<rdo::textstream*>(msg.param) << resultString.str();
 			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_MODEL_RESULTS_INFO: {
 			msg.lock();
-			*static_cast<std::stringstream*>(msg.param) << parser->getChanges();
-			*static_cast<std::stringstream*>(msg.param) << std::endl << std::endl;
-			*static_cast<std::stringstream*>(msg.param) << resultInfoString.str();
+			*static_cast<rdo::textstream*>(msg.param) << parser->getChanges();
+			*static_cast<rdo::textstream*>(msg.param) << std::endl << std::endl;
+			*static_cast<rdo::textstream*>(msg.param) << resultInfoString.str();
 			msg.unlock();
 			break;
 		}
@@ -946,11 +941,11 @@ void RDOThreadSimulator::closeModel()
 		}
 	} catch (...) {
 		parser = NULL;
-		TRACE( "******************************** Ошибка удаления parser\n" );
+		TRACE(_T("******************************** Ошибка удаления parser\n"));
 	}
 }
 
-void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info )
+void RDOThreadSimulator::parseSMRFileInfo(rdo::textstream& smr, rdoModelObjects::RDOSMRFileInfo& info)
 {
 	rdoParse::RDOParserSMRInfo parser;
 
