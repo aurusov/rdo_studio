@@ -103,7 +103,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				BrowseInformation="1"
 			/>
 			<Tool

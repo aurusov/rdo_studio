@@ -136,8 +136,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../rdo_lib/rdo_corba;../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common;../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
+				AdditionalIncludeDirectories="../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				BrowseInformation="1"
 				WarningLevel="3"

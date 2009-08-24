@@ -92,7 +92,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
@@ -113,14 +113,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="2"
-				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories=".,../rdo_parser,../../rdo_common"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				AdditionalIncludeDirectories="../../thirdparty/corba/include"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;NDEBUG;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="pch.h"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderThrough=""
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>

@@ -283,6 +283,7 @@ Global
 		{201000FF-16EB-4410-A653-8DF3009CF71C}.Release Corba|Win32.ActiveCfg = Release Corba|Win32
 		{201000FF-16EB-4410-A653-8DF3009CF71C}.Release Corba|Win32.Build.0 = Release Corba|Win32
 		{201000FF-16EB-4410-A653-8DF3009CF71C}.Release|Win32.ActiveCfg = Release Corba|Win32
+		{201000FF-16EB-4410-A653-8DF3009CF71C}.Release|Win32.Build.0 = Release Corba|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../rdo_plugin"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;_USRDLL;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;_USRDLL;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				BrowseInformation="1"
 				WarningLevel="3"

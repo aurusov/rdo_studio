@@ -44,8 +44,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories=".,..,../rdo_system,../rdo_runtime,../rdo_parser,../../rdo_common,../../rdo_kernel,../../rdo_repository"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				AdditionalIncludeDirectories=".;..;../rdo_runtime;../rdo_parser;../../rdo_common;../../rdo_kernel;../../rdo_repository"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="pch.h"
 				BrowseInformation="1"
@@ -109,7 +109,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".,..,../rdo_system,../rdo_runtime,../rdo_parser,../../rdo_common,../../rdo_kernel,../../rdo_repository"
+				AdditionalIncludeDirectories=".;..;../rdo_runtime;../rdo_parser;../../rdo_common;../../rdo_kernel;../../rdo_repository"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -176,7 +176,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".,..,../rdo_system,../rdo_runtime,../rdo_parser,../../rdo_common,../../rdo_kernel,../../rdo_repository"
+				AdditionalIncludeDirectories=".;..;../rdo_runtime;../rdo_parser;../../rdo_common;../../rdo_kernel;../../rdo_repository"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -245,7 +245,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories=".,..,../rdo_system,../rdo_runtime,../rdo_parser,../../rdo_common,../../rdo_kernel,../../rdo_repository"
+				AdditionalIncludeDirectories=".;..;../rdo_runtime;../rdo_parser;../../rdo_common;../../rdo_kernel;../../rdo_repository"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="pch.h"

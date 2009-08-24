@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories=".,../../rdo_common"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="pch.h"
 			/>
