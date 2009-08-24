@@ -1,9 +1,9 @@
 #ifndef RDOPARSER_CORBA_H
 #define RDOPARSER_CORBA_H
 
-#include "rdoparser_rdo.h"
-
 #ifdef CORBA_ENABLE
+
+#include "rdoparser_rdo.h"
 
 namespace rdoParse
 {

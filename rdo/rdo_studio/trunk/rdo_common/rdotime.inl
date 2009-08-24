@@ -1,5 +1,9 @@
 // ====================================================================== INCLUDES
+#ifdef RDO_MT
+#include <afxwin.h>
+#else
 #include <windows.h>
+#endif
 #include <time.h>
 // ====================================================================== SYNOPSIS
 #include "rdodebug.h"

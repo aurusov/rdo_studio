@@ -6,7 +6,11 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#ifdef RDO_MT
+#include <afxwin.h>
+#else
 #include <windows.h>
+#endif
 
 #include <rdocommon.h>
 #include <rdokernel.h>

@@ -2,10 +2,31 @@
 #define RDODEBUG_H
 
 // ====================================================================== INCLUDES
+#ifdef RDO_MT
+#include <afxwin.h>
+#else
 #include <windows.h>
+#endif
 // ====================================================================== SYNOPSIS
 #include "rdocommon.h"
 // ===============================================================================
+
+#ifdef TRACE
+#undef TRACE
+#endif
+#ifdef TRACE1
+#undef TRACE1
+#endif
+#ifdef TRACE2
+#undef TRACE2
+#endif
+#ifdef TRACE3
+#undef TRACE3
+#endif
+#ifdef ASSERT
+#undef ASSERT
+#endif
+
 
 #ifdef _DEBUG
 

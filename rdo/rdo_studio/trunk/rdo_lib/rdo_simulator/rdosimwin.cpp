@@ -164,7 +164,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		return 0;
 	}
 	catch(CORBA::SystemException& ex) {
-		TRACE( "Caught a CORBA:: %s while using the naming service.", ex._name() );
+		TRACE1( "Caught a CORBA:: %s while using the naming service.", ex._name() );
 		return 0;
 	}
 	
@@ -207,13 +207,13 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		g_orb->run();
 	}
 	catch(CORBA::SystemException& ex) {
-		TRACE( "Caught CORBA::%s", ex._name());
+		TRACE1( "Caught CORBA::%s", ex._name());
 	}
 	catch(CORBA::Exception&) {
 		TRACE( "Caught CORBA::Exception: " );
 	}	
 	catch(omniORB::fatalException& fe) {
-		TRACE( "Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
+		TRACE3( "Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
 	}
 	
 	return 0;
