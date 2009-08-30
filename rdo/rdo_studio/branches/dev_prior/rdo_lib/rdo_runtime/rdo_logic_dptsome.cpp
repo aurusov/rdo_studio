@@ -18,4 +18,8 @@ RDODPTSome::~RDODPTSome()
 {
 }
 
+void RDODPTSome::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
+{
+}
+
 } // namespace rdoRuntime
