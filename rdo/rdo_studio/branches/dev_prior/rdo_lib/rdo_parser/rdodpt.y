@@ -452,25 +452,8 @@ dpt_some_descr_param:	/* empty */
 							PARSER->error( @1, @2, "Ошибка описания параметра образца" )
 						};
 
-dpt_some_activ_prior:	/* empty */
-						| RDO_CF '=' fun_arithm
-						{
-							if (!PARSER->getLastDPTSome()->getLastActivity()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
-							{
-								PARSER->error(@3, _T("Активность не может иметь приоритет"));
-							}
-						}
-						| RDO_CF '=' error
-						{
-							PARSER->error( @1, @2, "Ошибка описания приоритета активности" )
-						}
-						| RDO_CF error
-						{
-							PARSER->error( @1, @2, "Ошибка: ожидается знак равенства" )
-						};
-
 dpt_some_activity:		/* empty */
-						| dpt_some_activity dpt_some_name dpt_some_descr_param dpt_some_activ_prior{
+						| dpt_some_activity dpt_some_name dpt_some_descr_param{
 							RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
 							activity->endParam( @3 );
 						};
