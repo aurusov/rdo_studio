@@ -5,7 +5,7 @@ $Activities
 	ќриентирование_детали_против_часовой_стрелки : ќбразец_ориентировани€_детали против_часовой_стрелки //CF =  ак_ориентирована_деталь(—истема.как_ориентированна_текуща€_деталь)
 $End
 
-$Decision_point dpt2 : prior
+$Decision_point dpt2 : some
 $Condition NoCheck
 $Priority time_now/32
 $Activities
