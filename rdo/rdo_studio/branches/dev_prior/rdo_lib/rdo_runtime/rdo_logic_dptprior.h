@@ -18,6 +18,8 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
+	List troubleActivitiesContainer;
+
 	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
 
 	RDODPTPrior (RDOSimulator* sim);
