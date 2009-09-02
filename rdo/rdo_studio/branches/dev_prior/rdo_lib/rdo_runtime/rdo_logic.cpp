@@ -215,9 +215,14 @@ rbool RDOLogic::onCheckCondition(PTR(RDOSimulator) sim)
 	if (condition)
 	{
 		actionWithRDOOprContainer(sim);
-		return m_childList.query_cast<IBaseOperation>()->onCheckCondition(sim);
+		return onCheckChildCondition(sim);
 	}
 	return false;
+}
+
+rbool RDOLogic::onCheckChildCondition(PTR(RDOSimulator) sim)
+{
+	return m_childList.query_cast<IBaseOperation>()->onCheckCondition(sim);
 }
 
 IBaseOperation::BOResult RDOLogic::onDoOperation(PTR(RDOSimulator) sim)

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "rdo_logic_dptprior.h"
 #include "rdo_runtime.h"
+//#include "rdo_logic.cpp"
 
 namespace rdoRuntime
 {
@@ -12,13 +13,15 @@ RDODPTPrior::RDODPTPrior( RDOSimulator* sim ):
 	RDOLogic( sim )
 {
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
+//	m_troubleContainer = F(RDOOprContainer)::create();
+//	ASSERT(m_troubleContainer);
 }
 
 RDODPTPrior::~RDODPTPrior()
 {
 }
 
-void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
+/*void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 {
 	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
 	for (CIterator it = begin(); it != end(); ++it)
@@ -35,7 +38,20 @@ void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 			}
 		}
 	}
-	std::sort(begin(), end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
+	
+	for (CIterator it = begin(); it != end(); ++it)
+	{
+		if (it->query_cast<IBaseOperation>()->onCheckCondition(sim))
+		{
+			m_troubleContainer->append(*it);
+		}
+	}
+	std::sort(m_troubleContainer->begin(), m_troubleContainer->end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
 }
+
+rbool RDODPTPrior::onCheckChildCondition(PTR(RDOSimulator) sim)
+{
+	return m_troubleContainer.query_cast<IBaseOperation>()->onCheckCondition(sim);
+}*/
 
 } // namespace rdoRuntime

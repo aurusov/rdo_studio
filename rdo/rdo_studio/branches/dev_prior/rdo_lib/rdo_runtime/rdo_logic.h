@@ -51,6 +51,7 @@ protected:
 
 private:
 	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
+	virtual rbool onCheckChildCondition(PTR(RDOSimulator) sim);
 
 	rbool checkSelfCondition(PTR(RDOSimulator) sim);
 	void  start             (PTR(RDOSimulator) sim);
