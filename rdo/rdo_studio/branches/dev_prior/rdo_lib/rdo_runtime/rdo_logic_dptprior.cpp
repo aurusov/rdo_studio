@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "rdo_logic_dptprior.h"
 #include "rdo_runtime.h"
-//#include "rdo_logic.cpp"
+#include "rdo_logic.cpp"
 
 namespace rdoRuntime
 {
@@ -13,15 +13,15 @@ RDODPTPrior::RDODPTPrior( RDOSimulator* sim ):
 	RDOLogic( sim )
 {
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
-//	m_troubleContainer = F(RDOOprContainer)::create();
-//	ASSERT(m_troubleContainer);
+	m_troubleContainer = F(RDOOprContainer)::create();
+	ASSERT(m_troubleContainer);
 }
 
 RDODPTPrior::~RDODPTPrior()
 {
 }
 
-/*void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
+void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 {
 	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
 	for (CIterator it = begin(); it != end(); ++it)
@@ -52,6 +52,6 @@ RDODPTPrior::~RDODPTPrior()
 rbool RDODPTPrior::onCheckChildCondition(PTR(RDOSimulator) sim)
 {
 	return m_troubleContainer.query_cast<IBaseOperation>()->onCheckCondition(sim);
-}*/
+}
 
 } // namespace rdoRuntime

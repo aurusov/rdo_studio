@@ -18,10 +18,10 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-//	LPIBaseOperationContainer  m_troubleContainer;
+	LPIBaseOperationContainer  m_troubleContainer;
 
-//	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
-//	virtual rbool onCheckChildCondition(PTR(RDOSimulator) sim);
+	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
+	virtual rbool onCheckChildCondition(PTR(RDOSimulator) sim);
 
 	RDODPTPrior (RDOSimulator* sim);
 	virtual ~RDODPTPrior();
