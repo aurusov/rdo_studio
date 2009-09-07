@@ -25,6 +25,9 @@ private:
 
 	RDODPTPrior (RDOSimulator* sim);
 	virtual ~RDODPTPrior();
+
+	IBaseOperation::BOResult RDODPTPrior::onDoOperation( PTR(RDOSimulator) );
+
 };
 
 } // namespace rdoRuntime

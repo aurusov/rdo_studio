@@ -21,6 +21,18 @@ RDODPTPrior::~RDODPTPrior()
 {
 }
 
+IBaseOperation::BOResult RDODPTPrior::onDoOperation(PTR(RDOSimulator) sim)
+{
+	if (m_lastCondition)
+	{
+		return m_troubleContainer.query_cast<IBaseOperation>()->onDoOperation(sim);
+	}
+	else
+	{
+		return IBaseOperation::BOR_cant_run;
+	}
+}
+
 void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 {
 	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
@@ -38,7 +50,7 @@ void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 			}
 		}
 	}
-	
+	m_troubleContainer->clear();
 	for (CIterator it = begin(); it != end(); ++it)
 	{
 		if (it->query_cast<IBaseOperation>()->onCheckCondition(sim))

@@ -65,6 +65,11 @@ RDOOprContainer::CIterator RDOOprContainer::begin() const
 	return m_items.begin();
 }
 
+void RDOOprContainer::clear()
+{
+	return m_items.clear();
+}
+
 RDOOprContainer::CIterator RDOOprContainer::end() const
 {
 	return m_items.end();
@@ -290,6 +295,11 @@ RDOLogic::CIterator RDOLogic::end() const
 REF(LPIBaseOperation) RDOLogic::back()
 {
 	return m_childList->back();
+}
+
+void RDOLogic::clear()
+{
+	return m_childList->clear();
 }
 
 void RDOLogic::append(CREF(Item) item)
