@@ -246,7 +246,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".;..;../rdo_runtime;../rdo_parser;../../rdo_common;../../rdo_kernel;../../rdo_repository"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="pch.h"
 				BrowseInformation="1"

@@ -101,7 +101,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 	}
 
 	try {
-		// Bind a context called "test" to the root context:
+		// Bind a context called "RDO" to the root context:
 		CosNaming::Name contextName;
 		contextName.length(1);
 		contextName[0].id = (const char*) "RDO"; // string copied
@@ -149,7 +149,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		}
 		
 		// Note: Using rebind() will overwrite any Object previously bound
-		// to /test/Echo with obj.
+		// to /RDO/RDO_context with obj.
 		// Alternatively, bind() can be used, which will raise a
 		// CosNaming::NamingContext::AlreadyBound exception if the name
 		// supplied is already bound to an object.
