@@ -513,6 +513,24 @@ void RDOFUNArithm::init( const RDOValue& res_name, const RDOValue& par_name )
 						return;
 					}
 				}
+				if ( parser()->isCurrentDPTPrior() && parser()->getLastDPTPrior()->getLastActivity() )
+				{
+					const RDOPATPattern* activity = parser()->getLastDPTPrior()->getLastActivity()->pattern();
+					if ( activity && activity->findRelevantResource( res_name->getIdentificator() ) ) {
+						// Это ресурс, который используется в выражении приоритета активности DPTPrior
+						const RDORelevantResource* const rel = activity->findRelevantResource( res_name->getIdentificator() );
+						int relResNumb = activity->findRelevantResourceNum( res_name->getIdentificator() );
+						unsigned int parNumb = rel->getType()->getRTPParamNumber( par_name->getIdentificator() );
+						if ( parNumb == RDORTPResType::UNDEFINED_PARAM )
+						{
+							parser()->error( par_name.src_info(), rdo::format("Неизвестный параметр ресурса: %s", par_name->getIdentificator().c_str()) );
+						}
+						m_calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser()->runtime(), relResNumb, parNumb );
+						m_calc->setSrcInfo( src_info() );
+						m_value = rel->getType()->findRTPParam( par_name->getIdentificator() )->getType()->type();
+						return;
+					}
+				}
 				break;
 			}
 			case rdoModelObjects::FRM:

@@ -112,6 +112,11 @@ bool RDOParser::isCurrentDPTSearch()
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
+bool RDOParser::isCurrentDPTPrior()
+{
+	return getLastDPTPrior() ? true : false;
+}
+
 void RDOParser::insertChanges( const std::string& name, const std::string& value )
 {
 	m_changes.push_back( Changes( name, value ) );

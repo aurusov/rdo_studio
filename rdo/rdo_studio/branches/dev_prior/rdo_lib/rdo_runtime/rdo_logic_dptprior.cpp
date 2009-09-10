@@ -35,8 +35,16 @@ IBaseOperation::BOResult RDODPTPrior::onDoOperation(PTR(RDOSimulator) sim)
 
 void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 {
-	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
+	m_troubleContainer->clear();
 	for (CIterator it = begin(); it != end(); ++it)
+	{
+		if (it->query_cast<IBaseOperation>()->onCheckCondition(sim))
+		{
+			m_troubleContainer->append(*it);
+		}
+	}
+	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
+	for (CIterator it = m_troubleContainer->begin(); it != m_troubleContainer->end(); ++it)
 	{
 		LPIPriority pattern = *it;
 		if (pattern)
@@ -48,14 +56,6 @@ void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 				if (value < 0 || value > 1)
 					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
 			}
-		}
-	}
-	m_troubleContainer->clear();
-	for (CIterator it = begin(); it != end(); ++it)
-	{
-		if (it->query_cast<IBaseOperation>()->onCheckCondition(sim))
-		{
-			m_troubleContainer->append(*it);
 		}
 	}
 	std::sort(m_troubleContainer->begin(), m_troubleContainer->end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));

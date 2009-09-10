@@ -121,6 +121,7 @@ public:
 	void setHaveKWResourcesEnd( bool value ) { m_have_kw_ResourcesEnd = value; }
 
 	bool isCurrentDPTSearch();
+	bool isCurrentDPTPrior();
 
 	int getRTP_id() const      { return m_allRTPResType.size()  + 1; }
 	int getRSS_id() const      { return m_allRSSResource.size() + 0; }
