@@ -49,6 +49,7 @@ void RDOParserCorbaRTP::parse()
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRSS::parse()
 {
+/*
 	// Тут надо запросить все ресурсы у парного РДО
 
 	// Количество полученных ресурсов
@@ -79,6 +80,7 @@ void RDOParserCorbaRSS::parse()
 		{
 		}
 	}
+*/
 }
 
 } // namespace rdoParse
