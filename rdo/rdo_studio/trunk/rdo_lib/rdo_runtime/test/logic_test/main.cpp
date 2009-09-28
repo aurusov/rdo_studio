@@ -1,16 +1,32 @@
 #include <vector>
+#include <algorithm>
 #include <rdomacros.h>
 #include <rdotypes.h>
 #include <rdodebug.h>
 
-template<class T>
-class ContainerVector
+class MyOperation
 {
 public:
-	typedef T                                  Item;
-	typedef std::vector<Item>                  Container;
-	typedef typename Container::iterator       Iterator;
-	typedef typename Container::const_iterator CIterator;
+	MyOperation(ruint dummy)
+		: m_dummy(dummy)
+	{}
+	rbool operator< (CREF(MyOperation) opr) const
+	{
+		return m_dummy < opr.m_dummy;
+	}
+
+private:
+	ruint m_dummy;
+};
+
+template <class T, class C = std::vector<T> >
+class Container
+{
+public:
+	typedef T                             Item;
+	typedef C                             List;
+	typedef typename List::iterator       Iterator;
+	typedef typename List::const_iterator CIterator;
 
 	Iterator  begin()       { return m_list.begin(); }
 	Iterator  end  ()       { return m_list.end  (); }
@@ -18,95 +34,80 @@ public:
 	CIterator end  () const { return m_list.end  (); }
 	rbool     empty() const { return m_list.empty(); }
 
-	REF(ContainerVector) operator() (CREF(Item) item)
+	REF(Container) operator() (CREF(Item) item)
 	{
 		m_list.push_back(item);
 		return *this;
 	}
 
 private:
-	Container m_list;
+	List m_list;
 };
 
-template <class Container>
 class OrderFIFO
 {
 public:
-	static typename Container::CIterator getFirst(CREF(Container) container)
-	{
-		return container.begin();
-	}
+	template <class Container>
+	static void sort(REF(Container) container)
+	{}
 };
 
-template <class Container>
 class OrderLIFO
 {
 public:
-	static typename Container::CIterator getFirst(CREF(Container) container)
+	template <class Container>
+	static void sort(REF(Container) container)
 	{
-		if (container.empty())
-			return container.end();
-
-		Container::CIterator last = container.end();
-		--last;
-		return last;
+		std::reverse(container.begin(), container.end());
 	}
 };
 
-template <class Container>
-class OrderFIFOCashed
+class OrderPrior
 {
 public:
-	OrderFIFOCashed()
-		: m_inited(false)
-	{}
-	typename Container::CIterator getFirst(CREF(Container) container)
+	template <class Container>
+	static void sort(REF(Container) container)
 	{
-		m_lastItemIt = container.begin();
-		m_inited     = true;
-		return m_lastItemIt;
+		std::sort(container.begin(), container.end());
+	}
+};
+
+template <class Order>
+class Logic
+{
+public:
+	Logic()
+	{
+		m_ñontainer(1)(2)(4)(3);
+	}
+	rbool checkOperation()
+	{
+		Order::sort(m_ñontainer);
+		return true;
 	}
 
 private:
-	rbool                         m_inited;
-	typename Container::CIterator m_lastItemIt;
-};
+	typedef MyOperation              Item;
+	typedef Container<Item>          Container;
 
-template <class Container, class Order>
-class Queue
-{
-public:
-	typename Container::CIterator getFirst(CREF(Container) container) const
-	{
-		return Order::getFirst(container);
-	}
-	typename Container::CIterator getFirst(CREF(Container) container, REF(Order) order) const
-	{
-		return order.getFirst(container);
-	}
+	Container  m_ñontainer;
 };
 
 void main()
 {
-	typedef ruint                  Item;
-	typedef ContainerVector<Item>  Container;
-	Container ñontainer;
-	ñontainer(1)(2)(4)(3);
-
 	{
-		Queue<Container, OrderFIFO<Container> > queue;
-		Container::CIterator it = queue.getFirst(ñontainer);
+		Logic<OrderFIFO> logic;
+		logic.checkOperation();
 		int i = 1;
 	}
 	{
-		Queue<Container, OrderLIFO<Container> > queue;
-		Container::CIterator it = queue.getFirst(ñontainer);
+		Logic<OrderLIFO> logic;
+		logic.checkOperation();
 		int i = 1;
 	}
 	{
-		OrderFIFOCashed<Container> order;
-		Queue<Container, OrderFIFOCashed<Container> > queue;
-		Container::CIterator it = queue.getFirst(ñontainer, order);
+		Logic<OrderPrior> logic;
+		logic.checkOperation();
 		int i = 1;
 	}
 }
