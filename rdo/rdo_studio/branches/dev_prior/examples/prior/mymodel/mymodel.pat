@@ -50,3 +50,12 @@ _система
 	Convert_rule
 		time set min(станок_1.время_конца_обработки, станок_2.время_конца_обработки)
 $End
+
+$Pattern образец_перевода_времени_ie: irregular_event trace
+$Relevant_resources
+	_система: система Keep
+$Time = 1
+$Body
+_система
+	convert_event time set _система.time + 1
+$End

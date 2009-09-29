@@ -10,4 +10,4 @@ Frame_file     = mymodel
 Show_mode      = Animation
 Show_rate      = 1000000.0
 
-Terminate_if  for_all(детали: детали.обработано = 2)
+Terminate_if  for_all(детали: детали.обработано = 2) or time_now >= 100
