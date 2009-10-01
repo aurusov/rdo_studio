@@ -9,7 +9,7 @@ namespace rdoRuntime
 // ---------- RDODPTFree
 // ----------------------------------------------------------------------------
 RDODPTFree::RDODPTFree( RDOSimulator* sim ):
-	RDOLogic( sim )
+	RDOLogic()
 {
 }
 

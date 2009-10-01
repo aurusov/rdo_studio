@@ -149,14 +149,6 @@ RDOLogic::RDOLogic()
 	ASSERT(m_childList);
 }
 
-RDOLogic::RDOLogic(PTR(RDOSimulator) sim)
-	: m_condition    (NULL)
-	, m_lastCondition(false)
-{
-	m_childList = F(RDOOprContainer)::create();
-	ASSERT(m_childList);
-}
-
 void RDOLogic::init(PTR(RDOSimulator) sim)
 {
 	if (sim)

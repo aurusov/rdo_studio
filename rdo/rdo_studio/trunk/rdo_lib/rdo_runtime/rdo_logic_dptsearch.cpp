@@ -12,7 +12,7 @@ namespace rdoRuntime {
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch( RDOSimulator* sim ):
-	RDOLogic( sim ),
+	RDOLogic(),
 	treeRoot( NULL )
 {
 }

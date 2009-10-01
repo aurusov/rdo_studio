@@ -38,7 +38,6 @@ QUERY_INTERFACE_END
 
 protected:
 	RDOLogic ();
-	RDOLogic (PTR(RDOSimulator) sim);
 	virtual ~RDOLogic()
 	{}
 

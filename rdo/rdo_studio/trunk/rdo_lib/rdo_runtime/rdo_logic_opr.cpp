@@ -9,7 +9,7 @@ namespace rdoRuntime
 // ---------- RDOOperations
 // ----------------------------------------------------------------------------
 RDOOperations::RDOOperations( RDOSimulator* sim ):
-	RDOLogic( sim )
+	RDOLogic()
 {
 }
 

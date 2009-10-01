@@ -54,7 +54,7 @@ bool RDOSimulator::doOperation()
 		res = found_planed;
 		if ( !found_planed ) {
 			// Не нашли запланированное событие
-			// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
+			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
 			res = m_metaLogic.query_cast<IBaseOperation>()->onCheckCondition(this);
 			if ( res )
 			{
