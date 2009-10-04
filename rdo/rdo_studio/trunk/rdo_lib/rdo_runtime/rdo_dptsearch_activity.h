@@ -12,9 +12,9 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_dptsearch_activity_interface.h"
 #include "rdo_rule_interface.h"
 #include "rdo_runtime_interface_registrator.h"
+#include "rdo_dptsearch_activity_interface.h"
 #include "rdotrace.h"
 // ===============================================================================
 
