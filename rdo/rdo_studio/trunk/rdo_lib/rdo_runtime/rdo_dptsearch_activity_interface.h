@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include <namespace.h>
 #include <rdointerface.h>
+#include "rdo_rule_interface.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

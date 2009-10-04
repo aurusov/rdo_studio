@@ -1,8 +1,8 @@
 #ifndef RDO_SIMTRACE_H
 #define RDO_SIMTRACE_H
 
-#include "rdo_simulator.h"
 #include "rdotrace.h"
+#include "rdo_simulator.h"
 
 namespace rdoParse {
 class RDODPTSome;
@@ -12,6 +12,10 @@ namespace rdoRuntime {
 
 class RDOBaseOperation;
 class RDODPTSearchTrace;
+class RDODPTSearchTrace;
+class RDOIrregEvent;
+class RDORule;
+class RDOOperation;
 
 class RDOSimulatorTrace: public RDOSimulator
 {
@@ -120,8 +124,8 @@ private:
 	void addTemplateRule          ( RDORule           *rule );
 	void addTemplateOperation     ( RDOOperation      *op   );
 
-	unsigned int memory_current;
-	unsigned int memory_max;
+	ruint memory_current;
+	ruint memory_max;
 
 	bool timeForTrace() const
 	{

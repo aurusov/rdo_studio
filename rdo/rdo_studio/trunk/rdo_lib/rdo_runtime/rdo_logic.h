@@ -24,32 +24,36 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOLogic
+// ---------- RDOLogicBase
 // ----------------------------------------------------------------------------
+template <class Order>
 class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic, CAST_TO_UNKNOWN
 {
-DEFINE_FACTORY(RDOLogic)
-
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IBaseOperation)
 	QUERY_INTERFACE(IBaseOperationContainer)
 	QUERY_INTERFACE(ILogic)
 QUERY_INTERFACE_END
 
-protected:
-	RDOLogic ();
-	virtual ~RDOLogic()
-	{}
+public:
+	typedef std::vector<LPIBaseOperation> ChildList;
+	typedef ChildList::iterator           Iterator;
+	typedef ChildList::const_iterator     CIterator;
 
 protected:
+	RDOLogic();
+	virtual ~RDOLogic();
+
 	DECLARE_IBaseOperationContainer;
 
-	PTR(RDOCalc)               m_condition;
-	rbool                      m_lastCondition;
-	LPIBaseOperationContainer  m_childList;
+	PTR(RDOCalc)      m_condition;
+	rbool             m_lastCondition;
+	ChildList         m_childList;
+	LPIBaseOperation  m_first;
+	Order             m_order;
 
 private:
-	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
+//	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
 
 	rbool checkSelfCondition(PTR(RDOSimulator) sim);
 	void  start             (PTR(RDOSimulator) sim);
@@ -59,6 +63,28 @@ private:
 	DECLARE_ILogic;
 };
 
+class OrderFIFO
+{
+public:
+	template <class Container>
+	void sort(PTR(RDOSimulator) sim, REF(Container) container)
+	{}
+};
+
+class RDOLogicFIFO: public RDOLogic<OrderFIFO>
+{
+protected:
+	DEFINE_FACTORY(RDOLogicFIFO);
+
+	RDOLogicFIFO()
+		: RDOLogic<OrderFIFO>()
+	{}
+	virtual ~RDOLogicFIFO()
+	{}
+};
+
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_logic.inl"
 
 #endif //! _RDO_LOGIC_H_

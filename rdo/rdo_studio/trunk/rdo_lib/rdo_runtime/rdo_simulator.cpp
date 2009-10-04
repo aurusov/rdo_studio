@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "rdo_simulator.h"
-#include "rdo_ie.h"
-#include "rdo_rule.h"
-#include "rdo_operation.h"
+#include "rdo_logic.h"
+#include <rdostream.h>
+#include "rdo_model_interface.h"
+//#include "rdo_ie.h"
+//#include "rdo_rule.h"
+//#include "rdo_operation.h"
 
 #pragma warning(disable : 4786)  
 
@@ -11,6 +14,22 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOSimulator - один из базовых классов для RDORuntime
 // ----------------------------------------------------------------------------
+RDOSimulator::RDOSimulator()
+	: RDOSimulatorBase( )
+	, m_sizeof_sim    (0)
+{
+	m_metaLogic = F(RDOLogicFIFO)::create();
+}
+
+RDOSimulator::~RDOSimulator()
+{}
+
+void RDOSimulator::appendLogic(CREF(LPIBaseOperation) logic)
+{
+	ASSERT(m_metaLogic);
+	m_metaLogic->append(logic);
+}
+
 bool RDOSimulator::doOperation()
 {
 	bool res;

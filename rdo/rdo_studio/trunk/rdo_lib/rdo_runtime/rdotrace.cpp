@@ -5,6 +5,7 @@
 #include "rdo_rule.h"
 #include "rdo_operation.h"
 #include "rdo_runtime.h"
+#include "rdo_logic_dptsearch.h"
 
 namespace rdoRuntime {
 

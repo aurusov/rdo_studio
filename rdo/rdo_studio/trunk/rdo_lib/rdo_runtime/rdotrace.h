@@ -2,7 +2,6 @@
 #define RDOTRACE_H
 
 #include "rdo.h"
-#include "rdo_logic_dptsearch.h"
 #include "rdotrace_interface.h"
 #include "rdo_runtime_interface_registrator.h"
 

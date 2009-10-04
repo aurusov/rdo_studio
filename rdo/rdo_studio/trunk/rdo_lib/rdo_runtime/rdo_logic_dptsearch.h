@@ -15,7 +15,7 @@ class TreeRoot;
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-class RDODPTSearch: public RDOLogic, public IDPTSearchLogic
+class RDODPTSearch: public RDOLogicFIFO, public IDPTSearchLogic
 {
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOLogic)
