@@ -9,7 +9,7 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-class RDODPTSome: public RDOLogic, public RDOPatternPrior
+class RDODPTSome: public RDOLogicFIFO, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTSome);
 QUERY_INTERFACE_BEGIN

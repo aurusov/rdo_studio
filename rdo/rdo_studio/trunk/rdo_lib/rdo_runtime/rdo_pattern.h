@@ -3,6 +3,7 @@
 
 #include "rdotrace.h"
 #include "rdo_resource.h"
+#include "rdocalc.h"
 
 namespace rdoRuntime {
 

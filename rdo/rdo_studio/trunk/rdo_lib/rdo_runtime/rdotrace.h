@@ -4,6 +4,7 @@
 #include "rdo.h"
 #include "rdotrace_interface.h"
 #include "rdo_runtime_interface_registrator.h"
+#include "rdoruntime_object.h"
 
 #include <fstream>
 

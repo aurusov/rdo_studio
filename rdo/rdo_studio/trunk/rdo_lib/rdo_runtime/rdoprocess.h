@@ -4,6 +4,7 @@
 #include "rdo.h"
 #include "rdo_runtime.h"
 #include "rdoprocess_interface.h"
+#include "rdo_logic.h"
 
 namespace rdoRuntime {
 

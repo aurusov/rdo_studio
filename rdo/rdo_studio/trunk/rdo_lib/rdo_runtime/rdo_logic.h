@@ -16,12 +16,13 @@
 // ====================================================================== SYNOPSIS
 #include <namespace.h>
 #include "rdo.h"
-#include "rdocalc.h"
 #include "rdo_runtime_interface_registrator.h"
 #include "rdo_logic_interface.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
+class RDOCalc;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogicBase

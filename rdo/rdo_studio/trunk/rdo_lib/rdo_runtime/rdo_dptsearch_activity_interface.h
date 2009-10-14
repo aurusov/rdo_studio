@@ -35,8 +35,8 @@ public:
 	virtual double       cost     (PTR(rdoRuntime::RDOSimulator) sim) = 0;
 	virtual ValueTime    valueTime() const                            = 0;
 };
-#define DECLARE_IDPTSearchActivity \
-	virtual REF(LPIRule) rule     (); \
+#define DECLARE_IDPTSearchActivity                                     \
+	virtual REF(LPIRule) rule     ();                                  \
 	virtual double       cost     (PTR(rdoRuntime::RDOSimulator) sim); \
 	virtual ValueTime    valueTime() const;
 

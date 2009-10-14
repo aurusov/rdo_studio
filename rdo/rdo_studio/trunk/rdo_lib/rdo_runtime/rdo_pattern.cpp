@@ -5,7 +5,6 @@
 #include "rdo_operation.h"
 #include "rdo_keyboard.h"
 #include "rdo_runtime.h"
-#include "rdocalc.h"
 
 namespace rdoRuntime
 {

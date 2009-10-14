@@ -15,6 +15,7 @@
 #include "rdo_rule_interface.h"
 #include "rdo_runtime_interface_registrator.h"
 #include "rdo_dptsearch_activity_interface.h"
+#include "rdocalc.h"
 #include "rdotrace.h"
 // ===============================================================================
 
