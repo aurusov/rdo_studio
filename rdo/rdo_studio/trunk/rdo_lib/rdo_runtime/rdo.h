@@ -1,7 +1,14 @@
-#ifndef RDO_H
-#define RDO_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo.h
+ * author   : 
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
-#include "rdoruntime_object.h"
+#ifndef _RDO_H_
+#define _RDO_H_
 
 namespace rdoRuntime
 {
@@ -9,7 +16,7 @@ class RDOSimulator;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOBaseOperation - базовый класс для паттернов, процессов и блоков процесса
+// ---------- IRDOBaseOperation - интерфейс для паттернов, процессов и блоков процесса
 // ----------------------------------------------------------------------------
 // Надо бы сделать его базовым для всех возможных логик
 // ----------------------------------------------------------------------------
@@ -18,9 +25,9 @@ class IBaseOperation
 public:
 	enum BOResult
 	{
-		BOR_cant_run = 0,
+		BOR_cant_run       = 0,
 		BOR_planned_and_run,
-		BOR_must_continue,
+		BOR_must_continue  ,
 		BOR_done
 	};
 
@@ -54,4 +61,4 @@ public:
 	virtual void     onMakePlaned    (PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param); \
 	virtual BOResult onContinue      (PTR(rdoRuntime::RDOSimulator) sim);
 
-#endif // RDO_H
+#endif // _RDO_H_

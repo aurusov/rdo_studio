@@ -10,7 +10,6 @@ class RDODPTSome;
 
 namespace rdoRuntime {
 
-class RDOBaseOperation;
 class RDODPTSearchTrace;
 class RDODPTSearchTrace;
 class RDOIrregEvent;
