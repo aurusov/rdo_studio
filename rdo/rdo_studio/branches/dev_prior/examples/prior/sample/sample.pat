@@ -113,3 +113,29 @@ _деталь
 	Convert_rule
 		операция set _деталь.операция + 1
 $End
+
+$Pattern образец_увеличения_приоритета : keyboard trace
+$Parameters
+	номер_типа_деталей : integer
+$Relevant_resources
+	_приоритет: приоритеты NoChange Keep
+$Time = 0
+$Body
+_приоритет
+	Choice from _приоритет.номер = номер_типа_деталей
+	Convert_end
+		значение set _приоритет.значение + 1
+$End
+
+$Pattern образец_уменьшения_приоритета : keyboard trace
+$Parameters
+	номер_типа_деталей : integer
+$Relevant_resources
+	_приоритет: приоритеты NoChange Keep
+$Time = 0
+$Body
+_приоритет
+	Choice from _приоритет.номер = номер_типа_деталей and _приоритет.значение > 1
+	Convert_end
+		значение set _приоритет.значение - 1
+$End

@@ -1,3 +1,9 @@
+$Resource_type приоритеты : permanent
+$Parameters
+	номер   : integer
+	значение: integer = 1
+$End
+
 $Resource_type станки : permanent
 $Parameters
 	номер : integer

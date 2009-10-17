@@ -1,5 +1,5 @@
 $Constant
-	количество_деталей : integer = 100
+	количество_деталей : integer = 10
 $End
 
 $Function время_операции : integer[0..10]
