@@ -401,7 +401,7 @@
 					Name=".rdo_logic"
 					>
 					<Filter
-						Name="6. rdo_process"
+						Name="7. rdo_process"
 						>
 						<File
 							RelativePath="rdoprocess.cpp"
@@ -529,7 +529,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="4. dpt_search"
+						Name="5. dpt_search"
 						>
 						<File
 							RelativePath="rdo_logic_dptsearch.cpp"
@@ -623,7 +623,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="5. dpt_free"
+						Name="6. dpt_free"
 						>
 						<File
 							RelativePath=".\rdo_logic_dptfree.cpp"
@@ -631,6 +631,18 @@
 						</File>
 						<File
 							RelativePath=".\rdo_logic_dptfree.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="4. dpt_prior"
+						>
+						<File
+							RelativePath=".\rdo_logic_dptprior.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_logic_dptprior.h"
 							>
 						</File>
 					</Filter>
@@ -1055,14 +1067,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\rdo_logic_dptprior.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\rdo_logic_dptprior.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
