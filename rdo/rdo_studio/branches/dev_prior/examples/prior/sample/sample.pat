@@ -1,7 +1,7 @@
 $Pattern образец_прихода_детали : irregular_event trace
 $Relevant_resources
 	_деталь: детали Create
-$Time = 0
+$Time = 2
 $Body
 _деталь
 	Convert_event
