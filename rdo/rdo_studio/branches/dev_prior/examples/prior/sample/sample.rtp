@@ -1,0 +1,12 @@
+$Resource_type станки : permanent
+$Parameters
+	номер : integer
+	статус: (занят, свободен) = свободен
+$End
+
+$Resource_type детали : temporary
+$Parameters
+	тип: integer[1..3]
+	статус: (обрабатывается, свободна) = свободна
+	операция: integer = 0
+$End
