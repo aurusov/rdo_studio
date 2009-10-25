@@ -1,7 +1,7 @@
 $Pattern образец_прихода_детали : irregular_event trace
 $Relevant_resources
 	_деталь: детали Create
-$Time = 2
+$Time = 0.1
 $Body
 _деталь
 	Convert_event
@@ -131,11 +131,11 @@ $Pattern образец_уменьшения_приоритета : keyboard trace
 $Parameters
 	номер_типа_деталей : integer
 $Relevant_resources
-	_приоритет: приоритеты NoChange Keep
+	_приоритет: приоритеты Keep NoChange
 $Time = 0
 $Body
 _приоритет
 	Choice from _приоритет.номер = номер_типа_деталей and _приоритет.значение > 1
-	Convert_end
+	Convert_begin
 		значение set _приоритет.значение - 1
 $End
