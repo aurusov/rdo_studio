@@ -1,3 +1,4 @@
+#include "rdo_priority.h"
 #include "pch.h"
 #include "rdo_logic_dptsearch.h"
 #include "searchtree.h"

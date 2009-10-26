@@ -2,6 +2,7 @@
 #define RDO_LOGIC_DPTSEARCH_H
 
 #include "rdo_logic.h"
+#include "rdo_priority.h"
 #include "rdocalc.h"
 #include "rdo_dptsearch_activity_interface.h"
 #include "rdo_logic_dptsearch_interface.h"
@@ -15,7 +16,7 @@ class TreeRoot;
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-class RDODPTSearch: public RDOLogic, public IDPTSearchLogic, public RDOPatternPrior
+class RDODPTSearch: public RDOLogic, public IDPTSearchLogic
 {
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOLogic)
