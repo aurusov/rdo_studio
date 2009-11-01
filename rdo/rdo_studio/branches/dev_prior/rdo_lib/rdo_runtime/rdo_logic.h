@@ -24,6 +24,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOCalc;
 
+typedef std::vector<LPIBaseOperation> BaseOperationList;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOLogicBase
 // ----------------------------------------------------------------------------
@@ -37,9 +39,9 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	typedef std::vector<LPIBaseOperation> ChildList;
-	typedef ChildList::iterator           Iterator;
-	typedef ChildList::const_iterator     CIterator;
+	typedef  BaseOperationList                  ChildList;
+	typedef  BaseOperationList::iterator        Iterator;
+	typedef  BaseOperationList::const_iterator  CIterator;
 
 protected:
 	RDOLogic();
@@ -51,12 +53,8 @@ protected:
 	rbool             m_lastCondition;
 	ChildList         m_childList;
 	LPIBaseOperation  m_first;
-	Order             m_order;
 
 private:
-//	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
-	virtual rbool onCheckChildCondition(PTR(RDOSimulator) sim);
-
 	rbool checkSelfCondition(PTR(RDOSimulator) sim);
 	void  start             (PTR(RDOSimulator) sim);
 	void  stop              (PTR(RDOSimulator) sim);
@@ -68,9 +66,7 @@ private:
 class OrderFIFO
 {
 public:
-	template <class Container>
-	void sort(PTR(RDOSimulator) sim, REF(Container) container)
-	{}
+	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 class RDOLogicFIFO: public RDOLogic<OrderFIFO>

@@ -1,35 +1,53 @@
-#ifndef RDO_LOGIC_DPTPRIOR_H
-#define RDO_LOGIC_DPTPRIOR_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_dptprior.h
+ * author   : ƒмитрий Ћущан
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_LOGIC_DPTPRIOR_H_
+#define _RDO_LOGIC_DPTPRIOR_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include <namespace.h>
 #include "rdo_logic.h"
 #include "rdo_priority.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
+
+// ----------------------------------------------------------------------------
+// ---------- RDODPTOrderPrior
+// ----------------------------------------------------------------------------
+class RDODPTPriorOrder
+{
+public:
+	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-class RDODPTPrior: public RDOLogic, public RDOPatternPrior
+typedef RDOLogic<RDODPTPriorOrder> RDOLogicPrior;
+
+class RDODPTPrior: public RDOLogicPrior, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTPrior);
 QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogic)
+QUERY_INTERFACE_PARENT(RDOLogicPrior)
 QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	LPIBaseOperationContainer  m_troubleContainer;
-
-	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
-	virtual rbool onCheckChildCondition(PTR(RDOSimulator) sim);
-
-	RDODPTPrior (RDOSimulator* sim);
+	RDODPTPrior(RDOSimulator* sim);
 	virtual ~RDODPTPrior();
-
-	IBaseOperation::BOResult RDODPTPrior::onDoOperation( PTR(RDOSimulator) );
-
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_LOGIC_DPTPRIOR_H
+#include "rdo_logic_dptprior.inl"
+
+#endif // _RDO_LOGIC_DPTPRIOR_H_

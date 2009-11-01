@@ -20,8 +20,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 #pragma warning(disable : 4786)  
 
-#define STL_SERIAL_BYPASS(TYPE, CONTAINER, IT)  for (TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
-#define LOGIC_SERIAL_BYPASS()                   STL_SERIAL_BYPASS(ChildList, m_childList, it)
+#define STL_FOR_ALL(TYPE, CONTAINER, IT) for (TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define LOGIC_SERIAL_BYPASS()            STL_FOR_ALL(ChildList, m_childList, it)
 
 /*
 // ----------------------------------------------------------------------------
@@ -143,56 +143,49 @@ IBaseOperation::BOResult RDOOprContainer::onContinue(PTR(RDOSimulator) sim)
 */
 
 // ----------------------------------------------------------------------------
+// ---------- OrderFIFO
+// ----------------------------------------------------------------------------
+inline LPIBaseOperation OrderFIFO::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+{
+	STL_FOR_ALL(BaseOperationList, container, it)
+	{
+		if ((*it)->onCheckCondition(sim))
+		{
+			return *it;
+		}
+	}
+	return NULL;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOLogic
 // ----------------------------------------------------------------------------
 template <class Order>
-RDOLogic<Order>::RDOLogic()
+inline RDOLogic<Order>::RDOLogic()
 	: m_condition    (NULL )
 	, m_lastCondition(false)
 	, m_first        (NULL )
 {}
 
 template <class Order>
-RDOLogic<Order>::~RDOLogic()
+inline RDOLogic<Order>::~RDOLogic()
 {}
 
 template <class Order>
-void RDOLogic<Order>::init(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::init(PTR(RDOSimulator) sim)
 {
 	if (sim)
 		sim->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>());
 }
 
 template <class Order>
-void RDOLogic<Order>::setCondition(PTR(RDOCalc) calc)
+inline void RDOLogic<Order>::setCondition(PTR(RDOCalc) calc)
 {
 	m_condition = calc;
 }
 
-/*
-void RDOLogic<Order>::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
-{
-	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
-	LOGIC_SERIAL_BYPASS()
-	{
-		LPIPriority pattern = *it;
-		if (pattern)
-		{
-			PTR(RDOCalc) prior = pattern->getPrior();
-			if (prior)
-			{
-				RDOValue value = prior->calcValue(runtime);
-				if (value < 0 || value > 1)
-					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
-			}
-		}
-	}
-	std::sort(m_childList.begin(), m_childList.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
-}
-*/
-
 template <class Order>
-void RDOLogic<Order>::onStart(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::onStart(PTR(RDOSimulator) sim)
 {
 	m_lastCondition = checkSelfCondition(sim);
 	if (m_lastCondition)
@@ -200,14 +193,14 @@ void RDOLogic<Order>::onStart(PTR(RDOSimulator) sim)
 }
 
 template <class Order>
-void RDOLogic<Order>::onStop(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::onStop(PTR(RDOSimulator) sim)
 {
 	m_lastCondition = false;
 	stop(sim);
 }
 
 template <class Order>
-rbool RDOLogic<Order>::onCheckCondition(PTR(RDOSimulator) sim)
+inline rbool RDOLogic<Order>::onCheckCondition(PTR(RDOSimulator) sim)
 {
 	rbool condition = checkSelfCondition(sim);
 	if (condition != m_lastCondition)
@@ -218,25 +211,16 @@ rbool RDOLogic<Order>::onCheckCondition(PTR(RDOSimulator) sim)
 		else
 			stop(sim);
 	}
-	if (condition)
-	{
-		m_order.sort(sim, m_childList);
-//		actionWithRDOOprContainer(sim);
-		LOGIC_SERIAL_BYPASS()
-		{
-			if ((*it)->onCheckCondition(sim))
-			{
-				m_first = *it;
-				return true;
-			}
-		}
-		m_first = NULL;
-	}
-	return false;
+
+	if (!condition)
+		return false;
+
+	m_first = Order::sort(sim, m_childList);
+	return m_first ? true : false;
 }
 
 template <class Order>
-IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(PTR(RDOSimulator) sim)
+inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(PTR(RDOSimulator) sim)
 {
 	if (m_lastCondition)
 	{
@@ -256,14 +240,14 @@ IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(PTR(RDOSimulator) sim)
 }
 
 template <class Order>
-void RDOLogic<Order>::onMakePlaned(PTR(RDOSimulator) sim, PTR(void) param)
+inline void RDOLogic<Order>::onMakePlaned(PTR(RDOSimulator) sim, PTR(void) param)
 {
 	LOGIC_SERIAL_BYPASS()
 		(*it)->onMakePlaned(sim, param);
 }
 
 template <class Order>
-IBaseOperation::BOResult RDOLogic<Order>::onContinue(PTR(RDOSimulator) sim)
+inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(PTR(RDOSimulator) sim)
 {
 	LOGIC_SERIAL_BYPASS()
 	{
@@ -274,65 +258,71 @@ IBaseOperation::BOResult RDOLogic<Order>::onContinue(PTR(RDOSimulator) sim)
 }
 
 template <class Order>
-rbool RDOLogic<Order>::checkSelfCondition(PTR(RDOSimulator) sim)
+inline rbool RDOLogic<Order>::checkSelfCondition(PTR(RDOSimulator) sim)
 {
 	return m_condition ? m_condition->calcValue(static_cast<PTR(RDORuntime)>(sim)).getAsBool() : true;
 }
 
 template <class Order>
-void RDOLogic<Order>::start(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::start(PTR(RDOSimulator) sim)
 {
 	LOGIC_SERIAL_BYPASS()
 		(*it)->onStart(sim);
 }
 
 template <class Order>
-void RDOLogic<Order>::stop(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::stop(PTR(RDOSimulator) sim)
 {
 	LOGIC_SERIAL_BYPASS()
 		(*it)->onStop(sim);
 }
 
 template <class Order>
-rbool RDOLogic<Order>::empty() const
+inline rbool RDOLogic<Order>::empty() const
 {
 	return m_childList.empty();
 }
 
 template <class Order>
-typename RDOLogic<Order>::Iterator RDOLogic<Order>::begin()
+inline typename RDOLogic<Order>::Iterator RDOLogic<Order>::begin()
 {
 	return m_childList.begin();
 }
 
 template <class Order>
-typename RDOLogic<Order>::Iterator RDOLogic<Order>::end()
+inline typename RDOLogic<Order>::Iterator RDOLogic<Order>::end()
 {
 	return m_childList.end();
 }
 
 template <class Order>
-typename RDOLogic<Order>::CIterator RDOLogic<Order>::begin() const
+inline typename RDOLogic<Order>::CIterator RDOLogic<Order>::begin() const
 {
 	return m_childList.begin();
 }
 
 template <class Order>
-typename RDOLogic<Order>::CIterator RDOLogic<Order>::end() const
+inline typename RDOLogic<Order>::CIterator RDOLogic<Order>::end() const
 {
 	return m_childList.end();
 }
 
 template <class Order>
-REF(LPIBaseOperation) RDOLogic<Order>::back()
+inline REF(LPIBaseOperation) RDOLogic<Order>::back()
 {
 	return m_childList.back();
 }
 
 template <class Order>
-void RDOLogic<Order>::append(CREF(Item) item)
+inline void RDOLogic<Order>::append(CREF(Item) item)
 {
 	m_childList.push_back(item);
+}
+
+template <class Order>
+inline void RDOLogic<Order>::clear()
+{
+	m_childList.clear();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

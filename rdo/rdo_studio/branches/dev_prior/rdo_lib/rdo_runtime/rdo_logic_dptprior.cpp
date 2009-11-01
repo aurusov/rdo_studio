@@ -1,69 +1,15 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_dptprior.cpp
+ * author   : Дмитрий Лущан
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// =========================================================================== PCH
 #include "pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_logic_dptprior.h"
-#include "rdo_runtime.h"
-#include "rdo_logic.cpp"
-
-namespace rdoRuntime
-{
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTPrior
-// ----------------------------------------------------------------------------
-RDODPTPrior::RDODPTPrior( RDOSimulator* sim ):
-	RDOLogic( sim )
-{
-	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
-	m_troubleContainer = F(RDOOprContainer)::create();
-	ASSERT(m_troubleContainer);
-}
-
-RDODPTPrior::~RDODPTPrior()
-{
-}
-
-IBaseOperation::BOResult RDODPTPrior::onDoOperation(PTR(RDOSimulator) sim)
-{
-	if (m_lastCondition)
-	{
-		return m_troubleContainer.query_cast<IBaseOperation>()->onDoOperation(sim);
-	}
-	else
-	{
-		return IBaseOperation::BOR_cant_run;
-	}
-}
-
-void RDODPTPrior::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
-{
-	m_troubleContainer->clear();
-	for (CIterator it = begin(); it != end(); ++it)
-	{
-		if (it->query_cast<IBaseOperation>()->onCheckCondition(sim))
-		{
-			m_troubleContainer->append(*it);
-		}
-	}
-	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
-	for (CIterator it = m_troubleContainer->begin(); it != m_troubleContainer->end(); ++it)
-	{
-		LPIPriority pattern = *it;
-		if (pattern)
-		{
-			PTR(RDOCalc) prior = pattern->getPrior();
-			if (prior)
-			{
-				RDOValue value = prior->calcValue(runtime);
-				if (value < 0 || value > 1)
-					runtime->error(rdo::format(_T("Приоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
-			}
-		}
-	}
-	std::sort(m_troubleContainer->begin(), m_troubleContainer->end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
-}
-
-rbool RDODPTPrior::onCheckChildCondition(PTR(RDOSimulator) sim)
-{
-	return m_troubleContainer.query_cast<IBaseOperation>()->onCheckCondition(sim);
-}
-
-} // namespace rdoRuntime
+// ===============================================================================

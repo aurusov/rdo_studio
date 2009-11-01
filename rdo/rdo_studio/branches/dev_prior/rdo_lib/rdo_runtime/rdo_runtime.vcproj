@@ -1050,6 +1050,10 @@
 							RelativePath=".\rdo_logic_dptprior.h"
 							>
 						</File>
+						<File
+							RelativePath=".\rdo_logic_dptprior.inl"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
