@@ -19,4 +19,4 @@ Results_file   = mymodel2
 Trace_file     = mymodel2
 
 // ”словие остановки модели. ѕосле Terminate_if можно указать любое логическое выражение
-Terminate_if Term_now >= 20
+Terminate_if Terminate_counter >= 20

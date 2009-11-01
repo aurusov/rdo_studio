@@ -10,9 +10,14 @@
 // --------------------------------------------------------------------
 // ---------- RDOKernel
 // --------------------------------------------------------------------
+
+#ifdef CORBA_ENABLE
+
 namespace rdoCorba {
 class RDOThreadCorba;
 }
+
+#endif
 
 namespace rdoSimulator {
 class RDOThreadSimulator;
@@ -53,7 +58,12 @@ protected:
 	rdoSimulator::RDOThreadSimulator*   thread_simulator;
 	rdoSimulator::RDOThreadCodeComp*    thread_codecomp;
 	rdoRepository::RDOThreadRepository* thread_repository;
+	
+	
+#ifdef CORBA_ENABLE
 	rdoCorba::RDOThreadCorba*           thread_corba;
+#endif
+	
 
 	void registration( RDOThread* thread );
 	void unregistered( RDOThread* thread );
@@ -71,7 +81,10 @@ public:
 	rdoSimulator::RDOThreadSimulator*   simulator() const  { return thread_simulator;  }
 	rdoSimulator::RDOThreadCodeComp*    codecomp() const   { return thread_codecomp;   }
 	rdoRepository::RDOThreadRepository* repository() const { return thread_repository; }
+
+#ifdef CORBA_ENABLE
 	rdoCorba::RDOThreadCorba*           corba() const      { return thread_corba;      }
+#endif
 };
 
 #ifdef RDO_MT

@@ -75,10 +75,14 @@ RDOParserContainerModel::RDOParserContainerModel( RDOParser* parser ):
 	insert( rdoModelObjects::obPRE, new RDOParserRDOItem( m_parser, rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex ) );
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex ) );
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex ) );
+#ifdef CORBA_ENABLE
 	insert( rdoModelObjects::obRTP, new RDOParserCorbaRTP( m_parser ) );
+#endif
 	insert( rdoModelObjects::obRSS, new RDOParserRSS( m_parser ) );
 	insert( rdoModelObjects::obRSS, new RDOParserRDOItem( m_parser, rdoModelObjects::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex ) );
+#ifdef CORBA_ENABLE
 	insert( rdoModelObjects::obRSS, new RDOParserCorbaRSS( m_parser ) );
+#endif
 	insert( rdoModelObjects::obFUN, new RDOParserRDOItem( m_parser, rdoModelObjects::FUN, funparse, funerror, funlex ) );
 	insert( rdoModelObjects::obPAT, new RDOParserRDOItem( m_parser, rdoModelObjects::PAT, patparse, paterror, patlex ) );
 	insert( rdoModelObjects::obOPR, new RDOParserRDOItem( m_parser, rdoModelObjects::OPR, oprparse, oprerror, oprlex ) );

@@ -5,7 +5,11 @@
 #include "rdo_runtime_interface_registrator.h"
 #include <rdocommon.h>
 
+#ifdef RDO_MT
+#include <afxwin.h>
+#else
 #include <windows.h>
+#endif
 
 namespace rdoRuntime
 {

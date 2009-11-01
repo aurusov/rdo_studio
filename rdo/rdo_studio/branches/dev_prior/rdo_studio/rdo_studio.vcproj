@@ -49,7 +49,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -136,8 +136,179 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../rdo_ctrls,../rdo_kernel,../rdo_repository,../rdo_lib/rdo_simulator,../rdo_lib/rdo_runtime,../rdo_plugin,../rdo_common;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
+				UsePrecompiledHeader="2"
+				BrowseInformation="1"
+				WarningLevel="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1049"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				OutputFile="$(OutDir)\RAO-studio.exe"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug Corba|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/rdo_studio.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../rdo_lib/rdo_corba;../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common;../thirdparty/corba/include"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				BrowseInformation="1"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1049"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				OutputFile="$(OutDir)\RAO-studio.exe"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release Corba|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/rdo_studio.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="../rdo_lib/rdo_corba;../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common;../thirdparty/corba/include"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				BrowseInformation="1"
 				WarningLevel="3"
@@ -219,6 +390,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="sizecbar\sizecbar.cpp"
@@ -234,6 +423,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -283,6 +490,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\rdobaseeditstyle.cpp"
@@ -298,6 +523,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -327,6 +570,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\rdobuildeditstyle.cpp"
@@ -342,6 +603,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -371,6 +650,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\rdofindedit.cpp"
@@ -386,6 +683,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -415,6 +730,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\rdologedit.cpp"
@@ -437,6 +770,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\rdologeditstyle.cpp"
@@ -452,6 +803,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -530,6 +899,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="rdo_tracer\tracer_ctrls\rdologstyle.cpp"
@@ -545,6 +932,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -574,6 +979,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogstyle.cpp"
@@ -589,6 +1012,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -618,6 +1059,24 @@
 								PreprocessorDefinitions=""
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp"
@@ -633,6 +1092,24 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions=""
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -705,6 +1182,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\CallTip.cxx"
@@ -721,6 +1218,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -753,6 +1270,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\ContractionState.cxx"
@@ -769,6 +1306,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -801,6 +1358,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\DocumentAccessor.cxx"
@@ -817,6 +1394,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -849,6 +1446,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\ExternalLexer.cxx"
@@ -865,6 +1482,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -897,6 +1534,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\KeyMap.cxx"
@@ -913,6 +1570,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -945,6 +1622,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\LexFind.cxx"
@@ -961,6 +1658,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -993,6 +1710,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\LexText.cxx"
@@ -1009,6 +1746,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -1041,6 +1798,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\PlatWin.cxx"
@@ -1057,6 +1834,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -1089,6 +1886,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\RESearch.cxx"
@@ -1105,6 +1922,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -1137,6 +1974,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\ScintillaWin.cxx"
@@ -1153,6 +2010,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -1185,6 +2062,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\StyleContext.cxx"
@@ -1201,6 +2098,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -1233,6 +2150,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\ViewStyle.cxx"
@@ -1249,6 +2186,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -1281,6 +2238,26 @@
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="edit_ctrls\sci\XPM.cxx"
@@ -1297,6 +2274,26 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug Corba|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories=""
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Corba|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -1465,6 +2462,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_tracer\rdotracerbase.cpp"
@@ -1480,6 +2495,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1509,6 +2542,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_tracer\rdotracerpattern.cpp"
@@ -1524,6 +2575,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1553,6 +2622,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_tracer\rdotracerrestype.cpp"
@@ -1568,6 +2655,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1597,6 +2702,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_tracer\rdotracerserie.cpp"
@@ -1619,6 +2742,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_tracer\rdotracervalues.cpp"
@@ -1634,6 +2775,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1712,6 +2871,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudioframemanager.cpp"
@@ -1727,6 +2904,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1756,6 +2951,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudioframestyle.cpp"
@@ -1771,6 +2984,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1800,6 +3031,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudioframeview.cpp"
@@ -1815,6 +3064,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1932,6 +3199,22 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="res\rdo_studio.rc2"
@@ -2002,6 +3285,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiochildfrm.cpp"
@@ -2017,6 +3318,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2046,6 +3365,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiomainfrm.cpp"
@@ -2061,6 +3398,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2090,6 +3445,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiooutput.cpp"
@@ -2105,6 +3478,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2134,6 +3525,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiostatusbar.cpp"
@@ -2149,6 +3558,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2178,6 +3605,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiothread.cpp"
@@ -2193,6 +3638,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2222,6 +3685,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudioworkspace.cpp"
@@ -2237,6 +3718,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2260,6 +3759,26 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2359,6 +3878,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiomodeldoc.cpp"
@@ -2374,6 +3911,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2403,6 +3958,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiomodelview.cpp"
@@ -2418,6 +3991,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2476,6 +4067,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiochartoptions.cpp"
@@ -2491,6 +4100,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2520,6 +4147,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiochartviewstyle.cpp"
@@ -2542,6 +4187,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudiodocserie.cpp"
@@ -2557,6 +4220,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2619,6 +4300,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_edit\rdoeditorbaseeditstyle.cpp"
@@ -2634,6 +4333,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2663,6 +4380,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_edit\rdoeditoreditstyle.cpp"
@@ -2678,6 +4413,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2707,6 +4460,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdo_edit\rdoeditorresultsstyle.cpp"
@@ -2722,6 +4493,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2751,6 +4540,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudioeditbasedoc.cpp"
@@ -2766,6 +4573,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -2795,6 +4620,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudioeditdoc.cpp"
@@ -2817,6 +4660,24 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdostudioeditview.cpp"
@@ -2832,6 +4693,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"

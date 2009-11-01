@@ -114,10 +114,17 @@ RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, unsigned in
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
-RDOPROCBlock::RDOPROCBlock(LPIPROCProcess process):
-	m_process(process)
+RDOPROCBlock::RDOPROCBlock(LPIPROCProcess process)
+	: m_process(process)
+{}
+
+rbool RDOPROCBlock::init()
 {
+	if (!m_process)
+		return false;
+
 	m_process.query_cast<IBaseOperationContainer>()->append(this);
+	return true;
 }
 
 RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(PTR(Transact) transact)

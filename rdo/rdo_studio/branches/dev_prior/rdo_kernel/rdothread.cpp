@@ -5,6 +5,10 @@
 #include <fstream>
 #include <algorithm>
 
+#ifdef RDO_MT
+#include <afxwin.h>
+#endif
+
 #ifdef TR_TRACE
 #ifdef RDO_MT
 std::fstream file(_T("C:\\rdo_kernel_mt.log"), std::ios_base::in | std::ios_base::out | std::ios_base::trunc);

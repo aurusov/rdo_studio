@@ -12,10 +12,11 @@ class RDOCalc;
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
-class RDOPROCBlock: public IPROCBlock, CAST_TO_UNKNOWN
+class RDOPROCBlock: public IPROCBlock, public IInit, CAST_TO_UNKNOWN
 {
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IPROCBlock)
+	QUERY_INTERFACE(IInit     )
 QUERY_INTERFACE_END
 
 friend class RDOPROCTransact;
@@ -30,6 +31,7 @@ protected:
 	virtual ~RDOPROCBlock() {}
 
 	DECLARE_IPROCBlock;
+	DECLARE_IInit;
 };
 
 // ----------------------------------------------------------------------------
@@ -41,8 +43,8 @@ class RDOPROCProcess: public RDOLogic, public IPROCProcess
 {
 DEFINE_FACTORY(RDOPROCProcess)
 QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogic)
-QUERY_INTERFACE(IPROCProcess)
+	QUERY_INTERFACE_PARENT(RDOLogic    )
+	QUERY_INTERFACE       (IPROCProcess)
 QUERY_INTERFACE_END
 friend class RDOPROCBlock;
 
@@ -113,7 +115,8 @@ class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCGenerate);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
+	QUERY_INTERFACE       (IBaseOperation)
 QUERY_INTERFACE_END
 
 public:
@@ -164,7 +167,8 @@ class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCQueue);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
+	QUERY_INTERFACE       (IBaseOperation      )
 QUERY_INTERFACE_END
 
 public:
@@ -186,7 +190,8 @@ class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCDepart);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
+	QUERY_INTERFACE       (IBaseOperation      )
 QUERY_INTERFACE_END
 
 public:
@@ -240,7 +245,8 @@ class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCSeize);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
+	QUERY_INTERFACE       (IBaseOperation      )
 QUERY_INTERFACE_END
 
 private:
@@ -253,8 +259,8 @@ private:
 
 	ruint index;
 
-	virtual void transactGoIn( RDOPROCTransact* _transact );
-	virtual void transactGoOut( RDOPROCTransact* _transact );
+	virtual void transactGoIn (PTR(RDOPROCTransact) _transact);
+	virtual void transactGoOut(PTR(RDOPROCTransact) _transact);
 
 	DECLARE_IBaseOperation;
 };
@@ -266,7 +272,8 @@ class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCRelease);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
+	QUERY_INTERFACE       (IBaseOperation      )
 QUERY_INTERFACE_END
 
 private:
@@ -289,7 +296,8 @@ class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCAdvance);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
+	QUERY_INTERFACE       (IBaseOperation)
 QUERY_INTERFACE_END
 
 protected:
@@ -321,7 +329,8 @@ class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCTerminate);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
+	QUERY_INTERFACE       (IBaseOperation)
 QUERY_INTERFACE_END
 
 public:
@@ -344,7 +353,8 @@ class RDOPROCAssign: public RDOPROCBlock, public IBaseOperation
 {
 DEFINE_FACTORY(RDOPROCAssign);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
+	QUERY_INTERFACE       (IBaseOperation)
 QUERY_INTERFACE_END
 
 private:

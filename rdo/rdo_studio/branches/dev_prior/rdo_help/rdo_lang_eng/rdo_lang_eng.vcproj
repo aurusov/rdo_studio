@@ -25,7 +25,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				ExcludedFromBuild="true"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -37,33 +36,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				ExcludedFromBuild="true"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="10"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				ExcludedFromBuild="true"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName="./rdo_lang_eng.tlb"
-				HeaderFileName=""
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				ExcludedFromBuild="true"
 			/>
 		</Configuration>
 	</Configurations>
@@ -82,16 +54,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
-						Outputs="RAO-language.chm"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;"
+						CommandLine="&quot;$(SolutionDir)\rdo_help\help_tools\hhc.bat&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;"
 						Outputs="RAO-language.chm"
 					/>
 				</FileConfiguration>
@@ -106,14 +69,6 @@
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -137,28 +92,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="rdo_lang.stp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -182,28 +121,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_base_equations.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -222,28 +145,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_base_res_types.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -262,28 +169,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_base_std_var_func.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -302,28 +193,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_intro.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -342,28 +217,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_names.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -382,28 +241,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_res_words.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -422,28 +265,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_string_const.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -462,28 +289,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_obj_dpt.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -502,28 +313,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_obj_fun.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -542,28 +337,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_obj_opr.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -582,28 +361,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_obj_pmd.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -622,28 +385,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_obj_smr.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -662,28 +409,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_res_pmv.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -702,28 +433,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_res_trc_decisionpt.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -742,28 +457,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_res_trc_resourses.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -782,28 +481,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="html\rdo_terms.htm"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -827,28 +510,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\shared\images\next_section_d.gif"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -867,28 +534,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\shared\images\next_topic_d.gif"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -907,28 +558,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\shared\images\prev_section_d.gif"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -947,28 +582,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\shared\images\prev_topic_d.gif"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -987,28 +606,12 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\shared\images\section_top_d.gif"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1032,14 +635,6 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -1051,14 +646,6 @@
 				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
