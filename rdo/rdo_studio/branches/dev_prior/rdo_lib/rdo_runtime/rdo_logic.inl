@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 #pragma warning(disable : 4786)  
 
-#define LOGIC_SERIAL_BYPASS() STL_FOR_ALL(ChildList, m_childList, it)
+#define LOGIC_FOR_ALL() STL_FOR_ALL(ChildList, m_childList, it)
 
 // ----------------------------------------------------------------------------
 // ---------- OrderFIFO
@@ -123,14 +123,14 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(PTR(RDOSimulator)
 template <class Order>
 inline void RDOLogic<Order>::onMakePlaned(PTR(RDOSimulator) sim, PTR(void) param)
 {
-	LOGIC_SERIAL_BYPASS()
+	LOGIC_FOR_ALL()
 		(*it)->onMakePlaned(sim, param);
 }
 
 template <class Order>
 inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(PTR(RDOSimulator) sim)
 {
-	LOGIC_SERIAL_BYPASS()
+	LOGIC_FOR_ALL()
 	{
 		if ((*it)->onContinue(sim) == IBaseOperation::BOR_must_continue)
 			return IBaseOperation::BOR_must_continue;
@@ -147,14 +147,14 @@ inline rbool RDOLogic<Order>::checkSelfCondition(PTR(RDOSimulator) sim)
 template <class Order>
 inline void RDOLogic<Order>::start(PTR(RDOSimulator) sim)
 {
-	LOGIC_SERIAL_BYPASS()
+	LOGIC_FOR_ALL()
 		(*it)->onStart(sim);
 }
 
 template <class Order>
 inline void RDOLogic<Order>::stop(PTR(RDOSimulator) sim)
 {
-	LOGIC_SERIAL_BYPASS()
+	LOGIC_FOR_ALL()
 		(*it)->onStop(sim);
 }
 
