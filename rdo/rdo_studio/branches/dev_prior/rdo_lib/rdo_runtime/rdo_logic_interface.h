@@ -49,6 +49,7 @@ public:
 	virtual REF(LPIBaseOperation) back  ()                = 0;
 	virtual void                  clear ()                = 0;
 };
+
 #define DECLARE_IBaseOperationContainer                    \
 	virtual Iterator              begin ();                \
 	virtual Iterator              end   ();                \
