@@ -775,6 +775,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdo_logic.inl"
+							>
+						</File>
+						<File
 							RelativePath=".\rdo_logic_interface.h"
 							>
 						</File>

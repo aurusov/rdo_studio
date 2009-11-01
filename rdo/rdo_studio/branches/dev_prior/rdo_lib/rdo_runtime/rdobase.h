@@ -14,14 +14,12 @@
 namespace rdoRuntime
 {
 
-class RDOBaseOperation;
-
 class RDOSimulatorBase: public RDORuntimeParent
 {
 public:
 	// Публичные методы управления симулятором
 	virtual void rdoInit();
-	virtual bool rdoNext();
+	virtual rbool rdoNext();
 	virtual void rdoPostProcess();
 
 	void setStartTime( double value )          { m_startTime = value;  }
@@ -46,12 +44,12 @@ public:
 	void inc_cnt_calc_arithm() { m_cnt_calc_arithm++; }
 	void inc_cnt_calc_logic()  { m_cnt_calc_logic++;  }
 
-	unsigned int get_cnt_events()      { return m_cnt_events;      }
-	unsigned int get_cnt_choice_from() { return m_cnt_choice_from; }
-	unsigned int get_cnt_calc_arithm() { return m_cnt_calc_arithm; }
-	unsigned int get_cnt_calc_logic()  { return m_cnt_calc_logic;  }
+	ruint get_cnt_events()      { return m_cnt_events;      }
+	ruint get_cnt_choice_from() { return m_cnt_choice_from; }
+	ruint get_cnt_calc_arithm() { return m_cnt_calc_arithm; }
+	ruint get_cnt_calc_logic()  { return m_cnt_calc_logic;  }
 
-	static unsigned int getMSec( const SYSTEMTIME& systime )
+	static ruint getMSec(CREF(SYSTEMTIME) systime)
 	{
 		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
 	}
@@ -63,29 +61,39 @@ protected:
 	struct BOPlanned
 	{
 		LPIBaseOperation  m_opr;
-		void*             m_param;
-		BOPlanned()                                          : m_opr( NULL )      , m_param( NULL )         {}
-		BOPlanned( const BOPlanned& copy )                   : m_opr( copy.m_opr ), m_param( copy.m_param ) {}
-		BOPlanned( LPIBaseOperation opr, void* param = NULL ): m_opr( opr )       , m_param( param )        {}
+		PTR(void)         m_param;
+		
+		BOPlanned()
+			: m_opr  (NULL)
+			, m_param(NULL)
+		{}
+		BOPlanned(CREF(BOPlanned) copy)
+			: m_opr  (copy.m_opr  )
+			, m_param(copy.m_param)
+		{}
+		BOPlanned(LPIBaseOperation opr, PTR(void) param = NULL)
+			: m_opr  (opr  )
+			, m_param(param)
+		{}
 	};
-	typedef std::list< BOPlanned >              BOPlannedItem;
-	typedef std::map< double, BOPlannedItem* >  BOPlannedMap;
-	BOPlannedMap                                m_timePoints;
+	typedef  std::list<BOPlanned>                  BOPlannedItem;
+	typedef  std::map<double, PTR(BOPlannedItem)>  BOPlannedMap;
 
-	bool m_check_operation;
+	BOPlannedMap m_timePoints;
+	rbool        m_check_operation;
 
-	void setCurrentTime( double value ) { m_currentTime = value; }
+	void setCurrentTime(double value) { m_currentTime = value; }
 
 	// Выполнение любых операций (паттерны, DPT и процессы)
 	// Если вернулось значение true, то необходимо вызвать doOperation
 	// и в следующий раз/ без перевода модельного времени вперед
-	virtual bool doOperation()  = 0;
+	virtual rbool doOperation()  = 0;
 
 	// Проверка на условие конца моделирования
-	virtual bool endCondition() = 0;
+	virtual rbool endCondition() = 0;
 
 	// Проверка на точки останова
-	virtual bool breakPoints() = 0;
+	virtual rbool breakPoints() = 0;
 
 	// Инициализация/очистка симулятора
 	virtual void onInit()    = 0;
@@ -107,7 +115,7 @@ protected:
 	virtual void postProcess() = 0;
 
 	// Проверка на нажатие клавиши или активной области
-	virtual bool isKeyDown()   = 0;
+	virtual rbool isKeyDown()   = 0;
 
 	// Вызывается при увеличении модельного времени
 	virtual void onNewTimeNow() {};
@@ -121,18 +129,18 @@ private:
 	RunTimeMode  m_mode;
 
 	double       m_speed;
-	unsigned int m_speed_range_max;
-	unsigned int m_next_delay_count;
-	unsigned int m_next_delay_current;
+	ruint        m_speed_range_max;
+	ruint        m_next_delay_count;
+	ruint        m_next_delay_current;
 
 	double       m_showRate;
 	double       m_msec_wait;
-	unsigned int m_msec_prev;
+	ruint        m_msec_prev;
 
-	unsigned int m_cnt_events;
-	unsigned int m_cnt_choice_from;
-	unsigned int m_cnt_calc_arithm;
-	unsigned int m_cnt_calc_logic;
+	ruint        m_cnt_events;
+	ruint        m_cnt_choice_from;
+	ruint        m_cnt_calc_arithm;
+	ruint        m_cnt_calc_logic;
 };
 
 } // namespace rdoRuntime;

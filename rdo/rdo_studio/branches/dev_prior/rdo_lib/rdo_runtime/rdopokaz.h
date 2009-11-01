@@ -18,6 +18,7 @@
 #include "rdotrace_interface.h"
 #include "rdopokaz_interface.h"
 #include "rdo_model_interface.h"
+#include "rdo_value.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

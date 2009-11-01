@@ -10,7 +10,7 @@ namespace rdoRuntime {
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, PTR(RDOSimulator) sim)
-	: RDOLogic(sim )
+	: RDOLogicFIFO()
 	, m_name  (name)
 {}
 

@@ -3,7 +3,8 @@
 
 #include "rdo.h"
 #include "rdobase.h"
-#include "rdo_logic_opr.h"
+#include "rdo_logic_interface.h"
+//#include "rdo_logic_opr.h"
 
 namespace rdoRuntime {
 
@@ -12,23 +13,13 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 class RDOSimulator: public RDOSimulatorBase
 {
-friend class RDOTrace;
+//friend class RDOTrace;
 
 public:
-	RDOSimulator()
-		: RDOSimulatorBase( )
-		, m_sizeof_sim    (0)
-	{
-		m_metaLogic = F(RDOLogic)::create();
-	}
-	virtual ~RDOSimulator()
-	{}
+	RDOSimulator();
+	virtual ~RDOSimulator();
 
-	void appendLogic(CREF(LPIBaseOperation) logic)
-	{
-		ASSERT(m_metaLogic);
-		m_metaLogic->append(logic);
-	}
+	void appendLogic(CREF(LPIBaseOperation) logic);
 
 	LPIBaseOperation getMustContinueOpr() const           { return opr_must_continue;  }
 	void setMustContinueOpr(CREF(LPIBaseOperation) value) { opr_must_continue = value; }
@@ -48,6 +39,8 @@ public:
 	{
 		return m_sizeof_sim;
 	}
+
+	LPIBaseOperationContainer m_metaLogic;
 
 protected:
 	void appendBaseOperation(CREF(LPIBaseOperation) op)
@@ -69,8 +62,6 @@ protected:
 	ruint m_sizeof_sim;
 
 private:
-	LPIBaseOperationContainer m_metaLogic;
-
 	LPIBaseOperation opr_must_continue;
 	virtual bool doOperation();
 };

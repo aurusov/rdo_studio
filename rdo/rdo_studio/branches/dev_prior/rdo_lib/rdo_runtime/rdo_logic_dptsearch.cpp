@@ -11,27 +11,25 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch( RDOSimulator* sim ):
-	RDOLogic( sim ),
-	treeRoot( NULL )
-{
-}
+RDODPTSearch::RDODPTSearch(PTR(RDOSimulator) sim)
+	: RDOLogicFIFO()
+	, treeRoot    (NULL)
+{}
 
 RDODPTSearch::~RDODPTSearch()
-{
-}
+{}
 
-IBaseOperation::BOResult RDODPTSearch::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDODPTSearch::onDoOperation(PTR(RDOSimulator) sim)
 {
 	// Начало поиска: вывели трасировку, обновили статистику
-	onSearchBegin( sim );
-	treeRoot = createTreeRoot( sim );
-	treeRoot->createRootTreeNode( sim->createCopy() );
+	onSearchBegin(sim);
+	treeRoot = createTreeRoot(sim);
+	treeRoot->createRootTreeNode(sim->createCopy());
 
-	return onContinue( sim );
+	return onContinue(sim);
 }
 
-IBaseOperation::BOResult RDODPTSearch::onContinue( RDOSimulator* sim )
+IBaseOperation::BOResult RDODPTSearch::onContinue(PTR(RDOSimulator) sim)
 {
 	DWORD time_begin = ::GetTickCount();
 	while ( true ) {

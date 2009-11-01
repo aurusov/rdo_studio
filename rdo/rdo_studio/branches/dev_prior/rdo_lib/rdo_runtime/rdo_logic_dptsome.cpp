@@ -8,15 +8,14 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-RDODPTSome::RDODPTSome( RDOSimulator* sim ):
-	RDOLogic( sim )
+RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim)
+	: RDOLogicFIFO()
 {
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }
 
 RDODPTSome::~RDODPTSome()
-{
-}
+{}
 
 void RDODPTSome::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
 {

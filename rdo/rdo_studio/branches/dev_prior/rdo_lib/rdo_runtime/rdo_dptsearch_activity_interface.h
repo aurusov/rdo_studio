@@ -14,6 +14,8 @@
 // ====================================================================== SYNOPSIS
 #include <namespace.h>
 #include <rdointerface.h>
+#include "rdo_rule_interface.h"
+#include "rdo_runtime_interface_registrator.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -33,8 +35,8 @@ public:
 	virtual double       cost     (PTR(rdoRuntime::RDOSimulator) sim) = 0;
 	virtual ValueTime    valueTime() const                            = 0;
 };
-#define DECLARE_IDPTSearchActivity \
-	virtual REF(LPIRule) rule     (); \
+#define DECLARE_IDPTSearchActivity                                     \
+	virtual REF(LPIRule) rule     ();                                  \
 	virtual double       cost     (PTR(rdoRuntime::RDOSimulator) sim); \
 	virtual ValueTime    valueTime() const;
 

@@ -8,13 +8,11 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOOperations
 // ----------------------------------------------------------------------------
-RDOOperations::RDOOperations( RDOSimulator* sim ):
-	RDOLogic( sim )
-{
-}
+RDOOperations::RDOOperations(PTR(RDOSimulator) sim)
+	: RDOLogicFIFO()
+{}
 
 RDOOperations::~RDOOperations()
-{
-}
+{}
 
 } // namespace rdoRuntime

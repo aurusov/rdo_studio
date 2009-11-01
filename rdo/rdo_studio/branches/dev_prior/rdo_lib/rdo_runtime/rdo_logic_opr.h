@@ -8,7 +8,7 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOOperations
 // ----------------------------------------------------------------------------
-class RDOOperations: public RDOLogic
+class RDOOperations: public RDOLogicFIFO
 {
 DEFINE_FACTORY(RDOOperations);
 

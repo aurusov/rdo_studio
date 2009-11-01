@@ -82,7 +82,7 @@ public:
 		std::vector< RDORuntimeObject* >::reverse_iterator it = std::find( m_objects.rbegin(), m_objects.rend(), object );
 		if ( it != m_objects.rend() ) {
 //			TRACE( "remove object: %d\n", object );
-			// Комнада it.base() приводит реверсивный итератор к нормальному,
+			// Команда it.base() приводит реверсивный итератор к нормальному,
 			// но перед этим необходимо сделать инкремент
 			it++;
 			m_objects.erase( it.base() );
