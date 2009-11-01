@@ -14,14 +14,14 @@
 #include "rdo_simulator.h"
 #include "rdo_priority.h"
 #include "rdo_runtime.h"
+#include "rdomacros.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 #pragma warning(disable : 4786)  
 
-#define STL_FOR_ALL(TYPE, CONTAINER, IT) for (TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
-#define LOGIC_SERIAL_BYPASS()            STL_FOR_ALL(ChildList, m_childList, it)
+#define LOGIC_SERIAL_BYPASS() STL_FOR_ALL(ChildList, m_childList, it)
 
 // ----------------------------------------------------------------------------
 // ---------- OrderFIFO
