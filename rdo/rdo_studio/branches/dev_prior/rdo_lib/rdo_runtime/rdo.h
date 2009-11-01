@@ -10,10 +10,17 @@
 #ifndef _RDO_H_
 #define _RDO_H_
 
-namespace rdoRuntime
-{
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include <namespace.h>
+#include "rdointerface.h"
+// ===============================================================================
+
+OPEN_RDO_RUNTIME_NAMESPACE
+
 class RDOSimulator;
-};
+
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- IRDOBaseOperation - интерфейс для паттернов, процессов и блоков процесса
@@ -60,5 +67,8 @@ public:
 	virtual BOResult onDoOperation   (PTR(rdoRuntime::RDOSimulator) sim); \
 	virtual void     onMakePlaned    (PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param); \
 	virtual BOResult onContinue      (PTR(rdoRuntime::RDOSimulator) sim);
+
+INTERFACE_PREDECLARATION(IBaseOperation);
+typedef std::vector<LPIBaseOperation> BaseOperationList;
 
 #endif // _RDO_H_

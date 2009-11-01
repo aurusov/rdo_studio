@@ -1411,6 +1411,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdo_priority.inl"
+							>
+						</File>
+						<File
 							RelativePath=".\rdo_priority_interface.h"
 							>
 						</File>

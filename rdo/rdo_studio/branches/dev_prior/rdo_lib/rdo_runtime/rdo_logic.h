@@ -24,8 +24,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOCalc;
 
-typedef std::vector<LPIBaseOperation> BaseOperationList;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOLogicBase
 // ----------------------------------------------------------------------------
