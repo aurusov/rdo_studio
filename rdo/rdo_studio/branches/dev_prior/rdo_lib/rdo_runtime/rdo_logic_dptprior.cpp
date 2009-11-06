@@ -1,8 +1,8 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo_logic_dptprior.cpp
- * author   : ƒмитрий Ћущан
- * date     : 
+ * author   : Ћущан ƒмитрий
+ * date     : 04.11.09
  * bref     : 
  * indent   : 4T
  */

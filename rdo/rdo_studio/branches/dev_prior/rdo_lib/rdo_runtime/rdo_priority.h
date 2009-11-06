@@ -1,8 +1,8 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo_priority.h
- * author   : 
- * date     : 
+ * author   : Ћущан ƒмитрий
+ * date     : 04.11.09
  * bref     : 
  * indent   : 4T
  */
@@ -83,15 +83,6 @@ public:
 
 private:
 	PTR(RDORuntime) m_runtime;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- BaseOperationPriorOrder
-// ----------------------------------------------------------------------------
-class BaseOperationPriorOrder
-{
-public:
-	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

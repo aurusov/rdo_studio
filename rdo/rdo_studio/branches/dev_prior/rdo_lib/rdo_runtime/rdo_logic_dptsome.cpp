@@ -1,24 +1,15 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_dptsome.cpp
+ * author   : Ћущан ƒмитрий
+ * date     : 04.11.09
+ * bref     : 
+ * indent   : 4T
+ */
+
+// =========================================================================== PCH
 #include "pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_logic_dptsome.h"
-#include "rdo_runtime.h"
-
-namespace rdoRuntime
-{
-
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSome
-// ----------------------------------------------------------------------------
-RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim)
-	: RDOLogicFIFO()
-{
-	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
-}
-
-RDODPTSome::~RDODPTSome()
-{}
-
-void RDODPTSome::actionWithRDOOprContainer(PTR(RDOSimulator) sim)
-{
-}
-
-} // namespace rdoRuntime
+// ===============================================================================

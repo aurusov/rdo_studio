@@ -1,8 +1,8 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo_logic_dptprior.h
- * author   : ƒмитрий Ћущан
- * date     : 
+ * author   : Ћущан ƒмитрий
+ * date     : 04.11.09
  * bref     : 
  * indent   : 4T
  */
@@ -29,10 +29,23 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOLogicPrior
+// ----------------------------------------------------------------------------
+class RDOLogicPrior: public RDOLogic<RDODPTPriorOrder>
+{
+protected:
+	DEFINE_FACTORY(RDOLogicPrior);
+
+	RDOLogicPrior()
+		: RDOLogic<RDODPTPriorOrder>()
+	{}
+	virtual ~RDOLogicPrior()
+	{}
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-typedef RDOLogic<RDODPTPriorOrder> RDOLogicPrior;
-
 class RDODPTPrior: public RDOLogicPrior, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTPrior);

@@ -1,8 +1,8 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo_logic_dptprior.inl
- * author   : ƒмитрий Ћущан
- * date     : 
+ * author   : Ћущан ƒмитрий
+ * date     : 04.11.09
  * bref     : 
  * indent   : 4T
  */
@@ -32,7 +32,7 @@ inline LPIBaseOperation RDODPTPriorOrder::sort(PTR(RDOSimulator) sim, REF(BaseOp
 	if (priorContainer.empty())
 		return NULL;
 
-	return BaseOperationPriorOrder::sort(sim, priorContainer);
+	return RDOSimplePriorOrder::sort(sim, priorContainer);
 }
 
 // ----------------------------------------------------------------------------

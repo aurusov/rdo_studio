@@ -61,12 +61,27 @@ private:
 	DECLARE_ILogic;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- OrderFIFO
+// ----------------------------------------------------------------------------
 class OrderFIFO
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOSimplePriorOrder
+// ----------------------------------------------------------------------------
+class RDOSimplePriorOrder
+{
+public:
+	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLogicFIFO
+// ----------------------------------------------------------------------------
 class RDOLogicFIFO: public RDOLogic<OrderFIFO>
 {
 protected:
@@ -76,6 +91,21 @@ protected:
 		: RDOLogic<OrderFIFO>()
 	{}
 	virtual ~RDOLogicFIFO()
+	{}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLogicSimplePrior
+// ----------------------------------------------------------------------------
+class RDOLogicSimplePrior: public RDOLogic<RDOSimplePriorOrder>
+{
+protected:
+	DEFINE_FACTORY(RDOLogicSimplePrior);
+
+	RDOLogicSimplePrior()
+		: RDOLogic<RDOSimplePriorOrder>()
+	{}
+	virtual ~RDOLogicSimplePrior()
 	{}
 };
 

@@ -878,6 +878,10 @@
 							RelativePath="rdo_logic_dptsome.h"
 							>
 						</File>
+						<File
+							RelativePath=".\rdo_logic_dptsome.inl"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="5. dpt_search"
