@@ -830,6 +830,10 @@
 							RelativePath="rdo_logic_opr.h"
 							>
 						</File>
+						<File
+							RelativePath=".\rdo_logic_opr.inl"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="3. dpt_some"

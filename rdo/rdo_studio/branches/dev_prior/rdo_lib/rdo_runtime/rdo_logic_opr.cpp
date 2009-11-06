@@ -1,18 +1,15 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_opr.cpp
+ * author   : Ћущан ƒмитрий
+ * date     : 05.11.09
+ * bref     : 
+ * indent   : 4T
+ */
+
+// =========================================================================== PCH
 #include "pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_logic_opr.h"
-#include "rdo_runtime.h"
-
-namespace rdoRuntime
-{
-
-// ----------------------------------------------------------------------------
-// ---------- RDOOperations
-// ----------------------------------------------------------------------------
-RDOOperations::RDOOperations(PTR(RDOSimulator) sim)
-	: RDOLogicFIFO()
-{}
-
-RDOOperations::~RDOOperations()
-{}
-
-} // namespace rdoRuntime
+// ===============================================================================

@@ -18,7 +18,7 @@ RDOSimulator::RDOSimulator()
 	: RDOSimulatorBase( )
 	, m_sizeof_sim    (0)
 {
-	m_metaLogic = F(RDOLogicSimplePrior)::create();
+	m_metaLogic = F(RDOMetaLogic)::create();
 }
 
 RDOSimulator::~RDOSimulator()

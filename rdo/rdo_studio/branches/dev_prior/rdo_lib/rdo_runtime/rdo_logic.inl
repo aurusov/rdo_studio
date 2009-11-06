@@ -65,6 +65,40 @@ inline LPIBaseOperation RDOSimplePriorOrder::sort(PTR(RDOSimulator) sim, REF(Bas
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOMetaLogicOrder
+// ----------------------------------------------------------------------------
+inline LPIBaseOperation RDOMetaLogicOrder::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+{
+	if (container.empty())
+		return NULL;
+
+	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
+	STL_FOR_ALL_CONST(BaseOperationList, container, it)
+	{
+		LPIPriority pattern = *it;
+		if (pattern)
+		{
+			PTR(RDOCalc) prior = pattern->getPrior();
+			if (prior)
+			{
+				RDOValue value = prior->calcValue(runtime);
+				if (value < 0 || value > 1)
+					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
+			}
+		}
+	}
+	std::sort(container.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
+	STL_FOR_ALL(BaseOperationList, container, it)
+	{
+		if ((*it)->onCheckCondition(sim))
+		{
+			return *it;
+		}
+	}
+	return NULL;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOLogic
 // ----------------------------------------------------------------------------
 template <class Order>

@@ -80,6 +80,15 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOMetaLogicOrder
+// ----------------------------------------------------------------------------
+class RDOMetaLogicOrder
+{
+public:
+	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOLogicFIFO
 // ----------------------------------------------------------------------------
 class RDOLogicFIFO: public RDOLogic<OrderFIFO>
@@ -106,6 +115,21 @@ protected:
 		: RDOLogic<RDOSimplePriorOrder>()
 	{}
 	virtual ~RDOLogicSimplePrior()
+	{}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOMetaLogic
+// ----------------------------------------------------------------------------
+class RDOMetaLogic: public RDOLogic<RDOMetaLogicOrder>
+{
+protected:
+	DEFINE_FACTORY(RDOMetaLogic);
+
+	RDOMetaLogic()
+		: RDOLogic<RDOMetaLogicOrder>()
+	{}
+	virtual ~RDOMetaLogic()
 	{}
 };
 
