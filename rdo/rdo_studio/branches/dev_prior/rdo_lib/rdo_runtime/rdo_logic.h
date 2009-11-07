@@ -62,74 +62,50 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- OrderFIFO
+// ---------- RDOOrderDown
 // ----------------------------------------------------------------------------
-class OrderFIFO
+class RDOOrderDown
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSimplePriorOrder
+// ---------- RDOOrderHLC // HLC - highest level container
 // ----------------------------------------------------------------------------
-class RDOSimplePriorOrder
+class RDOOrderHLC
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOMetaLogicOrder
+// ---------- RDOLogicDown
 // ----------------------------------------------------------------------------
-class RDOMetaLogicOrder
-{
-public:
-	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOLogicFIFO
-// ----------------------------------------------------------------------------
-class RDOLogicFIFO: public RDOLogic<OrderFIFO>
+class RDOLogicDown: public RDOLogic<RDOOrderDown>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicFIFO);
+	DEFINE_FACTORY(RDOLogicDown);
 
-	RDOLogicFIFO()
-		: RDOLogic<OrderFIFO>()
+	RDOLogicDown()
+		: RDOLogic<RDOOrderDown>()
 	{}
-	virtual ~RDOLogicFIFO()
+	virtual ~RDOLogicDown()
 	{}
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOLogicSimplePrior
+// ---------- RDOLogicHLC
 // ----------------------------------------------------------------------------
-class RDOLogicSimplePrior: public RDOLogic<RDOSimplePriorOrder>
+class RDOLogicHLC: public RDOLogic<RDOOrderHLC>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicSimplePrior);
+	DEFINE_FACTORY(RDOLogicHLC);
 
-	RDOLogicSimplePrior()
-		: RDOLogic<RDOSimplePriorOrder>()
+	RDOLogicHLC()
+		: RDOLogic<RDOOrderHLC>()
 	{}
-	virtual ~RDOLogicSimplePrior()
-	{}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOMetaLogic
-// ----------------------------------------------------------------------------
-class RDOMetaLogic: public RDOLogic<RDOMetaLogicOrder>
-{
-protected:
-	DEFINE_FACTORY(RDOMetaLogic);
-
-	RDOMetaLogic()
-		: RDOLogic<RDOMetaLogicOrder>()
-	{}
-	virtual ~RDOMetaLogic()
+	virtual ~RDOLogicHLC()
 	{}
 };
 

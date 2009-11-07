@@ -16,9 +16,9 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDODPTPriorOrder
+// ---------- RDOOrderDPTPrior
 // ----------------------------------------------------------------------------
-inline LPIBaseOperation RDODPTPriorOrder::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
 	BaseOperationList priorContainer;
 	STL_FOR_ALL_CONST(BaseOperationList, container, it)
@@ -32,14 +32,30 @@ inline LPIBaseOperation RDODPTPriorOrder::sort(PTR(RDOSimulator) sim, REF(BaseOp
 	if (priorContainer.empty())
 		return NULL;
 
-	return RDOSimplePriorOrder::sort(sim, priorContainer);
+	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
+	STL_FOR_ALL_CONST(BaseOperationList, priorContainer, it)
+	{
+		LPIPriority pattern = *it;
+		if (pattern)
+		{
+			PTR(RDOCalc) prior = pattern->getPrior();
+			if (prior)
+			{
+				RDOValue value = prior->calcValue(runtime);
+				if (value < 0 || value > 1)
+					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
+			}
+		}
+	}
+	std::sort(priorContainer.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
+	return priorContainer.front();
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
 inline RDODPTPrior::RDODPTPrior( RDOSimulator* sim ):
-	RDOLogicPrior()
+	RDOLogicDPTPrior()
 {
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }

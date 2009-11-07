@@ -20,37 +20,37 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDODPTOrderPrior
+// ---------- RDOOrderDPTPrior
 // ----------------------------------------------------------------------------
-class RDODPTPriorOrder
+class RDOOrderDPTPrior
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOLogicPrior
+// ---------- RDOLogicDPTPrior
 // ----------------------------------------------------------------------------
-class RDOLogicPrior: public RDOLogic<RDODPTPriorOrder>
+class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicPrior);
+	DEFINE_FACTORY(RDOLogicDPTPrior);
 
-	RDOLogicPrior()
-		: RDOLogic<RDODPTPriorOrder>()
+	RDOLogicDPTPrior()
+		: RDOLogic<RDOOrderDPTPrior>()
 	{}
-	virtual ~RDOLogicPrior()
+	virtual ~RDOLogicDPTPrior()
 	{}
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-class RDODPTPrior: public RDOLogicPrior, public RDOPatternPrior
+class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTPrior);
 QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogicPrior)
+QUERY_INTERFACE_PARENT(RDOLogicDPTPrior)
 QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 

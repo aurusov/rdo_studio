@@ -8,7 +8,7 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDODPTFree
 // ----------------------------------------------------------------------------
-class RDODPTFree: public RDOLogicFIFO
+class RDODPTFree: public RDOLogicDown
 {
 DEFINE_FACTORY(RDODPTFree)
 

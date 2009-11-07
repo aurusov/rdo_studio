@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOOperations
 // ----------------------------------------------------------------------------
 RDOOperations::RDOOperations(PTR(RDOSimulator) sim)
-	: RDOLogicFIFO()
+	: RDOLogicDown()
 {}
 
 RDOOperations::~RDOOperations()

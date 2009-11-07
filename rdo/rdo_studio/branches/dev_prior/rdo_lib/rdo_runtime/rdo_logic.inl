@@ -23,9 +23,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 #define LOGIC_FOR_ALL() STL_FOR_ALL(ChildList, m_childList, it)
 
 // ----------------------------------------------------------------------------
-// ---------- OrderFIFO
+// ---------- RDOOrderDown
 // ----------------------------------------------------------------------------
-inline LPIBaseOperation OrderFIFO::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderDown::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
 	STL_FOR_ALL(BaseOperationList, container, it)
 	{
@@ -38,9 +38,9 @@ inline LPIBaseOperation OrderFIFO::sort(PTR(RDOSimulator) sim, REF(BaseOperation
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSimplePriorOrder
+// ---------- RDOOrderHLC
 // ----------------------------------------------------------------------------
-inline LPIBaseOperation RDOSimplePriorOrder::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderHLC::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
 	if (container.empty())
 		return NULL;
@@ -60,33 +60,7 @@ inline LPIBaseOperation RDOSimplePriorOrder::sort(PTR(RDOSimulator) sim, REF(Bas
 			}
 		}
 	}
-	std::sort(container.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
-	return container.front();
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOMetaLogicOrder
-// ----------------------------------------------------------------------------
-inline LPIBaseOperation RDOMetaLogicOrder::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
-{
-	if (container.empty())
-		return NULL;
-
-	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
-	STL_FOR_ALL_CONST(BaseOperationList, container, it)
-	{
-		LPIPriority pattern = *it;
-		if (pattern)
-		{
-			PTR(RDOCalc) prior = pattern->getPrior();
-			if (prior)
-			{
-				RDOValue value = prior->calcValue(runtime);
-				if (value < 0 || value > 1)
-					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
-			}
-		}
-	}
+	// ¬озможна проблема при сортровке.
 	std::sort(container.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
 	STL_FOR_ALL(BaseOperationList, container, it)
 	{
