@@ -1046,6 +1046,10 @@
 							RelativePath=".\rdo_logic_dptfree.h"
 							>
 						</File>
+						<File
+							RelativePath=".\rdo_logic_dptfree.inl"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="4. dpt_prior"
