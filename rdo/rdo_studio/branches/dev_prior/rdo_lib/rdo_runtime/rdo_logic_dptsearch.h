@@ -1,12 +1,26 @@
-#ifndef RDO_LOGIC_DPTSEARCH_H
-#define RDO_LOGIC_DPTSEARCH_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_dptprior.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_LOGIC_DPTSEARCH_H_
+#define _RDO_LOGIC_DPTSEARCH_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include <namespace.h>
 #include "rdo_logic.h"
+#include "rdo_priority.h"
 #include "rdocalc.h"
 #include "rdo_dptsearch_activity_interface.h"
 #include "rdo_logic_dptsearch_interface.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOSimulator;
 class TreeNode;
@@ -15,7 +29,7 @@ class TreeRoot;
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-class RDODPTSearch: public RDOLogicDown, public IDPTSearchLogic
+class RDODPTSearch: public RDOLogicDown, public IDPTSearchLogic, public RDOPatternPrior
 {
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOLogic)
@@ -50,6 +64,6 @@ private:
 	DECLARE_IDPTSearchLogic;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_LOGIC_DPTSEARCH_H
+#endif // _RDO_LOGIC_DPTSEARCH_H_

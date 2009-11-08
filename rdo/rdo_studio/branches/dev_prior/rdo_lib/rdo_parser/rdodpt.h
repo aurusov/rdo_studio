@@ -196,6 +196,8 @@ public:
 	void end();
 	bool closed() const { return m_closed; }
 
+	bool setPrior( RDOFUNArithm* prior );
+
 private:
 	RDOFUNLogic*   m_conditon;
 	RDOFUNLogic*   m_termConditon;
