@@ -262,7 +262,7 @@ dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic {
 							PARSER->error( @2, "Ожидается ключевое слово $Condition" );
 						};
 
-dpt_some_prior:	        dpt_search_condition
+dpt_search_prior:	    dpt_search_condition
 						| dpt_search_condition RDO_Priority fun_arithm
 						{
 							if (!PARSER->getLastDPTSearch()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
@@ -279,18 +279,18 @@ dpt_some_prior:	        dpt_search_condition
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
 						};
 
-dpt_search_term:		dpt_search_condition RDO_Term_condition fun_logic {
+dpt_search_term:		dpt_search_prior RDO_Term_condition fun_logic {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition((RDOFUNLogic *)$3);
 						}
-						| dpt_search_condition RDO_Term_condition RDO_NoCheck {
+						| dpt_search_prior RDO_Term_condition RDO_NoCheck {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition();
 						}
-						| dpt_search_condition RDO_Term_condition error {
+						| dpt_search_prior RDO_Term_condition error {
 							PARSER->error( @2, @3, "После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)" );
 						}
-						| dpt_search_condition error {
+						| dpt_search_prior error {
 							PARSER->error( @2, "Ожидается ключевое слово $Term_condition" );
 						};
 
