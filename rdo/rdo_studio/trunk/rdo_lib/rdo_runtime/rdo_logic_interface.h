@@ -47,7 +47,9 @@ public:
 	virtual void                  append(CREF(Item) item) = 0;
 	virtual rbool                 empty () const          = 0;
 	virtual REF(LPIBaseOperation) back  ()                = 0;
+	virtual void                  clear ()                = 0;
 };
+
 #define DECLARE_IBaseOperationContainer                    \
 	virtual Iterator              begin ();                \
 	virtual Iterator              end   ();                \
@@ -55,6 +57,7 @@ public:
 	virtual CIterator             end   () const;          \
 	virtual void                  append(CREF(Item) item); \
 	virtual rbool                 empty () const;          \
-	virtual REF(LPIBaseOperation) back  ();
+	virtual REF(LPIBaseOperation) back  ();                \
+	virtual void                  clear ();
 
 #endif //! _RDO_LOGIC_INTERFACE_H_

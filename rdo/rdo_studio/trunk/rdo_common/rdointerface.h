@@ -37,6 +37,9 @@ template <> class rdo::GetInterface<I>: public Registered##I {}; \
 class ___InterfaceRegistrator___DoubleID___##ID {}; \
 typedef rdo::Interface<I> LP##I;
 
+#define INTERFACE_PREDECLARATION(I) \
+typedef rdo::Interface<I> LP##I;
+
 #define IID(I) \
 Registered##I::ID
 

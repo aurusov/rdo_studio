@@ -29,4 +29,7 @@
 #define  CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
 
+#define STL_FOR_ALL(TYPE, CONTAINER, IT)       for (TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define STL_FOR_ALL_CONST(TYPE, CONTAINER, IT) for (TYPE::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+
 #endif //! _RDOMACROS_H_

@@ -57,6 +57,7 @@ DECLARE_PARSER_OBJECT_CONTAINER( FUNFunction     );
 DECLARE_PARSER_OBJECT_CONTAINER( FUNSequence     );
 DECLARE_PARSER_OBJECT_CONTAINER( DPTSearch       );
 DECLARE_PARSER_OBJECT_CONTAINER( DPTSome         );
+DECLARE_PARSER_OBJECT_CONTAINER( DPTPrior        );
 DECLARE_PARSER_OBJECT_CONTAINER( DPTFreeActivity );
 DECLARE_PARSER_OBJECT_CONTAINER( PMDPokaz        );
 
@@ -109,6 +110,11 @@ RDOParser::~RDOParser()
 bool RDOParser::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
+}
+
+bool RDOParser::isCurrentDPTPrior()
+{
+	return getLastDPTPrior() ? true : false;
 }
 
 void RDOParser::insertChanges( const std::string& name, const std::string& value )

@@ -140,6 +140,7 @@ public:
 	RDOValue getResParamVal( unsigned int res_id, unsigned int param_id ) const
 	{
 		RDOResource* res = getResourceByID( res_id );
+
 		return res->getParam( param_id );
 	}
 	void setResParamVal( unsigned int res_id, unsigned int param_id, const RDOValue& value ) {

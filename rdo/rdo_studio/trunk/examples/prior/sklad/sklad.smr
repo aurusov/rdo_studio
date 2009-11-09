@@ -2,6 +2,7 @@ Model_name     = sklad
 
 Resource_file  = sklad
 Statistic_file = sklad
+//OprIev_file    = sklad
 Results_file   = sklad
 Trace_file     = sklad
 Show_mode      = NoShow

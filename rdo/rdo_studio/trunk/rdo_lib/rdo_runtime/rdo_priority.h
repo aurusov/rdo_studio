@@ -1,12 +1,25 @@
-#ifndef RDO_PRIORITY_H
-#define RDO_PRIORITY_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_priority.h
+ * author   : 
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_PRIORITY_H_
+#define _RDO_PRIORITY_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include <namespace.h>
 #include "rdo.h"
 #include "rdocalc.h"
 #include "rdo_runtime.h"
 #include "rdo_priority_interface.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternPrior
@@ -72,6 +85,17 @@ private:
 	PTR(RDORuntime) m_runtime;
 };
 
-} // namespace rdoRuntime
+// ----------------------------------------------------------------------------
+// ---------- BaseOperationPriorOrder
+// ----------------------------------------------------------------------------
+class BaseOperationPriorOrder
+{
+public:
+	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+};
 
-#endif // RDO_PRIORITY_H
+CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_priority.inl"
+
+#endif //! _RDO_PRIORITY_H_

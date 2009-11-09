@@ -224,6 +224,7 @@ value[\r\n\t ]+after	return(RDO_value_after);
 value_before		return(RDO_value_before);
 value_after			return(RDO_value_after);
 some				return(RDO_some);
+prior				return(RDO_prior);
 cf					return(RDO_CF);
 CF					return(RDO_CF);
 $Priority           return(RDO_Priority);
