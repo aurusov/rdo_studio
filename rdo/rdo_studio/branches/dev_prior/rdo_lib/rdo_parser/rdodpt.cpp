@@ -404,6 +404,10 @@ RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& name ):
 void RDOPROCProcess::end()
 {
 	m_closed = true;
+	if ( getConditon() )
+	{
+		getRunTime()->setCondition( getConditon()->getCalc() );
+	}
 }
 
 void RDOPROCProcess::insertChild( RDOPROCProcess* value )

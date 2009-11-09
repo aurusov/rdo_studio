@@ -209,7 +209,26 @@ dptrtp_main:
 
 /* ///////////////////////  PROCESS ///////////////////////////// */
 
-dpt_process:		dpt_process_begin dpt_process_input;
+dpt_process:			dpt_process_header dpt_process_input;
+
+dpt_process_header:	RDO_Condition fun_logic dpt_process_begin {
+						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
+						proc->setCondition((RDOFUNLogic *)$2);
+					}
+					| RDO_Condition RDO_NoCheck dpt_process_begin {
+						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
+						proc->setCondition();
+					}
+					| dpt_process_begin {
+						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
+						proc->setCondition();
+					}
+					| RDO_Condition error dpt_process_begin {
+						PARSER->error( @2, @3, "После ключевого слова $Condition ожидается условие активации процесса" );
+					}
+					| error dpt_process_begin {
+						PARSER->error( @2, "Ожидается ключевое слово $Condition" );
+					};
 
 dpt_process_begin:	RDO_Process 
 					{
@@ -348,8 +367,6 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_ASSIGN dpt_assign_param	  { 	}
 					| RDO_ASSIGN error				  { PARSER->error(@1, rdo::format("Ожидается строка изменения параметра"));								};
-
-
 
 dpt_queue_param:	RDO_IDENTIF 
 					{
