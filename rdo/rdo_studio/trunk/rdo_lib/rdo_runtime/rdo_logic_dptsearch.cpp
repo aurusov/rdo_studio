@@ -1,18 +1,31 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_dptsearch.cpp
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// =========================================================================== PCH
 #include "pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_logic_dptsearch.h"
 #include "searchtree.h"
 #include "rdo_rule.h"
 #include "rdo_runtime.h"
+// ===============================================================================
 
 #pragma warning(disable : 4786)  
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch(PTR(RDOSimulator) sim)
-	: RDOLogicFIFO()
+	: RDOLogicDown()
 	, treeRoot    (NULL)
 {}
 
@@ -86,4 +99,4 @@ void RDODPTSearch::addActivity(LPIDPTSearchActivity activity)
 	m_activityList.push_back(activity); 
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

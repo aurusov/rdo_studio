@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "rdo_simulator.h"
-#include "rdo_logic.h"
+#include "rdo_logic_dptprior.h"
 #include <rdostream.h>
 #include "rdo_model_interface.h"
 //#include "rdo_ie.h"
@@ -18,7 +18,7 @@ RDOSimulator::RDOSimulator()
 	: RDOSimulatorBase( )
 	, m_sizeof_sim    (0)
 {
-	m_metaLogic = F(RDOLogicFIFO)::create();
+	m_metaLogic = F(RDOLogicHLC)::create();
 }
 
 RDOSimulator::~RDOSimulator()

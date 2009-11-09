@@ -1,15 +1,28 @@
-#ifndef RDO_LOGIC_DPTSOME_H
-#define RDO_LOGIC_DPTSOME_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_dptsome.h
+ * author   : Ћущан ƒмитрий
+ * date     : 04.11.09
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_LOGIC_DPTSOME_H_
+#define _RDO_LOGIC_DPTSOME_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include <namespace.h>
 #include "rdo_logic.h"
 #include "rdo_priority.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-class RDODPTSome: public RDOLogicFIFO, public RDOPatternPrior
+class RDODPTSome: public RDOLogicDown, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTSome);
 QUERY_INTERFACE_BEGIN
@@ -18,12 +31,12 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	virtual void actionWithRDOOprContainer(PTR(RDOSimulator) sim);
-
 	RDODPTSome (RDOSimulator* sim);
 	virtual ~RDODPTSome();
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_LOGIC_DPTSOME_H
+#include "rdo_logic_dptsome.inl"
+
+#endif // _RDO_LOGIC_DPTSOME_H_

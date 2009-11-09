@@ -61,21 +61,51 @@ private:
 	DECLARE_ILogic;
 };
 
-class OrderFIFO
+// ----------------------------------------------------------------------------
+// ---------- RDOOrderDown
+// ----------------------------------------------------------------------------
+class RDOOrderDown
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
-class RDOLogicFIFO: public RDOLogic<OrderFIFO>
+// ----------------------------------------------------------------------------
+// ---------- RDOOrderHLC // HLC - highest level container
+// ----------------------------------------------------------------------------
+class RDOOrderHLC
+{
+public:
+	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLogicDown
+// ----------------------------------------------------------------------------
+class RDOLogicDown: public RDOLogic<RDOOrderDown>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicFIFO);
+	DEFINE_FACTORY(RDOLogicDown);
 
-	RDOLogicFIFO()
-		: RDOLogic<OrderFIFO>()
+	RDOLogicDown()
+		: RDOLogic<RDOOrderDown>()
 	{}
-	virtual ~RDOLogicFIFO()
+	virtual ~RDOLogicDown()
+	{}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLogicHLC
+// ----------------------------------------------------------------------------
+class RDOLogicHLC: public RDOLogic<RDOOrderHLC>
+{
+protected:
+	DEFINE_FACTORY(RDOLogicHLC);
+
+	RDOLogicHLC()
+		: RDOLogic<RDOOrderHLC>()
+	{}
+	virtual ~RDOLogicHLC()
 	{}
 };
 

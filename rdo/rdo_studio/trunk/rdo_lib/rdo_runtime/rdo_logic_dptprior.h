@@ -1,8 +1,8 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo_logic_dptprior.h
- * author   : ƒмитрий Ћущан
- * date     : 
+ * author   : Ћущан ƒмитрий
+ * date     : 04.11.09
  * bref     : 
  * indent   : 4T
  */
@@ -20,24 +20,37 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDODPTOrderPrior
+// ---------- RDOOrderDPTPrior
 // ----------------------------------------------------------------------------
-class RDODPTPriorOrder
+class RDOOrderDPTPrior
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOLogicDPTPrior
+// ----------------------------------------------------------------------------
+class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
+{
+protected:
+	DEFINE_FACTORY(RDOLogicDPTPrior);
+
+	RDOLogicDPTPrior()
+		: RDOLogic<RDOOrderDPTPrior>()
+	{}
+	virtual ~RDOLogicDPTPrior()
+	{}
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-typedef RDOLogic<RDODPTPriorOrder> RDOLogicPrior;
-
-class RDODPTPrior: public RDOLogicPrior, public RDOPatternPrior
+class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTPrior);
 QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogicPrior)
+QUERY_INTERFACE_PARENT(RDOLogicDPTPrior)
 QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 

@@ -374,6 +374,16 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 	parser()->insertDPTSearch( this );
 }
 
+bool RDODPTSearch::setPrior(RDOFUNArithm* prior)
+{
+	LPIPriority priority = m_rt_logic;
+	if (priority)
+	{
+		return priority->setPrior(prior->createCalc());
+	}
+	return false;
+}
+
 void RDODPTSearch::end()
 {
 	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );

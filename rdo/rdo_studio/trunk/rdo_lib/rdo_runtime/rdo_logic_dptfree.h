@@ -1,22 +1,40 @@
-#ifndef RDO_LOGIC_DPTFREE_H
-#define RDO_LOGIC_DPTFREE_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_logic_dptfree.h
+ * author   : Ћущан ƒмитрий
+ * date     : 07.11.09
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_LOGIC_DPTFREE_H_
+#define _RDO_LOGIC_DPTFREE_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include <namespace.h>
 #include "rdo_logic.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTFree
 // ----------------------------------------------------------------------------
-class RDODPTFree: public RDOLogicFIFO
+class RDODPTFree: public RDOLogicDown
 {
-DEFINE_FACTORY(RDODPTFree)
+DEFINE_FACTORY(RDODPTFree);
+QUERY_INTERFACE_BEGIN
+QUERY_INTERFACE_PARENT(RDOLogic)
+QUERY_INTERFACE_END
 
 private:
-	RDODPTFree( RDOSimulator* sim );
+	RDODPTFree (RDOSimulator* sim);
 	virtual ~RDODPTFree();
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_LOGIC_DPTFREE_H
+#include "rdo_logic_dptfree.inl"
+
+#endif // _RDO_LOGIC_DPTFREE_H_

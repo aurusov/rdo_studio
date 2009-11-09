@@ -40,7 +40,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCTransact;
 
-class RDOPROCProcess: public RDOLogicFIFO, public IPROCProcess
+class RDOPROCProcess: public RDOLogicDown, public IPROCProcess
 {
 DEFINE_FACTORY(RDOPROCProcess)
 QUERY_INTERFACE_BEGIN

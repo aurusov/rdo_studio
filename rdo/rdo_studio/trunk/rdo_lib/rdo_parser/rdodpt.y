@@ -262,6 +262,23 @@ dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic {
 							PARSER->error( @2, "Ожидается ключевое слово $Condition" );
 						};
 
+dpt_some_prior:	        dpt_search_condition
+						| dpt_search_condition RDO_Priority fun_arithm
+						{
+							if (!PARSER->getLastDPTSearch()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+							{
+								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет :-("));
+							}
+						}
+						| dpt_search_condition RDO_Priority error
+						{
+							PARSER->error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+						}
+						| dpt_search_condition error
+						{
+							PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
+						};
+
 dpt_search_term:		dpt_search_condition RDO_Term_condition fun_logic {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition((RDOFUNLogic *)$3);
@@ -422,7 +439,7 @@ dpt_some_prior:	        dpt_some_condition
 						}
 						| dpt_some_condition RDO_Priority error
 						{
-							PARSER->error( @1, @2, "Ошибка описания приоритета активности" )
+							PARSER->error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
 						}
 						| dpt_some_condition error
 						{
