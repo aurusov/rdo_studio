@@ -136,8 +136,6 @@ public:
 
 	void end();
 
-	bool setPrior( RDOFUNArithm* prior );
-
 private:
 	RDOFUNLogic* m_conditon;
 };
@@ -154,8 +152,6 @@ public:
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
 
 	void end();
-
-	bool setPrior( RDOFUNArithm* prior );
 
 private:
 	RDOFUNLogic* m_conditon;
@@ -195,8 +191,6 @@ public:
 
 	void end();
 	bool closed() const { return m_closed; }
-
-	bool setPrior( RDOFUNArithm* prior );
 
 private:
 	RDOFUNLogic*   m_conditon;

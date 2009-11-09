@@ -282,16 +282,6 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	parser()->insertDPTSome(this);
 }
 
-bool RDODPTSome::setPrior(RDOFUNArithm* prior)
-{
-	LPIPriority priority = m_rt_logic;
-	if (priority)
-	{
-		return priority->setPrior(prior->createCalc());
-	}
-	return false;
-}
-
 void RDODPTSome::end()
 {
 	if ( getConditon() )
@@ -310,16 +300,6 @@ RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info 
 	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime());
 	m_rt_logic->init(parser()->runtime());
 	parser()->insertDPTPrior(this);
-}
-
-bool RDODPTPrior::setPrior(RDOFUNArithm* prior)
-{
-	LPIPriority priority = m_rt_logic;
-	if (priority)
-	{
-		return priority->setPrior(prior->createCalc());
-	}
-	return false;
 }
 
 void RDODPTPrior::end()
@@ -372,16 +352,6 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 {
 	parser()->checkDPTName( src_info() );
 	parser()->insertDPTSearch( this );
-}
-
-bool RDODPTSearch::setPrior(RDOFUNArithm* prior)
-{
-	LPIPriority priority = m_rt_logic;
-	if (priority)
-	{
-		return priority->setPrior(prior->createCalc());
-	}
-	return false;
 }
 
 void RDODPTSearch::end()
