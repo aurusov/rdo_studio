@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_dptprior.h
+ * filename : rdo_logic_dptsearch.h
  * author   : Урусов Андрей
  * date     : 
  * bref     : 

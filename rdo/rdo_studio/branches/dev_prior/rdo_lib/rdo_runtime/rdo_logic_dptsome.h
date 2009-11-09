@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_dptprior.h
+ * filename : rdo_logic_dptsome.h
  * author   : Ћущан ƒмитрий
  * date     : 04.11.09
  * bref     : 
