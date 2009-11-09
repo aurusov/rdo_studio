@@ -220,6 +220,8 @@ public:
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
 	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
 
+	bool setPrior(RDOFUNArithm* prior);
+
 	void insertChild( RDOPROCProcess* value );
 
 	LPILogic getRunTime() const { return m_runtime; }

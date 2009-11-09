@@ -60,7 +60,6 @@ inline LPIBaseOperation RDOOrderHLC::sort(PTR(RDOSimulator) sim, REF(BaseOperati
 			}
 		}
 	}
-	// Возможна проблема при сортровке.
 	std::sort(container.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
 	STL_FOR_ALL(BaseOperationList, container, it)
 	{

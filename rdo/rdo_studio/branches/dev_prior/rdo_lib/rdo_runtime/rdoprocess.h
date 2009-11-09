@@ -40,12 +40,13 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCTransact;
 
-class RDOPROCProcess: public RDOLogicDown, public IPROCProcess
+class RDOPROCProcess: public RDOLogicDown, public IPROCProcess, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDOPROCProcess)
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOLogic    )
 	QUERY_INTERFACE       (IPROCProcess)
+	QUERY_INTERFACE_PARENT(RDOLogic    )
+	QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 friend class RDOPROCBlock;
 
