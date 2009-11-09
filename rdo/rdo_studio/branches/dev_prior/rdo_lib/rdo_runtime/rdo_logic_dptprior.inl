@@ -47,7 +47,7 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOp
 			}
 		}
 	}
-	std::sort(priorContainer.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
+	std::sort(priorContainer.begin(), priorContainer.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
 	return priorContainer.front();
 }
 
