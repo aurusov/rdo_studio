@@ -23,9 +23,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 #define LOGIC_FOR_ALL() STL_FOR_ALL(ChildList, m_childList, it)
 
 // ----------------------------------------------------------------------------
-// ---------- RDOOrderDown
+// ---------- RDOOrderSimple
 // ----------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderDown::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderSimple::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
 	STL_FOR_ALL(BaseOperationList, container, it)
 	{
@@ -38,9 +38,9 @@ inline LPIBaseOperation RDOOrderDown::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOOrderHLC
+// ---------- RDOOrderMeta
 // ----------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderHLC::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
 	if (container.empty())
 		return NULL;

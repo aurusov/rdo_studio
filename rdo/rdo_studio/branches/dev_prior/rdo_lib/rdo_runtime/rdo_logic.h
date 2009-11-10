@@ -62,50 +62,50 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOOrderDown
+// ---------- RDOOrderSimple
 // ----------------------------------------------------------------------------
-class RDOOrderDown
+class RDOOrderSimple
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOOrderHLC // HLC - highest level container
+// ---------- RDOOrderMeta
 // ----------------------------------------------------------------------------
-class RDOOrderHLC
+class RDOOrderMeta
 {
 public:
 	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOLogicDown
+// ---------- RDOLogicSimple
 // ----------------------------------------------------------------------------
-class RDOLogicDown: public RDOLogic<RDOOrderDown>
+class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicDown);
+	DEFINE_FACTORY(RDOLogicSimple);
 
-	RDOLogicDown()
-		: RDOLogic<RDOOrderDown>()
+	RDOLogicSimple()
+		: RDOLogic<RDOOrderSimple>()
 	{}
-	virtual ~RDOLogicDown()
+	virtual ~RDOLogicSimple()
 	{}
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOLogicHLC
+// ---------- RDOLogicMeta
 // ----------------------------------------------------------------------------
-class RDOLogicHLC: public RDOLogic<RDOOrderHLC>
+class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicHLC);
+	DEFINE_FACTORY(RDOLogicMeta);
 
-	RDOLogicHLC()
-		: RDOLogic<RDOOrderHLC>()
+	RDOLogicMeta()
+		: RDOLogic<RDOOrderMeta>()
 	{}
-	virtual ~RDOLogicHLC()
+	virtual ~RDOLogicMeta()
 	{}
 };
 

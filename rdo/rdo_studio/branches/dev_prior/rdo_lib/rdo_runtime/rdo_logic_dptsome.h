@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-class RDODPTSome: public RDOLogicDown, public RDOPatternPrior
+class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTSome);
 QUERY_INTERFACE_BEGIN
