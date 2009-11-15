@@ -3,6 +3,7 @@
 #include "rdoprocess_method_proc2rdo_MJ.h"
 #include "rdoprocess_shape_process_MJ.h" 
 #include "rdoprocess_shape_create_MJ.h"
+#include "rdoprocess_shape_decide_SH.h"
 #include "rdoprocess_shape_terminate_MJ.h"
 #include "rdoprocess_shape_resource.h"
 

@@ -219,57 +219,25 @@
 			<File
 				RelativePath=".\rdoprocess_shape_create_dlg1_MJ.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="stdafx.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="stdafx.h"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\rdoprocess_shape_create_dlg2_MJ.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="stdafx.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="stdafx.h"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\rdoprocess_shape_create_MJ.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoprocess_shape_decide_SH.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="stdafx.h"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -277,8 +245,8 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="stdafx.h"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
 			</File>
@@ -533,6 +501,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdoprocess_shape_decide_SH.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdoprocess_shape_MJ.h"
 				>
 			</File>
@@ -580,6 +552,10 @@
 			>
 			<File
 				RelativePath=".\res\block_create.xpm"
+				>
+			</File>
+			<File
+				RelativePath=".\res\block_decide.xpm"
 				>
 			</File>
 			<File

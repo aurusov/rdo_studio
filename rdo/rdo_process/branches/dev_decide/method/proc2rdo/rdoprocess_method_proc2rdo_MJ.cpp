@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_method_proc2rdo_MJ.h"
 #include "rdoprocess_shape_create_MJ.h"
+#include "rdoprocess_shape_decide_SH.h"
 #include "rdoprocess_shape_resource.h"
 #include "rdoprocess_shape_process_MJ.h"
 #include "rdoprocess_shape_terminate_MJ.h"
@@ -11,6 +12,7 @@
 #include "res/generate.xpm"
 #include "res/generate_setup.xpm"
 #include "res/block_create.xpm"
+#include "res/block_decide.xpm"
 #include "res/block_terminate.xpm"
 #include "res/block_process.xpm"
 #include "res/block_resource.xpm"
@@ -72,9 +74,11 @@ void RPMethodProc2RDO_MJ::registerObject()
 
 	// Потомки RPShape_MJ
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeCreateMJ", "RPShape_MJ", RPShapeCreateMJ::newObject, this, _T("Генератор"), block_create_xpm, 0 ) );
+
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeTerminateMJ", "RPShape_MJ", RPShapeTerminateMJ::newObject, this, _T("Терминатор"), block_terminate_xpm, 1 ) );
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeProcessMJ", "RPShape_MJ", RPShapeProcessMJ::newObject, this, _T("Процесс"), block_process_xpm, 2 ) );
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeResource_MJ", "RPShape_MJ", RPShapeResource_MJ::newObject, this, _T("Ресурс"), block_resource_xpm, 3 ) );
+	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeDecideSH", "RPShape_MJ", RPShapeDecideSH::newObject, this, _T("Десайд"), block_decide_xpm, 4 ) );
 
 	RPCtrlToolbar* toolbar = rpMethod::project->createToolBar( _T("РДО-Процесс") );
 	btn_generate       = toolbar->insertButton( this, generate_xpm, _T("Создать модель") );
@@ -111,14 +115,14 @@ void RPMethodProc2RDO_MJ::buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_upda
 
 void RPMethodProc2RDO_MJ::generate()
 {
-	RDOfiles->pattern.open("aaa\\RDO_PROCESS.pat");
-	RDOfiles->resourse.open("aaa\\RDO_PROCESS.rss");
-	RDOfiles->function.open("aaa\\RDO_PROCESS.fun");
+	RDOfiles->pattern.open(_T("aaa\\RDO_PROCESS.pat"));
+	RDOfiles->resourse.open(_T("aaa\\RDO_PROCESS.rss"));
+	RDOfiles->function.open(_T("aaa\\RDO_PROCESS.fun"));
 
-	RDOfiles->typeres.open("aaa\\RDO_PROCESS.rtp");
-	RDOfiles->operations.open("aaa\\RDO_PROCESS.opr");
-	RDOfiles->smr.open("aaa\\RDO_PROCESS.smr");
-	RDOfiles->statistic.open("aaa\\RDO_PROCESS.pmd");
+	RDOfiles->typeres.open(_T("aaa\\RDO_PROCESS.rtp"));
+	RDOfiles->operations.open(_T("aaa\\RDO_PROCESS.opr"));
+	RDOfiles->smr.open(_T("aaa\\RDO_PROCESS.smr"));
+	RDOfiles->statistic.open(_T("aaa\\RDO_PROCESS.pmd"));
 
 	blank_rdo_MJ();
 
@@ -128,7 +132,7 @@ void RPMethodProc2RDO_MJ::generate()
 	class_names.push_back( "RPShapeCreateMJ" );
 	class_names.push_back( "RPShapeProcessMJ" );
 	class_names.push_back( "RPShapeTerminateMJ" );
-	rpMethod::project->getAllChildByClasses( all_child, class_names, true );
+	rpMethod::project->getAllChildByClasses( all_child, class_names, true );//???
 	std::list< RPObject* >::const_iterator block_it = all_child.begin();
 	while ( block_it != all_child.end() ) {
 		std::list< RPShape* > list = static_cast<RPShape*>(*block_it)->getNextBlock();
@@ -141,8 +145,8 @@ void RPMethodProc2RDO_MJ::generate()
 
 	// Вызвали генерацию у объектов
 	all_child.clear();
-	rpMethod::project->getAllChildByClass( all_child, "RPShape_MJ", true );
-	std::list< RPObject* >::iterator shape_it = all_child.begin();
+	rpMethod::project->getAllChildByClass( all_child, "RPShape_MJ", true );//???
+  	std::list< RPObject* >::iterator shape_it = all_child.begin();
 	while ( shape_it != all_child.end() ) {
 		dynamic_cast<RPObject_MJ*>(static_cast<RPShape_MJ*>(*shape_it))->generate();
 		shape_it++;
