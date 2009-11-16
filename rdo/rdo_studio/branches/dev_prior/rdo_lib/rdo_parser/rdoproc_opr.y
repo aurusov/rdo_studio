@@ -209,43 +209,9 @@ dptrtp_main:
 
 /* ///////////////////////  PROCESS ///////////////////////////// */
 
-dpt_process:			dpt_process_header dpt_process_input;
+dpt_process:		dpt_process_header dpt_process_input;
 
-dpt_process_header:	RDO_Condition fun_logic dpt_process_prior {
-						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
-						proc->setCondition((RDOFUNLogic *)$2);
-					}
-					| RDO_Condition RDO_NoCheck dpt_process_prior {
-						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
-						proc->setCondition();
-					}
-					| dpt_process_prior {
-						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
-						proc->setCondition();
-					}
-					| RDO_Condition error dpt_process_prior {
-						PARSER->error( @2, @3, "После ключевого слова $Condition ожидается условие активации процесса" );
-					}
-					| error dpt_process_prior {
-						PARSER->error( @2, "Ожидается ключевое слово $Condition" );
-					};
-
-dpt_process_prior:	dpt_process_begin
-					| RDO_Priority fun_arithm dpt_process_begin
-					{
-						if (!PARSER->getLastPROCProcess()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
-						{
-							PARSER->error(@3, _T("Процесс пока не может иметь приоритет"));
-						}
-					}
-					| RDO_Priority error dpt_process_begin
-					{
-						PARSER->error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
-					}
-					| error dpt_process_begin
-					{
-						PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
-					};
+dpt_process_header:	dpt_process_begin dpt_process_condition dpt_process_prior;
 
 dpt_process_begin:	RDO_Process
 					{
@@ -255,6 +221,42 @@ dpt_process_begin:	RDO_Process
 						}
 						proc = new RDOPROCProcess( PARSER, "Process" );
 						@$ = @1;
+					};
+
+dpt_process_condition:	/* empty */ {
+						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
+						proc->setCondition();
+					}
+					| RDO_Condition fun_logic {
+						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
+						proc->setCondition((RDOFUNLogic *)$2);
+					}
+					| RDO_Condition RDO_NoCheck {
+						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
+						proc->setCondition();
+					}
+					| RDO_Condition error {
+						PARSER->error( @2, @2, "После ключевого слова $Condition ожидается условие активации процесса" );
+					}
+					| error {
+						PARSER->error( @1, "Ожидается ключевое слово $Condition" );
+					};
+
+dpt_process_prior:	/* empty */
+					| RDO_Priority fun_arithm
+					{
+						if (!PARSER->getLastPROCProcess()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
+						{
+							PARSER->error(@2, _T("Процесс пока не может иметь приоритет"));
+						}
+					}
+					| RDO_Priority error
+					{
+						PARSER->error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+					}
+					| error
+					{
+						PARSER->error( @1, @1, "Ожидается ключевое слово $Priority" )
 					};
 
 dpt_process_input:	/* empty */

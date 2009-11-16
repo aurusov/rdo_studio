@@ -214,15 +214,15 @@ dptrtp_main:
 
 dpt_process:		dpt_process_header dpt_process_input;
 
-dpt_process_header:	RDO_Condition error dpt_process_prior {
-					};
-
-dpt_process_prior:	dpt_process_begin
-					| RDO_Priority error dpt_process_begin
-					{
-					};
+dpt_process_header:	dpt_process_begin dpt_process_condition dpt_process_prior;
 
 dpt_process_begin:	RDO_Process;
+
+dpt_process_condition:	/* empty */
+					| RDO_Condition error;
+
+dpt_process_prior:	/* empty */
+					| RDO_Priority error;
 
 dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line
