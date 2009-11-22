@@ -120,6 +120,20 @@ void RDOParserRSSPost::parse()
 		rtp_it++;
 	}
 #endif
+
+	std::vector< RDORTPResType* >::const_iterator rtp_it = m_parser->getRTPResTypes().begin();
+	if (rtp_it == m_parser->getRTPResTypes().end())
+		return;
+
+	rdoRuntime::RDOEnumType* enumType = new rdoRuntime::RDOEnumType(NULL, rdoRuntime::RDOEnumType::Enums("Red")("Green")("Type"));
+
+	rdoRuntime::RDOValue value1(*enumType, "Red"  );
+	rdoRuntime::RDOValue value2(*enumType, "Green");
+	rdoRuntime::RDOValue value3(*enumType, "Green");
+	bool equal;
+	equal = value1 == value2;
+	equal = value2 == value3;
+	int i = 1;
 }
 
 // ----------------------------------------------------------------------------
