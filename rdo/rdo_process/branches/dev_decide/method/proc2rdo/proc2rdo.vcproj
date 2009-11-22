@@ -229,7 +229,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_decide_SH.cpp"
+				RelativePath=".\rdoprocess_shape_decide.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -501,7 +501,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_decide_SH.h"
+				RelativePath=".\rdoprocess_shape_decide.h"
 				>
 			</File>
 			<File
