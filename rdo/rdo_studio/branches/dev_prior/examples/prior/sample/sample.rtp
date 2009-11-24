@@ -1,3 +1,10 @@
+$Resource_type системы: permanent
+$Parameters
+	детали_типа_1: integer = 0
+	детали_типа_2: integer = 0
+	детали_типа_3: integer = 0
+$End
+
 $Resource_type приоритеты : permanent
 $Parameters
 	номер   : integer
