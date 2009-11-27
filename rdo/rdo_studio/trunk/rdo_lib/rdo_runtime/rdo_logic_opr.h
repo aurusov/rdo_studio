@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOOperations
 // ----------------------------------------------------------------------------
-class RDOOperations: public RDOLogicDown, public RDOPatternPrior
+class RDOOperations: public RDOLogicSimple, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDOOperations);
 QUERY_INTERFACE_BEGIN

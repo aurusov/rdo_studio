@@ -136,8 +136,6 @@ public:
 
 	void end();
 
-	bool setPrior( RDOFUNArithm* prior );
-
 private:
 	RDOFUNLogic* m_conditon;
 };
@@ -154,8 +152,6 @@ public:
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
 
 	void end();
-
-	bool setPrior( RDOFUNArithm* prior );
 
 private:
 	RDOFUNLogic* m_conditon;
@@ -196,8 +192,6 @@ public:
 	void end();
 	bool closed() const { return m_closed; }
 
-	bool setPrior( RDOFUNArithm* prior );
-
 private:
 	RDOFUNLogic*   m_conditon;
 	RDOFUNLogic*   m_termConditon;
@@ -223,6 +217,11 @@ public:
 	void end();
 	bool closed() const { return m_closed; }
 
+	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
+	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
+
+	bool setPrior(RDOFUNArithm* prior);
+
 	void insertChild( RDOPROCProcess* value );
 
 	LPILogic getRunTime() const { return m_runtime; }
@@ -234,6 +233,9 @@ protected:
 	std::list< RDOPROCProcess* >  m_child;
 	std::list< RDOPROCOperator* > m_operations;
 	LPILogic                      m_runtime;
+
+private:
+	RDOFUNLogic*                  m_conditon;
 };
 
 // ----------------------------------------------------------------------------

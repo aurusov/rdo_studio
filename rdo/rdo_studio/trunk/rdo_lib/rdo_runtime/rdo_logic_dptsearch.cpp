@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch(PTR(RDOSimulator) sim)
-	: RDOLogicDown()
+	: RDOLogicSimple()
 	, treeRoot    (NULL)
 {}
 

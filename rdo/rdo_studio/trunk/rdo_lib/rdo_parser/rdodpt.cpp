@@ -282,16 +282,6 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	parser()->insertDPTSome(this);
 }
 
-bool RDODPTSome::setPrior(RDOFUNArithm* prior)
-{
-	LPIPriority priority = m_rt_logic;
-	if (priority)
-	{
-		return priority->setPrior(prior->createCalc());
-	}
-	return false;
-}
-
 void RDODPTSome::end()
 {
 	if ( getConditon() )
@@ -310,16 +300,6 @@ RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info 
 	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime());
 	m_rt_logic->init(parser()->runtime());
 	parser()->insertDPTPrior(this);
-}
-
-bool RDODPTPrior::setPrior(RDOFUNArithm* prior)
-{
-	LPIPriority priority = m_rt_logic;
-	if (priority)
-	{
-		return priority->setPrior(prior->createCalc());
-	}
-	return false;
 }
 
 void RDODPTPrior::end()
@@ -374,16 +354,6 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 	parser()->insertDPTSearch( this );
 }
 
-bool RDODPTSearch::setPrior(RDOFUNArithm* prior)
-{
-	LPIPriority priority = m_rt_logic;
-	if (priority)
-	{
-		return priority->setPrior(prior->createCalc());
-	}
-	return false;
-}
-
 void RDODPTSearch::end()
 {
 	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
@@ -431,9 +401,24 @@ RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& name ):
 	m_runtime.query_cast<ILogic>()->init(parser()->runtime());
 }
 
+bool RDOPROCProcess::setPrior(RDOFUNArithm* prior)
+{
+	LPILogic runtime_logic = getRunTime();
+	LPIPriority priority = runtime_logic.query_cast<IPriority>();
+	if (priority)
+	{
+		return priority->setPrior(prior->createCalc());
+	}
+	return false;
+}
+
 void RDOPROCProcess::end()
 {
 	m_closed = true;
+	if ( getConditon() )
+	{
+		getRunTime()->setCondition( getConditon()->getCalc() );
+	}
 }
 
 void RDOPROCProcess::insertChild( RDOPROCProcess* value )
@@ -525,8 +510,8 @@ const RDORSSResource* rss = parser->findRSSResource( Res );
 		// "длина_очереди"
 		std::string rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
 		parser_for_runtime.Id_res = rss->getID();
-		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id(); 
-	}	
+		parser_for_runtime.Id_param = rtp.m_params[rtp_param_name].id();
+	}
 	else
 	{
 		parser->error( "¬нутренн€€ ошибка RDOPROCQueue: не нашли parser-ресурс" );

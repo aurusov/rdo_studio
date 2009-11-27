@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDODPTFree
 // ----------------------------------------------------------------------------
 RDODPTFree::RDODPTFree(PTR(RDOSimulator) sim)
-	: RDOLogicDown()
+	: RDOLogicSimple()
 {}
 
 RDODPTFree::~RDODPTFree()

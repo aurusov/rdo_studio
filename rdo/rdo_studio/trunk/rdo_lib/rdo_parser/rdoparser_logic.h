@@ -3,6 +3,7 @@
 
 #include "rdoparser_object.h"
 #include <rdo_logic_interface.h>
+#include "rdofun.h"
 
 namespace rdoParse
 {
@@ -33,6 +34,16 @@ public:
 		return !m_activities.empty() ? m_activities.back() : NULL;
 	}
 	const std::vector< Activity* >& getActivities() const { return m_activities; }
+
+	bool setPrior(RDOFUNArithm* prior)
+	{
+		LPIPriority priority = m_rt_logic;
+		if (priority)
+		{
+			return priority->setPrior(prior->createCalc());
+		}
+		return false;
+	}
 
 protected:
 	LPILogic                 m_rt_logic;

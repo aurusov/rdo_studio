@@ -18,7 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
 RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim)
-	: RDOLogicDown()
+	: RDOLogicSimple()
 {
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }

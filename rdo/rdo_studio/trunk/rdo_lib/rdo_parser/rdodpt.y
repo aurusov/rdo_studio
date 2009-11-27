@@ -262,12 +262,12 @@ dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic {
 							PARSER->error( @2, "Ожидается ключевое слово $Condition" );
 						};
 
-dpt_some_prior:	        dpt_search_condition
+dpt_search_prior:	    dpt_search_condition
 						| dpt_search_condition RDO_Priority fun_arithm
 						{
 							if (!PARSER->getLastDPTSearch()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
 							{
-								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет :-("));
+								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 							}
 						}
 						| dpt_search_condition RDO_Priority error
@@ -279,18 +279,18 @@ dpt_some_prior:	        dpt_search_condition
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
 						};
 
-dpt_search_term:		dpt_search_condition RDO_Term_condition fun_logic {
+dpt_search_term:		dpt_search_prior RDO_Term_condition fun_logic {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition((RDOFUNLogic *)$3);
 						}
-						| dpt_search_condition RDO_Term_condition RDO_NoCheck {
+						| dpt_search_prior RDO_Term_condition RDO_NoCheck {
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition();
 						}
-						| dpt_search_condition RDO_Term_condition error {
+						| dpt_search_prior RDO_Term_condition error {
 							PARSER->error( @2, @3, "После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)" );
 						}
-						| dpt_search_condition error {
+						| dpt_search_prior error {
 							PARSER->error( @2, "Ожидается ключевое слово $Term_condition" );
 						};
 
@@ -434,7 +434,7 @@ dpt_some_prior:	        dpt_some_condition
 						{
 							if (!PARSER->getLastDPTSome()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
 							{
-								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет :-("));
+								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 							}
 						}
 						| dpt_some_condition RDO_Priority error
@@ -537,7 +537,7 @@ dpt_prior_prior:		dpt_prior_condition
 						{
 							if (!PARSER->getLastDPTPrior()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
 							{
-								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет :-("));
+								PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 							}
 						}
 						| dpt_prior_condition RDO_Priority error
@@ -612,6 +612,23 @@ dpt_prior_end:			dpt_prior_header RDO_End {
 // ----------------------------------------------------------------------------
 // ---------- DPT Free
 // ----------------------------------------------------------------------------
+dpt_free_prior:				dpt_free_header
+							| RDO_Priority fun_arithm dpt_free_header
+							{
+								if (!PARSER->getLastDPTFree()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
+								{
+									PARSER->error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
+								}
+							}
+							| RDO_Priority error dpt_free_header
+							{
+								PARSER->error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+							}
+							| error dpt_free_header
+							{
+								PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
+							};
+
 dpt_free_header:			RDO_Activities {
 								$$ = (int)new RDODPTFree( PARSER, @1 );
 							};
@@ -655,7 +672,7 @@ dpt_free_activity_keys:		/* empty */
 								activity->addHotKey( key, @3 );
 							};
 
-dpt_free_end:				dpt_free_header dpt_free_activity RDO_End {
+dpt_free_end:				dpt_free_prior dpt_free_activity RDO_End {
 							}
 							| dpt_free_header error {
 								PARSER->error( @1, "Ожидается ключевое слово $End" );
