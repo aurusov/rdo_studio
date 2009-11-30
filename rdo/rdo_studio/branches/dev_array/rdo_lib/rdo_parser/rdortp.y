@@ -123,7 +123,8 @@
 %token RDO_if							369
 %token RDO_result						370
 %token RDO_CF							371
-%token RDO_Priority                     372
+%token RDO_Priority						372
+%token RDO_array						373
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -375,7 +376,7 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 					RDORTPEnumParamType* rp = new RDORTPEnumParamType( PARSER->getLastParsingObject(), enu, dv, RDOParserSrcInfo( @1, @2 ) );
 					$$ = (int)rp;
 				}
-				| param_array param_array_type /*param_array_default_val*/
+				| param_array /*param_array_default_val*/
 				{
 				/*пока пусто*/
 				}
@@ -660,31 +661,31 @@ param_enum_default_val:	/* empty */ {
 							PARSER->error( _src_info, "Неверное значение по-умолчанию для перечислимого типа" );
 						}
 					};
-					
-param_array: '<' param_array_type '>'
-              {
-              /*пока пусто*/
-              }
-              |
-              {
-              /*место для ошибок*/
-              };
-              
-param_array_type: RDO_integer
-                  {
-                  /*пока пусто*/
-                  }
-                  |
-                  RDO_real
-                  {
-                  /*пока пусто*/
-                  }
-                  |
-                  peram_array
-                  {
-                  /*пока пусто*/
-                  };
-                  
+
+param_array:	RDO_array '<' param_array_type '>'
+				{
+					/*пока пусто*/
+				}
+				|
+				{
+					/*место для ошибок*/
+				};
+
+param_array_type:	RDO_integer
+					{
+						/*пока пусто*/
+					}
+					|
+					RDO_real
+					{
+						/*пока пусто*/
+					}
+					|
+					param_array
+					{
+						/*пока пусто*/
+					};
+
 param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 					std::string type  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					std::string param = reinterpret_cast<RDOValue*>($4)->value().getIdentificator();

@@ -42,6 +42,7 @@ longint				return(RDO_integer);
 real				return(RDO_real);
 string				return(RDO_string);
 bool				return(RDO_bool);
+array				return(RDO_array);
 $End				return(RDO_End);
 $end				return(RDO_End);
 temporary			return(RDO_temporary);
