@@ -229,6 +229,8 @@ cf					return(RDO_CF);
 CF					return(RDO_CF);
 $Priority           return(RDO_Priority);
 $priority           return(RDO_Priority);
+$Parent				return(RDO_Parent);
+$parent				return(RDO_Parent);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);

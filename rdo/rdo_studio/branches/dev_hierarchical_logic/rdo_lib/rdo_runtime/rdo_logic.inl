@@ -75,10 +75,19 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 // ---------- RDOLogic
 // ----------------------------------------------------------------------------
 template <class Order>
+inline RDOLogic<Order>::RDOLogic(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
+	: m_condition    (NULL       )
+	, m_lastCondition(false      )
+	, m_first        (NULL       )
+	, m_parent       (parent ? parent : sim->m_metaLogic)
+{}
+
+template <class Order>
 inline RDOLogic<Order>::RDOLogic()
-	: m_condition    (NULL )
-	, m_lastCondition(false)
-	, m_first        (NULL )
+	: m_condition    (NULL       )
+	, m_lastCondition(false      )
+	, m_first        (NULL       )
+	, m_parent       (NULL       )
 {}
 
 template <class Order>
@@ -89,7 +98,7 @@ template <class Order>
 inline void RDOLogic<Order>::init(PTR(RDOSimulator) sim)
 {
 	if (sim)
-		sim->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>());
+		sim->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>(), this->m_parent);
 }
 
 template <class Order>

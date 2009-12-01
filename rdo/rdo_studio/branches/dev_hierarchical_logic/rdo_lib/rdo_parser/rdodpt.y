@@ -125,6 +125,7 @@
 %token RDO_CF							371
 %token RDO_Priority						372
 %token RDO_prior						373
+%token RDO_Parent                       374
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -207,58 +208,73 @@ dpt_main:
 		| dpt_main dpt_prior_end
 		| dpt_main dpt_free_end
 		| dpt_main dpt_process_end
-		| error {
+		| error
+		{
 			PARSER->error( @1, "Ожидается описание точки или свободного блока активностей" );
 		};
 
 // ----------------------------------------------------------------------------
-// ---------- DPT Search
+// ---------- DPTSearch
 // ----------------------------------------------------------------------------
-dpt_search_trace:		/* empty */ {
+dpt_search_trace:		/* empty */
+						{
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
 						}
-						| RDO_no_trace {
+						| RDO_no_trace
+						{
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
 						}
-						| RDO_trace {
+						| RDO_trace
+						{
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа search" );
 						}
-						| RDO_trace_stat {
+						| RDO_trace_stat
+						{
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_stat;
 						}
-						| RDO_trace_tops {
+						| RDO_trace_tops
+						{
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_tops;
 						}
-						| RDO_trace_all {
+						| RDO_trace_all
+						{
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
 						};
 
-dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace {
+dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace
+						{
 							RDOValue* identificator = reinterpret_cast<RDOValue*>($2);
 							$$ = (int)new RDODPTSearch( PARSER, identificator->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
 						}
-						| RDO_Decision_point RDO_IDENTIF_COLON error {
+						| RDO_Decision_point RDO_IDENTIF_COLON error
+						{
 							PARSER->error( @2, @3, "Ожидается тип точки" );
 						}
-						| RDO_Decision_point RDO_IDENTIF error {
+						| RDO_Decision_point RDO_IDENTIF error
+						{
 							PARSER->error( @2, "Ожидается двоеточие" );
 						}
-						| RDO_Decision_point error {
+						| RDO_Decision_point error
+						{
 							PARSER->error( @1, @2, "После ключевого слова $Decision_point ожидается имя точки" );
 						};
 
-dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic {
+dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCondition((RDOFUNLogic *)$3);
 						}
-						| dpt_search_begin RDO_Condition RDO_NoCheck {
+						| dpt_search_begin RDO_Condition RDO_NoCheck
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCondition();
 						}
-						| dpt_search_begin RDO_Condition error {
+						| dpt_search_begin RDO_Condition error
+						{
 							PARSER->error( @2, @3, "После ключевого слова $Condition ожидается условие начала поиска (начальная вершина)" );
 						}
-						| dpt_search_begin error {
+						| dpt_search_begin error
+						{
 							PARSER->error( @2, "Ожидается ключевое слово $Condition" );
 						};
 
@@ -279,152 +295,238 @@ dpt_search_prior:	    dpt_search_condition
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
 						};
 
-dpt_search_term:		dpt_search_prior RDO_Term_condition fun_logic {
+dpt_search_term:		dpt_search_prior RDO_Term_condition fun_logic
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition((RDOFUNLogic *)$3);
 						}
-						| dpt_search_prior RDO_Term_condition RDO_NoCheck {
+						| dpt_search_prior RDO_Term_condition RDO_NoCheck
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setTermCondition();
 						}
-						| dpt_search_prior RDO_Term_condition error {
+						| dpt_search_prior RDO_Term_condition error
+						{
 							PARSER->error( @2, @3, "После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)" );
 						}
-						| dpt_search_prior error {
+						| dpt_search_prior error
+						{
 							PARSER->error( @2, "Ожидается ключевое слово $Term_condition" );
 						};
 
-dpt_search_evaluate:	dpt_search_term RDO_Evaluate_by fun_arithm {
+dpt_search_evaluate:	dpt_search_term RDO_Evaluate_by fun_arithm
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setEvaluateBy((RDOFUNArithm *)$3);
 						}
-						| dpt_search_term RDO_Evaluate_by error {
+						| dpt_search_term RDO_Evaluate_by error
+						{
 							PARSER->error( @2, @3, "После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину" );
 						}
-						| dpt_search_term error {
+						| dpt_search_term error
+						{
 							PARSER->error( @2, "Ожидается ключевое слово $Evaluate_by" );
 						};
 
-dp_searcht_compare:		dpt_search_evaluate RDO_Compare_tops '=' RDO_NO {
+dp_searcht_compare:		dpt_search_evaluate RDO_Compare_tops '=' RDO_NO
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCompareTops(false);
 						}
-						| dpt_search_evaluate RDO_Compare_tops '=' RDO_YES {
+						| dpt_search_evaluate RDO_Compare_tops '=' RDO_YES
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->setCompareTops(true);
 						}
-						| dpt_search_evaluate RDO_Compare_tops '=' error {
+						| dpt_search_evaluate RDO_Compare_tops '=' error
+						{
 							PARSER->error( @3, @4, "Ожидается режим запоминания пройденных вершин (YES или NO)" );
 						}
-						| dpt_search_evaluate RDO_Compare_tops error {
+						| dpt_search_evaluate RDO_Compare_tops error
+						{
 							PARSER->error( @2, @3, "Ожидается знак равенства" );
 						}
-						| dpt_search_evaluate error {
+						| dpt_search_evaluate error
+						{
 							PARSER->error( @2, "Ожидается ключевое слово $Compare_tops" );
 						};
 
 dpt_search_descr_param:	/* empty */
-						| dpt_search_descr_param  '*'               { PARSER->getLastDPTSearch()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
-						| dpt_search_descr_param  RDO_INT_CONST     { PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_search_descr_param  RDO_REAL_CONST    { PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_search_descr_param  RDO_BOOL_CONST    { PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_search_descr_param  RDO_STRING_CONST  { PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_search_descr_param  RDO_IDENTIF       { PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) };
+						| dpt_search_descr_param  '*'
+						{
+							PARSER->getLastDPTSearch()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) )
+						}
+						| dpt_search_descr_param  RDO_INT_CONST
+						{
+							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_search_descr_param  RDO_REAL_CONST
+						{
+							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_search_descr_param  RDO_BOOL_CONST
+						{
+							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_search_descr_param  RDO_STRING_CONST
+						{
+							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_search_descr_param  RDO_IDENTIF
+						{
+							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						};
 
-dpt_search_descr_value:	RDO_value_before fun_arithm {
+dpt_search_descr_value:	RDO_value_before fun_arithm
+						{
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
 							dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
-						| RDO_value_after fun_arithm {
+						| RDO_value_after fun_arithm
+						{
 							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
 							dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
 						}
-						| RDO_value_before error {
+						| RDO_value_before error
+						{
 							PARSER->error( @1, @2, "Ошибка в арифметическом выражении" );
 						}
-						| RDO_value_after error {
+						| RDO_value_after error
+						{
 							PARSER->error( @1, @2, "Ошибка в арифметическом выражении" );
 						};
 
-dpt_search_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
+dpt_search_name:		RDO_IDENTIF_COLON RDO_IDENTIF
+						{
 							RDODPTSearch* dpt   = PARSER->getLastDPTSearch();
 							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
 							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
 							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
 						}
-						| RDO_IDENTIF_COLON error {
+						| RDO_IDENTIF_COLON error
+						{
 							PARSER->error( @1, @2, "Ожидается имя образца" );
 						}
-						| RDO_IDENTIF {
+						| RDO_IDENTIF
+						{
 							PARSER->error( @1, "Ожидается ':'" );
 						}
-						| error {
+						| error
+						{
 							PARSER->error( @1, "Ожидается имя активности" );
 						};
 
 dpt_searcht_activity:	/* empty */
-						| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value {
+						| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
+						{
 							RDODPTSearchActivity* activity = reinterpret_cast<RDODPTSearchActivity*>($2);
 							activity->endParam( @3 );
 						}
-						| dpt_searcht_activity dpt_search_name dpt_search_descr_param error {
+						| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
+						{
 							PARSER->error( @3, @4, "Ожидаются ключевые слова value before или value after и стоимость применения правила" );
 						};
 
-dpt_search_header:		dp_searcht_compare RDO_Activities dpt_searcht_activity {
+dpt_search_header:		dp_searcht_compare RDO_Activities dpt_searcht_activity
+						{
 						}
-						| dp_searcht_compare error {
+						| dp_searcht_compare error
+						{
 							PARSER->error( @1, @2, "После режима запоминания пройденных вершин ожидается ключевое слово $Activities" );
 						};
 
-dpt_search_end:			dpt_search_header RDO_End {
+dpt_search_end:			dpt_search_header RDO_End
+						{
 							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
 							dpt->end();
 						}
-						| dpt_search_header {
+						| dpt_search_header
+						{
 							PARSER->error( @1, "Ожидается ключевое слово $End" );
 						};
 
 // ----------------------------------------------------------------------------
-// ---------- DPT Some
+// ---------- DPTSome
 // ----------------------------------------------------------------------------
-dpt_some_trace:			/* empty */ {
+dpt_some_trace:			/* empty */
+						{
 							$$ = 1;
 						}
-						| RDO_no_trace {
+						| RDO_no_trace
+						{
 							$$ = 1;
 						}
-						| RDO_trace {
+						| RDO_trace
+						{
 							$$ = 2;
 						}
-						| RDO_trace_stat {
+						| RDO_trace_stat
+						{
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа some" );
 						}
-						| RDO_trace_tops {
+						| RDO_trace_tops
+						{
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа some" );
 						}
-						| RDO_trace_all {
+						| RDO_trace_all
+						{
 							PARSER->error( @1, "Данный признак трассировки не используется в точке типа some" );
 						};
 
-dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace {
-							// TODO: а где признак трассировки для some ?
+dpt_some_parent:		/* empty */
+						{
+							$$ = 0;
+						}
+						| RDO_Parent RDO_IDENTIF
+						{
 							RDOValue* name = reinterpret_cast<RDOValue*>($2);
-							$$ = (int)new RDODPTSome( PARSER, name->src_info() );
+							PARSER->warning( @1, rdo::format("Нашел в качестве родительской точку %s", name->value().getIdentificator().c_str()) );
+							$$ = $2;
+						}
+						| RDO_Parent error
+						{
+							PARSER->error( @1, "Ошибка в имени родительской точки" );
 						};
 
-dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic {
+dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace dpt_some_parent
+						{
+							RDOValue* name   = reinterpret_cast<RDOValue*>($2);
+							RDOValue* parent = reinterpret_cast<RDOValue*>($5);
+							if ( parent != 0 )
+							{
+								const RDODPTSome* parent_DPTSome = PARSER->findDPTSome( parent->value().getIdentificator() );
+								if ( parent_DPTSome == NULL)
+								{
+									PARSER->error( @1, rdo::format("Не найдена родитеская точка %s", parent->value().getIdentificator().c_str()) );
+								}
+								if ( parent_DPTSome != NULL)
+								{
+									$$ = (int)new RDODPTSome( PARSER, name->src_info(), static_cast<const RDODPTSome*>(parent_DPTSome) );
+								}
+								
+							}
+							if ( parent == 0 )
+							{
+								$$ = (int)new RDODPTSome( PARSER, name->src_info(), NULL );
+							}
+						};
+
+dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic
+						{
 							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
 							dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
 						}
-						| dpt_some_begin RDO_Condition RDO_NoCheck {
+						| dpt_some_begin RDO_Condition RDO_NoCheck
+						{
 							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
 							dpt->setCondition();
 						}
-						| dpt_some_begin RDO_Condition error {
+						| dpt_some_begin RDO_Condition error
+						{
 							PARSER->error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
 						}
-						| dpt_some_begin {
+						| dpt_some_begin
+						{
 							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
 							dpt->setCondition();
 						};
@@ -446,46 +548,70 @@ dpt_some_prior:	        dpt_some_condition
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Priority" )
 						};
 
-dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
+dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF
+						{
 							RDODPTSome* dpt   = PARSER->getLastDPTSome();
 							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
 							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
 							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
 						}
-						| RDO_IDENTIF_COLON error {
+						| RDO_IDENTIF_COLON error
+						{
 							PARSER->error( @1, @2, "Ожидается имя образца" );
 						};
 
 dpt_some_descr_param:	/* empty */
-						| dpt_some_descr_param  '*'               { PARSER->getLastDPTSome()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
-						| dpt_some_descr_param  RDO_INT_CONST     { PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_some_descr_param  RDO_REAL_CONST    { PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_some_descr_param  RDO_BOOL_CONST    { PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_some_descr_param  RDO_STRING_CONST  { PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_some_descr_param  RDO_IDENTIF       { PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-
+						| dpt_some_descr_param  '*'
+						{
+							PARSER->getLastDPTSome()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) )
+						}
+						| dpt_some_descr_param  RDO_INT_CONST
+						{
+							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_some_descr_param  RDO_REAL_CONST
+						{
+							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_some_descr_param  RDO_BOOL_CONST
+						{
+							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_some_descr_param  RDO_STRING_CONST
+						{
+							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
+						| dpt_some_descr_param  RDO_IDENTIF
+						{
+							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+						}
 						| dpt_some_descr_param error
 						{
 							PARSER->error( @1, @2, "Ошибка описания параметра образца" )
 						};
 
 dpt_some_activity:		/* empty */
-						| dpt_some_activity dpt_some_name dpt_some_descr_param{
+						| dpt_some_activity dpt_some_name dpt_some_descr_param
+						{
 							RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
 							activity->endParam( @3 );
 						};
 
-dpt_some_header:		dpt_some_prior RDO_Activities dpt_some_activity {
+dpt_some_header:		dpt_some_prior RDO_Activities dpt_some_activity
+						{
 						}
-						| dpt_some_prior error {
+						| dpt_some_prior error
+						{
 							PARSER->error( @1, @2, "Ожидается ключевое слово $Activities" );
 						};
 
-dpt_some_end:			dpt_some_header RDO_End {
+dpt_some_end:			dpt_some_header RDO_End
+						{
 							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
 							dpt->end();
 						}
-						| dpt_some_header {
+						| dpt_some_header
+						{
 							PARSER->error( @1, "Ожидается ключевое слово $End" );
 						};
 

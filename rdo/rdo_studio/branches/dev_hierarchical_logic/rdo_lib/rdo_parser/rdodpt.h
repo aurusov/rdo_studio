@@ -129,7 +129,7 @@ private:
 class RDODPTSome: public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 {
 public:
-	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDODPTSome* parent_DPTSome );
 
 	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }

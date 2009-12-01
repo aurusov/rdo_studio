@@ -273,11 +273,11 @@ RDODPTPriorActivity::RDODPTPriorActivity( const RDOParserObject* _parent, const 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDODPTSome* parent_DPTSome ):
 	RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>( _parser, _src_info )
 {
 	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime());
+	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime(), parent_DPTSome ? parent_DPTSome->m_rt_logic : NULL);
 	m_rt_logic->init(parser()->runtime());
 	parser()->insertDPTSome(this);
 }

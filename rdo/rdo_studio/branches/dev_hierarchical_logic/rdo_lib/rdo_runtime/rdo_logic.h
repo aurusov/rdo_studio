@@ -43,14 +43,16 @@ public:
 
 protected:
 	RDOLogic();
+	RDOLogic(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent);
 	virtual ~RDOLogic();
 
 	DECLARE_IBaseOperationContainer;
 
-	PTR(RDOCalc)      m_condition;
-	rbool             m_lastCondition;
-	ChildList         m_childList;
-	LPIBaseOperation  m_first;
+	PTR(RDOCalc)               m_condition;
+	rbool                      m_lastCondition;
+	ChildList                  m_childList;
+	LPIBaseOperation           m_first;
+	LPIBaseOperationContainer  m_parent;
 
 private:
 	rbool checkSelfCondition(PTR(RDOSimulator) sim);
@@ -89,6 +91,9 @@ protected:
 
 	RDOLogicSimple()
 		: RDOLogic<RDOOrderSimple>()
+	{}
+	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
+		: RDOLogic<RDOOrderSimple>(sim, parent)
 	{}
 	virtual ~RDOLogicSimple()
 	{}
