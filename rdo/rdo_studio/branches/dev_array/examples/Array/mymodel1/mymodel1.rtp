@@ -1,0 +1,9 @@
+$Resource_type Тип_1 : permanent
+$Parameters
+	Параметр_1 : integer
+	Параметр_2 : real
+	Параметр_3 : string
+	Параметр_4 : bool
+	Параметр_5 : (Значение_1, Значение_2, Значение_3, Значение_4)
+	Параметр_6 : array<array<array<array<bool>>>>
+$End
