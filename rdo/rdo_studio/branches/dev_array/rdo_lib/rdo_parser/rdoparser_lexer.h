@@ -26,14 +26,16 @@ public:
 		yyout( _yyout ),
 		m_lpval( NULL ),
 		m_lploc( NULL ),
-		m_enum_param_cnt( 0 )
+		m_enum_param_cnt( 0 ),
+		m_array_param_cnt( 0 )
 	{
 	};
 
-	RDOParser*   m_parser;
-	int*         m_lpval;
-	YYLTYPE*     m_lploc;
-	int          m_enum_param_cnt;
+	RDOParser*		m_parser;
+	int*			m_lpval;
+	YYLTYPE*		m_lploc;
+	int				m_enum_param_cnt;
+	int				m_array_param_cnt;
 
 	void loc_init()
 	{
