@@ -43,13 +43,13 @@ public:
 	LPIBaseOperationContainer m_metaLogic;
 
 protected:
-	void appendBaseOperation(CREF(LPIBaseOperation) op)
+	void appendBaseOperation(LPIBaseOperationContainer parent, CREF(LPIBaseOperation) op)
 	{
 		ASSERT(op);
-		ASSERT(!m_metaLogic->empty());
-		LPIBaseOperationContainer logic = m_metaLogic->back();
-		ASSERT(logic);
-		logic->append(op);
+//		ASSERT(!m_metaLogic->empty());
+//		LPIBaseOperationContainer logic = m_metaLogic->back();
+		ASSERT(parent);
+		parent->append(op);
 	}
 
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания

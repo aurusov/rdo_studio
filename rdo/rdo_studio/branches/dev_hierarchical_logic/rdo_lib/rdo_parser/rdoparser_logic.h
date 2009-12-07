@@ -24,7 +24,7 @@ public:
 
 	Activity* addNewActivity( const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info )
 	{
-		Activity* activity = new Activity( this, activity_src_info, pattern_src_info );
+		Activity* activity = new Activity( this->m_rt_logic, this, activity_src_info, pattern_src_info );
 		m_activities.push_back( activity );
 		return activity;
 	}

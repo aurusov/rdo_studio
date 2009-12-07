@@ -110,7 +110,6 @@ public:
 	void checkFunctionName( const RDOParserSrcInfo& _src_info );
 	void checkActivityName( const RDOParserSrcInfo& _src_info );
 	void checkDPTName( const RDOParserSrcInfo& _src_info );
-	void findDPTName( const RDOParserSrcInfo& _parent_info );
 
 	std::vector< RDOFUNGroup* >& getFUNGroupStack() { return m_allFUNGroup; }
 

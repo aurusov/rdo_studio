@@ -91,7 +91,7 @@ public:
 
 	double getNextTimeInterval( PTR(RDORuntime) runtime );
 
-	LPIIrregEvent createActivity(PTR(RDORuntime) runtime, CREF(tstring) oprName);
+	LPIIrregEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
 
 private:
 	PTR(RDOCalc)                                  m_timeCalc;
@@ -129,8 +129,8 @@ public:
 		runCalcs( m_erase, runtime );
 	}
 
-	LPIRule createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName);
-	LPIRule createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName);
 
 private:
 	std::vector< PTR(RDOCalc) >                   m_choiceFrom;
@@ -185,8 +185,8 @@ public:
 
 	double getNextTimeInterval( PTR(RDORuntime) runtime );
 
-	LPIOperation createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName);
-	LPIOperation createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName);
 
 private:
 	PTR(RDOCalc)                                  m_timeCalc;
@@ -209,8 +209,8 @@ class RDOPatternKeyboard: public RDOPatternOperation
 public:
 	RDOPatternKeyboard( PTR(RDORuntime) rTime, bool trace );
 
-	LPIKeyboard createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName);
-	LPIKeyboard createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName);
+	LPIKeyboard createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
+	LPIKeyboard createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName);
 };
 
 } // namespace rdoRuntime

@@ -20,8 +20,8 @@ void oprerror( char* mes )
 // ----------------------------------------------------------------------------
 // ---------- RDOOPROperation
 // ----------------------------------------------------------------------------
-RDOOPROperation::RDOOPROperation( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivityHotKey( parent, _src_info, _pattern_src_info )
+RDOOPROperation::RDOOPROperation( LPIBaseOperationContainer dpt, const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( dpt, parent, _src_info, _pattern_src_info )
 {
 	parser()->insertOPROperation( this );
 }

@@ -241,10 +241,49 @@ dpt_search_trace:		/* empty */
 							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
 						};
 
-dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace
+dpt_search_parent:		/* empty */
 						{
-							RDOValue* identificator = reinterpret_cast<RDOValue*>($2);
-							$$ = (int)new RDODPTSearch( PARSER, identificator->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
+							$$ = 0;
+						}
+						| RDO_Parent RDO_IDENTIF
+						{
+							$$ = $2;
+						}
+						| RDO_Parent error
+						{
+							PARSER->error( @1, "ќшибка в имени родительской точки" );
+						};
+
+dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace dpt_search_parent
+						{
+							RDOValue* name   = reinterpret_cast<RDOValue*>($2);
+							RDOValue* parent = reinterpret_cast<RDOValue*>($5);
+							if ( parent != 0 )
+							{
+								const RDODPTPrior*  parentDPTPrior  = PARSER->findDPTPrior(  parent->value().getIdentificator() );
+								const RDODPTSearch* parentDPTSearch = PARSER->findDPTSearch( parent->value().getIdentificator() );
+								const RDODPTSome*   parentDPTSome   = PARSER->findDPTSome(   parent->value().getIdentificator() );
+								if ( parentDPTPrior == NULL && parentDPTSearch == NULL && parentDPTSome == NULL )
+								{
+									PARSER->error( @1, rdo::format("Ќе найдена родитеска€ точка %s", parent->value().getIdentificator().c_str()) );
+								}
+								if ( parentDPTPrior  != NULL )
+								{
+									$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4), static_cast<const RDODPTPrior*>(parentDPTPrior) );
+								}
+								if ( parentDPTSearch  != NULL )
+								{
+									PARSER->error( @1, "“очка прин€ти€ решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки" );
+								}
+								if ( parentDPTSome   != NULL )
+								{
+									$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4), static_cast<const RDODPTSome*>(parentDPTSome) );
+								}
+							}
+							if ( parent == 0 )
+							{
+								$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4), reinterpret_cast<const RDODPTPrior*>(parent) );
+							}
 						}
 						| RDO_Decision_point RDO_IDENTIF_COLON error
 						{
@@ -479,8 +518,6 @@ dpt_some_parent:		/* empty */
 						}
 						| RDO_Parent RDO_IDENTIF
 						{
-							RDOValue* name = reinterpret_cast<RDOValue*>($2);
-							PARSER->warning( @1, rdo::format("Ќашел в качестве родительской точку %s", name->value().getIdentificator().c_str()) );
 							$$ = $2;
 						}
 						| RDO_Parent error
@@ -494,20 +531,29 @@ dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace d
 							RDOValue* parent = reinterpret_cast<RDOValue*>($5);
 							if ( parent != 0 )
 							{
-								const RDODPTSome* parent_DPTSome = PARSER->findDPTSome( parent->value().getIdentificator() );
-								if ( parent_DPTSome == NULL)
+								const RDODPTPrior*  parentDPTPrior  = PARSER->findDPTPrior(  parent->value().getIdentificator() );
+								const RDODPTSearch* parentDPTSearch = PARSER->findDPTSearch( parent->value().getIdentificator() );
+								const RDODPTSome*   parentDPTSome   = PARSER->findDPTSome(   parent->value().getIdentificator() );
+								if ( parentDPTPrior == NULL && parentDPTSearch == NULL && parentDPTSome == NULL )
 								{
 									PARSER->error( @1, rdo::format("Ќе найдена родитеска€ точка %s", parent->value().getIdentificator().c_str()) );
 								}
-								if ( parent_DPTSome != NULL)
+								if ( parentDPTPrior  != NULL )
 								{
-									$$ = (int)new RDODPTSome( PARSER, name->src_info(), static_cast<const RDODPTSome*>(parent_DPTSome) );
+									$$ = (int)new RDODPTSome( PARSER, name->src_info(), static_cast<const RDODPTPrior*>(parentDPTPrior) );
 								}
-								
+								if ( parentDPTSearch  != NULL )
+								{
+									PARSER->error( @5, @1, "“очка прин€ти€ решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки" );
+								}
+								if ( parentDPTSome   != NULL )
+								{
+									$$ = (int)new RDODPTSome( PARSER, name->src_info(), static_cast<const RDODPTSome*>(parentDPTSome) );
+								}
 							}
 							if ( parent == 0 )
 							{
-								$$ = (int)new RDODPTSome( PARSER, name->src_info(), NULL );
+								$$ = (int)new RDODPTSome( PARSER, name->src_info() );
 							}
 						};
 
@@ -637,9 +683,49 @@ dpt_prior_trace:		/* empty */ {
 							PARSER->error( @1, "ƒанный признак трассировки не используетс€ в точке типа prior" );
 						};
 
-dpt_prior_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_trace {
-							RDOValue* name = reinterpret_cast<RDOValue*>($2);
-							$$ = (int)new RDODPTPrior( PARSER, name->src_info() );
+dpt_prior_parent:		/* empty */
+						{
+							$$ = 0;
+						}
+						| RDO_Parent RDO_IDENTIF
+						{
+							$$ = $2;
+						}
+						| RDO_Parent error
+						{
+							PARSER->error( @1, "ќшибка в имени родительской точки" );
+						};
+
+dpt_prior_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_trace dpt_prior_parent
+						{
+							RDOValue* name   = reinterpret_cast<RDOValue*>($2);
+							RDOValue* parent = reinterpret_cast<RDOValue*>($5);
+							if ( parent != 0 )
+							{
+								const RDODPTPrior*  parentDPTPrior  = PARSER->findDPTPrior(  parent->value().getIdentificator() );
+								const RDODPTSearch* parentDPTSearch = PARSER->findDPTSearch( parent->value().getIdentificator() );
+								const RDODPTSome*   parentDPTSome   = PARSER->findDPTSome(   parent->value().getIdentificator() );
+								if ( parentDPTPrior == NULL && parentDPTSome == NULL && parentDPTSearch == NULL )
+								{
+									PARSER->error( @1, rdo::format("Ќе найдена родитеска€ точка %s", parent->value().getIdentificator().c_str()) );
+								}
+								if ( parentDPTPrior  != NULL )
+								{
+									$$ = (int)new RDODPTPrior( PARSER, name->src_info(), static_cast<const RDODPTPrior*>(parentDPTPrior) );
+								}
+								if ( parentDPTSearch  != NULL )
+								{
+									PARSER->error( @5, @1, "“очка прин€ти€ решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки" );
+								}
+								if ( parentDPTSome   != NULL )
+								{
+									$$ = (int)new RDODPTPrior( PARSER, name->src_info(), static_cast<const RDODPTSome*>(parentDPTSome) );
+								}
+							}
+							if ( parent == 0 )
+							{
+								$$ = (int)new RDODPTPrior( PARSER, name->src_info() );
+							}
 						};
 
 dpt_prior_condition:	dpt_prior_begin RDO_Condition fun_logic {

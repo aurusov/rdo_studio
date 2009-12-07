@@ -48,8 +48,8 @@ public:
 	DPT_TraceFlag traceFlag;
 
 protected:
-	RDODPTSearchTrace( RDOSimulatorTrace* sim ):
-		RDODPTSearch( sim ),
+	RDODPTSearchTrace( RDOSimulatorTrace* sim, LPIBaseOperationContainer parent ):
+		RDODPTSearch( sim, parent ),
 		RDOTraceableObject( false ),
 		calc_cnt( 0 ),
 		calc_res_found_cnt( 0 )
