@@ -92,7 +92,7 @@ protected:
 	RDOLogicSimple()
 		: RDOLogic<RDOOrderSimple>()
 	{}
-	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
+	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent = NULL)
 		: RDOLogic<RDOOrderSimple>(sim, parent)
 	{}
 	virtual ~RDOLogicSimple()
