@@ -13,9 +13,10 @@ void main()
 {
 	RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Red")("Green")("Type"));
 
-	RDOType* arraytype;
-	arraytype->
-	RDOArrayType* arrayType = new RDOArrayType(NULL,arraytype);
+	RDOArrayType* arrayType  = new RDOArrayType(NULL, enumType);
+	RDOArrayType* arrayType2 = new RDOArrayType(NULL, arrayType);
+
+	std::string className = arrayType2->asString();
 
 	int i = 1;
 }
