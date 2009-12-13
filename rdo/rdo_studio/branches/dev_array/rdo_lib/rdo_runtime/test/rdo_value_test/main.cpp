@@ -1,25 +1,26 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : main.cpp
- * author   : Урусов Андрей
- * date     : 13.07.2009
- * bref     : тест для RDOValue
- * indent   : 4T
- */
-
 // ====================================================================== INCLUDES
 #include <iostream>
 // ====================================================================== SYNOPSIS
 #include "rdo_value.h"
+#include "rdo_enum.h"
+#include "rdo_array.h"
+#include "rdo_type.h"
 // ===============================================================================
 
 using namespace rdoRuntime;
 
 void main()
 {
-	int i = 1;
-	RDOValue value1("qqq");
-	RDOValue value2 = value1;
-	value2 += "aaa";
+	/*RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Red")("Green")("Type"));
+
+	RDOValue value1(*enumType, "Red"  );
+	RDOValue value2(*enumType, "Green");
+	RDOValue value3(*enumType, "Green");
+	bool equal, equal1;
+	equal = value1 == value2;
+	equal1 = value2 == value3;*/
+	RDOType* b;
+	RDOArrayType* a;
+
 	int i = 1;
 }
