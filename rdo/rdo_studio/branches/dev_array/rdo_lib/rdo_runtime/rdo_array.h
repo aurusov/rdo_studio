@@ -17,6 +17,7 @@ class RDOArrayType: public RDOType, public RDORuntimeObject
 public:
 	typedef CPTR(RDOType) ArrayType;
 
+	RDOArrayType(PTR(RDORuntimeParent) parent);
 	RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype);
 
 	virtual tstring  asString()                    const;

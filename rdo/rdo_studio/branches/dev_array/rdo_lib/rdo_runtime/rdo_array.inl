@@ -4,7 +4,11 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype)
+inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent)
+	: RDORuntimeObject(parent          )
+	, RDOType         (RDOType::t_array)
+{}
+	inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
 	, m_arrayType     (arraytype       )
