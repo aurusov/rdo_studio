@@ -251,6 +251,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdoprocess_shape_decide_dlg1.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\rdoprocess_shape_MJ.cpp"
 				>
 				<FileConfiguration
@@ -502,6 +506,10 @@
 			</File>
 			<File
 				RelativePath=".\rdoprocess_shape_decide.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoprocess_shape_decide_dlg1.h"
 				>
 			</File>
 			<File

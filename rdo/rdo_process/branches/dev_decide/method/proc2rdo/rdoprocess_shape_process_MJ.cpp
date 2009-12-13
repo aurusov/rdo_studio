@@ -306,28 +306,8 @@ RDOfiles->pattern <<std::endl
 	<<std::endl<<"	Convert_begin"
 	<<std::endl<<"		Âûõîä_î÷åğåäè set ñâîáîäåí"
     <<std::endl
-	<<std::endl
+	<<std::endl;
 	  
-	<<std::endl<<"_transact_X"	
-	<<std::endl<<"	Choice from _transact_X.Ñîñòîÿíèå_òğàíñïîğòèğîâêè = â_î÷åğåäè_âûõîä and"
-	<<std::endl<<"	_transact_X.Ìåñòî_íàõîæäåíèÿ = "<<getName().c_str() 
-	<<std::endl<<"		first"
-	<<std::endl<<"	Convert_begin"
-	
-	
-	<<std::endl<<"		Ñîñòîÿíèå_òğàíñïîğòèğîâêè set çàõâà÷åí"
-	<<std::endl<<"		Ìåñòî_íàõîæäåíèÿ_áóäóùåå set "<<id_next.c_str()
-	<<std::endl
-	<<std::endl<<"	Convert_end"
-	<<std::endl<<"		Ñîñòîÿíèå_òğàíñïîğòèğîâêè set îæèäàåò"
-	
-	
-	<<std::endl<<"{ÒÀÊÈÌ ÎÁĞÀÇÎÌ ÈÄÅÍÒÈ×ÍÎ ÍÓÆÍÎ ÏĞÎÉÒÈÑÜ ÏÎ ÂÑÅÌ ĞÅËËÅÂÀÍÒÍÛÌ ĞÅÑÓĞÑÀÌ}	"
-	<<std::endl<<std::endl;
-
-
-
-
 //îïèñàíèå ğåññóğñà
 	it = list_resource_procMJ.begin();
 	while( it != list_resource_procMJ.end() ) 
@@ -355,8 +335,23 @@ RDOfiles->pattern <<std::endl
 	it++;
 	}
 
-
-
+	RDOfiles->pattern <<std::endl
+	<<std::endl<<"_transact_X"	
+	<<std::endl<<"	Choice from _transact_X.Ñîñòîÿíèå_òğàíñïîğòèğîâêè = â_î÷åğåäè_âûõîä and"
+	<<std::endl<<"	_transact_X.Ìåñòî_íàõîæäåíèÿ = "<<getName().c_str() 
+	<<std::endl<<"		first"
+	<<std::endl<<"	Convert_begin"
+	
+	
+	<<std::endl<<"		Ñîñòîÿíèå_òğàíñïîğòèğîâêè set çàõâà÷åí"
+	<<std::endl<<"		Ìåñòî_íàõîæäåíèÿ_áóäóùåå set "<<id_next.c_str()
+	<<std::endl
+	<<std::endl<<"	Convert_end"
+	<<std::endl<<"		Ñîñòîÿíèå_òğàíñïîğòèğîâêè set îæèäàåò"
+	
+	
+	<<std::endl<<"{ÒÀÊÈÌ ÎÁĞÀÇÎÌ ÈÄÅÍÒÈ×ÍÎ ÍÓÆÍÎ ÏĞÎÉÒÈÑÜ ÏÎ ÂÑÅÌ ĞÅËËÅÂÀÍÒÍÛÌ ĞÅÑÓĞÑÀÌ}	"
+	<<std::endl<<std::endl;
 
 RDOfiles->pattern <<std::endl<<std::endl
 

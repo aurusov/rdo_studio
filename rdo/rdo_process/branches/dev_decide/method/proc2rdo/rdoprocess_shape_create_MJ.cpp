@@ -33,7 +33,7 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	// инициализация параметров для генерирования
 	gname; // имя
 	 gfirst=0; // время первого
-	gamount=1000000; // кол-во создаваемых
+	gamount=100; // кол-во создаваемых
 	gtype=0; // закон прибытия
 	base_gen=1234567890;
 	//атрибуты законов
@@ -105,7 +105,7 @@ proc2rdo->list_pattern_names.push_back(name_value);
 	RPCreationRDOFilesMJ* RDOfiles = proc2rdo->RDOfiles;
 	RDOfiles->resourse<<std::endl<<std::endl<<"{-------блок cretae ------" <<getName().c_str()<<"-------------------}" <<std::endl
 
-	<<"Create_"<<getName().c_str()<<" : Creates false 1";
+	<<"Create_"<<getName().c_str()<<" : Creates _false 1";
 
 
 
@@ -122,7 +122,7 @@ proc2rdo->list_pattern_names.push_back(name_value);
 	<<std::endl<<"$Body"
 	<<std::endl<<"_parameter"
 	<<std::endl<<" Convert_event"
-	<<std::endl<<"par_1      set true {говорит о том , что это уже не первый}"
+	<<std::endl<<"par_1      set _true {говорит о том , что это уже не первый}"
 	<<std::endl<<"par_amount set _parameter.par_amount + 1" 
 	<<std::endl	
 	<<std::endl<<"_transact"
@@ -195,10 +195,10 @@ RDOfiles->function<<std::endl
 <<std::endl<<"$Body"
 <<std::endl<<"  Calculate_if _par_amount > "<<gamount<<"{колличество создаваемых танзактов}  fun_"<<getName().c_str()<<"="<<inf
 <<std::endl 
-<<std::endl<<"  Calculate_if _par = false and _par_amount <= "<<gamount<<"{колличество создаваемых танзактов} "
+<<std::endl<<"  Calculate_if _par = _false and _par_amount <= "<<gamount<<"{колличество создаваемых танзактов} "
 <<std::endl<<"  fun_"<<getName().c_str()<<"="<<gfirst<<"{время появление первого транзакта}"
 <<std::endl  
-<<std::endl<<"  Calculate_if _par = true and _par_amount <= "<<gamount<<"{колличество создаваемых танзактов} "
+<<std::endl<<"  Calculate_if _par = _true and _par_amount <= "<<gamount<<"{колличество создаваемых танзактов} "
 <<std::endl<<"  fun_"<<getName().c_str()<<"=";
 
 // добовляем закон

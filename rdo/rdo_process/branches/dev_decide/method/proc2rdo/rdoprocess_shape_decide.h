@@ -24,15 +24,10 @@ public:
 
 	virtual rp::string getClassName() const { return "RPShapeDecide"; }
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
-
-	void define_rule();
-	//virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
-	//virtual void list_name();
+	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
-
-	
-
-
+	double ptrue; 
+	double pfalse; 
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)

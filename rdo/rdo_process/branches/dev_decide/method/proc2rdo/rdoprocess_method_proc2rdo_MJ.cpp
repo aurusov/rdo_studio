@@ -115,14 +115,18 @@ void RPMethodProc2RDO_MJ::buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_upda
 
 void RPMethodProc2RDO_MJ::generate()
 {
-	RDOfiles->pattern.open(_T("aaa\\RDO_PROCESS.pat"));
-	RDOfiles->resourse.open(_T("aaa\\RDO_PROCESS.rss"));
-	RDOfiles->function.open(_T("aaa\\RDO_PROCESS.fun"));
+	//RPConnectorDock* dock = NULL;
+	//if (RPConnectorDock::can_connect(dock));
+	if (CreateDirectory("Mymodel01", NULL));
 
-	RDOfiles->typeres.open(_T("aaa\\RDO_PROCESS.rtp"));
-	RDOfiles->operations.open(_T("aaa\\RDO_PROCESS.opr"));
-	RDOfiles->smr.open(_T("aaa\\RDO_PROCESS.smr"));
-	RDOfiles->statistic.open(_T("aaa\\RDO_PROCESS.pmd"));
+	RDOfiles->pattern.open(_T("Mymodel01\\RDO_PROCESS.pat"));
+	RDOfiles->resourse.open(_T("Mymodel01\\RDO_PROCESS.rss"));
+	RDOfiles->function.open(_T("Mymodel01\\RDO_PROCESS.fun"));
+
+	RDOfiles->typeres.open(_T("Mymodel01\\RDO_PROCESS.rtp"));
+	RDOfiles->operations.open(_T("Mymodel01\\RDO_PROCESS.opr"));
+	RDOfiles->smr.open(_T("Mymodel01\\RDO_PROCESS.smr"));
+	RDOfiles->statistic.open(_T("Mymodel01\\RDO_PROCESS.pmd"));
 
 	blank_rdo_MJ();
 
@@ -132,20 +136,33 @@ void RPMethodProc2RDO_MJ::generate()
 	class_names.push_back( "RPShapeCreateMJ" );
 	class_names.push_back( "RPShapeProcessMJ" );
 	class_names.push_back( "RPShapeTerminateMJ" );
-	rpMethod::project->getAllChildByClasses( all_child, class_names, true );//???
+	class_names.push_back( "RPShapeDecide" );
+	rpMethod::project->getAllChildByClasses( all_child, class_names, true );
 	std::list< RPObject* >::const_iterator block_it = all_child.begin();
 	while ( block_it != all_child.end() ) {
 		std::list< RPShape* > list = static_cast<RPShape*>(*block_it)->getNextBlock();
 		if ( !list.empty() ) {
 			dynamic_cast<RPObject_MJ*>(*block_it)->id_next = list.front()->getName();
 			rp::string s = dynamic_cast<RPObject_MJ*>(*block_it)->id_next;
+			if((*block_it)->getClassName()=="RPShapeDecide"){
+				dynamic_cast<RPObject_MJ*>(*block_it)->id_next2 = list.back()->getName();
+				rp::string s2 = dynamic_cast<RPObject_MJ*>(*block_it)->id_next2;
+				if(s2==s){
+					dynamic_cast<RPObject_MJ*>(*block_it)->id_next2 = "В никуда";
+					TRACE( "%s\n", "ДЕСАЙД ДОЛЖЕН ИМЕТЬ 2 ВЕТВИ!!\nА НЕ ОДНУ!!" );
+				}
+			}
+		}else{
+			if((*block_it)->getClassName()=="RPShapeDecide"){
+				TRACE( "%s\n", "БЛОК ДЕСАЙД ДОЛЖЕН ИМЕТЬ ПРОДОЛЖЕНИЕ" );
+			}
 		}
 		block_it++;
 	}
 
 	// Вызвали генерацию у объектов
 	all_child.clear();
-	rpMethod::project->getAllChildByClass( all_child, "RPShape_MJ", true );//???
+	rpMethod::project->getAllChildByClass( all_child, "RPShape_MJ", true );
   	std::list< RPObject* >::iterator shape_it = all_child.begin();
 	while ( shape_it != all_child.end() ) {
 		dynamic_cast<RPObject_MJ*>(static_cast<RPShape_MJ*>(*shape_it))->generate();
@@ -168,7 +185,7 @@ void RPMethodProc2RDO_MJ::generate()
 
 	//ГЕНЕРИРОВАНИЕ  ОПЕРАЦИЙ *.opr тут т.к. должны быть уже сгенерированны все файлы
 
-		list_pattern_names.push_back("Блок_останова_моделирования_по_времени");
+	//list_pattern_names.push_back("{Блок_останова_моделирования_по_времени}");
 
 					RDOfiles->operations<<"$Operations";
 
@@ -213,7 +230,7 @@ RDOfiles->typeres
 <<std::endl<<"{1}"
 <<std::endl<<"$Resource_type Creates : permanent {Параметры блока Create}"
 <<std::endl<<"$Parameters"
-<<std::endl<<"  par_1 : (true, false) {false} {связанно с созданием первого только}"
+<<std::endl<<"  par_1 : (_true, _false) {false} {связанно с созданием первого только}"
 <<std::endl<<"  par_amount: integer   {1}     {соклько выполнилось раз} "
 <<std::endl<<"$End"
 <<std::endl
@@ -337,12 +354,14 @@ RDOfiles->pattern
 
 RDOfiles->pattern
 <<std::endl<<"{----------------ГЕНЕРАЦИЯ если останавливается по времени-------------------------------------------}"
-<<std::endl
+<<std::endl<<"{"
 <<std::endl<<"$Pattern  Блок_останова_моделирования_по_времени : irregular_event trace "
 <<std::endl<<"$Relevant_resources"
 <<std::endl<<"_parameter : Group_of_transacts_X  NoChange {нужен для того, что без него глючит}"
+<<std::endl<<"{"
 <<std::endl<<"$Time ="<< generate_time_MJ
 <<std::endl<<"$Body"
 <<std::endl<<"_parameter"
-<<std::endl<<"$End";
+<<std::endl<<"$End"
+<<std::endl<<"}";
 }

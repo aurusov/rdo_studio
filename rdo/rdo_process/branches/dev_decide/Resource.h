@@ -27,6 +27,7 @@
 #define IDC_FLOW_DOCK_IN                157
 #define IDC_FLOW_DOCK_NOT               158
 #define IDD_DIALOG_RESOURCE_DLG1        159
+#define IDD_DIALOG_DECIDE_1				160
 #define IDD_DIALOG_GEN_TYPE             162
 #define IDR_TOOLBAR_STYLEANDCOLOR       164
 #define IDD_ABOUT                       165
