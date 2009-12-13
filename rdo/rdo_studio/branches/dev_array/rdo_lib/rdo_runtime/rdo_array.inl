@@ -4,12 +4,25 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-	inline RDOArrayType(ArrayType arrayID)
-		:RDOType         (RDOType::t_array)
-	{}
-	
-	inline RDOArrayType::ArrayType RDOArrayType::ArrayID() const
+inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype)
+	: RDORuntimeObject(parent          )
+	, RDOType         (RDOType::t_array)
+	, m_arrayType     (arraytype       )
+{}
+inline RDOValue RDOArrayType::cast(CREF(RDOValue) from) const
+{
+	switch (from.typeID())
 	{
-		return m_arrayID;
+		case RDOType::t_array: {
+			if (this == &from.type())
+				return from;
+			break;
+		}
 	}
+	throw RDOTypeException();
+}
+inline tstring RDOArrayType::asString() const
+{
+	return " ";
+}
 }

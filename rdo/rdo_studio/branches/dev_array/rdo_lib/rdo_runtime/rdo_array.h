@@ -12,12 +12,15 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-class RDOArrayType: public RDOType
+class RDOArrayType: public RDOType, public RDORuntimeObject
 {
 public:
 	typedef CPTR(RDOType) ArrayType;
 
-	RDOArrayType();
+	RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype);
+
+	virtual tstring  asString()                    const;
+	virtual RDOValue cast    (CREF(RDOValue) from) const;
 
 private:
 	ArrayType m_arrayType;

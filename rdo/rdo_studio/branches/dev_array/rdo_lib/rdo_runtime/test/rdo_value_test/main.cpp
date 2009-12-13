@@ -11,9 +11,11 @@ using namespace rdoRuntime;
 
 void main()
 {
-	RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Red")("Green")("Type"));
+	RDOEnumType* enumType = new RDOEnumType(NULL/*, RDOEnumType::Enums("Red")("Green")("Type")*/);
 
-	RDOArrayType* arrayType = new RDOArrayType();
+	RDOType* arraytype;
+
+	RDOArrayType* arrayType = new RDOArrayType(NULL,arraytype);
 
 	int i = 1;
 }
