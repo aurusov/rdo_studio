@@ -44,7 +44,11 @@ void RDOToolBarModel::init( CWnd* parent, unsigned int tbResID, unsigned int tbD
 	GetItemRect( CommandToIndex(ID_MODEL_SPEED_SLIDER), rc );
 	rc.top    += 1;
 	rc.bottom -= 1;
-	slider.Create( WS_CHILD | WS_VISIBLE | WS_TABSTOP | TBS_HORZ, rc, this, ID_MODEL_SPEED_SLIDER );
+
+#define VISTA_TRANSPARENT_FLAG 0x1000
+	slider.Create( WS_CHILD | WS_VISIBLE | WS_TABSTOP | TBS_HORZ | VISTA_TRANSPARENT_FLAG, rc, this, ID_MODEL_SPEED_SLIDER );
+#undef VISTA_TRANSPARENT_FLAG
+
 	slider.SetRange( 0, 100 );
 	for ( int i = 1; i <= 101; i += 10 ) {
 		slider.SetTic( (int)(log( (double)i ) / log101 * 100) );
