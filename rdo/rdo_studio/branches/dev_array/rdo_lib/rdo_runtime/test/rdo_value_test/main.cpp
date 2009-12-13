@@ -11,16 +11,9 @@ using namespace rdoRuntime;
 
 void main()
 {
-	/*RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Red")("Green")("Type"));
+	RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Red")("Green")("Type"));
 
-	RDOValue value1(*enumType, "Red"  );
-	RDOValue value2(*enumType, "Green");
-	RDOValue value3(*enumType, "Green");
-	bool equal, equal1;
-	equal = value1 == value2;
-	equal1 = value2 == value3;*/
-	RDOType* b;
-	RDOArrayType* a;
+	RDOArrayType* arrayType = new RDOArrayType();
 
 	int i = 1;
 }

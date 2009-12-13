@@ -13,20 +13,18 @@ namespace rdoRuntime
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
 class RDOArrayType: public RDOType
-	{
-	public:
-		typedef CPTR(RDOType)				ArrayType;
+{
+public:
+	typedef CPTR(RDOType) ArrayType;
 
-		RDOArrayType(ArrayType arrayID);
-		ArrayType ArrayID();
+	RDOArrayType();
 
-	private:
-		ArrayType m_arrayID;
-	};
+private:
+	ArrayType m_arrayType;
+};
+
 } // namespace rdoRuntime
 
-//#include "rdo_array.inl"
-
-//#include "rdo_array.inl"
+#include "rdo_array.inl"
 
 #endif // RDO_ARRAY_H
