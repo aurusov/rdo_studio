@@ -23,12 +23,6 @@ RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }
 
-RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim)
-	: RDOLogicSimple(sim, NULL)
-{
-	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
-}
-
 RDODPTSome::~RDODPTSome()
 {}
 

@@ -60,12 +60,6 @@ inline RDODPTPrior::RDODPTPrior( RDOSimulator* sim, LPIBaseOperationContainer pa
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }
 
-inline RDODPTPrior::RDODPTPrior( RDOSimulator* sim ):
-	RDOLogicDPTPrior(sim, NULL)
-{
-	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
-}
-
 inline RDODPTPrior::~RDODPTPrior()
 {}
 

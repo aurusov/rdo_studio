@@ -41,7 +41,7 @@ friend class RDOSimulator;
 friend class TreeNode;
 
 protected:
-	RDODPTSearch( RDOSimulator* sim, LPIBaseOperationContainer parent );
+	RDODPTSearch( RDOSimulator* sim, LPIBaseOperationContainer parent = NULL );
 	virtual ~RDODPTSearch();
 
 	typedef std::list<LPIDPTSearchActivity> ActivityList;

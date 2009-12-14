@@ -273,29 +273,11 @@ RDODPTPriorActivity::RDODPTPriorActivity( LPIBaseOperationContainer dpt, const R
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent ):
 	RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>( _parser, _src_info )
 {
 	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime());
-	m_rt_logic->init(parser()->runtime());
-	parser()->insertDPTSome(this);
-}
-
-RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDODPTSome* parentDPT ):
-	RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>( _parser, _src_info )
-{
-	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime(), parentDPT->m_rt_logic);
-	m_rt_logic->init(parser()->runtime());
-	parser()->insertDPTSome(this);
-}
-
-RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDODPTPrior* parentDPT ):
-	RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>( _parser, _src_info )
-{
-	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime(), parentDPT->m_rt_logic);
+	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime(), _parent);
 	m_rt_logic->init(parser()->runtime());
 	parser()->insertDPTSome(this);
 }
@@ -311,29 +293,11 @@ void RDODPTSome::end()
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent ):
 	RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>( _parser, _src_info )
 {
 	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime());
-	m_rt_logic->init(parser()->runtime());
-	parser()->insertDPTPrior(this);
-}
-
-RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDODPTSome* parentDPT ):
-	RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>( _parser, _src_info )
-{
-	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime(), parentDPT->m_rt_logic);
-	m_rt_logic->init(parser()->runtime());
-	parser()->insertDPTPrior(this);
-}
-
-RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDODPTPrior* parentDPT ):
-	RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>( _parser, _src_info )
-{
-	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime(), parentDPT->m_rt_logic);
+	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime(), _parent);
 	m_rt_logic->init(parser()->runtime());
 	parser()->insertDPTPrior(this);
 }
@@ -381,37 +345,16 @@ void RDODPTSearchActivity::setValue( IDPTSearchActivity::ValueTime value, RDOFUN
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, const RDODPTPrior* parentDPT ):
+RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic _parent ):
 	RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>( _parser, _src_info ),
 	m_trace( trace ),
-	m_closed( false )
+	m_closed( false ),
+	m_parent( _parent )
 {
-	m_parent = parentDPT ? parentDPT->m_rt_logic : NULL ;
 	parser()->checkDPTName( src_info() );
 	parser()->insertDPTSearch( this );
 }
 
-RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, const RDODPTSome* parentDPT ):
-	RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>( _parser, _src_info ),
-	m_trace( trace ),
-	m_closed( false )
-{
-	m_parent = parentDPT ? parentDPT->m_rt_logic : NULL ;
-	parser()->checkDPTName( src_info() );
-	parser()->insertDPTSearch( this );
-}
-/*
-RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, const RDODPTPrior* parentDPT ):
-	RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>( _parser, _src_info ),
-	m_trace( trace ),
-	m_closed( false )
-{
-//	if ( parentDPT->m_rt_logic ) m_parent = parentDPT->m_rt_logic;
-//	m_parent = NULL;
-	parser()->checkDPTName( src_info() );
-	parser()->insertDPTSearch( this );
-}
-*/
 void RDODPTSearch::end()
 {
 	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );

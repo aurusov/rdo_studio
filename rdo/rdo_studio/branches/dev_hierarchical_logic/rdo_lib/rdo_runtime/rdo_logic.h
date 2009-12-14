@@ -42,8 +42,7 @@ public:
 	typedef  BaseOperationList::const_iterator  CIterator;
 
 protected:
-	RDOLogic();
-	RDOLogic(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent);
+	RDOLogic(PTR(RDOSimulator) sim = NULL, LPIBaseOperationContainer parent = NULL);
 	virtual ~RDOLogic();
 
 	DECLARE_IBaseOperationContainer;
@@ -89,9 +88,6 @@ class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 protected:
 	DEFINE_FACTORY(RDOLogicSimple);
 
-	RDOLogicSimple()
-		: RDOLogic<RDOOrderSimple>()
-	{}
 	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent = NULL)
 		: RDOLogic<RDOOrderSimple>(sim, parent)
 	{}
