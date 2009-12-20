@@ -1,13 +1,23 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_array.h
+ * author   : Чирков Михаил
+ * date     : 14.12.2009
+ * bref     : 
+ * indent   : 4T
+ */
 #ifndef RDO_ARRAY_H
 #define RDO_ARRAY_H
 
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_type.h"
 #include "rdoruntime_object.h"
 #include <rdocommon.h>
 #include <string>
+// ===============================================================================
 
-namespace rdoRuntime 
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
@@ -27,7 +37,7 @@ private:
 	ArrayType m_arrayType;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_array.inl"
 
