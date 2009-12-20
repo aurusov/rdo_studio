@@ -19,21 +19,26 @@ OPEN_RDO_RUNTIME_NAMESPACE
 inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
+	, m_arrayType     (NULL            )
 {}
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype)
+
+inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, CREF(ArrayType) arrayType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
-	, m_arrayType     (arraytype       )
+	, m_arrayType     (arrayType       )
 {}
 
 inline RDOValue RDOArrayType::cast(CREF(RDOValue) from) const
 {
 	switch (from.typeID())
+	{
 		case RDOType::t_array: 
 		{
 			if (this == &from.type())
 				return from;
 			break;
+		}
+	}
 	throw RDOTypeException();
 }
 
@@ -42,4 +47,5 @@ inline tstring RDOArrayType::asString() const
 	ASSERT(m_arrayType);
 	return rdo::format(_T("array<%s>"), m_arrayType->asString().c_str());
 }
+
 CLOSE_RDO_RUNTIME_NAMESPACE
