@@ -28,5 +28,7 @@ void main()
 	RDOArrayType* arrayType5       = new RDOArrayType(NULL,arrayType_enum);
 	RDOArrayType* arrayType6       = new RDOArrayType(NULL,arrayType5);
 	RDOArrayType* arrayType7       = new RDOArrayType(NULL,arrayType6);
+	std::string className = arrayType2->asString();
+
 	int i = 1;
 }
