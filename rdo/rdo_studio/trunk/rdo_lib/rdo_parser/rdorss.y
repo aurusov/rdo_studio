@@ -171,6 +171,10 @@
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 %token RDO_External_Model				444
+%token RDO_QUEUE						445
+%token RDO_DEPART						446
+%token RDO_ASSIGN						447
+
 
 %{
 #include "pch.h"
