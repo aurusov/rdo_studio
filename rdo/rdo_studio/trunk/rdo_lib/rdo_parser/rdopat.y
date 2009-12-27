@@ -67,7 +67,7 @@
 %token RDO_Convert_event				316
 %token RDO_with_max						317
 %token RDO_with_min						318
-%token RDO_IDENTIF_set					319
+%token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
 	
@@ -153,6 +153,8 @@
 %token RDO_color_magenta				424
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
+
+%token RDO_IDENTIF_RELRES				427
 
 %token RDO_STRING_CONST					430
 %token RDO_STRING_CONST_BAD				431
@@ -802,12 +804,12 @@ pat_time:	pat_common_choice RDO_Body {
 				}
 			};
 
-pat_body:	pat_time RDO_IDENTIF {
+pat_body:	pat_time RDO_IDENTIF_RELRES {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
 				std::string    name    = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
 			}
-			| pat_convert RDO_IDENTIF {
+			| pat_convert RDO_IDENTIF_RELRES {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
 				std::string    name    = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
@@ -1016,17 +1018,17 @@ pat_params_set:	/* empty */	{
 					par_set->setSrcPos( pos );
 					$$ = (int)par_set;
 				}
-				|	pat_params_set RDO_IDENTIF_set fun_arithm {
+				|	pat_params_set RDO_IDENTIF RDO_set fun_arithm {
 					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
-					RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($3);
+					RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($4);
 					std::string     param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 					YYLTYPE param_name_pos = @2;
 					param_name_pos.last_line   = param_name_pos.first_line;
 					param_name_pos.last_column = param_name_pos.first_column + param_name.length();
 					param_set->addSet( param_name, param_name_pos, arithm );
 				}
-				| pat_params_set RDO_IDENTIF_set error {
-					PARSER->error( @3, "Ошибка в арифметическом выражении" )
+				| pat_params_set RDO_IDENTIF RDO_set error {
+					PARSER->error( @4, "Ошибка в арифметическом выражении" )
 				}
 				|	pat_params_set RDO_IDENTIF_NoChange {
 					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
@@ -1455,7 +1457,9 @@ fun_arithm:	  RDO_INT_CONST                 { $$ = (int)new RDOFUNArithm( PARSER
 			| RDO_BOOL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
 			| RDO_STRING_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
 			| RDO_IDENTIF                   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF_RELRES            { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
 			| RDO_IDENTIF '.' RDO_IDENTIF   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
+			| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
 			| fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }

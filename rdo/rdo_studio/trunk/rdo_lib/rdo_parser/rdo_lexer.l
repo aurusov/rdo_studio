@@ -8,6 +8,7 @@
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
 #include "rdoparser_value.h"
+#include "rdopat.h"
 #include <rdo_runtime.h>
 
 #define LEXER     reinterpret_cast<rdoParse::RDOLexer*>(this)
@@ -274,6 +275,8 @@ $fuzzy				return(RDO_Fuzzy);
 $Term				return(RDO_Fuzzy_Term);
 $term				return(RDO_Fuzzy_Term);
 
+set					return(RDO_set);
+
 (\'[^\']*\')		{
 						std::string n1(YYText());
 						int len = n1.length();
@@ -344,27 +347,6 @@ false				{
 						return RDO_IDENTIF_BAD;
 					}
 
-[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+set[\r\n\t ]  {       
-					std::string n1(YYText());
-					std::string::size_type pos = n1.find_first_of("\r\n\t ");
-					std::string name(n1, 0, pos);
-					RUNTIME->memory_insert( name.length() + sizeof(std::string) );
-					rdoParse::RDOValue* value;
-					if ( LEXER->m_lploc )
-					{
-						YYLTYPE pos     = *LEXER->m_lploc;
-						pos.last_line   = pos.first_line;
-						pos.last_column = pos.first_column + name.length();
-						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
-					}
-					else
-					{
-						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
-					}
-					LEXER->setvalue( (int)PARSER->addValue(value) );
-					return RDO_IDENTIF_set;
-				}
-
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange  {       
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
@@ -432,6 +414,16 @@ false				{
 					std::string name(YYText());
 					RUNTIME->memory_insert( name.length() + sizeof(std::string) );
 					LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, name) : rdoParse::RDOParserSrcInfo(name))) );
+					switch (PARSER->getFileToParse())
+					{
+					case rdoModelObjects::PAT:
+						rdoParse::RDOPATPattern* pattern = dynamic_cast<rdoParse::RDOPATPattern*>(PARSER->getLastParsingObject());
+						if (pattern && pattern->findRelevantResource(name))
+						{
+							return RDO_IDENTIF_RELRES;
+						}
+						break;
+					}
 					return RDO_IDENTIF;
 				}
 

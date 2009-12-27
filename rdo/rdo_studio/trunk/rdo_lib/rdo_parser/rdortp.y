@@ -67,7 +67,7 @@
 %token RDO_Convert_event				316
 %token RDO_with_max						317
 %token RDO_with_min						318
-%token RDO_IDENTIF_set					319
+%token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
 	
@@ -154,6 +154,8 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
+%token RDO_IDENTIF_RELRES				427
+
 %token RDO_STRING_CONST					430
 %token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
@@ -172,6 +174,7 @@
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
 %token RDO_ASSIGN						447
+
 
 %{
 #include "pch.h"
