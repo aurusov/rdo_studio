@@ -50,17 +50,17 @@ RDOPatternRule::RDOPatternRule( PTR(RDORuntime) rTime, bool trace ):
 {
 }
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
 {
 	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), _oprName);
-	runtime->addRuntimeRule(parent, rule);
+	runtime->addRuntimeRule(logic, rule);
 	return rule;
 }
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
 {
 	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), condition, _oprName);
-	runtime->addRuntimeRule(parent, rule);
+	runtime->addRuntimeRule(logic, rule);
 	return rule;
 }
 

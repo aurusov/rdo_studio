@@ -124,9 +124,9 @@ public:
 	REF(LPIActivity) getCurrentActivity()                           { return m_currActivity;      }
 	void             setCurrentActivity(CREF(LPIActivity) activity) { m_currActivity = activity;  }
 
-	void addRuntimeIE       (LPIBaseOperationContainer parent, CREF(LPIIrregEvent) ie      );
-	void addRuntimeRule     (LPIBaseOperationContainer parent, CREF(LPIRule)       rule    );
-	void addRuntimeOperation(LPIBaseOperationContainer parent, CREF(LPIOperation)  opration);
+	void addRuntimeIE       (LPIBaseOperationContainer logic, CREF(LPIIrregEvent) ie      );
+	void addRuntimeRule     (LPIBaseOperationContainer logic, CREF(LPIRule)       rule    );
+	void addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation)  opration);
 	void addRuntimePokaz    (CREF(LPIPokaz)      pokaz   );
 	void addRuntimeFrame    (PTR(RDOFRMFrame)    frame   );
 	
