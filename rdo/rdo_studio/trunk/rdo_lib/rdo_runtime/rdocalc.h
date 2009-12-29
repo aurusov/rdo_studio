@@ -173,7 +173,8 @@ public:
 		, m_calc   (calc   )
 	{
 		m_value = 1;
-		if ( m_calc ) setSrcInfo( m_calc->src_info() );
+		if (m_calc)
+			setSrcInfo(m_calc->src_info());
 	}
 
 protected:
@@ -188,20 +189,28 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOSetRelParamDiapCalc
 // ----------------------------------------------------------------------------
-class RDOSetRelParamDiapCalc: public RDOSetRelParamCalc
+class RDOSetRelParamDiapCalc: public RDOCalc
 {
 public:
-	RDOSetRelParamDiapCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, PTR(RDOCalc) calc, RDOValue min_value, RDOValue max_value)
-		: RDOSetRelParamCalc(parent, relNumb, parNumb, calc)
-		, m_min_value       (min_value                     )
-		, m_max_value       (max_value                     )
+	RDOSetRelParamDiapCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, PTR(RDOCalc) calc)
+		: RDOCalc    (parent   )
+		, m_relNumb  (relNumb  )
+		, m_parNumb  (parNumb  )
+		, m_calc     (calc     )
+		, m_min_value(min_value)
+		, m_max_value(max_value)
 	{
-		m_value = 1;
+		m_value = true;
+		if (m_calc)
+			setSrcInfo(m_calc->src_info());
 	}
 
 private:
-	RDOValue m_min_value;
-	RDOValue m_max_value;
+	int          m_relNumb;
+	int          m_parNumb;
+	PTR(RDOCalc) m_calc;
+	RDOValue     m_min_value;
+	RDOValue     m_max_value;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -218,8 +227,9 @@ public:
 		, m_parNumb(parNumb)
 		, m_calc   (calc   )
 	{
-		m_value = 1;
-		if ( m_calc ) setSrcInfo( m_calc->src_info() );
+		m_value = true;
+		if (m_calc)
+			setSrcInfo(m_calc->src_info());
 	}
 
 private:

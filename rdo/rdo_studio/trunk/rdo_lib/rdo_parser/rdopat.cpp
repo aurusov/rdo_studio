@@ -136,8 +136,8 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 		if ( currArithm ) { // NULL == NoChange
 			const RDORTPParam* param = parSet->getRelRes()->getType()->getParams().at(parNumb);
 			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
-			rdoRuntime::RDOCalc* calc = NULL;
-			// Фильтр перед присваиванием
+			rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOSetRelParamCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue );
+			// Проверка на диапазон
 			switch ( param->getType()->typeID() )
 			{
 				case rdoRuntime::RDOType::t_int:
@@ -145,7 +145,7 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
 					if ( param_type->getDiap().isExist() )
 					{
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
+						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
 					}
 					break;
 				}
@@ -154,14 +154,10 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
 					if ( param_type->getDiap().isExist() )
 					{
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
+						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
 					}
 					break;
 				}
-			}
-			if ( !calc )
-			{
-				calc = new rdoRuntime::RDOSetRelParamCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue );
 			}
 			calc->setSrcText( parSet->params.at(i).name + " set " + rightValue->src_text() );
 			addParamSetCalc( parSet, calc );
