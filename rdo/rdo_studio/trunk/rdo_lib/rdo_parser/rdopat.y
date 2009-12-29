@@ -125,6 +125,10 @@
 %token RDO_CF							371
 %token RDO_Priority						372
 %token RDO_prior						373
+%token RDO_PlusEqual					374
+%token RDO_MinusEqual					375
+%token RDO_MultiplyEqual				376
+%token RDO_DivideEqual					377
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -1015,33 +1019,52 @@ convert_end:	RDO_Convert_end {
 			};
 
 pat_params_set:	/* empty */	{
-					RDOPATParamSet* par_set = PARSER->getLastPATPattern()->currRelRes->createParamSet();
+					PTR(RDOPATParamSet) paramSet = PARSER->getLastPATPattern()->currRelRes->createParamSet();
 					YYLTYPE pos = @0;
 					pos.first_line   = pos.last_line;
 					pos.first_column = pos.last_column;
-					par_set->setSrcPos( pos );
-					$$ = (int)par_set;
+					paramSet->setSrcPos(pos);
+					$$ = (int)paramSet;
 				}
-				|	pat_params_set RDO_IDENTIF RDO_set fun_arithm {
-					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
-					RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($4);
-					std::string     param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					YYLTYPE param_name_pos = @2;
-					param_name_pos.last_line   = param_name_pos.first_line;
-					param_name_pos.last_column = param_name_pos.first_column + param_name.length();
-					param_set->addSet( param_name, param_name_pos, arithm );
+				|	pat_params_set RDO_IDENTIF param_equal_type param_set_right_value {
+					PTR(RDOPATParamSet)              paramSet    = reinterpret_cast<PTR(RDOPATParamSet)>($1);
+					RDOPATParamSet::Param::EqualType equalType   = static_cast<RDOPATParamSet::Param::EqualType>($3);
+					PTR(RDOFUNArithm)                rightArithm = reinterpret_cast<PTR(RDOFUNArithm)>($4);
+					std::string                      paramName   = reinterpret_cast<PTR(RDOValue)>($2)->value().getIdentificator();
+					paramSet->addSet(paramName, @2, equalType, rightArithm);
 				}
-				| pat_params_set RDO_IDENTIF RDO_set error {
-					PARSER->error( @4, "Ошибка в арифметическом выражении" )
+				| pat_params_set RDO_IDENTIF param_equal_type error {
+					PARSER->error(@4, "Ошибка в арифметическом выражении")
 				}
 				|	pat_params_set RDO_IDENTIF_NoChange {
-					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
-					std::string     param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					YYLTYPE param_name_pos = @2;
-					param_name_pos.last_line   = param_name_pos.first_line;
-					param_name_pos.last_column = param_name_pos.first_column + param_name.length();
-					param_set->addSet( param_name, param_name_pos );
+					PTR(RDOPATParamSet) paramSet  = reinterpret_cast<PTR(RDOPATParamSet)>($1);
+					std::string         paramName = reinterpret_cast<PTR(RDOValue)>($2)->value().getIdentificator();
+					YYLTYPE paramNamePos = @2;
+					paramNamePos.last_line   = paramNamePos.first_line;
+					paramNamePos.last_column = paramNamePos.first_column + paramName.length();
+					paramSet->addSet(paramName, paramNamePos, RDOPATParamSet::Param::ET_UNDEFINED, NULL);
 				};
+
+param_equal_type: RDO_set {
+					$$ = RDOPATParamSet::Param::ET_EQUAL;
+				}
+				| '=' {
+					$$ = RDOPATParamSet::Param::ET_EQUAL;
+				}
+				| RDO_PlusEqual {
+					$$ = RDOPATParamSet::Param::ET_PLUS;
+				}
+				| RDO_MinusEqual {
+					$$ = RDOPATParamSet::Param::ET_MINUS;
+				}
+				| RDO_MultiplyEqual {
+					$$ = RDOPATParamSet::Param::ET_MULTIPLY;
+				}
+				| RDO_DivideEqual {
+					$$ = RDOPATParamSet::Param::ET_DIVIDE;
+				};
+
+param_set_right_value: fun_arithm;
 
 pat_pattern:	pat_convert RDO_End {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);

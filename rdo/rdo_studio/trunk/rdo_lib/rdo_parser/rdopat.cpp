@@ -126,17 +126,22 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 		}
 	}
 
-	int size = parSet->params.size();
+	int size = parSet->m_params.size();
 	if ( !size && parSet->convert_status == rdoRuntime::RDOResource::CS_Keep ) {
 		parser()->warning( convertor_pos, getWarningMessage_EmptyConvertor(parSet) );
 	}
 	for ( int i = 0; i < size; i++ ) {
-		int parNumb = parSet->params.at(i).index;
-		RDOFUNArithm* currArithm = parSet->params.at(i).arithm;
+		int parNumb = parSet->m_params.at(i).m_paramID;
+		RDOFUNArithm* currArithm = parSet->m_params.at(i).m_rightArithm;
 		if ( currArithm ) { // NULL == NoChange
 			const RDORTPParam* param = parSet->getRelRes()->getType()->getParams().at(parNumb);
 			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
-			rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOSetRelParamCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue );
+			rdoRuntime::RDOCalc* calc = NULL;
+			switch (parSet->m_params.at(i).m_equalType)
+			{
+			case RDOPATParamSet::Param::ET_EQUAL: calc = new rdoRuntime::RDOSetRelParamCalc(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
+			default: NEVER_REACH_HERE;
+			}
 			// Проверка на диапазон
 			switch ( param->getType()->typeID() )
 			{
@@ -159,7 +164,7 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 					break;
 				}
 			}
-			calc->setSrcText( parSet->params.at(i).name + " set " + rightValue->src_text() );
+			calc->setSrcText( parSet->m_params.at(i).m_name + " set " + rightValue->src_text() );
 			addParamSetCalc( parSet, calc );
 		}
 	}
@@ -504,9 +509,11 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 		if ( !(*it)->getType()->getDV().isExist() ) {
 			params_default.push_back( rdoRuntime::RDOValue(0) );
 			bool set_found = false;
-			std::vector< RDOPATParamSet::param_set >::const_iterator set_it = parSet->params.begin();
-			while ( set_it != parSet->params.end() ) {
-				if ( (*it)->name() == set_it->name && set_it->arithm ) {
+			RDOPATParamSet::ParamList::const_iterator set_it = parSet->m_params.begin();
+			while (set_it != parSet->m_params.end())
+			{
+				if ((*it)->name() == set_it->m_name && set_it->m_rightArithm)
+				{
 					set_found = true;
 					break;
 				}
@@ -896,13 +903,19 @@ rdoRuntime::RDOSelectResourceCommon* RDORelevantResourceByType::createSelectReso
 // ----------------------------------------------------------------------------
 // ---------- RDOPATParamSet - все операторы set для одного рел. ресурса
 // ----------------------------------------------------------------------------
-void RDOPATParamSet::addSet( const std::string& paramName, const YYLTYPE& param_name_pos, RDOFUNArithm* paramArithm )
+void RDOPATParamSet::addSet(CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, Param::EqualType equalType, PTR(RDOFUNArithm) rightArithm)
 {
-	if ( params.empty() ) {
-		setSrcText( paramName + (paramArithm ? " set " + paramArithm->src_text() : " NoChange") );
+	switch (equalType)
+	{
+	case RDOPATParamSet::Param::ET_EQUAL: break;
+	default                             : parser()->error(param_name_pos, _T("Неизвестный оператор присваивания"));
+	}
+
+	if ( m_params.empty() ) {
+		setSrcText( paramName + (rightArithm ? " set " + rightArithm->src_text() : " NoChange") );
 		setSrcPos( param_name_pos );
 	} else {
-		setSrcText( src_text() + "\n" + paramName + (paramArithm ? " set " + paramArithm->src_text() : " NoChange") );
+		setSrcText( src_text() + "\n" + paramName + (rightArithm ? " set " + rightArithm->src_text() : " NoChange") );
 	}
 	const RDORTPParam* param = getRelRes()->getType()->findRTPParam( paramName );
 	if ( !param ) {
@@ -912,10 +925,10 @@ void RDOPATParamSet::addSet( const std::string& paramName, const YYLTYPE& param_
 		parser()->error( RDOParserSrcInfo(param_name_pos), rdo::format("Параметр '%s' уже используется", paramName.c_str()) );
 //		parser()->warning( RDOParserSrcInfo(param_name_pos), rdo::format("Параметр '%s' уже изменяется в конверторе. В трассировку попадет последнее значение параметра", paramName.c_str()) );
 	}
-	if ( paramArithm ) {
-		param->getType()->checkParamType( paramArithm );
+	if ( rightArithm ) {
+		param->getType()->checkParamType( rightArithm );
 	}
-	params.push_back( param_set( paramName, getRelRes()->getType()->getRTPParamNumber( paramName ), paramArithm ) );
+	m_params.push_back(Param(paramName, getRelRes()->getType()->getRTPParamNumber(paramName), equalType, rightArithm));
 }
 
 } // namespace rdoParse

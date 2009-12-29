@@ -230,6 +230,10 @@ cf					return(RDO_CF);
 CF					return(RDO_CF);
 $Priority           return(RDO_Priority);
 $priority           return(RDO_Priority);
+"+="                return(RDO_PlusEqual);
+"-="                return(RDO_MinusEqual);
+"*="                return(RDO_MultiplyEqual);
+"/="                return(RDO_DivideEqual);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);
