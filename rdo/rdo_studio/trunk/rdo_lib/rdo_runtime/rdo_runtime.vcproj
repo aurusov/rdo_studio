@@ -1501,6 +1501,10 @@
 				RelativePath=".\rdocalc.inl"
 				>
 			</File>
+			<File
+				RelativePath=".\rdocalc_relres.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".rdo_fun"

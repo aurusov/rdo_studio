@@ -1027,10 +1027,10 @@ pat_params_set:	/* empty */	{
 					$$ = (int)paramSet;
 				}
 				|	pat_params_set RDO_IDENTIF param_equal_type param_set_right_value {
-					PTR(RDOPATParamSet)              paramSet    = reinterpret_cast<PTR(RDOPATParamSet)>($1);
-					RDOPATParamSet::Param::EqualType equalType   = static_cast<RDOPATParamSet::Param::EqualType>($3);
-					PTR(RDOFUNArithm)                rightArithm = reinterpret_cast<PTR(RDOFUNArithm)>($4);
-					std::string                      paramName   = reinterpret_cast<PTR(RDOValue)>($2)->value().getIdentificator();
+					PTR(RDOPATParamSet)   paramSet    = reinterpret_cast<PTR(RDOPATParamSet)>($1);
+					rdoRuntime::EqualType equalType   = static_cast<rdoRuntime::EqualType>($3);
+					PTR(RDOFUNArithm)     rightArithm = reinterpret_cast<PTR(RDOFUNArithm)>($4);
+					std::string           paramName   = reinterpret_cast<PTR(RDOValue)>($2)->value().getIdentificator();
 					paramSet->addSet(paramName, @2, equalType, rightArithm);
 				}
 				| pat_params_set RDO_IDENTIF param_equal_type error {
@@ -1042,26 +1042,26 @@ pat_params_set:	/* empty */	{
 					YYLTYPE paramNamePos = @2;
 					paramNamePos.last_line   = paramNamePos.first_line;
 					paramNamePos.last_column = paramNamePos.first_column + paramName.length();
-					paramSet->addSet(paramName, paramNamePos, RDOPATParamSet::Param::ET_UNDEFINED, NULL);
+					paramSet->addSet(paramName, paramNamePos, rdoRuntime::ET_NOCHANGE, NULL);
 				};
 
 param_equal_type: RDO_set {
-					$$ = RDOPATParamSet::Param::ET_EQUAL;
+					$$ = rdoRuntime::ET_EQUAL;
 				}
 				| '=' {
-					$$ = RDOPATParamSet::Param::ET_EQUAL;
+					$$ = rdoRuntime::ET_EQUAL;
 				}
 				| RDO_PlusEqual {
-					$$ = RDOPATParamSet::Param::ET_PLUS;
+					$$ = rdoRuntime::ET_PLUS;
 				}
 				| RDO_MinusEqual {
-					$$ = RDOPATParamSet::Param::ET_MINUS;
+					$$ = rdoRuntime::ET_MINUS;
 				}
 				| RDO_MultiplyEqual {
-					$$ = RDOPATParamSet::Param::ET_MULTIPLY;
+					$$ = rdoRuntime::ET_MULTIPLY;
 				}
 				| RDO_DivideEqual {
-					$$ = RDOPATParamSet::Param::ET_DIVIDE;
+					$$ = rdoRuntime::ET_DIVIDE;
 				};
 
 param_set_right_value: fun_arithm;

@@ -139,33 +139,41 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			rdoRuntime::RDOCalc* calc = NULL;
 			switch (parSet->m_params.at(i).m_equalType)
 			{
-			case RDOPATParamSet::Param::ET_EQUAL: calc = new rdoRuntime::RDOSetRelParamCalc(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
+			case rdoRuntime::ET_NOCHANGE: break;
+			case rdoRuntime::ET_EQUAL   : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL   >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
+			case rdoRuntime::ET_PLUS    : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS    >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
+			case rdoRuntime::ET_MINUS   : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS   >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
+			case rdoRuntime::ET_MULTIPLY: calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY>(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
+			case rdoRuntime::ET_DIVIDE  : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE  >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
 			default: NEVER_REACH_HERE;
 			}
-			// Проверка на диапазон
-			switch ( param->getType()->typeID() )
+			if (calc)
 			{
-				case rdoRuntime::RDOType::t_int:
+				// Проверка на диапазон
+				switch ( param->getType()->typeID() )
 				{
-					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
-					if ( param_type->getDiap().isExist() )
+					case rdoRuntime::RDOType::t_int:
 					{
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
+						const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
+						if ( param_type->getDiap().isExist() )
+						{
+							calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
+						}
+						break;
 					}
-					break;
-				}
-				case rdoRuntime::RDOType::t_real:
-				{
-					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
-					if ( param_type->getDiap().isExist() )
+					case rdoRuntime::RDOType::t_real:
 					{
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
+						const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
+						if ( param_type->getDiap().isExist() )
+						{
+							calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
+						}
+						break;
 					}
-					break;
 				}
+				calc->setSrcText( parSet->m_params.at(i).m_name + " set " + rightValue->src_text() );
+				addParamSetCalc( parSet, calc );
 			}
-			calc->setSrcText( parSet->m_params.at(i).m_name + " set " + rightValue->src_text() );
-			addParamSetCalc( parSet, calc );
 		}
 	}
 }
@@ -903,12 +911,17 @@ rdoRuntime::RDOSelectResourceCommon* RDORelevantResourceByType::createSelectReso
 // ----------------------------------------------------------------------------
 // ---------- RDOPATParamSet - все операторы set для одного рел. ресурса
 // ----------------------------------------------------------------------------
-void RDOPATParamSet::addSet(CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, Param::EqualType equalType, PTR(RDOFUNArithm) rightArithm)
+void RDOPATParamSet::addSet(CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm)
 {
 	switch (equalType)
 	{
-	case RDOPATParamSet::Param::ET_EQUAL: break;
-	default                             : parser()->error(param_name_pos, _T("Неизвестный оператор присваивания"));
+	case rdoRuntime::ET_NOCHANGE:
+	case rdoRuntime::ET_EQUAL   :
+	case rdoRuntime::ET_PLUS    :
+	case rdoRuntime::ET_MINUS   :
+	case rdoRuntime::ET_MULTIPLY:
+	case rdoRuntime::ET_DIVIDE  : break;
+	default                     : parser()->error(param_name_pos, _T("Неизвестный оператор присваивания"));
 	}
 
 	if ( m_params.empty() ) {

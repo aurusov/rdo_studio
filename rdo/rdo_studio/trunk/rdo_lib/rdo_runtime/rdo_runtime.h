@@ -137,11 +137,17 @@ public:
 	void addInitCalc( RDOCalc* initCalc) { initCalcs.push_back( initCalc ); }
 
 	// Параметры ресурса
-	RDOValue getResParamVal( unsigned int res_id, unsigned int param_id ) const
+	RDOValue getResParamVal(ruint resID, ruint paramID) const
 	{
-		RDOResource* res = getResourceByID( res_id );
-
-		return res->getParam( param_id );
+		CPTR(RDOResource) res = getResourceByID(resID);
+		ASSERT(res);
+		return res->getParam(paramID);
+	}
+	REF(RDOValue) getResParamVal(ruint resID, ruint paramID)
+	{
+		PTR(RDOResource) res = getResourceByID(resID);
+		ASSERT(res);
+		return res->getParam(paramID);
 	}
 	void setResParamVal( unsigned int res_id, unsigned int param_id, const RDOValue& value ) {
 		RDOResource* res = getResourceByID( res_id );

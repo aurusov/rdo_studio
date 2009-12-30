@@ -4,6 +4,7 @@
 #include "rdoparser_object.h"
 #include <rdo_resource.h>
 #include <rdocalc.h>
+#include <rdocalc_relres.h>
 
 namespace rdoRuntime
 {
@@ -370,27 +371,18 @@ class RDOPATParamSet: public RDOParserObject, public RDOParserSrcInfo
 public:
 	struct Param
 	{
-		enum EqualType
-		{
-			ET_UNDEFINED,
-			ET_EQUAL,
-			ET_PLUS,
-			ET_MINUS,
-			ET_MULTIPLY,
-			ET_DIVIDE
-		};
-		std::string       m_name;
-		ruint             m_paramID;
-		EqualType         m_equalType;
-		PTR(RDOFUNArithm) m_rightArithm;
+		std::string            m_name;
+		ruint                  m_paramID;
+		rdoRuntime::EqualType  m_equalType;
+		PTR(RDOFUNArithm)      m_rightArithm;
 
 		Param()
-			: m_name       (_T("")      )
-			, m_paramID    ( -1         )
-			, m_equalType  (ET_UNDEFINED)
-			, m_rightArithm(NULL        )
+			: m_name       (_T("")                  )
+			, m_paramID    ( -1                     )
+			, m_equalType  (rdoRuntime::ET_UNDEFINED)
+			, m_rightArithm(NULL                    )
 		{}
-		Param(CREF(std::string) name, ruint paramID, EqualType equalType, PTR(RDOFUNArithm) rightArithm)
+		Param(CREF(std::string) name, ruint paramID, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm)
 			: m_name       (name       )
 			, m_paramID    (paramID    )
 			, m_equalType  (equalType  )
@@ -408,7 +400,7 @@ public:
 	typedef std::vector<Param> ParamList;
 	ParamList m_params;
 
-	void  addSet (CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, Param::EqualType equalType, PTR(RDOFUNArithm) rightArithm);
+	void  addSet (CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm);
 	rbool isExist(CREF(std::string) paramName ) const
 	{
 		ParamList::const_iterator it = m_params.begin();

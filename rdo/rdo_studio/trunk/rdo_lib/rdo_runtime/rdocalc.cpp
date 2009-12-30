@@ -139,15 +139,6 @@ REF(RDOValue) RDOCalcGetRelevantResParam::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamCalc
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOSetRelParamCalc::doCalc(PTR(RDORuntime) runtime)
-{
-	runtime->setResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb, m_calc->calcValue(runtime));
-	return m_value;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOSetRelParamDiapCalc
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)

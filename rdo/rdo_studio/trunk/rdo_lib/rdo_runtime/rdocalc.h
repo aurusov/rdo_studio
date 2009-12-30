@@ -161,32 +161,6 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamCalc
-// ----------------------------------------------------------------------------
-class RDOSetRelParamCalc: public RDOCalc
-{
-public:
-	RDOSetRelParamCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, PTR(RDOCalc) calc)
-		: RDOCalc  (parent )
-		, m_relNumb(relNumb)
-		, m_parNumb(parNumb)
-		, m_calc   (calc   )
-	{
-		m_value = 1;
-		if (m_calc)
-			setSrcInfo(m_calc->src_info());
-	}
-
-protected:
-	int          m_relNumb;
-	int          m_parNumb;
-	PTR(RDOCalc) m_calc;
-
-private:
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOSetRelParamDiapCalc
 // ----------------------------------------------------------------------------
 class RDOSetRelParamDiapCalc: public RDOCalc

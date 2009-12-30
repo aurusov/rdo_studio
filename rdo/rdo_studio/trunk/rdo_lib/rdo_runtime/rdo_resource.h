@@ -51,14 +51,22 @@ public:
 		return m_type == type;
 	}
 
-	virtual const RDOValue& getParam( unsigned int index ) const
+	CREF(RDOValue) getParam(ruint index) const
 	{
-		return m_params.at( index );
+		ASSERT(index < m_params.size());
+		return m_params[index];
 	}
-	virtual void setParam( unsigned int index, const RDOValue& value )
+	REF(RDOValue) getParam(ruint index)
 	{
-		if ( m_params.size() <= index ) {
-			m_params.resize( index + 1 );
+		ASSERT(index < m_params.size());
+		setState(CS_Keep);
+		return m_params[index];
+	}
+	void setParam(ruint index, CREF(RDOValue) value)
+	{
+		if (m_params.size() <= index)
+		{
+			m_params.resize(index + 1);
 		}
 		setState(CS_Keep);
 		m_params.at(index) = value;
