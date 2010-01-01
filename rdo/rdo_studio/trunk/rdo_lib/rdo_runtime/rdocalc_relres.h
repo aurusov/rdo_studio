@@ -69,7 +69,7 @@ template <>
 inline REF(RDOValue) RDOSetRelParamCalc<ET_PLUS>::doCalc(PTR(RDORuntime) runtime)
 {
 	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamVal(resID, m_parNumb) += m_calc->calcValue(runtime);
+	runtime->getResParamValRaw(resID, m_parNumb) += m_calc->calcValue(runtime);
 	return m_value;
 }
 
@@ -77,7 +77,7 @@ template <>
 inline REF(RDOValue) RDOSetRelParamCalc<ET_MINUS>::doCalc(PTR(RDORuntime) runtime)
 {
 	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamVal(resID, m_parNumb) -= m_calc->calcValue(runtime);
+	runtime->getResParamValRaw(resID, m_parNumb) -= m_calc->calcValue(runtime);
 	return m_value;
 }
 
@@ -85,7 +85,7 @@ template <>
 inline REF(RDOValue) RDOSetRelParamCalc<ET_MULTIPLY>::doCalc(PTR(RDORuntime) runtime)
 {
 	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamVal(resID, m_parNumb) *= m_calc->calcValue(runtime);
+	runtime->getResParamValRaw(resID, m_parNumb) *= m_calc->calcValue(runtime);
 	return m_value;
 }
 
@@ -93,7 +93,7 @@ template <>
 inline REF(RDOValue) RDOSetRelParamCalc<ET_DIVIDE>::doCalc(PTR(RDORuntime) runtime)
 {
 	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamVal(resID, m_parNumb) /= m_calc->calcValue(runtime);
+	runtime->getResParamValRaw(resID, m_parNumb) /= m_calc->calcValue(runtime);
 	return m_value;
 }
 

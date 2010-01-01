@@ -56,7 +56,7 @@ public:
 		ASSERT(index < m_params.size());
 		return m_params[index];
 	}
-	REF(RDOValue) getParam(ruint index)
+	REF(RDOValue) getParamRaw(ruint index)
 	{
 		ASSERT(index < m_params.size());
 		setState(CS_Keep);

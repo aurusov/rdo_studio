@@ -143,11 +143,11 @@ public:
 		ASSERT(res);
 		return res->getParam(paramID);
 	}
-	REF(RDOValue) getResParamVal(ruint resID, ruint paramID)
+	REF(RDOValue) getResParamValRaw(ruint resID, ruint paramID)
 	{
 		PTR(RDOResource) res = getResourceByID(resID);
 		ASSERT(res);
-		return res->getParam(paramID);
+		return res->getParamRaw(paramID);
 	}
 	void setResParamVal( unsigned int res_id, unsigned int param_id, const RDOValue& value ) {
 		RDOResource* res = getResourceByID( res_id );
