@@ -236,7 +236,7 @@ RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* parent, const RDOValue& res_name
 	init( res_name, par_name );
 }
 
-void RDOFUNArithm::init( const RDOValue& value )
+void RDOFUNArithm::init(CREF(RDOValue) value)
 {
 	setSrcInfo( value.src_info() );
 
@@ -254,19 +254,35 @@ void RDOFUNArithm::init( const RDOValue& value )
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
-	if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
+	else if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
 	{
 		m_value = g_int;
 		m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
-	if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
+	else if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
 	{
 		m_value = g_real;
 		m_calc = new rdoRuntime::RDOCalcGetSeconds( parser()->runtime() );
 		m_calc->setSrcInfo( src_info() );
 		return;
+	}
+
+	//! Ищем параметр релевантного ресурса
+	if (parser()->getFileToParse() == rdoModelObjects::PAT)
+	{
+		CPTR(RDOPATPattern) pPattern = parser()->getLastPATPattern();
+		if (pPattern && pPattern->currRelRes)
+		{
+			CPTR(RDORTPParam) pParam = pPattern->currRelRes->getType()->findRTPParam(value->getIdentificator());
+			if (pParam)
+			{
+				RDOValue paramName(pPattern->currRelRes->body_name);
+				init(paramName, value);
+				return;
+			}
+		}
 	}
 
 	// Ищем параметры паттерна или функции по имени
@@ -339,7 +355,7 @@ void RDOFUNArithm::init( const RDOValue& value )
 	parser()->error( value.src_info(), rdo::format("Неизвестный идентификатор: %s", value->getIdentificator().c_str()) );
 }
 
-void RDOFUNArithm::init( const RDOValue& res_name, const RDOValue& par_name )
+void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 {
 	setSrcInfo( res_name.src_info(), ".", par_name.src_info() );
 	const RDORSSResource* const res = parser()->findRSSResource( res_name->getIdentificator() ); 
@@ -472,7 +488,7 @@ void RDOFUNArithm::init( const RDOValue& res_name, const RDOValue& par_name )
 									}
 								}
 							}
-							// В конверторе начала
+							// В конверторе конца
 							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResource::CS_Create) {
 								if ( !pat->currRelRes->getParamSetEnd()->isExist( par_name->getIdentificator() ) ) {
 									if ( !param->getType()->getDV().isExist() ) {
