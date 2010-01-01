@@ -8,13 +8,13 @@
  */
 
 // =========================================================================== PCH
-#include "pch.h"
+#include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 #include <limits>
 // ====================================================================== SYNOPSIS
-#include "rdopokaz.h"
-#include "rdocalc.h"
-#include "rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdopokaz.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

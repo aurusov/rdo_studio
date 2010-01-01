@@ -1,15 +1,12 @@
 %{
-#include "pch.h"
+#include "rdo_lib/rdo_parser/pch.h"
 
-// #include <iostream>
-// using namespace std;
-
-#include "rdogramma.h"
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include "rdoparser_value.h"
-#include "rdopat.h"
-#include <rdo_runtime.h>
+#include "rdo_lib/rdo_parser/rdogramma.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdoparser_value.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 
 #define LEXER     reinterpret_cast<rdoParse::RDOLexer*>(this)
 #define PARSER    LEXER->m_parser

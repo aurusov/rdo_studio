@@ -1,10 +1,10 @@
 #ifndef RDOPROCESS_H
 #define RDOPROCESS_H
 
-#include "rdo.h"
-#include "rdo_runtime.h"
-#include "rdoprocess_interface.h"
-#include "rdo_logic.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdoprocess_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_logic.h"
 
 namespace rdoRuntime {
 

@@ -49,10 +49,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -136,9 +137,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -219,11 +221,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../rdo_lib/rdo_corba;../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -307,9 +310,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../rdo_lib/rdo_corba;../rdo_ctrls;../rdo_kernel;../rdo_repository;../rdo_lib/rdo_simulator;../rdo_lib/rdo_runtime;../rdo_plugin;../rdo_common;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>

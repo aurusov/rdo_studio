@@ -6,11 +6,11 @@
 // ====================================================================== INCLUDES
 #include <time.h>
 // ====================================================================== SYNOPSIS
-#include "rdotrace.h"
-#include "simtrace.h"
-#include "rdo_resource.h"
-#include "rdo_runtime_interface_registrator.h"
-#include <rdocommon.h>
+#include "rdo_common/rdocommon.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/simtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 // ===============================================================================
 
 namespace rdoRuntime

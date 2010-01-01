@@ -1,17 +1,16 @@
-#include "pch.h"
-#include "rdoparser_rdo.h"
-#include "rdoparser_lexer.h"
-#include "rdoparser.h"
-#include "rdosmr.h"
-#include "rdorss.h"
-#include "rdortp.h"
-#include "rdofun.h"
-#include "rdosmr.h"
-
-#include <rdostream.h>
-#include <rdokernel.h>
-#include <rdorepository.h>
-#include <rdocalc.h>
+#include "rdo_lib/rdo_parser/pch.h"
+#include "rdo_lib/rdo_parser/rdoparser_rdo.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_common/rdostream.h"
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_repository/rdorepository.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 
 namespace rdoParse
 {

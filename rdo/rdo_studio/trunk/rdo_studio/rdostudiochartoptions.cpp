@@ -1,9 +1,9 @@
-#include "stdafx.h"
-#include "rdostudiochartoptions.h"
-#include "rdostudiochartview.h"
-#include "rdostudiochartdoc.h"
-#include "rdostudioapp.h"
-#include "htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudiochartoptions.h"
+#include "rdo_studio/rdostudiochartview.h"
+#include "rdo_studio/rdostudiochartdoc.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

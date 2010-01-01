@@ -10,8 +10,8 @@
 #include <string>
 #include <list>
 #include <vector>
-#include <rdomacros.h>
-#include <rdotypes.h>
+#include "rdo_common/rdomacros.h"
+#include "rdo_common/rdotypes.h"
 
 // --------------------------------------------------------------------
 // #define RDOSIM_COMPATIBLE

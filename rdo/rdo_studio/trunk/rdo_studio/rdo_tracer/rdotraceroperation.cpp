@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdotraceroperation.h"
-#include "rdotracervalues.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_tracer/rdotraceroperation.h"
+#include "rdo_studio/rdo_tracer/rdotracervalues.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -5,12 +5,12 @@
 #pragma once
 #endif
 
-#include "rdostudioframemanager.h"
-#include "rdostudiomodeldoc.h"
-#include "rdostudiomodelview.h"
-#include "rdostudioplugins.h"
-#include <rdosimwin.h>
-#include <rdothread.h>
+#include "rdo_studio/rdostudioframemanager.h"
+#include "rdo_studio/rdostudiomodeldoc.h"
+#include "rdo_studio/rdostudiomodelview.h"
+#include "rdo_studio/rdostudioplugins.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "rdo_kernel/rdothread.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel

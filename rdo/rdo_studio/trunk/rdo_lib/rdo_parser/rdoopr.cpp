@@ -1,8 +1,8 @@
-#include "pch.h"
-#include "rdoopr.h"
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include <rdo_logic_opr.h>
+#include "rdo_lib/rdo_parser/pch.h"
+#include "rdo_lib/rdo_parser/rdoopr.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_opr.h"
 
 namespace rdoParse 
 {

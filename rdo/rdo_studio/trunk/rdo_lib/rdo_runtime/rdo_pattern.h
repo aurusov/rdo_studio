@@ -1,9 +1,9 @@
 #ifndef RDO_PATTERN_H
 #define RDO_PATTERN_H
 
-#include "rdotrace.h"
-#include "rdo_resource.h"
-#include "rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 
 namespace rdoRuntime {
 

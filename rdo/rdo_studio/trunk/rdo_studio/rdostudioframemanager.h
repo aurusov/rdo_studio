@@ -5,10 +5,10 @@
 #pragma once
 #endif
 
-#include "rdostudioframedoc.h"
-#include "rdostudioframeview.h"
 #include <vector>
 #include <map>
+#include "rdo_studio/rdostudioframedoc.h"
+#include "rdo_studio/rdostudioframeview.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager

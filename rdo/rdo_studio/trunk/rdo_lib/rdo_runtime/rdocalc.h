@@ -13,10 +13,10 @@
 // ====================================================================== INCLUDES
 #include <list>
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo_value.h"
-#include "rdoruntime_object.h"
-#include "rdo_random_distribution.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -1200,6 +1200,6 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdocalc.inl"
+#include "rdo_lib/rdo_runtime/rdocalc.inl"
 
 #endif //! _RDOCALC_H_

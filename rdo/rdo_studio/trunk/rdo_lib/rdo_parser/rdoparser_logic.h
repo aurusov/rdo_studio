@@ -1,9 +1,9 @@
 #ifndef RDOPARSER_LOGIC_H
 #define RDOPARSER_LOGIC_H
 
-#include "rdoparser_object.h"
-#include <rdo_logic_interface.h>
-#include "rdofun.h"
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
 
 namespace rdoParse
 {

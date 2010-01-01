@@ -2,7 +2,7 @@
 #define RDOTRACERLOGSTYLE_H
 #pragma once
 
-#include "rdologstyle.h"
+#include "rdo_studio/rdo_tracer/tracer_ctrls/rdologstyle.h"
 
 class RDOStudioOptionsStylesAndColors;
 

@@ -5,10 +5,9 @@
 #pragma once
 #endif
 
-#include "rdostudiodockwnd.h"
-#include "rdostudioframetreectrl.h"
-
-#include <rdotabctrl.h>
+#include "rdo_studio/rdostudiodockwnd.h"
+#include "rdo_studio/rdostudioframetreectrl.h"
+#include "rdo_ctrls/rdotabctrl.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioWorkspace

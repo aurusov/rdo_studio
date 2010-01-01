@@ -1,5 +1,5 @@
-#include "rdo_ctrls_pch.h"
-#include "rdocolorcombobox.h"
+#include "rdo_ctrls/rdo_ctrls_pch.h"
+#include "rdo_ctrls/rdocolorcombobox.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,13 +1,12 @@
-#include "stdafx.h"
-#include "rdotracer.h"
-#include "../rdostudiomodel.h"
-#include "../rdostudiothread.h"
-#include <rdokernel.h>
-#include <rdorepository.h>
-#include <rdosimwin.h>
-
-#include "../rdostudiomainfrm.h"
-#include "../rdostudioapp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_tracer/rdotracer.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiothread.h"
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_repository/rdorepository.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

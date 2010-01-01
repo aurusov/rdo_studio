@@ -17,9 +17,9 @@
 #include <vector>
 #include <sstream>
 // ====================================================================== SYNOPSIS
-#include "namespace.h"
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/namespace.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -185,6 +185,6 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 	};
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
-#include "rdocommon.inl"
+#include "rdo_common/rdocommon.inl"
 
 #endif //! _RDOCOMMON_H_

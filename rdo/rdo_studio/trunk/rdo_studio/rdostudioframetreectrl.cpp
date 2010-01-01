@@ -1,13 +1,13 @@
-#include "stdafx.h"
-#include "rdostudioframetreectrl.h"
-#include "rdostudiomodel.h"
-#include "rdostudioframemanager.h"
-#include "rdostudioframedoc.h"
-#include "rdostudioframeview.h"
-#include "rdostudioapp.h"
-#include "rdostudiomainfrm.h"
-#include "resource.h"
-#include "htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudioframetreectrl.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdostudioframemanager.h"
+#include "rdo_studio/rdostudioframedoc.h"
+#include "rdo_studio/rdostudioframeview.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

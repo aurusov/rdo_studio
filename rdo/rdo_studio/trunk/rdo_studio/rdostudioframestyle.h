@@ -2,7 +2,7 @@
 #define RDOSTUDIOFRAMESTYLE_H
 #pragma once
 
-#include "rdostudiostyle.h"
+#include "rdo_studio/rdostudiostyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameTheme

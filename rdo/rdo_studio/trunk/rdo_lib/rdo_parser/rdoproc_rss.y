@@ -181,17 +181,17 @@
 
 
 %{
-#include "pch.h"
+#include "rdo_lib/rdo_parser/pch.h"
 
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include "rdofun.h"
-#include "rdodpt.h"
-#include "rdortp.h"
-#include "rdorss.h"
-#include "rdopmd.h"
-#include <rdoprocess.h>
-#include <rdo_resources.h>
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/rdopmd.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 
 #define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 #define RUNTIME PARSER->runtime()

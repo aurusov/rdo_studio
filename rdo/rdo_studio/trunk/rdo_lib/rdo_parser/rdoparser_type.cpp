@@ -1,7 +1,7 @@
-#include "pch.h"
-#include "rdoparser.h"
-#include "rdoparser_type.h"
-#include <rdo_exception.h>
+#include "rdo_lib/rdo_parser/pch.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_type.h"
+#include "rdo_lib/rdo_runtime/rdo_exception.h"
 
 namespace rdoParse {
 

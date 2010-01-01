@@ -3,7 +3,7 @@
 
 #ifdef CORBA_ENABLE
 
-#include "rdoparser_rdo.h"
+#include "rdo_lib/rdo_parser/rdoparser_rdo.h"
 
 namespace rdoParse
 {

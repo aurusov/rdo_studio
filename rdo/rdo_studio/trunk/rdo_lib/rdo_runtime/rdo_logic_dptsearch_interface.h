@@ -12,8 +12,8 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include <rdointerface.h>
+#include "rdo_common/namespace.h"
+#include "rdo_common/rdointerface.h"
 // ===============================================================================
 
 class IDPTSearchLogic

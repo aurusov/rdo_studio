@@ -12,12 +12,12 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo_logic.h"
-#include "rdo_priority.h"
-#include "rdocalc.h"
-#include "rdo_dptsearch_activity_interface.h"
-#include "rdo_logic_dptsearch_interface.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo_logic.h"
+#include "rdo_lib/rdo_runtime/rdo_priority.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch_interface.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

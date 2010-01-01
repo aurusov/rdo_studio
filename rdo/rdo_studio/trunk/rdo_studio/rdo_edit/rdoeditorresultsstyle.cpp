@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "rdoeditorresultsstyle.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,10 +1,10 @@
 #ifndef RDOPAT_PAT
 #define RDOPAT_PAT
 
-#include "rdoparser_object.h"
-#include <rdo_resource.h>
-#include <rdocalc.h>
-#include <rdocalc_relres.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdocalc_relres.h"
 
 namespace rdoRuntime
 {

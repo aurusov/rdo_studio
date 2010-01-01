@@ -1,8 +1,8 @@
 #ifndef RDOPARSER_OBJECT_H
 #define RDOPARSER_OBJECT_H
 
-#include "rdogramma.h"
-#include <rdoruntime_object.h>
+#include "rdo_lib/rdo_parser/rdogramma.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 
 namespace rdoParse 
 {

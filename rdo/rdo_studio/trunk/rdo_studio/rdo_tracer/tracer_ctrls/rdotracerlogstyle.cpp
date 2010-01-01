@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdotracerlogstyle.h"
-#include "../../rdostudioapp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "rdo_studio/rdostudioapp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

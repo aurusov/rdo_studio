@@ -1,9 +1,9 @@
-#include "stdafx.h"
-#include "rdotracerlogctrl.h"
-#include "../../rdostudioapp.h"
-#include "../../rdostudiomainfrm.h"
-#include "../../resource.h"
-#include "../../htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

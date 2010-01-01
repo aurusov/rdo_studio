@@ -14,10 +14,10 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo.h"
-#include "rdo_runtime_interface_registrator.h"
-#include "rdo_logic_interface.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -111,6 +111,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_logic.inl"
+#include "rdo_lib/rdo_runtime/rdo_logic.inl"
 
 #endif //! _RDO_LOGIC_H_

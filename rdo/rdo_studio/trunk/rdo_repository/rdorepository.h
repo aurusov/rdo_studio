@@ -5,11 +5,11 @@
 #pragma once
 #endif
 
-#include <rdothread.h>
-#include <rdostream.h>
-#include <rdocommon.h>
 #include <string>
 #include <fstream>
+#include "rdo_kernel/rdothread.h"
+#include "rdo_common/rdostream.h"
+#include "rdo_common/rdocommon.h"
 
 namespace rdoRepository {
 

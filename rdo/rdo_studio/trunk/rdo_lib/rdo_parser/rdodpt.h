@@ -1,15 +1,15 @@
 #ifndef RDODPT_DPT
 #define RDODPT_DPT
 
-#include "rdoparser_object.h"
-#include "rdoparser_logic.h"
-#include "rdofun.h"
-#include "rdopat.h"
-#include <rdoprocess.h>
-#include <rdo_activity.h>
-#include <searchtrace.h>
-#include <rdo_resources.h>
-#include <rdo_dptsearch_activity_interface.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdoparser_logic.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/searchtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 
 namespace rdoRuntime
 {

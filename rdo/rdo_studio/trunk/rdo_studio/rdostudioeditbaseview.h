@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdostudioview.h"
+#include "rdo_studio/rdostudioview.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioEditBaseView

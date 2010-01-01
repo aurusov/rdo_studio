@@ -1,20 +1,20 @@
-#include "pch.h"
-#include "rdodpt.h"
-#include "rdoopr.h"
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include "rdorss.h"
-#include <rdo_ie.h>
-#include <rdo_rule.h>
-#include <rdo_operation.h>
-#include <rdo_keyboard.h>
-#include <rdoprocess.h>
-#include <rdo_logic_dptfree.h>
-#include <rdo_logic_dptsome.h>
-#include <rdo_logic_dptprior.h>
-#include <rdodptrtime.h>
-#include <rdo_resources.h>
-#include <rdo_dptsearch_activity.h>
+#include "rdo_lib/rdo_parser/pch.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdoopr.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdo_keyboard.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptfree.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsome.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
+#include "rdo_lib/rdo_runtime/rdodptrtime.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 
 namespace rdoParse 
 {

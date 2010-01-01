@@ -1,9 +1,9 @@
 #ifndef RDOPARSER_BASE_H
 #define RDOPARSER_BASE_H
 
-#include "rdogramma.h"
-#include "rdoparser_object.h"
-#include <rdocommon.h>
+#include "rdo_lib/rdo_parser/rdogramma.h"
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_common/rdocommon.h"
 
 namespace rdoParse
 {

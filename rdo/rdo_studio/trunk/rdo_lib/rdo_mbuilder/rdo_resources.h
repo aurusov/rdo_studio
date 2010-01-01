@@ -5,12 +5,12 @@
 #pragma once
 #endif
 
-#include <rdoruntime_object.h>
-#include <rdoparser_object.h>
-#include <rdoparser.h>
-#include <rdorss.h>
-#include <rdodebug.h>
 #include <list>
+#include "rdo_common/rdodebug.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdorss.h"
 
 namespace rdoParse
 {

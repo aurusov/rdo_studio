@@ -181,11 +181,11 @@
 
 
 %{
-#include "pch.h"
+#include "rdo_lib/rdo_parser/pch.h"
 
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include "rdosmr.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
 
 #define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 

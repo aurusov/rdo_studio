@@ -1,9 +1,9 @@
 #ifndef RDOSMR_H
 #define RDOSMR_H
 
-#include "rdoparser_object.h"
-#include <rdotrace.h>
-#include <rdocommon.h>
+#include "rdo_common/rdocommon.h"
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
 
 namespace rdoRuntime
 {

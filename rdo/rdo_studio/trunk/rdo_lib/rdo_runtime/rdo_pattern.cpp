@@ -1,10 +1,10 @@
-#include "pch.h"
-#include "rdo_pattern.h"
-#include "rdo_ie.h"
-#include "rdo_rule.h"
-#include "rdo_operation.h"
-#include "rdo_keyboard.h"
-#include "rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_lib/rdo_runtime/rdo_pattern.h"
+#include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdo_keyboard.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 
 namespace rdoRuntime
 {

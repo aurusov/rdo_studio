@@ -2,7 +2,7 @@
 #define RDOTRACERRESOURCE_H
 #pragma once
 
-#include "rdotracerserie.h"
+#include "rdo_studio/rdo_tracer/rdotracerserie.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResParam

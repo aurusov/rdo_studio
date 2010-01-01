@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".;..;../rdo_parser;../rdo_mbuilder;../../rdo_kernel;../../rdo_repository;../../rdo_common;../rdo_runtime"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -111,7 +111,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories=".;..;../rdo_runtime;../rdo_parser;../rdo_mbuilder;../../rdo_kernel;../../rdo_repository;../../rdo_common"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
 				BrowseInformation="1"
 				WarningLevel="3"
@@ -176,7 +176,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../rdo_parser;../rdo_mbuilder;../../rdo_kernel;../../rdo_repository;../../rdo_common;../../thirdparty/corba/include;../rdo_corba;../rdo_runtime;..;."
+				AdditionalIncludeDirectories="../../;../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -245,7 +245,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../rdo_lib/rdo_corba;.;..;../rdo_runtime;../rdo_parser;../rdo_mbuilder;../../rdo_kernel;../../rdo_repository;../../rdo_common;../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../;../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
 				BrowseInformation="1"
 				WarningLevel="3"

@@ -5,21 +5,20 @@
 #pragma once
 #endif
 
-#include "rdostudioworkspace.h"
-#include "rdostudiooutput.h"
-#include "rdo_edit/rdoeditoreditstyle.h"
-#include "rdo_edit/rdoeditorresultsstyle.h"
-#include "edit_ctrls/rdobuildeditstyle.h"
-#include "edit_ctrls/rdobaseeditstyle.h"
-#include "edit_ctrls/rdofindeditstyle.h"
-#include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
-#include "rdostudiostyle.h"
-#include "rdostudiochartviewstyle.h"
-#include "rdostudiostatusbar.h"
-#include "rdostudioframestyle.h"
-
-#include <rdokernel.h>
 #include <math.h>
+#include "rdo_studio/rdostudioworkspace.h"
+#include "rdo_studio/rdostudiooutput.h"
+#include "rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
+#include "rdo_studio/edit_ctrls/rdobuildeditstyle.h"
+#include "rdo_studio/edit_ctrls/rdobaseeditstyle.h"
+#include "rdo_studio/edit_ctrls/rdofindeditstyle.h"
+#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "rdo_studio/rdostudiostyle.h"
+#include "rdo_studio/rdostudiochartviewstyle.h"
+#include "rdo_studio/rdostudiostatusbar.h"
+#include "rdo_studio/rdostudioframestyle.h"
+#include "rdo_kernel/rdokernel.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOToolBar

@@ -12,8 +12,8 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_type.h"
-#include <rdosmart_ptr.h>
+#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_lib/rdo_runtime/rdo_type.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -115,6 +115,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_value.inl"
+#include "rdo_lib/rdo_runtime/rdo_value.inl"
 
 #endif //! _RDO_VALUE_H_

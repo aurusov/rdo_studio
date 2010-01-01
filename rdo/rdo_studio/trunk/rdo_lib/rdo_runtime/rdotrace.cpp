@@ -1,11 +1,11 @@
-#include "pch.h"
-#include "rdotrace.h"
-#include "searchtrace.h"
-#include "rdo_ie.h"
-#include "rdo_rule.h"
-#include "rdo_operation.h"
-#include "rdo_runtime.h"
-#include "rdo_logic_dptsearch.h"
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/searchtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
 
 namespace rdoRuntime {
 

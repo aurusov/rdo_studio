@@ -9,9 +9,9 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include <rdolink.h>
-#include <rdothread.h>
-#include "resource.h"
+#include "rdo_ctrls/rdolink.h"
+#include "rdo_kernel/rdothread.h"
+#include "rdo_studio/resource.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp

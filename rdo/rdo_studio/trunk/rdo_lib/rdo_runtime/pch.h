@@ -20,7 +20,8 @@
 #include <fstream>
 #include <map>
 #include <functional>
-#include <rdocommon.h>
-#include <rdotypes.h>
-#include <rdomacros.h>
-#include <rdodebug.h>
+
+#include "rdo_common/rdocommon.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
+#include "rdo_common/rdodebug.h"

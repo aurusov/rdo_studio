@@ -13,9 +13,9 @@
 // ====================================================================== INCLUDES
 #include <string>
 // ====================================================================== SYNOPSIS
-#include "namespace.h"
-#include "rdosmart_ptr.h"
-#include "rdodebug.h"
+#include "rdo_common/namespace.h"
+#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/rdodebug.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE

@@ -8,7 +8,7 @@
 #include <windows.h>
 #endif
 // ====================================================================== SYNOPSIS
-#include "rdocommon.h"
+#include "rdo_common/rdocommon.h"
 // ===============================================================================
 
 #ifdef TRACE

@@ -8,12 +8,12 @@
  */
 
 // =========================================================================== PCH
-#include "pch.h"
+#include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo_dptsearch_activity.h"
-#include "rdo_runtime.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

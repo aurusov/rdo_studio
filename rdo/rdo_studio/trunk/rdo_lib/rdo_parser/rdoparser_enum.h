@@ -1,10 +1,10 @@
 #ifndef RDOPARSER_ENUM_H
 #define RDOPARSER_ENUM_H
 
-#include "rdoparser_type.h"
-#include "rdoparser_object.h"
-#include "rdoparser_value.h"
-#include <rdo_enum.h>
+#include "rdo_lib/rdo_parser/rdoparser_type.h"
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdoparser_value.h"
+#include "rdo_lib/rdo_runtime/rdo_enum.h"
 
 namespace rdoParse 
 {

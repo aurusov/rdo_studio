@@ -1,8 +1,8 @@
 #ifndef RDOPARSER_VALUE_H
 #define RDOPARSER_VALUE_H
 
-#include "rdoparser_type.h"
-#include <rdo_value.h>
+#include "rdo_lib/rdo_parser/rdoparser_type.h"
+#include "rdo_lib/rdo_runtime/rdo_value.h"
 
 namespace rdoParse 
 {

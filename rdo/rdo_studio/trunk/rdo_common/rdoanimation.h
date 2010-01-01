@@ -13,9 +13,9 @@
 // ====================================================================== INCLUDES
 #include <vector>
 // ====================================================================== SYNOPSIS
-#include "namespace.h"
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/namespace.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 // ===============================================================================
 
 OPEN_RDO_ANIMATION_NAMESPACE
@@ -187,6 +187,6 @@ OPEN_RDO_ANIMATION_NAMESPACE
 
 CLOSE_RDO_ANIMATION_NAMESPACE
 
-#include "rdoanimation.inl"
+#include "rdo_common/rdoanimation.inl"
 
 #endif //! _RDOANIMATION_H_

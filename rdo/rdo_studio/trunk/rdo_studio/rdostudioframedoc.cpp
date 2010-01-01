@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdostudioframedoc.h"
-#include "rdostudiomodel.h"
-#include "rdostudioframemanager.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudioframedoc.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdostudioframemanager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

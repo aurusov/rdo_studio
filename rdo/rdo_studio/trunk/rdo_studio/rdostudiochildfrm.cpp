@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdostudiochildfrm.h"
-#include "rdostudioapp.h"
-#include "rdostudiomainfrm.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudiochildfrm.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

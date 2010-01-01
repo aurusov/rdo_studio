@@ -2,7 +2,7 @@
 #define RDOEDITORBASEEDITSTYLE_H
 #pragma once
 
-#include "../edit_ctrls/rdobaseeditstyle.h"
+#include "rdo_studio/edit_ctrls/rdobaseeditstyle.h"
 
 namespace rdoEditor {
 

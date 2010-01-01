@@ -3,8 +3,8 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 // ===============================================================================
 
 namespace rdo {
@@ -19,6 +19,6 @@ public:
 
 } //! namespace rdo
 
-#include "rdofile.inl"
+#include "rdo_common/rdofile.inl"
 
 #endif //! RDOFILE_H

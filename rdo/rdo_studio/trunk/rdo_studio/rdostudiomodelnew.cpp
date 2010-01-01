@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdostudiomodelnew.h"
+#include "rdo_studio/stdafx.h"
 #include <shlobj.h>
+#include "rdo_studio/rdostudiomodelnew.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

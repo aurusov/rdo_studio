@@ -1,8 +1,8 @@
 // ====================================================================== INCLUDES
 #include <io.h>
 // ====================================================================== SYNOPSIS
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 // ===============================================================================
 
 namespace rdo

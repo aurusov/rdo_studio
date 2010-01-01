@@ -12,19 +12,19 @@
 #include <sstream>
 #include <algorithm>
 
-#include "rdosimwin.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
 
-#include <rdokernel.h>
-#include <rdorepository.h>
-#include <rdotrace.h>
-#include <rdo_runtime.h>
-#include <rdoframe.h>
-#include <rdoparser.h>
-#include <rdosmr.h>
-#include <rdofrm.h>
-#include <rdortp.h>
-#include <rdo_resources.h>
-#include <rdodebug.h>
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_repository/rdorepository.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdoframe.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_lib/rdo_parser/rdofrm.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+#include "rdo_common/rdodebug.h"
 
 //#ifndef DISABLE_CORBA
 
