@@ -367,7 +367,7 @@ void RDOFUNArithm::init( const RDOValue& res_name, const RDOValue& par_name )
 		m_value = res->getType()->findRTPParam( par_name->getIdentificator() )->getType()->type();
 		return;
 	}
-	// Это не ресурс, но возможно релевантный ресурс или ресурс, внутри групповой функции
+	// Это не ресурс, но возможно, ресурс внутри групповой функции
 	else if ( !parser()->getFUNGroupStack().empty() && parser()->getFUNGroupStack().back()->resType->name() == res_name->getIdentificator() )
 	{
 		// Это ресурс внутри групповой функции
@@ -384,6 +384,7 @@ void RDOFUNArithm::init( const RDOValue& res_name, const RDOValue& par_name )
 	}
 	else
 	{
+		// Возможно, это релевантный ресурс
 		switch ( parser()->getFileToParse() )
 		{
 			case rdoModelObjects::PAT:
