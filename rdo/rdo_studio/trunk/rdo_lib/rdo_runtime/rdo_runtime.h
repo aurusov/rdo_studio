@@ -1,11 +1,21 @@
-#ifndef RDO_RUNTIME_H
-#define RDO_RUNTIME_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_runtime.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _RDO_RUNTIME_H_
+#define _RDO_RUNTIME_H_
 
 #pragma warning(disable : 4786)  
 
 // ====================================================================== INCLUDES
 #include <time.h>
 // ====================================================================== SYNOPSIS
+#include "rdo_common/namespace.h"
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
@@ -13,41 +23,33 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 // ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResults
 // ----------------------------------------------------------------------------
 class RDOResults
 {
-private:
-	std::ofstream out;
-	virtual std::ostream& getOStream() { return out; }
-
-protected:
-	bool isNullResult;
-
 public:
-	RDOResults( const char* const fileName ):
-		out( fileName, std::ios::out ),
-		isNullResult( false )
-	{
-	}
-	RDOResults():
-		isNullResult( true )
-	{
-	}
+	RDOResults()
+	{}
+
 	virtual ~RDOResults()
+	{}
+
+	void width(ruint w)
 	{
+		getOStream().width(w);
 	}
-	int width( int w ) {
-		return isNullResult ? 0 : getOStream().width(w);
-	}
-	template< class TN > RDOResults& operator << (TN str) {
-		if ( !isNullResult ) getOStream() << str;
+
+	template<class T> REF(RDOResults) operator<< (CREF(T) value)
+	{
+		getOStream() << value;
 		return *this;
 	}
+
+private:
+	virtual REF(std::ostream) getOStream() = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -103,10 +105,10 @@ public:
 	RDOHotKeyToolkit rdoHotKeyToolkit;
 
 	std::vector< unsigned int > using_scan_codes;
-	bool keyDown( unsigned int scan_code );
+	rbool keyDown( unsigned int scan_code );
 	void keyUp( unsigned int scan_code );
-	bool checkKeyPressed( unsigned int scan_code, bool shift, bool control );
-	bool checkAreaActivated( const std::string& oprName );
+	rbool checkKeyPressed( unsigned int scan_code, rbool shift, rbool control );
+	rbool checkAreaActivated( const std::string& oprName );
 
 	void setConstValue( unsigned int numberOfConst, RDOValue value );
 	RDOValue getConstValue( int numberOfConst );
@@ -156,13 +158,13 @@ public:
 
 #ifdef _DEBUG
 	std::vector< std::vector< RDOValue > > state;
-	bool checkState();
+	rbool checkState();
 	void showResources( int node ) const;
 #endif
 
 	void onEraseRes( const int res_id, const RDOCalcEraseRes* calc );
 	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
-	RDOResource* createNewResource( unsigned int type, bool trace );
+	RDOResource* createNewResource( unsigned int type, rbool trace );
 	void insertNewResource( RDOResource* res );
 
 	RDOValue getFuncArgument(int numberOfParam); 
@@ -175,10 +177,10 @@ public:
 	void resetFuncTop( int numArg )        { currFuncTop = funcStack.size() - numArg;              }
 	void popFuncTop()                      { currFuncTop = funcStack.back().getInt(); funcStack.pop_back(); }
 
-	virtual bool endCondition();
+	virtual rbool endCondition();
 	void setTerminateIf( RDOCalc* _terminateIfCalc );
 
-	virtual bool breakPoints();
+	virtual rbool breakPoints();
 	void insertBreakPoint( const std::string& name, RDOCalc* calc );
 	RDOCalc* findBreakPoint( const std::string& name );
 	std::string getLastBreakPointName() const;
@@ -289,12 +291,12 @@ private:
 
 	virtual RDOSimulator* clone();
 	virtual void operator=  (const RDORuntime& other);
-	virtual bool operator== (RDOSimulator& other);
+	virtual rbool operator== (RDOSimulator& other);
 
 	void writeExitCode();
 
-	bool key_found;
-	virtual bool isKeyDown();
+	rbool key_found;
+	virtual rbool isKeyDown();
 
 	typedef std::multimap<ruint, PTR(INotify)> Connected;
 	Connected m_connected;
@@ -306,6 +308,6 @@ private:
 	unsigned int m_currentTerm;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_RUNTIME_H
+#endif //! _RDO_RUNTIME_H_

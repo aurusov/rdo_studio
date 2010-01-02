@@ -353,15 +353,17 @@ private:
 // --------------------------------------------------------------------
 class RDOSimResulter: public rdoRuntime::RDOResults
 {
-private:
-	std::ostream& stream;
-	virtual std::ostream& getOStream() { return stream; }
-
 public:
-	RDOSimResulter( std::ostream& _stream ):
-		stream( _stream )
+	RDOSimResulter(REF(std::ostream) stream)
+		: m_stream(stream)
+	{}
+
+private:
+	REF(std::ostream) m_stream;
+
+	virtual REF(std::ostream) getOStream()
 	{
-		isNullResult = false;
+		return m_stream;
 	}
 };
 
@@ -498,19 +500,11 @@ void RDOThreadRunTime::start()
 		tracer = new rdoSimulator::RDORuntimeTracer( simulator );
 	}
 
-	simulator->resultString.str( "" );
-	if ( !simulator->parser->getSMR()->hasFile( "Statistic_file" ) ) {
-		results      = new rdoRuntime::RDOResults();
-	} else {
-		results      = new rdoSimulator::RDOSimResulter( simulator->resultString );
-	}
+	simulator->resultString.str(_T(""));
+	results = new rdoSimulator::RDOSimResulter(simulator->resultString);
 
-	simulator->resultInfoString.str( "" );
-	if ( !simulator->parser->getSMR()->hasFile( "Results_file" ) ) {
-		results_info = new rdoRuntime::RDOResults();
-	} else {
-		results_info = new rdoSimulator::RDOSimResulter( simulator->resultInfoString );
-	}
+	simulator->resultInfoString.str(_T(""));
+	results_info = new rdoSimulator::RDOSimResulter(simulator->resultInfoString);
 
 	// RDO config initialization
 	simulator->runtime->keysDown.clear();
@@ -524,7 +518,7 @@ void RDOThreadRunTime::start()
 
 	try {
 		simulator->exitCode = rdoSimulator::EC_OK;
-		simulator->runtime->rdoInit( tracer, results, results_info );
+		simulator->runtime->rdoInit(tracer, results, results_info);
 		switch ( simulator->parser->getSMR()->getShowMode() ) {
 			case rdoSimulator::SM_NoShow   : simulator->runtime->setMode( rdoRuntime::RTM_MaxSpeed ); break;
 			case rdoSimulator::SM_Animation: simulator->runtime->setMode( rdoRuntime::RTM_Sync ); break;
