@@ -2,7 +2,7 @@
  * copyright: (c) RDO-Team, 2009
  * filename : main.cpp
  * author   : Урусов Андрей
- * date     : 10.05.09
+ * date     : 10.05.2009
  * bref     : Тест нечеткой логики
  * indent   : 4T
  */

@@ -2,7 +2,7 @@
  * copyright: (c) RDO-Team, 2009
  * filename : main.cpp
  * author   : Урусов Андрей
- * date     : 14.07.09
+ * date     : 14.07.2009
  * bref     : Тест умных указателей
  * indent   : 4T
  */
