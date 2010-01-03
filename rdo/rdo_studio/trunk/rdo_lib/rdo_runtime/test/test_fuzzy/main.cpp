@@ -1,14 +1,26 @@
-#include <rdo_runtime.h>
-#include <rdo_fuzzy.h>
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : main.cpp
+ * author   : Урусов Андрей
+ * date     : 10.05.09
+ * bref     : Тест нечеткой логики
+ * indent   : 4T
+ */
 
+// ====================================================================== PCH
+// ====================================================================== INCLUDES
 #include <iostream>
+// ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
+// ===============================================================================
 
 using namespace rdoRuntime;
 
 void main()
 {
 	RDORuntime runtime;
-	RDOFuzzySetDefinitionRangeDiscret* setDefinition1 = new RDOFuzzySetDefinitionRangeDiscret(&runtime, 0, 50);
+	PTR(RDOFuzzySetDefinitionRangeDiscret) setDefinition1 = new RDOFuzzySetDefinitionRangeDiscret(&runtime, 0, 50);
 	RDOFuzzyType type1(setDefinition1);
 
 	RDOFuzzyValue value1(type1);

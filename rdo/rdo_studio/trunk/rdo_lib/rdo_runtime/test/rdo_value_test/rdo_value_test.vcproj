@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".,../../,../../../../rdo_common"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				RuntimeLibrary="3"
 				WarningLevel="3"
@@ -113,7 +113,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".,../../,../../../../rdo_common"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_CONSOLE"
 			/>
 			<Tool

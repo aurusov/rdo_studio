@@ -1,8 +1,21 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : main.cpp
+ * author   : Урусов Андрей
+ * date     : 28.09.09
+ * bref     : Тест логик
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
+// ====================================================================== INCLUDES
 #include <vector>
 #include <algorithm>
-#include <rdomacros.h>
-#include <rdotypes.h>
-#include <rdodebug.h>
+// ====================================================================== SYNOPSIS
+#include "rdo_common/rdomacros.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdodebug.h"
+// ===============================================================================
 
 class MyOperation
 {
