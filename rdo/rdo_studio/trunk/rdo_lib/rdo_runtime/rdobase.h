@@ -1,6 +1,7 @@
 #ifndef RDOBASE_H
 #define RDOBASE_H
 
+#include <map>
 #include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_common/rdocommon.h"
