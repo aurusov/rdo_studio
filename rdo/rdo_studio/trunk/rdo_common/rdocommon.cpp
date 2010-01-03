@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdocommon.cpp
- * author   : Урусов Андрей
+ * author   : Александ Барс, Урусов Андрей
  * date     : 13.06.2009
  * bref     : 
  * indent   : 4T
@@ -9,6 +9,7 @@
 
 #pragma warning(disable : 4786)  
 
+// ====================================================================== PCH
 // ====================================================================== INCLUDES
 #include <stdio.h>
 #include <stdarg.h>

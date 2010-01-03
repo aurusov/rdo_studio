@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdoanimation.h
- * author   : Урусов Андрей
+ * author   : Александ Барс, Урусов Андрей
  * date     : 13.06.2009
  * bref     : Описание объектов анимации
  * indent   : 4T

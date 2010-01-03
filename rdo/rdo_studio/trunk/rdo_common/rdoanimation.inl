@@ -162,7 +162,7 @@ inline RDONullElement::RDONullElement()
 
 inline RDOFrame::~RDOFrame()
 {
-	for (Elements::iterator it = m_elements.begin(); it != m_elements.end(); it++)
+	STL_FOR_ALL(Elements, m_elements, it)
 		delete (*it);
 
 	m_elements.clear();

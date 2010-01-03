@@ -11,7 +11,6 @@
 #define _RDOINTERFACE_H_
 
 // ====================================================================== INCLUDES
-#include <string>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdosmart_ptr.h"

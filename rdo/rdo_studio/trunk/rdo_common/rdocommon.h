@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdocommon.h
- * author   : Урусов Андрей
+ * author   : Александ Барс, Урусов Андрей
  * date     : 13.06.2009
  * bref     : 
  * indent   : 4T
