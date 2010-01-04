@@ -125,7 +125,7 @@
 %token RDO_CF							371
 %token RDO_Priority						372
 %token RDO_prior						373
-%token RDO_Parent                       374
+%token RDO_Parent						374
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
