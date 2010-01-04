@@ -24,10 +24,10 @@ RDOSimulator::RDOSimulator()
 RDOSimulator::~RDOSimulator()
 {}
 
-void RDOSimulator::appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer  m_parent)
+void RDOSimulator::appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer parent)
 {
-	ASSERT(m_parent);
-	m_parent->append(logic);
+	ASSERT(parent);
+	parent->append(logic);
 }
 
 bool RDOSimulator::doOperation()

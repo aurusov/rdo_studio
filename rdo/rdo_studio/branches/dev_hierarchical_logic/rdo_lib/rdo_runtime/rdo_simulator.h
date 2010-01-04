@@ -19,7 +19,7 @@ public:
 	RDOSimulator();
 	virtual ~RDOSimulator();
 
-	void appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer  m_parent);
+	void appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer parent);
 
 	LPIBaseOperation getMustContinueOpr() const           { return opr_must_continue;  }
 	void setMustContinueOpr(CREF(LPIBaseOperation) value) { opr_must_continue = value; }
