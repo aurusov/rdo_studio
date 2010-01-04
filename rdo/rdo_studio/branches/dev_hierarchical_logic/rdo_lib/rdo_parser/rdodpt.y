@@ -254,10 +254,10 @@ dpt_search_parent:		/* empty */
 							PARSER->error( @1, "Ошибка в имени родительской точки" );
 						};
 
-dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_trace dpt_search_parent
+dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_parent dpt_search_trace
 						{
 							RDOValue* name        = reinterpret_cast<RDOValue*>($2);
-							RDOValue* parent_name = reinterpret_cast<RDOValue*>($5);
+							RDOValue* parent_name = reinterpret_cast<RDOValue*>($4);
 							if ( parent_name != 0 )
 							{
 								const RDODPTPrior*  parentDPTPrior  = PARSER->findDPTPrior(  parent_name->value().getIdentificator() );
@@ -274,17 +274,17 @@ dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_tr
 								if ( parentDPTPrior  != NULL )
 								{
 									LPILogic parent = parentDPTPrior->getLogic();
-									$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4), parent );
+									$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), parent );
 								}
 								if ( parentDPTSome   != NULL )
 								{
 									LPILogic parent = parentDPTSome->getLogic();
-									$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4), parent );
+									$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), parent );
 								}
 							}
 							if ( parent_name == 0 )
 							{
-								$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$4) );
+								$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5) );
 							}
 						}
 						| RDO_Decision_point RDO_IDENTIF_COLON error
@@ -319,7 +319,7 @@ dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic
 							PARSER->error( @2, "Ожидается ключевое слово $Condition" );
 						};
 
-dpt_search_prior:	    dpt_search_condition
+dpt_search_prior:		dpt_search_condition
 						| dpt_search_condition RDO_Priority fun_arithm
 						{
 							if (!PARSER->getLastDPTSearch()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
@@ -527,10 +527,11 @@ dpt_some_parent:		/* empty */
 							PARSER->error( @1, "Ошибка в имени родительской точки" );
 						};
 
-dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace dpt_some_parent
+dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
 						{
+							// TODO: а где признак трассировки для some ?
 							RDOValue* name        = reinterpret_cast<RDOValue*>($2);
-							RDOValue* parent_name = reinterpret_cast<RDOValue*>($5);
+							RDOValue* parent_name = reinterpret_cast<RDOValue*>($4);
 							if ( parent_name != 0 )
 							{
 								const RDODPTPrior*  parentDPTPrior  = PARSER->findDPTPrior(  parent_name->value().getIdentificator() );
@@ -581,7 +582,7 @@ dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic
 							dpt->setCondition();
 						};
 
-dpt_some_prior:	        dpt_some_condition
+dpt_some_prior:			dpt_some_condition
 						| dpt_some_condition RDO_Priority fun_arithm
 						{
 							if (!PARSER->getLastDPTSome()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
@@ -700,10 +701,11 @@ dpt_prior_parent:		/* empty */
 							PARSER->error( @1, "Ошибка в имени родительской точки" );
 						};
 
-dpt_prior_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_trace dpt_prior_parent
+dpt_prior_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
 						{
+							// TODO: а где признак трассировки для prior ?
 							RDOValue* name        = reinterpret_cast<RDOValue*>($2);
-							RDOValue* parent_name = reinterpret_cast<RDOValue*>($5);
+							RDOValue* parent_name = reinterpret_cast<RDOValue*>($4);
 							if ( parent_name != 0 )
 							{
 								const RDODPTPrior*  parentDPTPrior  = PARSER->findDPTPrior(  parent_name->value().getIdentificator() );
