@@ -54,8 +54,8 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOp
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-inline RDODPTPrior::RDODPTPrior( RDOSimulator* sim ):
-	RDOLogicDPTPrior()
+inline RDODPTPrior::RDODPTPrior( RDOSimulator* sim, LPIBaseOperationContainer parent ):
+	RDOLogicDPTPrior(sim, parent)
 {
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }

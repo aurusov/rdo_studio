@@ -271,19 +271,19 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimeIE(CREF(LPIIrregEvent) ie)
+void RDORuntime::addRuntimeIE(LPIBaseOperationContainer logic, CREF(LPIIrregEvent) ie)
 {
-	appendBaseOperation(ie);
+	appendBaseOperation(logic, ie);
 }
 
-void RDORuntime::addRuntimeRule(CREF(LPIRule) rule)
+void RDORuntime::addRuntimeRule(LPIBaseOperationContainer logic, CREF(LPIRule) rule)
 {
-	appendBaseOperation(rule);
+	appendBaseOperation(logic, rule);
 }
 
-void RDORuntime::addRuntimeOperation(CREF(LPIOperation) opration)
+void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation) opration)
 {
-	appendBaseOperation(opration);
+	appendBaseOperation(logic, opration);
 }
 
 void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pokaz)

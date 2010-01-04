@@ -35,10 +35,10 @@ double RDOPatternIrregEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
 	return 0;
 }
 
-LPIIrregEvent RDOPatternIrregEvent::createActivity(PTR(RDORuntime) runtime, CREF(tstring) oprName)
+LPIIrregEvent RDOPatternIrregEvent::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName)
 {
 	LPIIrregEvent ie = F(RDOIrregEvent)::create(runtime, this, traceable(), oprName);
-	runtime->addRuntimeIE(ie);
+	runtime->addRuntimeIE(parent, ie);
 	return ie;
 }
 
@@ -50,17 +50,17 @@ RDOPatternRule::RDOPatternRule( PTR(RDORuntime) rTime, bool trace ):
 {
 }
 
-LPIRule RDOPatternRule::createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
 {
 	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), _oprName);
-	runtime->addRuntimeRule(rule);
+	runtime->addRuntimeRule(logic, rule);
 	return rule;
 }
 
-LPIRule RDOPatternRule::createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
 {
 	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), condition, _oprName);
-	runtime->addRuntimeRule(rule);
+	runtime->addRuntimeRule(logic, rule);
 	return rule;
 }
 
@@ -81,17 +81,17 @@ double RDOPatternOperation::getNextTimeInterval( PTR(RDORuntime) runtime )
 	return 0;
 }
 
-LPIOperation RDOPatternOperation::createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
 {
 	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), _oprName);
-	runtime->addRuntimeOperation(operation);
+	runtime->addRuntimeOperation(parent, operation);
 	return operation;
 }
 
-LPIOperation RDOPatternOperation::createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
 {
 	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), condition, _oprName);
-	runtime->addRuntimeOperation(operation);
+	runtime->addRuntimeOperation(parent, operation);
 	return operation;
 }
 
@@ -103,17 +103,17 @@ RDOPatternKeyboard::RDOPatternKeyboard( PTR(RDORuntime) rTime, bool _trace ):
 {
 }
 
-LPIKeyboard RDOPatternKeyboard::createActivity(PTR(RDORuntime) runtime, CREF(tstring) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
 {
 	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), _oprName);
-	runtime->addRuntimeOperation(keyboard);
+	runtime->addRuntimeOperation(parent, keyboard);
 	return keyboard;
 }
 
-LPIKeyboard RDOPatternKeyboard::createActivity(PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
 {
 	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), condition, _oprName);
-	runtime->addRuntimeOperation(keyboard);
+	runtime->addRuntimeOperation(parent, keyboard);
 	return keyboard;
 }
 

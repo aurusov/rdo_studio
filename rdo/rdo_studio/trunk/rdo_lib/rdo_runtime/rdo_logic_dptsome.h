@@ -26,12 +26,12 @@ class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {
 DEFINE_FACTORY(RDODPTSome);
 QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogic)
+QUERY_INTERFACE_PARENT(RDOLogicSimple)
 QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTSome (RDOSimulator* sim);
+	RDODPTSome (RDOSimulator* sim, LPIBaseOperationContainer parent = NULL);
 	virtual ~RDODPTSome();
 };
 

@@ -227,6 +227,8 @@ cf					return(RDO_CF);
 CF					return(RDO_CF);
 $Priority           return(RDO_Priority);
 $priority           return(RDO_Priority);
+$Parent				return(RDO_Parent);
+$parent				return(RDO_Parent);
 "+="                return(RDO_PlusEqual);
 "-="                return(RDO_MinusEqual);
 "*="                return(RDO_MultiplyEqual);

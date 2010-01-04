@@ -22,7 +22,7 @@ class RDOOPROperation: public RDODPTActivityHotKey
 {
 friend class RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>;
 private:
-	RDOOPROperation( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDOOPROperation( LPIBaseOperationContainer dpt, const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 };
 
 // ----------------------------------------------------------------------------
