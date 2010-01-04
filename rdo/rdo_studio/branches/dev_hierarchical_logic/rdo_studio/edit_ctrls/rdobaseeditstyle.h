@@ -2,7 +2,7 @@
 #define RDOBASEEDITSTYLE_H
 #pragma once
 
-#include "../rdostudiostyle.h"
+#include "rdo_studio/rdostudiostyle.h"
 #include "sci/Scintilla.h"
 
 namespace rdoEditCtrl {

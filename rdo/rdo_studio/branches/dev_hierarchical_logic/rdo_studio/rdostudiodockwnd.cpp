@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "rdostudiodockwnd.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudiodockwnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,13 +1,13 @@
-#include "stdafx.h"
-#include "rdostudiochartview.h"
-#include "rdo_tracer/rdotracer.h"
-#include "rdostudioapp.h"
-#include "rdostudiomainfrm.h"
-#include "resource.h"
-#include "rdostudiochartviewstyle.h"
-#include "rdostudiodocserie.h"
-#include "rdostudiochartoptions.h"
-#include "htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudiochartview.h"
+#include "rdo_studio/rdo_tracer/rdotracer.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/rdostudiochartviewstyle.h"
+#include "rdo_studio/rdostudiodocserie.h"
+#include "rdo_studio/rdostudiochartoptions.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

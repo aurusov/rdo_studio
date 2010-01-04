@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "rdotracerpattern.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_tracer/rdotracerpattern.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -12,12 +12,10 @@
 #include <windows.h>
 #endif
 
-#include <rdocommon.h>
-#include <rdokernel.h>
-#include <rdothread.h>
-
-#include <rdostream.h>
-#include <rdocommon.h>
+#include "rdo_common/rdocommon.h"
+#include "rdo_common/rdostream.h"
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_kernel/rdothread.h"
 
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
@@ -53,7 +51,7 @@ struct RDOFrame;
 
 #pragma warning(disable: 4996)
 #include <omniORB4/CORBA.h>
-#include "RDOCorba.hh"
+#include "rdo_lib/rdo_corba/RDOCorba.hh"
 #pragma warning(default: 4996)
 
 namespace rdoCorba {

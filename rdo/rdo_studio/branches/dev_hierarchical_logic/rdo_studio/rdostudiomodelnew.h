@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "resource.h"
+#include "rdo_studio/resource.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsGeneral

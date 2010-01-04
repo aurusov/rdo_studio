@@ -1,9 +1,9 @@
-#include "stdafx.h"
-#include "rdoeditortabctrl.h"
-#include "../rdostudioapp.h"
-#include "../rdostudiomainfrm.h"
-#include "../rdostudioeditbaseview.h"
-#include "../resource.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/rdostudioeditbaseview.h"
+#include "rdo_studio/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

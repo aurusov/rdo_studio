@@ -1,13 +1,13 @@
-#include "pch.h"
+#include "rdo_lib/rdo_parser/pch.h"
 
 #ifdef CORBA_ENABLE
 
-#include "rdoparser_corba.h"
-#include "rdortp.h"
-#include <rdo_resources.h>
-#include <rdoruntime_object.h>
-#include "RDOCorba.hh"
-#include "rdosmr.h"
+#include "rdo_lib/rdo_parser/rdoparser_corba.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_lib/rdo_mbuilder//rdo_resources.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_corba/RDOCorba.hh"
 
 #define file1 "C:\\RTP.txt"
 #define file2 "C:\\RSS.txt"

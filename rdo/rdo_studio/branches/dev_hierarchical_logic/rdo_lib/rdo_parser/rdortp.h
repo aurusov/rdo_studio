@@ -1,12 +1,12 @@
 #ifndef RDORTP_H
 #define RDORTP_H
 
-#include "rdoparser_object.h"
-#include "rdoparser_value.h"
-#include "rdoparser_type.h"
-#include "rdoparser_enum.h"
-#include <rdoruntime_object.h>
-#include <rdo_value.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdoparser_value.h"
+#include "rdo_lib/rdo_parser/rdoparser_type.h"
+#include "rdo_lib/rdo_parser/rdoparser_enum.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_value.h"
 
 namespace rdoParse 
 {

@@ -1,11 +1,11 @@
 #ifndef RDORUNTIME_OBJECT_H
 #define RDORUNTIME_OBJECT_H
 
-#include <rdocommon.h>
-#include <rdotypes.h>
-
 #include <vector>
 #include <algorithm>
+
+#include "rdo_common/rdocommon.h"
+#include "rdo_common/rdotypes.h"
 
 namespace rdoRuntime {
 

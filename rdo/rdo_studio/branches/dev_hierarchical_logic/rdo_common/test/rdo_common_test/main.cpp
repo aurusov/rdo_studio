@@ -1,7 +1,20 @@
-#include "../../rdocommon.h"
-#include "../../rdofile.h"
-#include "../../rdotime.h"
-#include "resource.h"
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : main.cpp
+ * author   : Урусов Андрей
+ * date     : 10.05.2009
+ * bref     : Тест common-библиотеки
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include "rdo_common/rdocommon.h"
+#include "rdo_common/rdofile.h"
+#include "rdo_common/rdotime.h"
+#include "rdo_common/test/rdo_common_test/resource.h"
+// ===============================================================================
 
 void main()
 {

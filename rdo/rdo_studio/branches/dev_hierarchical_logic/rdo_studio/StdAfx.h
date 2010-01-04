@@ -55,14 +55,14 @@
 #undef TRACE3
 #endif
 
-#include <rdodebug.h>
-#include <rdocommon.h>
-#include <rdotypes.h>
-#include <rdomacros.h>
-#include <rdodebug.h>
+#include "rdo_common/rdodebug.h"
+#include "rdo_common/rdocommon.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
+#include "rdo_common/rdodebug.h"
 
-#include "sizecbar/sizecbar.h"
-#include "sizecbar/scbarg.h"
+#include "rdo_studio/sizecbar/sizecbar.h"
+#include "rdo_studio/sizecbar/scbarg.h"
 
 void appendMenu( CMenu* from, const int from_index, CMenu* to );
 void eraseMenu( CMenu* from, const int from_index = -1 );

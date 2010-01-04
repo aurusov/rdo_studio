@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdopluginmfcmainframe.h"
-#include "rdopluginmfc.h"
-#include "resource.h"
+#include "rdo_plugin_mfc/stdafx.h"
+#include "rdo_plugin_mfc/rdopluginmfcmainframe.h"
+#include "rdo_plugin_mfc/rdopluginmfc.h"
+#include "rdo_plugin_mfc/resource.h"
 
 #include <limits>
 #include <vector>

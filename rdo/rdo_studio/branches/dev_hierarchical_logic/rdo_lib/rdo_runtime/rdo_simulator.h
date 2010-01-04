@@ -1,10 +1,9 @@
 #ifndef RDO_SIMULATOR_H
 #define RDO_SIMULATOR_H
 
-#include "rdo.h"
-#include "rdobase.h"
-#include "rdo_logic_interface.h"
-//#include "rdo_logic_opr.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdobase.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
 
 namespace rdoRuntime {
 

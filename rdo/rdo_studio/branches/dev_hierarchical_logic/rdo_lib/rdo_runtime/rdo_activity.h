@@ -1,11 +1,11 @@
 #ifndef RDO_ACTIVITY_H
 #define RDO_ACTIVITY_H
 
-#include "rdo.h"
-#include "rdo_resource.h"
-#include "rdo_model_interface.h"
-#include "rdo_activity_interface.h"
-#include <rdostream.h>
+#include "rdo_common/rdostream.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_activity_interface.h"
 
 namespace rdoRuntime {
 

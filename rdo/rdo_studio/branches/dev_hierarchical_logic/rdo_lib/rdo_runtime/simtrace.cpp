@@ -1,11 +1,11 @@
-#include "pch.h"
-#include "simtrace.h"
-#include "searchtrace.h"
-#include "rdo_ie.h"
-#include "rdo_rule.h"
-#include "rdo_operation.h"
-#include "rdo_resource.h"
-#include <rdodebug.h>
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_common/rdodebug.h"
+#include "rdo_lib/rdo_runtime/simtrace.h"
+#include "rdo_lib/rdo_runtime/searchtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 
 #pragma warning(disable : 4786)  
 

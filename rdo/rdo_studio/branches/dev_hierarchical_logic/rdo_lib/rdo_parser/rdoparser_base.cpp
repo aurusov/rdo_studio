@@ -1,14 +1,14 @@
-#include "pch.h"
+#include "rdo_lib/rdo_parser/pch.h"
 
-#include "rdoparser_base.h"
-#include "rdoparser_rdo.h"
-#include "rdoparser_corba.h"
-#include "rdopat.h"
-#include "rdoopr.h"
-#include "rdodpt.h"
-#include "rdosmr.h"
-#include "rdofrm.h"
-#include "rdopmd.h"
+#include "rdo_lib/rdo_parser/rdoparser_base.h"
+#include "rdo_lib/rdo_parser/rdoparser_rdo.h"
+#include "rdo_lib/rdo_parser/rdoparser_corba.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
+#include "rdo_lib/rdo_parser/rdoopr.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_lib/rdo_parser/rdofrm.h"
+#include "rdo_lib/rdo_parser/rdopmd.h"
 
 namespace rdoParse
 {

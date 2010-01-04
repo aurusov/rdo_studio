@@ -1,13 +1,23 @@
-#ifndef RDOFILE_H
-#define RDOFILE_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdofile.h
+ * author   : Урусов Андрей
+ * date     : 10.05.2009
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _RDOFILE_H_
+#define _RDOFILE_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/namespace.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 // ===============================================================================
 
-namespace rdo {
+OPEN_RDO_NAMESPACE
 
 class File
 {
@@ -17,8 +27,8 @@ public:
 	static rbool unlink   (CREF(tstring) name);
 };
 
-} //! namespace rdo
+CLOSE_RDO_NAMESPACE
 
-#include "rdofile.inl"
+#include "rdo_common/rdofile.inl"
 
-#endif //! RDOFILE_H
+#endif //! _RDOFILE_H_

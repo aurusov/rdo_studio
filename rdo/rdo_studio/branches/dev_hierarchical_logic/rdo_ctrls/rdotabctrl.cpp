@@ -1,5 +1,5 @@
-#include "rdo_ctrls_pch.h"
-#include "rdotabctrl.h"
+#include "rdo_ctrls/rdo_ctrls_pch.h"
+#include "rdo_ctrls/rdotabctrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

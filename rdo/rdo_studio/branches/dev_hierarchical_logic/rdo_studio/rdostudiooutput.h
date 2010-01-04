@@ -5,10 +5,10 @@
 #pragma once
 #endif
 
-#include "rdostudiodockwnd.h"
+#include "rdo_studio/rdostudiodockwnd.h"
 
-#include <rdotabctrl.h>
-#include <rdosimwin.h>
+#include "rdo_ctrls/rdotabctrl.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
 
 namespace rdoEditor {
 	class RDOEditorEdit;

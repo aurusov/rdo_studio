@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "rdoruntime_object.h"
-#include "rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 
 namespace rdoRuntime {
 

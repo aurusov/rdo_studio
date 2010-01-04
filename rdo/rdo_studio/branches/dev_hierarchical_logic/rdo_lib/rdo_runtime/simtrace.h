@@ -1,8 +1,8 @@
 #ifndef RDO_SIMTRACE_H
 #define RDO_SIMTRACE_H
 
-#include "rdotrace.h"
-#include "rdo_simulator.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdo_simulator.h"
 
 namespace rdoParse {
 class RDODPTSome;

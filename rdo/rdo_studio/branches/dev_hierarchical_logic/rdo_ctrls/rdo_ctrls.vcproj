@@ -41,10 +41,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_ctrls_pch.h"
+				PrecompiledHeaderThrough="rdo_ctrls/rdo_ctrls_pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -104,9 +105,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_ctrls_pch.h"
+				PrecompiledHeaderThrough="rdo_ctrls/rdo_ctrls_pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -164,10 +166,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_ctrls_pch.h"
+				PrecompiledHeaderThrough="rdo_ctrls/rdo_ctrls_pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -227,9 +230,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_ctrls_pch.h"
+				PrecompiledHeaderThrough="rdo_ctrls/rdo_ctrls_pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>

@@ -1,3 +1,12 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdotime.inl
+ * author   : Урусов Андрей
+ * date     : 10.05.2009
+ * bref     : 
+ * indent   : 4T
+ */
+
 // ====================================================================== INCLUDES
 #ifdef RDO_MT
 #include <afxwin.h>
@@ -6,11 +15,10 @@
 #endif
 #include <time.h>
 // ====================================================================== SYNOPSIS
-#include "rdodebug.h"
+#include "rdo_common/rdodebug.h"
 // ===============================================================================
 
-namespace rdo
-{
+OPEN_RDO_NAMESPACE
 
 inline Time::Time()
 	: m_value(Time::invalid().value())
@@ -87,4 +95,4 @@ inline Time Time::invalid()
 	return ~0;
 }
 
-} //! namespace rdo
+CLOSE_RDO_NAMESPACE

@@ -1,12 +1,12 @@
 #ifndef RDOTRACE_H
 #define RDOTRACE_H
 
-#include "rdo.h"
-#include "rdotrace_interface.h"
-#include "rdo_runtime_interface_registrator.h"
-#include "rdoruntime_object.h"
-
 #include <fstream>
+#include <list>
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdotrace_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 
 namespace rdoRuntime {
 

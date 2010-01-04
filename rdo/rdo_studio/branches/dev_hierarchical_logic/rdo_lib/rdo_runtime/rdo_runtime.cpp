@@ -1,16 +1,16 @@
-#include "pch.h"
-#include "rdo_runtime.h"
-#include "rdo_activity.h"
-#include "rdo_ie.h"
-#include "rdo_rule.h"
-#include "rdo_operation.h"
-#include "rdoprocess.h"
-#include "rdopokaz.h"
-#include "rdodptrtime.h"
-#include "rdocalc.h"
-#include <rdodebug.h>
+#include "rdo_lib/rdo_runtime/pch.h"
 #include <limits>
 #include <iomanip>
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdopokaz.h"
+#include "rdo_lib/rdo_runtime/rdodptrtime.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_common/rdodebug.h"
 
 #pragma warning(disable : 4786)  
 

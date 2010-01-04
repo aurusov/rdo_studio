@@ -1,7 +1,7 @@
 #ifndef RDOOPR_H
 #define RDOOPR_H
 
-#include "rdodpt.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
 
 namespace rdoRuntime
 {

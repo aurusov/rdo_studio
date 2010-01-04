@@ -1,27 +1,51 @@
-$Decision_point generate : prior
+$Decision_point dptmain : prior
+$Condition nocheck
+$Activities
+$End
+
+$Decision_point dptsearch : search
+$Parent dptmain
+$Condition 1 = 2
+$Term_condition false
+$Evaluate_by 1
+$Compare_tops = YES
+$Activities
+$End
+
+$Decision_point dpt11 : some
+$Parent dptmain
 $Condition —истема.количество_прибывших_деталей < 20
 $Activities
 	ѕоступление_детали                           : ќбразец_поступлени€_новой_детали
 $End
 
-$Decision_point simple : some
-$Condition NoCheck
+$Decision_point dpt21 : some
+$Parent dpt11
 $Activities
 	«ахват_детали                                : ќбразец_захвата_детали_роботом
+$End
+
+$Decision_point dpt22 : some
+$Parent dpt11
+$Activities
 	“ранспортировка_детали                       : ќбразец_транспортировки_детали_роботом
+$End
+
+$Decision_point dpt31 : some
+$Parent dpt21
+$Activities
 	¬озврат_робота                               : ќбразец_возврата_робота
 $End
 
-$Decision_point dpt3 : prior
-$Condition NoCheck
-$Priority  ак_ориентирована_деталь(—истема.как_ориентированна_текуща€_деталь)
+$Decision_point dpt12 : prior
+$Parent dptmain
 $Activities
-	ќриентирование_детали_против_часовой_стрелки : ќбразец_ориентировани€_детали против_часовой_стрелки
+	ќриентирование_детали_против_часовой_стрелки : ќбразец_ориентировани€_детали против_часовой_стрелки cf =  ак_ориентирована_деталь(—истема.как_ориентированна_текуща€_деталь)
 $End
 
-$Decision_point dpt4 : some
-$Condition NoCheck
+$Decision_point dpt23 : prior
+$Parent dpt12
 $Priority 1 -  ак_ориентирована_деталь(—истема.как_ориентированна_текуща€_деталь)
 $Activities
-	ќриентирование_детали_по_часовой_стрелке     : ќбразец_ориентировани€_детали по_часовой_стрелке
+	ќриентирование_детали_по_часовой_стрелке     : ќбразец_ориентировани€_детали по_часовой_стрелке //cf = 1 -  ак_ориентирована_деталь(—истема.как_ориентированна_текуща€_деталь)
 $End

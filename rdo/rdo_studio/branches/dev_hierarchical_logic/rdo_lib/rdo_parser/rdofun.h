@@ -1,11 +1,11 @@
 #ifndef RDOFUN_H
 #define RDOFUN_H
 
-#include "rdoparser_object.h"
-#include "rdoparser_value.h"
-#include "rdortp.h"
-#include <rdoruntime_object.h>
-#include <rdo_type.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdoparser_value.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_type.h"
 
 namespace rdoRuntime
 {

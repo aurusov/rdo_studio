@@ -13,10 +13,10 @@
 // ====================================================================== INCLUDES
 #include <list>
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo_value.h"
-#include "rdoruntime_object.h"
-#include "rdo_random_distribution.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -161,47 +161,30 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamCalc
+// ---------- RDOSetRelParamDiapCalc
 // ----------------------------------------------------------------------------
-class RDOSetRelParamCalc: public RDOCalc
+class RDOSetRelParamDiapCalc: public RDOCalc
 {
 public:
-	RDOSetRelParamCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, PTR(RDOCalc) calc)
-		: RDOCalc  (parent )
-		, m_relNumb(relNumb)
-		, m_parNumb(parNumb)
-		, m_calc   (calc   )
+	RDOSetRelParamDiapCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, PTR(RDOCalc) calc)
+		: RDOCalc    (parent   )
+		, m_relNumb  (relNumb  )
+		, m_parNumb  (parNumb  )
+		, m_calc     (calc     )
+		, m_min_value(min_value)
+		, m_max_value(max_value)
 	{
-		m_value = 1;
-		if ( m_calc ) setSrcInfo( m_calc->src_info() );
+		m_value = true;
+		if (m_calc)
+			setSrcInfo(m_calc->src_info());
 	}
 
-protected:
+private:
 	int          m_relNumb;
 	int          m_parNumb;
 	PTR(RDOCalc) m_calc;
-
-private:
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamDiapCalc
-// ----------------------------------------------------------------------------
-class RDOSetRelParamDiapCalc: public RDOSetRelParamCalc
-{
-public:
-	RDOSetRelParamDiapCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, PTR(RDOCalc) calc, RDOValue min_value, RDOValue max_value)
-		: RDOSetRelParamCalc(parent, relNumb, parNumb, calc)
-		, m_min_value       (min_value                     )
-		, m_max_value       (max_value                     )
-	{
-		m_value = 1;
-	}
-
-private:
-	RDOValue m_min_value;
-	RDOValue m_max_value;
+	RDOValue     m_min_value;
+	RDOValue     m_max_value;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -218,8 +201,9 @@ public:
 		, m_parNumb(parNumb)
 		, m_calc   (calc   )
 	{
-		m_value = 1;
-		if ( m_calc ) setSrcInfo( m_calc->src_info() );
+		m_value = true;
+		if (m_calc)
+			setSrcInfo(m_calc->src_info());
 	}
 
 private:
@@ -1216,6 +1200,6 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdocalc.inl"
+#include "rdo_lib/rdo_runtime/rdocalc.inl"
 
 #endif //! _RDOCALC_H_

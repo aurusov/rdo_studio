@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdofindedit.h"
-#include "sci/SciLexer.h"
-#include "sci/LexFind.h"
-#include "../rdostudioapp.h"
-#include "../resource.h"
-#include "../htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/edit_ctrls/rdofindedit.h"
+#include "rdo_studio/edit_ctrls/sci/SciLexer.h"
+#include "rdo_studio/edit_ctrls/sci/LexFind.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

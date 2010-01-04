@@ -1,12 +1,20 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdofile.inl
+ * author   : Урусов Андрей
+ * date     : 10.05.2009
+ * bref     : 
+ * indent   : 4T
+ */
+
 // ====================================================================== INCLUDES
 #include <io.h>
 // ====================================================================== SYNOPSIS
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 // ===============================================================================
 
-namespace rdo
-{
+OPEN_RDO_NAMESPACE
 
 inline rbool File::exist(CREF(tstring) name)
 {
@@ -23,4 +31,4 @@ inline rbool File::unlink(CREF(tstring) name)
 	return _unlink(name.c_str()) == 0;
 }
 
-} //! namespace rdo
+CLOSE_RDO_NAMESPACE

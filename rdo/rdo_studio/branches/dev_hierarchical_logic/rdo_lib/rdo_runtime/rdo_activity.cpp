@@ -1,7 +1,7 @@
-#include "pch.h"
-#include "rdo_activity.h"
-#include "rdo_runtime.h"
-#include "rdocalc.h"
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 
 namespace rdoRuntime
 {

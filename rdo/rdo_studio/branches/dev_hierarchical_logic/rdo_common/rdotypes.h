@@ -1,5 +1,14 @@
-#ifndef RDOTYPES_H
-#define RDOTYPES_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdotypes.h
+ * author   : Урусов Андрей
+ * date     : 18.04.2009
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _RDOTYPES_H_
+#define _RDOTYPES_H_
 
 // ====================================================================== INCLUDES
 #include <tchar.h>
@@ -16,4 +25,4 @@ typedef  signed long long int       rsint64;
 typedef  unsigned long long int     ruint64;
 typedef  unsigned char              rbyte;
 
-#endif //! RDOTYPES_H
+#endif //! _RDOTYPES_H_

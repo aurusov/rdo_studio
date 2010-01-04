@@ -2,9 +2,9 @@
 #define RDOEDITOREDIT_H
 #pragma once
 
-#include "rdoeditorbaseedit.h"
-#include "rdoeditoreditstyle.h"
-#include "../edit_ctrls/rdologedit.h"
+#include "rdo_studio/rdo_edit/rdoeditorbaseedit.h"
+#include "rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "rdo_studio/edit_ctrls/rdologedit.h"
 
 class RDOStudioEditBaseView;
 

@@ -1,9 +1,9 @@
 #ifndef RDO_RESOURCE_H
 #define RDO_RESOURCE_H
 
-#include "rdotrace.h"
-#include "rdoruntime_object.h"
-#include "rdo_value.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_value.h"
 
 namespace rdoRuntime
 {
@@ -51,14 +51,22 @@ public:
 		return m_type == type;
 	}
 
-	virtual const RDOValue& getParam( unsigned int index ) const
+	CREF(RDOValue) getParam(ruint index) const
 	{
-		return m_params.at( index );
+		ASSERT(index < m_params.size());
+		return m_params[index];
 	}
-	virtual void setParam( unsigned int index, const RDOValue& value )
+	REF(RDOValue) getParamRaw(ruint index)
 	{
-		if ( m_params.size() <= index ) {
-			m_params.resize( index + 1 );
+		ASSERT(index < m_params.size());
+		setState(CS_Keep);
+		return m_params[index];
+	}
+	void setParam(ruint index, CREF(RDOValue) value)
+	{
+		if (m_params.size() <= index)
+		{
+			m_params.resize(index + 1);
 		}
 		setState(CS_Keep);
 		m_params.at(index) = value;

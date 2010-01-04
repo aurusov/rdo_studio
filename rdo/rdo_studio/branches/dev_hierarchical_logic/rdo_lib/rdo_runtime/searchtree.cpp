@@ -1,9 +1,9 @@
-#include "pch.h"
-#include "searchtree.h"
-#include "searchtrace.h"
-#include "rdo_runtime.h"
-#include "rdo_rule.h"
-#include <rdodebug.h>
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_common/rdodebug.h"
+#include "rdo_lib/rdo_runtime/searchtree.h"
+#include "rdo_lib/rdo_runtime/searchtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
 
 namespace rdoRuntime
 {

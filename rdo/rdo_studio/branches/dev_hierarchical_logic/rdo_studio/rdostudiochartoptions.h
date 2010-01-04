@@ -5,9 +5,9 @@
 #pragma once
 #endif
 
-#include <rdocolorcombobox.h>
-#include "rdostudiochartdoc.h"
-#include "resource.h"
+#include "rdo_ctrls/rdocolorcombobox.h"
+#include "rdo_studio/rdostudiochartdoc.h"
+#include "rdo_studio/resource.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartOptionsChart

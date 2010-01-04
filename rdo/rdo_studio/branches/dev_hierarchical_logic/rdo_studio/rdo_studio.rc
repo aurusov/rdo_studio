@@ -18,7 +18,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian resources
+// русский resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 #ifdef _WIN32
@@ -310,16 +310,16 @@ BEGIN
     CONTROL         "Прозрачный маркер",IDC_TRANSP_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,144,72,85,10
 END
 
-IDD_ABOUT DIALOG  0, 0, 268, 249
+IDD_ABOUT DIALOGEX 0, 0, 268, 249
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "О программе"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,212,228,50,14
     ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
     CTEXT           "caption",IDC_ABOUT_CAPTION,40,8,220,8
     LTEXT           "Московский Государственный Университет им.Н.Э.Баумана,\nФакультет Робототехники и комплексной автоматизации,\nКафедра Компьютерные системы автоматизации производства",IDC_ABOUT_INFO,40,20,220,24
-    RTEXT           "Телефон: +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nФакс: +7 (495) 263 61 70",IDC_ABOUT_TEL,116,76,144,32
+    RTEXT           "Телефон: +7 (499) 263 63 88\n+7 (499) 263 69 54",IDC_ABOUT_TEL,117,83,144,23
     EDITTEXT        IDC_DEVELOPERS,4,131,260,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "Разработчики",IDC_STATIC,4,120,50,8
     RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,204,112,56,8,SS_NOTIFY
@@ -1162,8 +1162,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,1,0,701
- PRODUCTVERSION 1,1,0,701
+ FILEVERSION 1,1,0,702
+ PRODUCTVERSION 1,1,0,702
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1179,12 +1179,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "RAO studio"
-            VALUE "FileVersion", "1, 1, 0, 701"
+            VALUE "FileVersion", "1, 1, 0, 702"
             VALUE "InternalName", "RAO-Studio"
             VALUE "LegalCopyright", "Copyright (C) 2003-2009"
             VALUE "OriginalFilename", "RAO-Studio.exe"
             VALUE "ProductName", "RAO-Studio"
-            VALUE "ProductVersion", "1, 1, 0, 701"
+            VALUE "ProductVersion", "1, 1, 0, 702"
         END
     END
     BLOCK "VarFileInfo"
@@ -3631,12 +3631,12 @@ BEGIN
     ID_MODEL_RUNTIME_PAUSE  "\nПауза"
 END
 
-#endif    // Russian resources
+#endif    // русский resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// английский (США) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
@@ -3756,16 +3756,16 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOG  0, 0, 224, 249
+IDD_ABOUT DIALOGEX 0, 0, 224, 249
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About RAO Studio"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,168,228,50,14
     ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
     CTEXT           "caption",IDC_ABOUT_CAPTION,48,8,144,8
     LTEXT           "Bauman Moscow State Technical University,\nRobotics and Complex Automation Faculty,\nComputer-Aided Systems for Manufacturing Automatization Departmen",IDC_ABOUT_INFO,52,20,144,24
-    RTEXT           "Tel. +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nFax +7 (495) 263 61 70",IDC_ABOUT_TEL,52,76,144,32
+    RTEXT           "Tel. +7 (499) 263 63 88\n+7 (499) 263 69 54",IDC_ABOUT_TEL,52,76,144,23
     EDITTEXT        IDC_DEVELOPERS,4,131,216,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "Developers",IDC_STATIC,4,120,50,8
     RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,140,112,56,8,SS_NOTIFY
@@ -4971,7 +4971,7 @@ BEGIN
     ID_MODEL_RUNTIME_PAUSE  "\nPause"
 END
 
-#endif    // English (U.S.) resources
+#endif    // английский (США) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

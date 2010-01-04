@@ -1,9 +1,9 @@
-#include "stdafx.h"
-#include "rdostudioframeoptionsctrl.h"
-#include "rdostudioframestyle.h"
-#include "rdostudioapp.h"
-#include "rdostudiomainfrm.h"
-#include "resource.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudioframeoptionsctrl.h"
+#include "rdo_studio/rdostudioframestyle.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,8 +1,8 @@
 #ifndef RDO_TYPE_H
 #define RDO_TYPE_H
 
-#include <rdomacros.h>
-#include <rdotypes.h>
+#include "rdo_common/rdomacros.h"
+#include "rdo_common/rdotypes.h"
 
 namespace rdoRuntime {
 
@@ -62,6 +62,6 @@ DEFINE_ATOM_TYPE(string,        _T("string")       );
 
 } // namespace rdoRuntime
 
-#include "rdo_type.inl"
+#include "rdo_lib/rdo_runtime/rdo_type.inl"
 
 #endif // RDO_TYPE_H

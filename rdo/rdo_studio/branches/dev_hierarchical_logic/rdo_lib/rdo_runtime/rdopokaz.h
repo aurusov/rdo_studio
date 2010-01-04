@@ -13,12 +13,12 @@
 // =========================================================================== PCH
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdotrace.h"
-#include "rdotrace_interface.h"
-#include "rdopokaz_interface.h"
-#include "rdo_model_interface.h"
-#include "rdo_value.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdotrace_interface.h"
+#include "rdo_lib/rdo_runtime/rdopokaz_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_value.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

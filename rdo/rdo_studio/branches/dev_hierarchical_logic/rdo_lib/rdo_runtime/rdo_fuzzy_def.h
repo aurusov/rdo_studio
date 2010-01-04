@@ -10,10 +10,9 @@
 // #include "rdo_fuzzy.h"
 //
 
-#include "rdo_type.h"
-#include "rdoruntime_object.h"
-
 #include <map>
+#include "rdo_lib/rdo_runtime/rdo_type.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 
 namespace rdoRuntime {
 

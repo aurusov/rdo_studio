@@ -12,19 +12,19 @@
 #include <sstream>
 #include <algorithm>
 
-#include "rdosimwin.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
 
-#include <rdokernel.h>
-#include <rdorepository.h>
-#include <rdotrace.h>
-#include <rdo_runtime.h>
-#include <rdoframe.h>
-#include <rdoparser.h>
-#include <rdosmr.h>
-#include <rdofrm.h>
-#include <rdortp.h>
-#include <rdo_resources.h>
-#include <rdodebug.h>
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_repository/rdorepository.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdoframe.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_lib/rdo_parser/rdofrm.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+#include "rdo_common/rdodebug.h"
 
 //#ifndef DISABLE_CORBA
 
@@ -353,15 +353,17 @@ private:
 // --------------------------------------------------------------------
 class RDOSimResulter: public rdoRuntime::RDOResults
 {
-private:
-	std::ostream& stream;
-	virtual std::ostream& getOStream() { return stream; }
-
 public:
-	RDOSimResulter( std::ostream& _stream ):
-		stream( _stream )
+	RDOSimResulter(REF(std::ostream) stream)
+		: m_stream(stream)
+	{}
+
+private:
+	REF(std::ostream) m_stream;
+
+	virtual REF(std::ostream) getOStream()
 	{
-		isNullResult = false;
+		return m_stream;
 	}
 };
 
@@ -498,19 +500,11 @@ void RDOThreadRunTime::start()
 		tracer = new rdoSimulator::RDORuntimeTracer( simulator );
 	}
 
-	simulator->resultString.str( "" );
-	if ( !simulator->parser->getSMR()->hasFile( "Statistic_file" ) ) {
-		results      = new rdoRuntime::RDOResults();
-	} else {
-		results      = new rdoSimulator::RDOSimResulter( simulator->resultString );
-	}
+	simulator->resultString.str(_T(""));
+	results = new rdoSimulator::RDOSimResulter(simulator->resultString);
 
-	simulator->resultInfoString.str( "" );
-	if ( !simulator->parser->getSMR()->hasFile( "Results_file" ) ) {
-		results_info = new rdoRuntime::RDOResults();
-	} else {
-		results_info = new rdoSimulator::RDOSimResulter( simulator->resultInfoString );
-	}
+	simulator->resultInfoString.str(_T(""));
+	results_info = new rdoSimulator::RDOSimResulter(simulator->resultInfoString);
 
 	// RDO config initialization
 	simulator->runtime->keysDown.clear();
@@ -524,7 +518,7 @@ void RDOThreadRunTime::start()
 
 	try {
 		simulator->exitCode = rdoSimulator::EC_OK;
-		simulator->runtime->rdoInit( tracer, results, results_info );
+		simulator->runtime->rdoInit(tracer, results, results_info);
 		switch ( simulator->parser->getSMR()->getShowMode() ) {
 			case rdoSimulator::SM_NoShow   : simulator->runtime->setMode( rdoRuntime::RTM_MaxSpeed ); break;
 			case rdoSimulator::SM_Animation: simulator->runtime->setMode( rdoRuntime::RTM_Sync ); break;

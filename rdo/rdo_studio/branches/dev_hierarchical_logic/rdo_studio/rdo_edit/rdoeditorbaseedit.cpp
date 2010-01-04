@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdoeditorbaseedit.h"
-#include "../edit_ctrls/sci/SciLexer.h"
-#include "../resource.h"
-#include "../res/ac_function.xpm"
-#include "../res/ac_data.xpm"
-#include "../res/ac_trace.xpm"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_edit/rdoeditorbaseedit.h"
+#include "rdo_studio/edit_ctrls/sci/SciLexer.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/res/ac_function.xpm"
+#include "rdo_studio/res/ac_data.xpm"
+#include "rdo_studio/res/ac_trace.xpm"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

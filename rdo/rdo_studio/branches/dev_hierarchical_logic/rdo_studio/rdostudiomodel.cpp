@@ -1,26 +1,25 @@
-#include "stdafx.h"
-#include "rdostudiomodel.h"
-#include "rdostudioapp.h"
-#include "rdostudiothread.h"
-#include "rdostudiomainfrm.h"
-#include "rdostudiochildfrm.h"
-#include "rdostudioframedoc.h"
-#include "rdostudioframeview.h"
-#include "rdostudioplugins.h"
-#include "rdo_edit/rdoeditortabctrl.h"
-#include "edit_ctrls/rdobuildedit.h"
-#include "edit_ctrls/rdodebugedit.h"
-#include "rdo_tracer/rdotracer.h"
-#include "resource.h"
-
-#include <rdokernel.h>
-#include <rdorepository.h>
-#include <rdostream.h>
-#include <rdoplugin.h>
-#include <rdothread.h>
-#include <rdo_exception.h>
-#include <rdoanimation.h>
+#include "rdo_studio/stdafx.h"
 #include <limits>
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiothread.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/rdostudiochildfrm.h"
+#include "rdo_studio/rdostudioframedoc.h"
+#include "rdo_studio/rdostudioframeview.h"
+#include "rdo_studio/rdostudioplugins.h"
+#include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "rdo_studio/edit_ctrls/rdobuildedit.h"
+#include "rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "rdo_studio/rdo_tracer/rdotracer.h"
+#include "rdo_studio/resource.h"
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_kernel/rdothread.h"
+#include "rdo_repository/rdorepository.h"
+#include "rdo_common/rdostream.h"
+#include "rdo_common/rdoanimation.h"
+#include "rdo_plugin/rdoplugin.h"
+#include "rdo_lib/rdo_runtime/rdo_exception.h"
 
 using namespace rdoEditor;
 using namespace rdoSimulator;

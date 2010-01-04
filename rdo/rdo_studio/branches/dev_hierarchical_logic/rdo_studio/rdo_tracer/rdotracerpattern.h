@@ -2,7 +2,7 @@
 #define RDOTRACERPATTERN_H
 #pragma once
 
-#include "tracer_ctrls/rdotracertreeitem.h"
+#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerPattern

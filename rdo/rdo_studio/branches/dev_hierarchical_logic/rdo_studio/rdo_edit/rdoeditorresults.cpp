@@ -1,8 +1,8 @@
-#include "stdafx.h"
-#include "rdoeditorresults.h"
-#include "../rdostudioapp.h"
-#include "../resource.h"
-#include "../htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_edit/rdoeditorresults.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

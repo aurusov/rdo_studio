@@ -1,13 +1,13 @@
 #ifndef RDO_OPERATION_H
 #define RDO_OPERATION_H
 
-#include "rdo.h"
-#include "rdotrace.h"
-#include "simtrace.h"
-#include "rdo_pattern.h"
-#include "rdo_activity.h"
-#include "rdo_priority.h"
-#include "rdo_operation_interface.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/simtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_pattern.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/rdo_priority.h"
+#include "rdo_lib/rdo_runtime/rdo_operation_interface.h"
 
 namespace rdoRuntime
 {

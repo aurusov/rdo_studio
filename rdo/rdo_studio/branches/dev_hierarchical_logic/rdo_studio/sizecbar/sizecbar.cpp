@@ -55,8 +55,8 @@
 // sizecbar.cpp : implementation file
 //
 
-#include "stdafx.h"
-#include "sizecbar.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/sizecbar/sizecbar.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdostudiothread.h"
-#include "rdostudiomodel.h"
-#include "rdo_tracer/rdotracer.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudiothread.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdo_tracer/rdotracer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

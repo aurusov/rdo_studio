@@ -1,9 +1,10 @@
 #ifndef RDOPAT_PAT
 #define RDOPAT_PAT
 
-#include "rdoparser_object.h"
-#include <rdo_resource.h>
-#include <rdocalc.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdocalc_relres.h"
 
 namespace rdoRuntime
 {
@@ -368,12 +369,25 @@ public:
 class RDOPATParamSet: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	struct param_set {
-		std::string   name;
-		int           index;
-		RDOFUNArithm* arithm;
-		param_set(): name( "" ), index( -1 ), arithm( NULL ) {}
-		param_set( const std::string& _name, int _index, RDOFUNArithm* _arithm ): name( _name ), index( _index ), arithm( _arithm ) {}
+	struct Param
+	{
+		std::string            m_name;
+		ruint                  m_paramID;
+		rdoRuntime::EqualType  m_equalType;
+		PTR(RDOFUNArithm)      m_rightArithm;
+
+		Param()
+			: m_name       (_T("")                  )
+			, m_paramID    ( -1                     )
+			, m_equalType  (rdoRuntime::ET_UNDEFINED)
+			, m_rightArithm(NULL                    )
+		{}
+		Param(CREF(std::string) name, ruint paramID, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm)
+			: m_name       (name       )
+			, m_paramID    (paramID    )
+			, m_equalType  (equalType  )
+			, m_rightArithm(rightArithm)
+		{}
 	};
 	rdoRuntime::RDOResource::ConvertStatus convert_status;
 
@@ -382,12 +396,18 @@ public:
 		convert_status( _convert_status )
 	{
 	}
-	std::vector< param_set > params;
-	void addSet( const std::string& paramName, const YYLTYPE& param_name_pos, RDOFUNArithm* paramArithm = NULL );
-	bool isExist( const std::string& paramName ) const {
-		std::vector< param_set >::const_iterator it = params.begin();
-		while ( it != params.end() ) {
-			if ( it->name == paramName ) {
+
+	typedef std::vector<Param> ParamList;
+	ParamList m_params;
+
+	void  addSet (CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm);
+	rbool isExist(CREF(std::string) paramName ) const
+	{
+		ParamList::const_iterator it = m_params.begin();
+		while (it != m_params.end())
+		{
+			if (it->m_name == paramName)
+			{
 				return true;
 			}
 			it++;

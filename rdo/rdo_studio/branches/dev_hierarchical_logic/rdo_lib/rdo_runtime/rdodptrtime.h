@@ -1,10 +1,10 @@
 #ifndef RDODTPRTIME_H
 #define RDODTPRTIME_H
 
-#include "searchtrace.h"
-#include "rdo_runtime.h"
-#include "rdocalc.h"
 #include <sstream>
+#include "rdo_lib/rdo_runtime/searchtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 
 namespace rdoRuntime
 {

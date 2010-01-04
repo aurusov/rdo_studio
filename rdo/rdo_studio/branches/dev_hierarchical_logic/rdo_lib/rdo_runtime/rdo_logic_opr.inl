@@ -9,8 +9,8 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_runtime.h"
-#include "rdo_priority.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_priority.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

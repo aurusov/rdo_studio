@@ -1,9 +1,9 @@
-#include "stdafx.h"
-#include "rdodebugedit.h"
-#include "sci/SciLexer.h"
-#include "../rdostudioapp.h"
-#include "../resource.h"
-#include "../htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "rdo_studio/edit_ctrls/sci/SciLexer.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
