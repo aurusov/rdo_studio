@@ -1,11 +1,11 @@
 #ifndef RDOPARSER_RDO_H
 #define RDOPARSER_RDO_H
 
-#include "rdoparser_base.h"
-#include "rdoparser_lexer.h"
-#include "rdoparser_object.h"
-#include <rdoruntime_object.h>
 #include <iostream>
+#include "rdo_lib/rdo_parser/rdoparser_base.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 
 namespace rdoParse
 {

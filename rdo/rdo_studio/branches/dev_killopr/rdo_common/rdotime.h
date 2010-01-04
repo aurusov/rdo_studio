@@ -1,15 +1,22 @@
-#ifndef RDOTIME_H
-#define RDOTIME_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdotime.h
+ * author   : Урусов Андрей
+ * date     : 10.05.2009
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _RDOTIME_H_
+#define _RDOTIME_H_
 
 // ====================================================================== INCLUDES
-#include <io.h>
 // ====================================================================== SYNOPSIS
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 // ===============================================================================
 
-namespace rdo
-{
+OPEN_RDO_NAMESPACE
 
 class Time
 {
@@ -34,8 +41,8 @@ private:
 	Value  m_value;
 };
 
-} //! namespace rdo
+CLOSE_RDO_NAMESPACE
 
-#include "rdotime.inl"
+#include "rdo_common/rdotime.inl"
 
-#endif //! RDOTIME_H
+#endif //! _RDOTIME_H_

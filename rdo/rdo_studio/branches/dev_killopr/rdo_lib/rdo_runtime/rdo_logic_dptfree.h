@@ -12,8 +12,8 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo_logic.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo_logic.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

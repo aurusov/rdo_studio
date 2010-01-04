@@ -9,11 +9,11 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdotrace.h"
-#include "rdo_simulator.h"
-#include "rdo_priority.h"
-#include "rdo_runtime.h"
-#include "rdomacros.h"
+#include "rdo_common/rdomacros.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdo_simulator.h"
+#include "rdo_lib/rdo_runtime/rdo_priority.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -75,10 +75,11 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 // ---------- RDOLogic
 // ----------------------------------------------------------------------------
 template <class Order>
-inline RDOLogic<Order>::RDOLogic()
-	: m_condition    (NULL )
-	, m_lastCondition(false)
-	, m_first        (NULL )
+inline RDOLogic<Order>::RDOLogic(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
+	: m_condition    (NULL       )
+	, m_lastCondition(false      )
+	, m_first        (NULL       )
+	, m_parent       (parent ? parent : (sim ? sim->m_metaLogic : NULL))
 {}
 
 template <class Order>
@@ -89,7 +90,7 @@ template <class Order>
 inline void RDOLogic<Order>::init(PTR(RDOSimulator) sim)
 {
 	if (sim)
-		sim->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>());
+		sim->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>(), this->m_parent);
 }
 
 template <class Order>

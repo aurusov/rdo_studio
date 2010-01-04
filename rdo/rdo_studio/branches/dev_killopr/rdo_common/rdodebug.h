@@ -1,5 +1,14 @@
-#ifndef RDODEBUG_H
-#define RDODEBUG_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdodebug.h
+ * author   : Урусов Андрей
+ * date     : 10.05.2009
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _RDODEBUG_H_
+#define _RDODEBUG_H_
 
 // ====================================================================== INCLUDES
 #ifdef RDO_MT
@@ -8,7 +17,7 @@
 #include <windows.h>
 #endif
 // ====================================================================== SYNOPSIS
-#include "rdocommon.h"
+#include "rdo_common/rdocommon.h"
 // ===============================================================================
 
 #ifdef TRACE
@@ -55,4 +64,4 @@
 
 #endif
 
-#endif //! RDODEBUG_H
+#endif //! _RDODEBUG_H_

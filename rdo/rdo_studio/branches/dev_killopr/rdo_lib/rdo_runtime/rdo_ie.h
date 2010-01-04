@@ -1,11 +1,11 @@
 #ifndef RDO_IE_H
 #define RDO_IE_H
 
-#include "rdo.h"
-#include "rdotrace.h"
-#include "rdo_pattern.h"
-#include "rdo_activity.h"
-#include "rdo_ie_interface.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdo_pattern.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/rdo_ie_interface.h"
 
 namespace rdoRuntime {
 

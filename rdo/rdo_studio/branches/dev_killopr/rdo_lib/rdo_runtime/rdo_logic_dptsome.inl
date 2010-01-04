@@ -9,7 +9,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -17,8 +17,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim)
-	: RDOLogicSimple()
+RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
+	: RDOLogicSimple(sim, parent)
 {
 	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
 }

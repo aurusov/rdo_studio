@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "rdo_resources.h"
-#include <rdortp.h>
+#include "rdo_lib/rdo_mbuilder/pch.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
 
 namespace rdoMBuilder
 {

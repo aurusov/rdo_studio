@@ -1,15 +1,15 @@
 #ifndef RDODPT_DPT
 #define RDODPT_DPT
 
-#include "rdoparser_object.h"
-#include "rdoparser_logic.h"
-#include "rdofun.h"
-#include "rdopat.h"
-#include <rdoprocess.h>
-#include <rdo_activity.h>
-#include <searchtrace.h>
-#include <rdo_resources.h>
-#include <rdo_dptsearch_activity_interface.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdoparser_logic.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/searchtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 
 namespace rdoRuntime
 {
@@ -81,7 +81,7 @@ public:
 	void addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos );
 
 protected:
-	RDODPTActivityHotKey( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDODPTActivityHotKey( LPIBaseOperationContainer dpt, const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 };
 
 // ----------------------------------------------------------------------------
@@ -91,7 +91,7 @@ class RDODPTFreeActivity: public RDODPTActivityHotKey
 {
 friend class RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>;
 private:
-	RDODPTFreeActivity( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDODPTFreeActivity( LPIBaseOperationContainer dpt, const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 };
 
 // ----------------------------------------------------------------------------
@@ -110,7 +110,7 @@ class RDODPTSomeActivity: public RDODPTActivityHotKey
 {
 friend class RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>;
 private:
-	RDODPTSomeActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDODPTSomeActivity( LPIBaseOperationContainer dpt, const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 };
 
 // ----------------------------------------------------------------------------
@@ -120,7 +120,7 @@ class RDODPTPriorActivity: public RDODPTActivityHotKey
 {
 friend class RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>;
 private:
-	RDODPTPriorActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDODPTPriorActivity( LPIBaseOperationContainer dpt, const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 };
 
 // ----------------------------------------------------------------------------
@@ -129,8 +129,9 @@ private:
 class RDODPTSome: public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 {
 public:
-	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent = NULL );
 
+	LPILogic getLogic() const                         { return m_rt_logic;     }
 	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
 
@@ -146,8 +147,9 @@ private:
 class RDODPTPrior: public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
 {
 public:
-	RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+	RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent = NULL  );
 
+	LPILogic getLogic() const                         { return m_rt_logic;     }
 	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
 	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
 
@@ -170,7 +172,7 @@ public:
 	RDOFUNArithm* getRuleCost() const { return m_ruleCost; }
 
 private:
-	RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	RDODPTSearchActivity( LPIBaseOperationContainer dpt, const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
 	IDPTSearchActivity::ValueTime  m_value;
 	RDOFUNArithm*                  m_ruleCost;
@@ -182,7 +184,7 @@ private:
 class RDODPTSearch: public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
 {
 public:
-	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace );
+	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic _parent = NULL );
 
 	void setCondition( RDOFUNLogic* conditon = NULL )         { m_conditon     = conditon;     }
 	void setTermCondition( RDOFUNLogic* termConditon = NULL ) { m_termConditon = termConditon; }
@@ -193,11 +195,12 @@ public:
 	bool closed() const { return m_closed; }
 
 private:
-	RDOFUNLogic*   m_conditon;
-	RDOFUNLogic*   m_termConditon;
-	RDOFUNArithm*  m_evalBy;
-	bool           m_compTops;
-	bool           m_closed;
+	RDOFUNLogic*                                  m_conditon;
+	RDOFUNLogic*                                  m_termConditon;
+	RDOFUNArithm*                                 m_evalBy;
+	LPILogic                                      m_parent;
+	bool                                          m_compTops;
+	bool                                          m_closed;
 	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
 };
 

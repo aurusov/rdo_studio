@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdostudiooptions.h"
-#include "rdostudioapp.h"
-#include "rdostudiomainfrm.h"
-#include "rdostudioplugins.h"
-#include "rdostudiomodel.h"
-#include "htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudiooptions.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/rdostudioplugins.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

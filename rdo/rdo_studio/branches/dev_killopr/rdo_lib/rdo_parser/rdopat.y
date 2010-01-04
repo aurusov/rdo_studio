@@ -67,7 +67,7 @@
 %token RDO_Convert_event				316
 %token RDO_with_max						317
 %token RDO_with_min						318
-%token RDO_IDENTIF_set					319
+%token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
 	
@@ -125,6 +125,11 @@
 %token RDO_CF							371
 %token RDO_Priority						372
 %token RDO_prior						373
+%token RDO_Parent						374
+%token RDO_PlusEqual					375
+%token RDO_MinusEqual					376
+%token RDO_MultiplyEqual				377
+%token RDO_DivideEqual					378
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -154,6 +159,8 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
+%token RDO_IDENTIF_RELRES				427
+
 %token RDO_STRING_CONST					430
 %token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
@@ -169,16 +176,20 @@
 %token RDO_Fuzzy_Term					442
 %token RDO_eq							443
 %token RDO_External_Model				444
+%token RDO_QUEUE						445
+%token RDO_DEPART						446
+%token RDO_ASSIGN						447
+
 
 %{
-#include "pch.h"
+#include "rdo_lib/rdo_parser/pch.h"
 
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include "rdopat.h"
-#include "rdortp.h"
-#include "rdofun.h"
-#include <rdotrace.h>
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
 
 #define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 #define RUNTIME PARSER->runtime()
@@ -802,12 +813,12 @@ pat_time:	pat_common_choice RDO_Body {
 				}
 			};
 
-pat_body:	pat_time RDO_IDENTIF {
+pat_body:	pat_time RDO_IDENTIF_RELRES {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
 				std::string    name    = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
 			}
-			| pat_convert RDO_IDENTIF {
+			| pat_convert RDO_IDENTIF_RELRES {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
 				std::string    name    = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
 				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
@@ -1009,33 +1020,52 @@ convert_end:	RDO_Convert_end {
 			};
 
 pat_params_set:	/* empty */	{
-					RDOPATParamSet* par_set = PARSER->getLastPATPattern()->currRelRes->createParamSet();
+					PTR(RDOPATParamSet) paramSet = PARSER->getLastPATPattern()->currRelRes->createParamSet();
 					YYLTYPE pos = @0;
 					pos.first_line   = pos.last_line;
 					pos.first_column = pos.last_column;
-					par_set->setSrcPos( pos );
-					$$ = (int)par_set;
+					paramSet->setSrcPos(pos);
+					$$ = (int)paramSet;
 				}
-				|	pat_params_set RDO_IDENTIF_set fun_arithm {
-					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
-					RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($3);
-					std::string     param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					YYLTYPE param_name_pos = @2;
-					param_name_pos.last_line   = param_name_pos.first_line;
-					param_name_pos.last_column = param_name_pos.first_column + param_name.length();
-					param_set->addSet( param_name, param_name_pos, arithm );
+				|	pat_params_set RDO_IDENTIF param_equal_type param_set_right_value {
+					PTR(RDOPATParamSet)   paramSet    = reinterpret_cast<PTR(RDOPATParamSet)>($1);
+					rdoRuntime::EqualType equalType   = static_cast<rdoRuntime::EqualType>($3);
+					PTR(RDOFUNArithm)     rightArithm = reinterpret_cast<PTR(RDOFUNArithm)>($4);
+					std::string           paramName   = reinterpret_cast<PTR(RDOValue)>($2)->value().getIdentificator();
+					paramSet->addSet(paramName, @2, equalType, rightArithm);
 				}
-				| pat_params_set RDO_IDENTIF_set error {
-					PARSER->error( @3, "Ошибка в арифметическом выражении" )
+				| pat_params_set RDO_IDENTIF param_equal_type error {
+					PARSER->error(@4, "Ошибка в арифметическом выражении")
 				}
 				|	pat_params_set RDO_IDENTIF_NoChange {
-					RDOPATParamSet* param_set  = reinterpret_cast<RDOPATParamSet*>($1);
-					std::string     param_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					YYLTYPE param_name_pos = @2;
-					param_name_pos.last_line   = param_name_pos.first_line;
-					param_name_pos.last_column = param_name_pos.first_column + param_name.length();
-					param_set->addSet( param_name, param_name_pos );
+					PTR(RDOPATParamSet) paramSet  = reinterpret_cast<PTR(RDOPATParamSet)>($1);
+					std::string         paramName = reinterpret_cast<PTR(RDOValue)>($2)->value().getIdentificator();
+					YYLTYPE paramNamePos = @2;
+					paramNamePos.last_line   = paramNamePos.first_line;
+					paramNamePos.last_column = paramNamePos.first_column + paramName.length();
+					paramSet->addSet(paramName, paramNamePos, rdoRuntime::ET_NOCHANGE, NULL);
 				};
+
+param_equal_type: RDO_set {
+					$$ = rdoRuntime::ET_EQUAL;
+				}
+				| '=' {
+					$$ = rdoRuntime::ET_EQUAL;
+				}
+				| RDO_PlusEqual {
+					$$ = rdoRuntime::ET_PLUS;
+				}
+				| RDO_MinusEqual {
+					$$ = rdoRuntime::ET_MINUS;
+				}
+				| RDO_MultiplyEqual {
+					$$ = rdoRuntime::ET_MULTIPLY;
+				}
+				| RDO_DivideEqual {
+					$$ = rdoRuntime::ET_DIVIDE;
+				};
+
+param_set_right_value: fun_arithm;
 
 pat_pattern:	pat_convert RDO_End {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
@@ -1450,16 +1480,17 @@ fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(*reinterpret_ca
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm:	  RDO_INT_CONST                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_REAL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_BOOL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_STRING_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_IDENTIF                   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_IDENTIF '.' RDO_IDENTIF   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
-			| fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm '/' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
+fun_arithm:	  RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
+			| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
+			| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
+			| fun_arithm '+' fun_arithm		     { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '-' fun_arithm		     { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '*' fun_arithm		     { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
+			| fun_arithm '/' fun_arithm		     { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
 			| fun_arithm_func_call
 			| fun_select_arithm
 			| '(' fun_arithm ')'

@@ -1,20 +1,20 @@
-#include "pch.h"
-#include "rdodpt.h"
-#include "rdoopr.h"
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include "rdorss.h"
-#include <rdo_ie.h>
-#include <rdo_rule.h>
-#include <rdo_operation.h>
-#include <rdo_keyboard.h>
-#include <rdoprocess.h>
-#include <rdo_logic_dptfree.h>
-#include <rdo_logic_dptsome.h>
-#include <rdo_logic_dptprior.h>
-#include <rdodptrtime.h>
-#include <rdo_resources.h>
-#include <rdo_dptsearch_activity.h>
+#include "rdo_lib/rdo_parser/pch.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdoopr.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdo_keyboard.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptfree.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsome.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
+#include "rdo_lib/rdo_runtime/rdodptrtime.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 
 namespace rdoParse 
 {
@@ -160,29 +160,29 @@ bool RDODPTActivity::setPrior(RDOFUNArithm* prior)
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivityHotKey
 // ----------------------------------------------------------------------------
-RDODPTActivityHotKey::RDODPTActivityHotKey( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+RDODPTActivityHotKey::RDODPTActivityHotKey( LPIBaseOperationContainer dpt, const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
 	RDODPTActivity( parent, _src_info, _pattern_src_info )
 {
 	switch ( pattern()->getType() )
 	{
 		case RDOPATPattern::PT_IE:
 		{
-			m_activity = static_cast<rdoRuntime::RDOPatternIrregEvent*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
+			m_activity = static_cast<rdoRuntime::RDOPatternIrregEvent*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
 			break;
 		}
 		case RDOPATPattern::PT_Rule:
 		{
-			m_activity = static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
+			m_activity = static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
 			break;
 		}
 		case RDOPATPattern::PT_Operation:
 		{
-			m_activity = static_cast<rdoRuntime::RDOPatternOperation*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
+			m_activity = static_cast<rdoRuntime::RDOPatternOperation*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
 			break;
 		}
 		case RDOPATPattern::PT_Keyboard:
 		{
-			m_activity = static_cast<rdoRuntime::RDOPatternKeyboard*>(pattern()->getPatRuntime())->createActivity( parser()->runtime(), name() );
+			m_activity = static_cast<rdoRuntime::RDOPatternKeyboard*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
 			break;
 		}
 		default:
@@ -236,8 +236,8 @@ void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTFreeActivity
 // ----------------------------------------------------------------------------
-RDODPTFreeActivity::RDODPTFreeActivity( const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivityHotKey( parent, _src_info, _pattern_src_info )
+RDODPTFreeActivity::RDODPTFreeActivity( LPIBaseOperationContainer dpt, const RDOParserObject* parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( dpt, parent, _src_info, _pattern_src_info )
 {
 	parser()->insertDPTFreeActivity( this );
 }
@@ -257,27 +257,27 @@ RDODPTFree::RDODPTFree( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSomeActivity
 // ----------------------------------------------------------------------------
-RDODPTSomeActivity::RDODPTSomeActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivityHotKey( _parent, _src_info, _pattern_src_info )
+RDODPTSomeActivity::RDODPTSomeActivity( LPIBaseOperationContainer dpt, const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( dpt, _parent, _src_info, _pattern_src_info )
 {
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPriorActivity
 // ----------------------------------------------------------------------------
-RDODPTPriorActivity::RDODPTPriorActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDODPTActivityHotKey( _parent, _src_info, _pattern_src_info )
+RDODPTPriorActivity::RDODPTPriorActivity( LPIBaseOperationContainer dpt, const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( dpt, _parent, _src_info, _pattern_src_info )
 {
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent ):
 	RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>( _parser, _src_info )
 {
 	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime());
+	m_rt_logic = F(rdoRuntime::RDODPTSome)::create(parser()->runtime(), _parent);
 	m_rt_logic->init(parser()->runtime());
 	parser()->insertDPTSome(this);
 }
@@ -293,11 +293,11 @@ void RDODPTSome::end()
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+RDODPTPrior::RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent ):
 	RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>( _parser, _src_info )
 {
 	parser()->checkDPTName(src_info());
-	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime());
+	m_rt_logic = F(rdoRuntime::RDODPTPrior)::create(parser()->runtime(), _parent);
 	m_rt_logic->init(parser()->runtime());
 	parser()->insertDPTPrior(this);
 }
@@ -313,7 +313,7 @@ void RDODPTPrior::end()
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearchActivity
 // ----------------------------------------------------------------------------
-RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+RDODPTSearchActivity::RDODPTSearchActivity( LPIBaseOperationContainer dpt, const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
 	RDODPTActivity( _parent, _src_info, _pattern_src_info ),
 	m_value( IDPTSearchActivity::vt_before ),
 	m_ruleCost( NULL )
@@ -332,7 +332,7 @@ RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, cons
 //			parser()->error( "Rule: " + name() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
-	m_activity = F(rdoRuntime::RDORule)::create(parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime()), true, name());
+	m_activity = F(rdoRuntime::RDORule)::create( parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime()), true, name());
 }
 
 void RDODPTSearchActivity::setValue( IDPTSearchActivity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos )
@@ -345,10 +345,11 @@ void RDODPTSearchActivity::setValue( IDPTSearchActivity::ValueTime value, RDOFUN
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace ):
+RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic _parent ):
 	RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>( _parser, _src_info ),
 	m_trace( trace ),
-	m_closed( false )
+	m_closed( false ),
+	m_parent( _parent )
 {
 	parser()->checkDPTName( src_info() );
 	parser()->insertDPTSearch( this );
@@ -360,6 +361,7 @@ void RDODPTSearch::end()
 	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 
 	m_rt_logic = F(rdoRuntime::RDODPTSearchRuntime)::create( parser()->runtime(),
+		m_parent,
 		condCalc,
 		termCalc,
 		m_evalBy->createCalc(),

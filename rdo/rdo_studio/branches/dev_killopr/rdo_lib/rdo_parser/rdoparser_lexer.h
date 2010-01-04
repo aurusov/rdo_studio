@@ -1,8 +1,8 @@
 #ifndef RDOPARSER_LEXER_H
 #define RDOPARSER_LEXER_H
 
-#include "rdogramma.h"
-#include <FlexLexer.h>
+#include "rdo_lib/rdo_parser/rdogramma.h"
+#include "thirdparty/bison_flex/FlexLexer.h"
 
 namespace rdoParse
 {

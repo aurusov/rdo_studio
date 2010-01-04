@@ -5,8 +5,8 @@
 #pragma once
 #endif
 
-#include <rdothread.h>
-#include <rdokernel.h>
+#include "rdo_kernel/rdothread.h"
+#include "rdo_kernel/rdokernel.h"
 
 #ifdef RDO_MT
 // --------------------------------------------------------------------

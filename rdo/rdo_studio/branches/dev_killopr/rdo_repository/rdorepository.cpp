@@ -1,9 +1,8 @@
-#include "rdorepository.h"
-
-#include <rdokernel.h>
-#include <rdosimwin.h>
-#include <rdofile.h>
-#include <rdotime.h>
+#include "rdo_repository/rdorepository.h"
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "rdo_common/rdofile.h"
+#include "rdo_common/rdotime.h"
 
 using namespace rdoRepository;
 

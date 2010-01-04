@@ -14,10 +14,10 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo.h"
-#include "rdo_runtime_interface_registrator.h"
-#include "rdo_logic_interface.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -42,15 +42,16 @@ public:
 	typedef  BaseOperationList::const_iterator  CIterator;
 
 protected:
-	RDOLogic();
+	RDOLogic(PTR(RDOSimulator) sim = NULL, LPIBaseOperationContainer parent = NULL);
 	virtual ~RDOLogic();
 
 	DECLARE_IBaseOperationContainer;
 
-	PTR(RDOCalc)      m_condition;
-	rbool             m_lastCondition;
-	ChildList         m_childList;
-	LPIBaseOperation  m_first;
+	PTR(RDOCalc)               m_condition;
+	rbool                      m_lastCondition;
+	ChildList                  m_childList;
+	LPIBaseOperation           m_first;
+	LPIBaseOperationContainer  m_parent;
 
 private:
 	rbool checkSelfCondition(PTR(RDOSimulator) sim);
@@ -87,8 +88,8 @@ class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 protected:
 	DEFINE_FACTORY(RDOLogicSimple);
 
-	RDOLogicSimple()
-		: RDOLogic<RDOOrderSimple>()
+	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent = NULL)
+		: RDOLogic<RDOOrderSimple>(sim, parent)
 	{}
 	virtual ~RDOLogicSimple()
 	{}
@@ -111,6 +112,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_logic.inl"
+#include "rdo_lib/rdo_runtime/rdo_logic.inl"
 
 #endif //! _RDO_LOGIC_H_

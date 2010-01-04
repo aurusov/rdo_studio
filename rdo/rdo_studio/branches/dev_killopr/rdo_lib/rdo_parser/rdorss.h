@@ -1,9 +1,9 @@
 #ifndef RDORSS_RSS
 #define RDORSS_RSS
 
-#include "rdoparser_object.h"
-#include "rdoparser_value.h"
-#include <rdoruntime_object.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdoparser_value.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 
 namespace rdoRuntime
 {

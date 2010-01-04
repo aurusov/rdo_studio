@@ -1,11 +1,11 @@
-#include "stdafx.h"
-#include "rdobaseedit.h"
-#include "../rdostudioapp.h"
-#include "../rdostudiomainfrm.h"
-#include "sci/SciLexer.h"
-#include "sci/PropSet.h"
-#include "sci/Scintilla.h"
-#include "../resource.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/edit_ctrls/rdobaseedit.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/edit_ctrls/sci/SciLexer.h"
+#include "rdo_studio/edit_ctrls/sci/PropSet.h"
+#include "rdo_studio/edit_ctrls/sci/Scintilla.h"
+#include "rdo_studio/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

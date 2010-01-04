@@ -10,7 +10,7 @@
 #endif
 
 #define RDOPLUGIN_EXPORTS
-#include <rdoplugin.h>
+#include "rdo_plugin/rdoplugin.h"
 
 #include <afxmt.h>
 

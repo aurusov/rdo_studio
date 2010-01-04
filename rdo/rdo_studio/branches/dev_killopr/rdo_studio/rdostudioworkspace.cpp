@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdostudioworkspace.h"
-#include "rdostudioapp.h"
-#include "rdostudiomainfrm.h"
-#include "rdo_tracer/rdotracer.h"
-#include "rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
-#include "resource.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudioworkspace.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/rdo_tracer/rdotracer.h"
+#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
+#include "rdo_studio/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

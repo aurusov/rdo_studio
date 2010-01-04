@@ -2,8 +2,8 @@
 #define RDOBASEEDIT_H
 #pragma once
 
-#include "rdobaseeditstyle.h"
-#include <rdostream.h>
+#include "rdo_studio/edit_ctrls/rdobaseeditstyle.h"
+#include "rdo_common/rdostream.h"
 
 namespace rdoEditCtrl {
 

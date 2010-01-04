@@ -12,10 +12,10 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "namespace.h"
-#include "rdocalc.h"
-#include "rdoruntime_object.h"
-#include <rdoanimation.h>
+#include "rdo_common/namespace.h"
+#include "rdo_common/rdoanimation.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

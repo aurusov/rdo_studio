@@ -1,8 +1,8 @@
 #ifndef RDOPMD_PMD
 #define RDOPMD_PMD
 
-#include "rdoparser_object.h"
-#include <rdopokaz.h>
+#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_runtime/rdopokaz.h"
 
 namespace rdoParse 
 {

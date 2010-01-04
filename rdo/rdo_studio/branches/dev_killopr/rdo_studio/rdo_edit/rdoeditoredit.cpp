@@ -1,13 +1,13 @@
-#include "stdafx.h"
-#include "rdoeditoredit.h"
-#include "rdoeditortabctrl.h"
-#include "../rdostudioapp.h"
-#include "../rdostudiomodel.h"
-#include "../rdostudioeditbaseview.h"
-#include "../edit_ctrls/sci/LexRdo.h"
-#include "../edit_ctrls/sci/PropSet.h"
-#include "../resource.h"
-#include "../htmlhelp.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdostudioeditbaseview.h"
+#include "rdo_studio/edit_ctrls/sci/LexRdo.h"
+#include "rdo_studio/edit_ctrls/sci/PropSet.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

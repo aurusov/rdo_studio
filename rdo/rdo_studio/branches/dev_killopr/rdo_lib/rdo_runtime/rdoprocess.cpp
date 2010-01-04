@@ -1,8 +1,8 @@
-#include "pch.h"
-#include "rdoprocess.h"
-#include "rdocalc.h"
-#include <rdotypes.h>
-#include <rdomacros.h>
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 
 namespace rdoRuntime {
 
@@ -10,7 +10,7 @@ namespace rdoRuntime {
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, PTR(RDOSimulator) sim)
-	: RDOLogicSimple()
+	: RDOLogicSimple(sim)
 	, m_name  (name)
 {}
 

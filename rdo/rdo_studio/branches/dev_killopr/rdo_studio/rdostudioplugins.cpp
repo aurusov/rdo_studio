@@ -1,8 +1,8 @@
-#include "stdafx.h"
-#include "rdostudioplugins.h"
-#include "rdostudioapp.h"
-#include "rdostudiomodel.h"
-#include "rdo_edit/rdoeditortabctrl.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudioplugins.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

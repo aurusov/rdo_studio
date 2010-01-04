@@ -49,10 +49,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../rdo_plugin"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;WINVER=0x0501;_USRDLL"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_plugin_mfc/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -136,9 +137,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../rdo_plugin"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;_USRDLL;WINVER=0x0501"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_plugin_mfc/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -219,11 +221,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../rdo_plugin"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;WINVER=0x0501;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_plugin_mfc/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -307,9 +310,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../rdo_plugin"
+				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;_USRDLL;WINVER=0x0501"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_plugin_mfc/StdAfx.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -374,7 +378,6 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -393,7 +396,6 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -416,7 +418,6 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -435,7 +436,6 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
 				<FileConfiguration

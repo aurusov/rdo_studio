@@ -5,9 +5,9 @@
 #pragma once
 #endif
 
-#include <rdoplugin.h>
 #include <string>
 #include <vector>
+#include "rdo_plugin/rdoplugin.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugin

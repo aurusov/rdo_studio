@@ -9,10 +9,10 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_enum.h"
-#include "rdo_fuzzy_def.h"
-#include "rdo_exception.h"
-#include <rdodebug.h>
+#include "rdo_common/rdodebug.h"
+#include "rdo_lib/rdo_runtime/rdo_enum.h"
+#include "rdo_lib/rdo_runtime/rdo_fuzzy_def.h"
+#include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

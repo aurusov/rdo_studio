@@ -5,9 +5,9 @@
 #pragma once
 #endif
 
-#include "rdostudioview.h"
-#include "rdo_tracer/rdotracervalues.h"
-#include "rdostudiochartdoc.h"
+#include "rdo_studio/rdostudioview.h"
+#include "rdo_studio/rdo_tracer/rdotracervalues.h"
+#include "rdo_studio/rdostudiochartdoc.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartView

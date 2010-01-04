@@ -1,10 +1,9 @@
 #ifndef RDO_SIMULATOR_H
 #define RDO_SIMULATOR_H
 
-#include "rdo.h"
-#include "rdobase.h"
-#include "rdo_logic_interface.h"
-//#include "rdo_logic_opr.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdobase.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
 
 namespace rdoRuntime {
 
@@ -19,7 +18,7 @@ public:
 	RDOSimulator();
 	virtual ~RDOSimulator();
 
-	void appendLogic(CREF(LPIBaseOperation) logic);
+	void appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer parent);
 
 	LPIBaseOperation getMustContinueOpr() const           { return opr_must_continue;  }
 	void setMustContinueOpr(CREF(LPIBaseOperation) value) { opr_must_continue = value; }
@@ -43,11 +42,11 @@ public:
 	LPIBaseOperationContainer m_metaLogic;
 
 protected:
-	void appendBaseOperation(CREF(LPIBaseOperation) op)
+	void appendBaseOperation(LPIBaseOperationContainer logic, CREF(LPIBaseOperation) op)
 	{
 		ASSERT(op);
-		ASSERT(!m_metaLogic->empty());
-		LPIBaseOperationContainer logic = m_metaLogic->back();
+//		ASSERT(!m_metaLogic->empty());
+//		LPIBaseOperationContainer logic = m_metaLogic->back();
 		ASSERT(logic);
 		logic->append(op);
 	}

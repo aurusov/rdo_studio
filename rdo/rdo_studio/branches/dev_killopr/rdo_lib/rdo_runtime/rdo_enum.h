@@ -1,10 +1,9 @@
 #ifndef RDO_ENUM_H
 #define RDO_ENUM_H
 
-#include "rdo_type.h"
-#include "rdoruntime_object.h"
-#include <rdocommon.h>
-#include <string>
+#include "rdo_common/rdocommon.h"
+#include "rdo_lib/rdo_runtime/rdo_type.h"
+#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 
 namespace rdoRuntime {
 
@@ -42,6 +41,6 @@ private:
 
 } // namespace rdoRuntime
 
-#include "rdo_enum.inl"
+#include "rdo_lib/rdo_runtime/rdo_enum.inl"
 
 #endif // RDO_ENUM_H

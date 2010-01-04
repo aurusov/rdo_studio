@@ -2,9 +2,9 @@
 #define RDOLOGEDIT_H
 #pragma once
 
-#include "rdobaseedit.h"
-#include "rdologeditstyle.h"
-#include <rdosimwin.h>
+#include "rdo_studio/edit_ctrls/rdobaseedit.h"
+#include "rdo_studio/edit_ctrls/rdologeditstyle.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
 
 namespace rdoEditor {
 class RDOEditorEdit;

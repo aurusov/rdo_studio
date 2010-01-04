@@ -1,8 +1,8 @@
-#include "stdafx.h"
-#include "rdotracerresource.h"
-#include "rdotracerrestype.h"
-#include "rdotracervalues.h"
-#include "rdotracer.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_tracer/rdotracerresource.h"
+#include "rdo_studio/rdo_tracer/rdotracerrestype.h"
+#include "rdo_studio/rdo_tracer/rdotracervalues.h"
+#include "rdo_studio/rdo_tracer/rdotracer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

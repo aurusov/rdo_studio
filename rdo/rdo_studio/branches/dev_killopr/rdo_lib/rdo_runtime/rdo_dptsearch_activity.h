@@ -12,11 +12,11 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_rule_interface.h"
-#include "rdo_runtime_interface_registrator.h"
-#include "rdo_dptsearch_activity_interface.h"
-#include "rdocalc.h"
-#include "rdotrace.h"
+#include "rdo_lib/rdo_runtime/rdo_rule_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

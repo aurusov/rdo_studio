@@ -1,8 +1,8 @@
-#include "pch.h"
-#include "searchtrace.h"
-#include "rdotrace.h"
-#include "simtrace.h"
-#include "rdo_rule.h"
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_lib/rdo_runtime/searchtrace.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/simtrace.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
 
 namespace rdoRuntime
 {

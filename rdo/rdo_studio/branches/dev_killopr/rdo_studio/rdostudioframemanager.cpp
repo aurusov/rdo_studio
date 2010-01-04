@@ -1,20 +1,19 @@
-#include "stdafx.h"
-#include "rdostudioframemanager.h"
-#include "rdostudiomodel.h"
-#include "rdostudioapp.h"
-#include "rdostudiomainfrm.h"
-#include "rdostudiochildfrm.h"
-#include "rdostudioworkspace.h"
-#include "rdostudioframetreectrl.h"
-#include "edit_ctrls/rdodebugedit.h"
-#include "resource.h"
-
-#include <rdokernel.h>
-#include <rdosimwin.h>
-#include <rdorepository.h>
-#include <rdostream.h>
-#include <rdothread.h>
-#include <rdoanimation.h>
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudioframemanager.h"
+#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/rdostudiochildfrm.h"
+#include "rdo_studio/rdostudioworkspace.h"
+#include "rdo_studio/rdostudioframetreectrl.h"
+#include "rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "rdo_studio/resource.h"
+#include "rdo_kernel/rdokernel.h"
+#include "rdo_kernel/rdothread.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "rdo_repository/rdorepository.h"
+#include "rdo_common/rdostream.h"
+#include "rdo_common/rdoanimation.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdologctrl.h"
-#include "../../rdostudioapp.h"
-#include "../../rdostudiomainfrm.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdo_tracer/tracer_ctrls/rdologctrl.h"
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/rdostudiomainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

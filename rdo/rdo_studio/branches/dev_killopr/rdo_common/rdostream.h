@@ -1,16 +1,22 @@
-#ifndef RDOSTREAM_H
-#define RDOSTREAM_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdointerface.h
+ * author   : Урусов Андрей
+ * date     : 05.07.2009
+ * bref     : 
+ * indent   : 4T
+ */
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDOSTREAM_H_
+#define _RDOSTREAM_H_
 
 // ====================================================================== INCLUDES
 #include <sstream>
 // ====================================================================== SYNOPSIS
+#include "rdo_common/namespace.h"
 // ===============================================================================
 
-namespace rdo {
+OPEN_RDO_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- stream
@@ -48,6 +54,6 @@ public:
 	virtual bool isBinary() const { return false; }
 };
 
-}; // namespace rdo
+CLOSE_RDO_NAMESPACE
 
-#endif // RDOSTREAM_H
+#endif // _RDOSTREAM_H_

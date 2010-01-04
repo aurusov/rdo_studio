@@ -8,16 +8,16 @@
  */
 
 // ====================================================================== PCH
-#include "pch.h"
+#include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 #include <limits>
 #include <math.h>
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdocalc.h"
-#include "rdoprocess.h"
-#include "rdo_runtime.h"
-#include "rdo_activity.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -139,25 +139,16 @@ REF(RDOValue) RDOCalcGetRelevantResParam::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamCalc
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOSetRelParamCalc::doCalc(PTR(RDORuntime) runtime)
-{
-	runtime->setResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb, m_calc->calcValue(runtime));
-	return m_value;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOSetRelParamDiapCalc
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
 {
-	m_value = m_calc->calcValue(runtime);
+	m_calc->calcValue(runtime);
+	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
 	if (m_value < m_min_value || m_value > m_max_value)
 	{
 		runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
 	}
-	runtime->setResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb, m_value);
 	return m_value;
 }
 

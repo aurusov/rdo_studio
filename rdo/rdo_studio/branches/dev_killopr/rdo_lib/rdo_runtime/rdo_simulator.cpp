@@ -1,11 +1,8 @@
-#include "pch.h"
-#include "rdo_simulator.h"
-#include "rdo_logic_dptprior.h"
-#include <rdostream.h>
-#include "rdo_model_interface.h"
-//#include "rdo_ie.h"
-//#include "rdo_rule.h"
-//#include "rdo_operation.h"
+#include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_common/rdostream.h"
+#include "rdo_lib/rdo_runtime/rdo_simulator.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
+#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
 
 #pragma warning(disable : 4786)  
 
@@ -24,10 +21,10 @@ RDOSimulator::RDOSimulator()
 RDOSimulator::~RDOSimulator()
 {}
 
-void RDOSimulator::appendLogic(CREF(LPIBaseOperation) logic)
+void RDOSimulator::appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer parent)
 {
-	ASSERT(m_metaLogic);
-	m_metaLogic->append(logic);
+	ASSERT(parent);
+	parent->append(logic);
 }
 
 bool RDOSimulator::doOperation()

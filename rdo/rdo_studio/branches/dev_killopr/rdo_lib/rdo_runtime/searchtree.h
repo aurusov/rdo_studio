@@ -1,15 +1,13 @@
 #ifndef SEARCHTREE_H
 #define SEARCHTREE_H
 
-#include "rdo_logic_dptsearch.h"
-#include "rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
 
 namespace rdoRuntime
 {
 
 class TreeNode;
-
-#include "rdo_dptsearch_activity_interface.h"
 
 // ----------------------------------------------------------------------------
 // ---------- TreeRoot - корень дерева DPT

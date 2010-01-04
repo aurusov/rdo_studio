@@ -1,11 +1,11 @@
 #ifndef SEARCHTRACE_H
 #define SEARCHTRACE_H
 
-#include "rdo.h"
-#include "searchtree.h"
-#include "rdotrace.h"
-#include "simtrace.h"
-#include "searchtrace_interface.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/searchtree.h"
+#include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/simtrace.h"
+#include "rdo_lib/rdo_runtime/searchtrace_interface.h"
 
 namespace rdoRuntime
 {
@@ -48,8 +48,8 @@ public:
 	DPT_TraceFlag traceFlag;
 
 protected:
-	RDODPTSearchTrace( RDOSimulatorTrace* sim ):
-		RDODPTSearch( sim ),
+	RDODPTSearchTrace( RDOSimulatorTrace* sim, LPIBaseOperationContainer parent ):
+		RDODPTSearch( sim, parent ),
 		RDOTraceableObject( false ),
 		calc_cnt( 0 ),
 		calc_res_found_cnt( 0 )

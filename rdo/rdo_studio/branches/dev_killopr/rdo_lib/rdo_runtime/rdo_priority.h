@@ -12,11 +12,11 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include <namespace.h>
-#include "rdo.h"
-#include "rdocalc.h"
-#include "rdo_runtime.h"
-#include "rdo_priority_interface.h"
+#include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_priority_interface.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -87,6 +87,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_priority.inl"
+#include "rdo_lib/rdo_runtime/rdo_priority.inl"
 
 #endif //! _RDO_PRIORITY_H_

@@ -1,16 +1,16 @@
-#include "pch.h"
-#include "rdo_runtime.h"
-#include "rdo_activity.h"
-#include "rdo_ie.h"
-#include "rdo_rule.h"
-#include "rdo_operation.h"
-#include "rdoprocess.h"
-#include "rdopokaz.h"
-#include "rdodptrtime.h"
-#include "rdocalc.h"
-#include <rdodebug.h>
+#include "rdo_lib/rdo_runtime/pch.h"
 #include <limits>
 #include <iomanip>
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdopokaz.h"
+#include "rdo_lib/rdo_runtime/rdodptrtime.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_common/rdodebug.h"
 
 #pragma warning(disable : 4786)  
 
@@ -271,19 +271,19 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimeIE(CREF(LPIIrregEvent) ie)
+void RDORuntime::addRuntimeIE(LPIBaseOperationContainer logic, CREF(LPIIrregEvent) ie)
 {
-	appendBaseOperation(ie);
+	appendBaseOperation(logic, ie);
 }
 
-void RDORuntime::addRuntimeRule(CREF(LPIRule) rule)
+void RDORuntime::addRuntimeRule(LPIBaseOperationContainer logic, CREF(LPIRule) rule)
 {
-	appendBaseOperation(rule);
+	appendBaseOperation(logic, rule);
 }
 
-void RDORuntime::addRuntimeOperation(CREF(LPIOperation) opration)
+void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation) opration)
 {
-	appendBaseOperation(opration);
+	appendBaseOperation(logic, opration);
 }
 
 void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pokaz)

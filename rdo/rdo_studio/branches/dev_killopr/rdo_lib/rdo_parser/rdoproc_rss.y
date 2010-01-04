@@ -67,7 +67,7 @@
 %token RDO_Convert_event				316
 %token RDO_with_max						317
 %token RDO_with_min						318
-%token RDO_IDENTIF_set					319
+%token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
 	
@@ -125,6 +125,11 @@
 %token RDO_CF							371
 %token RDO_Priority						372
 %token RDO_prior						373
+%token RDO_Parent						374
+%token RDO_PlusEqual					375
+%token RDO_MinusEqual					376
+%token RDO_MultiplyEqual				377
+%token RDO_DivideEqual					378
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -154,6 +159,8 @@
 %token RDO_color_yellow					425
 %token RDO_color_gray					426
 
+%token RDO_IDENTIF_RELRES				427
+
 %token RDO_STRING_CONST					430
 %token RDO_STRING_CONST_BAD				431
 %token RDO_IDENTIF_BAD					432
@@ -173,18 +180,19 @@
 %token RDO_DEPART						446
 %token RDO_ASSIGN						447
 
-%{
-#include "pch.h"
 
-#include "rdoparser.h"
-#include "rdoparser_lexer.h"
-#include "rdofun.h"
-#include "rdodpt.h"
-#include "rdortp.h"
-#include "rdorss.h"
-#include "rdopmd.h"
-#include <rdoprocess.h>
-#include <rdo_resources.h>
+%{
+#include "rdo_lib/rdo_parser/pch.h"
+
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/rdopmd.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 
 #define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 #define RUNTIME PARSER->runtime()

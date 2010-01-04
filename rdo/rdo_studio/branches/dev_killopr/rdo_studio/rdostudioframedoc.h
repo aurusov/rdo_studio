@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdostudioframeview.h"
+#include "rdo_studio/rdostudioframeview.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameDoc

@@ -8,13 +8,13 @@
  */
 
 // =========================================================================== PCH
-#include "pch.h"
+#include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_logic_dptsearch.h"
-#include "searchtree.h"
-#include "rdo_rule.h"
-#include "rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
+#include "rdo_lib/rdo_runtime/searchtree.h"
+#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 #pragma warning(disable : 4786)  
@@ -24,8 +24,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(PTR(RDOSimulator) sim)
-	: RDOLogicSimple()
+RDODPTSearch::RDODPTSearch(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
+	: RDOLogicSimple(sim, parent)
 	, treeRoot    (NULL)
 {}
 

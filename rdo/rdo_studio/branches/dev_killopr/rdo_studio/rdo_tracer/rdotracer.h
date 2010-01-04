@@ -2,9 +2,10 @@
 #define RDOTRACER_H
 #pragma once
 
-#include "rdotracerbase.h"
-#include <rdosimwin.h>
-#include <rdothread.h>
+#include "rdo_studio/rdo_tracer/rdotracerbase.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "rdo_kernel/rdothread.h"
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTracer
 // ----------------------------------------------------------------------------
