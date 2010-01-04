@@ -126,10 +126,10 @@
 %token RDO_Priority						372
 %token RDO_prior						373
 %token RDO_Parent						374
-%token RDO_PlusEqual					374
-%token RDO_MinusEqual					375
-%token RDO_MultiplyEqual				376
-%token RDO_DivideEqual					377
+%token RDO_PlusEqual					375
+%token RDO_MinusEqual					376
+%token RDO_MultiplyEqual				377
+%token RDO_DivideEqual					378
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
