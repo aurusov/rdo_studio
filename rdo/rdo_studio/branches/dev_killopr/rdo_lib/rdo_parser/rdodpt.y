@@ -621,6 +621,18 @@ dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF
 							PARSER->error( @1, @2, "Ожидается имя образца" );
 						};
 
+dpt_some_descr_keyb:   /* empty */
+						| dpt_some_descr_keyb '+' RDO_STRING_CONST {
+							RDODPTSomeActivity* activity = PARSER->getLastDPTSome()->getLastActivity();
+							std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
+							activity->addHotKey( key, @3 );
+						}
+						| RDO_STRING_CONST {
+							RDODPTSomeActivity* activity = PARSER->getLastDPTSome()->getLastActivity();
+							std::string      key = reinterpret_cast<RDOValue*>($1)->value().getString();
+							activity->addHotKey( key, @1 );
+						};
+
 dpt_some_descr_param:	/* empty */
 						| dpt_some_descr_param  '*'
 						{
@@ -652,7 +664,7 @@ dpt_some_descr_param:	/* empty */
 						};
 
 dpt_some_activity:		/* empty */
-						| dpt_some_activity dpt_some_name dpt_some_descr_param
+						| dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
 						{
 							RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
 							activity->endParam( @3 );
@@ -789,6 +801,18 @@ dpt_prior_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
 							PARSER->error( @1, @2, "Ожидается имя образца" );
 						};
 
+dpt_prior_descr_keyb:   /* empty */
+						| dpt_prior_descr_keyb '+' RDO_STRING_CONST {
+							RDODPTPriorActivity* activity = PARSER->getLastDPTPrior()->getLastActivity();
+							std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
+							activity->addHotKey( key, @3 );
+						}
+						| RDO_STRING_CONST {
+							RDODPTPriorActivity* activity = PARSER->getLastDPTPrior()->getLastActivity();
+							std::string      key = reinterpret_cast<RDOValue*>($1)->value().getString();
+							activity->addHotKey( key, @1 );
+						};
+
 dpt_prior_descr_param:	/* empty */
 						| dpt_prior_descr_param  '*'               { PARSER->getLastDPTPrior()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
 						| dpt_prior_descr_param  RDO_INT_CONST     { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
@@ -820,7 +844,7 @@ dpt_prior_activ_prior:	/* empty */
 						};
 
 dpt_prior_activity:		/* empty */
-						| dpt_prior_activity dpt_prior_name dpt_prior_descr_param dpt_prior_activ_prior{
+						| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior{
 							RDODPTPriorActivity* activity = reinterpret_cast<RDODPTPriorActivity*>($2);
 							activity->endParam( @3 );
 						};
