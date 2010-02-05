@@ -186,17 +186,16 @@ public:
 	RDOParserSrcInfo funseq_name;
 	std::vector< RDOFUNArithm* > params;
 
-	RDOFUNParams( RDOParser* _parser ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo()
-	{
-	}
-	RDOFUNParams( const RDOParserObject* _parent ):
-		RDOParserObject( _parent ),
-		RDOParserSrcInfo()
-	{
-	}
-	virtual ~RDOFUNParams() {}
+	RDOFUNParams(PTR(RDOParser) _parser)
+		: RDOParserObject (_parser)
+		, RDOParserSrcInfo(       )
+	{}
+	RDOFUNParams(CPTR(RDOParserObject) _parent, CREF(RDOParserSrcInfo) src_info)
+		: RDOParserObject ( _parent )
+		, RDOParserSrcInfo(src_info )
+	{}
+	virtual ~RDOFUNParams()
+	{}
 
 	void addParameter( RDOFUNArithm* param ) {
 		params.push_back( param );

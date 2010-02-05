@@ -302,7 +302,7 @@ void RDOFUNArithm::init( const RDOValue& value )
 
 	if ( seq )
 	{
-		RDOFUNParams tmp( seq );
+		RDOFUNParams tmp(seq, src_info());
 		RDOFUNArithm* arithm = tmp.createSeqCall( value->getIdentificator() );
 		arithm->setSrcInfo( src_info() );
 		m_value = arithm->value();
