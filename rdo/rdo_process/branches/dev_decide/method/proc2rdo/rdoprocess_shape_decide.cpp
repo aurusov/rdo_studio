@@ -119,9 +119,4 @@ RDOfiles->function<<std::endl<<"{-------áëîê äåñàéä ------" <<getName().c_str()<
 <<std::endl<<id_next2.c_str()<<"  "<<pfalse
 
 	<<std::endl<<"	$End";
-//RPShape_MJ::generate();
-
-	//RPCreationRDOFilesMJ* RDOfiles = proc2rdo->RDOfiles;
-
-	//RDOfiles->resourse<<std::endl<<std::endl<<"{-ÃÅÍÅÐÈÐÓÅÌ ÄÅÑÀÉÄ-}" <<std::endl;
 }

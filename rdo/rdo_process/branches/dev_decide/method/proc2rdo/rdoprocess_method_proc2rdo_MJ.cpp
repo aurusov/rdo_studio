@@ -117,7 +117,7 @@ void RPMethodProc2RDO_MJ::generate()
 {
 	//RPConnectorDock* dock = NULL;
 	//if (RPConnectorDock::can_connect(dock));
-	if (CreateDirectory("Mymodel01", NULL));
+	CreateDirectory("Mymodel01", NULL);
 
 	RDOfiles->pattern.open(_T("Mymodel01\\RDO_PROCESS.pat"));
 	RDOfiles->resourse.open(_T("Mymodel01\\RDO_PROCESS.rss"));
@@ -141,20 +141,21 @@ void RPMethodProc2RDO_MJ::generate()
 	std::list< RPObject* >::const_iterator block_it = all_child.begin();
 	while ( block_it != all_child.end() ) {
 		std::list< RPShape* > list = static_cast<RPShape*>(*block_it)->getNextBlock();
-		if ( !list.empty() ) {
+		if ( !list.empty() ){
 			dynamic_cast<RPObject_MJ*>(*block_it)->id_next = list.front()->getName();
-			rp::string s = dynamic_cast<RPObject_MJ*>(*block_it)->id_next;
+			rp::string name1 = dynamic_cast<RPObject_MJ*>(*block_it)->id_next;
 			if((*block_it)->getClassName()=="RPShapeDecide"){
-				dynamic_cast<RPObject_MJ*>(*block_it)->id_next2 = list.back()->getName();
-				rp::string s2 = dynamic_cast<RPObject_MJ*>(*block_it)->id_next2;
-				if(s2==s){
-					dynamic_cast<RPObject_MJ*>(*block_it)->id_next2 = "Â íèêóäà";
-					TRACE( "%s\n", "ÄÅÑÀÉÄ ÄÎËÆÅÍ ÈÌÅÒÜ 2 ÂÅÒÂÈ!!\nÀ ÍÅ ÎÄÍÓ!!" );
+				if(list.size()==2){
+					dynamic_cast<RPObject_MJ*>(*block_it)->id_next2 = list.back()->getName();
+					rp::string name2 = dynamic_cast<RPObject_MJ*>(*block_it)->id_next2;
+				}else{
+						TRACE( "%s\n", "ÄÅÑÀÉÄ ÄÎËÆÅÍ ÈÌÅÒÜ 2 ÂÅÒÂÈ!!\nÀ ÍÅ ÎÄÍÓ!!" );
 				}
 			}
 		}else{
-			if((*block_it)->getClassName()=="RPShapeDecide"){
-				TRACE( "%s\n", "ÁËÎÊ ÄÅÑÀÉÄ ÄÎËÆÅÍ ÈÌÅÒÜ ÏĞÎÄÎËÆÅÍÈÅ" );
+			if((*block_it)->getClassName()!="RPShapeTerminateMJ")
+			{
+				TRACE( "%s\n", "ÁËÎÊ ÄÎËÆÅÍ ÈÌÅÒÜ ÊÎÍÍÅÊÒÎĞ" );
 			}
 		}
 		block_it++;
@@ -253,7 +254,7 @@ RDOfiles->typeres
 		it++;
 	}
 
-RDOfiles->typeres<<"ÎØÈÁÊÀ_ÍÀÄÎ_ÓÑÒĞÀÍÈÒÜ)"
+RDOfiles->typeres<<")"
 
 
 <<std::endl<<"	Ìåñòî_íàõîæäåíèÿ_áóäóùåå : such_as  Group_of_transacts_X.Ìåñòî_íàõîæäåíèÿ {ID ìîäóëÿ, êóäà ïëàíèğóåòñÿ îòïğàâèòñÿ íà ñëåä øàãå}"
