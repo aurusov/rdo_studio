@@ -137,12 +137,14 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug Corba|Win32"
+			Name="Release MT|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			CharacterSet="2"
+			ManagedExtensions="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -161,14 +163,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				BrowseInformation="1"
-				WarningLevel="3"
-				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -199,14 +197,12 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release Corba|Win32"
+			Name="Debug MT|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			CharacterSet="2"
-			ManagedExtensions="0"
-			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -225,10 +221,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				FavorSizeOrSpeed="1"
+				Optimization="0"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				RuntimeLibrary="3"
 				BrowseInformation="1"
+				WarningLevel="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
