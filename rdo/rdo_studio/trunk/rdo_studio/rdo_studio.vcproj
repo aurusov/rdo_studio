@@ -244,7 +244,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(OutDir)\RAO-studio.exe"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -330,7 +330,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(OutDir)\RAO-studio.exe"
 				SubSystem="2"
 				TargetMachine="1"
