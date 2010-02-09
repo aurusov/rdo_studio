@@ -2,12 +2,14 @@
 
 #ifdef CORBA_ENABLE
 
+#pragma warning(disable: 4996)
 #include "rdo_lib/rdo_parser/rdoparser_corba.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
-#include "rdo_lib/rdo_mbuilder//rdo_resources.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 #include "rdo_lib/rdo_corba/RDOCorba.hh"
+#pragma warning(default: 4996)
 
 #define file1 "C:\\RTP.txt"
 #define file2 "C:\\RSS.txt"
