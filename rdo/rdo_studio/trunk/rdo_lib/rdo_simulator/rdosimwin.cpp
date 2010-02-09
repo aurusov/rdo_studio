@@ -268,8 +268,14 @@ void RDOThreadCorba::stop()
 	// Место для остановки корбы
 	if ( g_orb != CORBA::ORB::_nil() )
 	{
-		g_orb->shutdown( true );
-		g_orb->destroy();
+		try
+		{
+			g_orb->shutdown(true);
+			g_orb->destroy();
+		}
+		catch (...)
+		{
+		}
 	}
 
 	if ( thread_corbaRunThreadFun )
