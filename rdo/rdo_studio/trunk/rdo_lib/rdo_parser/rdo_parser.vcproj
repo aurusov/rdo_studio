@@ -1275,7 +1275,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="bison"
+			Name=".bison"
 			>
 			<File
 				RelativePath="rdo_lexer.l"
