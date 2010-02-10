@@ -160,6 +160,7 @@
 %token RDO_color_gray					426
 
 %token RDO_IDENTIF_RELRES				427
+%token RDO_enum							428
 
 %token RDO_STRING_CONST					430
 %token RDO_STRING_CONST_BAD				431

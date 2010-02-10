@@ -266,6 +266,10 @@ yellow				return(RDO_color_yellow);
 gray				return(RDO_color_gray);
 last				return(RDO_color_last);
 
+enum				return(RDO_enum)
+$Enum				return(RDO_enum)
+$enum				return(RDO_enum)
+
 Select				return(RDO_Select);
 select				return(RDO_Select);
 Size				return(RDO_Size);
