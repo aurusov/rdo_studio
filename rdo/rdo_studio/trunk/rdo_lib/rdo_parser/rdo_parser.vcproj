@@ -1446,6 +1446,10 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\namespace.h"
+				>
+			</File>
+			<File
 				RelativePath="pch.h"
 				>
 			</File>

@@ -1,21 +1,33 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoparser_object.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDODeletable
 // ----------------------------------------------------------------------------
-RDODeletable::RDODeletable( RDOParser* parser ):
-	m_parser( parser )
+RDODeletable::RDODeletable(PTR(RDOParser) parser)
+	: m_parser(parser)
 {
-	if ( m_parser )
+	if (m_parser)
 	{
-		m_parser->insertDeletables( this );
-		m_parser->runtime()->memory_insert( object_size );
+		m_parser->insertDeletables(this);
+		m_parser->runtime()->memory_insert(m_object_size);
 	}
 }
 
@@ -26,50 +38,47 @@ RDODeletable::~RDODeletable()
 
 void RDODeletable::noAutoDelete()
 {
-	if ( m_parser )
+	if (m_parser)
 	{
-		m_parser->removeDeletables( this );
+		m_parser->removeDeletables(this);
 	}
-}
-/*
-#ifndef _DEBUG
-void* RDODeletable::operator new( size_t sz )
-{
-	RDODeletable* obj = static_cast<RDODeletable*>(::operator new( sz ));
-	obj->object_size = sz;
-	return obj;
 }
 
-void RDODeletable::operator delete( void* v )
-{
-	if ( static_cast<RDODeletable*>(v)->m_parser )
-	{
-		static_cast<RDODeletable*>(v)->m_parser->runtime()->memory_remove( static_cast<RDODeletable*>(v)->object_size );
-	}
-	::operator delete( v );
-}
-#endif
-*/
+//#ifndef _DEBUG
+//PTR(void) RDODeletable::operator new(size_t sz)
+//{
+//	PTR(RDODeletable) obj = static_cast<PTR(RDODeletable)>(::operator new(sz));
+//	obj->m_object_size = sz;
+//	return obj;
+//}
+//
+//void RDODeletable::operator delete(PTR(void) v)
+//{
+//	if (static_cast<PTR(RDODeletable)>(v)->m_parser)
+//	{
+//		static_cast<PTR(RDODeletable)>(v)->m_parser->runtime()->memory_remove(static_cast<PTR(RDODeletable)>(v)->m_object_size);
+//	}
+//	::operator delete(v);
+//}
+//#endif
+
 // ----------------------------------------------------------------------------
 // ---------- RDOParserObject
 // ----------------------------------------------------------------------------
-RDOParserObject::RDOParserObject( RDOParser* parser ):
-	RDODeletable( parser ),
-	m_parent( NULL )
-{
-}
+RDOParserObject::RDOParserObject(PTR(RDOParser) parser)
+	: RDODeletable(parser)
+	, m_parent    (NULL  )
+{}
 
-RDOParserObject::RDOParserObject( const RDOParserObject* parent ):
-	RDODeletable( parent->m_parser ),
-	m_parent( parent )
-{
-}
+RDOParserObject::RDOParserObject(CPTR(RDOParserObject) parent)
+	: RDODeletable(parent->m_parser)
+	, m_parent    (parent          )
+{}
 
 RDOParserObject::~RDOParserObject()
-{
-}
+{}
 
-void RDOParserObject::reparent( const RDOParserObject* parent )
+void RDOParserObject::reparent(CPTR(RDOParserObject) parent)
 {
 	m_parent = parent;
 	m_parser = parent->m_parser;
@@ -78,85 +87,86 @@ void RDOParserObject::reparent( const RDOParserObject* parent )
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSrcInfo
 // ----------------------------------------------------------------------------
-RDOParserSrcInfo::RDOParserSrcInfo(): RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo()
+	: RDOSrcInfo()
 {
 	init();
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos ):
-	RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos)
+	: RDOSrcInfo()
 {
 	init();
-	setSrcPos( _pos );
+	setSrcPos(pos);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info ):
-	RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo) info)
+	: RDOSrcInfo()
 {
 	init();
-	RDOSrcInfo::setSrcInfo( _info );
+	RDOSrcInfo::setSrcInfo(info);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos ):
-	RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo::Position) pos)
+	: RDOSrcInfo()
 {
 	init();
-	RDOSrcInfo::setSrcPos( _pos );
+	RDOSrcInfo::setSrcPos(pos);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const std::string& _text ):
-	RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(tstring) text)
+	: RDOSrcInfo()
 {
 	init();
-	setSrcText( _text );
+	setSrcText(text);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text ):
-	RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(tstring) text)
+	: RDOSrcInfo()
 {
 	init();
-	setSrcPos( _pos );
-	setSrcText( _text );
+	setSrcPos (pos );
+	setSrcText(text);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, bool first_align ):
-	RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, rbool first_align)
+	: RDOSrcInfo()
 {
 	init();
-	if ( !first_align )
+	if (!first_align)
 	{
-		setSrcPos( _pos_begin, _pos_end );
+		setSrcPos(pos_begin, pos_end);
 	}
 	else
 	{
-		if ( _pos_begin.first_line == _pos_end.last_line )
+		if (pos_begin.first_line == pos_end.last_line)
 		{
-			setSrcPos( _pos_begin, _pos_end );
+			setSrcPos(pos_begin, pos_end);
 		}
 		else
 		{
-			YYLTYPE _pos(_pos_begin);
-			_pos.first_line   = _pos.last_line;
-			_pos.first_column = _pos.last_column;
-			setSrcPos( _pos );
+			YYLTYPE pos(pos_begin);
+			pos.first_line   = pos.last_line;
+			pos.first_column = pos.last_column;
+			setSrcPos(pos);
 		}
 	}
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, const std::string& _text ):
-	RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(tstring) text)
+	: RDOSrcInfo()
 {
 	init();
-	setSrcPos( _pos_begin, _pos_end );
-	setSrcText( _text );
+	setSrcPos (pos_begin, pos_end);
+	setSrcText(text);
 }
 
 void RDOParserSrcInfo::init()
 {
-	setSrcFileType( RDOParser::getFileToParse() );
+	setSrcFileType(RDOParser::getFileToParse());
 	rdoRuntime::RDOSrcInfo::Position pos = src_pos();
 	pos.m_last_line = RDOParser::lexer_loc_line();
-	RDOSrcInfo::setSrcPos( pos );
+	RDOSrcInfo::setSrcPos(pos);
 }
 
-} // namespace rdoParse 
+CLOSE_RDO_PARSER_NAMESPACE

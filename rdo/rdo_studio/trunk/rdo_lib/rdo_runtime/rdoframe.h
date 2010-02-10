@@ -540,7 +540,7 @@ public:
 	bool isShowIf() const { return conditionCalc != NULL; }
 
 	bool checkCondition( RDORuntime* sim );
-	virtual void getBitmaps( std::list< std::string >& list );
+	virtual void getBitmaps(REF(std::list<tstring>) list);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -188,8 +188,8 @@ rdoAnimation::RDOFrame* RDOFRMFrame::prepareFrame( rdoAnimation::RDOFrame* frame
 		std::list< RDOFRMShow* >::iterator it_show = shows.begin();
 		while ( it_show != shows.end() ) {
 			if ( (*it_show)->checkCondition(sim) ) {
-				std::vector< RDORuntimeObject* >::iterator it_obj = (*it_show)->m_objects.begin();
-				while ( it_obj != (*it_show)->m_objects.end() ) {
+				ChildList::iterator it_obj = (*it_show)->m_childList.begin();
+				while ( it_obj != (*it_show)->m_childList.end() ) {
 					rdoAnimation::FrameItem* element = static_cast<RDOFRMItem*>(*it_obj)->createElement(sim);
 					if ( element ) {
 						frame->m_elements.push_back( element );
@@ -560,12 +560,11 @@ RDOFRMShow::~RDOFRMShow()
 {
 }
 
-void RDOFRMShow::getBitmaps( std::list< std::string >& list )
+void RDOFRMShow::getBitmaps(REF(std::list<tstring>) list)
 {
-	std::vector< RDORuntimeObject* >::iterator it = m_objects.begin();
-	while ( it != m_objects.end() ) {
-		static_cast<RDOFRMItem*>(*it)->getBitmaps( list );
-		it++;
+	STL_FOR_ALL(ChildList, m_childList, it)
+	{
+		static_cast<PTR(RDOFRMItem)>(*it)->getBitmaps(list);
 	}
 }
 
