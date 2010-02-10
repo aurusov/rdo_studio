@@ -160,7 +160,8 @@
 %token RDO_color_gray					426
 
 %token RDO_IDENTIF_RELRES				427
-%token RDO_enum							428
+%token RDO_typedef						428
+%token RDO_enum							429
 
 %token RDO_STRING_CONST					430
 %token RDO_STRING_CONST_BAD				431
@@ -198,15 +199,22 @@ namespace rdoParse
 {
 %}
 
-%start rtp_list
+%start type_list
 
 %%
 
-rtp_list:			/* empty */
-					| rtp_list rtp_res_type
+type_list:			/* empty */
+					| type_list rtp_res_type
+					| type_list ext_param_type
 					| error {
-						PARSER->error( "Ожидается ключевое слово $Resource_type" );
+						PARSER->error(_T("Ожидается ключевое слово $Resource_type"));
 					};
+
+ext_param_type:		RDO_typedef RDO_enum ext_param_type_enum {
+						PARSER->warning("qqq");
+					};
+
+ext_param_type_enum:	RDO_IDENTIF_COLON
 
 rtp_res_type:		rtp_header RDO_Parameters rtp_body RDO_End
 					{

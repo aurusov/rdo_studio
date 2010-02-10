@@ -266,6 +266,9 @@ yellow				return(RDO_color_yellow);
 gray				return(RDO_color_gray);
 last				return(RDO_color_last);
 
+typedef				return(RDO_typedef);
+$Typedef			return(RDO_typedef);
+$typedef			return(RDO_typedef);
 enum				return(RDO_enum);
 $Enum				return(RDO_enum);
 $enum				return(RDO_enum);
