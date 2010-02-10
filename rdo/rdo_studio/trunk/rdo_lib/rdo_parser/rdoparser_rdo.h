@@ -1,14 +1,25 @@
-#ifndef RDOPARSER_RDO_H
-#define RDOPARSER_RDO_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoparser_rdo.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDOPARSER_RDO_H_
+#define _RDOPARSER_RDO_H_
+
+// ====================================================================== INCLUDES
 #include <iostream>
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+// ===============================================================================
 
-namespace rdoParse
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRDOItem
@@ -16,15 +27,15 @@ namespace rdoParse
 class RDOParserRDOItem: public RDOParserItem
 {
 public:
-	RDOParserRDOItem( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository );
+	RDOParserRDOItem(PTR(RDOParser) _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
 	virtual ~RDOParserRDOItem();
 
 	virtual void parse();
-	virtual void parse( std::istream& in_stream );
-	virtual RDOLexer* getLexer( std::istream* in_stream, std::ostream* out_stream );
+	virtual void parse(std::istream& in_stream);
+	virtual RDOLexer* getLexer(std::istream* in_stream, std::ostream* out_stream);
 
-	virtual int  lexer_loc_line();
-	virtual int  lexer_loc_pos();
+	virtual ruint  lexer_loc_line();
+	virtual ruint  lexer_loc_pos ();
 
 protected:
 	RDOLexer*  m_lexer;
@@ -37,7 +48,7 @@ protected:
 class RDOParserRSS: public RDOParserRDOItem
 {
 public:
-	RDOParserRSS( RDOParser* _parser, StreamFrom from = sf_repository );
+	RDOParserRSS(PTR(RDOParser) _parser, StreamFrom from = sf_repository);
 	virtual void parse();
 };
 
@@ -47,7 +58,7 @@ public:
 class RDOParserRSSPost: public RDOParserItem
 {
 public:
-	RDOParserRSSPost( RDOParser* _parser ): RDOParserItem( _parser, rdoModelObjects::RSS, NULL, NULL, NULL ) {};
+	RDOParserRSSPost(PTR(RDOParser) _parser): RDOParserItem(_parser, rdoModelObjects::RSS, NULL, NULL, NULL) {};
 	virtual void parse();
 };
 
@@ -57,10 +68,10 @@ public:
 class RDOParserSTDFUN: public RDOParserItem
 {
 public:
-	RDOParserSTDFUN( RDOParser* _parser ): RDOParserItem( _parser, rdoModelObjects::FUN, NULL, NULL, NULL ) {};
+	RDOParserSTDFUN(PTR(RDOParser) _parser): RDOParserItem(_parser, rdoModelObjects::FUN, NULL, NULL, NULL) {};
 	virtual void parse();
 };
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDOPARSER_RDO_H
+#endif //! _RDOPARSER_RDO_H_

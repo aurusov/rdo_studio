@@ -98,7 +98,7 @@ RDOSimulator* RDOSimulator::createCopy()
 }
 
 
-std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logic, REF(int) counter)
+tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logic, REF(ruint) counter)
 {
 	rdo::textstream stream;
 	IBaseOperationContainer::CIterator it = logic->begin();
@@ -117,7 +117,7 @@ std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logi
 	stream << std::endl;
 #endif
 
-	int _counter = 1;
+	ruint _counter = 1;
 	it = logic->begin();
 	while ( it != logic->end() )
 	{
@@ -145,7 +145,7 @@ std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logi
 	return stream.str();
 }
 
-std::string RDOSimulator::writeActivitiesStructure(REF(int) counter)
+tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
 {
 	return writeActivitiesStructureRecurse(m_metaLogic, counter);
 }

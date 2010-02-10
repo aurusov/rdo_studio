@@ -1,41 +1,54 @@
-#ifndef RDOPARSER_LOGIC_H
-#define RDOPARSER_LOGIC_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoparser_logic.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDOPARSER_LOGIC_H_
+#define _RDOPARSER_LOGIC_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
+// ===============================================================================
 
-namespace rdoParse
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogicActivity
 // ----------------------------------------------------------------------------
-template< class RTLogic, class Activity >
+template<class RTLogic, class Activity>
 class RDOLogicActivity: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDOLogicActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo( _src_info )
+	typedef std::vector<PTR(Activity)> ActivityList;
+
+	RDOLogicActivity(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) src_info)
+		: RDOParserObject (parser  )
+		, RDOParserSrcInfo(src_info)
 	{}
 
-	const std::string& name() const { return src_info().src_text(); }
+	CREF(tstring) name() const { return src_info().src_text(); }
 
-	Activity* addNewActivity( const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info )
+	PTR(Activity) addNewActivity(CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	{
-		Activity* activity = new Activity( this->m_rt_logic, this, activity_src_info, pattern_src_info );
-		m_activities.push_back( activity );
+		PTR(Activity) activity = new Activity(this->m_rt_logic, this, activity_src_info, pattern_src_info);
+		m_activities.push_back(activity);
 		return activity;
 	}
 
-	Activity* getLastActivity() const
+	PTR(Activity) getLastActivity() const
 	{
 		return !m_activities.empty() ? m_activities.back() : NULL;
 	}
-	const std::vector< Activity* >& getActivities() const { return m_activities; }
+	CREF(ActivityList) getActivities() const { return m_activities; }
 
-	bool setPrior(RDOFUNArithm* prior)
+	rbool setPrior(PTR(RDOFUNArithm) prior)
 	{
 		LPIPriority priority = m_rt_logic;
 		if (priority)
@@ -46,12 +59,12 @@ public:
 	}
 
 protected:
-	LPILogic                 m_rt_logic;
+	LPILogic     m_rt_logic;
 
 private:
-	std::vector< Activity* > m_activities;
+	ActivityList m_activities;
 };
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDOPARSER_LOGIC_H
+#endif //! _RDOPARSER_LOGIC_H_

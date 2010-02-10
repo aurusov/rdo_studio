@@ -25,7 +25,7 @@ public:
 
 	virtual void onPutToTreeNode() = 0;
 
-	std::string writeActivitiesStructure( int& counter );
+	tstring writeActivitiesStructure(REF(ruint) counter);
 
 	RDOSimulator* createCopy();
 	// Для DPT необходимо перекрыть две нижеследующие функции:
