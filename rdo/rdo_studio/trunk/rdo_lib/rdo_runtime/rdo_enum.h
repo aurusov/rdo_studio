@@ -16,6 +16,7 @@ public:
 	typedef tstring                  EnumItem;
 	typedef rdo::vector< EnumItem >  Enums;
 	typedef Enums::const_iterator    CIterator;
+	typedef Enums::const_iterator    const_iterator;
 
 	enum { END = ~0 };
 

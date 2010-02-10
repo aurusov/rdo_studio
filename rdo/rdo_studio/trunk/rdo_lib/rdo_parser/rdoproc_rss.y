@@ -244,17 +244,17 @@ dpt_process_line:	  RDO_IDENTIF					  {		}
 					| RDO_ADVANCE					  {		}
 					| RDO_ASSIGN					  { 	}
 					| RDO_QUEUE dpt_queue_param		  {		}
-					| RDO_QUEUE error				  {	PARSER->error(@1, rdo::format("Ожидается имя ресурса для сбора статистики по очереди"));			}
+					| RDO_QUEUE error				  {	PARSER->error().error(@1, rdo::format("Ожидается имя ресурса для сбора статистики по очереди"));			}
 					| RDO_DEPART dpt_depart_param	  {		}
-					| RDO_DEPART error				  { PARSER->error(@1, rdo::format("Ожидается имя ресурса для сбора статистики по очереди"));			}
+					| RDO_DEPART error				  { PARSER->error().error(@1, rdo::format("Ожидается имя ресурса для сбора статистики по очереди"));			}
 					/*| RDO_RELEASE dpt_release_param   {		}
-					| RDO_RELEASE error				  { PARSER->error(@1, rdo::format("Ожидается имя освобождаемого ресурса"));								}
+					| RDO_RELEASE error				  { PARSER->error().error(@1, rdo::format("Ожидается имя освобождаемого ресурса"));								}
 					| RDO_SEIZE dpt_seize_param		  {		}
-					| RDO_SEIZE error				  { PARSER->error(@1, rdo::format("Ожидается имя занимаемого ресурса"));								}*/
+					| RDO_SEIZE error				  { PARSER->error().error(@1, rdo::format("Ожидается имя занимаемого ресурса"));								}*/
 					| RDO_SEIZE dpt_seize_param	  {		}
-					| RDO_SEIZE error				  { PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));	}
+					| RDO_SEIZE error				  { PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));	}
 					| RDO_RELEASE dpt_release_param { 	}
-					| RDO_RELEASE error			  { PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));	};
+					| RDO_RELEASE error			  { PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));	};
 					
 dpt_queue_param:	RDO_IDENTIF 
 					{
@@ -300,7 +300,7 @@ dpt_queue_param:	RDO_IDENTIF
 					}
 					| RDO_IDENTIF error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};
 dpt_depart_param:	RDO_IDENTIF 
 					{
@@ -341,7 +341,7 @@ dpt_depart_param:	RDO_IDENTIF
 					}
 					| RDO_IDENTIF error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};
 /*dpt_seize_param:	RDO_IDENTIF 
 					{
@@ -388,7 +388,7 @@ dpt_depart_param:	RDO_IDENTIF
 					}
 					| RDO_IDENTIF error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};
 
 dpt_release_param:	RDO_IDENTIF 
@@ -436,7 +436,7 @@ dpt_release_param:	RDO_IDENTIF
 					}
 					| RDO_IDENTIF error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};
 */
 dpt_seize_param:	RDO_IDENTIF
@@ -527,7 +527,7 @@ dpt_seize_param:	RDO_IDENTIF
 					}
 					| dpt_seize_param error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};
 dpt_release_param:	RDO_IDENTIF
 					{
@@ -617,7 +617,7 @@ dpt_release_param:	RDO_IDENTIF
 					}
 					| dpt_release_param error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};	
 
 

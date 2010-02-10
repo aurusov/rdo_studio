@@ -92,7 +92,7 @@ ruint RDOParser::lexer_loc_line()
 
 ruint RDOParser::lexer_loc_pos()
 {
-	return m_parser_item ? m_parser_item->lexer_loc_pos() : 0;
+	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
 RDOParser::RDOParser()
@@ -291,132 +291,29 @@ void RDOParser::parse(REF(std::istream) stream)
 	}
 }
 
-void RDOParser::error(rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...)
-{
-	va_list params;
-	va_start(params, error_code);
-	tstring str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage(error_code, params);
-	va_end(params);
-	error(str, error_code);
-}
-
-void RDOParser::error_push_only(rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...)
-{
-	va_list params;
-	va_start(params, error_code);
-	tstring str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage(error_code, params);
-	va_end(params);
-	error_push_only(str, error_code);
-}
-
-void RDOParser::error(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...)
-{
-	va_list params;
-	va_start(params, error_code);
-	tstring str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage(error_code, params);
-	va_end(params);
-	error(src_info, str, error_code);
-}
-
-void RDOParser::error_push_only(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...)
-{
-	va_list params;
-	va_start(params, error_code);
-	tstring str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage(error_code, params);
-	va_end(params);
-	error_push_only(src_info, str, error_code);
-}
-
-void RDOParser::error(CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
-{
-	error_push_only(message, error_code);
-	throw rdoParse::RDOSyntaxException(m_errors.back().message);
-}
-
-void RDOParser::error_push_only(CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
-{
-	m_errors.push_back(rdoSimulator::RDOSyntaxError(error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse()));
-}
-
-void RDOParser::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
-{
-	error_push_only(src_info, message, error_code);
-	throw rdoParse::RDOSyntaxException(m_errors.back().message);
-}
-
-void RDOParser::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
-{
-	error_push_only(src_info1.src_pos().m_last_line != src_info2.src_pos().m_last_line ? src_info1 : src_info2, message, error_code);
-	throw rdoParse::RDOSyntaxException(m_errors.back().message);
-}
-
-void RDOParser::error_push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
-{
-	if (src_info.src_pos().m_last_line != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE && src_info.src_pos().m_last_pos != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_POS)
-	{
-		m_errors.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype()));
-	}
-}
-
-void RDOParser::error_push_done()
-{
-	if (!m_errors.empty())
-	{
-		throw rdoParse::RDOSyntaxException(m_errors.back().message);
-	}
-}
-
-void RDOParser::error_modify(CREF(tstring) message)
-{
-	if (!m_errors.empty())
-	{
-		m_errors.front().message = message + m_errors.front().message;
-		throw rdoParse::RDOSyntaxException(_T(""));
-	}
-}
-
-void RDOParser::warning(rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...)
-{
-	va_list params;
-	va_start(params, error_code);
-	tstring str = _T(""); //rdoSimulator::RDOSyntaxError::getMessage(error_code, params);
-	va_end(params);
-	warning(str, error_code);
-}
-
-void RDOParser::warning(CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code) 
-{
-	m_errors.push_back(rdoSimulator::RDOSyntaxError(error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true));
-}
-
-void RDOParser::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code) 
-{
-	m_errors.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype(), true));
-}
-
 void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 {
 	CPTR(RDOFUNConstant) pConst = findFUNConstant(src_info.src_text());
 	if (pConst)
 	{
-		error_push_only(src_info, rdo::format(_T("Константа '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(src_info, rdo::format(_T("Константа '%s' уже существует"), src_info.src_text().c_str()));
 //		parser->error(_T("Second appearance of the same constant name: ") + *(_cons->getName()));
-		error_push_only(pConst->src_info(), _T("См. первое определение"));
-		error_push_done();
+		error().push_only(pConst->src_info(), _T("См. первое определение"));
+		error().push_done();
 	}
 	CPTR(RDOFUNSequence) pSequence = findFUNSequence(src_info.src_text());
 	if (pSequence)
 	{
-		error_push_only(src_info, rdo::format(_T("Последовательность '%s' уже существует"), src_info.src_text().c_str()));
-		error_push_only(pSequence->src_info(), _T("См. первое определение"));
-		error_push_done();
+		error().push_only(src_info, rdo::format(_T("Последовательность '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(pSequence->src_info(), _T("См. первое определение"));
+		error().push_done();
 	}
 	CPTR(RDOFUNFunction) pFunction = findFUNFunction(src_info.src_text());
 	if (pFunction)
 	{
-		error_push_only(src_info, rdo::format(_T("Функция '%s' уже существует"), src_info.src_text().c_str()));
-		error_push_only(pFunction->src_info(), _T("См. первое определение"));
-		error_push_done();
+		error().push_only(src_info, rdo::format(_T("Функция '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(pFunction->src_info(), _T("См. первое определение"));
+		error().push_done();
 	}
 }
 
@@ -427,9 +324,9 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
 		if (it_search_act != (*it_search)->getActivities().end())
 		{
-			error_push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error_push_only((*it_search_act)->src_info(), _T("См. первое определение"));
-			error_push_done();
+			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
+			error().push_only((*it_search_act)->src_info(), _T("См. первое определение"));
+			error().push_done();
 //			error(_T("Activity name: ") + *_name + _T(" already defined"));
 		}
 	}
@@ -438,25 +335,25 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
 		if (it_some_act != (*it_some)->getActivities().end())
 		{
-			error_push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error_push_only((*it_some_act)->src_info(), _T("См. первое определение"));
-			error_push_done();
+			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
+			error().push_only((*it_some_act)->src_info(), _T("См. первое определение"));
+			error().push_done();
 		}
 	}
 	CPTR(RDODPTFreeActivity) pFreeAct = findDPTFreeActivity(src_info.src_text());
 	if (pFreeAct)
 	{
-		error_push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-		error_push_only(pFreeAct->src_info(), _T("См. первое определение"));
-		error_push_done();
+		error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(pFreeAct->src_info(), _T("См. первое определение"));
+		error().push_done();
 //		error(_T("Free activity name: ") + *_name + _T(" already defined"));
 	}
 	CPTR(RDOOPROperation) pOpr = findOPROperation(src_info.src_text());
 	if (pOpr)
 	{
-		error_push_only(src_info, rdo::format(_T("Операция '%s' уже существует"), src_info.src_text().c_str()));
-		error_push_only(pOpr->src_info(), _T("См. первое определение"));
-		error_push_done();
+		error().push_only(src_info, rdo::format(_T("Операция '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(pOpr->src_info(), _T("См. первое определение"));
+		error().push_done();
 	}
 }
 
@@ -470,17 +367,17 @@ void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 	DPTSearchList::const_iterator search_it = std::find_if(getDPTSearchs().begin(), getDPTSearchs().end(), compareName<RDODPTSearch>(src_info.src_text()));
 	if (search_it != getDPTSearchs().end())
 	{
-		error_push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error_push_only((*search_it)->src_info(), _T("См. первое определение"));
-		error_push_done();
+		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only((*search_it)->src_info(), _T("См. первое определение"));
+		error().push_done();
 //		error(src_info, _T("DPT name: ") + src_info.src_text() + _T(" already defined"));
 	}
 	DPTSomeList::const_iterator some_it = std::find_if(getDPTSomes().begin(), getDPTSomes().end(), compareName<RDODPTSome>(src_info.src_text()));
 	if (some_it != getDPTSomes().end())
 	{
-		error_push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error_push_only((*some_it)->src_info(), _T("См. первое определение"));
-		error_push_done();
+		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only((*some_it)->src_info(), _T("См. первое определение"));
+		error().push_done();
 	}
 }
 

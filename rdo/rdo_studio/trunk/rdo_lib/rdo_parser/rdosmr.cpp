@@ -55,10 +55,10 @@ void RDOSMR::setShowMode( rdoSimulator::ShowMode _showMode )
 void RDOSMR::setFrameNumber( int value, const YYLTYPE& pos )
 {
 	if ( value <= 0 ) {
-		parser()->error( pos, "Номер кадра должен быть больше нуля" );
+		parser()->error().error( pos, "Номер кадра должен быть больше нуля" );
 	}
 	if ( parser()->runtime()->allFrames.size() + 1 <= (unsigned int)value ) {
-		parser()->error( pos, rdo::format("Несуществующий кадр: %d", value) );
+		parser()->error().error( pos, rdo::format("Несуществующий кадр: %d", value) );
 	}
 	frameNumber = value;
 }
@@ -66,7 +66,7 @@ void RDOSMR::setFrameNumber( int value, const YYLTYPE& pos )
 void RDOSMR::setShowRate( double value, const YYLTYPE& pos )
 {
 	if ( value < 0 ) {
-		parser()->error( pos, "Масштаб должен быть больше нуля" );
+		parser()->error().error( pos, "Масштаб должен быть больше нуля" );
 	}
 	showRate = value;
 }
@@ -74,7 +74,7 @@ void RDOSMR::setShowRate( double value, const YYLTYPE& pos )
 void RDOSMR::setRunStartTime( double value, const YYLTYPE& pos )
 {
 	if ( value < 0 ) {
-		parser()->error( pos, "Начальное модельное время должно быть больше нуля" );
+		parser()->error().error( pos, "Начальное модельное время должно быть больше нуля" );
 	}
 	runStartTime = value;
 }
@@ -82,12 +82,12 @@ void RDOSMR::setRunStartTime( double value, const YYLTYPE& pos )
 void RDOSMR::setTraceStartTime( double value, const YYLTYPE& pos )
 {
 	if ( value < 0 ) {
-		parser()->error( pos, "Начальное время трассировки должно быть больше нуля" );
+		parser()->error().error( pos, "Начальное время трассировки должно быть больше нуля" );
 	}
 	if ( getTraceEndTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value ){
-		parser()->error_push_only( pos, "Начальное время трассировки должно быть меньше конечного" );
-		parser()->error_push_only( traceEndTime_pos, "См. конечное время трассировки" );
-		parser()->error_push_done();
+		parser()->error().push_only( pos, "Начальное время трассировки должно быть меньше конечного" );
+		parser()->error().push_only( traceEndTime_pos, "См. конечное время трассировки" );
+		parser()->error().push_done();
 	}
 	traceStartTime     = value;
 	traceStartTime_pos = pos;
@@ -96,12 +96,12 @@ void RDOSMR::setTraceStartTime( double value, const YYLTYPE& pos )
 void RDOSMR::setTraceEndTime( double value, const YYLTYPE& pos )
 {
 	if ( value < 0 ) {
-		parser()->error( pos, "Конечное время трассировки должно быть больше нуля" );
+		parser()->error().error( pos, "Конечное время трассировки должно быть больше нуля" );
 	}
 	if ( getTraceStartTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value ) {
-		parser()->error_push_only( pos, "Конечное время трассировки должно быть больше начального" );
-		parser()->error_push_only( traceStartTime_pos, "См. начальное время трассировки" );
-		parser()->error_push_done();
+		parser()->error().push_only( pos, "Конечное время трассировки должно быть больше начального" );
+		parser()->error().push_only( traceStartTime_pos, "См. начальное время трассировки" );
+		parser()->error().push_done();
 	}
 	traceEndTime     = value;
 	traceEndTime_pos = pos;
@@ -110,10 +110,10 @@ void RDOSMR::setTraceEndTime( double value, const YYLTYPE& pos )
 void RDOSMR::setTerminateIf( RDOFUNLogic* logic )
 {
 	if ( terminateIf ) {
-		parser()->error_push_only( logic->src_info(), "Terminate_if уже определен" );
-	//	parser()->error_push_only( logic->src_info(), "Second Terminate_if entry" );
-		parser()->error_push_only( terminateIf->src_info(), "См. первое определение" );
-		parser()->error_push_done();
+		parser()->error().push_only( logic->src_info(), "Terminate_if уже определен" );
+	//	parser()->error().push_only( logic->src_info(), "Second Terminate_if entry" );
+		parser()->error().push_only( terminateIf->src_info(), "См. первое определение" );
+		parser()->error().push_done();
 	}
 	terminateIf = logic;
 	parser()->runtime()->setTerminateIf( logic->getCalc() );
@@ -123,7 +123,7 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 {
 	const RDOFUNConstant* const cons = parser()->findFUNConstant( const_info.src_text() );
 	if ( !cons ) {
-		parser()->error( const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()) );
+		parser()->error().error( const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()) );
 	}
 	cons->getType()->checkParamType( arithm );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( cons->getType() );
@@ -135,16 +135,16 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 {
 	const RDORSSResource* res = parser()->findRSSResource( res_info.src_text() );
 	if ( !res ) {
-		parser()->error( res_info.src_info(), rdo::format("Ресурс '%s' не найден", res_info.src_text().c_str()) );
-//		parser()->error( res_info.src_info(), "Undefined resource name: " + resName );
+		parser()->error().error( res_info.src_info(), rdo::format("Ресурс '%s' не найден", res_info.src_text().c_str()) );
+//		parser()->error().error( res_info.src_info(), "Undefined resource name: " + resName );
 	}
 	const RDORTPParam* param = res->getType()->findRTPParam( par_info.src_text() );
 	if ( !param ) {
-		parser()->error_push_only( par_info.src_info(), rdo::format("Параметр '%s' не найден", par_info.src_text().c_str()) );
-		parser()->error_push_only( res->src_info(), "См. ресурс" );
-		parser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
-		parser()->error_push_done();
-//		parser()->error( par_info.src_info(), "Undefined resource parameter name: " + parName);
+		parser()->error().push_only( par_info.src_info(), rdo::format("Параметр '%s' не найден", par_info.src_text().c_str()) );
+		parser()->error().push_only( res->src_info(), "См. ресурс" );
+		parser()->error().push_only( res->getType()->src_info(), "См. тип ресурса" );
+		parser()->error().push_done();
+//		parser()->error().error( par_info.src_info(), "Undefined resource parameter name: " + parName);
 	}
 	param->getType()->checkParamType( arithm );
 	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
@@ -157,8 +157,8 @@ void RDOSMR::setSeed( const RDOParserSrcInfo& seq_info, int base )
 {
 	const RDOFUNSequence* seq = parser()->findFUNSequence( seq_info.src_text() );
 	if ( !seq ) {
-		parser()->error( seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()) );
-//		parser()->error( "Undefined sequence: " + seqName );
+		parser()->error().error( seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()) );
+//		parser()->error().error( "Undefined sequence: " + seqName );
 	}
 	seq->init_calc->setBase( base );
 	parser()->insertChanges( seq->src_text() + ".Seed", rdo::format("%d", base) );
@@ -169,9 +169,9 @@ void RDOSMR::insertBreakPoint( const RDOParserSrcInfo& _src_info, RDOFUNLogic* _
 	std::vector< BreakPoint* >::const_iterator it = breakPoints.begin();
 	while ( it != breakPoints.end() ) {
 		if ( (*it)->src_text() == _src_info.src_text() ) {
-			parser()->error_push_only( _src_info, rdo::format("Точка останова с именем '%s' уже существует", _src_info.src_text().c_str()) );
-			parser()->error_push_only( (*it)->src_info(), "См. первое определение" );
-			parser()->error_push_done();
+			parser()->error().push_only( _src_info, rdo::format("Точка останова с именем '%s' уже существует", _src_info.src_text().c_str()) );
+			parser()->error().push_only( (*it)->src_info(), "См. первое определение" );
+			parser()->error().push_done();
 		}
 		it++;
 	}

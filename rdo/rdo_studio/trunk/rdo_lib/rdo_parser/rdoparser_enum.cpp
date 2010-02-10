@@ -38,7 +38,7 @@ void RDORTPEnum::add( const RDOValue& next )
 {
 	if ( __enum()->findEnum( next->getIdentificator() ) != rdoRuntime::RDOEnumType::END )
 	{
-		parser()->error( next.src_info(), rdo::format("Значение перечислимого типа уже существует: %s", next.src_text().c_str()) );
+		parser()->error().error( next.src_info(), rdo::format("Значение перечислимого типа уже существует: %s", next.src_text().c_str()) );
 	}
 	__enum()->add( next->getIdentificator() );
 }
@@ -48,9 +48,9 @@ rdoRuntime::RDOValue RDORTPEnum::findEnumValueWithThrow( const RDOParserSrcInfo&
 	rdoRuntime::RDOValue result = cast(rdoRuntime::RDOValue(val, rdoRuntime::g_identificator));
 	if (result.typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		parser()->error_push_only( val_src_info, rdo::format("Неверное значение параметра перечислимого типа: %s", val.c_str()) );
-		parser()->error_push_only( src_info(), rdo::format("Возможные значения: %s", __enum()->asString().c_str()) );
-		parser()->error_push_done();
+		parser()->error().push_only( val_src_info, rdo::format("Неверное значение параметра перечислимого типа: %s", val.c_str()) );
+		parser()->error().push_only( src_info(), rdo::format("Возможные значения: %s", __enum()->asString().c_str()) );
+		parser()->error().push_done();
 	}
 	return result;
 }
@@ -59,7 +59,7 @@ rdoRuntime::RDOValue RDORTPEnum::getFirstValue() const
 {
 	if ( __enum()->getValues().empty() )
 	{
-		parser()->error( src_info(), "Внутренняя ошибка: Пустой перечислимый тип" );
+		parser()->error().error( src_info(), "Внутренняя ошибка: Пустой перечислимый тип" );
 	}
 	return rdoRuntime::RDOValue( *__enum() );
 }

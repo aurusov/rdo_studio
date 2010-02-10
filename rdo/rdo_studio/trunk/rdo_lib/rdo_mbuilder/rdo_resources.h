@@ -89,7 +89,7 @@ protected:
 // ---------- Базовая часть mbuilder-объекта
 // --------------------------------------------------------------------
 #define MBUILDER_OBJECT(Class)                             \
-class Class                                                \
+class Class: public rdoParse::RDOParserSrcInfo             \
 {                                                          \
 friend class Class##List;                                  \
 public:                                                    \

@@ -206,10 +206,10 @@ smr_model:	RDO_Model_name '=' RDO_IDENTIF {
 				$$ = (int)new RDOSMR( PARSER, reinterpret_cast<RDOValue*>($3)->value().getIdentificator() );
 			}
 			| RDO_Model_name '=' error {
-				PARSER->error( @2, @3, "ќжидаетс€ им€ модели" );
+				PARSER->error().error( @2, @3, "ќжидаетс€ им€ модели" );
 			}
 			| RDO_Model_name error {
-				PARSER->error( @1, "ќжидаетс€ '='" );
+				PARSER->error().error( @1, "ќжидаетс€ '='" );
 			};
 
 smr_descr:	/* empty */
@@ -218,60 +218,60 @@ smr_descr:	/* empty */
 				smr->setFile( "Resource_file", reinterpret_cast<RDOValue*>($4)->value().getIdentificator() );
 			}
 			| smr_descr RDO_Resource_file '=' error {
-				PARSER->error( @3, @4, "ќжидаетс€ им€ файла ресурсов" );
+				PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла ресурсов" );
 			}
 			| smr_descr RDO_Resource_file error {
-				PARSER->error( @2, "ќжидаетс€ '='" );
+				PARSER->error().error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr RDO_OprIev_file '=' RDO_IDENTIF {
 				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "OprIev_file", reinterpret_cast<RDOValue*>($4)->value().getIdentificator() );
 			}
 			| smr_descr RDO_OprIev_file '=' error {
-				PARSER->error( @3, @4, "ќжидаетс€ им€ файла операций" );
+				PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла операций" );
 			}
 			| smr_descr RDO_OprIev_file error {
-				PARSER->error( @2, "ќжидаетс€ '='" );
+				PARSER->error().error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr RDO_Frame_file '=' RDO_IDENTIF {
 				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Frame_file", reinterpret_cast<RDOValue*>($4)->value().getIdentificator() );
 			}
 			| smr_descr RDO_Frame_file '=' error {
-				PARSER->error( @3, @4, "ќжидаетс€ им€ файла анимации" );
+				PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла анимации" );
 			}
 			| smr_descr RDO_Frame_file error {
-				PARSER->error( @2, "ќжидаетс€ '='" );
+				PARSER->error().error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr RDO_Statistic_file '=' RDO_IDENTIF {
 				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Statistic_file", reinterpret_cast<RDOValue*>($4)->value().getIdentificator() );
 			}
 			| smr_descr RDO_Statistic_file '=' error {
-				PARSER->error( @3, @4, "ќжидаетс€ им€ файла собираемых показателей" );
+				PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла собираемых показателей" );
 			}
 			| smr_descr RDO_Statistic_file error {
-				PARSER->error( @2, "ќжидаетс€ '='" );
+				PARSER->error().error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr RDO_Results_file '=' RDO_IDENTIF {
 				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Results_file", reinterpret_cast<RDOValue*>($4)->value().getIdentificator() );
 			}
 			| smr_descr RDO_Results_file '=' error {
-				PARSER->error( @3, @4, "ќжидаетс€ им€ файла результатов" );
+				PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла результатов" );
 			}
 			| smr_descr RDO_Results_file error {
-				PARSER->error( @2, "ќжидаетс€ '='" );
+				PARSER->error().error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr RDO_Trace_file '=' RDO_IDENTIF {
 				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Trace_file", reinterpret_cast<RDOValue*>($4)->value().getIdentificator() );
 			}
 			| smr_descr RDO_Trace_file '=' error {
-				PARSER->error( @3, @4, "ќжидаетс€ им€ файла трассировки" );
+				PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла трассировки" );
 			}
 			| smr_descr RDO_Trace_file error {
-				PARSER->error( @2, "ќжидаетс€ '='" );
+				PARSER->error().error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF {
 				std::string alias = reinterpret_cast<RDOValue*>($3)->value().getIdentificator();
@@ -280,13 +280,13 @@ smr_descr:	/* empty */
 				smr->setExternalModelName(alias, model);
 			}
 			| smr_descr RDO_External_Model RDO_IDENTIF '=' error {
-				PARSER->error( @4, @5, "ќжидаетс€ путь и название внешней модели" );
+				PARSER->error().error( @4, @5, "ќжидаетс€ путь и название внешней модели" );
 			}
 			| smr_descr RDO_External_Model RDO_IDENTIF error {
-				PARSER->error( @3, "ќжидаетс€ '='" );
+				PARSER->error().error( @3, "ќжидаетс€ '='" );
 			}
 			| smr_descr RDO_External_Model error {
-				PARSER->error( @2, "ќжидаетс€ псевдоним внешей модели" );
+				PARSER->error().error( @2, "ќжидаетс€ псевдоним внешей модели" );
 			}
 			| smr_descr error {
 			};

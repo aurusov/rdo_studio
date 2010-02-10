@@ -237,31 +237,31 @@ pmd_pokaz:	RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 				$$ = (int)(new RDOPMDWatchPar( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOValue*>($4)->src_info(), reinterpret_cast<RDOValue*>($6)->src_info() ));
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error {
-				PARSER->error( @5, @6, "Ожидается имя параметра" );
+				PARSER->error().error( @5, @6, "Ожидается имя параметра" );
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF error {
-				PARSER->error( @4, "Ожидается '.'" );
+				PARSER->error().error( @4, "Ожидается '.'" );
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_par error {
-				PARSER->error( @3, @4, "После ключевого слова watch_par ожидается имя ресурса" );
+				PARSER->error().error( @3, @4, "После ключевого слова watch_par ожидается имя ресурса" );
 			}
 			| RDO_IDENTIF_COLON pmd_trace error {
-				PARSER->error( @2, @3, "Ожидается тип показателя" );
+				PARSER->error().error( @2, @3, "Ожидается тип показателя" );
 			}
 			| RDO_IDENTIF_COLON error {
-				PARSER->error( @1, @2, "Ожидается признак трассировки или тип показателя" );
+				PARSER->error().error( @1, @2, "Ожидается признак трассировки или тип показателя" );
 			}
 			| RDO_IDENTIF error {
-				PARSER->error( @1, @2, "Ожидается ':'" );
+				PARSER->error().error( @1, @2, "Ожидается ':'" );
 			}
 			| error {
-				PARSER->error( @1, "Ожидается имя показателя" );
+				PARSER->error().error( @1, "Ожидается имя показателя" );
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic {
 				$$ = (int)(new RDOPMDWatchState( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOFUNLogic*>($4) ));
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error {
-				PARSER->error( @3, @4, "После ключевого слова watch_state ожидается логическое выражение" );
+				PARSER->error().error( @3, @4, "После ключевого слова watch_state ожидается логическое выражение" );
 			}
 			| pmd_pokaz_watch_quant_begin fun_logic {
 				reinterpret_cast<RDOPMDWatchQuant*>($1)->setLogic( reinterpret_cast<RDOFUNLogic*>($2) );
@@ -270,10 +270,10 @@ pmd_pokaz:	RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 				reinterpret_cast<RDOPMDWatchQuant*>($1)->setLogicNoCheck();
 			}
 			| pmd_pokaz_watch_quant_begin error {
-				PARSER->error( @1, @2, "После имени типа ожидается логическое выражение" );
+				PARSER->error().error( @1, @2, "После имени типа ожидается логическое выражение" );
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_quant error {
-				PARSER->error( @3, @4, "После ключевого слова watch_quant ожидается тип ресурса" );
+				PARSER->error().error( @3, @4, "После ключевого слова watch_quant ожидается тип ресурса" );
 			}
 			| pmd_pokaz_watch_value_begin fun_logic fun_arithm {
 				reinterpret_cast<RDOPMDWatchValue*>($1)->setLogic( reinterpret_cast<RDOFUNLogic*>($2), reinterpret_cast<RDOFUNArithm*>($3) );
@@ -282,22 +282,22 @@ pmd_pokaz:	RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 				reinterpret_cast<RDOPMDWatchValue*>($1)->setLogicNoCheck( reinterpret_cast<RDOFUNArithm*>($3) );
 			}
 			| pmd_pokaz_watch_value_begin fun_logic error {
-				PARSER->error( @2, @3, "После логического ожидается арифметическое выражение" );
+				PARSER->error().error( @2, @3, "После логического ожидается арифметическое выражение" );
 			}
 			| pmd_pokaz_watch_value_begin RDO_NoCheck error {
-				PARSER->error( @2, @3, "После логического ожидается арифметическое выражение" );
+				PARSER->error().error( @2, @3, "После логического ожидается арифметическое выражение" );
 			}
 			| pmd_pokaz_watch_value_begin error {
-				PARSER->error( @1, @2, "После имени типа ожидается логическое выражение" );
+				PARSER->error().error( @1, @2, "После имени типа ожидается логическое выражение" );
 			}
 			| RDO_IDENTIF_COLON pmd_trace RDO_watch_value error {
-				PARSER->error( @3, @4, "После ключевого слова watch_value ожидается тип ресурса" );
+				PARSER->error().error( @3, @4, "После ключевого слова watch_value ожидается тип ресурса" );
 			}
 			| RDO_IDENTIF_COLON RDO_get_value fun_arithm {
 				$$ = (int)(new RDOPMDGetValue( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), reinterpret_cast<RDOFUNArithm*>($3) ));
 			}
 			| RDO_IDENTIF_COLON RDO_get_value error {
-				PARSER->error( @2, @3, "После ключевого слова get_value ожидается арифметическое выражение" );
+				PARSER->error().error( @2, @3, "После ключевого слова get_value ожидается арифметическое выражение" );
 			};
 
 pmd_end:	RDO_Results pmd_body RDO_End
@@ -305,10 +305,10 @@ pmd_end:	RDO_Results pmd_body RDO_End
 				YYLTYPE pos( @1 );
 				pos.last_line = pos.first_line;
 				pos.last_column = pos.first_column;
-				PARSER->error( pos, "Ожидается ключевое слово $Results" );
+				PARSER->error().error( pos, "Ожидается ключевое слово $Results" );
 			}
 			| RDO_Results pmd_body error {
-				PARSER->error( @3, "Ожидается ключевое слово $End" );
+				PARSER->error().error( @3, "Ожидается ключевое слово $End" );
 			};
 
 // ----------------------------------------------------------------------------
@@ -351,10 +351,10 @@ fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(*reinterpret_ca
 				$$ = (int)logic_not;
 			}
 			| '[' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 			}
 			| '(' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 			};
 
 // ----------------------------------------------------------------------------
@@ -409,7 +409,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							$$ = (int)arithm;
 						}
 						| RDO_IDENTIF '(' error {
-							PARSER->error( @3, "Ошибка в параметрах функции" );
+							PARSER->error().error( @3, "Ошибка в параметрах функции" );
 						};
 
 fun_arithm_func_call_pars:	fun_arithm {
@@ -427,10 +427,10 @@ fun_arithm_func_call_pars:	fun_arithm {
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars error {
-								PARSER->error( @2, "Ошибка в арифметическом выражении" );
+								PARSER->error().error( @2, "Ошибка в арифметическом выражении" );
 							}
 							| fun_arithm_func_call_pars ',' error {
-								PARSER->error( @3, "Ошибка в арифметическом выражении" );
+								PARSER->error().error( @3, "Ошибка в арифметическом выражении" );
 							};
 
 // ----------------------------------------------------------------------------
@@ -446,10 +446,10 @@ fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
+						PARSER->error().error( @3, "Ожидается имя типа" );
 					}
 					| fun_group_keyword error {
-						PARSER->error( @1, "После имени функции ожидается октрывающаяся скобка" );
+						PARSER->error().error( @1, "После имени функции ожидается октрывающаяся скобка" );
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
@@ -466,13 +466,13 @@ fun_group:			fun_group_header fun_logic ')' {
 						$$ = (int)groupfun->createFunLogic( trueLogic );
 					}
 					| fun_group_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 // ----------------------------------------------------------------------------
@@ -485,10 +485,10 @@ fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
+						PARSER->error().error( @3, "Ожидается имя типа" );
 					}
 					| RDO_Select error {
-						PARSER->error( @1, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @1, "Ожидается октрывающаяся скобка" );
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
@@ -507,13 +507,13 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						select->initSelect( flogic );
 					}
 					| fun_select_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -528,10 +528,10 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' fun_select_keyword '(' error {
-						PARSER->error( @4, @5, "Ошибка в логическом выражении" )
+						PARSER->error().error( @4, @5, "Ошибка в логическом выражении" )
 					}
 					| fun_select_body '.' fun_select_keyword error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Empty '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
@@ -541,16 +541,16 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' RDO_Empty '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Empty error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' error {
-						PARSER->error( @2, @3, "Ожидается метод списка ресурсов" );
+						PARSER->error().error( @2, @3, "Ожидается метод списка ресурсов" );
 					}
 					| fun_select_body error {
-						PARSER->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
+						PARSER->error().error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					};
 
 fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
@@ -561,10 +561,10 @@ fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
 						$$ = (int)arithm;
 					}
 					| fun_select_body '.' RDO_Size error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Size '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
 					};
 
 %%

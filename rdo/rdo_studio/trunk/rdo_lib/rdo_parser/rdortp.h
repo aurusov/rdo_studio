@@ -254,7 +254,7 @@ private:
 	void init( const YYLTYPE* const max_value_pos )
 	{
 		if ( max_value_pos && m_min_value > m_max_value ) {
-			parser()->error( *max_value_pos, "Ћева€ граница диапазона должна быть меньше правой" );
+			parser()->error().error( *max_value_pos, "Ћева€ граница диапазона должна быть меньше правой" );
 		}
 		setSrcText( rdo::format("[%s..%s]", rdoRuntime::RDOValue(m_min_value).getAsString().c_str(), rdoRuntime::RDOValue(m_max_value).getAsString().c_str()) );
 	}

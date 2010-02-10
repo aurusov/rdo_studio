@@ -29,9 +29,9 @@ RDOPMDPokaz::RDOPMDPokaz(PTR(RDOParser) _parser, CREF(RDOParserSrcInfo) _src_inf
 {
 	const RDOPMDPokaz* pokaz = parser()->findPMDPokaz( src_text() );
 	if ( pokaz ) {
-		parser()->error_push_only( src_info(), rdo::format("Показатель '%s' уже существует", src_text().c_str()) );
-		parser()->error_push_only( pokaz->src_info(), "См. первое определение" );
-		parser()->error_push_done();
+		parser()->error().push_only( src_info(), rdo::format("Показатель '%s' уже существует", src_text().c_str()) );
+		parser()->error().push_only( pokaz->src_info(), "См. первое определение" );
+		parser()->error().push_done();
 	}
 }
 
@@ -54,28 +54,28 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 {
 	const RDORSSResource* const res = parser()->findRSSResource( _res_src_info.src_text() );
 	if ( !res ) {
-		parser()->error( _res_src_info, rdo::format("Ресурс '%s' не найден", _res_src_info.src_text().c_str()) );
+		parser()->error().error( _res_src_info, rdo::format("Ресурс '%s' не найден", _res_src_info.src_text().c_str()) );
 	}
 /*
 	if ( !res->getType()->isPermanent() ) {
-		parser()->error_push_only( _res_src_info, "Наблюдать (watch_par) можно только за параметром постоянного ресурса" );
-		parser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
-		parser()->error_push_done();
-//		parser()->error("Resource must be of permanent type: " + _resName);
+		parser()->error().push_only( _res_src_info, "Наблюдать (watch_par) можно только за параметром постоянного ресурса" );
+		parser()->error().push_only( res->getType()->src_info(), "См. тип ресурса" );
+		parser()->error().push_done();
+//		parser()->error().error("Resource must be of permanent type: " + _resName);
 	}
 */
 	const RDORTPParam* const par = res->getType()->findRTPParam( _par_src_info.src_text() );
 	if ( !par ) {
-		parser()->error_push_only( _par_src_info, rdo::format("Параметр '%s' не найден", _par_src_info.src_text().c_str()) );
-		parser()->error_push_only( res->src_info(), "См. ресурс" );
-		parser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
-		parser()->error_push_done();
+		parser()->error().push_only( _par_src_info, rdo::format("Параметр '%s' не найден", _par_src_info.src_text().c_str()) );
+		parser()->error().push_only( res->src_info(), "См. ресурс" );
+		parser()->error().push_only( res->getType()->src_info(), "См. тип ресурса" );
+		parser()->error().push_done();
 	}
 	rdoRuntime::RDOType::TypeID typeID = par->getType()->typeID();
 	if ( typeID != rdoRuntime::RDOType::t_int && typeID != rdoRuntime::RDOType::t_real ) {
-		parser()->error_push_only( _par_src_info, "Наблюдать можно только за параметром целого или вещественного типа" );
-		parser()->error_push_only( par->getType()->src_info(), "См. тип параметра" );
-		parser()->error_push_done();
+		parser()->error().push_only( _par_src_info, "Наблюдать можно только за параметром целого или вещественного типа" );
+		parser()->error().push_only( par->getType()->src_info(), "См. тип параметра" );
+		parser()->error().push_done();
 	}
 	endOfCreation(F(rdoRuntime::RDOPMDWatchPar)::create(parser()->runtime(), src_text(), _trace, _res_src_info.src_text(), _par_src_info.src_text(), res->getID(), res->getType()->getRTPParamNumber(_par_src_info.src_text())));
 }
@@ -97,12 +97,12 @@ RDOPMDWatchTemp::RDOPMDWatchTemp( RDOParser* _parser, const RDOParserSrcInfo& _s
 {
 	const RDORTPResType* const res_type = parser()->findRTPResType( _res_type_src_info.src_text() );
 	if ( !res_type ) {
-		parser()->error( _res_type_src_info, rdo::format("Тип ресурса '%s' не найден", _res_type_src_info.src_text().c_str()) );
+		parser()->error().error( _res_type_src_info, rdo::format("Тип ресурса '%s' не найден", _res_type_src_info.src_text().c_str()) );
 	}
 	if ( !res_type->isTemporary() ) {
-		parser()->error_push_only( _res_type_src_info, "Показатель собирает информацию по временным ресурсам (temporary)" );
-		parser()->error_push_only( res_type->src_info(), "См. тип ресурса" );
-		parser()->error_push_done();
+		parser()->error().push_only( _res_type_src_info, "Показатель собирает информацию по временным ресурсам (temporary)" );
+		parser()->error().push_only( res_type->src_info(), "См. тип ресурса" );
+		parser()->error().push_done();
 	}
 }
 

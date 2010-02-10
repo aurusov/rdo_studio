@@ -870,7 +870,7 @@ bool RDOThreadSimulator::parseModel()
 void RDOThreadSimulator::runModel()
 {
 	if ( parseModel() ) {
-		parser->m_errors.clear();
+		parser->error().clear();
 		exitCode = rdoSimulator::EC_OK;
 		thread_runtime = new rdoRuntime::RDOThreadRunTime();
 	}
@@ -985,7 +985,7 @@ std::vector< RDOSyntaxError > RDOThreadSimulator::getErrors()
 
 	if ( !parser ) return res;
 
-	res = parser->m_errors;
+	res = parser->error().getList();
 	res.insert( res.end(), runtime->errors.begin(), runtime->errors.end() );
 	return res;
 }

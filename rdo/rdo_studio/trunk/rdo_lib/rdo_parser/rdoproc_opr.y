@@ -227,9 +227,9 @@ dpt_process_begin:	RDO_Process
 					{
 						RDOPROCProcess* proc = PARSER->getLastPROCProcess();
 						if ( proc && !proc->closed() ) {
-							PARSER->error( "Незакрыт предыдущий блок $Process" );
+							PARSER->error().error(proc->src_info(), _T("Незакрыт предыдущий блок $Process"));
 						}
-						proc = new RDOPROCProcess( PARSER, "Process" );
+						proc = new RDOPROCProcess(PARSER, rdoParse::RDOParserSrcInfo(@1, _T("Process")));
 						@$ = @1;
 					};
 
@@ -246,10 +246,10 @@ dpt_process_condition:	/* empty */ {
 						proc->setCondition();
 					}
 					| RDO_Condition error {
-						PARSER->error( @2, @2, "После ключевого слова $Condition ожидается условие активации процесса" );
+						PARSER->error().error( @2, @2, "После ключевого слова $Condition ожидается условие активации процесса" );
 					}
 					| error {
-						PARSER->error( @1, "Ожидается ключевое слово $Condition" );
+						PARSER->error().error( @1, "Ожидается ключевое слово $Condition" );
 					};
 
 dpt_process_prior:	/* empty */
@@ -257,16 +257,16 @@ dpt_process_prior:	/* empty */
 					{
 						if (!PARSER->getLastPROCProcess()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
 						{
-							PARSER->error(@2, _T("Процесс пока не может иметь приоритет"));
+							PARSER->error().error(@2, _T("Процесс пока не может иметь приоритет"));
 						}
 					}
 					| RDO_Priority error
 					{
-						PARSER->error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+						PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
 					}
 					| error
 					{
-						PARSER->error( @1, @1, "Ожидается ключевое слово $Priority" )
+						PARSER->error().error( @1, @1, "Ожидается ключевое слово $Priority" )
 					};
 
 dpt_process_input:	/* empty */
@@ -274,7 +274,7 @@ dpt_process_input:	/* empty */
 
 dpt_process_line:	RDO_IDENTIF	
 					{
-						PARSER->error( rdo::format("Неизвестный оператор '%s'", reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()) );
+						PARSER->error().error(@1, rdo::format(_T("Неизвестный оператор '%s'"), reinterpret_cast<RDOValue*>($1)->value().getIdentificator().c_str()));
 					}
 					| RDO_GENERATE fun_arithm 
 					{
@@ -294,20 +294,22 @@ dpt_process_line:	RDO_IDENTIF
 								// Добавим тип ресурса
 								if ( !rtpList.append( rtp ) )
 								{
-									PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+									PARSER->error().error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
 								}
 								rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 							}
 							else
 							{
 								// Тип найден, проверим его на наличие вещественного параметра
-								const rdoMBuilder::RDOResType& rtp = rtpList[rtp_name];
-								if ( !rtp.m_params[rtp_param_name].exist() ) {
-									PARSER->error( rdo::format( "У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+								CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
+								if (!rtp.m_params[rtp_param_name].exist())
+								{
+									PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет требуемого параметра '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 								}
 								// Параметр есть, надо проверить на тип
-								if ( rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real ) {
-									PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
+								if (rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real)
+								{
+									PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является перечислимым типом"), rtp.name().c_str(), rtp_param_name.c_str()));
 								}
 								rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 							}
@@ -316,14 +318,14 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_GENERATE fun_arithm error 
 					{
-						PARSER->error( @2, "Ошибка в арифметическом выражении" );
+						PARSER->error().error( @2, "Ошибка в арифметическом выражении" );
 					}
 					| RDO_TERMINATE dpt_term_param
 					{
 					}
 					| RDO_TERMINATE error
 					{
-						PARSER->error( @1, "Ошибка в параметре оператора TERMINATE" );
+						PARSER->error().error( @1, "Ошибка в параметре оператора TERMINATE" );
 					}
 					| RDO_ADVANCE fun_arithm 
 					{
@@ -332,7 +334,7 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_ADVANCE fun_arithm error 
 					{
-						PARSER->error( @2, "Ошибка в арифметическом выражении" );
+						PARSER->error().error( @2, "Ошибка в арифметическом выражении" );
 					}
 					| RDO_QUEUE dpt_queue_param 
 					{
@@ -342,7 +344,7 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_QUEUE error 
 					{
-						PARSER->error( @1, "Ожидается имя ресурса для сбора статистики по очереди" );
+						PARSER->error().error( @1, "Ожидается имя ресурса для сбора статистики по очереди" );
 					}
 					| RDO_DEPART dpt_depart_param 
 					{
@@ -352,7 +354,7 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_DEPART error 
 					{
-						PARSER->error( @1, "Ожидается имя ресурса для сбора статистики по очереди" );
+						PARSER->error().error( @1, "Ожидается имя ресурса для сбора статистики по очереди" );
 					}
 				/*	| RDO_SEIZE dpt_seize_param 
 					{
@@ -362,7 +364,7 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_SEIZE error				
 					{
-						PARSER->error(@1, rdo::format("Ожидается имя занимаемого ресурса"));
+						PARSER->error().error(@1, rdo::format("Ожидается имя занимаемого ресурса"));
 					}
 					| RDO_RELEASE dpt_release_param 
 					{
@@ -372,7 +374,7 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_RELEASE error				
 					{
-						PARSER->error(@1, rdo::format("Ожидается имя освобождаемого ресурса"));
+						PARSER->error().error(@1, rdo::format("Ожидается имя освобождаемого ресурса"));
 					}*/
 					| RDO_SEIZE dpt_seize_param 
 					{
@@ -382,7 +384,7 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_SEIZE error				
 					{
-						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
+						PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 					}
 					| RDO_RELEASE dpt_release_param 
 					{
@@ -392,10 +394,10 @@ dpt_process_line:	RDO_IDENTIF
 					}
 					| RDO_RELEASE error				
 					{
-						PARSER->error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
+						PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 					}
 					| RDO_ASSIGN dpt_assign_param	  { 	}
-					| RDO_ASSIGN error				  { PARSER->error(@1, rdo::format("Ожидается строка изменения параметра"));								};
+					| RDO_ASSIGN error				  { PARSER->error().error(@1, rdo::format("Ожидается строка изменения параметра"));								};
 
 dpt_queue_param:	RDO_IDENTIF 
 					{
@@ -407,7 +409,7 @@ dpt_queue_param:	RDO_IDENTIF
 					}
 					| RDO_IDENTIF error 
                     {
-						PARSER->error( @1, "Ошибка в миени очереди" )
+						PARSER->error().error( @1, "Ошибка в миени очереди" )
 					};     
 dpt_depart_param:	RDO_IDENTIF 
 					{
@@ -419,7 +421,7 @@ dpt_depart_param:	RDO_IDENTIF
 					}
 					| RDO_IDENTIF error 
                     {
-						PARSER->error( @1, "Ошибка в имени ресурса" )
+						PARSER->error().error( @1, "Ошибка в имени ресурса" )
 					};     
 /*dpt_seize_param:    RDO_IDENTIF 
 					{
@@ -431,7 +433,7 @@ dpt_depart_param:	RDO_IDENTIF
 					}
                     | RDO_IDENTIF error 
                     {
-						PARSER->error( @1, "Ошибка в миени ресурса" )
+						PARSER->error().error( @1, "Ошибка в миени ресурса" )
 					};     
 dpt_release_param:  RDO_IDENTIF 
 					{
@@ -443,7 +445,7 @@ dpt_release_param:  RDO_IDENTIF
 					}
 					| RDO_IDENTIF error 
 					{	
-						PARSER->error( @1, "Ошибка в миени ресурса" )
+						PARSER->error().error( @1, "Ошибка в миени ресурса" )
 					};	*/				
 dpt_term_param:		//empty 
 					{
@@ -460,12 +462,12 @@ dpt_term_param:		//empty
 						}
 						else
 						{
-							PARSER->error( @1, "Ошибка, для оператора TERMINATE можно использовать только целое значение" );
+							PARSER->error().error( @1, "Ошибка, для оператора TERMINATE можно использовать только целое значение" );
 						}
 					}
 					| fun_arithm  error 
 					{	
-						PARSER->error( @1, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
+						PARSER->error().error( @1, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число" )
 					};	
 dpt_seize_param:	RDO_IDENTIF
 					{
@@ -483,7 +485,7 @@ dpt_seize_param:	RDO_IDENTIF
 					}
 					| dpt_seize_param error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};
 dpt_release_param:	RDO_IDENTIF
 					{	
@@ -501,7 +503,7 @@ dpt_release_param:	RDO_IDENTIF
 					}
 					| dpt_release_param error
 					{
-						PARSER->error( @1, "Ошибка в имени ресурса" );
+						PARSER->error().error( @1, "Ошибка в имени ресурса" );
 					};		
 					
 dpt_assign_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
@@ -518,7 +520,7 @@ dpt_assign_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 							rtp = rssList[res].getType();
 							if( !rtp.m_params[param].exist() )
 							{
-								PARSER->error( @1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()) );
+								PARSER->error().error( @1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()) );
 							}
 						
 							RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($5);
@@ -535,7 +537,7 @@ dpt_assign_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 						}
 						else
 						{
-							PARSER->error( @1, rdo::format("Ссылка на неизвестный ресурс: %s", res.c_str()) );
+							PARSER->error().error( @1, rdo::format("Ссылка на неизвестный ресурс: %s", res.c_str()) );
 						}
 					};
 
@@ -584,10 +586,10 @@ fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(*reinterpret_ca
 				$$ = (int)logic_not;
 			}
 			| '[' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 			}
 			| '(' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 			};
 
 // ----------------------------------------------------------------------------
@@ -642,7 +644,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							$$ = (int)arithm;
 						}
 						| RDO_IDENTIF '(' error {
-							PARSER->error( @3, "Ошибка в параметрах функции" );
+							PARSER->error().error( @3, "Ошибка в параметрах функции" );
 						};
 
 fun_arithm_func_call_pars:	fun_arithm {
@@ -660,10 +662,10 @@ fun_arithm_func_call_pars:	fun_arithm {
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars error {
-								PARSER->error( @2, "Ошибка в арифметическом выражении" );
+								PARSER->error().error( @2, "Ошибка в арифметическом выражении" );
 							}
 							| fun_arithm_func_call_pars ',' error {
-								PARSER->error( @3, "Ошибка в арифметическом выражении" );
+								PARSER->error().error( @3, "Ошибка в арифметическом выражении" );
 							};
 
 // ----------------------------------------------------------------------------
@@ -679,10 +681,10 @@ fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
+						PARSER->error().error( @3, "Ожидается имя типа" );
 					}
 					| fun_group_keyword error {
-						PARSER->error( @1, "После имени функции ожидается октрывающаяся скобка" );
+						PARSER->error().error( @1, "После имени функции ожидается октрывающаяся скобка" );
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
@@ -699,13 +701,13 @@ fun_group:			fun_group_header fun_logic ')' {
 						$$ = (int)groupfun->createFunLogic( trueLogic );
 					}
 					| fun_group_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 // ----------------------------------------------------------------------------
@@ -718,10 +720,10 @@ fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
+						PARSER->error().error( @3, "Ожидается имя типа" );
 					}
 					| RDO_Select error {
-						PARSER->error( @1, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @1, "Ожидается октрывающаяся скобка" );
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
@@ -740,13 +742,13 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						select->initSelect( flogic );
 					}
 					| fun_select_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -761,10 +763,10 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' fun_select_keyword '(' error {
-						PARSER->error( @4, @5, "Ошибка в логическом выражении" )
+						PARSER->error().error( @4, @5, "Ошибка в логическом выражении" )
 					}
 					| fun_select_body '.' fun_select_keyword error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Empty '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
@@ -774,16 +776,16 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' RDO_Empty '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Empty error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' error {
-						PARSER->error( @2, @3, "Ожидается метод списка ресурсов" );
+						PARSER->error().error( @2, @3, "Ожидается метод списка ресурсов" );
 					}
 					| fun_select_body error {
-						PARSER->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
+						PARSER->error().error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					};
 
 fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
@@ -794,10 +796,10 @@ fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
 						$$ = (int)arithm;
 					}
 					| fun_select_body '.' RDO_Size error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Size '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
 					};
 
 %%

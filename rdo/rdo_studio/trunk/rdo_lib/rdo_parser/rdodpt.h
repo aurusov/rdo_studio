@@ -207,7 +207,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-class RDOPROCProcess: public RDOParserObject
+class RDOPROCProcess: public RDOParserObject, public RDOParserSrcInfo
 {
 friend class RDOPROCOperator;
 
@@ -215,7 +215,7 @@ public:
 	static std::string s_name_prefix;
 	static std::string s_name_sufix;
 
-	RDOPROCProcess( RDOParser* _parser, const std::string& name );
+	RDOPROCProcess(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) info);
 
 	void end();
 	bool closed() const { return m_closed; }
@@ -230,7 +230,6 @@ public:
 	LPILogic getRunTime() const { return m_runtime; }
 
 protected:
-	std::string                   m_name;
 	bool                          m_closed;
 	RDOPROCProcess*               m_parent;
 	std::list< RDOPROCProcess* >  m_child;

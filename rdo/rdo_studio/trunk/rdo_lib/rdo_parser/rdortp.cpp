@@ -30,11 +30,11 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 		{
 			if ( action->typeID() == rdoRuntime::RDOType::t_real )
 			{
-				parser()->warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
+				parser()->error().warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
 			}
 			else if ( action->typeID() != rdoRuntime::RDOType::t_int )
 			{
-				parser()->error( action->src_info(), "Несоответствие типов. Ожидается целочисленное значение" );
+				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается целочисленное значение" );
 			}
 			rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->calc());
 			if ( calc_const )
@@ -48,7 +48,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 		{
 			if ( action->typeID() != rdoRuntime::RDOType::t_real && action->typeID() != rdoRuntime::RDOType::t_int )
 			{
-				parser()->error( action->src_info(), "Несоответствие типов. Ожидается вещественное значение" );
+				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается вещественное значение" );
 			}
 			else
 			{
@@ -65,7 +65,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 		{
 			if ( action->typeID() != rdoRuntime::RDOType::t_bool )
 			{
-				parser()->error( action->src_info(), "Несоответствие типов. Ожидается булевское значение" );
+				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается булевское значение" );
 			}
 			break;
 		}
@@ -77,38 +77,38 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 				{
 					if ( static_cast<const RDORTPEnumParamType*>(this)->enum_fun )
 					{
-						parser()->error( action->src_info(), rdo::format("Значение '%s' не может являться результатом функции: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
+						parser()->error().error( action->src_info(), rdo::format("Значение '%s' не может являться результатом функции: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
 					}
 					else
 					{
-						parser()->error( action->src_info(), rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
+						parser()->error().error( action->src_info(), rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
 					}
 				}
 			}
 			else if ( action->typeID() != rdoRuntime::RDOType::t_enum )
 			{
-				parser()->error_push_only( action->src_info(), rdo::format("Несоответствие типов. Ожидается перечислимый тип: %s", src_text().c_str()) );
-				parser()->error_push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), rdo::format("Возможные значения: %s", static_cast<const RDORTPEnumParamType*>(this)->m_enum->getEnums().asString().c_str()) );
-				parser()->error_push_done();
+				parser()->error().push_only( action->src_info(), rdo::format("Несоответствие типов. Ожидается перечислимый тип: %s", src_text().c_str()) );
+				parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), rdo::format("Возможные значения: %s", static_cast<const RDORTPEnumParamType*>(this)->m_enum->getEnums().asString().c_str()) );
+				parser()->error().push_done();
 			}
 			else if ( &action->enumType() != static_cast<const RDORTPEnumParamType*>(this)->m_enum )
 			{
 				if ( action->enumType() == *static_cast<const RDORTPEnumParamType*>(this)->m_enum )
 				{
-					parser()->error_push_only( action->src_info(), "Используются различные перечислимые типы с одинаковыми значениями" );
-					parser()->error_push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
-					parser()->error_push_only( action->src_info(), "и" );
-					parser()->error_push_only( action->enumType().src_info(), action->enumType().src_text() );
-					parser()->error_push_only( action->src_info(), "Возможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать" );
+					parser()->error().push_only( action->src_info(), "Используются различные перечислимые типы с одинаковыми значениями" );
+					parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
+					parser()->error().push_only( action->src_info(), "и" );
+					parser()->error().push_only( action->enumType().src_info(), action->enumType().src_text() );
+					parser()->error().push_only( action->src_info(), "Возможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать" );
 				}
 				else
 				{
-					parser()->error_push_only( action->src_info(), "Несоответствие перечислимых типов" );
-					parser()->error_push_only( action->enumType().src_info(), action->enumType().src_text() );
-					parser()->error_push_only( action->src_info(), "и" );
-					parser()->error_push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
+					parser()->error().push_only( action->src_info(), "Несоответствие перечислимых типов" );
+					parser()->error().push_only( action->enumType().src_info(), action->enumType().src_text() );
+					parser()->error().push_only( action->src_info(), "и" );
+					parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
 				}
-				parser()->error_push_done();
+				parser()->error().push_done();
 			}
 			break;
 		}
@@ -116,11 +116,11 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 		{
 			if ( action->typeID() != rdoRuntime::RDOType::t_string )
 			{
-				parser()->error( action->src_info(), "Несоответствие типов. Ожидается строка" );
+				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается строка" );
 			}
 			break;
 		}
-		default: parser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
+		default: parser()->error().error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
 	}
 }
 
@@ -128,16 +128,16 @@ rdoRuntime::RDOValue RDORTPParamType::getDefaultValue( const RDOValue& value ) c
 {
 	if ( !m_dv->isExist() )
 	{
-		parser()->error_push_only( value.src_info(), "Нет значения по-умолчанию" );
-		parser()->error_push_only( src_info(), "См. описание параметра" );
-		parser()->error_push_done();
+		parser()->error().push_only( value.src_info(), "Нет значения по-умолчанию" );
+		parser()->error().push_only( src_info(), "См. описание параметра" );
+		parser()->error().push_done();
 	}
 	return m_dv->value().value();
 }
 
 ruint RDORTPParamType::getDiapTableFunc() const
 {
-	parser()->error( src_info(), "Параметр табличной функции может быть целого или перечислимого типа" );
+	parser()->error().error( src_info(), "Параметр табличной функции может быть целого или перечислимого типа" );
 	return 0;		// unreachable code...
 }
 
@@ -194,7 +194,7 @@ void RDORTPResType::addParam(CPTRC(RDORTPParam) param)
 {
 	if (findRTPParam(param->name()))
 	{
-		parser()->error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
+		parser()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
 	}
 	m_params.push_back(param);
 }
@@ -278,7 +278,7 @@ RDORTPParamType* RDORTPIntParamType::constructorSuchAs( const RDOParserSrcInfo& 
 {
 	if ( defValue.defined() && defValue.value().typeID() != rdoRuntime::RDOType::t_int )
 	{
-		parser()->error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра целого типа: %s", defValue.value().getAsString().c_str()) );
+		parser()->error().error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра целого типа: %s", defValue.value().getAsString().c_str()) );
 	}
 	RDORTPDefVal* dv;
 	if ( defValue.defined() )
@@ -316,20 +316,20 @@ void RDORTPIntParamType::checkValue( const RDOValue& value ) const
 			{
 				if ( value.src_filetype() == m_diap->src_filetype() && value.src_pos().m_last_line == m_diap->src_pos().m_last_line )
 				{
-					parser()->error( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_diap->getMin(), m_diap->getMax(), value.value().getInt()) );
+					parser()->error().error( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_diap->getMin(), m_diap->getMax(), value.value().getInt()) );
 				}
 				else
 				{
-					parser()->error_push_only( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_diap->getMin(), m_diap->getMax(), value.value().getInt()) );
-					parser()->error_push_only( m_diap->src_info(), rdo::format("См. описание диапазона") );
-					parser()->error_push_done();
+					parser()->error().push_only( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", m_diap->getMin(), m_diap->getMax(), value.value().getInt()) );
+					parser()->error().push_only( m_diap->src_info(), rdo::format("См. описание диапазона") );
+					parser()->error().push_done();
 				}
 			}
 		}
 	}
 	else
 	{
-		parser()->error( value.src_info(), rdo::format("Ожидается целое число, найдено '%s'", value.value().getAsString().c_str()) );
+		parser()->error().error( value.src_info(), rdo::format("Ожидается целое число, найдено '%s'", value.value().getAsString().c_str()) );
 	}
 }
 
@@ -342,10 +342,10 @@ rdoRuntime::RDOValue RDORTPIntParamType::getValue( const RDOValue& value ) const
 ruint RDORTPIntParamType::getDiapTableFunc() const 
 {
 	if ( !m_diap->isExist() ) {
-		parser()->error( src_info(), "Для параметра табличной функции должен быть задан допустимый диапазон" );
+		parser()->error().error( src_info(), "Для параметра табличной функции должен быть задан допустимый диапазон" );
 	}
 	if ( m_diap->getMin() != 1 ) {
-		parser()->error( src_info(), rdo::format("Минимальное значение диапазона должно быть 1, текущий диапазон [%d..%d]", m_diap->getMin(), m_diap->getMax()) );
+		parser()->error().error( src_info(), rdo::format("Минимальное значение диапазона должно быть 1, текущий диапазон [%d..%d]", m_diap->getMin(), m_diap->getMax()) );
 	}
 	return m_diap->getMax() - m_diap->getMin() + 1;
 }
@@ -405,7 +405,7 @@ RDORTPParamType* RDORTPRealParamType::constructorSuchAs( const RDOParserSrcInfo&
 {
 	if ( defValue.defined() && defValue.value().typeID() != rdoRuntime::RDOType::t_int && defValue.value().typeID() != rdoRuntime::RDOType::t_real)
 	{
-		parser()->error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра вещественного типа: %s", defValue.value().getAsString().c_str()) );
+		parser()->error().error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра вещественного типа: %s", defValue.value().getAsString().c_str()) );
 	}
 	RDORTPDefVal* dv;
 	if ( defValue.defined() )
@@ -443,20 +443,20 @@ void RDORTPRealParamType::checkValue( const RDOValue& value ) const
 			{
 				if ( value.src_filetype() == m_diap->src_filetype() && value.src_pos().m_last_line == m_diap->src_pos().m_last_line )
 				{
-					parser()->error( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_diap->getMin(), m_diap->getMax(), value.value().getDouble()) );
+					parser()->error().error( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_diap->getMin(), m_diap->getMax(), value.value().getDouble()) );
 				}
 				else
 				{
-					parser()->error_push_only( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_diap->getMin(), m_diap->getMax(), value.value().getDouble()) );
-					parser()->error_push_only( m_diap->src_info(), rdo::format("См. описание диапазона") );
-					parser()->error_push_done();
+					parser()->error().push_only( value.src_info(), rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", m_diap->getMin(), m_diap->getMax(), value.value().getDouble()) );
+					parser()->error().push_only( m_diap->src_info(), rdo::format("См. описание диапазона") );
+					parser()->error().push_done();
 				}
 			}
 		}
 	}
 	else
 	{
-		parser()->error( value.src_info(), rdo::format("Ожидается вещественное число, найдено '%s'", value.value().getAsString().c_str()) );
+		parser()->error().error( value.src_info(), rdo::format("Ожидается вещественное число, найдено '%s'", value.value().getAsString().c_str()) );
 	}
 }
 
@@ -500,7 +500,7 @@ RDORTPParamType* RDORTPEnumParamType::constructorSuchAs( const RDOParserSrcInfo&
 {
 	if ( defValue.defined() && defValue.value().typeID() != rdoRuntime::RDOType::t_enum && defValue.value().typeID() != rdoRuntime::RDOType::t_identificator)
 	{
-		parser()->error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра перечислимого типа: %s", defValue.value().getAsString().c_str()) );
+		parser()->error().error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра перечислимого типа: %s", defValue.value().getAsString().c_str()) );
 	}
 	RDORTPDefVal* dv;
 	if ( defValue.defined() )
@@ -541,12 +541,12 @@ void RDORTPEnumParamType::checkValue( const RDOValue& value ) const
 	}
 	else
 	{
-		parser()->error_push_only( value.src_info(), rdo::format("Ожидается перечислимый тип, найдено '%s'", value.value().getAsString().c_str()) );
+		parser()->error().push_only( value.src_info(), rdo::format("Ожидается перечислимый тип, найдено '%s'", value.value().getAsString().c_str()) );
 		if ( src_pos().m_last_line != value.src_pos().m_last_line )
 		{
-			parser()->error_push_only( src_info(), rdo::format("См. перечисление: %s", src_text().c_str()) );
+			parser()->error().push_only( src_info(), rdo::format("См. перечисление: %s", src_text().c_str()) );
 		}
-		parser()->error_push_done();
+		parser()->error().push_done();
 	}
 }
 
@@ -579,7 +579,7 @@ RDORTPParamType* RDORTPStringParamType::constructorSuchAs( const RDOParserSrcInf
 {
 	if ( defValue.defined() && defValue.value().typeID() != rdoRuntime::RDOType::t_string)
 	{
-		parser()->error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра строкового типа: %s", defValue.value().getAsString().c_str()) );
+		parser()->error().error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра строкового типа: %s", defValue.value().getAsString().c_str()) );
 	}
 	RDORTPDefVal* dv;
 	if ( defValue.defined() )
@@ -608,7 +608,7 @@ void RDORTPStringParamType::checkValue( const RDOValue& value ) const
 	}
 	else
 	{
-		parser()->error( value.src_info(), rdo::format("Ожидается строка, найдено '%s'", value.value().getAsString().c_str()) );
+		parser()->error().error( value.src_info(), rdo::format("Ожидается строка, найдено '%s'", value.value().getAsString().c_str()) );
 	}
 }
 
@@ -635,7 +635,7 @@ RDORTPParamType* RDORTPBoolParamType::constructorSuchAs( const RDOParserSrcInfo&
 {
 	if ( defValue.defined() && defValue.value().typeID() != rdoRuntime::RDOType::t_bool)
 	{
-		parser()->error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра булевского типа: %s", defValue.value().getAsString().c_str()) );
+		parser()->error().error( defValue.src_info(), rdo::format("Неверное значение по-умолчанию для параметра булевского типа: %s", defValue.value().getAsString().c_str()) );
 	}
 	RDORTPDefVal* dv;
 	if ( defValue.defined() )
@@ -664,7 +664,7 @@ void RDORTPBoolParamType::checkValue( const RDOValue& value ) const
 	}
 	else
 	{
-		parser()->error( value.src_info(), rdo::format("Ожидается булевское значение, найдено '%s'", value.value().getAsString().c_str()) );
+		parser()->error().error( value.src_info(), rdo::format("Ожидается булевское значение, найдено '%s'", value.value().getAsString().c_str()) );
 	}
 }
 

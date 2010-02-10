@@ -315,7 +315,7 @@ set					return(RDO_set);
 
 "}"|"*/"			{
 						LEXER->loc_delta_pos( YYLeng() );
-						PARSER->error( "Не найдено начало комментария" );
+						PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
 					}
 
 [\r\n\t ]+						;

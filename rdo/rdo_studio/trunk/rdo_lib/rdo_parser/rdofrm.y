@@ -223,7 +223,7 @@ namespace rdoParse
 frm_main:	/* empty */
 			| frm_main frm_end
 			| error {
-				PARSER->error( @1, "Неизвестная ошибка" );
+				PARSER->error().error( @1, "Неизвестная ошибка" );
 			};
 
 
@@ -237,24 +237,24 @@ frm_begin:			RDO_Frame RDO_IDENTIF {
 						$$ = (int)new RDOFRMFrame( PARSER, reinterpret_cast<RDOValue*>($2)->src_info(), reinterpret_cast<RDOFUNLogic*>($4) );;
 					}
 					| RDO_Frame RDO_IDENTIF RDO_Show_if error {
-						PARSER->error( @4, "Ошибка в логическом выражении" )
+						PARSER->error().error( @4, "Ошибка в логическом выражении" )
 					};
 
 frm_background:		frm_begin RDO_Back_picture '=' frm_color {
 						RDOFRMFrame* frame                             = reinterpret_cast<RDOFRMFrame*>($1);
 						rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMColor*>($4);
 						if ( bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent && bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_rgb ) {
-							PARSER->error( @4, "Цвет фона не может быть указан ссылкой на последнее значение" );
+							PARSER->error().error( @4, "Цвет фона не может быть указан ссылкой на последнее значение" );
 						}
 						frame->frame()->setBackgroundColor( bg_color );
 					}
 					| frm_begin RDO_Back_picture '=' {
 					}
 					| frm_begin RDO_Back_picture error {
-						PARSER->error( @3, "После ключевого слова $Back_picture ожидается знак равенства" );
+						PARSER->error().error( @3, "После ключевого слова $Back_picture ожидается знак равенства" );
 					}
 					| frm_begin error {
-						PARSER->error( @2, "После имени кадра ожидается ключевое слово $Back_picture" );
+						PARSER->error().error( @2, "После имени кадра ожидается ключевое слово $Back_picture" );
 					};
 
 frm_backpicture:	frm_background RDO_IDENTIF {
@@ -266,16 +266,16 @@ frm_backpicture:	frm_background RDO_IDENTIF {
 						frame->frame()->setBackPicture( reinterpret_cast<RDOValue*>($2)->value().getInt(), reinterpret_cast<RDOValue*>($3)->value().getInt() );
 					}
 					| frm_background RDO_INT_CONST RDO_INT_CONST error {
-						PARSER->error( @4, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
+						PARSER->error().error( @4, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
 					}
 					| frm_background RDO_IDENTIF error {
-						PARSER->error( @3, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
+						PARSER->error().error( @3, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
 					}
 					| frm_background RDO_INT_CONST error {
-						PARSER->error( @2, "После ширины кадра необходимо указать его высоту" );
+						PARSER->error().error( @2, "После ширины кадра необходимо указать его высоту" );
 					}
 					| frm_background {
-						PARSER->error( @1, "Необходимо указать имя фоновой картинки или размер кадра" );
+						PARSER->error().error( @1, "Необходимо указать имя фоновой картинки или размер кадра" );
 					};
 
 /*
@@ -292,7 +292,7 @@ frm_show:			frm_backpicture {
 						frame->startShow( reinterpret_cast<RDOFUNLogic*>($3)->calc );
 					}
 					| frm_backpicture RDO_Show_if error {
-						PARSER->error( @3, "Ошибка в логическом выражении" )
+						PARSER->error().error( @3, "Ошибка в логическом выражении" )
 					};
 */
 
@@ -305,7 +305,7 @@ frm_show:	RDO_Show {
 				frame->frame()->startShow( reinterpret_cast<RDOFUNLogic*>($2)->getCalc() );
 			}
 			| RDO_Show_if error {
-				PARSER->error( @2, "Ошибка в логическом выражении" )
+				PARSER->error().error( @2, "Ошибка в логическом выражении" )
 			};
 
 frm_item:	/* empty */
@@ -374,13 +374,13 @@ frm_color:	RDO_color_transparent {
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
 			}
 			| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST error {
-				PARSER->error( @4, "Найдены все составляющие цвета, ожидается '>'" );
+				PARSER->error().error( @4, "Найдены все составляющие цвета, ожидается '>'" );
 			}
 			| '<' RDO_INT_CONST RDO_INT_CONST error {
-				PARSER->error( @3, @4, "Ожидается синяя составляющая цвета" );
+				PARSER->error().error( @3, @4, "Ожидается синяя составляющая цвета" );
 			}
 			| '<' RDO_INT_CONST error {
-				PARSER->error( @2, @3, "Ожидается зеленая составляющая цвета" );
+				PARSER->error().error( @2, @3, "Ожидается зеленая составляющая цвета" );
 			}
 			| '<' fun_arithm ',' fun_arithm ',' fun_arithm '>' {
 				RDOFUNArithm* red   = reinterpret_cast<RDOFUNArithm*>($2);
@@ -393,22 +393,22 @@ frm_color:	RDO_color_transparent {
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
 			}
 			| '<' fun_arithm ',' fun_arithm ',' fun_arithm error {
-				PARSER->error( @6, "Найдены все составляющие цвета, ожидается '>'" );
+				PARSER->error().error( @6, "Найдены все составляющие цвета, ожидается '>'" );
 			}
 			| '<' fun_arithm ',' fun_arithm ',' error {
-				PARSER->error( @5, @6, "Ожидается синяя составляющая цвета" );
+				PARSER->error().error( @5, @6, "Ожидается синяя составляющая цвета" );
 			}
 			| '<' fun_arithm ',' fun_arithm error {
-				PARSER->error( @4, "После зеленой составляющей цвета ожидается запятая" );
+				PARSER->error().error( @4, "После зеленой составляющей цвета ожидается запятая" );
 			}
 			| '<' fun_arithm ',' error {
-				PARSER->error( @3, @4, "Ожидается зеленая составляющая цвета" );
+				PARSER->error().error( @3, @4, "Ожидается зеленая составляющая цвета" );
 			}
 			| '<' fun_arithm error {
-				PARSER->error( @2, "После красной составляющей цвета ожидается запятая" );
+				PARSER->error().error( @2, "После красной составляющей цвета ожидается запятая" );
 			}
 			| '<' error {
-				PARSER->error( @1, "После '<' ожидается красная составляющая цвета" );
+				PARSER->error().error( @1, "После '<' ожидается красная составляющая цвета" );
 			};
 
 frm_postype:	/* empty */     { $$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute; }
@@ -417,15 +417,15 @@ frm_postype:	/* empty */     { $$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::abs
 				| '#' RDO_INT_CONST {
 					int rilet_id = reinterpret_cast<RDOValue*>($2)->value().getInt();
 					if ( rilet_id <= 0 ) {
-						PARSER->error( @2, "Номер рулетки должен быть больше нуля" );
+						PARSER->error().error( @2, "Номер рулетки должен быть больше нуля" );
 					}
 					if ( !RUNTIME->lastFrame()->findRulet( rilet_id ) ) {
-						PARSER->error( @2, rdo::format("Рулетки с номером '%d' не существует", rilet_id) );
+						PARSER->error().error( @2, rdo::format("Рулетки с номером '%d' не существует", rilet_id) );
 					}
 					$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet + rilet_id;
 				}
 				| '#' error {
-					PARSER->error( @1, "После '#' ожидается целочисленный номер рулетки" );
+					PARSER->error().error( @1, "После '#' ожидается целочисленный номер рулетки" );
 				};
 
 frm_postype_xy: frm_postype
@@ -435,7 +435,7 @@ frm_postype_xy: frm_postype
 
 frm_postype_wh:	frm_postype;
 				| '=' {
-					PARSER->error( @1, "Нельзя использовать данное выравнивание для ширины или высоты" );
+					PARSER->error().error( @1, "Нельзя использовать данное выравнивание для ширины или высоты" );
 				};
 
 frm_position_xy: fun_arithm frm_postype_xy {
@@ -459,40 +459,40 @@ frm_position_wh: fun_arithm frm_postype_wh {
 frm_ruler:		RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']' {
 					const rdoRuntime::RDOFRMFrame::RDOFRMRulet* rulet = RUNTIME->lastFrame()->findRulet( reinterpret_cast<RDOValue*>($3)->value().getInt() );
 					if ( rulet ) {
-						PARSER->error_push_only( @3, rdo::format("Рулетка с номером '%d' уже существует", reinterpret_cast<RDOValue*>($3)->value().getInt()) );
-						PARSER->error_push_only( rulet->src_info(), "См. первое определение" );
-						PARSER->error_push_done();
+						PARSER->error().push_only( @3, rdo::format("Рулетка с номером '%d' уже существует", reinterpret_cast<RDOValue*>($3)->value().getInt()) );
+						PARSER->error().push_only( rulet->src_info(), "См. первое определение" );
+						PARSER->error().push_done();
 					}
 					rdoRuntime::RDOFRMFrame::RDOFRMPosition* x = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($5);
 					rdoRuntime::RDOFRMFrame::RDOFRMPosition* y = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($7);
 					if ( x->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute ) {
-						PARSER->error( @5, "Коодинаты рулетки должны быть абсолютными" );
+						PARSER->error().error( @5, "Коодинаты рулетки должны быть абсолютными" );
 					}
 					if ( y->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute ) {
-						PARSER->error( @7, "Коодинаты рулетки должны быть абсолютными" );
+						PARSER->error().error( @7, "Коодинаты рулетки должны быть абсолютными" );
 					}
 					$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMRulet( RDOParserSrcInfo(@1), reinterpret_cast<RDOValue*>($3)->value().getInt(), x, y );
 				}
 				| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error {
-					PARSER->error( @7, "Ожидается ']'" );
+					PARSER->error().error( @7, "Ожидается ']'" );
 				}
 				| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' error {
-					PARSER->error( @6, @7, "Ожидается координата по оси Y" );
+					PARSER->error().error( @6, @7, "Ожидается координата по оси Y" );
 				}
 				| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy error {
-					PARSER->error( @5, "Ожидается запятая" );
+					PARSER->error().error( @5, "Ожидается запятая" );
 				}
 				| RDO_ruler '[' RDO_INT_CONST ',' error {
-					PARSER->error( @4, @5, "Ожидается координата по оси X" );
+					PARSER->error().error( @4, @5, "Ожидается координата по оси X" );
 				}
 				| RDO_ruler '[' RDO_INT_CONST error {
-					PARSER->error( @3, "Ожидается запятая" );
+					PARSER->error().error( @3, "Ожидается запятая" );
 				}
 				| RDO_ruler '[' error {
-					PARSER->error( @2, @3, "Ожидается номер рулетки" );
+					PARSER->error().error( @2, @3, "Ожидается номер рулетки" );
 				}
 				| RDO_ruler error {
-					PARSER->error( @1, "Ожидается '['" );
+					PARSER->error().error( @1, "Ожидается '['" );
 				};
 
 frm_space:	RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']' {
@@ -503,31 +503,31 @@ frm_space:	RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh
 				$$ = (int)new rdoRuntime::RDOFRMSpace( RUNTIME->lastFrame(), x, y, width, height );
 			}
 			| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error {
-				PARSER->error( @9, "Ожидается ']'" );
+				PARSER->error().error( @9, "Ожидается ']'" );
 			}
 			| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error {
-				PARSER->error( @8, @9, "Ожидается высота" );
+				PARSER->error().error( @8, @9, "Ожидается высота" );
 			}
 			| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error {
-				PARSER->error( @7, "Ожидается запятая" );
+				PARSER->error().error( @7, "Ожидается запятая" );
 			}
 			| RDO_space '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @6, @7, "Ожидается ширина" );
+				PARSER->error().error( @6, @7, "Ожидается ширина" );
 			}
 			| RDO_space '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_space '[' frm_position_xy ',' error {
-				PARSER->error( @4, @5, "Ожидается координата по оси Y" );
+				PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
 			}
 			| RDO_space '[' frm_position_xy error {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_space '[' error {
-				PARSER->error( @2, @3, "Ожидается координата по оси X" );
+				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 			}
 			| RDO_space error {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_text_align: /* empty */ { $$ = rdoAnimation::RDOTextElement::TETA_LEFT;   }
@@ -571,43 +571,43 @@ frm_text_common:	RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_positi
 					}
 */
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error {
-						PARSER->error( @13, "Ожидается запятая" );
+						PARSER->error().error( @13, "Ожидается запятая" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error {
-						PARSER->error( @12, @13, "Ожидается цвет текста" );
+						PARSER->error().error( @12, @13, "Ожидается цвет текста" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error {
-						PARSER->error( @11, "Ожидается запятая" );
+						PARSER->error().error( @11, "Ожидается запятая" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error {
-						PARSER->error( @10, @11, "Ожидается цвет фона" );
+						PARSER->error().error( @10, @11, "Ожидается цвет фона" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error {
-						PARSER->error( @9, "Ожидается запятая" );
+						PARSER->error().error( @9, "Ожидается запятая" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error {
-						PARSER->error( @8, @9, "Ожидается высота" );
+						PARSER->error().error( @8, @9, "Ожидается высота" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error {
-						PARSER->error( @7, "Ожидается запятая" );
+						PARSER->error().error( @7, "Ожидается запятая" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy ',' error {
-						PARSER->error( @6, @7, "Ожидается ширина" );
+						PARSER->error().error( @6, @7, "Ожидается ширина" );
 					}
 					| RDO_text '[' frm_position_xy ',' frm_position_xy error {
-						PARSER->error( @5, "Ожидается запятая" );
+						PARSER->error().error( @5, "Ожидается запятая" );
 					}
 					| RDO_text '[' frm_position_xy ',' error {
-						PARSER->error( @4, @5, "Ожидается координата по оси Y" );
+						PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
 					}
 					| RDO_text '[' frm_position_xy error {
-						PARSER->error( @3, "Ожидается запятая" );
+						PARSER->error().error( @3, "Ожидается запятая" );
 					}
 					| RDO_text '[' error {
-						PARSER->error( @2, @3, "Ожидается координата по оси X" );
+						PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 					}
 					| RDO_text error {
-						PARSER->error( @1, "Ожидается '['" );
+						PARSER->error().error( @1, "Ожидается '['" );
 					};
 
 frm_text:	frm_text_common frm_text_align fun_arithm ']' {
@@ -617,13 +617,13 @@ frm_text:	frm_text_common frm_text_align fun_arithm ']' {
 				((rdoRuntime::RDOFRMText *)$1)->setText( (rdoAnimation::RDOTextElement::TextAlign)$2, reinterpret_cast<RDOValue*>($3)->value().getString() );
 			}
 			| frm_text_common frm_text_align fun_arithm error {
-				PARSER->error( @3, "Ожидается ']'" );
+				PARSER->error().error( @3, "Ожидается ']'" );
 			}
 			| frm_text_common frm_text_align RDO_STRING_CONST error {
-				PARSER->error( @3, "Ожидается ']'" );
+				PARSER->error().error( @3, "Ожидается ']'" );
 			}
 			| frm_text_common frm_text_align error {
-				PARSER->error( @2, "Ожидается параметр ресурса или строка" );
+				PARSER->error().error( @2, "Ожидается параметр ресурса или строка" );
 			};
 
 frm_bitmap:	RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ']' {
@@ -637,31 +637,31 @@ frm_bitmap:	RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF '
 				$$ = (int)new rdoRuntime::RDOFRMBitmap( RUNTIME->lastFrame(), x, y, reinterpret_cast<RDOValue*>($7)->value().getIdentificator(), reinterpret_cast<RDOValue*>($9)->value().getIdentificator() );
 			}
 			| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error  {
-				PARSER->error( @9, "Ожидается ']'" );
+				PARSER->error().error( @9, "Ожидается ']'" );
 			}
 			| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' error  {
-				PARSER->error( @8, @9, "Ожидается имя маски для картинки" );
+				PARSER->error().error( @8, @9, "Ожидается имя маски для картинки" );
 			}
 			| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF error  {
-				PARSER->error( @7, "Ожидается ']'" );
+				PARSER->error().error( @7, "Ожидается ']'" );
 			}
 			| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' error  {
-				PARSER->error( @6, @7, "Ожидается имя картинки" );
+				PARSER->error().error( @6, @7, "Ожидается имя картинки" );
 			}
 			| RDO_bitmap '[' frm_position_xy ',' frm_position_xy error  {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_bitmap '[' frm_position_xy ',' error  {
-				PARSER->error( @4, @5, "Ожидается координата по оси Y" );
+				PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
 			}
 			| RDO_bitmap '[' frm_position_xy error  {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_bitmap '[' error  {
-				PARSER->error( @2, @3, "Ожидается координата по оси X" );
+				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 			}
 			| RDO_bitmap error  {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_s_bmp:	RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ']' {
@@ -679,43 +679,43 @@ frm_s_bmp:	RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh
 				$$ = (int)new rdoRuntime::RDOFRMBitmapStretch( RUNTIME->lastFrame(), x, y, width, height, reinterpret_cast<RDOValue*>($11)->value().getIdentificator(), reinterpret_cast<RDOValue*>($13)->value().getIdentificator() );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error {
-				PARSER->error( @13, "Ожидается ']'" );
+				PARSER->error().error( @13, "Ожидается ']'" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' error {
-				PARSER->error( @12, @13, "Ожидается имя маски для картинки" );
+				PARSER->error().error( @12, @13, "Ожидается имя маски для картинки" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF error {
-				PARSER->error( @11, "Ожидается ']'" );
+				PARSER->error().error( @11, "Ожидается ']'" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error {
-				PARSER->error( @10, @11, "Ожидается имя картинки" );
+				PARSER->error().error( @10, @11, "Ожидается имя картинки" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error {
-				PARSER->error( @9, "Ожидается запятая" );
+				PARSER->error().error( @9, "Ожидается запятая" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error {
-				PARSER->error( @8, @9, "Ожидается высота" );
+				PARSER->error().error( @8, @9, "Ожидается высота" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error {
-				PARSER->error( @7, "Ожидается запятая" );
+				PARSER->error().error( @7, "Ожидается запятая" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @6, @7, "Ожидается ширина" );
+				PARSER->error().error( @6, @7, "Ожидается ширина" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_s_bmp '[' frm_position_xy ',' error {
-				PARSER->error( @4, @5, "Ожидается координата по оси Y" );
+				PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
 			}
 			| RDO_s_bmp '[' frm_position_xy error {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_s_bmp '[' error {
-				PARSER->error( @2, @3, "Ожидается координата по оси X" );
+				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 			}
 			| RDO_s_bmp error {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_rect:	RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']' {
@@ -774,43 +774,43 @@ frm_rect:	RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh '
 				$$ = (int)new rdoRuntime::RDOFRMRect( RUNTIME->lastFrame(), x, y, width, height, bg_color, fg_color );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error {
-				PARSER->error( @13, "Ожидается ']'" );
+				PARSER->error().error( @13, "Ожидается ']'" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error {
-				PARSER->error( @12, @13, "Ожидается цвет линии прямоугольника" );
+				PARSER->error().error( @12, @13, "Ожидается цвет линии прямоугольника" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error {
-				PARSER->error( @11, "Ожидается запятая" );
+				PARSER->error().error( @11, "Ожидается запятая" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error {
-				PARSER->error( @10, @11, "Ожидается цвет фона" );
+				PARSER->error().error( @10, @11, "Ожидается цвет фона" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error {
-				PARSER->error( @9, "Ожидается запятая" );
+				PARSER->error().error( @9, "Ожидается запятая" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error {
-				PARSER->error( @8, @9, "Ожидается высота" );
+				PARSER->error().error( @8, @9, "Ожидается высота" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error {
-				PARSER->error( @7, "Ожидается запятая" );
+				PARSER->error().error( @7, "Ожидается запятая" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @6, @7, "Ожидается ширина" );
+				PARSER->error().error( @6, @7, "Ожидается ширина" );
 			}
 			| RDO_rect '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_rect '[' frm_position_xy ',' error {
-				PARSER->error( @4, @5, "Ожидается координата по оси Y" );
+				PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
 			}
 			| RDO_rect '[' frm_position_xy error {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_rect '[' error {
-				PARSER->error( @2, @3, "Ожидается координата по оси X" );
+				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 			}
 			| RDO_rect error {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_r_rect:	RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']' {
@@ -825,43 +825,43 @@ frm_r_rect:	RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_
 				$$ = (int)new rdoRuntime::RDOFRMRectRound( RUNTIME->lastFrame(), x, y, width, height, bg_color, fg_color );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error {
-				PARSER->error( @13, "Ожидается ']'" );
+				PARSER->error().error( @13, "Ожидается ']'" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error {
-				PARSER->error( @12, @13, "Ожидается цвет линии прямоугольника" );
+				PARSER->error().error( @12, @13, "Ожидается цвет линии прямоугольника" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error {
-				PARSER->error( @11, "Ожидается запятая" );
+				PARSER->error().error( @11, "Ожидается запятая" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error {
-				PARSER->error( @10, @11, "Ожидается цвет фона" );
+				PARSER->error().error( @10, @11, "Ожидается цвет фона" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error {
-				PARSER->error( @9, "Ожидается запятая" );
+				PARSER->error().error( @9, "Ожидается запятая" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error {
-				PARSER->error( @8, @9, "Ожидается высота" );
+				PARSER->error().error( @8, @9, "Ожидается высота" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error {
-				PARSER->error( @7, "Ожидается запятая" );
+				PARSER->error().error( @7, "Ожидается запятая" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @6, @7, "Ожидается ширина" );
+				PARSER->error().error( @6, @7, "Ожидается ширина" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_r_rect '[' frm_position_xy ',' error {
-				PARSER->error( @4, @5, "Ожидается координата по оси Y" );
+				PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
 			}
 			| RDO_r_rect '[' frm_position_xy error {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_r_rect '[' error {
-				PARSER->error( @2, @3, "Ожидается координата по оси X" );
+				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 			}
 			| RDO_r_rect error {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_ellipse: RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']' {
@@ -876,43 +876,43 @@ frm_ellipse: RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_positio
 				$$ = (int)new rdoRuntime::RDOFRMEllipse( RUNTIME->lastFrame(), x, y, width, height, bg_color, fg_color );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error {
-				PARSER->error( @13, "Ожидается ']'" );
+				PARSER->error().error( @13, "Ожидается ']'" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error {
-				PARSER->error( @12, @13, "Ожидается цвет линии эллипса" );
+				PARSER->error().error( @12, @13, "Ожидается цвет линии эллипса" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error {
-				PARSER->error( @11, "Ожидается запятая" );
+				PARSER->error().error( @11, "Ожидается запятая" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error {
-				PARSER->error( @10, @11, "Ожидается цвет фона" );
+				PARSER->error().error( @10, @11, "Ожидается цвет фона" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error {
-				PARSER->error( @9, "Ожидается запятая" );
+				PARSER->error().error( @9, "Ожидается запятая" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error {
-				PARSER->error( @8, @9, "Ожидается высота" );
+				PARSER->error().error( @8, @9, "Ожидается высота" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error {
-				PARSER->error( @7, "Ожидается запятая" );
+				PARSER->error().error( @7, "Ожидается запятая" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @6, @7, "Ожидается ширина" );
+				PARSER->error().error( @6, @7, "Ожидается ширина" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_ellipse '[' frm_position_xy ',' error {
-				PARSER->error( @4, @5, "Ожидается координата по оси Y" );
+				PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
 			}
 			| RDO_ellipse '[' frm_position_xy error {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_ellipse '[' error {
-				PARSER->error( @2, @3, "Ожидается координата по оси X" );
+				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 			}
 			| RDO_ellipse error {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_line:	RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ']' {
@@ -925,37 +925,37 @@ frm_line:	RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy '
 				$$ = (int)new rdoRuntime::RDOFRMLine( RUNTIME->lastFrame(), x, y, width, height, color );
 			}
 			| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error {
-				PARSER->error( @11, "Ожидается ']'" );
+				PARSER->error().error( @11, "Ожидается ']'" );
 			}
 			| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @10, @11, "Ожидается цвет линии" );
+				PARSER->error().error( @10, @11, "Ожидается цвет линии" );
 			}
 			| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @9, "Ожидается запятая" );
+				PARSER->error().error( @9, "Ожидается запятая" );
 			}
 			| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @8, @9, "Ожидается Y2" );
+				PARSER->error().error( @8, @9, "Ожидается Y2" );
 			}
 			| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @7, "Ожидается запятая" );
+				PARSER->error().error( @7, "Ожидается запятая" );
 			}
 			| RDO_line '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @6, @7, "Ожидается X2" );
+				PARSER->error().error( @6, @7, "Ожидается X2" );
 			}
 			| RDO_line '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_line '[' frm_position_xy ',' error {
-				PARSER->error( @4, @5, "Ожидается Y1" );
+				PARSER->error().error( @4, @5, "Ожидается Y1" );
 			}
 			| RDO_line '[' frm_position_xy error {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_line '[' error {
-				PARSER->error( @2, @3, "Ожидается X1" );
+				PARSER->error().error( @2, @3, "Ожидается X1" );
 			}
 			| RDO_line error {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_triang:	RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color ']' {
@@ -972,55 +972,55 @@ frm_triang:	RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_
 				$$ = (int)new rdoRuntime::RDOFRMTriang( RUNTIME->lastFrame(), x1, y1, x2, y2, x3, y3, bg_color, fg_color );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error {
-				PARSER->error( @17, "Ожидается ']'" );
+				PARSER->error().error( @17, "Ожидается ']'" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' error {
-				PARSER->error( @16, @17, "Ожидается цвет линии" );
+				PARSER->error().error( @16, @17, "Ожидается цвет линии" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error {
-				PARSER->error( @15, "Ожидается запятая" );
+				PARSER->error().error( @15, "Ожидается запятая" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @14, @15, "Ожидается цвет треугольника" );
+				PARSER->error().error( @14, @15, "Ожидается цвет треугольника" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @13, "Ожидается запятая" );
+				PARSER->error().error( @13, "Ожидается запятая" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @12, @13, "Ожидается Y3" );
+				PARSER->error().error( @12, @13, "Ожидается Y3" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @11, "Ожидается запятая" );
+				PARSER->error().error( @11, "Ожидается запятая" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @10, @11, "Ожидается X3" );
+				PARSER->error().error( @10, @11, "Ожидается X3" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @9, "Ожидается запятая" );
+				PARSER->error().error( @9, "Ожидается запятая" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @8, @9, "Ожидается Y2" );
+				PARSER->error().error( @8, @9, "Ожидается Y2" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @7, "Ожидается запятая" );
+				PARSER->error().error( @7, "Ожидается запятая" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @6, @7, "Ожидается X2" );
+				PARSER->error().error( @6, @7, "Ожидается X2" );
 			}
 			| RDO_triang '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @5, "Ожидается запятая" );
+				PARSER->error().error( @5, "Ожидается запятая" );
 			}
 			| RDO_triang '[' frm_position_xy ',' error {
-				PARSER->error( @4, @5, "Ожидается Y1" );
+				PARSER->error().error( @4, @5, "Ожидается Y1" );
 			}
 			| RDO_triang '[' frm_position_xy error {
-				PARSER->error( @3, "Ожидается запятая" );
+				PARSER->error().error( @3, "Ожидается запятая" );
 			}
 			| RDO_triang '[' error {
-				PARSER->error( @2, @3, "Ожидается X1" );
+				PARSER->error().error( @2, @3, "Ожидается X1" );
 			}
 			| RDO_triang error {
-				PARSER->error( @1, "Ожидается '['" );
+				PARSER->error().error( @1, "Ожидается '['" );
 			};
 
 frm_active:	RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']' {
@@ -1029,21 +1029,21 @@ frm_active:	RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' f
 				if ( !opr ) {
 					const RDODPTFreeActivity* activity = PARSER->findDPTFreeActivity( opr_name );
 					if ( !activity ) {
-						PARSER->error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
+						PARSER->error().error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
 					} else {
 						if ( activity->pattern()->getType() != RDOPATPattern::PT_Keyboard ) {
-							PARSER->error_push_only( @2, rdo::format("Активность '%s' должна быть клавиатурной", activity->name().c_str()) );
-							PARSER->error_push_only( activity->src_info(), "См. акивность" );
-							PARSER->error_push_only( activity->pattern()->src_info(), "См. образец" );
-							PARSER->error_push_done();
+							PARSER->error().push_only( @2, rdo::format("Активность '%s' должна быть клавиатурной", activity->name().c_str()) );
+							PARSER->error().push_only( activity->src_info(), "См. акивность" );
+							PARSER->error().push_only( activity->pattern()->src_info(), "См. образец" );
+							PARSER->error().push_done();
 						}
 					}
 				} else {
 					if ( opr->pattern()->getType() != RDOPATPattern::PT_Keyboard ) {
-						PARSER->error_push_only( @2, rdo::format("Операция '%s' должна быть клавиатурной", opr->name().c_str()) );
-						PARSER->error_push_only( opr->src_info(), "См. операцию" );
-						PARSER->error_push_only( opr->pattern()->src_info(), "См. образец" );
-						PARSER->error_push_done();
+						PARSER->error().push_only( @2, rdo::format("Операция '%s' должна быть клавиатурной", opr->name().c_str()) );
+						PARSER->error().push_only( opr->src_info(), "См. операцию" );
+						PARSER->error().push_only( opr->pattern()->src_info(), "См. образец" );
+						PARSER->error().push_done();
 					}
 				}
 				rdoRuntime::RDOFRMFrame::RDOFRMPosition* x      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($4);
@@ -1053,34 +1053,34 @@ frm_active:	RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' f
 				$$ = (int)new rdoRuntime::RDOFRMActive( RUNTIME->lastFrame(), x, y, width, height, opr_name );
 			}
 			| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error {
-				PARSER->error( @10, "Ожидается ']'" );
+				PARSER->error().error( @10, "Ожидается ']'" );
 			}
 			| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error {
-				PARSER->error( @9, @10, "Ожидается высота" );
+				PARSER->error().error( @9, @10, "Ожидается высота" );
 			}
 			| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error {
-				PARSER->error( @8, "Ожидается запятая" );
+				PARSER->error().error( @8, "Ожидается запятая" );
 			}
 			| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' error {
-				PARSER->error( @7, @8, "Ожидается ширина" );
+				PARSER->error().error( @7, @8, "Ожидается ширина" );
 			}
 			| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy error {
-				PARSER->error( @6, "Ожидается запятая" );
+				PARSER->error().error( @6, "Ожидается запятая" );
 			}
 			| RDO_active RDO_IDENTIF '[' frm_position_xy ',' error {
-				PARSER->error( @5, @6, "Ожидается координата по оси Y" );
+				PARSER->error().error( @5, @6, "Ожидается координата по оси Y" );
 			}
 			| RDO_active RDO_IDENTIF '[' frm_position_xy error {
-				PARSER->error( @4, "Ожидается запятая" );
+				PARSER->error().error( @4, "Ожидается запятая" );
 			}
 			| RDO_active RDO_IDENTIF '[' error {
-				PARSER->error( @3, @4, "Ожидается координата по оси X" );
+				PARSER->error().error( @3, @4, "Ожидается координата по оси X" );
 			}
 			| RDO_active RDO_IDENTIF error {
-				PARSER->error( @2, "Ожидается '['" );
+				PARSER->error().error( @2, "Ожидается '['" );
 			}
 			| RDO_active error {
-				PARSER->error( @1, "Ожидается имя клавиатурной операции" );
+				PARSER->error().error( @1, "Ожидается имя клавиатурной операции" );
 			};
 
 // ----------------------------------------------------------------------------
@@ -1123,10 +1123,10 @@ fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(*reinterpret_ca
 				$$ = (int)logic_not;
 			}
 			| '[' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 			}
 			| '(' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 			};
 
 // ----------------------------------------------------------------------------
@@ -1181,7 +1181,7 @@ fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
 							$$ = (int)arithm;
 						}
 						| RDO_IDENTIF '(' error {
-							PARSER->error( @3, "Ошибка в параметрах функции" );
+							PARSER->error().error( @3, "Ошибка в параметрах функции" );
 						};
 
 fun_arithm_func_call_pars:	fun_arithm {
@@ -1199,10 +1199,10 @@ fun_arithm_func_call_pars:	fun_arithm {
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars error {
-								PARSER->error( @2, "Ошибка в арифметическом выражении" );
+								PARSER->error().error( @2, "Ошибка в арифметическом выражении" );
 							}
 							| fun_arithm_func_call_pars ',' error {
-								PARSER->error( @3, "Ошибка в арифметическом выражении" );
+								PARSER->error().error( @3, "Ошибка в арифметическом выражении" );
 							};
 
 // ----------------------------------------------------------------------------
@@ -1218,10 +1218,10 @@ fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
 						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
 					}
 					| fun_group_keyword '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
+						PARSER->error().error( @3, "Ожидается имя типа" );
 					}
 					| fun_group_keyword error {
-						PARSER->error( @1, "После имени функции ожидается октрывающаяся скобка" );
+						PARSER->error().error( @1, "После имени функции ожидается октрывающаяся скобка" );
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
@@ -1238,13 +1238,13 @@ fun_group:			fun_group_header fun_logic ')' {
 						$$ = (int)groupfun->createFunLogic( trueLogic );
 					}
 					| fun_group_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 // ----------------------------------------------------------------------------
@@ -1257,10 +1257,10 @@ fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
+						PARSER->error().error( @3, "Ожидается имя типа" );
 					}
 					| RDO_Select error {
-						PARSER->error( @1, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @1, "Ожидается октрывающаяся скобка" );
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
@@ -1279,13 +1279,13 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						select->initSelect( flogic );
 					}
 					| fun_select_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -1300,10 +1300,10 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' fun_select_keyword '(' error {
-						PARSER->error( @4, @5, "Ошибка в логическом выражении" )
+						PARSER->error().error( @4, @5, "Ошибка в логическом выражении" )
 					}
 					| fun_select_body '.' fun_select_keyword error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Empty '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
@@ -1313,16 +1313,16 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' RDO_Empty '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Empty error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' error {
-						PARSER->error( @2, @3, "Ожидается метод списка ресурсов" );
+						PARSER->error().error( @2, @3, "Ожидается метод списка ресурсов" );
 					}
 					| fun_select_body error {
-						PARSER->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
+						PARSER->error().error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					};
 
 fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
@@ -1333,10 +1333,10 @@ fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
 						$$ = (int)arithm;
 					}
 					| fun_select_body '.' RDO_Size error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' RDO_Size '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
 					};
 
 %%

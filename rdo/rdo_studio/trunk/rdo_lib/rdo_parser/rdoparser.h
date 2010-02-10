@@ -18,6 +18,7 @@
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdoparser_value.h"
+#include "rdo_lib/rdo_parser/rdoparser_error.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 // ===============================================================================
@@ -50,18 +51,6 @@ class RDOPROCProcess;
 class RDORTPEnumParamType;
 
 class RDORTPFuzzyParam;
-
-// ----------------------------------------------------------------------------
-// ---------- RDOSyntaxException
-// ----------------------------------------------------------------------------
-class RDOSyntaxException: public rdoRuntime::RDOException
-{
-public:
-   RDOSyntaxException(CREF(tstring) message)
-	   : RDOException(message)
-   {}
-   virtual tstring getType() const { return _T("RDO Syntax Error"); }
-};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParser
@@ -145,8 +134,6 @@ public:
 	ruint getPMD_id     () const { return m_allPMDPokaz.size()    + 1; }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 
-	std::vector<rdoSimulator::RDOSyntaxError> m_errors;
-
 	tstring getModelStructure();
 	tstring getChanges       () const;
 
@@ -157,20 +144,8 @@ public:
 	void parse();
 	void parse(REF(std::istream) stream);
 
-	void error          (rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...);
-	void error          (CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN);
-	void error          (CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...);
-	void error          (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN);
-	void error          (CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN);
-	void error_push_only(rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...);
-	void error_push_only(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...);
-	void error_push_only(CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN);
-	void error_push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN);
-	void error_push_done();
-	void error_modify   (CREF(tstring) message);
-	void warning        (rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...);
-	void warning        (CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN);
-	void warning        (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN);
+	CREF(Error) error() const { return m_error; }
+	 REF(Error) error()       { return m_error; }
 
 	PTR(RDOValue) addValue(PTR(RDOValue) value)
 	{
@@ -181,6 +156,7 @@ public:
 
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
+	static ruint                        lexer_loc_pos ();
 
 protected:
 	PTR(RDOParserItem) m_parser_item;
@@ -214,6 +190,7 @@ private:
 	PTR(RDOSMR)            m_smr;
 	rbool                  m_have_kw_Resources;
 	rbool                  m_have_kw_ResourcesEnd;
+	Error                  m_error;
 
 	struct Changes
 	{
@@ -226,8 +203,6 @@ private:
 	};
 	typedef std::vector<Changes> ChangesList;
 	ChangesList m_changes;
-
-	ruint lexer_loc_pos();
 
 	typedef std::list<PTR(RDOParser)> ParserList;
 	static ParserList s_parserStack;

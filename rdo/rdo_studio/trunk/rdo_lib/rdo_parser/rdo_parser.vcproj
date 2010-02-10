@@ -1230,10 +1230,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdoparser_error.h"
-				>
-			</File>
-			<File
 				RelativePath="rdoparser_lexer.h"
 				>
 			</File>
@@ -3341,6 +3337,18 @@
 				RelativePath="rdoparser_rdo.h"
 				>
 			</File>
+			<Filter
+				Name=".error"
+				>
+				<File
+					RelativePath=".\rdoparser_error.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdoparser_error.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

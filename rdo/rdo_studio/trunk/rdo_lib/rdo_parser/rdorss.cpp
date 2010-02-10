@@ -42,9 +42,9 @@ void RDORSSResource::addParam( const RDOValue& param )
 {
 	if ( m_currParam == getType()->getParams().end() )
 	{
-		parser()->error_push_only( param.src_info(), "Слишком много параметров" );
-		parser()->error_push_only( getType()->src_info(), "См. тип ресурса" );
-		parser()->error_push_done();
+		parser()->error().push_only( param.src_info(), "Слишком много параметров" );
+		parser()->error().push_only( getType()->src_info(), "См. тип ресурса" );
+		parser()->error().push_done();
 	}
 	try
 	{
@@ -61,7 +61,7 @@ void RDORSSResource::addParam( const RDOValue& param )
 	}
 	catch( RDOSyntaxException& )
 	{
-		parser()->error_modify( rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()) );
+		parser()->error().modify( rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()) );
 	}
 }
 
