@@ -7,9 +7,9 @@
 namespace rdoParse
 {
 
-int frmparse( void* lexer );
-int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void frmerror( char* mes );
+int  frmparse(PTR(void) lexer);
+int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void frmerror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame

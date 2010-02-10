@@ -7,15 +7,15 @@
 namespace rdoParse 
 {
 
-int oprlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int oprlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void oprerror( char* mes )
-{
-}
+
+void oprerror(PTR(char) mes)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOPROperation

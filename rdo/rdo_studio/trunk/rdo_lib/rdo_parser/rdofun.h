@@ -24,9 +24,9 @@ class RDOFunCalcSelect;
 namespace rdoParse 
 {
 
-int funparse( void* lexer );
-int funlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void funerror( char* mes );
+int  funparse(PTR(void) lexer);
+int  funlex   (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void funerror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNDoubleToIntByResult

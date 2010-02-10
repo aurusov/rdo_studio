@@ -9,15 +9,15 @@
 namespace rdoParse 
 {
 
-int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void rtperror( char* mes )
-{
-}
+
+void rtperror(PTR(char) mes)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParamType

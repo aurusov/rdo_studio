@@ -10,25 +10,25 @@
 namespace rdoParse 
 {
 
-int smr_file_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int smr_file_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
-}
-void smr_file_error( char* mes )
-{
 }
 
-int smr_sim_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+void smr_file_error(PTR(char) mes)
+{}
+
+int smr_sim_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void smr_sim_error( char* mes )
-{
-}
+
+void smr_sim_error(PTR(char) mes)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOSMR

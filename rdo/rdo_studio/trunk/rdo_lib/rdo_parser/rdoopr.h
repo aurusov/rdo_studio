@@ -11,9 +11,9 @@ class RDOOperations;
 namespace rdoParse 
 {
 
-int oprparse( void* lexer );
-int oprlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void oprerror( char* mes );
+int  oprparse(PTR(void) lexer);
+int  oprlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void oprerror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOPROperation

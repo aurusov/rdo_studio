@@ -13,9 +13,9 @@ class RDOCalc;
 namespace rdoParse
 {
 
-int rssparse( void* lexer );
-int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void rsserror( char* mes );
+int  rssparse(PTR(void) lexer);
+int  rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void rsserror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource

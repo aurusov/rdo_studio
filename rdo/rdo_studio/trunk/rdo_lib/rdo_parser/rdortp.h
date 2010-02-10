@@ -11,9 +11,9 @@
 namespace rdoParse 
 {
 
-int rtpparse( void* lexer );
-int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void rtperror( char* mes );
+int  rtpparse(PTR(void) lexer);
+int  rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void rtperror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParamType

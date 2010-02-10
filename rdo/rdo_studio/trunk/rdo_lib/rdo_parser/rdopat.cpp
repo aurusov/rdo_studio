@@ -10,15 +10,15 @@
 namespace rdoParse 
 {
 
-int patlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void paterror( char* mes )
-{
-}
+
+void paterror(PTR(char) mes)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPattern

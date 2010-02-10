@@ -19,45 +19,45 @@
 namespace rdoParse 
 {
 
-int dptlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
-}
-void dpterror( char* mes )
-{
 }
 
-int proc_rtp_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+void dpterror(PTR(char) mes)
+{}
+
+int proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
-}
-void proc_rtp_error( char* mes )
-{
 }
 
-int proc_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+void proc_rtp_error(PTR(char) mes)
+{}
+
+int proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
-}
-void proc_rss_error( char* mes )
-{
 }
 
-int proc_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+void proc_rss_error(PTR(char) mes)
+{}
+
+int proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void proc_opr_error( char* mes )
-{
-}
+
+void proc_opr_error(PTR(char) mes)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivity

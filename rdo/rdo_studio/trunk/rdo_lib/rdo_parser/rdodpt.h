@@ -31,21 +31,21 @@ struct parser_for_Queue;
 namespace rdoParse 
 {
 
-int dptparse( void* lexer );
-int dptlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void dpterror( char* mes );
+int  dptparse      (PTR(void) lexer);
+int  dptlex        (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void dpterror      (PTR(char) mes);
 
-int proc_rtp_parse( void* lexer );
-int proc_rtp_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void proc_rtp_error( char* mes );
+int  proc_rtp_parse(PTR(void) lexer);
+int  proc_rtp_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void proc_rtp_error(PTR(char) mes);
 
-int proc_rss_parse( void* lexer );
-int proc_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void proc_rss_error( char* mes );
+int  proc_rss_parse(PTR(void) lexer);
+int  proc_rss_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void proc_rss_error(PTR(char) mes);
 
-int proc_opr_parse( void* lexer );
-int proc_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void proc_opr_error( char* mes );
+int  proc_opr_parse(PTR(void) lexer);
+int  proc_opr_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void proc_opr_error(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivity

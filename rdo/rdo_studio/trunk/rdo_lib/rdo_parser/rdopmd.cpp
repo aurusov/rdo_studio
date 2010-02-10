@@ -10,15 +10,15 @@
 namespace rdoParse 
 {
 
-int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void pmderror( char* mes )
-{
-}
+
+void pmderror(PTR(char) mes)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz

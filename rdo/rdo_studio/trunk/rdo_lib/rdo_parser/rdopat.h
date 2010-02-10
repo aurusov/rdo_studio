@@ -14,9 +14,9 @@ class RDOPattern;
 namespace rdoParse 
 {
 
-int patparse( void* lexer );
-int patlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void paterror( char* mes );
+int  patparse(PTR(void) lexer);
+int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void paterror(PTR(char) mes);
 
 class RDORTPResType;
 class RDOPATChoiceFrom;

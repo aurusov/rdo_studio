@@ -7,9 +7,9 @@
 namespace rdoParse 
 {
 
-int pmdparse( void* lexer );
-int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void pmderror( char* mes );
+int  pmdparse(PTR(void) lexer);
+int  pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void pmderror(PTR(char) mes);
 
 class RDOFUNLogic;
 class RDOFUNArithm;

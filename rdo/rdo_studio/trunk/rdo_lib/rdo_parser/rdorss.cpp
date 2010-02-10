@@ -9,15 +9,15 @@
 namespace rdoParse 
 {
 
-int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void rsserror( char* mes )
-{
-}
+
+void rsserror(PTR(char) mes)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource

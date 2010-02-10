@@ -210,11 +210,15 @@ type_list:			/* empty */
 						PARSER->error(_T("Ожидается ключевое слово $Resource_type"));
 					};
 
-ext_param_type:		RDO_typedef RDO_enum ext_param_type_enum {
+ext_param_type:		RDO_typedef RDO_enum ext_par_type_enum {
 						PARSER->warning("qqq");
 					};
 
-ext_param_type_enum:	RDO_IDENTIF_COLON
+ext_par_type_enum:	param_enum RDO_IDENTIF
+					{
+						PTR(RDORTPEnum) enu = reinterpret_cast<PTR(RDORTPEnum)>($1);
+						int i = 1;
+					};
 
 rtp_res_type:		rtp_header RDO_Parameters rtp_body RDO_End
 					{
