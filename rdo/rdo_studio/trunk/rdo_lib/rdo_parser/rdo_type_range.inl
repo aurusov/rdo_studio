@@ -9,96 +9,65 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_parser/rdoparser.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
-template<class T>
 inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser)
 	: RDOParserObject (parser)
 	, RDOParserSrcInfo(      )
-	, m_exist         (false )
-	, m_min_value     (0     )
-	, m_max_value     (0     )
 {}
 
-template<class T>
-inline RDOTypeRange(PTR(RDOParser) parser, CREF(RDOTypeRange<T>) range)
+inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser, CREF(RDOTypeRange) range)
 	: RDOParserObject (parser           )
 	, RDOParserSrcInfo(range.src_info() )
-	, m_exist         (range.m_exist    )
 	, m_min_value     (range.m_min_value)
 	, m_max_value     (range.m_max_value)
 {}
 
-template<class T>
-inline RDOTypeRange::RDOTypeRange(CREF(RDOTypeRange<T>) range)
+inline RDOTypeRange::RDOTypeRange(CREF(RDOTypeRange) range)
 	: RDOParserObject (range.parser()   )
 	, RDOParserSrcInfo(range.src_info() )
-	, m_exist         (range.m_exist    )
 	, m_min_value     (range.m_min_value)
 	, m_max_value     (range.m_max_value)
 {}
 
-template<class T>
-inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserObject (parser  )
-	, RDOParserSrcInfo(src_info)
-	, m_exist         (false   )
-	, m_min_value     (0       )
-	, m_max_value     (0       )
-{}
-
-template<class T>
-inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser, CREF(T) min_value, CREF(T) max_value, CREF(RDOParserSrcInfo) src_info, CREF(YYLTYPE) max_value_pos)
+inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserObject (parser   )
 	, RDOParserSrcInfo(src_info )
-	, m_exist         (true     )
 	, m_min_value     (min_value)
 	, m_max_value     (max_value)
 {
-	init(&max_value_pos);
+	init();
 }
 
-template<class T>
-inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser, CREF(T) min_value, CREF(T) max_value)
-	: RDOParserObject (parser   )
-	, RDOParserSrcInfo(         )
-	, m_exist         (true     )
-	, m_min_value     (min_value)
-	, m_max_value     (max_value)
-{
-	init(NULL);
-}
-
-template<class T>
 inline RDOTypeRange::~RDOTypeRange()
 {}
 
-template<class T>
-inline void RDOTypeRange::init(CPTR(YYLTYPE) const max_value_pos)
+inline void RDOTypeRange::init()
 {
-	if (max_value_pos && m_min_value > m_max_value)
+	if (isExist())
 	{
-		parser()->error().error(*max_value_pos, _T("Ћева€ граница диапазона должна быть меньше правой"));
+		if (m_min_value.value() > m_max_value.value())
+		{
+			parser()->error().error(m_max_value.src_info(), _T("Ћева€ граница диапазона должна быть меньше правой"));
+		}
+		setSrcText(rdo::format(_T("[%s..%s]"), m_min_value->getAsString().c_str(), m_max_value->getAsString().c_str()));
 	}
-	setSrcText(rdo::format(_T("[%s..%s]"), rdoRuntime::RDOValue(m_min_value).getAsString().c_str(), rdoRuntime::RDOValue(m_max_value).getAsString().c_str()) );
 }
 
-template<class T>
 inline rbool RDOTypeRange::isExist() const
 {
-	return m_exist;
+	return m_min_value.defined() && m_max_value.defined();
 }
 
-template<class T>
-inline T RDOTypeRange::getMin() const
+inline CREF(RDOValue) RDOTypeRange::getMin() const
 {
 	return m_min_value;
 }
 
-template<class T>
-inline T RDOTypeRange::getMax() const
+inline CREF(RDOValue) RDOTypeRange::getMax() const
 {
 	return m_max_value;
 }

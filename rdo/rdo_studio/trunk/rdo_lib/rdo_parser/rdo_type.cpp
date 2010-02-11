@@ -11,8 +11,9 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdo_type.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 

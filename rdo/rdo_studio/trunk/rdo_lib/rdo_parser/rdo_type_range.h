@@ -7,11 +7,13 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_TYPE_RANGE_H_
-#define _RDOPARSER_TYPE_RANGE_H_
+#ifndef _RDO_TYPE_RANGE_H_
+#define _RDO_TYPE_RANGE_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_parser/rdoparser_value.h"
+#include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
@@ -19,35 +21,33 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
+class RDOParser;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeRange
 // ----------------------------------------------------------------------------
-template<class T>
 class RDOTypeRange: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	RDOTypeRange(PTR(RDOParser) parser);
-	RDOTypeRange(PTR(RDOParser) parser, CREF(RDOTypeRange<T>) range);
-	RDOTypeRange( CREF(RDOTypeRange<T>) range );
-	RDOTypeRange( PTR(RDOParser) parser, CREF(RDOParserSrcInfo) src_info );
-	RDOTypeRange( PTR(RDOParser) parser, CREF(T) min_value, CREF(T) max_value, CREF(RDOParserSrcInfo) src_info, CREF(YYLTYPE) max_value_pos);
-	RDOTypeRange( PTR(RDOParser) parser, CREF(T) min_value, CREF(T) max_value );
+	RDOTypeRange(PTR(RDOParser) parser, CREF(RDOTypeRange) range);
+	RDOTypeRange(CREF(RDOTypeRange) range);
+	RDOTypeRange(PTR(RDOParser) parser, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeRange();
 
-	rbool isExist() const;
-	T     getMin () const;
-	T     getMax () const;
+	rbool          isExist() const;
+	CREF(RDOValue) getMin () const;
+	CREF(RDOValue) getMax () const;
 
 private:
-	rbool m_exist;
-	T     m_min_value;
-	T     m_max_value;
+	RDOValue m_min_value;
+	RDOValue m_max_value;
 
-	void init( const YYLTYPE* const max_value_pos );
+	void init();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
 
 #include "rdo_lib/rdo_parser/rdo_type_range.inl"
 
-#endif //! _RDOPARSER_TYPE_RANGE_H_
+#endif //! _RDO_TYPE_RANGE_H_
