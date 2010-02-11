@@ -32,6 +32,7 @@ public:
 	typedef std::list< T >                List;
 	typedef typename List::iterator       Iterator;
 	typedef typename List::const_iterator CIterator;
+	typedef typename List::const_iterator const_iterator;
 
 	RDOList()
 		: m_parser(NULL)
