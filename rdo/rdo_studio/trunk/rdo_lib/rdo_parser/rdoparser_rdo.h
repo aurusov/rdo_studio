@@ -30,16 +30,16 @@ public:
 	RDOParserRDOItem(PTR(RDOParser) _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
 	virtual ~RDOParserRDOItem();
 
-	virtual void parse();
-	virtual void parse(std::istream& in_stream);
-	virtual RDOLexer* getLexer(std::istream* in_stream, std::ostream* out_stream);
+	virtual void          parse   ();
+	virtual void          parse   (REF(std::istream) in_stream);
+	virtual PTR(RDOLexer) getLexer(PTR(std::istream) in_stream, PTR(std::ostream) out_stream);
 
 	virtual ruint  lexer_loc_line();
 	virtual ruint  lexer_loc_pos ();
 
 protected:
-	RDOLexer*  m_lexer;
-	YYLTYPE    m_loc;
+	PTR(RDOLexer)  m_lexer;
+	YYLTYPE        m_loc;
 };
 
 // ----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ protected:
 class RDOParserRSS: public RDOParserRDOItem
 {
 public:
-	RDOParserRSS(PTR(RDOParser) _parser, StreamFrom from = sf_repository);
+	RDOParserRSS(PTR(RDOParser) parser, StreamFrom from = sf_repository);
 	virtual void parse();
 };
 
@@ -58,7 +58,9 @@ public:
 class RDOParserRSSPost: public RDOParserItem
 {
 public:
-	RDOParserRSSPost(PTR(RDOParser) _parser): RDOParserItem(_parser, rdoModelObjects::RSS, NULL, NULL, NULL) {};
+	RDOParserRSSPost(PTR(RDOParser) parser)
+		: RDOParserItem(parser, rdoModelObjects::RSS, NULL, NULL, NULL)
+	{}
 	virtual void parse();
 };
 
@@ -68,7 +70,9 @@ public:
 class RDOParserSTDFUN: public RDOParserItem
 {
 public:
-	RDOParserSTDFUN(PTR(RDOParser) _parser): RDOParserItem(_parser, rdoModelObjects::FUN, NULL, NULL, NULL) {};
+	RDOParserSTDFUN(PTR(RDOParser) parser)
+		: RDOParserItem(parser, rdoModelObjects::FUN, NULL, NULL, NULL)
+	{}
 	virtual void parse();
 };
 

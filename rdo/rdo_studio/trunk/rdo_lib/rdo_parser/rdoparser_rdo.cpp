@@ -66,8 +66,10 @@ void RDOParserRDOItem::parse(REF(std::istream) in_stream)
 {
 	if (m_lexer)
 		delete m_lexer;
+
 	std::ostringstream out_stream;
 	m_lexer = getLexer(&in_stream, &out_stream);
+
 	if (m_lexer && m_parser_fun)
 		m_parser_fun(m_lexer);
 }
@@ -121,7 +123,8 @@ void RDOParserRSSPost::parse()
 		STL_FOR_ALL_CONST(RDOParser::RSSResourceList, m_parser->getRSSResources(), rss_it)
 		{
 #ifdef RDOSIM_COMPATIBLE
-			if ((*rss_it)->getType() == *rtp_it) {
+			if ((*rss_it)->getType() == *rtp_it)
+			{
 #endif
 				PTR(rdoRuntime::RDOCalc) calc = (*rss_it)->createCalc();
 				m_parser->runtime()->addInitCalc(calc);
