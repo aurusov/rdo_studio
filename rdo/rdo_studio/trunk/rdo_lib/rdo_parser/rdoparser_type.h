@@ -50,7 +50,7 @@ class RDOType__##Class: public RDOType \
 public: \
 	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {} \
 	virtual tstring              name() const { return ""#Class""; } \
-	virtual const RDOType*       cast(CREF(RDOType) toType) const; \
+	virtual CPTR(RDOType)        cast(CREF(RDOType) toType) const; \
 	virtual rdoRuntime::RDOValue cast(CREF(rdoRuntime::RDOValue) from) const; \
 }; \
 extern RDOType__##Class g_##Class;
