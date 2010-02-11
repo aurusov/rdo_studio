@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 // ===============================================================================
@@ -39,6 +40,7 @@ public:
 
 protected:
 	CPTR(rdoRuntime::RDOType) m_type;
+	PTR()
 };
 
 // ----------------------------------------------------------------------------

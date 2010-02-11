@@ -3365,6 +3365,14 @@
 				RelativePath=".\rdo_type.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdo_type_range.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_type_range.inl"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
