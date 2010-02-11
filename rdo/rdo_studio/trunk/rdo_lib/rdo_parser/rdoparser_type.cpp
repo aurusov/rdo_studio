@@ -1,9 +1,22 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoparser_type.cpp
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_type.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
+// ===============================================================================
 
-namespace rdoParse {
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOType
@@ -109,13 +122,13 @@ rdoRuntime::RDOValue RDOType__bool::cast(CREF(rdoRuntime::RDOValue) from) const
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
 // ----------------------------------------------------------------------------
-#define DECLARE_ATOM_TYPE_PARSER( Class ) RDOType__##Class g_##Class;
+#define DECLARE_ATOM_TYPE_PARSER(Class) RDOType__##Class g_##Class;
 
-DECLARE_ATOM_TYPE_PARSER( unknow        );
-DECLARE_ATOM_TYPE_PARSER( identificator );
-DECLARE_ATOM_TYPE_PARSER( int           );
-DECLARE_ATOM_TYPE_PARSER( real          );
-DECLARE_ATOM_TYPE_PARSER( bool          );
-DECLARE_ATOM_TYPE_PARSER( string        );
+DECLARE_ATOM_TYPE_PARSER(unknow       );
+DECLARE_ATOM_TYPE_PARSER(identificator);
+DECLARE_ATOM_TYPE_PARSER(int          );
+DECLARE_ATOM_TYPE_PARSER(real         );
+DECLARE_ATOM_TYPE_PARSER(bool         );
+DECLARE_ATOM_TYPE_PARSER(string       );
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE

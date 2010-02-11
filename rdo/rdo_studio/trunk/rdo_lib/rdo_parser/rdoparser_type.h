@@ -1,12 +1,23 @@
-#ifndef RDOPARSER_TYPE_H
-#define RDOPARSER_TYPE_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoparser_type.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDOPARSER_TYPE_H_
+#define _RDOPARSER_TYPE_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOType
@@ -33,24 +44,24 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER( Class ) \
+#define DEFINE_ATOM_TYPE_PARSER(Class) \
 class RDOType__##Class: public RDOType \
 { \
 public: \
 	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {} \
-	virtual tstring              name() const { return "" #Class ""; } \
+	virtual tstring              name() const { return ""#Class""; } \
 	virtual const RDOType*       cast(CREF(RDOType) toType) const; \
 	virtual rdoRuntime::RDOValue cast(CREF(rdoRuntime::RDOValue) from) const; \
 }; \
 extern RDOType__##Class g_##Class;
 
-DEFINE_ATOM_TYPE_PARSER( unknow        );
-DEFINE_ATOM_TYPE_PARSER( identificator );
-DEFINE_ATOM_TYPE_PARSER( int           );
-DEFINE_ATOM_TYPE_PARSER( real          );
-DEFINE_ATOM_TYPE_PARSER( bool          );
-DEFINE_ATOM_TYPE_PARSER( string        );
+DEFINE_ATOM_TYPE_PARSER(unknow       );
+DEFINE_ATOM_TYPE_PARSER(identificator);
+DEFINE_ATOM_TYPE_PARSER(int          );
+DEFINE_ATOM_TYPE_PARSER(real         );
+DEFINE_ATOM_TYPE_PARSER(bool         );
+DEFINE_ATOM_TYPE_PARSER(string       );
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDOPARSER_TYPE_H
+#endif //! _RDOPARSER_TYPE_H_
