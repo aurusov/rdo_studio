@@ -330,9 +330,9 @@ private:
 class RDORTPEnumParamType: public RDORTPParamType
 {
 public:
-	RDORTPEnum* m_enum;
-	std::string enum_name; // Используется в сообщениях об ошибках
-	rbool        enum_fun;  // Используется в сообщениях об ошибках
+	PTR(RDORTPEnum) m_enum;
+	tstring         enum_name; // Используется в сообщениях об ошибках
+	rbool           enum_fun;  // Используется в сообщениях об ошибках
 
 	RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
 	virtual ~RDORTPEnumParamType() {}
