@@ -3358,11 +3358,11 @@
 			Name=".type"
 			>
 			<File
-				RelativePath=".\rdoparser_type.cpp"
+				RelativePath=".\rdo_type.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoparser_type.h"
+				RelativePath=".\rdo_type.h"
 				>
 			</File>
 		</Filter>

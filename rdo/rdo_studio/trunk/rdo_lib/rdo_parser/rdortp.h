@@ -3,7 +3,7 @@
 
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_value.h"
-#include "rdo_lib/rdo_parser/rdoparser_type.h"
+#include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdoparser_enum.h"
 #include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"

@@ -13,7 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdoparser_type.h"
+#include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 // ===============================================================================
 

@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_type.cpp
+ * filename : rdo_type.cpp
  * author   : Урусов Андрей
  * date     : 
  * bref     : 
@@ -12,7 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdoparser_type.h"
+#include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
