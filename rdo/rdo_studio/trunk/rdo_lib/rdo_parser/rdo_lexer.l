@@ -8,8 +8,12 @@
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 
-#define LEXER     reinterpret_cast<rdoParse::RDOLexer*>(this)
-#define PARSER    LEXER->m_parser
+#ifdef LEXER
+#undef LEXER
+#endif
+
+#define LEXER     reinterpret_cast<PTR(rdoParse::RDOLexer)>(this)
+#define PARSER    LEXER->parser()
 #define RUNTIME   PARSER->runtime()
 
 #define YY_INTERACTIVE

@@ -192,7 +192,7 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 
-#define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
 namespace rdoParse 

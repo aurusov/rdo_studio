@@ -12,9 +12,9 @@ namespace rdoParse
 
 int patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
-	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+	LEXER->m_lpval = lpval;
+	LEXER->m_lploc = llocp;
+	return LEXER->yylex();
 }
 
 void paterror(PTR(char) mes)

@@ -193,7 +193,7 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 
-#define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
 namespace rdoParse 
@@ -272,42 +272,42 @@ pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
 				if ( @1.last_line != @2.last_line ) {
 					PARSER->error().error( @2, "Ожидается имя параметра образца" );
 				} else {
-					PARSER->error().error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					PARSER->error().error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", LEXER->YYText()) );
 				}
 			}
 			| pat_params_begin RDO_IDENTIF error {
 				if ( @2.last_line != @3.last_line ) {
 					PARSER->error().error( @2, @3, "Ожидается двоеточие" );
 				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается двоеточие, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					PARSER->error().error( @2, @3, rdo::format("Ожидается двоеточие, найдено: %s", LEXER->YYText()) );
 				}
 			}
 			| pat_params_begin RDO_IDENTIF_COLON error {
 				if ( @2.last_line != @3.last_line ) {
 					PARSER->error().error( @2, @3, "Ожидается тип параметра образца" );
 				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается тип параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					PARSER->error().error( @2, @3, rdo::format("Ожидается тип параметра образца, найдено: %s", LEXER->YYText()) );
 				}
 			}
 			| pat_params error {
 				if ( @1.last_line != @2.last_line ) {
 					PARSER->error().error( @2, "Ожидается имя параметра образца" );
 				} else {
-					PARSER->error().error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					PARSER->error().error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", LEXER->YYText()) );
 				}
 			}
 			| pat_params RDO_IDENTIF error {
 				if ( @2.last_line != @3.last_line ) {
 					PARSER->error().error( @2, @3, "Ожидается двоеточие" );
 				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается двоеточие, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					PARSER->error().error( @2, @3, rdo::format("Ожидается двоеточие, найдено: %s", LEXER->YYText()) );
 				}
 			}
 			| pat_params RDO_IDENTIF_COLON error {
 				if ( @2.last_line != @3.last_line ) {
 					PARSER->error().error( @2, @3, "Ожидается тип параметра образца" );
 				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается тип параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					PARSER->error().error( @2, @3, rdo::format("Ожидается тип параметра образца, найдено: %s", LEXER->YYText()) );
 				}
 			};
 
@@ -452,7 +452,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
 							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_begin_pos = @3;
-							std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
+							std::string str = LEXER->YYText();
 							rdo::toLower( str );
 							std::string::size_type first_nochange = str.find( "nochange" );
 							int i = 0;
@@ -493,7 +493,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							RDOValue* rel_name  = reinterpret_cast<RDOValue*>($2);
 							RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
 							YYLTYPE convertor_begin_pos = @3;
-							std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
+							std::string str = LEXER->YYText();
 							rdo::toLower( str );
 							std::string::size_type first_nochange = str.find( "nochange" );
 							int i = 0;
@@ -661,7 +661,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+							PARSER->error().error( @4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
 							break;
 						}
 					}
@@ -678,7 +678,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+							PARSER->error().error( @4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
 						}
 					}
 				}
@@ -694,7 +694,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+							PARSER->error().error( @3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
 						}
 					}
 				}
@@ -710,7 +710,7 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 						}
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+							PARSER->error().error( @3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
 							break;
 						}
 					}
@@ -803,13 +803,13 @@ pat_time:	pat_common_choice RDO_Body {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
 				switch ( pattern->getType() ) {
 					case RDOPATPattern::PT_Rule: {
-						PARSER->error().error( @2, rdo::format("Ожидается $Body, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+						PARSER->error().error( @2, rdo::format("Ожидается $Body, найдено: %s", LEXER->YYText()) );
 						break;
 					}
 					case RDOPATPattern::PT_IE       :
 					case RDOPATPattern::PT_Operation:
 					case RDOPATPattern::PT_Keyboard : {
-						PARSER->error().error( @2, rdo::format("Ожидается $Time, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+						PARSER->error().error( @2, rdo::format("Ожидается $Time, найдено: %s", LEXER->YYText()) );
 						break;
 					}
 				}
@@ -826,11 +826,11 @@ pat_body:	pat_time RDO_IDENTIF_RELRES {
 				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
 			}
 			| pat_time error {
-				std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+				std::string str( LEXER->YYText() );
 				PARSER->error().error( @2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()) );
 			}
 			| pat_convert error {
-				std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+				std::string str( LEXER->YYText() );
 				PARSER->error().error( @2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()) );
 			};
 
@@ -913,10 +913,10 @@ pat_convert:	pat_res_usage {
 					}
 					if ( rel_res->begin != rdoRuntime::RDOResource::CS_NoChange && rel_res->begin != rdoRuntime::RDOResource::CS_Erase && rel_res->begin != rdoRuntime::RDOResource::CS_NonExist ) {
 						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
-							case RDOPATPattern::PT_Rule     : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
+							case RDOPATPattern::PT_IE       : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
+							case RDOPATPattern::PT_Rule     : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
 						}
 //						PARSER->error().error( "Converter needed for \"" + *rel_res->name() + "\" relevant resource in pattern \"" + getName() + "\"" );
 					}
@@ -925,7 +925,7 @@ pat_convert:	pat_res_usage {
 							case RDOPATPattern::PT_IE       : PARSER->error().error( @1, "Внутренняя ошибка" ); break;
 							case RDOPATPattern::PT_Rule     : PARSER->error().error( @1, "Внутренняя ошибка" ); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
 						}
 					}
 				}
@@ -1105,7 +1105,7 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 				}
 				| param_enum param_enum_default_val
 				{
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 0;
+					LEXER->enumReset();
 					RDORTPEnum*  enu = reinterpret_cast<RDORTPEnum*>($1);
 					RDORTPDefVal* dv = reinterpret_cast<RDORTPDefVal*>($2);
 					if ( dv->isExist() )
@@ -1324,11 +1324,11 @@ param_enum:	'(' param_enum_list ')' {
 param_enum_list: RDO_IDENTIF {
 					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
 					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 1;
+					LEXER->enumBegin();
 					$$ = (int)enu;
 				}
 				| param_enum_list ',' RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
+					if ( !LEXER->enumEmpty() ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
 						enu->add( *reinterpret_cast<RDOValue*>($3) );
 						$$ = (int)enu;
@@ -1337,14 +1337,14 @@ param_enum_list: RDO_IDENTIF {
 					}
 				}
 				| param_enum_list RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
+					if ( !LEXER->enumEmpty() ) {
 						PARSER->error().error( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
 					} else {
 						PARSER->error().error( @2, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list error {
-					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+					std::string str( LEXER->YYText() );
 					if ( str.empty() ) {
 						PARSER->error().error( @1, "Ошибка в описании значений перечислимого типа" );
 					} else {

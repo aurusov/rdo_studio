@@ -34,10 +34,14 @@ public:
 	void loc_delta_pos(int value);
 	void setvalue     (int value);
 
-	PTR(RDOParser)   m_parser;
+	PTR(RDOParser)    parser();
+
+	void  enumBegin();
+	void  enumReset();
+	rbool enumEmpty();
+
 	PTR(int)         m_lpval;
 	PTR(YYLTYPE)     m_lploc;
-	int              m_enum_param_cnt;
 
 protected:
 	virtual int  LexerInput (PTR(char)  buf, int max_size);
@@ -47,9 +51,13 @@ protected:
 private:
 	PTR(std::istream) m_yyin;
 	PTR(std::ostream) m_yyout;
+	PTR(RDOParser)    m_parser;
+	rbool             m_enumEmpty;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#define LEXER reinterpret_cast<PTR(rdoParse::RDOLexer)>(lexer)
 
 #include "rdo_lib/rdo_parser/rdoparser_lexer.inl"
 

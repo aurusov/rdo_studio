@@ -191,8 +191,7 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 
-#define LEXER   reinterpret_cast<rdoParse::RDOLexer*>(lexer)
-#define PARSER  LEXER->m_parser
+#define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
 namespace rdoParse
@@ -210,8 +209,8 @@ type_list:			/* empty */
 						PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
 					};
 
-ext_param_type:		RDO_typedef RDO_enum ext_par_type_enum {
-//						PARSER->error().warning("qqq");
+ext_param_type:		RDO_typedef RDO_enum ext_par_type_enum
+					{
 					};
 
 ext_par_type_enum:	param_enum RDO_IDENTIF
@@ -237,7 +236,7 @@ rtp_res_type:		rtp_header RDO_Parameters rtp_body RDO_End
 
 rtp_header:			RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 					{
-						LEXER->m_enum_param_cnt = 0;
+						LEXER->enumReset();
 						RDOValue*            type_name = reinterpret_cast<RDOValue*>($2);
 						std::string          name      = type_name->value().getIdentificator();
 						const RDORTPResType* _rtp      = PARSER->findRTPResType( name );
@@ -387,7 +386,7 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 				}
 				| param_enum param_enum_default_val
 				{
-					LEXER->m_enum_param_cnt = 0;
+					LEXER->enumReset();
 					RDORTPEnum*  enu = reinterpret_cast<RDORTPEnum*>($1);
 					RDORTPDefVal* dv = reinterpret_cast<RDORTPDefVal*>($2);
 					if ( dv->isExist() )
@@ -620,11 +619,11 @@ param_enum:	'(' param_enum_list ')' {
 param_enum_list: RDO_IDENTIF {
 					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
 					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
-					LEXER->m_enum_param_cnt = 1;
+					LEXER->enumBegin();
 					$$ = (int)enu;
 				}
 				| param_enum_list ',' RDO_IDENTIF {
-					if ( LEXER->m_enum_param_cnt >= 1 ) {
+					if ( !LEXER->enumEmpty() ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
 						enu->add( *reinterpret_cast<RDOValue*>($3) );
 						$$ = (int)enu;
@@ -633,7 +632,7 @@ param_enum_list: RDO_IDENTIF {
 					}
 				}
 				| param_enum_list RDO_IDENTIF {
-					if ( LEXER->m_enum_param_cnt >= 1 ) {
+					if ( !LEXER->enumEmpty() ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
 						enu->add( *reinterpret_cast<RDOValue*>($2) );
 						$$ = (int)enu;

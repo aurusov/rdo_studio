@@ -21,9 +21,9 @@ namespace rdoParse
 
 int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
-	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+	LEXER->m_lpval = lpval;
+	LEXER->m_lploc = llocp;
+	return LEXER->yylex();
 }
 
 void dpterror(PTR(char) mes)
@@ -31,9 +31,9 @@ void dpterror(PTR(char) mes)
 
 int proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
-	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+	LEXER->m_lpval = lpval;
+	LEXER->m_lploc = llocp;
+	return LEXER->yylex();
 }
 
 void proc_rtp_error(PTR(char) mes)
@@ -41,9 +41,9 @@ void proc_rtp_error(PTR(char) mes)
 
 int proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
-	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+	LEXER->m_lpval = lpval;
+	LEXER->m_lploc = llocp;
+	return LEXER->yylex();
 }
 
 void proc_rss_error(PTR(char) mes)
@@ -51,9 +51,9 @@ void proc_rss_error(PTR(char) mes)
 
 int proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
-	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+	LEXER->m_lpval = lpval;
+	LEXER->m_lploc = llocp;
+	return LEXER->yylex();
 }
 
 void proc_opr_error(PTR(char) mes)

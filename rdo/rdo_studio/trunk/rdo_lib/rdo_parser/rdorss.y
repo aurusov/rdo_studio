@@ -191,7 +191,8 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 
-#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  LEXER->parser()
+#define RUNTIME PARSER->runtime()
 
 namespace rdoParse 
 {
@@ -294,7 +295,7 @@ rss_value:		'*'                 { PARSER->getLastRSSResource()->addParam( RDOVal
 
 				| error
 				{
-					PARSER->error().error( @1, rdo::format("Неправильное значение параметра: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					PARSER->error().error( @1, rdo::format("Неправильное значение параметра: %s", LEXER->YYText()) );
 				};
 
 %%

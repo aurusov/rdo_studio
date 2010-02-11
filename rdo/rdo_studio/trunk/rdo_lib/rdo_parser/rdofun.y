@@ -192,7 +192,7 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 
-#define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
 namespace rdoParse 
@@ -291,7 +291,7 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 				}
 				| param_enum param_enum_default_val
 				{
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 0;
+					LEXER->enumReset();
 					RDORTPEnum*  enu = reinterpret_cast<RDORTPEnum*>($1);
 					RDORTPDefVal* dv = reinterpret_cast<RDORTPDefVal*>($2);
 					if ( dv->isExist() )
@@ -510,11 +510,11 @@ param_enum:	'(' param_enum_list ')' {
 param_enum_list: RDO_IDENTIF {
 					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
 					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 1;
+					LEXER->enumBegin();
 					$$ = (int)enu;
 				}
 				| param_enum_list ',' RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
+					if ( !LEXER->enumEmpty() ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
 						enu->add( *reinterpret_cast<RDOValue*>($3) );
 						$$ = (int)enu;
@@ -523,14 +523,14 @@ param_enum_list: RDO_IDENTIF {
 					}
 				}
 				| param_enum_list RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
+					if ( !LEXER->enumEmpty() ) {
 						PARSER->error().error( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
 					} else {
 						PARSER->error().error( @2, "Ошибка в описании значений перечислимого типа" );
 					}
 				}
 				| param_enum_list error {
-					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+					std::string str( LEXER->YYText() );
 					if ( str.empty() ) {
 						PARSER->error().error( @1, "Ошибка в описании значений перечислимого типа" );
 					} else {
