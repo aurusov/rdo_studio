@@ -3352,6 +3352,10 @@
 					RelativePath="rdoparser_lexer.h"
 					>
 				</File>
+				<File
+					RelativePath=".\rdoparser_lexer.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
