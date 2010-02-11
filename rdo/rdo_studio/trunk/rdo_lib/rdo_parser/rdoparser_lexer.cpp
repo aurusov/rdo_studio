@@ -1,57 +1,70 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoparser_lexer.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
-
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+// ===============================================================================
 
-namespace rdoParse
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLexer
 // ----------------------------------------------------------------------------
 #ifdef YY_INTERACTIVE
-int RDOLexer::LexerInput( char* buf, int /* max_size */ )
+int RDOLexer::LexerInput(PTR(char) buf, int /* max_size */)
 #else
-int RDOLexer::LexerInput( char* buf, int max_size )
+int RDOLexer::LexerInput(PTR(char) buf, int max_size)
 #endif
 {
-	if ( yyin->eof() || yyin->fail() )
+	if (m_yyin->eof() || m_yyin->fail())
 		return 0;
 
 #ifdef YY_INTERACTIVE
-	yyin->get( buf[0] );
+	m_yyin->get(buf[0]);
 
-	if ( yyin->eof() )
+	if (m_yyin->eof())
 		return 0;
 
-	if ( yyin->bad() )
+	if (m_yyin->bad())
 		return -1;
 
 	return 1;
-
 #else
-	(void) yyin->read( buf, max_size );
+	(void) m_yyin->read(buf, max_size);
 
-	if ( yyin->bad() ) {
+	if (m_yyin->bad())
+	{
 		return -1;
-	} else {
-		return yyin->gcount();
+	}
+	else
+	{
+		return m_yyin->gcount();
 	}
 #endif
 }
 
-void RDOLexer::LexerOutput( const char* buf, int size )
+void RDOLexer::LexerOutput(CPTR(char) buf, int size)
 {
-	(void) yyout->write( buf, size );
+	(void) m_yyout->write(buf, size);
 }
 
 #ifndef YY_EXIT_FAILURE
 #define YY_EXIT_FAILURE 2
 #endif
 
-void RDOLexer::LexerError( const char msg[] )
+void RDOLexer::LexerError(const char msg[])
 {
 	std::cerr << msg << '\n';
-	exit( YY_EXIT_FAILURE );
+	exit(YY_EXIT_FAILURE);
 }
 
 extern "C"
@@ -62,4 +75,4 @@ extern "C"
 	}
 }
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE

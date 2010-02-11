@@ -1,10 +1,23 @@
-#include "rdo_lib/rdo_parser/pch.h"
-#include "rdo_lib/rdo_parser/rdoparser_value.h"
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoparser_value.cpp
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
-namespace rdoParse {
+// ====================================================================== PCH
+#include "rdo_lib/rdo_parser/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_parser/rdoparser_value.h"
+// ===============================================================================
+
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
