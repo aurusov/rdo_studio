@@ -761,10 +761,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdoparser_value.cpp"
-				>
-			</File>
-			<File
 				RelativePath="rdopat.cpp"
 				>
 				<FileConfiguration
@@ -1102,10 +1098,6 @@
 			</File>
 			<File
 				RelativePath="rdoparser_object.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdoparser_value.h"
 				>
 			</File>
 			<File
@@ -3371,6 +3363,18 @@
 			</File>
 			<File
 				RelativePath=".\rdo_type_range.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".value"
+			>
+			<File
+				RelativePath=".\rdo_value.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_value.h"
 				>
 			</File>
 		</Filter>

@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_value.h
+ * filename : rdo_value.h
  * author   : Урусов Андрей
  * date     : 
  * bref     : 
