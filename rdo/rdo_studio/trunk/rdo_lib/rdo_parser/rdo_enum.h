@@ -1,13 +1,24 @@
-#ifndef RDOPARSER_ENUM_H
-#define RDOPARSER_ENUM_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_enum.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDOPARSER_ENUM_H_
+#define _RDOPARSER_ENUM_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdoparser_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnum
@@ -15,19 +26,19 @@ namespace rdoParse
 class RDORTPEnum: public RDOType, public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDORTPEnum(CPTR(RDOParserObject) _parent, CREF(RDOValue) first);
+	RDORTPEnum(CPTR(RDOParserObject) parent, CREF(RDOValue) first);
 	virtual ~RDORTPEnum();
 
 	void add(CREF(RDOValue) next);
-	rdoRuntime::RDOValue          findEnumValueWithThrow(CREF(RDOParserSrcInfo) val_src_info, CREF(tstring) val) const;
+	rdoRuntime::RDOValue          findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const;
 	rdoRuntime::RDOValue          getFirstValue() const;
-	CREF(rdoRuntime::RDOEnumType) getEnums     () const { return *static_cast<const rdoRuntime::RDOEnumType*>(m_type); }
+	CREF(rdoRuntime::RDOEnumType) getEnums     () const { return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type); }
 
-	bool operator== (CREF(RDORTPEnum) enums) const
+	rbool operator== (CREF(RDORTPEnum) enums) const
 	{
 		return __enum()->getValues() == enums.__enum()->getValues();
 	}
-	bool operator!= (CREF(RDORTPEnum) enums) const
+	rbool operator!= (CREF(RDORTPEnum) enums) const
 	{
 		return !operator==(enums);
 	}
@@ -40,6 +51,6 @@ private:
 	PTR(rdoRuntime::RDOEnumType) __enum() const { return static_cast<PTR(rdoRuntime::RDOEnumType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
 };
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDOPARSER_ENUM_H
+#endif //! _RDOPARSER_ENUM_H_
