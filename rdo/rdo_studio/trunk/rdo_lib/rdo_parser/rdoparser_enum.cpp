@@ -8,9 +8,9 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnum
 // ----------------------------------------------------------------------------
-RDORTPEnum::RDORTPEnum(CPTR(RDOParserObject) _parent, CREF(RDOValue) first)
-	: RDOType        (g_unknow)
-	, RDOParserObject(_parent )
+RDORTPEnum::RDORTPEnum(CPTR(RDOParserObject) parent, CREF(RDOValue) first)
+	: RDOType        (rdoRuntime::g_unknow)
+	, RDOParserObject(parent              )
 {
 	m_type = new rdoRuntime::RDOEnumType(parser()->runtime());
 	add(first);
