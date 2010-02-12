@@ -692,10 +692,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdoparser_enum.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\rdoparser_logic.cpp"
 				>
 			</File>
@@ -1086,10 +1082,6 @@
 			</File>
 			<File
 				RelativePath="rdoopr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdoparser_enum.h"
 				>
 			</File>
 			<File
@@ -3365,6 +3357,18 @@
 				RelativePath=".\rdo_type_range.inl"
 				>
 			</File>
+			<Filter
+				Name=".enum"
+				>
+				<File
+					RelativePath=".\rdo_enum.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_enum.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".value"
