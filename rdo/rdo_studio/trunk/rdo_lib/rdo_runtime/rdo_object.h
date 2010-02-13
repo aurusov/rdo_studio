@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdoruntime_object.h
+ * filename : rdo_object.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 
  * bref     : 

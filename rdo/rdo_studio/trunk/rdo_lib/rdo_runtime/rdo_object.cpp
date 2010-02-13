@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdoruntime_object.h
+ * filename : rdo_object.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 
  * bref     : 
@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
