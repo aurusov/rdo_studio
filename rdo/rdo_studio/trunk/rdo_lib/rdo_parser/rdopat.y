@@ -231,34 +231,34 @@ OPEN_RDO_PARSER_NAMESPACE
 pat_main:
 			| pat_main pat_pattern;
 			| error {
-				PARSER->error().error( @1, "Неизвестная ошибка" );
+				PARSER->error().error(@1, _T("Неизвестная ошибка"));
 			};
 
 pat_header:	RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace {
 				PTR(RDOValue) name = P_RDOVALUE($2);
-				$$ = (int)new RDOPatternOperation( PARSER, name->src_info(), $4 != 0 );
+				$$ = (int)new RDOPatternOperation(PARSER, name->src_info(), $4 != 0);
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {
 				PTR(RDOValue) name = P_RDOVALUE($2);
-				$$ = (int)new RDOPatternIrregEvent( PARSER, name->src_info(), $4 != 0 );
+				$$ = (int)new RDOPatternIrregEvent(PARSER, name->src_info(), $4 != 0);
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace {
 				PTR(RDOValue) name = P_RDOVALUE($2);
-				$$ = (int)new RDOPatternRule( PARSER, name->src_info(), $4 != 0 );
+				$$ = (int)new RDOPatternRule(PARSER, name->src_info(), $4 != 0);
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace {
 				PTR(RDOValue) name = P_RDOVALUE($2);
-				$$ = (int)new RDOPatternKeyboard( PARSER, name->src_info(), $4 != 0 );
+				$$ = (int)new RDOPatternKeyboard(PARSER, name->src_info(), $4 != 0);
 			};
 			| RDO_Pattern error {
-				PARSER->error().error( @2, "Ожидается имя образца" );
+				PARSER->error().error(@2, _T("Ожидается имя образца"));
 			}
 			| RDO_Pattern RDO_IDENTIF_COLON error {
-				PARSER->error().error( @2, @3, "Ожидается тип образца" );
+				PARSER->error().error(@2, @3, _T("Ожидается тип образца"));
 //			}
 //			| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event error {
-//				PARSER->error().error( @2, @3, "Ожидается признак трассировки" );
-//				PARSER->error().error( @2, @3, "Ожидается признак трассировки, описание параметров или релевантных ресурсов образца" );
+//				PARSER->error().error(@2, @3, _T("Ожидается признак трассировки"));
+//				PARSER->error().error(@2, @3, _T("Ожидается признак трассировки, описание параметров или релевантных ресурсов образца"));
 			};
 
 pat_trace:	/* empty */		{ $$ = 0; }
@@ -268,330 +268,366 @@ pat_trace:	/* empty */		{ $$ = 0; }
 pat_params_begin: pat_header RDO_Parameters { $$ = $1; };
 
 pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
-				RDOPATPattern*   pattern    = reinterpret_cast<RDOPATPattern*>($1);
-				PTR(RDOValue)    param_name = P_RDOVALUE($2);
-				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, param_name->src_info(), param_type );
-				pattern->add( param );
-				if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name->value().getIdentificator().c_str() );
+				PTR(RDOPATPattern)       pattern    = reinterpret_cast<PTR(RDOPATPattern)>($1);
+				PTR(RDOValue)            param_name = P_RDOVALUE($2);
+				PTR(RDORTPParamType)     param_type = reinterpret_cast<PTR(RDORTPParamType)>($3);
+				PTR(RDOFUNFunctionParam) param      = new RDOFUNFunctionParam(pattern, param_name->src_info(), param_type);
+				pattern->add(param);
+				if (param_type->typeID() == rdoRuntime::RDOType::t_enum)
+				{
+					static_cast<PTR(RDORTPEnumParamType)>(param_type)->enum_name = rdo::format(_T("%s.%s"), pattern->name().c_str(), param_name->value().getIdentificator().c_str());
 				}
 			}
 			| pat_params RDO_IDENTIF_COLON param_type {
-				RDOPATPattern*   pattern    = reinterpret_cast<RDOPATPattern*>($1);
-				PTR(RDOValue)    param_name = P_RDOVALUE($2);
-				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, param_name->src_info(), param_type );
-				pattern->add( param );
-				if ( param_type->typeID() == rdoRuntime::RDOType::t_enum ) {
-					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->name().c_str(), param_name->value().getIdentificator().c_str() );
+				PTR(RDOPATPattern)       pattern    = reinterpret_cast<PTR(RDOPATPattern)>($1);
+				PTR(RDOValue)            param_name = P_RDOVALUE($2);
+				PTR(RDORTPParamType)     param_type = reinterpret_cast<PTR(RDORTPParamType)>($3);
+				PTR(RDOFUNFunctionParam) param      = new RDOFUNFunctionParam(pattern, param_name->src_info(), param_type);
+				pattern->add(param);
+				if (param_type->typeID() == rdoRuntime::RDOType::t_enum)
+				{
+					static_cast<PTR(RDORTPEnumParamType)>(param_type)->enum_name = rdo::format(_T("%s.%s"), pattern->name().c_str(), param_name->value().getIdentificator().c_str());
 				}
 			}
 			| pat_params_begin error {
-				if ( @1.last_line != @2.last_line ) {
-					PARSER->error().error( @2, "Ожидается имя параметра образца" );
-				} else {
-					PARSER->error().error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", LEXER->YYText()) );
+				if (@1.last_line != @2.last_line)
+				{
+					PARSER->error().error(@2, _T("Ожидается имя параметра образца"));
+				}
+				else
+				{
+					PARSER->error().error(@2, rdo::format(_T("Ожидается имя параметра образца, найдено: %s"), LEXER->YYText()));
 				}
 			}
 			| pat_params_begin RDO_IDENTIF error {
-				if ( @2.last_line != @3.last_line ) {
-					PARSER->error().error( @2, @3, "Ожидается двоеточие" );
-				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается двоеточие, найдено: %s", LEXER->YYText()) );
+				if (@2.last_line != @3.last_line)
+				{
+					PARSER->error().error(@2, @3, _T("Ожидается двоеточие"));
+				}
+				else
+				{
+					PARSER->error().error(@2, @3, rdo::format(_T("Ожидается двоеточие, найдено: %s"), LEXER->YYText()));
 				}
 			}
 			| pat_params_begin RDO_IDENTIF_COLON error {
-				if ( @2.last_line != @3.last_line ) {
-					PARSER->error().error( @2, @3, "Ожидается тип параметра образца" );
-				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается тип параметра образца, найдено: %s", LEXER->YYText()) );
+				if (@2.last_line != @3.last_line)
+				{
+					PARSER->error().error(@2, @3, _T("Ожидается тип параметра образца"));
+				}
+				else
+				{
+					PARSER->error().error(@2, @3, rdo::format(_T("Ожидается тип параметра образца, найдено: %s"), LEXER->YYText()));
 				}
 			}
 			| pat_params error {
-				if ( @1.last_line != @2.last_line ) {
-					PARSER->error().error( @2, "Ожидается имя параметра образца" );
-				} else {
-					PARSER->error().error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", LEXER->YYText()) );
+				if (@1.last_line != @2.last_line)
+				{
+					PARSER->error().error(@2, _T("Ожидается имя параметра образца"));
+				}
+				else
+				{
+					PARSER->error().error(@2, rdo::format(_T("Ожидается имя параметра образца, найдено: %s"), LEXER->YYText()));
 				}
 			}
 			| pat_params RDO_IDENTIF error {
-				if ( @2.last_line != @3.last_line ) {
-					PARSER->error().error( @2, @3, "Ожидается двоеточие" );
-				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается двоеточие, найдено: %s", LEXER->YYText()) );
+				if (@2.last_line != @3.last_line)
+				{
+					PARSER->error().error(@2, @3, _T("Ожидается двоеточие"));
+				}
+				else
+				{
+					PARSER->error().error(@2, @3, rdo::format(_T("Ожидается двоеточие, найдено: %s"), LEXER->YYText()));
 				}
 			}
 			| pat_params RDO_IDENTIF_COLON error {
-				if ( @2.last_line != @3.last_line ) {
-					PARSER->error().error( @2, @3, "Ожидается тип параметра образца" );
-				} else {
-					PARSER->error().error( @2, @3, rdo::format("Ожидается тип параметра образца, найдено: %s", LEXER->YYText()) );
+				if (@2.last_line != @3.last_line)
+				{
+					PARSER->error().error(@2, @3, _T("Ожидается тип параметра образца"));
+				}
+				else
+				{
+					PARSER->error().error(@2, @3, rdo::format(_T("Ожидается тип параметра образца, найдено: %s"), LEXER->YYText()));
 				}
 			};
 
 pat_params_end:	pat_params RDO_Relevant_resources   { $$ = $1; }
 				| pat_header RDO_Relevant_resources { $$ = $1; }
 				| pat_header error {
-					PARSER->error().error( @2, "Ожидается ключевое слово $Relevant_resources" );
+					PARSER->error().error(@2, _T("Ожидается ключевое слово $Relevant_resources"));
 				};
 
 pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @5, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @5, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@5, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5 );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @5, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @5, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@5, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()) );
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 							break;
-						}
 						case RDOPATPattern::PT_IE  : 
-						case RDOPATPattern::PT_Rule: {
+						case RDOPATPattern::PT_Rule:
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
-							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
+							pattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
 							break;
 						}
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()) );
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 							break;
-						}
 						case RDOPATPattern::PT_IE  : 
-						case RDOPATPattern::PT_Rule: {
+						case RDOPATPattern::PT_Rule:
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
-							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4 );
+							pattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
 							break;
 						}
 					}
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @4, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @4, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4 );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @4, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @4, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							YYLTYPE convertor_begin_pos = @3;
 							tstring str = LEXER->YYText();
-							rdo::toLower( str );
-							tstring::size_type first_nochange = str.find( "nochange" );
+							rdo::toLower(str);
+							tstring::size_type first_nochange = str.find(_T("nochange"));
 							int i = 0;
-							while ( true ) {
-								if ( str[i] == '\n' ) {
+							while (true)
+							{
+								if (str[i] == '\n')
+								{
 									convertor_begin_pos.first_line++;
 									convertor_begin_pos.first_column = 0;
-								} else if ( str[i] != '\r' ) {
+								}
+								else if (str[i] != '\r')
+								{
 									convertor_begin_pos.first_column++;
 								}
 								i++;
-								if ( i == first_nochange ) break;
+								if (i == first_nochange)
+									break;
 							}
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
 							convertor_begin_pos.last_column = convertor_begin_pos.first_column + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @3, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @3, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@3, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							YYLTYPE convertor_begin_pos = @3;
 							tstring str = LEXER->YYText();
-							rdo::toLower( str );
-							tstring::size_type first_nochange = str.find( "nochange" );
+							rdo::toLower(str);
+							tstring::size_type first_nochange = str.find(_T("nochange"));
 							int i = 0;
-							while ( true ) {
-								if ( str[i] == '\n' ) {
+							while (true)
+							{
+								if (str[i] == '\n')
+								{
 									convertor_begin_pos.first_line++;
 									convertor_begin_pos.first_column = 0;
-								} else if ( str[i] != '\r' ) {
+								}
+								else if (str[i] != '\r')
+								{
 									convertor_begin_pos.first_column++;
 								}
 								i++;
-								if ( i == first_nochange ) break;
+								if (i == first_nochange)
+									break;
 							}
 							convertor_begin_pos.last_line   = convertor_begin_pos.first_line;
 							convertor_begin_pos.last_column = convertor_begin_pos.first_column + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 							YYLTYPE convertor_end_pos = @3;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @3, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @3, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@3, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()) );
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 							break;
-						}
 						case RDOPATPattern::PT_IE  : 
-						case RDOPATPattern::PT_Rule: {
+						case RDOPATPattern::PT_Rule:
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
+							pattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 							break;
 						}
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()) );
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 							break;
-						}
 						case RDOPATPattern::PT_IE  : 
-						case RDOPATPattern::PT_Rule: {
+						case RDOPATPattern::PT_Rule:
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							YYLTYPE convertor_pos = @3;
 							convertor_pos.first_line   = convertor_pos.last_line;
 							convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							pattern->addRelRes( rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos );
+							pattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 							break;
 						}
 					}
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							tstring convert_begin = RDOVALUE($4)->getIdentificator();
@@ -601,25 +637,25 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), pattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @4, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @4, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getType() ) {
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					switch (pattern->getType())
+					{
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
+						case RDOPATPattern::PT_Keyboard :
+						{
 							PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 							PTR(RDOValue) type_name = P_RDOVALUE($3);
 							tstring convert_begin = RDOVALUE($4)->getIdentificator();
@@ -629,109 +665,107 @@ pat_rel_res:	pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv {
 							YYLTYPE convertor_end_pos = @4;
 							convertor_end_pos.first_line   = convertor_end_pos.last_line;
 							convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-							static_cast<RDOPatternOperation*>(pattern)->addRelRes( rel_name->src_info(), type_name->src_info(), pattern->StrToStatus( convert_begin, convertor_begin_pos ), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos );
+							static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), pattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 							break;
 						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @4, rdo::format("У нерегулярного события нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @4, rdo::format("У продукционного правила нет события конца, а значит и второго статуса конвертора") );
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
 							break;
-						}
 					}
 				}
 				| pat_params_end error {
-					PARSER->error().error( @2, "Ошибка в описании релевантных ресурсов" );
+					PARSER->error().error(@2, _T("Ошибка в описании релевантных ресурсов"));
 				}
 				| pat_rel_res error {
-					PARSER->error().error( @2, "Ошибка в описании релевантных ресурсов" );
+					PARSER->error().error(@2, _T("Ошибка в описании релевантных ресурсов"));
 				}
 				| pat_params_end RDO_IDENTIF_COLON error {
-					PARSER->error().error( @2, @3, "Ожидается описатель (имя типа или ресурса)" );
+					PARSER->error().error(@2, @3, _T("Ожидается описатель (имя типа или ресурса)"));
 				}
 				| pat_rel_res RDO_IDENTIF_COLON error {
-					PARSER->error().error( @2, @3, "Ожидается описатель (имя типа или ресурса)" );
+					PARSER->error().error(@2, @3, _T("Ожидается описатель (имя типа или ресурса)"));
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF error {
-					if ( PARSER->getLastPATPattern()->isHaveConvertEnd() ) {
-						PARSER->error().error( @3, @4, "Ожидается статус конвертора начала" );
-					} else {
-						PARSER->error().error( @3, @4, "Ожидается статус конвертора" );
+					if (PARSER->getLastPATPattern()->isHaveConvertEnd())
+					{
+						PARSER->error().error(@3, @4, _T("Ожидается статус конвертора начала"));
+					}
+					else
+					{
+						PARSER->error().error(@3, @4, _T("Ожидается статус конвертора"));
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF error {
-					if ( PARSER->getLastPATPattern()->isHaveConvertEnd() ) {
-						PARSER->error().error( @3, @4, "Ожидается статус конвертора начала" );
-					} else {
-						PARSER->error().error( @3, @4, "Ожидается статус конвертора" );
+					if (PARSER->getLastPATPattern()->isHaveConvertEnd())
+					{
+						PARSER->error().error(@3, @4, _T("Ожидается статус конвертора начала"));
+					}
+					else
+					{
+						PARSER->error().error(@3, @4, _T("Ожидается статус конвертора"));
 					}
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error {
-					switch ( PARSER->getLastPATPattern()->getType() ) {
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @5, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
+					switch (PARSER->getLastPATPattern()->getType())
+					{
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 							break;
-						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @5, "Ожидается способ выбора (first/with_min/with_max) или $Time" );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
 							break;
-						}
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@4, @5, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
 							break;
-						}
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error {
-					switch ( PARSER->getLastPATPattern()->getType() ) {
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @5, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
+					switch (PARSER->getLastPATPattern()->getType())
+					{
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 							break;
-						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @5, "Ожидается способ выбора (first/with_min/with_max) или $Time" );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
 							break;
-						}
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
-						}
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@4, @5, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
+							break;
 					}
 				}
 				| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error {
-					switch ( PARSER->getLastPATPattern()->getType() ) {
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @4, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
+					switch (PARSER->getLastPATPattern()->getType())
+					{
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 							break;
-						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @4, "Ожидается способ выбора (first/with_min/with_max) или $Time" );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
 							break;
-						}
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
-						}
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@3, @4, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
+							break;
 					}
 				}
 				| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error {
-					switch ( PARSER->getLastPATPattern()->getType() ) {
-						case RDOPATPattern::PT_Rule: {
-							PARSER->error().error( @4, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
+					switch (PARSER->getLastPATPattern()->getType())
+					{
+						case RDOPATPattern::PT_Rule:
+							PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 							break;
-						}
-						case RDOPATPattern::PT_IE: {
-							PARSER->error().error( @4, "Ожидается способ выбора (first/with_min/with_max) или $Time" );
+						case RDOPATPattern::PT_IE:
+							PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
 							break;
-						}
 						case RDOPATPattern::PT_Operation:
-						case RDOPATPattern::PT_Keyboard : {
-							PARSER->error().error( @3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()) );
+						case RDOPATPattern::PT_Keyboard :
+							PARSER->error().error(@3, @4, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
 							break;
-						}
 					}
 				};
 
@@ -742,139 +776,148 @@ pat_conv:	RDO_Keep			{ $$ = rdoRuntime::RDOResource::CS_Keep;     }
 
 pat_common_choice:	pat_rel_res
 					| pat_rel_res RDO_first {
-						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-						if ( pattern->getType() == RDOPATPattern::PT_IE ) {
-							PARSER->error().error( @2, "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
-						} else {
+						PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+						if (pattern->getType() == RDOPATPattern::PT_IE)
+						{
+							PARSER->error().error(@2, _T("В нерегулярном событии не используется способ выбора релевантных ресурсов"));
+						}
+						else
+						{
 							pattern->setCommonChoiceFirst();
-//							PTR(RDOFUNArithm) arithm = new RDOFUNArithm( PARSER, 1, @2 );
-//							arithm->setSrcPos( @2 );
-//							arithm->setSrcText( "first" );
-//							pattern->setCommonChoiceWithMax( arithm );
+//							PTR(RDOFUNArithm) arithm = new RDOFUNArithm(PARSER, 1, @2);
+//							arithm->setSrcPos(@2);
+//							arithm->setSrcText(_T("first"));
+//							pattern->setCommonChoiceWithMax(arithm);
 						}
 					}
 					| pat_rel_res RDO_with_min fun_arithm {
-						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-						if ( pattern->getType() == RDOPATPattern::PT_IE ) {
-							PARSER->error().error( @2, "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
-						} else {
+						PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+						if (pattern->getType() == RDOPATPattern::PT_IE)
+						{
+							PARSER->error().error(@2, _T("В нерегулярном событии не используется способ выбора релевантных ресурсов"));
+						}
+						else
+						{
 							PTR(RDOFUNArithm) arithm = P_ARITHM($3);
-							arithm->setSrcPos( @2, @3 );
-							arithm->setSrcText( "with_min " + arithm->src_text() );
-							pattern->setCommonChoiceWithMin( arithm );
+							arithm->setSrcPos (@2, @3);
+							arithm->setSrcText(_T("with_min ") + arithm->src_text());
+							pattern->setCommonChoiceWithMin(arithm);
 						}
 					}
 					| pat_rel_res RDO_with_max fun_arithm {
-						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-						if ( pattern->getType() == RDOPATPattern::PT_IE ) {
-							PARSER->error().error( @2, "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
-						} else {
+						PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+						if (pattern->getType() == RDOPATPattern::PT_IE)
+						{
+							PARSER->error().error(@2, _T("В нерегулярном событии не используется способ выбора релевантных ресурсов"));
+						}
+						else
+						{
 							PTR(RDOFUNArithm) arithm = P_ARITHM($3);
-							arithm->setSrcPos( @2, @3 );
-							arithm->setSrcText( "with_max " + arithm->src_text() );
-							pattern->setCommonChoiceWithMax( arithm );
+							arithm->setSrcPos (@2, @3);
+							arithm->setSrcText(_T("with_max ") + arithm->src_text());
+							pattern->setCommonChoiceWithMax(arithm);
 						}
 					}
 					| pat_rel_res RDO_with_min error {
-						PARSER->error().error( @3, "Ошибка в арифметическом выражении" )
+						PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 					}
 					| pat_rel_res RDO_with_max error {
-						PARSER->error().error( @3, "Ошибка в арифметическом выражении" )
+						PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 					};
 
 pat_time:	pat_common_choice RDO_Body {
-				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				switch ( pattern->getType() ) {
+				PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+				switch (pattern->getType())
+				{
 					case RDOPATPattern::PT_IE       :
 					case RDOPATPattern::PT_Operation:
-					case RDOPATPattern::PT_Keyboard : {
-						PARSER->error().error( @2, "Перед $Body пропущено ключевое слово $Time" );
+					case RDOPATPattern::PT_Keyboard :
+						PARSER->error().error(@2, _T("Перед $Body пропущено ключевое слово $Time"));
 						break;
-					}
 				}
 			}
 			| pat_common_choice RDO_Time '=' fun_arithm RDO_Body {
-				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				switch ( pattern->getType() ) {
+				PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+				switch (pattern->getType())
+				{
 					case RDOPATPattern::PT_IE       :
 					case RDOPATPattern::PT_Operation:
 					case RDOPATPattern::PT_Keyboard : break;
-					case RDOPATPattern::PT_Rule     : {
-						PARSER->error().error( @2, "Поле $Time не используется в продукционном правиле" );
-//						getParser()->error( "Rule must have no $Time field" );
-					}
+					case RDOPATPattern::PT_Rule     :
+						PARSER->error().error(@2, _T("Поле $Time не используется в продукционном правиле"));
+//						getParser()->error(_T("Rule must have no $Time field"));
+						break;
 				}
 				PTR(RDOFUNArithm) arithm = P_ARITHM($4);
-				arithm->setSrcPos( @2, @4 );
-				arithm->setSrcText( "$Time = " + arithm->src_text() );
-				pattern->setTime( arithm );
+				arithm->setSrcPos (@2, @4);
+				arithm->setSrcText(_T("$Time = ") + arithm->src_text());
+				pattern->setTime(arithm);
 			}
 			| pat_common_choice RDO_Time '=' fun_arithm error {
-				PARSER->error().error( @4, @5, "Ожидается ключевое слово $Body" );
+				PARSER->error().error(@4, @5, _T("Ожидается ключевое слово $Body"));
 			}
 			| pat_common_choice RDO_Time '=' error {
-				PARSER->error().error( @4, "Ошибка в арифметическом выражении" )
+				PARSER->error().error(@4, _T("Ошибка в арифметическом выражении"));
 			}
 			| pat_common_choice RDO_Time error {
-				PARSER->error().error( @2, @3, "После ключевого слова $Time ожидается знак равенства" )
+				PARSER->error().error(@2, @3, _T("После ключевого слова $Time ожидается знак равенства"));
 			}
 			| pat_common_choice error {
-				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				switch ( pattern->getType() ) {
-					case RDOPATPattern::PT_Rule: {
-						PARSER->error().error( @2, rdo::format("Ожидается $Body, найдено: %s", LEXER->YYText()) );
+				PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+				switch (pattern->getType())
+				{
+					case RDOPATPattern::PT_Rule:
+						PARSER->error().error(@2, rdo::format(_T("Ожидается $Body, найдено: %s"), LEXER->YYText()));
 						break;
-					}
 					case RDOPATPattern::PT_IE       :
 					case RDOPATPattern::PT_Operation:
-					case RDOPATPattern::PT_Keyboard : {
-						PARSER->error().error( @2, rdo::format("Ожидается $Time, найдено: %s", LEXER->YYText()) );
+					case RDOPATPattern::PT_Keyboard :
+						PARSER->error().error(@2, rdo::format(_T("Ожидается $Time, найдено: %s"), LEXER->YYText()));
 						break;
-					}
 				}
 			};
 
 pat_body:	pat_time RDO_IDENTIF_RELRES {
-				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				tstring        name    = RDOVALUE($2)->getIdentificator();
-				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
+				PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+				tstring            name    = RDOVALUE($2)->getIdentificator();
+				pattern->addRelResBody(RDOParserSrcInfo(@2, name));
 			}
 			| pat_convert RDO_IDENTIF_RELRES {
-				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				tstring        name    = RDOVALUE($2)->getIdentificator();
-				pattern->addRelResBody( RDOParserSrcInfo( @2, name ) );
+				PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+				tstring            name    = RDOVALUE($2)->getIdentificator();
+				pattern->addRelResBody(RDOParserSrcInfo(@2, name));
 			}
 			| pat_time error {
-				tstring str( LEXER->YYText() );
-				PARSER->error().error( @2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()) );
+				tstring str(LEXER->YYText());
+				PARSER->error().error(@2, rdo::format(_T("Неизвестный релевантный ресурс: %s"), str.c_str()));
 			}
 			| pat_convert error {
-				tstring str( LEXER->YYText() );
-				PARSER->error().error( @2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()) );
+				tstring str(LEXER->YYText());
+				PARSER->error().error(@2, rdo::format(_T("Неизвестный релевантный ресурс: %s"), str.c_str()));
 			};
 
 pat_res_usage:	pat_body pat_choice pat_order {
-					RDOPATChoiceFrom* choice_from = reinterpret_cast<RDOPATChoiceFrom*>($2);
-					choice_from->setSrcPos( @2 );
-					RDOPATChoiceOrder* choice_order = reinterpret_cast<RDOPATChoiceOrder*>($3);
-					choice_order->setSrcPos( @3 );
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					pattern->addRelResUsage( choice_from, choice_order );
+					PTR(RDOPATChoiceFrom) choice_from = reinterpret_cast<PTR(RDOPATChoiceFrom)>($2);
+					choice_from->setSrcPos(@2);
+					PTR(RDOPATChoiceOrder) choice_order = reinterpret_cast<PTR(RDOPATChoiceOrder)>($3);
+					choice_order->setSrcPos(@3);
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					pattern->addRelResUsage(choice_from, choice_order);
 				};
 
 pat_choice: /* empty */ {
 				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceEmpty;
-				$$ = (int) new RDOPATChoiceFrom( PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "Choice NoCheck" ), RDOPATChoiceFrom::ch_empty );
+				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_empty);
 			}
 			| pat_choice_nocheck {
-				$$ = (int) new RDOPATChoiceFrom( PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "Choice NoCheck" ), RDOPATChoiceFrom::ch_nocheck );
+				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_nocheck);
 			}
 			| pat_choice_from fun_logic {
-				RDOFUNLogic* logic = P_LOGIC($2);
-				$$ = (int) new RDOPATChoiceFrom( PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "Choice from " + logic->src_text() ), RDOPATChoiceFrom::ch_from, logic );
+				PTR(RDOFUNLogic) logic = P_LOGIC($2);
+				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("Choice from ") + logic->src_text()), RDOPATChoiceFrom::ch_from, logic);
 			}
 			| pat_choice_from error {
-				PARSER->error().error( @2, "Ошибка в логическом выражении" );
+				PARSER->error().error(@2, _T("Ошибка в логическом выражении"));
 			};
 
 pat_choice_nocheck: RDO_Choice RDO_NoCheck {
@@ -887,24 +930,24 @@ pat_choice_from: RDO_Choice RDO_from {
 
 pat_order:	/* empty */ {
 				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderEmpty;
-				$$ = (int) new RDOPATChoiceOrder( PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(), rdoRuntime::RDOSelectResourceCalc::order_empty );
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(), rdoRuntime::RDOSelectResourceCalc::order_empty);
 			}
 			| pat_choice_first {
-				$$ = (int) new RDOPATChoiceOrder( PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "first" ), rdoRuntime::RDOSelectResourceCalc::order_first );
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("first")), rdoRuntime::RDOSelectResourceCalc::order_first);
 			}
 			| pat_choice_with_min fun_arithm {
 				PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-				$$ = (int) new RDOPATChoiceOrder( PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "with_min " + arithm->src_text() ), rdoRuntime::RDOSelectResourceCalc::order_with_min, arithm );
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("with_min ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_min, arithm);
 			}
 			| pat_choice_with_max fun_arithm {
 				PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-				$$ = (int) new RDOPATChoiceOrder( PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "with_max " + arithm->src_text() ), rdoRuntime::RDOSelectResourceCalc::order_with_max, arithm );
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("with_max ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_max, arithm);
 			}
 			| pat_choice_with_min error {
-				PARSER->error().error( @2, "Ошибка в арифметическом выражении" )
+				PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 			}
 			| pat_choice_with_max error {
-				PARSER->error().error( @2, "Ошибка в арифметическом выражении" )
+				PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 			};
 
 pat_choice_first: RDO_first {
@@ -920,108 +963,127 @@ pat_choice_with_max: RDO_with_max {
 			};
 
 pat_convert:	pat_res_usage {
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					RDORelevantResource* rel_res = pattern->currRelRes;
+					PTR(RDOPATPattern)       pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					PTR(RDORelevantResource) rel_res = pattern->currRelRes;
 					tstring str;
-					if ( rel_res->choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty ) {
-						str = "Сразу после ключевого слова " + rel_res->choice_order->asString();
-					} else if ( rel_res->choice_from->type != RDOPATChoiceFrom::ch_empty ) {
-						str = "Сразу после условия выбора";
-					} else {
-						str = "Сразу после имени";
+					if (rel_res->choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty)
+					{
+						str = _T("Сразу после ключевого слова ") + rel_res->choice_order->asString();
 					}
-					if ( rel_res->begin != rdoRuntime::RDOResource::CS_NoChange && rel_res->begin != rdoRuntime::RDOResource::CS_Erase && rel_res->begin != rdoRuntime::RDOResource::CS_NonExist ) {
-						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
-							case RDOPATPattern::PT_Rule     : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
+					else if (rel_res->choice_from->type != RDOPATChoiceFrom::ch_empty)
+					{
+						str = _T("Сразу после условия выбора");
+					}
+					else
+					{
+						str = _T("Сразу после имени");
+					}
+					if (rel_res->begin != rdoRuntime::RDOResource::CS_NoChange && rel_res->begin != rdoRuntime::RDOResource::CS_Erase && rel_res->begin != rdoRuntime::RDOResource::CS_NonExist)
+					{
+						switch (pattern->getType())
+						{
+							case RDOPATPattern::PT_IE       : PARSER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
+							case RDOPATPattern::PT_Rule     : PARSER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
 						}
-//						PARSER->error().error( "Converter needed for \"" + *rel_res->name() + "\" relevant resource in pattern \"" + getName() + "\"" );
+//						PARSER->error().error(_T("Converter needed for \"") + *rel_res->name() + _T("\" relevant resource in pattern \"") + getName() + _T("\""));
 					}
-					if ( rel_res->end != rdoRuntime::RDOResource::CS_NoChange && rel_res->end != rdoRuntime::RDOResource::CS_Erase && rel_res->end != rdoRuntime::RDOResource::CS_NonExist ) {
-						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : PARSER->error().error( @1, "Внутренняя ошибка" ); break;
-							case RDOPATPattern::PT_Rule     : PARSER->error().error( @1, "Внутренняя ошибка" ); break;
+					if (rel_res->end != rdoRuntime::RDOResource::CS_NoChange && rel_res->end != rdoRuntime::RDOResource::CS_Erase && rel_res->end != rdoRuntime::RDOResource::CS_NonExist)
+					{
+						switch (pattern->getType())
+						{
+							case RDOPATPattern::PT_IE       : PARSER->error().error(@1, _T("Внутренняя ошибка")); break;
+							case RDOPATPattern::PT_Rule     : PARSER->error().error(@1, _T("Внутренняя ошибка")); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error().error( @1, rdo::format("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText()) ); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
 						}
 					}
 				}
 				| pat_res_usage convert_begin pat_trace pat_params_set {
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
-						tstring type = "";
-						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
-							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
+					{
+						tstring type = _T("");
+						switch (pattern->getType())
+						{
+							case RDOPATPattern::PT_IE       : type = _T("нерегулярном событии");  break;
+							case RDOPATPattern::PT_Rule     : type = _T("продукционном правиле"); break;
 						}
-						PARSER->error().error( @2, rdo::format("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
+						PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
-					par_set->setSrcPos( @4 );
-					static_cast<RDOPatternOperation*>(pattern)->addRelResConvertBeginEnd( $3 != 0, par_set, false, NULL, @2, @2, @3, @3 );
+					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($4);
+					par_set->setSrcPos(@4);
+					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, par_set, false, NULL, @2, @2, @3, @3);
 				}
 				| pat_res_usage pat_params_set convert_end pat_trace pat_params_set {
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
-						tstring type = "";
-						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
-							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
+					{
+						tstring type = _T("");
+						switch (pattern->getType())
+						{
+							case RDOPATPattern::PT_IE       : type = _T("нерегулярном событии");  break;
+							case RDOPATPattern::PT_Rule     : type = _T("продукционном правиле"); break;
 						}
-						PARSER->error().error( @3, rdo::format("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
+						PARSER->error().error(@3, rdo::format(_T("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
 					pattern->currRelRes->deleteParamSetBegin();
-					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($5);
-					par_set->setSrcPos( @5 );
-					static_cast<RDOPatternOperation*>(pattern)->addRelResConvertBeginEnd( false, NULL, $4 != 0, par_set, @3, @3, @4, @4 );
+					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($5);
+					par_set->setSrcPos(@5);
+					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd(false, NULL, $4 != 0, par_set, @3, @3, @4, @4);
 				}
 				| pat_res_usage convert_begin pat_trace pat_params_set convert_end pat_trace pat_params_set {
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
-						tstring type = "";
-						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
-							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
+					{
+						tstring type = _T("");
+						switch (pattern->getType())
+						{
+							case RDOPATPattern::PT_IE       : type = _T("нерегулярном событии");  break;
+							case RDOPATPattern::PT_Rule     : type = _T("продукционном правиле"); break;
 						}
-						PARSER->error().error( @2, rdo::format("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
+						PARSER->error().error(@2, rdo::format(_T("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					RDOPATParamSet* par_set_begin = reinterpret_cast<RDOPATParamSet*>($4);
-					par_set_begin->setSrcPos( @4 );
-					RDOPATParamSet* par_set_end = reinterpret_cast<RDOPATParamSet*>($7);
-					par_set_end->setSrcPos( @7 );
-					static_cast<RDOPatternOperation*>(pattern)->addRelResConvertBeginEnd( $3 != 0, par_set_begin, $6 != 0, par_set_end, @2, @5, @3, @6 );
+					PTR(RDOPATParamSet) par_set_begin = reinterpret_cast<PTR(RDOPATParamSet)>($4);
+					PTR(RDOPATParamSet) par_set_end   = reinterpret_cast<PTR(RDOPATParamSet)>($7);
+					par_set_begin->setSrcPos(@4);
+					par_set_end->setSrcPos(@7);
+					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, par_set_begin, $6 != 0, par_set_end, @2, @5, @3, @6);
 				}
 				| pat_res_usage convert_rule pat_trace pat_params_set {
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getType() != RDOPATPattern::PT_Rule ) {
-						tstring type = "";
-						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
-							case RDOPATPattern::PT_Operation: type = "операции"; break;
-							case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					if (pattern->getType() != RDOPATPattern::PT_Rule)
+					{
+						tstring type = _T("");
+						switch (pattern->getType())
+						{
+							case RDOPATPattern::PT_IE       : type = _T("нерегулярном событии");  break;
+							case RDOPATPattern::PT_Operation: type = _T("операции");              break;
+							case RDOPATPattern::PT_Keyboard : type = _T("клавиатурной операции"); break;
 						}
-						PARSER->error().error( @2, rdo::format("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
+						PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
-					par_set->setSrcPos( @4 );
-					pattern->addRelResConvert( $3 != 0, par_set, @2, @3 );
+					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($4);
+					par_set->setSrcPos(@4);
+					pattern->addRelResConvert($3 != 0, par_set, @2, @3);
 				}
 				| pat_res_usage convert_event pat_trace pat_params_set {
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getType() != RDOPATPattern::PT_IE ) {
-						tstring type = "";
-						switch ( pattern->getType() ) {
-							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
-							case RDOPATPattern::PT_Operation: type = "операции"; break;
-							case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
+					if (pattern->getType() != RDOPATPattern::PT_IE)
+					{
+						tstring type = _T("");
+						switch (pattern->getType())
+						{
+							case RDOPATPattern::PT_Rule     : type = _T("продукционном правиле"); break;
+							case RDOPATPattern::PT_Operation: type = _T("операции");              break;
+							case RDOPATPattern::PT_Keyboard : type = _T("клавиатурной операции"); break;
 						}
-						PARSER->error().error( @2, rdo::format("Ключевое слово Convert_event может быть использовано в нерегулярном событии, но не в %s '%s'", type.c_str(), pattern->name().c_str()) );
+						PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в нерегулярном событии, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
-					par_set->setSrcPos( @4 );
-					pattern->addRelResConvert( $3 != 0, par_set, @2, @3 );
+					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($4);
+					par_set->setSrcPos(@4);
+					pattern->addRelResConvert($3 != 0, par_set, @2, @3);
 				};
 
 convert_rule:	RDO_Convert_rule {
@@ -1056,12 +1118,12 @@ pat_params_set:	/* empty */	{
 					paramSet->addSet(paramName, @2, equalType, rightArithm);
 				}
 				| pat_params_set RDO_IDENTIF param_equal_type error {
-					PARSER->error().error(@4, "Ошибка в арифметическом выражении")
+					PARSER->error().error(@4, _T("Ошибка в арифметическом выражении"));
 				}
 				|	pat_params_set RDO_IDENTIF_NoChange {
-					PTR(RDOPATParamSet) paramSet  = reinterpret_cast<PTR(RDOPATParamSet)>($1);
-					tstring             paramName = RDOVALUE($2)->getIdentificator();
-					YYLTYPE paramNamePos = @2;
+					PTR(RDOPATParamSet) paramSet     = reinterpret_cast<PTR(RDOPATParamSet)>($1);
+					tstring             paramName    = RDOVALUE($2)->getIdentificator();
+					YYLTYPE             paramNamePos = @2;
 					paramNamePos.last_line   = paramNamePos.first_line;
 					paramNamePos.last_column = paramNamePos.first_column + paramName.length();
 					paramSet->addSet(paramName, paramNamePos, rdoRuntime::ET_NOCHANGE, NULL);
@@ -1089,7 +1151,7 @@ param_equal_type: RDO_set {
 param_set_right_value: fun_arithm;
 
 pat_pattern:	pat_convert RDO_End {
-					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
+					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
 					pattern->end();
 				};
 
@@ -1483,42 +1545,42 @@ fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == A
 			| '[' fun_logic ']'
 			{
 				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				logic->setSrcPos( @1, @3 );
-				logic->setSrcText( "[" + logic->src_text() + "]" );
+				logic->setSrcPos (@1, @3);
+				logic->setSrcText(_T("[") + logic->src_text() + _T("]"));
 				$$ = $2;
 			}
 			| '(' fun_logic ')'
 			{
 				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				logic->setSrcPos( @1, @3 );
-				logic->setSrcText( "(" + logic->src_text() + ")" );
+				logic->setSrcPos (@1, @3);
+				logic->setSrcText(_T("(") + logic->src_text() + _T(")"));
 				$$ = $2;
 			}
 			| RDO_not fun_logic
 			{
 				PTR(RDOFUNLogic) logic = P_LOGIC($2);
 				PTR(RDOFUNLogic) logic_not = logic->operator_not();
-				logic_not->setSrcPos( @1, @2 );
-				logic_not->setSrcText( "not " + logic->src_text() );
+				logic_not->setSrcPos (@1, @2);
+				logic_not->setSrcText(_T("not ") + logic->src_text());
 				$$ = (int)logic_not;
 			}
 			| '[' fun_logic error {
-				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 			}
 			| '(' fun_logic error {
-				PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 			};
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm:	  RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm( PARSER, RDOVALUE($1) ); }
-			| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm( PARSER, RDOVALUE($1) ); }
-			| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm( PARSER, RDOVALUE($1) ); }
-			| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm( PARSER, RDOVALUE($1) ); }
-			| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm( PARSER, RDOVALUE($1) ); }
-			| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm( PARSER, RDOVALUE($1), RDOVALUE($3) ); }
-			| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm( PARSER, RDOVALUE($1), RDOVALUE($3) ); }
+fun_arithm:	  RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+			| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+			| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+			| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+			| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+			| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
+			| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
 			| fun_arithm '+' fun_arithm		     { $$ = (int)(ARITHM($1) + ARITHM($3)); }
 			| fun_arithm '-' fun_arithm		     { $$ = (int)(ARITHM($1) - ARITHM($3)); }
 			| fun_arithm '*' fun_arithm		     { $$ = (int)(ARITHM($1) * ARITHM($3)); }
@@ -1528,62 +1590,62 @@ fun_arithm:	  RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm( P
 			| '(' fun_arithm ')'
 			{
 				PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-				arithm->setSrcPos( @1, @3 );
-				arithm->setSrcText( "(" + arithm->src_text() + ")" );
+				arithm->setSrcPos (@1, @3);
+				arithm->setSrcText(_T("(") + arithm->src_text() + _T(")"));
 				$$ = $2;
 			}
 			| '-' fun_arithm %prec RDO_UMINUS
 			{
 				RDOParserSrcInfo info;
-				info.setSrcPos( @1, @2 );
-				info.setSrcText( "-" + ARITHM($2).src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus( RUNTIME, ARITHM($2).createCalc() ) );
+				info.setSrcPos (@1, @2);
+				info.setSrcText(_T("-") + ARITHM($2).src_text());
+				$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus(RUNTIME, ARITHM($2).createCalc()));
 			};
 
 // ----------------------------------------------------------------------------
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
-							PTR(RDOFUNParams) fun = new RDOFUNParams( PARSER );
+							PTR(RDOFUNParams) fun = new RDOFUNParams(PARSER);
 							tstring fun_name = RDOVALUE($1)->getIdentificator();
-							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
-							fun->setSrcPos( @1, @3 );
-							fun->setSrcText( fun_name + "()" );
-							PTR(RDOFUNArithm) arithm = fun->createCall( fun_name );
+							fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
+							fun->setSrcPos (@1, @3);
+							fun->setSrcText(fun_name + _T("()"));
+							PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
 							$$ = (int)arithm;
 						}
 						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
-							PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($3);
-							tstring fun_name = RDOVALUE($1)->getIdentificator();
-							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
-							fun->setSrcPos( @1, @4 );
-							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
-							PTR(RDOFUNArithm) arithm = fun->createCall( fun_name );
+							PTR(RDOFUNParams) fun      = reinterpret_cast<PTR(RDOFUNParams)>($3);
+							tstring           fun_name = RDOVALUE($1)->getIdentificator();
+							fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
+							fun->setSrcPos (@1, @4);
+							fun->setSrcText(fun_name + _T("(") + fun->src_text() + _T(")"));
+							PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
 							$$ = (int)arithm;
 						}
 						| RDO_IDENTIF '(' error {
-							PARSER->error().error( @3, "Ошибка в параметрах функции" );
+							PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
 						};
 
 fun_arithm_func_call_pars:	fun_arithm {
-								PTR(RDOFUNParams) fun = new RDOFUNParams( PARSER );
+								PTR(RDOFUNParams) fun    = new RDOFUNParams(PARSER);
 								PTR(RDOFUNArithm) arithm = P_ARITHM($1);
-								fun->setSrcText( arithm->src_text() );
-								fun->addParameter( arithm );
+								fun->setSrcText  (arithm->src_text());
+								fun->addParameter(arithm);
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars ',' fun_arithm {
 								PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($1);
 								PTR(RDOFUNArithm) arithm = P_ARITHM($3);
-								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
-								fun->addParameter( arithm );
+								fun->setSrcText  (fun->src_text() + _T(", ") + arithm->src_text());
+								fun->addParameter(arithm);
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars error {
-								PARSER->error().error( @2, "Ошибка в арифметическом выражении" );
+								PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 							}
 							| fun_arithm_func_call_pars ',' error {
-								PARSER->error().error( @3, "Ошибка в арифметическом выражении" );
+								PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 							};
 
 // ----------------------------------------------------------------------------
@@ -1595,37 +1657,37 @@ fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						PTR(RDOValue) type_name  = P_RDOVALUE($3);
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info() ));
+						PTR(RDOValue) type_name = P_RDOVALUE($3);
+						$$ = (int)(new RDOFUNGroupLogic(PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
 					}
 					| fun_group_keyword '(' error {
-						PARSER->error().error( @3, "Ожидается имя типа" );
+						PARSER->error().error(@3, _T("Ожидается имя типа"));
 					}
 					| fun_group_keyword error {
-						PARSER->error().error( @1, "После имени функции ожидается октрывающаяся скобка" );
+						PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
-						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
-						groupfun->setSrcPos( @1, @3 );
-						$$ = (int)groupfun->createFunLogic( P_LOGIC($2) );
+						PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
+						groupfun->setSrcPos(@1, @3);
+						$$ = (int)groupfun->createFunLogic(P_LOGIC($2));
 					}
 					| fun_group_header RDO_NoCheck ')' {
-						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
-						groupfun->setSrcPos( @1, @3 );
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( RUNTIME, 1 ) );
-						trueLogic->setSrcPos( @2 );
-						trueLogic->setSrcText( "NoCheck" );
-						$$ = (int)groupfun->createFunLogic( trueLogic );
+						PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
+						groupfun->setSrcPos(@1, @3);
+						PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, new rdoRuntime::RDOCalcConst(RUNTIME, 1));
+						trueLogic->setSrcPos (@2);
+						trueLogic->setSrcText(_T("NoCheck"));
+						$$ = (int)groupfun->createFunLogic(trueLogic);
 					}
 					| fun_group_header fun_logic error {
-						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 					}
 					| fun_group_header RDO_NoCheck error {
-						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 					}
 					| fun_group_header error {
-						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
 					};
 
 // ----------------------------------------------------------------------------
@@ -1633,40 +1695,40 @@ fun_group:			fun_group_header fun_logic ')' {
 // ----------------------------------------------------------------------------
 fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
 						PTR(RDOValue) type_name  = P_RDOVALUE($3);
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
-						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
+						PTR(RDOFUNSelect) select = new RDOFUNSelect(PARSER, type_name->src_info());
+						select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
 						$$ = (int)select;
 					}
 					| RDO_Select '(' error {
-						PARSER->error().error( @3, "Ожидается имя типа" );
+						PARSER->error().error(@3, _T("Ожидается имя типа"));
 					}
 					| RDO_Select error {
-						PARSER->error().error( @1, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						RDOFUNLogic*  flogic = P_LOGIC($2);
-						select->setSrcText( select->src_text() + flogic->src_text() + ")" );
-						select->initSelect( flogic );
+						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+						PTR(RDOFUNLogic)  flogic = P_LOGIC($2);
+						select->setSrcText(select->src_text() + flogic->src_text() + _T(")"));
+						select->initSelect(flogic);
 					}
 					| fun_select_header RDO_NoCheck ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						RDOParserSrcInfo logic_info(@2, "NoCheck");
-						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
-						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( RUNTIME, 1 );
-						RDOFUNLogic* flogic = new RDOFUNLogic( select, calc_nocheck, true );
-						flogic->setSrcInfo( logic_info );
-						select->initSelect( flogic );
+						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+						RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
+						select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
+						PTR(rdoRuntime::RDOCalcConst) calc_nocheck = new rdoRuntime::RDOCalcConst(RUNTIME, 1);
+						PTR(RDOFUNLogic)              flogic       = new RDOFUNLogic(select, calc_nocheck, true);
+						flogic->setSrcInfo(logic_info);
+						select->initSelect(flogic);
 					}
 					| fun_select_header fun_logic error {
-						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 					}
 					| fun_select_header RDO_NoCheck error {
-						PARSER->error().error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 					}
 					| fun_select_header error {
-						PARSER->error().error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
 					};
 
 fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -1675,49 +1737,49 @@ fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcPos( @1, @6 );
-						RDOFUNLogic* logic = select->createFunSelectGroup( (RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5) );
+						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+						select->setSrcPos(@1, @6);
+						PTR(RDOFUNLogic) logic = select->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5));
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' fun_select_keyword '(' error {
-						PARSER->error().error( @4, @5, "Ошибка в логическом выражении" )
+						PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
 					}
 					| fun_select_body '.' fun_select_keyword error {
-						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 					}
 					| fun_select_body '.' RDO_Empty '(' ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcPos( @1, @5 );
-						RDOParserSrcInfo empty_info(@3, @5, "Empty()");
-						RDOFUNLogic* logic = select->createFunSelectEmpty( empty_info );
+						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+						select->setSrcPos(@1, @5);
+						RDOParserSrcInfo empty_info(@3, @5, _T("Empty()"));
+						PTR(RDOFUNLogic) logic = select->createFunSelectEmpty(empty_info);
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' RDO_Empty '(' error {
-						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 					}
 					| fun_select_body '.' RDO_Empty error {
-						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 					}
 					| fun_select_body '.' error {
-						PARSER->error().error( @2, @3, "Ожидается метод списка ресурсов" );
+						PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
 					}
 					| fun_select_body error {
-						PARSER->error().error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
+						PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
 					};
 
 fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcPos( @1, @5 );
-						RDOParserSrcInfo size_info(@3, @5, "Size()");
-						PTR(RDOFUNArithm) arithm = select->createFunSelectSize( size_info );
+						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+						select->setSrcPos(@1, @5);
+						RDOParserSrcInfo size_info(@3, @5, _T("Size()"));
+						PTR(RDOFUNArithm) arithm = select->createFunSelectSize(size_info);
 						$$ = (int)arithm;
 					}
 					| fun_select_body '.' RDO_Size error {
-						PARSER->error().error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 					}
 					| fun_select_body '.' RDO_Size '(' error {
-						PARSER->error().error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 					};
 
 %%
