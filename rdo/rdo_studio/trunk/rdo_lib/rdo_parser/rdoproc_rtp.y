@@ -1,3 +1,12 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdoproc_rtp.y
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer
@@ -184,8 +193,10 @@
 
 
 %{
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
-
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
@@ -194,12 +205,12 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+// ===============================================================================
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %left RDO_or
@@ -223,4 +234,4 @@ dptrtp_main:
 
 %%
 
-}
+CLOSE_RDO_PARSER_NAMESPACE

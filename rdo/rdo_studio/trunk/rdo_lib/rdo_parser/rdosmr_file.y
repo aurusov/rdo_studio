@@ -1,3 +1,12 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdosmr_file.y
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer
@@ -184,17 +193,19 @@
 
 
 %{
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
-
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
+// ===============================================================================
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %start smr_main
@@ -294,4 +305,4 @@ smr_descr:	/* empty */
 
 %%
 
-}
+CLOSE_RDO_PARSER_NAMESPACE

@@ -1,3 +1,12 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdodpt.y
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer
@@ -184,20 +193,22 @@
 
 
 %{
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
-
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
+// ===============================================================================
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %left RDO_or
@@ -1173,4 +1184,4 @@ fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
 
 %%
 
-}
+CLOSE_RDO_PARSER_NAMESPACE

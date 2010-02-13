@@ -210,7 +210,6 @@
 #define RDOVALUE(A)   (*P_RDOVALUE(A))
 
 OPEN_RDO_PARSER_NAMESPACE
-
 %}
 
 %start type_list
