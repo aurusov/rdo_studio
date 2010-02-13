@@ -154,6 +154,32 @@ public:
 		return value;
 	}
 
+	typedef std::map<ruint, PTR(void)> MovementObjectList;
+
+	template<class T>
+	ruint push_movement(PTR(T) object)
+	{
+		ruint index = 0;
+		while (true)
+		{
+			if (m_movementObjectList.count(index) == 0)
+				break;
+			index++;
+		}
+		std::pair<MovementObjectList::iterator, rbool> result = m_movementObjectList.insert(std::pair(index, object));
+		ASSERT(result.second);
+		return index;
+	}
+	template<class T>
+	PTR(T) pop_movement(ruint index)
+	{
+		MovementObjectList::iterator it = m_movementObjectList.find(index);
+		ASSERT(it != m_movementObjectList.end());
+		PTR(T) object = reinterpret_cast<PTR(T)>(it->second);
+		m_movementObjectList.erase(it);
+		return object;
+	}
+
 	template<class T, class P1, class P2>
 	PTR(T) factory_type(CREF(P1) param1, CREF(P2) param2)
 	{
@@ -161,10 +187,18 @@ public:
 		m_typeList.push_back(pType);
 		return pType;
 	}
+	template<class T, class P1, class P2, class P3>
+	PTR(T) factory_type(CREF(P1) param1, CREF(P2) param2, CREF(P3) param3)
+	{
+		PTR(T) pType = new T(param1, param2, param3);
+		m_typeList.push_back(pType);
+		return pType;
+	}
 
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
+	static PTR(RDOParser)               s_parser      ();
 
 protected:
 	PTR(RDOParserItem) m_parser_item;
@@ -202,6 +236,7 @@ private:
 	rbool                  m_have_kw_ResourcesEnd;
 	Error                  m_error;
 	TypeList               m_typeList;
+	MovementObjectList     m_movementObjectList;
 
 	struct Changes
 	{

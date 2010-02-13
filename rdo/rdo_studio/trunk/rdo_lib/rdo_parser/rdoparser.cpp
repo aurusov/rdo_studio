@@ -95,6 +95,11 @@ ruint RDOParser::lexer_loc_pos()
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
+PTR(RDOParser) RDOParser::s_parser()
+{
+	return !s_parserStack.empty() ? s_parserStack.back() : NULL;
+}
+
 RDOParser::RDOParser()
 	: m_parsing_object      (NULL )
 	, m_parser_item         (NULL )
@@ -112,6 +117,13 @@ RDOParser::~RDOParser()
 	m_runtime.deinit();
 	rdo::deleteAllObjects(m_allValues);
 	rdo::deleteAllObjects(m_typeList );
+
+	STL_FOR_ALL(MovementObjectList, m_movementObjectList, it)
+	{
+		delete it->second;
+	}
+	m_movementObjectList.clear();
+
 	DeletableList::reverse_iterator it = m_allDeletables.rbegin();
 	while (it != m_allDeletables.rend())
 	{
