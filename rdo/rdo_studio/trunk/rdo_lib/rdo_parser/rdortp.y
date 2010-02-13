@@ -375,7 +375,7 @@ fuzzy_membershift_fun: /* empty */ {
 						RDORTPFuzzyMembershiftFun* fun = new RDORTPFuzzyMembershiftFun( PARSER );
 						$$ = (int)fun;
 					}
-					| fuzzy_membershift_fun membershift_point 
+					| fuzzy_membershift_fun membershift_point {					
 						RDORTPFuzzyMembershiftFun*   fun   = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
 						RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
 						fun->add( point );
@@ -383,30 +383,30 @@ fuzzy_membershift_fun: /* empty */ {
 						//Задание функции принадлежности точками - вершинами ломанных кривых
 					};
 
-membershift_point:	'(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' 
+membershift_point:	'(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
-					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' 
+					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {					
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
-					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {
+					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {					
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
-					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' 
+					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' {					
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
-					};
+					};							
 
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
