@@ -249,44 +249,46 @@ rtp_header:			RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 						$$ = (int)rtp;
 					}
 					|	RDO_Resource_type RDO_IDENTIF_COLON RDO_IDENTIF_COLON rtp_vid_res
+					{
+						LEXER->enumReset();
+						RDOValue*            type_name = reinterpret_cast<RDOValue*>($2);
+						std::string          name      = type_name->value().getIdentificator();
+						const RDORTPResType* _rtp      = PARSER->findRTPResType( name );
+						if ( _rtp )
 						{
-							LEXER->m_enum_param_cnt = 0;
-							RDOValue*            type_name = reinterpret_cast<RDOValue*>($2);
-							std::string          name      = type_name->value().getIdentificator();
-							const RDORTPResType* _rtp      = PARSER->findRTPResType( name );
-							if ( _rtp ) {
-								PARSER->error_push_only( type_name->src_info(), rdo::format("Тип ресурса уже существует: %s", name.c_str()) );
-								PARSER->error_push_only( _rtp->src_info(), "См. первое определение" );
-								PARSER->error_push_done();
-							}
-							
-							RDOValue*            prnt_type_name = reinterpret_cast<RDOValue*>($3);
-							std::string          prnt_name      = prnt_type_name->value().getIdentificator();
-							const RDORTPResType* _rtp_prnt      = PARSER->findRTPResType( prnt_name );
-
-							if ( _rtp_prnt ) {
-								RDORTPResType* rtp = new RDORTPResType( PARSER, type_name->src_info(), $4 != 0 );						
-								rsint t_ind=0, col_par=_rtp_prnt->getParams().size();
-								while (t_ind<col_par)
-									{
-									rtp->addParam(_rtp_prnt->getParams()[t_ind]);
-									PARSER->warning( rdo::format("Параметр %s передан от родителя %s потомку %s", _rtp_prnt->getParams()[t_ind]->src_info().src_text().c_str(), prnt_name.c_str(),name.c_str()) );
-									t_ind=t_ind+1;
-									}								
-								$$ = (int)rtp;							
-								PARSER->warning(   rdo::format("Тип ресурса %s является потомком типа ресурса %s", name.c_str(), prnt_name.c_str()) );
-								}
-							else {
-								PARSER->error_push_only( rdo::format("Родительский тип ресурса не существует: %s", prnt_name.c_str()) );
-								PARSER->error_push_done();
-								}
+							PARSER->error().push_only( type_name->src_info(), rdo::format("Тип ресурса уже существует: %s", name.c_str()) );
+							PARSER->error().push_only( _rtp->src_info(), "См. первое определение" );
+							PARSER->error().push_done();
 						}
+						RDOValue*            prnt_type_name = reinterpret_cast<RDOValue*>($3);
+						std::string          prnt_name      = prnt_type_name->value().getIdentificator();
+						const RDORTPResType* _rtp_prnt      = PARSER->findRTPResType( prnt_name );
 
+						if ( _rtp_prnt )
+						{
+							RDORTPResType* rtp = new RDORTPResType( PARSER, type_name->src_info(), $4 != 0 );
+							ruint t_ind   = 0;
+							ruint col_par = _rtp_prnt->getParams().size();
+							while (t_ind < col_par)
+							{
+								rtp->addParam(_rtp_prnt->getParams()[t_ind]);
+								PARSER->error().warning(_rtp_prnt->getParams()[t_ind]->src_info(), rdo::format("Параметр %s передан от родителя %s потомку %s", _rtp_prnt->getParams()[t_ind]->src_info().src_text().c_str(), prnt_name.c_str(), name.c_str()) );
+								t_ind++;
+							}
+							$$ = (int)rtp;
+							PARSER->error().warning(@2, rdo::format("Тип ресурса %s является потомком типа ресурса %s", name.c_str(), prnt_name.c_str()) );
+						}
+						else
+						{
+							PARSER->error().push_only(@3, rdo::format("Родительский тип ресурса не существует: %s", prnt_name.c_str()) );
+							PARSER->error().push_done();
+						}
+					}
 					| RDO_Resource_type RDO_IDENTIF_COLON error {
 						PARSER->error().error( @2, "Не указан вид ресурса" );
 					}
 					| RDO_Resource_type RDO_IDENTIF_COLON RDO_IDENTIF_COLON error {
-						PARSER->error( @2, "Не указан вид ресурса" );
+						PARSER->error().error( @3, "Не указан вид ресурса" );
 					}
 					| RDO_Resource_type error {
 						std::string str( LEXER->YYText() );
