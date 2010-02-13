@@ -12,8 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type.h"
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
 // ===============================================================================
@@ -23,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnum
 // ----------------------------------------------------------------------------
-class RDORTPEnum: public RDOType, public RDOParserObject, public RDOParserSrcInfo
+class RDORTPEnum: public RDOTypeParam
 {
 public:
 	RDORTPEnum(CPTR(RDOParserObject) parent, CREF(RDOValue) first);

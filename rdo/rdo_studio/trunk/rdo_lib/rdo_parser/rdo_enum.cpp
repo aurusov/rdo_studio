@@ -21,8 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- RDORTPEnum
 // ----------------------------------------------------------------------------
 RDORTPEnum::RDORTPEnum(CPTR(RDOParserObject) parent, CREF(RDOValue) first)
-	: RDOType        (rdoRuntime::g_unknow)
-	, RDOParserObject(parent              )
+	: RDOTypeParam(rdoRuntime::g_unknow, parent, RDOParserSrcInfo())
 {
 	m_type = new rdoRuntime::RDOEnumType(parser()->runtime());
 	add(first);
