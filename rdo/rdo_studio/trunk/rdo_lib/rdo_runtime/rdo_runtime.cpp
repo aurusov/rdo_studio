@@ -20,24 +20,33 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
-RDORuntime::RDORuntime():
-	RDOSimulatorTrace(),
-	m_currActivity( NULL ),
-	results( NULL ),
-	results_info( NULL ),
-	lastActiveBreakPoint( NULL ),
-	whyStop( rdoSimulator::EC_OK ),
-	key_found( false ),
-	m_currentTerm( 0 )
+RDORuntime::RDORuntime()
+	: RDOSimulatorTrace   (                   )
+	, m_currActivity      (NULL               )
+	, results             (NULL               )
+	, results_info        (NULL               )
+	, lastActiveBreakPoint(NULL               )
+	, whyStop             (rdoSimulator::EC_OK)
+	, key_found           (false              )
+	, m_currentTerm       (0                  )
 {
-	m_parent = NULL;
+	m_parent        = NULL;
 	detach();
 	terminateIfCalc = NULL;
 }
 
 RDORuntime::~RDORuntime()
+{}
+
+void RDORuntime::init()
+{
+	memory_insert(sizeof(rdoRuntime::RDORuntime));
+}
+
+void RDORuntime::deinit()
 {
 	m_connected.clear();
+	deleteObjects();
 	onDestroy();
 }
 

@@ -154,6 +154,14 @@ public:
 		return value;
 	}
 
+	template<class T, class P1, class P2>
+	PTR(T) factory_type(CREF(P1) param1, CREF(P2) param2)
+	{
+		PTR(T) pType = new T(param1, param2);
+		m_typeList.push_back(pType);
+		return pType;
+	}
+
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
@@ -186,11 +194,14 @@ protected:
 	void parse(rdoModelObjects::RDOParseType file);
 
 private:
+	typedef std::list<PTR(RDOType)> TypeList;
+
 	PTR(RDOParserObject)   m_parsing_object;
 	PTR(RDOSMR)            m_smr;
 	rbool                  m_have_kw_Resources;
 	rbool                  m_have_kw_ResourcesEnd;
 	Error                  m_error;
+	TypeList               m_typeList;
 
 	struct Changes
 	{

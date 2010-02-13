@@ -71,6 +71,9 @@ public:
 	RDORuntime();
 	virtual ~RDORuntime();
 
+	void init  ();
+	void deinit();
+
 	typedef  std::vector<LPIPokaz>           LPIPokazList;
 	typedef  std::vector<LPIPokazTrace>      LPIPokazTraceList;
 	typedef  std::vector<LPIPokazWatchValue> LPIPokazWatchValueList;

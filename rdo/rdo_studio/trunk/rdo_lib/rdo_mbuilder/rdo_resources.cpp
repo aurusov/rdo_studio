@@ -239,7 +239,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 				{
 					if (!pEnum)
 					{
-						pEnum = new rdoParse::RDORTPEnum(pRTP, rdoParse::RDOValue::getIdentificator(*enum_it));
+						pEnum = m_parser->factory_type<rdoParse::RDORTPEnum>(pRTP, rdoParse::RDOValue::getIdentificator(*enum_it));
 					}
 					else
 					{

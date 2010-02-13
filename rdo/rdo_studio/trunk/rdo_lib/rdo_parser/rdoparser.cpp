@@ -104,12 +104,14 @@ RDOParser::RDOParser()
 {
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));
-	m_runtime.memory_insert(sizeof(rdoRuntime::RDORuntime));
+	m_runtime.init();
 }
 
 RDOParser::~RDOParser()
 {
+	m_runtime.deinit();
 	rdo::deleteAllObjects(m_allValues);
+	rdo::deleteAllObjects(m_typeList );
 	DeletableList::reverse_iterator it = m_allDeletables.rbegin();
 	while (it != m_allDeletables.rend())
 	{
