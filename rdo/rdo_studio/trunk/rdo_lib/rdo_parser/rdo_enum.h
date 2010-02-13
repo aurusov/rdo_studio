@@ -25,7 +25,7 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDORTPEnum: public RDOTypeParam
 {
 public:
-	RDORTPEnum(CPTR(RDOParserObject) parent, CREF(RDOValue) first);
+	RDORTPEnum(CREF(RDOValue) first);
 	virtual ~RDORTPEnum();
 
 	void add(CREF(RDOValue) next);

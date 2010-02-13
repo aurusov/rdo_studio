@@ -23,16 +23,25 @@ class RDOTypeRange;
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-class RDOTypeParam: public RDOType, public RDOParserObject, public RDOParserSrcInfo
+class RDOTypeParam: public RDOType, public RDOParserSrcInfo
 {
 public:
-	RDOTypeParam(CREF(rdoRuntime::RDOType) type, CPTR(RDOParserObject) parent, CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDOTypeParam();
-
 	CPTR(RDOTypeRange) range() const { return m_range; }
 
 protected:
+	RDOTypeParam(CREF(rdoRuntime::RDOType) type, CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOTypeParam();
+
 	PTR(RDOTypeRange) m_range;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOTypeParamInt
+// ----------------------------------------------------------------------------
+class RDOTypeParamInt: RDOTypeParam
+{
+public:
+	RDOTypeParamInt(PTR(RDOTypeRange) range, CREF(RDOParserSrcInfo) src_info);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

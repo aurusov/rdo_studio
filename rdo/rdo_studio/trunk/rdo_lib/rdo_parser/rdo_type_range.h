@@ -25,15 +25,13 @@ class RDOParser;
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeRange
 // ----------------------------------------------------------------------------
-class RDOTypeRange: public RDOParserObject, public RDOParserSrcInfo
+class RDOTypeRange: public RDOParserSrcInfo
 {
 public:
-	RDOTypeRange(PTR(RDOParser) parser);
-	RDOTypeRange(PTR(RDOParser) parser, CREF(RDOTypeRange) range);
-	RDOTypeRange(CREF(RDOTypeRange) range);
-	RDOTypeRange(PTR(RDOParser) parser, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeRange();
 
+	void           check  ();
 	rbool          isExist() const;
 	CREF(RDOValue) getMin () const;
 	CREF(RDOValue) getMax () const;
@@ -41,8 +39,6 @@ public:
 private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
-
-	void init();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

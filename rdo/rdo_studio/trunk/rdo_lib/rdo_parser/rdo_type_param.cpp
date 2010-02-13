@@ -20,13 +20,21 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-RDOTypeParam::RDOTypeParam(CREF(rdoRuntime::RDOType) type, CPTR(RDOParserObject) parent, CREF(RDOParserSrcInfo) src_info)
+RDOTypeParam::RDOTypeParam(CREF(rdoRuntime::RDOType) type, CREF(RDOParserSrcInfo) src_info)
 	: RDOType         (rdoRuntime::g_unknow)
-	, RDOParserObject (parent              )
 	, RDOParserSrcInfo(src_info            )
 {}
 
 RDOTypeParam::~RDOTypeParam()
 {}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOTypeParamInt
+// ----------------------------------------------------------------------------
+RDOTypeParamInt::RDOTypeParamInt(PTR(RDOTypeRange) range, CREF(RDOParserSrcInfo) src_info)
+	: RDOTypeParam(rdoRuntime::g_int, src_info)
+{
+	m_range = range;
+}
 
 CLOSE_RDO_PARSER_NAMESPACE

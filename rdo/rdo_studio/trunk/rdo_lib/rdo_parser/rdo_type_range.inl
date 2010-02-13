@@ -14,44 +14,22 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser)
-	: RDOParserObject (parser)
-	, RDOParserSrcInfo(      )
-{}
-
-inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser, CREF(RDOTypeRange) range)
-	: RDOParserObject (parser           )
-	, RDOParserSrcInfo(range.src_info() )
-	, m_min_value     (range.m_min_value)
-	, m_max_value     (range.m_max_value)
-{}
-
-inline RDOTypeRange::RDOTypeRange(CREF(RDOTypeRange) range)
-	: RDOParserObject (range.parser()   )
-	, RDOParserSrcInfo(range.src_info() )
-	, m_min_value     (range.m_min_value)
-	, m_max_value     (range.m_max_value)
-{}
-
-inline RDOTypeRange::RDOTypeRange(PTR(RDOParser) parser, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserObject (parser   )
-	, RDOParserSrcInfo(src_info )
+inline RDOTypeRange::RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info )
 	, m_min_value     (min_value)
 	, m_max_value     (max_value)
-{
-	init();
-}
+{}
 
 inline RDOTypeRange::~RDOTypeRange()
 {}
 
-inline void RDOTypeRange::init()
+inline void RDOTypeRange::check()
 {
 	if (isExist())
 	{
 		if (m_min_value.value() > m_max_value.value())
 		{
-			parser()->error().error(m_max_value.src_info(), _T("Ћева€ граница диапазона должна быть меньше правой"));
+			RDOParser::s_parser()->error().error(m_max_value.src_info(), _T("Ћева€ граница диапазона должна быть меньше правой"));
 		}
 		setSrcText(rdo::format(_T("[%s..%s]"), m_min_value->getAsString().c_str(), m_max_value->getAsString().c_str()));
 	}

@@ -475,7 +475,6 @@ RDORTPEnumParamType::RDORTPEnumParamType( const RDOParserObject* _parent, RDORTP
 	enum_name( "" ),
 	enum_fun( false )
 {
-	m_enum->reparent( this );
 	m_dv->reparent( this );
 	init_src_info();
 	parser()->insertRTPEnumParamType( this );
