@@ -360,7 +360,7 @@ fuzzy_terms_list:	/* empty */ {
 						RDORTPFuzzyTermsSet* terms_set = reinterpret_cast<RDORTPFuzzyTermsSet*>($1);
 						RDORTPFuzzyTerm*     term      = reinterpret_cast<RDORTPFuzzyTerm*>($2);
 						terms_set->add( term );
-						$$ = $1;				
+						$$ = $1;
 					};
 
 fuzzy_term:			RDO_Fuzzy_Term RDO_IDENTIF {
@@ -368,45 +368,45 @@ fuzzy_term:			RDO_Fuzzy_Term RDO_IDENTIF {
 //						RDORTPFuzzyMembershiftFun* fuzzy_membershift_fun = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($3);
 //						RDORTPFuzzyTerm* fuzzy_term = new RDORTPFuzzyTerm( PARSER, param_name->src_info(), fuzzy_membershift_fun );
 //						fuzzy_membershift_fun->reparent( fuzzy_term );
-//						$$ = (int)fuzzy_term;				
+//						$$ = (int)fuzzy_term;
 					};
 
 fuzzy_membershift_fun: /* empty */ {
 						RDORTPFuzzyMembershiftFun* fun = new RDORTPFuzzyMembershiftFun( PARSER );
 						$$ = (int)fun;
 					}
-					| fuzzy_membershift_fun membershift_point {					
+					| fuzzy_membershift_fun membershift_point {
 						RDORTPFuzzyMembershiftFun*   fun   = reinterpret_cast<RDORTPFuzzyMembershiftFun*>($1);
 						RDORTPFuzzyMembershiftPoint* point = reinterpret_cast<RDORTPFuzzyMembershiftPoint*>($2);
 						fun->add( point );
-						$$ = $1;					
+						$$ = $1;
 						//Задание функции принадлежности точками - вершинами ломанных кривых
 					};
 
-membershift_point:	'(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {					
+membershift_point:	'(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' {
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
-					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {					
+					| '(' RDO_REAL_CONST ',' RDO_REAL_CONST ')' ',' {
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
-					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {					
+					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' {
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
 					}
-					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' {					
+					| '(' RDO_REAL_CONST ',' RDO_INT_CONST ')' ',' {
 						double x_value = RDOVALUE($2)->getDouble();
 						double y_value = RDOVALUE($4)->getDouble();
 						RDORTPFuzzyMembershiftPoint* fuzzy_membershift_point = new RDORTPFuzzyMembershiftPoint( PARSER, RDOParserSrcInfo( @1, @5 ), x_value, y_value);
 						$$ = (int)fuzzy_membershift_point;
-					};							
+					};
 
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
