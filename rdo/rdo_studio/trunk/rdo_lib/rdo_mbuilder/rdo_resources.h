@@ -7,7 +7,7 @@
 
 #include <list>
 #include "rdo_common/rdodebug.h"
-#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"

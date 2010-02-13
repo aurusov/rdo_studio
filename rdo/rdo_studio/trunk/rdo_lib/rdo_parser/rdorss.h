@@ -3,7 +3,7 @@
 
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 
 namespace rdoRuntime
 {
