@@ -15,7 +15,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdosingletone.h"
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"

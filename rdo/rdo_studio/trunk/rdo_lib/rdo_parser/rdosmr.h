@@ -2,7 +2,7 @@
 #define RDOSMR_H
 
 #include "rdo_common/rdocommon.h"
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 
 namespace rdoRuntime

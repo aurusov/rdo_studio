@@ -1,7 +1,7 @@
 #ifndef RDOPAT_PAT
 #define RDOPAT_PAT
 
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdocalc_relres.h"

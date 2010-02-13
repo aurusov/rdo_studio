@@ -15,7 +15,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 // ===============================================================================
 

@@ -448,6 +448,14 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\rdo_logic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_object.cpp"
+				>
+			</File>
+			<File
 				RelativePath="rdodpt.cpp"
 				>
 				<FileConfiguration
@@ -632,71 +640,6 @@
 			</File>
 			<File
 				RelativePath="rdoopr.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\rdoparser_logic.cpp"
-				>
-			</File>
-			<File
-				RelativePath="rdoparser_object.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -1069,6 +1012,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_logic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_object.h"
+				>
+			</File>
+			<File
 				RelativePath="rdodpt.h"
 				>
 			</File>
@@ -1082,14 +1033,6 @@
 			</File>
 			<File
 				RelativePath="rdoopr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdoparser_logic.h"
-				>
-			</File>
-			<File
-				RelativePath="rdoparser_object.h"
 				>
 			</File>
 			<File

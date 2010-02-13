@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_logic.cpp
+ * filename : rdo_logic.cpp
  * author   : Александ Барс, Урусов Андрей
  * date     : 
  * bref     : 
@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser_logic.h"
+#include "rdo_lib/rdo_parser/rdo_logic.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

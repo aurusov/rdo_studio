@@ -1,8 +1,8 @@
 #ifndef RDODPT_DPT
 #define RDODPT_DPT
 
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
-#include "rdo_lib/rdo_parser/rdoparser_logic.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdo_logic.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"

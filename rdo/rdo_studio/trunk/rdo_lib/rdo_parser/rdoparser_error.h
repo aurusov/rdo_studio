@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdoparser_logic.h"
+#include "rdo_lib/rdo_parser/rdo_logic.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

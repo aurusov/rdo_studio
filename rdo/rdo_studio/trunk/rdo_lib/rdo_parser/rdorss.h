@@ -1,7 +1,7 @@
 #ifndef RDORSS_RSS
 #define RDORSS_RSS
 
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdoruntime_object.h"
 

@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_logic.h
+ * filename : rdo_logic.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 
  * bref     : 
@@ -12,7 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
 // ===============================================================================

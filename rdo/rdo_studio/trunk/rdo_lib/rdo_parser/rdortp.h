@@ -1,7 +1,7 @@
 #ifndef RDORTP_H
 #define RDORTP_H
 
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_enum.h"

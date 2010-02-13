@@ -1,7 +1,7 @@
 #ifndef RDOFRM_H
 #define RDOFRM_H
 
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 
 namespace rdoParse
