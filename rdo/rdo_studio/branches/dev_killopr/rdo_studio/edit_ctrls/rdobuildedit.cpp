@@ -41,7 +41,7 @@ std::string RDOBuildEditLineInfo::getMessage() const
 		case rdoModelObjects::PAT: file = "PAT"; break;
 		case rdoModelObjects::RTP: file = "RTP"; break;
 		case rdoModelObjects::RSS: file = "RSS"; break;
-		case rdoModelObjects::OPR: file = "OPR"; break;
+//		case rdoModelObjects::OPR: file = "OPR"; break;
 		case rdoModelObjects::FRM: file = "FRM"; break;
 		case rdoModelObjects::FUN: file = "FUN"; break;
 		case rdoModelObjects::DPT: file = "DPT"; break;

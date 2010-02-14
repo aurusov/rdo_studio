@@ -965,7 +965,7 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::textstream& smr, rdoModelObjects:
 	} else {
 		info.model_name     = parser.getSMR()->getFile( "Model_name" );
 		info.resource_file  = parser.getSMR()->getFile( "Resource_file" );
-		info.oprIev_file    = parser.getSMR()->getFile( "OprIev_file" );
+//		info.oprIev_file    = parser.getSMR()->getFile( "OprIev_file" );
 		info.frame_file     = parser.getSMR()->getFile( "Frame_file" );
 		info.statistic_file = parser.getSMR()->getFile( "Statistic_file" );
 		info.results_file   = parser.getSMR()->getFile( "Results_file" );

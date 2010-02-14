@@ -124,7 +124,7 @@ rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) co
 		case  0: return rdoModelObjects::PAT;
 		case  1: return rdoModelObjects::RTP;
 		case  2: return rdoModelObjects::RSS;
-		case  3: return rdoModelObjects::OPR;
+//		case  3: return rdoModelObjects::OPR;
 		case  4: return rdoModelObjects::FRM;
 		case  5: return rdoModelObjects::FUN;
 		case  6: return rdoModelObjects::DPT;
@@ -140,7 +140,7 @@ int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) con
 		case rdoModelObjects::PAT: return 0;
 		case rdoModelObjects::RTP: return 1;
 		case rdoModelObjects::RSS: return 2;
-		case rdoModelObjects::OPR: return 3;
+//		case rdoModelObjects::OPR: return 3;
 		case rdoModelObjects::FRM: return 4;
 		case rdoModelObjects::FUN: return 5;
 		case rdoModelObjects::DPT: return 6;

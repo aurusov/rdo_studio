@@ -35,7 +35,7 @@ RDOThreadRepository::RDOThreadRepository()
 	m_files[rdoModelObjects::PAT].extention = _T(".pat");
 	m_files[rdoModelObjects::RTP].extention = _T(".rtp");
 	m_files[rdoModelObjects::RSS].extention = _T(".rss");
-	m_files[rdoModelObjects::OPR].extention = _T(".opr");
+//	m_files[rdoModelObjects::OPR].extention = _T(".opr");
 	m_files[rdoModelObjects::FRM].extention = _T(".frm");
 	m_files[rdoModelObjects::FUN].extention = _T(".fun");
 	m_files[rdoModelObjects::DPT].extention = _T(".dpt");
@@ -160,7 +160,7 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		m_files[rdoModelObjects::PAT].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
  		m_files[rdoModelObjects::RTP].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
  		m_files[rdoModelObjects::RSS].filename = fileInfo.resource_file.empty()  ? m_files[rdoModelObjects::SMR].filename : fileInfo.resource_file;
- 		m_files[rdoModelObjects::OPR].filename = fileInfo.oprIev_file.empty()    ? m_files[rdoModelObjects::SMR].filename : fileInfo.oprIev_file;
+// 		m_files[rdoModelObjects::OPR].filename = fileInfo.oprIev_file.empty()    ? m_files[rdoModelObjects::SMR].filename : fileInfo.oprIev_file;
  		m_files[rdoModelObjects::FRM].filename = fileInfo.frame_file.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.frame_file;
  		m_files[rdoModelObjects::FUN].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
  		m_files[rdoModelObjects::DPT].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
@@ -171,7 +171,7 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		m_files[rdoModelObjects::PAT].described = !fileInfo.model_name.empty();
 		m_files[rdoModelObjects::RTP].described = !fileInfo.model_name.empty();
 		m_files[rdoModelObjects::RSS].described = !fileInfo.resource_file.empty();
-		m_files[rdoModelObjects::OPR].described = !fileInfo.oprIev_file.empty(); // && rdo::isFileExists( getFullFileName( rdoModelObjects::OPR ) );
+//		m_files[rdoModelObjects::OPR].described = !fileInfo.oprIev_file.empty(); // && rdo::isFileExists( getFullFileName( rdoModelObjects::OPR ) );
 		m_files[rdoModelObjects::FRM].described = !fileInfo.frame_file.empty();
 		m_files[rdoModelObjects::FUN].described = !fileInfo.model_name.empty();
 		m_files[rdoModelObjects::DPT].described = !fileInfo.model_name.empty(); // !m_files[rdoModelObjects::OPR].described;
@@ -183,7 +183,7 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		m_files[rdoModelObjects::PAT].mustexist = true;
 		m_files[rdoModelObjects::RTP].mustexist = true;
 		m_files[rdoModelObjects::RSS].mustexist = true;
-		m_files[rdoModelObjects::OPR].mustexist = m_files[rdoModelObjects::OPR].described;
+//		m_files[rdoModelObjects::OPR].mustexist = m_files[rdoModelObjects::OPR].described;
 		m_files[rdoModelObjects::FRM].mustexist = !fileInfo.frame_file.empty();
 		m_files[rdoModelObjects::FUN].mustexist = false;
 		m_files[rdoModelObjects::DPT].mustexist = false; // m_files[rdoModelObjects::DPT].described;
@@ -514,7 +514,7 @@ void RDOThreadRepository::writeModelFilesInfo(REF(std::ofstream) stream) const
 	stream << _T("Run_file       = ") << getFileExtName( rdoModelObjects::SMR ) << std::endl;
 	stream << _T("Model_name     = ") << m_files[rdoModelObjects::SMR].filename << std::endl;
 	stream << _T("Resource_file  = ") << m_files[rdoModelObjects::RSS].filename << m_files[rdoModelObjects::RSS].extention << std::endl;
-	stream << _T("OprIev_file    = ") << m_files[rdoModelObjects::OPR].filename << m_files[rdoModelObjects::OPR].extention << std::endl;
+//	stream << _T("OprIev_file    = ") << m_files[rdoModelObjects::OPR].filename << m_files[rdoModelObjects::OPR].extention << std::endl;
 }
 
 void RDOThreadRepository::beforeModelStart()

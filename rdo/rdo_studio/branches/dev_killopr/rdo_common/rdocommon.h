@@ -92,7 +92,7 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 	{
 		tstring  model_name;
 		tstring  resource_file;
-		tstring  oprIev_file;
+//		tstring  oprIev_file;
 		tstring  frame_file;
 		tstring  statistic_file;
 		tstring  results_file;
@@ -102,7 +102,7 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 		RDOSMRFileInfo()
 			: model_name    (_T(""))
 			, resource_file (_T(""))
-			, oprIev_file   (_T(""))
+//			, oprIev_file   (_T(""))
 			, frame_file    (_T(""))
 			, statistic_file(_T(""))
 			, results_file  (_T(""))
@@ -111,7 +111,7 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 		{}
 	};
 
-	enum RDOFileType  { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+	enum RDOFileType  { PAT = 0, RTP, RSS, /*OPR, */FRM, FUN, DPT, SMR, PMD, PMV, TRC };
 
 	enum RDOParseType
 	{
@@ -121,7 +121,7 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 		obRSS  = 0x0004,
 		obFUN  = 0x0008,
 		obPAT  = 0x0010,
-		obOPR  = 0x0020,
+//		obOPR  = 0x0020,
 		obDPT  = 0x0040,
 		obPMD  = 0x0080,
 		obFRM  = 0x0100,
