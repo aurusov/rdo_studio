@@ -29,7 +29,6 @@ class RDOType
 public:
 	RDOType(CREF(rdoRuntime::RDOType) type)
 		: m_type (&type)
-		, m_range(NULL )
 	{}
 	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
 	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
@@ -38,13 +37,10 @@ public:
 	virtual CPTR(RDOType)        cast(CREF(RDOType) toType)            const = 0;
 	virtual rdoRuntime::RDOValue cast(CREF(rdoRuntime::RDOValue) from) const = 0;
 
-	CPTR(RDOTypeRange) range() const { return m_range; }
-
 	static CREF(RDOType) getTypeByID(rdoRuntime::RDOType::TypeID typeID);
 
 protected:
 	CPTR(rdoRuntime::RDOType) m_type;
-	PTR(RDOTypeRange)         m_range;
 };
 
 // ----------------------------------------------------------------------------
