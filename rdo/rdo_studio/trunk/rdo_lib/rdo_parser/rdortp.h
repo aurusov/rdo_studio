@@ -68,32 +68,6 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDORTPParam
-// ----------------------------------------------------------------------------
-// ѕараметр ресурса (RDORTPParam) или константа(RDOFUNConst)
-// — методом getResType() надо быть поосторожнее, т.к.
-// он или RDORTPResType или NULL дл€ константы
-// ----------------------------------------------------------------------------
-class RDORTPResType;
-
-class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
-	virtual ~RDORTPParam() {}
-	const std::string&           name() const       { return src_info().src_text(); }
-	const RDORTPParamType* const getType() const    { return m_parType; }
-	const RDORTPResType* const   getResType() const { return m_resType; }
-	void writeModelStructure( std::ostream& stream ) const;
-
-protected:
-	RDORTPParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
-
-	const RDORTPParamType* const m_parType;
-	const RDORTPResType*   const m_resType;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOFUNConst
 // ----------------------------------------------------------------------------
 class RDOFUNConst: public RDORTPParam
