@@ -28,6 +28,12 @@ RDOTypeParam::RDOTypeParam(CREF(rdoRuntime::RDOType) type, CREF(RDOParserSrcInfo
 RDOTypeParam::~RDOTypeParam()
 {}
 
+void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
+{
+	//todo недоделано
+	NEVER_REACH_HERE;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParamInt
 // ----------------------------------------------------------------------------

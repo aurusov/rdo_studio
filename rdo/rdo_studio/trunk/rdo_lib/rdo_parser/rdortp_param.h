@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
+#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -22,17 +23,17 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDORTPResType;
 
-class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo
+class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo, IModelStructure, IName
 {
 public:
 	RDORTPParam(CPTR(RDORTPResType) const resType, CPTR(RDOTypeParam) const parType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDORTPParam();
 
-	CREF(tstring)             name      () const { return src_info().src_text();        }
-	CPTR(RDORTPResType) const getResType() const { ASSERT(m_resType); return m_resType; }
-	CPTR(RDOTypeParam)  const getType   () const { ASSERT(m_parType); return m_parType; }
+	CPTR(RDORTPResType) const getResType  () const { ASSERT(m_resType); return m_resType; }
+	CPTR(RDOTypeParam)  const getParamType() const { ASSERT(m_parType); return m_parType; }
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	DECLARE_IModelStructure;
+	DECLARE_IName;
 
 protected:
 	CPTR(RDORTPResType) const m_resType;

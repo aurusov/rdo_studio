@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -23,10 +24,12 @@ class RDOTypeRange;
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-class RDOTypeParam: public RDOType, public RDOParserSrcInfo
+class RDOTypeParam: public RDOType, public RDOParserSrcInfo, IModelStructure
 {
 public:
 	CPTR(RDOTypeRange) range() const { return m_range; }
+
+	DECLARE_IModelStructure;
 
 protected:
 	RDOTypeParam(CREF(rdoRuntime::RDOType) type, CREF(RDOParserSrcInfo) src_info);

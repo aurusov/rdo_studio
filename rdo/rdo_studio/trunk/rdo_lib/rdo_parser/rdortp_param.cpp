@@ -30,10 +30,15 @@ RDORTPParam::RDORTPParam(CPTR(RDORTPResType) const resType, CPTR(RDOTypeParam) c
 RDORTPParam::~RDORTPParam()
 {}
 
+CREF(tstring) RDORTPParam::name() const
+{
+	return src_info().src_text();
+}
+
 void RDORTPParam::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << name() << _T(" ");
-//todo back getType()->writeModelStructure(stream);
+	getParamType()->writeModelStructure(stream);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
