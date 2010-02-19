@@ -59,11 +59,11 @@ private:
 class RDOType__##Class: public RDOType                                           \
 {                                                                                \
 public:                                                                          \
-	RDOType__##Class()                                                            \
-		: RDOType(t_##Class)                                                       \
-	{}                                                                            \
-	virtual tstring  asString  ()                    const { return ClassName; }  \
-	virtual RDOValue value_cast(CREF(RDOValue) from) const;                       \
+	RDOType__##Class()                                                           \
+		: RDOType(t_##Class)                                                     \
+	{}                                                                           \
+	virtual tstring  asString  ()                    const { return ClassName; } \
+	virtual RDOValue value_cast(CREF(RDOValue) from) const;                      \
 };                                                                               \
 extern RDOType__##Class g_##Class;
 
