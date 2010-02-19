@@ -22,37 +22,37 @@ CREF(RDOType) RDOType::getTypeByID(RDOType::TypeID typeID)
 }
 
 //! RDOType__unknow
-rdoRuntime::RDOValue RDOType__unknow::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__unknow::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	throw rdoRuntime::RDOTypeException();
 }
 
 //! RDOType__int
-rdoRuntime::RDOValue RDOType__int::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__int::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getInt();
 }
 
 //! RDOType__real
-rdoRuntime::RDOValue RDOType__real::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__real::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getDouble();
 }
 
 //! RDOType__string
-rdoRuntime::RDOValue RDOType__string::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__string::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getString();
 }
 
 //! RDOType__identificator
-rdoRuntime::RDOValue RDOType__identificator::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__identificator::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	throw rdoRuntime::RDOTypeException();
 }
 
 //! RDOType__bool
-rdoRuntime::RDOValue RDOType__bool::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__bool::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getBool();
 }

@@ -78,7 +78,7 @@ inline tstring RDOFuzzyType::asString() const
 	return _T("RDOFuzzyType");
 }
 
-inline RDOValue RDOFuzzyType::cast(CREF(RDOValue) from) const
+inline RDOValue RDOFuzzyType::value_cast(CREF(RDOValue) from) const
 {
 	throw RDOTypeException();
 }

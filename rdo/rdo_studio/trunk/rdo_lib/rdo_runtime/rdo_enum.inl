@@ -35,7 +35,7 @@ inline tstring RDOEnumType::asString() const
 	return str();
 }
 
-inline RDOValue RDOEnumType::cast(CREF(RDOValue) from) const
+inline RDOValue RDOEnumType::value_cast(CREF(RDOValue) from) const
 {
 	switch (from.typeID())
 	{

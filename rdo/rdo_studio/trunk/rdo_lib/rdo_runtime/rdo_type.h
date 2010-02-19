@@ -31,8 +31,8 @@ public:
 	TypeID  typeID     () const;
 	rbool   operator!= (CREF(RDOType) type);
 
-	virtual tstring  asString()                    const = 0;
-	virtual RDOValue cast    (CREF(RDOValue) from) const = 0;
+	virtual tstring  asString  ()                    const = 0;
+	virtual RDOValue value_cast(CREF(RDOValue) from) const = 0;
 
 	static CREF(RDOType) getTypeByID(TypeID typeID);
 
@@ -43,14 +43,16 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE( Class, ClassName ) \
-class RDOType__##Class: public RDOType \
-{ \
-public: \
-	RDOType__##Class(): RDOType(t_##Class) {} \
-	virtual tstring  asString() const { return ClassName; } \
-	virtual RDOValue cast    (CREF(RDOValue) from) const; \
-}; \
+#define DEFINE_ATOM_TYPE(Class, ClassName)                                       \
+class RDOType__##Class: public RDOType                                           \
+{                                                                                \
+public:                                                                          \
+	RDOType__##Class()                                                           \
+		: RDOType(t_##Class)                                                     \
+	{}                                                                           \
+	virtual tstring  asString  ()                    const { return ClassName; } \
+	virtual RDOValue value_cast(CREF(RDOValue) from) const;                      \
+};                                                                               \
 extern RDOType__##Class g_##Class;
 
 DEFINE_ATOM_TYPE(unknow,        _T("unknow")       );
