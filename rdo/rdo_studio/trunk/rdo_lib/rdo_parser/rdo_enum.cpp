@@ -31,11 +31,11 @@ RDORTPEnum::RDORTPEnum(CREF(RDOValue) first)
 RDORTPEnum::~RDORTPEnum()
 {}
 
-CPTR(RDOType) RDORTPEnum::type_cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDORTPEnum::type_cast(CREF(RDOType) from) const
 {
-	switch (toType->typeID())
+	switch (from->typeID())
 	{
-		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<CREF(RDORTPEnum)>(toType)) ? this : NULL;
+		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<CREF(RDORTPEnum)>(from)) ? this : NULL;
 	}
 	return NULL;
 }

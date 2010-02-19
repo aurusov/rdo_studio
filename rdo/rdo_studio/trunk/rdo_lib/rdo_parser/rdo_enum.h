@@ -43,7 +43,7 @@ public:
 	}
 
 	virtual tstring              name      ()                                const { return _T("enum"); }
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType) toType)            const;
+	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
 
 private:

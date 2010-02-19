@@ -50,7 +50,7 @@ CREF(RDOType) RDOType::getTypeByID(rdoRuntime::RDOType::TypeID typeID)
 }
 
 //! RDOType__unknow
-CPTR(RDOType) RDOType__unknow::type_cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__unknow::type_cast(CREF(RDOType) from) const
 {
 	return NULL;
 }
@@ -61,9 +61,9 @@ rdoRuntime::RDOValue RDOType__unknow::value_cast(CREF(rdoRuntime::RDOValue) from
 }
 
 //! RDOType__int
-CPTR(RDOType) RDOType__int::type_cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__int::type_cast(CREF(RDOType) from) const
 {
-	switch (toType->typeID())
+	switch (from->typeID())
 	{
 		case rdoRuntime::RDOType::t_int : return &g_int;
 		case rdoRuntime::RDOType::t_real: return &g_real;
@@ -77,9 +77,9 @@ rdoRuntime::RDOValue RDOType__int::value_cast(CREF(rdoRuntime::RDOValue) from) c
 }
 
 //! RDOType__real
-CPTR(RDOType) RDOType__real::type_cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__real::type_cast(CREF(RDOType) from) const
 {
-	switch (toType->typeID())
+	switch (from->typeID())
 	{
 		case rdoRuntime::RDOType::t_int :
 		case rdoRuntime::RDOType::t_real: return &g_real;
@@ -93,9 +93,9 @@ rdoRuntime::RDOValue RDOType__real::value_cast(CREF(rdoRuntime::RDOValue) from) 
 }
 
 //! RDOType__string
-CPTR(RDOType) RDOType__string::type_cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__string::type_cast(CREF(RDOType) from) const
 {
-	switch (toType->typeID())
+	switch (from->typeID())
 	{
 		case rdoRuntime::RDOType::t_string: return &g_string;
 	}
@@ -108,7 +108,7 @@ rdoRuntime::RDOValue RDOType__string::value_cast(CREF(rdoRuntime::RDOValue) from
 }
 
 //! RDOType__identificator
-CPTR(RDOType) RDOType__identificator::type_cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__identificator::type_cast(CREF(RDOType) from) const
 {
 	return NULL;
 }
@@ -119,9 +119,9 @@ rdoRuntime::RDOValue RDOType__identificator::value_cast(CREF(rdoRuntime::RDOValu
 }
 
 //! RDOType__bool
-CPTR(RDOType) RDOType__bool::type_cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__bool::type_cast(CREF(RDOType) from) const
 {
-	switch (toType->typeID())
+	switch (from->typeID())
 	{
 		case rdoRuntime::RDOType::t_bool: return &g_bool;
 	}

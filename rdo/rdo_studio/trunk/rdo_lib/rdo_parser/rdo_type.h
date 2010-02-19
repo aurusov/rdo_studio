@@ -41,7 +41,7 @@ public:
 	) const;
 
 	virtual tstring              name      ()                                const = 0;
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType) toType)            const = 0;
+	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const = 0;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const = 0;
 
 	static CREF(RDOType) getTypeByID(rdoRuntime::RDOType::TypeID typeID);
@@ -59,7 +59,7 @@ class RDOType__##Class: public RDOType                                          
 public:                                                                                                   \
 	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {}                                                 \
 	virtual tstring              name      ()                                const { return ""#Class""; } \
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType) toType)            const;                       \
+	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;                       \
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;                       \
 };                                                                                                        \
 extern RDOType__##Class g_##Class;
