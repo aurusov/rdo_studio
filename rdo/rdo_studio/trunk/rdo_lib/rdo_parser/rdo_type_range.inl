@@ -9,7 +9,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_error.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -29,7 +29,7 @@ inline void RDOTypeRange::check()
 	{
 		if (m_min_value.value() > m_max_value.value())
 		{
-			RDOParser::s_parser()->error().error(m_max_value.src_info(), _T("Ћева€ граница диапазона должна быть меньше правой"));
+			rdoParse::g_error().error(m_max_value.src_info(), _T("Ћева€ граница диапазона должна быть меньше правой"));
 		}
 		setSrcText(rdo::format(_T("[%s..%s]"), m_min_value->getAsString().c_str(), m_max_value->getAsString().c_str()));
 	}

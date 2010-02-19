@@ -14,7 +14,6 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdo_logic.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -60,6 +59,8 @@ public:
 private:
 	ErrorList m_errors;
 };
+
+REF(Error) g_error();
 
 CLOSE_RDO_PARSER_NAMESPACE
 

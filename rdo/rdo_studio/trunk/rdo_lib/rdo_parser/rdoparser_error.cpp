@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
@@ -84,6 +85,11 @@ void Error::clear()
 CREF(Error::ErrorList) Error::getList() const
 {
 	return m_errors;
+}
+
+REF(Error) g_error()
+{
+	return RDOParser::s_parser()->error();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
