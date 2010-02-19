@@ -1,10 +1,22 @@
-#ifndef RDO_TYPE_H
-#define RDO_TYPE_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_type.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_TYPE_H_
+#define _RDO_TYPE_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOValue;
 
@@ -47,11 +59,11 @@ private:
 class RDOType__##Class: public RDOType                                           \
 {                                                                                \
 public:                                                                          \
-	RDOType__##Class()                                                           \
-		: RDOType(t_##Class)                                                     \
-	{}                                                                           \
-	virtual tstring  asString  ()                    const { return ClassName; } \
-	virtual RDOValue value_cast(CREF(RDOValue) from) const;                      \
+	RDOType__##Class()                                                            \
+		: RDOType(t_##Class)                                                       \
+	{}                                                                            \
+	virtual tstring  asString  ()                    const { return ClassName; }  \
+	virtual RDOValue value_cast(CREF(RDOValue) from) const;                       \
 };                                                                               \
 extern RDOType__##Class g_##Class;
 
@@ -62,8 +74,8 @@ DEFINE_ATOM_TYPE(real,          _T("real")         );
 DEFINE_ATOM_TYPE(bool,          _T("bool")         );
 DEFINE_ATOM_TYPE(string,        _T("string")       );
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_type.inl"
 
-#endif // RDO_TYPE_H
+#endif //! _RDO_TYPE_H_

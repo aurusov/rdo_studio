@@ -1,8 +1,21 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_type.cpp
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOType
@@ -69,4 +82,4 @@ DECLARE_ATOM_TYPE(real         );
 DECLARE_ATOM_TYPE(bool         );
 DECLARE_ATOM_TYPE(string       );
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
