@@ -603,15 +603,7 @@ const RDOType* RDOFUNArithm::getPreType( const RDOFUNArithm& second )
 		parser()->error().error( second.src_info(), rdo::format("Неизвестный идентификатор: %s", second.value()->getIdentificator().c_str()) );
 	}
 
-	const RDOType* newType = type().type_cast( second.type() );
-	if ( !newType )
-	{
-		parser()->error().push_only( src_info(), rdo::format("Несовместимые типы данных: %s и %s", value().type()->asString().c_str(), second.value().type()->asString().c_str()) );
-		parser()->error().push_only( value().src_info(), "См. первый тип" );
-		parser()->error().push_only( second.value().src_info(), "См. второй тип" );
-		parser()->error().push_done();
-	}
-	return newType;
+	return type().type_cast_throw(second.type());
 }
 
 RDOFUNArithm* RDOFUNArithm::operator+ ( RDOFUNArithm& second )

@@ -33,6 +33,13 @@ public:
 	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
 	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
 
+	CPTR(RDOType) type_cast_throw(
+		CREF(RDOType)          from,
+		CREF(RDOParserSrcInfo) from_src_info,
+		CREF(RDOParserSrcInfo) to_src_info,
+		CREF(RDOParserSrcInfo) src_info
+	) const;
+
 	virtual tstring              name      ()                                const = 0;
 	virtual CPTR(RDOType)        type_cast (CREF(RDOType) toType)            const = 0;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const = 0;

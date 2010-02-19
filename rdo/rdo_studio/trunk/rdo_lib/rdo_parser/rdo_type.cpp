@@ -22,6 +22,19 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
+CPTR(RDOType) RDOType::type_cast_throw(CREF(RDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+{
+	CPTR(RDOType) toType = type_cast(from);
+	if (!toType)
+	{
+		rdoParse::g_error().push_only(src_info, rdo::format(_T("Несовместимые типы данных: %s и %s"), type().asString().c_str(), from.type().asString().c_str()));
+		rdoParse::g_error().push_only(to_src_info,   _T("См. первый тип"));
+		rdoParse::g_error().push_only(from_src_info, _T("См. второй тип"));
+		rdoParse::g_error().push_done();
+	}
+	return toType;
+}
+
 CREF(RDOType) RDOType::getTypeByID(rdoRuntime::RDOType::TypeID typeID)
 {
 	switch (typeID)
