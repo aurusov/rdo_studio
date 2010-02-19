@@ -1,4 +1,17 @@
-namespace rdoRuntime {
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_enum.inl
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+// ===============================================================================
+
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEnumType
@@ -32,7 +45,19 @@ inline rbool RDOEnumType::exist(CREF(tstring) val) const
 
 inline tstring RDOEnumType::asString() const
 {
-	return str();
+	tstring str = _T("(");
+	std::vector< tstring >::const_iterator it = begin();
+	while (it != end())
+	{
+		str += *it;
+		it++;
+		if (it != end())
+		{
+			str += _T(", ");
+		}
+	}
+	str += _T(")");
+	return str;
 }
 
 inline RDOValue RDOEnumType::value_cast(CREF(RDOValue) from) const
@@ -57,23 +82,6 @@ inline RDOValue RDOEnumType::value_cast(CREF(RDOValue) from) const
 inline rbool                        RDOEnumType::empty    () const { return m_enum.empty(); }
 inline const RDOEnumType::CIterator RDOEnumType::begin    () const { return m_enum.begin(); }
 inline const RDOEnumType::CIterator RDOEnumType::end      () const { return m_enum.end();   }
-inline CREF(RDOEnumType::Enums)     RDOEnumType::getValues() const { return m_enum;	        }
+inline CREF(RDOEnumType::Enums)     RDOEnumType::getValues() const { return m_enum;         }
 
-inline tstring RDOEnumType::str() const
-{
-	tstring _str = _T("(");
-	std::vector< tstring >::const_iterator it = begin();
-	while (it != end())
-	{
-		_str += *it;
-		it++;
-		if (it != end())
-		{
-			_str += _T(", ");
-		}
-	}
-	_str += _T(")");
-	return _str;
-}
-
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
