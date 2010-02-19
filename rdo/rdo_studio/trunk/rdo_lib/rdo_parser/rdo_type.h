@@ -33,9 +33,9 @@ public:
 	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
 	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
 
-	virtual tstring              name()                                const = 0;
-	virtual CPTR(RDOType)        cast(CREF(RDOType) toType)            const = 0;
-	virtual rdoRuntime::RDOValue cast(CREF(rdoRuntime::RDOValue) from) const = 0;
+	virtual tstring              name      ()                                const = 0;
+	virtual CPTR(RDOType)        type_cast (CREF(RDOType) toType)            const = 0;
+	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const = 0;
 
 	static CREF(RDOType) getTypeByID(rdoRuntime::RDOType::TypeID typeID);
 
@@ -46,15 +46,15 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Class) \
-class RDOType__##Class: public RDOType \
-{ \
-public: \
-	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {} \
-	virtual tstring              name() const { return ""#Class""; } \
-	virtual CPTR(RDOType)        cast(CREF(RDOType) toType) const; \
-	virtual rdoRuntime::RDOValue cast(CREF(rdoRuntime::RDOValue) from) const; \
-}; \
+#define DEFINE_ATOM_TYPE_PARSER(Class)                                                                    \
+class RDOType__##Class: public RDOType                                                                    \
+{                                                                                                         \
+public:                                                                                                   \
+	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {}                                                 \
+	virtual tstring              name      ()                                const { return ""#Class""; } \
+	virtual CPTR(RDOType)        type_cast (CREF(RDOType) toType)            const;                       \
+	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;                       \
+};                                                                                                        \
 extern RDOType__##Class g_##Class;
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );

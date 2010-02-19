@@ -336,7 +336,7 @@ void RDORTPIntParamType::checkValue( const RDOValue& value ) const
 rdoRuntime::RDOValue RDORTPIntParamType::getValue( const RDOValue& value ) const
 {
 	checkValue(value);
-	return type().cast(value.value());
+	return type().value_cast(value.value());
 }
 
 ruint RDORTPIntParamType::getDiapTableFunc() const 
@@ -463,7 +463,7 @@ void RDORTPRealParamType::checkValue( const RDOValue& value ) const
 rdoRuntime::RDOValue RDORTPRealParamType::getValue( const RDOValue& value ) const
 {
 	checkValue(value);
-	return type().cast(value.value());
+	return type().value_cast(value.value());
 }
 
 // ----------------------------------------------------------------------------
@@ -614,7 +614,7 @@ void RDORTPStringParamType::checkValue( const RDOValue& value ) const
 rdoRuntime::RDOValue RDORTPStringParamType::getValue( const RDOValue& value ) const
 {
 	checkValue(value);
-	return type().cast(value.value());
+	return type().value_cast(value.value());
 }
 
 void RDORTPStringParamType::writeModelStructure( std::ostream& stream ) const
@@ -670,7 +670,7 @@ void RDORTPBoolParamType::checkValue( const RDOValue& value ) const
 rdoRuntime::RDOValue RDORTPBoolParamType::getValue( const RDOValue& value ) const
 {
 	checkValue(value);
-	return type().cast(value.value());
+	return type().value_cast(value.value());
 }
 
 void RDORTPBoolParamType::writeModelStructure( std::ostream& stream ) const

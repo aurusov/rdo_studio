@@ -13,7 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
-#include "rdo_lib/rdo_parser/rdoparser.h"
+//#include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
@@ -37,18 +37,18 @@ CREF(RDOType) RDOType::getTypeByID(rdoRuntime::RDOType::TypeID typeID)
 }
 
 //! RDOType__unknow
-CPTR(RDOType) RDOType__unknow::cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__unknow::type_cast(CREF(RDOType) toType) const
 {
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__unknow::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__unknow::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	throw rdoRuntime::RDOTypeException();
 }
 
 //! RDOType__int
-CPTR(RDOType) RDOType__int::cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__int::type_cast(CREF(RDOType) toType) const
 {
 	switch (toType->typeID())
 	{
@@ -58,13 +58,13 @@ CPTR(RDOType) RDOType__int::cast(CREF(RDOType) toType) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__int::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__int::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getInt();
 }
 
 //! RDOType__real
-CPTR(RDOType) RDOType__real::cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__real::type_cast(CREF(RDOType) toType) const
 {
 	switch (toType->typeID())
 	{
@@ -74,13 +74,13 @@ CPTR(RDOType) RDOType__real::cast(CREF(RDOType) toType) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__real::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__real::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getDouble();
 }
 
 //! RDOType__string
-CPTR(RDOType) RDOType__string::cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__string::type_cast(CREF(RDOType) toType) const
 {
 	switch (toType->typeID())
 	{
@@ -89,24 +89,24 @@ CPTR(RDOType) RDOType__string::cast(CREF(RDOType) toType) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__string::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__string::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getString();
 }
 
 //! RDOType__identificator
-CPTR(RDOType) RDOType__identificator::cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__identificator::type_cast(CREF(RDOType) toType) const
 {
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__identificator::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__identificator::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	throw rdoRuntime::RDOTypeException();
 }
 
 //! RDOType__bool
-CPTR(RDOType) RDOType__bool::cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDOType__bool::type_cast(CREF(RDOType) toType) const
 {
 	switch (toType->typeID())
 	{
@@ -115,7 +115,7 @@ CPTR(RDOType) RDOType__bool::cast(CREF(RDOType) toType) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__bool::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOType__bool::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getBool();
 }

@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_enum.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_parser/rdoparser_error.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -30,7 +31,7 @@ RDORTPEnum::RDORTPEnum(CREF(RDOValue) first)
 RDORTPEnum::~RDORTPEnum()
 {}
 
-CPTR(RDOType) RDORTPEnum::cast(CREF(RDOType) toType) const
+CPTR(RDOType) RDORTPEnum::type_cast(CREF(RDOType) toType) const
 {
 	switch (toType->typeID())
 	{
@@ -39,28 +40,28 @@ CPTR(RDOType) RDORTPEnum::cast(CREF(RDOType) toType) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDORTPEnum::cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDORTPEnum::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	return m_type->cast(from);
+	return m_type->value_cast(from);
 }
 
 void RDORTPEnum::add(CREF(RDOValue) next)
 {
 	if (__enum()->findEnum(next->getIdentificator()) != rdoRuntime::RDOEnumType::END)
 	{
-		RDOParser::s_parser()->error().error(next.src_info(), rdo::format(_T("Значение перечислимого типа уже существует: %s"), next.src_text().c_str()));
+		rdoParse::g_error().error(next.src_info(), rdo::format(_T("Значение перечислимого типа уже существует: %s"), next.src_text().c_str()));
 	}
 	__enum()->add(next->getIdentificator());
 }
 
 rdoRuntime::RDOValue RDORTPEnum::findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const
 {
-	rdoRuntime::RDOValue result = cast(rdoRuntime::RDOValue(value, rdoRuntime::g_identificator));
+	rdoRuntime::RDOValue result = value_cast(rdoRuntime::RDOValue(value, rdoRuntime::g_identificator));
 	if (result.typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		RDOParser::s_parser()->error().push_only(src_info, rdo::format(_T("Неверное значение параметра перечислимого типа: %s"), value.c_str()));
-		RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("Возможные значения: %s"), __enum()->asString().c_str()));
-		RDOParser::s_parser()->error().push_done();
+		rdoParse::g_error().push_only(src_info, rdo::format(_T("Неверное значение параметра перечислимого типа: %s"), value.c_str()));
+		rdoParse::g_error().push_only(this->src_info(), rdo::format(_T("Возможные значения: %s"), __enum()->asString().c_str()));
+		rdoParse::g_error().push_done();
 	}
 	return result;
 }
@@ -69,7 +70,7 @@ rdoRuntime::RDOValue RDORTPEnum::getFirstValue() const
 {
 	if (__enum()->getValues().empty())
 	{
-		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка: Пустой перечислимый тип"));
+		rdoParse::g_error().error(src_info(), _T("Внутренняя ошибка: Пустой перечислимый тип"));
 	}
 	return rdoRuntime::RDOValue(*__enum());
 }
