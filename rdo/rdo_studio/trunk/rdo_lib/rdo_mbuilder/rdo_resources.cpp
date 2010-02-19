@@ -326,7 +326,7 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toPars
 		if (value_it == end())
 			return false;
 
-		rdoRuntime::RDOValue value = param_it->type()->cast(value_it->second);
+		rdoRuntime::RDOValue value = param_it->type()->value_cast(value_it->second);
 		//! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
 		toParserRSS->addParam(rdoParse::RDOValue(value, value.type(), toParserRSS->src_info()));
 	}
