@@ -29,7 +29,9 @@ RDOEnumType::RDOEnumType(CREF(RDOValue) first)
 }
 
 RDOEnumType::~RDOEnumType()
-{}
+{
+	delete m_type;
+}
 
 inline tstring RDOEnumType::name() const
 {
