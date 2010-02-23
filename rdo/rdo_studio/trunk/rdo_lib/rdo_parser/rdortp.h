@@ -305,11 +305,11 @@ private:
 class RDORTPEnumParamType: public RDORTPParamType
 {
 public:
-	PTR(RDORTPEnum) m_enum;
+	PTR(RDOEnumType) m_enum;
 	tstring         enum_name; // Используется в сообщениях об ошибках
 	rbool           enum_fun;  // Используется в сообщениях об ошибках
 
-	RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	RDORTPEnumParamType( const RDOParserObject* _parent, RDOEnumType* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
 	virtual ~RDORTPEnumParamType() {}
 
 	virtual void                  checkValue       ( const RDOValue& value ) const;

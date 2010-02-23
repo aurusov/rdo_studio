@@ -20,24 +20,24 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDORTPEnum
+// ---------- RDOEnumType
 // ----------------------------------------------------------------------------
-class RDORTPEnum: public RDOType
+class RDOEnumType: public RDOType
 {
 public:
-	RDORTPEnum(CREF(RDOValue) first);
-	virtual ~RDORTPEnum();
+	RDOEnumType(CREF(RDOValue) first);
+	virtual ~RDOEnumType();
 
 	void add(CREF(RDOValue) next);
 //	rdoRuntime::RDOValue          findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const;
 //	rdoRuntime::RDOValue          getFirstValue() const;
 	CREF(rdoRuntime::RDOEnumType) getEnums     () const { return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type); }
 
-	rbool operator== (CREF(RDORTPEnum) enums) const
+	rbool operator== (CREF(RDOEnumType) enums) const
 	{
 		return __enum()->getValues() == enums.__enum()->getValues();
 	}
-	rbool operator!= (CREF(RDORTPEnum) enums) const
+	rbool operator!= (CREF(RDOEnumType) enums) const
 	{
 		return !operator==(enums);
 	}

@@ -234,12 +234,12 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 			}
 			case rdoRuntime::RDOType::t_enum:
 			{
-				PTR(rdoParse::RDORTPEnum) pEnum = NULL;
+				PTR(rdoParse::RDOEnumType) pEnum = NULL;
 				STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType, param->getEnum(), enum_it)
 				{
 					if (!pEnum)
 					{
-						pEnum = m_parser->factory_type<rdoParse::RDORTPEnum>(pRTP, rdoParse::RDOValue::getIdentificator(*enum_it));
+						pEnum = m_parser->factory_type<rdoParse::RDOEnumType>(pRTP, rdoParse::RDOValue::getIdentificator(*enum_it));
 					}
 					else
 					{

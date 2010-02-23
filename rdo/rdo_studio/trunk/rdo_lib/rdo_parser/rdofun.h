@@ -120,7 +120,7 @@ public:
 	rdoRuntime::RDOCalc*           calc() const     { return m_calc;           }
 	const RDOValue&                value() const    { return m_value;          }
 	const RDOType&                 type() const     { return m_value.type();   }
-	const RDORTPEnum&              enumType() const { return static_cast<const RDORTPEnum&>(type()); }
+	const RDOEnumType&             enumType() const { return static_cast<CREF(RDOEnumType)>(type()); }
 	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->typeID(); }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );

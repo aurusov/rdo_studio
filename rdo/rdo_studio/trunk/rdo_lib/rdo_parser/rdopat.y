@@ -1187,7 +1187,7 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 				| param_enum param_enum_default_val
 				{
 					LEXER->enumReset();
-					PTR(RDORTPEnum)  enu = reinterpret_cast<PTR(RDORTPEnum)>($1);
+					PTR(RDOEnumType)  enu = reinterpret_cast<PTR(RDOEnumType)>($1);
 					PTR(RDORTPDefVal) dv = reinterpret_cast<PTR(RDORTPDefVal)>($2);
 					if (dv->isExist())
 					{
@@ -1407,7 +1407,7 @@ param_bool_default_val:	/* empty */
 					};
 
 param_enum:	'(' param_enum_list ')' {
-				PTR(RDORTPEnum) enu = reinterpret_cast<PTR(RDORTPEnum)>($2);
+				PTR(RDOEnumType) enu = reinterpret_cast<PTR(RDOEnumType)>($2);
 				enu->setSrcPos(@1, @3);
 				enu->setSrcText(enu->getEnums().asString());
 				$$ = $2;
@@ -1417,7 +1417,7 @@ param_enum:	'(' param_enum_list ')' {
 			};
 
 param_enum_list: RDO_IDENTIF {
-					PTR(RDORTPEnum) enu = new RDORTPEnum(PARSER->getLastParsingObject(), RDOVALUE($1));
+					PTR(RDOEnumType) enu = new RDOEnumType(PARSER->getLastParsingObject(), RDOVALUE($1));
 					enu->setSrcInfo(P_RDOVALUE($1)->src_info());
 					LEXER->enumBegin();
 					$$ = (int)enu;
@@ -1425,7 +1425,7 @@ param_enum_list: RDO_IDENTIF {
 				| param_enum_list ',' RDO_IDENTIF {
 					if (!LEXER->enumEmpty())
 					{
-						PTR(RDORTPEnum) enu  = reinterpret_cast<PTR(RDORTPEnum)>($1);
+						PTR(RDOEnumType) enu  = reinterpret_cast<PTR(RDOEnumType)>($1);
 						enu->add(RDOVALUE($3));
 						$$ = (int)enu;
 					}
@@ -1437,7 +1437,7 @@ param_enum_list: RDO_IDENTIF {
 				| param_enum_list RDO_IDENTIF {
 					if (!LEXER->enumEmpty())
 					{
-						PTR(RDORTPEnum) enu  = reinterpret_cast<PTR(RDORTPEnum)>($1);
+						PTR(RDOEnumType) enu  = reinterpret_cast<PTR(RDOEnumType)>($1);
 						enu->add(RDOVALUE($2));
 						$$ = (int)enu;
 						PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));

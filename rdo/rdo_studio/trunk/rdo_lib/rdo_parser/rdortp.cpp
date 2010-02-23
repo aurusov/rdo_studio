@@ -469,7 +469,7 @@ rdoRuntime::RDOValue RDORTPRealParamType::getValue( const RDOValue& value ) cons
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnumParamType
 // ----------------------------------------------------------------------------
-RDORTPEnumParamType::RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+RDORTPEnumParamType::RDORTPEnumParamType( const RDOParserObject* _parent, RDOEnumType* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
 	RDORTPParamType( _parent, _dv, _src_info ),
 	m_enum( _enu ),
 	enum_name( "" ),
@@ -513,7 +513,7 @@ RDORTPParamType* RDORTPEnumParamType::constructorSuchAs( const RDOParserSrcInfo&
 		dv->setSrcFileType( such_as_src_info.src_filetype() );
 		dv->setSrcPos( such_as_src_info.src_pos().m_last_line, such_as_src_info.src_pos().m_last_pos, such_as_src_info.src_pos().m_last_line, such_as_src_info.src_pos().m_last_pos );
 	}
-	RDORTPEnum*          enu  = m_enum;
+	RDOEnumType*          enu  = m_enum;
 	RDORTPEnumParamType* type = new RDORTPEnumParamType( parent(), enu, dv, such_as_src_info );
 	type->setSrcText( such_as_src_info.src_text() );
 	if ( dv->isExist() )

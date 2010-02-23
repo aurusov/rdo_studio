@@ -19,19 +19,19 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDORTPEnum
+// ---------- RDOEnumType
 // ----------------------------------------------------------------------------
-RDORTPEnum::RDORTPEnum(CREF(RDOValue) first)
+RDOEnumType::RDOEnumType(CREF(RDOValue) first)
 	: RDOType(&rdoRuntime::g_unknow)
 {
 	m_type = new rdoRuntime::RDOEnumType(RDOParser::s_parser()->runtime());
 	add(first);
 }
 
-RDORTPEnum::~RDORTPEnum()
+RDOEnumType::~RDOEnumType()
 {}
 
-inline tstring RDORTPEnum::name() const
+inline tstring RDOEnumType::name() const
 {
 	tstring str = _T("(");
 	rdoRuntime::RDOEnumType::const_iterator it = getEnums().begin();
@@ -48,16 +48,16 @@ inline tstring RDORTPEnum::name() const
 	return str;
 }
 
-CPTR(RDOType) RDORTPEnum::type_cast(CREF(RDOType) from) const
+CPTR(RDOType) RDOEnumType::type_cast(CREF(RDOType) from) const
 {
 	switch (from->typeID())
 	{
-		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<CREF(RDORTPEnum)>(from)) ? this : NULL;
+		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<CREF(RDOEnumType)>(from)) ? this : NULL;
 	}
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDORTPEnum::value_cast(CREF(rdoRuntime::RDOValue) from) const
+rdoRuntime::RDOValue RDOEnumType::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	switch (from.typeID())
 	{
@@ -76,7 +76,7 @@ rdoRuntime::RDOValue RDORTPEnum::value_cast(CREF(rdoRuntime::RDOValue) from) con
 	throw rdoRuntime::RDOTypeException();
 }
 
-void RDORTPEnum::add(CREF(RDOValue) next)
+void RDOEnumType::add(CREF(RDOValue) next)
 {
 	if (getEnums().findEnum(next->getIdentificator()) != rdoRuntime::RDOEnumType::END)
 	{
@@ -85,7 +85,7 @@ void RDORTPEnum::add(CREF(RDOValue) next)
 	__enum()->add(next->getIdentificator());
 }
 
-//rdoRuntime::RDOValue RDORTPEnum::findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const
+//rdoRuntime::RDOValue RDOEnumType::findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const
 //{
 //	rdoRuntime::RDOValue result = value_cast(rdoRuntime::RDOValue(value, rdoRuntime::g_identificator));
 //	if (result.typeID() == rdoRuntime::RDOType::t_unknow)
@@ -97,7 +97,7 @@ void RDORTPEnum::add(CREF(RDOValue) next)
 //	return result;
 //}
 
-//rdoRuntime::RDOValue RDORTPEnum::getFirstValue() const
+//rdoRuntime::RDOValue RDOEnumType::getFirstValue() const
 //{
 //	if (getEnums().getValues().empty())
 //	{

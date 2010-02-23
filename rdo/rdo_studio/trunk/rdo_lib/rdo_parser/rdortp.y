@@ -229,7 +229,7 @@ ext_param_type:		RDO_typedef RDO_enum ext_par_type_enum
 
 ext_par_type_enum:	param_enum RDO_IDENTIF
 					{
-						PTR(RDORTPEnum) enu = reinterpret_cast<PTR(RDORTPEnum)>($1);
+						PTR(RDOEnumType) enu = reinterpret_cast<PTR(RDOEnumType)>($1);
 					};
 
 rtp_res_type:		rtp_header RDO_Parameters rtp_body RDO_End
@@ -379,7 +379,7 @@ param_type:		RDO_integer param_type_diap
 				| param_enum
 				{
 					LEXER->enumReset();
-					PTR(RDORTPEnum) pType = reinterpret_cast<PTR(RDORTPEnum)>($1);
+					PTR(RDOEnumType) pType = reinterpret_cast<PTR(RDOEnumType)>($1);
 					pType->check();
 					$$ = (int)pType;
 				}
@@ -473,7 +473,7 @@ param_type_diap:	/* empty */ {
 				};
 
 param_enum:	'(' param_enum_list ')' {
-				PTR(RDORTPEnum) enu = reinterpret_cast<PTR(RDORTPEnum)>($2);
+				PTR(RDOEnumType) enu = reinterpret_cast<PTR(RDOEnumType)>($2);
 				enu->setSrcPos(@1, @3);
 				enu->setSrcText(enu->getEnums().asString());
 				$$ = $2;
@@ -483,7 +483,7 @@ param_enum:	'(' param_enum_list ')' {
 			};
 
 param_enum_list: RDO_IDENTIF {
-					PTR(RDORTPEnum) pType = PARSER->factory_type<RDORTPEnum>(RDOVALUE($1));
+					PTR(RDOEnumType) pType = PARSER->factory_type<RDOEnumType>(RDOVALUE($1));
 					pType->setSrcInfo(P_RDOVALUE($1)->src_info());
 					LEXER->enumBegin();
 					$$ = (int)pType;
@@ -491,7 +491,7 @@ param_enum_list: RDO_IDENTIF {
 				| param_enum_list ',' RDO_IDENTIF {
 					if (!LEXER->enumEmpty())
 					{
-						PTR(RDORTPEnum) pType  = reinterpret_cast<PTR(RDORTPEnum)>($1);
+						PTR(RDOEnumType) pType  = reinterpret_cast<PTR(RDOEnumType)>($1);
 						pType->add(RDOVALUE($3));
 						$$ = (int)pType;
 					}
@@ -503,7 +503,7 @@ param_enum_list: RDO_IDENTIF {
 				| param_enum_list RDO_IDENTIF {
 					if (!LEXER->enumEmpty())
 					{
-						PTR(RDORTPEnum) pType  = reinterpret_cast<PTR(RDORTPEnum)>($1);
+						PTR(RDOEnumType) pType  = reinterpret_cast<PTR(RDOEnumType)>($1);
 						pType->add(RDOVALUE($2));
 						$$ = (int)pType;
 						PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
