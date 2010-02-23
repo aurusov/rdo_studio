@@ -27,9 +27,11 @@ class RDOTypeRange;
 class RDOType
 {
 public:
-	RDOType(CREF(rdoRuntime::RDOType) type)
-		: m_type (&type)
-	{}
+	RDOType(CPTR(rdoRuntime::RDOType) type)
+		: m_type(type)
+	{
+		ASSERT(m_type);
+	}
 	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
 	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
 
@@ -58,7 +60,7 @@ class RDOType__##Type: public RDOType                                           
 {                                                                                                       \
 public:                                                                                                 \
 	RDOType__##Type():                                                                                  \
-		RDOType(rdoRuntime::g_##Type)                                                                   \
+		RDOType(&rdoRuntime::g_##Type)                                                                  \
 	{}                                                                                                  \
 	virtual tstring              name      ()                                const { return TypeName; } \
 	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;                     \
