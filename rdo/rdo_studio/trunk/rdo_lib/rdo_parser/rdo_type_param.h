@@ -25,14 +25,14 @@ class RDOTypeRange;
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-class RDOTypeParam: public RDOType, public RDOParserSrcInfo, public IModelStructure
+class RDOTypeParam: public RDOParserSrcInfo, public IModelStructure
 {
 public:
 	virtual void checkValue(CREF(RDOValue) value);
 	// добавить кастинг rdoParse::RDOValue -> rdoParse::RDOValue
 
 protected:
-	RDOTypeParam(CREF(rdoRuntime::RDOType) type, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeParam(CREF(RDOType) type, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeParam();
 };
 
