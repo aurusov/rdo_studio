@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnum
 // ----------------------------------------------------------------------------
-class RDORTPEnum: public RDOTypeParam
+class RDORTPEnum: public RDOType
 {
 public:
 	RDORTPEnum(CREF(RDOValue) first);
@@ -42,7 +42,7 @@ public:
 		return !operator==(enums);
 	}
 
-	virtual tstring              name      ()                                const { return _T("enum"); }
+	virtual tstring              name      ()                                const;
 	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
 

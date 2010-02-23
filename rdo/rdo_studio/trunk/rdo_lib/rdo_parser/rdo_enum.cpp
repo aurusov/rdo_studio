@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- RDORTPEnum
 // ----------------------------------------------------------------------------
 RDORTPEnum::RDORTPEnum(CREF(RDOValue) first)
-	: RDOTypeParam(rdoRuntime::g_unknow, RDOParserSrcInfo())
+	: RDOType(rdoRuntime::g_unknow, RDOParserSrcInfo())
 {
 	m_type = new rdoRuntime::RDOEnumType(RDOParser::s_parser()->runtime());
 	add(first);
@@ -30,6 +30,23 @@ RDORTPEnum::RDORTPEnum(CREF(RDOValue) first)
 
 RDORTPEnum::~RDORTPEnum()
 {}
+
+inline tstring RDORTPEnum::name() const
+{
+	tstring str = _T("(");
+	RDOEnumType::const_iterator it = begin();
+	while (it != end())
+	{
+		str += *it;
+		it++;
+		if (it != end())
+		{
+			str += _T(", ");
+		}
+	}
+	str += _T(")");
+	return str;
+}
 
 CPTR(RDOType) RDORTPEnum::type_cast(CREF(RDOType) from) const
 {
@@ -42,7 +59,21 @@ CPTR(RDOType) RDORTPEnum::type_cast(CREF(RDOType) from) const
 
 rdoRuntime::RDOValue RDORTPEnum::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	return m_type->value_cast(from);
+	switch (from.typeID())
+	{
+		case RDOType::t_identificator: {
+			return (findEnum(from.getIdentificator()) != END) ?
+				RDOValue(*m_type, from.getIdentificator()) :
+				RDOValue(g_unknow);
+			break;
+		}
+		case RDOType::t_enum: {
+			if (m_type == &from.type())
+				return from;
+			break;
+		}
+	}
+	throw RDOTypeException();
 }
 
 void RDORTPEnum::add(CREF(RDOValue) next)

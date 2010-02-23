@@ -38,8 +38,6 @@ public:
 	void  add     (CREF(tstring) next);
 	ruint findEnum(CREF(tstring) val) const;
 	rbool exist   (CREF(tstring) val) const;
-	virtual tstring  name      ()                    const;
-	virtual RDOValue value_cast(CREF(RDOValue) from) const;
 
 	rbool           empty    () const;
 	const CIterator begin    () const;

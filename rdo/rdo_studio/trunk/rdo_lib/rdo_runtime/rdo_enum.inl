@@ -44,42 +44,6 @@ inline rbool RDOEnumType::exist(CREF(tstring) val) const
 	return findEnum(val) != END;
 }
 
-inline tstring RDOEnumType::name() const
-{
-	tstring str = _T("(");
-	std::vector< tstring >::const_iterator it = begin();
-	while (it != end())
-	{
-		str += *it;
-		it++;
-		if (it != end())
-		{
-			str += _T(", ");
-		}
-	}
-	str += _T(")");
-	return str;
-}
-
-inline RDOValue RDOEnumType::value_cast(CREF(RDOValue) from) const
-{
-	switch (from.typeID())
-	{
-		case RDOType::t_identificator: {
-			return (findEnum(from.getIdentificator()) != END) ?
-				RDOValue(*this, from.getIdentificator()) :
-				RDOValue(g_unknow);
-			break;
-		}
-		case RDOType::t_enum: {
-			if (this == &from.type())
-				return from;
-			break;
-		}
-	}
-	throw RDOTypeException();
-}
-
 inline rbool                        RDOEnumType::empty    () const { return m_enum.empty(); }
 inline const RDOEnumType::CIterator RDOEnumType::begin    () const { return m_enum.begin(); }
 inline const RDOEnumType::CIterator RDOEnumType::end      () const { return m_enum.end();   }
