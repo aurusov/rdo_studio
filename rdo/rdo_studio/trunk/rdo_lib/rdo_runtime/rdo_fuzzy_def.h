@@ -91,7 +91,7 @@ public:
 	RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition);
 	virtual ~RDOFuzzyType();
 
-	virtual tstring  asString  ()                    const;
+	virtual tstring  name      ()                    const;
 	virtual RDOValue value_cast(CREF(RDOValue) from) const;
 
 	rbool operator== (CREF(RDOFuzzyType) type) const;

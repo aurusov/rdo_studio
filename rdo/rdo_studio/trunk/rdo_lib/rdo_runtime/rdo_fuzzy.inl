@@ -73,7 +73,7 @@ inline RDOFuzzyType::RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition)
 inline RDOFuzzyType::~RDOFuzzyType()
 {}
 
-inline tstring RDOFuzzyType::asString() const
+inline tstring RDOFuzzyType::name() const
 {
 	return _T("RDOFuzzyType");
 }

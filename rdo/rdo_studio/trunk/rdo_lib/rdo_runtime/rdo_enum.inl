@@ -43,7 +43,7 @@ inline rbool RDOEnumType::exist(CREF(tstring) val) const
 	return findEnum(val) != END;
 }
 
-inline tstring RDOEnumType::asString() const
+inline tstring RDOEnumType::name() const
 {
 	tstring str = _T("(");
 	std::vector< tstring >::const_iterator it = begin();

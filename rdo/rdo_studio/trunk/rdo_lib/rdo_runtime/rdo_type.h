@@ -43,7 +43,7 @@ public:
 	TypeID  typeID     () const;
 	rbool   operator!= (CREF(RDOType) type);
 
-	virtual tstring  asString  ()                    const = 0;
+	virtual tstring  name      ()                    const = 0;
 	virtual RDOValue value_cast(CREF(RDOValue) from) const = 0;
 
 	static CREF(RDOType) getTypeByID(TypeID typeID);
@@ -62,7 +62,7 @@ public:                                                                         
 	RDOType__##Class()                                                           \
 		: RDOType(t_##Class)                                                     \
 	{}                                                                           \
-	virtual tstring  asString  ()                    const { return ClassName; } \
+	virtual tstring  name      ()                    const { return ClassName; } \
 	virtual RDOValue value_cast(CREF(RDOValue) from) const;                      \
 };                                                                               \
 extern RDOType__##Class g_##Class;
