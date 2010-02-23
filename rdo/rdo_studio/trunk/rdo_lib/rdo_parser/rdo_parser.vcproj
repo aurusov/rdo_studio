@@ -3311,18 +3311,6 @@
 					RelativePath=".\rdo_type_range.inl"
 					>
 				</File>
-				<Filter
-					Name=".enum"
-					>
-					<File
-						RelativePath=".\rdo_enum.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\rdo_enum.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -3348,6 +3336,18 @@
 				RelativePath=".\rdo_type.h"
 				>
 			</File>
+			<Filter
+				Name=".enum"
+				>
+				<File
+					RelativePath=".\rdo_enum.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_enum.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
