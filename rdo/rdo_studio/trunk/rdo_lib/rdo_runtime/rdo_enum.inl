@@ -30,6 +30,7 @@ inline RDOEnumType::RDOEnumType(PTR(RDORuntimeParent) parent, CREF(Enums) enums)
 
 inline void RDOEnumType::add(CREF(tstring) next)
 {
+	ASSERT(findEnum(next) == END);
 	m_enum.push_back(next);
 }
 
