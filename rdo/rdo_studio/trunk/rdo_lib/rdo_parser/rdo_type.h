@@ -53,15 +53,17 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Class)                                                                    \
-class RDOType__##Class: public RDOType                                                                    \
-{                                                                                                         \
-public:                                                                                                   \
-	RDOType__##Class(): RDOType(rdoRuntime::g_##Class) {}                                                 \
-	virtual tstring              name      ()                                const { return ""#Class""; } \
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;                       \
-	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;                       \
-};                                                                                                        \
+#define DEFINE_ATOM_TYPE_PARSER(Class)                                                                       \
+class RDOType__##Class: public RDOType                                                                       \
+{                                                                                                            \
+public:                                                                                                      \
+	RDOType__##Class():                                                                                      \
+		RDOType(rdoRuntime::g_##Class)                                                                       \
+	{}                                                                                                       \
+	virtual tstring              name      ()                                const { return type().name(); } \
+	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;                          \
+	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;                          \
+};                                                                                                           \
 extern RDOType__##Class g_##Class;
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );
