@@ -40,9 +40,7 @@ public:
 
 	RDOType(TypeID typeID);
 
-	TypeID  typeID     () const;
-
-	static CREF(RDOType) getTypeByID(TypeID typeID);
+	TypeID  typeID() const;
 
 private:
 	TypeID  m_typeID;
