@@ -41,10 +41,6 @@ public:
 	RDOType(TypeID typeID);
 
 	TypeID  typeID     () const;
-	rbool   operator!= (CREF(RDOType) type);
-
-	virtual tstring  name      ()                    const = 0;
-	virtual RDOValue value_cast(CREF(RDOValue) from) const = 0;
 
 	static CREF(RDOType) getTypeByID(TypeID typeID);
 
@@ -55,24 +51,22 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE(Class, ClassName)                                       \
-class RDOType__##Class: public RDOType                                           \
-{                                                                                \
-public:                                                                          \
-	RDOType__##Class()                                                           \
-		: RDOType(t_##Class)                                                     \
-	{}                                                                           \
-	virtual tstring  name      ()                    const { return ClassName; } \
-	virtual RDOValue value_cast(CREF(RDOValue) from) const;                      \
-};                                                                               \
-extern RDOType__##Class g_##Class;
+#define DEFINE_ATOM_TYPE(Type)        \
+class RDOType__##Type: public RDOType \
+{                                     \
+public:                               \
+	RDOType__##Type()                 \
+		: RDOType(t_##Type)           \
+	{}                                \
+};                                    \
+extern RDOType__##Type g_##Type;
 
-DEFINE_ATOM_TYPE(unknow,        _T("unknow")       );
-DEFINE_ATOM_TYPE(identificator, _T("identificator"));
-DEFINE_ATOM_TYPE(int,           _T("integer")      );
-DEFINE_ATOM_TYPE(real,          _T("real")         );
-DEFINE_ATOM_TYPE(bool,          _T("bool")         );
-DEFINE_ATOM_TYPE(string,        _T("string")       );
+DEFINE_ATOM_TYPE(unknow       );
+DEFINE_ATOM_TYPE(identificator);
+DEFINE_ATOM_TYPE(int          );
+DEFINE_ATOM_TYPE(real         );
+DEFINE_ATOM_TYPE(bool         );
+DEFINE_ATOM_TYPE(string       );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

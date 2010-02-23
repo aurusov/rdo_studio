@@ -27,7 +27,7 @@ CPTR(RDOType) RDOType::type_cast_throw(CREF(RDOType) from, CREF(RDOParserSrcInfo
 	CPTR(RDOType) toType = type_cast(from);
 	if (!toType)
 	{
-		rdoParse::g_error().push_only(src_info, rdo::format(_T("Несовместимые типы данных: %s и %s"), type().name().c_str(), from.type().name().c_str()));
+		rdoParse::g_error().push_only(src_info, rdo::format(_T("Несовместимые типы данных: %s и %s"), name().c_str(), from.name().c_str()));
 		rdoParse::g_error().push_only(to_src_info,   _T("См. первый тип"));
 		rdoParse::g_error().push_only(from_src_info, _T("См. второй тип"));
 		rdoParse::g_error().push_done();
@@ -136,7 +136,7 @@ rdoRuntime::RDOValue RDOType__bool::value_cast(CREF(rdoRuntime::RDOValue) from) 
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
 // ----------------------------------------------------------------------------
-#define DECLARE_ATOM_TYPE_PARSER(Class) RDOType__##Class g_##Class;
+#define DECLARE_ATOM_TYPE_PARSER(Type) RDOType__##Type g_##Type;
 
 DECLARE_ATOM_TYPE_PARSER(unknow       );
 DECLARE_ATOM_TYPE_PARSER(identificator);

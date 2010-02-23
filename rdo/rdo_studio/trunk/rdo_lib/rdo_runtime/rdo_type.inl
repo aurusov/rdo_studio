@@ -26,9 +26,4 @@ inline RDOType::TypeID RDOType::typeID() const
 	return m_typeID;
 }
 
-inline rbool RDOType::operator!= (CREF(RDOType) type)
-{
-	return m_typeID != type.m_typeID;
-}
-
 CLOSE_RDO_RUNTIME_NAMESPACE
