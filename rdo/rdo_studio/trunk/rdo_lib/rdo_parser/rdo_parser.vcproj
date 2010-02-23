@@ -3293,61 +3293,61 @@
 				>
 			</File>
 			<Filter
-				Name=".type"
+				Name=".param"
 				>
 				<File
-					RelativePath=".\rdo_type.cpp"
+					RelativePath=".\rdo_type_param.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type.h"
+					RelativePath=".\rdo_type_param.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_range.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_range.inl"
 					>
 				</File>
 				<Filter
-					Name=".param"
+					Name=".enum"
 					>
 					<File
-						RelativePath=".\rdo_type_param.cpp"
+						RelativePath=".\rdo_enum.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\rdo_type_param.h"
+						RelativePath=".\rdo_enum.h"
 						>
 					</File>
-					<File
-						RelativePath=".\rdo_type_range.h"
-						>
-					</File>
-					<File
-						RelativePath=".\rdo_type_range.inl"
-						>
-					</File>
-					<Filter
-						Name=".enum"
-						>
-						<File
-							RelativePath=".\rdo_enum.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\rdo_enum.h"
-							>
-						</File>
-					</Filter>
 				</Filter>
 			</Filter>
-			<Filter
-				Name=".value"
+		</Filter>
+		<Filter
+			Name=".value"
+			>
+			<File
+				RelativePath=".\rdo_value.cpp"
 				>
-				<File
-					RelativePath=".\rdo_value.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_value.h"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath=".\rdo_value.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".type"
+			>
+			<File
+				RelativePath=".\rdo_type.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_type.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
