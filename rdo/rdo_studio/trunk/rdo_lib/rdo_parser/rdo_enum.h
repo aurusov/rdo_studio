@@ -12,7 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type_param.h"
+#include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
 // ===============================================================================
@@ -29,8 +29,8 @@ public:
 	virtual ~RDORTPEnum();
 
 	void add(CREF(RDOValue) next);
-	rdoRuntime::RDOValue          findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const;
-	rdoRuntime::RDOValue          getFirstValue() const;
+//	rdoRuntime::RDOValue          findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const;
+//	rdoRuntime::RDOValue          getFirstValue() const;
 	CREF(rdoRuntime::RDOEnumType) getEnums     () const { return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type); }
 
 	rbool operator== (CREF(RDORTPEnum) enums) const
