@@ -32,7 +32,9 @@ public:
 	template<class T>
 	ID push(PTR(T) object)
 	{
-		std::pair<Stack::iterator, rbool> result = m_stack.insert(std::pair(m_generator.get(), object));
+		std::pair<Stack::iterator, rbool> result = m_stack.insert(
+			std::pair<Stack::key_type, Stack::mapped_type>(m_generator.get(), object)
+		);
 		ASSERT(result.second);
 		return result.first->first;
 	}
