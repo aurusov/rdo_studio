@@ -39,7 +39,7 @@ public:
 	template<class T>
 	PTR(T) pop(ID index)
 	{
-		Stack::const_iterator it = m_stack.find(index);
+		Stack::iterator it = m_stack.find(index);
 		ASSERT(it != m_stack.end());
 		PTR(T) object = reinterpret_cast<PTR(T)>(it->second);
 		m_stack.erase(it);
