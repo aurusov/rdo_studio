@@ -116,13 +116,8 @@ RDOParser::~RDOParser()
 {
 	m_runtime.deinit();
 	rdo::deleteAllObjects(m_allValues);
-	rdo::deleteAllObjects(m_typeList );
-
-	STL_FOR_ALL(MovementObjectList, m_movementObjectList, it)
-	{
-		delete it->second;
-	}
-	m_movementObjectList.clear();
+	m_typeFactory.destroy();
+	m_movementObjectList.destroy();
 
 	DeletableList::reverse_iterator it = m_allDeletables.rbegin();
 	while (it != m_allDeletables.rend())

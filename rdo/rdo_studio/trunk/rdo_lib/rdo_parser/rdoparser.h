@@ -15,6 +15,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdosingletone.h"
+#include "rdo_common/rdoindexedstack.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
@@ -69,6 +70,22 @@ DEFINE_OBJECT_CONTAINER_NONAME(Name) \
 public: \
 	CPTR(RDO##Name) find##Name  (CREF(tstring) name) const; \
 	rbool           remove##Name(CPTR(RDO##Name) item);
+
+
+#define REGISTER_FACTORY(TYPE, TYPEID, VALUE)                   \
+private:                                                        \
+	template <> struct GetFactory<TYPEID>                       \
+	{                                                           \
+		typedef TYPE          Type;                             \
+		typedef Factory<Type> Factory;                          \
+	};                                                          \
+	GetFactory<TYPEID>::Factory VALUE;                          \
+public:                                                         \
+	template <>                                                 \
+	REF(typename GetFactory<TYPEID>::Factory) factory<TYPEID>() \
+	{                                                           \
+		return VALUE;                                           \
+	}
 
 class RDOParser
 {
@@ -154,45 +171,50 @@ public:
 		return value;
 	}
 
-	typedef std::map<ruint, PTR(void)> MovementObjectList;
-
-	template<class T>
-	ruint push_movement(PTR(T) object)
+	template <class Base>
+	class Factory
 	{
-		ruint index = 0;
-		while (true)
+	public:
+		template<class T, class P1, class P2>
+		PTR(T) create(CREF(P1) param1, CREF(P2) param2)
 		{
-			if (m_movementObjectList.count(index) == 0)
-				break;
-			index++;
+			PTR(T) pObject = new T(param1, param2);
+			m_container.push_back(pObject);
+			return pObject;
 		}
-		std::pair<MovementObjectList::iterator, rbool> result = m_movementObjectList.insert(std::pair(index, object));
-		ASSERT(result.second);
-		return index;
-	}
-	template<class T>
-	PTR(T) pop_movement(ruint index)
-	{
-		MovementObjectList::iterator it = m_movementObjectList.find(index);
-		ASSERT(it != m_movementObjectList.end());
-		PTR(T) object = reinterpret_cast<PTR(T)>(it->second);
-		m_movementObjectList.erase(it);
-		return object;
-	}
+		template<class T, class P1, class P2, class P3>
+		PTR(T) create(CREF(P1) param1, CREF(P2) param2, CREF(P3) param3)
+		{
+			PTR(T) pObject = new T(param1, param2, param3);
+			m_container.push_back(pObject);
+			return pObject;
+		}
+		void destroy()
+		{
+			STL_FOR_ALL(ObjectList, m_container, it)
+			{
+				delete *it;
+			}
+			m_container.clear();
+		}
+	private:
+		typedef std::list<PTR(Base)> ObjectList;
+		ObjectList m_container;
+	};
 
-	template<class T, class P1, class P2>
-	PTR(T) factory_type(CREF(P1) param1, CREF(P2) param2)
+	enum FactoryType
 	{
-		PTR(T) pType = new T(param1, param2);
-		m_typeList.push_back(pType);
-		return pType;
-	}
-	template<class T, class P1, class P2, class P3>
-	PTR(T) factory_type(CREF(P1) param1, CREF(P2) param2, CREF(P3) param3)
+		F_TYPE
+	};
+
+	template <ruint id>	   struct GetFactory;
+	template <ruint index> REF(typename GetFactory<index>::Factory) factory();
+
+	REGISTER_FACTORY(RDOType, F_TYPE, m_typeFactory);
+
+	REF(rdo::IndexedStack) stack()
 	{
-		PTR(T) pType = new T(param1, param2, param3);
-		m_typeList.push_back(pType);
-		return pType;
+		return m_movementObjectList;
 	}
 
 	static rdoModelObjects::RDOFileType getFileToParse();
@@ -228,15 +250,12 @@ protected:
 	void parse(rdoModelObjects::RDOParseType file);
 
 private:
-	typedef std::list<PTR(RDOType)> TypeList;
-
-	PTR(RDOParserObject)   m_parsing_object;
-	PTR(RDOSMR)            m_smr;
-	rbool                  m_have_kw_Resources;
-	rbool                  m_have_kw_ResourcesEnd;
-	Error                  m_error;
-	TypeList               m_typeList;
-	MovementObjectList     m_movementObjectList;
+	PTR(RDOParserObject)  m_parsing_object;
+	PTR(RDOSMR)           m_smr;
+	rbool                 m_have_kw_Resources;
+	rbool                 m_have_kw_ResourcesEnd;
+	Error                 m_error;
+	rdo::IndexedStack     m_movementObjectList;
 
 	struct Changes
 	{
