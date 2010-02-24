@@ -353,6 +353,14 @@
 			Name=".stuff"
 			>
 			<File
+				RelativePath=".\rdoidgenerator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoindexedstack.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdosingletone.h"
 				>
 			</File>
