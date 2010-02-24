@@ -378,7 +378,7 @@ public:
 	}
 	void addValue( const RDOValue& value )
 	{
-		m_values.push_back( header->getType()->getValue(value) );
+		m_values.push_back( header->getType()->value_cast(value) );
 	}
 	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
 
