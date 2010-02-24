@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_enum.h
+ * filename : rdo_enum.cpp
  * author   : Урусов Андрей
  * date     : 
  * bref     : 
@@ -21,11 +21,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEnumType
 // ----------------------------------------------------------------------------
-RDOEnumType::RDOEnumType(CREF(RDOValue) first)
+RDOEnumType::RDOEnumType()
 	: RDOType(&rdoRuntime::g_unknow)
 {
 	m_type = new rdoRuntime::RDOEnumType(RDOParser::s_parser()->runtime());
-	add(first);
 }
 
 RDOEnumType::~RDOEnumType()
@@ -76,6 +75,15 @@ rdoRuntime::RDOValue RDOEnumType::value_cast(CREF(rdoRuntime::RDOValue) from) co
 		}
 	}
 	throw rdoRuntime::RDOTypeException();
+}
+
+void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const
+{
+	stream << "E " << getEnums().getValues().size() << std::endl;
+	for (ruint i = 0; i < getEnums().getValues().size(); i++)
+	{
+		stream << "    " << i << " " << getEnums().getValues().at(i) << std::endl;
+	}
 }
 
 void RDOEnumType::add(CREF(RDOValue) next)

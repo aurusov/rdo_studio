@@ -25,7 +25,7 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOEnumType: public RDOType
 {
 public:
-	RDOEnumType(CREF(RDOValue) first);
+	RDOEnumType         ();
 	virtual ~RDOEnumType();
 
 	void add(CREF(RDOValue) next);
@@ -41,13 +41,14 @@ public:
 	{
 		return !operator==(enums);
 	}
-
-	virtual tstring              name      ()                                const;
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
-	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
+	virtual tstring name() const;
 
 private:
 	PTR(rdoRuntime::RDOEnumType) __enum() const { return static_cast<PTR(rdoRuntime::RDOEnumType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
+
+	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
+	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
+	DECLARE_IModelStructure;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

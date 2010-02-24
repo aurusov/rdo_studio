@@ -15,12 +15,11 @@
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
-
-class RDOTypeRange;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
@@ -28,28 +27,17 @@ class RDOTypeRange;
 class RDOTypeParam: public RDOParserSrcInfo, public IModelStructure
 {
 public:
-	virtual void checkValue(CREF(RDOValue) value);
-	// добавить кастинг rdoParse::RDOValue -> rdoParse::RDOValue
-
-protected:
-	RDOTypeParam(CREF(RDOType) type, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeParam(PTR(RDOType) type, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeParam();
-};
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTypeParamInt
-// ----------------------------------------------------------------------------
-class RDOTypeParamInt: RDOTypeParam
-{
-public:
-	RDOTypeParamInt(PTR(RDOTypeRange) range, CREF(RDOParserSrcInfo) src_info);
-
-	CPTR(RDOTypeRange) range() const { return m_range; }
-
-private:
-	PTR(RDOTypeRange) m_range;
+	virtual void     checkValue(CREF(RDOValue) value);
+	// добавить кастинг rdoParse::RDOValue -> rdoParse::RDOValue
+	virtual RDOValue value_cast(CREF(RDOValue) value) const;
 
 	DECLARE_IModelStructure;
+
+protected:
+	PTR(RDOType) m_type;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -60,6 +60,11 @@ rdoRuntime::RDOValue RDOType__unknow::value_cast(CREF(rdoRuntime::RDOValue) from
 	throw rdoRuntime::RDOTypeException();
 }
 
+void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
+{
+	NEVER_REACH_HERE;
+}
+
 //! RDOType__int
 CPTR(RDOType) RDOType__int::type_cast(CREF(RDOType) from) const
 {
@@ -74,6 +79,11 @@ CPTR(RDOType) RDOType__int::type_cast(CREF(RDOType) from) const
 rdoRuntime::RDOValue RDOType__int::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getInt();
+}
+
+void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
+{
+	stream << _T("I") << std::endl;
 }
 
 //! RDOType__real
@@ -92,6 +102,11 @@ rdoRuntime::RDOValue RDOType__real::value_cast(CREF(rdoRuntime::RDOValue) from) 
 	return from.getDouble();
 }
 
+void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
+{
+	stream << _T("R") << std::endl;
+}
+
 //! RDOType__string
 CPTR(RDOType) RDOType__string::type_cast(CREF(RDOType) from) const
 {
@@ -107,6 +122,11 @@ rdoRuntime::RDOValue RDOType__string::value_cast(CREF(rdoRuntime::RDOValue) from
 	return from.getString();
 }
 
+void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
+{
+	stream << _T("S") << std::endl;
+}
+
 //! RDOType__identificator
 CPTR(RDOType) RDOType__identificator::type_cast(CREF(RDOType) from) const
 {
@@ -116,6 +136,11 @@ CPTR(RDOType) RDOType__identificator::type_cast(CREF(RDOType) from) const
 rdoRuntime::RDOValue RDOType__identificator::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	throw rdoRuntime::RDOTypeException();
+}
+
+void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
+{
+	NEVER_REACH_HERE;
 }
 
 //! RDOType__bool
@@ -131,6 +156,11 @@ CPTR(RDOType) RDOType__bool::type_cast(CREF(RDOType) from) const
 rdoRuntime::RDOValue RDOType__bool::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
 	return from.getBool();
+}
+
+void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const
+{
+	stream << _T("B") << std::endl;
 }
 
 // ----------------------------------------------------------------------------

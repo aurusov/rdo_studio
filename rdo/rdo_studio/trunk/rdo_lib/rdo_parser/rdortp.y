@@ -201,6 +201,9 @@
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/rdo_type_int_range.h"
+#include "rdo_lib/rdo_parser/rdo_type_real_range.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -227,7 +230,7 @@ ext_param_type:		RDO_typedef RDO_enum ext_par_type_enum
 					{
 					};
 
-ext_par_type_enum:	param_enum RDO_IDENTIF
+ext_par_type_enum:	param_type_enum RDO_IDENTIF
 					{
 						PTR(RDOEnumType) enu = reinterpret_cast<PTR(RDOEnumType)>($1);
 					};
@@ -321,16 +324,18 @@ rtp_body:			/* empty */ {
 
 rtp_param:			RDO_IDENTIF_COLON param_type param_value_default
 					{
-						PTR(RDOValue)     param_name = P_RDOVALUE($1);
-						PTR(RDOTypeParam) param_type = reinterpret_cast<PTR(RDOTypeParam)>($2);
-						PTR(RDORTPParam)  param      = new RDORTPParam(PARSER->getLastRTPResType(), param_name->src_info(), param_type, RDOVALUE($3));
-						param->checkDefault();
-						param_type->reparent(param);
+						//PTR(RDOValue)     param_name = P_RDOVALUE($1);
+						//PTR(RDOTypeParam) param_type = reinterpret_cast<PTR(RDOTypeParam)>($2);
+						//PTR(RDORTPParam)  param      = new RDORTPParam(PARSER->getLastRTPResType(), param_name->src_info(), param_type, RDOVALUE($3));
+						//param->checkDefault();
+						//param_type->reparent(param);
+
 						//if (param_type->typeID() == rdoRuntime::RDOType::t_enum)
 						//{
 						//	static_cast<PTR(RDORTPEnumParamType)>(param_type)->enum_name = rdo::format(_T("%s.%s"), PARSER->getLastRTPResType()->name().c_str(), param_name->src_info().src_text().c_str());
 						//}
-						$$ = (int)param;
+
+						//$$ = (int)param;
 					}
 					| RDO_IDENTIF_COLON error {
 						if (PARSER->lexer_loc_line() == @1.last_line)
@@ -346,231 +351,6 @@ rtp_param:			RDO_IDENTIF_COLON param_type param_value_default
 					| error {
 						PARSER->error().error(@1, _T("Неправильное описание параметра"));
 					};
-
-// ----------------------------------------------------------------------------
-// ---------- Описание типа параметра
-// ----------------------------------------------------------------------------
-param_type:		RDO_integer param_type_diap
-				{
-					PTR(RDOTypeRange)    pRange = PARSER->pop_movement<RDOTypeRange>($2);
-					PTR(RDOTypeParamInt) pType  = PARSER->factory_type<RDOTypeParamInt>(pRange, RDOParserSrcInfo(@1, @2));
-					pType->check();
-					$$ = (int)pType;
-				}
-				| RDO_real param_type_diap
-				{
-					PTR(RDOTypeRange)     pRange = PARSER->pop_movement<RDOTypeRange>($2);
-					PTR(RDOTypeParamReal) pType  = PARSER->factory_type<RDOTypeParamReal>(pRange, RDOParserSrcInfo(@1, @2));
-					pType->check();
-					$$ = (int)pType;
-				}
-				| RDO_string
-				{
-					PTR(RDOTypeParamString) pType = PARSER->factory_type<RDOTypeParamString>(RDOParserSrcInfo(@1));
-					pType->check();
-					$$ = (int)pType;
-				}
-				| RDO_bool
-				{
-					PTR(RDOTypeParamBool) pType = PARSER->factory_type<RDOTypeParamBool>(RDOParserSrcInfo(@1));
-					pType->check();
-					$$ = (int)pType;
-				}
-				| param_enum
-				{
-					LEXER->enumReset();
-					PTR(RDOEnumType) pType = reinterpret_cast<PTR(RDOEnumType)>($1);
-					pType->check();
-					$$ = (int)pType;
-				}
-				| param_such_as
-				{
-					CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					RDOParserSrcInfo src_info(@1);
-					src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					$$ = (int)param->getType()->constructorSuchAs(src_info);
-				}
-				| param_such_as '=' RDO_INT_CONST
-				{
-					CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					RDOParserSrcInfo src_info(@1, @3);
-					src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
-				}
-				| param_such_as '=' RDO_REAL_CONST
-				{
-					CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					RDOParserSrcInfo src_info(@1, @3);
-					src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
-				}
-				| param_such_as '=' RDO_IDENTIF
-				{
-					CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					RDOParserSrcInfo src_info(@1, @3);
-					src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
-				}
-				| param_such_as '=' error
-				{
-					PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Ожидается зачение по-умолчанию"));
-				};
-/*
-				| RDO_integer error {
-					PARSER->error().error(@2, _T("Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию."));
-				}
-				| RDO_real error {
-					PARSER->error().error(@2, _T("Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию."));
-				}
-				| param_enum error {
-					PARSER->error().error(@2, _T("Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию."));
-				};
-*/
-
-param_type_diap:	/* empty */ {
-					YYLTYPE pos = @0;
-					pos.first_line   = pos.last_line;
-					pos.first_column = pos.last_column;
-					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOValue(), RDOValue(), pos);
-					$$ = PARSER->push_movement(pRange);
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					$$ = PARSER->push_movement(pRange);
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					$$ = PARSER->push_movement(pRange);
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					$$ = PARSER->push_movement(pRange);
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					$$ = PARSER->push_movement(pRange);
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error {
-					PARSER->error().error(@4, _T("Диапазон задан неверно"));
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error {
-					PARSER->error().error(@4, _T("Диапазон задан неверно"));
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error {
-					PARSER->error().error(@4, _T("Диапазон задан неверно"));
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error {
-					PARSER->error().error(@4, _T("Диапазон задан неверно"));
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint error {
-					PARSER->error().error(@4, _T("Диапазон задан неверно"));
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint error {
-					PARSER->error().error(@4, _T("Диапазон задан неверно"));
-				}
-				| '[' error {
-					PARSER->error().error(@2, _T("Диапазон задан неверно"));
-				};
-
-param_enum:	'(' param_enum_list ')' {
-				PTR(RDOEnumType) enu = reinterpret_cast<PTR(RDOEnumType)>($2);
-				enu->setSrcPos(@1, @3);
-				enu->setSrcText(enu->getEnums().asString());
-				$$ = $2;
-			}
-			| '(' param_enum_list error {
-				PARSER->error().error(@2, _T("Перечисление должно заканчиваться скобкой"));
-			};
-
-param_enum_list: RDO_IDENTIF {
-					PTR(RDOEnumType) pType = PARSER->factory_type<RDOEnumType>(RDOVALUE($1));
-					pType->setSrcInfo(P_RDOVALUE($1)->src_info());
-					LEXER->enumBegin();
-					$$ = (int)pType;
-				}
-				| param_enum_list ',' RDO_IDENTIF {
-					if (!LEXER->enumEmpty())
-					{
-						PTR(RDOEnumType) pType  = reinterpret_cast<PTR(RDOEnumType)>($1);
-						pType->add(RDOVALUE($3));
-						$$ = (int)pType;
-					}
-					else
-					{
-						PARSER->error().error(@3, _T("Ошибка в описании значений перечислимого типа"));
-					}
-				}
-				| param_enum_list RDO_IDENTIF {
-					if (!LEXER->enumEmpty())
-					{
-						PTR(RDOEnumType) pType  = reinterpret_cast<PTR(RDOEnumType)>($1);
-						pType->add(RDOVALUE($2));
-						$$ = (int)pType;
-						PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
-					}
-					else
-					{
-						PARSER->error().error(@2, _T("Ошибка в описании значений перечислимого типа"));
-					}
-				}
-				| param_enum_list ',' RDO_INT_CONST {
-					PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
-				}
-				| param_enum_list ',' RDO_REAL_CONST {
-					PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
-				}
-				| param_enum_list RDO_INT_CONST {
-					PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
-				}
-				| param_enum_list RDO_REAL_CONST {
-					PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
-				}
-				| RDO_INT_CONST {
-					PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
-				}
-				| RDO_REAL_CONST {
-					PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
-				};
-
-param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
-					tstring type  = RDOVALUE($2)->getIdentificator();
-					tstring param = RDOVALUE($4)->getIdentificator();
-					CPTR(RDORTPResType) const rt = PARSER->findRTPResType(type);
-					if (!rt)
-					{
-						PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
-					}
-					CPTR(RDORTPParam) const rp = rt->findRTPParam(param);
-					if (!rp)
-					{
-						PARSER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
-					}
-					$$ = (int)rp;
-				}
-				| RDO_such_as RDO_IDENTIF {
-					tstring constName = RDOVALUE($2)->getIdentificator();
-					CPTR(RDOFUNConstant) const cons = PARSER->findFUNConstant(constName);
-					if (!cons)
-					{
-						PARSER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
-					}
-					$$ = (int)cons->getDescr();
-				}
-				| RDO_such_as RDO_IDENTIF '.' error {
-					tstring type = RDOVALUE($2)->getIdentificator();
-					CPTR(RDORTPResType) const rt = PARSER->findRTPResType(type);
-					if (!rt)
-					{
-						PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
-					}
-					else
-					{
-						PARSER->error().error(@4, _T("Ошибка при указании параметра"));
-					}
-				}
-				| RDO_such_as error {
-					PARSER->error().error(@2, _T("После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки"));
-				};
 
 param_value_default:	/* empty */ {
 						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
@@ -600,6 +380,244 @@ param_value_default:	/* empty */ {
 						{
 							PARSER->error().error(src_info, _T("Неверное значение по-умолчанию "));
 						}
+					};
+
+// ----------------------------------------------------------------------------
+// ---------- Описание типа параметра
+// ----------------------------------------------------------------------------
+param_type:		RDO_integer param_type_range
+				{
+					PTR(RDOTypeRange) pRange = PARSER->stack().pop<RDOTypeRange>($2);
+					PTR(RDOTypeParam) pType  = NULL;
+					if (pRange)
+					{
+						PTR(RDOTypeIntRange) pIntRange = PARSER->factory<RDOParser::F_TYPE>().create<RDOTypeIntRange>(pRange);
+						pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(pIntRange, RDOParserSrcInfo(@1, @2));
+					}
+					else
+					{
+						pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(&g_int, @1);
+					}
+					$$ = PARSER->stack().push<RDOTypeParam>(pType);
+				}
+				| RDO_real param_type_range
+				{
+					PTR(RDOTypeRange) pRange = PARSER->stack().pop<RDOTypeRange>($2);
+					PTR(RDOTypeParam) pType  = NULL;
+					if (pRange)
+					{
+						PTR(RDOTypeRealRange) pRealRange = PARSER->factory<RDOParser::F_TYPE>().create<RDOTypeRealRange>(pRange);
+						pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(pRealRange, RDOParserSrcInfo(@1, @2));
+					}
+					else
+					{
+						pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(&g_real, @1);
+					}
+					$$ = PARSER->stack().push<RDOTypeParam>(pType);
+				}
+				| RDO_string
+				{
+					PTR(RDOTypeParam) pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(&g_string, @1);
+					$$ = PARSER->stack().push<RDOTypeParam>(pType);
+				}
+				| RDO_bool
+				{
+					PTR(RDOTypeParam) pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(&g_bool, @1);
+					$$ = PARSER->stack().push<RDOTypeParam>(pType);
+				}
+				| param_type_enum
+				{
+					LEXER->enumReset();
+					PTR(RDOTypeParam) pType = PARSER->stack().pop<RDOTypeParam>($1);
+					$$ = PARSER->stack().push<RDOTypeParam>(pType);
+				}
+				| param_type_such_as
+				{
+					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
+					//RDOParserSrcInfo src_info(@1);
+					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
+					//$$ = (int)param->getType()->constructorSuchAs(src_info);
+				}
+				| param_type_such_as '=' RDO_INT_CONST
+				{
+					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
+					//RDOParserSrcInfo src_info(@1, @3);
+					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
+					//$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
+				}
+				| param_type_such_as '=' RDO_REAL_CONST
+				{
+					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
+					//RDOParserSrcInfo src_info(@1, @3);
+					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
+					//$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
+				}
+				| param_type_such_as '=' RDO_IDENTIF
+				{
+					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
+					//RDOParserSrcInfo src_info(@1, @3);
+					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
+					//$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
+				}
+				| param_type_such_as '=' error
+				{
+					//PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Ожидается зачение по-умолчанию"));
+				};
+/*
+				| RDO_integer error {
+					PARSER->error().error(@2, _T("Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию."));
+				}
+				| RDO_real error {
+					PARSER->error().error(@2, _T("Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию."));
+				}
+				| param_type_enum error {
+					PARSER->error().error(@2, _T("Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию."));
+				};
+*/
+
+param_type_range:	/* empty */ {
+					$$ = PARSER->stack().push<RDOTypeRange>(NULL);
+				}
+				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
+					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->check();
+					$$ = PARSER->stack().push<RDOTypeRange>(pRange);
+				}
+				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']' {
+					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->check();
+					$$ = PARSER->stack().push<RDOTypeRange>(pRange);
+				}
+				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']' {
+					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->check();
+					$$ = PARSER->stack().push<RDOTypeRange>(pRange);
+				}
+				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']' {
+					PTR(RDOTypeRange) pRange = new RDOTypeRange(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->check();
+					$$ = PARSER->stack().push<RDOTypeRange>(pRange);
+				}
+				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error {
+					PARSER->error().error(@4, _T("Диапазон задан неверно"));
+				}
+				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error {
+					PARSER->error().error(@4, _T("Диапазон задан неверно"));
+				}
+				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error {
+					PARSER->error().error(@4, _T("Диапазон задан неверно"));
+				}
+				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error {
+					PARSER->error().error(@4, _T("Диапазон задан неверно"));
+				}
+				| '[' RDO_REAL_CONST RDO_dblpoint error {
+					PARSER->error().error(@4, _T("Диапазон задан неверно"));
+				}
+				| '[' RDO_INT_CONST RDO_dblpoint error {
+					PARSER->error().error(@4, _T("Диапазон задан неверно"));
+				}
+				| '[' error {
+					PARSER->error().error(@2, _T("Диапазон задан неверно"));
+				};
+
+param_type_enum:	'(' param_type_enum_list ')' {
+						PTR(RDOEnumType)  pEnum = PARSER->stack().pop<RDOEnumType>($2);
+						PTR(RDOTypeParam) pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(pEnum, RDOParserSrcInfo(@1, @3));
+						pType->setSrcText(pEnum->name());
+						$$ = PARSER->stack().push<RDOTypeParam>(pType);
+					}
+					| '(' param_type_enum_list error {
+						PARSER->error().error(@2, _T("Перечисление должно заканчиваться скобкой"));
+					};
+
+param_type_enum_list: RDO_IDENTIF {
+						PTR(RDOEnumType) pEnum = PARSER->factory<RDOParser::F_TYPE>().create<RDOEnumType>();
+						pEnum->add(RDOVALUE($1));
+						LEXER->enumBegin();
+						$$ = PARSER->stack().push<RDOEnumType>(pEnum);
+					}
+					| param_type_enum_list ',' RDO_IDENTIF {
+						if (!LEXER->enumEmpty())
+						{
+							PTR(RDOEnumType) pEnum = PARSER->stack().pop<RDOEnumType>($1);
+							pEnum->add(RDOVALUE($3));
+							$$ = PARSER->stack().push<RDOEnumType>(pEnum);
+						}
+						else
+						{
+							PARSER->error().error(@3, _T("Ошибка в описании значений перечислимого типа"));
+						}
+					}
+					| param_type_enum_list RDO_IDENTIF {
+						if (!LEXER->enumEmpty())
+						{
+							PTR(RDOEnumType) pEnum = PARSER->stack().pop<RDOEnumType>($1);
+							pEnum->add(RDOVALUE($2));
+							$$ = PARSER->stack().push<RDOEnumType>(pEnum);
+							PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
+						}
+						else
+						{
+							PARSER->error().error(@2, _T("Ошибка в описании значений перечислимого типа"));
+						}
+					}
+					| param_type_enum_list ',' RDO_INT_CONST {
+						PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+					}
+					| param_type_enum_list ',' RDO_REAL_CONST {
+						PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+					}
+					| param_type_enum_list RDO_INT_CONST {
+						PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+					}
+					| param_type_enum_list RDO_REAL_CONST {
+						PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+					}
+					| RDO_INT_CONST {
+						PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+					}
+					| RDO_REAL_CONST {
+						PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+					};
+
+param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
+						tstring type  = RDOVALUE($2)->getIdentificator();
+						tstring param = RDOVALUE($4)->getIdentificator();
+						CPTR(RDORTPResType) const rt = PARSER->findRTPResType(type);
+						if (!rt)
+						{
+							PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+						}
+						CPTR(RDORTPParam) const rp = rt->findRTPParam(param);
+						if (!rp)
+						{
+							PARSER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
+						}
+						$$ = (int)rp;
+					}
+					| RDO_such_as RDO_IDENTIF {
+						tstring constName = RDOVALUE($2)->getIdentificator();
+						CPTR(RDOFUNConstant) const cons = PARSER->findFUNConstant(constName);
+						if (!cons)
+						{
+							PARSER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
+						}
+						$$ = (int)cons->getDescr();
+					}
+					| RDO_such_as RDO_IDENTIF '.' error {
+						tstring type = RDOVALUE($2)->getIdentificator();
+						CPTR(RDORTPResType) const rt = PARSER->findRTPResType(type);
+						if (!rt)
+						{
+							PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+						}
+						else
+						{
+							PARSER->error().error(@4, _T("Ошибка при указании параметра"));
+						}
+					}
+					| RDO_such_as error {
+						PARSER->error().error(@2, _T("После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки"));
 					};
 // ----------------------------------------------------------------------------
 

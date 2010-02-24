@@ -50,6 +50,7 @@ class RDODPTFreeActivity;
 class RDOPMDPokaz;
 class RDOPROCProcess;
 class RDORTPEnumParamType;
+class RDOTypeParam;
 
 class RDORTPFuzzyParam;
 
@@ -175,6 +176,20 @@ public:
 	class Factory
 	{
 	public:
+		template<class T>
+		PTR(T) create()
+		{
+			PTR(T) pObject = new T();
+			m_container.push_back(pObject);
+			return pObject;
+		}
+		template<class T, class P1>
+		PTR(T) create(CREF(P1) param1)
+		{
+			PTR(T) pObject = new T(param1);
+			m_container.push_back(pObject);
+			return pObject;
+		}
 		template<class T, class P1, class P2>
 		PTR(T) create(CREF(P1) param1, CREF(P2) param2)
 		{
@@ -186,6 +201,13 @@ public:
 		PTR(T) create(CREF(P1) param1, CREF(P2) param2, CREF(P3) param3)
 		{
 			PTR(T) pObject = new T(param1, param2, param3);
+			m_container.push_back(pObject);
+			return pObject;
+		}
+		template<class T, class P1, class P2, class P3, class P4>
+		PTR(T) create(CREF(P1) param1, CREF(P2) param2, CREF(P3) param3, CREF(P4) param4)
+		{
+			PTR(T) pObject = new T(param1, param2, param3, param4);
 			m_container.push_back(pObject);
 			return pObject;
 		}
@@ -204,13 +226,15 @@ public:
 
 	enum FactoryType
 	{
-		F_TYPE
+		F_TYPE,
+		F_PARAM_TYPE
 	};
 
 	template <ruint id>	   struct GetFactory;
 	template <ruint index> REF(typename GetFactory<index>::Factory) factory();
 
-	REGISTER_FACTORY(RDOType, F_TYPE, m_typeFactory);
+	REGISTER_FACTORY(RDOType,      F_TYPE,       m_typeFactory     );
+	REGISTER_FACTORY(RDOTypeParam, F_PARAM_TYPE, m_paramTypeFactory);
 
 	REF(rdo::IndexedStack) stack()
 	{

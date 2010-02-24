@@ -3348,6 +3348,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".range"
+				>
+				<File
+					RelativePath=".\rdo_type_int_range.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_int_range.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_real_range.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_real_range.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

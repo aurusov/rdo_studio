@@ -15,6 +15,7 @@
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -22,7 +23,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
-class RDOType
+class RDOType: public IModelStructure
 {
 public:
 	RDOType(CPTR(rdoRuntime::RDOType) type)
@@ -63,6 +64,7 @@ public:                                                                         
 	virtual tstring              name      ()                                const { return TypeName; } \
 	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;                     \
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;                     \
+	DECLARE_IModelStructure;                                                                            \
 };                                                                                                      \
 extern RDOType__##Type g_##Type;
 

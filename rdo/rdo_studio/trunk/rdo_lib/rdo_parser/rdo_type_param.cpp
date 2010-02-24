@@ -20,33 +20,33 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-RDOTypeParam::RDOTypeParam(CREF(rdoRuntime::RDOType) type, CREF(RDOParserSrcInfo) src_info)
-	: RDOType         (rdoRuntime::g_unknow)
-	, RDOParserSrcInfo(src_info            )
-{}
+RDOTypeParam::RDOTypeParam(PTR(RDOType) type, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_type          (type    )
+{
+	ASSERT(m_type);
+}
 
 RDOTypeParam::~RDOTypeParam()
 {}
 
 void RDOTypeParam::checkValue(CREF(RDOValue) value)
 {
-	if (value->typeID() != type().typeID())
+	if (value.typeID() != m_type->type().typeID())
 	{
-		rdoParse::g_error().error(value.src_info(), rdo::format(_T("Ќе получаетс€ преобразовать переменную '%s' в тип %s"), value->getAsString().c_str(), name().c_str()));
+		rdoParse::g_error().error(value.src_info(), rdo::format(_T("Ќе получаетс€ преобразовать переменную '%s' в тип %s"), value->getAsString().c_str(), m_type->name().c_str()));
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTypeParamInt
-// ----------------------------------------------------------------------------
-RDOTypeParamInt::RDOTypeParamInt(PTR(RDOTypeRange) range, CREF(RDOParserSrcInfo) src_info)
-	: RDOTypeParam(rdoRuntime::g_int, src_info)
-	, m_range(range)
-{}
-
-void RDOTypeParamInt::writeModelStructure(REF(std::ostream) stream) const
+void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << _T("I") << std::endl;
+	m_type->writeModelStructure(stream);
+}
+
+RDOValue RDOTypeParam::value_cast(CREF(RDOValue) value) const
+{
+	NEVER_REACH_HERE;
+	return value;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
