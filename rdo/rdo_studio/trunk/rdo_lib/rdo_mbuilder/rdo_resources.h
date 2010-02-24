@@ -130,7 +130,7 @@ public:
 
 		CPTR(rdoRuntime::RDOType)          type() const       { return m_type;             }
 		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->typeID();   }
-		tstring                            typeStr() const    { return m_type->asString(); }
+//		tstring                            typeStr() const    { return m_type->asString(); }
 
 		rsint                         id() const         { return m_id;  }
 
