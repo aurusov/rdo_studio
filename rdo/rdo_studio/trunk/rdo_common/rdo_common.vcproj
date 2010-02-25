@@ -368,6 +368,10 @@
 				RelativePath=".\rdosmart_ptr.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdosmart_ptr_unknow.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

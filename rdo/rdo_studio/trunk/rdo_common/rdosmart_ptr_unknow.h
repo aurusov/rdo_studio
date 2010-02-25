@@ -1,37 +1,33 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdosmart_ptr.h
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdosmart_ptr_unknow.h
  * author   : Урусов Андрей
- * date     : 12.07.2009
+ * date     : 24.02.2010
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDOSMART_PTR_H_
-#define _RDOSMART_PTR_H_
+#ifndef _RDOSMART_PTR_UNKNOW_H_
+#define _RDOSMART_PTR_UNKNOW_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
 
-template<class T>
-class smart_ptr
+class usmart_ptr
 {
-friend class usmart_ptr;
 public:
-	typedef T            object_type;
-	typedef smart_ptr<T> this_type;
-
-	smart_ptr()
+	usmart_ptr()
 		: m_object (NULL)
 		, m_counter(NULL)
 	{}
-	smart_ptr(PTR(T) obj)
+	usmart_ptr(PTR(void) obj)
 		: m_object(obj)
 	{
 		if (m_object)
@@ -44,15 +40,33 @@ public:
 			m_counter = NULL;
 		}
 	}
-	smart_ptr(CREF(this_type) sptr)
+	usmart_ptr(CREF(usmart_ptr) usptr)
+		: m_counter(usptr.m_counter)
+		, m_object (usptr.m_object )
+	{
+		addref();
+	}
+	template <class T>
+	usmart_ptr(CREF(smart_ptr<T>) sptr)
 		: m_counter(sptr.m_counter)
 		, m_object (sptr.m_object )
 	{
 		addref();
 	}
-	REF(this_type) operator= (CREF(this_type) sptr)
+	REF(usmart_ptr) operator= (CREF(usmart_ptr) usptr)
 	{
-		if (get() != NULL)
+		if (get<void>() != NULL)
+			clear();
+
+		m_counter = usptr.m_counter;
+		m_object  = usptr.m_object;
+		addref();
+		return *this;
+	}
+	template <class T>
+	REF(usmart_ptr) operator= (CREF(smart_ptr<T>) sptr)
+	{
+		if (get<void>() != NULL)
 			clear();
 
 		m_counter = sptr.m_counter;
@@ -60,26 +74,33 @@ public:
 		addref();
 		return *this;
 	}
-	~smart_ptr()
+	~usmart_ptr()
 	{
 		if (inited())
 			clear();
 	}
+	template <class T>
+	operator smart_ptr<T> () const
+	{
+		smart_ptr<T> sptr;
+		sptr.m_counter = m_counter;
+		sptr.m_object  = reinterpret_cast<PTR(T)>(m_object);
+		sptr.addref();
+		return sptr;
+	}
+	template <class T>
 	PTR(T) get()
 	{
-		return m_object;
+		return reinterpret_cast<PTR(T)>(m_object);
 	}
+	template <class T>
 	CPTR(T) get() const
 	{
-		return m_object;
+		return reinterpret_cast<CPTR(T)>(m_object);
 	}
 	operator rbool () const
 	{
-		return get() != NULL;
-	}
-	PTR(T) operator-> ()
-	{
-		return get();
+		return get<void>() != NULL;
 	}
 	rbool owner() const
 	{
@@ -110,7 +131,7 @@ protected:
 
 private:
 	PTR(ruint) m_counter;
-	PTR(T)     m_object;
+	PTR(void)  m_object;
 
 	rbool inited() const
 	{
@@ -142,4 +163,4 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#endif //! _RDOSMART_PTR_H_
+#endif //! _RDOSMART_PTR_UNKNOW_H_
