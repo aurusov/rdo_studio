@@ -204,6 +204,7 @@
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdo_type_int_range.h"
 #include "rdo_lib/rdo_parser/rdo_type_real_range.h"
+#include "rdo_common/rdosmart_ptr_unknow_factory.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -391,8 +392,8 @@ param_type:		RDO_integer param_type_range
 					PTR(RDOTypeParam) pType  = NULL;
 					if (pRange)
 					{
-						PTR(RDOTypeIntRange) pIntRange = PARSER->factory<RDOParser::F_TYPE>().create<RDOTypeIntRange>(pRange);
-						pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(pIntRange, RDOParserSrcInfo(@1, @2));
+						SMPRDOTypeIntRange pIntRange = rdo::UFactory::create<RDOTypeIntRange>(pRange);
+						pType = PARSER->factory<RDOParser::F_PARAM_TYPE>().create<RDOTypeParam>(pIntRange.get(), RDOParserSrcInfo(@1, @2));
 					}
 					else
 					{

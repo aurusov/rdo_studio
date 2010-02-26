@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_common/rdosmart_ptr_unknow_factory.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -23,11 +24,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOTypeIntRange: public RDOType
 {
-public:
+DEFINE_FACTORIES;
+private:
 	RDOTypeIntRange(PTR(RDOTypeRange) range);
 	virtual ~RDOTypeIntRange();
 
-private:
 	virtual tstring              name      ()                                const;
 	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
@@ -35,6 +36,7 @@ private:
 
 	PTR(RDOTypeRange) m_range;
 };
+typedef rdo::smart_ptr<RDOTypeIntRange> SMPRDOTypeIntRange;
 
 CLOSE_RDO_PARSER_NAMESPACE
 
