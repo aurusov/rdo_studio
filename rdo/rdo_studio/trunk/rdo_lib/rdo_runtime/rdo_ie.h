@@ -15,7 +15,7 @@ namespace rdoRuntime {
 class RDOIrregEvent: public IBaseOperation, public IIrregEvent, public RDOActivityPattern<RDOPatternIrregEvent>
 {
 typedef RDOActivityPattern<RDOPatternIrregEvent> pattern_type;
-DEFINE_FACTORY(RDOIrregEvent);
+DEFINE_IFACTORY(RDOIrregEvent);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(pattern_type)
 	QUERY_INTERFACE(IBaseOperation)

@@ -86,7 +86,7 @@ public:
 class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicSimple);
+	DEFINE_IFACTORY(RDOLogicSimple);
 
 	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent = NULL)
 		: RDOLogic<RDOOrderSimple>(sim, parent)
@@ -101,7 +101,7 @@ protected:
 class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicMeta);
+	DEFINE_IFACTORY(RDOLogicMeta);
 
 	RDOLogicMeta()
 		: RDOLogic<RDOOrderMeta>()

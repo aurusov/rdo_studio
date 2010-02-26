@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDODPTSearchActivity: public IDPTSearchActivity, public RDOTraceableObject
 {
-DEFINE_FACTORY(RDODPTSearchActivity);
+DEFINE_IFACTORY(RDODPTSearchActivity);
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOTraceableObject)
 QUERY_INTERFACE(IDPTSearchActivity)

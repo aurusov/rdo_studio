@@ -16,7 +16,7 @@ namespace rdoRuntime {
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior, public RDORuntimeContainer
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
-DEFINE_FACTORY(RDORule);
+DEFINE_IFACTORY(RDORule);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(pattern_type)
 	QUERY_INTERFACE_PARENT(RDOPatternPrior)

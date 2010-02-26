@@ -12,7 +12,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 class RDOKeyboard: public RDOOperation, public IKeyboard
 {
-DEFINE_FACTORY(RDOKeyboard);
+DEFINE_IFACTORY(RDOKeyboard);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOOperation)
 	QUERY_INTERFACE(IKeyboard)

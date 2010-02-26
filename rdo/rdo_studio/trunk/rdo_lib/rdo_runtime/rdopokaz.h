@@ -47,7 +47,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchPar: public RDOPMDPokaz, public IPokaz, public IModelStructure, public INotify
 {
-DEFINE_FACTORY(RDOPMDWatchPar);
+DEFINE_IFACTORY(RDOPMDWatchPar);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -85,7 +85,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchState: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-DEFINE_FACTORY(RDOPMDWatchState);
+DEFINE_IFACTORY(RDOPMDWatchState);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -118,7 +118,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchQuant: public RDOPMDPokaz, public IPokaz, public IPokazWatchQuant, public IModelStructure
 {
-DEFINE_FACTORY(RDOPMDWatchQuant);
+DEFINE_IFACTORY(RDOPMDWatchQuant);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -154,7 +154,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchValue: public RDOPMDPokaz, public IPokaz, public IPokazWatchValue, public IModelStructure
 {
-DEFINE_FACTORY(RDOPMDWatchValue);
+DEFINE_IFACTORY(RDOPMDWatchValue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)
@@ -188,7 +188,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
-DEFINE_FACTORY(RDOPMDGetValue);
+DEFINE_IFACTORY(RDOPMDGetValue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDPokaz)
 	QUERY_INTERFACE(IPokaz)

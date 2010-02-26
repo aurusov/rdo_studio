@@ -247,13 +247,13 @@ inline UnknownPointer::operator Interface<I> () const
 }
 
 template <class T>
-class Factory
+class IFactory
 {
 private:
 	class Counter: public IUnknown
 	{
-	friend class Factory<T>;
-	friend class Factory<T>::Object;
+	friend class IFactory<T>;
+	friend class IFactory<T>::Object;
 	private:
 		ruint  m_counter;
 		PTR(T) m_object;
@@ -277,7 +277,7 @@ private:
 			{
 				if (m_object)
 				{
-					Factory<T>::destroy(m_object);
+					IFactory<T>::destroy(m_object);
 				}
 			}
 		}
@@ -428,9 +428,9 @@ CLOSE_RDO_NAMESPACE
 
 #define  CAST_TO_UNKNOWN  public rdo::IGetUnknown
 
-#define F(A) rdo::Factory<A>
+#define F(A) rdo::IFactory<A>
 
-#define DEFINE_FACTORY(A)      friend class rdo::Factory<A>; friend class rdo::Factory<A>::Object;
+#define DEFINE_IFACTORY(A)      friend class rdo::IFactory<A>; friend class rdo::IFactory<A>::Object;
 
 #define QUERY_INTERFACE_BEGIN \
 public: \

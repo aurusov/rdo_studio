@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {
-DEFINE_FACTORY(RDODPTSome);
+DEFINE_IFACTORY(RDODPTSome);
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOLogicSimple)
 QUERY_INTERFACE_PARENT(RDOPatternPrior)

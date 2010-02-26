@@ -34,7 +34,7 @@ public:
 class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicDPTPrior);
+	DEFINE_IFACTORY(RDOLogicDPTPrior);
 
 	RDOLogicDPTPrior(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
 		: RDOLogic<RDOOrderDPTPrior>(sim, parent)
@@ -48,7 +48,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {
-DEFINE_FACTORY(RDODPTPrior);
+DEFINE_IFACTORY(RDODPTPrior);
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOLogicDPTPrior)
 QUERY_INTERFACE_PARENT(RDOPatternPrior)

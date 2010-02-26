@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDODPTFree: public RDOLogicSimple, public RDOPatternPrior
 {
-DEFINE_FACTORY(RDODPTFree);
+DEFINE_IFACTORY(RDODPTFree);
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOLogic)
 QUERY_INTERFACE_PARENT(RDOPatternPrior)

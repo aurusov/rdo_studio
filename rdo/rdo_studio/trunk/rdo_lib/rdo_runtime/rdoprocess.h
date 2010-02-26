@@ -42,7 +42,7 @@ class RDOPROCTransact;
 
 class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatternPrior
 {
-DEFINE_FACTORY(RDOPROCProcess)
+DEFINE_IFACTORY(RDOPROCProcess)
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE       (IPROCProcess)
 	QUERY_INTERFACE_PARENT(RDOLogic    )
@@ -115,7 +115,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
 {
-DEFINE_FACTORY(RDOPROCGenerate);
+DEFINE_IFACTORY(RDOPROCGenerate);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
@@ -167,7 +167,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCQueue);
+DEFINE_IFACTORY(RDOPROCQueue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -190,7 +190,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCDepart);
+DEFINE_IFACTORY(RDOPROCDepart);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -245,7 +245,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCSeize);
+DEFINE_IFACTORY(RDOPROCSeize);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -272,7 +272,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCRelease);
+DEFINE_IFACTORY(RDOPROCRelease);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -296,7 +296,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCAdvance);
+DEFINE_IFACTORY(RDOPROCAdvance);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
@@ -329,7 +329,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCTerminate);
+DEFINE_IFACTORY(RDOPROCTerminate);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
@@ -353,7 +353,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCAssign: public RDOPROCBlock, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCAssign);
+DEFINE_IFACTORY(RDOPROCAssign);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)

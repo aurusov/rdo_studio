@@ -14,7 +14,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
-DEFINE_FACTORY(RDODPTSearchRuntime);
+DEFINE_IFACTORY(RDODPTSearchRuntime);
 
 private:
 	RDODPTSearchRuntime( RDORuntime* runtime, LPIBaseOperationContainer parent, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):

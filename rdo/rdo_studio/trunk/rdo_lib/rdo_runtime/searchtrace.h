@@ -12,7 +12,7 @@ namespace rdoRuntime
 
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
-DEFINE_FACTORY(RDODPTSearchTrace);
+DEFINE_IFACTORY(RDODPTSearchTrace);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDODPTSearch)
 	QUERY_INTERFACE_PARENT(RDOTraceableObject)
