@@ -17,9 +17,11 @@
 
 class MyClass
 {
+DECLARE_FACTORY(MyClass)
 public:
 	ruint m_i;
 
+private:
 	MyClass()
 		: m_i(2)
 	{}
@@ -30,6 +32,7 @@ public:
 
 class MyClass2
 {
+DECLARE_FACTORY(MyClass2)
 public:
 	ruint m_i1;
 	ruint m_i2;
@@ -37,6 +40,7 @@ public:
 	ruint m_i4;
 	ruint m_i5;
 
+private:
 	MyClass2()
 		: m_i1(2)
 	{}
@@ -52,11 +56,11 @@ void main()
 	ruint size3 = sizeof(rdo::smart_ptr<MyClass>);
 	ruint size4 = sizeof(rdo::smart_ptr<MyClass2>);
 	{
-		rdo::smart_ptr<MyClass> obj = new MyClass();
+		rdo::smart_ptr<MyClass> obj = rdo::Factory<MyClass>::create();
 		obj->m_i = 10;
 	}
 	{
-		rdo::smart_ptr<MyClass> sobj = new MyClass();
+		rdo::smart_ptr<MyClass> sobj = rdo::Factory<MyClass>::create();
 		int i = 1;
 	}
 	int i = 1;

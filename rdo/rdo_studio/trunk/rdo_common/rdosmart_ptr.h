@@ -108,6 +108,8 @@ private:
 	}
 };
 
+#define DECLARE_FACTORY(TYPE) friend class rdo::Factory<TYPE>;
+
 CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/rdosmart_ptr.inl"
