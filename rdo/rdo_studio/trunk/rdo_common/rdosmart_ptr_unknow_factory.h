@@ -13,7 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
-#include "rdo_common/rdosmart_ptr_unknow.h"
+#include "rdo_common/rdosmart_ptr_unknow.def"
 #include "rdo_common/rdodebug.h"
 // ===============================================================================
 
@@ -21,6 +21,7 @@ OPEN_RDO_NAMESPACE
 
 class UFactory
 {
+friend class usmart_ptr;
 public:
 	template <class T>
 	static usmart_ptr create()
@@ -64,7 +65,7 @@ public:
 	}
 
 private:
-	static void destroy(usmart_ptr object)
+	static void destroy(REF(usmart_ptr) object)
 	{
 		delete object.get<void>();
 	}
@@ -72,6 +73,6 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#define DEFINE_UFACTORY  friend class rdo::UFactory; friend class rdo::usmart_ptr;
+#define DEFINE_UFACTORY  friend class rdo::UFactory;
 
 #endif //! _RDOSMART_PTR_UNKNOW_FACTORY_H_

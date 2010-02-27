@@ -369,7 +369,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdosmart_ptr.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\rdosmart_ptr_unknow.def"
+				>
+			</File>
+			<File
 				RelativePath=".\rdosmart_ptr_unknow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdosmart_ptr_unknow.inl"
 				>
 			</File>
 			<File
