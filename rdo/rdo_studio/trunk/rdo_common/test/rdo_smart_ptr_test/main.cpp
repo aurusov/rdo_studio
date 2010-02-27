@@ -10,9 +10,11 @@
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
 #include <vector>
+#include <list>
 #include <iostream>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/rdosmart_ptr_wrapper.h"
 // ===============================================================================
 
 class MyClass
@@ -63,5 +65,16 @@ void main()
 		rdo::smart_ptr<MyClass> sobj = rdo::Factory<MyClass>::create();
 		int i = 1;
 	}
+	{
+		std::list<rdo::LPISmartPtrWrapper> container;
+		for (ruint i = 0; i < 100; i++)
+		{
+			rdo::smart_ptr<MyClass> obj1 = rdo::Factory<MyClass>::create();
+			rdo::smart_ptr_wrapper<MyClass> obj1wr(obj1);
+			container.push_back(&obj1wr);
+		}
+		int i = 1;
+	}
+
 	int i = 1;
 }

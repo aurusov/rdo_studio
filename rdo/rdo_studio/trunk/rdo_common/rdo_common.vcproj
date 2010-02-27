@@ -372,6 +372,10 @@
 				RelativePath=".\rdosmart_ptr.inl"
 				>
 			</File>
+			<File
+				RelativePath=".\rdosmart_ptr_wrapper.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
