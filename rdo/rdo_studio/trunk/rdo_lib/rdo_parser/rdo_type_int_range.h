@@ -24,7 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOTypeIntRange: public RDOType
 {
-DEFINE_FACTORIES;
+DEFINE_UFACTORY;
 private:
 	RDOTypeIntRange(PTR(RDOTypeRange) range);
 	virtual ~RDOTypeIntRange();
