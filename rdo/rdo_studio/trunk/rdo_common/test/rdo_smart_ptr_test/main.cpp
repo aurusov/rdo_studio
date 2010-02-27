@@ -13,7 +13,6 @@
 #include <iostream>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdosmart_ptr.h"
-#include "rdo_common/rdosmart_ptr_unknow.h"
 // ===============================================================================
 
 class MyClass
@@ -58,9 +57,6 @@ void main()
 	}
 	{
 		rdo::smart_ptr<MyClass> sobj = new MyClass();
-		rdo::usmart_ptr uobj = sobj;
-		PTR(MyClass) pObj = uobj.get<MyClass>();
-		rdo::smart_ptr<MyClass> sobj2 = uobj;
 		int i = 1;
 	}
 	int i = 1;

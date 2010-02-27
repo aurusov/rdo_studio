@@ -110,9 +110,7 @@ inline void smart_ptr<T>::release()
 	{
 		if (m_object)
 		{
-			{
-				usmart_ptr(this);
-			}
+			Factory<T>::destroy(m_object);
 			m_object = NULL;
 		}
 	}

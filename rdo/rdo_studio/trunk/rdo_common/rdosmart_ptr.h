@@ -22,7 +22,6 @@ OPEN_RDO_NAMESPACE
 template<class T>
 class smart_ptr
 {
-friend class usmart_ptr;
 public:
 	typedef T            object_type;
 	typedef smart_ptr<T> this_type;
@@ -55,6 +54,58 @@ private:
 	void        allocateCounter  ();
 	void        deallocateCounter();
 	void        clear            ();
+};
+
+template <class T>
+class Factory
+{
+friend class smart_ptr<T>;
+public:
+	static smart_ptr<T> create()
+	{
+		return smart_ptr<T>(new T());
+	}
+	template <typename P1>
+	static smart_ptr<T> create(CREF(P1) p1)
+	{
+		return smart_ptr<T>(new T(p1));
+	}
+	template <typename P1, typename P2>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2)
+	{
+		return smart_ptr<T>(new T(p1, p2));
+	}
+	template <typename P1, typename P2, typename P3>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3));
+	}
+	template <typename P1, typename P2, typename P3, typename P4>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4));
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4, p5));
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6));
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
+	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
+	{
+		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6, p7));
+	}
+
+private:
+	static void destroy(PTR(T) object)
+	{
+		delete object;
+	}
 };
 
 CLOSE_RDO_NAMESPACE
