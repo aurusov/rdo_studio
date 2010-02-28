@@ -25,7 +25,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOEnumType: public RDOType
 {
-DECLARE_FACTORY(RDOTypeParam);
+DECLARE_FACTORY(RDOEnumType);
 public:
 	void add(CREF(RDOValue) next);
 //	rdoRuntime::RDOValue          findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const;
