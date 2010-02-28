@@ -31,22 +31,22 @@ RDOTypeRealRange::~RDOTypeRealRange()
 
 inline tstring RDOTypeRealRange::name() const
 {
-	return rdo::format(_T("%s %s"), g_real.name().c_str(), m_range->src_text().c_str());
+	return rdo::format(_T("%s %s"), g_real->name().c_str(), m_range->src_text().c_str());
 }
 
-CPTR(RDOType) RDOTypeRealRange::type_cast(CREF(RDOType) from) const
+LPRDOType RDOTypeRealRange::type_cast(CREF(LPRDOType) from) const
 {
-	return g_real.type_cast(from);
+	return g_real->type_cast(from);
 }
 
 rdoRuntime::RDOValue RDOTypeRealRange::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	return g_real.value_cast(from);
+	return g_real->value_cast(from);
 }
 
 void RDOTypeRealRange::writeModelStructure(REF(std::ostream) stream) const
 {
-	g_real.writeModelStructure(stream);
+	g_real->writeModelStructure(stream);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

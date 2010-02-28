@@ -31,22 +31,22 @@ RDOTypeIntRange::~RDOTypeIntRange()
 
 inline tstring RDOTypeIntRange::name() const
 {
-	return rdo::format(_T("%s %s"), g_int.name().c_str(), m_range->src_text().c_str());
+	return rdo::format(_T("%s %s"), g_int->name().c_str(), m_range->src_text().c_str());
 }
 
 LPRDOType RDOTypeIntRange::type_cast(CREF(LPRDOType) from) const
 {
-	return g_int.type_cast(from);
+	return g_int->type_cast(from);
 }
 
 rdoRuntime::RDOValue RDOTypeIntRange::value_cast(CREF(rdoRuntime::RDOValue) from) const
 {
-	return g_int.value_cast(from);
+	return g_int->value_cast(from);
 }
 
 void RDOTypeIntRange::writeModelStructure(REF(std::ostream) stream) const
 {
-	g_int.writeModelStructure(stream);
+	g_int->writeModelStructure(stream);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
