@@ -116,8 +116,6 @@ RDOParser::~RDOParser()
 {
 	m_runtime.deinit();
 	rdo::deleteAllObjects(m_allValues);
-	m_typeFactory.destroy();
-	m_paramTypeFactory.destroy();
 //	m_movementObjectList.destroy(); todo: объект может быть сразу в двух списках: m_parserTypeFactory и m_paramTypeFactory
 
 	DeletableList::reverse_iterator it = m_allDeletables.rbegin();

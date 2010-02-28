@@ -74,21 +74,6 @@ public: \
 	rbool           remove##Name(CPTR(RDO##Name) item);
 
 
-#define REGISTER_FACTORY(TYPE, TYPEID, VALUE)                   \
-private:                                                        \
-	template <> struct GetFactory<TYPEID>                       \
-	{                                                           \
-		typedef TYPE          Type;                             \
-		typedef Factory<Type> Factory;                          \
-	};                                                          \
-	GetFactory<TYPEID>::Factory VALUE;                          \
-public:                                                         \
-	template <>                                                 \
-	REF(typename GetFactory<TYPEID>::Factory) factory<TYPEID>() \
-	{                                                           \
-		return VALUE;                                           \
-	}
-
 class RDOParser
 {
 public:
@@ -172,70 +157,6 @@ public:
 		m_allValues.push_back(value);
 		return value;
 	}
-
-	template <class Base>
-	class Factory
-	{
-	public:
-		template<class T>
-		PTR(T) create()
-		{
-			PTR(T) pObject = new T();
-			m_container.push_back(pObject);
-			return pObject;
-		}
-		template<class T, class P1>
-		PTR(T) create(CREF(P1) param1)
-		{
-			PTR(T) pObject = new T(param1);
-			m_container.push_back(pObject);
-			return pObject;
-		}
-		template<class T, class P1, class P2>
-		PTR(T) create(CREF(P1) param1, CREF(P2) param2)
-		{
-			PTR(T) pObject = new T(param1, param2);
-			m_container.push_back(pObject);
-			return pObject;
-		}
-		template<class T, class P1, class P2, class P3>
-		PTR(T) create(CREF(P1) param1, CREF(P2) param2, CREF(P3) param3)
-		{
-			PTR(T) pObject = new T(param1, param2, param3);
-			m_container.push_back(pObject);
-			return pObject;
-		}
-		template<class T, class P1, class P2, class P3, class P4>
-		PTR(T) create(CREF(P1) param1, CREF(P2) param2, CREF(P3) param3, CREF(P4) param4)
-		{
-			PTR(T) pObject = new T(param1, param2, param3, param4);
-			m_container.push_back(pObject);
-			return pObject;
-		}
-		void destroy()
-		{
-			STL_FOR_ALL(ObjectList, m_container, it)
-			{
-				delete *it;
-			}
-			m_container.clear();
-		}
-	private:
-		typedef std::list<PTR(Base)> ObjectList;
-		ObjectList m_container;
-	};
-
-	enum FactoryType
-	{
-		F_TYPE,
-		F_PARAM_TYPE
-	};
-
-	template <ruint id>	   struct GetFactory;
-	template <ruint index> REF(typename GetFactory<index>::Factory) factory();
-
-	REGISTER_FACTORY(RDOType,      F_TYPE,       m_typeFactory     );
-	REGISTER_FACTORY(RDOTypeParam, F_PARAM_TYPE, m_paramTypeFactory);
 
 	class Stack
 	{
