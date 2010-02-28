@@ -39,6 +39,9 @@ public:
 	CPTR(T) operator-> () const;
 	 PTR(T) operator-> ();
 
+	template <class P>
+	operator smart_ptr<P>() const;
+
 	rbool owner() const;
 
 protected:

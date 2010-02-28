@@ -93,6 +93,13 @@ inline PTR(T) smart_ptr<T>::operator-> ()
 }
 
 template<class T>
+template <class P>
+inline smart_ptr<T>::operator smart_ptr<P>() const
+{
+	return smart_ptr<P>(*this);
+}
+
+template<class T>
 inline rbool smart_ptr<T>::owner() const
 {
 	return inited() ? (counter() == 1) : false;
