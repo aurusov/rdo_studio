@@ -35,8 +35,9 @@ public:
 	PTR(T)   get();
 	CPTR(T)  get() const;
 
-	operator rbool    () const;
-	PTR(T) operator-> ();
+	operator rbool     () const;
+	CPTR(T) operator-> () const;
+	 PTR(T) operator-> ();
 
 	rbool owner() const;
 

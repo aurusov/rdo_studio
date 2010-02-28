@@ -81,6 +81,12 @@ inline smart_ptr<T>::operator rbool () const
 }
 
 template<class T>
+inline CPTR(T) smart_ptr<T>::operator-> () const
+{
+	return get();
+}
+
+template<class T>
 inline PTR(T) smart_ptr<T>::operator-> ()
 {
 	return get();
