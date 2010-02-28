@@ -21,6 +21,7 @@
 
 OPEN_RDO_NAMESPACE
 
+template<class T>
 class IndexedStack
 {
 public:
@@ -29,8 +30,7 @@ public:
 	IndexedStack()
 	{}
 
-	template<class T>
-	ID push(PTR(T) object)
+	ID push(CREF(T) object)
 	{
 		std::pair<Stack::iterator, rbool> result = m_stack.insert(
 			std::pair<Stack::key_type, Stack::mapped_type>(m_generator.get(), object)
@@ -38,27 +38,17 @@ public:
 		ASSERT(result.second);
 		return result.first->first;
 	}
-	template<class T>
-	PTR(T) pop(ID index)
+	T pop(ID index)
 	{
 		Stack::iterator it = m_stack.find(index);
 		ASSERT(it != m_stack.end());
-		PTR(T) object = reinterpret_cast<PTR(T)>(it->second);
+		T object = it->second;
 		m_stack.erase(it);
 		return object;
 	}
 
-	void destroy()
-	{
-		STL_FOR_ALL(Stack, m_stack, it)
-		{
-			delete it->second;
-		}
-		m_stack.clear();
-	}
-
 private:
-	typedef std::map<IDGenerator::ID, PTR(void)> Stack;
+	typedef std::map<IDGenerator::ID, T> Stack;
 	Stack       m_stack;
 	IDGenerator m_generator;
 };
