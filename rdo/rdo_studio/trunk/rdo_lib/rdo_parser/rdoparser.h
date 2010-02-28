@@ -158,8 +158,9 @@ public:
 		return value;
 	}
 
-	class Stack
+	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
 	{
+	friend class RDOParser;
 	public:
 		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
 
@@ -179,7 +180,13 @@ public:
 			return pObject;
 		}
 	private:
-		IndexedStack m_stack;
+		void clear()
+		{
+			STL_FOR_ALL(IndexedStack::Stack, m_stack, it)
+			{
+				it->second->destroy();
+			}
+		}
 	};
 
 	REF(Stack) stack()
