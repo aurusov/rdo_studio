@@ -16,6 +16,7 @@
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdosingletone.h"
 #include "rdo_common/rdoindexedstack.h"
+#include "rdo_common/rdosmart_ptr_wrapper.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
@@ -236,7 +237,31 @@ public:
 	REGISTER_FACTORY(RDOType,      F_TYPE,       m_typeFactory     );
 	REGISTER_FACTORY(RDOTypeParam, F_PARAM_TYPE, m_paramTypeFactory);
 
-	REF(rdo::IndexedStack) stack()
+	class Stack
+	{
+	public:
+		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
+
+		template <class T>
+		IndexedStack::ID push(CREF(rdo::smart_ptr<T>) pObject)
+		{
+			rdo::LPISmartPtrWrapper pWrapper = new rdo::smart_ptr_wrapper<T>(pObject);
+			return m_stack.push(pWrapper);
+		}
+		template <class T>
+		rdo::smart_ptr<T> pop(IndexedStack::ID id)
+		{
+			rdo::LPISmartPtrWrapper pWrapper = m_stack.pop(id);
+			ASSERT(pWrapper);
+			rdo::smart_ptr<T> pObject = *reinterpret_cast<PTR(rdo::smart_ptr<T>)>(pWrapper->getSmartPtr());
+			pWrapper->destroy();
+			return pObject;
+		}
+	private:
+		IndexedStack m_stack;
+	};
+
+	REF(Stack) stack()
 	{
 		return m_movementObjectList;
 	}
@@ -279,7 +304,7 @@ private:
 	rbool                 m_have_kw_Resources;
 	rbool                 m_have_kw_ResourcesEnd;
 	Error                 m_error;
-	rdo::IndexedStack     m_movementObjectList;
+	Stack                 m_movementObjectList;
 
 	struct Changes
 	{
