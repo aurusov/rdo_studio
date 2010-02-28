@@ -30,7 +30,7 @@ private:
 	virtual ~RDOTypeIntRange();
 
 	virtual tstring              name      ()                                const;
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
+	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
 	DECLARE_IModelStructure;
 

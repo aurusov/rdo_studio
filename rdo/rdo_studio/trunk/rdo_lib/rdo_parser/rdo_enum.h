@@ -23,6 +23,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEnumType
 // ----------------------------------------------------------------------------
+class RDOEnumType;
+typedef rdo::smart_ptr<RDOEnumType> LPRDOEnumType;
+
 class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
@@ -32,11 +35,11 @@ public:
 //	rdoRuntime::RDOValue          getFirstValue() const;
 	CREF(rdoRuntime::RDOEnumType) getEnums     () const { return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type); }
 
-	rbool operator== (CREF(RDOEnumType) enums) const
+	rbool operator== (CREF(LPRDOEnumType) enums) const
 	{
-		return __enum()->getValues() == enums.__enum()->getValues();
+		return __enum()->getValues() == enums->__enum()->getValues();
 	}
-	rbool operator!= (CREF(RDOEnumType) enums) const
+	rbool operator!= (CREF(LPRDOEnumType) enums) const
 	{
 		return !operator==(enums);
 	}
@@ -48,11 +51,10 @@ private:
 
 	PTR(rdoRuntime::RDOEnumType) __enum() const { return static_cast<PTR(rdoRuntime::RDOEnumType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
 
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
+	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
 	DECLARE_IModelStructure;
 };
-typedef rdo::smart_ptr<RDOEnumType> LPRDOEnumType;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

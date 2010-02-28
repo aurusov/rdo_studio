@@ -36,10 +36,10 @@ public:
 	DECLARE_IModelStructure;
 
 protected:
-	RDOTypeParam(PTR(RDOType) type, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeParam();
 
-	PTR(RDOType) m_type;
+	LPRDOType m_type;
 };
 typedef rdo::smart_ptr<RDOTypeParam> LPRDOTypeParam;
 

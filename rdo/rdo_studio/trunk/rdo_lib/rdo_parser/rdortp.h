@@ -35,8 +35,8 @@ public:
 
 	virtual void                  writeModelStructure( std::ostream& stream ) const = 0;
 
-	virtual const RDOType&       type() const = 0;
-	rdoRuntime::RDOType::TypeID  typeID() const { return type()->typeID(); }
+	virtual LPRDOType              type() const = 0;
+	rdoRuntime::RDOType::TypeID  typeID() const { return type()->type().typeID(); }
 
 	void checkParamType( const RDOFUNArithm* const action ) const;
 
@@ -264,7 +264,7 @@ public:
 	virtual unsigned int getDiapTableFunc() const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const RDOType& type() const { return rdoParse::g_int; }
+	virtual LPRDOType type() const { return rdoParse::g_int; }
 
 	const RDORTPIntDiap& getDiap() const { return *m_diap; }
 
@@ -291,7 +291,7 @@ public:
 	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const RDOType& type() const { return rdoParse::g_real; }
+	virtual LPRDOType type() const        { return rdoParse::g_real; }
 	const RDORTPRealDiap& getDiap() const { return *m_diap; }
 
 private:
@@ -305,11 +305,11 @@ private:
 class RDORTPEnumParamType: public RDORTPParamType
 {
 public:
-	PTR(RDOEnumType) m_enum;
+	LPRDOEnumType   m_enum;
 	tstring         enum_name; // Используется в сообщениях об ошибках
 	rbool           enum_fun;  // Используется в сообщениях об ошибках
 
-	RDORTPEnumParamType( const RDOParserObject* _parent, RDOEnumType* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+	RDORTPEnumParamType( const RDOParserObject* _parent, CREF(LPRDOEnumType) _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
 	virtual ~RDORTPEnumParamType() {}
 
 	virtual void                  checkValue       ( const RDOValue& value ) const;
@@ -321,7 +321,7 @@ public:
 	virtual unsigned int getDiapTableFunc() const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const RDOType& type() const { return *m_enum; }
+	virtual LPRDOType type() const { return LPRDOType(const_cast<PTR(RDOEnumType)>(m_enum.get())); }
 
 private:
 	void init_src_info();
@@ -342,7 +342,7 @@ public:
 	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const RDOType& type() const { return rdoParse::g_string; }
+	virtual LPRDOType type() const { return rdoParse::g_string; }
 };
 
 // ----------------------------------------------------------------------------
@@ -360,7 +360,7 @@ public:
 	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
 
 	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual const RDOType& type() const { return rdoParse::g_bool; }
+	virtual LPRDOType type() const { return rdoParse::g_bool; }
 };
 
 // ----------------------------------------------------------------------------

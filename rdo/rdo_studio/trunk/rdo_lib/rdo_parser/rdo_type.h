@@ -23,31 +23,35 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
+class RDOType;
+typedef rdo::smart_ptr<RDOType> LPRDOType;
+
 class RDOType: public IModelStructure
 {
 public:
-	RDOType(CPTR(rdoRuntime::RDOType) type)
-		: m_type(type)
-	{
-		ASSERT(m_type);
-	}
 	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
 	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
 
-	CPTR(RDOType) type_cast_throw(
-		CREF(RDOType)          from,
+	LPRDOType type_cast_throw(
+		CREF(LPRDOType)        from,
 		CREF(RDOParserSrcInfo) from_src_info,
 		CREF(RDOParserSrcInfo) to_src_info,
 		CREF(RDOParserSrcInfo) src_info
 	) const;
 
 	virtual tstring              name      ()                                const = 0;
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const = 0;
+	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const = 0;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const = 0;
 
-	static CREF(RDOType) getTypeByID(rdoRuntime::RDOType::TypeID typeID);
+	static LPRDOType getTypeByID(rdoRuntime::RDOType::TypeID typeID);
 
 protected:
+	RDOType(CPTR(rdoRuntime::RDOType) type)
+		: m_type(type)
+	{
+		ASSERT(m_type);
+	}
+
 	CPTR(rdoRuntime::RDOType) m_type;
 };
 
@@ -62,11 +66,11 @@ public:                                                                         
 		RDOType(&rdoRuntime::g_##Type)                                                                  \
 	{}                                                                                                  \
 	virtual tstring              name      ()                                const { return TypeName; } \
-	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;                     \
+	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const;                     \
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;                     \
 	DECLARE_IModelStructure;                                                                            \
 };                                                                                                      \
-extern RDOType__##Type g_##Type;
+extern rdo::smart_ptr<RDOType> g_##Type;
 
 DEFINE_ATOM_TYPE_PARSER(unknow,        _T("unknow")       );
 DEFINE_ATOM_TYPE_PARSER(identificator, _T("identificator"));

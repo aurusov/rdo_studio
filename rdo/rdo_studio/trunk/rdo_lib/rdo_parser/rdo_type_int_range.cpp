@@ -34,7 +34,7 @@ inline tstring RDOTypeIntRange::name() const
 	return rdo::format(_T("%s %s"), g_int.name().c_str(), m_range->src_text().c_str());
 }
 
-CPTR(RDOType) RDOTypeIntRange::type_cast(CREF(RDOType) from) const
+LPRDOType RDOTypeIntRange::type_cast(CREF(LPRDOType) from) const
 {
 	return g_int.type_cast(from);
 }

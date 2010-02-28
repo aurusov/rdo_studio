@@ -119,9 +119,9 @@ public:
 	rdoRuntime::RDOCalc*           createCalc( const RDOTypeParam* const forType = NULL );
 	rdoRuntime::RDOCalc*           calc() const     { return m_calc;           }
 	const RDOValue&                value() const    { return m_value;          }
-	const RDOType&                 type() const     { return m_value.type();   }
-	const RDOEnumType&             enumType() const { return static_cast<CREF(RDOEnumType)>(type()); }
-	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->typeID(); }
+	LPRDOType                      type() const     { return m_value.type();   }
+	LPRDOEnumType                  enumType() const { return LPRDOEnumType(static_cast<PTR(RDOEnumType)>(type().get())); }
+	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->type().typeID(); }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
 	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );

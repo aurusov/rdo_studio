@@ -49,11 +49,13 @@ inline tstring RDOEnumType::name() const
 	return str;
 }
 
-CPTR(RDOType) RDOEnumType::type_cast(CREF(RDOType) from) const
+LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from) const
 {
-	switch (from->typeID())
+	switch (from->type().typeID())
 	{
-		case rdoRuntime::RDOType__int::t_enum: return operator==(static_cast<CREF(RDOEnumType)>(from)) ? this : NULL;
+		case rdoRuntime::RDOType__int::t_enum:
+			return operator==(const_cast<PTR(RDOEnumType)>(static_cast<CPTR(RDOEnumType)>(from.get()))) ?
+			LPRDOType(const_cast<PTR(RDOEnumType)>(this)) : NULL;
 	}
 	return NULL;
 }

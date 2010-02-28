@@ -20,7 +20,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-RDOTypeParam::RDOTypeParam(PTR(RDOType) type, CREF(RDOParserSrcInfo) src_info)
+RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_type          (type    )
 {

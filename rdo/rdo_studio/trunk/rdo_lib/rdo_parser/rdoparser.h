@@ -168,12 +168,12 @@ public:
 		IndexedStack::ID push(CREF(rdo::smart_ptr<T>) pObject)
 		{
 			rdo::LPISmartPtrWrapper pWrapper = new rdo::smart_ptr_wrapper<T>(pObject);
-			return m_stack.push(pWrapper);
+			return IndexedStack::push(pWrapper);
 		}
 		template <class T>
 		rdo::smart_ptr<T> pop(IndexedStack::ID id)
 		{
-			rdo::LPISmartPtrWrapper pWrapper = m_stack.pop(id);
+			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
 			ASSERT(pWrapper);
 			rdo::smart_ptr<T> pObject = *reinterpret_cast<PTR(rdo::smart_ptr<T>)>(pWrapper->getSmartPtr());
 			pWrapper->destroy();

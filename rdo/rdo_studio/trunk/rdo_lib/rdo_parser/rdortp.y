@@ -393,11 +393,11 @@ param_type:		RDO_integer param_type_range
 					if (pRange)
 					{
 						LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-						pType = rdo::Factory<RDOTypeParam>::create(pIntRange.get(), RDOParserSrcInfo(@1, @2));
+						pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo(@1, @2));
 					}
 					else
 					{
-						pType = rdo::Factory<RDOTypeParam>::create(&g_int, @1);
+						pType = rdo::Factory<RDOTypeParam>::create(g_int, @1);
 					}
 					$$ = PARSER->stack().push(pType);
 				}
@@ -408,22 +408,22 @@ param_type:		RDO_integer param_type_range
 					if (pRange)
 					{
 						LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
-						pType = rdo::Factory<RDOTypeParam>::create(pRealRange.get(), RDOParserSrcInfo(@1, @2));
+						pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOParserSrcInfo(@1, @2));
 					}
 					else
 					{
-						pType = rdo::Factory<RDOTypeParam>::create(&g_real, @1);
+						pType = rdo::Factory<RDOTypeParam>::create(g_real, @1);
 					}
 					$$ = PARSER->stack().push(pType);
 				}
 				| RDO_string
 				{
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(&g_string, @1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, @1);
 					$$ = PARSER->stack().push(pType);
 				}
 				| RDO_bool
 				{
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(&g_bool, @1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_bool, @1);
 					$$ = PARSER->stack().push(pType);
 				}
 				| param_type_enum
@@ -523,7 +523,7 @@ param_type_range:	/* empty */ {
 
 param_type_enum:	'(' param_type_enum_list ')' {
 						LPRDOEnumType  pEnum = PARSER->stack().pop<RDOEnumType>($2);
-						LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum.get(), RDOParserSrcInfo(@1, @3));
+						LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOParserSrcInfo(@1, @3));
 						pType->setSrcText(pEnum->name());
 						$$ = PARSER->stack().push(pType);
 					}

@@ -469,7 +469,7 @@ rdoRuntime::RDOValue RDORTPRealParamType::getValue( const RDOValue& value ) cons
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnumParamType
 // ----------------------------------------------------------------------------
-RDORTPEnumParamType::RDORTPEnumParamType( const RDOParserObject* _parent, RDOEnumType* _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+RDORTPEnumParamType::RDORTPEnumParamType( const RDOParserObject* _parent, CREF(LPRDOEnumType) _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
 	RDORTPParamType( _parent, _dv, _src_info ),
 	m_enum( _enu ),
 	enum_name( "" ),
