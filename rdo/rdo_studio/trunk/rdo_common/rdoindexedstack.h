@@ -47,7 +47,7 @@ public:
 		return object;
 	}
 
-private:
+protected:
 	typedef std::map<IDGenerator::ID, T> Stack;
 	Stack       m_stack;
 	IDGenerator m_generator;
