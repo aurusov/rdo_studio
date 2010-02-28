@@ -15,6 +15,7 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
