@@ -16,6 +16,7 @@
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -27,19 +28,21 @@ class RDOParser;
 // ----------------------------------------------------------------------------
 class RDOTypeRange: public RDOParserSrcInfo
 {
+DECLARE_FACTORY(RDOTypeRange);
 public:
-	RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDOTypeRange();
-
 	void           check  ();
 	rbool          isExist() const;
 	CREF(RDOValue) getMin () const;
 	CREF(RDOValue) getMax () const;
 
 private:
+	RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOTypeRange();
+
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 };
+typedef rdo::smart_ptr<RDOTypeRange> LPRDOTypeRange;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

@@ -17,6 +17,7 @@
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,10 +27,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOTypeParam: public RDOParserSrcInfo, public IModelStructure
 {
+DECLARE_FACTORY(RDOTypeParam);
 public:
-	RDOTypeParam(PTR(RDOType) type, CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDOTypeParam();
-
 	virtual void     checkValue(CREF(RDOValue) value);
 	// добавить кастинг rdoParse::RDOValue -> rdoParse::RDOValue
 	virtual RDOValue value_cast(CREF(RDOValue) value) const;
@@ -37,8 +36,12 @@ public:
 	DECLARE_IModelStructure;
 
 protected:
+	RDOTypeParam(PTR(RDOType) type, CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOTypeParam();
+
 	PTR(RDOType) m_type;
 };
+typedef rdo::smart_ptr<RDOTypeParam> LPRDOTypeParam;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
-#include "rdo_common/rdosmart_ptr_unknow_factory.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -24,7 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOTypeIntRange: public RDOType
 {
-DEFINE_UFACTORY;
+DECLARE_FACTORY(RDOTypeIntRange);
 private:
 	RDOTypeIntRange(PTR(RDOTypeRange) range);
 	virtual ~RDOTypeIntRange();
@@ -36,7 +36,7 @@ private:
 
 	PTR(RDOTypeRange) m_range;
 };
-typedef rdo::smart_ptr<RDOTypeIntRange> SMPRDOTypeIntRange;
+typedef rdo::smart_ptr<RDOTypeIntRange> LPRDOTypeIntRange;
 
 CLOSE_RDO_PARSER_NAMESPACE
 
