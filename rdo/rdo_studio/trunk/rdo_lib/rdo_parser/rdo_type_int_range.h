@@ -26,7 +26,7 @@ class RDOTypeIntRange: public RDOType
 {
 DECLARE_FACTORY(RDOTypeIntRange);
 private:
-	RDOTypeIntRange(PTR(RDOTypeRange) range);
+	RDOTypeIntRange(CREF(LPRDOTypeRange) range);
 	virtual ~RDOTypeIntRange();
 
 	virtual tstring              name      ()                                const;
@@ -34,7 +34,7 @@ private:
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
 	DECLARE_IModelStructure;
 
-	PTR(RDOTypeRange) m_range;
+	LPRDOTypeRange m_range;
 };
 typedef rdo::smart_ptr<RDOTypeIntRange> LPRDOTypeIntRange;
 

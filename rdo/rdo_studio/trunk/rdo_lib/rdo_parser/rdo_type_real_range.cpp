@@ -19,7 +19,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeRealRange
 // ----------------------------------------------------------------------------
-RDOTypeRealRange::RDOTypeRealRange(PTR(RDOTypeRange) range)
+RDOTypeRealRange::RDOTypeRealRange(CREF(LPRDOTypeRange) range)
 	: RDOType(&rdoRuntime::g_real)
 	, m_range(range              )
 {

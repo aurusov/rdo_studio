@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -23,18 +24,19 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOTypeRealRange: public RDOType
 {
-public:
-	RDOTypeRealRange(PTR(RDOTypeRange) range);
+DECLARE_FACTORY(RDOTypeRealRange);
+private:
+	RDOTypeRealRange(CREF(LPRDOTypeRange) range);
 	virtual ~RDOTypeRealRange();
 
-private:
 	virtual tstring              name      ()                                const;
 	virtual CPTR(RDOType)        type_cast (CREF(RDOType)              from) const;
 	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
 	DECLARE_IModelStructure;
 
-	PTR(RDOTypeRange) m_range;
+	LPRDOTypeRange m_range;
 };
+typedef rdo::smart_ptr<RDOTypeRealRange> LPRDOTypeRealRange;
 
 CLOSE_RDO_PARSER_NAMESPACE
 
