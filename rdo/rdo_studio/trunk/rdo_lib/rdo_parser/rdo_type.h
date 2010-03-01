@@ -16,6 +16,7 @@
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -24,10 +25,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- RDOType
 // ----------------------------------------------------------------------------
 class RDOType;
-typedef rdo::smart_ptr<RDOType> LPRDOType;
+DECLARE_POINTER(RDOType);
 
 class RDOType: public IModelStructure
 {
+friend class rdo::Factory<RDOType>;
 public:
 	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
 	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
@@ -51,6 +53,8 @@ protected:
 	{
 		ASSERT(m_type);
 	}
+	virtual ~RDOType()
+	{}
 
 	CPTR(rdoRuntime::RDOType) m_type;
 };
@@ -64,6 +68,8 @@ class RDOType__##Type: public RDOType                                           
 public:                                                                                                 \
 	RDOType__##Type():                                                                                  \
 		RDOType(&rdoRuntime::g_##Type)                                                                  \
+	{}                                                                                                  \
+	~RDOType__##Type()                                                                                  \
 	{}                                                                                                  \
 	virtual tstring              name      ()                                const { return TypeName; } \
 	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const;                     \
