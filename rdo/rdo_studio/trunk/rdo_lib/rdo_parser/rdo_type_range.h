@@ -42,7 +42,7 @@ private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 };
-typedef rdo::smart_ptr<RDOTypeRange> LPRDOTypeRange;
+DECLARE_POINTER(RDOTypeRange);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

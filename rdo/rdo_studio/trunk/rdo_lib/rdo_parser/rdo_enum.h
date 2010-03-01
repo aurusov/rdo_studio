@@ -24,7 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- RDOEnumType
 // ----------------------------------------------------------------------------
 class RDOEnumType;
-typedef rdo::smart_ptr<RDOEnumType> LPRDOEnumType;
+DECLARE_POINTER(RDOEnumType);
 
 class RDOEnumType: public RDOType
 {
