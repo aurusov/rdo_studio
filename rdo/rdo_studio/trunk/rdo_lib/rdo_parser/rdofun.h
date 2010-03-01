@@ -117,11 +117,11 @@ public:
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 
 	rdoRuntime::RDOCalc*           createCalc( const RDOTypeParam* const forType = NULL );
-	rdoRuntime::RDOCalc*           calc() const     { return m_calc;           }
-	const RDOValue&                value() const    { return m_value;          }
-	LPRDOType                      type() const     { return m_value.type();   }
-	LPRDOEnumType                  enumType() const { return type();           }
-	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->type().typeID(); }
+	rdoRuntime::RDOCalc*           calc() const     { return m_calc;                     }
+	const RDOValue&                value() const    { return m_value;                    }
+	LPRDOType                      type() const     { return m_value.type();             }
+	LPRDOEnumType                  enumType() const { return type().cast<RDOEnumType>(); }
+	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->type().typeID();    }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
 	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
