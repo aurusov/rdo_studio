@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -23,22 +24,29 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDORTPResType;
 
-class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo, IModelStructure, IName
+class RDORTPParam: public RDOParserSrcInfo, IModelStructure, IName
 {
+DECLARE_FACTORY(RDORTPParam);
 public:
-	RDORTPParam(CPTR(RDORTPResType) const resType, CPTR(RDOTypeParam) const parType, CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDORTPParam();
+	CPTR(RDORTPResType) const getResType  () const { ASSERT(m_resType);   return m_resType;   }
+	LPRDOTypeParam            getParamType() const { ASSERT(m_paramType); return m_paramType; }
+	CREF(RDOValue)            getDefault  () const { return m_defaultValue;                   }
 
-	CPTR(RDORTPResType) const getResType  () const { ASSERT(m_resType); return m_resType; }
-	CPTR(RDOTypeParam)  const getParamType() const { ASSERT(m_parType); return m_parType; }
+	void checkDefault() const;
 
 	DECLARE_IModelStructure;
 	DECLARE_IName;
 
 protected:
 	CPTR(RDORTPResType) const m_resType;
-	CPTR(RDOTypeParam)  const m_parType;
+	LPRDOTypeParam            m_paramType;
+	RDOValue                  m_defaultValue;
+
+protected:
+	RDORTPParam(CPTR(RDORTPResType) const resType, CREF(LPRDOTypeParam) pParamType, CREF(RDOValue) defaultValue, CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDORTPParam();
 };
+DECLARE_POINTER(RDORTPParam);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

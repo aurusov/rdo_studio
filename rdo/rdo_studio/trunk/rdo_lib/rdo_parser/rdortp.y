@@ -319,24 +319,22 @@ rtp_vid_res:		RDO_permanent	{ $$ = 1; }
 rtp_body:			/* empty */ {
 					}
 					| rtp_body rtp_param {
-						PTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($2);
-						PARSER->getLastRTPResType()->addParam(param);
+						LPRDORTPParam pParam = PARSER->stack().pop<RDORTPParam>($2);
+						PARSER->getLastRTPResType()->addParam(pParam.get());
 					};
 
 rtp_param:			RDO_IDENTIF_COLON param_type param_value_default
 					{
-						//PTR(RDOValue)     param_name = P_RDOVALUE($1);
-						//PTR(RDOTypeParam) param_type = reinterpret_cast<PTR(RDOTypeParam)>($2);
-						//PTR(RDORTPParam)  param      = new RDORTPParam(PARSER->getLastRTPResType(), param_name->src_info(), param_type, RDOVALUE($3));
-						//param->checkDefault();
-						//param_type->reparent(param);
-
+						PTR(RDOValue)  param_name    = P_RDOVALUE($1);
+						LPRDOTypeParam param_type    = PARSER->stack().pop<RDOTypeParam>($2);
+						CREF(RDOValue) param_default = RDOVALUE($3);
+						LPRDORTPParam  pParam        = rdo::Factory<RDORTPParam>::create(PARSER->getLastRTPResType(), param_type, param_default, param_name->src_info());
+						pParam->checkDefault();
 						//if (param_type->typeID() == rdoRuntime::RDOType::t_enum)
 						//{
 						//	static_cast<PTR(RDORTPEnumParamType)>(param_type)->enum_name = rdo::format(_T("%s.%s"), PARSER->getLastRTPResType()->name().c_str(), param_name->src_info().src_text().c_str());
 						//}
-
-						//$$ = (int)param;
+						$$ = PARSER->stack().push(pParam);
 					}
 					| RDO_IDENTIF_COLON error {
 						if (PARSER->lexer_loc_line() == @1.last_line)
