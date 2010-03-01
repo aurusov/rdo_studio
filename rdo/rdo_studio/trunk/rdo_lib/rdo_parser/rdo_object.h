@@ -17,6 +17,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+#include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -132,7 +133,8 @@ private:
 	void init();
 };
 
-template <class T> class compareName
+template <class T>
+class compareName
 {
 public:
 	compareName(CREF(tstring) name)
@@ -142,12 +144,17 @@ public:
 	{
 		return obj->name() == m_name;
 	}
+	rbool operator() (CREF(rdo::smart_ptr<T>) pObj)
+	{
+		return pObj->name() == m_name;
+	}
 
 private:
 	CREF(tstring) m_name;
 };
 
-template <class T> class compareNameRef
+template <class T>
+class compareNameRef
 {
 public:
 	compareNameRef(CREF(tstring) name)
