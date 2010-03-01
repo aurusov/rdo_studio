@@ -16,67 +16,67 @@ int  rtpparse(PTR(void) lexer);
 int  rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void rtperror(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDORTPParamType
-// ----------------------------------------------------------------------------
-class RDOFUNArithm;
-class RDORTPDefVal;
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPParamType
+//// ----------------------------------------------------------------------------
+//class RDOFUNArithm;
+//class RDORTPDefVal;
+//
+//class RDORTPParamType: public RDOParserObject, public RDOParserSrcInfo
+//{
+//public:
+//	virtual void                  checkValue         ( const RDOValue& value ) const = 0;
+//	virtual rdoRuntime::RDOValue  getValue           ( const RDOValue& value ) const = 0;
+//	virtual rdoRuntime::RDOValue  getDefaultValue    ( const RDOValue& value ) const;
+//
+//	virtual RDORTPParamType*      constructorSuchAs  ( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const = 0;
+//
+//	virtual unsigned int          getDiapTableFunc   () const;
+//
+//	virtual void                  writeModelStructure( std::ostream& stream ) const = 0;
+//
+//	virtual LPRDOType              type() const = 0;
+//	rdoRuntime::RDOType::TypeID  typeID() const { return type()->type().typeID(); }
+//
+//	void checkParamType( const RDOFUNArithm* const action ) const;
+//
+//	const RDORTPDefVal& getDV() const { return *m_dv; }
+//
+//protected:
+//	RDORTPDefVal* m_dv;
+//
+//	// Для глобальный типов, напримиер, для параметров стандартных функций
+//	RDORTPParamType( RDOParser* _parser, RDORTPDefVal* _dv ):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo(),
+//		m_dv( _dv )
+//	{
+//	}
+//	// Для нормальных параметров
+//	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv ):
+//		RDOParserObject( _parent ),
+//		RDOParserSrcInfo(),
+//		m_dv( _dv )
+//	{
+//	}
+//	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+//		RDOParserObject( _parent ),
+//		RDOParserSrcInfo( _src_info ),
+//		m_dv( _dv )
+//	{
+//	}
+//	virtual ~RDORTPParamType() {};
+//};
 
-class RDORTPParamType: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	virtual void                  checkValue         ( const RDOValue& value ) const = 0;
-	virtual rdoRuntime::RDOValue  getValue           ( const RDOValue& value ) const = 0;
-	virtual rdoRuntime::RDOValue  getDefaultValue    ( const RDOValue& value ) const;
-
-	virtual RDORTPParamType*      constructorSuchAs  ( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const = 0;
-
-	virtual unsigned int          getDiapTableFunc   () const;
-
-	virtual void                  writeModelStructure( std::ostream& stream ) const = 0;
-
-	virtual LPRDOType              type() const = 0;
-	rdoRuntime::RDOType::TypeID  typeID() const { return type()->type().typeID(); }
-
-	void checkParamType( const RDOFUNArithm* const action ) const;
-
-	const RDORTPDefVal& getDV() const { return *m_dv; }
-
-protected:
-	RDORTPDefVal* m_dv;
-
-	// Для глобальный типов, напримиер, для параметров стандартных функций
-	RDORTPParamType( RDOParser* _parser, RDORTPDefVal* _dv ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo(),
-		m_dv( _dv )
-	{
-	}
-	// Для нормальных параметров
-	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv ):
-		RDOParserObject( _parent ),
-		RDOParserSrcInfo(),
-		m_dv( _dv )
-	{
-	}
-	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
-		RDOParserObject( _parent ),
-		RDOParserSrcInfo( _src_info ),
-		m_dv( _dv )
-	{
-	}
-	virtual ~RDORTPParamType() {};
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNConst
-// ----------------------------------------------------------------------------
-class RDOFUNConst: public RDORTPParam
-{
-public:
-	RDOFUNConst( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
-	virtual ~RDOFUNConst() {}
-};
+//// ----------------------------------------------------------------------------
+//// ---------- RDOFUNConst
+//// ----------------------------------------------------------------------------
+//class RDOFUNConst: public RDORTPParam
+//{
+//public:
+//	RDOFUNConst( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+//	virtual ~RDOFUNConst() {}
+//};
 
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
@@ -84,7 +84,7 @@ public:
 class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	typedef std::vector<CPTR(RDORTPParam)> ParamList;
+	typedef std::vector<LPRDORTPParam> ParamList;
 
 	enum { UNDEFINED_PARAM = ~0 };
 
@@ -95,12 +95,12 @@ public:
 	rbool         isPermanent() const   { return m_permanent;  };
 	rbool         isTemporary() const   { return !m_permanent; };
 
-	void addParam(CPTRC(RDORTPParam) param);
+	void addParam(CREF(LPRDORTPParam) param);
 	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
-	CPTR(RDORTPParam) findRTPParam(CREF(tstring) param) const;
+	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
 
-	ruint           getRTPParamNumber(CREF(tstring) param) const;
-	CREF(ParamList) getParams        ()                    const { return m_params; }
+	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
+	CREF(ParamList) getParams        ()                        const { return m_params; }
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -157,211 +157,211 @@ private:
 	RDOValue m_value;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDORTPDiap - Шаблон классов диапазонов для integer и real
-// ----------------------------------------------------------------------------
-// Сначала цепляется к парсеру, а потом идет reparent на тип ресурса
-// ----------------------------------------------------------------------------
-template<class T>
-class RDORTPDiap: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPDiap( RDOParser* _parser ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo(),
-		m_exist( false ),
-		m_min_value( 0 ),
-		m_max_value( 0 )
-	{
-	}
-	RDORTPDiap( RDOParser* _parser, const RDORTPDiap<T>& copy ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo( copy.src_info() ),
-		m_exist( copy.m_exist ),
-		m_min_value( copy.m_min_value ),
-		m_max_value( copy.m_max_value )
-	{
-	}
-	RDORTPDiap( const RDORTPDiap<T>& copy ):
-		RDOParserObject( copy.parser() ),
-		RDOParserSrcInfo( copy.src_info() ),
-		m_exist( copy.m_exist ),
-		m_min_value( copy.m_min_value ),
-		m_max_value( copy.m_max_value )
-	{
-	}
-	RDORTPDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo( _src_info ),
-		m_exist( false ),
-		m_min_value( 0 ),
-		m_max_value( 0 )
-	{
-	}
-	RDORTPDiap( RDOParser* _parser, T min_value, T max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& max_value_pos ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo( _src_info ),
-		m_exist( true ),
-		m_min_value( min_value ),
-		m_max_value( max_value )
-	{
-		init( &max_value_pos );
-	}
-	RDORTPDiap( RDOParser* _parser, T min_value, T max_value ):
-		RDOParserObject( _parser ),
-		m_exist( true ),
-		m_min_value( min_value ),
-		m_max_value( max_value )
-	{
-		init( NULL );
-	}
-	virtual ~RDORTPDiap() {}
-
-	rbool isExist() const { return m_exist;     }
-	T  getMin() const    { return m_min_value; }
-	T  getMax() const    { return m_max_value; }
-
-private:
-	rbool m_exist;
-	T    m_min_value;
-	T    m_max_value;
-
-	void init( const YYLTYPE* const max_value_pos )
-	{
-		if ( max_value_pos && m_min_value > m_max_value ) {
-			parser()->error().error( *max_value_pos, "Левая граница диапазона должна быть меньше правой" );
-		}
-		setSrcText( rdo::format("[%s..%s]", rdoRuntime::RDOValue(m_min_value).getAsString().c_str(), rdoRuntime::RDOValue(m_max_value).getAsString().c_str()) );
-	}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPIntDiap - integer даипазон, например, [1 .. 4]
-// ----------------------------------------------------------------------------
-typedef RDORTPDiap<int>    RDORTPIntDiap;
-// ----------------------------------------------------------------------------
-// ---------- RDORTPRealDiap - real даипазон, например, [1.2 .. 4.78]
-// ----------------------------------------------------------------------------
-typedef RDORTPDiap<double> RDORTPRealDiap;
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPIntParamType
-// ----------------------------------------------------------------------------
-class RDORTPIntParamType: public RDORTPParamType
-{
-public:
-	RDORTPIntParamType( RDOParser* _parser, RDORTPIntDiap* _diap, RDORTPDefVal* _dv );
-	RDORTPIntParamType( const RDOParserObject* _parent );
-	RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPDefVal* _dv );
-	RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
-	virtual ~RDORTPIntParamType() {}
-
-	virtual void                  checkValue( const RDOValue& value ) const;
-	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
-
-	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
-
-	virtual unsigned int getDiapTableFunc() const;
-
-	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual LPRDOType type() const { return rdoParse::g_int; }
-
-	const RDORTPIntDiap& getDiap() const { return *m_diap; }
-
-private:
-	RDORTPIntDiap* m_diap;
-	void init();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPRealParamType
-// ----------------------------------------------------------------------------
-class RDORTPRealParamType: public RDORTPParamType
-{
-public:
-	RDORTPRealParamType( RDOParser* _parser, RDORTPRealDiap* _diap, RDORTPDefVal* _dv );
-	RDORTPRealParamType( const RDOParserObject* _parent );
-	RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPDefVal* _dv );
-	RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
-	virtual ~RDORTPRealParamType() {}
-
-	virtual void                  checkValue( const RDOValue& value ) const;
-	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
-
-	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
-
-	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual LPRDOType type() const        { return rdoParse::g_real; }
-	const RDORTPRealDiap& getDiap() const { return *m_diap; }
-
-private:
-	RDORTPRealDiap* m_diap;
-	void init();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPEnumParamType
-// ----------------------------------------------------------------------------
-class RDORTPEnumParamType: public RDORTPParamType
-{
-public:
-	LPRDOEnumType   m_enum;
-	tstring         enum_name; // Используется в сообщениях об ошибках
-	rbool           enum_fun;  // Используется в сообщениях об ошибках
-
-	RDORTPEnumParamType( const RDOParserObject* _parent, CREF(LPRDOEnumType) _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
-	virtual ~RDORTPEnumParamType() {}
-
-	virtual void                  checkValue       ( const RDOValue& value ) const;
-	virtual rdoRuntime::RDOValue  getValue         ( const RDOValue& value ) const;
-	virtual rdoRuntime::RDOValue  getDefaultValue  ( const RDOValue& value ) const;
-
-	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
-
-	virtual unsigned int getDiapTableFunc() const;
-
-	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual LPRDOType type() const { return LPRDOType(const_cast<PTR(RDOEnumType)>(m_enum.get())); }
-
-private:
-	void init_src_info();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPStringParamType
-// ----------------------------------------------------------------------------
-class RDORTPStringParamType: public RDORTPParamType
-{
-public:
-	RDORTPStringParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
-	virtual ~RDORTPStringParamType() {}
-
-	virtual void                  checkValue( const RDOValue& value ) const;
-	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
-
-	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
-
-	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual LPRDOType type() const { return rdoParse::g_string; }
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPBoolParamType
-// ----------------------------------------------------------------------------
-class RDORTPBoolParamType: public RDORTPParamType
-{
-public:
-	RDORTPBoolParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
-	virtual ~RDORTPBoolParamType() {}
-
-	virtual void                  checkValue( const RDOValue& value ) const;
-	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
-
-	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
-
-	virtual void writeModelStructure( std::ostream& stream ) const;
-	virtual LPRDOType type() const { return rdoParse::g_bool; }
-};
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPDiap - Шаблон классов диапазонов для integer и real
+//// ----------------------------------------------------------------------------
+//// Сначала цепляется к парсеру, а потом идет reparent на тип ресурса
+//// ----------------------------------------------------------------------------
+//template<class T>
+//class RDORTPDiap: public RDOParserObject, public RDOParserSrcInfo
+//{
+//public:
+//	RDORTPDiap( RDOParser* _parser ):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo(),
+//		m_exist( false ),
+//		m_min_value( 0 ),
+//		m_max_value( 0 )
+//	{
+//	}
+//	RDORTPDiap( RDOParser* _parser, const RDORTPDiap<T>& copy ):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo( copy.src_info() ),
+//		m_exist( copy.m_exist ),
+//		m_min_value( copy.m_min_value ),
+//		m_max_value( copy.m_max_value )
+//	{
+//	}
+//	RDORTPDiap( const RDORTPDiap<T>& copy ):
+//		RDOParserObject( copy.parser() ),
+//		RDOParserSrcInfo( copy.src_info() ),
+//		m_exist( copy.m_exist ),
+//		m_min_value( copy.m_min_value ),
+//		m_max_value( copy.m_max_value )
+//	{
+//	}
+//	RDORTPDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo( _src_info ),
+//		m_exist( false ),
+//		m_min_value( 0 ),
+//		m_max_value( 0 )
+//	{
+//	}
+//	RDORTPDiap( RDOParser* _parser, T min_value, T max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& max_value_pos ):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo( _src_info ),
+//		m_exist( true ),
+//		m_min_value( min_value ),
+//		m_max_value( max_value )
+//	{
+//		init( &max_value_pos );
+//	}
+//	RDORTPDiap( RDOParser* _parser, T min_value, T max_value ):
+//		RDOParserObject( _parser ),
+//		m_exist( true ),
+//		m_min_value( min_value ),
+//		m_max_value( max_value )
+//	{
+//		init( NULL );
+//	}
+//	virtual ~RDORTPDiap() {}
+//
+//	rbool isExist() const { return m_exist;     }
+//	T  getMin() const    { return m_min_value; }
+//	T  getMax() const    { return m_max_value; }
+//
+//private:
+//	rbool m_exist;
+//	T    m_min_value;
+//	T    m_max_value;
+//
+//	void init( const YYLTYPE* const max_value_pos )
+//	{
+//		if ( max_value_pos && m_min_value > m_max_value ) {
+//			parser()->error().error( *max_value_pos, "Левая граница диапазона должна быть меньше правой" );
+//		}
+//		setSrcText( rdo::format("[%s..%s]", rdoRuntime::RDOValue(m_min_value).getAsString().c_str(), rdoRuntime::RDOValue(m_max_value).getAsString().c_str()) );
+//	}
+//};
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPIntDiap - integer даипазон, например, [1 .. 4]
+//// ----------------------------------------------------------------------------
+//typedef RDORTPDiap<int>    RDORTPIntDiap;
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPRealDiap - real даипазон, например, [1.2 .. 4.78]
+//// ----------------------------------------------------------------------------
+//typedef RDORTPDiap<double> RDORTPRealDiap;
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPIntParamType
+//// ----------------------------------------------------------------------------
+//class RDORTPIntParamType: public RDORTPParamType
+//{
+//public:
+//	RDORTPIntParamType( RDOParser* _parser, RDORTPIntDiap* _diap, RDORTPDefVal* _dv );
+//	RDORTPIntParamType( const RDOParserObject* _parent );
+//	RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPDefVal* _dv );
+//	RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+//	virtual ~RDORTPIntParamType() {}
+//
+//	virtual void                  checkValue( const RDOValue& value ) const;
+//	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
+//
+//	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
+//
+//	virtual unsigned int getDiapTableFunc() const;
+//
+//	virtual void writeModelStructure( std::ostream& stream ) const;
+//	virtual LPRDOType type() const { return rdoParse::g_int; }
+//
+//	const RDORTPIntDiap& getDiap() const { return *m_diap; }
+//
+//private:
+//	RDORTPIntDiap* m_diap;
+//	void init();
+//};
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPRealParamType
+//// ----------------------------------------------------------------------------
+//class RDORTPRealParamType: public RDORTPParamType
+//{
+//public:
+//	RDORTPRealParamType( RDOParser* _parser, RDORTPRealDiap* _diap, RDORTPDefVal* _dv );
+//	RDORTPRealParamType( const RDOParserObject* _parent );
+//	RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPDefVal* _dv );
+//	RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+//	virtual ~RDORTPRealParamType() {}
+//
+//	virtual void                  checkValue( const RDOValue& value ) const;
+//	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
+//
+//	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
+//
+//	virtual void writeModelStructure( std::ostream& stream ) const;
+//	virtual LPRDOType type() const        { return rdoParse::g_real; }
+//	const RDORTPRealDiap& getDiap() const { return *m_diap; }
+//
+//private:
+//	RDORTPRealDiap* m_diap;
+//	void init();
+//};
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPEnumParamType
+//// ----------------------------------------------------------------------------
+//class RDORTPEnumParamType: public RDORTPParamType
+//{
+//public:
+//	LPRDOEnumType   m_enum;
+//	tstring         enum_name; // Используется в сообщениях об ошибках
+//	rbool           enum_fun;  // Используется в сообщениях об ошибках
+//
+//	RDORTPEnumParamType( const RDOParserObject* _parent, CREF(LPRDOEnumType) _enu, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+//	virtual ~RDORTPEnumParamType() {}
+//
+//	virtual void                  checkValue       ( const RDOValue& value ) const;
+//	virtual rdoRuntime::RDOValue  getValue         ( const RDOValue& value ) const;
+//	virtual rdoRuntime::RDOValue  getDefaultValue  ( const RDOValue& value ) const;
+//
+//	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
+//
+//	virtual unsigned int getDiapTableFunc() const;
+//
+//	virtual void writeModelStructure( std::ostream& stream ) const;
+//	virtual LPRDOType type() const { return LPRDOType(const_cast<PTR(RDOEnumType)>(m_enum.get())); }
+//
+//private:
+//	void init_src_info();
+//};
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPStringParamType
+//// ----------------------------------------------------------------------------
+//class RDORTPStringParamType: public RDORTPParamType
+//{
+//public:
+//	RDORTPStringParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+//	virtual ~RDORTPStringParamType() {}
+//
+//	virtual void                  checkValue( const RDOValue& value ) const;
+//	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
+//
+//	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
+//
+//	virtual void writeModelStructure( std::ostream& stream ) const;
+//	virtual LPRDOType type() const { return rdoParse::g_string; }
+//};
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPBoolParamType
+//// ----------------------------------------------------------------------------
+//class RDORTPBoolParamType: public RDORTPParamType
+//{
+//public:
+//	RDORTPBoolParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info );
+//	virtual ~RDORTPBoolParamType() {}
+//
+//	virtual void                  checkValue( const RDOValue& value ) const;
+//	virtual rdoRuntime::RDOValue  getValue  ( const RDOValue& value ) const;
+//
+//	virtual RDORTPParamType*      constructorSuchAs( const RDOParserSrcInfo& such_as_src_info, const RDOValue& defValue = RDOValue() ) const;
+//
+//	virtual void writeModelStructure( std::ostream& stream ) const;
+//	virtual LPRDOType type() const { return rdoParse::g_bool; }
+//};
 
 // ----------------------------------------------------------------------------
 //------------------------------ FOR FUZZY LOGIC ------------------------------	
