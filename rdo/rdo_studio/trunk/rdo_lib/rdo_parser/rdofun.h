@@ -120,7 +120,7 @@ public:
 	rdoRuntime::RDOCalc*           calc() const     { return m_calc;           }
 	const RDOValue&                value() const    { return m_value;          }
 	LPRDOType                      type() const     { return m_value.type();   }
-	LPRDOEnumType                  enumType() const { return LPRDOEnumType(static_cast<PTR(RDOEnumType)>(type().get())); }
+	LPRDOEnumType                  enumType() const { return type();           }
 	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->type().typeID(); }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
@@ -162,17 +162,17 @@ private:
 class RDOFUNConstant: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDOFUNConstant( RDOParser* _parser, RDOFUNConst* _const );
+	RDOFUNConstant( RDOParser* _parser, CREF(LPRDORTPParam) _const );
 	virtual ~RDOFUNConstant() {}
 
-	const std::string&           name() const      { return m_const->name();         }
-	const RDOTypeParam* const getType() const   { return m_const->getParamType(); }
-	const RDOFUNConst* const     getDescr() const  { return m_const;                 }
-	int                          getNumber() const { return m_number;                }
+	const std::string&    name() const      { return m_const->name();         }
+	LPRDOTypeParam        getType() const   { return m_const->getParamType(); }
+	LPRDORTPParam         getDescr() const  { return m_const;                 }
+	int                   getNumber() const { return m_number;                }
 
 private:
-	RDOFUNConst* m_const;
-	int          m_number;
+	LPRDORTPParam  m_const;
+	int            m_number;
 };
 
 // ----------------------------------------------------------------------------

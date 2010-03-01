@@ -275,7 +275,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		CPTR(RDOPATPattern) pPattern = parser()->getLastPATPattern();
 		if (pPattern && pPattern->currRelRes)
 		{
-			CPTR(RDORTPParam) pParam = pPattern->currRelRes->getType()->findRTPParam(value->getIdentificator());
+			LPRDORTPParam pParam = pPattern->currRelRes->getType()->findRTPParam(value->getIdentificator());
 			if (pParam)
 			{
 				RDOValue paramName(pPattern->currRelRes->body_name);
@@ -339,17 +339,20 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	}
 
 	// ¬озможно, что это значение перечислимого типа
-	std::vector< RDORTPEnumParamType* >::const_iterator it = parser()->getRTPEnumParamTypes().begin();
-	while ( it != parser()->getRTPEnumParamTypes().end() )
+	CREF(RDOParser::PreCastTypeList) typeList = parser()->getPreCastTypeList();
+	STL_FOR_ALL_CONST(RDOParser::PreCastTypeList, typeList, it)
 	{
-		if ( (*it)->m_enum->getEnums().findEnum( value->getIdentificator() ) != rdoRuntime::RDOEnumType::END )
+		//! TODO: value_cast не написан
+		RDOValue try_cast_value = (*it)->value_cast(value);
+		if (try_cast_value.defined())
+		//! TODO: перенести в кастинг енума
+//		if ( (*it)->m_enum->getEnums().findEnum( value->getIdentificator() ) != rdoRuntime::RDOEnumType::END )
 		{
 			// ƒа, это перечислимый тип, только одно и тоже значение может встречатьс€ в разных
 			// перечислимых типах, поэтому какой именно из них выбрать - вопрос
-			m_value = value;
+			m_value = try_cast_value;
 			return;
 		}
-		it++;
 	}
 
 	parser()->error().error( value.src_info(), rdo::format("Ќеизвестный идентификатор: %s", value->getIdentificator().c_str()) );
@@ -380,7 +383,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 			parser()->error().error( res_name.src_info(), rdo::format("Ќельз€ использовать временный ресурс: %s", res_name->getIdentificator().c_str()) );
 		}
 		m_calc->setSrcInfo( src_info() );
-		m_value = res->getType()->findRTPParam( par_name->getIdentificator() )->getType()->type();
+		m_value = res->getType()->findRTPParam( par_name->getIdentificator() )->getParamType()->type();
 		return;
 	}
 	// Ёто не ресурс, но возможно, ресурс внутри групповой функции
@@ -395,7 +398,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 		}
 		m_calc = new rdoRuntime::RDOCalcGetGroupResParam( parser()->runtime(), parNumb );
 		m_calc->setSrcInfo( src_info() );
-		m_value = currGroup->resType->findRTPParam( par_name->getIdentificator() )->getType()->type();
+		m_value = currGroup->resType->findRTPParam( par_name->getIdentificator() )->getParamType()->type();
 		return;
 	}
 	else
@@ -474,7 +477,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 							}
 						}
 						// ѕровер€ем использование еще не инициализированного (только дл€ Create) параметра рел. ресурса в его же конверторе
-						const RDORTPParam* param = pat->currRelRes->getType()->findRTPParam( par_name->getIdentificator() );
+						LPRDORTPParam param = pat->currRelRes->getType()->findRTPParam( par_name->getIdentificator() );
 						if ( param && pat->currRelRes->name() == res_name->getIdentificator() )
 						{
 							// ¬ конверторе начала
@@ -482,7 +485,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 							{
 								if ( !pat->currRelRes->getParamSetBegin()->isExist( par_name->getIdentificator() ) )
 								{
-									if ( !param->getType()->getDV().isExist() )
+									if ( !param->getDefault().defined() )
 									{
 										parser()->error().error( par_name.src_info(), rdo::format("ѕараметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name->getIdentificator().c_str()) );
 									}
@@ -491,7 +494,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 							// ¬ конверторе конца
 							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResource::CS_Create) {
 								if ( !pat->currRelRes->getParamSetEnd()->isExist( par_name->getIdentificator() ) ) {
-									if ( !param->getType()->getDV().isExist() ) {
+									if ( !param->getDefault().defined() ) {
 										parser()->error().error( par_name.src_info(), rdo::format("ѕараметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name->getIdentificator().c_str()) );
 									}
 								}
@@ -505,7 +508,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 					}
 					m_calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser()->runtime(), pat->findRelevantResourceNum( res_name->getIdentificator() ), parNumb );
 					m_calc->setSrcInfo( src_info() );
-					m_value = rel->getType()->findRTPParam( par_name->getIdentificator() )->getType()->type();
+					m_value = rel->getType()->findRTPParam( par_name->getIdentificator() )->getParamType()->type();
 					return;
 				}
 				break;
@@ -526,7 +529,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 						}
 						m_calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser()->runtime(), relResNumb, parNumb );
 						m_calc->setSrcInfo( src_info() );
-						m_value = rel->getType()->findRTPParam( par_name->getIdentificator() )->getType()->type();
+						m_value = rel->getType()->findRTPParam( par_name->getIdentificator() )->getParamType()->type();
 						return;
 					}
 				}
@@ -544,7 +547,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 						}
 						m_calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser()->runtime(), relResNumb, parNumb );
 						m_calc->setSrcInfo( src_info() );
-						m_value = rel->getType()->findRTPParam( par_name->getIdentificator() )->getType()->type();
+						m_value = rel->getType()->findRTPParam( par_name->getIdentificator() )->getParamType()->type();
 						return;
 					}
 				}
@@ -569,14 +572,14 @@ RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue( RDOFUNArithm& second )
 {
 	if ( typeID() == rdoRuntime::RDOType::t_enum && second.typeID() == rdoRuntime::RDOType::t_identificator )
 	{
-		second.m_value = RDOValue( enumType().findEnumValueWithThrow(second.src_info(), second.value()->getAsString()), enumType(), second.m_value.src_info() );
+		second.m_value = RDOValue( enumType()->findEnumValueWithThrow(second.src_info(), second.value()->getAsString()), enumType(), second.m_value.src_info() );
 		second.m_calc  = new rdoRuntime::RDOCalcConst( parser()->runtime(), second.m_value.value() );
 		second.m_calc->setSrcInfo( second.src_info() );
 		return CR_DONE;
 	}
 	else if ( typeID() == rdoRuntime::RDOType::t_identificator && second.typeID() == rdoRuntime::RDOType::t_enum )
 	{
-		m_value = RDOValue( second.enumType().findEnumValueWithThrow(src_info(), value()->getAsString()), second.enumType(), m_value.src_info() );
+		m_value = RDOValue( second.enumType()->findEnumValueWithThrow(src_info(), value()->getAsString()), second.enumType(), m_value.src_info() );
 		m_calc  = new rdoRuntime::RDOCalcConst( parser()->runtime(), m_value.value() );
 		m_calc->setSrcInfo( src_info() );
 		return CR_DONE;
@@ -731,7 +734,7 @@ void RDOFUNArithm::setSrcText( const std::string& value )
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNConstant
 // ----------------------------------------------------------------------------
-RDOFUNConstant::RDOFUNConstant( RDOParser* _parser, RDOFUNConst* _const ):
+RDOFUNConstant::RDOFUNConstant( RDOParser* _parser, CREF(LPRDORTPParam) _const ):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _const->src_info() ),
 	m_const( _const ),
