@@ -22,13 +22,16 @@ OPEN_RDO_NAMESPACE
 template<class T>
 class smart_ptr
 {
+template<class P> friend class smart_ptr;
 public:
 	typedef T            object_type;
 	typedef smart_ptr<T> this_type;
 
 	smart_ptr ();
-	smart_ptr ( PTR(T)         obj );
-	smart_ptr (CREF(this_type) sptr);
+	smart_ptr ( PTR(T)            obj );
+	smart_ptr (CREF(this_type)    sptr);
+	template<class P>
+	smart_ptr (CREF(smart_ptr<P>) sptr);
 	~smart_ptr();
 
 	REF(this_type) operator= (CREF(this_type) sptr);
@@ -40,7 +43,10 @@ public:
 	 PTR(T) operator-> ();
 
 	template <class P>
-	operator smart_ptr<P>() const;
+	smart_ptr<P> cast() const;
+
+	template <class P>
+	P lp_cast() const;
 
 	rbool owner() const;
 
@@ -51,6 +57,9 @@ protected:
 private:
 	PTR(ruint) m_counter;
 	PTR(T)     m_object;
+
+	template<class P>
+	smart_ptr(PTR(P) object, PTR(ruint) counter);
 
 	rbool       inited           () const;
 	CREF(ruint) counter          () const;

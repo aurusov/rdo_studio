@@ -44,6 +44,31 @@ inline smart_ptr<T>::smart_ptr(CREF(this_type) sptr)
 }
 
 template<class T>
+template<class P>
+inline smart_ptr<T>::smart_ptr(CREF(smart_ptr<P>) sptr)
+	: m_counter(sptr.m_counter)
+	, m_object (sptr.m_object )
+{
+	addref();
+}
+
+template<class T>
+template<class P>
+inline smart_ptr<T>::smart_ptr(PTR(P) object, PTR(ruint) counter)
+	: m_counter(counter)
+	, m_object (object )
+{
+	addref();
+}
+
+template<class T>
+inline smart_ptr<T>::~smart_ptr()
+{
+	if (inited())
+		clear();
+}
+
+template<class T>
 inline REF(typename smart_ptr<T>::this_type) smart_ptr<T>::operator= (CREF(this_type) sptr)
 {
 	if (get() != NULL)
@@ -53,13 +78,6 @@ inline REF(typename smart_ptr<T>::this_type) smart_ptr<T>::operator= (CREF(this_
 	m_object  = sptr.m_object;
 	addref();
 	return *this;
-}
-
-template<class T>
-inline smart_ptr<T>::~smart_ptr()
-{
-	if (inited())
-		clear();
 }
 
 template<class T>
@@ -93,10 +111,17 @@ inline PTR(T) smart_ptr<T>::operator-> ()
 }
 
 template<class T>
-template <class P>
-inline smart_ptr<T>::operator smart_ptr<P>() const
+template<class P>
+inline smart_ptr<P> smart_ptr<T>::cast() const
 {
-	return smart_ptr<P>(*this);
+	return smart_ptr<P>(static_cast<PTR(P)>(m_object), m_counter);
+}
+
+template<class T>
+template<class P>
+inline P smart_ptr<T>::lp_cast() const
+{
+	return P(static_cast<PTR(P::object_type)>(m_object), m_counter);
 }
 
 template<class T>

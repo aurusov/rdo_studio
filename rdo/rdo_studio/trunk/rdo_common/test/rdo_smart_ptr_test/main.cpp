@@ -23,7 +23,7 @@ DECLARE_FACTORY(MyClass)
 public:
 	ruint m_i;
 
-private:
+protected:
 	MyClass()
 		: m_i(2)
 	{}
@@ -31,8 +31,9 @@ private:
 	~MyClass()
 	{}
 };
+typedef rdo::smart_ptr<MyClass> LPMyClass;
 
-class MyClass2
+class MyClass2: public MyClass
 {
 DECLARE_FACTORY(MyClass2)
 public:
@@ -50,6 +51,22 @@ private:
 	~MyClass2()
 	{}
 };
+typedef rdo::smart_ptr<MyClass2> LPMyClass2;
+
+class MyClass3
+{
+DECLARE_FACTORY(MyClass3)
+public:
+	ruint m_i1;
+
+private:
+	MyClass3()
+		: m_i1(2)
+	{}
+	~MyClass3()
+	{}
+};
+typedef rdo::smart_ptr<MyClass3> LPMyClass3;
 
 void main()
 {
@@ -73,6 +90,14 @@ void main()
 			rdo::smart_ptr_wrapper<MyClass> obj1wr(obj1);
 			container.push_back(&obj1wr);
 		}
+		int i = 1;
+	}
+	{
+		LPMyClass2 obj21 = rdo::Factory<MyClass2>::create();
+		LPMyClass  obj11 = obj21;
+		LPMyClass2 obj22 = obj11.cast<MyClass2>();
+		LPMyClass2 obj23 = obj11.lp_cast<LPMyClass2>();
+//		LPMyClass3 obj31 = obj21.cast<MyClass3>();
 		int i = 1;
 	}
 
