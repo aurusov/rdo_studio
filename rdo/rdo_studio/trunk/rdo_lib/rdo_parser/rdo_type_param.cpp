@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,10 +26,20 @@ RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info
 	, m_type          (type    )
 {
 	ASSERT(m_type);
+	switch (m_type->type().typeID())
+	{
+	case rdoRuntime::RDOType::t_enum :
+	case rdoRuntime::RDOType::t_fuzzy: RDOParser::s_parser()->insertPreCastType(this); break;
+	}
 }
 
 RDOTypeParam::~RDOTypeParam()
 {}
+
+LPRDOType RDOTypeParam::type() const
+{
+	return m_type;
+}
 
 void RDOTypeParam::checkValue(CREF(RDOValue) value)
 {

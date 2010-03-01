@@ -78,8 +78,6 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(PROCProcess);
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(Operations );
 
-DECLARE_SIMPLE_OBJECT_CONTAINER_NONAME(RTPEnumParamType);
-
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjects::PAT;

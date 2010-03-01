@@ -21,6 +21,7 @@
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
+#include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
@@ -50,7 +51,6 @@ class RDODPTFree;
 class RDODPTFreeActivity;
 class RDOPMDPokaz;
 class RDOPROCProcess;
-class RDORTPEnumParamType;
 class RDOTypeParam;
 
 class RDORTPFuzzyParam;
@@ -95,8 +95,6 @@ DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
 DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 DEFINE_OBJECT_CONTAINER_NONAME(Operations );
-
-DEFINE_OBJECT_CONTAINER_NONAME(RTPEnumParamType);
 
 public:
 	RDOParser();
@@ -194,6 +192,16 @@ public:
 		return m_movementObjectList;
 	}
 
+	typedef std::vector<LPRDOTypeParam> PreCastTypeList;
+	CREF(PreCastTypeList) getPreCastTypeList() const
+	{
+		return m_preCastTypeList;
+	}
+	void insertPreCastType(CREF(LPRDOTypeParam) type)
+	{
+		m_preCastTypeList.push_back(type);
+	}
+
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
@@ -233,6 +241,7 @@ private:
 	rbool                 m_have_kw_ResourcesEnd;
 	Error                 m_error;
 	Stack                 m_movementObjectList;
+	PreCastTypeList       m_preCastTypeList;
 
 	struct Changes
 	{
