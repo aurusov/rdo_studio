@@ -31,8 +31,10 @@ class RDOType: public IModelStructure
 {
 friend class rdo::Factory<RDOType>;
 public:
-	CREF(rdoRuntime::RDOType)        type() const { return *m_type; }
-	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type; }
+	CREF(rdoRuntime::RDOType)        type() const { return *m_type;         }
+	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type;         }
+
+	rdoRuntime::RDOType::TypeID    typeID() const { return type().typeID(); }
 
 	LPRDOType type_cast_throw(
 		CREF(LPRDOType)        from,
