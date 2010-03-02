@@ -24,6 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
+class RDOValue;
 class RDOType;
 DECLARE_POINTER(RDOType);
 
@@ -43,9 +44,9 @@ public:
 		CREF(RDOParserSrcInfo) src_info
 	) const;
 
-	virtual tstring              name      ()                                const = 0;
-	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const = 0;
-	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const = 0;
+	virtual tstring   name      ()                     const = 0;
+	virtual LPRDOType type_cast (CREF(LPRDOType) from) const = 0;
+	virtual RDOValue  value_cast(CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const = 0;
 
 	static LPRDOType getTypeByID(rdoRuntime::RDOType::TypeID typeID);
 
@@ -64,20 +65,20 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Type, TypeName)                                                         \
-class RDOType__##Type: public RDOType                                                                   \
-{                                                                                                       \
-public:                                                                                                 \
-	RDOType__##Type():                                                                                  \
-		RDOType(&rdoRuntime::g_##Type)                                                                  \
-	{}                                                                                                  \
-	~RDOType__##Type()                                                                                  \
-	{}                                                                                                  \
-	virtual tstring              name      ()                                const { return TypeName; } \
-	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const;                     \
-	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;                     \
-	DECLARE_IModelStructure;                                                                            \
-};                                                                                                      \
+#define DEFINE_ATOM_TYPE_PARSER(Type, TypeName)                                   \
+class RDOType__##Type: public RDOType                                             \
+{                                                                                 \
+public:                                                                           \
+	RDOType__##Type():                                                            \
+		RDOType(&rdoRuntime::g_##Type)                                            \
+	{}                                                                            \
+	~RDOType__##Type()                                                            \
+	{}                                                                            \
+	virtual tstring   name      ()                     const { return TypeName; } \
+	virtual LPRDOType type_cast (CREF(LPRDOType) from) const;                     \
+	virtual RDOValue  value_cast(CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
+	DECLARE_IModelStructure;                                                      \
+};                                                                                \
 extern rdo::smart_ptr<RDOType> g_##Type;
 
 DEFINE_ATOM_TYPE_PARSER(unknow,        _T("unknow")       );

@@ -43,10 +43,7 @@ LPRDOType RDOTypeParam::type() const
 
 void RDOTypeParam::checkValue(CREF(RDOValue) value)
 {
-	if (value.typeID() != m_type->type().typeID())
-	{
-		rdoParse::g_error().error(value.src_info(), rdo::format(_T("Ќе получаетс€ преобразовать переменную '%s' в тип %s"), value->getAsString().c_str(), m_type->name().c_str()));
-	}
+	value_cast(value);
 }
 
 void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
@@ -56,8 +53,7 @@ void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
 
 RDOValue RDOTypeParam::value_cast(CREF(RDOValue) value) const
 {
-	NEVER_REACH_HERE;
-	return value;
+	return m_type->value_cast(value, src_info(), value.src_info());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

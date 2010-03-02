@@ -20,8 +20,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- RDOTypeRealRange
 // ----------------------------------------------------------------------------
 RDOTypeRealRange::RDOTypeRealRange(CREF(LPRDOTypeRange) range)
-	: RDOType(&rdoRuntime::g_real)
-	, m_range(range              )
+	: RDOType__real(     )
+	, m_range      (range)
 {
 	ASSERT(m_range);
 }
@@ -31,22 +31,14 @@ RDOTypeRealRange::~RDOTypeRealRange()
 
 inline tstring RDOTypeRealRange::name() const
 {
-	return rdo::format(_T("%s %s"), g_real->name().c_str(), m_range->src_text().c_str());
+	return rdo::format(_T("%s %s"), parent_type::name().c_str(), m_range->src_text().c_str());
 }
 
-LPRDOType RDOTypeRealRange::type_cast(CREF(LPRDOType) from) const
+RDOValue RDOTypeRealRange::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	return g_real->type_cast(from);
-}
-
-rdoRuntime::RDOValue RDOTypeRealRange::value_cast(CREF(rdoRuntime::RDOValue) from) const
-{
-	return g_real->value_cast(from);
-}
-
-void RDOTypeRealRange::writeModelStructure(REF(std::ostream) stream) const
-{
-	g_real->writeModelStructure(stream);
+	RDOValue toValue = parent_type::value_cast(from, to_src_info, src_info);
+	m_range->checkValue(toValue);
+	return toValue;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

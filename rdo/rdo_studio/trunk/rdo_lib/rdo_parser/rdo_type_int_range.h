@@ -22,17 +22,17 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeIntRange
 // ----------------------------------------------------------------------------
-class RDOTypeIntRange: public RDOType
+class RDOTypeIntRange: public RDOType__int
 {
 DECLARE_FACTORY(RDOTypeIntRange);
 private:
+	typedef RDOType__int parent_type;
+
 	RDOTypeIntRange(CREF(LPRDOTypeRange) range);
 	virtual ~RDOTypeIntRange();
 
-	virtual tstring              name      ()                                const;
-	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const;
-	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
-	DECLARE_IModelStructure;
+	virtual tstring   name      () const;
+	virtual RDOValue  value_cast(CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const;
 
 	LPRDOTypeRange m_range;
 };

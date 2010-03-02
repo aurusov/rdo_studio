@@ -29,10 +29,10 @@ class RDOTypeParam: public RDOParserSrcInfo, public IModelStructure
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
-	LPRDOType        type      ()                      const;
-	virtual void     checkValue(CREF(RDOValue) value);
+	LPRDOType type      ()                      const;
+	void      checkValue(CREF(RDOValue) value);
+	RDOValue  value_cast(CREF(RDOValue) value)  const;
 	// добавить кастинг rdoParse::RDOValue -> rdoParse::RDOValue
-	virtual RDOValue value_cast(CREF(RDOValue) value)  const;
 
 	DECLARE_IModelStructure;
 

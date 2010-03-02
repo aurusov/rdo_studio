@@ -60,23 +60,42 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOEnumType::value_cast(CREF(rdoRuntime::RDOValue) from) const
+RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	switch (from.typeID())
+	RDOValue toValue;
+	try
 	{
-		case rdoRuntime::RDOType::t_identificator: {
-			return (getEnums().findEnum(from.getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
-				rdoRuntime::RDOValue(getEnums(), from.getIdentificator()) :
-				rdoRuntime::RDOValue(rdoRuntime::g_unknow);
-			break;
-		}
-		case rdoRuntime::RDOType::t_enum: {
-			if (m_type == &from.type())
-				return from;
-			break;
+		switch (from.typeID())
+		{
+			case rdoRuntime::RDOType::t_identificator: {
+				toValue = (getEnums().findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
+					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), from.src_info()) :
+					RDOValue(rdoRuntime::RDOValue(rdoRuntime::g_unknow), from.src_info());
+				break;
+			}
+			case rdoRuntime::RDOType::t_string: {
+				toValue = (getEnums().findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END) ?
+					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), from.src_info()) :
+					RDOValue(rdoRuntime::RDOValue(rdoRuntime::g_unknow), from.src_info());
+				break;
+			}
+			case rdoRuntime::RDOType::t_enum: {
+				if (m_type == &from.type()->type())
+					toValue = from;
+				break;
+			}
 		}
 	}
-	throw rdoRuntime::RDOTypeException();
+	catch (CREF(rdoRuntime::RDOValueException))
+	{}
+
+	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
+	{
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Неверное значение параметра перечислимого типа: %s"), from.src_info().src_text().c_str()));
+		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("Возможные значения: %s"), name().c_str()));
+		rdoParse::g_error().push_done();
+	}
+	return toValue;
 }
 
 void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const

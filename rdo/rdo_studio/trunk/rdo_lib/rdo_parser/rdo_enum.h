@@ -31,7 +31,6 @@ class RDOEnumType: public RDOType
 DECLARE_FACTORY(RDOEnumType);
 public:
 	void add(CREF(RDOValue) next);
-//	rdoRuntime::RDOValue          findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const;
 //	rdoRuntime::RDOValue          getFirstValue() const;
 	CREF(rdoRuntime::RDOEnumType) getEnums     () const { return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type); }
 
@@ -51,8 +50,8 @@ private:
 
 	PTR(rdoRuntime::RDOEnumType) __enum() const { return static_cast<PTR(rdoRuntime::RDOEnumType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
 
-	virtual LPRDOType            type_cast (CREF(LPRDOType)            from) const;
-	virtual rdoRuntime::RDOValue value_cast(CREF(rdoRuntime::RDOValue) from) const;
+	virtual LPRDOType type_cast (CREF(LPRDOType) from) const;
+	virtual RDOValue  value_cast(CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const;
 	DECLARE_IModelStructure;
 };
 

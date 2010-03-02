@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/rdo_value.h"
 //#include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
@@ -69,9 +70,12 @@ LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__unknow::value_cast(CREF(rdoRuntime::RDOValue) from) const
+RDOValue RDOType__unknow::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	throw rdoRuntime::RDOTypeException();
+	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к неизвестному типу"), from.src_info().src_text().c_str()));
+	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParse::g_error().push_done();
+	return RDOValue();
 }
 
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
@@ -90,9 +94,23 @@ LPRDOType RDOType__int::type_cast(CREF(LPRDOType) from) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__int::value_cast(CREF(rdoRuntime::RDOValue) from) const
+RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	return from.getInt();
+	RDOValue toValue;
+	try
+	{
+		toValue = RDOValue(from->getInt(), from.src_info());
+	}
+	catch (CREF(rdoRuntime::RDOValueException))
+	{}
+
+	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
+	{
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к целому типу"), from.src_info().src_text().c_str()));
+		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		rdoParse::g_error().push_done();
+	}
+	return toValue;
 }
 
 void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
@@ -111,9 +129,23 @@ LPRDOType RDOType__real::type_cast(CREF(LPRDOType) from) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__real::value_cast(CREF(rdoRuntime::RDOValue) from) const
+RDOValue RDOType__real::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	return from.getDouble();
+	RDOValue toValue;
+	try
+	{
+		toValue = RDOValue(from->getDouble(), from.src_info());
+	}
+	catch (CREF(rdoRuntime::RDOValueException))
+	{}
+
+	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
+	{
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к вещественному типу"), from.src_info().src_text().c_str()));
+		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		rdoParse::g_error().push_done();
+	}
+	return toValue;
 }
 
 void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
@@ -131,9 +163,23 @@ LPRDOType RDOType__string::type_cast(CREF(LPRDOType) from) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__string::value_cast(CREF(rdoRuntime::RDOValue) from) const
+RDOValue RDOType__string::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	return from.getString();
+	RDOValue toValue;
+	try
+	{
+		toValue = RDOValue(from->getString(), from.src_info());
+	}
+	catch (CREF(rdoRuntime::RDOValueException))
+	{}
+
+	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
+	{
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к строковому типу"), from.src_info().src_text().c_str()));
+		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		rdoParse::g_error().push_done();
+	}
+	return toValue;
 }
 
 void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
@@ -147,9 +193,12 @@ LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) from) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__identificator::value_cast(CREF(rdoRuntime::RDOValue) from) const
+RDOValue RDOType__identificator::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	throw rdoRuntime::RDOTypeException();
+	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к типу идентификатор"), from.src_info().src_text().c_str()));
+	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParse::g_error().push_done();
+	return RDOValue();
 }
 
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
@@ -167,9 +216,23 @@ LPRDOType RDOType__bool::type_cast(CREF(LPRDOType) from) const
 	return NULL;
 }
 
-rdoRuntime::RDOValue RDOType__bool::value_cast(CREF(rdoRuntime::RDOValue) from) const
+RDOValue RDOType__bool::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	return from.getBool();
+	RDOValue toValue;
+	try
+	{
+		toValue = RDOValue(from->getBool(), from.src_info());
+	}
+	catch (CREF(rdoRuntime::RDOValueException))
+	{}
+
+	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
+	{
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к строковому типу"), from.src_info().src_text().c_str()));
+		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		rdoParse::g_error().push_done();
+	}
+	return toValue;
 }
 
 void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const

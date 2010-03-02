@@ -30,10 +30,10 @@ class RDOTypeRange: public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOTypeRange);
 public:
-	void           check  ();
-	rbool          isExist() const;
-	CREF(RDOValue) getMin () const;
-	CREF(RDOValue) getMax () const;
+	void           checkRange()                     const throw(...);
+	void           checkValue(CREF(RDOValue) value) const throw(...);
+//	CREF(RDOValue) getMin    () const;
+//	CREF(RDOValue) getMax    () const;
 
 private:
 	RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
