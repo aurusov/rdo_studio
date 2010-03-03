@@ -75,11 +75,11 @@ try \
 } \
 catch ( rdoRuntime::RDOValueException& ) \
 { \
-	parser()->error().error( second, rdo::format(ERROR, type().name().c_str(), second.type().name().c_str()) ); \
+	parser()->error().error( second, rdo::format(ERROR, type()->name().c_str(), second.type()->name().c_str()) ); \
 }
 
 #define GET_ARITHM_PRE_TYPE() \
-const RDOType* newType = getPreType( second );
+LPRDOType newType = getPreType( second );
 
 #define GENERATE_ARITHM_CALC( CALC, OPR, ERROR ) \
 CAST_ARITHM_VALUE( OPR, ERROR ) \
@@ -87,7 +87,7 @@ GET_ARITHM_PRE_TYPE() \
 CREATE_CALC( CALC, OPR )
 
 #define RETURN_ARITHM() \
-RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(*newType, newCalc->src_info()), newCalc ); \
+RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(newType, newCalc->src_info()), newCalc ); \
 arithm->m_int_or_double.insert( m_int_or_double, second.m_int_or_double ); \
 return arithm;
 
@@ -568,18 +568,34 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 	parser()->error().error( res_name.src_info(), rdo::format("Неизвестный ресурс: %s", res_name->getIdentificator().c_str()) );
 }
 
-RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue( RDOFUNArithm& second )
+RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue(REF(RDOFUNArithm) second)
 {
 	if ( typeID() == rdoRuntime::RDOType::t_enum && second.typeID() == rdoRuntime::RDOType::t_identificator )
 	{
-		second.m_value = RDOValue( enumType()->findEnumValueWithThrow(second.src_info(), second.value()->getAsString()), enumType(), second.m_value.src_info() );
+		second.m_value = RDOValue(
+			type()->value_cast(
+				second.value(),
+				second.src_info(),
+				src_info()
+			).value(),
+			enumType(),
+			second.m_value.src_info()
+		);
 		second.m_calc  = new rdoRuntime::RDOCalcConst( parser()->runtime(), second.m_value.value() );
 		second.m_calc->setSrcInfo( second.src_info() );
 		return CR_DONE;
 	}
 	else if ( typeID() == rdoRuntime::RDOType::t_identificator && second.typeID() == rdoRuntime::RDOType::t_enum )
 	{
-		m_value = RDOValue( second.enumType()->findEnumValueWithThrow(src_info(), value()->getAsString()), second.enumType(), m_value.src_info() );
+		m_value = RDOValue(
+			second.type()->value_cast(
+				value(),
+				src_info(),
+				second.src_info()
+			).value(),
+			second.enumType(),
+			m_value.src_info()
+		);
 		m_calc  = new rdoRuntime::RDOCalcConst( parser()->runtime(), m_value.value() );
 		m_calc->setSrcInfo( src_info() );
 		return CR_DONE;
@@ -587,7 +603,7 @@ RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue( RDOFUNArithm& second )
 	return CR_CONTINUE;
 }
 
-const RDOType* RDOFUNArithm::getPreType( const RDOFUNArithm& second )
+LPRDOType RDOFUNArithm::getPreType(CREF(RDOFUNArithm) second)
 {
 	if ( typeID() == rdoRuntime::RDOType::t_unknow )
 	{
@@ -606,7 +622,8 @@ const RDOType* RDOFUNArithm::getPreType( const RDOFUNArithm& second )
 		parser()->error().error( second.src_info(), rdo::format("Неизвестный идентификатор: %s", second.value()->getIdentificator().c_str()) );
 	}
 
-	return type().type_cast_throw(second.type());
+	//! TODO: смущают два одинаковых src_info(), проверить и доказать правильность
+	return type()->type_cast_throw(second.type(), second.src_info(), src_info(), src_info());
 }
 
 RDOFUNArithm* RDOFUNArithm::operator+ ( RDOFUNArithm& second )
@@ -635,7 +652,7 @@ RDOFUNArithm* RDOFUNArithm::operator/ ( RDOFUNArithm& second )
 		newCalc = new rdoRuntime::RDOCalcDoubleToIntByResult( parser()->runtime(), newCalc_div );
 		newCalc->setSrcInfo( newCalc_div->src_info() );
 	}
-	RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(*newType, newCalc->src_info()), newCalc );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(newType, newCalc->src_info()), newCalc );
 	if ( newType->type().typeID() == rdoRuntime::RDOType::t_int )
 	{
 		arithm->m_int_or_double.push_back( reinterpret_cast<rdoRuntime::RDOCalcDoubleToIntByResult*>(newCalc) );
@@ -674,7 +691,7 @@ RDOFUNLogic* RDOFUNArithm::operator!= ( RDOFUNArithm& second )
 	GENERATE_LOGIC_FROM_ARITHM( IsNotEqual, !=, "Нельзя сравнивать %s и %s" );
 }
 
-rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPParamType* const forType )
+rdoRuntime::RDOCalc* RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) forType)
 {
 	if ( typeID() != rdoRuntime::RDOType::t_identificator )
 	{
@@ -682,9 +699,9 @@ rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPParamType* const forT
 		{
 			return m_calc;
 		}
-		if ( forType->typeID() != rdoRuntime::RDOType::t_int )
+		if ( forType->type()->typeID() != rdoRuntime::RDOType::t_int )
 		{
-			if ( forType->typeID() == rdoRuntime::RDOType::t_enum )
+			if ( forType->type()->typeID() == rdoRuntime::RDOType::t_enum )
 			{
 				m_int_or_double.roundCalc();
 			}
@@ -708,7 +725,7 @@ rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPParamType* const forT
 		parser()->error().error( src_info(), "Неизвестный тип параметра" );
 	}
 
-	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), forType->getValue( RDOValue(src_info()) )); // TODO юзали _m_str
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcConst( parser()->runtime(), forType->value_cast(RDOValue(src_info())).value()); // TODO юзали _m_str
 	newCalc->setSrcInfo( src_info() );
 	return newCalc;
 }
@@ -764,7 +781,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 	const_cast<RDOFUNFunction*>(func)->insertPostLinked( funcCall );
 	funcCall->setSrcInfo( src_info() );
 	for ( int i = 0; i < nParams; i++ ) {
-		const RDORTPParamType* const funcParam = func->getParams()[i]->getType();
+		LPRDOTypeParam funcParam = func->getParams()[i]->getType();
 		RDOFUNArithm* arithm = params[i];
 		funcParam->checkParamType( arithm );
 		switch ( funcParam->typeID() ) {

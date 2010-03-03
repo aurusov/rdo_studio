@@ -134,8 +134,8 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 		int parNumb = parSet->m_params.at(i).m_paramID;
 		RDOFUNArithm* currArithm = parSet->m_params.at(i).m_rightArithm;
 		if ( currArithm ) { // NULL == NoChange
-			const RDORTPParam* param = parSet->getRelRes()->getType()->getParams().at(parNumb);
-			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
+			LPRDORTPParam param = parSet->getRelRes()->getType()->getParams().at(parNumb);
+			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getParamType().get() );
 			rdoRuntime::RDOCalc* calc = NULL;
 			switch (parSet->m_params.at(i).m_equalType)
 			{
@@ -150,7 +150,7 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			if (calc)
 			{
 				// Проверка на диапазон
-				switch ( param->getType()->typeID() )
+				switch ( param->getParamType()->type()->typeID() )
 				{
 					case rdoRuntime::RDOType::t_int:
 					{

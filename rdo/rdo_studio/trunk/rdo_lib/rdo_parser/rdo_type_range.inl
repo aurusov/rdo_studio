@@ -14,7 +14,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-inline RDOTypeRange::RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info)
+inline RDOTypeRangeRange::RDOTypeRangeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info )
 	, m_min_value     (min_value)
 	, m_max_value     (max_value)
@@ -24,18 +24,22 @@ inline RDOTypeRange::RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_v
 	setSrcText(rdo::format(_T("[%s..%s]"), m_min_value->getAsString().c_str(), m_max_value->getAsString().c_str()));
 }
 
-inline RDOTypeRange::~RDOTypeRange()
+inline RDOTypeRangeRange::~RDOTypeRangeRange()
 {}
 
-inline void RDOTypeRange::checkRange() const throw(...)
+inline void RDOTypeRangeRange::checkRange() const throw(...)
 {
+	if (m_min_value->typeID() != m_max_value->typeID())
+	{
+		rdoParse::g_error().error(m_max_value.src_info(), rdo::format(_T("√раницы диапазона должна быть одного типа: %s .. %s"), m_min_value.type()->name().c_str(), m_max_value.type()->name().c_str()));
+	}
 	if (m_min_value.value() > m_max_value.value())
 	{
 		rdoParse::g_error().error(m_max_value.src_info(), _T("Ћева€ граница диапазона должна быть меньше правой"));
 	}
 }
 
-inline void RDOTypeRange::checkValue(CREF(RDOValue) value) const throw(...)
+inline void RDOTypeRangeRange::checkValue(CREF(RDOValue) value) const throw(...)
 {
 	if (value.value() < m_min_value.value() || value.value() > m_max_value.value())
 	{
@@ -52,14 +56,43 @@ inline void RDOTypeRange::checkValue(CREF(RDOValue) value) const throw(...)
 	}
 }
 
-//inline CREF(RDOValue) RDOTypeRange::getMin() const
-//{
-//	return m_min_value;
-//}
-//
-//inline CREF(RDOValue) RDOTypeRange::getMax() const
-//{
-//	return m_max_value;
-//}
+inline CREF(RDOValue) RDOTypeRangeRange::getMin() const
+{
+	return m_min_value;
+}
+
+inline CREF(RDOValue) RDOTypeRangeRange::getMax() const
+{
+	return m_max_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOTypeIntRange
+// ----------------------------------------------------------------------------
+template<class T>
+inline RDOTypeRange<T>::RDOTypeRange(CREF(LPRDOTypeRangeRange) range)
+	: T      (     )
+	, m_range(range)
+{
+	ASSERT(m_range);
+}
+
+template<class T>
+inline RDOTypeRange<T>::~RDOTypeRange()
+{}
+
+template<class T>
+inline tstring RDOTypeRange<T>::name() const
+{
+	return rdo::format(_T("%s %s"), T::name().c_str(), m_range->src_text().c_str());
+}
+
+template<class T>
+inline RDOValue RDOTypeRange<T>::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+{
+	RDOValue toValue = T::value_cast(from, to_src_info, src_info);
+	m_range->checkValue(toValue);
+	return toValue;
+}
 
 CLOSE_RDO_PARSER_NAMESPACE

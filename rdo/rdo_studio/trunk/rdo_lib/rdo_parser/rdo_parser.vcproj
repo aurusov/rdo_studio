@@ -3303,14 +3303,6 @@
 					RelativePath=".\rdo_type_param.h"
 					>
 				</File>
-				<File
-					RelativePath=".\rdo_type_range.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_type_range.inl"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -3352,19 +3344,11 @@
 				Name=".range"
 				>
 				<File
-					RelativePath=".\rdo_type_int_range.cpp"
+					RelativePath=".\rdo_type_range.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_int_range.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_type_real_range.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_type_real_range.h"
+					RelativePath=".\rdo_type_range.inl"
 					>
 				</File>
 			</Filter>

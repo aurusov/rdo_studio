@@ -14,8 +14,6 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
@@ -24,25 +22,46 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOParser;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOTypeRange
+// ---------- RDOTypeRangeRange
 // ----------------------------------------------------------------------------
-class RDOTypeRange: public RDOParserSrcInfo
+class RDOTypeRangeRange: public RDOParserSrcInfo
 {
-DECLARE_FACTORY(RDOTypeRange);
+DECLARE_FACTORY(RDOTypeRangeRange);
 public:
 	void           checkRange()                     const throw(...);
 	void           checkValue(CREF(RDOValue) value) const throw(...);
-//	CREF(RDOValue) getMin    () const;
-//	CREF(RDOValue) getMax    () const;
+	CREF(RDOValue) getMin    () const;
+	CREF(RDOValue) getMax    () const;
 
 private:
-	RDOTypeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDOTypeRange();
+	RDOTypeRangeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOTypeRangeRange();
 
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 };
-DECLARE_POINTER(RDOTypeRange);
+DECLARE_POINTER(RDOTypeRangeRange);
+
+// ----------------------------------------------------------------------------
+// ---------- RDOTypeRange
+// ----------------------------------------------------------------------------
+template<class T>
+class RDOTypeRange: public T
+{
+DECLARE_FACTORY(RDOTypeRange<T>);
+private:
+	RDOTypeRange(CREF(LPRDOTypeRangeRange) range);
+	virtual ~RDOTypeRange();
+
+	virtual tstring  name      () const;
+	virtual RDOValue value_cast(CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const;
+
+	LPRDOTypeRangeRange m_range;
+};
+typedef RDOTypeRange<RDOType__int>  RDOTypeIntRange;
+typedef RDOTypeRange<RDOType__real> RDOTypeRealRange;
+DECLARE_POINTER(RDOTypeIntRange);
+DECLARE_POINTER(RDOTypeRealRange);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

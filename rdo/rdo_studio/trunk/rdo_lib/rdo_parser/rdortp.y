@@ -202,8 +202,6 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
-#include "rdo_lib/rdo_parser/rdo_type_int_range.h"
-#include "rdo_lib/rdo_parser/rdo_type_real_range.h"
 #include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
@@ -386,10 +384,15 @@ param_value_default:	/* empty */ {
 // ----------------------------------------------------------------------------
 param_type:		RDO_integer param_type_range
 				{
-					LPRDOTypeRange pRange = PARSER->stack().pop<RDOTypeRange>($2);
+					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 					LPRDOTypeParam pType;
 					if (pRange)
 					{
+						if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
+						    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
+						{
+							PARSER->error().error(@2, _T("ƒиапазон целого типа должен быть целочисленным"));
+						}
 						LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 						pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo(@1, @2));
 					}
@@ -401,7 +404,7 @@ param_type:		RDO_integer param_type_range
 				}
 				| RDO_real param_type_range
 				{
-					LPRDOTypeRange pRange = PARSER->stack().pop<RDOTypeRange>($2);
+					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 					LPRDOTypeParam pType;
 					if (pRange)
 					{
@@ -475,26 +478,26 @@ param_type:		RDO_integer param_type_range
 */
 
 param_type_range:	/* empty */ {
-					$$ = PARSER->stack().push<RDOTypeRange>(NULL);
+					$$ = PARSER->stack().push<RDOTypeRangeRange>(NULL);
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					LPRDOTypeRange pRange = rdo::Factory<RDOTypeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					pRange->check();
+					LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->checkRange();
 					$$ = PARSER->stack().push(pRange);
 				}
 				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					LPRDOTypeRange pRange = rdo::Factory<RDOTypeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					pRange->check();
+					LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->checkRange();
 					$$ = PARSER->stack().push(pRange);
 				}
 				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					LPRDOTypeRange pRange = rdo::Factory<RDOTypeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					pRange->check();
+					LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->checkRange();
 					$$ = PARSER->stack().push(pRange);
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					LPRDOTypeRange pRange = rdo::Factory<RDOTypeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
-					pRange->check();
+					LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+					pRange->checkRange();
 					$$ = PARSER->stack().push(pRange);
 				}
 				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error {
@@ -587,7 +590,7 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 						{
 							PARSER->error().error(@2, rdo::format(_T("—сылка на неизвестный тип ресурса: %s"), type.c_str()));
 						}
-						CPTR(RDORTPParam) const rp = rt->findRTPParam(param);
+						LPRDORTPParam rp = rt->findRTPParam(param);
 						if (!rp)
 						{
 							PARSER->error().error(@4, rdo::format(_T("—сылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));

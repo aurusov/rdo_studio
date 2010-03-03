@@ -116,7 +116,7 @@ public:
 	RDOFUNLogic* operator <=( RDOFUNArithm& second );
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 
-	rdoRuntime::RDOCalc*           createCalc( const RDOTypeParam* const forType = NULL );
+	rdoRuntime::RDOCalc*           createCalc       (CREF(LPRDOTypeParam) forType = NULL);
 	rdoRuntime::RDOCalc*           calc() const     { return m_calc;                     }
 	const RDOValue&                value() const    { return m_value;                    }
 	LPRDOType                      type() const     { return m_value.type();             }
@@ -152,8 +152,8 @@ private:
 		CR_DONE,
 		CR_CONTINUE
 	};
-	CastResult beforeCastValue( RDOFUNArithm& second );
-	const RDOType* getPreType( const RDOFUNArithm& second );
+	CastResult beforeCastValue(REF(RDOFUNArithm)  second);
+	LPRDOType  getPreType     (CREF(RDOFUNArithm) second);
 };
 
 // ----------------------------------------------------------------------------
@@ -396,26 +396,25 @@ private:
 // ----------------------------------------------------------------------------
 class RDOFUNFunctionParam: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	RDOTypeParam* type;
-
 public:
-	RDOFUNFunctionParam( const RDOParserObject* _parent, const std::string& _name, RDOTypeParam* _type ):
-		RDOParserObject( _parent ),
-		RDOParserSrcInfo( _name ),
-		type( _type )
-	{
-	}
-	RDOFUNFunctionParam( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, RDOTypeParam* _type ):
-		RDOParserObject( _parent ),
-		RDOParserSrcInfo( _src_info ),
-		type( _type )
-	{
-	}
-	virtual ~RDOFUNFunctionParam() {}
+	RDOFUNFunctionParam(CPTR(RDOParserObject) parent, CREF(tstring) name, CREF(LPRDOTypeParam) type)
+		: RDOParserObject (parent)
+		, RDOParserSrcInfo(name  )
+		, m_type          (type  )
+	{}
+	RDOFUNFunctionParam(CPTR(RDOParserObject) parent, CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) type)
+		: RDOParserObject (parent  )
+		, RDOParserSrcInfo(src_info)
+		, m_type          (type    )
+	{}
+	virtual ~RDOFUNFunctionParam()
+	{}
 
-	const std::string& name() const              { return src_info().src_text(); }
-	const RDOTypeParam* const getType() const { return type;                  }
+	CREF(tstring)  name   () const { return src_info().src_text(); }
+	LPRDOTypeParam getType() const { return m_type;                }
+
+private:
+	LPRDOTypeParam m_type;
 };
 
 // ----------------------------------------------------------------------------
