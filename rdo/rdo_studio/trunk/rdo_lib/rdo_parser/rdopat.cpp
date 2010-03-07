@@ -149,27 +149,17 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			}
 			if (calc)
 			{
-				// Проверка на диапазон
-				switch ( param->getParamType()->type()->typeID() )
+				//! Проверка на диапазон
+				//! TODO: проверить работоспособность
+				if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
 				{
-					case rdoRuntime::RDOType::t_int:
-					{
-						const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
-						if ( param_type->getDiap().isExist() )
-						{
-							calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
-						}
-						break;
-					}
-					case rdoRuntime::RDOType::t_real:
-					{
-						const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
-						if ( param_type->getDiap().isExist() )
-						{
-							calc = new rdoRuntime::RDOSetRelParamDiapCalc( parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, param_type->getDiap().getMin(), param_type->getDiap().getMax(), calc );
-						}
-						break;
-					}
+					LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
+					calc = new rdoRuntime::RDOSetRelParamDiapCalc(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, pRange->range()->getMin().value(), pRange->range()->getMax().value(), calc);
+				}
+				else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+				{
+					LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
+					calc = new rdoRuntime::RDOSetRelParamDiapCalc(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, pRange->range()->getMin().value(), pRange->range()->getMax().value(), calc);
 				}
 				calc->setSrcText( parSet->m_params.at(i).m_name + " set " + rightValue->src_text() );
 				addParamSetCalc( parSet, calc );
@@ -512,9 +502,10 @@ void RDOPatternIrregEvent::addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPAT
 rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const parSet, bool trace ) const
 {
 	std::vector< rdoRuntime::RDOValue > params_default;
-	std::vector< const RDORTPParam* >::const_iterator it = currRelRes->getType()->getParams().begin();
-	while ( it != currRelRes->getType()->getParams().end() ) {
-		if ( !(*it)->getType()->getDV().isExist() ) {
+	STL_FOR_ALL_CONST(RDORTPResType::ParamList, currRelRes->getType()->getParams(), it)
+	{
+		if (!(*it)->getDefault().defined())
+		{
 			params_default.push_back( rdoRuntime::RDOValue(0) );
 			bool set_found = false;
 			RDOPATParamSet::ParamList::const_iterator set_it = parSet->m_params.begin();
@@ -531,9 +522,8 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 				parser()->error().error( parSet->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", (*it)->name().c_str()));
 			}
 		} else {
-			params_default.push_back( (*it)->getType()->getDefaultValue( (*it)->getType()->getDV().value() ) );
+			params_default.push_back((*it)->getDefault().value());
 		}
-		it++;
 	}
 	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateEmptyResource( parser()->runtime(), currRelRes->getType()->getNumber(), trace, params_default, currRelRes->rel_res_id );
 	calc->setSrcInfo( currRelRes->src_info() );
@@ -931,7 +921,7 @@ void RDOPATParamSet::addSet(CREF(std::string) paramName, CREF(YYLTYPE) param_nam
 	} else {
 		setSrcText( src_text() + "\n" + paramName + (rightArithm ? " set " + rightArithm->src_text() : " NoChange") );
 	}
-	const RDORTPParam* param = getRelRes()->getType()->findRTPParam( paramName );
+	LPRDORTPParam param = getRelRes()->getType()->findRTPParam(paramName);
 	if ( !param ) {
 		parser()->error().error( param_name_pos, rdo::format("Неизвестный параметр: %s", paramName.c_str()) );
 	}
@@ -939,8 +929,9 @@ void RDOPATParamSet::addSet(CREF(std::string) paramName, CREF(YYLTYPE) param_nam
 		parser()->error().error( RDOParserSrcInfo(param_name_pos), rdo::format("Параметр '%s' уже используется", paramName.c_str()) );
 //		parser()->error().warning( RDOParserSrcInfo(param_name_pos), rdo::format("Параметр '%s' уже изменяется в конверторе. В трассировку попадет последнее значение параметра", paramName.c_str()) );
 	}
-	if ( rightArithm ) {
-		param->getType()->checkParamType( rightArithm );
+	if (rightArithm)
+	{
+		param->getParamType()->checkParamType( rightArithm );
 	}
 	m_params.push_back(Param(paramName, getRelRes()->getType()->getRTPParamNumber(paramName), equalType, rightArithm));
 }

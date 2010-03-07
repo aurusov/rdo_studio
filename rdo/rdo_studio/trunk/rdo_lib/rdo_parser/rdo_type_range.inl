@@ -95,4 +95,10 @@ inline RDOValue RDOTypeRange<T>::value_cast(CREF(RDOValue) from, CREF(RDOParserS
 	return toValue;
 }
 
+template<class T>
+inline CREF(LPRDOTypeRangeRange) RDOTypeRange<T>::range() const
+{
+	return m_range;
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

@@ -49,6 +49,9 @@ template<class T>
 class RDOTypeRange: public T
 {
 DECLARE_FACTORY(RDOTypeRange<T>);
+public:
+	CREF(LPRDOTypeRangeRange) range() const;
+
 private:
 	RDOTypeRange(CREF(LPRDOTypeRangeRange) range);
 	virtual ~RDOTypeRange();
