@@ -54,13 +54,16 @@ private:
 DECLARE_POINTER(MyClass2);
 
 PREDECLARE_POINTER(MyClass3);
-class MyClass3
+class MyClass3: public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(MyClass3)
 public:
 	ruint m_i1;
 
-	
+	LPMyClass3 getThis()
+	{
+		return LPMyClass3(this, m_pCounter);
+	}
 
 private:
 	MyClass3()
@@ -76,6 +79,7 @@ void main()
 	ruint size2 = sizeof(MyClass2);
 	ruint size3 = sizeof(rdo::smart_ptr<MyClass>);
 	ruint size4 = sizeof(rdo::smart_ptr<MyClass2>);
+
 	{
 		rdo::smart_ptr<MyClass> obj = rdo::Factory<MyClass>::create();
 		obj->m_i = 10;
@@ -102,6 +106,10 @@ void main()
 //		LPMyClass3 obj31 = obj21.cast<MyClass3>(); //! Не должно компилироваться
 		int i = 1;
 	}
-
+	{
+		LPMyClass3 obj31 = rdo::Factory<MyClass3>::create();
+		LPMyClass3 obj32 = obj31->getThis();
+		int i = 1;
+	}
 	int i = 1;
 }

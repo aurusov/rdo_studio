@@ -376,6 +376,10 @@
 				RelativePath=".\rdosmart_ptr_wrapper.h"
 				>
 			</File>
+			<File
+				RelativePath=".\supersubclass.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

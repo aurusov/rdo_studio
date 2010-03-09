@@ -10,6 +10,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/rdodebug.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -48,6 +49,14 @@ template<class P>
 inline smart_ptr<T>::smart_ptr(CREF(smart_ptr<P>) sptr)
 	: m_counter(sptr.m_counter)
 	, m_object (sptr.m_object )
+{
+	addref();
+}
+
+template<class T>
+inline smart_ptr<T>::smart_ptr(PTR(T) object, PTR(ruint) counter)
+	: m_counter(counter)
+	, m_object (object )
 {
 	addref();
 }
@@ -190,6 +199,16 @@ inline void smart_ptr<T>::clear()
 	release();
 	if (counter() == 0)
 		deallocateCounter();
+}
+
+inline smart_ptr_counter_reference::smart_ptr_counter_reference()
+	: m_pCounter(NULL)
+{}
+
+inline void smart_ptr_counter_reference::setSmartPtrCounterReference(PTR(ruint) pCounter)
+{
+	ASSERT(pCounter);
+	m_pCounter = pCounter;
 }
 
 CLOSE_RDO_NAMESPACE

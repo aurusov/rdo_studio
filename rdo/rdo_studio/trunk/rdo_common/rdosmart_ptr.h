@@ -15,6 +15,7 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+#include "rdo_common/supersubclass.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -23,13 +24,14 @@ template<class T>
 class smart_ptr
 {
 template<class P> friend class smart_ptr;
+template<class P> friend class Factory;
 public:
 	typedef T            object_type;
 	typedef smart_ptr<T> this_type;
 
 	smart_ptr ();
-	smart_ptr ( PTR(T)            obj );
-	smart_ptr (CREF(this_type)    sptr);
+	smart_ptr (CREF(this_type) sptr);
+	smart_ptr (PTR(T) object, PTR(ruint) counter);
 	template<class P>
 	smart_ptr (CREF(smart_ptr<P>) sptr);
 	~smart_ptr();
@@ -55,11 +57,12 @@ protected:
 	void release();
 
 private:
-	PTR(ruint) m_counter;
-	PTR(T)     m_object;
-
+	smart_ptr(PTR(T) object);
 	template<class P>
 	smart_ptr(PTR(P) object, PTR(ruint) counter);
+
+	PTR(ruint) m_counter;
+	PTR(T)     m_object;
 
 	rbool       inited           () const;
 	CREF(ruint) counter          () const;
@@ -69,52 +72,87 @@ private:
 	void        clear            ();
 };
 
+class smart_ptr_counter_reference
+{
+public:
+	smart_ptr_counter_reference();
+
+	void setSmartPtrCounterReference(PTR(ruint) pCounter);
+
+	PTR(ruint) m_pCounter;
+};
+
 template <class T>
 class Factory
 {
 friend class smart_ptr<T>;
 public:
-	static smart_ptr<T> create()
+	inline static smart_ptr<T> create()
 	{
-		return smart_ptr<T>(new T());
+		PTR(T) pObject = new T();
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 	template <typename P1>
 	static smart_ptr<T> create(CREF(P1) p1)
 	{
-		return smart_ptr<T>(new T(p1));
+		PTR(T) pObject = new T(p1);
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 	template <typename P1, typename P2>
 	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2)
 	{
-		return smart_ptr<T>(new T(p1, p2));
+		PTR(T) pObject = new T(p1, p2);
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 	template <typename P1, typename P2, typename P3>
 	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
 	{
-		return smart_ptr<T>(new T(p1, p2, p3));
+		PTR(T) pObject = new T(p1, p2, p3);
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 	template <typename P1, typename P2, typename P3, typename P4>
 	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
 	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4));
+		PTR(T) pObject = new T(p1, p2, p3, p4);
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
 	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
 	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4, p5));
+		PTR(T) pObject = new T(p1, p2, p3, p4, p5);
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
 	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
 	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6));
+		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6);
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 	static smart_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 	{
-		return smart_ptr<T>(new T(p1, p2, p3, p4, p5, p6, p7));
+		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7);
+		return init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>(pObject);
 	}
 
 private:
+	template <rbool>
+	static smart_ptr<T> init(PTR(T) object);
+
+	template <>
+	static smart_ptr<T> init<false>(PTR(T) object)
+	{
+		return smart_ptr<T>(object);
+	}
+
+	template <>
+	static smart_ptr<T> init<true>(PTR(T) object)
+	{
+		smart_ptr<T> sobj(object);
+		object->setSmartPtrCounterReference(sobj.m_counter);
+		return sobj;
+	}
+
 	static void destroy(PTR(T) object)
 	{
 		delete object;
