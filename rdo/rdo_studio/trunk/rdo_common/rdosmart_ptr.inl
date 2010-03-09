@@ -22,26 +22,26 @@ inline smart_ptr<T>::smart_ptr()
 {}
 
 template<class T>
-inline smart_ptr<T>::smart_ptr(PTR(T) obj)
-	: m_object(obj)
-{
-	if (m_object)
-	{
-		allocateCounter();
-		counter() = 1;
-	}
-	else
-	{
-		m_counter = NULL;
-	}
-}
-
-template<class T>
 inline smart_ptr<T>::smart_ptr(CREF(this_type) sptr)
 	: m_counter(sptr.m_counter)
 	, m_object (sptr.m_object )
 {
 	addref();
+}
+
+template<class T>
+inline smart_ptr<T>::smart_ptr(PTR(T) obj)
+	: m_object(obj)
+{
+	if (m_object)
+	{
+		init<SUPERSUBCLASS(smart_ptr_counter_reference, T)>();
+		addref();
+	}
+	else
+	{
+		m_counter = NULL;
+	}
 }
 
 template<class T>
@@ -54,11 +54,20 @@ inline smart_ptr<T>::smart_ptr(CREF(smart_ptr<P>) sptr)
 }
 
 template<class T>
-inline smart_ptr<T>::smart_ptr(PTR(T) object, PTR(ruint) counter)
-	: m_counter(counter)
-	, m_object (object )
+inline smart_ptr<T>::smart_ptr(PTR(T) obj, rbool factory)
+	: m_object(obj)
 {
-	addref();
+	ASSERT(factory);
+
+	if (m_object)
+	{
+		allocateCounter();
+		counter() = 1;
+	}
+	else
+	{
+		m_counter = NULL;
+	}
 }
 
 template<class T>

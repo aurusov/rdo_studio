@@ -16,9 +16,20 @@
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/supersubclass.h"
+#include "rdo_common/static_assert.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
+
+class smart_ptr_counter_reference
+{
+public:
+	smart_ptr_counter_reference();
+
+	void setSmartPtrCounterReference(PTR(ruint) pCounter);
+
+	PTR(ruint) m_pCounter;
+};
 
 template<class T>
 class smart_ptr
@@ -31,7 +42,8 @@ public:
 
 	smart_ptr ();
 	smart_ptr (CREF(this_type) sptr);
-	smart_ptr (PTR(T) object, PTR(ruint) counter);
+	//! Используется только для объектов-потомков от smart_ptr_counter_reference
+	smart_ptr (PTR(T) object);
 	template<class P>
 	smart_ptr (CREF(smart_ptr<P>) sptr);
 	~smart_ptr();
@@ -57,9 +69,23 @@ protected:
 	void release();
 
 private:
-	smart_ptr(PTR(T) object);
+	//! Вызываеися из фабрики, factory используется только для перегрузки
+	smart_ptr(PTR(T) object, rbool factory);
+
+	//! Вызывается из другого smart_ptr
 	template<class P>
 	smart_ptr(PTR(P) object, PTR(ruint) counter);
+
+	template <rbool> void init();
+
+	template <>	void init<false>()
+	{
+		STATIC_ASSERT(Object_can_use_smart_ptr_counter_reference);
+	}
+	template <>	void init<true>()
+	{
+		m_counter = m_object->m_pCounter;
+	}
 
 	PTR(ruint) m_counter;
 	PTR(T)     m_object;
@@ -70,16 +96,6 @@ private:
 	void        allocateCounter  ();
 	void        deallocateCounter();
 	void        clear            ();
-};
-
-class smart_ptr_counter_reference
-{
-public:
-	smart_ptr_counter_reference();
-
-	void setSmartPtrCounterReference(PTR(ruint) pCounter);
-
-	PTR(ruint) m_pCounter;
 };
 
 template <class T>
@@ -142,13 +158,13 @@ private:
 	template <>
 	static smart_ptr<T> init<false>(PTR(T) object)
 	{
-		return smart_ptr<T>(object);
+		return smart_ptr<T>(object, true);
 	}
 
 	template <>
 	static smart_ptr<T> init<true>(PTR(T) object)
 	{
-		smart_ptr<T> sobj(object);
+		smart_ptr<T> sobj(object, true);
 		object->setSmartPtrCounterReference(sobj.m_counter);
 		return sobj;
 	}

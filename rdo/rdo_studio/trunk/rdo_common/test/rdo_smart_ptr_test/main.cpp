@@ -62,7 +62,7 @@ public:
 
 	LPMyClass3 getThis()
 	{
-		return LPMyClass3(this, m_pCounter);
+		return this;
 	}
 
 private:
@@ -83,10 +83,6 @@ void main()
 	{
 		rdo::smart_ptr<MyClass> obj = rdo::Factory<MyClass>::create();
 		obj->m_i = 10;
-	}
-	{
-		rdo::smart_ptr<MyClass> sobj = rdo::Factory<MyClass>::create();
-		int i = 1;
 	}
 	{
 		std::list<rdo::LPISmartPtrWrapper> container;
