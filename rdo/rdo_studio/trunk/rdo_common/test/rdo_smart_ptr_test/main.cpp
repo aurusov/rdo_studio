@@ -97,7 +97,7 @@ void main()
 		LPMyClass  obj11 = obj21;
 		LPMyClass2 obj22 = obj11.cast<MyClass2>();
 		LPMyClass2 obj23 = obj11.lp_cast<LPMyClass2>();
-//		LPMyClass3 obj31 = obj21.cast<MyClass3>();
+//		LPMyClass3 obj31 = obj21.cast<MyClass3>(); //! Не должно компилироваться
 		int i = 1;
 	}
 
