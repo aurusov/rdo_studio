@@ -316,6 +316,10 @@
 				RelativePath=".\rdodebug.h"
 				>
 			</File>
+			<File
+				RelativePath=".\static_assert.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".file"
