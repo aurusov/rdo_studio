@@ -121,8 +121,9 @@ private:
 	}
 };
 
-#define DECLARE_FACTORY(TYPE) friend class rdo::Factory<TYPE>;
-#define DECLARE_POINTER(TYPE) typedef rdo::smart_ptr<TYPE> LP##TYPE;
+#define DECLARE_FACTORY(TYPE)    friend class rdo::Factory<TYPE>;
+#define DECLARE_POINTER(TYPE)    typedef rdo::smart_ptr<TYPE> LP##TYPE;
+#define PREDECLARE_POINTER(TYPE) class TYPE; DECLARE_POINTER(TYPE);
 
 CLOSE_RDO_NAMESPACE
 

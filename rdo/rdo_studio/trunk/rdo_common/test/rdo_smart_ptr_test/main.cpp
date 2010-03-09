@@ -31,7 +31,7 @@ protected:
 	~MyClass()
 	{}
 };
-typedef rdo::smart_ptr<MyClass> LPMyClass;
+DECLARE_POINTER(MyClass);
 
 class MyClass2: public MyClass
 {
@@ -51,13 +51,16 @@ private:
 	~MyClass2()
 	{}
 };
-typedef rdo::smart_ptr<MyClass2> LPMyClass2;
+DECLARE_POINTER(MyClass2);
 
+PREDECLARE_POINTER(MyClass3);
 class MyClass3
 {
 DECLARE_FACTORY(MyClass3)
 public:
 	ruint m_i1;
+
+	
 
 private:
 	MyClass3()
@@ -66,7 +69,6 @@ private:
 	~MyClass3()
 	{}
 };
-typedef rdo::smart_ptr<MyClass3> LPMyClass3;
 
 void main()
 {
