@@ -73,13 +73,13 @@ public:
 	rbool owner() const;
 
 protected:
+	//! Вызывается из фабрики или потомков, factory используется только для перегрузки
+	smart_ptr(PTR(T) object, rbool factory);
+
 	void addref ();
 	void release();
 
 private:
-	//! Вызываеися из фабрики, factory используется только для перегрузки
-	smart_ptr(PTR(T) object, rbool factory);
-
 	//! Вызывается из другого smart_ptr
 	template<class P>
 	smart_ptr(PTR(P) object, PTR(ruint) counter);
