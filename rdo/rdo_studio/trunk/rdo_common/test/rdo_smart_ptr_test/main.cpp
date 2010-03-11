@@ -43,6 +43,11 @@ public:
 	ruint m_i4;
 	ruint m_i5;
 
+	rbool operator== (CREF(MyClass2) class2)
+	{
+		return m_i1 == class2.m_i1;
+	}
+
 private:
 	MyClass2()
 		: m_i1(2)
@@ -59,6 +64,11 @@ class MyClass3: public rdo::smart_ptr_counter_reference
 DECLARE_FACTORY(MyClass3)
 public:
 	ruint m_i1;
+
+	rbool operator== (CREF(MyClass3) class3)
+	{
+		return m_i1 == class3.m_i1;
+	}
 
 	LPMyClass3 getThis()
 	{
@@ -123,7 +133,29 @@ void main()
 		rbool flag4 = obj31 == obj34;
 		ASSERT( flag3);
 		ASSERT(!flag4);
-		int i = 1;
+	}
+	{
+		LPMyClass2 obj21 = rdo::Factory<MyClass2>::create();
+		LPMyClass2 obj22 = obj21;
+		LPMyClass2 obj23 = rdo::Factory<MyClass2>::create();
+		rbool flag1 = obj21.compare(obj22);
+		rbool flag2 = obj21.compare(obj23);
+		ASSERT(flag1);
+		ASSERT(flag2);
+		obj23->m_i1 = 10;
+		rbool flag3 = obj21.compare(obj23);
+		ASSERT(!flag3);
+		LPMyClass3 obj31 = rdo::Factory<MyClass3>::create();
+		LPMyClass3 obj32 = obj31->getThis();
+		LPMyClass3 obj33 = obj31->getThis();
+		LPMyClass3 obj34 = rdo::Factory<MyClass3>::create();
+		rbool flag4 = obj31.compare(obj32) && obj32.compare(obj33);
+		rbool flag5 = obj31.compare(obj34);
+		ASSERT(flag4);
+		ASSERT(flag5);
+		obj34->m_i1 = 10;
+		rbool flag6 = obj21.compare(obj23);
+		ASSERT(!flag6);
 	}
 	int i = 1;
 }

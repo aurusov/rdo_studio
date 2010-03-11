@@ -137,6 +137,13 @@ inline rbool smart_ptr<T>::operator== (CREF(smart_ptr<P>) sptr) const
 
 template<class T>
 template<class P>
+inline rbool smart_ptr<T>::compare(CREF(smart_ptr<P>) sptr) const
+{
+	return *m_object == *sptr.m_object;
+}
+
+template<class T>
+template<class P>
 inline smart_ptr<P> smart_ptr<T>::cast() const
 {
 	return smart_ptr<P>(static_cast<PTR(P)>(m_object), m_counter);
