@@ -97,7 +97,7 @@ private:
 		typedef rdo::smart_ptr<tstring> parent_type;
 
 		smart_tstring(PTR(tstring) pString)
-			: parent_type(pString)
+			: parent_type(pString, true)
 		{}
 		void addref () { parent_type::addref (); }
 		void release() { parent_type::release(); }
