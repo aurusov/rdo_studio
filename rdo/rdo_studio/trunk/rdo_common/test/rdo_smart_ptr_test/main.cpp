@@ -107,5 +107,23 @@ void main()
 		LPMyClass3 obj32 = obj31->getThis();
 		int i = 1;
 	}
+	{
+		LPMyClass2 obj21 = rdo::Factory<MyClass2>::create();
+		LPMyClass2 obj22 = obj21;
+		LPMyClass2 obj23 = rdo::Factory<MyClass2>::create();
+		rbool flag1 = obj21 == obj22;
+		rbool flag2 = obj21 == obj23;
+		ASSERT( flag1);
+		ASSERT(!flag2);
+		LPMyClass3 obj31 = rdo::Factory<MyClass3>::create();
+		LPMyClass3 obj32 = obj31->getThis();
+		LPMyClass3 obj33 = obj31->getThis();
+		LPMyClass3 obj34 = rdo::Factory<MyClass3>::create();
+		rbool flag3 = obj31 == obj32 && obj32 == obj33;
+		rbool flag4 = obj31 == obj34;
+		ASSERT( flag3);
+		ASSERT(!flag4);
+		int i = 1;
+	}
 	int i = 1;
 }

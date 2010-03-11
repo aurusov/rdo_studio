@@ -56,6 +56,9 @@ public:
 	CPTR(T) operator-> () const;
 	 PTR(T) operator-> ();
 
+	template<class P>
+ 	rbool operator== (CREF(smart_ptr<P>) sptr) const;
+
 	template <class P>
 	smart_ptr<P> cast() const;
 
