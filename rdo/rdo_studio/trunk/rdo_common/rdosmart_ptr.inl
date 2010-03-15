@@ -45,15 +45,6 @@ inline smart_ptr<T>::smart_ptr(PTR(T) obj)
 }
 
 template<class T>
-template<class P>
-inline smart_ptr<T>::smart_ptr(CREF(smart_ptr<P>) sptr)
-	: m_counter(sptr.m_counter)
-	, m_object (sptr.m_object )
-{
-	addref();
-}
-
-template<class T>
 inline smart_ptr<T>::smart_ptr(PTR(T) obj, rbool factory)
 	: m_object(obj)
 {
@@ -68,6 +59,15 @@ inline smart_ptr<T>::smart_ptr(PTR(T) obj, rbool factory)
 	{
 		m_counter = NULL;
 	}
+}
+
+template<class T>
+template<class P>
+inline smart_ptr<T>::smart_ptr(CREF(smart_ptr<P>) sptr)
+	: m_counter(sptr.m_counter)
+	, m_object (sptr.m_object )
+{
+	addref();
 }
 
 template<class T>

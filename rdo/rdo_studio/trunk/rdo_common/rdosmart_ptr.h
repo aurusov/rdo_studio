@@ -23,11 +23,13 @@ OPEN_RDO_NAMESPACE
 
 class smart_ptr_counter_reference
 {
+template<class T> friend class smart_ptr;
 public:
 	smart_ptr_counter_reference();
 
 	void setSmartPtrCounterReference(PTR(ruint) pCounter);
 
+private:
 	PTR(ruint) m_pCounter;
 };
 
@@ -44,6 +46,8 @@ public:
 	smart_ptr (CREF(this_type) sptr);
 	//! Используется только для объектов-потомков от smart_ptr_counter_reference
 	smart_ptr (PTR(T) object);
+	//! Вызывается из фабрики или потомков, factory используется только для перегрузки
+	smart_ptr(PTR(T) object, rbool factory);
 	template<class P>
 	smart_ptr (CREF(smart_ptr<P>) sptr);
 	~smart_ptr();
@@ -73,9 +77,6 @@ public:
 	rbool owner() const;
 
 protected:
-	//! Вызывается из фабрики или потомков, factory используется только для перегрузки
-	smart_ptr(PTR(T) object, rbool factory);
-
 	void addref ();
 	void release();
 
