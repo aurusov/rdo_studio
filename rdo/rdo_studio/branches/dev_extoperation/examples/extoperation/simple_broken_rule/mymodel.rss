@@ -1,0 +1,13 @@
+$Resources
+	system        : system_type       * * * *
+	machine_tool_1: machine_tool_type * * *
+	machine_tool_2: machine_tool_type * * *
+	part_1        : part_type         * * * 2.4
+	part_2        : part_type         * * * 1.5
+	part_3        : part_type         * * * 1.9
+	part_4        : part_type         * * * 2.2
+	part_5        : part_type         * * * 2.3
+	part_6        : part_type         * * * 2.5
+	part_7        : part_type         * * * 2.0
+	part_8        : part_type         * * * 2.8
+$End

@@ -1,0 +1,13 @@
+Model_name     = mymodel
+
+Resource_file  = mymodel
+Statistic_file = mymodel
+Results_file   = mymodel
+OprIev_file    = mymodel
+Trace_file     = mymodel
+Frame_file     = mymodel
+Frame_number   = 1
+Show_mode      = Animation
+Show_rate      = 5000.0
+
+Terminate_if system.part_done_count + system.part_broken_count = 8

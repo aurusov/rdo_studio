@@ -1,0 +1,7 @@
+$Decision_point dpt : some
+$Condition NoCheck
+$Activities
+	timer   : timer_pat
+	begin   : opr_begin
+	end     : opr_end
+$End
