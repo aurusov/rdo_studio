@@ -22,107 +22,107 @@ void rtperror(PTR(char) mes)
 //// ----------------------------------------------------------------------------
 //// ---------- RDORTPParamType
 //// ----------------------------------------------------------------------------
-//void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
-//{
-//	switch ( typeID() )
-//	{
-//		case rdoRuntime::RDOType::t_int:
-//		{
-//			if ( action->typeID() == rdoRuntime::RDOType::t_real )
-//			{
-//				parser()->error().warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
-//			}
-//			else if ( action->typeID() != rdoRuntime::RDOType::t_int )
-//			{
-//				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается целочисленное значение" );
-//			}
-//			rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->calc());
-//			if ( calc_const )
-//			{
-//				rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
-//				checkValue( RDOValue(value, action->src_info()) );
-//			}
-//			break;
-//		}
-//		case rdoRuntime::RDOType::t_real:
-//		{
-//			if ( action->typeID() != rdoRuntime::RDOType::t_real && action->typeID() != rdoRuntime::RDOType::t_int )
-//			{
-//				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается вещественное значение" );
-//			}
-//			else
-//			{
-//				rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->calc());
-//				if ( calc_const )
-//				{
-//					rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
-//					checkValue( RDOValue(value, action->src_info()) );
-//				}
-//			}
-//			break;
-//		}
-//		case rdoRuntime::RDOType::t_bool:
-//		{
-//			if ( action->typeID() != rdoRuntime::RDOType::t_bool )
-//			{
-//				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается булевское значение" );
-//			}
-//			break;
-//		}
-//		case rdoRuntime::RDOType::t_enum:
-//		{
-//			if ( action->typeID() == rdoRuntime::RDOType::t_identificator )
-//			{
-//				if ( static_cast<const RDORTPEnumParamType*>(this)->m_enum->getEnums().findEnum( action->value()->getAsString() ) == rdoRuntime::RDOEnumType::END )
-//				{
-//					if ( static_cast<const RDORTPEnumParamType*>(this)->enum_fun )
-//					{
-//						parser()->error().error( action->src_info(), rdo::format("Значение '%s' не может являться результатом функции: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
-//					}
-//					else
-//					{
-//						parser()->error().error( action->src_info(), rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
-//					}
-//				}
-//			}
-//			else if ( action->typeID() != rdoRuntime::RDOType::t_enum )
-//			{
-//				parser()->error().push_only( action->src_info(), rdo::format("Несоответствие типов. Ожидается перечислимый тип: %s", src_text().c_str()) );
-//				parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), rdo::format("Возможные значения: %s", static_cast<const RDORTPEnumParamType*>(this)->m_enum->getEnums().asString().c_str()) );
-//				parser()->error().push_done();
-//			}
-//			else if ( &action->enumType() != static_cast<const RDORTPEnumParamType*>(this)->m_enum )
-//			{
-//				if ( action->enumType() == *static_cast<const RDORTPEnumParamType*>(this)->m_enum )
-//				{
-//					parser()->error().push_only( action->src_info(), "Используются различные перечислимые типы с одинаковыми значениями" );
-//					parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
-//					parser()->error().push_only( action->src_info(), "и" );
-//					parser()->error().push_only( action->enumType().src_info(), action->enumType().src_text() );
-//					parser()->error().push_only( action->src_info(), "Возможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать" );
-//				}
-//				else
-//				{
-//					parser()->error().push_only( action->src_info(), "Несоответствие перечислимых типов" );
-//					parser()->error().push_only( action->enumType().src_info(), action->enumType().src_text() );
-//					parser()->error().push_only( action->src_info(), "и" );
-//					parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
-//				}
-//				parser()->error().push_done();
-//			}
-//			break;
-//		}
-//		case rdoRuntime::RDOType::t_string:
-//		{
-//			if ( action->typeID() != rdoRuntime::RDOType::t_string )
-//			{
-//				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается строка" );
-//			}
-//			break;
-//		}
-//		default: parser()->error().error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
-//	}
-//}
+////void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
+////{
+////	switch ( typeID() )
+////	{
+////		case rdoRuntime::RDOType::t_int:
+////		{
+////			if ( action->typeID() == rdoRuntime::RDOType::t_real )
+////			{
+////				parser()->error().warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
+////			}
+////			else if ( action->typeID() != rdoRuntime::RDOType::t_int )
+////			{
+////				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается целочисленное значение" );
+////			}
+////			rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->calc());
+////			if ( calc_const )
+////			{
+////				rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
+////				checkValue( RDOValue(value, action->src_info()) );
+////			}
+////			break;
+////		}
+////		case rdoRuntime::RDOType::t_real:
+////		{
+////			if ( action->typeID() != rdoRuntime::RDOType::t_real && action->typeID() != rdoRuntime::RDOType::t_int )
+////			{
+////				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается вещественное значение" );
+////			}
+////			else
+////			{
+////				rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<rdoRuntime::RDOCalcConst*>(action->calc());
+////				if ( calc_const )
+////				{
+////					rdoRuntime::RDOValue value = calc_const->calcValue( parser()->runtime() );
+////					checkValue( RDOValue(value, action->src_info()) );
+////				}
+////			}
+////			break;
+////		}
+////		case rdoRuntime::RDOType::t_bool:
+////		{
+////			if ( action->typeID() != rdoRuntime::RDOType::t_bool )
+////			{
+////				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается булевское значение" );
+////			}
+////			break;
+////		}
+////		case rdoRuntime::RDOType::t_enum:
+////		{
+////			if ( action->typeID() == rdoRuntime::RDOType::t_identificator )
+////			{
+////				if ( static_cast<const RDORTPEnumParamType*>(this)->m_enum->getEnums().findEnum( action->value()->getAsString() ) == rdoRuntime::RDOEnumType::END )
+////				{
+////					if ( static_cast<const RDORTPEnumParamType*>(this)->enum_fun )
+////					{
+////						parser()->error().error( action->src_info(), rdo::format("Значение '%s' не может являться результатом функции: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
+////					}
+////					else
+////					{
+////						parser()->error().error( action->src_info(), rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->value()->getAsString().c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
+////					}
+////				}
+////			}
+////			else if ( action->typeID() != rdoRuntime::RDOType::t_enum )
+////			{
+////				parser()->error().push_only( action->src_info(), rdo::format("Несоответствие типов. Ожидается перечислимый тип: %s", src_text().c_str()) );
+////				parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), rdo::format("Возможные значения: %s", static_cast<const RDORTPEnumParamType*>(this)->m_enum->getEnums().asString().c_str()) );
+////				parser()->error().push_done();
+////			}
+////			else if ( &action->enumType() != static_cast<const RDORTPEnumParamType*>(this)->m_enum )
+////			{
+////				if ( action->enumType() == *static_cast<const RDORTPEnumParamType*>(this)->m_enum )
+////				{
+////					parser()->error().push_only( action->src_info(), "Используются различные перечислимые типы с одинаковыми значениями" );
+////					parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
+////					parser()->error().push_only( action->src_info(), "и" );
+////					parser()->error().push_only( action->enumType().src_info(), action->enumType().src_text() );
+////					parser()->error().push_only( action->src_info(), "Возможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать" );
+////				}
+////				else
+////				{
+////					parser()->error().push_only( action->src_info(), "Несоответствие перечислимых типов" );
+////					parser()->error().push_only( action->enumType().src_info(), action->enumType().src_text() );
+////					parser()->error().push_only( action->src_info(), "и" );
+////					parser()->error().push_only( static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_info(), static_cast<const RDORTPEnumParamType*>(this)->m_enum->src_text() );
+////				}
+////				parser()->error().push_done();
+////			}
+////			break;
+////		}
+////		case rdoRuntime::RDOType::t_string:
+////		{
+////			if ( action->typeID() != rdoRuntime::RDOType::t_string )
+////			{
+////				parser()->error().error( action->src_info(), "Несоответствие типов. Ожидается строка" );
+////			}
+////			break;
+////		}
+////		default: parser()->error().error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
+////	}
+////}
 //
 //rdoRuntime::RDOValue RDORTPParamType::getDefaultValue( const RDOValue& value ) const 
 //{
@@ -206,7 +206,7 @@ void RDORTPResType::addParam(CREF(tstring) param_name, rdoRuntime::RDOType::Type
 LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
-	return it != m_params.end() ? *it : NULL;
+	return it != m_params.end() ? *it : LPRDORTPParam();
 }
 
 ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const

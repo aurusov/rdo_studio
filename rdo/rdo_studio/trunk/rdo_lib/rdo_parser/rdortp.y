@@ -318,7 +318,7 @@ rtp_body:			/* empty */ {
 					}
 					| rtp_body rtp_param {
 						LPRDORTPParam pParam = PARSER->stack().pop<RDORTPParam>($2);
-						PARSER->getLastRTPResType()->addParam(pParam.get());
+						PARSER->getLastRTPResType()->addParam(pParam);
 					};
 
 rtp_param:			RDO_IDENTIF_COLON param_type param_value_default
@@ -478,7 +478,7 @@ param_type:		RDO_integer param_type_range
 */
 
 param_type_range:	/* empty */ {
-					$$ = PARSER->stack().push<RDOTypeRangeRange>(NULL);
+					$$ = PARSER->stack().push<RDOTypeRangeRange>(LPRDOTypeRangeRange());
 				}
 				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
 					LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));

@@ -56,8 +56,9 @@ private:
 	RDOTypeRange(CREF(LPRDOTypeRangeRange) range);
 	virtual ~RDOTypeRange();
 
-	virtual tstring  name      () const;
-	virtual RDOValue value_cast(CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const;
+	virtual tstring                  name      () const;
+	virtual RDOValue                 value_cast(CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const;
+	virtual PTR(rdoRuntime::RDOCalc) calc_cast (PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const;
 
 	LPRDOTypeRangeRange m_range;
 };

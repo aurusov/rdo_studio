@@ -249,21 +249,21 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	}
 	if ( value->getIdentificator() == "Time_now" || value->getIdentificator() == "time_now" || value->getIdentificator() == "Системное_время" || value->getIdentificator() == "системное_время" )
 	{
-		m_value = g_real;
+		m_value = g_real.cast<RDOType>();
 		m_calc = new rdoRuntime::RDOCalcGetTimeNow( parser()->runtime() );
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
 	else if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
 	{
-		m_value = g_int;
+		m_value = g_int.cast<RDOType>();
 		m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
 	else if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
 	{
-		m_value = g_real;
+		m_value = g_real.cast<RDOType>();
 		m_calc = new rdoRuntime::RDOCalcGetSeconds( parser()->runtime() );
 		m_calc->setSrcInfo( src_info() );
 		return;
@@ -338,18 +338,14 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		return;
 	}
 
-	// Возможно, что это значение перечислимого типа
+	// Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+	// перечислимых типах, поэтому какой именно из них выбрать - вопрос
 	CREF(RDOParser::PreCastTypeList) typeList = parser()->getPreCastTypeList();
 	STL_FOR_ALL_CONST(RDOParser::PreCastTypeList, typeList, it)
 	{
-		//! TODO: value_cast не написан
 		RDOValue try_cast_value = (*it)->value_cast(value);
 		if (try_cast_value.defined())
-		//! TODO: перенести в кастинг енума
-//		if ( (*it)->m_enum->getEnums().findEnum( value->getIdentificator() ) != rdoRuntime::RDOEnumType::END )
 		{
-			// Да, это перечислимый тип, только одно и тоже значение может встречаться в разных
-			// перечислимых типах, поэтому какой именно из них выбрать - вопрос
 			m_value = try_cast_value;
 			return;
 		}
@@ -623,7 +619,7 @@ LPRDOType RDOFUNArithm::getPreType(CREF(RDOFUNArithm) second)
 	}
 
 	//! TODO: смущают два одинаковых src_info(), проверить и доказать правильность
-	return type()->type_cast_throw(second.type(), second.src_info(), src_info(), src_info());
+	return type()->type_cast(second.type(), second.src_info(), src_info(), src_info());
 }
 
 RDOFUNArithm* RDOFUNArithm::operator+ ( RDOFUNArithm& second )
@@ -689,6 +685,17 @@ RDOFUNLogic* RDOFUNArithm::operator== ( RDOFUNArithm& second )
 RDOFUNLogic* RDOFUNArithm::operator!= ( RDOFUNArithm& second )
 {
 	GENERATE_LOGIC_FROM_ARITHM( IsNotEqual, !=, "Нельзя сравнивать %s и %s" );
+}
+
+void RDOFUNArithm::checkParamType(CREF(LPRDOTypeParam) pType)
+{
+	pType->type()->type_cast(type(), src_info(), pType->src_info(), src_info());
+	PTR(rdoRuntime::RDOCalcConst) calc_const = dynamic_cast<PTR(rdoRuntime::RDOCalcConst)>(calc());
+	if (calc_const)
+	{
+		rdoRuntime::RDOValue value = calc_const->calcValue(parser()->runtime());
+		pType->value_cast(RDOValue(value, src_info()));
+	}
 }
 
 rdoRuntime::RDOCalc* RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) forType)
@@ -780,28 +787,21 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 	rdoRuntime::RDOCalcFunctionCall* funcCall = new rdoRuntime::RDOCalcFunctionCall( parser()->runtime(), func->getFunctionCalc() );
 	const_cast<RDOFUNFunction*>(func)->insertPostLinked( funcCall );
 	funcCall->setSrcInfo( src_info() );
-	for ( int i = 0; i < nParams; i++ ) {
+	for ( int i = 0; i < nParams; i++ )
+	{
 		LPRDOTypeParam funcParam = func->getParams()[i]->getType();
-		RDOFUNArithm* arithm = params[i];
-		funcParam->checkParamType( arithm );
-		switch ( funcParam->typeID() ) {
-			case rdoRuntime::RDOType::t_int: {
-				rdoRuntime::RDOCalc* arg = arithm->createCalc();
-				if ( arithm->typeID() == rdoRuntime::RDOType::t_real ) {
-					arg = new rdoRuntime::RDOCalcDoubleToInt( parser()->runtime(), arg );
-				}
-				if ( static_cast<const RDORTPIntParamType*>(funcParam)->getDiap().isExist() ) {
-					arg = new rdoRuntime::RDOCalcCheckDiap( parser()->runtime(), static_cast<const RDORTPIntParamType*>(funcParam)->getDiap().getMin(), static_cast<const RDORTPIntParamType*>(funcParam)->getDiap().getMax(), arg );
-				}
-				funcCall->addParameter( arg );
+		PTR(RDOFUNArithm) arithm = params[i];
+		arithm->checkParamType(funcParam);
+		switch (funcParam->type()->typeID())
+		{
+			case rdoRuntime::RDOType::t_int:
+			{
+				funcCall->addParameter(funcParam->type()->calc_cast(arithm->createCalc(), arithm->type()));
 				break;
 			}
-			case rdoRuntime::RDOType::t_real: {
-				rdoRuntime::RDOCalc* arg = arithm->createCalc();
-				if ( static_cast<const RDORTPRealParamType*>(funcParam)->getDiap().isExist() ) {
-					arg = new rdoRuntime::RDOCalcCheckDiap( parser()->runtime(), static_cast<const RDORTPRealParamType*>(funcParam)->getDiap().getMin(), static_cast<const RDORTPRealParamType*>(funcParam)->getDiap().getMax(), arg );
-				}
-				funcCall->addParameter( arg );
+			case rdoRuntime::RDOType::t_real:
+			{
+				funcCall->addParameter(funcParam->type()->calc_cast(arithm->createCalc(), arithm->type()));
 				break;
 			}
 			default: {

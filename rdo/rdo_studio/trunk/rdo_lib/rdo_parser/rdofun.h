@@ -147,6 +147,8 @@ private:
 	void init( const RDOValue& value );
 	void init( const RDOValue& res_name, const RDOValue& par_name );
 
+	void checkParamType(CREF(LPRDOTypeParam) pType);
+
 	enum CastResult
 	{
 		CR_DONE,

@@ -10,6 +10,8 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -67,7 +69,7 @@ inline CREF(RDOValue) RDOTypeRangeRange::getMax() const
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOTypeIntRange
+// ---------- RDOTypeRange
 // ----------------------------------------------------------------------------
 template<class T>
 inline RDOTypeRange<T>::RDOTypeRange(CREF(LPRDOTypeRangeRange) range)
@@ -93,6 +95,12 @@ inline RDOValue RDOTypeRange<T>::value_cast(CREF(RDOValue) from, CREF(RDOParserS
 	RDOValue toValue = T::value_cast(from, to_src_info, src_info);
 	m_range->checkValue(toValue);
 	return toValue;
+}
+
+template<class T>
+inline PTR(rdoRuntime::RDOCalc) RDOTypeRange<T>::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+{
+	return new rdoRuntime::RDOCalcCheckDiap(RDOParser::s_parser()->runtime(), range()->getMin().value(), range()->getMax().value(), T::calc_cast(pCalc, pType));
 }
 
 template<class T>
