@@ -32,6 +32,15 @@ private:
 
 public:
 	enum { exists = sizeof(Test(MakeT())) == sizeof(Small) };
+	enum { same   = false };
+};
+
+template <class T>
+class SuperSubClass<T, T>
+{
+public:
+	enum { exists = true };
+	enum { same   = true };
 };
 
 #define SUPERSUBCLASS(T, U) (SuperSubClass<CPTR(U), CPTR(T)>::exists)
