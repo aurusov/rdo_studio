@@ -30,8 +30,15 @@ inline smart_ptr<T>::smart_ptr(CREF(this_type) sptr)
 }
 
 template<class T>
-inline smart_ptr<T>::smart_ptr(PTR(T) obj)
-	: m_object(obj)
+inline smart_ptr<T>::smart_ptr(CREF(smart_ptr_null))
+	: m_object (NULL)
+	, m_counter(NULL)
+{}
+
+#ifndef CHECH_OFF
+template<class T>
+inline smart_ptr<T>::smart_ptr(PTR(T) object)
+	: m_object(object)
 {
 	if (m_object)
 	{
@@ -43,6 +50,7 @@ inline smart_ptr<T>::smart_ptr(PTR(T) obj)
 		m_counter = NULL;
 	}
 }
+#endif
 
 template<class T>
 inline smart_ptr<T>::smart_ptr(PTR(T) obj, rbool factory)
@@ -76,6 +84,7 @@ inline smart_ptr<T>::smart_ptr(PTR(P) object, PTR(ruint) counter)
 	: m_counter(counter)
 	, m_object (object )
 {
+	ASSERT(object);
 	addref();
 }
 

@@ -21,6 +21,8 @@
 
 OPEN_RDO_NAMESPACE
 
+//#define CHECH_OFF
+
 class smart_ptr_counter_reference
 {
 template<class T> friend class smart_ptr;
@@ -33,6 +35,8 @@ private:
 	PTR(ruint) m_pCounter;
 };
 
+class smart_ptr_null {};
+
 template<class T>
 class smart_ptr
 {
@@ -43,9 +47,12 @@ public:
 	typedef smart_ptr<T> this_type;
 
 	smart_ptr ();
-	smart_ptr (CREF(this_type) sptr);
+	smart_ptr (CREF(this_type)      sptr);
+	smart_ptr (CREF(smart_ptr_null) null);
+#ifndef CHECH_OFF
 	//! Используется только для объектов-потомков от smart_ptr_counter_reference
 	smart_ptr (PTR(T) object);
+#endif
 	//! Вызывается из фабрики или потомков, factory используется только для перегрузки
 	smart_ptr(PTR(T) object, rbool factory);
 	template<class P>
@@ -86,7 +93,6 @@ private:
 	smart_ptr(PTR(P) object, PTR(ruint) counter);
 
 	template <rbool> void init();
-
 	template <>	void init<false>()
 	{
 		STATIC_ASSERT(Object_can_use_smart_ptr_counter_reference);

@@ -93,6 +93,8 @@ void main()
 	{
 		rdo::smart_ptr<MyClass> obj = rdo::Factory<MyClass>::create();
 		obj->m_i = 10;
+		rdo::smart_ptr<MyClass> obj2 = NULL;
+		int i = 1;
 	}
 	{
 		std::list<rdo::LPISmartPtrWrapper> container;
