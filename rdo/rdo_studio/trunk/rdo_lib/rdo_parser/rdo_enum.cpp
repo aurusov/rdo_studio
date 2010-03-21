@@ -49,15 +49,53 @@ inline tstring RDOEnumType::name() const
 	return str;
 }
 
-LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from) const
+LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	switch (from->type().typeID())
 	{
 		case rdoRuntime::RDOType__int::t_enum:
-			return operator==(const_cast<PTR(RDOEnumType)>(static_cast<CPTR(RDOEnumType)>(from.get()))) ?
-			LPRDOType(const_cast<PTR(RDOEnumType)>(this)) : NULL;
+		{
+			LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+			//! Ёто один и тот же тип
+			if (pEnum == from)
+				return pEnum;
+
+			//! “ипы разные, сгенерим ошибку
+			if (pEnum.compare(from.lp_cast<LPRDOEnumType>()))
+			{
+				rdoParse::g_error().push_only(src_info,     _T("»спользуютс€ различные перечислимые типы с одинаковыми значени€ми"));
+				rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
+				rdoParse::g_error().push_only(src_info,     _T("и"));
+				rdoParse::g_error().push_only(from_src_info, from_src_info.src_text());
+				rdoParse::g_error().push_only(src_info,     _T("¬озможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать"));
+			}
+			else
+			{
+				rdoParse::g_error().push_only(src_info,     _T("Ќесоответствие перечислимых типов"));
+				rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
+				rdoParse::g_error().push_only(src_info,     _T("и"));
+				rdoParse::g_error().push_only(from_src_info, from_src_info.src_text());
+			}
+			rdoParse::g_error().push_done();
+			break;
+		}
+		case rdoRuntime::RDOType::t_identificator:
+		{
+			if (getEnums().exist(from_src_info.src_text()))
+			{
+				LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+				return pEnum;
+			}
+			rdoParse::g_error().error(src_info, rdo::format(_T("«начение '%s' не €вл€етс€ элементом перечислимого типа %s"), from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
+			break;
+		}
+		default:
+			rdoParse::g_error().push_only(src_info,    rdo::format(_T("ќжидаетс€ значение перечислимого типа, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("—м. тип: %s"), to_src_info.src_text().c_str()));
+			rdoParse::g_error().push_done();
+			break;
 	}
-	return NULL;
+	return rdo::smart_ptr_null();
 }
 
 RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
