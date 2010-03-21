@@ -12,7 +12,6 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
-#include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 // ===============================================================================
 
@@ -39,11 +38,6 @@ RDOTypeParam::~RDOTypeParam()
 LPRDOType RDOTypeParam::type() const
 {
 	return m_type;
-}
-
-void RDOTypeParam::checkValue(CREF(RDOValue) value)
-{
-	value_cast(value);
 }
 
 void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
