@@ -4,6 +4,7 @@
 #include "rdo_lib/rdo_runtime/rdo_ie.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
+#include "rdo_lib/rdo_runtime/rdo_action.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
 
@@ -283,6 +284,58 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, PTR(RDOSimulat
 		ASSERT(activityPatternTrace);
 		getOStream() << "EF " << sim->getCurrentTime() 
 		             << " "   << operationTrace->traceOperId() 
+		             << " "   << trace->traceId() 
+		             << " "   << activityPatternTrace->tracePatternId() 
+		             << " "   << activityTrace->traceResourcesListNumbers(sim, false)
+		             << std::endl << getEOL();
+	}
+	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
+}
+
+void RDOTrace::writeAfterActionBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
+{
+	if (!canTrace())
+		return;
+
+	LPITrace         trace         = opr;
+	LPIActivityTrace activityTrace = opr;
+	ASSERT(trace);
+	ASSERT(activityTrace);
+
+	if (trace->traceable())
+	{
+		LPIActionTrace          actionTrace          = opr;
+		LPIActivityPatternTrace activityPatternTrace = opr;
+		ASSERT(actionTrace);
+		ASSERT(activityPatternTrace);
+		getOStream() << "EB " << sim->getCurrentTime()
+		             << " "   << actionTrace->traceActionId()
+		             << " "   << trace->traceId()
+		             << " "   << activityPatternTrace->tracePatternId()
+		             << " "   << activityTrace->traceResourcesListNumbers(sim, false)
+		             << std::endl << getEOL(); 
+	}
+	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
+}
+
+void RDOTrace::writeAfterActionEnd(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
+{
+	if (!canTrace())
+		return;
+
+	LPITrace         trace         = opr;
+	LPIActivityTrace activityTrace = opr;
+	ASSERT(trace);
+	ASSERT(activityTrace);
+
+	if (trace->traceable())
+	{
+		LPIActionTrace          actionTrace          = opr;
+		LPIActivityPatternTrace activityPatternTrace = opr;
+		ASSERT(actionTrace);
+		ASSERT(activityPatternTrace);
+		getOStream() << "EF " << sim->getCurrentTime() 
+		             << " "   << actionTrace->traceActionId() 
 		             << " "   << trace->traceId() 
 		             << " "   << activityPatternTrace->tracePatternId() 
 		             << " "   << activityTrace->traceResourcesListNumbers(sim, false)

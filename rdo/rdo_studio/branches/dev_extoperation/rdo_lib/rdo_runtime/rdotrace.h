@@ -69,6 +69,8 @@ public:
 	virtual void writeRule               (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeAfterActionBegin   (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeAfterActionEnd     (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 
 	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
 	virtual void writeModelBegin(RDOSimulatorTrace *sim);

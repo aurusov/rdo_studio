@@ -202,6 +202,68 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPatternAction
+// ----------------------------------------------------------------------------
+class RDOPatternAction: public RDOPattern
+{
+friend class RDOAction;
+
+public:
+	RDOPatternAction( PTR(RDORuntime) rTime, bool trace );
+
+	void addChoiceFromCalc      ( PTR(RDOCalc) calc                     ) { m_choiceFrom.push_back( calc );             }
+
+	void addConvertorBeginCalc  ( PTR(RDOCalc) calc                     ) { m_convertorBegin.push_back( calc );         }
+	void addConvertorBeginStatus( RDOResource::ConvertStatus status     ) { m_convertorBeginStatus.push_back( status ); }
+	void addEraseBeginCalc      ( PTR(RDOCalc) calc                     ) { m_eraseBegin.push_back( calc );             }
+
+	void addConvertorEndCalc    ( PTR(RDOCalc) calc                     ) { m_convertorEnd.push_back( calc );           }
+	void addConvertorEndStatus  ( RDOResource::ConvertStatus status     ) { m_convertorEndStatus.push_back( status );   }
+	void addEraseEndCalc        ( PTR(RDOCalc) calc                     ) { m_eraseEnd.push_back( calc );               }
+
+	void setTime                ( PTR(RDOCalc) calc                     ) { m_timeCalc = calc;                          }
+
+	bool choiceFrom( PTR(RDORuntime) runtime )
+	{
+		preSelectRelRes( runtime );
+		return runCalcsBool( m_choiceFrom, runtime );
+	}
+	void convertBegin( PTR(RDORuntime) runtime )
+	{
+		runCalcs( m_convertorBegin, runtime );
+	}
+	void convertBeginErase( PTR(RDORuntime) runtime )
+	{
+		runCalcs( m_eraseBegin, runtime );
+	}
+	void convertEnd( PTR(RDORuntime) runtime )
+	{
+		runCalcs( m_convertorEnd, runtime );
+	}
+	void convertEndErase( PTR(RDORuntime) runtime )
+	{
+		runCalcs( m_eraseEnd, runtime );
+	}
+
+	double getNextTimeInterval( PTR(RDORuntime) runtime );
+
+	LPIAction createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
+	LPIAction createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName);
+
+private:
+	PTR(RDOCalc)                                  m_timeCalc;
+	std::vector< PTR(RDOCalc) >                   m_choiceFrom;
+
+	std::vector< PTR(RDOCalc) >                   m_convertorBegin;
+	std::vector< RDOResource::ConvertStatus >     m_convertorBeginStatus;
+	std::vector< PTR(RDOCalc) >                   m_eraseBegin;
+
+	std::vector< PTR(RDOCalc) >                   m_convertorEnd;
+	std::vector< RDOResource::ConvertStatus >     m_convertorEndStatus;
+	std::vector< PTR(RDOCalc) >                   m_eraseEnd;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPatternKeyboard
 // ----------------------------------------------------------------------------
 class RDOPatternKeyboard: public RDOPatternOperation

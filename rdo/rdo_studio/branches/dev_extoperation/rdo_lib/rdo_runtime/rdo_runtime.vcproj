@@ -1447,6 +1447,22 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="5. action"
+						>
+						<File
+							RelativePath=".\rdo_action.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_action.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_action_interface.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>
