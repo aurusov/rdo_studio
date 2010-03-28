@@ -97,6 +97,7 @@ not					return(RDO_not);
 $Pattern			return(RDO_Pattern);
 $pattern			return(RDO_Pattern);
 operation			return(RDO_operation);
+action				return(RDO_action);
 irregular_event		return(RDO_irregular_event);
 rule				return(RDO_rule);
 keyboard			return(RDO_keyboard);
