@@ -47,7 +47,8 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
 	tab.insertItem( trace, rdo::format( IDS_TAB_TRACER ).c_str() );
-	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );
+	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );//создаем табы в том самом окне. Как создать таб??? и то что внутри таба....
+	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES2 ).c_str() );
 
 	studioApp.mainFrame->registerCmdWnd( trace );
 	studioApp.mainFrame->registerCmdWnd( frames );

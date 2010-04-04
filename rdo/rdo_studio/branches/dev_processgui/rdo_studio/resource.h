@@ -646,6 +646,7 @@
 #define IDS_TAB_FIND                    40308
 #define IDS_TAB_TRACER                  40309
 #define IDS_TAB_FRAMES                  40310
+#define IDS_TAB_FRAMES2                 40311
 #define ID_MODEL_START                  40913
 #define ID_RESOURCE_TYPES               40914
 #define ID_PATTERNS                     40915

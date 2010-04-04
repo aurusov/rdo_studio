@@ -3615,6 +3615,7 @@ BEGIN
     IDS_TAB_FIND            "Поиск"
     IDS_TAB_TRACER          "Графики"
     IDS_TAB_FRAMES          "Анимация"
+	IDS_TAB_FRAMES2         "РДО_ПРОЦ"
 END
 
 STRINGTABLE 
@@ -4956,6 +4957,7 @@ BEGIN
     IDS_TAB_FIND            "Find in Model"
     IDS_TAB_TRACER          "Tracer"
     IDS_TAB_FRAMES          "Frames"
+	IDS_TAB_FRAMES2         "Frames2"
 END
 
 STRINGTABLE 
