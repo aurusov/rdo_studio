@@ -45,6 +45,7 @@ public:
 		PT_IE,
 		PT_Rule,
 		PT_Operation,
+		PT_Action,
 		PT_Keyboard
 	};
 	virtual PatType getType() const = 0;
@@ -178,6 +179,34 @@ public:
 	        void addRelResConvertBeginEnd( bool trace_begin, RDOPATParamSet* parSet_begin, bool trace_end, RDOPATParamSet* parSet_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos );
 	virtual char getModelStructureLetter() const { return 'A'; };
 	virtual PatType getType() const { return PT_Operation; }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPatternAction
+// ----------------------------------------------------------------------------
+class RDOPatternAction: public RDOPATPattern
+{
+protected:
+	// Конструктор вызывается из RDOPatternKeyboard
+	RDOPatternAction( RDOParser* _parser, bool _trace, const RDOParserSrcInfo& _name_src_info );
+	virtual void rel_res_insert( RDORelevantResource* rel_res );
+	virtual void addParamSetCalc( const RDOPATParamSet* const parSet, rdoRuntime::RDOCalc* calc );
+	virtual std::string getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet );
+	virtual std::string getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet );
+
+public:
+	enum ConvertorType {
+		convert_unknow,
+		convert_begin,
+		convert_end
+	};
+
+	RDOPatternAction( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
+	virtual void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos );
+	        void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResource::ConvertStatus beg, rdoRuntime::RDOResource::ConvertStatus end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos );
+	        void addRelResConvertBeginEnd( bool trace_begin, RDOPATParamSet* parSet_begin, bool trace_end, RDOPATParamSet* parSet_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos );
+	virtual char getModelStructureLetter() const { return 'A'; };
+	virtual PatType getType() const { return PT_Action; }
 };
 
 // ----------------------------------------------------------------------------
