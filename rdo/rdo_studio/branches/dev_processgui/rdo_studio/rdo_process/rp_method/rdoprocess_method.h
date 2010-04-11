@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_object.h"
-#include <rdoprocess_toolbar.h>
+#include "rdo_studio/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 
 class RPObjectFlowChart;
 class RPObjectFactory;

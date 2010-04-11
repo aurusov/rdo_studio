@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_object_chart.h"
-#include <rdoprocess_math.h>
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_math.h"
 #include <vector>
 
 // ----------------------------------------------------------------------------

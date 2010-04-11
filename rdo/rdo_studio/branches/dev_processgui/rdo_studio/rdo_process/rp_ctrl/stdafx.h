@@ -28,7 +28,7 @@
 #include <list>
 #include <algorithm>
 
-#include <rdoprocess_string.h>
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

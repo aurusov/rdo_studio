@@ -5,9 +5,9 @@
 #include "rdoprocess_method.h"
 #include "rdoprocess_factory.h"
 #include "rdoprocess_object_pixmap.h"
-#include "../resource.h"
-#include <rdoprocess_pixmap.h>
-#include <rdoprocess_xml.h>
+#include "rdo_studio/resource.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

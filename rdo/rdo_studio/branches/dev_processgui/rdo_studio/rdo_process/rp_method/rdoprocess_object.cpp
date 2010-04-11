@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_object.h"
 #include "rdoprocess_project.h"
-#include <rdoprocess_xml.h>
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

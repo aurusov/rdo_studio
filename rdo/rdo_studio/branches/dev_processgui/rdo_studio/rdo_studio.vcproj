@@ -3265,6 +3265,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\trash.bmp"
+				>
+			</File>
+			<File
 				RelativePath="res\zoomToolbar.bmp"
 				>
 			</File>

@@ -12,6 +12,7 @@
 #define IDR_CHARTTYPE                   134
 #define IDR_FRAME_TYPE                  135
 #define IDD_BUFFER                      142
+#define IDB_TRASH                       143 //rdo-proc
 #define IDB_FILE_TOOLBAR_D              144
 #define IDB_EDIT_TOOLBAR_D              145
 #define IDB_PAGECTRL_CLOSE              146 //rdo-proc
