@@ -404,6 +404,9 @@ END
 //
 // Bitmap
 //
+IDB_PAGECTRL_CLOSE      BITMAP  MOVEABLE PURE   "res\\pagectrl_close.bmp"
+IDB_PAGECTRL_CLOSE_OVER BITMAP  MOVEABLE PURE   "res\\pagectrl_close_over.bmp"
+IDB_PAGECTRL_PAGE       BITMAP  MOVEABLE PURE   "res\\pagectrl_page.bmp"
 
 IDB_FILE_TOOLBAR_D      BITMAP                  "res\\fileToolbar_d.bmp"
 IDB_EDIT_TOOLBAR_D      BITMAP                  "res\\editToolbar_d.bmp"

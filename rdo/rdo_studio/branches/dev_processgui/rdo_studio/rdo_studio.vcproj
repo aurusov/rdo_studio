@@ -3177,6 +3177,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\pagectrl_close.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pagectrl_close_over.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pagectrl_page.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\RAO-studio.manifest"
 				>
 			</File>
@@ -3268,6 +3280,10 @@
 				Name="Source Files"
 				Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 				>
+				<File
+					RelativePath=".\rdoprocess_projectbar.cpp"
+					>
+				</File>
 				<File
 					RelativePath="rdostudioapp.cpp"
 					>
@@ -3797,6 +3813,10 @@
 				Name="Header Files"
 				Filter="h;hpp;hxx;hm;inl"
 				>
+				<File
+					RelativePath=".\rdoprocess_projectbar.h"
+					>
+				</File>
 				<File
 					RelativePath="rdostudioapp.h"
 					>
@@ -4772,6 +4792,26 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="8. RDO-Process"
+			>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_dockwnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_dockwnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_pagectrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_pagectrl.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\Changes.txt"

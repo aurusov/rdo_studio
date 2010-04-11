@@ -14,7 +14,10 @@
 #define IDD_BUFFER                      142
 #define IDB_FILE_TOOLBAR_D              144
 #define IDB_EDIT_TOOLBAR_D              145
+#define IDB_PAGECTRL_CLOSE              146 //rdo-proc
+#define IDB_PAGECTRL_CLOSE_OVER         147 //rdo-proc
 #define IDR_MODEL_TOOLBAR               148
+#define IDB_PAGECTRL_PAGE               149 //rdo-proc
 #define IDR_EDIT_TOOLBAR                151
 #define IDD_OPTIONS_EDITOR              152
 #define IDB_MODEL_TOOLBAR_D             152
