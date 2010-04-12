@@ -517,8 +517,8 @@ class RDOFUNFunction: public RDOParserObject, public RDOParserSrcInfo
 {
 friend class RDOParser;
 public:
-	RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPParam) _retType );
-	RDOFUNFunction( RDOParser* _parser, const std::string& _name, CREF(LPRDORTPParam) _retType );
+	RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDOTypeParam) _retType );
+	RDOFUNFunction( RDOParser* _parser, const std::string& _name, CREF(LPRDOTypeParam) _retType );
 	virtual ~RDOFUNFunction() {}
 
 	void add( const RDOFUNFunctionParam* const _param );
@@ -535,13 +535,13 @@ public:
 	void setFunctionCalc( rdoRuntime::RDOFunCalc* calc );
 	rdoRuntime::RDOFunCalc* getFunctionCalc() const                   { return functionCalc;          }
 
-	CREF(LPRDORTPParam) getType() const                      { return retType;               }
+	CREF(LPRDOTypeParam) getType() const                              { return retType;               }
 	void insertPostLinked( rdoRuntime::RDOCalcFunctionCall* calc ) {
 		post_linked.push_back( calc );
 	}
 
 private:
-	LPRDORTPParam retType;
+	LPRDOTypeParam retType;
 	std::vector< const RDOFUNFunctionParam* >       params;
 	std::vector< const RDOFUNFunctionListElement* > elements;    // for list and table
 	std::vector< const RDOFUNCalculateIf* >         calculateIf; // for algorithmic

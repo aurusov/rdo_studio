@@ -321,12 +321,11 @@ rtp_body:			/* empty */ {
 						PARSER->getLastRTPResType()->addParam(pParam);
 					};
 
-rtp_param:			RDO_IDENTIF_COLON param_type param_value_default
+rtp_param:			RDO_IDENTIF_COLON param_type
 					{
 						PTR(RDOValue)  param_name    = P_RDOVALUE($1);
 						LPRDOTypeParam param_type    = PARSER->stack().pop<RDOTypeParam>($2);
-						CREF(RDOValue) param_default = RDOVALUE($3);
-						LPRDORTPParam  pParam        = rdo::Factory<RDORTPParam>::create(PARSER->getLastRTPResType(), param_type, param_default, param_name->src_info());
+						LPRDORTPParam  pParam        = rdo::Factory<RDORTPParam>::create(PARSER->getLastRTPResType(), param_type, param_name->src_info());
 						pParam->checkDefault();
 						//if (param_type->typeID() == rdoRuntime::RDOType::t_enum)
 						//{
@@ -352,7 +351,7 @@ rtp_param:			RDO_IDENTIF_COLON param_type param_value_default
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
-param_type:		RDO_integer param_type_range
+param_type:		RDO_integer param_type_range param_value_default
 				{
 					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 					LPRDOTypeParam pType;
@@ -364,46 +363,48 @@ param_type:		RDO_integer param_type_range
 							PARSER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
 						}
 						LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-						pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo(@1, @2));
+						pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 					}
 					else
 					{
-						pType = rdo::Factory<RDOTypeParam>::create(g_int, @1);
+						pType = rdo::Factory<RDOTypeParam>::create(g_int, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 					}
 					$$ = PARSER->stack().push(pType);
 				}
-				| RDO_real param_type_range
+				| RDO_real param_type_range param_value_default
 				{
 					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 					LPRDOTypeParam pType;
 					if (pRange)
 					{
 						LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
-						pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOParserSrcInfo(@1, @2));
+						pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 					}
 					else
 					{
-						pType = rdo::Factory<RDOTypeParam>::create(g_real, @1);
+						pType = rdo::Factory<RDOTypeParam>::create(g_real, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 					}
 					$$ = PARSER->stack().push(pType);
 				}
-				| RDO_string
+				| RDO_string param_value_default
 				{
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, @1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 					$$ = PARSER->stack().push(pType);
 				}
-				| RDO_bool
+				| RDO_bool param_value_default
 				{
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_bool, @1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_bool, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 					$$ = PARSER->stack().push(pType);
 				}
-				| param_type_enum
+				| param_type_enum param_value_default
 				{
 					LEXER->enumReset();
-					LPRDOTypeParam pType = PARSER->stack().pop<RDOTypeParam>($1);
+					LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					pType->setSrcText(pEnum->name());
 					$$ = PARSER->stack().push(pType);
 				}
-				| param_type_such_as
+				| param_type_such_as param_value_default
 				{
 					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
 					//RDOParserSrcInfo src_info(@1);
@@ -493,10 +494,8 @@ param_type_range:	/* empty */ {
 				};
 
 param_type_enum:	'(' param_type_enum_list ')' {
-						LPRDOEnumType  pEnum = PARSER->stack().pop<RDOEnumType>($2);
-						LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOParserSrcInfo(@1, @3));
-						pType->setSrcText(pEnum->name());
-						$$ = PARSER->stack().push(pType);
+						LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($2);
+						$$ = PARSER->stack().push(pEnum);
 					}
 					| '(' param_type_enum_list error {
 						PARSER->error().error(@2, _T("Перечисление должно заканчиваться скобкой"));

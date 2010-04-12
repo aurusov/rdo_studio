@@ -796,7 +796,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 		funcCall->addParameter(funcParam->type()->calc_cast(arithm->createCalc(), arithm->type()));
 	}
 
-	RDOFUNArithm* res = new RDOFUNArithm( this, RDOValue(func->getType()->getParamType()->type(), src_pos()), funcCall );
+	RDOFUNArithm* res = new RDOFUNArithm( this, RDOValue(func->getType()->type(), src_pos()), funcCall );
 	res->setSrcInfo( src_info() );
 
 	return res;
@@ -1190,13 +1190,13 @@ RDOFUNCalculateIf::RDOFUNCalculateIf( const RDOParserObject* _parent, RDOFUNLogi
 	condition( _condition ),
 	action( _action )
 {
-	action->checkParamType(parser()->getLastFUNFunction()->getType()->getParamType());
+	action->checkParamType(parser()->getLastFUNFunction()->getType());
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNFunction
 // ----------------------------------------------------------------------------
-RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPParam) _retType ):
+RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDOTypeParam) _retType ):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _src_info ),
 	retType( _retType ),
@@ -1205,7 +1205,7 @@ RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src
 	parser()->insertFUNFunction( this );
 }
 
-RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const std::string& _name, CREF(LPRDORTPParam) _retType ):
+RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const std::string& _name, CREF(LPRDOTypeParam) _retType ):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _name ),
 	retType( _retType ),

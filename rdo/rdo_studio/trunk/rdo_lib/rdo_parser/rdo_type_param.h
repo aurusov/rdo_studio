@@ -31,13 +31,16 @@ public:
 	LPRDOType type      ()                     const;
 	RDOValue  value_cast(CREF(RDOValue) value) const;
 
+	CREF(RDOValue) default() const;
+
 	DECLARE_IModelStructure;
 
-protected:
-	RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
+private:
+	RDOTypeParam(CREF(LPRDOType) type, CREF(RDOValue) default, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeParam();
 
 	LPRDOType m_type;
+	RDOValue  m_default;
 };
 DECLARE_POINTER(RDOTypeParam);
 

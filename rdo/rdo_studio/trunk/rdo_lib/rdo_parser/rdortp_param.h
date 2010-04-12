@@ -30,7 +30,7 @@ DECLARE_FACTORY(RDORTPParam);
 public:
 	CPTR(RDORTPResType) const getResType  () const { ASSERT(m_resType);   return m_resType;   }
 	LPRDOTypeParam            getParamType() const { ASSERT(m_paramType); return m_paramType; }
-	CREF(RDOValue)            getDefault  () const { return m_defaultValue;                   }
+	CREF(RDOValue)            getDefault  () const { return getParamType()->default();        }
 
 	void checkDefault() const;
 
@@ -40,10 +40,9 @@ public:
 protected:
 	CPTR(RDORTPResType) const m_resType;
 	LPRDOTypeParam            m_paramType;
-	RDOValue                  m_defaultValue;
 
 protected:
-	RDORTPParam(CPTR(RDORTPResType) const resType, CREF(LPRDOTypeParam) pParamType, CREF(RDOValue) defaultValue, CREF(RDOParserSrcInfo) src_info);
+	RDORTPParam(CPTR(RDORTPResType) const resType, CREF(LPRDOTypeParam) pParamType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDORTPParam();
 };
 DECLARE_POINTER(RDORTPParam);

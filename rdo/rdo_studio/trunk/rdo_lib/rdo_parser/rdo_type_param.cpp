@@ -20,9 +20,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
+RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOValue) default, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_type          (type    )
+	, m_default       (default )
 {
 	ASSERT(m_type);
 	switch (m_type->type().typeID())
@@ -48,6 +49,11 @@ void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
 RDOValue RDOTypeParam::value_cast(CREF(RDOValue) value) const
 {
 	return m_type->value_cast(value, src_info(), value.src_info());
+}
+
+CREF(RDOValue) RDOTypeParam::default() const
+{
+	return m_default;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
