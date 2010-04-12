@@ -359,12 +359,12 @@ set					return(RDO_set);
 					}
 
 true				{
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(true, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
 						return RDO_BOOL_CONST;
 					}
 
 false				{
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(false, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
 						return RDO_BOOL_CONST;
 					}
 
