@@ -259,17 +259,15 @@ fun_const_param_desc:	RDO_IDENTIF_COLON param_type
 						{
 							PTR(RDOValue) name = P_RDOVALUE($1);
 							PARSER->checkFunctionName(name->src_info());
-							LPRDOTypeParam param_type    = PARSER->stack().pop<RDOTypeParam>($2);
-							ASSERT(param_type);
-//							RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
-							if (!param_type->default().defined())
+							LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($2);
+							ASSERT(pParamType);
+							if (!pParamType->default().defined())
 							{
 								PARSER->error().error(@2, _T("Константа должна иметь значение"));
 							}
-							RDOFUNConst* param = new RDOFUNConst( PARSER, name->src_info(), parType );
-							RDOFUNConstant* newConst = new RDOFUNConstant( PARSER, param );
+							RDOFUNConstant* newConst = new RDOFUNConstant(PARSER, name->src_text(), pParamType);
 							newConst->setSrcInfo( name->src_info() );
-							RUNTIME->setConstValue( newConst->getNumber(), newConst->getType()->getDefaultValue( RDOParserSrcInfo(param->src_info()) ) );
+							RUNTIME->setConstValue(newConst->getNumber(), newConst->getType()->default().value());
 							$$ = (int)newConst;
 						}
 						| RDO_IDENTIF_COLON
