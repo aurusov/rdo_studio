@@ -573,7 +573,9 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 						{
 							PARSER->error().error(@2, rdo::format(_T("—сылка на несуществующую константу: %s"), constName.c_str()));
 						}
-						$$ = (int)cons->getDescr();
+						NEVER_REACH_HERE;
+						$$ = NULL;
+//						$$ = (int)cons->getDescr();
 					}
 					| RDO_such_as RDO_IDENTIF '.' error {
 						tstring type = RDOVALUE($2)->getIdentificator();
