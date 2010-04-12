@@ -5,6 +5,7 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 
 namespace rdoParse 
@@ -931,7 +932,7 @@ void RDOPATParamSet::addSet(CREF(std::string) paramName, CREF(YYLTYPE) param_nam
 	}
 	if (rightArithm)
 	{
-		param->getParamType()->checkParamType( rightArithm );
+		rightArithm->checkParamType(param->getParamType());
 	}
 	m_params.push_back(Param(paramName, getRelRes()->getType()->getRTPParamNumber(paramName), equalType, rightArithm));
 }

@@ -50,12 +50,12 @@ void RDORSSResource::addParam( const RDOValue& param )
 	{
 		if ( param->getAsString() == "*" )
 		{
-			m_params.push_back( (*m_currParam)->getType()->getDefaultValue( param ) );
+			m_params.push_back((*m_currParam)->getDefault().value());
 			m_currParam++;
 		}
 		else
 		{
-			m_params.push_back( (*m_currParam)->getType()->getValue( param ) );
+			m_params.push_back((*m_currParam)->getParamType()->value_cast(param).value());
 			m_currParam++;
 		}
 	}

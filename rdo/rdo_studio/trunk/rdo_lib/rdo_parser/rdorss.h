@@ -3,6 +3,7 @@
 
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 
 namespace rdoRuntime
@@ -55,7 +56,7 @@ protected:
 	bool                       trace;
 
 private:
-	std::vector< const RDORTPParam* >::const_iterator m_currParam;
+	RDORTPResType::ParamList::const_iterator m_currParam;
 };
 
 // ----------------------------------------------------------------------------

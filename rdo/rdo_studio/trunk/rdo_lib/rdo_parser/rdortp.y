@@ -349,36 +349,6 @@ rtp_param:			RDO_IDENTIF_COLON param_type param_value_default
 						PARSER->error().error(@1, _T("Неправильное описание параметра"));
 					};
 
-param_value_default:	/* empty */ {
-						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
-					}
-					| '=' RDO_INT_CONST {
-						$$ = $2;
-					}
-					| '=' RDO_REAL_CONST {
-						$$ = $2;
-					}
-					| '=' RDO_STRING_CONST{
-						$$ = $2;
-					}
-					| '=' RDO_IDENTIF {
-						$$ = $2;
-					}
-					| '=' RDO_BOOL_CONST {
-						$$ = $2;
-					}
-					| '=' error {
-						RDOParserSrcInfo src_info(@1, @2, true);
-						if (src_info.src_pos().point())
-						{
-							PARSER->error().error(src_info, _T("Не указано значение по-умолчанию"));
-						}
-						else
-						{
-							PARSER->error().error(src_info, _T("Неверное значение по-умолчанию "));
-						}
-					};
-
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
@@ -620,6 +590,36 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 					}
 					| RDO_such_as error {
 						PARSER->error().error(@2, _T("После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки"));
+					};
+
+param_value_default:	/* empty */ {
+						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
+					}
+					| '=' RDO_INT_CONST {
+						$$ = $2;
+					}
+					| '=' RDO_REAL_CONST {
+						$$ = $2;
+					}
+					| '=' RDO_STRING_CONST{
+						$$ = $2;
+					}
+					| '=' RDO_IDENTIF {
+						$$ = $2;
+					}
+					| '=' RDO_BOOL_CONST {
+						$$ = $2;
+					}
+					| '=' error {
+						RDOParserSrcInfo src_info(@1, @2, true);
+						if (src_info.src_pos().point())
+						{
+							PARSER->error().error(src_info, _T("Не указано значение по-умолчанию"));
+						}
+						else
+						{
+							PARSER->error().error(src_info, _T("Неверное значение по-умолчанию "));
+						}
 					};
 // ----------------------------------------------------------------------------
 
