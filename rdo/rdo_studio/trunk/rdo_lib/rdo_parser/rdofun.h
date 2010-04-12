@@ -164,17 +164,18 @@ private:
 class RDOFUNConstant: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDOFUNConstant( RDOParser* _parser, CREF(LPRDORTPParam) _const );
-	virtual ~RDOFUNConstant() {}
+	RDOFUNConstant(PTR(RDOParser) parser, CREF(tstring) name, CREF(LPRDOTypeParam) type);
+	virtual ~RDOFUNConstant()
+	{}
 
-	const std::string&    name() const      { return m_const->name();         }
-	LPRDOTypeParam        getType() const   { return m_const->getParamType(); }
-	LPRDORTPParam         getDescr() const  { return m_const;                 }
-	int                   getNumber() const { return m_number;                }
+	CREF(tstring)  name() const      { return m_name;   }
+	LPRDOTypeParam getType() const   { return m_type;   }
+	int            getNumber() const { return m_number; }
 
 private:
-	LPRDORTPParam  m_const;
-	int            m_number;
+	tstring         m_name;
+	LPRDOTypeParam  m_type;
+	int             m_number;
 };
 
 // ----------------------------------------------------------------------------
