@@ -206,6 +206,7 @@
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdoopr.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_common/rdoanimation.h"
 // ===============================================================================
@@ -385,10 +386,12 @@ frm_color:	RDO_color_transparent {
 				RDOFUNArithm* red   = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($2) );
 				RDOFUNArithm* green = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($3) );
 				RDOFUNArithm* blue  = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($4) );
-				RDORTPIntParamType intType( PARSER, new RDORTPIntDiap( PARSER, 0, 255, @1, @1 ), new RDORTPDefVal(PARSER) );
-				intType.checkParamType( red );
-				intType.checkParamType( green );
-				intType.checkParamType( blue );
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdoRuntime::RDOValue(0), rdoRuntime::RDOValue(255), RDOParserSrcInfo());
+				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, rdoRuntime::RDOValue(0), RDOParserSrcInfo());
+				red->checkParamType  (pType);
+				green->checkParamType(pType);
+				blue->checkParamType (pType);
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
 			}
 			| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST error {
@@ -404,10 +407,12 @@ frm_color:	RDO_color_transparent {
 				RDOFUNArithm* red   = reinterpret_cast<RDOFUNArithm*>($2);
 				RDOFUNArithm* green = reinterpret_cast<RDOFUNArithm*>($4);
 				RDOFUNArithm* blue  = reinterpret_cast<RDOFUNArithm*>($6);
-				RDORTPIntParamType intType( PARSER, new RDORTPIntDiap( PARSER, 0, 255, @1, @1 ), new RDORTPDefVal(PARSER) );
-				intType.checkParamType( red );
-				intType.checkParamType( green );
-				intType.checkParamType( blue );
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdoRuntime::RDOValue(0), rdoRuntime::RDOValue(255), RDOParserSrcInfo());
+				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, rdoRuntime::RDOValue(0), RDOParserSrcInfo());
+				red->checkParamType  (pType);
+				green->checkParamType(pType);
+				blue->checkParamType (pType);
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
 			}
 			| '<' fun_arithm ',' fun_arithm ',' fun_arithm error {
