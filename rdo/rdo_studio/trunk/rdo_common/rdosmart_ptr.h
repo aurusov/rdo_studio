@@ -53,8 +53,8 @@ public:
 	//! Используется только для объектов-потомков от smart_ptr_counter_reference
 	smart_ptr (PTR(T) object);
 #endif
-	//! Вызывается из фабрики или потомков, factory используется только для перегрузки
-	smart_ptr(PTR(T) object, rbool factory);
+	//! Вызывается из фабрики или потомков
+	smart_ptr(PTR(T) object, ruint counter_value);
 	template<class P>
 	smart_ptr (CREF(smart_ptr<P>) sptr);
 	~smart_ptr();

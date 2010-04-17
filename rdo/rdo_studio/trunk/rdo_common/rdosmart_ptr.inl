@@ -53,15 +53,15 @@ inline smart_ptr<T>::smart_ptr(PTR(T) object)
 #endif
 
 template<class T>
-inline smart_ptr<T>::smart_ptr(PTR(T) obj, rbool factory)
+inline smart_ptr<T>::smart_ptr(PTR(T) obj, ruint counter_value)
 	: m_object(obj)
 {
-	ASSERT(factory);
+	ASSERT(counter_value);
 
 	if (m_object)
 	{
 		allocateCounter();
-		counter() = 1;
+		counter() = counter_value;
 	}
 	else
 	{
