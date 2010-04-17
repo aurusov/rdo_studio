@@ -29,7 +29,7 @@ RDOEnumType::RDOEnumType()
 
 RDOEnumType::~RDOEnumType()
 {
-	delete m_type;
+//	delete m_type;
 }
 
 inline tstring RDOEnumType::name() const
@@ -101,19 +101,20 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	RDOValue toValue;
+	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
 	try
 	{
 		switch (from.typeID())
 		{
 			case rdoRuntime::RDOType::t_identificator: {
 				toValue = (getEnums().findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
-					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), from.src_info()) :
+					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), pEnum, from.src_info()) :
 					RDOValue(rdoRuntime::RDOValue(rdoRuntime::g_unknow), from.src_info());
 				break;
 			}
 			case rdoRuntime::RDOType::t_string: {
 				toValue = (getEnums().findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END) ?
-					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), from.src_info()) :
+					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), pEnum, from.src_info()) :
 					RDOValue(rdoRuntime::RDOValue(rdoRuntime::g_unknow), from.src_info());
 				break;
 			}
