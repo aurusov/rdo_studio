@@ -32,8 +32,6 @@ public:
 	LPRDOTypeParam            getParamType() const { ASSERT(m_paramType); return m_paramType; }
 	CREF(RDOValue)            getDefault  () const { return getParamType()->default();        }
 
-	void checkDefault() const;
-
 	DECLARE_IModelStructure;
 	DECLARE_IName;
 

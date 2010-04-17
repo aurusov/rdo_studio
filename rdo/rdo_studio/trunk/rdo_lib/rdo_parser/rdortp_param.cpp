@@ -42,10 +42,4 @@ void RDORTPParam::writeModelStructure(REF(std::ostream) stream) const
 	getParamType()->writeModelStructure(stream);
 }
 
-void RDORTPParam::checkDefault() const
-{
-	//! TODO: недоделано
-	NEVER_REACH_HERE;
-}
-
 CLOSE_RDO_PARSER_NAMESPACE
