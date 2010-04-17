@@ -99,16 +99,16 @@ void RDODPTActivity::addParam( const RDOValue& param )
 	RDOFUNFunctionParam* pat_param = m_pattern->params.at( m_currParam );
 	if ( param->getAsString() == "*" )
 	{
-		if ( !pat_param->getType()->getDV().isExist() ) {
+		if ( !pat_param->getType()->default().defined() ) {
 			parser()->error().push_only( param, rdo::format("Нет значения по-умолчанию для параметра '%s'", pat_param->src_text().c_str()) );
 			parser()->error().push_only( pat_param->src_info(), rdo::format("См. параметр '%s', тип '%s'", pat_param->src_text().c_str(), pat_param->getType()->src_text().c_str()) );
 			parser()->error().push_done();
 		}
-		val = pat_param->getType()->getDefaultValue( param );
+		val = pat_param->getType()->default().value();
 	}
 	else
 	{
-		val = pat_param->getType()->getValue( param );
+		val = pat_param->getType()->value_cast(param).value();
 	}
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(param.getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), pat_param->name().c_str(), param->getAsString().c_str())) );

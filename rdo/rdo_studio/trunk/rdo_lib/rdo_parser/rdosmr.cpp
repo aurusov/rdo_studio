@@ -125,7 +125,8 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 	if ( !cons ) {
 		parser()->error().error( const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()) );
 	}
-	cons->getType()->checkParamType( arithm );
+	ASSERT(arithm);
+	arithm->checkParamType(cons->getType());
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( cons->getType() );
 	parser()->runtime()->addInitCalc( new rdoRuntime::RDOCalcSetConst( parser()->runtime(), cons->getNumber(), calc ) );
 	parser()->insertChanges( cons->src_text(), arithm->src_text() );
@@ -138,7 +139,7 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 		parser()->error().error( res_info.src_info(), rdo::format("Ресурс '%s' не найден", res_info.src_text().c_str()) );
 //		parser()->error().error( res_info.src_info(), "Undefined resource name: " + resName );
 	}
-	const RDORTPParam* param = res->getType()->findRTPParam( par_info.src_text() );
+	LPRDORTPParam param = res->getType()->findRTPParam( par_info.src_text() );
 	if ( !param ) {
 		parser()->error().push_only( par_info.src_info(), rdo::format("Параметр '%s' не найден", par_info.src_text().c_str()) );
 		parser()->error().push_only( res->src_info(), "См. ресурс" );
@@ -146,9 +147,10 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 		parser()->error().push_done();
 //		parser()->error().error( par_info.src_info(), "Undefined resource parameter name: " + parName);
 	}
-	param->getType()->checkParamType( arithm );
+	ASSERT(arithm);
+	arithm->checkParamType(param->getParamType());
 	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
-	rdoRuntime::RDOCalc* calc = arithm->createCalc( param->getType() );
+	rdoRuntime::RDOCalc* calc = arithm->createCalc( param->getParamType() );
 	parser()->runtime()->addInitCalc( new rdoRuntime::RDOSetResourceParamCalc( parser()->runtime(), res->getID(), parNumb, calc ) );
 	parser()->insertChanges( res_info.src_text() + "." + par_info.src_text(), arithm->src_text() );
 }

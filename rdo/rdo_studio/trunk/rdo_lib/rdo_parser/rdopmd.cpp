@@ -64,17 +64,17 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 //		parser()->error().error("Resource must be of permanent type: " + _resName);
 	}
 */
-	const RDORTPParam* const par = res->getType()->findRTPParam( _par_src_info.src_text() );
+	LPRDORTPParam par = res->getType()->findRTPParam( _par_src_info.src_text() );
 	if ( !par ) {
 		parser()->error().push_only( _par_src_info, rdo::format("Параметр '%s' не найден", _par_src_info.src_text().c_str()) );
 		parser()->error().push_only( res->src_info(), "См. ресурс" );
 		parser()->error().push_only( res->getType()->src_info(), "См. тип ресурса" );
 		parser()->error().push_done();
 	}
-	rdoRuntime::RDOType::TypeID typeID = par->getType()->typeID();
+	rdoRuntime::RDOType::TypeID typeID = par->getParamType()->type()->typeID();
 	if ( typeID != rdoRuntime::RDOType::t_int && typeID != rdoRuntime::RDOType::t_real ) {
 		parser()->error().push_only( _par_src_info, "Наблюдать можно только за параметром целого или вещественного типа" );
-		parser()->error().push_only( par->getType()->src_info(), "См. тип параметра" );
+		parser()->error().push_only( par->getParamType()->src_info(), "См. тип параметра" );
 		parser()->error().push_done();
 	}
 	endOfCreation(F(rdoRuntime::RDOPMDWatchPar)::create(parser()->runtime(), src_text(), _trace, _res_src_info.src_text(), _par_src_info.src_text(), res->getID(), res->getType()->getRTPParamNumber(_par_src_info.src_text())));
