@@ -937,8 +937,8 @@ dpt_process_end:	RDO_Process error RDO_End; /* заглушка для $Process */
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-fun_logic_eq: '='    { $1 = RDO_eq; }
-			| RDO_eq { $1 = RDO_eq; };
+fun_logic_eq: '='    { $$ = RDO_eq; }
+			| RDO_eq { $$ = RDO_eq; };
 
 fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
 			| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
