@@ -50,12 +50,14 @@ RDOValue::RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (rdoRuntime::RDOValue(src_info.src_text(), rdoRuntime::g_identificator))
+	, m_type          (g_identificator)
 {}
 
 // Неопределенный тип
 RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow))
+	, m_type          (g_unknow)
 {}
 
 CREF(LPRDOType) RDOValue::type() const
