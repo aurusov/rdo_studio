@@ -29,7 +29,7 @@ tstring RDOType__##Type::name() const               \
 	return TypeName;                                \
 }                                                   \
 RDOType__##Type g_##Type##_type;                    \
-rdo::smart_ptr<RDOType__##Type> g_##Type(&g_##Type##_type, true);
+rdo::smart_ptr<RDOType__##Type> g_##Type(&g_##Type##_type, 2); \
 
 DECLARE_ATOM_TYPE_PARSER(unknow,        _T("unknow")       );
 DECLARE_ATOM_TYPE_PARSER(identificator, _T("identificator"));
