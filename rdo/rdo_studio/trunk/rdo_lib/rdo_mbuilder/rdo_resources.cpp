@@ -1,6 +1,7 @@
 #include "rdo_lib/rdo_mbuilder/pch.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
 
 namespace rdoMBuilder
 {
@@ -69,45 +70,45 @@ RDOResType::RDOResType(CREF(rdoParse::RDORTPResType) rtp)
 {
 	STL_FOR_ALL_CONST(rdoParse::RDORTPResType::ParamList, rtp.getParams(), param_it)
 	{
-		Param param(**param_it);
+		Param param(*param_it);
 		param.m_id = m_params.size();
 		m_params.append(param);
 	}
 }
 
-RDOResType::Param::Param(CREF(rdoParse::RDORTPParam) param)
-	: rdoParse::RDOParserSrcInfo(param.src_info())
-	, m_name (param.name()                       )
-	, m_type (&param.getType()->type().type()    )
-	, m_exist(true                               )
-	, m_id   (-1                                 )
+RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
+	: rdoParse::RDOParserSrcInfo(param->src_info()  )
+	, m_name (param->name()                         )
+	, m_type (&param->getParamType()->type()->type())
+	, m_exist(true                                  )
+	, m_id   (-1                                    )
 {
 	switch ( typeID() )
 	{
 		case rdoRuntime::RDOType::t_int:
 		{
-			CPTR(rdoParse::RDORTPIntParamType) param_type = static_cast<CPTR(rdoParse::RDORTPIntParamType)>(param.getType());
-			if (param_type->getDiap().isExist())
+			if (dynamic_cast<PTR(rdoParse::RDOTypeIntRange)>(param->getParamType()->type().get()))
 			{
-				m_min = param_type->getDiap().getMin();
-				m_max = param_type->getDiap().getMax();
+				rdoParse::LPRDOTypeIntRange pRange = param->getParamType()->type().lp_cast<rdoParse::LPRDOTypeIntRange>();
+				m_min = pRange->range()->getMin().value().getInt();
+				m_max = pRange->range()->getMax().value().getInt();
 			}
 			break;
 		}
 		case rdoRuntime::RDOType::t_real:
 		{
-			CPTR(rdoParse::RDORTPRealParamType) param_type = static_cast<CPTR(rdoParse::RDORTPRealParamType)>(param.getType());
-			if (param_type->getDiap().isExist())
+			if (dynamic_cast<PTR(rdoParse::RDOTypeRealRange)>(param->getParamType()->type().get()))
 			{
-				m_min = param_type->getDiap().getMin();
-				m_max = param_type->getDiap().getMax();
+				rdoParse::LPRDOTypeRealRange pRange = param->getParamType()->type().lp_cast<rdoParse::LPRDOTypeRealRange>();
+				m_min = pRange->range()->getMin().value().getDouble();
+				m_max = pRange->range()->getMax().value().getDouble();
 			}
 			break;
 		}
 	}
-	if (param.getType()->getDV().isExist())
+	if (param->getParamType()->default().defined())
 	{
-		m_default = param.getType()->getDefaultValue(param.getType()->getDV().value());
+		m_default = param->getParamType()->default().value();
 	}
 }
 
@@ -152,13 +153,13 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def)
 {}
 
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def)
-	: m_name   (name                                           )
-	, m_type   (&rdoRuntime::RDOType::getTypeByID(min.typeID()))
-	, m_min    (min                                            )
-	, m_max    (max                                            )
-	, m_default(def                                            )
-	, m_exist  (true                                           )
-	, m_id     (-1                                             )
+	: m_name   (name                                                 )
+	, m_type   (&rdoParse::RDOType::getTypeByID(min.typeID())->type())
+	, m_min    (min                                                  )
+	, m_max    (max                                                  )
+	, m_default(def                                                  )
+	, m_exist  (true                                                 )
+	, m_id     (-1                                                   )
 {}
 
 void RDOResType::Param::setDiap(CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max)
@@ -203,54 +204,48 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 	PTR(rdoParse::RDORTPResType) pRTP = new rdoParse::RDORTPResType(m_parser, rtp.name(), rtp.isPermanent());
 	STL_FOR_ALL_CONST(RDOResType::ParamList::List, rtp.m_params, param)
 	{
-		PTR(rdoParse::RDORTPParamType) pParamType = NULL;
+		rdoParse::LPRDOTypeParam pParamType;
 		switch (param->typeID())
 		{
 			case rdoRuntime::RDOType::t_int:
 			{
-				PTR(rdoParse::RDORTPIntDiap) pDiap = param->hasDiap() ?
-					new rdoParse::RDORTPIntDiap(m_parser, param->getMin().getInt(), param->getMax().getInt()) :
-					new rdoParse::RDORTPIntDiap(m_parser);
-
-				PTR(rdoParse::RDORTPDefVal) pDef = param->hasDefault() ?
-					new rdoParse::RDORTPDefVal(m_parser, param->getDefault()) :
-					new rdoParse::RDORTPDefVal(m_parser);
-					
-				pParamType = new rdoParse::RDORTPIntParamType(m_parser, pDiap, pDef);
+				rdoRuntime::RDOValue default = param->hasDefault() ? param->getDefault() : rdoRuntime::RDOValue();
+				if (param->hasDiap())
+				{
+					rdoParse::LPRDOTypeRangeRange pRange    = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
+					rdoParse::LPRDOTypeIntRange   pIntRange = rdo::Factory<rdoParse::RDOTypeIntRange>::create(pRange);
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pIntRange, default, rdoParse::RDOParserSrcInfo());
+				}
+				else
+				{
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::g_int, default, rdoParse::RDOParserSrcInfo());
+				}
 				break;
 			}
 			case rdoRuntime::RDOType::t_real:
 			{
-				PTR(rdoParse::RDORTPRealDiap) pDiap = param->hasDiap() ?
-					new rdoParse::RDORTPRealDiap(m_parser, param->getMin().getDouble(), param->getMax().getDouble()) :
-					new rdoParse::RDORTPRealDiap(m_parser);
-
-				PTR(rdoParse::RDORTPDefVal) pDef = param->hasDefault() ?
-					new rdoParse::RDORTPDefVal(m_parser, param->getDefault()) :
-					new rdoParse::RDORTPDefVal(m_parser);
-
-				pParamType = new rdoParse::RDORTPRealParamType( m_parser, pDiap, pDef );
+				rdoRuntime::RDOValue default = param->hasDefault() ? param->getDefault() : rdoRuntime::RDOValue();
+				if (param->hasDiap())
+				{
+					rdoParse::LPRDOTypeRangeRange pRange     = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
+					rdoParse::LPRDOTypeRealRange  pRealRange = rdo::Factory<rdoParse::RDOTypeRealRange>::create(pRange);
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pRealRange, default, rdoParse::RDOParserSrcInfo());
+				}
+				else
+				{
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::g_real, default, rdoParse::RDOParserSrcInfo());
+				}
 				break;
 			}
 			case rdoRuntime::RDOType::t_enum:
 			{
-				PTR(rdoParse::RDOEnumType) pEnum = NULL;
+				rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create();
 				STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType, param->getEnum(), enum_it)
 				{
-					if (!pEnum)
-					{
-						pEnum = m_parser->factory_type<rdoParse::RDOEnumType>(pRTP, rdoParse::RDOValue::getIdentificator(*enum_it));
-					}
-					else
-					{
-						pEnum->add(rdoParse::RDOValue::getIdentificator(*enum_it));
-					}
+					pEnum->add(rdoParse::RDOValue::getIdentificator(*enum_it));
 				}
-				PTR(rdoParse::RDORTPDefVal) pEnumDefValue = param->hasDefault() ?
-					new rdoParse::RDORTPDefVal(m_parser, rdoParse::RDOValue(param->getDefault(), *pEnum, rdoParse::RDOParserSrcInfo())) :
-					new rdoParse::RDORTPDefVal(m_parser);
-
-				pParamType = new rdoParse::RDORTPEnumParamType(pRTP, pEnum, pEnumDefValue, rtp.name());
+				rdoRuntime::RDOValue default = param->hasDefault() ? param->getDefault() : rdoRuntime::RDOValue();
+				pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum, default, rdoParse::RDOParserSrcInfo());
 				break;
 			}
 			default:
@@ -259,7 +254,9 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 				return false;
 			}
 		}
-		pRTP->addParam(new rdoParse::RDORTPParam(pRTP, param->name(), pParamType));
+		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pRTP, pParamType, rdoParse::RDOParserSrcInfo());
+		ASSERT(pParam);
+		pRTP->addParam(pParam);
 	}
 	rtp.m_exist = true;
 	rtp.m_id    = pRTP->getNumber();
@@ -325,10 +322,10 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toPars
 		RDOResource::Params::const_iterator value_it = operator[](param_it->name());
 		if (value_it == end())
 			return false;
-
-		rdoRuntime::RDOValue value = param_it->type()->value_cast(value_it->second);
-		//! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
-		toParserRSS->addParam(rdoParse::RDOValue(value, value.type(), toParserRSS->src_info()));
+//! TODO: не знаю как переделать
+		//rdoRuntime::RDOValue value = param_it->type()->value_cast(value_it->second);
+		////! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
+		//toParserRSS->addParam(rdoParse::RDOValue(value, value.type(), toParserRSS->src_info()));
 	}
 	return true;
 }

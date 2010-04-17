@@ -136,6 +136,11 @@ RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_
 	return toValue;
 }
 
+PTR(rdoRuntime::RDOCalc) RDOEnumType::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+{
+	return RDOType::calc_cast(pCalc, pType);
+}
+
 void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << "E " << getEnums().getValues().size() << std::endl;

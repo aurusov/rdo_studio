@@ -1322,8 +1322,8 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 			const std::vector< rdoParse::RDORTPResType* >& rtp_list = parser->getRTPResTypes(); 
 			std::vector< rdoParse::RDORTPResType* >::const_iterator rtp_it = rtp_list.begin();
 			while ( rtp_it != rtp_list.end() ) {
-				const std::vector< const rdoParse::RDORTPParam* >& param_list = (*rtp_it)->getParams();
-				std::vector< const rdoParse::RDORTPParam* >::const_iterator param_it = param_list.begin();
+				CREF(rdoParse::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
+				rdoParse::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
 				while ( param_it != param_list.end() ) {
 					data->result += (*param_it)->name() + ' ';
 					param_it++;

@@ -123,7 +123,7 @@ public:
 	MBUILDER_OBJECT(Param)
 	friend class RDOResType;
 	public:
-		Param(CREF(rdoParse::RDORTPParam) param);
+		Param(CREF(rdoParse::LPRDORTPParam) param);
 		Param(CREF(tstring) name, CPTR(rdoRuntime::RDOType) type, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
 		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def);
 		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
