@@ -347,7 +347,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		RDOValue try_cast_value = (*it)->value_cast(value);
 		if (try_cast_value.defined())
 		{
-			m_value = try_cast_value;
+			m_value = value;
 			return;
 		}
 	}
