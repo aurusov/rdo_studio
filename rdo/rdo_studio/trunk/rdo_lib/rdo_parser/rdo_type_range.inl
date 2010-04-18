@@ -90,6 +90,12 @@ inline tstring RDOTypeRange<T>::name() const
 }
 
 template<class T>
+inline LPRDOType RDOTypeRange<T>::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+{
+	return parent_type::type_cast(from, from_src_info, to_src_info, src_info);
+}
+
+template<class T>
 inline RDOValue RDOTypeRange<T>::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	RDOValue toValue = T::value_cast(from, to_src_info, src_info);
