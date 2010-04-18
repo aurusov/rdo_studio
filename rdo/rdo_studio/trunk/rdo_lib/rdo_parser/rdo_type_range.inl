@@ -33,7 +33,7 @@ inline void RDOTypeRangeRange::checkRange() const throw(...)
 {
 	if (m_min_value->typeID() != m_max_value->typeID())
 	{
-		rdoParse::g_error().error(m_max_value.src_info(), rdo::format(_T("√раницы диапазона должна быть одного типа: %s .. %s"), m_min_value.type()->name().c_str(), m_max_value.type()->name().c_str()));
+		rdoParse::g_error().error(m_max_value.src_info(), rdo::format(_T("√раницы диапазона должны быть одного типа, найдено: [%s] .. [%s]"), m_min_value.type()->name().c_str(), m_max_value.type()->name().c_str()));
 	}
 	if (m_min_value.value() > m_max_value.value())
 	{
