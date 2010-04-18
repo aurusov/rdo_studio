@@ -625,7 +625,7 @@ LPRDOType RDOFUNArithm::getPreType(CREF(RDOFUNArithm) second)
 
 RDOFUNArithm* RDOFUNArithm::operator+ ( RDOFUNArithm& second )
 {
-	GENERATE_ARITHM( Plus, +, "Ну не мегу я сложить %s и %s" );
+	GENERATE_ARITHM( Plus, +, "Ну не могу я сложить %s и %s" );
 }
 
 RDOFUNArithm* RDOFUNArithm::operator- ( RDOFUNArithm& second )
