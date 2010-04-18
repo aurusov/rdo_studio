@@ -406,7 +406,13 @@ param_type:		RDO_integer param_type_range param_value_default
 				{
 					LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
 					ASSERT(pTypeSuchAs);
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					RDOValue default = RDOVALUE($2);
+					if (!default.defined())
+					{
+						if (pTypeSuchAs->default().defined())
+							default = pTypeSuchAs->default();
+					}
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), default, RDOParserSrcInfo(@1, @2));
 					$$ = PARSER->stack().push(pType);
 				};
 /*
