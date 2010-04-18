@@ -400,7 +400,6 @@ param_type:		RDO_integer param_type_range param_value_default
 					LEXER->enumReset();
 					LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
 					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-					pType->setSrcText(pEnum->name());
 					$$ = PARSER->stack().push(pType);
 				}
 				| param_type_such_as param_value_default
