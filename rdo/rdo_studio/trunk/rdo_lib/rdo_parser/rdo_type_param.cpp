@@ -28,6 +28,7 @@ RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOValue) default, CREF(RD
 	ASSERT(m_type);
 	if (m_default.defined())
 	{
+		m_type->type_cast(m_default.type(), m_default.src_info(), src_info, m_default.src_info());
 		m_default = m_type->value_cast(m_default, src_info, m_default.src_info());
 	}
 	switch (m_type->type().typeID())
