@@ -89,7 +89,7 @@ LPRDOType RDOType__int::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 		case rdoRuntime::RDOType::t_int :
 			return g_int;
 		case rdoRuntime::RDOType::t_real:
-			rdoParse::g_error().warning(src_info, _T("ѕеревод вещественного числа в целое, возможна потер€ данных"));
+			rdoParse::g_error().warning(src_info, rdo::format(_T("ѕреобразование '%s' в '%s', возможна потер€ данных"), from->name().c_str(), name().c_str()));
 			return g_real;
 		default:
 			rdoParse::g_error().push_only(src_info,    rdo::format(_T("ќжидаетс€ целочисленное значение, найдено: %s"), from_src_info.src_text().c_str()));
