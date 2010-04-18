@@ -50,6 +50,12 @@ void RDORSSResource::addParam( const RDOValue& param )
 	{
 		if ( param->getAsString() == "*" )
 		{
+			if (!(*m_currParam)->getDefault().defined())
+			{
+				parser()->error().push_only(param.src_info(), _T("Ќевозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
+				parser()->error().push_only((*m_currParam)->getParamType()->src_info(), _T("—м. описание параметра"));
+				parser()->error().push_done();
+			}
 			m_params.push_back((*m_currParam)->getDefault().value());
 			m_currParam++;
 		}
