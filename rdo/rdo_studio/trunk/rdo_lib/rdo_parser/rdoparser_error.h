@@ -40,6 +40,8 @@ class Error
 public:
 	typedef std::vector<rdoSimulator::RDOSyntaxError> ErrorList;
 
+	Error();
+
 	//! 1
 	void error    (CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code);
 	void push_only(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code);
@@ -57,12 +59,29 @@ public:
 	void            modify   (CREF(tstring) message);
 	void            clear    ();
 	CREF(ErrorList) getList  () const;
+	void            block    ();
+	void            unblock  ();
+	rbool           blocked  () const;
 
 private:
 	ErrorList m_errors;
+	rbool     m_blocked;
 };
 
 REF(Error) g_error();
+
+class ErrorBlockMonicker
+{
+public:
+	ErrorBlockMonicker()
+	{
+		g_error().block();
+	}
+	~ErrorBlockMonicker()
+	{
+		g_error().unblock();
+	}
+};
 
 CLOSE_RDO_PARSER_NAMESPACE
 
