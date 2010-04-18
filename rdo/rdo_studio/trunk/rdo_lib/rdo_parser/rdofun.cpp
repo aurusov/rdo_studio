@@ -339,16 +339,18 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		return;
 	}
 
-	// Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	// перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	CREF(RDOParser::PreCastTypeList) typeList = parser()->getPreCastTypeList();
-	STL_FOR_ALL_CONST(RDOParser::PreCastTypeList, typeList, it)
-	{
-		RDOValue try_cast_value = (*it)->value_cast(value);
-		if (try_cast_value.defined())
+	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	{ErrorBlockMonicker errorBlockMonicker;
+		CREF(RDOParser::PreCastTypeList) typeList = parser()->getPreCastTypeList();
+		STL_FOR_ALL_CONST(RDOParser::PreCastTypeList, typeList, it)
 		{
-			m_value = value;
-			return;
+			RDOValue try_cast_value = (*it)->value_cast(value);
+			if (try_cast_value.defined())
+			{
+				m_value = value;
+				return;
+			}
 		}
 	}
 
