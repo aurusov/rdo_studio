@@ -405,35 +405,10 @@ param_type:		RDO_integer param_type_range param_value_default
 				}
 				| param_type_such_as param_value_default
 				{
-					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					//RDOParserSrcInfo src_info(@1);
-					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					//$$ = (int)param->getType()->constructorSuchAs(src_info);
-				}
-				| param_type_such_as '=' RDO_INT_CONST
-				{
-					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					//RDOParserSrcInfo src_info(@1, @3);
-					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					//$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
-				}
-				| param_type_such_as '=' RDO_REAL_CONST
-				{
-					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					//RDOParserSrcInfo src_info(@1, @3);
-					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					//$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
-				}
-				| param_type_such_as '=' RDO_IDENTIF
-				{
-					//CPTR(RDORTPParam) param = reinterpret_cast<PTR(RDORTPParam)>($1);
-					//RDOParserSrcInfo src_info(@1, @3);
-					//src_info.setSrcText(_T("such_as ") + (param->getResType() ? param->getResType()->name() + _T(".") : _T("")) + param->name());
-					//$$ = (int)param->getType()->constructorSuchAs(src_info, RDOVALUE($3));
-				}
-				| param_type_such_as '=' error
-				{
-					//PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("ќжидаетс€ зачение по-умолчанию"));
+					LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
+					ASSERT(pTypeSuchAs);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
 				};
 /*
 				| RDO_integer error {
@@ -553,17 +528,17 @@ param_type_enum_list: RDO_IDENTIF {
 param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 						tstring type  = RDOVALUE($2)->getIdentificator();
 						tstring param = RDOVALUE($4)->getIdentificator();
-						CPTR(RDORTPResType) const rt = PARSER->findRTPResType(type);
-						if (!rt)
+						CPTRC(RDORTPResType) pRTP = PARSER->findRTPResType(type);
+						if (!pRTP)
 						{
 							PARSER->error().error(@2, rdo::format(_T("—сылка на неизвестный тип ресурса: %s"), type.c_str()));
 						}
-						LPRDORTPParam rp = rt->findRTPParam(param);
-						if (!rp)
+						LPRDORTPParam pParam = pRTP->findRTPParam(param);
+						if (!pParam)
 						{
 							PARSER->error().error(@4, rdo::format(_T("—сылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
 						}
-						$$ = (int)rp;
+						$$ = PARSER->stack().push(pParam->getParamType());
 					}
 					| RDO_such_as RDO_IDENTIF {
 						tstring constName = RDOVALUE($2)->getIdentificator();
@@ -572,9 +547,7 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 						{
 							PARSER->error().error(@2, rdo::format(_T("—сылка на несуществующую константу: %s"), constName.c_str()));
 						}
-						NEVER_REACH_HERE;
-						$$ = NULL;
-//						$$ = (int)cons->getDescr();
+						$$ = PARSER->stack().push(cons->getType());
 					}
 					| RDO_such_as RDO_IDENTIF '.' error {
 						tstring type = RDOVALUE($2)->getIdentificator();
