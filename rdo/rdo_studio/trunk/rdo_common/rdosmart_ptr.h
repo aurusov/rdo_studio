@@ -173,13 +173,13 @@ private:
 	template <>
 	static smart_ptr<T> init<false>(PTR(T) object)
 	{
-		return smart_ptr<T>(object, true);
+		return smart_ptr<T>(object, 1);
 	}
 
 	template <>
 	static smart_ptr<T> init<true>(PTR(T) object)
 	{
-		smart_ptr<T> sobj(object, true);
+		smart_ptr<T> sobj(object, 1);
 		object->setSmartPtrCounterReference(sobj.m_counter);
 		return sobj;
 	}
