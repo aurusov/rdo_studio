@@ -77,11 +77,11 @@ RDOResType::RDOResType(CREF(rdoParse::RDORTPResType) rtp)
 }
 
 RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
-	: rdoParse::RDOParserSrcInfo(param->src_info()  )
-	, m_name (param->name()                         )
-	, m_type (&param->getParamType()->type()->type())
-	, m_exist(true                                  )
-	, m_id   (-1                                    )
+	: rdoParse::RDOParserSrcInfo(param->src_info())
+	, m_name (param->name()                       )
+	, m_type (param->getParamType()               )
+	, m_exist(true                                )
+	, m_id   (-1                                  )
 {
 	switch ( typeID() )
 	{
@@ -131,36 +131,38 @@ rbool RDOResType::ParamList::append(REF(Param) param)
 	return true;
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CPTR(rdoRuntime::RDOType) type, CREF(rdoRuntime::RDOValue) def)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoRuntime::RDOValue) def)
 	: m_name   (name)
 	, m_type   (type)
 	, m_default(def )
 	, m_exist  (true)
 	, m_id     (-1  )
 {
-	if (type->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
+	if (m_type->type()->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
 	{
 		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
 	}
 }
 
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def)
-	: m_name   (name       )
-	, m_type   (&def.type())
-	, m_default(def        )
-	, m_exist  (true       )
-	, m_id     (-1         )
-{}
+	: m_name   (name)
+	, m_default(def )
+	, m_exist  (true)
+	, m_id     (-1  )
+{
+	m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::RDOType::getTypeByID(m_default.typeID()), m_default, rdoParse::RDOParserSrcInfo());
+}
 
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def)
-	: m_name   (name                                                 )
-	, m_type   (&rdoParse::RDOType::getTypeByID(min.typeID())->type())
-	, m_min    (min                                                  )
-	, m_max    (max                                                  )
-	, m_default(def                                                  )
-	, m_exist  (true                                                 )
-	, m_id     (-1                                                   )
-{}
+	: m_name   (name)
+	, m_min    (min )
+	, m_max    (max )
+	, m_default(def )
+	, m_exist  (true)
+	, m_id     (-1  )
+{
+	m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::RDOType::getTypeByID(m_min.typeID()), m_default, rdoParse::RDOParserSrcInfo());
+}
 
 void RDOResType::Param::setDiap(CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max)
 {
@@ -322,10 +324,12 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toPars
 		RDOResource::Params::const_iterator value_it = operator[](param_it->name());
 		if (value_it == end())
 			return false;
-//! TODO: не знаю как переделать
-		//rdoRuntime::RDOValue value = param_it->type()->value_cast(value_it->second);
-		////! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
-		//toParserRSS->addParam(rdoParse::RDOValue(value, value.type(), toParserRSS->src_info()));
+
+		rdoParse::RDOValue value(value_it->second);
+		value = param_it->type()->value_cast(value);
+		//! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
+		value.setSrcInfo(toParserRSS->src_info());
+		toParserRSS->addParam(value);
 	}
 	return true;
 }
@@ -341,7 +345,7 @@ RDOResource::RDOResource(CREF( RDOResType) rtp, CREF(tstring) name)
 {
 	STL_FOR_ALL_CONST(RDOResType::ParamList::List, m_rtp.m_params, param_it)
 	{
-		rdoRuntime::RDOValue value(*param_it->type());
+		rdoRuntime::RDOValue value(param_it->type()->type()->type());
 		if (param_it->hasDefault())
 		{
 			value = param_it->getDefault();

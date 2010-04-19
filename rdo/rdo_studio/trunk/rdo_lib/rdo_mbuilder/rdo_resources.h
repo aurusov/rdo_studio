@@ -11,6 +11,7 @@
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/rdo_type_param.h"
 
 namespace rdoParse
 {
@@ -124,12 +125,12 @@ public:
 	friend class RDOResType;
 	public:
 		Param(CREF(rdoParse::LPRDORTPParam) param);
-		Param(CREF(tstring) name, CPTR(rdoRuntime::RDOType) type, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
+		Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
 		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def);
 		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
 
-		CPTR(rdoRuntime::RDOType)          type() const       { return m_type;             }
-		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->typeID();   }
+		CREF(rdoParse::LPRDOTypeParam)     type() const       { return m_type;                   }
+		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->type()->typeID(); }
 //		tstring                            typeStr() const    { return m_type->asString(); }
 
 		rsint                         id() const         { return m_id;  }
@@ -146,13 +147,13 @@ public:
 		CREF(rdoRuntime::RDOEnumType)  getEnum() const
 		{
 			ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
-			return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type);
+			return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(&type()->type()->type());
 		}
 
 		rbool operator== (CREF(Param) param) const;
 
 	private:
-		CPTR(rdoRuntime::RDOType)  m_type;
+		rdoParse::LPRDOTypeParam   m_type;
 		rdoRuntime::RDOValue       m_min;
 		rdoRuntime::RDOValue       m_max;
 		rdoRuntime::RDOValue       m_default;
