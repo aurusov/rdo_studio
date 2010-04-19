@@ -796,7 +796,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 		LPRDOTypeParam funcParam = func->getParams()[i]->getType();
 		PTR(RDOFUNArithm) arithm = params[i];
 		arithm->checkParamType(funcParam);
-		funcCall->addParameter(funcParam->type()->calc_cast(arithm->createCalc(), arithm->type()));
+		funcCall->addParameter(funcParam->type()->calc_cast(arithm->createCalc(funcParam), arithm->type()));
 	}
 
 	RDOFUNArithm* res = new RDOFUNArithm( this, RDOValue(func->getType()->type(), src_pos()), funcCall );
