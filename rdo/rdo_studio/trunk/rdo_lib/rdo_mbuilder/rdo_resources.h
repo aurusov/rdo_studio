@@ -8,6 +8,7 @@
 #include <list>
 #include "rdo_common/rdodebug.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
+#include "rdo_lib/rdo_runtime/rdo_enum.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
@@ -17,7 +18,6 @@ namespace rdoParse
 {
 class RDOParser;
 class RDORTPResType;
-class RDORTPParam;
 class RDORSSResource;
 }
 
@@ -152,6 +152,8 @@ public:
 
 		rbool operator== (CREF(Param) param) const;
 
+		static rdoParse::LPRDOTypeParam createEnumType(CREF(rdoRuntime::RDOEnumType) enumType, CREF(tstring) default);
+
 	private:
 		rdoParse::LPRDOTypeParam   m_type;
 		rdoRuntime::RDOValue       m_min;
@@ -188,7 +190,7 @@ public:
 	CREF(RDOResType)  getType() const { return m_rtp; }
 	rsint             getID  () const { return m_id;  }
 
-	typedef std::map< tstring, rdoRuntime::RDOValue > Params;
+	typedef std::map< tstring, rdoParse::RDOValue > Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
 	Params::const_iterator end  () const { return m_params.end();   }

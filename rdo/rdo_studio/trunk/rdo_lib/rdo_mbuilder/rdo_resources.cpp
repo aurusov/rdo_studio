@@ -180,6 +180,16 @@ rbool RDOResType::Param::operator== (CREF(Param) param) const
 	return true;
 }
 
+rdoParse::LPRDOTypeParam RDOResType::Param::createEnumType(CREF(rdoRuntime::RDOEnumType) enumType, CREF(tstring) default)
+{
+	rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create(enumType);
+	ASSERT(pEnum)
+	rdoParse::RDOValue defaultValue = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(default).value(), pEnum, rdoParse::RDOParserSrcInfo(default));
+	rdoParse::LPRDOTypeParam pType = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum, defaultValue, rdoParse::RDOParserSrcInfo());
+	ASSERT(pType);
+	return pType;
+}
+
 // --------------------------------------------------------------------
 // ---------- RDOResTypeList
 // --------------------------------------------------------------------
@@ -241,13 +251,8 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 			}
 			case rdoRuntime::RDOType::t_enum:
 			{
-				rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create();
-				STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType, param->getEnum(), enum_it)
-				{
-					pEnum->add(rdoParse::RDOValue::getIdentificator(*enum_it));
-				}
-				rdoRuntime::RDOValue default = param->hasDefault() ? param->getDefault() : rdoRuntime::RDOValue();
-				pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum, default, rdoParse::RDOParserSrcInfo());
+				tstring default = param->hasDefault() ? param->getDefault().getAsString() : _T("");
+				pParamType = RDOResType::Param::createEnumType(param->getEnum(), default);
 				break;
 			}
 			default:
@@ -284,7 +289,7 @@ RDOResource::RDOResource(CREF(rdoParse::RDORSSResource) rss)
 		ruint index = 0;
 		STL_FOR_ALL_CONST(RDOResType::ParamList::List, m_rtp.m_params, param_it)
 		{
-			m_params[param_it->name()] = rss.params()[index];
+			m_params[param_it->name()] = rss.params()[index].param();
 			index++;
 		}
 	}

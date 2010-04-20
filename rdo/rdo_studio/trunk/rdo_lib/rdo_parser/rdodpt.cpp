@@ -607,7 +607,15 @@ rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, con
 	// Создадим тип ресурса
 	rdoMBuilder::RDOResType rtp( rtp_name );
 	// Создадим параметр перечислимого типа - "Состояние"
-	rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnumType(parser->runtime(), rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
+	LPRDOTypeParam pEnum = rdoMBuilder::RDOResType::Param::createEnumType(rdoRuntime::RDOEnumType(parser->runtime(), rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy)), rtp_state_free);
+	ASSERT(pEnum);
+	rtp.m_params.append(
+		rdoMBuilder::RDOResType::Param(
+			rtp_param_name,
+			pEnum,
+			rtp_state_free
+		)
+	);
 	// Добавим тип ресурса
 	if ( !rtpList.append( rtp ) )
 	{
