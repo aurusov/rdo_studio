@@ -27,6 +27,16 @@ RDOEnumType::RDOEnumType()
 	m_type = new rdoRuntime::RDOEnumType(RDOParser::s_parser()->runtime());
 }
 
+RDOEnumType::RDOEnumType(CREF(rdoRuntime::RDOEnumType) enumType)
+	: RDOType(&rdoRuntime::g_unknow)
+{
+	m_type = new rdoRuntime::RDOEnumType(RDOParser::s_parser()->runtime());
+	STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType::Enums, enumType, it)
+	{
+		__enum()->add(*it);
+	}
+}
+
 RDOEnumType::~RDOEnumType()
 {
 //	delete m_type;

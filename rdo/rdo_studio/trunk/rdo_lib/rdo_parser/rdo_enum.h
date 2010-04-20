@@ -48,6 +48,7 @@ public:
 
 private:
 	RDOEnumType         ();
+	RDOEnumType         (CREF(rdoRuntime::RDOEnumType) enumType);
 	virtual ~RDOEnumType();
 
 	PTR(rdoRuntime::RDOEnumType) __enum() const { return static_cast<PTR(rdoRuntime::RDOEnumType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
