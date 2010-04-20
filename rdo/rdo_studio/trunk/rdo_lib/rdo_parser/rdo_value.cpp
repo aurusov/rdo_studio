@@ -26,7 +26,12 @@ RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_
 	: RDOParserSrcInfo(src_info                                   )
 	, m_value         (value                                      )
 	, m_type          (RDOType::getTypeByID(value.type().typeID()))
-{}
+{
+	if (src_text().empty())
+	{
+		setSrcText(m_value.getAsString());
+	}
+}
 
 RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
