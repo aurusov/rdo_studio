@@ -27,7 +27,22 @@ class RDORTPParam;
 class RDORSSResource: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	typedef std::vector< rdoRuntime::RDOValue > Params;
+	class Param
+	{
+	public:
+		explicit Param(CREF(RDOValue) value)
+			: m_value(value)
+		{}
+
+		CREF(RDOValue) param() const
+		{
+			return m_value;
+		}
+
+	private:
+		RDOValue m_value;
+	};
+	typedef std::vector<Param> Params;
 	enum { UNDEFINED_ID = ~0 };
 
 	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id = UNDEFINED_ID );

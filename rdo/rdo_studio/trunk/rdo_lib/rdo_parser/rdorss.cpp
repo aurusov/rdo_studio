@@ -56,12 +56,12 @@ void RDORSSResource::addParam( const RDOValue& param )
 				parser()->error().push_only((*m_currParam)->getParamType()->src_info(), _T("См. описание параметра"));
 				parser()->error().push_done();
 			}
-			m_params.push_back((*m_currParam)->getDefault().value());
+			m_params.push_back(Param((*m_currParam)->getDefault()));
 			m_currParam++;
 		}
 		else
 		{
-			m_params.push_back((*m_currParam)->getParamType()->value_cast(param).value());
+			m_params.push_back(Param((*m_currParam)->getParamType()->value_cast(param)));
 			m_currParam++;
 		}
 	}
@@ -78,7 +78,13 @@ bool RDORSSResource::defined() const
 
 rdoRuntime::RDOCalc* RDORSSResource::createCalc()
 {
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateNumberedResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getID(), getType()->isPermanent() );
+	std::vector<rdoRuntime::RDOValue> paramList;
+	STL_FOR_ALL_CONST(Params, params(), it)
+	{
+		paramList.push_back(it->param().value());
+	}
+	
+	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateNumberedResource( parser()->runtime(), getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent() );
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;
@@ -94,7 +100,13 @@ RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _s
 
 rdoRuntime::RDOCalc* RDOPROCResource::createCalc()
 {
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateProcessResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getID(), getType()->isPermanent() );
+	std::vector<rdoRuntime::RDOValue> paramList;
+	STL_FOR_ALL_CONST(Params, params(), it)
+	{
+		paramList.push_back(it->param().value());
+	}
+
+	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateProcessResource( parser()->runtime(), getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent() );
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;
