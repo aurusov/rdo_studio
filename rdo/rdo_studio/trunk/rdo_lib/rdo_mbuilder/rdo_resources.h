@@ -12,6 +12,7 @@
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 
 namespace rdoParse
@@ -124,10 +125,12 @@ public:
 	MBUILDER_OBJECT(Param)
 	friend class RDOResType;
 	public:
-		Param(CREF(rdoParse::LPRDORTPParam) param);
-		Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) def = rdoParse::g_unknow.lp_cast<rdoParse::LPRDOType>());
-		Param(CREF(tstring) name, CREF(rdoParse::RDOValue) def);
-		Param(CREF(tstring) name, CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max, CREF(rdoParse::RDOValue) def = rdoParse::g_unknow.lp_cast<rdoParse::LPRDOType>());
+		explicit Param(CREF(rdoParse::LPRDORTPParam) param);
+		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__int>)  type, CREF(rdoParse::RDOValue) def = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) def = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) def = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoParse::RDOValue) def);
+		explicit Param(CREF(tstring) name, CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max, CREF(rdoParse::RDOValue) def = rdoParse::g_unknow.lp_cast<rdoParse::LPRDOType>());
 
 		CREF(rdoParse::LPRDOTypeParam)     type() const       { return m_type;                   }
 		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->type()->typeID(); }
@@ -160,6 +163,13 @@ public:
 		rdoParse::RDOValue         m_max;
 		rdoParse::RDOValue         m_default;
 		rsint                      m_id;
+
+		template <class T>
+		void initType(CREF(T) type)
+		{
+			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type, m_default, rdoParse::RDOParserSrcInfo());
+			ASSERT(m_type);
+		}
 	};
 	class ParamList: public RDOList<Param>
 	{

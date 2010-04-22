@@ -4,6 +4,7 @@
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_ie.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
@@ -484,17 +485,17 @@ rdoMBuilder::RDOResType RDOPROCBlockForQueue::createType( RDOParser *parser, con
 	// "длина_очереди"
 	std::string rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
 	// значение длины очереди по умолчанию
-	rdoRuntime::RDOValue def = rdoRuntime::RDOValue( int (rdoRuntime::RDOPROCQueue::getDefaultValue()) );
+	RDOValue default(rdoRuntime::RDOPROCQueue::getDefaultValue());
 	// Получили список всех типов ресурсов
 	rdoMBuilder::RDOResTypeList rtpList( parser );
 	// Создадим тип ресурса
 	rdoMBuilder::RDOResType rtp( rtp_name );
 	// Создадим параметр типа integer
-	rtp.m_params.append( rdoMBuilder::RDOResType::Param( rtp_param_name, def ));
+	rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, g_int, default));
 	// Добавим тип ресурса
-	if ( !rtpList.append( rtp ) )
+	if (!rtpList.append( rtp ))
 	{
-		parser->error().error( info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+		parser->error().error(info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()));
 	}
 	return rtp;
 }
@@ -567,7 +568,7 @@ bool RDOPROCBlockForSeize::checkType( RDOParser *parser, rdoMBuilder::RDOResType
 		parser->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа"), rtp.name().c_str(), rtp_param_name.c_str()));
 
 	// Теперь проверим сами значения
-	if (!param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy))
+	if (!param.getEnum()->getEnums().exist(rtp_state_free) || !param.getEnum()->getEnums().exist(rtp_state_buzy))
 		parser->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s"), rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str()));
 
 	return true;
@@ -613,7 +614,7 @@ rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, con
 		rdoMBuilder::RDOResType::Param(
 			rtp_param_name,
 			pEnum,
-			rtp_state_free
+			RDOValue(rtp_state_free)
 		)
 	);
 	// Добавим тип ресурса

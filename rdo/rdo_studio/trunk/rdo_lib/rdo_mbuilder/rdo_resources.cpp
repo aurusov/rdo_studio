@@ -140,9 +140,27 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type
 {
 	if (m_type->type()->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
 	{
-		ruint index = getEnum()->getEnums()->findEnum(def.getAsString());
-		m_default = rdoParse::RDOValue(getEnum(), def.getAsString());
+		//ruint index = getEnum()->getEnums()->findEnum(def.getAsString());
+		//m_default = rdoParse::RDOValue(getEnum(), def.getAsString());
 	}
+}
+
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__int>) type, CREF(rdoParse::RDOValue) def)
+	: m_name   (name)
+	, m_default(def )
+	, m_exist  (true)
+	, m_id     (-1  )
+{
+	initType(type);
+}
+
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) def)
+	: m_name   (name)
+	, m_default(def )
+	, m_exist  (true)
+	, m_id     (-1  )
+{
+	initType(type);
 }
 
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::RDOValue) def)
@@ -252,8 +270,8 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 			}
 			case rdoRuntime::RDOType::t_enum:
 			{
-				tstring default = param->hasDefault() ? param->getDefault().getAsString() : _T("");
-				pParamType = RDOResType::Param::createEnumType(param->getEnum(), default);
+				tstring default = param->hasDefault() ? param->getDefault().value().getAsString() : _T("");
+				pParamType = RDOResType::Param::createEnumType(param->getEnum()->getEnums(), default);
 				break;
 			}
 			default:
@@ -351,7 +369,7 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 {
 	STL_FOR_ALL_CONST(RDOResType::ParamList::List, m_rtp.m_params, param_it)
 	{
-		rdoParse::RDOValue value(param_it->type()->type()->type());
+		rdoParse::RDOValue value(param_it->type()->type());
 		if (param_it->hasDefault())
 		{
 			value = param_it->getDefault();
