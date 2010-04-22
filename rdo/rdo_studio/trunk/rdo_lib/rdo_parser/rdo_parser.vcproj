@@ -3316,6 +3316,10 @@
 				RelativePath=".\rdo_value.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdo_value.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".type"

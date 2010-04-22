@@ -22,28 +22,22 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 
 // Для атомарных типов, иначе throw в RDOType::getTypeByID
-RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info                                   )
-	, m_value         (value                                      )
-	, m_type          (RDOType::getTypeByID(value.type().typeID()))
-{
-	if (src_text().empty())
-	{
-		setSrcText(m_value.getAsString());
-	}
-}
+//RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info)
+//	: RDOParserSrcInfo(src_info                                   )
+//	, m_value         (value                                      )
+//	, m_type          (RDOType::getTypeByID(value.type().typeID()))
+//{
+//	if (src_text().empty())
+//	{
+//		setSrcText(m_value.getAsString());
+//	}
+//}
 
 RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 	, m_type          (type    )
 {}
-
-//RDOValue(CREF(RDOValue) value)
-//	: RDOParserSrcInfo(value.src_info())
-//	, m_value         (value.value()   )
-//	, m_type          (value.type()    )
-//{}
 
 RDOValue::RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info    )

@@ -41,19 +41,19 @@ DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
-LPRDOType RDOType::getTypeByID(rdoRuntime::RDOType::TypeID typeID)
-{
-	switch (typeID)
-	{
-		case rdoRuntime::RDOType::t_unknow       : return g_unknow;
-		case rdoRuntime::RDOType::t_int          : return g_int;
-		case rdoRuntime::RDOType::t_real         : return g_real;
-		case rdoRuntime::RDOType::t_bool         : return g_bool;
-		case rdoRuntime::RDOType::t_string       : return g_string;
-		case rdoRuntime::RDOType::t_identificator: return g_identificator;
-	}
-	throw rdoRuntime::RDOTypeException();
-}
+//LPRDOType RDOType::getTypeByID(rdoRuntime::RDOType::TypeID typeID)
+//{
+//	switch (typeID)
+//	{
+//		case rdoRuntime::RDOType::t_unknow       : return g_unknow;
+//		case rdoRuntime::RDOType::t_int          : return g_int;
+//		case rdoRuntime::RDOType::t_real         : return g_real;
+//		case rdoRuntime::RDOType::t_bool         : return g_bool;
+//		case rdoRuntime::RDOType::t_string       : return g_string;
+//		case rdoRuntime::RDOType::t_identificator: return g_identificator;
+//	}
+//	throw rdoRuntime::RDOTypeException();
+//}
 
 //! RDOType__unknow
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -104,7 +104,7 @@ RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getInt(), from.src_info());
+		toValue = RDOValue(from->getInt(), g_int, from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -153,7 +153,7 @@ RDOValue RDOType__real::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getDouble(), from.src_info());
+		toValue = RDOValue(from->getDouble(), g_real, from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -197,7 +197,7 @@ RDOValue RDOType__string::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo)
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getString(), from.src_info());
+		toValue = RDOValue(from->getString(), g_string, from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -267,7 +267,7 @@ RDOValue RDOType__bool::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getBool(), from.src_info());
+		toValue = RDOValue(from->getBool(), g_bool, from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}

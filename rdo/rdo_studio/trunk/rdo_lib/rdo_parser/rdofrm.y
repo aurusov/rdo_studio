@@ -386,9 +386,9 @@ frm_color:	RDO_color_transparent {
 				RDOFUNArithm* red   = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($2) );
 				RDOFUNArithm* green = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($3) );
 				RDOFUNArithm* blue  = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($4) );
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdoRuntime::RDOValue(0), rdoRuntime::RDOValue(255), RDOParserSrcInfo());
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, rdoRuntime::RDOValue(0), RDOParserSrcInfo());
+				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
 				red->checkParamType  (pType);
 				green->checkParamType(pType);
 				blue->checkParamType (pType);
@@ -407,9 +407,9 @@ frm_color:	RDO_color_transparent {
 				RDOFUNArithm* red   = reinterpret_cast<RDOFUNArithm*>($2);
 				RDOFUNArithm* green = reinterpret_cast<RDOFUNArithm*>($4);
 				RDOFUNArithm* blue  = reinterpret_cast<RDOFUNArithm*>($6);
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdoRuntime::RDOValue(0), rdoRuntime::RDOValue(255), RDOParserSrcInfo());
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, rdoRuntime::RDOValue(0), RDOParserSrcInfo());
+				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
 				red->checkParamType  (pType);
 				green->checkParamType(pType);
 				blue->checkParamType (pType);

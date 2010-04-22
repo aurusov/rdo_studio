@@ -29,13 +29,12 @@ class RDOValue: public RDOParserSrcInfo
 {
 public:
 	// Для атомарных типов, иначе throw в RDOType::getTypeByID
-	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
+//	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
+	explicit RDOValue(CREF(rsint) value);
+	explicit RDOValue(CREF(ruint) value);
+
 	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
-	RDOValue(CREF(RDOValue) value)
-		: RDOParserSrcInfo(value.src_info())
-		, m_value         (value.value()   )
-		, m_type          (value.type()    )
-	{}
+	RDOValue(CREF(RDOValue) value);
 	RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
 	// Для t_identificator известно только имя, но не тип
 	RDOValue(CREF(RDOParserSrcInfo) src_info);
@@ -58,5 +57,7 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#include "rdo_lib/rdo_parser/rdo_value.inl"
 
 #endif //! _RDOPARSER_VALUE_H_

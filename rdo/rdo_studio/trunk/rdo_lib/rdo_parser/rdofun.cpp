@@ -697,7 +697,7 @@ void RDOFUNArithm::checkParamType(CREF(LPRDOTypeParam) pType)
 	if (calc_const)
 	{
 		rdoRuntime::RDOValue value = calc_const->calcValue(parser()->runtime());
-		pType->value_cast(RDOValue(value, src_info()));
+		pType->value_cast(RDOValue(value, type(), src_info()));
 	}
 }
 
@@ -1161,7 +1161,7 @@ rdoRuntime::RDOCalcConst* RDOFUNFunctionListElementIdentif::createResultCalc(CRE
 // ----------------------------------------------------------------------------
 rdoRuntime::RDOCalcConst* RDOFUNFunctionListElementReal::createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const
 {
-	rdoRuntime::RDOCalcConst* const_calc = new rdoRuntime::RDOCalcConst( parser()->runtime(), retType->value_cast(RDOValue(value, _src_pos)).value() );
+	rdoRuntime::RDOCalcConst* const_calc = new rdoRuntime::RDOCalcConst( parser()->runtime(), retType->value_cast(RDOValue(value, g_real, _src_pos)).value() );
 	const_calc->setSrcInfo( _src_pos );
 	return const_calc;
 }
@@ -1171,7 +1171,7 @@ rdoRuntime::RDOCalcConst* RDOFUNFunctionListElementReal::createResultCalc(CREF(L
 // ----------------------------------------------------------------------------
 rdoRuntime::RDOCalcConst* RDOFUNFunctionListElementInt::createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const
 {
-	rdoRuntime::RDOCalcConst* const_calc = new rdoRuntime::RDOCalcConst( parser()->runtime(), retType->value_cast(RDOValue(value, _src_pos)).value() );
+	rdoRuntime::RDOCalcConst* const_calc = new rdoRuntime::RDOCalcConst( parser()->runtime(), retType->value_cast(RDOValue(value, g_int, _src_pos)).value() );
 	const_calc->setSrcInfo( _src_pos );
 	return const_calc;
 }

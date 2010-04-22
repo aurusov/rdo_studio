@@ -68,7 +68,7 @@ public:
 
 	rdoRuntime::RDOType::TypeID    typeID() const { return type().typeID(); }
 
-	static LPRDOType getTypeByID(rdoRuntime::RDOType::TypeID typeID);
+//	static LPRDOType getTypeByID(rdoRuntime::RDOType::TypeID typeID);
 
 	virtual PTR(rdoRuntime::RDOCalc) calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
 	{
