@@ -125,29 +125,29 @@ public:
 	friend class RDOResType;
 	public:
 		Param(CREF(rdoParse::LPRDORTPParam) param);
-		Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
-		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def);
-		Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def = rdoRuntime::g_unknow);
+		Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) def = rdoParse::g_unknow.lp_cast<rdoParse::LPRDOType>());
+		Param(CREF(tstring) name, CREF(rdoParse::RDOValue) def);
+		Param(CREF(tstring) name, CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max, CREF(rdoParse::RDOValue) def = rdoParse::g_unknow.lp_cast<rdoParse::LPRDOType>());
 
 		CREF(rdoParse::LPRDOTypeParam)     type() const       { return m_type;                   }
 		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->type()->typeID(); }
 //		tstring                            typeStr() const    { return m_type->asString(); }
 
-		rsint                         id() const         { return m_id;  }
+		rsint                     id() const          { return m_id;  }
 
-		rbool                       hasDiap() const     { return m_min.typeID() != rdoRuntime::RDOType::t_unknow && m_max.typeID() != rdoRuntime::RDOType::t_unknow; }
-		CREF(rdoRuntime::RDOValue)  getMin () const     { return m_min; }
-		CREF(rdoRuntime::RDOValue)  getMax () const     { return m_max; }
-		void                        setDiap(CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max);
+		rbool                     hasDiap() const     { return m_min.typeID() != rdoRuntime::RDOType::t_unknow && m_max.typeID() != rdoRuntime::RDOType::t_unknow; }
+		CREF(rdoParse::RDOValue)  getMin () const     { return m_min; }
+		CREF(rdoParse::RDOValue)  getMax () const     { return m_max; }
+		void                      setDiap(CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max);
 
-		rbool                       hasDefault() const { return m_default.typeID() != rdoRuntime::RDOType::t_unknow; }
-		CREF(rdoRuntime::RDOValue)  getDefault() const { return m_default; }
-		void                        setDefault(CREF(rdoRuntime::RDOValue) def);
+		rbool                     hasDefault() const  { return m_default.typeID() != rdoRuntime::RDOType::t_unknow; }
+		CREF(rdoParse::RDOValue)  getDefault() const  { return m_default; }
+		void                      setDefault(CREF(rdoParse::RDOValue) def);
 
-		CREF(rdoRuntime::RDOEnumType)  getEnum() const
+		rdoParse::LPRDOEnumType   getEnum() const
 		{
 			ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
-			return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(&type()->type()->type());
+			return type()->type().lp_cast<rdoParse::LPRDOEnumType>();
 		}
 
 		rbool operator== (CREF(Param) param) const;
@@ -156,9 +156,9 @@ public:
 
 	private:
 		rdoParse::LPRDOTypeParam   m_type;
-		rdoRuntime::RDOValue       m_min;
-		rdoRuntime::RDOValue       m_max;
-		rdoRuntime::RDOValue       m_default;
+		rdoParse::RDOValue         m_min;
+		rdoParse::RDOValue         m_max;
+		rdoParse::RDOValue         m_default;
 		rsint                      m_id;
 	};
 	class ParamList: public RDOList<Param>

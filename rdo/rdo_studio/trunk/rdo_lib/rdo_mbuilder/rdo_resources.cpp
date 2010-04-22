@@ -90,8 +90,8 @@ RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
 			if (dynamic_cast<PTR(rdoParse::RDOTypeIntRange)>(param->getParamType()->type().get()))
 			{
 				rdoParse::LPRDOTypeIntRange pRange = param->getParamType()->type().lp_cast<rdoParse::LPRDOTypeIntRange>();
-				m_min = pRange->range()->getMin().value().getInt();
-				m_max = pRange->range()->getMax().value().getInt();
+				m_min = pRange->range()->getMin();
+				m_max = pRange->range()->getMax();
 			}
 			break;
 		}
@@ -100,15 +100,15 @@ RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
 			if (dynamic_cast<PTR(rdoParse::RDOTypeRealRange)>(param->getParamType()->type().get()))
 			{
 				rdoParse::LPRDOTypeRealRange pRange = param->getParamType()->type().lp_cast<rdoParse::LPRDOTypeRealRange>();
-				m_min = pRange->range()->getMin().value().getDouble();
-				m_max = pRange->range()->getMax().value().getDouble();
+				m_min = pRange->range()->getMin();
+				m_max = pRange->range()->getMax();
 			}
 			break;
 		}
 	}
 	if (param->getParamType()->default().defined())
 	{
-		m_default = param->getParamType()->default().value();
+		m_default = param->getParamType()->default();
 	}
 }
 
@@ -131,7 +131,7 @@ rbool RDOResType::ParamList::append(REF(Param) param)
 	return true;
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoRuntime::RDOValue) def)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) def)
 	: m_name   (name)
 	, m_type   (type)
 	, m_default(def )
@@ -140,20 +140,21 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type
 {
 	if (m_type->type()->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
 	{
-		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
+		ruint index = getEnum()->getEnums()->findEnum(def.getAsString());
+		m_default = rdoParse::RDOValue(getEnum(), def.getAsString());
 	}
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::RDOValue) def)
 	: m_name   (name)
 	, m_default(def )
 	, m_exist  (true)
 	, m_id     (-1  )
 {
-	m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::RDOType::getTypeByID(m_default.typeID()), m_default, rdoParse::RDOParserSrcInfo());
+//TODO переделка RDOValue m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::RDOType::getTypeByID(m_default.typeID()), m_default, rdoParse::RDOParserSrcInfo());
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max, CREF(rdoParse::RDOValue) def)
 	: m_name   (name)
 	, m_min    (min )
 	, m_max    (max )
@@ -161,16 +162,16 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CRE
 	, m_exist  (true)
 	, m_id     (-1  )
 {
-	m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::RDOType::getTypeByID(m_min.typeID()), m_default, rdoParse::RDOParserSrcInfo());
+//TODO переделка RDOValue m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(rdoParse::RDOType::getTypeByID(m_min.typeID()), m_default, rdoParse::RDOParserSrcInfo());
 }
 
-void RDOResType::Param::setDiap(CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max)
+void RDOResType::Param::setDiap(CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max)
 {
 	m_min = min;
 	m_max = max;
 }
 
-void RDOResType::Param::setDefault(CREF(rdoRuntime::RDOValue) def)
+void RDOResType::Param::setDefault(CREF(rdoParse::RDOValue) def)
 {
 	m_default = def;
 }
@@ -221,7 +222,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 		{
 			case rdoRuntime::RDOType::t_int:
 			{
-				rdoRuntime::RDOValue default = param->hasDefault() ? param->getDefault() : rdoRuntime::RDOValue();
+				rdoParse::RDOValue default = param->hasDefault() ? param->getDefault() : rdoParse::RDOValue();
 				if (param->hasDiap())
 				{
 					rdoParse::LPRDOTypeRangeRange pRange    = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
@@ -236,7 +237,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 			}
 			case rdoRuntime::RDOType::t_real:
 			{
-				rdoRuntime::RDOValue default = param->hasDefault() ? param->getDefault() : rdoRuntime::RDOValue();
+				rdoParse::RDOValue default = param->hasDefault() ? param->getDefault() : rdoParse::RDOValue();
 				if (param->hasDiap())
 				{
 					rdoParse::LPRDOTypeRangeRange pRange     = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
@@ -342,7 +343,7 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toPars
 // --------------------------------------------------------------------
 // ---- Инициализация *нового* ресурса
 // --------------------------------------------------------------------
-RDOResource::RDOResource(CREF( RDOResType) rtp, CREF(tstring) name)
+RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 	: m_name (name                                  )
 	, m_rtp  (rtp                                   )
 	, m_exist(false                                 )
@@ -350,7 +351,7 @@ RDOResource::RDOResource(CREF( RDOResType) rtp, CREF(tstring) name)
 {
 	STL_FOR_ALL_CONST(RDOResType::ParamList::List, m_rtp.m_params, param_it)
 	{
-		rdoRuntime::RDOValue value(param_it->type()->type()->type());
+		rdoParse::RDOValue value(param_it->type()->type()->type());
 		if (param_it->hasDefault())
 		{
 			value = param_it->getDefault();
