@@ -89,6 +89,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 			rdoParse::g_error().push_done();
 			break;
 		}
+		case rdoRuntime::RDOType::t_string       :
 		case rdoRuntime::RDOType::t_identificator:
 		{
 			if (getEnums().exist(from_src_info.src_text()))
@@ -116,23 +117,22 @@ RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_
 	{
 		switch (from.typeID())
 		{
-			case rdoRuntime::RDOType::t_identificator: {
-				toValue = (getEnums().findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
-					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), pEnum, from.src_info()) :
-					RDOValue(g_unknow, from.src_info());
-				break;
-			}
-			case rdoRuntime::RDOType::t_string: {
-				toValue = (getEnums().findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END) ?
-					RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), pEnum, from.src_info()) :
-					RDOValue(g_unknow, from.src_info());
-				break;
-			}
-			case rdoRuntime::RDOType::t_enum: {
-				if (m_type == &from.type()->type())
-					toValue = from;
-				break;
-			}
+		case rdoRuntime::RDOType::t_identificator:
+			toValue = (getEnums().findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
+				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), pEnum, from.src_info()) :
+				RDOValue(g_unknow, from.src_info());
+			break;
+
+		case rdoRuntime::RDOType::t_string:
+			toValue = (getEnums().findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END) ?
+				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), pEnum, from.src_info()) :
+				RDOValue(g_unknow, from.src_info());
+			break;
+
+		case rdoRuntime::RDOType::t_enum:
+			if (m_type == &from.type()->type())
+				toValue = from;
+			break;
 		}
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
@@ -163,11 +163,11 @@ void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const
 
 void RDOEnumType::add(CREF(RDOValue) next)
 {
-	if (getEnums().findEnum(next->getIdentificator()) != rdoRuntime::RDOEnumType::END)
+	if (getEnums().findEnum(next->getAsString()) != rdoRuntime::RDOEnumType::END)
 	{
 		rdoParse::g_error().error(next.src_info(), rdo::format(_T("«начение перечислимого типа уже существует: %s"), next.src_text().c_str()));
 	}
-	__enum()->add(next->getIdentificator());
+	__enum()->add(next->getAsString());
 }
 
 //rdoRuntime::RDOValue RDOEnumType::findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const
