@@ -112,7 +112,7 @@ RDOPMDWatchTemp::RDOPMDWatchTemp( RDOParser* _parser, const RDOParserSrcInfo& _s
 RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info ):
 	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
-	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, _res_type_src_info.src_text() );
+	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(_res_type_src_info.src_text()) );
 	endOfCreation(F(rdoRuntime::RDOPMDWatchQuant)::create(parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber()));
 }
 
@@ -138,7 +138,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info ):
 	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
-	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, _res_type_src_info.src_text() );
+	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(_res_type_src_info.src_text()) );
 	endOfCreation(F(rdoRuntime::RDOPMDWatchValue)::create(parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber()));
 }
 

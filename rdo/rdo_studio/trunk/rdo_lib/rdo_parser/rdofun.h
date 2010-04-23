@@ -609,7 +609,7 @@ private:
 
 public:
 	RDOFUNSelect( RDOParser* _parser, const RDOParserSrcInfo& _res_info ):
-		RDOFUNGroup( _parser, _res_info.src_text() ),
+		RDOFUNGroup( _parser, RDOParserSrcInfo(_res_info.src_text()) ),
 		select( NULL )
 	{
 	}

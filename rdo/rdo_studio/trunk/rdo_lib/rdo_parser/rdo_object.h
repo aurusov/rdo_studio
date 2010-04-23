@@ -79,7 +79,7 @@ public:
 	RDOParserSrcInfo(CREF(YYLTYPE) pos);
 	RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo) info);
 	RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo::Position) pos);
-	RDOParserSrcInfo(CREF(tstring) text);
+	explicit RDOParserSrcInfo(CREF(tstring) text);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(tstring) text);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, rbool first_align = false);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(tstring) text);
