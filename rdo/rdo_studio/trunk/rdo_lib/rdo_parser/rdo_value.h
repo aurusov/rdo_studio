@@ -28,17 +28,18 @@ DECLARE_POINTER(RDOType);
 class RDOValue: public RDOParserSrcInfo
 {
 public:
-	explicit RDOValue(CREF(rsint)  value);
-	explicit RDOValue(CREF(ruint)  value);
-	explicit RDOValue(CREF(double) value);
+	explicit RDOValue(CREF(rsint)   value);
+	explicit RDOValue(CREF(ruint)   value);
+	explicit RDOValue(CREF(double)  value);
+	explicit RDOValue(CREF(tstring) value);
 
-	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
-	RDOValue(CREF(RDOValue) value);
-	RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
+	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
+	         RDOValue(CREF(RDOValue) value);
+	         RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
 	// Для t_identificator известно только имя, но не тип
-	RDOValue(CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(RDOParserSrcInfo) src_info);
 	// Неопределенный тип
-	RDOValue();
+	         RDOValue();
 
 	CREF(LPRDOType)                   type() const;
 	rdoRuntime::RDOType::TypeID     typeID() const;
