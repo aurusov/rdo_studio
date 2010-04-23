@@ -1092,14 +1092,14 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 
 					if ( param_it->hasDiap() )
 					{
-						my_rtpList[i].m_param[j].m_min_int = param_it->getMin().getInt();
-						my_rtpList[i].m_param[j].m_max_int = param_it->getMax().getInt();
+						my_rtpList[i].m_param[j].m_min_int = param_it->getMin()->getInt();
+						my_rtpList[i].m_param[j].m_max_int = param_it->getMax()->getInt();
 						my_rtpList[i].m_param[j].m_diap_int = 1;
 
 					}
 					if ( param_it->hasDefault() )
 					{
-						my_rtpList[i].m_param[j].m_default_int = param_it->getDefault().getInt();
+						my_rtpList[i].m_param[j].m_default_int = param_it->getDefault()->getInt();
 						my_rtpList[i].m_param[j].m_default_int_ch = 1;
 					}
 					break;
@@ -1109,14 +1109,14 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 
 					if ( param_it->hasDiap() )
 					{
-						my_rtpList[i].m_param[j].m_min_double = param_it->getMin().getDouble();
-						my_rtpList[i].m_param[j].m_max_double = param_it->getMax().getDouble();
+						my_rtpList[i].m_param[j].m_min_double = param_it->getMin()->getDouble();
+						my_rtpList[i].m_param[j].m_max_double = param_it->getMax()->getDouble();
 						my_rtpList[i].m_param[j].m_diap_double = 1;
 
 					}
 					if ( param_it->hasDefault() )
 					{
-						my_rtpList[i].m_param[j].m_default_double = param_it->getDefault().getDouble();
+						my_rtpList[i].m_param[j].m_default_double = param_it->getDefault()->getDouble();
 						my_rtpList[i].m_param[j].m_default_double_ch = 1;
 					}
 					break;
@@ -1125,11 +1125,11 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::enum_type;
 					
 					//Считаем количество значений перечислимого типа
-					rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum().begin();
+					rdoRuntime::RDOEnumType::CIterator enum_it = param_it->getEnum()->getEnums().begin();
 					
 					CORBA::Long k = 0;
 
-					while ( enum_it != param_it->getEnum().end() )
+					while ( enum_it != param_it->getEnum()->getEnums().end() )
 					{
 						k++;					
 						enum_it++;
@@ -1138,10 +1138,10 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					//Выделяем память под последовательность значений j-го параметра перечислимого типа i-го типа ресурсов
 					my_rtpList[i].m_param[j].m_var_enum.length(k);
 					
-					enum_it = param_it->getEnum().begin();
+					enum_it = param_it->getEnum()->getEnums().begin();
 					k = 0;
 
-					while ( enum_it != param_it->getEnum().end() )
+					while ( enum_it != param_it->getEnum()->getEnums().end() )
 					{
 						my_rtpList[i].m_param[j].m_var_enum[k] = CORBA::string_dup( enum_it->c_str() );
 						enum_it++;
@@ -1150,7 +1150,7 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					
 					if ( param_it->hasDefault() )
 					{
-						my_rtpList[i].m_param[j].m_default_enum = CORBA::string_dup( param_it->getDefault().getAsString().c_str() );
+						my_rtpList[i].m_param[j].m_default_enum = CORBA::string_dup( param_it->getDefault()->getAsString().c_str() );
 						my_rtpList[i].m_param[j].m_default_enum_ch = 1;
 					}
 
@@ -1233,21 +1233,21 @@ void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList
 			{
 				case rdoRuntime::RDOType::t_int:{
 					
-					my_rssList[i].m_param[j].m_int = param_it->second.getInt();
+					my_rssList[i].m_param[j].m_int = param_it->second->getInt();
 					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::int_type;
 
 					break;
 				}
 				case rdoRuntime::RDOType::t_real:{
 
-					my_rssList[i].m_param[j].m_double = param_it->second.getDouble();
+					my_rssList[i].m_param[j].m_double = param_it->second->getDouble();
 					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::double_type;
 					
 					break;
 				}
 				case rdoRuntime::RDOType::t_enum:{
 
-					my_rssList[i].m_param[j].m_enum = param_it->second.getAsString().c_str();
+					my_rssList[i].m_param[j].m_enum = param_it->second->getAsString().c_str();
 					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::enum_type;
 
 					break;

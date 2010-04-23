@@ -258,26 +258,26 @@ void RDOParserCorbaRTP::parse()
 					{
 					case rdoParse::RDOCorba::int_type:
 					{
-						rdoMBuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_int);
+						rdoMBuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), g_int);
 
 						if (my_rtpList[i].m_param[j].m_diap_int == 1)
-							par_int.setDiap(my_rtpList[i].m_param[j].m_min_int , my_rtpList[i].m_param[j].m_max_int);
+							par_int.setDiap(RDOValue(my_rtpList[i].m_param[j].m_min_int), RDOValue(my_rtpList[i].m_param[j].m_max_int));
 
 						if (my_rtpList[i].m_param[j].m_default_int_ch == 1)
-							par_int.setDefault(my_rtpList[i].m_param[j].m_default_int);
+							par_int.setDefault(RDOValue(my_rtpList[i].m_param[j].m_default_int));
 
 						rtp.m_params.append(par_int);
 						break;
 					}
 					case rdoParse::RDOCorba::double_type:
 					{
-						rdoMBuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in() , rdoRuntime::g_real);
+						rdoMBuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), g_real);
 
 						if (my_rtpList[i].m_param[j].m_diap_double == 1)
-							par_double.setDiap(my_rtpList[i].m_param[j].m_min_double , my_rtpList[i].m_param[j].m_max_double);
+							par_double.setDiap(RDOValue(my_rtpList[i].m_param[j].m_min_double), RDOValue(my_rtpList[i].m_param[j].m_max_double));
 
 						if (my_rtpList[i].m_param[j].m_default_double_ch == 1)
-							par_double.setDefault(my_rtpList[i].m_param[j].m_default_double);
+							par_double.setDefault(RDOValue(my_rtpList[i].m_param[j].m_default_double));
 
 						rtp.m_params.append(par_double);
 						break;
@@ -289,18 +289,18 @@ void RDOParserCorbaRTP::parse()
 
 						for (CORBA::Long k = 0; k < my_rtpList[i].m_param[j].m_var_enum_count ; k++)
 						{
-							enumList.push_back (my_rtpList[i].m_param[j].m_var_enum[k].pd_data);
+							enumList.push_back(my_rtpList[i].m_param[j].m_var_enum[k].pd_data);
 						}
 
 						//! —оздадим параметр перечислимого типа
-						rdoMBuilder::RDOResType::Param par_enum(my_rtpList[i].m_param[j].m_name.in() , new rdoRuntime::RDOEnumType(m_parser->runtime() , enumList));
+						rdoMBuilder::RDOResType::Param par_enum(my_rtpList[i].m_param[j].m_name.in(), enumList);
 
 						//ƒобавл€ем, если есть значение по умолчанию
 						if (my_rtpList[i].m_param[j].m_default_enum_ch == 1)
 						{
 							tstring temp_string;
 							temp_string = my_rtpList[i].m_param[j].m_default_enum.in();
-							par_enum.setDefault(temp_string);
+							par_enum.setDefault(RDOValue::getIdentificator(temp_string));
 						}
 						rtp.m_params.append(par_enum);
 						break;
@@ -331,17 +331,17 @@ void RDOParserCorbaRTP::parse()
 					tstring info = rdo::format("  param: %s: %s", param_it->name().c_str() , param_it->typeStr().c_str());
 					if (param_it->hasDiap())
 					{
-						info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
+						info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin()->getAsString().c_str(), param_it->getMax()->getAsString().c_str());
 					}
 					if (param_it->hasDefault())
 					{
-						info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
+						info = rdo::format("%s = %s", info.c_str(), param_it->getDefault()->getAsString().c_str());
 					}
 					TRACE1(_T("%s\n"), info.c_str());
 
 					if (param_it->typeID() ==  rdoRuntime::RDOType::t_enum)
 					{
-						STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType, param_it->getEnum(), enum_it)
+						STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType::Enums, param_it->getEnum()->getEnums(), enum_it)
 						{
 							TRACE1(_T("  - enum - %s\n"), enum_it->c_str());
 						}
@@ -378,16 +378,16 @@ void RDOParserCorbaRTP::parse()
 					switch (my_rssList[i].m_param[j].m_type)
 					{
 					case rdoParse::RDOCorba::int_type:
-						rss[my_rssList[i].m_param[j].m_name.in()] = my_rssList[i].m_param[j].m_int;
+						rss[my_rssList[i].m_param[j].m_name.in()] = RDOValue(my_rssList[i].m_param[j].m_int);
 						break;
 					case rdoParse::RDOCorba::double_type:
-						rss[my_rssList[i].m_param[j].m_name.in()] = my_rssList[i].m_param[j].m_double;
+						rss[my_rssList[i].m_param[j].m_name.in()] = RDOValue(my_rssList[i].m_param[j].m_double);
 						break;
 					case rdoParse::RDOCorba::enum_type:
 					{
 						tstring temp_string;
 						temp_string = my_rssList[i].m_param[j].m_enum.in();
-						rss[my_rssList[i].m_param[j].m_name.in()] = temp_string;
+						rss[my_rssList[i].m_param[j].m_name.in()] = RDOValue::getIdentificator(temp_string);
 						break;
 					}
 					default: break;
@@ -414,7 +414,7 @@ void RDOParserCorbaRTP::parse()
 				TRACE2(_T("rss.name = %s: %s\n"), rss_it->name().c_str(), rss_it->getType().name().c_str());
 				STL_FOR_ALL_CONST(rdoMBuilder::RDOResource::Params, (*rss_it), param_it)
 				{
-					TRACE2(_T("  %s = %s\n"), param_it->first.c_str(), param_it->second.getAsString().c_str());
+					TRACE2(_T("  %s = %s\n"), param_it->first.c_str(), param_it->second->getAsString().c_str());
 				}
 			}
 
