@@ -611,7 +611,7 @@ rdoMBuilder::RDOResType RDOPROCBlockForSeize::createType( RDOParser *parser, con
 	rtp.m_params.append(rdoMBuilder::RDOResType::Param(
 		rtp_param_name,
 		rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy),
-		RDOValue::getIdentificator(rtp_state_free)
+		RDOValue(rtp_state_free)
 	));
 	// Добавим тип ресурса
 	if ( !rtpList.append( rtp ) )
