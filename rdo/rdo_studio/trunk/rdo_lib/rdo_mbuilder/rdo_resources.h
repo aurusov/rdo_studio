@@ -126,15 +126,14 @@ public:
 	friend class RDOResType;
 	public:
 		explicit Param(CREF(rdoParse::LPRDORTPParam) param);
-		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__int>)  type, CREF(rdoParse::RDOValue) def = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) def = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) def = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdoParse::RDOValue) def);
-		explicit Param(CREF(tstring) name, CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max, CREF(rdoParse::RDOValue) def = rdoParse::g_unknow.lp_cast<rdoParse::LPRDOType>());
+		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__int>)  type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__real>) type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)          enums, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
 
 		CREF(rdoParse::LPRDOTypeParam)     type() const       { return m_type;                   }
 		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->type()->typeID(); }
-//		tstring                            typeStr() const    { return m_type->asString(); }
+		tstring                            typeStr() const    { return m_type->type()->name();   }
 
 		rsint                     id() const          { return m_id;  }
 
@@ -145,7 +144,7 @@ public:
 
 		rbool                     hasDefault() const  { return m_default.typeID() != rdoRuntime::RDOType::t_unknow; }
 		CREF(rdoParse::RDOValue)  getDefault() const  { return m_default; }
-		void                      setDefault(CREF(rdoParse::RDOValue) def);
+		void                      setDefault(CREF(rdoParse::RDOValue) default);
 
 		rdoParse::LPRDOEnumType   getEnum() const
 		{
@@ -154,8 +153,6 @@ public:
 		}
 
 		rbool operator== (CREF(Param) param) const;
-
-		static rdoParse::LPRDOTypeParam createEnumType(CREF(rdoRuntime::RDOEnumType) enumType, CREF(tstring) default);
 
 	private:
 		rdoParse::LPRDOTypeParam   m_type;
@@ -168,6 +165,19 @@ public:
 		void initType(CREF(T) type)
 		{
 			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type, m_default, rdoParse::RDOParserSrcInfo());
+			ASSERT(m_type);
+		}
+		template <>
+		void initType(CREF(rdoRuntime::RDOEnumType::Enums) enums)
+		{
+			rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create();
+			ASSERT(pEnum)
+			STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType::Enums, enums, it)
+			{
+				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
+			}
+			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_default.value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
+			m_type    = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum, m_default, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_type);
 		}
 	};
