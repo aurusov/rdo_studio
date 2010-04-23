@@ -560,7 +560,7 @@ bool RDOPROCBlockForSeize::checkType( RDOParser *parser, rdoMBuilder::RDOResType
 	// Тип найден, проверим его на наличие перечислимого параметра
 	if (!rtp.m_params[rtp_param_name].exist())
 		parser->error().error(info, rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
-	
+
 	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 	// Для начала проверим тип параметра
