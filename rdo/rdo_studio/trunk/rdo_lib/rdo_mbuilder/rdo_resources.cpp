@@ -249,7 +249,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 				return false;
 			}
 		}
-		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pRTP, pParamType, rdoParse::RDOParserSrcInfo());
+		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pRTP, pParamType, rdoParse::RDOParserSrcInfo(param->name()));
 		ASSERT(pParam);
 		pRTP->addParam(pParam);
 	}
