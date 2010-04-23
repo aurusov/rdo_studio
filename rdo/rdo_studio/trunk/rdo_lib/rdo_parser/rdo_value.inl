@@ -31,6 +31,11 @@ inline RDOValue::RDOValue(CREF(ruint) value)
 	, m_type (g_int)
 {}
 
+inline RDOValue::RDOValue(CREF(double) value)
+	: m_value(value )
+	, m_type (g_real)
+{}
+
 inline RDOValue::RDOValue(CREF(RDOValue) value)
 	: RDOParserSrcInfo(value.src_info())
 	, m_value         (value.value()   )

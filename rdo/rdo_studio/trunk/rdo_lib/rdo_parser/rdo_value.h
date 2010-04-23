@@ -28,10 +28,9 @@ DECLARE_POINTER(RDOType);
 class RDOValue: public RDOParserSrcInfo
 {
 public:
-	// Для атомарных типов, иначе throw в RDOType::getTypeByID
-//	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
-	explicit RDOValue(CREF(rsint) value);
-	explicit RDOValue(CREF(ruint) value);
+	explicit RDOValue(CREF(rsint)  value);
+	explicit RDOValue(CREF(ruint)  value);
+	explicit RDOValue(CREF(double) value);
 
 	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(RDOValue) value);
