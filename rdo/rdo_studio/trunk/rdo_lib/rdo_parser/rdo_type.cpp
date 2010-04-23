@@ -41,19 +41,6 @@ DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
-//LPRDOType RDOType::getTypeByID(rdoRuntime::RDOType::TypeID typeID)
-//{
-//	switch (typeID)
-//	{
-//		case rdoRuntime::RDOType::t_unknow       : return g_unknow;
-//		case rdoRuntime::RDOType::t_int          : return g_int;
-//		case rdoRuntime::RDOType::t_real         : return g_real;
-//		case rdoRuntime::RDOType::t_bool         : return g_bool;
-//		case rdoRuntime::RDOType::t_string       : return g_string;
-//		case rdoRuntime::RDOType::t_identificator: return g_identificator;
-//	}
-//	throw rdoRuntime::RDOTypeException();
-//}
 
 //! RDOType__unknow
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
