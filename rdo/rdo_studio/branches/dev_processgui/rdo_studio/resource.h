@@ -195,6 +195,7 @@
 #define IDC_GOTO_STATIC                 1132
 #define IDC_WARNING_CHECK               1133
 #define ID_CHART_ADDTONEWCHART          32771
+#define ID_DOCK_PROJECT_BAR             32772
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
 #define ID_EDIT_UPPERCASE               32780

@@ -19,6 +19,7 @@
 #include "rdo_studio/rdostudiostatusbar.h"
 #include "rdo_studio/rdostudioframestyle.h"
 #include "rdo_kernel/rdokernel.h"
+#include "rdo_studio/rdoprocess_projectbar.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOToolBar
@@ -82,6 +83,7 @@ public:
 
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
+	RPProjectBar projectBar;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;

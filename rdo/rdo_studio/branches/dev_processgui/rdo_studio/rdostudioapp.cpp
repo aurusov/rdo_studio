@@ -237,7 +237,7 @@ BOOL RDOStudioApp::InitInstance()
 	}
 
 	mainFrame->ShowWindow( m_nCmdShow );
-	mainFrame->UpdateWindow();//уже появилось миниконо. ОТКУДА??
+	mainFrame->UpdateWindow();
 
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );

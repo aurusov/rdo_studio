@@ -4935,6 +4935,11 @@ BEGIN
     IDS_MODEL_DURATION      "Model execution duration: %u msec.\n"
 END
 
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DOCK_PROJECT_BAR     "Проект"
+END
+
 STRINGTABLE 
 BEGIN
     ID_VIEW_WORKSPACE       "\nWorkspace (Alt+0)"
