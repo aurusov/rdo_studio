@@ -326,10 +326,6 @@ rtp_param:			RDO_IDENTIF_COLON param_type
 						PTR(RDOValue)  param_name = P_RDOVALUE($1);
 						LPRDOTypeParam param_type = PARSER->stack().pop<RDOTypeParam>($2);
 						LPRDORTPParam  pParam     = rdo::Factory<RDORTPParam>::create(PARSER->getLastRTPResType(), param_type, param_name->src_info());
-						//if (param_type->typeID() == rdoRuntime::RDOType::t_enum)
-						//{
-						//	static_cast<PTR(RDORTPEnumParamType)>(param_type)->enum_name = rdo::format(_T("%s.%s"), PARSER->getLastRTPResType()->name().c_str(), param_name->src_info().src_text().c_str());
-						//}
 						$$ = PARSER->stack().push(pParam);
 					}
 					| RDO_IDENTIF_COLON error {

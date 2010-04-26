@@ -274,10 +274,6 @@ pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
 				LPRDOTypeParam           param_type = PARSER->stack().pop<RDOTypeParam>($3);
 				PTR(RDOFUNFunctionParam) param      = new RDOFUNFunctionParam(pattern, param_name->src_info(), param_type);
 				pattern->add(param);
-				if (param_type->type()->typeID() == rdoRuntime::RDOType::t_enum)
-				{
-//					static_cast<PTR(RDORTPEnumParamType)>(param_type)->enum_name = rdo::format(_T("%s.%s"), pattern->name().c_str(), param_name->value().getIdentificator().c_str());
-				}
 			}
 			| pat_params RDO_IDENTIF_COLON param_type {
 				PTR(RDOPATPattern)       pattern    = reinterpret_cast<PTR(RDOPATPattern)>($1);
@@ -285,10 +281,6 @@ pat_params:	pat_params_begin RDO_IDENTIF_COLON param_type {
 				LPRDOTypeParam           param_type = PARSER->stack().pop<RDOTypeParam>($3);
 				PTR(RDOFUNFunctionParam) param      = new RDOFUNFunctionParam(pattern, param_name->src_info(), param_type);
 				pattern->add(param);
-				if (param_type->type()->typeID() == rdoRuntime::RDOType::t_enum)
-				{
-//					static_cast<PTR(RDORTPEnumParamType)>(param_type)->enum_name = rdo::format(_T("%s.%s"), pattern->name().c_str(), param_name->value().getIdentificator().c_str());
-				}
 			}
 			| pat_params_begin error {
 				if (@1.last_line != @2.last_line)
