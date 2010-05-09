@@ -218,6 +218,10 @@ pat_header:	RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace {
 				RDOValue* name = reinterpret_cast<RDOValue*>($2);
 				$$ = (int)new RDOPatternOperation( PARSER, name->src_info(), $4 != 0 );
 			}
+			| RDO_Pattern RDO_IDENTIF_COLON RDO_action pat_trace {
+				RDOValue* name = reinterpret_cast<RDOValue*>($2);
+				$$ = (int)new RDOPatternOperation( PARSER, name->src_info(), $4 != 0 );
+			}
 			| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {
 				RDOValue* name = reinterpret_cast<RDOValue*>($2);
 				$$ = (int)new RDOPatternIrregEvent( PARSER, name->src_info(), $4 != 0 );
