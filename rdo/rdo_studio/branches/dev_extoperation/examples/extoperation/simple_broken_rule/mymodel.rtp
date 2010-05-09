@@ -1,9 +1,10 @@
 $Resource_type system_type : permanent
 $Parameters
-	sys_time  : real    = 0
-	part_done_count: integer = 0
+	sys_time         : real    = 0
+	part_done_count  : integer = 0
 	part_broken_count: integer = 0
-	opr_count : integer = 0
+	opr_count        : integer = 0
+	opr_sign         : bool    = true
 $End
 
 $Resource_type machine_tool_type : permanent

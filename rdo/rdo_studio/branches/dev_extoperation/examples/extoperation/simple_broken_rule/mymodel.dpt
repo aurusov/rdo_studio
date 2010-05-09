@@ -4,4 +4,5 @@ $Activities
 	timer   : timer_pat
 	begin   : opr_begin
 	end     : opr_end
+	opr     : pat_opr
 $End

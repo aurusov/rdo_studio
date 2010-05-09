@@ -1,3 +1,14 @@
+$Pattern pat_opr : action trace
+$Relevant_resources
+	rel_sys			: system            keep keep
+$Time = 0.1
+$Body
+rel_sys
+	Choice from rel_sys.opr_sign = true
+	Convert_begin opr_sign set false
+	Convert_end opr_sign set true
+$End
+
 $Pattern timer_pat : irregular_event trace
 $Relevant_resources
 	rel_sys			: system            keep

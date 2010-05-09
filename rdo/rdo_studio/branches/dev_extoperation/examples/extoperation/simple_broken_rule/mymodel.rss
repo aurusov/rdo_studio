@@ -1,5 +1,5 @@
 $Resources
-	system        : system_type       * * * *
+	system        : system_type       * * * * *
 	machine_tool_1: machine_tool_type * * *
 	machine_tool_2: machine_tool_type * * *
 	part_1        : part_type         * * * 2.4
