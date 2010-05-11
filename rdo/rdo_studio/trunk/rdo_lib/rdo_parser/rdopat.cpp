@@ -139,6 +139,9 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 
 	STL_FOR_ALL_CONST(ConvertCmdList::CalcList, commands->commands(), cmdIt)
 		addParamSetCalc(*cmdIt);
+
+   ASSERT(currRelRes);
+   currRelRes->getParamSetList().reset();
 }
 
 void RDOPATPattern::addParamSetCalc(PTR(rdoRuntime::RDOCalc) calc)

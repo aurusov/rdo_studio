@@ -288,6 +288,10 @@ public:
 			}
 			return false;
 		}
+      rbool empty() const
+      {
+         return m_list.empty();
+      }
 	private:
 		typedef std::vector<LPRDORTPParam> List;
 
