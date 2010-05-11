@@ -83,7 +83,7 @@ public:
 
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
-	RPProjectBar projectBar;
+	//RPProjectBar projectBar;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
