@@ -993,7 +993,7 @@ pat_convert:	pat_res_usage {
 						}
 					}
 				}
-				| pat_res_usage convert_begin pat_trace pat_params_set {
+				| pat_res_usage convert_begin pat_trace pat_convert_cmd {
 					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
 					if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
 					{
@@ -1005,11 +1005,10 @@ pat_convert:	pat_res_usage {
 						}
 						PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($4);
-					par_set->setSrcPos(@4);
-					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, par_set, false, NULL, @2, @2, @3, @3);
+					LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
+					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, pCmdList, false, NULL, @2, @2, @3, @3);
 				}
-				| pat_res_usage pat_params_set convert_end pat_trace pat_params_set {
+				| pat_res_usage pat_convert_cmd convert_end pat_trace pat_convert_cmd {
 					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
 					if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
 					{
@@ -1021,12 +1020,10 @@ pat_convert:	pat_res_usage {
 						}
 						PARSER->error().error(@3, rdo::format(_T("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					pattern->currRelRes->deleteParamSetBegin();
-					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($5);
-					par_set->setSrcPos(@5);
-					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd(false, NULL, $4 != 0, par_set, @3, @3, @4, @4);
+					LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($5);
+					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd(false, NULL, $4 != 0, pCmdList, @3, @3, @4, @4);
 				}
-				| pat_res_usage convert_begin pat_trace pat_params_set convert_end pat_trace pat_params_set {
+				| pat_res_usage convert_begin pat_trace pat_convert_cmd convert_end pat_trace pat_convert_cmd {
 					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
 					if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
 					{
@@ -1038,13 +1035,11 @@ pat_convert:	pat_res_usage {
 						}
 						PARSER->error().error(@2, rdo::format(_T("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					PTR(RDOPATParamSet) par_set_begin = reinterpret_cast<PTR(RDOPATParamSet)>($4);
-					PTR(RDOPATParamSet) par_set_end   = reinterpret_cast<PTR(RDOPATParamSet)>($7);
-					par_set_begin->setSrcPos(@4);
-					par_set_end->setSrcPos(@7);
-					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, par_set_begin, $6 != 0, par_set_end, @2, @5, @3, @6);
+					LPConvertCmdList pCmdListBegin = PARSER->stack().pop<ConvertCmdList>($4);
+					LPConvertCmdList pCmdListEnd   = PARSER->stack().pop<ConvertCmdList>($7);
+					static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, pCmdListBegin, $6 != 0, pCmdListEnd, @2, @5, @3, @6);
 				}
-				| pat_res_usage convert_rule pat_trace pat_params_set {
+				| pat_res_usage convert_rule pat_trace pat_convert_cmd {
 					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
 					if (pattern->getType() != RDOPATPattern::PT_Rule)
 					{
@@ -1057,11 +1052,11 @@ pat_convert:	pat_res_usage {
 						}
 						PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($4);
-					par_set->setSrcPos(@4);
-					pattern->addRelResConvert($3 != 0, par_set, @2, @3);
+					LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
+					ASSERT(pattern->currRelRes);
+					pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->currRelRes->begin);
 				}
-				| pat_res_usage convert_event pat_trace pat_params_set {
+				| pat_res_usage convert_event pat_trace pat_convert_cmd {
 					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
 					if (pattern->getType() != RDOPATPattern::PT_IE)
 					{
@@ -1074,9 +1069,9 @@ pat_convert:	pat_res_usage {
 						}
 						PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в нерегулярном событии, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
-					PTR(RDOPATParamSet) par_set = reinterpret_cast<PTR(RDOPATParamSet)>($4);
-					par_set->setSrcPos(@4);
-					pattern->addRelResConvert($3 != 0, par_set, @2, @3);
+					LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
+					ASSERT(pattern->currRelRes);
+					pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->currRelRes->begin);
 				};
 
 convert_rule:	RDO_Convert_rule {
@@ -1095,31 +1090,79 @@ convert_end:	RDO_Convert_end {
 				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertEnd;
 			};
 
-pat_params_set:	/* empty */	{
-					PTR(RDOPATParamSet) paramSet = PARSER->getLastPATPattern()->currRelRes->createParamSet();
-					YYLTYPE pos = @0;
-					pos.first_line   = pos.last_line;
-					pos.first_column = pos.last_column;
-					paramSet->setSrcPos(pos);
-					$$ = (int)paramSet;
+pat_convert_cmd:/* empty */
+				{
+					LPConvertCmdList pCmdList = rdo::Factory<ConvertCmdList>::create();
+					PTR(RDORelevantResource) pRelRes = PARSER->getLastPATPattern()->currRelRes;
+					ASSERT(pRelRes);
+					pRelRes->getParamSetList().reset();
+					$$ = PARSER->stack().push(pCmdList);
 				}
-				|	pat_params_set RDO_IDENTIF param_equal_type param_set_right_value {
-					PTR(RDOPATParamSet)   paramSet    = reinterpret_cast<PTR(RDOPATParamSet)>($1);
-					rdoRuntime::EqualType equalType   = static_cast<rdoRuntime::EqualType>($3);
-					PTR(RDOFUNArithm)     rightArithm = P_ARITHM($4);
-					tstring               paramName   = RDOVALUE($2)->getIdentificator();
-					paramSet->addSet(paramName, @2, equalType, rightArithm);
+				|	pat_convert_cmd RDO_IDENTIF param_equal_type fun_arithm
+				{
+					LPConvertCmdList         pCmdList    = PARSER->stack().pop<ConvertCmdList>($1);
+					tstring                  paramName   = RDOVALUE($2)->getIdentificator();
+					rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($3);
+					PTR(RDOFUNArithm)        rightArithm = P_ARITHM($4);
+					PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->currRelRes;
+					ASSERT(pRelRes);
+					LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
+					if (!param)
+					{
+						PARSER->error().error(@2, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+					}
+					PTR(rdoRuntime::RDOCalc) pCalcRight = rightArithm->createCalc(param->getParamType().get());
+					PTR(rdoRuntime::RDOCalc) pCalc      = NULL;
+					switch (equalType)
+					{
+					case rdoRuntime::ET_NOCHANGE: break;
+					case rdoRuntime::ET_EQUAL   : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL   >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); pRelRes->getParamSetList().insert(param); break;
+					case rdoRuntime::ET_PLUS    : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS    >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					case rdoRuntime::ET_MINUS   : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS   >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					case rdoRuntime::ET_MULTIPLY: pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY>(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					case rdoRuntime::ET_DIVIDE  : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE  >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					default: NEVER_REACH_HERE;
+					}
+					if (pCalc)
+					{
+						//! Проверка на диапазон
+						//! TODO: проверить работоспособность
+						if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+						{
+							LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
+							pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+						}
+						else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+						{
+							LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
+							pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+						}
+
+						tstring oprStr;
+						switch (equalType)
+						{
+						case rdoRuntime::ET_EQUAL   : oprStr = _T("=");  break;
+						case rdoRuntime::ET_PLUS    : oprStr = _T("+="); break;
+						case rdoRuntime::ET_MINUS   : oprStr = _T("-="); break;
+						case rdoRuntime::ET_MULTIPLY: oprStr = _T("*="); break;
+						case rdoRuntime::ET_DIVIDE  : oprStr = _T("/="); break;
+						default                     : oprStr = _T("");   break;
+						}
+						pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+						pCalc->setSrcPos (@2.first_line, @2.first_column, @4.last_line, @4.last_column);
+
+						pCmdList->insertCommand(pCalc);
+					}
+					$$ = PARSER->stack().push(pCmdList);
 				}
-				| pat_params_set RDO_IDENTIF param_equal_type error {
+				| pat_convert_cmd RDO_IDENTIF param_equal_type error
+				{
 					PARSER->error().error(@4, _T("Ошибка в арифметическом выражении"));
 				}
-				|	pat_params_set RDO_IDENTIF_NoChange {
-					PTR(RDOPATParamSet) paramSet     = reinterpret_cast<PTR(RDOPATParamSet)>($1);
-					tstring             paramName    = RDOVALUE($2)->getIdentificator();
-					YYLTYPE             paramNamePos = @2;
-					paramNamePos.last_line   = paramNamePos.first_line;
-					paramNamePos.last_column = paramNamePos.first_column + paramName.length();
-					paramSet->addSet(paramName, paramNamePos, rdoRuntime::ET_NOCHANGE, NULL);
+				|	pat_convert_cmd RDO_IDENTIF_NoChange
+				{
+					LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
+					$$ = PARSER->stack().push(pCmdList);
 				};
 
 param_equal_type: RDO_set {
@@ -1140,8 +1183,6 @@ param_equal_type: RDO_set {
 				| RDO_DivideEqual {
 					$$ = rdoRuntime::ET_DIVIDE;
 				};
-
-param_set_right_value: fun_arithm;
 
 pat_pattern:	pat_convert RDO_End {
 					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
