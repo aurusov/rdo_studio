@@ -480,9 +480,9 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 						if ( param && pat->currRelRes->name() == res_name->getIdentificator() )
 						{
 							// В конверторе начала
-							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResource::CS_Create)
+							if (pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResource::CS_Create)
 							{
-								if ( !pat->currRelRes->getParamSetBegin()->isExist( par_name->getIdentificator() ) )
+								if (!pat->currRelRes->getParamSetList().find(par_name->getIdentificator()))
 								{
 									if ( !param->getDefault().defined() )
 									{
@@ -491,8 +491,10 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 								}
 							}
 							// В конверторе конца
-							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResource::CS_Create) {
-								if ( !pat->currRelRes->getParamSetEnd()->isExist( par_name->getIdentificator() ) ) {
+							if (pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResource::CS_Create)
+							{
+								if (!pat->currRelRes->getParamSetList().find( par_name->getIdentificator()))
+								{
 									if ( !param->getDefault().defined() ) {
 										parser()->error().error( par_name.src_info(), rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name->getIdentificator().c_str()) );
 									}

@@ -2,9 +2,11 @@
 #define RDOPAT_PAT
 
 #include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdortp_param.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdocalc_relres.h"
+#include "rdo_common/rdosmart_ptr.h"
 
 namespace rdoRuntime
 {
@@ -22,7 +24,6 @@ class RDORTPResType;
 class RDOPATChoiceFrom;
 class RDOPATChoiceOrder;
 class RDORSSResource;
-class RDOPATParamSet;
 class RDOOPROperation;
 class RDODPTSearchActivity;
 class RDODPTSomeActivity;
@@ -31,6 +32,29 @@ class RDOFUNFunctionParam;
 class RDOFUNArithm;
 class RDOFUNLogic;
 class RDORelevantResource;
+
+// ----------------------------------------------------------------------------
+// ---------- ConvertCmdList
+// ----------------------------------------------------------------------------
+class ConvertCmdList: public rdo::smart_ptr_counter_reference
+{
+DECLARE_FACTORY(ConvertCmdList);
+public:
+	typedef std::vector<PTR(rdoRuntime::RDOCalc)> CalcList;
+
+	void insertCommand(PTR(rdoRuntime::RDOCalc) pCalc)
+	{
+		m_calcList.push_back(pCalc);
+	}
+	CREF(CalcList) commands() const
+	{
+		return m_calcList;
+	}
+
+private:
+	CalcList m_calcList;
+};
+DECLARE_POINTER(ConvertCmdList);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPattern
@@ -76,7 +100,7 @@ public:
 	void setTime( RDOFUNArithm* arithm );
 	void addRelResBody( const RDOParserSrcInfo& body_name );
 	virtual void addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceOrder* choice_order );
-	void addRelResConvert( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos, const YYLTYPE& trace_pos );
+	void addRelResConvert(rbool trace, CREF(LPConvertCmdList) commands, const YYLTYPE& convertor_pos, const YYLTYPE& trace_pos, rdoRuntime::RDOResource::ConvertStatus status);
 	void end();
 
 	void writeModelStructure( std::ostream& stream ) const;
@@ -89,10 +113,10 @@ protected:
 
 	rdoRuntime::RDOPattern* patRuntime;
 
-	rdoRuntime::RDOCalc* createRelRes( const RDOPATParamSet* const parSet, bool trace ) const;
-	virtual void addParamSetCalc( const RDOPATParamSet* const parSet, rdoRuntime::RDOCalc* calc );
-	virtual std::string getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet ) = 0;
-	virtual std::string getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet ) = 0;
+	PTR(rdoRuntime::RDOCalc) createRelRes(rbool trace) const;
+	virtual void addParamSetCalc(PTR(rdoRuntime::RDOCalc) pCalc);
+	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status) = 0;
+	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status) = 0;
 
 private:
 	std::vector< RDOFUNFunctionParam* > params;
@@ -125,8 +149,8 @@ private:
 class RDOPatternIrregEvent: public RDOPATPattern
 {
 protected:
-	virtual std::string getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet );
-	virtual std::string getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet );
+	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 
 public:
 	RDOPatternIrregEvent( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
@@ -142,8 +166,8 @@ public:
 class RDOPatternRule: public RDOPATPattern
 {
 protected:
-	virtual std::string getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet );
-	virtual std::string getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet );
+	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 
 public:
 	RDOPatternRule( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
@@ -157,27 +181,30 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPatternOperation: public RDOPATPattern
 {
+public:
+	RDOPatternOperation( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
+	virtual void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos );
+	        void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResource::ConvertStatus beg, rdoRuntime::RDOResource::ConvertStatus end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos );
+	        void addRelResConvertBeginEnd( bool trace_begin, CREF(LPConvertCmdList) cmd_begin, bool trace_end, CREF(LPConvertCmdList) cmd_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos );
+	virtual char getModelStructureLetter() const { return 'A'; };
+	virtual PatType getType() const { return PT_Operation; }
+
 protected:
 	// Конструктор вызывается из RDOPatternKeyboard
 	RDOPatternOperation( RDOParser* _parser, bool _trace, const RDOParserSrcInfo& _name_src_info );
 	virtual void rel_res_insert( RDORelevantResource* rel_res );
-	virtual void addParamSetCalc( const RDOPATParamSet* const parSet, rdoRuntime::RDOCalc* calc );
-	virtual std::string getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet );
-	virtual std::string getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet );
+	virtual void addParamSetCalc(PTR(rdoRuntime::RDOCalc) pCalc);
+	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 
-public:
-	enum ConvertorType {
+private:
+	enum ConvertorType
+	{
 		convert_unknow,
 		convert_begin,
 		convert_end
 	};
-
-	RDOPatternOperation( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
-	virtual void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos );
-	        void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResource::ConvertStatus beg, rdoRuntime::RDOResource::ConvertStatus end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos );
-	        void addRelResConvertBeginEnd( bool trace_begin, RDOPATParamSet* parSet_begin, bool trace_end, RDOPATParamSet* parSet_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos );
-	virtual char getModelStructureLetter() const { return 'A'; };
-	virtual PatType getType() const { return PT_Operation; }
+	ConvertorType m_convertorType;
 };
 
 // ----------------------------------------------------------------------------
@@ -196,15 +223,6 @@ public:
 // ----------------------------------------------------------------------------
 class RDORelevantResource: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	RDOPATParamSet* param_set_begin;
-	RDOPATParamSet* param_set_end;
-
-protected:
-	rdoRuntime::RDOCalc* getChoiceCalc() const;
-	rdoRuntime::RDOCalc* getSelectCalc() const;
-	rdoRuntime::RDOSelectResourceCalc::Type getSelectType() const;
-
 public:
 	int                rel_res_id;
 	bool               alreadyHaveConverter;
@@ -236,8 +254,6 @@ public:
 		alreadyHaveConverter( false ),
 		choice_from( NULL ),
 		choice_order( NULL ),
-		param_set_begin( NULL ),
-		param_set_end( NULL ),
 		currentState( stateNone )
 	{
 	}
@@ -252,19 +268,47 @@ public:
 
 	virtual bool isDirect() const                                      = 0;
 
-	RDOPATParamSet* createParamSet();
-	void deleteParamSetBegin();
-	const RDOPATParamSet* const getParamSetBegin() const { return param_set_begin; }
-	const RDOPATParamSet* const getParamSetEnd() const   { return param_set_end;   }
-	RDOPatternOperation::ConvertorType getConvertorType( const RDOPATParamSet* const param_set ) const {
-		if ( param_set == param_set_begin ) {
-			return RDOPatternOperation::convert_begin;
-		} else if ( param_set == param_set_end ) {
-			return RDOPatternOperation::convert_end;
-		} else {
-			return RDOPatternOperation::convert_unknow;
+	class ParamSetList
+	{
+	public:
+		void reset()
+		{
+			m_list.clear();
 		}
+		void insert(CREF(LPRDORTPParam) param)
+		{
+			m_list.push_back(param);
+		}
+		rbool find(CREF(tstring) name) const
+		{
+			STL_FOR_ALL_CONST(List, m_list, paramIt)
+			{
+				if ((*paramIt)->name() == name)
+					return true;
+			}
+			return false;
+		}
+      rbool empty() const
+      {
+         return m_list.empty();
+      }
+	private:
+		typedef std::vector<LPRDORTPParam> List;
+
+		List m_list;
+	};
+	REF(ParamSetList) getParamSetList()
+	{
+		return m_paramSetList;
 	}
+
+protected:
+	rdoRuntime::RDOCalc* getChoiceCalc() const;
+	rdoRuntime::RDOCalc* getSelectCalc() const;
+	rdoRuntime::RDOSelectResourceCalc::Type getSelectType() const;
+
+private:
+	ParamSetList m_paramSetList;
 };
 
 // ----------------------------------------------------------------------------
@@ -361,60 +405,6 @@ public:
 	virtual rdoRuntime::RDOCalc* createSelectResourceChoiceCalc();
 	virtual rdoRuntime::RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc();
 	virtual bool isDirect() const  { return false; }
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOPATParamSet - все операторы set для одного рел. ресурса
-// ----------------------------------------------------------------------------
-class RDOPATParamSet: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	struct Param
-	{
-		std::string            m_name;
-		ruint                  m_paramID;
-		rdoRuntime::EqualType  m_equalType;
-		PTR(RDOFUNArithm)      m_rightArithm;
-
-		Param()
-			: m_name       (_T("")                  )
-			, m_paramID    ( -1                     )
-			, m_equalType  (rdoRuntime::ET_UNDEFINED)
-			, m_rightArithm(NULL                    )
-		{}
-		Param(CREF(std::string) name, ruint paramID, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm)
-			: m_name       (name       )
-			, m_paramID    (paramID    )
-			, m_equalType  (equalType  )
-			, m_rightArithm(rightArithm)
-		{}
-	};
-	rdoRuntime::RDOResource::ConvertStatus convert_status;
-
-	RDOPATParamSet( const RDORelevantResource* _parent, rdoRuntime::RDOResource::ConvertStatus _convert_status ):
-		RDOParserObject( _parent ),
-		convert_status( _convert_status )
-	{
-	}
-
-	typedef std::vector<Param> ParamList;
-	ParamList m_params;
-
-	void  addSet (CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm);
-	rbool isExist(CREF(std::string) paramName ) const
-	{
-		ParamList::const_iterator it = m_params.begin();
-		while (it != m_params.end())
-		{
-			if (it->m_name == paramName)
-			{
-				return true;
-			}
-			it++;
-		}
-		return false;
-	}
-	const RDORelevantResource* getRelRes() const { return static_cast<const RDORelevantResource*>(parent()); }
 };
 
 } // namespace rdoParse

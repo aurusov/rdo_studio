@@ -113,63 +113,38 @@ void RDOPATPattern::rel_res_insert( RDORelevantResource* rel_res )
 	relRes.push_back( rel_res );
 }
 
-void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos, const YYLTYPE& trace_pos )
+void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) commands, const YYLTYPE& convertor_pos, const YYLTYPE& trace_pos, rdoRuntime::RDOResource::ConvertStatus status)
 {
-	if ( parSet->convert_status == rdoRuntime::RDOResource::CS_NoChange || parSet->convert_status == rdoRuntime::RDOResource::CS_NonExist ) {
-		parser()->error().error( convertor_pos, getErrorMessage_NotNeedConvertor(parSet) );
+	if (status == rdoRuntime::RDOResource::CS_NoChange || status == rdoRuntime::RDOResource::CS_NonExist)
+	{
+		parser()->error().error(convertor_pos, getErrorMessage_NotNeedConvertor(currRelRes->name(), status));
 	}
 
-	if ( parSet->convert_status == rdoRuntime::RDOResource::CS_Create ) {
-		addParamSetCalc( parSet, createRelRes( parSet, trace ) );
-	} else {
-		if ( trace ) {
-			parser()->error().error( trace_pos, "Признак трассировки в данном месте возможен только для создаваемого ресурса" );
+	if (status == rdoRuntime::RDOResource::CS_Create)
+	{
+		addParamSetCalc(createRelRes(trace));
+	}
+	else
+	{
+		if (trace)
+		{
+			parser()->error().error(trace_pos, _T("Признак трассировки в данном месте возможен только для создаваемого ресурса"));
 		}
 	}
 
-	int size = parSet->m_params.size();
-	if ( !size && parSet->convert_status == rdoRuntime::RDOResource::CS_Keep ) {
-		parser()->error().warning( convertor_pos, getWarningMessage_EmptyConvertor(parSet) );
+	if (commands->commands().empty() && status == rdoRuntime::RDOResource::CS_Keep)
+	{
+		parser()->error().warning(convertor_pos, getWarningMessage_EmptyConvertor(currRelRes->name(), status));
 	}
-	for ( int i = 0; i < size; i++ ) {
-		int parNumb = parSet->m_params.at(i).m_paramID;
-		RDOFUNArithm* currArithm = parSet->m_params.at(i).m_rightArithm;
-		if ( currArithm ) { // NULL == NoChange
-			LPRDORTPParam param = parSet->getRelRes()->getType()->getParams().at(parNumb);
-			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getParamType().get() );
-			rdoRuntime::RDOCalc* calc = NULL;
-			switch (parSet->m_params.at(i).m_equalType)
-			{
-			case rdoRuntime::ET_NOCHANGE: break;
-			case rdoRuntime::ET_EQUAL   : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL   >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
-			case rdoRuntime::ET_PLUS    : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS    >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
-			case rdoRuntime::ET_MINUS   : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS   >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
-			case rdoRuntime::ET_MULTIPLY: calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY>(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
-			case rdoRuntime::ET_DIVIDE  : calc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE  >(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, rightValue); break;
-			default: NEVER_REACH_HERE;
-			}
-			if (calc)
-			{
-				//! Проверка на диапазон
-				//! TODO: проверить работоспособность
-				if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
-				{
-					LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
-					calc = new rdoRuntime::RDOSetRelParamDiapCalc(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, pRange->range()->getMin().value(), pRange->range()->getMax().value(), calc);
-				}
-				else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
-				{
-					LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
-					calc = new rdoRuntime::RDOSetRelParamDiapCalc(parser()->runtime(), parSet->getRelRes()->rel_res_id, parNumb, pRange->range()->getMin().value(), pRange->range()->getMax().value(), calc);
-				}
-				calc->setSrcText( parSet->m_params.at(i).m_name + " set " + rightValue->src_text() );
-				addParamSetCalc( parSet, calc );
-			}
-		}
-	}
+
+	STL_FOR_ALL_CONST(ConvertCmdList::CalcList, commands->commands(), cmdIt)
+		addParamSetCalc(*cmdIt);
+
+   ASSERT(currRelRes);
+   currRelRes->getParamSetList().reset();
 }
 
-void RDOPATPattern::addParamSetCalc( const RDOPATParamSet* const parSet, rdoRuntime::RDOCalc* calc )
+void RDOPATPattern::addParamSetCalc(PTR(rdoRuntime::RDOCalc) calc)
 {
 	switch ( getType() )
 	{
@@ -185,12 +160,12 @@ void RDOPATPattern::addParamSetCalc( const RDOPATParamSet* const parSet, rdoRunt
 		}
 		case PT_Operation:
 		{
-			static_cast<rdoRuntime::RDOPatternOperation*>(getPatRuntime())->addConvertorBeginCalc( calc );
+			NEVER_REACH_HERE;
 			break;
 		}
 		case PT_Keyboard:
 		{
-			static_cast<rdoRuntime::RDOPatternKeyboard*>(getPatRuntime())->addConvertorBeginCalc( calc );
+			NEVER_REACH_HERE;
 			break;
 		}
 		default:
@@ -500,46 +475,38 @@ void RDOPatternIrregEvent::addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPAT
 	currRelRes->choice_order = choice_order;
 }
 
-rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const parSet, bool trace ) const
+PTR(rdoRuntime::RDOCalc) RDOPATPattern::createRelRes(rbool trace) const
 {
 	std::vector< rdoRuntime::RDOValue > params_default;
 	STL_FOR_ALL_CONST(RDORTPResType::ParamList, currRelRes->getType()->getParams(), it)
 	{
 		if (!(*it)->getDefault().defined())
 		{
-			params_default.push_back( rdoRuntime::RDOValue(0) );
-			bool set_found = false;
-			RDOPATParamSet::ParamList::const_iterator set_it = parSet->m_params.begin();
-			while (set_it != parSet->m_params.end())
+			params_default.push_back(rdoRuntime::RDOValue(0));
+			if (!currRelRes->getParamSetList().find((*it)->name()))
 			{
-				if ((*it)->name() == set_it->m_name && set_it->m_rightArithm)
-				{
-					set_found = true;
-					break;
-				}
-				set_it++;
+				parser()->error().error(currRelRes->src_info(), rdo::format(_T("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s"), (*it)->name().c_str()));
 			}
-			if ( !set_found ) {
-				parser()->error().error( parSet->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", (*it)->name().c_str()));
-			}
-		} else {
+		}
+		else
+		{
 			params_default.push_back((*it)->getDefault().value());
 		}
 	}
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateEmptyResource( parser()->runtime(), currRelRes->getType()->getNumber(), trace, params_default, currRelRes->rel_res_id );
-	calc->setSrcInfo( currRelRes->src_info() );
-	calc->setSrcText( rdo::format("Создание временного ресурса %s", currRelRes->name().c_str()) );
-	return calc;
+	PTR(rdoRuntime::RDOCalc) pCalc = new rdoRuntime::RDOCalcCreateEmptyResource(parser()->runtime(), currRelRes->getType()->getNumber(), trace, params_default, currRelRes->rel_res_id);
+	pCalc->setSrcInfo(currRelRes->src_info());
+	pCalc->setSrcText(rdo::format("Создание временного ресурса %s", currRelRes->name().c_str()));
+	return pCalc;
 }
 
-std::string RDOPatternIrregEvent::getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet )
+tstring RDOPatternIrregEvent::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
 {
-	return rdo::format("Для релевантного ресурса '%s' не требуется конвертор (Convert_event), т.к. его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str());
+	return rdo::format(_T("Для релевантного ресурса '%s' не требуется конвертор (Convert_event), т.к. его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
-std::string RDOPatternIrregEvent::getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet )
+tstring RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
 {
-	return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор (Convert_event), хотя его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str());
+	return rdo::format(_T("Для релевантного ресурса '%s' указан пустой конвертор (Convert_event), хотя его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
 // ----------------------------------------------------------------------------
@@ -595,14 +562,14 @@ void RDOPatternRule::addRelRes( const RDOParserSrcInfo& rel_info, const RDOParse
 	}
 }
 
-std::string RDOPatternRule::getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet )
+tstring RDOPatternRule::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
 {
-	return rdo::format("Для релевантного ресурса '%s' не требуется конвертор (Convert_rule), т.к. его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str());
+	return rdo::format(_T("Для релевантного ресурса '%s' не требуется конвертор (Convert_rule), т.к. его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
-std::string RDOPatternRule::getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet )
+tstring RDOPatternRule::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
 {
-	return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор (Convert_rule), хотя его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str());
+	return rdo::format(_T("Для релевантного ресурса '%s' указан пустой конвертор (Convert_rule), хотя его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
 // ----------------------------------------------------------------------------
@@ -610,6 +577,7 @@ std::string RDOPatternRule::getWarningMessage_EmptyConvertor( const RDOPATParamS
 // ----------------------------------------------------------------------------
 RDOPatternOperation::RDOPatternOperation( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool trace ):
 	RDOPATPattern( _parser, _name_src_info )
+	, m_convertorType(convert_unknow)
 { 
 	patRuntime = new rdoRuntime::RDOPatternOperation( parser()->runtime(), trace );
 	patRuntime->setTraceID( parser()->getPAT_id() );
@@ -617,6 +585,7 @@ RDOPatternOperation::RDOPatternOperation( RDOParser* _parser, const RDOParserSrc
 
 RDOPatternOperation::RDOPatternOperation( RDOParser* _parser, bool trace, const RDOParserSrcInfo& _name_src_info ):
 	RDOPATPattern( _parser, _name_src_info )
+	, m_convertorType(convert_unknow)
 {
 }
 
@@ -716,42 +685,54 @@ void RDOPatternOperation::addRelRes( const RDOParserSrcInfo& rel_info, const RDO
 	}
 }
 
-void RDOPatternOperation::addRelResConvertBeginEnd( bool trace_begin, RDOPATParamSet* parSet_begin, bool trace_end, RDOPATParamSet* parSet_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos )
+void RDOPatternOperation::addRelResConvertBeginEnd(bool trace_begin, CREF(LPConvertCmdList) cmd_begin, bool trace_end, CREF(LPConvertCmdList) cmd_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos)
 {
-	if ( parSet_begin ) {
-		addRelResConvert( trace_begin, parSet_begin, convertor_begin_pos, trace_begin_pos );
-	}
-	if ( parSet_end ) {
-		addRelResConvert( trace_end, parSet_end, convertor_end_pos, trace_end_pos );
-	}
-}
-
-void RDOPatternOperation::addParamSetCalc( const RDOPATParamSet* const parSet, rdoRuntime::RDOCalc* calc )
-{
-	switch (parSet->getRelRes()->getConvertorType(parSet))
+	if (cmd_begin)
 	{
-		case convert_begin: static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addConvertorBeginCalc(calc); break;
-		case convert_end  : static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addConvertorEndCalc  (calc); break;
-		default           : NEVER_REACH_HERE;
+		m_convertorType = convert_begin;
+		ASSERT(currRelRes);
+		addRelResConvert(trace_begin, cmd_begin, convertor_begin_pos, trace_begin_pos, currRelRes->begin);
+		m_convertorType = convert_unknow;
+	}
+	if (cmd_end)
+	{
+		m_convertorType = convert_end;
+		ASSERT(currRelRes);
+		addRelResConvert(trace_end, cmd_end, convertor_end_pos, trace_end_pos, currRelRes->end);
+		m_convertorType = convert_unknow;
 	}
 }
 
-std::string RDOPatternOperation::getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet )
+void RDOPatternOperation::addParamSetCalc(PTR(rdoRuntime::RDOCalc) pCalc)
 {
-	switch ( parSet->getRelRes()->getConvertorType(parSet) ) {
-		case convert_begin: return rdo::format("Для релевантного ресурса '%s' не требуется конвертор начала (Convert_begin), т.к. его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str()); break;
-		case convert_end  : return rdo::format("Для релевантного ресурса '%s' не требуется конвертор конца (Convert_end), т.к. его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str()); break;
+	switch (m_convertorType)
+	{
+	case convert_begin: static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addConvertorBeginCalc(pCalc); break;
+	case convert_end  : static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addConvertorEndCalc  (pCalc); break;
+	default           : NEVER_REACH_HERE;
 	}
-	return "Внутренняя ошибка парсера";
 }
 
-std::string RDOPatternOperation::getWarningMessage_EmptyConvertor( const RDOPATParamSet* const parSet )
+tstring RDOPatternOperation::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
 {
-	switch ( parSet->getRelRes()->getConvertorType(parSet) ) {
-		case convert_begin: return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор начала (Convert_begin), хотя его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str()); break;
-		case convert_end  : return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор конца (Convert_end), хотя его статус: %s", parSet->getRelRes()->name().c_str(), RDOPATPattern::StatusToStr(parSet->convert_status).c_str()); break;
+	switch (m_convertorType)
+	{
+	case convert_begin: return rdo::format(_T("Для релевантного ресурса '%s' не требуется конвертор начала (Convert_begin), т.к. его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+	case convert_end  : return rdo::format(_T("Для релевантного ресурса '%s' не требуется конвертор конца (Convert_end), т.к. его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+	default           : NEVER_REACH_HERE;
 	}
-	return "Внутренняя ошибка парсера";
+	return tstring();
+}
+
+tstring RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
+{
+	switch (m_convertorType)
+	{
+	case convert_begin: return rdo::format(_T("Для релевантного ресурса '%s' указан пустой конвертор начала (Convert_begin), хотя его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+	case convert_end  : return rdo::format(_T("Для релевантного ресурса '%s' указан пустой конвертор конца (Convert_end), хотя его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+	default           : NEVER_REACH_HERE;
+	}
+	return tstring();
 }
 
 // ----------------------------------------------------------------------------
@@ -767,27 +748,6 @@ RDOPatternKeyboard::RDOPatternKeyboard( RDOParser* _parser, const RDOParserSrcIn
 // ----------------------------------------------------------------------------
 // ---------- RDORelevantResource
 // ----------------------------------------------------------------------------
-RDOPATParamSet* RDORelevantResource::createParamSet()
-{
-	if ( !param_set_begin ) {
-		param_set_begin = new RDOPATParamSet( this, begin );
-		return param_set_begin;
-	} else if ( !param_set_end ) {
-		param_set_end = new RDOPATParamSet( this, end );
-		return param_set_end;
-	}
-	parser()->error().error( src_info(), "Внутренняя ошибка парсера" );
-	return NULL;
-}
-
-void RDORelevantResource::deleteParamSetBegin()
-{
-	if ( param_set_begin ) {
-		delete param_set_begin;
-		param_set_begin = NULL;
-	}
-}
-
 rdoRuntime::RDOCalc* RDORelevantResource::getChoiceCalc() const
 {
 	if ( choice_from && choice_from->type == rdoParse::RDOPATChoiceFrom::ch_from ) {
@@ -898,43 +858,6 @@ rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectFirstResourceChoiceC
 rdoRuntime::RDOSelectResourceCommon* RDORelevantResourceByType::createSelectResourceCommonChoiceCalc()
 {
 	return new rdoRuntime::RDOSelectResourceByTypeCommonCalc( parser()->runtime(), rel_res_id, type->getNumber(), getChoiceCalc() );
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOPATParamSet - все операторы set для одного рел. ресурса
-// ----------------------------------------------------------------------------
-void RDOPATParamSet::addSet(CREF(std::string) paramName, CREF(YYLTYPE) param_name_pos, rdoRuntime::EqualType equalType, PTR(RDOFUNArithm) rightArithm)
-{
-	switch (equalType)
-	{
-	case rdoRuntime::ET_NOCHANGE:
-	case rdoRuntime::ET_EQUAL   :
-	case rdoRuntime::ET_PLUS    :
-	case rdoRuntime::ET_MINUS   :
-	case rdoRuntime::ET_MULTIPLY:
-	case rdoRuntime::ET_DIVIDE  : break;
-	default                     : parser()->error().error(param_name_pos, _T("Неизвестный оператор присваивания"));
-	}
-
-	if ( m_params.empty() ) {
-		setSrcText( paramName + (rightArithm ? " set " + rightArithm->src_text() : " NoChange") );
-		setSrcPos( param_name_pos );
-	} else {
-		setSrcText( src_text() + "\n" + paramName + (rightArithm ? " set " + rightArithm->src_text() : " NoChange") );
-	}
-	LPRDORTPParam param = getRelRes()->getType()->findRTPParam(paramName);
-	if ( !param ) {
-		parser()->error().error( param_name_pos, rdo::format("Неизвестный параметр: %s", paramName.c_str()) );
-	}
-	if ( isExist(paramName) ) {
-		parser()->error().error( RDOParserSrcInfo(param_name_pos), rdo::format("Параметр '%s' уже используется", paramName.c_str()) );
-//		parser()->error().warning( RDOParserSrcInfo(param_name_pos), rdo::format("Параметр '%s' уже изменяется в конверторе. В трассировку попадет последнее значение параметра", paramName.c_str()) );
-	}
-	if (rightArithm)
-	{
-		rightArithm->checkParamType(param->getParamType());
-	}
-	m_params.push_back(Param(paramName, getRelRes()->getType()->getRTPParamNumber(paramName), equalType, rightArithm));
 }
 
 } // namespace rdoParse
