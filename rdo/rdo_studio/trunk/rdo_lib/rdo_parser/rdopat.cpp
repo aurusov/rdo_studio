@@ -684,14 +684,14 @@ void RDOPatternOperation::addRelRes( const RDOParserSrcInfo& rel_info, const RDO
 
 void RDOPatternOperation::addRelResConvertBeginEnd(bool trace_begin, CREF(LPConvertCmdList) cmd_begin, bool trace_end, CREF(LPConvertCmdList) cmd_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos)
 {
-	if (cmd_begin && !cmd_begin->commands().empty())
+	if (cmd_begin)
 	{
 		m_convertorType = convert_begin;
 		ASSERT(currRelRes);
 		addRelResConvert(trace_begin, cmd_begin, convertor_begin_pos, trace_begin_pos, currRelRes->begin);
 		m_convertorType = convert_unknow;
 	}
-	if (cmd_end && !cmd_end->commands().empty())
+	if (cmd_end)
 	{
 		m_convertorType = convert_end;
 		ASSERT(currRelRes);
