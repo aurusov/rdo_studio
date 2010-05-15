@@ -16,6 +16,8 @@
 #include "rdo_plugin/rdoplugin.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_common/rdofile.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

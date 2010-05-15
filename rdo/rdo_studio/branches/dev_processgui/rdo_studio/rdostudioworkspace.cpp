@@ -46,17 +46,20 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	frames = new RDOStudioFrameTreeCtrl;
 	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
-	pagectrl = new RPPageCtrl;
-	pagectrl->Create( "", "", 0, CRect(0,0,100,100), &tab, 0 );
-	//pagectrl = new RDOStudioFrameTreeCtrl;
+	//pagectrl = new RPPageCtrl;
 	//pagectrl->Create( "", "", 0, CRect(0,0,100,100), &tab, 0 );
-
+	
+	//projectBar.Create( rdo::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );
+	projectBar = new RPProjectBar;
+	projectBar->Create( rdo::format( ID_DOCK_PROJECT_BAR ).c_str(), &tab, 0 );
+	
 	tab.insertItem( trace, rdo::format( IDS_TAB_TRACER ).c_str() );
 	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );//создаем табы 
-	tab.insertItem( pagectrl, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
+	tab.insertItem( projectBar, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
 
 	studioApp.mainFrame->registerCmdWnd( trace );
 	studioApp.mainFrame->registerCmdWnd( frames );
+	studioApp.mainFrame->registerCmdWnd( projectBar );
 
 	return 0;
 }

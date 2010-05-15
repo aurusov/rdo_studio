@@ -8,7 +8,7 @@
 #include "rdo_studio/rdostudiodockwnd.h"
 #include "rdo_studio/rdostudioframetreectrl.h"
 #include "rdo_ctrls/rdotabctrl.h"
-#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
+#include "rdo_studio/rdoprocess_projectbar.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioWorkspace
@@ -19,7 +19,8 @@ friend class RDOStudioFrameManager;
 private:
 	RDOTabCtrl tab;
 	RDOStudioFrameTreeCtrl* frames;
-	RPPageCtrl* pagectrl;
+//	RPPageCtrl* pagectrl;
+	RPProjectBar* projectBar;
 
 public:
 	RDOStudioWorkspace();
