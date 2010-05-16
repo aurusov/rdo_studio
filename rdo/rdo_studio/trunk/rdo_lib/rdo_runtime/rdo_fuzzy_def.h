@@ -2,7 +2,7 @@
 #define RDO_FUZZY_DEF_H
 
 #ifndef _RDO_VALUE_H_
-#error include "rdo_value.h" first (и вообще, вместо "rdo_fuzzy_def.h" лучше юзать "rdo_fuzzy.h")
+#error include "rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
 #endif
 
 //

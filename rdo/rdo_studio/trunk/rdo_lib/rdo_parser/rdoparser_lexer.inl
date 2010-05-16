@@ -24,6 +24,7 @@ inline RDOLexer::RDOLexer(PTR(RDOParser) parser, PTR(std::istream) yyin, PTR(std
 	, m_lpval    (NULL       )
 	, m_lploc    (NULL       )
 	, m_enumEmpty(true       )
+	, m_array_param_cnt(0    )
 {}
 
 inline void RDOLexer::loc_init()

@@ -139,6 +139,7 @@
 %token RDO_MinusEqual					376
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
+%token RDO_array						379
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -386,6 +387,12 @@ param_type:		RDO_integer param_type_range param_value_default
 					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 					$$ = PARSER->stack().push(pType);
 				}
+				| param_array /*param_array_default_val*/
+				{
+					PARSER->error().warning( @1, rdo::format("create array Done.	Dimension of array: %u" ,LEXER->m_array_param_cnt));
+					PARSER->error().error(@1, "OK");
+					LEXER->m_array_param_cnt = 0;
+				}
 				| RDO_bool param_value_default
 				{
 					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_bool, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
@@ -592,9 +599,36 @@ param_value_default:	/* empty */ {
 						}
 						else
 						{
-							PARSER->error().error(src_info, _T("Неверное значение по-умолчанию "));
+							PARSER->error().error(src_info, _T("Неверное значение по-умолчанию"));
 						}
 					};
+
+param_array:		RDO_array '<' param_array_type '>'
+					{
+						LEXER->m_array_param_cnt++;
+					};
+
+param_array_type:	RDO_integer
+					{
+						PARSER->error().warning(@1, _T("array integer"));
+					}
+					| RDO_real
+					{
+						PARSER->error().warning(@1, _T("array real"));
+					}
+					| RDO_string
+					{
+						PARSER->error().warning(@1, _T("array string"));
+					}
+					| RDO_bool
+					{
+						PARSER->error().warning(@1, _T("array bool"));
+					}
+					| param_array
+					{
+						PARSER->error().warning(@1, _T("array array"));
+					};
+
 // ----------------------------------------------------------------------------
 
 %%

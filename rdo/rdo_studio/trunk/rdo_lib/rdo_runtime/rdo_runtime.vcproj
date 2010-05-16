@@ -2192,6 +2192,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".rdo_array"
+				>
+				<File
+					RelativePath=".\rdo_array.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_array.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_array_def.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".interfaces"

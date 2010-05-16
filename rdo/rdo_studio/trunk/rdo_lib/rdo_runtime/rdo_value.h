@@ -24,6 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOType;
 class RDOEnumType;
 class RDOFuzzyValue;
+class RDOArrayValue;
 
 class RDOValue
 {
@@ -44,6 +45,7 @@ public:
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
+	RDOValue(CREF(RDOArrayValue) arrayValue);
 
 	rsint             getInt          () const;
 	rsint             getEnumAsInt    () const;
@@ -90,6 +92,8 @@ private:
 	CREF(tstring)       __stringV() const;
 	 REF(RDOFuzzyValue) __fuzzyV ();
 	CREF(RDOFuzzyValue) __fuzzyV () const;
+	 REF(RDOArrayValue) __arrayV ();
+	CREF(RDOArrayValue) __arrayV () const;
 
 	class smart_tstring: public rdo::smart_ptr<tstring>
 	{
