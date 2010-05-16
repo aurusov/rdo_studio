@@ -53,6 +53,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	RDOEditorEdit* page7  = new RDOEditorEdit( view );
 	RDOEditorEdit* page8  = new RDOEditorEdit( view );
 	RDOEditorEdit* page9  = new RDOEditorEdit( view );
+	RDOEditorEdit* page10  = new RDOEditorEdit( view );
 
 	page1->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page2->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
@@ -63,6 +64,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page7->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page9->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
 	page1->setEditorStyle( &studioApp.mainFrame->style_editor );
 	page2->setEditorStyle( &studioApp.mainFrame->style_editor );
@@ -73,6 +75,8 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page7->setEditorStyle( &studioApp.mainFrame->style_editor );
 	page8->setEditorStyle( &studioApp.mainFrame->style_editor );
 	page9->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page9->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page10->setEditorStyle( &studioApp.mainFrame->style_editor );
 
 	page1->setPopupMenu( &view->popupMenu );
 	page2->setPopupMenu( &view->popupMenu );
@@ -83,6 +87,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page7->setPopupMenu( &view->popupMenu );
 	page8->setPopupMenu( &view->popupMenu );
 	page9->setPopupMenu( &view->popupMenu );
+	page10->setPopupMenu( &view->popupMenu );
 
 	group.insert( page1 );
 	group.insert( page2 );
@@ -93,6 +98,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	group.insert( page7 );
 	group.insert( page8 );
 	group.insert( page9 );
+	group.insert( page10 );
 	page1->setGroup( &group );
 	page2->setGroup( &group );
 	page3->setGroup( &group );
@@ -102,6 +108,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page7->setGroup( &group );
 	page8->setGroup( &group );
 	page9->setGroup( &group );
+	page10->setGroup( &group );
 
 	insertItem( page1, "PAT" );
 	insertItem( page2, "RTP" );
@@ -112,6 +119,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	insertItem( page7, "DPT" );
 	insertItem( page8, "SMR" );
 	insertItem( page9, "PMD" );
+	insertItem( page10, "РДО-Процесс" );
 
 	setCurrentRDOItem( rdoModelObjects::PAT );
 

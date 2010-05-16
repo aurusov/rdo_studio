@@ -12,7 +12,7 @@
 #include "rdo_ctrls/rdolink.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_studio/resource.h"
-//#include "rdo_studio/rdo_process/rdoprocess_method_manager.h"
+#include "rdo_studio/rdo_process/rdoprocess_method_manager.h"
 #include "rdo_studio/rdostudiomainfrm.h"
 //#include "rdo_studio/rdo_process/rdoprocess_project.h"
 
@@ -72,9 +72,11 @@ public:
 	RDOStudioApp();
 
 	RDOStudioMainFrame* mainFrame;
-	//RPMethodManager methods;
+	RPMethodManager methods;
+	//std::ofstream   log;
+
 	RPProjectBar& getProjectBar() const             { return mainFrame->projectBar; }
-	//const RPMethodManager& getMethodManager() const { return methods;               }
+	const RPMethodManager& getMethodManager() const { return methods;               }
 
 	void broadcastMessage( RDOThread::RDOTreadMessage message, void* param = NULL );
 

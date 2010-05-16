@@ -12,13 +12,13 @@
 #define IDR_CHARTTYPE                   134
 #define IDR_FRAME_TYPE                  135
 #define IDD_BUFFER                      142
-#define IDB_TRASH                       143 //rdo-proc
+#define IDB_TRASH                       143
 #define IDB_FILE_TOOLBAR_D              144
 #define IDB_EDIT_TOOLBAR_D              145
-#define IDB_PAGECTRL_CLOSE              146 //rdo-proc
-#define IDB_PAGECTRL_CLOSE_OVER         147 //rdo-proc
+#define IDB_PAGECTRL_CLOSE              146
+#define IDB_PAGECTRL_CLOSE_OVER         147
 #define IDR_MODEL_TOOLBAR               148
-#define IDB_PAGECTRL_PAGE               149 //rdo-proc
+#define IDB_PAGECTRL_PAGE               149
 #define IDR_EDIT_TOOLBAR                151
 #define IDD_OPTIONS_EDITOR              152
 #define IDB_MODEL_TOOLBAR_D             152
@@ -80,6 +80,8 @@
 #define IDR_MODEL_TMP6_SMR              225
 #define IDR_MODEL_TMP6_OPR              226
 #define IDD_GOTO_LINE_DIALOG            227
+#define IDB_FLOWCHART_DEFAULT           230
+#define IDD_METHOD_NEW                  231
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -167,7 +169,9 @@
 #define IDC_ABOUT_TEL                   1085
 #define IDC_ABOUR_EMAIL_STATIC          1086
 #define IDC_ABOUT_EMAIL                 1087
+#define IDC_METHOD_LIST                 1088
 #define IDC_ABOUT_WEB                   1089
+#define IDC_METHOD_DESC                 1090
 #define IDC_FILEASSOCIATION_SETUP_CHECK 1091
 #define IDC_OPENLASTPROJECT_CHECK       1092
 #define IDC_SHOWCAPTIONFULLNAME_CHECK   1093
@@ -683,7 +687,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        228
+#define _APS_NEXT_RESOURCE_VALUE        232
 #define _APS_NEXT_COMMAND_VALUE         33293
 #define _APS_NEXT_CONTROL_VALUE         1134
 #define _APS_NEXT_SYMED_VALUE           101

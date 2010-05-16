@@ -3157,6 +3157,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\flowchart_default.bmp"
+				>
+			</File>
+			<File
 				RelativePath="res\frameoptionsctrl.bmp"
 				>
 			</File>
@@ -4806,6 +4810,14 @@
 			</File>
 			<File
 				RelativePath=".\rdo_process\rdoprocess_dockwnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_method_manager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_method_manager.h"
 				>
 			</File>
 			<File
