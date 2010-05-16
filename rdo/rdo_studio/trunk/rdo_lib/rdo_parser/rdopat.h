@@ -14,6 +14,8 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp_param.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdocalc_relres.h"
@@ -30,17 +32,8 @@ int  patparse(PTR(void) lexer);
 int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void paterror(PTR(char) mes);
 
-class RDORTPResType;
 class RDOPATChoiceFrom;
 class RDOPATChoiceOrder;
-class RDORSSResource;
-class RDOOPROperation;
-class RDODPTSearchActivity;
-class RDODPTSomeActivity;
-class RDODPTFreeActivity;
-class RDOFUNFunctionParam;
-class RDOFUNArithm;
-class RDOFUNLogic;
 class RDORelevantResource;
 
 // ----------------------------------------------------------------------------
