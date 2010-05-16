@@ -899,42 +899,42 @@ pat_res_usage:	pat_body pat_choice pat_order {
 				};
 
 pat_choice: /* empty */ {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceEmpty;
-				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_empty);
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceEmpty;
+				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_empty);
 			}
 			| pat_choice_nocheck {
-				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_nocheck);
+				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_nocheck);
 			}
 			| pat_choice_from fun_logic {
 				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("Choice from ") + logic->src_text()), RDOPATChoiceFrom::ch_from, logic);
+				$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("Choice from ") + logic->src_text()), RDOPATChoiceFrom::ch_from, logic);
 			}
 			| pat_choice_from error {
 				PARSER->error().error(@2, _T("ќшибка в логическом выражении"));
 			};
 
 pat_choice_nocheck: RDO_Choice RDO_NoCheck {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceNoCheck;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceNoCheck;
 			};
 
 pat_choice_from: RDO_Choice RDO_from {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceFrom;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceFrom;
 			};
 
 pat_order:	/* empty */ {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderEmpty;
-				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(), rdoRuntime::RDOSelectResourceCalc::order_empty);
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderEmpty;
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(), rdoRuntime::RDOSelectResourceCalc::order_empty);
 			}
 			| pat_choice_first {
-				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("first")), rdoRuntime::RDOSelectResourceCalc::order_first);
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("first")), rdoRuntime::RDOSelectResourceCalc::order_first);
 			}
 			| pat_choice_with_min fun_arithm {
 				PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("with_min ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_min, arithm);
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("with_min ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_min, arithm);
 			}
 			| pat_choice_with_max fun_arithm {
 				PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->currRelRes, RDOParserSrcInfo(_T("with_max ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_max, arithm);
+				$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("with_max ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_max, arithm);
 			}
 			| pat_choice_with_min error {
 				PARSER->error().error(@2, _T("ќшибка в арифметическом выражении"));
@@ -944,26 +944,26 @@ pat_order:	/* empty */ {
 			};
 
 pat_choice_first: RDO_first {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderFirst;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderFirst;
 			};
 
 pat_choice_with_min: RDO_with_min {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderWithMin;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMin;
 			};
 
 pat_choice_with_max: RDO_with_max {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderWithMax;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMax;
 			};
 
 pat_convert:	pat_res_usage {
 					PTR(RDOPATPattern)       pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-					PTR(RDORelevantResource) rel_res = pattern->currRelRes;
+					PTR(RDORelevantResource) rel_res = pattern->m_pCurrRelRes;
 					tstring str;
-					if (rel_res->choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty)
+					if (rel_res->m_pChoiceOrder->m_type != rdoRuntime::RDOSelectResourceCalc::order_empty)
 					{
-						str = _T("—разу после ключевого слова ") + rel_res->choice_order->asString();
+						str = _T("—разу после ключевого слова ") + rel_res->m_pChoiceOrder->asString();
 					}
-					else if (rel_res->choice_from->type != RDOPATChoiceFrom::ch_empty)
+					else if (rel_res->m_pChoiceFrom->m_type != RDOPATChoiceFrom::ch_empty)
 					{
 						str = _T("—разу после услови€ выбора");
 					}
@@ -971,25 +971,25 @@ pat_convert:	pat_res_usage {
 					{
 						str = _T("—разу после имени");
 					}
-					if (rel_res->begin != rdoRuntime::RDOResource::CS_NoChange && rel_res->begin != rdoRuntime::RDOResource::CS_Erase && rel_res->begin != rdoRuntime::RDOResource::CS_NonExist)
+					if (rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_NoChange && rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_Erase && rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_NonExist)
 					{
 						switch (pattern->getType())
 						{
-							case RDOPATPattern::PT_IE       : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_event дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
-							case RDOPATPattern::PT_Rule     : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_rule дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
+							case RDOPATPattern::PT_IE       : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_event дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText())); break;
+							case RDOPATPattern::PT_Rule     : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_rule дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText())); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_begin дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_begin дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText())); break;
 						}
 //						PARSER->error().error(_T("Converter needed for \"") + *rel_res->name() + _T("\" relevant resource in pattern \"") + getName() + _T("\""));
 					}
-					if (rel_res->end != rdoRuntime::RDOResource::CS_NoChange && rel_res->end != rdoRuntime::RDOResource::CS_Erase && rel_res->end != rdoRuntime::RDOResource::CS_NonExist)
+					if (rel_res->m_statusEnd != rdoRuntime::RDOResource::CS_NoChange && rel_res->m_statusEnd != rdoRuntime::RDOResource::CS_Erase && rel_res->m_statusEnd != rdoRuntime::RDOResource::CS_NonExist)
 					{
 						switch (pattern->getType())
 						{
 							case RDOPATPattern::PT_IE       : PARSER->error().error(@1, _T("¬нутренн€€ ошибка")); break;
 							case RDOPATPattern::PT_Rule     : PARSER->error().error(@1, _T("¬нутренн€€ ошибка")); break;
 							case RDOPATPattern::PT_Operation:
-							case RDOPATPattern::PT_Keyboard : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_end дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), LEXER->YYText())); break;
+							case RDOPATPattern::PT_Keyboard : PARSER->error().error(@1, rdo::format(_T("%s ожидаетс€ ключевое слово Convert_end дл€ релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText())); break;
 						}
 					}
 				}
@@ -1053,8 +1053,8 @@ pat_convert:	pat_res_usage {
 						PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
 					LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
-					ASSERT(pattern->currRelRes);
-					pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->currRelRes->begin);
+					ASSERT(pattern->m_pCurrRelRes);
+					pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->m_pCurrRelRes->m_statusBegin);
 				}
 				| pat_res_usage convert_event pat_trace pat_convert_cmd {
 					PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
@@ -1070,30 +1070,30 @@ pat_convert:	pat_res_usage {
 						PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_event может быть использовано в нерегул€рном событии, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
 					}
 					LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
-					ASSERT(pattern->currRelRes);
-					pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->currRelRes->begin);
+					ASSERT(pattern->m_pCurrRelRes);
+					pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->m_pCurrRelRes->m_statusBegin);
 				};
 
 convert_rule:	RDO_Convert_rule {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertBegin;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
 			};
 
 convert_event:	RDO_Convert_event {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertBegin;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
 			};
 
 convert_begin:	RDO_Convert_begin {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertBegin;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
 			};
 
 convert_end:	RDO_Convert_end {
-				PARSER->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertEnd;
+				PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertEnd;
 			};
 
 pat_convert_cmd:/* empty */
 				{
 					LPConvertCmdList pCmdList = rdo::Factory<ConvertCmdList>::create();
-					PTR(RDORelevantResource) pRelRes = PARSER->getLastPATPattern()->currRelRes;
+					PTR(RDORelevantResource) pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
 					ASSERT(pRelRes);
 					pRelRes->getParamSetList().reset();
 					$$ = PARSER->stack().push(pCmdList);
@@ -1104,7 +1104,7 @@ pat_convert_cmd:/* empty */
 					tstring                  paramName   = RDOVALUE($2)->getIdentificator();
 					rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($3);
 					PTR(RDOFUNArithm)        rightArithm = P_ARITHM($4);
-					PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->currRelRes;
+					PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->m_pCurrRelRes;
 					ASSERT(pRelRes);
 					LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 					if (!param)
@@ -1116,11 +1116,11 @@ pat_convert_cmd:/* empty */
 					switch (equalType)
 					{
 					case rdoRuntime::ET_NOCHANGE: break;
-					case rdoRuntime::ET_EQUAL   : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL   >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); pRelRes->getParamSetList().insert(param); break;
-					case rdoRuntime::ET_PLUS    : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS    >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
-					case rdoRuntime::ET_MINUS   : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS   >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
-					case rdoRuntime::ET_MULTIPLY: pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY>(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
-					case rdoRuntime::ET_DIVIDE  : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE  >(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					case rdoRuntime::ET_EQUAL   : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL   >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); pRelRes->getParamSetList().insert(param); break;
+					case rdoRuntime::ET_PLUS    : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS    >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					case rdoRuntime::ET_MINUS   : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS   >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					case rdoRuntime::ET_MULTIPLY: pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY>(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
+					case rdoRuntime::ET_DIVIDE  : pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE  >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight); break;
 					default: NEVER_REACH_HERE;
 					}
 					if (pCalc)
@@ -1130,12 +1130,12 @@ pat_convert_cmd:/* empty */
 						if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
 						{
 							LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
-							pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+							pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 						}
 						else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
 						{
 							LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
-							pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->rel_res_id, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+							pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 						}
 
 						tstring oprStr;
