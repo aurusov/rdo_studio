@@ -44,82 +44,79 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOTabCtrl::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	RDOEditorEdit* page1  = new RDOEditorEdit( view );
-	RDOEditorEdit* page2  = new RDOEditorEdit( view );
-	RDOEditorEdit* page3  = new RDOEditorEdit( view );
-	RDOEditorEdit* page4  = new RDOEditorEdit( view );
-	RDOEditorEdit* page5  = new RDOEditorEdit( view );
-	RDOEditorEdit* page6  = new RDOEditorEdit( view );
-	RDOEditorEdit* page7  = new RDOEditorEdit( view );
-	RDOEditorEdit* page8  = new RDOEditorEdit( view );
-	RDOEditorEdit* page9  = new RDOEditorEdit( view );
-	RDOEditorEdit* page10  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage1  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage2  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage3  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage4  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage5  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage6  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage7  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage8  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage9  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage10  = new RDOEditorEdit( view );
 
-	page1->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page2->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page3->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page4->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page5->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page6->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page7->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page9->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage1->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage2->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage3->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage4->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage5->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage6->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage7->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage8->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage9->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
-	page1->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page2->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page3->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page4->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page5->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page6->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page7->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page8->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page9->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page9->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page10->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage1->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage2->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage3->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage4->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage5->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage6->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage7->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage8->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage9->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage9->setEditorStyle( &studioApp.mainFrame->style_editor );
 
-	page1->setPopupMenu( &view->popupMenu );
-	page2->setPopupMenu( &view->popupMenu );
-	page3->setPopupMenu( &view->popupMenu );
-	page4->setPopupMenu( &view->popupMenu );
-	page5->setPopupMenu( &view->popupMenu );
-	page6->setPopupMenu( &view->popupMenu );
-	page7->setPopupMenu( &view->popupMenu );
-	page8->setPopupMenu( &view->popupMenu );
-	page9->setPopupMenu( &view->popupMenu );
-	page10->setPopupMenu( &view->popupMenu );
+	pPage1->setPopupMenu( &view->popupMenu );
+	pPage2->setPopupMenu( &view->popupMenu );
+	pPage3->setPopupMenu( &view->popupMenu );
+	pPage4->setPopupMenu( &view->popupMenu );
+	pPage5->setPopupMenu( &view->popupMenu );
+	pPage6->setPopupMenu( &view->popupMenu );
+	pPage7->setPopupMenu( &view->popupMenu );
+	pPage8->setPopupMenu( &view->popupMenu );
+	pPage9->setPopupMenu( &view->popupMenu );
 
-	group.insert( page1 );
-	group.insert( page2 );
-	group.insert( page3 );
-	group.insert( page4 );
-	group.insert( page5 );
-	group.insert( page6 );
-	group.insert( page7 );
-	group.insert( page8 );
-	group.insert( page9 );
-	group.insert( page10 );
-	page1->setGroup( &group );
-	page2->setGroup( &group );
-	page3->setGroup( &group );
-	page4->setGroup( &group );
-	page5->setGroup( &group );
-	page6->setGroup( &group );
-	page7->setGroup( &group );
-	page8->setGroup( &group );
-	page9->setGroup( &group );
-	page10->setGroup( &group );
+	group.insert( pPage1 );
+	group.insert( pPage2 );
+	group.insert( pPage3 );
+	group.insert( pPage4 );
+	group.insert( pPage5 );
+	group.insert( pPage6 );
+	group.insert( pPage7 );
+	group.insert( pPage8 );
+	group.insert( pPage9 );
+	group.insert( pPage10 );
+	pPage1->setGroup( &group );
+	pPage2->setGroup( &group );
+	pPage3->setGroup( &group );
+	pPage4->setGroup( &group );
+	pPage5->setGroup( &group );
+	pPage6->setGroup( &group );
+	pPage7->setGroup( &group );
+	pPage8->setGroup( &group );
+	pPage9->setGroup( &group );
 
-	insertItem( page1, "PAT" );
-	insertItem( page2, "RTP" );
-	insertItem( page3, "RSS" );
-	insertItem( page4, "OPR" );
-	insertItem( page5, "FRM" );
-	insertItem( page6, "FUN" );
-	insertItem( page7, "DPT" );
-	insertItem( page8, "SMR" );
-	insertItem( page9, "PMD" );
-	insertItem( page10, "РДО-Процесс" );
+	insertItem(pPage1, _T("PAT"));
+	insertItem(pPage2, _T("RTP"));
+	insertItem(pPage3, _T("RSS"));
+	insertItem(pPage4, _T("OPR"));
+	insertItem(pPage5, _T("FRM"));
+	insertItem(pPage6, _T("FUN"));
+	insertItem(pPage7, _T("DPT"));
+	insertItem(pPage8, _T("SMR"));
+	insertItem(pPage9, _T("PMD"));
+	insertItem(pPage10, _T("РДО-Процесс") );
 
 	setCurrentRDOItem( rdoModelObjects::PAT );
 
@@ -138,23 +135,26 @@ rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) co
 		case  6: return rdoModelObjects::DPT;
 		case  7: return rdoModelObjects::SMR;
 		case  8: return rdoModelObjects::PMD;
-		default: return rdoModelObjects::PAT;
+		case  9: return rdoModelObjects::GUI_PROC;
+		default: NEVER_REACH_HERE;
 	}
 }
 
 int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) const
 {
 	switch ( type ) {
-		case rdoModelObjects::PAT: return 0;
-		case rdoModelObjects::RTP: return 1;
-		case rdoModelObjects::RSS: return 2;
-		case rdoModelObjects::OPR: return 3;
-		case rdoModelObjects::FRM: return 4;
-		case rdoModelObjects::FUN: return 5;
-		case rdoModelObjects::DPT: return 6;
-		case rdoModelObjects::SMR: return 7;
-		case rdoModelObjects::PMD: return 8;
+		case rdoModelObjects::PAT     : return 0;
+		case rdoModelObjects::RTP     : return 1;
+		case rdoModelObjects::RSS     : return 2;
+		case rdoModelObjects::OPR     : return 3;
+		case rdoModelObjects::FRM     : return 4;
+		case rdoModelObjects::FUN     : return 5;
+		case rdoModelObjects::DPT     : return 6;
+		case rdoModelObjects::SMR     : return 7;
+		case rdoModelObjects::PMD     : return 8;
+		case rdoModelObjects::GUI_PROC: return -1;
 	}
+	NEVER_REACH_HERE;
 	return -1;
 }
 
