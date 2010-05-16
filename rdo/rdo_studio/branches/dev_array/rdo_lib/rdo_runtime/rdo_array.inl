@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2010
  * filename : rdo_array.inl
  * author   : Чирков Михаил
  * date     : 14.12.2009
@@ -14,14 +14,26 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOArrayType
+// ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent)
-	: RDORuntimeObject(parent          )
-	, RDOType         (RDOType::t_array)
-	, m_arrayType     (NULL            )
+inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
+	: m_arrayTape(&type)
 {}
 
+inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
+	: m_arrayTape(value.m_arrayTape)
+{
+	m_arrayValue = value.m_arrayValue;
+}
+
+inline RDOArrayValue::~RDOArrayValue()
+{}
+
+inline CREF(RDOArrayType)       RDOArrayValue::type() const { return *m_arrayTape; }
+
+// ----------------------------------------------------------------------------
+// ---------- RDOArrayType
+// ----------------------------------------------------------------------------
 inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, CREF(ArrayType) arrayType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)

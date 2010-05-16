@@ -380,6 +380,7 @@ param_type:		RDO_integer param_int_diap param_int_default_val
 				{
 					PARSER->warning( @1, rdo::format("create array Done.	Dimension of array: %u" ,LEXER->m_array_param_cnt));
 					PARSER->error(@1, "OK");
+					LEXER->m_array_param_cnt = 0;
 				}
 				| param_such_as
 				{
@@ -670,31 +671,26 @@ param_array:	RDO_array '<' param_array_type '>'
 
 param_array_type:	RDO_integer
 					{
-						LEXER->m_array_param_cnt--;
 						PARSER->warning(@1, "array integer");
 					}
 					|
 					RDO_real
 					{
-						LEXER->m_array_param_cnt--;
 						PARSER->warning(@1, "array real");
 					}
 					|
 					RDO_string
 					{
-						LEXER->m_array_param_cnt--;
 						PARSER->warning(@1, "array string");
 					}
 					|
 					RDO_bool
 					{
-						LEXER->m_array_param_cnt--;
 						PARSER->warning(@1, "array bool");
 					}
 					|
 					param_such_as
 					{
-						LEXER->m_array_param_cnt--;
 						PARSER->warning(@1, "array enum");
 					}
 					|

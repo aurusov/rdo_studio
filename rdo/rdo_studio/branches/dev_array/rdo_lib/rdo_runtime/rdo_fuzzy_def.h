@@ -12,7 +12,6 @@
 
 #include "rdo_type.h"
 #include "rdoruntime_object.h"
-
 #include <map>
 
 namespace rdoRuntime {

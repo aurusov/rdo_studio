@@ -141,6 +141,12 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
 	m_value.s_value = new smart_tstring(new tstring(value));
 }
 
+//inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
+//	: m_type(&arrayValue.type())
+//{
+//	m_value.p_data = new RDOArrayValue(arrayValue);
+//}
+
 inline rsint RDOValue::getInt() const
 {
 	switch (typeID())

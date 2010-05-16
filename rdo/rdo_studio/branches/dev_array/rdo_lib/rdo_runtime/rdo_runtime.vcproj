@@ -1636,6 +1636,10 @@
 					RelativePath=".\rdo_array.inl"
 					>
 				</File>
+				<File
+					RelativePath=".\rdo_array_def.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
