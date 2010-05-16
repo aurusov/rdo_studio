@@ -307,7 +307,7 @@ void RPConnector::draw( CDC& dc )
 		CPen* old_pen = dc.SelectObject( const_cast<CPen*>(&getPen()) );
 		dc.Polyline( &pa.getWinPolyline()[0], pa.size() );
 		pa.draw( dc );
-		dc.Ellipse( p3.x-3, p3.y-3, p3.x+3, p3.y+3 );
+		dc.Ellipse( int(p3.x)-3, int(p3.y)-3, int(p3.x)+3, int(p3.y)+3 );
 		dc.SelectObject( old_pen );
 /*
 		rp::point p1 = dock_begin->getDeltaPosition();
