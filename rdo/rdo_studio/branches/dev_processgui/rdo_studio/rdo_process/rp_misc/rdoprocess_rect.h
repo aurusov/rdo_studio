@@ -118,10 +118,10 @@ public:
 
 #ifdef _DEBUG
 	void trace() const {
-		TRACE( "p0.x = %f, p0.y = %f\n", pa[0].x, pa[0].y );
-		TRACE( "p1.x = %f, p1.y = %f\n", pa[1].x, pa[1].y );
-		TRACE( "p2.x = %f, p2.y = %f\n", pa[2].x, pa[2].y );
-		TRACE( "p3.x = %f, p3.y = %f\n", pa[3].x, pa[3].y );
+		TRACE2( "p0.x = %f, p0.y = %f\n", pa[0].x, pa[0].y );
+		TRACE2( "p1.x = %f, p1.y = %f\n", pa[1].x, pa[1].y );
+		TRACE2( "p2.x = %f, p2.y = %f\n", pa[2].x, pa[2].y );
+		TRACE2( "p3.x = %f, p3.y = %f\n", pa[3].x, pa[3].y );
 	}
 #endif
 };
