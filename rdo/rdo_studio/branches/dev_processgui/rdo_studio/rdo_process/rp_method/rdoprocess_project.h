@@ -7,6 +7,7 @@
 
 #include "rdoprocess_object.h"
 #include "rdoprocess_messages.h"
+#include <fstream>
 
 // ----------------------------------------------------------------------------
 // ---------- RPProject
