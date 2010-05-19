@@ -152,6 +152,12 @@ PTR(rdoRuntime::RDOCalc) RDOEnumType::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, 
 	return RDOType::calc_cast(pCalc, pType);
 }
 
+RDOValue RDOEnumType::get_default() const
+{
+	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+	return RDOValue(rdoRuntime::RDOValue(getEnums(), 0), pEnum, RDOParserSrcInfo());
+}
+
 void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << "E " << getEnums().getValues().size() << std::endl;
