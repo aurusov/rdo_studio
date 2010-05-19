@@ -1475,45 +1475,11 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 			default_flag = true;
 		}
 	}
-	if ( !default_flag ) {
-		rdoRuntime::RDOCalcConst* calc_cond = new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
-		rdoRuntime::RDOCalcConst* calc_act  = NULL;
-		// ѕрисвоить автоматическое значение по-умолчанию, если оно не задано в €вном виде
-		switch (getType()->type()->typeID())
-		{
-		case rdoRuntime::RDOType::t_int:
-			if (dynamic_cast<PTR(RDOTypeIntRange)>(getType()->type().get()))
-			{
-				LPRDOTypeIntRange pRange = getType()->type().lp_cast<LPRDOTypeIntRange>();
-				calc_act = new rdoRuntime::RDOCalcConst(parser()->runtime(), pRange->range()->getMin().value());
-			}
-			break;
-
-		case rdoRuntime::RDOType::t_real:
-			if (dynamic_cast<PTR(RDOTypeRealRange)>(getType()->type().get()))
-			{
-				LPRDOTypeRealRange pRange = getType()->type().lp_cast<LPRDOTypeRealRange>();
-				calc_act = new rdoRuntime::RDOCalcConst(parser()->runtime(), pRange->range()->getMin().value());
-			}
-			break;
-
-		case rdoRuntime::RDOType::t_bool:
-			calc_act = new rdoRuntime::RDOCalcConst(parser()->runtime(), rdoRuntime::RDOValue(false));
-			break;
-
-		case rdoRuntime::RDOType::t_enum:
-			calc_act = new rdoRuntime::RDOCalcConst(parser()->runtime(), *getType()->type().lp_cast<LPRDOEnumType>()->getEnums().begin());
-			break;
-
-		case rdoRuntime::RDOType::t_string:
-			calc_act = new rdoRuntime::RDOCalcConst(parser()->runtime(), rdoRuntime::RDOValue(""));
-			break;
-
-		default: parser()->error().error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
-		}
-		if ( !calc_act ) {
-			calc_act = new rdoRuntime::RDOCalcConst( parser()->runtime(), 0 );
-		}
+	if ( !default_flag )
+	{
+		//! ѕрисвоить автоматическое значение по-умолчанию, если оно не задано в €вном виде
+		rdoRuntime::RDOCalcConst* calc_cond = new rdoRuntime::RDOCalcConst(parser()->runtime(), 1);
+		rdoRuntime::RDOCalcConst* calc_act  = new rdoRuntime::RDOCalcConst(parser()->runtime(), getType()->type()->get_default().value());
 		calc_cond->setSrcInfo( getType()->src_info() );
 		calc_act->setSrcInfo( getType()->src_info() );
 		fun_calc->addCalcIf( calc_cond, calc_act );
