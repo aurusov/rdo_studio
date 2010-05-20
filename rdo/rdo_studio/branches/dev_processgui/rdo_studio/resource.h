@@ -82,6 +82,19 @@
 #define IDD_GOTO_LINE_DIALOG            227
 #define IDB_FLOWCHART_DEFAULT           230
 #define IDD_METHOD_NEW                  231
+#define IDD_DIALOG_CREATE_1_MJ          232
+#define IDD_DIALOG_CREATE_2_MJ          233
+#define IDD_DIALOG_GEN_TYPE             234
+#define IDD_DIALOG_DECIDE_1				235
+#define IDD_DIALOG_PROCESS_1_MJ         236
+#define IDD_DIALOG_PROCESS_2_MJ         237
+#define IDD_DIALOG_RESOURCE_DLG1        238
+#define IDD_DIALOG_TERMINATE_1_MJ       239
+#define TOOLBARBLOCKMJ                  240
+#define IDR_TOOLBAR_STYLEANDCOLOR       241
+#define IDR_TOOLBAR_MAINFRAME           242
+#define IDR_TOOLBAR_EMPTY               243
+#define IDR_TOOLBAR_MAINFRAME_D         244
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -198,6 +211,21 @@
 #define IDC_GOTO_EDIT                   1131
 #define IDC_GOTO_STATIC                 1132
 #define IDC_WARNING_CHECK               1133
+#define IDC_EDIT1                       1134
+#define IDC_EDIT2                       1135
+#define IDC_EDIT3                       1136
+#define IDC_COMBO1                      1137
+#define IDC_EDIT4                       1138
+#define IDC_EDIT5                       1139
+#define IDC_EDIT6                       1140
+#define IDC_EDIT7                       1141
+#define IDC_EDIT8                       1142
+#define IDC_BUTTON1                     1143
+#define IDC_COMBO2                      1144
+#define IDC_BUTTON2                     1145
+#define IDC_LIST1                       1146
+#define IDC_COMBO3                      1147
+#define IDC_COMBO4                      1148
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_DOCK_PROJECT_BAR             32772
 #define ID_VIEW_WORKSPACE               32774
@@ -499,6 +527,21 @@
 #define ID_MODEL_RUNTIME_SYNC           33286
 #define ID_MODEL_RUNTIME_PAUSE          33287
 #define ID_SEARCH_GOTO_LINE             33292
+#define ID_BUTTON32779                  33293
+#define ID_BUTTON32781                  33294
+#define ID_BUTTON32782                  33295
+#define ID_BUTTON32783                  33296
+#define ID_GEN_TYPE                     33297
+#define ID_GENERATE                     33298
+#define ID_FLOWCHART_SAVE               33299
+#define ID_BTN_FILL_BRUSH               33300
+#define ID_BTN_FILL_PEN                 33301
+#define ID_BTN_FILL_FONT                33302
+#define ID_BTN_FILL_TEXT                33303
+#define ID_BTN_EMPTY                    33304
+#define ID_FLOW_SELECT                  33305
+#define ID_FLOW_CONNECTOR               33306
+#define ID_FLOW_ROTATE                  33307
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define ID_STATUSBAR_READONLY           40000
@@ -687,9 +730,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        232
-#define _APS_NEXT_COMMAND_VALUE         33293
-#define _APS_NEXT_CONTROL_VALUE         1134
+#define _APS_NEXT_RESOURCE_VALUE        245
+#define _APS_NEXT_COMMAND_VALUE         33308
+#define _APS_NEXT_CONTROL_VALUE         1149
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -241,8 +241,8 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame->ShowWindow( m_nCmdShow );
 	mainFrame->UpdateWindow();
 	
-	methods.init();
-	mainFrame->projectBar.selectFirst();
+	//methods.init();
+	//mainFrame->projectBar.selectFirst();
 
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );
