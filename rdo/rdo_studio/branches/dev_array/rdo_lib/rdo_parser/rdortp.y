@@ -389,9 +389,9 @@ param_type:		RDO_integer param_type_range param_value_default
 				}
 				| param_array /*param_array_default_val*/
 				{
-					PARSER->error().warning( @1, rdo::format("create array Done.	Dimension of array: %u" ,LEXER->m_array_param_cnt));
+					PARSER->error().warning( @1, rdo::format("create array Done.	Dimension of array: %u" ,LEXER->array_cnt_shw()));
 					PARSER->error().error(@1, "OK");
-					LEXER->m_array_param_cnt = 0;
+					LEXER->array_cnt_rst();
 				}
 				| RDO_bool param_value_default
 				{
@@ -605,7 +605,7 @@ param_value_default:	/* empty */ {
 
 param_array:		RDO_array '<' param_array_type '>'
 					{
-						LEXER->m_array_param_cnt++;
+						LEXER->array_cnt_pls();
 					};
 
 param_array_type:	RDO_integer

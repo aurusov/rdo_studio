@@ -10,7 +10,7 @@
 #define _RDO_ARRAY_DEF_H_
 
 #ifndef _RDO_VALUE_H_
-#error include "rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_fuzzy.h")
+#error include "rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_array.h")
 #endif
 
 //
