@@ -114,6 +114,7 @@ $Pattern			return(RDO_Pattern);
 $pattern			return(RDO_Pattern);
 operation			return(RDO_operation);
 irregular_event		return(RDO_irregular_event);
+event				return(RDO_event);
 rule				return(RDO_rule);
 keyboard			return(RDO_keyboard);
 $Relevant_resources	return(RDO_Relevant_resources);

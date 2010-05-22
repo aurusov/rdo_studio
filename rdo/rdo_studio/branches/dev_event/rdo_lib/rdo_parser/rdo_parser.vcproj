@@ -1314,6 +1314,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdopat_event.y"
+				>
+			</File>
+			<File
 				RelativePath="rdopmd.y"
 				>
 				<FileConfiguration

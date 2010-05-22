@@ -57,6 +57,7 @@
 
 %token RDO_Pattern						298
 %token RDO_operation					299
+%token RDO_event						379
 %token RDO_irregular_event				300
 %token RDO_rule							301
 %token RDO_keyboard						302
@@ -230,15 +231,19 @@ OPEN_RDO_PARSER_NAMESPACE
 %%
 
 pat_main
-	:
+	: /* empty */	       {}
 	| pat_main pat_pattern {};
 	| error                {};
 
 pat_header
-	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace       {}
+	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation       pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace            {}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace        {};
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
+	{
+		
+	}
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule            pat_trace {}
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard        pat_trace {};
 	| RDO_Pattern RDO_IDENTIF_COLON error                         {}
 	| RDO_Pattern error                                           {};
 
