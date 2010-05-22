@@ -20,11 +20,12 @@ private:
 	RDOTabCtrl tab;
 	RDOStudioFrameTreeCtrl* frames;
 //	RPPageCtrl* pagectrl;
-	RPProjectBar* projectBar;
 
 public:
 	RDOStudioWorkspace();
 	virtual ~RDOStudioWorkspace();
+
+	RPProjectBar* projectBar;
 
 protected:
 	//{{AFX_VIRTUAL(RDOStudioWorkspace)

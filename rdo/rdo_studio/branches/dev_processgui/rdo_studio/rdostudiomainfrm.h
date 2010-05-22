@@ -87,7 +87,6 @@ public:
 
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
-	RPProjectBar projectBar;
 	CControlBar*		last_docked;
 	CMultiDocTemplate*  flowchartDocTemplate;
 

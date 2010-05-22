@@ -74,7 +74,6 @@ public:
 	RPMethodManager methods;
 	std::ofstream   log;
 
-	RPProjectBar& getProjectBar() const             { return mainFrame->projectBar; }
 	const RPMethodManager& getMethodManager() const { return methods;               }
 
 	void broadcastMessage( RDOThread::RDOTreadMessage message, void* param = NULL );

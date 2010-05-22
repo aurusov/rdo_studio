@@ -171,7 +171,7 @@ void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
 		method->setPixmap( new RPPixmap( IDB_FLOWCHART_DEFAULT, RGB(0xFF,0xFF,0xFF) ) );
 	}
 	CListCtrl* listctrl = new CListCtrl();
-	listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.getProjectBar().prepareNewPage(), 1 );
+	listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.mainFrame->workspace.projectBar->prepareNewPage(), 1 );
 	CImageList* im_list = new CImageList();
 	im_lists.push_back( im_list );
 	im_list->Create( 32, 32, ILC_MASK | ILC_COLOR32, 0, 1 );
@@ -194,7 +194,7 @@ void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
 		}
 		it++;
 	}
-	RPPageCtrlItem* page = studioApp.getProjectBar().insertPage( listctrl, method->getName() );
+	RPPageCtrlItem* page = studioApp.mainFrame->workspace.projectBar->insertPage( listctrl, method->getName() );
 	page->setPixmap( *method->getPixmap() );
 	listctrl->SortItems( BlocksCompareProc, NULL );
 }
