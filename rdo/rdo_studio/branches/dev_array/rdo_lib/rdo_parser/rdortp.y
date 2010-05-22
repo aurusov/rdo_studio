@@ -387,7 +387,7 @@ param_type:		RDO_integer param_type_range param_value_default
 					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 					$$ = PARSER->stack().push(pType);
 				}
-				| param_array /*param_array_default_val*/
+				| param_array param_value_default
 				{
 					PARSER->error().warning( @1, rdo::format("create array Done.	Dimension of array: %u" ,LEXER->array_cnt_shw()));
 					PARSER->error().error(@1, "OK");
@@ -603,30 +603,9 @@ param_value_default:	/* empty */ {
 						}
 					};
 
-param_array:		RDO_array '<' param_array_type '>'
+param_array:		RDO_array '<' param_type '>'
 					{
 						LEXER->array_cnt_pls();
-					};
-
-param_array_type:	RDO_integer
-					{
-						PARSER->error().warning(@1, _T("array integer"));
-					}
-					| RDO_real
-					{
-						PARSER->error().warning(@1, _T("array real"));
-					}
-					| RDO_string
-					{
-						PARSER->error().warning(@1, _T("array string"));
-					}
-					| RDO_bool
-					{
-						PARSER->error().warning(@1, _T("array bool"));
-					}
-					| param_array
-					{
-						PARSER->error().warning(@1, _T("array array"));
 					};
 
 // ----------------------------------------------------------------------------
