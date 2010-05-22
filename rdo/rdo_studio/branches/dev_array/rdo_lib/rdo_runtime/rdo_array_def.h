@@ -60,7 +60,7 @@ public:
 	RDOArrayType(PTR(RDORuntimeParent) parent);
 	RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype);
 
-	virtual tstring  asString()                    const;
+	//virtual tstring  asString()                    const;
 	virtual RDOValue cast    (CREF(RDOValue) from) const;
 
 private:
