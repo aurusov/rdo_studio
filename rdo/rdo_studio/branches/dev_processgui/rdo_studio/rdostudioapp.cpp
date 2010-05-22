@@ -18,6 +18,7 @@
 #include "rdo_common/rdofile.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -148,17 +149,6 @@ END_MESSAGE_MAP()
 
 RDOStudioApp::RDOStudioApp():
 	CWinApp(),
-//	mainFrame( NULL )
-//{
-//	log.open( "log.txt" );
-//
-//	//new RPProjectMFC();
-//
-//	log << "new factory.." << std::endl;
-//	new RPObjectFactory();
-//	rpMethod::factory->registerDefaultObject();
-//	log << "new factory..ok" << std::endl;
-//}
 	studioGUI( NULL ),
 #ifdef RDO_MT
 	studioMT( NULL ),
@@ -173,12 +163,20 @@ RDOStudioApp::RDOStudioApp():
 	autoExitByModel( false ),
 	dontCloseIfError( false ),
 	exitCode( rdoSimulator::EC_OK ),
-	openModelName( "" )
+	openModelName( "" ),
+	mainFrame( NULL )
 {
 	setlocale( LC_ALL, "rus" );
 	setlocale( LC_NUMERIC, "eng" );
-}
 
+	log.open( "log.txt" );
+
+	new RPProjectMFC();
+	log << "new factory.." << std::endl;
+	new RPObjectFactory();
+	rpMethod::factory->registerDefaultObject();
+	log << "new factory..ok" << std::endl;
+}
 
 BOOL RDOStudioApp::InitInstance()
 {
