@@ -1,6 +1,9 @@
 #ifndef RDO_PROCESS_CTRL_TOOLBAR_H
 #define RDO_PROCESS_CTRL_TOOLBAR_H
 
+#include "rdo_common/rdomacros.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
+
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -18,10 +21,8 @@ protected:
 	RPCtrlToolbar();
 	~RPCtrlToolbar();
 public:
-//	virtual int insertButton(rpMethod::RPMethod* method, char* xpm[], const rp::string& tool_tip = "")=0;
-
-	virtual int insertButton( rpMethod::RPMethod* method, char* xpm[], const rp::string& tool_tip = "" ) = 0;
-	virtual void setCaption( const rp::string& caption ) = 0;
+	virtual int  insertButton(PTR(rpMethod::RPMethod) method, PTR(char) xpm[], CREF(rp::string) tool_tip = _T("")) = 0;
+	virtual void setCaption  (CREF(rp::string) caption) = 0;
 	
 	struct ButtonUpdate {
 		int  id;
