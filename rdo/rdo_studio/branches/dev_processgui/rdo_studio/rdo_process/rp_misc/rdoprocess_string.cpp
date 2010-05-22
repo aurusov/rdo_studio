@@ -47,8 +47,7 @@ string format( const char* str, ... )
 	int size = -1;
 	while ( size == -1 ) {
 		va_start( paramList, str );
-	//	size = _vsnprintf( &s[0], s.size(), str, paramList );
-		size=_vsnprintf_s(&s[0],0,s.size(),str,paramList);
+		size = _vsnprintf_s(&s[0], s.size(), _TRUNCATE, str, paramList);
 		va_end( paramList );
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
@@ -69,8 +68,7 @@ string format( unsigned int resource, ... )
 		int size = -1;
 		while ( size == -1 ) {
 			va_start( paramList, resource );
-			//size = _vsnprintf( &s[0], s.size(), static_cast<LPCTSTR>(str), paramList );
-			size=_vsnprintf_s( &s[0],0, s.size(), static_cast<LPCTSTR>(str), paramList );
+			size = _vsnprintf_s(&s[0], s.size(), _TRUNCATE, static_cast<LPCTSTR>(str), paramList);
 			va_end( paramList );
 			if ( size == -1 ) {
 				s.resize( s.size() + 256 );
