@@ -30,4 +30,5 @@ RDOArrayType::RDOArrayType()
 RDOArrayType::~RDOArrayType()
 {
 }
+
 CLOSE_RDO_PARSER_NAMESPACE
