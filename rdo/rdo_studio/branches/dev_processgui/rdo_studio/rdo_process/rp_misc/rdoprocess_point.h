@@ -1,6 +1,6 @@
 #ifndef RDO_PROCESS_POINT_H
 #define RDO_PROCESS_POINT_H
-
+#include <math.h>
 namespace rp {
 
 // ----------------------------------------------------------------------------
@@ -31,7 +31,7 @@ public:
 
 #ifdef _DEBUG
 	void trace() {
-		TRACE( "x = %f, y = %f\n", x, y );
+		TRACE2( "x = %f, y = %f\n", x, y );
 	}
 #endif
 };

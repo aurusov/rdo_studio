@@ -265,14 +265,14 @@ void RPObjectPixmap::draw( CDC& dc )
 	CBitmap* original_old_bitmap = original_dc.SelectObject( &pixmap->getCBitmap() );
 	int w = pixmap->getWidth();
 	int h = pixmap->getHeight();
-	int scaled_w = w * getScaleX();
-	int scaled_h = h * getScaleY();
+	int scaled_w = int(w * getScaleX());
+	int scaled_h = int(h * getScaleY());
 	int rotated_w;
 	int rotated_h;
 	CDC rotated_dc;
 	rotated_dc.CreateCompatibleDC( &dc );
-	HGDIOBJ rotated_old_pixmap = RotateMemoryDC( pixmap->getBitmap(), original_dc, w, h, getRotation() *  rp::math::pi / 180, rotated_dc, rotated_w, rotated_h, RGB(0,-1,0)/*pixmap->getTransparent()*/ );
-	McTransparentBlt( dc.m_hDC, rect.p0().x, rect.p0().y, rotated_w * getScaleX(), rotated_h * getScaleY(), rotated_dc.m_hDC, 0, 0, rotated_w, rotated_h, pixmap->getTransparent() );
+	HGDIOBJ rotated_old_pixmap = RotateMemoryDC( pixmap->getBitmap(), original_dc, w, h, float(getRotation() *  rp::math::pi / 180), rotated_dc, rotated_w, rotated_h, RGB(0,-1,0)/*pixmap->getTransparent()*/ );
+	McTransparentBlt( dc.m_hDC, int(rect.p0().x), int(rect.p0().y), int(rotated_w * getScaleX()), int(rotated_h * getScaleY()), rotated_dc.m_hDC, 0, 0, rotated_w, rotated_h, pixmap->getTransparent() );
 	::SelectObject( rotated_dc.m_hDC, rotated_old_pixmap );
 	original_dc.SelectObject( original_old_bitmap );
 	rect.draw( dc );

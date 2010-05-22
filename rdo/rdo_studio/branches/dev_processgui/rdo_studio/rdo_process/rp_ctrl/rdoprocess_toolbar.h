@@ -18,6 +18,8 @@ protected:
 	RPCtrlToolbar();
 	~RPCtrlToolbar();
 public:
+//	virtual int insertButton(rpMethod::RPMethod* method, char* xpm[], const rp::string& tool_tip = "")=0;
+
 	virtual int insertButton( rpMethod::RPMethod* method, char* xpm[], const rp::string& tool_tip = "" ) = 0;
 	virtual void setCaption( const rp::string& caption ) = 0;
 	

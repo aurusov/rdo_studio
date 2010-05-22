@@ -23,9 +23,9 @@ public:
 
 #ifdef _DEBUG
 	void trace() const {
-		TRACE( "%f, %f, %f\n", data[0][0], data[0][1], data[0][2] );
-		TRACE( "%f, %f, %f\n", data[1][0], data[1][1], data[1][2] );
-		TRACE( "%f, %f, %f\n", data[2][0], data[2][1], data[2][2] );
+		TRACE3( "%f, %f, %f\n", data[0][0], data[0][1], data[0][2] );
+		TRACE3( "%f, %f, %f\n", data[1][0], data[1][1], data[1][2] );
+		TRACE3( "%f, %f, %f\n", data[2][0], data[2][1], data[2][2] );
 	}
 #endif
 

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "rdoprocess_toolbar.h"
+#include "rdo_studio/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

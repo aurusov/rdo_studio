@@ -20,6 +20,8 @@
 #include "rdo_studio/rdostudioframestyle.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_studio/rdoprocess_projectbar.h"
+#include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOToolBar
@@ -63,13 +65,15 @@ friend class RDOToolBar;
 friend class RDOStudioModelDoc;
 
 private:
-	RDOToolBar         fileToolBar;
-	RDOToolBar         editToolBar;
-	RDOToolBar         zoomToolBar;
-	RDOToolBarModel    modelToolBar;
-	RDOStudioStatusBar statusBar;
+	RDOToolBar          fileToolBar;
+	RDOToolBar          editToolBar;
+	RDOToolBar          zoomToolBar;
+	RDOToolBarModel		modelToolBar;
+	RDOStudioStatusBar	statusBar;
+
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
+	
 	std::map< HWND, CWnd* > cmd_wnd;
 
 	UINT update_timer;
@@ -84,6 +88,8 @@ public:
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
 	RPProjectBar projectBar;
+	CControlBar*		last_docked;
+	CMultiDocTemplate*  flowchartDocTemplate;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
@@ -94,6 +100,8 @@ public:
 	RDOStudioFrameStyle              style_frame;
 	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
+
+	void insertToolBar( CToolBar* toolbar );//рдо_проджект
 
 	void showWorkspace();
 	void showOutput();

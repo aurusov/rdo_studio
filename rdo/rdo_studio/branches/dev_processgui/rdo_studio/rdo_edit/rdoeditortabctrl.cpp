@@ -75,7 +75,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	pPage7->setEditorStyle( &studioApp.mainFrame->style_editor );
 	pPage8->setEditorStyle( &studioApp.mainFrame->style_editor );
 	pPage9->setEditorStyle( &studioApp.mainFrame->style_editor );
-	pPage9->setEditorStyle( &studioApp.mainFrame->style_editor );
 
 	pPage1->setPopupMenu( &view->popupMenu );
 	pPage2->setPopupMenu( &view->popupMenu );

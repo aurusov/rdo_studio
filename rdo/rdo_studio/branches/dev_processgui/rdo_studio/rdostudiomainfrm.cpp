@@ -7,7 +7,12 @@
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
 #include "rdo_studio/resource.h"
-
+#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
+#include "rdo_studio/rdo_process/rdoprocess_docview.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -141,12 +146,16 @@ bool RDOStudioMainFrame::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame():
 	CMDIFrameWnd(),
-	update_timer( 0 )
+	last_docked( NULL ),//рдо-процесс
+	update_timer( 0 ),
+	flowchartDocTemplate( NULL )
 {
+	flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
 {
+	if ( flowchartDocTemplate ) delete flowchartDocTemplate;
 }
 
 int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -256,6 +265,16 @@ void RDOStudioMainFrame::OnDestroy()
 	::OleUninitialize();
 	CMDIFrameWnd::OnDestroy();
 }
+//для рдо-процесс
+void RDOStudioMainFrame::insertToolBar( CToolBar* toolbar )
+{
+	if ( !last_docked ) {
+		DockControlBar( toolbar );
+	} else {
+		dockControlBarBesideOf( *toolbar, *last_docked );
+	}
+	last_docked = toolbar;
+}
 
 BOOL RDOStudioMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -298,6 +317,7 @@ void RDOStudioMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& 
 	rect.OffsetRect( dx, dy );
 
 	DockControlBar( &bar, n, rect );
+	last_docked = &bar;//рдо-процесс
 }
 
 void RDOStudioMainFrame::OnViewFileToolbar() 

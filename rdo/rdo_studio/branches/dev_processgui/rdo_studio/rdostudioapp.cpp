@@ -148,6 +148,17 @@ END_MESSAGE_MAP()
 
 RDOStudioApp::RDOStudioApp():
 	CWinApp(),
+//	mainFrame( NULL )
+//{
+//	log.open( "log.txt" );
+//
+//	//new RPProjectMFC();
+//
+//	log << "new factory.." << std::endl;
+//	new RPObjectFactory();
+//	rpMethod::factory->registerDefaultObject();
+//	log << "new factory..ok" << std::endl;
+//}
 	studioGUI( NULL ),
 #ifdef RDO_MT
 	studioMT( NULL ),
@@ -167,6 +178,7 @@ RDOStudioApp::RDOStudioApp():
 	setlocale( LC_ALL, "rus" );
 	setlocale( LC_NUMERIC, "eng" );
 }
+
 
 BOOL RDOStudioApp::InitInstance()
 {
@@ -335,6 +347,17 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
+	//log << "methods.close().." << std::endl;
+	//methods.close();
+	//log << "methods.close().. ok" << std::endl;
+
+	log << "delete factory.. " << std::endl;
+	if ( rpMethod::factory ) {
+		delete rpMethod::factory;
+		rpMethod::factory = NULL;
+	}
+	log << "delete factory.. ok" << std::endl;
+
 	if ( exitCode != rdoSimulator::EC_ModelNotFound ) {
 		exitCode = model->getExitCode();
 	}

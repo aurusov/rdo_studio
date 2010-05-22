@@ -95,6 +95,7 @@
 #define IDR_TOOLBAR_MAINFRAME           242
 #define IDR_TOOLBAR_EMPTY               243
 #define IDR_TOOLBAR_MAINFRAME_D         244
+#define IDR_FLOWCHART_TYPE              245
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -730,7 +731,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        245
+#define _APS_NEXT_RESOURCE_VALUE        246
 #define _APS_NEXT_COMMAND_VALUE         33308
 #define _APS_NEXT_CONTROL_VALUE         1149
 #define _APS_NEXT_SYMED_VALUE           101

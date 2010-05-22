@@ -779,6 +779,7 @@ IDR_CHARTTYPE           ICON                    "res\\rdostudiochartdoc.ico"
 IDR_MODEL_TYPE          ICON                    "res\\rdostudiomodeldoc.ico"
 IDR_EDIT_TYPE           ICON                    "res\\rdostudioeditdoc.ico"
 IDR_FRAME_TYPE          ICON                    "res\\rdostudioframedoc.ico"
+IDR_FLOWCHART_TYPE      ICON    DISCARDABLE     "res\\flowchart_icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3306,6 +3307,7 @@ BEGIN
     TOOLBARBLOCKMJ          "РДО-Процесс"
     IDR_TOOLBAR_MAINFRAME   "Основные"
     IDR_TOOLBAR_EMPTY       "Команды"
+	IDR_FLOWCHART_TYPE      "\nfchart\nfchart"
 END
 
 STRINGTABLE DISCARDABLE 

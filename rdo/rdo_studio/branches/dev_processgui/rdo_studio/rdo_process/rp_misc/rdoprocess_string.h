@@ -63,7 +63,7 @@ rp::string str = rp::string::fromint( 20 );
 	*/
 	static rp::string fromint( int value ) {
 		char buffer[20];
-		_itoa( value, buffer, 10 );
+		_itoa_s( value, buffer, 10 );
 		return rp::string( buffer );
 	}
 
@@ -78,7 +78,8 @@ rp::string str = rp::string::fromdouble( 20.2 );
 	*/
 	static rp::string fromdouble( double value ) {
 		char buffer[40];
-		_gcvt( value, 10, buffer );
+		//_gcvt( value, 10, buffer );
+		_gcvt_s(buffer,value,10);
 		rp::string str( buffer );
 		if ( str[str.length()-1] == '.' ) {
 			str += '0';

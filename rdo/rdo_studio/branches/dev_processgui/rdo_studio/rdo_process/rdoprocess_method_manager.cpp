@@ -7,7 +7,7 @@
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
 #include "rdo_studio/rdo_process/algorithm/rdoprocess_method_algorithm.h"
-//#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -254,18 +254,18 @@ BOOL RPMethodNewDlg::OnInitDialog()
 {
 	BOOL res = CDialog::OnInitDialog();
 	if ( !res ) {
-		//rpMethod::project->log() << "RPMethodNewDlg::OnInitDialog() = FAILD" << std::endl;
+		rpMethod::project->log() << "RPMethodNewDlg::OnInitDialog() = FAILD" << std::endl;
 		return FALSE;
 	}
-	//rpMethod::project->log() << "RPMethodNewDlg::OnInitDialog().." << std::endl;
+	rpMethod::project->log() << "RPMethodNewDlg::OnInitDialog().." << std::endl;
 	im_list.Create( 16, 16, ILC_MASK, 0, 1 );
 	methods.SetImageList( &im_list, LVSIL_SMALL );
-	//rpMethod::project->log() << "methods.SetImageList" << std::endl;
+	rpMethod::project->log() << "methods.SetImageList" << std::endl;
 	CRect rect;
 	methods.GetClientRect( rect );
 	methods.InsertColumn( 1, "Название", LVCFMT_LEFT, 120 );
 	methods.InsertColumn( 2, "Версия", LVCFMT_LEFT, rect.Width() - methods.GetColumnWidth(0) );
-	//rpMethod::project->log() << "methods.InsertColumns" << std::endl;
+	rpMethod::project->log() << "methods.InsertColumns" << std::endl;
 	methods.SetExtendedStyle( methods.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES );
 #ifdef RDO_METHOD_DLL
 	std::vector< RPMethodPlugin* >::const_iterator it = studioApp.getMethodManager().getList().begin();
@@ -273,40 +273,40 @@ BOOL RPMethodNewDlg::OnInitDialog()
 	std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
 #endif
 	int index = 0;
-	//rpMethod::project->log() << "перед вставкой методов" << std::endl;
+	rpMethod::project->log() << "перед вставкой методов" << std::endl;
 	while ( it != studioApp.getMethodManager().getList().end() ) {
 #ifdef RDO_METHOD_DLL
 		rpMethod::RPMethod* method = (*it)->getMethod();
 #else
 		rpMethod::RPMethod* method = *it;
 #endif
-		//rpMethod::project->log() << "  добавление метода " << method->getName() << std::endl;
+		rpMethod::project->log() << "  добавление метода " << method->getName() << std::endl;
 		index = methods.InsertItem( index, method->getName().c_str() );
 		if ( index != LB_ERR ) {
 			methods.SetItemText( index, 1, rp::format( "ver %d.%d (build %d) %s", method->getVersionMajor(), method->getVersionMinor(), method->getVersionBuild(),  method->getVersionDesc().c_str() ).c_str() );
-			//rpMethod::project->log() << "    index = " << index << std::endl;
+			rpMethod::project->log() << "    index = " << index << std::endl;
 #if _MSC_VER > 1200
 			methods.SetItemData( index, reinterpret_cast<DWORD_PTR>(method) );
 #else
 			methods.SetItemData( index, reinterpret_cast<DWORD>(method) );
 #endif
 		} else {
-		//	rpMethod::project->log() << "  ошибка добавления" << std::endl;
+			rpMethod::project->log() << "  ошибка добавления" << std::endl;
 			return FALSE;
 		}
-		//rpMethod::project->log() << "  метод добавлен " << method->getName() << std::endl;
+		rpMethod::project->log() << "  метод добавлен " << method->getName() << std::endl;
 		index++;
 		it++;
 	}
 	if ( methods.GetItemCount() ) {
-		//rpMethod::project->log() << "сортировка.." << std::endl;
+		rpMethod::project->log() << "сортировка.." << std::endl;
 		methods.SortItems( MethodsCompareProc, NULL );
-		//rpMethod::project->log() << "сортировка.. ok" << std::endl;
+		rpMethod::project->log() << "сортировка.. ok" << std::endl;
 		methods.SetItemState( 0, LVIS_SELECTED, LVIS_SELECTED );
 	} else {
 		GetDlgItem( IDOK )->EnableWindow( false );
 	}
-	//rpMethod::project->log() << "RPMethodNewDlg::OnInitDialog().. ok" << std::endl;
+	rpMethod::project->log() << "RPMethodNewDlg::OnInitDialog().. ok" << std::endl;
 	return res;
 }
 
@@ -324,7 +324,7 @@ void RPMethodNewDlg::OnOK()
 		int index = methods.GetNextItem( -1, LVNI_SELECTED );
 		if ( index != -1 ) {
 			method_last = reinterpret_cast<rpMethod::RPMethod*>(methods.GetItemData(index));
-//			rpMethod::project->log() << "method_last = " << method_last->getName() << std::endl;
+			rpMethod::project->log() << "method_last = " << method_last->getName() << std::endl;
 		}
 	}
 	CDialog::OnOK();
