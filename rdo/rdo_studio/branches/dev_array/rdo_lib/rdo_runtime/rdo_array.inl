@@ -34,6 +34,10 @@ inline CREF(RDOArrayType)       RDOArrayValue::type() const { return *m_arrayTap
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
+inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent)
+	: RDORuntimeObject(parent         )
+	, RDOType         (RDOType::t_array)
+{}
 inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, CREF(ArrayType) arrayType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
