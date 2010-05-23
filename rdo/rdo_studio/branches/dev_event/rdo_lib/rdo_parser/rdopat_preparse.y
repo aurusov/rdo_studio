@@ -232,7 +232,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 pat_main
 	: /* empty */	       {}
-	| pat_main pat_pattern {}
+	| pat_main pat_pattern {@1;}
 	| error                {}
 	;
 
@@ -241,7 +241,7 @@ pat_header
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
 	{
-		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(P_RDOVALUE($2));
+		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator());
 		ASSERT(pEvent);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule            pat_trace {}
