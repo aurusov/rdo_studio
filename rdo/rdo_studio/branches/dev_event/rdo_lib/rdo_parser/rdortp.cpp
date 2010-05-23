@@ -1,12 +1,24 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdortp.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -21,18 +33,17 @@ void rtperror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(PTR(RDOParser) _parser, CREF(RDOParserSrcInfo) _src_info, rbool _permanent):
-	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	m_number( _parser->getRTP_id() ),
-	m_permanent( _permanent )
+RDORTPResType::RDORTPResType(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+	: RDOParserObject (parser             )
+	, RDOParserSrcInfo(src_info           )
+	, m_number        (parser->getRTP_id())
+	, m_permanent     (permanent          )
 {
-	parser()->insertRTPResType( this );
+	parser->insertRTPResType(LPRDORTPResType(this));
 }
 
 RDORTPResType::~RDORTPResType()
-{
-}
+{}
 
 void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
@@ -97,4 +108,4 @@ RDORTPFuzzyTerm::RDORTPFuzzyTerm( RDOParser* _parser, const RDOParserSrcInfo& _s
 
 }*/
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE

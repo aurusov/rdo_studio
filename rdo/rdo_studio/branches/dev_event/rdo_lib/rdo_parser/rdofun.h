@@ -561,7 +561,7 @@ protected:
 	void init( const RDOParserSrcInfo& _res_info );
 
 public:
-	const RDORTPResType* resType;
+	LPRDORTPResType resType;
 
 	RDOFUNGroup( RDOParser* _parser, const RDOParserSrcInfo& _res_info );
 	RDOFUNGroup( const RDOParserObject* _parent, const RDOParserSrcInfo& _res_info );

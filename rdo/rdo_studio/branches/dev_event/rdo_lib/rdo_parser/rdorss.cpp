@@ -22,7 +22,7 @@ void rsserror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id )
+RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPResType) _resType, int id )
 	: RDOParserObject (_parser                                       )
 	, RDOParserSrcInfo(_src_info                                     )
 	, resType         (_resType                                      )
@@ -93,7 +93,7 @@ rdoRuntime::RDOCalc* RDORSSResource::createCalc()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id ):
+RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPResType) _resType, int id ):
 	RDORSSResource( _parser, _src_info, _resType, id )
 {
 }

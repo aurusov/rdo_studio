@@ -95,7 +95,7 @@ RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& 
 RDOPMDWatchTemp::RDOPMDWatchTemp( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _res_type_src_info ):
 	RDOPMDPokaz( _parser, _src_info )
 {
-	const RDORTPResType* const res_type = parser()->findRTPResType( _res_type_src_info.src_text() );
+	const LPRDORTPResType res_type = parser()->findRTPResType( _res_type_src_info.src_text() );
 	if ( !res_type ) {
 		parser()->error().error( _res_type_src_info, rdo::format("Тип ресурса '%s' не найден", _res_type_src_info.src_text().c_str()) );
 	}

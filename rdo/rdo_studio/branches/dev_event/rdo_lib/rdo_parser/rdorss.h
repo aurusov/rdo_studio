@@ -45,12 +45,12 @@ public:
 	typedef std::vector<Param> Params;
 	enum { UNDEFINED_ID = ~0 };
 
-	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id = UNDEFINED_ID );
+	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPResType) _resType, int id = UNDEFINED_ID );
 
 	virtual rdoRuntime::RDOCalc* createCalc();
 
-	const std::string&         name() const    { return src_info().src_text(); }
-	const RDORTPResType* const getType() const { return resType;  }
+	const std::string& name   () const { return src_info().src_text(); }
+	LPRDORTPResType    getType() const { return resType;  }
 
 	int getID() const                          { return m_id;     }
 
@@ -65,10 +65,10 @@ public:
 	bool defined() const;
 
 protected:
-	const RDORTPResType* const resType;
-	const int                  m_id;        // in system
-	Params                     m_params;
-	bool                       trace;
+	LPRDORTPResType resType;
+	const int       m_id;        // in system
+	Params          m_params;
+	bool            trace;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
@@ -80,7 +80,7 @@ private:
 class RDOPROCResource: public RDORSSResource
 {
 public:
-	RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id = UNDEFINED_ID );
+	RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPResType) _resType, int id = UNDEFINED_ID );
 
 private:
 	virtual rdoRuntime::RDOCalc* createCalc();

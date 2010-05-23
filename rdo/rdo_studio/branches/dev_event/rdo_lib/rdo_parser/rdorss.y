@@ -266,7 +266,7 @@ rss_res_type:	RDO_IDENTIF_COLON RDO_IDENTIF
 				{
 					RDOValue* name = reinterpret_cast<RDOValue*>($1);
 					RDOValue* type = reinterpret_cast<RDOValue*>($2);
-					const RDORTPResType* const resType = PARSER->findRTPResType( type->value().getIdentificator() );
+					LPRDORTPResType resType = PARSER->findRTPResType( type->value().getIdentificator() );
 					if ( !resType ) {
 						PARSER->error().error( @2, rdo::format("Неизвестный тип ресурса: %s", type->value().getIdentificator().c_str()) );
 					}

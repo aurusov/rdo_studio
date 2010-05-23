@@ -20,10 +20,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
-RDORTPParam::RDORTPParam(CPTR(RDORTPResType) const resType, CREF(LPRDOTypeParam) pParamType, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info  )
-	, m_resType       (resType   )
-	, m_paramType     (pParamType)
+RDORTPParam::RDORTPParam(CREF(LPRDORTPResType) pResourceType, CREF(LPRDOTypeParam) pParamType, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info     )
+	, m_pResourceType (pResourceType)
+	, m_paramType     (pParamType   )
 {
 	ASSERT(m_paramType);
 }
