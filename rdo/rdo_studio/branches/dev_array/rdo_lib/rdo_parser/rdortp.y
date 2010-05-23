@@ -389,9 +389,10 @@ param_type:		RDO_integer param_type_range param_value_default
 				}
 				| param_array param_value_default
 				{
-					PARSER->error().warning( @1, rdo::format("create array Done.	Dimension of array: %u" ,LEXER->array_cnt_shw()));
-					PARSER->error().error(@1, "OK");
 					LEXER->array_cnt_rst();
+					LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
 				}
 				| RDO_bool param_value_default
 				{

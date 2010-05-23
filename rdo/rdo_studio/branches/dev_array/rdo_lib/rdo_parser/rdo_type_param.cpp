@@ -37,6 +37,7 @@ RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOValue) default, CREF(RD
 	switch (m_type->type().typeID())
 	{
 	case rdoRuntime::RDOType::t_enum :
+	case rdoRuntime::RDOType::t_array:
 	case rdoRuntime::RDOType::t_fuzzy: RDOParser::s_parser()->insertPreCastType(this); break;
 	}
 }
