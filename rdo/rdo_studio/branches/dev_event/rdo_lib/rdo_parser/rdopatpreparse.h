@@ -17,14 +17,10 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-//int  patpreparseparse(PTR(void) lexer);
-//int  patpreparselex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-//void patpreparseerror(PTR(char) mes);
-
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
 // ----------------------------------------------------------------------------
-class RDOEvent
+class RDOEvent: public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(RDOEvent);
 public:
