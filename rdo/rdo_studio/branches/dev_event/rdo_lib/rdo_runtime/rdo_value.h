@@ -38,7 +38,7 @@ public:
 	RDOValue(ruint               value   );
 	RDOValue(double              value   );
 	RDOValue(rbool               value   );
-	RDOValue(REF(RDOEnumType)    enums   );
+	RDOValue(CREF(RDOEnumType)   enums   );
 	RDOValue(CREF(RDOEnumType)   enums, CREF(tstring) value);
 	RDOValue(CREF(RDOEnumType)   enums, ruint index);
 	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
