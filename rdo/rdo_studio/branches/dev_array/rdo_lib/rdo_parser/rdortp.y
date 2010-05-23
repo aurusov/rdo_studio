@@ -203,6 +203,7 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
