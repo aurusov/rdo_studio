@@ -232,28 +232,33 @@ OPEN_RDO_PARSER_NAMESPACE
 
 pat_main
 	: /* empty */	       {}
-	| pat_main pat_pattern {};
-	| error                {};
+	| pat_main pat_pattern {}
+	| error                {}
+	;
 
 pat_header
 	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation       pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
 	{
-		
+		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(P_RDOVALUE($2));
+		ASSERT(pEvent);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule            pat_trace {}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard        pat_trace {};
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard        pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON error                         {}
-	| RDO_Pattern error                                           {};
+	| RDO_Pattern error                                           {}
+	;
 
 pat_trace
 	: /* empty */	{}
 	| RDO_trace		{}
-	| RDO_no_trace	{};
+	| RDO_no_trace	{}
+	;
 
 pat_params_begin
-	: pat_header RDO_Parameters {};
+	: pat_header RDO_Parameters {}
+	;
 
 pat_params
 	: pat_params_begin RDO_IDENTIF_COLON param_type {}
@@ -263,12 +268,14 @@ pat_params
 	| pat_params_begin RDO_IDENTIF_COLON error      {}
 	| pat_params error                              {}
 	| pat_params RDO_IDENTIF error                  {}
-	| pat_params RDO_IDENTIF_COLON error            {};
+	| pat_params RDO_IDENTIF_COLON error            {}
+	;
 
 pat_params_end
 	: pat_params RDO_Relevant_resources {}
 	| pat_header RDO_Relevant_resources {}
-	| pat_header error                  {};
+	| pat_header error                  {}
+	;
 
 pat_rel_res
 	: pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv    {}
@@ -292,13 +299,15 @@ pat_rel_res
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error       {}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error          {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error       {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error          {};
+	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error          {}
+	;
 
 pat_conv
 	: RDO_Keep			{}
 	| RDO_Create		{}
 	| RDO_Erase			{}
-	| RDO_NonExist		{};
+	| RDO_NonExist		{}
+	;
 
 pat_common_choice
 	: pat_rel_res
@@ -306,7 +315,8 @@ pat_common_choice
 	| pat_rel_res RDO_with_min fun_arithm {}
 	| pat_rel_res RDO_with_max fun_arithm {}
 	| pat_rel_res RDO_with_min error      {}
-	| pat_rel_res RDO_with_max error      {};
+	| pat_rel_res RDO_with_max error      {}
+	;
 
 pat_time
 	: pat_common_choice RDO_Body                         {}
@@ -314,28 +324,34 @@ pat_time
 	| pat_common_choice RDO_Time '=' fun_arithm error    {}
 	| pat_common_choice RDO_Time '=' error               {}
 	| pat_common_choice RDO_Time error                   {}
-	| pat_common_choice error                            {};
+	| pat_common_choice error                            {}
+	;
 
 pat_body
 	: pat_time RDO_IDENTIF_RELRES    {}
 	| pat_convert RDO_IDENTIF_RELRES {}
 	| pat_time error                 {}
-	| pat_convert error              {};
+	| pat_convert error              {}
+	;
 
 pat_res_usage
-	: pat_body pat_choice pat_order {};
+	: pat_body pat_choice pat_order {}
+	;
 
 pat_choice
 	: /* empty */               {}
 	| pat_choice_nocheck        {}
 	| pat_choice_from fun_logic {}
-	| pat_choice_from error     {};
+	| pat_choice_from error     {}
+	;
 
 pat_choice_nocheck
-	: RDO_Choice RDO_NoCheck    {};
+	: RDO_Choice RDO_NoCheck    {}
+	;
 
 pat_choice_from
-	: RDO_Choice RDO_from       {};
+	: RDO_Choice RDO_from       {}
+	;
 
 pat_order
 	: /* empty */                    {}
@@ -343,16 +359,20 @@ pat_order
 	| pat_choice_with_min fun_arithm {}
 	| pat_choice_with_max fun_arithm {}
 	| pat_choice_with_min error      {}
-	| pat_choice_with_max error      {};
+	| pat_choice_with_max error      {}
+	;
 
 pat_choice_first
-	: RDO_first    {};
+	: RDO_first    {}
+	;
 
 pat_choice_with_min
-	: RDO_with_min {};
+	: RDO_with_min {}
+	;
 
 pat_choice_with_max
-	: RDO_with_max {};
+	: RDO_with_max {}
+	;
 
 pat_convert
 	: pat_res_usage                                                                               {}
@@ -360,25 +380,31 @@ pat_convert
 	| pat_res_usage pat_convert_cmd convert_end pat_trace pat_convert_cmd                         {}
 	| pat_res_usage convert_begin pat_trace pat_convert_cmd convert_end pat_trace pat_convert_cmd {}
 	| pat_res_usage convert_rule pat_trace pat_convert_cmd                                        {}
-	| pat_res_usage convert_event pat_trace pat_convert_cmd                                       {};
+	| pat_res_usage convert_event pat_trace pat_convert_cmd                                       {}
+	;
 
 convert_rule
-	: RDO_Convert_rule  {};
+	: RDO_Convert_rule  {}
+	;
 
 convert_event
-	: RDO_Convert_event {};
+	: RDO_Convert_event {}
+	;
 
 convert_begin
-	: RDO_Convert_begin {};
+	: RDO_Convert_begin {}
+	;
 
 convert_end
-	: RDO_Convert_end   {};
+	: RDO_Convert_end   {}
+	;
 
 pat_convert_cmd
 	: /* empty */                                             {}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type fun_arithm {}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error      {}
-	| pat_convert_cmd RDO_IDENTIF_NoChange                    {};
+	| pat_convert_cmd RDO_IDENTIF_NoChange                    {}
+	;
 
 param_equal_type
 	: RDO_set           {}
@@ -386,10 +412,12 @@ param_equal_type
 	| RDO_PlusEqual     {}
 	| RDO_MinusEqual    {}
 	| RDO_MultiplyEqual {}
-	| RDO_DivideEqual   {};
+	| RDO_DivideEqual   {}
+	;
 
 pat_pattern
-	: pat_convert RDO_End {};
+	: pat_convert RDO_End {}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
@@ -400,7 +428,8 @@ param_type
 	| RDO_string param_value_default                   {}
 	| RDO_bool param_value_default                     {}
 	| param_type_enum param_value_default              {}
-	| param_type_such_as param_value_default           {};
+	| param_type_such_as param_value_default           {}
+	;
 
 param_type_range
 	: /* empty */                                          {}
@@ -414,11 +443,13 @@ param_type_range
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error   {}
 	| '[' RDO_REAL_CONST RDO_dblpoint error                {}
 	| '[' RDO_INT_CONST RDO_dblpoint error                 {}
-	| '[' error                                            {};
+	| '[' error                                            {}
+	;
 
 param_type_enum
 	: '(' param_type_enum_list ')'   {}
-	| '(' param_type_enum_list error {};
+	| '(' param_type_enum_list error {}
+	;
 
 param_type_enum_list
 	: RDO_IDENTIF                             {}
@@ -429,13 +460,15 @@ param_type_enum_list
 	| param_type_enum_list RDO_INT_CONST      {}
 	| param_type_enum_list RDO_REAL_CONST     {}
 	| RDO_INT_CONST                           {}
-	| RDO_REAL_CONST                          {};
+	| RDO_REAL_CONST                          {}
+	;
 
 param_type_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {}
 	| RDO_such_as RDO_IDENTIF                 {}
 	| RDO_such_as RDO_IDENTIF '.' error       {}
-	| RDO_such_as error                       {};
+	| RDO_such_as error                       {}
+	;
 
 param_value_default
 	: /* empty */         {}
@@ -444,14 +477,16 @@ param_value_default
 	| '=' RDO_STRING_CONST{}
 	| '=' RDO_IDENTIF     {}
 	| '=' RDO_BOOL_CONST  {}
-	| '=' error           {};
+	| '=' error           {}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
 	: '='    {}
-	| RDO_eq {};
+	| RDO_eq {}
+	;
 
 fun_logic
 	: fun_arithm  fun_logic_eq  fun_arithm   {}
@@ -469,7 +504,8 @@ fun_logic
 	| '(' fun_logic ')'                      {}
 	| RDO_not fun_logic                      {}
 	| '[' fun_logic error                    {}
-	| '(' fun_logic error                    {};
+	| '(' fun_logic error                    {}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
@@ -489,7 +525,8 @@ fun_arithm
 	| fun_arithm_func_call               {}
 	| fun_select_arithm                  {}
 	| '(' fun_arithm ')'                 {}
-	| '-' fun_arithm %prec RDO_UMINUS    {};
+	| '-' fun_arithm %prec RDO_UMINUS    {}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Функции и последовательности
@@ -497,13 +534,15 @@ fun_arithm
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'                           {}
 	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {}
-	| RDO_IDENTIF '(' error                         {};
+	| RDO_IDENTIF '(' error                         {}
+	;
 
 fun_arithm_func_call_pars
-	: fun_arithm {}
+	: fun_arithm                               {}
 	| fun_arithm_func_call_pars ',' fun_arithm {}
 	| fun_arithm_func_call_pars error          {}
-	| fun_arithm_func_call_pars ',' error      {};
+	| fun_arithm_func_call_pars ',' error      {}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Групповые выражения
@@ -512,19 +551,22 @@ fun_group_keyword
 	: RDO_Exist			{}
 	| RDO_Not_Exist		{}
 	| RDO_For_All		{}
-	| RDO_Not_For_All	{};
+	| RDO_Not_For_All	{}
+	;
 
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON {}
 	| fun_group_keyword '(' error             {}
-	| fun_group_keyword error                 {};
+	| fun_group_keyword error                 {}
+	;
 
 fun_group
 	: fun_group_header fun_logic ')'     {}
 	| fun_group_header RDO_NoCheck ')'   {}
 	| fun_group_header fun_logic error   {}
 	| fun_group_header RDO_NoCheck error {}
-	| fun_group_header error             {};
+	| fun_group_header error             {}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Select
@@ -532,20 +574,23 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON {}
 	| RDO_Select '(' error             {}
-	| RDO_Select error                 {};
+	| RDO_Select error                 {}
+	;
 
 fun_select_body
 	: fun_select_header fun_logic ')'     {}
 	| fun_select_header RDO_NoCheck ')'   {}
 	| fun_select_header fun_logic error   {}
 	| fun_select_header RDO_NoCheck error {}
-	| fun_select_header error             {};
+	| fun_select_header error             {}
+	;
 
 fun_select_keyword
 	: RDO_Exist			{}
 	| RDO_Not_Exist		{}
 	| RDO_For_All		{}
-	| RDO_Not_For_All	{};
+	| RDO_Not_For_All	{}
+	;
 
 fun_select_logic
 	: fun_select_body '.' fun_select_keyword '(' fun_logic ')' {}
@@ -555,12 +600,14 @@ fun_select_logic
 	| fun_select_body '.' RDO_Empty '(' error                  {}
 	| fun_select_body '.' RDO_Empty error                      {}
 	| fun_select_body '.' error                                {}
-	| fun_select_body error                                    {};
+	| fun_select_body error                                    {}
+	;
 
 fun_select_arithm
 	: fun_select_body '.' RDO_Size '(' ')'   {}
 	| fun_select_body '.' RDO_Size error     {}
-	| fun_select_body '.' RDO_Size '(' error {};
+	| fun_select_body '.' RDO_Size '(' error {}
+	;
 
 %%
 

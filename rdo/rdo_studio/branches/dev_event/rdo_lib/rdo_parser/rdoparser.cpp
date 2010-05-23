@@ -75,7 +75,7 @@ rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
 	m_all##NAME.erase(it); \
 	return true; \
 }
-//DECLARE_PARSER_OBJECT_CONTAINER(Event          );
+DECLARE_PARSER_OBJECT_CONTAINER(Event          );
 
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(PATPattern     );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (RTPResType     );
