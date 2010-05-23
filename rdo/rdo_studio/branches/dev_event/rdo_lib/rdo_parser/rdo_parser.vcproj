@@ -1249,18 +1249,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdopat_event.y"
+				RelativePath=".\rdopat_preparse.y"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppatpreparse --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampatpreparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogrampatpreparse.cpp"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="rdopmd.y"
