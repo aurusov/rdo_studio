@@ -12,6 +12,7 @@
 #include "rdo_common/rdodebug.h"
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
 #include "rdo_lib/rdo_runtime/rdo_fuzzy_def.h"
+#include "rdo_lib/rdo_runtime/rdo_array_def.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
@@ -139,6 +140,12 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
 		RDOValueException();
 
 	m_value.s_value = new smart_tstring(new tstring(value));
+}
+
+inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
+	: m_type(&arrayValue.type())
+{
+	m_value.p_data = new RDOArrayValue(arrayValue);
 }
 
 inline rsint RDOValue::getInt() const

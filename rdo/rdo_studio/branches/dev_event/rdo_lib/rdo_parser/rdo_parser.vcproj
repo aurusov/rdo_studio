@@ -1322,7 +1322,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppatpreparse --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampatpreparse.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppatpreparse --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampatpreparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampatpreparse.cpp"
 					/>
 				</FileConfiguration>

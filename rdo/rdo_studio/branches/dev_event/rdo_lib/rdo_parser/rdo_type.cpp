@@ -62,6 +62,11 @@ PTR(rdoRuntime::RDOCalc) RDOType__unknow::calc_cast(PTR(rdoRuntime::RDOCalc) pCa
 	return parent_type::calc_cast(pCalc, pType);
 }
 
+RDOValue RDOType__unknow::get_default() const
+{
+	return RDOValue(rdoRuntime::RDOValue(), g_unknow, RDOParserSrcInfo());
+}
+
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 {
 	rdoParse::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет"));
@@ -114,6 +119,11 @@ PTR(rdoRuntime::RDOCalc) RDOType__int::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc,
 	return pCalc;
 }
 
+RDOValue RDOType__int::get_default() const
+{
+	return RDOValue(rdoRuntime::RDOValue(0), g_int, RDOParserSrcInfo());
+}
+
 void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << _T("I") << std::endl;
@@ -157,6 +167,11 @@ RDOValue RDOType__real::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 PTR(rdoRuntime::RDOCalc) RDOType__real::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
+}
+
+RDOValue RDOType__real::get_default() const
+{
+	return RDOValue(rdoRuntime::RDOValue(0.0), g_real, RDOParserSrcInfo());
 }
 
 void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
@@ -203,6 +218,11 @@ PTR(rdoRuntime::RDOCalc) RDOType__string::calc_cast(PTR(rdoRuntime::RDOCalc) pCa
 	return parent_type::calc_cast(pCalc, pType);
 }
 
+RDOValue RDOType__string::get_default() const
+{
+	return RDOValue(rdoRuntime::RDOValue(_T("")), g_string, RDOParserSrcInfo());
+}
+
 void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << _T("S") << std::endl;
@@ -226,6 +246,11 @@ RDOValue RDOType__identificator::value_cast(CREF(RDOValue) from, CREF(RDOParserS
 PTR(rdoRuntime::RDOCalc) RDOType__identificator::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
+}
+
+RDOValue RDOType__identificator::get_default() const
+{
+	return RDOValue(rdoRuntime::RDOValue(_T(""), rdoRuntime::g_identificator), g_identificator, RDOParserSrcInfo());
 }
 
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
@@ -271,6 +296,11 @@ RDOValue RDOType__bool::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 PTR(rdoRuntime::RDOCalc) RDOType__bool::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
+}
+
+RDOValue RDOType__bool::get_default() const
+{
+	return RDOValue(rdoRuntime::RDOValue(false), g_bool, RDOParserSrcInfo());
 }
 
 void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const

@@ -34,6 +34,8 @@ public:
 	void loc_delta_pos(int value);
 	void setvalue     (int value);
 
+	int m_array_param_cnt;
+
 	PTR(RDOParser)    parser();
 
 	void  enumBegin();
