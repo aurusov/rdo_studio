@@ -32,6 +32,10 @@ int  patparse(PTR(void) lexer);
 int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void paterror(PTR(char) mes);
 
+int  pat_preparse_parse(PTR(void) lexer);
+int  pat_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void pat_preparse_error(PTR(char) mes);
+
 //int  patpreparseparse(PTR(void) lexer);
 //int  patpreparselex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 //void patpreparseerror(PTR(char) mes);
