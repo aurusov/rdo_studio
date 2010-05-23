@@ -31,8 +31,11 @@ class RDOEnumType: public RDOType, public rdo::smart_ptr_counter_reference
 DECLARE_FACTORY(RDOEnumType);
 public:
 	void add(CREF(RDOValue) next);
-//	rdoRuntime::RDOValue          getFirstValue() const;
-	CREF(rdoRuntime::RDOEnumType) getEnums     () const { return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type); }
+
+	CREF(rdoRuntime::RDOEnumType) getEnums() const
+	{
+		return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type);
+	}
 
 	rbool operator== (CREF(RDOEnumType) enums) const
 	{
