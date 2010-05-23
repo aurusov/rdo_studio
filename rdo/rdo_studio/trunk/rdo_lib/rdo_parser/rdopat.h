@@ -306,8 +306,8 @@ public:
 		, m_currentState        (stateNone  )
 	{}
 
-	         CREF(tstring)       name   () const  { return src_text(); };
-	virtual CPTRC(RDORTPResType) getType() const = 0;
+	        CREF(tstring)   name   () const  { return src_text(); };
+	virtual LPRDORTPResType getType() const = 0;
 
 	virtual PTR(rdoRuntime::RDOCalc)                 createPreSelectRelResCalc           () = 0; //! ѕредварительный выбор ресурсов в самом списке рел. ресурсов
 	virtual PTR(rdoRuntime::RDOCalc)                 createSelectResourceChoiceCalc      () = 0; //! —амый обыкновенный choice from + first/with_min/with_max
@@ -426,7 +426,7 @@ public:
 
 	CPTRC(RDORSSResource) getResource() const { return m_pResource; }
 
-	virtual CPTRC(RDORTPResType)                     getType                             () const;
+	virtual LPRDORTPResType                          getType                             () const;
 	virtual PTR(rdoRuntime::RDOCalc)                 createPreSelectRelResCalc           ();
 	virtual PTR(rdoRuntime::RDOCalc)                 createSelectFirstResourceChoiceCalc ();
 	virtual PTR(rdoRuntime::RDOCalc)                 createSelectResourceChoiceCalc      ();
@@ -443,12 +443,12 @@ private:
 class RDORelevantResourceByType: public RDORelevantResource
 {
 public:
-	RDORelevantResourceByType(CPTR(RDOPATPattern) parent, CREF(RDOParserSrcInfo) src_info, const int relResID, CPTRC(RDORTPResType) pResType, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
+	RDORelevantResourceByType(CPTR(RDOPATPattern) parent, CREF(RDOParserSrcInfo) src_info, const int relResID, LPRDORTPResType pResType, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
 		: RDORelevantResource(parent, src_info, relResID, statusBegin, statusEnd)
 		, m_pResType         (pResType)
 	{}
 
-	virtual CPTRC(RDORTPResType) getType() const
+	virtual LPRDORTPResType getType() const
 	{
 		return m_pResType;
 	}
@@ -459,7 +459,7 @@ public:
 	virtual rbool isDirect() const  { return false; }
 
 private:
-	CPTRC(RDORTPResType) m_pResType;
+	LPRDORTPResType m_pResType;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

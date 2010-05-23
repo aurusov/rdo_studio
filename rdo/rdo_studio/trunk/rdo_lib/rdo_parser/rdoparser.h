@@ -16,6 +16,7 @@
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdosingletone.h"
 #include "rdo_common/rdoindexedstack.h"
+#include "rdo_common/rdosmart_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
@@ -24,6 +25,7 @@
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -33,7 +35,6 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 OPEN_RDO_PARSER_NAMESPACE
 
 class RDORTPParam;
-class RDORTPResType;
 class RDORSSResource;
 class RDOPATPattern;
 class RDOOPROperation;
@@ -58,38 +59,47 @@ class RDORTPFuzzyParam;
 // ----------------------------------------------------------------------------
 // ---------- RDOParser
 // ----------------------------------------------------------------------------
-#define DEFINE_OBJECT_CONTAINER_NONAME(Name) \
+#define DEFINE_OBJECT_CONTAINER_MINIMUM(TYPE, NAME) \
 public: \
-	typedef std::vector<PTR(RDO##Name)> Name##List; \
-	void                insert##Name (PTR(RDO##Name) value); \
-	PTR(RDO##Name)      getLast##Name()       { return !m_all##Name.empty() ? m_all##Name.back() : NULL; } \
-	CREF(Name##List)    get##Name##s () const { return m_all##Name; } \
+	typedef std::vector<TYPE> NAME##List; \
+	void                insert##NAME (TYPE value); \
+	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : NULL; } \
+	CREF(NAME##List)    get##NAME##s () const { return m_all##NAME; } \
 private: \
-	Name##List m_all##Name;
+	NAME##List m_all##NAME;
 
-#define DEFINE_OBJECT_CONTAINER(Name) \
-DEFINE_OBJECT_CONTAINER_NONAME(Name) \
+#define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	CPTR(RDO##Name) find##Name  (CREF(tstring) name) const; \
-	rbool           remove##Name(CPTR(RDO##Name) item);
+	const TYPE find##NAME  (CREF(tstring) name) const; \
+	rbool      remove##NAME(const TYPE item);
 
+#define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME)
+
+#define DEFINE_OBJECT_CONTAINER(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME) \
+DEFINE_OBJECT_CONTAINER_WITHNAME(PTR(RDO##NAME), NAME)
+
+#define DEFINE_OBJECT_CONTAINER_LP(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
+DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
 class RDOParser
 {
 public:
-DEFINE_OBJECT_CONTAINER(PATPattern     );
-DEFINE_OBJECT_CONTAINER(RTPResType     );
-DEFINE_OBJECT_CONTAINER(RSSResource    );
-DEFINE_OBJECT_CONTAINER(OPROperation   );
-DEFINE_OBJECT_CONTAINER(FRMFrame       );
-DEFINE_OBJECT_CONTAINER(FUNConstant    );
-DEFINE_OBJECT_CONTAINER(FUNFunction    );
-DEFINE_OBJECT_CONTAINER(FUNSequence    );
-DEFINE_OBJECT_CONTAINER(DPTSearch      );
-DEFINE_OBJECT_CONTAINER(DPTSome        );
-DEFINE_OBJECT_CONTAINER(DPTPrior       );
-DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
-DEFINE_OBJECT_CONTAINER(PMDPokaz       );
+DEFINE_OBJECT_CONTAINER   (PATPattern     );
+DEFINE_OBJECT_CONTAINER_LP(RTPResType     );
+DEFINE_OBJECT_CONTAINER   (RSSResource    );
+DEFINE_OBJECT_CONTAINER   (OPROperation   );
+DEFINE_OBJECT_CONTAINER   (FRMFrame       );
+DEFINE_OBJECT_CONTAINER   (FUNConstant    );
+DEFINE_OBJECT_CONTAINER   (FUNFunction    );
+DEFINE_OBJECT_CONTAINER   (FUNSequence    );
+DEFINE_OBJECT_CONTAINER   (DPTSearch      );
+DEFINE_OBJECT_CONTAINER   (DPTSome        );
+DEFINE_OBJECT_CONTAINER   (DPTPrior       );
+DEFINE_OBJECT_CONTAINER   (DPTFreeActivity);
+DEFINE_OBJECT_CONTAINER   (PMDPokaz       );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );

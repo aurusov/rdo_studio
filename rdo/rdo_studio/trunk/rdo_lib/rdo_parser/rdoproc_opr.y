@@ -546,7 +546,7 @@ dpt_assign_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 							if ( arithm ) 
 							{
 								const RDORSSResource* rs = PARSER->findRSSResource( res );
-								const RDORTPResType* rt = rs->getType();
+								LPRDORTPResType rt = rs->getType();
 								LPRDORTPParam pr = rt->findRTPParam( param );
 								arithm->checkParamType(pr->getParamType());
 								RDOPROCAssign* assign = new RDOPROCAssign( PARSER->getLastPROCProcess(), "ASSIGN", arithm->createCalc( pr->getParamType() ), rs->getID(), rtp.m_params[param].id() );

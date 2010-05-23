@@ -410,7 +410,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 	}
 	else
 	{
-		CPTRC(RDORTPResType) pResType = parser()->findRTPResType(type_info.src_text());
+		LPRDORTPResType pResType = parser()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
 			parser()->error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
@@ -517,7 +517,7 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	}
 	else
 	{
-		CPTRC(RDORTPResType) pResType = parser()->findRTPResType(type_info.src_text());
+		LPRDORTPResType pResType = parser()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
 			parser()->error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
@@ -637,7 +637,7 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	}
 	else
 	{
-		CPTRC(RDORTPResType) pResType = parser()->findRTPResType(type_info.src_text());
+		LPRDORTPResType pResType = parser()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
 			parser()->error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
@@ -786,7 +786,7 @@ PTR(rdoRuntime::RDOSelectResourceCommon) RDORelevantResourceDirect::createSelect
 	return new rdoRuntime::RDOSelectResourceDirectCommonCalc(parser()->runtime(), m_relResID, m_pResource->getID(), getChoiceCalc());
 }
 
-CPTRC(RDORTPResType) RDORelevantResourceDirect::getType() const 
+LPRDORTPResType RDORelevantResourceDirect::getType() const 
 { 
 	return m_pResource->getType(); 
 }
