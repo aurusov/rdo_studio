@@ -21,14 +21,14 @@ int patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void paterror(PTR(char) mes)
 {}
 
-int pat_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int patpreparselex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void pat_preparse_error(PTR(char) mes)
+void patpreparse_error(PTR(char) mes)
 {}
 
 // ----------------------------------------------------------------------------

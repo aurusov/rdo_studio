@@ -52,7 +52,7 @@ class RDODPTFreeActivity;
 class RDOPMDPokaz;
 class RDOPROCProcess;
 class RDOTypeParam;
-class RDOEvent;
+//class RDOEvent;
 
 class RDORTPFuzzyParam;
 
@@ -91,7 +91,7 @@ DEFINE_OBJECT_CONTAINER(DPTSome        );
 DEFINE_OBJECT_CONTAINER(DPTPrior       );
 DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
 DEFINE_OBJECT_CONTAINER(PMDPokaz       );
-DEFINE_OBJECT_CONTAINER(Event          );
+//DEFINE_OBJECT_CONTAINER(Event          );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
