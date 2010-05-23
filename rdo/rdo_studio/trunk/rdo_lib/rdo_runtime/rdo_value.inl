@@ -89,7 +89,7 @@ inline RDOValue::RDOValue(rbool value)
 	m_value.b_value = value;
 }
 
-inline RDOValue::RDOValue(REF(RDOEnumType) enums)
+inline RDOValue::RDOValue(CREF(RDOEnumType) enums)
 	: m_type(&enums)
 {
 	if (enums.empty())
