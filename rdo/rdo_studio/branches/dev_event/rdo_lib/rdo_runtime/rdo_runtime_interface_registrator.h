@@ -26,6 +26,7 @@ INTERFACE_REGISTRATOR(ITrace,                     8);
 INTERFACE_REGISTRATOR(IName,                      9);
 INTERFACE_REGISTRATOR(IBaseOperation,            10);
 INTERFACE_REGISTRATOR(IIrregEvent,               11);
+INTERFACE_REGISTRATOR(IEvent,                    27);
 INTERFACE_REGISTRATOR(IRule,                     12);
 INTERFACE_REGISTRATOR(IOperation,                13);
 INTERFACE_REGISTRATOR(IKeyboard,                 14);

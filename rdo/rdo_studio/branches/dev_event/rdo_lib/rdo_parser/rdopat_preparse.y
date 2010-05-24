@@ -263,7 +263,7 @@ pat_params_begin
 
 pat_params
 	: pat_params_begin RDO_IDENTIF_COLON param_type {}
-	| pat_params RDO_IDENTIF_COLON param_type       {}
+	| pat_params       RDO_IDENTIF_COLON param_type {}
 	| pat_params_begin error                        {}
 	| pat_params_begin RDO_IDENTIF error            {}
 	| pat_params_begin RDO_IDENTIF_COLON error      {}
@@ -280,27 +280,27 @@ pat_params_end
 
 pat_rel_res
 	: pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv    {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv       {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv    {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv             {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv                {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF pat_conv             {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv    {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv       {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv    {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange    {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange       {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange    {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange             {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange                {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF_NoChange             {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange    {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange {}
 	| pat_params_end error                                              {}
-	| pat_rel_res error                                                 {}
+	| pat_rel_res    error                                              {}
 	| pat_params_end RDO_IDENTIF_COLON error                            {}
-	| pat_rel_res RDO_IDENTIF_COLON error                               {}
+	| pat_rel_res    RDO_IDENTIF_COLON error                            {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF error                {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF error                   {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF error                {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error       {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error          {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error       {}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error       {}
-	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error          {}
+	| pat_rel_res    RDO_IDENTIF_COLON RDO_IDENTIF_NoChange error       {}
 	;
 
 pat_conv
@@ -329,9 +329,9 @@ pat_time
 	;
 
 pat_body
-	: pat_time RDO_IDENTIF_RELRES    {}
+	: pat_time    RDO_IDENTIF_RELRES {}
 	| pat_convert RDO_IDENTIF_RELRES {}
-	| pat_time error                 {}
+	| pat_time    error              {}
 	| pat_convert error              {}
 	;
 
@@ -378,9 +378,9 @@ pat_choice_with_max
 pat_convert
 	: pat_res_usage                                                                               {}
 	| pat_res_usage convert_begin pat_trace pat_convert_cmd                                       {}
-	| pat_res_usage pat_convert_cmd convert_end pat_trace pat_convert_cmd                         {}
+	| pat_res_usage                                         convert_end pat_trace pat_convert_cmd {}
 	| pat_res_usage convert_begin pat_trace pat_convert_cmd convert_end pat_trace pat_convert_cmd {}
-	| pat_res_usage convert_rule pat_trace pat_convert_cmd                                        {}
+	| pat_res_usage convert_rule  pat_trace pat_convert_cmd                                       {}
 	| pat_res_usage convert_event pat_trace pat_convert_cmd                                       {}
 	;
 
@@ -424,26 +424,26 @@ pat_pattern
 // ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
 param_type
-	: RDO_integer param_type_range param_value_default {}
-	| RDO_real param_type_range param_value_default    {}
-	| RDO_string param_value_default                   {}
-	| RDO_bool param_value_default                     {}
-	| param_type_enum param_value_default              {}
-	| param_type_such_as param_value_default           {}
+	: RDO_integer        param_type_range param_value_default {}
+	| RDO_real           param_type_range param_value_default {}
+	| RDO_string                          param_value_default {}
+	| RDO_bool                            param_value_default {}
+	| param_type_enum                     param_value_default {}
+	| param_type_such_as                  param_value_default {}
 	;
 
 param_type_range
 	: /* empty */                                          {}
-	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']'     {}
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_INT_CONST  ']'   {}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'   {}
-	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']'    {}
-	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']'    {}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST  ']'   {}
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_REAL_CONST ']'   {}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error {}
-	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error  {}
-	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error  {}
-	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error   {}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST  error {}
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_REAL_CONST error {}
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_INT_CONST  error {}
 	| '[' RDO_REAL_CONST RDO_dblpoint error                {}
-	| '[' RDO_INT_CONST RDO_dblpoint error                 {}
+	| '[' RDO_INT_CONST  RDO_dblpoint error                {}
 	| '[' error                                            {}
 	;
 
@@ -455,11 +455,11 @@ param_type_enum
 param_type_enum_list
 	: RDO_IDENTIF                             {}
 	| param_type_enum_list ',' RDO_IDENTIF    {}
-	| param_type_enum_list RDO_IDENTIF        {}
+	| param_type_enum_list     RDO_IDENTIF    {}
 	| param_type_enum_list ',' RDO_INT_CONST  {}
 	| param_type_enum_list ',' RDO_REAL_CONST {}
-	| param_type_enum_list RDO_INT_CONST      {}
-	| param_type_enum_list RDO_REAL_CONST     {}
+	| param_type_enum_list     RDO_INT_CONST  {}
+	| param_type_enum_list     RDO_REAL_CONST {}
 	| RDO_INT_CONST                           {}
 	| RDO_REAL_CONST                          {}
 	;

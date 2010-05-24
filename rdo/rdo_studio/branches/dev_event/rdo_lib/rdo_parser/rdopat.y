@@ -250,6 +250,11 @@ pat_header
 		PTR(RDOValue) name = P_RDOVALUE($2);
 		$$ = (int)new RDOPatternIrregEvent(PARSER, name->src_info(), $4 != 0);
 	}
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
+	{
+		PTR(RDOValue) name = P_RDOVALUE($2);
+		$$ = (int)new RDOPatternEvent(PARSER, name->src_info(), $4 != 0);
+	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);

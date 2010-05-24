@@ -36,10 +36,6 @@ int  pat_preparse_parse(PTR(void) lexer);
 int  pat_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void pat_preparse_error(PTR(char) mes);
 
-//int  patpreparseparse(PTR(void) lexer);
-//int  patpreparselex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-//void patpreparseerror(PTR(char) mes);
-
 class RDORTPResType;
 class RDOPATChoiceFrom;
 class RDOPATChoiceOrder;
@@ -80,6 +76,7 @@ public:
 	enum PatType
 	{
 		PT_IE,
+		PT_Event,
 		PT_Rule,
 		PT_Operation,
 		PT_Keyboard
@@ -155,6 +152,7 @@ private:
 		switch (type)
 		{
 		case PT_IE       : return _T("нерегулярное событие");
+		case PT_Event    : return _T("событие");
 		case PT_Rule     : return _T("продукционное правило");
 		case PT_Operation: return _T("операция");
 		case PT_Keyboard : return _T("клавиатурная операция");
@@ -183,6 +181,31 @@ public:
 	virtual PatType getType() const
 	{
 		return PT_IE;
+	}
+
+protected:
+	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPatternEvent
+// ----------------------------------------------------------------------------
+class RDOPatternEvent: public RDOPATPattern
+{
+public:
+	RDOPatternEvent(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info, rbool trace);
+
+	virtual void addRelRes     (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
+	virtual void addRelResUsage(PTR(RDOPATChoiceFrom) choice_from, PTR(RDOPATChoiceOrder) choice_order);
+
+	virtual char getModelStructureLetter() const
+	{
+		return _T('V');
+	}
+	virtual PatType getType() const
+	{
+		return PT_Event;
 	}
 
 protected:
