@@ -304,6 +304,8 @@ $Term				return(RDO_Fuzzy_Term);
 $term				return(RDO_Fuzzy_Term);
 
 set					return(RDO_set);
+planning			return(RDO_Planning);
+Planning			return(RDO_Planning);
 
 (\'[^\']*\')		{
 						std::string n1(YYText());

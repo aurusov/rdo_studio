@@ -80,6 +80,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
+%token RDO_Planning						382
 	
 %token RDO_Results						322
 %token RDO_watch_par					323

@@ -14,6 +14,7 @@
 
 %pure-parser
 
+%token RDO_Planning						382
 %token RDO_Resource_type				257
 %token RDO_permanent					258
 %token RDO_Parameters					259
@@ -1569,6 +1570,10 @@ pat_convert_cmd
 			pCmdList->insertCommand(pCalc);
 		}
 		$$ = PARSER->stack().push(pCmdList);
+	}
+	| pat_convert_cmd RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')'
+	{
+		PARSER->error().error(@4, _T("Типа запланировали!)"));
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error
 	{

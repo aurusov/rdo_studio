@@ -14,6 +14,7 @@
 
 %pure-parser
 
+%token RDO_Planning						382
 %token RDO_Resource_type				257
 %token RDO_permanent					258
 %token RDO_Parameters					259
