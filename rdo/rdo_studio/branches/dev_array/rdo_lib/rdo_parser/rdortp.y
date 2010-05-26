@@ -605,9 +605,9 @@ param_value_default:	/* empty */ {
 						}
 					};
 
-param_array:		RDO_array '<' param_type '>'
-					{
-						LEXER->array_cnt_pls();
+param_array:		RDO_array '<' param_type '>'{
+						LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($2);
+						$$ = PARSER->stack().push(pArray);
 					};
 
 // ----------------------------------------------------------------------------
