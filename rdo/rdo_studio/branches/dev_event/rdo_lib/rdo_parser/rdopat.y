@@ -206,6 +206,7 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_runtime/calc_event_plan.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -1570,15 +1571,15 @@ pat_convert_cmd
 	}
 	| pat_convert_cmd RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')'
 	{
-		tstring                  paramName   = RDOVALUE($2)->getIdentificator();
-		PTR(RDOFUNArithm)        timeArithm = P_ARITHM($6);
-		LPRDOEvent param = PARSER->findEvent(paramName);
-		if (!param)
+		tstring           eventName  = RDOVALUE($2)->getIdentificator();
+		PTR(RDOFUNArithm) pTimeArithm = P_ARITHM($6);
+		CREF(LPRDOEvent)  pEvent = PARSER->findEvent(eventName);
+		if (!pEvent)
 		{
-			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), paramName.c_str()));
+			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
-		PTR(rdoRuntime::RDOCalc) pCalcTime = timeArithm->createCalc(NULL);
-//		PTR(rdoRuntime::RDOCalc) pCalcPlan = new rdoRuntime::RDOCalc(RUNTIME, param, pCalcTime);
+		PTR(rdoRuntime::RDOCalc) pCalcTime = pTimeArithm->createCalc(NULL);
+		PTR(rdoRuntime::RDOCalcEventPlan) pCalcPlan = new rdoRuntime::RDOCalcEventPlan(RUNTIME, pEvent.lp_cast<LPIBaseOperation>(), pCalcTime);
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error
 	{

@@ -12,8 +12,10 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -24,15 +26,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcEventPlan: public RDOCalc
 {
 public:
-	RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(IBaseOperation) _event, PTR(RDOCalc) calc)
-		: RDOCalc    (parent)
-		, m_event    (_event)
-		, m_timerCalc(calc  )
+	RDOCalcEventPlan(PTR(RDORuntimeParent) parent, CREF(LPIBaseOperation) event, PTR(RDOCalc) timeCalc)
+		: RDOCalc   (parent  )
+		, m_event   (event   )
+		, m_timeCalc(timeCalc)
 	{}
 
 private:
-	PTR(IBaseOperation) m_event;
-	PTR(RDOCalc)        m_timerCalc;
+	LPIBaseOperation m_event;
+	PTR(RDOCalc)     m_timeCalc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
