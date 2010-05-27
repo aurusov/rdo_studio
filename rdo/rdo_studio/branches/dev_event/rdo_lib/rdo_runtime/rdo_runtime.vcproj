@@ -1941,6 +1941,14 @@
 			Name=".rdo_calc"
 			>
 			<File
+				RelativePath=".\calc_event_plan.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc_event_plan.h"
+				>
+			</File>
+			<File
 				RelativePath="rdocalc.cpp"
 				>
 				<FileConfiguration

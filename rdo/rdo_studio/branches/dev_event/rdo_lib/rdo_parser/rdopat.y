@@ -1032,15 +1032,12 @@ pat_time
 		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
 		switch (pattern->getType())
 		{
-			case RDOPATPattern::PT_IE       :
-			case RDOPATPattern::PT_Operation:
-			case RDOPATPattern::PT_Keyboard : break;
-			case RDOPATPattern::PT_Event    :
+			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@2, _T("Поле $Time не используется в событии"));
 				break;
 			}
-			case RDOPATPattern::PT_Rule     :
+			case RDOPATPattern::PT_Rule:
 			{
 				PARSER->error().error(@2, _T("Поле $Time не используется в продукционном правиле"));
 				break;
@@ -1573,7 +1570,15 @@ pat_convert_cmd
 	}
 	| pat_convert_cmd RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')'
 	{
-		PARSER->error().error(@4, _T("Типа запланировали!)"));
+		tstring                  paramName   = RDOVALUE($2)->getIdentificator();
+		PTR(RDOFUNArithm)        timeArithm = P_ARITHM($6);
+		LPRDOEvent param = PARSER->findEvent(paramName);
+		if (!param)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), paramName.c_str()));
+		}
+		PTR(rdoRuntime::RDOCalc) pCalcTime = timeArithm->createCalc(NULL);
+//		PTR(rdoRuntime::RDOCalc) pCalcPlan = new rdoRuntime::RDOCalc(RUNTIME, param, pCalcTime);
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error
 	{
