@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCALCEVENTPLAN_H_
-#define _RDOCALCEVENTPLAN_H_
+#ifndef _CALC_EVENT_PLAN_H_
+#define _CALC_EVENT_PLAN_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -41,4 +41,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDOCALCEVENTPLAN_H_
+#endif //! _CALC_EVENT_PLAN_H_
