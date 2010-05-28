@@ -36,7 +36,6 @@ int  pat_preparse_parse(PTR(void) lexer);
 int  pat_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void pat_preparse_error(PTR(char) mes);
 
-class RDORTPResType;
 class RDOPATChoiceFrom;
 class RDOPATChoiceOrder;
 class RDORelevantResource;
