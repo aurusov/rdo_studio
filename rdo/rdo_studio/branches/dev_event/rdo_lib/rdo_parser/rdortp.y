@@ -139,7 +139,7 @@
 %token RDO_MinusEqual					376
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
-%token RDO_array						380
+%token RDO_array						379
 %token RDO_event						380
 %token RDO_Planning						381
 
