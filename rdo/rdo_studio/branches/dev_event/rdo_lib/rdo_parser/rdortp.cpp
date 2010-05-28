@@ -34,8 +34,7 @@ void rtperror(PTR(char) mes)
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
 RDORTPResType::RDORTPResType(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
-	: RDOParserObject (parser             )
-	, RDOParserSrcInfo(src_info           )
+	: RDOParserSrcInfo(src_info           )
 	, m_number        (parser->getRTP_id())
 	, m_permanent     (permanent          )
 {
@@ -49,7 +48,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
 	if (findRTPParam(param->name()))
 	{
-		parser()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
+		RDOParser::s_parser()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
 	}
 	m_params.push_back(param);
 }
