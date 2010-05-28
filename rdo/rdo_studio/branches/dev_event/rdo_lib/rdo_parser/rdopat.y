@@ -1571,15 +1571,24 @@ pat_convert_cmd
 	}
 	| pat_convert_cmd RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')'
 	{
-		tstring           eventName  = RDOVALUE($2)->getIdentificator();
+		LPConvertCmdList  pCmdList    = PARSER->stack().pop<ConvertCmdList>($1);
+		tstring           eventName   = RDOVALUE($2)->getIdentificator();
 		PTR(RDOFUNArithm) pTimeArithm = P_ARITHM($6);
-		CREF(LPRDOEvent)  pEvent = PARSER->findEvent(eventName);
+		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
 			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
+
 		PTR(rdoRuntime::RDOCalc) pCalcTime = pTimeArithm->createCalc(NULL);
-		PTR(rdoRuntime::RDOCalcEventPlan) pCalcPlan = new rdoRuntime::RDOCalcEventPlan(RUNTIME, pEvent.lp_cast<LPIBaseOperation>(), pCalcTime);
+		ASSERT(pCalcTime);
+
+		PTR(rdoRuntime::RDOCalcEventPlan) pCalc = new rdoRuntime::RDOCalcEventPlan(RUNTIME, pCalcTime);
+		ASSERT(pCalc);
+		pEvent->attachCalc(pCalc);
+		pCmdList->insertCommand(pCalc);
+
+		$$ = PARSER->stack().push(pCmdList);
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error
 	{

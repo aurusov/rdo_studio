@@ -65,6 +65,18 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOParserPATPost
+// ----------------------------------------------------------------------------
+class RDOParserPATPost: public RDOParserItem
+{
+public:
+	RDOParserPATPost(PTR(RDOParser) parser)
+		: RDOParserItem(parser, rdoModelObjects::PAT, NULL, NULL, NULL)
+	{}
+	virtual void parse();
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
 class RDOParserSTDFUN: public RDOParserItem

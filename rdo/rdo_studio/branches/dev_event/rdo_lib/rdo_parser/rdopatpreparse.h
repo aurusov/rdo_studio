@@ -12,7 +12,10 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_common/rdomacros.h"
+#include "rdo_common/rdotypes.h"
 #include "rdo_common/rdosmart_ptr.h"
+#include "rdo_lib/rdo_runtime/calc_event_plan.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -24,13 +27,18 @@ class RDOEvent: public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(RDOEvent);
 public:
-	CREF(tstring) name() const;
+	typedef std::list<PTR(rdoRuntime::RDOCalcEventPlan)> CalcList;
+
+	CREF(tstring)  name       () const;
+	void           attachCalc (PTR(rdoRuntime::RDOCalcEventPlan) pCalc);
+	CREF(CalcList) getCalcList() const;
 
 private:
 	RDOEvent(CREF(tstring) name);
 	virtual ~RDOEvent();
 
-	tstring m_name;
+	tstring  m_name;
+	CalcList m_calcList;
 };
 
 DECLARE_POINTER(RDOEvent);

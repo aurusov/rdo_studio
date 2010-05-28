@@ -105,6 +105,7 @@ RDOParserContainerModel::RDOParserContainerModel(PTR(RDOParser) parser)
 	insert(rdoModelObjects::obFUN, new RDOParserRDOItem(m_parser, rdoModelObjects::FUN, funparse, funerror, funlex));
 	insert(rdoModelObjects::obPAT, new RDOParserRDOItem(m_parser, rdoModelObjects::PAT, pat_preparse_parse, pat_preparse_error, pat_preparse_lex));
 	insert(rdoModelObjects::obPAT, new RDOParserRDOItem(m_parser, rdoModelObjects::PAT, patparse, paterror, patlex));
+	insert(rdoModelObjects::obPAT, new RDOParserPATPost(m_parser));
 	insert(rdoModelObjects::obOPR, new RDOParserRDOItem(m_parser, rdoModelObjects::OPR, oprparse, oprerror, oprlex));
 	insert(rdoModelObjects::obOPR, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_opr_parse, proc_opr_error, proc_opr_lex));
 	insert(rdoModelObjects::obDPT, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, dptparse, dpterror, dptlex));

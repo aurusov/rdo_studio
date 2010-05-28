@@ -26,11 +26,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcEventPlan: public RDOCalc
 {
 public:
-	RDOCalcEventPlan(PTR(RDORuntimeParent) parent, CREF(LPIBaseOperation) event, PTR(RDOCalc) timeCalc)
-		: RDOCalc   (parent  )
-		, m_event   (event   )
-		, m_timeCalc(timeCalc)
-	{}
+	RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) timeCalc);
+
+	void setEvent(CREF(LPIBaseOperation) event);
 
 private:
 	LPIBaseOperation m_event;

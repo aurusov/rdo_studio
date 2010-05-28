@@ -28,4 +28,15 @@ inline CREF(tstring) RDOEvent::name() const
 	return m_name;
 }
 
+inline void RDOEvent::attachCalc(PTR(rdoRuntime::RDOCalcEventPlan) pCalc)
+{
+	ASSERT(pCalc);
+	m_calcList.push_back(pCalc);
+}
+
+inline CREF(RDOEvent::CalcList) RDOEvent::getCalcList() const
+{
+	return m_calcList;
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

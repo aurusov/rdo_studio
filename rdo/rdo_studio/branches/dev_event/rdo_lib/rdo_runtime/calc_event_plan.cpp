@@ -19,8 +19,22 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEventPlan
 // ----------------------------------------------------------------------------
+RDOCalcEventPlan::RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) timeCalc)
+	: RDOCalc   (parent  )
+	, m_timeCalc(timeCalc)
+{
+	ASSERT(m_timeCalc);
+}
+
+void RDOCalcEventPlan::setEvent(CREF(LPIBaseOperation) event)
+{
+	ASSERT(event);
+	m_event = event;
+}
+
 REF(RDOValue) RDOCalcEventPlan::doCalc(PTR(RDORuntime) runtime)
 {
+	ASSERT(m_event);
 	runtime->addTimePoint(m_timeCalc->calcValue(runtime).getDouble(), m_event);
 	return m_timeCalc->calcValue(runtime);
 }
