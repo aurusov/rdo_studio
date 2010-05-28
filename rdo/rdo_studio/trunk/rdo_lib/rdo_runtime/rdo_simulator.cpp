@@ -30,22 +30,29 @@ void RDOSimulator::appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationCon
 bool RDOSimulator::doOperation()
 {
 	bool res;
-	if ( getMustContinueOpr() ) {
+	if ( getMustContinueOpr() )
+	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
 		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue( this );
-		if ( result != IBaseOperation::BOR_must_continue ) {
+		if ( result != IBaseOperation::BOR_must_continue )
+		{
 			setMustContinueOpr( NULL );
 		}
 		return result != IBaseOperation::BOR_cant_run;
-	} else {
+	}
+	else
+	{
 		bool found_planed = false;
 		// Отработаем все запланированные на данный момент события
-		if ( !m_check_operation && !m_timePoints.empty() ) {
+		if ( !m_check_operation && !m_timePoints.empty() )
+		{
 			m_check_operation = true;
 			double newTime = m_timePoints.begin()->first;
-			if ( getCurrentTime() >= newTime ) {
+			if ( getCurrentTime() >= newTime )
+			{
 				BOPlannedItem* list = m_timePoints.begin()->second;
-				if ( list && !list->empty() ) {
+				if ( list && !list->empty() )
+				{
 #ifdef RDOSIM_COMPATIBLE
 					// Дисциплина списка текущих событий LIFO
 					LPIBaseOperation opr   = list->back().m_opr;
@@ -57,9 +64,9 @@ bool RDOSimulator::doOperation()
 					void*            param = list->front().m_param;
 					list->pop_front();
 #endif
-					if ( list->empty() ) {
+					if ( list->empty() )
+					{
 						delete list;
-//						delete m_timePoints.begin()->second;
 						m_timePoints.erase( m_timePoints.begin() );
 					}
 					opr->onMakePlaned( this, param );
@@ -68,7 +75,8 @@ bool RDOSimulator::doOperation()
 			}
 		}
 		res = found_planed;
-		if ( !found_planed ) {
+		if ( !found_planed )
+		{
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
 			res = m_metaLogic.query_cast<IBaseOperation>()->onCheckCondition(this);

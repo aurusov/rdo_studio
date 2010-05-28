@@ -23,9 +23,11 @@
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
+#include "rdo_lib/rdo_parser/rdopatpreparse.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdopatpreparse.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -100,6 +102,7 @@ DEFINE_OBJECT_CONTAINER   (DPTSome        );
 DEFINE_OBJECT_CONTAINER   (DPTPrior       );
 DEFINE_OBJECT_CONTAINER   (DPTFreeActivity);
 DEFINE_OBJECT_CONTAINER   (PMDPokaz       );
+DEFINE_OBJECT_CONTAINER_LP(Event          );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );

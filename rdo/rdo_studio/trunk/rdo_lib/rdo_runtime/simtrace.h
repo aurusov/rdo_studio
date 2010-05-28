@@ -62,6 +62,10 @@ public:
 	{
 		return m_ieCounter++;
 	}
+	int getFreeEventId()
+	{
+		return m_eventCounter++;
+	}
 	int getFreeActivityId()
 	{
 		return m_activityCounter++;
@@ -79,6 +83,7 @@ protected:
 		traceStartTime( UNDEFINE_TIME ),
 		traceEndTime( UNDEFINE_TIME ),
 		m_ieCounter( 1 ),
+		m_eventCounter( 1 ),
 		m_activityCounter( 1 ),
 		m_dptCounter( 1 ),
 		maxResourcesId( 0 ),
@@ -115,6 +120,7 @@ private:
 	void eraseFreeResourceId( int id );
 
 	int m_ieCounter;
+	int m_eventCounter;
 	int m_activityCounter;
 	int m_dptCounter;
 

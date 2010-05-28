@@ -19,6 +19,9 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
+#include "rdo_lib/rdo_parser/rdoopr.h"
+#include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_repository/rdorepository.h"
@@ -135,6 +138,47 @@ void RDOParserRSSPost::parse()
 #ifdef RDOSIM_COMPATIBLE
 	}
 #endif
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserPATPost
+// ----------------------------------------------------------------------------
+void RDOParserPATPost::parse()
+{
+	//! Позднее связывание для планирования событий
+	STL_FOR_ALL_CONST(RDOParser::EventList, m_parser->getEvents(), eventIt)
+	{
+		LPRDOEvent pEvent = *eventIt;
+
+		if (pEvent->getCalcList().empty())
+			continue;
+
+		CPTR(RDOPATPattern) pPattern = m_parser->findPATPattern(pEvent->name());
+		if (!pPattern)
+		{
+			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+			{
+				m_parser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
+			}
+			m_parser->error().push_done();
+		}
+		if (pPattern->getType() != RDOPATPattern::PT_Event)
+		{
+			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+			{
+				m_parser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
+			}
+			m_parser->error().push_done();
+		}
+
+		STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+		{
+			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
+			ASSERT(pRuntimeEvent);
+
+			(*calcIt)->setEvent(pRuntimeEvent);
+		}
+	}
 }
 
 // ----------------------------------------------------------------------------

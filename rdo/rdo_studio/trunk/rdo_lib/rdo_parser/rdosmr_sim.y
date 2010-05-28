@@ -14,6 +14,7 @@
 
 %pure-parser
 
+%token RDO_Planning						382
 %token RDO_Resource_type				257
 %token RDO_permanent					258
 %token RDO_Parameters					259
@@ -57,6 +58,7 @@
 
 %token RDO_Pattern						298
 %token RDO_operation					299
+%token RDO_event						379
 %token RDO_irregular_event				300
 %token RDO_rule							301
 %token RDO_keyboard						302

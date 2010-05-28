@@ -75,9 +75,9 @@ public:
 	RDOPatternIrregEvent( PTR(RDORuntime) rTime, bool trace );
 
 	void addConvertorCalc  ( PTR(RDOCalc) calc                     ) { m_convertor.push_back( calc );         }
-	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
+	void addConvertorStatus( RDOResource::ConvertStatus status     ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( PTR(RDOCalc) calc                     ) { m_erase.push_back( calc );             }
-	void setTime           ( PTR(RDOCalc) timeCalc                 ) { m_timeCalc = timeCalc;	               }
+	void setTime           ( PTR(RDOCalc) timeCalc                 ) { m_timeCalc = timeCalc;	              }
 
 	void convertEvent( PTR(RDORuntime) runtime )
 	{
@@ -96,7 +96,43 @@ public:
 private:
 	PTR(RDOCalc)                                  m_timeCalc;
 	std::vector< PTR(RDOCalc) >                   m_convertor;
-	std::vector< RDOResource::ConvertStatus > m_convertorStatus;
+	std::vector< RDOResource::ConvertStatus >     m_convertorStatus;
+	std::vector< PTR(RDOCalc) >                   m_erase;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPatternEvent
+// ----------------------------------------------------------------------------
+class RDOPatternEvent: public RDOPattern
+{
+friend class RDOEvent;
+
+public:
+	RDOPatternEvent( PTR(RDORuntime) rTime, bool trace );
+
+	void addConvertorCalc  ( PTR(RDOCalc) calc                     ) { m_convertor.push_back( calc );         }
+	void addConvertorStatus( RDOResource::ConvertStatus status     ) { m_convertorStatus.push_back( status ); }
+	void addEraseCalc      ( PTR(RDOCalc) calc                     ) { m_erase.push_back( calc );             }
+	void setTime           ( PTR(RDOCalc) timeCalc                 ) { m_timeCalc = timeCalc;	              }
+
+	void convertEvent( PTR(RDORuntime) runtime )
+	{
+		preSelectRelRes( runtime );
+		runCalcs( m_convertor, runtime );
+	}
+	void convertErase( PTR(RDORuntime) runtime )
+	{
+		runCalcs( m_erase, runtime );
+	}
+
+	double getNextTimeInterval( PTR(RDORuntime) runtime );
+
+	LPIEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
+
+private:
+	PTR(RDOCalc)                                  m_timeCalc;
+	std::vector< PTR(RDOCalc) >                   m_convertor;
+	std::vector< RDOResource::ConvertStatus >     m_convertorStatus;
 	std::vector< PTR(RDOCalc) >                   m_erase;
 };
 

@@ -115,6 +115,7 @@ $Pattern			return(RDO_Pattern);
 $pattern			return(RDO_Pattern);
 operation			return(RDO_operation);
 irregular_event		return(RDO_irregular_event);
+event				return(RDO_event);
 rule				return(RDO_rule);
 keyboard			return(RDO_keyboard);
 $Relevant_resources	return(RDO_Relevant_resources);
@@ -303,6 +304,8 @@ $Term				return(RDO_Fuzzy_Term);
 $term				return(RDO_Fuzzy_Term);
 
 set					return(RDO_set);
+planning			return(RDO_Planning);
+Planning			return(RDO_Planning);
 
 (\'[^\']*\')		{
 						std::string n1(YYText());

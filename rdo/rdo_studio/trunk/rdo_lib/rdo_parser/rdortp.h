@@ -30,7 +30,7 @@ void rtperror(PTR(char) mes);
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo, public rdo::smart_ptr_counter_reference
+class RDORTPResType: public RDOParserSrcInfo, public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(RDORTPResType);
 public:

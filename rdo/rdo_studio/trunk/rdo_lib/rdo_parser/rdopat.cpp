@@ -31,6 +31,15 @@ int patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void paterror(PTR(char) mes)
 {}
 
+int pat_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+{
+	LEXER->m_lpval = lpval;
+	LEXER->m_lploc = llocp;
+	return LEXER->yylex();
+}
+void pat_preparse_error(PTR(char) mes)
+{}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPattern
 // ----------------------------------------------------------------------------
@@ -106,6 +115,7 @@ void RDOPATPattern::rel_res_insert(PTR(RDORelevantResource) pRelevantResource)
 	switch (getType())
 	{
 	case PT_IE       : static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
+	case PT_Event    : static_cast<PTR(rdoRuntime::RDOPatternEvent)>     (getPatRuntime())->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
 	case PT_Rule     : static_cast<PTR(rdoRuntime::RDOPatternRule)>      (getPatRuntime())->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
 	case PT_Operation: static_cast<PTR(rdoRuntime::RDOPatternOperation)> (getPatRuntime())->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
 	case PT_Keyboard : static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>  (getPatRuntime())->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
@@ -150,6 +160,7 @@ void RDOPATPattern::addParamSetCalc(PTR(rdoRuntime::RDOCalc) pCalc)
 	switch (getType())
 	{
 	case PT_IE       : static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addConvertorCalc(pCalc); break;
+	case PT_Event    : static_cast<PTR(rdoRuntime::RDOPatternEvent)>     (getPatRuntime())->addConvertorCalc(pCalc); break;
 	case PT_Rule     : static_cast<PTR(rdoRuntime::RDOPatternRule)>      (getPatRuntime())->addConvertorCalc(pCalc); break;
 	case PT_Operation: NEVER_REACH_HERE;
 	case PT_Keyboard : NEVER_REACH_HERE;
@@ -244,6 +255,7 @@ void RDOPATPattern::addChoiceFromCalc(PTR(rdoRuntime::RDOCalc) pCalc)
 	switch (getType())
 	{
 	case PT_IE       : static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addPreSelectRelRes(pCalc); break;
+	case PT_Event    : static_cast<PTR(rdoRuntime::RDOPatternEvent)>     (getPatRuntime())->addPreSelectRelRes(pCalc); break;
 	case PT_Rule     : static_cast<PTR(rdoRuntime::RDOPatternRule)>      (getPatRuntime())->addChoiceFromCalc (pCalc); break;
 	case PT_Operation: static_cast<PTR(rdoRuntime::RDOPatternOperation)> (getPatRuntime())->addChoiceFromCalc (pCalc); break;
 	case PT_Keyboard : static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>  (getPatRuntime())->addChoiceFromCalc (pCalc); break;
@@ -477,6 +489,85 @@ tstring RDOPatternIrregEvent::getErrorMessage_NotNeedConvertor(CREF(tstring) nam
 }
 
 tstring RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
+{
+	return rdo::format(_T("Для релевантного ресурса '%s' указан пустой конвертор (Convert_event), хотя его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPatternEvent
+// ----------------------------------------------------------------------------
+RDOPatternEvent::RDOPatternEvent(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+	: RDOPATPattern(pParser, name_src_info)
+{ 
+	m_pPatRuntime = new rdoRuntime::RDOPatternEvent(parser()->runtime(), trace); 
+	m_pPatRuntime->setTraceID(parser()->getPAT_id());
+}
+
+void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
+{
+	beforeRelRensert(rel_info);
+	if (beg == rdoRuntime::RDOResource::CS_NonExist || beg == rdoRuntime::RDOResource::CS_NoChange)
+	{
+		parser()->error().error(convertor_pos, _T("Статусы конверторов NonExist и NoChange не могут быть использованы в событии"));
+	}
+
+	PTR(RDORelevantResource) m_relResList = NULL;
+	CPTRC(RDORSSResource)    res    = parser()->findRSSResource(type_info.src_text());
+	if (res)
+	{
+		switch (beg)
+		{
+		case rdoRuntime::RDOResource::CS_Create: parser()->error().error(type_info, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str())); break;
+		case rdoRuntime::RDOResource::CS_Erase : parser()->error().error(convertor_pos, _T("Удалять ресурсы в событии нельзя")); break;
+		}
+		m_relResList = new RDORelevantResourceDirect(this, rel_info, rel_res_count(), res, beg);
+		rel_res_insert(m_relResList);
+	}
+	else
+	{
+		LPRDORTPResType pResType = parser()->findRTPResType(type_info.src_text());
+		if (!pResType)
+		{
+			parser()->error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
+		}
+		switch (beg)
+		{
+		case rdoRuntime::RDOResource::CS_Create: if (!pResType->isTemporary()) parser()->error().error(type_info, rdo::format(_T("Тип ресурса '%s' постоянный. Динамически создавать от него ресурсы нельзя"), type_info.src_text().c_str())); break;
+		case rdoRuntime::RDOResource::CS_Keep  :
+		case rdoRuntime::RDOResource::CS_Erase : parser()->error().error(convertor_pos, _T("Статусы конверторов Keep и Erase могут быть использованы в событии с описателем в виде ресурса, но не типа ресурса")); break;
+		}
+		m_relResList = new RDORelevantResourceByType(this, rel_info, rel_res_count(), pResType, beg);
+		rel_res_insert(m_relResList);
+	}
+	if (m_relResList->m_statusBegin == rdoRuntime::RDOResource::CS_Erase)
+	{
+		PTR(rdoRuntime::RDOCalc) pCalc = new rdoRuntime::RDOCalcEraseRes(parser()->runtime(), m_relResList->m_relResID, m_relResList->name());
+		pCalc->setSrcInfo(rel_info);
+		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addEraseCalc(pCalc);
+	}
+}
+
+void RDOPatternEvent::addRelResUsage(PTR(RDOPATChoiceFrom) choice_from, PTR(RDOPATChoiceOrder) choice_order)
+{
+	if (choice_from->m_type != RDOPATChoiceFrom::ch_empty)
+	{
+		parser()->error().error(choice_from->src_info(), _T("Релевантные ресурсы события нельзя выбирать с помощью Choice from или Choice NoCheck"));
+	}
+	if (choice_order->m_type != rdoRuntime::RDOSelectResourceCalc::order_empty)
+	{
+		parser()->error().error(choice_from->src_info(), rdo::format(_T("Для релевантных ресурсов события нельзя использовать правило выбора '%s'"), choice_order->asString().c_str()));
+	}
+	m_pCurrRelRes->m_pChoiceFrom  = choice_from;
+	m_pCurrRelRes->m_pChoiceOrder = choice_order;
+}
+
+tstring RDOPatternEvent::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
+{
+	return rdo::format(_T("Для релевантного ресурса '%s' не требуется конвертор (Convert_event), т.к. его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
+}
+
+tstring RDOPatternEvent::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status)
 {
 	return rdo::format(_T("Для релевантного ресурса '%s' указан пустой конвертор (Convert_event), хотя его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }

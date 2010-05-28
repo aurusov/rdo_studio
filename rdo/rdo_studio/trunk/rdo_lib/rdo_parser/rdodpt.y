@@ -57,6 +57,7 @@
 
 %token RDO_Pattern						298
 %token RDO_operation					299
+%token RDO_event						379
 %token RDO_irregular_event				300
 %token RDO_rule							301
 %token RDO_keyboard						302
@@ -79,6 +80,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
+%token RDO_Planning						382
 	
 %token RDO_Results						322
 %token RDO_watch_par					323

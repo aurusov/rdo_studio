@@ -285,6 +285,11 @@ void RDORuntime::addRuntimeIE(LPIBaseOperationContainer logic, CREF(LPIIrregEven
 	appendBaseOperation(logic, ie);
 }
 
+void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer logic, CREF(LPIEvent) ev)
+{
+	appendBaseOperation(logic, ev);
+}
+
 void RDORuntime::addRuntimeRule(LPIBaseOperationContainer logic, CREF(LPIRule) rule)
 {
 	appendBaseOperation(logic, rule);
