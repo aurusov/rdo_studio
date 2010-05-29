@@ -109,9 +109,6 @@ or					return(RDO_or);
 and					return(RDO_and);
 !					return(RDO_not);
 not					return(RDO_not);
-\{                  return('{');
-\}                  return('}');
-\;                  return(';');
 
 $Pattern			return(RDO_Pattern);
 $pattern			return(RDO_Pattern);
@@ -336,7 +333,7 @@ Planning			return(RDO_Planning);
 					}
 
 [\r\n\t ]+						;
-[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
+[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\\{\}]	return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText());
