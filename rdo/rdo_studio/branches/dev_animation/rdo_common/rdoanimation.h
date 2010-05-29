@@ -31,6 +31,7 @@ OPEN_RDO_ANIMATION_NAMESPACE
 			FIT_RECT   ,
 			FIT_R_RECT ,
 			FIT_ELLIPSE,
+			FIT_CIRCLE ,
 			FIT_BMP    ,
 			FIT_S_BMP  ,
 			FIT_ACTIVE
@@ -72,6 +73,15 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		RDOPoint(CREF(RDOPoint) point);
 		RDOPoint(double x, double y);
 	};
+
+	STRUCT(RDORadius)
+	{
+		double m_radius;
+
+		RDORadius(CREF(RDORadius) radius);
+		RDORadius(double radius);
+	};
+
 
 	STRUCT(RDOSize)
 	{
@@ -139,6 +149,14 @@ OPEN_RDO_ANIMATION_NAMESPACE
 	                              AND IMPLEMENTATION_OF(RDOColoredElement)
 	{
 		RDOEllipseElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color);
+	};
+
+	FRAME_ITEM(RDOCircleElement) IS IMPLEMENTATION_OF(RDOColoredElement)
+	{
+		RDOPoint  m_center;
+		RDORadius m_radius;
+
+		RDOCircleElement(CREF(RDOPoint) center, CREF(RDORadius) radius, CREF(RDOColoredElement) color);
 	};
 
 	FRAME_ITEM(RDOBmpElement)

@@ -568,6 +568,35 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 						break;
 					}
+					case rdoAnimation::FrameItem::FIT_CIRCLE:
+					{
+						rdoAnimation::RDOCircleElement* element = static_cast<rdoAnimation::RDOCircleElement*>(currElement);
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
+						HBRUSH pOldBrush;
+						if( !element->m_background.m_transparent ) {
+							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
+						} else {
+							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
+						}
+
+						HPEN pen     = NULL;
+						HPEN pOldPen = NULL;
+						if( !element->m_foreground.m_transparent ) {
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
+							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+						}
+
+						::Ellipse( hdc, (int)(element->m_center.m_x - element->m_radius.m_radius), (int)(element->m_center.m_y - element->m_radius.m_radius), (int)(element->m_center.m_x + element->m_radius.m_radius), (int)(element->m_center.m_y + element->m_radius.m_radius) );
+
+						::SelectObject( hdc, pOldBrush );
+						::DeleteObject( brush );
+						if ( pen ) {
+							::SelectObject( hdc, pOldPen );
+							::DeleteObject( pen );
+						}
+
+						break;
+					}
 					case rdoAnimation::FrameItem::FIT_BMP:
 					{
 						rdoAnimation::RDOBmpElement* element = static_cast<rdoAnimation::RDOBmpElement*>(currElement);

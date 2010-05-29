@@ -59,6 +59,13 @@ inline RDOPoint::RDOPoint(double x, double y)
 	: m_x(x)
 	, m_y(y)
 {}
+inline RDORadius::RDORadius(CREF(RDORadius) radius)
+	: m_radius(radius.m_radius)
+{}
+
+inline RDORadius::RDORadius(double radius)
+	: m_radius(radius)
+{}
 
 inline RDOSize::RDOSize()
 	: m_width (0)
@@ -124,6 +131,13 @@ inline RDOEllipseElement::RDOEllipseElement(CREF(RDOBoundedElement) rect, CREF(R
 	: FrameItem        (FIT_ELLIPSE)
 	, RDOBoundedElement(rect       )
 	, RDOColoredElement(color      )
+{}
+
+inline RDOCircleElement::RDOCircleElement(CREF(RDOPoint) center, CREF(RDORadius) radius, CREF(RDOColoredElement) color)
+	: FrameItem        (FIT_CIRCLE)
+	, RDOColoredElement(color     )
+	, m_center         (center    )
+	, m_radius         (radius    )
 {}
 
 inline RDOBmpElement::RDOBmpElement(CREF(RDOPoint) point, CREF(tstring) bmp_name, CREF(tstring) mask_name)

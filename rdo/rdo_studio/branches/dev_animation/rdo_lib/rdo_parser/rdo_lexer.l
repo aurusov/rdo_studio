@@ -254,6 +254,7 @@ rect				return(RDO_rect);
 r_rect				return(RDO_r_rect);
 line				return(RDO_line);
 ellipse				return(RDO_ellipse);
+circle				return(RDO_circle);
 triang				return(RDO_triang);
 active				return(RDO_active);
 ruler				return(RDO_ruler);

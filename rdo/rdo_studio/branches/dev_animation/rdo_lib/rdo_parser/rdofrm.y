@@ -181,6 +181,7 @@
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
 %token RDO_ASSIGN						447
+%token RDO_circle						448
 
 
 %{
@@ -315,6 +316,7 @@ frm_item:	/* empty */
 			| frm_item frm_rect    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMRect *)$2); }
 			| frm_item frm_line    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMLine *)$2); }
 			| frm_item frm_ellipse { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMEllipse *)$2); }
+			| frm_item frm_circle  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMCircle *)$2); }
 			| frm_item frm_r_rect  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMRectRound *)$2); }
 			| frm_item frm_triang  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMTriang *)$2); }
 			| frm_item frm_s_bmp   { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMBitmapStretch *)$2); }
@@ -438,6 +440,15 @@ frm_postype_wh:	frm_postype;
 					PARSER->error().error( @1, "Нельзя использовать данное выравнивание для ширины или высоты" );
 				};
 
+frm_circle_radius:	fun_arithm frm_postype_xy
+				{
+					if ($2 != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute && $2 != rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta &&$2 != rdoRuntime::RDOFRMFrame::RDOFRMPosition::mult )
+						PARSER->error().error( @2, "Нельзя использовать данное выравнивание для радиуса" );
+
+					rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
+					$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
+				};
+
 frm_position_xy: fun_arithm frm_postype_xy {
 					rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
 					if ( $2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet ) {
@@ -466,10 +477,10 @@ frm_ruler:		RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy 
 					rdoRuntime::RDOFRMFrame::RDOFRMPosition* x = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($5);
 					rdoRuntime::RDOFRMFrame::RDOFRMPosition* y = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($7);
 					if ( x->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute ) {
-						PARSER->error().error( @5, "Коодинаты рулетки должны быть абсолютными" );
+						PARSER->error().error( @5, "Координаты рулетки должны быть абсолютными" );
 					}
 					if ( y->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute ) {
-						PARSER->error().error( @7, "Коодинаты рулетки должны быть абсолютными" );
+						PARSER->error().error( @7, "Координаты рулетки должны быть абсолютными" );
 					}
 					$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMRulet( RDOParserSrcInfo(@1), reinterpret_cast<RDOValue*>($3)->value().getInt(), x, y );
 				}
@@ -912,6 +923,50 @@ frm_ellipse: RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_positio
 				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
 			}
 			| RDO_ellipse error {
+				PARSER->error().error( @1, "Ожидается '['" );
+			};
+
+frm_circle: RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_circle_radius ',' frm_color ',' frm_color ']' {
+				rdoRuntime::RDOFRMFrame::RDOFRMPosition* x      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($3);
+				rdoRuntime::RDOFRMFrame::RDOFRMPosition* y      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($5);
+				rdoRuntime::RDOFRMFrame::RDOFRMPosition* radius  = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($7);
+				rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMColor*>($9);
+				rdoRuntime::RDOFRMFrame::RDOFRMColor* fg_color = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMColor*>($11);
+				bg_color->setColorType( rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg );
+				fg_color->setColorType( rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg );
+				$$ = (int)new rdoRuntime::RDOFRMCircle( RUNTIME->lastFrame(), x, y, radius, bg_color, fg_color );
+			}
+			| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_circle_radius ',' frm_color ',' frm_color error {
+				PARSER->error().error( @11, "Ожидается ']'" );
+			}
+			| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_circle_radius ',' frm_color ',' error {
+				PARSER->error().error( @10, @11, "Ожидается цвет линии круга" );
+			}
+			| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_circle_radius ',' frm_color error {
+				PARSER->error().error( @9, "Ожидается запятая" );
+			}
+			| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_circle_radius ',' error {
+				PARSER->error().error( @8, @9, "Ожидается цвет фона" );
+			}
+			| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_circle_radius error {
+				PARSER->error().error( @7, "Ожидается запятая" );
+			}
+			| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' error {
+				PARSER->error().error( @6, @7, "Ожидается радиус" );
+			}
+			| RDO_circle '[' frm_position_xy ',' frm_position_xy error {
+				PARSER->error().error( @5, "Ожидается запятая" );
+			}
+			| RDO_circle '[' frm_position_xy ',' error {
+				PARSER->error().error( @4, @5, "Ожидается координата по оси Y" );
+			}
+			| RDO_circle '[' frm_position_xy error {
+				PARSER->error().error( @3, "Ожидается запятая" );
+			}
+			| RDO_circle '[' error {
+				PARSER->error().error( @2, @3, "Ожидается координата по оси X" );
+			}
+			| RDO_circle error {
 				PARSER->error().error( @1, "Ожидается '['" );
 			};
 

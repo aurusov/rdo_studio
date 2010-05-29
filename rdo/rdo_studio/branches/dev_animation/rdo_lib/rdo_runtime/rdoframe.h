@@ -458,6 +458,22 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFRMCircle
+// ----------------------------------------------------------------------------
+class RDOFRMCircle: public RDOFRMItem, public RDOFRMColoredItem
+{
+private:
+	RDOFRMFrame::RDOFRMPosition* m_x;
+	RDOFRMFrame::RDOFRMPosition* m_y;
+	RDOFRMFrame::RDOFRMPosition* m_radius;
+protected:
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
+
+public:
+	RDOFRMCircle( RDOFRMFrame* parent, RDOFRMFrame::RDOFRMPosition* x, RDOFRMFrame::RDOFRMPosition* y, RDOFRMFrame::RDOFRMPosition* radius, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFRMLine
 // ----------------------------------------------------------------------------
 class RDOFRMLine: public RDOFRMItem, public RDOFRMBoundingItem

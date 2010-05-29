@@ -181,6 +181,7 @@
 %token RDO_QUEUE						445
 %token RDO_DEPART						446
 %token RDO_ASSIGN						447
+%token RDO_circle						448
 
 
 %{

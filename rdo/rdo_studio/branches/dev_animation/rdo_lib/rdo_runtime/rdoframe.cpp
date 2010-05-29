@@ -419,6 +419,35 @@ rdoAnimation::FrameItem* RDOFRMEllipse::createElement( RDORuntime* sim )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFRMCircle
+// ----------------------------------------------------------------------------
+RDOFRMCircle::RDOFRMCircle( RDOFRMFrame* parent, RDOFRMFrame::RDOFRMPosition* x, RDOFRMFrame::RDOFRMPosition* y, RDOFRMFrame::RDOFRMPosition* radius, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor ):
+	RDOFRMItem( parent ),
+	RDOFRMColoredItem( bgColor, fgColor ),
+	m_x( x ),
+	m_y( y ),
+	m_radius( radius )
+{
+	color_reparent( this );
+}
+
+rdoAnimation::FrameItem* RDOFRMCircle::createElement( RDORuntime* sim )
+{
+	sim->memory_insert( sizeof(rdoAnimation::RDOCircleElement) );
+
+	rdoAnimation::RDOColor bg = getBg( sim, getFrame() );
+	rdoAnimation::RDOColor fg = getFg( sim, getFrame() );
+	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
+	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
+
+	return new rdoAnimation::RDOCircleElement(
+		rdoAnimation::RDOPoint(m_x->getX( sim, getFrame() ), m_y->getY( sim, getFrame() )),
+		rdoAnimation::RDORadius(m_radius->getX( sim, getFrame() )),
+		rdoAnimation::RDOColoredElement(bg, fg)
+	);
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFRMLine
 // ----------------------------------------------------------------------------
 RDOFRMLine::RDOFRMLine( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x1, RDOFRMFrame::RDOFRMPosition* _y1, RDOFRMFrame::RDOFRMPosition* _x2, RDOFRMFrame::RDOFRMPosition* _y2, RDOFRMFrame::RDOFRMColor* _color ):
