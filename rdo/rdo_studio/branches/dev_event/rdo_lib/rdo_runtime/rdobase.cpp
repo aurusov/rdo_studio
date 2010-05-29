@@ -35,8 +35,8 @@ void RDOSimulatorBase::rdoInit()
 	m_check_operation = true;
 	onInit();
 
-	m_timePoints.clear();
-	m_timePoints[m_currentTime] = NULL;
+	if (m_timePoints.find(m_currentTime) == m_timePoints.end())
+		m_timePoints[m_currentTime] = NULL;
 	preProcess();
 
 	m_speed              = 1;
