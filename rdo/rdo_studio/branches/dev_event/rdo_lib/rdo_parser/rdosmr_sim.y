@@ -267,7 +267,9 @@ smr_cond
 		PTR(rdoRuntime::RDOCalc) pCalcTime = pTimeArithm->createCalc(NULL);
 		ASSERT(pCalcTime);
 
-		RUNTIME->addTimePoint(pCalcTime->calcValue(RUNTIME).getDouble(), pEvent->getRuntimeEvent());
+		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
+		ASSERT(pBaseOperation);
+		RUNTIME->addTimePoint(pCalcTime->calcValue(RUNTIME).getDouble(), pBaseOperation);
 	}
 	| smr_cond RDO_Model_name                 '=' RDO_IDENTIF
 	| smr_cond RDO_Resource_file              '=' RDO_IDENTIF
