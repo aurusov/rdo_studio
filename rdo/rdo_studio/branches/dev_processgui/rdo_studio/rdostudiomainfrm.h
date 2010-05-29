@@ -21,7 +21,6 @@
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_studio/rdoprocess_projectbar.h"
 #include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOToolBar
@@ -89,6 +88,7 @@ public:
 	RDOStudioOutput    output;
 	CControlBar*		last_docked;
 	CMultiDocTemplate*  flowchartDocTemplate;
+RPProjectBar projectBar;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;

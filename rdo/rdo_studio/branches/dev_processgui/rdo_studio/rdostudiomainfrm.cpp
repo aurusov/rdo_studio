@@ -9,6 +9,8 @@
 #include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
 #include "rdo_studio/rdo_process/rdoprocess_docview.h"
+#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
@@ -213,8 +215,8 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-//	projectBar.Create( rdo::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );//проджект бар 
-//	projectBar.EnableDocking( CBRS_ALIGN_ANY );//проджект бар 
+	projectBar.Create( rdo::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );//проджект бар 
+	projectBar.EnableDocking( CBRS_ALIGN_ANY );//проджект бар 
 	
 
 	output.Create( rdo::format( ID_DOCK_OUTPUT ).c_str(), this, 0 );
@@ -235,7 +237,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	dockControlBarBesideOf( modelToolBar, zoomToolBar );
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
-//	DockControlBar( &projectBar, AFX_IDW_DOCKBAR_LEFT );//его положение - а зачем мне прожект бар?????
+	DockControlBar( &projectBar, AFX_IDW_DOCKBAR_LEFT );//его положение - а зачем мне прожект бар?????
 
 //	zoomToolBar.SetButtonStyle( 2, TBBS_CHECKBOX );
 

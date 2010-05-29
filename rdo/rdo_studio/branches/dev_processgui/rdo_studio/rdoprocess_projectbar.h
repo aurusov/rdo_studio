@@ -1,7 +1,8 @@
 #ifndef RDO_PROCESS_PROJECTBAR_H
 #define RDO_PROCESS_PROJECTBAR_H
 
-#include "rdo_studio/rdo_process/rdoprocess_dockwnd.h"
+//#include "rdo_studio/rdo_process/rdoprocess_dockwnd.h"
+#include "rdo_studio/rdostudiodockwnd.h"
 #include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
 
 #if _MSC_VER > 1000
@@ -11,7 +12,7 @@
 // ----------------------------------------------------------------------------
 // ---------- RPProjectBar
 // ----------------------------------------------------------------------------
-class RPProjectBar: public RPDockWnd
+class RPProjectBar: public RDOStudioDockWnd
 {
 protected:
 	RPPageCtrl pagectrl;

@@ -252,7 +252,8 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame->UpdateWindow();
 	
 	methods.init();
-	mainFrame->workspace.projectBar->selectFirst();
+	mainFrame->projectBar.selectFirst();
+	log << "RDOStudioApp::InitInstance().. ok" << std::endl;
 
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );
@@ -345,9 +346,9 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
-	//log << "methods.close().." << std::endl;
-	//methods.close();
-	//log << "methods.close().. ok" << std::endl;
+	log << "methods.close().." << std::endl;
+	methods.close();
+	log << "methods.close().. ok" << std::endl;
 
 	log << "delete factory.. " << std::endl;
 	if ( rpMethod::factory ) {
@@ -355,6 +356,13 @@ int RDOStudioApp::ExitInstance()
 		rpMethod::factory = NULL;
 	}
 	log << "delete factory.. ok" << std::endl;
+
+	log << "delete project.." << std::endl;
+	if ( rpMethod::project ) {
+		delete rpMethod::project;
+		rpMethod::project = NULL;
+	}
+	log << "delete project.. ok" << std::endl;
 
 	if ( exitCode != rdoSimulator::EC_ModelNotFound ) {
 		exitCode = model->getExitCode();

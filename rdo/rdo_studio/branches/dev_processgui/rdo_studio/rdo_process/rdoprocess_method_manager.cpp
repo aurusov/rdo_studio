@@ -92,7 +92,7 @@ void RPMethodManager::init()
 	}
 #else
 	insertMethod( RPMethodAlgorithm::registerMethod() );
-//	insertMethod( RPMethodProc2RDO_MJ::registerMethod() );
+	insertMethod( RPMethodProc2RDO_MJ::registerMethod() );
 #endif
 }
 
@@ -134,7 +134,7 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 							plugin->method->setPixmap( new RPPixmapMFC( IDB_FLOWCHART_DEFAULT, RGB(0xFF,0xFF,0xFF) ) );
 						}
 						CListCtrl* listctrl = new CListCtrl();
-						listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.getProjectBar().prepareNewPage(), 1 );
+						listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.mainFrame->projectBar.prepareNewPage(), 1 );
 						CImageList* im_list = new CImageList();
 						im_lists.push_back( im_list );
 						im_list->Create( 32, 32, ILC_MASK | ILC_COLOR32, 0, 1 );
@@ -153,7 +153,7 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 							}
 							it++;
 						}
-						RPPageCtrlItem* page = studioApp.getProjectBar().insertPage( listctrl, plugin->getMethod()->getName() );
+						RPPageCtrlItem* page = studioApp.mainFrame->projectBar.insertPage( listctrl, plugin->getMethod()->getName() );
 						page->setPixmap( *static_cast<RPPixmapMFC*>(plugin->getMethod()->getPixmap()) );
 						listctrl->SortItems( BlocksCompareProc, NULL );
 					}
@@ -171,7 +171,7 @@ void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
 		method->setPixmap( new RPPixmap( IDB_FLOWCHART_DEFAULT, RGB(0xFF,0xFF,0xFF) ) );
 	}
 	CListCtrl* listctrl = new CListCtrl();
-	listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.mainFrame->workspace.projectBar->prepareNewPage(), 1 );
+	listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.mainFrame->projectBar.prepareNewPage(), 1 );
 	CImageList* im_list = new CImageList();
 	im_lists.push_back( im_list );
 	im_list->Create( 32, 32, ILC_MASK | ILC_COLOR32, 0, 1 );
@@ -194,7 +194,7 @@ void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
 		}
 		it++;
 	}
-	RPPageCtrlItem* page = studioApp.mainFrame->workspace.projectBar->insertPage( listctrl, method->getName() );
+	RPPageCtrlItem* page = studioApp.mainFrame->projectBar.insertPage( listctrl, method->getName() );
 	page->setPixmap( *method->getPixmap() );
 	listctrl->SortItems( BlocksCompareProc, NULL );
 }

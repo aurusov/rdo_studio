@@ -10,6 +10,36 @@
 #include "rdo_ctrls/rdotabctrl.h"
 #include "rdo_studio/rdoprocess_projectbar.h"
 
+// CChildView window
+
+class CChildView : public CWnd
+{
+// Construction
+public:
+	CChildView();
+	CString m_strText;
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	protected:
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+
+// Implementation
+public:
+	virtual ~CChildView();
+
+	// Generated message map functions
+protected:
+	afx_msg void OnPaint();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+	DECLARE_MESSAGE_MAP()
+};
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioWorkspace
 // ----------------------------------------------------------------------------
@@ -19,13 +49,12 @@ friend class RDOStudioFrameManager;
 private:
 	RDOTabCtrl tab;
 	RDOStudioFrameTreeCtrl* frames;
-//	RPPageCtrl* pagectrl;
-
+	CChildView* m_wndView;
 public:
 	RDOStudioWorkspace();
 	virtual ~RDOStudioWorkspace();
 
-	RPProjectBar* projectBar;
+	RPProjectBar* projectBar2;
 
 protected:
 	//{{AFX_VIRTUAL(RDOStudioWorkspace)

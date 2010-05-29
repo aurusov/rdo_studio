@@ -12,6 +12,56 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// CChildView
+
+CChildView::CChildView()
+{
+}
+
+CChildView::~CChildView()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CChildView, CWnd)
+	ON_WM_PAINT()
+END_MESSAGE_MAP()
+
+
+
+// CChildView message handlers
+
+BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
+{
+	if (!CWnd::PreCreateWindow(cs))
+		return FALSE;
+
+	cs.dwExStyle |= WS_EX_CLIENTEDGE;
+	cs.style &= ~WS_BORDER;
+	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
+		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
+
+	return TRUE;
+}
+
+void CChildView::OnPaint() 
+{
+	CPaintDC dc(this);
+	
+	CRect rect;          
+	GetClientRect (&rect);
+	m_strText = _T("Вот окно ");
+	dc.DrawText(m_strText, rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE); 
+
+}
+
+ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+ {
+         if (CWnd ::OnCreate(lpCreateStruct) == -1)
+                 return -1;
+
+ }
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioWorkspace
 // ----------------------------------------------------------------------------
@@ -23,7 +73,8 @@ END_MESSAGE_MAP()
 
 RDOStudioWorkspace::RDOStudioWorkspace():
 	RDOStudioDockWnd(),
-	frames( NULL )
+	frames( NULL ),
+	projectBar2(NULL)
 {
 }
 
@@ -46,20 +97,23 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	frames = new RDOStudioFrameTreeCtrl;
 	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
-	//pagectrl = new RPPageCtrl;
-	//pagectrl->Create( "", "", 0, CRect(0,0,100,100), &tab, 0 );
+	m_wndView = new CChildView;
+	m_wndView->Create(NULL, NULL, AFX_WS_DEFAULT_VIEW,
+		CRect(0, 0, 0, 0), &tab, AFX_IDW_PANE_FIRST, NULL);
+
+	projectBar2 = new RPProjectBar;
+	projectBar2->Create( rdo::format( ID_DOCK_PROJECT_BAR ).c_str(), &tab, 0 );
 	
-	//projectBar.Create( rdo::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );
-	projectBar = new RPProjectBar;
-	projectBar->Create( rdo::format( ID_DOCK_PROJECT_BAR ).c_str(), &tab, 0 );
 	
 	tab.insertItem( trace, rdo::format( IDS_TAB_TRACER ).c_str() );
-	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );//создаем табы 
-	tab.insertItem( projectBar, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
+	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() ); 
+	tab.insertItem( m_wndView, rdo::format( "ОКНО" ).c_str() );
+	tab.insertItem( projectBar2, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
 
 	studioApp.mainFrame->registerCmdWnd( trace );
 	studioApp.mainFrame->registerCmdWnd( frames );
-	studioApp.mainFrame->registerCmdWnd( projectBar );
+	studioApp.mainFrame->registerCmdWnd( m_wndView );
+	studioApp.mainFrame->registerCmdWnd( projectBar2 );
 
 	return 0;
 }

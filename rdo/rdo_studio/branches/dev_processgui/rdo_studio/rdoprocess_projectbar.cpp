@@ -10,7 +10,7 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPProjectBar
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RPProjectBar, RPDockWnd)
+BEGIN_MESSAGE_MAP(RPProjectBar, RDOStudioDockWnd)
 	//{{AFX_MSG_MAP(RPProjectBar)
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
@@ -26,7 +26,7 @@ RPProjectBar::~RPProjectBar()
 
 int RPProjectBar::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
-	if ( RPDockWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOStudioDockWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	SetBarStyle( GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 

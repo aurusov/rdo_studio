@@ -14,7 +14,6 @@
 #include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_process/rdoprocess_method_manager.h"
 #include "rdo_studio/rdostudiomainfrm.h"
-//#include "rdo_studio/rdo_process/rdoprocess_project.h"//for MFC
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
