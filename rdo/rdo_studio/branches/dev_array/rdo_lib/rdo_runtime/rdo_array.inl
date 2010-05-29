@@ -62,6 +62,11 @@ inline RDOValue RDOArrayType::cast(CREF(RDOValue) from) const
 	throw RDOTypeException();
 }
 
+inline RDOArrayType::ArrayType RDOArrayType::getArrayType() const
+{
+	return m_arrayType;
+}
+
 //inline tstring RDOArrayType::asString() const
 //{
 //	ASSERT(m_arrayType);
