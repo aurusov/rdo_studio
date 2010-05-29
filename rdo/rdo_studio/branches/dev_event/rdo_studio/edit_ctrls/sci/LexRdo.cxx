@@ -65,10 +65,6 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 			if ( sc.ch == '\'' ) {
 				sc.ForwardSetState( SCE_RDO_DEFAULT );
 			}
-		} else if ( sc.state == SCE_RDO_COMMENT_RDO ) {
-			if ( sc.ch == '}' ) {
-				sc.ForwardSetState( SCE_RDO_DEFAULT );
-			}
 		} else if ( sc.state == SCE_RDO_COMMENT_CPP ) {
 			if ( sc.Match('*', '/') ) {
 				sc.Forward();
@@ -83,8 +79,6 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 		if ( sc.state == SCE_RDO_DEFAULT ) {
 			if ( sc.ch == '\'' ) {
 				sc.SetState( SCE_RDO_STRING );
-			} else if ( sc.ch == '{' ) {
-				sc.SetState( SCE_RDO_COMMENT_RDO );
 			} else if ( sc.Match('/', '*') ) {
 				sc.SetState( SCE_RDO_COMMENT_CPP );
 				sc.Forward();	// Eat the * so it isn't used for the end of the comment

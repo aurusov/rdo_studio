@@ -320,11 +320,6 @@ Planning			return(RDO_Planning);
 						return RDO_STRING_CONST_BAD;
 					}
 
-"{"						BEGIN(comment_rdo);
-<comment_rdo>[^}.]*		;
-<comment_rdo>[^}\n\r]*	;
-<comment_rdo>"}"		BEGIN(INITIAL);
-
 "/*"					BEGIN(comment_cpp);
 <comment_cpp>[^*.]*		;
 <comment_cpp>[^*\n\r]*	;
@@ -333,7 +328,7 @@ Planning			return(RDO_Planning);
 "//"					BEGIN(comment_line);
 <comment_line>[\n\r]+	BEGIN(INITIAL);
 
-"}"|"*/"			{
+"*/"				{
 						LEXER->loc_delta_pos( YYLeng() );
 						PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
 					}
