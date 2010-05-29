@@ -380,6 +380,7 @@
 #define ID_INSERT_RTP_BOOL              33014
 #define ID_INSERT_RTP_TRUE              33015
 #define ID_INSERT_RTP_FALSE             33016
+#define ID_INSERT_FRM_CIRCLE            33017
 #define ID_INSERT_BUFFER1_PASTE         33110
 #define ID_INSERT_BUFFER1_EDIT          33111
 #define ID_INSERT_BUFFER2_PASTE         33112

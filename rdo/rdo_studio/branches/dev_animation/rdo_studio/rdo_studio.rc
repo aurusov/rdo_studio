@@ -18,7 +18,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// русский resources
+// Russian resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 #ifdef _WIN32
@@ -845,6 +845,7 @@ BEGIN
             MENUITEM "text",                        ID_INSERT_FRM_TEXT
             MENUITEM "line",                        ID_INSERT_FRM_LINE
             MENUITEM "rect",                        ID_INSERT_FRM_RECT
+            MENUITEM "circle",                      ID_INSERT_FRM_CIRCLE
             MENUITEM "ellipse",                     ID_INSERT_FRM_ELLIPSE
             MENUITEM "r_rect",                      ID_INSERT_FRM_RRECT
             MENUITEM "triang",                      ID_INSERT_FRM_TRIANG
@@ -3631,12 +3632,12 @@ BEGIN
     ID_MODEL_RUNTIME_PAUSE  "\nПауза"
 END
 
-#endif    // русский resources
+#endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// английский (США) resources
+// English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
@@ -4326,6 +4327,7 @@ BEGIN
             MENUITEM "line",                        ID_INSERT_FRM_LINE
             MENUITEM "rect",                        ID_INSERT_FRM_RECT
             MENUITEM "ellipse",                     ID_INSERT_FRM_ELLIPSE
+            MENUITEM "circle",                      ID_INSERT_FRM_CIRCLE
             MENUITEM "r_rect",                      ID_INSERT_FRM_RRECT
             MENUITEM "triang",                      ID_INSERT_FRM_TRIANG
             MENUITEM "s_bmp",                       ID_INSERT_FRM_SBMP
@@ -4971,7 +4973,7 @@ BEGIN
     ID_MODEL_RUNTIME_PAUSE  "\nPause"
 END
 
-#endif    // английский (США) resources
+#endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
