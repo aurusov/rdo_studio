@@ -175,6 +175,7 @@ void RDOParserPATPost::parse()
 		{
 			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
 			ASSERT(pRuntimeEvent);
+			pEvent->setRuntimeEvent(pRuntimeEvent);
 
 			(*calcIt)->setEvent(pRuntimeEvent);
 		}

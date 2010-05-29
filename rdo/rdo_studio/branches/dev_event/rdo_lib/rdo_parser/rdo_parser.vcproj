@@ -1257,7 +1257,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampat_preparse.cpp"
 					/>
 				</FileConfiguration>
@@ -1267,7 +1267,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampat_preparse.cpp"
 					/>
 				</FileConfiguration>
@@ -1277,7 +1277,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampat_preparse.cpp"
 					/>
 				</FileConfiguration>
@@ -1287,7 +1287,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampat_preparse.cpp"
 					/>
 				</FileConfiguration>
@@ -1297,7 +1297,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampat_preparse.cpp"
 					/>
 				</FileConfiguration>
@@ -1307,7 +1307,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampat_preparse.cpp"
 					/>
 				</FileConfiguration>

@@ -171,11 +171,6 @@ RDODPTActivityHotKey::RDODPTActivityHotKey( LPIBaseOperationContainer dpt, const
 			m_activity = static_cast<rdoRuntime::RDOPatternIrregEvent*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
 			break;
 		}
-		case RDOPATPattern::PT_Event:
-		{
-			m_activity = static_cast<rdoRuntime::RDOPatternEvent*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
-			break;
-		}
 		case RDOPATPattern::PT_Rule:
 		{
 			m_activity = static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
