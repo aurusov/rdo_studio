@@ -51,7 +51,7 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 				} else if ( traces.InList(s) ) {
 					sc.ChangeState( SCE_RDO_TRACE );
 				} else if ( colors.InList(s) ) {
-					sc.ChangeState( SCE_RDO_COLOR );
+					sc.ChangeState( SCE_RDO_FRAME_COLOR );
 				}
 				sc.SetState( SCE_RDO_DEFAULT );
 			}
