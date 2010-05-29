@@ -118,7 +118,7 @@ public:
 		rt_temporary
 	};
 	// Проинициализировать по существующему типу
-	RDOResType(CREF(rdoParse::RDORTPResType) rtp);
+	RDOResType(CREF(rdoParse::LPRDORTPResType) rtp);
 	// Создать новый тип
 	RDOResType(CREF(tstring) name, Type type = rt_permanent);
 
@@ -229,7 +229,7 @@ public:
 	template <class T>
 	PTR(rdoParse::RDORSSResource) createParserResource(REF(rdoParse::RDOParser) parser, rsint id = rdoParse::RDORSSResource::UNDEFINED_ID) const
 	{
-		CPTR(rdoParse::RDORTPResType) pRTP = parser.findRTPResType(getType().name());
+		rdoParse::LPRDORTPResType pRTP = parser.findRTPResType(getType().name());
 		if (!pRTP)
 			return NULL;
 

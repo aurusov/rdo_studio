@@ -1319,8 +1319,8 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 //			rdo::binarystream stream;
 //			sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( data->file, stream ) );
 //			data->result = stream.data();
-			const std::vector< rdoParse::RDORTPResType* >& rtp_list = parser->getRTPResTypes(); 
-			std::vector< rdoParse::RDORTPResType* >::const_iterator rtp_it = rtp_list.begin();
+			const std::vector< rdoParse::LPRDORTPResType >& rtp_list = parser->getRTPResTypes(); 
+			std::vector< rdoParse::LPRDORTPResType >::const_iterator rtp_it = rtp_list.begin();
 			while ( rtp_it != rtp_list.end() ) {
 				CREF(rdoParse::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
 				rdoParse::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();

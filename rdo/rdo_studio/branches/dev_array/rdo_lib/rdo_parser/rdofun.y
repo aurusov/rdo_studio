@@ -140,6 +140,8 @@
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
 %token RDO_array						379
+%token RDO_event						380
+%token RDO_Planning						381
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -1044,7 +1046,7 @@ param_type_enum_list: RDO_IDENTIF {
 param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 						tstring type  = RDOVALUE($2)->getIdentificator();
 						tstring param = RDOVALUE($4)->getIdentificator();
-						CPTRC(RDORTPResType) pRTP = PARSER->findRTPResType(type);
+						LPRDORTPResType pRTP = PARSER->findRTPResType(type);
 						if (!pRTP)
 						{
 							PARSER->error().error(@2, rdo::format(_T("—сылка на неизвестный тип ресурса: %s"), type.c_str()));
@@ -1067,7 +1069,7 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 					}
 					| RDO_such_as RDO_IDENTIF '.' error {
 						tstring type = RDOVALUE($2)->getIdentificator();
-						CPTR(RDORTPResType) const rt = PARSER->findRTPResType(type);
+						LPRDORTPResType const rt = PARSER->findRTPResType(type);
 						if (!rt)
 						{
 							PARSER->error().error(@2, rdo::format(_T("—сылка на неизвестный тип ресурса: %s"), type.c_str()));

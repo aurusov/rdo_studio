@@ -22,25 +22,25 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
-class RDORTPResType;
+PREDECLARE_POINTER(RDORTPResType);
 
 class RDORTPParam: public RDOParserSrcInfo, IModelStructure, IName
 {
 DECLARE_FACTORY(RDORTPParam);
 public:
-	CPTR(RDORTPResType) const getResType  () const { ASSERT(m_resType);   return m_resType;   }
-	LPRDOTypeParam            getParamType() const { ASSERT(m_paramType); return m_paramType; }
-	CREF(RDOValue)            getDefault  () const { return getParamType()->default();        }
+	LPRDORTPResType getResType  () const { ASSERT(m_pResourceType); return m_pResourceType; }
+	LPRDOTypeParam  getParamType() const { ASSERT(m_paramType);     return m_paramType;     }
+	CREF(RDOValue)  getDefault  () const { return getParamType()->default();                }
 
 	DECLARE_IModelStructure;
 	DECLARE_IName;
 
 protected:
-	CPTR(RDORTPResType) const m_resType;
-	LPRDOTypeParam            m_paramType;
+	LPRDORTPResType m_pResourceType;
+	LPRDOTypeParam  m_paramType;
 
-protected:
-	RDORTPParam(CPTR(RDORTPResType) const resType, CREF(LPRDOTypeParam) pParamType, CREF(RDOParserSrcInfo) src_info);
+private:
+	RDORTPParam(CREF(LPRDORTPResType) pResourceType, CREF(LPRDOTypeParam) pParamType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDORTPParam();
 };
 DECLARE_POINTER(RDORTPParam);

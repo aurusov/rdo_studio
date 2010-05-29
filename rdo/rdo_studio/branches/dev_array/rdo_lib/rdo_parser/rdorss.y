@@ -140,6 +140,8 @@
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
 %token RDO_array						379
+%token RDO_event						380
+%token RDO_Planning						381
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -266,7 +268,7 @@ rss_res_type:	RDO_IDENTIF_COLON RDO_IDENTIF
 				{
 					RDOValue* name = reinterpret_cast<RDOValue*>($1);
 					RDOValue* type = reinterpret_cast<RDOValue*>($2);
-					const RDORTPResType* const resType = PARSER->findRTPResType( type->value().getIdentificator() );
+					LPRDORTPResType resType = PARSER->findRTPResType( type->value().getIdentificator() );
 					if ( !resType ) {
 						PARSER->error().error( @2, rdo::format("Неизвестный тип ресурса: %s", type->value().getIdentificator().c_str()) );
 					}

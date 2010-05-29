@@ -140,6 +140,8 @@
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
 %token RDO_array						379
+%token RDO_event						380
+%token RDO_Planning						381
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -238,11 +240,13 @@ ext_par_type_enum:	param_type_enum RDO_IDENTIF
 
 rtp_res_type:		rtp_header RDO_Parameters rtp_body RDO_End
 					{
-						PTR(RDORTPResType) res_type = reinterpret_cast<PTR(RDORTPResType)>($1);
-						if (res_type->getParams().empty())
+						LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($1);
+						ASSERT(pResourceType);
+						if (pResourceType->getParams().empty())
 						{
-							PARSER->error().warning(@2, rdo::format(_T("Тип ресурса '%s' не содежит параметров"), res_type->name().c_str()));
+							PARSER->error().warning(@2, rdo::format(_T("Тип ресурса '%s' не содежит параметров"), pResourceType->name().c_str()));
 						}
+						$$ = PARSER->stack().push(pResourceType);
 					}
 					| rtp_header RDO_Parameters rtp_body {
 						PARSER->error().error(@2, _T("Не найдено ключевое слово $End"));
@@ -256,22 +260,23 @@ rtp_header:			RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 						LEXER->enumReset();
 						PTR(RDOValue)       type_name = P_RDOVALUE($2);
 						tstring             name      = type_name->value().getIdentificator();
-						CPTR(RDORTPResType) _rtp      = PARSER->findRTPResType(name);
+						LPRDORTPResType     _rtp      = PARSER->findRTPResType(name);
 						if (_rtp)
 						{
 							PARSER->error().push_only(type_name->src_info(), rdo::format(_T("Тип ресурса уже существует: %s"), name.c_str()));
 							PARSER->error().push_only(_rtp->src_info(), _T("См. первое определение"));
 							PARSER->error().push_done();
 						}
-						PTR(RDORTPResType) rtp = new RDORTPResType(PARSER, type_name->src_info(), $3 != 0);
-						$$ = (int)rtp;
+						LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $3 != 0);
+						ASSERT(pResourceType);
+						$$ = PARSER->stack().push(pResourceType);
 					}
 					|	RDO_Resource_type RDO_IDENTIF_COLON RDO_IDENTIF_COLON rtp_vid_res
 					{
 						LEXER->enumReset();
 						PTR(RDOValue)       type_name = P_RDOVALUE($2);
 						tstring             name      = type_name->value().getIdentificator();
-						CPTR(RDORTPResType) _rtp      = PARSER->findRTPResType(name);
+						LPRDORTPResType     _rtp      = PARSER->findRTPResType(name);
 						if (_rtp)
 						{
 							PARSER->error().push_only(type_name->src_info(), rdo::format(_T("Тип ресурса уже существует: %s"), name.c_str()));
@@ -280,20 +285,21 @@ rtp_header:			RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 						}
 						PTR(RDOValue)       prnt_type_name = P_RDOVALUE($3);
 						tstring             prnt_name      = prnt_type_name->value().getIdentificator();
-						CPTR(RDORTPResType) _rtp_prnt      = PARSER->findRTPResType(prnt_name);
+						LPRDORTPResType     _rtp_prnt      = PARSER->findRTPResType(prnt_name);
 
 						if (_rtp_prnt)
 						{
-							PTR(RDORTPResType) rtp = new RDORTPResType(PARSER, type_name->src_info(), $4 != 0);
+							LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $4 != 0);
+							ASSERT(pResourceType);
 							ruint t_ind   = 0;
 							ruint col_par = _rtp_prnt->getParams().size();
 							while (t_ind < col_par)
 							{
-								rtp->addParam(_rtp_prnt->getParams()[t_ind]);
+								pResourceType->addParam(_rtp_prnt->getParams()[t_ind]);
 								PARSER->error().warning(_rtp_prnt->getParams()[t_ind]->src_info(), rdo::format(_T("Параметр %s передан от родителя %s потомку %s"), _rtp_prnt->getParams()[t_ind]->src_info().src_text().c_str(), prnt_name.c_str(), name.c_str()));
 								t_ind++;
 							}
-							$$ = (int)rtp;
+							$$ = PARSER->stack().push(pResourceType);
 							PARSER->error().warning(@2, rdo::format(_T("Тип ресурса %s является потомком типа ресурса %s"), name.c_str(), prnt_name.c_str()));
 						}
 						else
@@ -538,7 +544,7 @@ param_type_enum_list: RDO_IDENTIF {
 param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 						tstring type  = RDOVALUE($2)->getIdentificator();
 						tstring param = RDOVALUE($4)->getIdentificator();
-						CPTRC(RDORTPResType) pRTP = PARSER->findRTPResType(type);
+						LPRDORTPResType pRTP = PARSER->findRTPResType(type);
 						if (!pRTP)
 						{
 							PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
@@ -561,7 +567,7 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 					}
 					| RDO_such_as RDO_IDENTIF '.' error {
 						tstring type = RDOVALUE($2)->getIdentificator();
-						CPTR(RDORTPResType) const rt = PARSER->findRTPResType(type);
+						LPRDORTPResType rt = PARSER->findRTPResType(type);
 						if (!rt)
 						{
 							PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));

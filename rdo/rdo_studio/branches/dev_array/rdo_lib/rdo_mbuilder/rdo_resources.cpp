@@ -60,14 +60,14 @@ void RDOResource::operator= (CREF(RDOResource) obj)
 // ---- Инициализация типа ресурса по существующему в памяти
 // ---- Собирает все параметры существующего в памяти типа ресурса
 // --------------------------------------------------------------------
-RDOResType::RDOResType(CREF(rdoParse::RDORTPResType) rtp)
-	: rdoParse::RDOParserSrcInfo(rtp.src_info()              )
-	, m_name (rtp.name()                                     )
-	, m_type (rtp.isPermanent() ? rt_permanent : rt_temporary)
-	, m_exist(true                                           )
-	, m_id   (rtp.getNumber()                                )
+RDOResType::RDOResType(CREF(rdoParse::LPRDORTPResType) rtp)
+	: rdoParse::RDOParserSrcInfo(rtp->src_info()              )
+	, m_name (rtp->name()                                     )
+	, m_type (rtp->isPermanent() ? rt_permanent : rt_temporary)
+	, m_exist(true                                            )
+	, m_id   (rtp->getNumber()                                )
 {
-	STL_FOR_ALL_CONST(rdoParse::RDORTPResType::ParamList, rtp.getParams(), param_it)
+	STL_FOR_ALL_CONST(rdoParse::RDORTPResType::ParamList, rtp->getParams(), param_it)
 	{
 		Param param(*param_it);
 		param.m_id = m_params.size();
@@ -189,7 +189,7 @@ RDOResTypeList::RDOResTypeList(PTR(rdoParse::RDOParser) parser)
 {
 	STL_FOR_ALL_CONST(rdoParse::RDOParser::RTPResTypeList, m_parser->getRTPResTypes(), rtp_it)
 	{
-		RDOResType rtp(**rtp_it);
+		RDOResType rtp(*rtp_it);
 		m_list.push_back(rtp);
 	}
 }
@@ -202,7 +202,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 	if (std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResType>(rtp.name())) != end())
 		return false;
 
-	PTR(rdoParse::RDORTPResType) pRTP = new rdoParse::RDORTPResType(m_parser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
+	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_parser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
 	STL_FOR_ALL_CONST(RDOResType::ParamList::List, rtp.m_params, param)
 	{
 		rdoParse::LPRDOTypeParam pParamType;
@@ -245,16 +245,16 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 			}
 			default:
 			{
-				delete pRTP;
+				m_parser->removeRTPResType(pResourceType);
 				return false;
 			}
 		}
-		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pRTP, pParamType, rdoParse::RDOParserSrcInfo(param->name()));
+		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pResourceType, pParamType, rdoParse::RDOParserSrcInfo(param->name()));
 		ASSERT(pParam);
-		pRTP->addParam(pParam);
+		pResourceType->addParam(pParam);
 	}
 	rtp.m_exist = true;
-	rtp.m_id    = pRTP->getNumber();
+	rtp.m_id    = pResourceType->getNumber();
 	m_list.push_back(rtp);
 	return true;
 }
@@ -268,7 +268,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 RDOResource::RDOResource(CREF(rdoParse::RDORSSResource) rss)
 	: rdoParse::RDOParserSrcInfo(rss.src_info())
 	, m_name (rss.name()                       )
-	, m_rtp  (*rss.getType()                   )
+	, m_rtp  (rss.getType()                    )
 	, m_exist(true                             )
 	, m_id   (rss.getID()                      )
 {

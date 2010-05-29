@@ -1,6 +1,17 @@
-#ifndef RDORTP_H
-#define RDORTP_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdortp.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDORTP_H_
+#define _RDORTP_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_type.h"
@@ -8,9 +19,9 @@
 #include "rdo_lib/rdo_parser/rdortp_param.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 int  rtpparse(PTR(void) lexer);
 int  rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -19,15 +30,14 @@ void rtperror(PTR(char) mes);
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo
+class RDORTPResType: public RDOParserSrcInfo, public rdo::smart_ptr_counter_reference
 {
+DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
 
 	enum { UNDEFINED_PARAM = ~0 };
 
-	RDORTPResType(PTR(RDOParser) _parser, CREF(RDOParserSrcInfo) _src_info, rbool _permanent);
-	virtual ~RDORTPResType();
 	CREF(tstring) name       () const   { return src_text();   };
 	rsint         getNumber  () const   { return m_number;     };
 	rbool         isPermanent() const   { return m_permanent;  };
@@ -43,10 +53,14 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 private:
+	RDORTPResType(PTR(RDOParser) _parser, CREF(RDOParserSrcInfo) _src_info, rbool _permanent);
+	virtual ~RDORTPResType();
+
 	const rsint  m_number;
 	const rbool  m_permanent;
 	ParamList    m_params;
 };
+DECLARE_POINTER(RDORTPResType);
 
 // ----------------------------------------------------------------------------
 //------------------------------ FOR FUZZY LOGIC ------------------------------	
@@ -171,6 +185,6 @@ private:
 	RDORTPFuzzyTermsSet* m_set; // набор терминов параметра
 };
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDORTP_H
+#endif //! _RDORTP_H_

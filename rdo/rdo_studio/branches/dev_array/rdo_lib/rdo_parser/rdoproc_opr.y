@@ -140,6 +140,8 @@
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
 %token RDO_array						379
+%token RDO_event						380
+%token RDO_Planning						381
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -547,7 +549,7 @@ dpt_assign_param:	RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 							if ( arithm ) 
 							{
 								const RDORSSResource* rs = PARSER->findRSSResource( res );
-								const RDORTPResType* rt = rs->getType();
+								LPRDORTPResType rt = rs->getType();
 								LPRDORTPParam pr = rt->findRTPParam( param );
 								arithm->checkParamType(pr->getParamType());
 								RDOPROCAssign* assign = new RDOPROCAssign( PARSER->getLastPROCProcess(), "ASSIGN", arithm->createCalc( pr->getParamType() ), rs->getID(), rtp.m_params[param].id() );

@@ -1,6 +1,7 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_ie.h"
+#include "rdo_lib/rdo_runtime/rdo_event.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_keyboard.h"
@@ -40,6 +41,30 @@ LPIIrregEvent RDOPatternIrregEvent::createActivity(LPIBaseOperationContainer par
 	LPIIrregEvent ie = F(RDOIrregEvent)::create(runtime, this, traceable(), oprName);
 	runtime->addRuntimeIE(parent, ie);
 	return ie;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPatternEvent
+// ----------------------------------------------------------------------------
+RDOPatternEvent::RDOPatternEvent( PTR(RDORuntime) rTime, bool trace ):
+	RDOPattern( rTime, trace ),
+	m_timeCalc( NULL )
+{
+}
+
+double RDOPatternEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
+{
+	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
+	if ( time_next >= 0 ) return time_next;
+	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), m_timeCalc );
+	return 0;
+}
+
+LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName)
+{
+	LPIEvent ev = F(RDOEvent)::create(runtime, this, traceable(), oprName);
+	runtime->addRuntimeEvent(parent, ev);
+	return ev;
 }
 
 // ----------------------------------------------------------------------------

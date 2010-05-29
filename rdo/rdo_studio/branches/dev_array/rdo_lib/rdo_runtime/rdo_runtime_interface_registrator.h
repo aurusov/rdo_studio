@@ -41,5 +41,6 @@ INTERFACE_REGISTRATOR(IOperationTrace,           23);
 INTERFACE_REGISTRATOR(IDPTSearchActivity,        24);
 INTERFACE_REGISTRATOR(IDPTSearchLogic,           25);
 INTERFACE_REGISTRATOR(IPROCProcess,              26);
+INTERFACE_REGISTRATOR(IEvent,                    27);
 
 #endif //! _RDO_RUNTIME_INTERFACE_REGISTRATOR_H_

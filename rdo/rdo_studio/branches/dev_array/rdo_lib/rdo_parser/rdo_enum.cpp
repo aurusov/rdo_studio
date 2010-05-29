@@ -176,25 +176,4 @@ void RDOEnumType::add(CREF(RDOValue) next)
 	__enum()->add(next->getAsString());
 }
 
-//rdoRuntime::RDOValue RDOEnumType::findEnumValueWithThrow(CREF(RDOParserSrcInfo) src_info, CREF(tstring) value) const
-//{
-//	rdoRuntime::RDOValue result = value_cast(rdoRuntime::RDOValue(value, rdoRuntime::g_identificator));
-//	if (result.typeID() == rdoRuntime::RDOType::t_unknow)
-//	{
-//		rdoParse::g_error().push_only(src_info, rdo::format(_T("Неверное значение параметра перечислимого типа: %s"), value.c_str()));
-//		rdoParse::g_error().push_only(this->src_info(), rdo::format(_T("Возможные значения: %s"), getEnums().asString().c_str()));
-//		rdoParse::g_error().push_done();
-//	}
-//	return result;
-//}
-
-//rdoRuntime::RDOValue RDOEnumType::getFirstValue() const
-//{
-//	if (getEnums().getValues().empty())
-//	{
-//		rdoParse::g_error().error(src_info(), _T("Внутренняя ошибка: Пустой перечислимый тип"));
-//	}
-//	return rdoRuntime::RDOValue(getEnums());
-//}
-
 CLOSE_RDO_PARSER_NAMESPACE
