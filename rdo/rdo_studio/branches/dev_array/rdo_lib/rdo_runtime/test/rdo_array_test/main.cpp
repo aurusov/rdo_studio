@@ -9,6 +9,22 @@
 
 using namespace rdoRuntime;
 
+tstring printType(CPTR(RDOType) pType)
+{
+	switch (pType->typeID())
+	{
+	case RDOType::t_int  : return "int";
+	case RDOType::t_real : return "real";
+	case RDOType::t_bool : return "bool";
+	case RDOType::t_array:
+	{
+		CPTR(RDOArrayType) arrayType = static_cast<CPTR(RDOArrayType)>(pType);
+		return rdo::format(_T("array<%s>"), printType(arrayType->getArrayType()).c_str());
+	}
+	}
+	return "unknown type";
+}
+
 void main()
 {
 	RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Значение_1")("Значение_2")("Значение_3"));
@@ -16,13 +32,16 @@ void main()
 	RDOValue real    = 1.5;
 	RDOValue booling = true;
 	RDOValue string  = "string";
-	RDOArrayType* arrayType_int    = new RDOArrayType(NULL,&integer.type());
-	RDOArrayType* arrayType_real   = new RDOArrayType(NULL,&real.type());
-	RDOArrayType* arrayType_string = new RDOArrayType(NULL,&string.type());
-	RDOArrayType* arrayType_bool   = new RDOArrayType(NULL,&booling.type());
-	RDOArrayType* arrayType_enum   = new RDOArrayType(NULL,enumType);
-	RDOArrayType* arrayType5       = new RDOArrayType(NULL,arrayType_enum);
-	RDOArrayType* arrayType6       = new RDOArrayType(NULL,(new RDOArrayType(NULL,arrayType_int)));
+	PTR(RDOArrayType) arrayType_int    = new RDOArrayType(NULL,&integer.type());
+	PTR(RDOArrayType) arrayType_real   = new RDOArrayType(NULL,&real.type());
+	PTR(RDOArrayType) arrayType_string = new RDOArrayType(NULL,&string.type());
+	PTR(RDOArrayType) arrayType_bool   = new RDOArrayType(NULL,&booling.type());
+	PTR(RDOArrayType) arrayType_enum   = new RDOArrayType(NULL,enumType);
+	PTR(RDOArrayType) arrayType5       = new RDOArrayType(NULL,arrayType_enum);
+	PTR(RDOArrayType) arrayType6       = new RDOArrayType(NULL,(new RDOArrayType(NULL,arrayType_int)));
+
+	std::cout << printType(arrayType6) << std::endl;
+
 	//std::string className1 = arrayType_int->asString();
 	//std::string className2 = arrayType_real->asString();
 	//std::string className3 = arrayType_string->asString();
