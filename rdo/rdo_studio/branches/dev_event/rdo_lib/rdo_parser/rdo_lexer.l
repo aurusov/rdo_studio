@@ -41,7 +41,6 @@
 %}
 %option yylineno
 %option c++
-%x comment_rdo
 %x comment_cpp
 %x comment_line
 %%
@@ -110,6 +109,9 @@ or					return(RDO_or);
 and					return(RDO_and);
 !					return(RDO_not);
 not					return(RDO_not);
+\{                  return('{');
+\}                  return('}');
+\;                  return(';');
 
 $Pattern			return(RDO_Pattern);
 $pattern			return(RDO_Pattern);
