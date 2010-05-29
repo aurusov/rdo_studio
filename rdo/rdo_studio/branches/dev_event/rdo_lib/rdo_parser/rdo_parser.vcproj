@@ -3407,6 +3407,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".array"
+				>
+				<File
+					RelativePath=".\rdo_array.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_array.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".pat"

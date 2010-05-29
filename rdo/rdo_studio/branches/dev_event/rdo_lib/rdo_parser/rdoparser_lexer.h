@@ -34,13 +34,15 @@ public:
 	void loc_delta_pos(int value);
 	void setvalue     (int value);
 
-	int m_array_param_cnt;
-
 	PTR(RDOParser)    parser();
 
 	void  enumBegin();
 	void  enumReset();
 	rbool enumEmpty();
+
+	void array_cnt_pls();
+	void array_cnt_rst();
+	int  array_cnt_shw();
 
 	PTR(int)         m_lpval;
 	PTR(YYLTYPE)     m_lploc;
@@ -55,6 +57,7 @@ private:
 	PTR(std::ostream) m_yyout;
 	PTR(RDOParser)    m_parser;
 	rbool             m_enumEmpty;
+	rsint             m_array_param_cnt;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

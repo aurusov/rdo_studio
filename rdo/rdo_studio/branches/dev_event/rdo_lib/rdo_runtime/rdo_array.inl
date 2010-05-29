@@ -29,11 +29,19 @@ inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
 inline RDOArrayValue::~RDOArrayValue()
 {}
 
-inline CREF(RDOArrayType)       RDOArrayValue::type() const { return *m_arrayTape; }
+inline CREF(RDOArrayType) RDOArrayValue::type() const
+{
+	return *m_arrayTape;
+}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
+inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent)
+	: RDORuntimeObject(parent         )
+	, RDOType         (RDOType::t_array)
+{}
+
 inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, CREF(ArrayType) arrayType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
@@ -54,10 +62,10 @@ inline RDOValue RDOArrayType::cast(CREF(RDOValue) from) const
 	throw RDOTypeException();
 }
 
-inline tstring RDOArrayType::asString() const
-{
-	ASSERT(m_arrayType);
-	return rdo::format(_T("array<%s>"), m_arrayType->asString().c_str());
-}
+//inline tstring RDOArrayType::asString() const
+//{
+//	ASSERT(m_arrayType);
+//	return rdo::format(_T("array<%s>"), m_arrayType->asString().c_str());
+//}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

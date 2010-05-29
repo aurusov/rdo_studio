@@ -14,7 +14,6 @@
 
 %pure-parser
 
-%token RDO_Planning						382
 %token RDO_Resource_type				257
 %token RDO_permanent					258
 %token RDO_Parameters					259
@@ -58,7 +57,6 @@
 
 %token RDO_Pattern						298
 %token RDO_operation					299
-%token RDO_event						379
 %token RDO_irregular_event				300
 %token RDO_rule							301
 %token RDO_keyboard						302
@@ -142,6 +140,8 @@
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
 %token RDO_array						380
+%token RDO_event						380
+%token RDO_Planning						381
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -205,6 +205,7 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_common/rdosmart_ptr.h"
 // ===============================================================================
 
@@ -393,11 +394,12 @@ param_type:		RDO_integer param_type_range param_value_default
 					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 					$$ = PARSER->stack().push(pType);
 				}
-				| param_array /*param_array_default_val*/
+				| param_array param_value_default
 				{
-					PARSER->error().warning( @1, rdo::format("create array Done.	Dimension of array: %u" ,LEXER->m_array_param_cnt));
-					PARSER->error().error(@1, "OK");
-					LEXER->m_array_param_cnt = 0;
+					LEXER->array_cnt_rst();
+					LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
 				}
 				| RDO_bool param_value_default
 				{
@@ -609,30 +611,9 @@ param_value_default:	/* empty */ {
 						}
 					};
 
-param_array:		RDO_array '<' param_array_type '>'
-					{
-						LEXER->m_array_param_cnt++;
-					};
-
-param_array_type:	RDO_integer
-					{
-						PARSER->error().warning(@1, _T("array integer"));
-					}
-					| RDO_real
-					{
-						PARSER->error().warning(@1, _T("array real"));
-					}
-					| RDO_string
-					{
-						PARSER->error().warning(@1, _T("array string"));
-					}
-					| RDO_bool
-					{
-						PARSER->error().warning(@1, _T("array bool"));
-					}
-					| param_array
-					{
-						PARSER->error().warning(@1, _T("array array"));
+param_array:		RDO_array '<' param_type '>'{
+						LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($2);
+						$$ = PARSER->stack().push(pArray);
 					};
 
 // ----------------------------------------------------------------------------
