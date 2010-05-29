@@ -846,7 +846,6 @@ BEGIN
             MENUITEM "line",                        ID_INSERT_FRM_LINE
             MENUITEM "rect",                        ID_INSERT_FRM_RECT
             MENUITEM "ellipse",                     ID_INSERT_FRM_ELLIPSE
-            MENUITEM "circle",                      ID_INSERT_FRM_CIRCLE
             MENUITEM "r_rect",                      ID_INSERT_FRM_RRECT
             MENUITEM "triang",                      ID_INSERT_FRM_TRIANG
             MENUITEM "s_bmp",                       ID_INSERT_FRM_SBMP
@@ -4327,7 +4326,6 @@ BEGIN
             MENUITEM "line",                        ID_INSERT_FRM_LINE
             MENUITEM "rect",                        ID_INSERT_FRM_RECT
             MENUITEM "ellipse",                     ID_INSERT_FRM_ELLIPSE
-            MENUITEM "circle",                      ID_INSERT_FRM_CIRCLE
             MENUITEM "r_rect",                      ID_INSERT_FRM_RRECT
             MENUITEM "triang",                      ID_INSERT_FRM_TRIANG
             MENUITEM "s_bmp",                       ID_INSERT_FRM_SBMP
