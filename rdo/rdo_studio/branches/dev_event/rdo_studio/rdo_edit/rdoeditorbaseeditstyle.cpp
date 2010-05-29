@@ -158,12 +158,12 @@ bool RDOEditorBaseEditTheme::styleDefault( const int styleType ) const
 
 bool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
 {
-	return styleType == SCE_RDO_DEFAULT     || styleType == SCE_RDO_IDENTIFIER   ||
-	       styleType == SCE_RDO_KEYWORD     || styleType == SCE_RDO_FUNCTION     ||
-	       styleType == SCE_RDO_TRACE       || styleType == SCE_RDO_COMMENT_RDO  ||
-		   styleType == SCE_RDO_COMMENT_CPP || styleType == SCE_RDO_COMMENT_LINE ||
-	       styleType == SCE_RDO_NUMBER      || styleType == SCE_RDO_STRING       ||
-	       styleType == SCE_RDO_OPERATOR    || styleType == SCE_RDO_COLOR;
+	return styleType == SCE_RDO_DEFAULT      || styleType == SCE_RDO_IDENTIFIER   ||
+	       styleType == SCE_RDO_KEYWORD      || styleType == SCE_RDO_FUNCTION     ||
+	       styleType == SCE_RDO_TRACE        || styleType == SCE_RDO_COMMENT_CPP  ||
+	       styleType == SCE_RDO_COMMENT_LINE || styleType == SCE_RDO_NUMBER       ||
+	       styleType == SCE_RDO_STRING       || styleType == SCE_RDO_OPERATOR     ||
+	       styleType == SCE_RDO_COLOR;
 }
 
 bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
@@ -175,7 +175,6 @@ bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
 		case SCE_RDO_FUNCTION    : return functionsStyle  & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_TRACE       : return traceStyle      & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_COLOR       : return colorStyle      & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_COMMENT_RDO : return commentStyle    & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_COMMENT_CPP : return commentStyle    & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_COMMENT_LINE: return commentStyle    & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_NUMBER      : return numberStyle     & RDOStyleFont::BOLD ? true : false;
@@ -194,7 +193,6 @@ bool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 		case SCE_RDO_FUNCTION    : return functionsStyle  & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_TRACE       : return traceStyle      & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_COLOR       : return colorStyle      & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_COMMENT_RDO : return commentStyle    & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_COMMENT_CPP : return commentStyle    & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_COMMENT_LINE: return commentStyle    & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_NUMBER      : return numberStyle     & RDOStyleFont::ITALIC ? true : false;
@@ -213,7 +211,6 @@ std::string RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) con
 		case SCE_RDO_FUNCTION    : return colorToHEX( functionsColor );
 		case SCE_RDO_TRACE       : return colorToHEX( traceColor );
 		case SCE_RDO_COLOR       : return colorToHEX( colorColor );
-		case SCE_RDO_COMMENT_RDO : return colorToHEX( commentColor );
 		case SCE_RDO_COMMENT_CPP : return colorToHEX( commentColor );
 		case SCE_RDO_COMMENT_LINE: return colorToHEX( commentColor );
 		case SCE_RDO_NUMBER      : return colorToHEX( numberColor );

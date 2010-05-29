@@ -115,7 +115,7 @@ static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordLi
 		style = styleNext;
 		styleNext = styler.StyleAt(i + 1);
 		bool atEOL = ( ch == '\r' && chNext != '\n') || (ch == '\n' );
-		if ( (style == SCE_RDO_COMMENT_RDO || style == SCE_RDO_COMMENT_CPP) && styler.GetPropertyInt( "CommentFold" ) != 0 ) {
+		if ( style == SCE_RDO_COMMENT_CPP && styler.GetPropertyInt( "CommentFold" ) != 0 ) {
 			if ( style != stylePrev ) {
 				levelCurrent++;
 			} else if ( (style != styleNext) && !atEOL ) {
