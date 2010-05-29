@@ -10,7 +10,7 @@
 #define _RDO_ARRAY_DEF_H_
 
 #ifndef _RDO_VALUE_H_
-#error include "rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_fuzzy.h")
+#error include "rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_array.h")
 #endif
 
 //
@@ -57,9 +57,10 @@ class RDOArrayType: public RDOType, public RDORuntimeObject
 public:
 	typedef CPTR(RDOType) ArrayType;
 
+	RDOArrayType(PTR(RDORuntimeParent) parent);
 	RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype);
 
-	virtual tstring  asString()                    const;
+	//virtual tstring  asString()                    const;
 	virtual RDOValue cast    (CREF(RDOValue) from) const;
 
 private:
