@@ -8,38 +8,7 @@
 #include "rdo_studio/rdostudiodockwnd.h"
 #include "rdo_studio/rdostudioframetreectrl.h"
 #include "rdo_ctrls/rdotabctrl.h"
-#include "rdo_studio/rdoprocess_projectbar.h"
-
-// CChildView window
-
-class CChildView : public CWnd
-{
-// Construction
-public:
-	CChildView();
-	CString m_strText;
-// Attributes
-public:
-
-// Operations
-public:
-
-// Overrides
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
-// Implementation
-public:
-	virtual ~CChildView();
-
-	// Generated message map functions
-protected:
-	afx_msg void OnPaint();
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-
-	DECLARE_MESSAGE_MAP()
-};
-
+#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioWorkspace
 // ----------------------------------------------------------------------------
@@ -49,12 +18,15 @@ friend class RDOStudioFrameManager;
 private:
 	RDOTabCtrl tab;
 	RDOStudioFrameTreeCtrl* frames;
-	CChildView* m_wndView;
 public:
 	RDOStudioWorkspace();
 	virtual ~RDOStudioWorkspace();
-
-	RPProjectBar* projectBar2;
+	
+	RPPageCtrl* pagectrl;	
+	RPPageCtrlItem* prepareNewPage()                                 { return pagectrl->prepareNewPage();         }
+	RPPageCtrlItem* insertPage( CWnd* wnd, const rp::string& label ) { return pagectrl->insertPage( wnd, label ); }
+	void removePage( RPPageCtrlItem* page )                          { pagectrl->removePage( page );              }
+	void selectFirst()                                               { pagectrl->selectFirst();                   }
 
 protected:
 	//{{AFX_VIRTUAL(RDOStudioWorkspace)

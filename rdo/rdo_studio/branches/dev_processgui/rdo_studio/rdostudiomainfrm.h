@@ -19,7 +19,6 @@
 #include "rdo_studio/rdostudiostatusbar.h"
 #include "rdo_studio/rdostudioframestyle.h"
 #include "rdo_kernel/rdokernel.h"
-#include "rdo_studio/rdoprocess_projectbar.h"
 #include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
 
 // ----------------------------------------------------------------------------
@@ -84,11 +83,10 @@ public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
 
-	RDOStudioWorkspace workspace;
-	RDOStudioOutput    output;
+	RDOStudioWorkspace	workspace;
+	RDOStudioOutput		output;
 	CControlBar*		last_docked;
-	CMultiDocTemplate*  flowchartDocTemplate;
-RPProjectBar projectBar;
+	CMultiDocTemplate*	flowchartDocTemplate;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;

@@ -252,7 +252,7 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame->UpdateWindow();
 	
 	methods.init();
-	mainFrame->projectBar.selectFirst();
+	mainFrame->workspace.pagectrl->selectFirst();
 	log << "RDOStudioApp::InitInstance().. ok" << std::endl;
 
 	RDOStudioCommandLineInfo cmdInfo;
