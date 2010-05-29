@@ -14,7 +14,6 @@
 
 %pure-parser
 
-%token RDO_Planning						382
 %token RDO_Resource_type				257
 %token RDO_permanent					258
 %token RDO_Parameters					259
@@ -58,7 +57,6 @@
 
 %token RDO_Pattern						298
 %token RDO_operation					299
-%token RDO_event						379
 %token RDO_irregular_event				300
 %token RDO_rule							301
 %token RDO_keyboard						302
@@ -142,6 +140,8 @@
 %token RDO_MultiplyEqual				377
 %token RDO_DivideEqual					378
 %token RDO_array						379
+%token RDO_event						380
+%token RDO_Planning						381
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
