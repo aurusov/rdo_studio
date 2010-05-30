@@ -1603,6 +1603,36 @@ pat_convert_cmd
 	}
 	;
 
+statement
+	: empty_statement
+	| equal_statement
+	| planning_statement
+	| if_statement
+	| '{' statement_list '}'
+	;
+
+statement_list
+	: statement
+	| statement_list statement
+	;
+
+empty_statement
+	: ';'
+	;
+
+equal_statement
+	: RDO_IDENTIF param_equal_type fun_arithm ';'
+	;
+
+planning_statement
+	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' ';'
+	;
+
+if_statement
+	: RDO_if '(' fun_logic ')' statement
+	| RDO_if '(' fun_logic ')' statement RDO_else statement
+	;
+
 param_equal_type
 	: RDO_set
 	{
