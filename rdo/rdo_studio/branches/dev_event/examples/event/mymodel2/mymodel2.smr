@@ -9,4 +9,5 @@ Show_mode      = NoShow
 Show_rate      = 3600.0
 
 Событие_приход_клиента.planning( 30 )
+
 Terminate_if Time_now >= 12 * 7 * 60
