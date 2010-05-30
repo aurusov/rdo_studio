@@ -27,7 +27,10 @@ class RDOArrayType: public RDOType, public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	CREF(rdoRuntime::RDOArrayType) getArray() const { return *static_cast<CPTR(rdoRuntime::RDOArrayType)>(m_type); }
+	CREF(rdoRuntime::RDOArrayType) getArray() const
+	{
+		return *static_cast<CPTR(rdoRuntime::RDOArrayType)>(m_type);
+	}
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
