@@ -1605,6 +1605,7 @@ pat_convert_cmd
 
 statement
 	: empty_statement
+	| nochange_statement
 	| equal_statement
 	| planning_statement
 	| if_statement
@@ -1620,17 +1621,147 @@ empty_statement
 	: ';'
 	;
 
+nochange_statement
+	: RDO_IDENTIF_NoChange ';'
+	;
+
 equal_statement
 	: RDO_IDENTIF param_equal_type fun_arithm ';'
+	{
+		tstring                  paramName   = RDOVALUE($1)->getIdentificator();
+		rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($2);
+		PTR(RDOFUNArithm)        rightArithm = P_ARITHM($3);
+		PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->m_pCurrRelRes;
+		ASSERT(pRelRes);
+		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
+		if (!param)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		}
+		PTR(rdoRuntime::RDOCalc) pCalcRight = rightArithm->createCalc(param->getParamType().get());
+		PTR(rdoRuntime::RDOCalc) pCalc      = NULL;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_NOCHANGE:
+			{
+				break;
+			}
+			case rdoRuntime::ET_EQUAL:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL   >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pRelRes->getParamSetList().insert(param);
+				break;
+			}
+			case rdoRuntime::ET_PLUS:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS    >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				break;
+			}
+			case rdoRuntime::ET_MINUS:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS   >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				break;
+			}
+			case rdoRuntime::ET_MULTIPLY:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY>(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				break;
+			}
+			case rdoRuntime::ET_DIVIDE:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE  >(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				break;
+			}
+			default:
+			{
+				NEVER_REACH_HERE;
+			}
+		}
+		ASSERT(pCalc);
+		//! Проверка на диапазон
+		//! TODO: проверить работоспособность
+		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+		{
+			LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+		}
+		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+		{
+			LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+		}
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_EQUAL:
+			{
+				oprStr = _T("=");
+				break;
+			}
+			case rdoRuntime::ET_PLUS:
+			{
+				oprStr = _T("+=");
+				break;
+			}
+			case rdoRuntime::ET_MINUS:
+			{
+				oprStr = _T("-=");
+				break;
+			}
+			case rdoRuntime::ET_MULTIPLY:
+			{
+				oprStr = _T("*=");
+				break;
+			}
+			case rdoRuntime::ET_DIVIDE:
+			{
+				oprStr = _T("/=");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+		pCalc->setSrcPos (@1.first_line, @1.first_column, @3.last_line, @3.last_column);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
 	;
 
 planning_statement
 	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' ';'
+	{
+		tstring           eventName   = RDOVALUE($1)->getIdentificator();
+		PTR(RDOFUNArithm) pTimeArithm = P_ARITHM($5);
+		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		PTR(rdoRuntime::RDOCalc) pCalcTime = pTimeArithm->createCalc(NULL);
+		ASSERT(pCalcTime);
+
+		PTR(rdoRuntime::RDOCalcEventPlan) pCalc = new rdoRuntime::RDOCalcEventPlan(RUNTIME, pCalcTime);
+		ASSERT(pCalc);
+		pEvent->attachCalc(pCalc);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
 	;
 
 if_statement
 	: RDO_if '(' fun_logic ')' statement
+	{
+		PARSER->error().error(@1, rdo::format(_T("короткий if еще не готов")));
+	}
 	| RDO_if '(' fun_logic ')' statement RDO_else statement
+	{
+		PARSER->error().error(@1, rdo::format(_T("длинный if еще не готов")));
+	}
 	;
 
 param_equal_type
