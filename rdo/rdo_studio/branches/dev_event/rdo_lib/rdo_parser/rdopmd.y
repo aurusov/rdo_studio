@@ -142,6 +142,7 @@
 %token RDO_array						379
 %token RDO_event						380
 %token RDO_Planning						381
+%token RDO_else							382
 
 %token RDO_Frame						400
 %token RDO_Show_if						401

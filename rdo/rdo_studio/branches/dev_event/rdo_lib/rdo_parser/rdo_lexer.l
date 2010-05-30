@@ -81,6 +81,7 @@ list				return(RDO_list);
 Calculate_if		return(RDO_Calculate_if);
 calculate_if		return(RDO_Calculate_if);
 if					return(RDO_if);
+else				return(RDO_else);
 result				return(RDO_result);
 $Sequence			return(RDO_Sequence);
 $sequence			return(RDO_Sequence);
