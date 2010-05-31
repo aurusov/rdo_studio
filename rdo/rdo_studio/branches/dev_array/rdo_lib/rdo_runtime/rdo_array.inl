@@ -67,6 +67,24 @@ inline RDOArrayType::ArrayType RDOArrayType::getArrayType() const
 	return m_arrayType;
 }
 
+inline tstring RDOArrayType::name() const
+{
+	switch (typeID())
+	{
+	case RDOType::t_int    : return "integer";
+	case RDOType::t_real   : return "real";
+	case RDOType::t_bool   : return "bool";
+	case RDOType::t_string : return "string";
+	case RDOType::t_enum   : return "enum";
+	case RDOType::t_array  :
+	{
+		CPTR(RDOArrayType) arrayType = static_cast<CPTR(RDOArrayType)>(getArrayType());
+		return rdo::format(_T("array<%s>"), arrayType->name().c_str());
+	}
+	}
+	return "unknown type";
+}
+
 //inline tstring RDOArrayType::asString() const
 //{
 //	ASSERT(m_arrayType);
