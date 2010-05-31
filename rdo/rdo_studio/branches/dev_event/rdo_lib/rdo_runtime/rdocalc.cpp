@@ -218,10 +218,10 @@ REF(RDOValue) RDOCalcGetTermNow::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcIf
 // ----------------------------------------------------------------------------
-RDOCalcIf::RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pStatement, PTR(RDOCalc) pCondition)
+RDOCalcIf::RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pStatement)
 	: RDOCalc    (parent    )
-	, m_statement(pStatement)
 	, m_condition(pCondition)
+	, m_statement(pStatement)
 {
 	ASSERT(m_statement);
 	ASSERT(m_condition);

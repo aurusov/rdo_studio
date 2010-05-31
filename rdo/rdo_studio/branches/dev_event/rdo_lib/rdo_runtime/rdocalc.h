@@ -322,11 +322,11 @@ private:
 class RDOCalcIf: public RDOCalc
 {
 public:
-	RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pStatement, PTR(RDOCalc) pCondition);
+	RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pStatement);
 
 private:
-	PTR(RDOCalc) m_statement;
 	PTR(RDOCalc) m_condition;
+	PTR(RDOCalc) m_statement;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };

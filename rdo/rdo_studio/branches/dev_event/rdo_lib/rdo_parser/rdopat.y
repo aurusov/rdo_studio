@@ -1631,7 +1631,17 @@ planning_statement
 if_statement
 	: RDO_if '(' fun_logic ')' statement
 	{
-		PARSER->error().error(@1, rdo::format(_T("короткий if еще не готов")));
+		PTR(RDOFUNLogic) pCondition = P_LOGIC($3);
+		
+		PTR(rdoRuntime::RDOCalc) pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		PTR(rdoRuntime::RDOCalc) pStatementCalc = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($5);
+
+		PTR(rdoRuntime::RDOCalcIf) pCalc = new rdoRuntime::RDOCalcIf(RUNTIME, pConditionCalc, pStatementCalc);
+		ASSERT(pCalc);
+		
+		$$ = reinterpret_cast<int>(pCalc);
 	}
 	| RDO_if '(' fun_logic ')' statement RDO_else statement
 	{
