@@ -317,6 +317,21 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcIf
+// ----------------------------------------------------------------------------
+class RDOCalcIf: public RDOCalc
+{
+public:
+	RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pStatement, PTR(RDOCalc) pCondition);
+
+private:
+	PTR(RDOCalc) m_statement;
+	PTR(RDOCalc) m_condition;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 class RDOFunCalc: public RDOCalc

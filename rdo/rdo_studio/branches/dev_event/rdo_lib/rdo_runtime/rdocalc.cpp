@@ -216,6 +216,23 @@ REF(RDOValue) RDOCalcGetTermNow::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcIf
+// ----------------------------------------------------------------------------
+RDOCalcIf::RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pStatement, PTR(RDOCalc) pCondition)
+	: RDOCalc    (parent    )
+	, m_statement(pStatement)
+	, m_condition(pCondition)
+{
+	ASSERT(m_statement);
+	ASSERT(m_condition);
+}
+
+REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) runtime)
+{
+	return (m_condition->calcValue(runtime).getAsBool()) ? m_statement->calcValue(runtime) : RDOValue(false);
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunAlgorithmicCalc
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(PTR(RDORuntime) runtime)
