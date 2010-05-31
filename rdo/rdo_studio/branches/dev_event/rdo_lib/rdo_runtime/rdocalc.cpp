@@ -229,7 +229,8 @@ RDOCalcIf::RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(
 
 REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) runtime)
 {
-	return (m_condition->calcValue(runtime).getAsBool()) ? m_statement->calcValue(runtime) : RDOValue(false);
+	m_value = RDOValue(false);
+	return (m_condition->calcValue(runtime).getAsBool()) ? m_statement->calcValue(runtime) : (m_value);
 }
 
 // ----------------------------------------------------------------------------
@@ -271,19 +272,21 @@ REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) runtime)
 		(*calc_it)->calcValue(runtime);
 	}
 
-	return RDOValue(m_calcList.size());
+	m_value = RDOValue(m_calcList.size());
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcNoChange
 // ----------------------------------------------------------------------------
 RDOCalcNoChange::RDOCalcNoChange(PTR(RDORuntimeParent) parent)
-	: RDOCalc    (parent    )
+	: RDOCalc(parent)
 {}
 
 REF(RDOValue) RDOCalcNoChange::doCalc(PTR(RDORuntime) runtime)
 {
-	return RDOValue(0);
+	m_value = RDOValue(0);
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
