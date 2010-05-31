@@ -1481,11 +1481,31 @@ statement
 	| planning_statement
 	| if_statement
 	| '{' statement_list '}'
+	{
+		$$ = $2;
+	}
 	;
 
 statement_list
-	: statement
+	: /* empty */
+	{
+		PTR(rdoRuntime::RDOCalcList) pCalcList = new rdoRuntime::RDOCalcList(RUNTIME);
+		ASSERT(pCalcList);
+
+		$$ = reinterpret_cast<int>(pCalcList);
+	}
 	| statement_list statement
+	{
+		PTR(rdoRuntime::RDOCalcList) pCalcList = reinterpret_cast<PTR(rdoRuntime::RDOCalcList)>($1);
+		ASSERT(pCalcList);
+
+		PTR(rdoRuntime::RDOCalc    ) pCalc     = reinterpret_cast<PTR(rdoRuntime::RDOCalc    )>($2);
+		ASSERT(pCalc);
+
+		pCalcList->addCalc(pCalc);
+		
+		$$ = reinterpret_cast<int>(pCalcList);
+	}
 	;
 
 empty_statement
