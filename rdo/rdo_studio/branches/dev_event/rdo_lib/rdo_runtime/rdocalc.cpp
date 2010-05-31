@@ -223,13 +223,13 @@ RDOCalcIf::RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(
 	, m_condition(pCondition)
 	, m_statement(pStatement)
 {
-	ASSERT(m_statement);
 	ASSERT(m_condition);
+	ASSERT(m_statement);
 }
 
 REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) runtime)
 {
-	return (m_condition->calcValue(runtime).getAsBool()) ? m_statement->calcValue(runtime) : REF(RDOValue(false));
+	return (m_condition->calcValue(runtime).getAsBool()) ? m_statement->calcValue(runtime) : RDOValue(false);
 }
 
 // ----------------------------------------------------------------------------
@@ -241,7 +241,7 @@ RDOCalcIfElse::RDOCalcIfElse(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pConditi
 	, m_ifStatement  (pIfStatement  )
 	, m_elseStatement(pElseStatement)
 {
-	ASSERT(m_statement    );
+	ASSERT(m_condition    );
 	ASSERT(m_ifStatement  );
 	ASSERT(m_elseStatement);
 }
@@ -260,7 +260,7 @@ RDOCalcNoChange::RDOCalcNoChange(PTR(RDORuntimeParent) parent)
 
 REF(RDOValue) RDOCalcNoChange::doCalc(PTR(RDORuntime) runtime)
 {
-	return REF(RDOValue(0));
+	return RDOValue(0);
 }
 
 // ----------------------------------------------------------------------------
