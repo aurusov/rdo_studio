@@ -1,13 +1,12 @@
 Model_name     = mymodel2
 
 Resource_file  = mymodel2
-OprIev_file    = mymodel2
 Statistic_file = mymodel2
 Results_file   = mymodel2
 Trace_file     = mymodel2
 Show_mode      = NoShow
 Show_rate      = 3600.0
 
-Событие_приход_клиента.planning( 30 )
+Событие_прихода_клиента.planning(Интервал_прихода(30))
 
 Terminate_if Time_now >= 12 * 7 * 60
