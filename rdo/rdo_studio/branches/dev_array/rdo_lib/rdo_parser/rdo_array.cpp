@@ -33,12 +33,12 @@ RDOArrayType::~RDOArrayType()
 }
 inline tstring RDOArrayType::name() const
 {
-	CPTR(RDOArrayType) pArray(const_cast<PTR(RDOArrayType)>(this));
-	switch(pArray->typeID())
+	switch(typeID())
 	{
 	case rdoRuntime::RDOType::t_array:
 	{
-		return rdo::format(_T("array<%s>"), (*pArray).name()); break;
+		CPTR(rdoRuntime::RDOArrayType) pArray = static_cast<CPTR(rdoRuntime::RDOArrayType)>(getArray().getArrayType());
+		return rdo::format(_T("array<%s>"), pArray->name().c_str()); break;
 	}
 	default: return rdo::format(_T("unknown type"));break;
 	}

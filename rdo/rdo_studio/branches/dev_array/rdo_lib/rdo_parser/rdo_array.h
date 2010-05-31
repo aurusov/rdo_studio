@@ -39,7 +39,10 @@ private:
 	RDOArrayType         ();
 	virtual ~RDOArrayType();
 
-	PTR(rdoRuntime::RDOArrayType) __array() const { return static_cast<PTR(rdoRuntime::RDOArrayType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
+	PTR(rdoRuntime::RDOArrayType) __array() const 
+	{ 
+		return static_cast<PTR(rdoRuntime::RDOArrayType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type));
+	}
 };
 DECLARE_POINTER(RDOArrayType);
 
