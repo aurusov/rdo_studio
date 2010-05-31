@@ -332,6 +332,34 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcIfElse
+// ----------------------------------------------------------------------------
+class RDOCalcIfElse: public RDOCalc
+{
+public:
+	RDOCalcIfElse(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pIfStatement, PTR(RDOCalc) pElseStatement);
+
+private:
+	PTR(RDOCalc) m_condition;
+	PTR(RDOCalc) m_ifStatement;
+	PTR(RDOCalc) m_elseStatement;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcNoChange
+// ----------------------------------------------------------------------------
+class RDOCalcNoChange: public RDOCalc
+{
+public:
+	RDOCalcNoChange(PTR(RDORuntimeParent) parent);
+
+private:
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 class RDOFunCalc: public RDOCalc
