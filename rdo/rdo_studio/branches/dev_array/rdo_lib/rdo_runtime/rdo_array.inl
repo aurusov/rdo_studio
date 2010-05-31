@@ -37,58 +37,15 @@ inline CREF(RDOArrayType) RDOArrayValue::type() const
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent)
-	: RDORuntimeObject(parent         )
-	, RDOType         (RDOType::t_array)
-{}
-
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, CREF(ArrayType) arrayType)
+inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
-	, m_arrayType     (arrayType       )
+	, m_pArrayType    (pArrayType      )
 {}
-
-inline RDOValue RDOArrayType::cast(CREF(RDOValue) from) const
-{
-	switch (from.typeID())
-	{
-		case RDOType::t_array: 
-		{
-			if (this == &from.type())
-				return from;
-			break;
-		}
-	}
-	throw RDOTypeException();
-}
 
 inline RDOArrayType::ArrayType RDOArrayType::getArrayType() const
 {
-	return m_arrayType;
+	return m_pArrayType;
 }
-
-inline tstring RDOArrayType::name() const
-{
-	switch (typeID())
-	{
-	case RDOType::t_int    : return "integer";
-	case RDOType::t_real   : return "real";
-	case RDOType::t_bool   : return "bool";
-	case RDOType::t_string : return "string";
-	case RDOType::t_enum   : return "enum";
-	case RDOType::t_array  :
-	{
-		CPTR(RDOArrayType) arrayType = static_cast<CPTR(RDOArrayType)>(getArrayType());
-		return rdo::format(_T("array<%s>"), arrayType->name().c_str());
-	}
-	}
-	return "unknown type";
-}
-
-//inline tstring RDOArrayType::asString() const
-//{
-//	ASSERT(m_arrayType);
-//	return rdo::format(_T("array<%s>"), m_arrayType->asString().c_str());
-//}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

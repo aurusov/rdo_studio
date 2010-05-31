@@ -22,27 +22,22 @@ OPEN_RDO_PARSER_NAMESPACE
  //----------------------------------------------------------------------------
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType()
+RDOArrayType::RDOArrayType(CREF(LPRDOType) pType)
 	: RDOType(&rdoRuntime::g_unknow)
+	, m_pType(pType                )
 {
-	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime());
+	ASSERT(m_pType);
+	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime(), m_pType->type());
 }
 
 RDOArrayType::~RDOArrayType()
-{
-}
+{}
+
 inline tstring RDOArrayType::name() const
 {
-	switch(typeID())
-	{
-	case rdoRuntime::RDOType::t_array:
-	{
-		CPTR(rdoRuntime::RDOArrayType) pArray = static_cast<CPTR(rdoRuntime::RDOArrayType)>(getArray().getArrayType());
-		return rdo::format(_T("array<%s>"), pArray->name().c_str()); break;
-	}
-	default: return rdo::format(_T("unknown type"));break;
-	}
+	return rdo::format(_T("array<%s>"), m_pType->name().c_str());
 }
+
 LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	switch (from->typeID())
@@ -72,6 +67,7 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 	}
 	return rdo::smart_ptr_null();
 }
+
 RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	RDOValue toValue;
@@ -108,8 +104,10 @@ PTR(rdoRuntime::RDOCalc) RDOArrayType::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc,
 
 RDOValue RDOArrayType::get_default() const
 {
-	LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
-	return RDOValue(rdoRuntime::RDOValue(getArray()), pArray, RDOParserSrcInfo());
+	NEVER_REACH_HERE;
+	return RDOValue();
+	//LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
+	//return RDOValue(rdoRuntime::RDOValue(__array()), pArray, RDOParserSrcInfo());
 }
 
 void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const

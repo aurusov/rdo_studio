@@ -611,10 +611,10 @@ param_value_default:	/* empty */ {
 						}
 					};
 
-param_array:		RDO_array '<' param_type '>'{
-						LPRDOTypeParam param_type = PARSER->stack().pop<RDOTypeParam>($3);
-						ASSERT(param_type);
-						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create();
+param_array:		RDO_array '<' param_type '>' {
+						LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
+						ASSERT(pParamType);
+						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type());
 						$$ = PARSER->stack().push(pArray);
 						LEXER->array_cnt_pls();
 					};
