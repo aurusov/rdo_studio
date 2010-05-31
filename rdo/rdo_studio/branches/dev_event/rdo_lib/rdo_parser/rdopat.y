@@ -1490,10 +1490,28 @@ statement_list
 
 empty_statement
 	: ';'
+	{
+		PTR(rdoRuntime::RDOCalcNoChange) pCalc = new rdoRuntime::RDOCalcNoChange(RUNTIME);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| error ';'
+	{
+		PARSER->error().error(@1, _T("Ошибка в инструкции"));
+	}
 	;
 
 nochange_statement
 	: RDO_IDENTIF_NoChange ';'
+	{
+		PTR(rdoRuntime::RDOCalcNoChange) pCalc = new rdoRuntime::RDOCalcNoChange(RUNTIME);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_IDENTIF_NoChange error
+	{
+		PARSER->error().error(@2, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
 	;
 
 equal_statement
@@ -1604,6 +1622,14 @@ equal_statement
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
+	| RDO_IDENTIF param_equal_type fun_arithm error
+	{
+		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| RDO_IDENTIF error fun_arithm
+	{
+		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
+	}
 	;
 
 planning_statement
@@ -1626,17 +1652,35 @@ planning_statement
 
 		$$ = reinterpret_cast<int>(pCalc);
 	}
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' error
+	{
+		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' error
+	{
+		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning error
+	{
+		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm error
+	{
+		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
 	;
 
 if_statement
 	: RDO_if '(' fun_logic ')' statement
 	{
 		PTR(RDOFUNLogic) pCondition = P_LOGIC($3);
+		ASSERT(pCondition);
 		
 		PTR(rdoRuntime::RDOCalc) pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
 		PTR(rdoRuntime::RDOCalc) pStatementCalc = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($5);
+		ASSERT(pStatementCalc);
 
 		PTR(rdoRuntime::RDOCalcIf) pCalc = new rdoRuntime::RDOCalcIf(RUNTIME, pConditionCalc, pStatementCalc);
 		ASSERT(pCalc);
@@ -1645,7 +1689,30 @@ if_statement
 	}
 	| RDO_if '(' fun_logic ')' statement RDO_else statement
 	{
-		PARSER->error().error(@1, rdo::format(_T("длинный if еще не готов")));
+		PTR(RDOFUNLogic) pCondition = P_LOGIC($3);
+		ASSERT(pCondition);
+		
+		PTR(rdoRuntime::RDOCalc) pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		PTR(rdoRuntime::RDOCalc) pIfStatementCalc = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($5);
+		ASSERT(pIfStatementCalc);
+
+		PTR(rdoRuntime::RDOCalc) pElseStatementCalc = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($7);
+		ASSERT(pElseStatementCalc);
+
+		PTR(rdoRuntime::RDOCalcIfElse) pCalc = new rdoRuntime::RDOCalcIfElse(RUNTIME, pConditionCalc, pIfStatementCalc, pElseStatementCalc);
+		ASSERT(pCalc);
+		
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_if error fun_logic
+	{
+		PARSER->error().error(@2, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_if '(' fun_logic error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
 	}
 	;
 
