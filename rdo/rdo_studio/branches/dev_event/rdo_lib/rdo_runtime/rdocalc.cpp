@@ -252,6 +252,29 @@ REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcList
+// ----------------------------------------------------------------------------
+RDOCalcList::RDOCalcList(PTR(RDORuntimeParent) parent)
+	: RDOCalc (parent)
+{}
+
+void RDOCalcList::addCalc(PTR(RDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+	m_calcList.push_back(pCalc);
+}
+
+REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) runtime)
+{
+	STL_FOR_ALL_CONST(CalcList, m_calcList, calc_it)
+	{
+		(*calc_it)->calcValue(runtime);
+	}
+
+	return RDOValue(m_calcList.size());
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcNoChange
 // ----------------------------------------------------------------------------
 RDOCalcNoChange::RDOCalcNoChange(PTR(RDORuntimeParent) parent)

@@ -348,6 +348,24 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcList
+// ----------------------------------------------------------------------------
+class RDOCalcList: public RDOCalc
+{
+public:
+	RDOCalcList(PTR(RDORuntimeParent) parent);
+	
+	void addCalc(PTR(RDOCalc) pCalc);
+
+	typedef std::vector<PTR(RDOCalc)> CalcList;
+
+private:
+	CalcList m_calcList;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcNoChange
 // ----------------------------------------------------------------------------
 class RDOCalcNoChange: public RDOCalc
