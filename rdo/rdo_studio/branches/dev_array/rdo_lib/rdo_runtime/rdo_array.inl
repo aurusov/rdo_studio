@@ -34,6 +34,10 @@ inline CREF(RDOArrayType) RDOArrayValue::type() const
 	return *m_arrayTape;
 }
 
+inline RDOArrayValue::ArrayValue RDOArrayValue::getArrayValue()const
+{
+	return m_arrayValue;
+}
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------

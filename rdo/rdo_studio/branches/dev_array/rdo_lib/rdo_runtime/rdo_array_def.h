@@ -43,6 +43,7 @@ public:
 	~RDOArrayValue();
 
 	CREF(RDOArrayType) type() const;
+	ArrayValue getArrayValue()const;
 
 private:
 	ArrayValue         m_arrayValue;
