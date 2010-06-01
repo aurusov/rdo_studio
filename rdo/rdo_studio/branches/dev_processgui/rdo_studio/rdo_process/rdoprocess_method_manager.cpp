@@ -91,7 +91,7 @@ void RPMethodManager::init()
 		enumPlugins( path + "\\method\\*.*" );
 	}
 #else
-	insertMethod( RPMethodAlgorithm::registerMethod() );
+	//insertMethod( RPMethodAlgorithm::registerMethod() );
 	insertMethod( RPMethodProc2RDO_MJ::registerMethod() );
 #endif
 }

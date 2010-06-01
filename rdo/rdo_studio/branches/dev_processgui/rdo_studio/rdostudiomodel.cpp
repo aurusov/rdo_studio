@@ -21,6 +21,9 @@
 #include "rdo_plugin/rdoplugin.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
+
 using namespace rdoEditor;
 using namespace rdoSimulator;
 
@@ -580,6 +583,17 @@ void RDOStudioModel::newModelFromRepository()
 {
 	if ( modelDocTemplate ) {
 
+		rpMethod::project->log() << "начали делать flowchart" << std::endl;
+		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while ( it != studioApp.getMethodManager().getList().end() ) {
+			rpMethod::RPMethod* method = *it;
+			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
+				method->makeFlowChart(rpMethod::project);
+			}
+			it++;
+		}
+		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
+
 		GUI_HAS_MODEL = true;
 
 		BOOL maximize = false;
@@ -655,7 +669,19 @@ void RDOStudioModel::newModelFromRepository()
 
 void RDOStudioModel::openModelFromRepository()
 {
+
 	if ( modelDocTemplate ) {
+
+		rpMethod::project->log() << "начали делать flowchart" << std::endl;
+		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while ( it != studioApp.getMethodManager().getList().end() ) {
+			rpMethod::RPMethod* method = *it;
+			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
+				method->makeFlowChart(rpMethod::project);
+			}
+			it++;
+		}
+		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 
 		GUI_HAS_MODEL = true;
 

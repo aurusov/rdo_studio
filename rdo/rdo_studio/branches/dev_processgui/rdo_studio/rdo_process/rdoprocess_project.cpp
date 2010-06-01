@@ -1,7 +1,7 @@
 #include "rdo_studio/stdafx.h"
 #include "rdo_studio/rdo_process/rdoprocess_project.h"
 #include "rdo_studio/rdostudioapp.h"
-#include "rdoprocess_childfrm.h"
+#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
 #include "rdo_studio/rdo_process/rdoprocess_docview.h"
 #include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"

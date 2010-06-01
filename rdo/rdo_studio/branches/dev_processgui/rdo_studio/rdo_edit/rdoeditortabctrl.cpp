@@ -53,7 +53,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	PTR(RDOEditorEdit) pPage7  = new RDOEditorEdit( view );
 	PTR(RDOEditorEdit) pPage8  = new RDOEditorEdit( view );
 	PTR(RDOEditorEdit) pPage9  = new RDOEditorEdit( view );
-	PTR(RDOEditorEdit) pPage10  = new RDOEditorEdit( view );
 
 	pPage1->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	pPage2->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
@@ -64,7 +63,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	pPage7->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	pPage8->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	pPage9->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	pPage10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
 	pPage1->setEditorStyle( &studioApp.mainFrame->style_editor );
 	pPage2->setEditorStyle( &studioApp.mainFrame->style_editor );
@@ -95,7 +93,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	group.insert( pPage7 );
 	group.insert( pPage8 );
 	group.insert( pPage9 );
-	group.insert( pPage10 );
 	pPage1->setGroup( &group );
 	pPage2->setGroup( &group );
 	pPage3->setGroup( &group );
@@ -115,7 +112,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	insertItem(pPage7, _T("DPT"));
 	insertItem(pPage8, _T("SMR"));
 	insertItem(pPage9, _T("PMD"));
-	insertItem(pPage10, _T("РДО-Процесс") );
 
 	setCurrentRDOItem( rdoModelObjects::PAT );
 
@@ -134,7 +130,6 @@ rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) co
 		case  6: return rdoModelObjects::DPT;
 		case  7: return rdoModelObjects::SMR;
 		case  8: return rdoModelObjects::PMD;
-		case  9: return rdoModelObjects::GUI_PROC;
 		default: NEVER_REACH_HERE;
 	}
 }
@@ -151,7 +146,6 @@ int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) con
 		case rdoModelObjects::DPT     : return 6;
 		case rdoModelObjects::SMR     : return 7;
 		case rdoModelObjects::PMD     : return 8;
-		case rdoModelObjects::GUI_PROC: return -1;
 	}
 	NEVER_REACH_HERE;
 	return -1;
