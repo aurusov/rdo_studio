@@ -593,6 +593,19 @@ END
 //
 
 IDC_CURMARGIN           CURSOR                  "res\\Margin.cur"
+IDC_FLOW_SELECT         CURSOR  DISCARDABLE     "res\\flow_select.cur"
+IDC_FLOW_ROTATE         CURSOR  DISCARDABLE     "res\\flow_rotate.cur"
+IDC_FLOW_CONNECTOR      CURSOR  DISCARDABLE     "res\\flow_connector.cur"
+IDC_FLOW_SCALE_TB       CURSOR  DISCARDABLE     "res\\flow_scale_tb.cur"
+IDC_FLOW_SCALE_LR       CURSOR  DISCARDABLE     "res\\flow_scale_lr.cur"
+IDC_FLOW_SCALE_TRBL     CURSOR  DISCARDABLE     "res\\flow_scale_trbl.cur"
+IDC_FLOW_SCALE_TLBR     CURSOR  DISCARDABLE     "res\\flow_scale_tlbr.cur"
+IDC_FLOW_ROTATE_TL      CURSOR  DISCARDABLE     "res\\flow_rotate_tl.cur"
+IDC_FLOW_ROTATE_CENTER  CURSOR  DISCARDABLE     "res\\flow_rotate_center.cur"
+IDC_FLOW_MOVE           CURSOR  DISCARDABLE     "res\\flow_move.cur"
+IDC_FLOW_DOCK_IN        CURSOR  DISCARDABLE     "res\\flow_dock_in.cur"
+IDC_FLOW_DOCK_NOT       CURSOR  DISCARDABLE     "res\\flow_dock_not.cur"
+IDC_FLOW_TRASH          CURSOR  DISCARDABLE     "res\\flow_trash.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //

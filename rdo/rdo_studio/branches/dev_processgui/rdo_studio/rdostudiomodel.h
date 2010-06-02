@@ -32,7 +32,6 @@ friend class RDOStudioPlugins;
 
 private:
 	CMultiDocTemplate* modelDocTemplate;
-	CMultiDocTemplate* flowchartDocTemplate;
 	RDOStudioFrameManager frameManager;
 
 	int  useTemplate;
@@ -96,6 +95,7 @@ protected:
 	virtual void proc( RDOThread::RDOMessageInfo& msg );
 
 public:
+	CMultiDocTemplate* flowchartDocTemplate;
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 

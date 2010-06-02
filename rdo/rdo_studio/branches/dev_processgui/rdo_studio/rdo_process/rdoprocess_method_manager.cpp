@@ -1,12 +1,10 @@
 #include "rdo_studio/StdAfx.h"
 #include "rdoprocess_method_manager.h"
-//#include "rdoprocess_app.h"
 #include "rdo_studio/rdostudioapp.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include "rdo_studio/rdo_process/algorithm/rdoprocess_method_algorithm.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
 
 #ifdef _DEBUG

@@ -7,14 +7,14 @@
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
 #include "rdo_studio/resource.h"
-#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
-#include "rdo_studio/rdo_process/rdoprocess_docview.h"
-#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+//#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
+//#include "rdo_studio/rdo_process/rdoprocess_docview.h"
+//#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
+//#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
+//#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
+//#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
+//#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
+//#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -149,15 +149,15 @@ bool RDOStudioMainFrame::close_mode = false;
 RDOStudioMainFrame::RDOStudioMainFrame():
 	CMDIFrameWnd(),
 	last_docked( NULL ),//рдо-процесс
-	update_timer( 0 ),
-	flowchartDocTemplate( NULL )
+	update_timer( 0 )//,
+	//flowchartDocTemplate( NULL )
 {
-	flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
+	//flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
 {
-	if ( flowchartDocTemplate ) delete flowchartDocTemplate;
+	//if ( flowchartDocTemplate ) delete flowchartDocTemplate;
 }
 
 int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)

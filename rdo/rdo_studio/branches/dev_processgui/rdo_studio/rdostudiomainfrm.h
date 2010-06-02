@@ -19,7 +19,7 @@
 #include "rdo_studio/rdostudiostatusbar.h"
 #include "rdo_studio/rdostudioframestyle.h"
 #include "rdo_kernel/rdokernel.h"
-#include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
+//#include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOToolBar
@@ -86,7 +86,7 @@ public:
 	RDOStudioWorkspace	workspace;
 	RDOStudioOutput		output;
 	CControlBar*		last_docked;
-	CMultiDocTemplate*	flowchartDocTemplate;
+	//CMultiDocTemplate*	flowchartDocTemplate;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;

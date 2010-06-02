@@ -227,6 +227,19 @@
 #define IDC_LIST1                       1146
 #define IDC_COMBO3                      1147
 #define IDC_COMBO4                      1148
+#define IDC_FLOW_SELECT                 1149
+#define IDC_FLOW_DOCK_IN                1150
+#define IDC_FLOW_ROTATE                 1151
+#define IDC_FLOW_CONNECTOR              1152
+#define IDC_FLOW_SCALE_TB               1153
+#define IDC_FLOW_SCALE_LR               1154
+#define IDC_FLOW_SCALE_TRBL             1155
+#define IDC_FLOW_SCALE_TLBR             1156
+#define IDC_FLOW_ROTATE_TL              1157
+#define IDC_FLOW_ROTATE_CENTER          1158
+#define IDC_FLOW_MOVE                   1159
+#define IDC_FLOW_DOCK_NOT				1160
+#define IDC_FLOW_TRASH					1161
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_DOCK_PROJECT_BAR             32772
 #define ID_VIEW_WORKSPACE               32774
@@ -733,7 +746,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        246
 #define _APS_NEXT_COMMAND_VALUE         33308
-#define _APS_NEXT_CONTROL_VALUE         1149
+#define _APS_NEXT_CONTROL_VALUE         1162
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

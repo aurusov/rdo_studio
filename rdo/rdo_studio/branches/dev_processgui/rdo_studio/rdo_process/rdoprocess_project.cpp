@@ -9,6 +9,8 @@
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
+#include "rdo_studio/rdostudiomodel.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -112,8 +114,7 @@ void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
 	BOOL maximized = false;
 	studioApp.mainFrame->MDIGetActive( &maximized );
-
-	RPDoc* doc = static_cast<RPDoc*>(studioApp.mainFrame->flowchartDocTemplate->OpenDocumentFile( NULL ));
+	RPDoc* doc = static_cast<RPDoc*>(model->flowchartDocTemplate->OpenDocumentFile( NULL ));
 	RPChildFrame* mdi = static_cast<RPChildFrame*>(doc->getView()->GetParent());
 	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
 	if ( maximized ) {

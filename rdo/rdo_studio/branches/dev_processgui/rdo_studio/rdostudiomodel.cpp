@@ -20,7 +20,6 @@
 #include "rdo_common/rdoanimation.h"
 #include "rdo_plugin/rdoplugin.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
-
 #include "rdo_studio/rdo_process/rdoprocess_project.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
 
@@ -41,6 +40,7 @@ RDOStudioModel* model = NULL;
 RDOStudioModel::RDOStudioModel():
 	RDOThreadGUI( "RDOThreadModelGUI", static_cast<RDOKernelGUI*>(studioApp.studioGUI) ),
 	modelDocTemplate( NULL ),
+	flowchartDocTemplate( NULL ),
 	useTemplate( -1 ),
 	autoDeleteDoc( true ),
 	showCanNotCloseModelMessage( true ),
@@ -68,7 +68,8 @@ RDOStudioModel::RDOStudioModel():
 {
 	modelDocTemplate = new CMultiDocTemplate( IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
 	AfxGetApp()->AddDocTemplate( modelDocTemplate );
-
+	flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
+	AfxGetApp()->AddDocTemplate( flowchartDocTemplate );
 	model = this;
 
 	std::map< rdoModelObjects::RDOFileType, TemplateData > template_id;
