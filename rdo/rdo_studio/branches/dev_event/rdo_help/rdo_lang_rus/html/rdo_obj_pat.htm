@@ -189,11 +189,11 @@ $End</PRE>
 					<DT class="syntax"><A name="body_use_rule"></A><I>правило_использования</I></DT>
 					<DD class="syntax">Правило использования должно быть указано для каждого ресурса и в зависимости от типа образца имеет форматы:
 						<P>для образца типа <FONT class="syntax">operation</FONT> и <FONT class="syntax">keyboard</FONT>:</P>
-						<PRE class="syntax"><A class="syntax" href="#init_cond">&lt;предусловие&gt;</A> [ Convert_begin <A class="syntax" href="#conv">&lt;конвертор&gt;</A> ] [ Convert_end &lt;конвертор&gt; ]</PRE>
+						<PRE class="syntax"><A class="syntax" href="#init_cond">&lt;предусловие&gt;</A> [ Convert_begin <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> ] [ Convert_end <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> ]</PRE>
 						<P>для образца типа <FONT class="syntax">event</FONT> и <FONT class="syntax">irregular_event</FONT>:</P>
-						<PRE class="syntax">Convert_event <A class="syntax" href="#conv">&lt;конвертор&gt;</A></PRE>
+						<PRE class="syntax">Convert_event <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A></PRE>
 						<P>для образца типа <FONT class="syntax">rule</FONT>:</P>
-						<PRE class="syntax"><A class="syntax" href="#init_cond">&lt;предусловие&gt;</A> [ Convert_rule <A class="syntax" href="#conv">&lt;конвертор&gt;</A> ]</PRE>
+						<PRE class="syntax"><A class="syntax" href="#init_cond">&lt;предусловие&gt;</A> [ Convert_rule <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> ]</PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="init_cond"></A><A name="init_cond_nchk"></A><I>предусловие</I></DT>
 							<DD class="syntax">Предусловие записывают в следующем формате:
@@ -209,8 +209,8 @@ Choice NoCheck [ &lt;способ_выбора&gt; ]</PRE>
 									</DD>
 								</DL>
 							</DD>
-							<DT class="syntax"><A name="conv"></A><I>конвертор</I></DT>
-							<DD class="syntax">Конвертор и указанное перед ним зарезервированное слово должны присутствовать в образце в том случае, если соответствующий <A href="#rel_res_desc">статус конвертора</A>, указанный при описании релевантных ресурсов, есть <FONT class="syntax">Keep</FONT> или <FONT class="syntax">Create</FONT>. Если статус конвертора есть <FONT class="syntax">Erase</FONT>, то конвертор может быть пустым или наоборот содержать значения параметров, которые требуются для сбора статистики в момент удаления ресурса. <A name="temp_trace_feat"></A>Если статус конвертора есть <FONT class="syntax">Create</FONT>, то после зарезервированного слова может быть указан признак трассировки для создаваемого ресурса. Этот признак задают одним из двух зарезервированных слов:
+							<DT class="syntax"><A name="statement_list"></A><I>список_инструкций</I></DT>
+							<DD class="syntax">Список инструкций и указанное перед ним зарезервированное слово должны присутствовать в образце в том случае, если соответствующий <A href="#rel_res_desc">статус конвертора</A>, указанный при описании релевантных ресурсов, есть <FONT class="syntax">Keep</FONT> или <FONT class="syntax">Create</FONT>. Если статус конвертора есть <FONT class="syntax">Erase</FONT>, то список инструкций может быть пустым или наоборот содержать инструкции, которые требуется выполнить для сбора статистики в момент удаления ресурса. <A name="temp_trace_feat"></A>Если статус конвертора есть <FONT class="syntax">Create</FONT>, то после зарезервированного слова может быть указан признак трассировки для создаваемого ресурса. Этот признак задают одним из двух зарезервированных слов:
 								<TABLE class="visible" cols="2" style="width: 80%">
 									<TR valign="top">
 										<TH align="left" width="20%">Значение</TH>
@@ -226,20 +226,78 @@ Choice NoCheck [ &lt;способ_выбора&gt; ]</PRE>
 									</TR>
 								</TABLE>
 								<P>По умолчанию принимается значение признака <FONT class="syntax">no_trace</FONT>, поэтому это значение можно не указывать.</P>
-								<P>Конвертор записывают в следующем формате:</P>
-								<PRE class="syntax"><A class="syntax" href="#rel_res_conv">&lt;конвертор_параметра_релевантного_ресурса&gt;</A>
-{ &lt;конвертор_параметра_релевантного_ресурса&gt; }</PRE>
+								<P>Список инструкций записывают в следующем формате:</P>
+								<PRE class="syntax"><A class="syntax" href="#statement">&lt;инструкция&gt;</A> { &lt;инструкция&gt; }</PRE>
 								<DL class="syntax">
-									<DT class="syntax"><A name="rel_res_conv"></A><A name="rel_res_conv_nc"></A><I>конвертор_параметра_релевантного_ресурса</I></DT>
-									<DD class="syntax">Конвертор параметра релевантного ресурса имеет формат:
-										<PRE class="syntax">&lt;имя_параметра&gt; set <A class="syntax" href="#arith_expr">&lt;арифметическое_выражение&gt;</A>
-или
-&lt;имя_параметра&gt; NoChange</PRE>
+									<DT class="syntax"><A name="statement"></A><A name="statement_nc"></A><I>инструкция</I></DT>
+									<DD class="syntax">Инструкция имеет формат:
+										<PRE class="syntax"><A class="syntax" href="#statement_assignment">&lt;инструкция_присваивания&gt;</A>
+| <A class="syntax" href="#statement_planning">&lt;инструкция_планирования_события&gt;</A>
+| <A class="syntax" href="#statement_nochange">&lt;пустая_инструкция&gt;</A>
+| <A class="syntax" href="#statement_if">&lt;условная_инструкция&gt;</A>
+| { <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> }</PRE>
 										<DL class="syntax">
-											<DT class="syntax"><A name="arith_expr"></A><I>арифметическое_выражение</I></DT>
-											<DD class="syntax"><A href="../html/rdo_base_equations.htm#arith_expr">Арифметическое выражение</A> должно иметь тот же тип, что и параметр, которому присваивается значение. Для вещественного параметра выражение может иметь целый тип. Зарезервированное слово <FONT class="syntax">NoChange</FONT> указывает, что значение данного параметра не изменяется.</DD>
+											<DT class="syntax"><A name="statement_assignment"></A><I>инструкция_присваивания</I></DT>
+											<DD class="syntax">Инструкция присваивания иммет формат:
+												<PRE class="syntax">&lt;имя_параметра&gt; <A class="syntax" href="#assignment_operator">&lt;оператор_присваивания&gt;</A> <A class="syntax" href="#arith_expr">&lt;арифметическое_выражение&gt;</A>;</PRE>
+												<DL class="syntax">
+													<DT class="syntax"><A name="assignment_operator"></A><I>оператор_присваивания</I></DT>
+													<DD class="syntax">В данной версии языка возможны следующих операторы присваивания:
+														<TABLE class="visible" cols="2" style="width: 80%">
+															<TR valign="top">
+																<TH align="left" width="20%">Оператор присваивания</TH>
+																<TH align="left" width="80%">Описание</TH>
+															</TR>
+															<TR valign="top">
+																<TD class="visible" NOWRAP width="20%"><FONT class="syntax">set</FONT></TD>
+																<TD class="visible" width="80%">Присваивает параметру слева значение арифметического выражения справа</TD>
+															</TR>
+															<TR valign="top">
+																<TD class="visible" NOWRAP width="20%"><FONT class="syntax">=</FONT></TD>
+																<TD class="visible" width="80%">Присваивает параметру слева значение арифметического выражения справа</TD>
+															</TR>
+															<TR valign="top">
+																<TD class="visible" NOWRAP width="20%"><FONT class="syntax">+=</FONT></TD>
+																<TD class="visible" width="80%">Увеличивает параметр слева на значение арифметического выражения справа</TD>
+															</TR>
+															<TR valign="top">
+																<TD class="visible" NOWRAP width="20%"><FONT class="syntax">-=</FONT></TD>
+																<TD class="visible" width="80%">Уменьшает параметр слева на значение арифметического выражения справа</TD>
+															</TR>
+															<TR valign="top">
+																<TD class="visible" NOWRAP width="20%"><FONT class="syntax">*=</FONT></TD>
+																<TD class="visible" width="80%">Умножает параметр слева на значение арифметического выражения справа</TD>
+															</TR>
+															<TR valign="top">
+																<TD class="visible" NOWRAP width="20%"><FONT class="syntax">/=</FONT></TD>
+																<TD class="visible" width="80%">Делит параметр слева на значение арифметического выражения справа</TD>
+															</TR>
+														</TABLE>
+													</DD>
+													<DT class="syntax"><A name="arith_expr"></A><I>арифметическое_выражение</I></DT>
+													<DD class="syntax"><A href="../html/rdo_base_equations.htm#arith_expr">Арифметическое выражение</A> должно иметь тот же тип, что и параметр, которому присваивается значение. Для вещественного параметра выражение может иметь целый тип.</DD>
+												</DL>
+											</DD>
+											<DT class="syntax"><A name="statement_planning"></A><I>инструкция_планирования_события</I></DT>
+											<DD class="syntax">Инструкция планирования события иммет формат:
+												<PRE class="syntax"><A class="syntax" href="#event_name">&lt;имя_события&gt;</A>.planning( <A class="syntax" href="#event_time">&lt;время_планирования_события&gt;</A> );</PRE>
+												<DL class="syntax">
+													<DT class="syntax"><A name="event_name"></A><I>имя_события</I></DT>
+													<DD class="syntax">Имя события - это имя одного из описанных в модели событий.</DD>
+													<DT class="syntax"><A name="event_time"></A><I>время_планирования_события</I></DT>
+													<DD class="syntax">Время планирования события представляет собой <A href="../html/rdo_base_equations.htm#arith_expr">арифметическое выражение</A>, равное времени, в которое данное событие выполнится.</DD>
+												</DL>
+											</DD>
+											<DT class="syntax"><A name="statement_nochange"></A><I>пустая_инструкция</I></DT>
+											<DD class="syntax">Пустая инструкция иммет формат:
+												<PRE class="syntax">&lt;имя_параметра&gt; NoChange;</PRE>Зарезервированное слово <FONT class="syntax">NoChange</FONT> указывает, что значение данного параметра не изменяется.
+											</DD>
+											<DT class="syntax"><A name="statement_if"></A><I>условная_инструкция</I></DT>
+											<DD class="syntax">Условная инструкция иммет формат:
+												<PRE class="syntax">if ( <A class="syntax" href="#cond_log_expr">&lt;логическое_выражение&gt;</A> ) <A class="syntax" href="#statement">&lt;инструкция&gt;</A> [ else <A class="syntax" href="#statement">&lt;инструкция&gt;</A> ]</PRE>Ветвь <FONT class="syntax">else</FONT> является необязательной. Никаких ограничений на уровень вложенности инструкций в языке нет. Таким образом, внутри условной инструкции также могут быть условные инструкции и т.д.
+											</DD>
 										</DL>
-										<P><A name="set_order">Конверторы параметров могут быть указаны в произвольном порядке и не для всех параметров. Вычисление новых значений параметров релевантных ресурсов происходит в том порядке, в котором параметры следуют в конверторе. Если конвертор параметра не указан, подразумевается, что значение параметра не изменяется. Для конверторов, имеющих статус <FONT class="syntax">Create</FONT>, задание нового значения каждого параметра обязательны, за исключением случая, когда для параметра указано значение по-умолчанию в описании типа ресурса.</P>
+										<P><A name="set_order">Все инструкции могут быть указаны в произвольном порядке. Вычисление новых значений параметров релевантных ресурсов происходит в том порядке, в котором следуют их инструкции присваивания. Если нет ни одной инструкции присваивания, которая относится к данному параметру, то подразумевается, что значение этого параметра не изменяется. Для ресурсов, имеющих статус конвертора <FONT class="syntax">Create</FONT>, задание новых значений каждого параметра обязательны, за исключением случая, когда для параметра указано значение по-умолчанию в описании типа ресурса.</P>
 									</DD>
 								</DL>
 							</DD>
@@ -266,9 +324,9 @@ $Body
   Рел_ресурс_2
     Choice NoCheck first
     Convert_end
-      Параметр_1 set Рел_ресурс_2.Параметр_1 + Количество
-      Параметр_3 set Таблица_2(Значение_4, 2)
-      Параметр_6 NoChange
+      Параметр_1 += Количество;
+      Параметр_3 set Таблица_2(Значение_4, 2);
+      Параметр_6 NoChange;
   Рел_ресурс_3
     Choice from
          Рел_ресурс_3.Параметр_1 + Рел_ресурс_2.Параметр_1 &gt;=
@@ -277,11 +335,11 @@ $Body
     with_max (Рел_ресурс_3.Параметр_1 * Рел_ресурс_3.Параметр_4)
     Convert_begin
       Параметр_1 set Рел_ресурс_3.Параметр_1 +
-                     Рел_ресурс_2.Параметр_1 + Рел_ресурс_1.Параметр_1
-      Параметр_5 set Занят
+                     Рел_ресурс_2.Параметр_1 + Рел_ресурс_1.Параметр_1;
+      Параметр_5 = Занят;
     Convert_end
-      Параметр_4 set Последовательность_3(Рел_ресурс_3.Параметр_2, 0.2)
-      Параметр_5 set Свободен
+      Параметр_4 set Последовательность_3(Рел_ресурс_3.Параметр_2, 0.2);
+      Параметр_5 set Свободен;
 $End
 
 $Pattern Образец_2 : rule
@@ -303,8 +361,24 @@ $Body
     with_max (Рел_ресурс_2.Параметр_1 * Рел_ресурс_2.Параметр_4)
     Convert_rule
       Параметр_4 set Число + Последовательность_3(Рел_ресурс_2.
-                                                  Параметр_2, 0.2)
-      Параметр_5 set Свободен
+                                                  Параметр_2, 0.2);
+      Параметр_5 = Свободен;
+$End
+
+$Pattern Событие_прихода_клиента: event trace
+$Relevant_resources
+	_Парикмахерская: Парикмахерская Keep
+$Body
+  _Парикмахерская
+	Convert_event
+		Событие_прихода_клиента.Planning(Time_now + Интервал_прихода(30));
+		if (состояние_парикмахера == Свободен and количество_в_очереди == 0)
+		{
+			состояние_парикмахера = Занят;
+			Событие_окончания_обслуживания_клиента.planning(Time_now + Длительность_обслуживания( 20, 40 ));
+		}
+		else 
+			количество_в_очереди += 1;
 $End
 
 $Pattern Образец_3 : rule
@@ -324,8 +398,8 @@ $Body
                    [Рел_ресурс_1.Параметр_5 = Свободен or
                     Рел_ресурс_1.Параметр_5 = Разгрузка]
     Convert_rule
-      Параметр_4 set Функция_1(Рел_ресурс_2.Параметр_2, 0.2)
-      Параметр_5 set Свободен
+      Параметр_4 set Функция_1(Рел_ресурс_2.Параметр_2, 0.2);
+      Параметр_5 set Свободен;
 $End</PRE>
 	<H4>См. также</H4>
 	<P><A href="../html/rdo_base_res_types.htm">Типы ресурсов</A></P>
