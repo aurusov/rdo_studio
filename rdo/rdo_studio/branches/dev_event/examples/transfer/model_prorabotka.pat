@@ -1,4 +1,4 @@
-$Pattern Образец_прихода_заявок : irregular_event //превееееед
+$Pattern Образец_прихода_заявок : irregular_event //превеееееееееееееееееееед
 $Relevant_resources
 	_счетчик: счетчик Keep 
 	заявка  : заявки  Create 
