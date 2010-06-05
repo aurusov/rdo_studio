@@ -7,6 +7,7 @@
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
 #include "rdo_studio/resource.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
 //#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
 //#include "rdo_studio/rdo_process/rdoprocess_docview.h"
 //#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
@@ -14,7 +15,7 @@
 //#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
 //#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 //#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-//#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -131,6 +132,8 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODEL_SPEED_STATUSBAR     , OnUpdateModelSpeedStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
+	ON_COMMAND_RANGE( 70000, 80000, OnMethodCommandRange )
+	ON_UPDATE_COMMAND_UI_RANGE( 70000, 80000, OnMethodUpdateRange )
 END_MESSAGE_MAP()
 
 static UINT indicators[] = {
@@ -705,4 +708,21 @@ void RDOStudioMainFrame::OnEnterIdle( UINT nWhy, CWnd* pWho )
 {
 	CMDIFrameWnd::OnEnterIdle( nWhy, pWho );
 //	model->setGUIPause();
+}
+void RDOStudioMainFrame::OnMethodCommandRange( UINT id )
+{
+	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( id );
+	if ( method ) {
+		method->buttonCommand( id );
+	}
+}
+
+void RDOStudioMainFrame::OnMethodUpdateRange( CCmdUI* pCmdUI )
+{
+	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( pCmdUI->m_nID );
+	if ( method ) {
+		RPCtrlToolbar::ButtonUpdate button_update( pCmdUI->m_nID );
+		method->buttonUpdate( button_update );
+		pCmdUI->Enable( button_update.enable );
+	}
 }

@@ -195,6 +195,8 @@ protected:
 	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnWorkspaceShow();
 	afx_msg void OnOutputShow();
+	afx_msg void OnMethodCommandRange( UINT id );
+	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 	DECLARE_MESSAGE_MAP()
 };
 
