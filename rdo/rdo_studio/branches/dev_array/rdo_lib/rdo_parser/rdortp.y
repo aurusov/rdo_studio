@@ -615,6 +615,8 @@ rdo_array_default:	'[' param_array_item ']' {
 					};
 
 param_array_item:	value_default_item {
+						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
+						ASSERT(pArrayType);
 //					здесь зделаю создание массива.
 					}
 					|
