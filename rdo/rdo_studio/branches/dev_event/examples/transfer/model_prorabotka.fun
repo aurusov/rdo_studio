@@ -1,4 +1,3 @@
-//
 $Constant
 	тоннаж : real = 30.0
 $End

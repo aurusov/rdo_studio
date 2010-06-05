@@ -5,6 +5,6 @@ Results_file   = model_prorabotka
 Trace_file     = model_prorabotka
 Show_mode      = NoShow
 Show_rate      = 3600.0
-Terminate_if Time_now >= 10*60
+Terminate_if Time_now >= 1000*60
 
 //мой бессмысленный комментарий
