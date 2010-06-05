@@ -584,24 +584,7 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 param_value_default:	/* empty */ {
 						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
 					}
-					| '=' RDO_INT_CONST {
-						$$ = $2;
-					}
-					| '=' RDO_REAL_CONST {
-						$$ = $2;
-					}
-					| '=' RDO_STRING_CONST{
-						$$ = $2;
-					}
-					| '=' RDO_IDENTIF {
-						$$ = $2;
-					}
-					| '=' RDO_BOOL_CONST {
-						$$ = $2;
-					}
-					| '=' rdo_array_default {
-						RDOParserSrcInfo src_info(@1, @2, true);
-						PARSER->error().error(src_info, _T("rdo_array_default работает"));
+					| '=' value_default_item {
 						$$ = $2;
 					}
 					| '=' error {
@@ -631,17 +614,20 @@ rdo_array_default:	'[' param_array_item ']' {
 //					добавлю ошибку на случай отсутствия скобки
 					};
 
-param_array_item:	rdo_array_atom_item {
+param_array_item:	value_default_item {
 //					здесь зделаю создание массива.
 					}
 					|
-					param_array_item ',' rdo_array_atom_item {
+					param_array_item ',' value_default_item {
 //					здесь проверку на соответствие типов и размерностей массивов и добавление элементов.
+					}
+					|
+					param_array_item value_default_item {
+//					тоже самое но ещё ругаюсь на отсутствие запятой.
 					};
 
-rdo_array_atom_item: RDO_INT_CONST {
+value_default_item:	RDO_INT_CONST {
 //						здесь не знаю или класическое создание value как в param_value_default или создавать массивы с одним элементом.
-//						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
 //						$$ = $1;
 					}
 					| RDO_REAL_CONST {
