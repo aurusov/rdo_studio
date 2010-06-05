@@ -28,6 +28,7 @@ RDOArrayType::RDOArrayType(CREF(LPRDOType) pType)
 {
 	ASSERT(m_pType);
 	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime(), m_pType->type());
+	rdoParse::RDOParser::s_parser()->insertArrayType(this);
 }
 
 RDOArrayType::~RDOArrayType()

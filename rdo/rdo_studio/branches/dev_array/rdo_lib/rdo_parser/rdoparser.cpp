@@ -44,6 +44,13 @@ void RDOParser::insert##NAME(LPRDO##NAME value) \
 	m_all##NAME.push_back(value); \
 }
 
+#define DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(NAME) \
+void RDOParser::insert##NAME(LPRDO##NAME value) \
+{ \
+	m_parsing_object = (RDOParserObject*)(value.get()); \
+	m_all##NAME.push_back(value); \
+}
+
 #define DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(NAME) \
 const RDO##NAME* RDOParser::find##NAME(CREF(tstring) name) const \
@@ -95,6 +102,7 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(FUNGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(PROCProcess);
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(Operations );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP   (ArrayType  );
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {

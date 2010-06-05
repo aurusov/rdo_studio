@@ -28,6 +28,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
+#include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -55,6 +56,7 @@ class RDODPTFreeActivity;
 class RDOPMDPokaz;
 class RDOPROCProcess;
 class RDOTypeParam;
+class RDOArrayType;
 
 class RDORTPFuzzyParam;
 
@@ -77,6 +79,9 @@ public: \
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME)
+
+#define DEFINE_OBJECT_CONTAINER_NONAME_LP(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 
 #define DEFINE_OBJECT_CONTAINER(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME) \
@@ -104,10 +109,11 @@ DEFINE_OBJECT_CONTAINER   (DPTFreeActivity);
 DEFINE_OBJECT_CONTAINER   (PMDPokaz       );
 DEFINE_OBJECT_CONTAINER_LP(Event          );
 
-DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
-DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
-DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
-DEFINE_OBJECT_CONTAINER_NONAME(Operations );
+DEFINE_OBJECT_CONTAINER_NONAME   (FUNGroup   );
+DEFINE_OBJECT_CONTAINER_NONAME   (DPTFree    );
+DEFINE_OBJECT_CONTAINER_NONAME   (PROCProcess);
+DEFINE_OBJECT_CONTAINER_NONAME   (Operations );
+DEFINE_OBJECT_CONTAINER_NONAME_LP(ArrayType  );
 
 public:
 	RDOParser();
