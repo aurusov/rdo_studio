@@ -25,6 +25,8 @@ protected:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+	afx_msg void OnMethodCommandRange( UINT id );
+	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 	DECLARE_MESSAGE_MAP()
 
 public:

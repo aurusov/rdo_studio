@@ -2,6 +2,8 @@
 #include "rdo_studio/rdo_process/rdoprocess_docview.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_flowchart.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,6 +17,8 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(RPDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(RPDoc, CDocument)
+	ON_COMMAND_RANGE( 20000, 30000, OnMethodCommandRange )
+	ON_UPDATE_COMMAND_UI_RANGE( 20000, 30000, OnMethodUpdateRange )
 END_MESSAGE_MAP()
 
 RPDoc::RPDoc()
@@ -57,6 +61,24 @@ void RPDoc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
+
+void RPDoc::OnMethodCommandRange( UINT id )
+{
+	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( id );
+	if ( method ) {
+		method->buttonCommand( id );
+	}
+}
+
+void RPDoc::OnMethodUpdateRange( CCmdUI* pCmdUI )
+{
+	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( pCmdUI->m_nID );
+	if ( method ) {
+		RPCtrlToolbar::ButtonUpdate button_update( pCmdUI->m_nID );
+		method->buttonUpdate( button_update );
+		pCmdUI->Enable( button_update.enable );
+	}
+}
 
 // ----------------------------------------------------------------------------
 // ---------- RPView

@@ -17,7 +17,7 @@ RPProject* project = NULL;
 // ----------------------------------------------------------------------------
 RPProject::RPProject():
 	RPObject( NULL ),
-	last_button_id( 70000 ),
+	last_button_id( 20000 ),
 	flow_state( flow_none ),
 	message( NULL ),
 	activeObject( NULL ),
