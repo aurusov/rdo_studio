@@ -113,7 +113,6 @@ public:
 	void addConvertorCalc  ( PTR(RDOCalc) calc                     ) { m_convertor.push_back( calc );         }
 	void addConvertorStatus( RDOResource::ConvertStatus status     ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( PTR(RDOCalc) calc                     ) { m_erase.push_back( calc );             }
-	void setTime           ( PTR(RDOCalc) timeCalc                 ) { m_timeCalc = timeCalc;	              }
 
 	void convertEvent( PTR(RDORuntime) runtime )
 	{
@@ -125,12 +124,9 @@ public:
 		runCalcs( m_erase, runtime );
 	}
 
-	double getNextTimeInterval( PTR(RDORuntime) runtime );
-
 	LPIEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
 
 private:
-	PTR(RDOCalc)                                  m_timeCalc;
 	std::vector< PTR(RDOCalc) >                   m_convertor;
 	std::vector< RDOResource::ConvertStatus >     m_convertorStatus;
 	std::vector< PTR(RDOCalc) >                   m_erase;
