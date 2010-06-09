@@ -27,8 +27,6 @@ friend class RDOTrace;
 private:
 	RDOEvent( RDORuntime* runtime, RDOPatternEvent* pattern, bool trace, const std::string& name );
 
-	double  m_time;
-
 	void convertEvent( RDOSimulator* sim );
 
 	virtual void onBeforeEvent( RDOSimulator* sim );
