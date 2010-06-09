@@ -19,4 +19,4 @@ Results_file   = mymodel1
 Trace_file     = mymodel1
 
 // ”словие остановки модели. ѕосле Terminate_if можно указать любое логическое выражение
-Terminate_if Time_now >= 10*60*60.0
+Terminate_if Time_now >= 10*60*60
