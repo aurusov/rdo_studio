@@ -1,0 +1,8 @@
+$Decision_point work: some
+$Activities
+	Обслуживание_клиента: Образец_обслуживания_клиента
+$End
+
+$Process
+	GENERATE 100
+$End
