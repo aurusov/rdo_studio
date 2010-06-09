@@ -26,7 +26,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcEventPlan: public RDOCalc
 {
 public:
-	RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) timeCalc);
+	RDOCalcEventPlan(PTR(RDOCalc) timeCalc);
 
 	void setEvent(CREF(LPIBaseOperation) event);
 

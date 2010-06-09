@@ -19,9 +19,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEventPlan
 // ----------------------------------------------------------------------------
-RDOCalcEventPlan::RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) timeCalc)
-	: RDOCalc   (parent  )
-	, m_timeCalc(timeCalc)
+RDOCalcEventPlan::RDOCalcEventPlan(PTR(RDOCalc) timeCalc)
+	: m_timeCalc(timeCalc)
 {
 	ASSERT(m_timeCalc);
 }

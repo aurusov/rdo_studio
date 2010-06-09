@@ -14,6 +14,7 @@
 #include <list>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
+#include "rdo_common/rdosmart_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
@@ -24,46 +25,43 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-class RDOCalc: public RDORuntimeObject, public RDOSrcInfo
-{
-public:
-	RDOCalc(PTR(RDORuntimeParent) parent);
-	virtual ~RDOCalc();
+PREDECLARE_POINTER(RDOCalc);
 
+S_OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
+{
+DECLARE_FACTORY(RDOCalc)
+
+public:
 	REF(RDOValue) calcValue(PTR(RDORuntime) runtime);
 
-	rbool operator== (CREF(RDOCalc) calc) const
-	{
-		return compare(calc);
-	}
-
-protected:
-	RDOValue m_value;
-
-	virtual REF(RDOValue) doCalc (PTR(RDORuntime) runtime) = 0;
-	virtual rbool         compare(CREF(RDOCalc) calc) const
+	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
 		return false;
 	}
+
+protected:
+	RDOCalc();
+	virtual ~RDOCalc();
+
+	RDOValue m_value;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime) = 0;
 };
+
+DECLARE_POINTER(RDOCalc);
+
+#define DECALRE_ICalc \
+	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcConst
 // ----------------------------------------------------------------------------
 class RDOCalcConst: public RDOCalc
 {
-public:
-	RDOCalcConst(PTR(RDORuntimeParent) parent, CREF(RDOValue) val):
-		RDOCalc( parent )
-	{
-		m_value = val;
-	};
-
+DECLARE_FACTORY(RDOCalcConst)
 private:
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
-	{
-		return m_value;
-	}
+	RDOCalcConst(CREF(RDOValue) value);
+	DECALRE_ICalc;
 };
 
 // ----------------------------------------------------------------------------
@@ -71,14 +69,13 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetResParam: public RDOCalc
 {
-public:
-	RDOCalcGetResParam(PTR(RDORuntimeParent) parent, int _resNumb, int _parNumb)
-		: RDOCalc  (parent  )
-		, m_resID  (_resNumb)
+DECLARE_FACTORY(RDOCalcGetResParam)
+protected:
+	RDOCalcGetResParam(int _resNumb, int _parNumb)
+		: m_resID  (_resNumb)
 		, m_paramID(_parNumb)
 	{}
 
-protected:
 	int m_resID;
 	int m_paramID;
 
@@ -90,10 +87,9 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOCalcGetTempResParamFRM: public RDOCalcGetResParam, public INotify
 {
-public:
-	RDOCalcGetTempResParamFRM(PTR(RDORuntime) runtime, int _resNumb, int _parNumb);
-
+DECLARE_FACTORY(RDOCalcGetTempResParamFRM)
 private:
+	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 
 	virtual void notify(ruint message, PTR(void) param)
@@ -110,14 +106,13 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetUnknowResParam: public RDOCalc
 {
-public:
-	RDOCalcGetUnknowResParam(PTR(RDORuntimeParent) parent, CREF(tstring) resName, CREF(tstring) parName)
-		: RDOCalc  (parent )
-		, m_resName(resName)
+DECLARE_FACTORY(RDOCalcGetUnknowResParam)
+private:
+	RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName)
+		: m_resName(resName)
 		, m_parName(parName)
 	{}
 
-private:
 	tstring m_resName;
 	tstring m_parName;
 
@@ -129,13 +124,12 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetGroupResParam: public RDOCalc
 {
-public:
-	RDOCalcGetGroupResParam(PTR(RDORuntimeParent) parent, int parNumb)
-		: RDOCalc  (parent )
-		, m_parNumb(parNumb)
+DECLARE_FACTORY(RDOCalcGetGroupResParam)
+private:
+	RDOCalcGetGroupResParam(int parNumb)
+		: m_parNumb(parNumb)
 	{}
 
-private:
 	int m_parNumb;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
@@ -146,14 +140,13 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetRelevantResParam: public RDOCalc
 {
-public:
-	RDOCalcGetRelevantResParam(PTR(RDORuntimeParent) parent, int relNumb, int parNumb)
-		: RDOCalc  (parent )
-		, m_relNumb(relNumb)
+DECLARE_FACTORY(RDOCalcGetRelevantResParam)
+private:
+	RDOCalcGetRelevantResParam(int relNumb, int parNumb)
+		: m_relNumb(relNumb)
 		, m_parNumb(parNumb)
 	{}
 
-private:
 	int m_relNumb;
 	int m_parNumb;
 
@@ -165,10 +158,10 @@ private:
 // ----------------------------------------------------------------------------
 class RDOSetRelParamDiapCalc: public RDOCalc
 {
-public:
-	RDOSetRelParamDiapCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, PTR(RDOCalc) calc)
-		: RDOCalc    (parent   )
-		, m_relNumb  (relNumb  )
+DECLARE_FACTORY(RDOSetRelParamDiapCalc)
+private:
+	RDOSetRelParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, PTR(RDOCalc) calc)
+		: m_relNumb  (relNumb  )
 		, m_parNumb  (parNumb  )
 		, m_calc     (calc     )
 		, m_min_value(min_value)
@@ -179,7 +172,6 @@ public:
 			setSrcInfo(m_calc->src_info());
 	}
 
-private:
 	int          m_relNumb;
 	int          m_parNumb;
 	PTR(RDOCalc) m_calc;
@@ -194,10 +186,10 @@ private:
 // ----------------------------------------------------------------------------
 class RDOSetResourceParamCalc: public RDOCalc
 {
-public:
-	RDOSetResourceParamCalc(PTR(RDORuntimeParent) parent, int resNumb, int parNumb, PTR(RDOCalc) calc)
-		: RDOCalc  (parent )
-		, m_resNumb(resNumb)
+DECLARE_FACTORY(RDOSetResourceParamCalc)
+private:
+	RDOSetResourceParamCalc(int resNumb, int parNumb, PTR(RDOCalc) calc)
+		: m_resNumb(resNumb)
 		, m_parNumb(parNumb)
 		, m_calc   (calc   )
 	{
@@ -206,7 +198,6 @@ public:
 			setSrcInfo(m_calc->src_info());
 	}
 
-private:
 	int          m_resNumb;
 	int          m_parNumb;
 	PTR(RDOCalc) m_calc;
@@ -219,17 +210,18 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcEraseRes: public RDOCalc
 {
+DECLARE_FACTORY(RDOCalcEraseRes)
 public:
-	RDOCalcEraseRes(PTR(RDORuntimeParent) parent, int rel_res_id, CREF(tstring) rel_res_name)
-		: RDOCalc       (parent      )
-		, m_rel_res_id  (rel_res_id  )
+	tstring getName() const { return m_rel_res_name; }
+
+private:
+	RDOCalcEraseRes(int rel_res_id, CREF(tstring) rel_res_name)
+		: m_rel_res_id  (rel_res_id  )
 		, m_rel_res_name(rel_res_name)
 	{
 		m_value = 1;
 	}
-	tstring getName() const { return m_rel_res_name; }
 
-private:
 	int      m_rel_res_id;
 	tstring  m_rel_res_name;
 
@@ -241,16 +233,15 @@ private:
 // ----------------------------------------------------------------------------
 class RDOSetPatternParamCalc: public RDOCalc
 {
-public:
-	RDOSetPatternParamCalc(PTR(RDORuntimeParent) parent, int parNumb, RDOValue val)
-		: RDOCalc  (parent )
-		, m_parNumb(parNumb)
+DECLARE_FACTORY(RDOSetPatternParamCalc)
+private:
+	RDOSetPatternParamCalc(int parNumb, RDOValue val)
+		: m_parNumb(parNumb)
 		, m_val    (val    )
 	{
 		m_value = 0;
 	}
 
-private:
 	int      m_parNumb;
 	RDOValue m_val;
 
@@ -262,13 +253,12 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcPatParam: public RDOCalc
 {
-public:
-	RDOCalcPatParam(PTR(RDORuntimeParent) parent, int numberOfParam)
-		: RDOCalc        (parent       )
-		, m_numberOfParam(numberOfParam)
+DECLARE_FACTORY(RDOCalcPatParam)
+private:
+	RDOCalcPatParam(int numberOfParam)
+		: m_numberOfParam(numberOfParam)
 	{}
 
-private:
 	int m_numberOfParam;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
@@ -279,10 +269,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetTimeNow: public RDOCalc
 {
-public:
-	RDOCalcGetTimeNow(PTR(RDORuntimeParent) parent)
-		: RDOCalc(parent)
-	{}
+DECLARE_FACTORY(RDOCalcGetTimeNow)
 
 private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
@@ -293,11 +280,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetSeconds: public RDOCalc
 {
-public:
-	RDOCalcGetSeconds(PTR(RDORuntimeParent) parent)
-		: RDOCalc(parent)
-	{}
-
+DECLARE_FACTORY(RDOCalcGetSeconds)
 private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -307,11 +290,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetTermNow: public RDOCalc
 {
-public:
-	RDOCalcGetTermNow(PTR(RDORuntimeParent) parent)
-		: RDOCalc(parent)
-	{}
-
+DECLARE_FACTORY(RDOCalcGetTermNow)
 private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -322,8 +301,7 @@ private:
 class RDOFunCalc: public RDOCalc
 {
 protected:
-	RDOFunCalc(PTR(RDORuntimeParent) parent)
-		: RDOCalc(parent)
+	RDOFunCalc()
 	{}
 };
 
@@ -334,18 +312,18 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOFuncTableCalc: public RDOFunCalc
 {
+DECLARE_FACTORY(RDOFuncTableCalc)
 public:
-	RDOFuncTableCalc(PTR(RDORuntimeParent) parent, PTR(RDOCalc) argCalc)
-		: RDOFunCalc(parent )
-		, m_argCalc (argCalc)
-	{}
-
 	void addResultCalc(PTR(RDOCalcConst) res)
 	{
 		m_results.push_back( res );
 	}
 
 private:
+	RDOFuncTableCalc(PTR(RDOCalc) argCalc)
+		: m_argCalc (argCalc)
+	{}
+
 	std::vector<PTR(RDOCalcConst)> m_results;
 	PTR(RDOCalc)                   m_argCalc;
 
@@ -363,12 +341,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDOFunListCalc: public RDOFunCalc
 {
+DECLARE_FACTORY(RDOFunListCalc)
 public:
-	RDOFunListCalc(PTR(RDORuntimeParent) parent, PTR(RDOCalcConst) default_value)
-		: RDOFunCalc     (parent       )
-		, m_default_value(default_value)
-	{}
-
 	void addCase(PTR(RDOCalc) case_calc, PTR(RDOCalcConst) result_calc)
 	{
 		m_cases  .push_back(case_calc  ); 
@@ -376,6 +350,10 @@ public:
 	}
 
 private:
+	RDOFunListCalc(PTR(RDOCalcConst) default_value)
+		: m_default_value(default_value)
+	{}
+
 	std::vector<PTR(RDOCalc)>       m_cases;
 	std::vector<PTR(RDOCalcConst)>  m_results;
 	PTR(RDOCalcConst)               m_default_value;
@@ -402,12 +380,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
+DECLARE_FACTORY(RDOFunAlgorithmicCalc)
 public:
-	RDOFunAlgorithmicCalc(PTR(RDORuntimeParent) parent)
-		: RDOFunCalc(parent)
-	{
-		m_value = 0;
-	}
 	void addCalcIf(PTR(RDOCalc) cond, PTR(RDOCalc) act)
 	{
 		m_conditions.push_back(cond);
@@ -415,6 +389,11 @@ public:
 	}
 
 protected:
+	RDOFunAlgorithmicCalc()
+	{
+		m_value = 0;
+	}
+
 	std::vector<PTR(RDOCalc)> m_conditions;
 	std::vector<PTR(RDOCalc)> m_actions;
 
@@ -428,14 +407,13 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOFunAlgorithmicDiapCalc: public RDOFunAlgorithmicCalc
 {
-public:
-	RDOFunAlgorithmicDiapCalc(PTR(RDORuntimeParent) parent, CREF(RDOValue) min_value, CREF(RDOValue) max_value)
-		: RDOFunAlgorithmicCalc(parent   )
-		, m_min_value          (min_value)
+DECLARE_FACTORY(RDOFunAlgorithmicDiapCalc)
+private:
+	RDOFunAlgorithmicDiapCalc(CREF(RDOValue) min_value, CREF(RDOValue) max_value)
+		: m_min_value          (min_value)
 		, m_max_value          (max_value)
 	{}
 
-private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 
@@ -451,9 +429,8 @@ protected:
 	int           m_nResType;
 	PTR(RDOCalc)  m_condition;
 
-	RDOFunCalcGroup(PTR(RDORuntimeParent) parent, int nResType, PTR(RDOCalc) condition)
-		: RDOFunCalc (parent   )
-		, m_nResType (nResType )
+	RDOFunCalcGroup(int nResType, PTR(RDOCalc) condition)
+		: m_nResType (nResType )
 		, m_condition(condition)
 	{}
 };
@@ -461,13 +438,12 @@ protected:
 #define DEFINE_CALC_GROUP( CalcName ) \
 class RDOFunCalc##CalcName: public RDOFunCalcGroup \
 { \
-public: \
-	RDOFunCalc##CalcName(PTR(RDORuntimeParent) parent, int nResType, PTR(RDOCalc) condition) \
-		: RDOFunCalcGroup(parent, nResType, condition) \
-	{} \
- \
+DECLARE_FACTORY(RDOFunCalc##CalcName) \
 private: \
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
+	RDOFunCalc##CalcName(int nResType, PTR(RDOCalc) condition) \
+		: RDOFunCalcGroup(nResType, condition) \
+	{} \
+ 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
 
 DEFINE_CALC_GROUP( Exist     );
@@ -482,30 +458,28 @@ class RDOResource;
 
 class RDOFunCalcSelect: public RDOFunCalcGroup
 {
+DECLARE_FACTORY(RDOFunCalcSelect)
 public:
 	mutable std::list<PTR(RDOResource)> res_list;
 	void prepare(PTR(RDORuntime) sim) const;
 
-	RDOFunCalcSelect(PTR(RDORuntimeParent) parent, int nResType, PTR(RDOCalc) condition)
-		: RDOFunCalcGroup(parent, nResType, condition)
+private:
+	RDOFunCalcSelect(int nResType, PTR(RDOCalc) condition)
+		: RDOFunCalcGroup(nResType, condition)
 	{
 		m_value = 1;
 	}
-
-private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
 class RDOFunCalcSelectBase: public RDOFunCalc
 {
-public:
-	RDOFunCalcSelectBase(PTR(RDORuntimeParent) parent, PTR(RDOFunCalcSelect) select, PTR(RDOCalc) condition)
-		: RDOFunCalc (parent   )
-		, m_select   (select   )
+protected:
+	RDOFunCalcSelectBase(PTR(RDOFunCalcSelect) select, PTR(RDOCalc) condition)
+		: m_select   (select   )
 		, m_condition(condition)
 	{}
 
-protected:
 	PTR(RDOFunCalcSelect) m_select;
 	PTR(RDOCalc)          m_condition;
 };
@@ -513,24 +487,22 @@ protected:
 #define DEFINE_CALC_SELECT_GROUP(CalcName) \
 class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
 { \
-public: \
-	RDOFunCalcSelect##CalcName(PTR(RDORuntimeParent) parent, PTR(RDOFunCalcSelect) select, PTR(RDOCalc) condition) \
-		: RDOFunCalcSelectBase(parent, select, condition) \
-	{} \
- \
+DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
 private: \
+	RDOFunCalcSelect##CalcName(PTR(RDOFunCalcSelect) select, PTR(RDOCalc) condition) \
+		: RDOFunCalcSelectBase(select, condition) \
+	{} \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
 
 #define DEFINE_CALC_SELECT_METHOD( CalcName ) \
 class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
 { \
-public: \
-	RDOFunCalcSelect##CalcName(PTR(RDORuntimeParent) parent, PTR(RDOFunCalcSelect) select) \
-		: RDOFunCalcSelectBase(parent, select, NULL) \
-	{} \
- \
+DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
 private: \
+	RDOFunCalcSelect##CalcName(PTR(RDOFunCalcSelect) select) \
+		: RDOFunCalcSelectBase(select, NULL) \
+	{} \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
 
@@ -547,12 +519,10 @@ DEFINE_CALC_SELECT_METHOD( Size      );
 #define DEFINE_RDO_STD_FUN( CalcName ) \
 class RDOFunCalc##CalcName: public RDOFunCalc \
 { \
-public: \
-	RDOFunCalc##CalcName(PTR(RDORuntimeParent) parent) \
-		: RDOFunCalc( parent ) \
-	{} \
-\
+DECLARE_FACTORY(RDOFunCalc##CalcName) \
 private: \
+	RDOFunCalc##CalcName() \
+	{} \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
 
@@ -588,17 +558,16 @@ DEFINE_RDO_STD_FUN( Power    );
 class RDOCalcBinary: public RDOCalc
 {
 public:
-	RDOCalcBinary(PTR(RDORuntimeParent) parent, PTR(RDOCalc) left, PTR(RDOCalc) right)
-		: RDOCalc(parent)
-		, m_left (left  )
-		, m_right(right )
-	{}
-
 	PTR(RDOCalc)      getLeft() const              { return m_left; }
 	PTR(RDOCalcConst) getRightAsConst() const      { return dynamic_cast<PTR(RDOCalcConst)>(m_right); }
 	void              setRight(PTR(RDOCalc) right) { m_right = right; }
 
 protected:
+	RDOCalcBinary(PTR(RDOCalc) left, PTR(RDOCalc) right)
+		: m_left (left  )
+		, m_right(right )
+	{}
+
 	PTR(RDOCalc)  m_left;
 	PTR(RDOCalc)  m_right;
 };
@@ -606,12 +575,8 @@ protected:
 #define DEFINE_BINARY_CALC( CalcName, CalcOpr ) \
 class RDOCalc##CalcName: public RDOCalcBinary \
 { \
+DECLARE_FACTORY(RDOCalc##CalcName) \
 public: \
-	RDOCalc##CalcName(PTR(RDORuntimeParent) parent, PTR(RDOCalc) const left, PTR(RDOCalc) const right) \
-		: RDOCalcBinary(parent, left, right) \
-	{ \
-		setSrcInfo( getStaticSrcInfo(m_left, m_right) ); \
-	} \
 	static RDOSrcInfo getStaticSrcInfo(CPTRC(RDOCalc) left, CPTRC(RDOCalc) right) \
 	{ \
 		RDOSrcInfo src_info; \
@@ -619,6 +584,12 @@ public: \
 		return src_info; \
 	} \
  \
+protected: \
+	RDOCalc##CalcName(PTR(RDOCalc) const left, PTR(RDOCalc) const right) \
+		: RDOCalcBinary(left, right) \
+	{ \
+		setSrcInfo( getStaticSrcInfo(m_left, m_right) ); \
+	} \
 private: \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
@@ -633,23 +604,21 @@ DEFINE_BINARY_CALC( Div  , " / "  );
 
 class RDOCalcPlusEnumSafe: public RDOCalcPlus
 {
-public:
-	RDOCalcPlusEnumSafe(PTR(RDORuntimeParent) parent, PTR(RDOCalc) _left, PTR(RDOCalc) _right)
-		: RDOCalcPlus(parent, _left, _right)
-	{}
-
+DECLARE_FACTORY(RDOCalcPlusEnumSafe)
 private:
+	RDOCalcPlusEnumSafe(PTR(RDOCalc) _left, PTR(RDOCalc) _right)
+		: RDOCalcPlus(_left, _right)
+	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
 class RDOCalcMultEnumSafe: public RDOCalcMult
 {
-public:
-	RDOCalcMultEnumSafe(PTR(RDORuntimeParent) parent, PTR(RDOCalc) _left, PTR(RDOCalc) _right)
-		: RDOCalcMult(parent, _left, _right)
-	{}
-
+DECLARE_FACTORY(RDOCalcMultEnumSafe)
 private:
+	RDOCalcMultEnumSafe(PTR(RDOCalc) _left, PTR(RDOCalc) _right)
+		: RDOCalcMult(_left, _right)
+	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
@@ -658,14 +627,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcAnd: public RDOCalcBinary
 {
+DECLARE_FACTORY(RDOCalcAnd)
 public:
-	RDOCalcAnd(PTR(RDORuntimeParent) parent, PTR(RDOCalc) left, PTR(RDOCalc) right)
-		: RDOCalcBinary(parent, left, right)
-	{
-		m_value_true  = 1;
-		m_value_false = 0;
-		setSrcInfo( getStaticSrcInfo(m_left, m_right) );
-	}
 	static RDOSrcInfo getStaticSrcInfo(CPTR(RDOCalc) left, CPTR(RDOCalc) right)
 	{
 		RDOSrcInfo src_info;
@@ -674,6 +637,13 @@ public:
 	}
 
 private:
+	RDOCalcAnd(PTR(RDOCalc) left, PTR(RDOCalc) right)
+		: RDOCalcBinary(left, right)
+	{
+		m_value_true  = 1;
+		m_value_false = 0;
+		setSrcInfo( getStaticSrcInfo(m_left, m_right) );
+	}
 	RDOValue m_value_true;
 	RDOValue m_value_false;
 
@@ -682,14 +652,8 @@ private:
 
 class RDOCalcOr: public RDOCalcBinary
 {
+DECLARE_FACTORY(RDOCalcOr)
 public:
-	RDOCalcOr(PTR(RDORuntimeParent) parent, PTR(RDOCalc) left, PTR(RDOCalc) right)
-		: RDOCalcBinary(parent, left, right)
-	{
-		m_value_true  = 1;
-		m_value_false = 0;
-		setSrcInfo( getStaticSrcInfo(m_left, m_right) );
-	}
 	static RDOSrcInfo getStaticSrcInfo(CPTR(RDOCalc) left, CPTR(RDOCalc) right)
 	{
 		RDOSrcInfo src_info;
@@ -698,6 +662,14 @@ public:
 	}
 
 private:
+	RDOCalcOr(PTR(RDOCalc) left, PTR(RDOCalc) right)
+		: RDOCalcBinary(left, right)
+	{
+		m_value_true  = 1;
+		m_value_false = 0;
+		setSrcInfo( getStaticSrcInfo(m_left, m_right) );
+	}
+
 	RDOValue m_value_true;
 	RDOValue m_value_false;
 
@@ -706,13 +678,12 @@ private:
 
 class RDOCalcNot: public RDOCalc
 {
-public:
-	RDOCalcNot(PTR(RDORuntimeParent) parent, PTR(RDOCalc) calc)
-		: RDOCalc(parent)
-		, m_calc (calc  )
+DECLARE_FACTORY(RDOCalcNot)
+private:
+	RDOCalcNot(PTR(RDOCalc) calc)
+		: m_calc(calc)
 	{}
 
-private:
 	PTR(RDOCalc) m_calc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
@@ -731,14 +702,14 @@ DEFINE_BINARY_CALC( IsGEQ     , " >= " );
 class RDOCalcUnary: public RDOCalc
 {
 protected:
-	PTR(RDOCalc) m_oper;
-
-	RDOCalcUnary(PTR(RDORuntimeParent) parent, PTR(RDOCalc) oper)
-		: RDOCalc(parent)
-		, m_oper (oper  )
+	RDOCalcUnary(CREF(LPRDOCalc) pOperation)
+		: m_pOperation(pOperation)
 	{
-		if (m_oper) setSrcInfo(m_oper->src_info());
+		if (m_pOperation)
+			setSrcInfo(m_pOperation->src_info());
 	}
+
+	LPRDOCalc m_pOperation;
 };
 
 // ----------------------------------------------------------------------------
@@ -746,67 +717,66 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOCalcUMinus: public RDOCalcUnary
 {
-public:
-	RDOCalcUMinus(PTR(RDORuntimeParent) parent, PTR(RDOCalc) _oper)
-		: RDOCalcUnary(parent, _oper)
-	{}
-
+DECLARE_FACTORY(RDOCalcUMinus)
 private:
+	RDOCalcUMinus(PTR(RDOCalc) _oper)
+		: RDOCalcUnary(_oper)
+	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
-		m_value = -m_oper->calcValue(runtime);
+		m_value = -m_pOperation->calcValue(runtime);
 		return m_value;
 	}
 };
 
 class RDOCalcDoubleToInt: public RDOCalcUnary
 {
-public:
-	RDOCalcDoubleToInt(PTR(RDORuntimeParent) parent, PTR(RDOCalc) _oper)
-		: RDOCalcUnary(parent, _oper)
-	{}
-
+DECLARE_FACTORY(RDOCalcDoubleToInt)
 private:
+	RDOCalcDoubleToInt(PTR(RDOCalc) _oper)
+		: RDOCalcUnary(_oper)
+	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
-		m_value = m_oper->calcValue( runtime ).getInt();
+		m_value = m_pOperation->calcValue( runtime ).getInt();
 		return m_value;
 	}
 };
 
 class RDOCalcDoubleToIntByResult: public RDOCalcUnary
 {
+DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
 public:
-	RDOCalcDoubleToIntByResult(PTR(RDORuntimeParent) parent, PTR(RDOCalc) _oper)
-		: RDOCalcUnary(parent, _oper)
-		, m_round     (false        )
-	{}
-
 	void needRound()
 	{
 		m_round = true;
 	}
 
 private:
+	RDOCalcDoubleToIntByResult(PTR(RDOCalc) _oper)
+		: RDOCalcUnary(_oper)
+		, m_round     (false)
+	{}
+
 	rbool m_round;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
-		m_value = m_round ? RDOValue(m_oper->calcValue(runtime).getInt()) : m_oper->calcValue(runtime);
+		m_value = m_round ? RDOValue(m_pOperation->calcValue(runtime).getInt()) : m_pOperation->calcValue(runtime);
 		return m_value;
 	}
 };
 
 class RDOCalcCheckDiap: public RDOCalcUnary
 {
-public:
-	RDOCalcCheckDiap(PTR(RDORuntimeParent) parent, CREF(RDOValue) min_value, CREF(RDOValue) max_value, PTR(RDOCalc) oper)
-		: RDOCalcUnary(parent, oper)
-		, m_min_value (min_value   )
-		, m_max_value (max_value   )
+DECLARE_FACTORY(RDOCalcCheckDiap)
+private:
+	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper)
+		: RDOCalcUnary(pOper    )
+		, m_min_value (min_value)
+		, m_max_value (max_value)
 	{}
 
-private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 
@@ -818,20 +788,20 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcSeqInit: public RDOCalc
 {
+DECLARE_FACTORY(RDOCalcSeqInit)
 public:
-	RDOCalcSeqInit(PTR(RDORuntimeParent) parent, int base, PTR(RandGenerator) gen)
-		: RDOCalc(parent)
-		, m_base (base  )
-		, m_gen  (gen   )
-	{}
-	virtual ~RDOCalcSeqInit();
-
 	void setBase(int base)
 	{
 		m_base = base;
 	}
 
 private:
+	RDOCalcSeqInit(int base, PTR(RandGenerator) gen)
+		: m_base(base)
+		, m_gen (gen )
+	{}
+	virtual ~RDOCalcSeqInit();
+
 	int                m_base;
 	PTR(RandGenerator) m_gen;
 
@@ -846,32 +816,28 @@ public:
 	double  m_diap_min;
 	double  m_diap_max;
 
-	RDOCalcSeqNext(PTR(RDORuntimeParent) parent)
-		: RDOFunCalc(parent)
-		, m_res_real(true  )
+protected:
+	RDOCalcSeqNext()
+		: m_res_real(true  )
 		, m_diap    (false )
 		, m_diap_min(0     )
 		, m_diap_max(0     )
 	{}
 
-protected:
 	virtual RDOValue getNextValue(PTR(RDORuntime) runtime) = 0;
 };
 
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
-public:
-	RDOCalcRandomDistribution(PTR(RDORuntimeParent) parent, PTR(T) gen)
-		: RDOCalcSeqNext(parent)
-		, m_gen         (gen   )
+protected:
+	RDOCalcRandomDistribution(PTR(T) gen)
+		: m_gen(gen)
 	{}
 	virtual ~RDOCalcRandomDistribution()
 	{
 		delete m_gen;
 	}
-
-protected:
 	PTR(T) m_gen;
 
 private:
@@ -911,12 +877,12 @@ private:
 #define DEFINE_RANDON_DISTRIBUTION( CalcName, Distribution ) \
 class RDOCalcSeqNext##CalcName: public RDOCalcRandomDistribution<Distribution> \
 { \
-public: \
-	RDOCalcSeqNext##CalcName(PTR(RDORuntimeParent) parent, PTR(Distribution) gen) \
-		: RDOCalcRandomDistribution<Distribution>(parent, gen) \
+DECLARE_FACTORY(RDOCalcSeqNext##CalcName) \
+private: \
+	RDOCalcSeqNext##CalcName(PTR(Distribution) gen) \
+		: RDOCalcRandomDistribution<Distribution>(gen) \
 	{} \
  \
-private: \
 	virtual RDOValue getNextValue(PTR(RDORuntime) runtime); \
 };
 
@@ -930,15 +896,14 @@ DEFINE_RANDON_DISTRIBUTION( ByHist     , RandGeneratorCommonNext  );
 // ----------------------------------------------------------------------------
 class RDOCalcFuncParam: public RDOCalc
 {
-public:
-	RDOCalcFuncParam(PTR(RDORuntimeParent) parent, int param_number, CREF(RDOSrcInfo) _src_info)
-		: RDOCalc       (parent      )
-		, m_param_number(param_number)
+DECLARE_FACTORY(RDOCalcFuncParam)
+private:
+	RDOCalcFuncParam(int param_number, CREF(RDOSrcInfo) _src_info)
+		: m_param_number(param_number)
 	{
 		setSrcInfo( _src_info );
 	}
 
-private:
 	int m_param_number;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
@@ -949,30 +914,28 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcGetConst: public RDOCalc
 {
-public:
-	RDOCalcGetConst(PTR(RDORuntimeParent) parent, int number)
-		: RDOCalc (parent)
-		, m_number(number)
+DECLARE_FACTORY(RDOCalcGetConst)
+private:
+	RDOCalcGetConst(int number)
+		: m_number(number)
 	{}
 
-private:
 	int m_number;
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
 class RDOCalcSetConst: public RDOCalc
 {
-public:
-	RDOCalcSetConst(PTR(RDORuntimeParent) parent, int number, PTR(RDOCalc) calc)
-		: RDOCalc (parent)
-		, m_number(number)
+DECLARE_FACTORY(RDOCalcSetConst)
+private:
+	RDOCalcSetConst(int number, PTR(RDOCalc) calc)
+		: m_number(number)
 		, m_calc  (calc  )
 	{
 		m_value = 0;
 		if (m_calc) setSrcInfo(m_calc->src_info());
 	}
 
-private:
 	int          m_number;
 	PTR(RDOCalc) m_calc;
 
@@ -984,15 +947,15 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcInt: public RDOCalcUnary
 {
-public:
-	RDOCalcInt(PTR(RDORuntimeParent) parent, PTR(RDOCalc) oper)
-		: RDOCalcUnary(parent, oper)
+DECLARE_FACTORY(RDOCalcInt)
+private:
+	RDOCalcInt(PTR(RDOCalc) oper)
+		: RDOCalcUnary(oper)
 	{}
 
-private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
-		RDOValue res = m_oper->calcValue(runtime);
+		RDOValue res = m_pOperation->calcValue(runtime);
 		m_value = res > 0 ? RDOValue((int)(res.getDouble() + 0.5)) : RDOValue((int)(res.getDouble() - 0.5));
 		return m_value;
 	}
@@ -1003,12 +966,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcFunctionCall: public RDOCalc
 {
+DECLARE_FACTORY(RDOCalcFunctionCall)
 public:
-	RDOCalcFunctionCall(PTR(RDORuntimeParent) parent, PTR(RDOFunCalc) function)
-		: RDOCalc   (parent  )
-		, m_function(function)
-	{}
-
 	void addParameter(PTR(RDOCalc) calc)
 	{
 		m_parameters.push_back(calc);
@@ -1019,6 +978,10 @@ public:
 	}
 
 private:
+	RDOCalcFunctionCall(PTR(RDOFunCalc) function)
+		: m_function(function)
+	{}
+
 	std::vector<PTR(RDOCalc)>  m_parameters;
 	PTR(RDOFunCalc)            m_function;
 
@@ -1030,7 +993,14 @@ private:
 // ----------------------------------------------------------------------------
 class RDOCalcCreateNumberedResource: public RDOCalc
 {
+public:
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
+
+	ruint getNumber() const { return number; }
+
 protected:
+	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+
 	int                    type;
 	rbool                  traceFlag;
 	std::vector<RDOValue>  paramsCalcs;
@@ -1038,12 +1008,6 @@ protected:
 	rbool                  isPermanent;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
-
-public:
-	RDOCalcCreateNumberedResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
-
-	ruint getNumber() const { return number; }
 };
 
 // ----------------------------------------------------------------------------
@@ -1051,11 +1015,10 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcCreateProcessResource: public RDOCalcCreateNumberedResource
 {
+DECLARE_FACTORY(RDOCalcCreateProcessResource)
 private:
+	RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
 	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
-
-public:
-	RDOCalcCreateProcessResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
 };
 
 // ----------------------------------------------------------------------------
@@ -1063,14 +1026,15 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcCreateEmptyResource: public RDOCalc
 {
+DECLARE_FACTORY(RDOCalcCreateEmptyResource)
 private:
+	RDOCalcCreateEmptyResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id);
+
 	int                    type;
 	rbool                  traceFlag;
 	std::vector<RDOValue>  params_default;
 	int                    rel_res_id;
 
-public:
-	RDOCalcCreateEmptyResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id);
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
@@ -1089,113 +1053,122 @@ public:
 	};
 
 protected:
-	int           rel_res_id;
-	PTR(RDOCalc)  choice_calc;
-	PTR(RDOCalc)  order_calc;
-	Type          order_type;
-	RDOSelectResourceCalc(PTR(RDORuntimeParent) parent, int _rel_res_id, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty);
+	RDOSelectResourceCalc(int _rel_res_id, CREF(LPRDOCalc) _choice_calc, CREF(LPRDOCalc) _order_calc, Type _order_type = order_empty);
+
+	int        rel_res_id;
+	LPRDOCalc  choice_calc;
+	LPRDOCalc  order_calc;
+	Type       order_type;
 };
 
 class RDOSelectResourceNonExistCalc: public RDOSelectResourceCalc
 {
-public:
-	RDOSelectResourceNonExistCalc(PTR(RDORuntimeParent) parent, int _rel_res_id)
-		: RDOSelectResourceCalc(parent, _rel_res_id, NULL, NULL)
+DECLARE_FACTORY(RDOSelectResourceNonExistCalc)
+private:
+	RDOSelectResourceNonExistCalc(int _rel_res_id)
+		: RDOSelectResourceCalc(_rel_res_id, NULL, NULL)
 	{
 		m_value = 1;
 	}
-
-private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
-public:
-	RDOSelectResourceDirectCalc(PTR(RDORuntimeParent) parent, int _rel_res_id, int _res_id, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
-		: RDOSelectResourceCalc(parent, _rel_res_id, _choice_calc, _order_calc, _order_type)
-		, res_id               (_res_id                                                    )
+DECLARE_FACTORY(RDOSelectResourceDirectCalc)
+protected:
+	RDOSelectResourceDirectCalc(int _rel_res_id, int _res_id, CREF(LPRDOCalc) _choice_calc = NULL, CREF(LPRDOCalc) _order_calc = NULL, Type _order_type = order_empty)
+		: RDOSelectResourceCalc(_rel_res_id, _choice_calc, _order_calc, _order_type)
+		, res_id               (_res_id                                            )
 	{}
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
-
-protected:
 	int res_id;
 
-	virtual rbool compare(CREF(RDOCalc) calc) const
+	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
-		CPTR(RDOSelectResourceDirectCalc) directCalc = dynamic_cast<CPTR(RDOSelectResourceDirectCalc)>(&calc);
+		CPTR(RDOSelectResourceDirectCalc) directCalc = dynamic_cast<CPTR(RDOSelectResourceDirectCalc)>(pCalc.get());
 		if (!directCalc)
 		{
 			return false;
 		}
 		return rel_res_id == directCalc->rel_res_id && res_id == directCalc->res_id;
 	}
+
+private:
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
 class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 {
-public:
-	RDOSelectResourceByTypeCalc(PTR(RDORuntimeParent) parent, int _rel_res_id, int _resType, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
-		: RDOSelectResourceCalc(parent, _rel_res_id, _choice_calc, _order_calc, _order_type)
+DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
+protected:
+	RDOSelectResourceByTypeCalc(int _rel_res_id, int _resType, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
+		: RDOSelectResourceCalc(_rel_res_id, _choice_calc, _order_calc, _order_type)
 		, resType              (_resType                                                   )
 	{}
 
-protected:
 	int resType;
 
+private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
-class RDOSelectResourceCommon
+S_OBJECT(IRDOSelectResourceCommon)
 {
 public:
 	virtual std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const = 0;
 	virtual rbool            callChoice        (PTR(RDORuntime) sim) const = 0;
 };
+DECLARE_POINTER(IRDOSelectResourceCommon);
 
 class RDOSelectResourceCommonCalc: public RDOCalc
 {
-public:
-	RDOSelectResourceCommonCalc(PTR(RDORuntimeParent) parent, CREF(std::vector<PTR(RDOSelectResourceCommon)>) _resSelectors, rbool _useCommonWithMax, PTR(RDOCalc) _choice_calc)
-		: RDOCalc         (parent           )
-		, resSelectors    (_resSelectors    )
+DECLARE_FACTORY(RDOSelectResourceCommonCalc)
+private:
+	typedef  std::vector<LPIRDOSelectResourceCommon>  SelectResourceCommonList;
+
+	RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) _resSelectors, rbool _useCommonWithMax, CREF(LPRDOCalc) _choice_calc)
+		: resSelectors    (_resSelectors    )
 		, useCommonWithMax(_useCommonWithMax)
 		, choice_calc     (_choice_calc     )
 	{
 		if (choice_calc) setSrcInfo(choice_calc->src_info());
 	}
 
-private:
-	PTR(RDOCalc)                               choice_calc;
-	std::vector<PTR(RDOSelectResourceCommon)>  resSelectors;
-	rbool                                      useCommonWithMax;
+	LPRDOCalc                 choice_calc;
+	SelectResourceCommonList  resSelectors;
+	rbool                     useCommonWithMax;
 
 	void  getBest ( REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, PTR(RDORuntime) sim, REF(rbool) hasBest) const;
 	rbool getFirst( REF(std::vector< std::vector<int> >) allNumbs, ruint level, PTR(RDORuntime) sim) const;
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
-class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon
+class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public IRDOSelectResourceCommon
 {
+DECLARE_FACTORY(RDOSelectResourceDirectCommonCalc)
 public:
-	RDOSelectResourceDirectCommonCalc(PTR(RDORuntimeParent) parent, int _relNumb, int _resNumb, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
-		: RDOSelectResourceDirectCalc(parent, _relNumb, _resNumb, _choice_calc, _order_calc, _order_type)
-	{}
-
 	std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const;
 	virtual rbool    callChoice        (PTR(RDORuntime) sim) const;
+
+protected:
+	RDOSelectResourceDirectCommonCalc(int _relNumb, int _resNumb, CREF(LPRDOCalc) _choice_calc = NULL, CREF(LPRDOCalc) _order_calc = NULL, Type _order_type = order_empty)
+		: RDOSelectResourceDirectCalc(_relNumb, _resNumb, _choice_calc, _order_calc, _order_type)
+	{}
 };
+DECLARE_POINTER(RDOSelectResourceDirectCommonCalc);
 
-class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public RDOSelectResourceCommon
+class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public IRDOSelectResourceCommon
 {
+DECLARE_FACTORY(RDOSelectResourceByTypeCommonCalc)
 public:
-	RDOSelectResourceByTypeCommonCalc(PTR(RDORuntimeParent) parent, int _relNumb, int _resType, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
-		: RDOSelectResourceByTypeCalc(parent, _relNumb, _resType, _choice_calc, _order_calc, _order_type)
-	{}
-
 	std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const;
 	virtual rbool    callChoice        (PTR(RDORuntime) sim) const;
+
+private:
+	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
+		: RDOSelectResourceByTypeCalc(_relNumb, _resType, _choice_calc, _order_calc, _order_type)
+	{}
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

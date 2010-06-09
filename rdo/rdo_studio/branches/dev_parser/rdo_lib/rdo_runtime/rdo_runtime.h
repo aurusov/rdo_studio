@@ -64,6 +64,7 @@ class RDOPattern;
 class RDOCalcEraseRes;
 class RDOFRMFrame;
 class RDOCalcCreateNumberedResource;
+PREDECLARE_POINTER(RDOCalc);
 
 class RDORuntime: public RDOSimulatorTrace
 {
@@ -140,7 +141,7 @@ public:
 
 	CREF(LPIPokazList) getPokaz() const { return m_pokazAllList; }
 
-	void addInitCalc( RDOCalc* initCalc) { initCalcs.push_back( initCalc ); }
+	void addInitCalc(CREF(LPRDOCalc) initCalc) { initCalcs.push_back( initCalc ); }
 
 	// ѕараметры ресурса
 	RDOValue getResParamVal(ruint resID, ruint paramID) const
@@ -231,11 +232,12 @@ public:
 	}
 
 private:
-	typedef RDOSimulatorTrace Parent;
+	typedef RDOSimulatorTrace    Parent;
+	typedef std::list<LPRDOCalc> CalcList;
 	std::vector< RDOResource* > allResourcesByID;      // ¬се ресурсы симул€тора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // ќни же, только упор€дочены по времени создани€ и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // ќни же, только упор€дочены по типу перед запуском
-	std::list  < RDOCalc*     > initCalcs;
+	CalcList initCalcs;
 	
 	
 	class BreakPoint: public RDORuntimeObject

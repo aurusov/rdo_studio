@@ -119,14 +119,14 @@ public:
 
 	private:
 		ColorType color_type;
-		RDOCalc* red_calc;
-		RDOCalc* green_calc;
-		RDOCalc* blue_calc;
+		LPRDOCalc m_pRedCalc;
+		LPRDOCalc m_pGreenCalc;
+		LPRDOCalc m_pBlueCalc;
 
 	public:
-		RDOFRMColor( RDOFRMFrame* _parent, ColorType _type = color_none );
-		RDOFRMColor( RDOFRMFrame* _parent, int _red, int _green, int _blue );
-		RDOFRMColor( RDOFRMFrame* _parent, RDOCalc* _red_calc, RDOCalc* _green_calc, RDOCalc* _blue_calc );
+		RDOFRMColor(RDOFRMFrame* _parent, ColorType _type = color_none);
+		RDOFRMColor(RDOFRMFrame* _parent, int _red, int _green, int _blue);
+		RDOFRMColor(RDOFRMFrame* _parent, CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
 		~RDOFRMColor();
 
 		rdoAnimation::RDOColor getColor( RDORuntime* sim, RDOFRMFrame* frame ) const;

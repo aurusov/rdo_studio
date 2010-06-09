@@ -13,4 +13,17 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcConst
+// ----------------------------------------------------------------------------
+inline RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
+{
+	m_value = value;
+}
+
+inline REF(RDOValue) RDOCalcConst::doCalc(PTR(RDORuntime) runtime)
+{
+	return m_value;
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

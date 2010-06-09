@@ -248,14 +248,15 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		m_calc->setSrcInfo( src_info() );
 		return;
 	}
-	if ( value->getIdentificator() == "Time_now" || value->getIdentificator() == "time_now" || value->getIdentificator() == "Системное_время" || value->getIdentificator() == "системное_время" )
-	{
-		m_value = g_real.cast<RDOType>();
-		m_calc = new rdoRuntime::RDOCalcGetTimeNow( parser()->runtime() );
-		m_calc->setSrcInfo( src_info() );
-		return;
-	}
-	else if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
+	//if ( value->getIdentificator() == "Time_now" || value->getIdentificator() == "time_now" || value->getIdentificator() == "Системное_время" || value->getIdentificator() == "системное_время" )
+	//{
+	//	m_value = g_real.cast<RDOType>();
+	//	m_calc = new rdoRuntime::RDOCalcGetTimeNow( parser()->runtime() );
+	//	m_calc->setSrcInfo( src_info() );
+	//	return;
+	//}
+	//else
+	if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
 	{
 		m_value = g_int.cast<RDOType>();
 		m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );
