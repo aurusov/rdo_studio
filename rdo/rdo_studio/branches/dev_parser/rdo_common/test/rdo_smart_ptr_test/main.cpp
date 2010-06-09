@@ -13,11 +13,11 @@
 #include <list>
 #include <iostream>
 // ====================================================================== SYNOPSIS
-#include "rdo_common/rdosmart_ptr.h"
-#include "rdo_common/rdosmart_ptr_wrapper.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "rdo_common/rdodebug.h"
 // ===============================================================================
 
-class MyClass
+OBJECT(MyClass)
 {
 DECLARE_FACTORY(MyClass)
 public:
@@ -26,138 +26,100 @@ public:
 protected:
 	MyClass()
 		: m_i(2)
-	{}
+	{
+		int i = 1;
+	}
 
 	~MyClass()
-	{}
+	{
+		int i = 1;
+	}
 };
-DECLARE_POINTER(MyClass);
 
 class MyClass2: public MyClass
 {
 DECLARE_FACTORY(MyClass2)
 public:
-	ruint m_i1;
-	ruint m_i2;
-	ruint m_i3;
-	ruint m_i4;
-	ruint m_i5;
-
-	rbool operator== (CREF(MyClass2) class2)
-	{
-		return m_i1 == class2.m_i1;
-	}
+	ruint m_k;
 
 private:
 	MyClass2()
-		: m_i1(2)
-	{}
-
-	~MyClass2()
-	{}
-};
-DECLARE_POINTER(MyClass2);
-
-PREDECLARE_POINTER(MyClass3);
-class MyClass3: public rdo::smart_ptr_counter_reference
-{
-DECLARE_FACTORY(MyClass3)
-public:
-	ruint m_i1;
-
-	rbool operator== (CREF(MyClass3) class3)
+		: m_k(20)
 	{
-		return m_i1 == class3.m_i1;
+		int i = 1;
 	}
 
-	LPMyClass3 getThis()
+	~MyClass2()
+	{
+		int i = 1;
+	}
+};
+DECLARE_POINTER(MyClass2)
+
+OBJECT(MyClass3)
+{
+public:
+	ruint m_i;
+
+	MyClass3()
+		: m_i(3)
+	{
+		int i = 1;
+	}
+
+	~MyClass3()
+	{
+		int i = 1;
+	}
+
+	LPMyClass3 fun()
 	{
 		return this;
 	}
-
-private:
-	MyClass3()
-		: m_i1(2)
-	{}
-	~MyClass3()
-	{}
 };
 
 void main()
 {
-	ruint size1 = sizeof(MyClass );
-	ruint size2 = sizeof(MyClass2);
-	ruint size3 = sizeof(rdo::smart_ptr<MyClass>);
-	ruint size4 = sizeof(rdo::smart_ptr<MyClass2>);
+	ruint size1 = sizeof(MyClass);
+	ruint size2 = sizeof(LPMyClass);
 
-	{
-		rdo::smart_ptr<MyClass> obj = rdo::Factory<MyClass>::create();
-		obj->m_i = 10;
-		rdo::smart_ptr<MyClass> obj2 = NULL;
-		int i = 1;
-	}
-	{
-		std::list<rdo::LPISmartPtrWrapper> container;
-		for (ruint i = 0; i < 100; i++)
+	{ //! Создание через фабрику и тест конструтора копии
+
+		LPMyClass pMyClass = rdo::Factory<MyClass>::create();
 		{
-			rdo::smart_ptr<MyClass> obj1 = rdo::Factory<MyClass>::create();
-			rdo::smart_ptr_wrapper<MyClass> obj1wr(obj1);
-			container.push_back(&obj1wr);
+			LPMyClass pMyClass2 = pMyClass;
 		}
-		int i = 1;
+		pMyClass->m_i = 3;
 	}
-	{
-		LPMyClass2 obj21 = rdo::Factory<MyClass2>::create();
-		LPMyClass  obj11 = obj21;
-		LPMyClass2 obj22 = obj11.cast<MyClass2>();
-		LPMyClass2 obj23 = obj11.lp_cast<LPMyClass2>();
-//		LPMyClass3 obj31 = obj21.cast<MyClass3>(); //! Не должно компилироваться
-		int i = 1;
+
+	{ //! Кастинг к предку
+
+		LPMyClass2 pMyClass2 = rdo::Factory<MyClass2>::create();
+		pMyClass2->m_i = 10;
+		pMyClass2->m_k = 22;
+		LPMyClass  pMyClass = pMyClass2.cast<MyClass>();
+		pMyClass->m_i = 11;
 	}
-	{
-		LPMyClass3 obj31 = rdo::Factory<MyClass3>::create();
-		LPMyClass3 obj32 = obj31->getThis();
-		int i = 1;
+
+	{ //! Конструктор по-умолчанию, приведение указателя к rbool, оператор копирования, сброс указателя
+
+		LPMyClass pMyClass1;
+		ASSERT(!pMyClass1);
+		LPMyClass pMyClass2 = rdo::Factory<MyClass>::create();
+		ASSERT(pMyClass2);
+		pMyClass1 = pMyClass2;
+		ASSERT(pMyClass1);
+
+		LPMyClass pMyClass3 = rdo::Factory<MyClass>::create();
+		pMyClass2 = NULL;
+		pMyClass1 = pMyClass3;
 	}
-	{
-		LPMyClass2 obj21 = rdo::Factory<MyClass2>::create();
-		LPMyClass2 obj22 = obj21;
-		LPMyClass2 obj23 = rdo::Factory<MyClass2>::create();
-		rbool flag1 = obj21 == obj22;
-		rbool flag2 = obj21 == obj23;
-		ASSERT( flag1);
-		ASSERT(!flag2);
-		LPMyClass3 obj31 = rdo::Factory<MyClass3>::create();
-		LPMyClass3 obj32 = obj31->getThis();
-		LPMyClass3 obj33 = obj31->getThis();
-		LPMyClass3 obj34 = rdo::Factory<MyClass3>::create();
-		rbool flag3 = obj31 == obj32 && obj32 == obj33;
-		rbool flag4 = obj31 == obj34;
-		ASSERT( flag3);
-		ASSERT(!flag4);
+
+	{ //! Создание указателя по типу (на только из фабрики), создание указателя по this
+		PTR(MyClass3) pMyClass3 = new MyClass3();
+		LPMyClass3    pMyClass4(pMyClass3);
+		LPMyClass3    pMyClass5 = pMyClass4->fun();
 	}
-	{
-		LPMyClass2 obj21 = rdo::Factory<MyClass2>::create();
-		LPMyClass2 obj22 = obj21;
-		LPMyClass2 obj23 = rdo::Factory<MyClass2>::create();
-		rbool flag1 = obj21.compare(obj22);
-		rbool flag2 = obj21.compare(obj23);
-		ASSERT(flag1);
-		ASSERT(flag2);
-		obj23->m_i1 = 10;
-		rbool flag3 = obj21.compare(obj23);
-		ASSERT(!flag3);
-		LPMyClass3 obj31 = rdo::Factory<MyClass3>::create();
-		LPMyClass3 obj32 = obj31->getThis();
-		LPMyClass3 obj33 = obj31->getThis();
-		LPMyClass3 obj34 = rdo::Factory<MyClass3>::create();
-		rbool flag4 = obj31.compare(obj32) && obj32.compare(obj33);
-		rbool flag5 = obj31.compare(obj34);
-		ASSERT(flag4);
-		ASSERT(flag5);
-		obj34->m_i1 = 10;
-		rbool flag6 = obj21.compare(obj23);
-		ASSERT(!flag6);
-	}
+
 	int i = 1;
 }
