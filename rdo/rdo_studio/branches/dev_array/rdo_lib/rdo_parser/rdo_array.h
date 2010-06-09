@@ -47,6 +47,8 @@ DECLARE_POINTER(RDOArrayValue);
 class RDOArrayType: public RDOType, public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(RDOArrayType);
+public:
+	CREF(LPRDOType)                   type() const;
 private:
 	RDOArrayType         (CREF(LPRDOType) pType);
 	virtual ~RDOArrayType();
