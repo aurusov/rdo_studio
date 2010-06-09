@@ -608,8 +608,9 @@ param_array:		RDO_array '<' param_type '>' {
 					};
 
 rdo_array_default:	'[' param_array_item ']' {
-						LPRDOArrayValue pArray = PARSER->stack().pop<RDOArrayValue>($2);
-						$$ = PARSER->stack().push(pArray);
+						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
+						LPRDOTypeParam pArrayValue = rdo::Factory<RDOTypeParam>::create(pArrayType->type(), RDOVALUE($2), RDOParserSrcInfo(@1, @3));
+						$$ = PARSER->stack().push(pArrayValue);
 //					здесь окончательная сборка массива
 					}
 					|'[' param_array_item error {
@@ -620,7 +621,7 @@ rdo_array_default:	'[' param_array_item ']' {
 param_array_item:	value_default_item {
 						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
 						ASSERT(pArrayType);
-						if(RDOVALUE($1)->type().typeID() == pArrayType->type().typeID())
+						if(RDOVALUE($1)->type().typeID() == pArrayType->type()->typeID())
 						{
 							LPRDOArrayValue pArray = rdo::Factory<RDOArrayValue>::create();
 							pArray->insert_array(RDOVALUE($1));
@@ -635,7 +636,7 @@ param_array_item:	value_default_item {
 					param_array_item ',' value_default_item {
 						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
 						ASSERT(pArrayType);
-						if(RDOVALUE($3)->type().typeID() == pArrayType->type().typeID())
+						if(RDOVALUE($3)->type().typeID() == pArrayType->type()->typeID())
 						{
 							LPRDOArrayValue pArray = PARSER->stack().pop<RDOArrayValue>($1);
 							pArray->insert_array(RDOVALUE($3));
@@ -650,7 +651,7 @@ param_array_item:	value_default_item {
 					param_array_item value_default_item {
 						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
 						ASSERT(pArrayType);
-						if(RDOVALUE($2)->type().typeID() == pArrayType->type().typeID())
+						if(RDOVALUE($2)->type().typeID() == pArrayType->type()->typeID())
 						{
 							LPRDOArrayValue pArray = PARSER->stack().pop<RDOArrayValue>($1);
 							pArray->insert_array(RDOVALUE($2));
