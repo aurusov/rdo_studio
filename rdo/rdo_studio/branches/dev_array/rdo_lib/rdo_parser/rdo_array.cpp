@@ -33,6 +33,8 @@ RDOArrayValue::~RDOArrayValue()
 void RDOArrayValue::insert_array(CREF(RDOValue) pArray)
 {
 	m_arrayValue.push_back(&pArray);
+	rdoRuntime::RDOArrayValue m_Array;
+	m_Array.insert_array(pArray.value());
 }
  //----------------------------------------------------------------------------
  //---------- RDOArrayType
@@ -130,6 +132,11 @@ void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
 {
 	CPTR(RDOArrayType) pArray(const_cast<PTR(RDOArrayType)>(this));
 	stream << (*pArray).name()<< std::endl;
+}
+
+CREF(LPRDOType) RDOArrayType::type() const
+{
+	return m_pType;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
