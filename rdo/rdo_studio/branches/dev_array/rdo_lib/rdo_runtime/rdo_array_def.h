@@ -38,16 +38,18 @@ class RDOArrayValue
 public:
 	typedef std::vector<CPTR(RDOValue)> ArrayValue;
 
+	RDOArrayValue();
 	RDOArrayValue(CREF(RDOArrayType)  type );
 	RDOArrayValue(CREF(RDOArrayValue) value);
 	~RDOArrayValue();
 
 	CREF(RDOArrayType) type() const;
-	ArrayValue getArrayValue()const;
+	void insert_array(CREF(RDOValue) pArray);
+
 
 private:
 	ArrayValue         m_arrayValue;
-	CPTR(RDOArrayType) m_arrayTape;
+	CPTR(RDOArrayType) m_arrayType;
 };
 
 // ----------------------------------------------------------------------------

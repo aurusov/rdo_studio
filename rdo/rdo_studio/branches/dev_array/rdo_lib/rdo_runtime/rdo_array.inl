@@ -16,12 +16,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
+inline RDOArrayValue::RDOArrayValue()
+{}
+
 inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
-	: m_arrayTape(&type)
+	: m_arrayType(&type)
 {}
 
 inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
-	: m_arrayTape(value.m_arrayTape)
+	: m_arrayType(value.m_arrayType)
 {
 	m_arrayValue = value.m_arrayValue;
 }
@@ -31,13 +34,14 @@ inline RDOArrayValue::~RDOArrayValue()
 
 inline CREF(RDOArrayType) RDOArrayValue::type() const
 {
-	return *m_arrayTape;
+	return *m_arrayType;
 }
 
-inline RDOArrayValue::ArrayValue RDOArrayValue::getArrayValue()const
+inline void RDOArrayValue::insert_array(CREF(RDOValue) pArray)
 {
-	return m_arrayValue;
+	m_arrayValue.push_back(&pArray);
 }
+
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
