@@ -1,6 +1,6 @@
 #ifndef RDO_PROCESS_CHILDFRM_H
 #define RDO_PROCESS_CHILDFRM_H
-
+#include "rdo_studio/rdostudiochildfrm.h"
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -10,7 +10,7 @@
 // ----------------------------------------------------------------------------
 class RPView;
 
-class RPChildFrame: public CMDIChildWnd
+class RPChildFrame: public RDOStudioChildFrame
 {
 DECLARE_DYNCREATE(RPChildFrame)
 
@@ -31,7 +31,7 @@ public:
 	//{{AFX_VIRTUAL(RPChildFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+//	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	//}}AFX_VIRTUAL
 
 protected:

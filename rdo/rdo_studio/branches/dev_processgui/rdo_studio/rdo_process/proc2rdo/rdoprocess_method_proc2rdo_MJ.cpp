@@ -6,7 +6,6 @@
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process_MJ.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_terminate_MJ.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_generation_type_MJ.h"
-#include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_process/proc2rdo/res/method_big.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/method_small.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/generate.xpm"
@@ -16,11 +15,12 @@
 #include "rdo_studio/rdo_process/proc2rdo/res/block_terminate.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/block_process.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/block_resource.xpm"
-
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include "rdo_studio/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
-
+#include <afxole.h>		// для rdostudioapp
+#include <afxpriv.h>    // для rdostudioapp
+#include "rdo_studio/rdostudioapp.h"
+#include "rdo_repository/rdorepository.h"
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -112,21 +112,40 @@ void RPMethodProc2RDO_MJ::buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_upda
 {
 	button_update.enable = true;
 }
+const wchar_t* RPMethodProc2RDO_MJ::makestr(std::string str){
+	rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PAT );
+	studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
+	data.m_full_name.resize(data.m_full_name.size()-3);
+	data.m_full_name.insert(data.m_full_name.size(), str);
+	std::string orig;
+	orig=data.m_full_name;
+	// Convert to a char*
+    const size_t newsize = 100;
+    char nstring[newsize];
+    strcpy_s(nstring, orig.c_str());
+    strcat_s(nstring, " (char *)");
+    // Convert to a wchar_t*
+    size_t origsize = strlen(orig.c_str()) + 1;
+    size_t convertedChars = 0;
+    wchar_t wcstring[newsize];
+    mbstowcs_s(&convertedChars, wcstring, origsize, orig.c_str(), _TRUNCATE);
+    wcscat_s(wcstring, L" (wchar_t *)");
 
+	const wchar_t* ret= wcstring;
+	return ret;
+}
 void RPMethodProc2RDO_MJ::generate()
 {
 	//RPConnectorDock* dock = NULL;
 	//if (RPConnectorDock::can_connect(dock));
-	CreateDirectory("Mymodel01", NULL);
-
-	RDOfiles->pattern.open(_T("Mymodel01\\RDO_PROCESS.pat"));
-	RDOfiles->resourse.open(_T("Mymodel01\\RDO_PROCESS.rss"));
-	RDOfiles->function.open(_T("Mymodel01\\RDO_PROCESS.fun"));
-
-	RDOfiles->typeres.open(_T("Mymodel01\\RDO_PROCESS.rtp"));
-	RDOfiles->operations.open(_T("Mymodel01\\RDO_PROCESS.opr"));
-	RDOfiles->smr.open(_T("Mymodel01\\RDO_PROCESS.smr"));
-	RDOfiles->statistic.open(_T("Mymodel01\\RDO_PROCESS.pmd"));
+	CreateDirectory("C:/Mymodel01", NULL);
+	RDOfiles->resourse.open(_T(makestr("pat")));
+	RDOfiles->resourse.open(_T(makestr("rss")));
+	RDOfiles->function.open(_T(makestr("fun")));
+	RDOfiles->typeres.open(_T(makestr("rtp")));
+	RDOfiles->operations.open(_T(makestr("opr")));
+	RDOfiles->smr.open(_T(makestr("smr")));
+	RDOfiles->statistic.open(_T(makestr("pmd")));
 
 	blank_rdo_MJ();
 

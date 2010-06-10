@@ -25,7 +25,7 @@ BEGIN_MESSAGE_MAP(RPChildFrame, CMDIChildWnd)
 END_MESSAGE_MAP()
 
 RPChildFrame::RPChildFrame():
-	CMDIChildWnd(),
+	RDOStudioChildFrame(),
 	view( NULL )
 {
 }
@@ -57,12 +57,6 @@ void RPChildFrame::OnSetFocus(CWnd* pOldWnd)
 {
 	CMDIChildWnd::OnSetFocus( pOldWnd );
 //	if ( flowchart ) flowchart->SetFocus();
-}
-
-BOOL RPChildFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
-{
-//	if ( view && view->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo) ) return TRUE;
-	return CMDIChildWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
 #ifdef _DEBUG

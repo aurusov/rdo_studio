@@ -13,7 +13,7 @@ class RPMethodProc2RDO_MJ: public rpMethod::RPMethod, public RPObject_MJ
 {
 private:
 	virtual ~RPMethodProc2RDO_MJ();
-
+const	wchar_t* RPMethodProc2RDO_MJ::makestr(std::string str);
 protected:
 	void registerObject();
 

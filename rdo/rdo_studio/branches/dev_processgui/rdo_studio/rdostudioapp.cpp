@@ -8,7 +8,6 @@
 #include "rdo_studio/rdostudioplugins.h"
 #include "rdo_studio/rdostudiothread.h"
 #include "rdo_studio/rdostudiomodelnew.h"
-#include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
 #include "rdo_repository/rdorepository.h"
