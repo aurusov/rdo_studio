@@ -609,6 +609,8 @@ param_array:		RDO_array '<' param_type '>' {
 
 rdo_array_default:	'[' param_array_item ']' {
 						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
+						rdoRuntime::RDOArrayValue(rdoRuntime::RDOArrayType(NULL,pArrayType->type()->typeID()));
+
 						LPRDOTypeParam pArrayValue = rdo::Factory<RDOTypeParam>::create(pArrayType->type(), RDOVALUE($2), RDOParserSrcInfo(@1, @3));
 						$$ = PARSER->stack().push(pArrayValue);
 //					здесь окончательная сборка массива
@@ -624,6 +626,8 @@ param_array_item:	value_default_item {
 						if(RDOVALUE($1)->type().typeID() == pArrayType->type()->typeID())
 						{
 							LPRDOArrayValue pArray = rdo::Factory<RDOArrayValue>::create(pArrayType);
+							rdoRuntime::RDOArrayValue pArrayRuntime(rdoRuntime::RDOArrayType(NULL,pArrayType->type()->typeID()));
+							pArrayRuntime.insert_array(RDOVALUE($1)->value());
 							pArray->insert_array(RDOVALUE($1));
 							$$ = PARSER->stack().push(pArray);
 						}
