@@ -26,7 +26,15 @@ inline smart_ptr<T>::smart_ptr(CREF(this_type) sptr)
 	: m_counter(sptr.m_counter)
 	, m_object (sptr.m_object )
 {
-	addref();
+	if (m_object)
+	{
+		PTR(smart_ptr_counter_reference) pCounter = dynamic_cast<PTR(smart_ptr_counter_reference)>(m_object);
+		if (pCounter)
+		{
+			m_counter = pCounter->m_pCounter;
+		}
+		addref();
+	}
 }
 
 template<class T>
