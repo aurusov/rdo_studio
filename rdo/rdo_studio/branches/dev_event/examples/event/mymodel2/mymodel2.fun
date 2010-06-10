@@ -1,7 +1,7 @@
-$Sequence Интервал_прихода : real
-$Type = exponential 123456789
+$Sequence Время_между_приходами : real
+$Type = exponential 2345
 $End
 
 $Sequence Длительность_обслуживания : real
-$Type = uniform 123456789
+$Type = uniform 879433216
 $End

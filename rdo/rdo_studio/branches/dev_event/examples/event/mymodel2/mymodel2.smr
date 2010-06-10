@@ -7,6 +7,6 @@ Trace_file     = mymodel2
 Show_mode      = NoShow
 Show_rate      = 3600.0
 
-Событие_прихода_клиента.planning(Интервал_прихода(30))
+Событие_прихода_клиента.Planning(Время_между_приходами(30))
 
 Terminate_if Time_now >= 12 * 7 * 60
