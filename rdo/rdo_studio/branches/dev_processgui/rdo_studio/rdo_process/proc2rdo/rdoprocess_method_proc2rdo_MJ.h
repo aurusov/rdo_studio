@@ -8,12 +8,14 @@
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_creation_RDO_files_MJ.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_MJ.h"
+#include "rdo_common/rdotypes.h"
 
 class RPMethodProc2RDO_MJ: public rpMethod::RPMethod, public RPObject_MJ
 {
 private:
 	virtual ~RPMethodProc2RDO_MJ();
-const	wchar_t* RPMethodProc2RDO_MJ::makestr(std::string str);
+	tstring getDirectory() const;
+
 protected:
 	void registerObject();
 

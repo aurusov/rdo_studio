@@ -112,40 +112,32 @@ void RPMethodProc2RDO_MJ::buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_upda
 {
 	button_update.enable = true;
 }
-const wchar_t* RPMethodProc2RDO_MJ::makestr(std::string str){
-	rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PAT );
-	studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
-	data.m_full_name.resize(data.m_full_name.size()-3);
-	data.m_full_name.insert(data.m_full_name.size(), str);
-	std::string orig;
-	orig=data.m_full_name;
-	// Convert to a char*
-    const size_t newsize = 100;
-    char nstring[newsize];
-    strcpy_s(nstring, orig.c_str());
-    strcat_s(nstring, " (char *)");
-    // Convert to a wchar_t*
-    size_t origsize = strlen(orig.c_str()) + 1;
-    size_t convertedChars = 0;
-    wchar_t wcstring[newsize];
-    mbstowcs_s(&convertedChars, wcstring, origsize, orig.c_str(), _TRUNCATE);
-    wcscat_s(wcstring, L" (wchar_t *)");
 
-	const wchar_t* ret= wcstring;
-	return ret;
+tstring RPMethodProc2RDO_MJ::getDirectory() const
+{
+	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::PAT);
+	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
+
+	tstring::size_type pos = data.m_full_name.find(data.m_extention);
+	ASSERT(pos != tstring::npos);
+
+	tstring result(data.m_full_name.substr(0, pos));
+	return result;
 }
+
 void RPMethodProc2RDO_MJ::generate()
 {
 	//RPConnectorDock* dock = NULL;
 	//if (RPConnectorDock::can_connect(dock));
-	CreateDirectory("C:/Mymodel01", NULL);
-	RDOfiles->resourse.open(_T(makestr("pat")));
-	RDOfiles->resourse.open(_T(makestr("rss")));
-	RDOfiles->function.open(_T(makestr("fun")));
-	RDOfiles->typeres.open(_T(makestr("rtp")));
-	RDOfiles->operations.open(_T(makestr("opr")));
-	RDOfiles->smr.open(_T(makestr("smr")));
-	RDOfiles->statistic.open(_T(makestr("pmd")));
+//	CreateDirectory("C:/Mymodel01", NULL);
+
+	RDOfiles->resourse.open  (rdo::format(_T("%s.pat"), getDirectory().c_str()).c_str());
+	RDOfiles->resourse.open  (rdo::format(_T("%s.rss"), getDirectory().c_str()).c_str());
+	RDOfiles->function.open  (rdo::format(_T("%s.fun"), getDirectory().c_str()).c_str());
+	RDOfiles->typeres.open   (rdo::format(_T("%s.rtp"), getDirectory().c_str()).c_str());
+	RDOfiles->operations.open(rdo::format(_T("%s.opr"), getDirectory().c_str()).c_str());
+	RDOfiles->smr.open       (rdo::format(_T("%s.smr"), getDirectory().c_str()).c_str());
+	RDOfiles->statistic.open (rdo::format(_T("%s.pmd"), getDirectory().c_str()).c_str());
 
 	blank_rdo_MJ();
 
