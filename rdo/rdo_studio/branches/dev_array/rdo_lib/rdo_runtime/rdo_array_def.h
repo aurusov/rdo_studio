@@ -38,7 +38,6 @@ class RDOArrayValue
 public:
 	typedef std::vector<CPTR(RDOValue)> ArrayValue;
 
-	RDOArrayValue();
 	RDOArrayValue(CREF(RDOArrayType)  type );
 	RDOArrayValue(CREF(RDOArrayValue) value);
 	~RDOArrayValue();

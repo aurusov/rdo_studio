@@ -22,19 +22,15 @@ OPEN_RDO_PARSER_NAMESPACE
  //----------------------------------------------------------------------------
  //---------- RDOArrayValue
  //----------------------------------------------------------------------------
- RDOArrayValue::RDOArrayValue()
-{}
- RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) pValue)
+ RDOArrayValue::RDOArrayValue(LPRDOArrayType pArrayType)
 {
-	m_arrayValue = pValue.m_arrayValue;
+	m_arrayType = pArrayType;
 }
 RDOArrayValue::~RDOArrayValue()
 {}
 void RDOArrayValue::insert_array(CREF(RDOValue) pArray)
 {
 	m_arrayValue.push_back(&pArray);
-	rdoRuntime::RDOArrayValue m_Array;
-	m_Array.insert_array(pArray.value());
 }
  //----------------------------------------------------------------------------
  //---------- RDOArrayType

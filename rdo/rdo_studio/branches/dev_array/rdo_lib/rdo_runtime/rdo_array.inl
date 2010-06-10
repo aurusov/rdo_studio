@@ -16,9 +16,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-inline RDOArrayValue::RDOArrayValue()
-{}
-
 inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
 	: m_arrayType(&type)
 {}

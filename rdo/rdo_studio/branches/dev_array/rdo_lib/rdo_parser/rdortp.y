@@ -623,7 +623,7 @@ param_array_item:	value_default_item {
 						ASSERT(pArrayType);
 						if(RDOVALUE($1)->type().typeID() == pArrayType->type()->typeID())
 						{
-							LPRDOArrayValue pArray = rdo::Factory<RDOArrayValue>::create();
+							LPRDOArrayValue pArray = rdo::Factory<RDOArrayValue>::create(pArrayType);
 							pArray->insert_array(RDOVALUE($1));
 							$$ = PARSER->stack().push(pArray);
 						}
