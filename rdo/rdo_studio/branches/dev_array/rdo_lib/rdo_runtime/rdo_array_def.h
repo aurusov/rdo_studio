@@ -36,19 +36,18 @@ class RDOArrayType;
 class RDOArrayValue
 {
 public:
-	typedef std::vector<CPTR(RDOValue)> ArrayValue;
+	typedef std::vector<RDOValue> Container;
 
-	RDOArrayValue(CREF(RDOArrayType)  type );
-	RDOArrayValue(CREF(RDOArrayValue) value);
+	RDOArrayValue(CREF(RDOArrayType) type);
 	~RDOArrayValue();
 
 	CREF(RDOArrayType) type() const;
-	void insert_array(CREF(RDOValue) pArray);
 
+	void insertItem(CREF(RDOValue) value);
 
 private:
-	ArrayValue         m_arrayValue;
-	CPTR(RDOArrayType) m_arrayType;
+	Container           m_container;
+	CPTR(RDOArrayType)  m_pArrayType;
 };
 
 // ----------------------------------------------------------------------------
@@ -57,14 +56,14 @@ private:
 class RDOArrayType: public RDOType, public RDORuntimeObject
 {
 public:
-	typedef CREF(RDOType) ArrayType;
+	typedef CREF(RDOType) ItemType;
 
-	RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType);
+	RDOArrayType(PTR(RDORuntimeParent) parent, ItemType pItemType);
 
-	ArrayType getArrayType() const;
+	ItemType getItemType() const;
 
 private:
-	ArrayType  m_pArrayType;
+	ItemType  m_pItemType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
