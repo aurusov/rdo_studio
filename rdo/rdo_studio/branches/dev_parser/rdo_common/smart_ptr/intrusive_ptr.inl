@@ -97,6 +97,13 @@ inline intrusive_ptr<P> intrusive_ptr<T>::cast() const
 }
 
 template<class T>
+template<class P>
+inline interface_ptr<P> intrusive_ptr<T>::interface_cast()
+{
+	return interface_ptr<P>(static_cast<PTR(P)>(m_object), &counter());
+}
+
+template<class T>
 inline void intrusive_ptr<T>::addref()
 {
 	counter()++;

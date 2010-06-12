@@ -15,6 +15,7 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+#include "rdo_common/smart_ptr/interface_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -53,6 +54,9 @@ public:
 	template <class P>
 	intrusive_ptr<P> cast() const;
 
+	template <class P>
+	interface_ptr<P> interface_cast();
+
 private:
 	PTR(T) m_object;
 
@@ -65,6 +69,7 @@ template <class T>
 class Factory
 {
 friend class intrusive_ptr<T>;
+friend class interface_ptr<T>;
 public:
 	inline static intrusive_ptr<T> create()
 	{

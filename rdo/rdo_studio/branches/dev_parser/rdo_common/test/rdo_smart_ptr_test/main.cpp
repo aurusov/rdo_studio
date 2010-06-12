@@ -14,6 +14,7 @@
 #include <iostream>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "rdo_common/smart_ptr/interface_ptr.h"
 #include "rdo_common/rdodebug.h"
 // ===============================================================================
 
@@ -36,7 +37,14 @@ protected:
 	}
 };
 
-class MyClass2: public MyClass
+OBJECT_INTERFACE(IMyClass21)
+{
+	virtual void ifun21() = 0;
+};
+#define DECLARE_IMyClass21 \
+	void ifun21();
+
+class MyClass2: public MyClass, public IMyClass21
 {
 DECLARE_FACTORY(MyClass2)
 public:
@@ -49,12 +57,18 @@ private:
 		int i = 1;
 	}
 
-	~MyClass2()
+	virtual ~MyClass2()
 	{
 		int i = 1;
 	}
+	DECLARE_IMyClass21;
 };
 DECLARE_POINTER(MyClass2)
+
+void MyClass2::ifun21()
+{
+	int i = 1;
+}
 
 OBJECT(MyClass3)
 {
@@ -99,6 +113,14 @@ void main()
 		pMyClass2->m_k = 22;
 		LPMyClass  pMyClass = pMyClass2.cast<MyClass>();
 		pMyClass->m_i = 11;
+	}
+
+	{ //! Кастинг к предку
+
+		LPMyClass2 pMyClass2 = rdo::Factory<MyClass2>::create();
+		LPIMyClass21 pMyClass21 = pMyClass2.interface_cast<IMyClass21>();
+		pMyClass2 = NULL;
+		pMyClass21 = LPIMyClass21();
 	}
 
 	{ //! Конструктор по-умолчанию, приведение указателя к rbool, оператор копирования, сброс указателя
