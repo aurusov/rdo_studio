@@ -167,7 +167,7 @@ public:
 private:
 	std::vector< PTR(RDOCalc) >                   m_choiceFrom;
 	std::vector< PTR(RDOCalc) >                   m_convertor;
-	std::vector< RDOResource::ConvertStatus > m_convertorStatus;
+	std::vector< RDOResource::ConvertStatus >     m_convertorStatus;
 	std::vector< PTR(RDOCalc) >                   m_erase;
 };
 
