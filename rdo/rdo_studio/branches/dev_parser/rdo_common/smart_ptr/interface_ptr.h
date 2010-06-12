@@ -19,6 +19,21 @@
 
 OPEN_RDO_NAMESPACE
 
+struct __declspec(novtable) ICounterReference
+{
+	virtual void addref () = 0;
+	virtual void release() = 0;
+};
+typedef PTR(ICounterReference) LPICounterReference;
+
+template <class T>
+class CounterReferenceReal: public ICounterReference
+{
+public:
+	void addref ();
+	void release();
+};
+
 template<class T>
 class interface_ptr
 {
@@ -26,7 +41,7 @@ public:
 	typedef interface_ptr<T> this_type;
 
 	interface_ptr ();
-	interface_ptr (PTR (T) pInterface, PTR(ruint) pCounter);
+	interface_ptr (PTR (T) pInterface, LPICounterReference pCounter);
 	interface_ptr (CREF(this_type) sptr);
 	~interface_ptr();
 
@@ -37,15 +52,12 @@ public:
 	 PTR(T)  operator-> ();
 
 private:
-	PTR(T)     m_pInterface;
-	PTR(ruint) m_pCounter;
-
-	void       addref ();
-	void       release();
+	PTR(T)              m_pInterface;
+	LPICounterReference m_pCounter;
 };
 
 #define DECLARE_OBJECT_INTERFACE(TYPE)    typedef rdo::interface_ptr<TYPE> LP##TYPE;
-#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
+#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct __declspec(novtable) TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
 #define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE
 
 CLOSE_RDO_NAMESPACE

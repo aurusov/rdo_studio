@@ -44,7 +44,7 @@ OBJECT_INTERFACE(IMyClass21)
 #define DECLARE_IMyClass21 \
 	void ifun21();
 
-class MyClass2: public MyClass, public IMyClass21
+class MyClass2: public MyClass, public IMyClass21, public rdo::CounterReferenceReal<MyClass2>
 {
 DECLARE_FACTORY(MyClass2)
 public:
@@ -115,7 +115,7 @@ void main()
 		pMyClass->m_i = 11;
 	}
 
-	{ //! Кастинг к предку
+	{ //! Кастинг к интерфейсу
 
 		LPMyClass2 pMyClass2 = rdo::Factory<MyClass2>::create();
 		LPIMyClass21 pMyClass21 = pMyClass2.interface_cast<IMyClass21>();

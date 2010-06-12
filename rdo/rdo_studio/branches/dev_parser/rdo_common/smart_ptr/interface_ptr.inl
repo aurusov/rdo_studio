@@ -9,9 +9,32 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_common/rdodebug.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
+
+template<class T>
+inline void CounterReferenceReal<T>::addref()
+{
+	PTR(counter_reference) pCounter = dynamic_cast<PTR(counter_reference)>(this);
+	ASSERT(pCounter);
+	pCounter->m_intrusive_counter++;
+}
+
+template<class T>
+inline void CounterReferenceReal<T>::release()
+{
+	PTR(counter_reference) pCounter = dynamic_cast<PTR(counter_reference)>(this);
+	ASSERT(pCounter);
+	pCounter->m_intrusive_counter--;
+	if (pCounter->m_intrusive_counter == 0)
+	{
+		PTR(T) pObject = dynamic_cast<PTR(T)>(this);
+		ASSERT(pObject);
+		Factory<T>::destroy(pObject);
+	}
+}
 
 template<class T>
 inline interface_ptr<T>::interface_ptr()
@@ -20,12 +43,12 @@ inline interface_ptr<T>::interface_ptr()
 {}
 
 template<class T>
-inline interface_ptr<T>::interface_ptr(PTR(T) pInterface, PTR(ruint) pCounter)
+inline interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPICounterReference pCounter)
 	: m_pInterface(pInterface)
 	, m_pCounter  (pCounter  )
 {
 	if (m_pInterface)
-		addref();
+		m_pCounter->addref();
 }
 
 template<class T>
@@ -34,27 +57,27 @@ inline interface_ptr<T>::interface_ptr(CREF(this_type) sptr)
 	, m_pCounter  (sptr.m_pCounter  )
 {
 	if (m_pInterface)
-		addref();
+		m_pCounter->addref();
 }
 
 template<class T>
 inline interface_ptr<T>::~interface_ptr()
 {
 	if (m_pInterface)
-		release();
+		m_pCounter->release();
 }
 
 template<class T>
 inline REF(typename interface_ptr<T>::this_type) interface_ptr<T>::operator= (CREF(this_type) sptr)
 {
 	if (m_pInterface)
-		release();
+		m_pCounter->release();
 
 	m_pInterface = sptr.m_pInterface;
 	m_pCounter   = sptr.m_pCounter;
 
 	if (m_pInterface)
-		addref();
+		m_pCounter->addref();
 
 	return *this;
 }
@@ -75,26 +98,6 @@ template<class T>
 inline PTR(T) interface_ptr<T>::operator-> ()
 {
 	return m_pInterface;
-}
-
-template<class T>
-inline void interface_ptr<T>::addref()
-{
-	(*m_pCounter)++;
-}
-
-template<class T>
-inline void interface_ptr<T>::release()
-{
-	(*m_pCounter)--;
-	if ((*m_pCounter) == 0)
-	{
-		if (m_pInterface)
-		{
-			Factory<T>::destroy(m_pInterface);
-			m_pInterface = NULL;
-		}
-	}
 }
 
 CLOSE_RDO_NAMESPACE

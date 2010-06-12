@@ -376,6 +376,14 @@
 			Name=".smart_ptr"
 			>
 			<File
+				RelativePath=".\smart_ptr\counter_reference.h"
+				>
+			</File>
+			<File
+				RelativePath=".\smart_ptr\counter_reference.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\smart_ptr\interface_ptr.h"
 				>
 			</File>

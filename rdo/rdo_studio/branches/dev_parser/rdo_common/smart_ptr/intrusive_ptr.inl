@@ -13,10 +13,6 @@
 
 OPEN_RDO_NAMESPACE
 
-inline counter_reference::counter_reference()
-	: m_intrusive_counter(0)
-{}
-
 template<class T>
 inline intrusive_ptr<T>::intrusive_ptr()
 	: m_object(NULL)
@@ -100,7 +96,7 @@ template<class T>
 template<class P>
 inline interface_ptr<P> intrusive_ptr<T>::interface_cast()
 {
-	return interface_ptr<P>(static_cast<PTR(P)>(m_object), &counter());
+	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPICounterReference>(m_object));
 }
 
 template<class T>

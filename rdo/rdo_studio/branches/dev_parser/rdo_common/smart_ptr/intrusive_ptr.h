@@ -15,20 +15,11 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+#include "rdo_common/smart_ptr/counter_reference.h"
 #include "rdo_common/smart_ptr/interface_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
-
-class counter_reference
-{
-template<class T> friend class intrusive_ptr;
-public:
-	counter_reference();
-
-private:
-	ruint m_intrusive_counter;
-};
 
 template<class T>
 class intrusive_ptr
@@ -69,7 +60,7 @@ template <class T>
 class Factory
 {
 friend class intrusive_ptr<T>;
-friend class interface_ptr<T>;
+friend class CounterReferenceReal<T>;
 public:
 	inline static intrusive_ptr<T> create()
 	{
