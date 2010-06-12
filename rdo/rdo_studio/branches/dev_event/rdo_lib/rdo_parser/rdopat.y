@@ -1653,7 +1653,7 @@ equal_statement
 	;
 
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' ';'
+	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' ';'
 	{
 		tstring           eventName   = RDOVALUE($1)->getIdentificator();
 		PTR(RDOFUNArithm) pTimeArithm = P_ARITHM($5);
@@ -1672,7 +1672,7 @@ planning_statement
 
 		$$ = reinterpret_cast<int>(pCalc);
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' error
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' error
 	{
 		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -1684,9 +1684,25 @@ planning_statement
 	{
 		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm error
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+event_descr_param
+	: /* empty */
+	| event_descr_param ',' '*'
+	{
+		PARSER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
+	}
+	| event_descr_param ',' fun_arithm
+	{
+		PARSER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
+	}
+	| event_descr_param ',' error
+	{
+		PARSER->error().error(@1, @2, "Ошибка описания параметра события")
 	}
 	;
 
