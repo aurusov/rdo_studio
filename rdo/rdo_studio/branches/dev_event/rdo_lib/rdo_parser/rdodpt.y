@@ -447,29 +447,17 @@ dp_searcht_compare
 
 dpt_search_descr_param
 	: /* empty */
-	| dpt_search_descr_param  '*'
+	| dpt_search_descr_param '*'
 	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) )
+		PARSER->getLastDPTSearch()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
 	}
-	| dpt_search_descr_param  RDO_INT_CONST
+	| dpt_search_descr_param fun_arithm
 	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+		PARSER->getLastDPTSearch()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
 	}
-	| dpt_search_descr_param  RDO_REAL_CONST
+	| dpt_search_descr_param error
 	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-	}
-	| dpt_search_descr_param  RDO_BOOL_CONST
-	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-	}
-	| dpt_search_descr_param  RDO_STRING_CONST
-	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-	}
-	| dpt_search_descr_param  RDO_IDENTIF
-	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
 	}
 	;
 
@@ -690,29 +678,13 @@ dpt_some_name
 
 dpt_some_descr_param
 	: /* empty */
-	| dpt_some_descr_param  '*'
+	| dpt_some_descr_param '*'
 	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) )
+		PARSER->getLastDPTSome()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
 	}
-	| dpt_some_descr_param  RDO_INT_CONST
+	| dpt_some_descr_param fun_arithm
 	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-	}
-	| dpt_some_descr_param  RDO_REAL_CONST
-	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-	}
-	| dpt_some_descr_param  RDO_BOOL_CONST
-	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-	}
-	| dpt_some_descr_param  RDO_STRING_CONST
-	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-	}
-	| dpt_some_descr_param  RDO_IDENTIF
-	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
+		PARSER->getLastDPTSome()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
 	}
 	| dpt_some_descr_param error
 	{
@@ -890,12 +862,14 @@ dpt_prior_name
 
 dpt_prior_descr_param
 	: /* empty */
-	| dpt_prior_descr_param  '*'               { PARSER->getLastDPTPrior()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
-	| dpt_prior_descr_param  RDO_INT_CONST     { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_prior_descr_param  RDO_REAL_CONST    { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_prior_descr_param  RDO_BOOL_CONST    { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_prior_descr_param  RDO_STRING_CONST  { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_prior_descr_param  RDO_IDENTIF       { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+	| dpt_prior_descr_param '*'
+	{
+		PARSER->getLastDPTPrior()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+	}
+	| dpt_prior_descr_param fun_arithm
+	{
+		PARSER->getLastDPTPrior()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+	}
 	| dpt_prior_descr_param error
 	{
 		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
