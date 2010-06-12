@@ -255,274 +255,379 @@ frm_main
 // ----------------------------------------------------------------------------
 // ---------- Фрейм
 // ----------------------------------------------------------------------------
-frm_begin:			RDO_Frame RDO_IDENTIF {
-						$$ = (int)new RDOFRMFrame( PARSER, reinterpret_cast<RDOValue*>($2)->src_info() );;
-					}
-					| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic {
-						$$ = (int)new RDOFRMFrame( PARSER, reinterpret_cast<RDOValue*>($2)->src_info(), reinterpret_cast<RDOFUNLogic*>($4) );;
-					}
-					| RDO_Frame RDO_IDENTIF RDO_Show_if error {
-						PARSER->error().error( @4, "Ошибка в логическом выражении" )
-					};
+frm_begin
+	: RDO_Frame RDO_IDENTIF
+	{
+		$$ = (int)new RDOFRMFrame( PARSER, reinterpret_cast<RDOValue*>($2)->src_info() );;
+	}
+	| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic
+	{
+		$$ = (int)new RDOFRMFrame( PARSER, reinterpret_cast<RDOValue*>($2)->src_info(), reinterpret_cast<RDOFUNLogic*>($4) );;
+	}
+	| RDO_Frame RDO_IDENTIF RDO_Show_if error
+	{
+		PARSER->error().error( @4, "Ошибка в логическом выражении" )
+	}
+	;
 
-frm_background:		frm_begin RDO_Back_picture '=' frm_color {
-						RDOFRMFrame* frame                             = reinterpret_cast<RDOFRMFrame*>($1);
-						rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMColor*>($4);
-						if ( bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent && bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_rgb ) {
-							PARSER->error().error( @4, "Цвет фона не может быть указан ссылкой на последнее значение" );
-						}
-						frame->frame()->setBackgroundColor( bg_color );
-					}
-					| frm_begin RDO_Back_picture '=' {
-					}
-					| frm_begin RDO_Back_picture error {
-						PARSER->error().error( @3, "После ключевого слова $Back_picture ожидается знак равенства" );
-					}
-					| frm_begin error {
-						PARSER->error().error( @2, "После имени кадра ожидается ключевое слово $Back_picture" );
-					};
+frm_background
+	: frm_begin RDO_Back_picture '=' frm_color
+	{
+		RDOFRMFrame* frame                             = reinterpret_cast<RDOFRMFrame*>($1);
+		rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMColor*>($4);
+		if (bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent && bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_rgb)
+		{
+			PARSER->error().error(@4, "Цвет фона не может быть указан ссылкой на последнее значение");
+		}
+		frame->frame()->setBackgroundColor( bg_color );
+	}
+	| frm_begin RDO_Back_picture '='
+	{
+	}
+	| frm_begin RDO_Back_picture error
+	{
+		PARSER->error().error( @3, "После ключевого слова $Back_picture ожидается знак равенства" );
+	}
+	| frm_begin error
+	{
+		PARSER->error().error( @2, "После имени кадра ожидается ключевое слово $Back_picture" );
+	}
+	;
 
-frm_backpicture:	frm_background RDO_IDENTIF {
-						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
-						frame->frame()->setBackPicture( reinterpret_cast<RDOValue*>($2)->value().getIdentificator() );
-					}
-					| frm_background RDO_INT_CONST RDO_INT_CONST {
-						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
-						frame->frame()->setBackPicture( reinterpret_cast<RDOValue*>($2)->value().getInt(), reinterpret_cast<RDOValue*>($3)->value().getInt() );
-					}
-					| frm_background RDO_INT_CONST RDO_INT_CONST error {
-						PARSER->error().error( @4, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
-					}
-					| frm_background RDO_IDENTIF error {
-						PARSER->error().error( @3, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
-					}
-					| frm_background RDO_INT_CONST error {
-						PARSER->error().error( @2, "После ширины кадра необходимо указать его высоту" );
-					}
-					| frm_background {
-						PARSER->error().error( @1, "Необходимо указать имя фоновой картинки или размер кадра" );
-					};
+frm_backpicture
+	: frm_background RDO_IDENTIF
+	{
+		RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
+		frame->frame()->setBackPicture( reinterpret_cast<RDOValue*>($2)->value().getIdentificator() );
+	}
+	| frm_background RDO_INT_CONST RDO_INT_CONST
+	{
+		RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
+		frame->frame()->setBackPicture( reinterpret_cast<RDOValue*>($2)->value().getInt(), reinterpret_cast<RDOValue*>($3)->value().getInt() );
+	}
+	| frm_background RDO_INT_CONST RDO_INT_CONST error
+	{
+		PARSER->error().error( @4, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
+	}
+	| frm_background RDO_IDENTIF error
+	{
+		PARSER->error().error( @3, "Описание заголовка кадра окончено, ожидается ключевое слово $Show" );
+	}
+	| frm_background RDO_INT_CONST error
+	{
+		PARSER->error().error( @2, "После ширины кадра необходимо указать его высоту" );
+	}
+	| frm_background
+	{
+		PARSER->error().error( @1, "Необходимо указать имя фоновой картинки или размер кадра" );
+	}
+	;
 
 /*
-frm_show:			frm_backpicture {
-						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
-						frame->startShow();
-					}
-					| frm_backpicture RDO_Show {
-						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
-						frame->startShow();
-					}
-					| frm_backpicture RDO_Show_if fun_logic {
-						RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
-						frame->startShow( reinterpret_cast<RDOFUNLogic*>($3)->calc );
-					}
-					| frm_backpicture RDO_Show_if error {
-						PARSER->error().error( @3, "Ошибка в логическом выражении" )
-					};
+frm_show
+	: frm_backpicture
+	{
+		RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
+		frame->startShow();
+	}
+	| frm_backpicture RDO_Show
+	{
+		RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
+		frame->startShow();
+	}
+	| frm_backpicture RDO_Show_if fun_logic
+	{
+		RDOFRMFrame* frame = reinterpret_cast<RDOFRMFrame*>($1);
+		frame->startShow( reinterpret_cast<RDOFUNLogic*>($3)->calc );
+	}
+	| frm_backpicture RDO_Show_if error
+	{
+		PARSER->error().error( @3, "Ошибка в логическом выражении" )
+	}
+	;
 */
 
-frm_show:	RDO_Show {
-				RDOFRMFrame* frame = PARSER->getLastFRMFrame();
-				frame->frame()->startShow();
-			}
-			| RDO_Show_if fun_logic {
-				RDOFRMFrame* frame = PARSER->getLastFRMFrame();
-				frame->frame()->startShow( reinterpret_cast<RDOFUNLogic*>($2)->getCalc() );
-			}
-			| RDO_Show_if error {
-				PARSER->error().error( @2, "Ошибка в логическом выражении" )
-			};
+frm_show
+	: RDO_Show
+	{
+		RDOFRMFrame* frame = PARSER->getLastFRMFrame();
+		frame->frame()->startShow();
+	}
+	| RDO_Show_if fun_logic
+	{
+		RDOFRMFrame* frame = PARSER->getLastFRMFrame();
+		frame->frame()->startShow( reinterpret_cast<RDOFUNLogic*>($2)->getCalc() );
+	}
+	| RDO_Show_if error
+	{
+		PARSER->error().error( @2, "Ошибка в логическом выражении" )
+	}
+	;
 
-frm_item:	/* empty */
-			| frm_item frm_show
-			| frm_item frm_text    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMText *)$2); }
-			| frm_item frm_bitmap  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMBitmap *)$2); }
-			| frm_item frm_rect    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMRect *)$2); }
-			| frm_item frm_line    { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMLine *)$2); }
-			| frm_item frm_ellipse { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMEllipse *)$2); }
-			| frm_item frm_r_rect  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMRectRound *)$2); }
-			| frm_item frm_triang  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMTriang *)$2); }
-			| frm_item frm_s_bmp   { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMBitmapStretch *)$2); }
-			| frm_item frm_active  { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMActive *)$2); }
-			| frm_item frm_ruler   { PARSER->getLastFRMFrame()->frame()->addRulet((rdoRuntime::RDOFRMFrame::RDOFRMRulet*)$2); }
-			| frm_item frm_space   { PARSER->getLastFRMFrame()->frame()->addItem((rdoRuntime::RDOFRMSpace*)$2); };
+frm_item
+	: /* empty */
+	| frm_item frm_show
+	| frm_item frm_text    { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMText *)$2); }
+	| frm_item frm_bitmap  { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMBitmap *)$2); }
+	| frm_item frm_rect    { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMRect *)$2); }
+	| frm_item frm_line    { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMLine *)$2); }
+	| frm_item frm_ellipse { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMEllipse *)$2); }
+	| frm_item frm_r_rect  { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMRectRound *)$2); }
+	| frm_item frm_triang  { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMTriang *)$2); }
+	| frm_item frm_s_bmp   { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMBitmapStretch *)$2); }
+	| frm_item frm_active  { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMActive *)$2); }
+	| frm_item frm_ruler   { PARSER->getLastFRMFrame()->frame()->addRulet((rdoRuntime::RDOFRMFrame::RDOFRMRulet*)$2); }
+	| frm_item frm_space   { PARSER->getLastFRMFrame()->frame()->addItem ((rdoRuntime::RDOFRMSpace*             )$2); }
+	;
 
-frm_header:	frm_backpicture frm_item;
+frm_header
+	: frm_backpicture frm_item
+	;
 
-frm_end:	frm_header RDO_End {
-			};
+frm_end
+	: frm_header RDO_End
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Элементы
 // ----------------------------------------------------------------------------
-frm_color:	RDO_color_transparent {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent );
-			}
-			| RDO_color_last {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame() );
-			}
-			| RDO_color_white {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 255, 255 );
-			}
-			| RDO_color_black {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 0, 0 );
-			}
-			| RDO_color_red {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 0, 0 );
-			}
-			| RDO_color_green {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 255, 0 );
-			}
-			| RDO_color_blue {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 0, 255 );
-			}
-			| RDO_color_cyan {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 255, 255 );
-			}
-			| RDO_color_magenta {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 0, 255 );
-			}
-			| RDO_color_yellow {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 255, 0 );
-			}
-			| RDO_color_gray {
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 127, 127, 127 );
-			}
-			| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST '>' {
-				RDOFUNArithm* red   = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($2) );
-				RDOFUNArithm* green = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($3) );
-				RDOFUNArithm* blue  = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($4) );
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
-				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
-				red->checkParamType  (pType);
-				green->checkParamType(pType);
-				blue->checkParamType (pType);
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
-			}
-			| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST error {
-				PARSER->error().error( @4, "Найдены все составляющие цвета, ожидается '>'" );
-			}
-			| '<' RDO_INT_CONST RDO_INT_CONST error {
-				PARSER->error().error( @3, @4, "Ожидается синяя составляющая цвета" );
-			}
-			| '<' RDO_INT_CONST error {
-				PARSER->error().error( @2, @3, "Ожидается зеленая составляющая цвета" );
-			}
-			| '<' fun_arithm ',' fun_arithm ',' fun_arithm '>' {
-				RDOFUNArithm* red   = reinterpret_cast<RDOFUNArithm*>($2);
-				RDOFUNArithm* green = reinterpret_cast<RDOFUNArithm*>($4);
-				RDOFUNArithm* blue  = reinterpret_cast<RDOFUNArithm*>($6);
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
-				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-				LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
-				red->checkParamType  (pType);
-				green->checkParamType(pType);
-				blue->checkParamType (pType);
-				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
-			}
-			| '<' fun_arithm ',' fun_arithm ',' fun_arithm error {
-				PARSER->error().error( @6, "Найдены все составляющие цвета, ожидается '>'" );
-			}
-			| '<' fun_arithm ',' fun_arithm ',' error {
-				PARSER->error().error( @5, @6, "Ожидается синяя составляющая цвета" );
-			}
-			| '<' fun_arithm ',' fun_arithm error {
-				PARSER->error().error( @4, "После зеленой составляющей цвета ожидается запятая" );
-			}
-			| '<' fun_arithm ',' error {
-				PARSER->error().error( @3, @4, "Ожидается зеленая составляющая цвета" );
-			}
-			| '<' fun_arithm error {
-				PARSER->error().error( @2, "После красной составляющей цвета ожидается запятая" );
-			}
-			| '<' error {
-				PARSER->error().error( @1, "После '<' ожидается красная составляющая цвета" );
-			};
+frm_color
+	: RDO_color_transparent
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent );
+	}
+	| RDO_color_last
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame() );
+	}
+	| RDO_color_white
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 255, 255 );
+	}
+	| RDO_color_black
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 0, 0 );
+	}
+	| RDO_color_red
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 0, 0 );
+	}
+	| RDO_color_green
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 255, 0 );
+	}
+	| RDO_color_blue
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 0, 255 );
+	}
+	| RDO_color_cyan
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 0, 255, 255 );
+	}
+	| RDO_color_magenta
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 0, 255 );
+	}
+	| RDO_color_yellow
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 255, 255, 0 );
+	}
+	| RDO_color_gray
+	{
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), 127, 127, 127 );
+	}
+	| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST '>'
+	{
+		RDOFUNArithm* red   = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($2) );
+		RDOFUNArithm* green = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($3) );
+		RDOFUNArithm* blue  = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($4) );
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
+		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
+		red->checkParamType  (pType);
+		green->checkParamType(pType);
+		blue->checkParamType (pType);
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
+	}
+	| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST error
+	{
+		PARSER->error().error( @4, "Найдены все составляющие цвета, ожидается '>'" );
+	}
+	| '<' RDO_INT_CONST RDO_INT_CONST error
+	{
+		PARSER->error().error( @3, @4, "Ожидается синяя составляющая цвета" );
+	}
+	| '<' RDO_INT_CONST error
+	{
+		PARSER->error().error( @2, @3, "Ожидается зеленая составляющая цвета" );
+	}
+	| '<' fun_arithm ',' fun_arithm ',' fun_arithm '>'
+	{
+		RDOFUNArithm* red   = reinterpret_cast<RDOFUNArithm*>($2);
+		RDOFUNArithm* green = reinterpret_cast<RDOFUNArithm*>($4);
+		RDOFUNArithm* blue  = reinterpret_cast<RDOFUNArithm*>($6);
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
+		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
+		red->checkParamType  (pType);
+		green->checkParamType(pType);
+		blue->checkParamType (pType);
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
+	}
+	| '<' fun_arithm ',' fun_arithm ',' fun_arithm error
+	{
+		PARSER->error().error( @6, "Найдены все составляющие цвета, ожидается '>'" );
+	}
+	| '<' fun_arithm ',' fun_arithm ',' error
+	{
+		PARSER->error().error( @5, @6, "Ожидается синяя составляющая цвета" );
+	}
+	| '<' fun_arithm ',' fun_arithm error
+	{
+		PARSER->error().error( @4, "После зеленой составляющей цвета ожидается запятая" );
+	}
+	| '<' fun_arithm ',' error
+	{
+		PARSER->error().error( @3, @4, "Ожидается зеленая составляющая цвета" );
+	}
+	| '<' fun_arithm error
+	{
+		PARSER->error().error( @2, "После красной составляющей цвета ожидается запятая" );
+	}
+	| '<' error
+	{
+		PARSER->error().error( @1, "После '<' ожидается красная составляющая цвета" );
+	}
+	;
 
-frm_postype:	/* empty */     { $$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute; }
-				| '+'           { $$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta;    }
-				| '*'           { $$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::mult;     }
-				| '#' RDO_INT_CONST {
-					int rilet_id = reinterpret_cast<RDOValue*>($2)->value().getInt();
-					if ( rilet_id <= 0 ) {
-						PARSER->error().error( @2, "Номер рулетки должен быть больше нуля" );
-					}
-					if ( !RUNTIME->lastFrame()->findRulet( rilet_id ) ) {
-						PARSER->error().error( @2, rdo::format("Рулетки с номером '%d' не существует", rilet_id) );
-					}
-					$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet + rilet_id;
-				}
-				| '#' error {
-					PARSER->error().error( @1, "После '#' ожидается целочисленный номер рулетки" );
-				};
+frm_postype
+	: /* empty */
+	{
+		$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute;
+	}
+	| '+'           
+	{
+		$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta;
+	}
+	| '*'
+	{
+		$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::mult;
+	}
+	| '#' RDO_INT_CONST
+	{
+		int rilet_id = reinterpret_cast<RDOValue*>($2)->value().getInt();
+		if ( rilet_id <= 0 )
+		{
+			PARSER->error().error( @2, "Номер рулетки должен быть больше нуля" );
+		}
+		if ( !RUNTIME->lastFrame()->findRulet(rilet_id))
+		{
+			PARSER->error().error( @2, rdo::format("Рулетки с номером '%d' не существует", rilet_id) );
+		}
+		$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet + rilet_id;
+	}
+	| '#' error
+	{
+		PARSER->error().error( @1, "После '#' ожидается целочисленный номер рулетки" );
+	}
+	;
 
-frm_postype_xy: frm_postype
-				| '=' {
-					$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::gabarit;
-				};
+frm_postype_xy
+	: frm_postype
+	| '='
+	{
+		$$ = rdoRuntime::RDOFRMFrame::RDOFRMPosition::gabarit;
+	}
+	;
 
-frm_postype_wh:	frm_postype;
-				| '=' {
-					PARSER->error().error( @1, "Нельзя использовать данное выравнивание для ширины или высоты" );
-				};
+frm_postype_wh
+	: frm_postype;
+	| '='
+	{
+		PARSER->error().error( @1, "Нельзя использовать данное выравнивание для ширины или высоты" );
+	}
+	;
 
-frm_position_xy: fun_arithm frm_postype_xy {
-					rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
-					if ( $2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet ) {
-						$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
-					} else {
-						$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
-					}
-				};
+frm_position_xy
+	: fun_arithm frm_postype_xy 
+	{
+		rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
+		if ( $2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet )
+		{
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
+		}
+		else
+		{
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
+		}
+	}
+	;
 
-frm_position_wh: fun_arithm frm_postype_wh {
-					rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
-					if ( $2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet ) {
-						$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
-					} else {
-						$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
-					}
-				};
+frm_position_wh
+	: fun_arithm frm_postype_wh
+	{
+		rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
+		if ( $2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet )
+		{
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
+		}
+		else
+		{
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
+		}
+	}
+	;
 
-frm_ruler:		RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']' {
-					const rdoRuntime::RDOFRMFrame::RDOFRMRulet* rulet = RUNTIME->lastFrame()->findRulet( reinterpret_cast<RDOValue*>($3)->value().getInt() );
-					if ( rulet ) {
-						PARSER->error().push_only( @3, rdo::format("Рулетка с номером '%d' уже существует", reinterpret_cast<RDOValue*>($3)->value().getInt()) );
-						PARSER->error().push_only( rulet->src_info(), "См. первое определение" );
-						PARSER->error().push_done();
-					}
-					rdoRuntime::RDOFRMFrame::RDOFRMPosition* x = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($5);
-					rdoRuntime::RDOFRMFrame::RDOFRMPosition* y = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($7);
-					if ( x->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute ) {
-						PARSER->error().error( @5, "Коодинаты рулетки должны быть абсолютными" );
-					}
-					if ( y->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute ) {
-						PARSER->error().error( @7, "Коодинаты рулетки должны быть абсолютными" );
-					}
-					$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMRulet( RDOParserSrcInfo(@1), reinterpret_cast<RDOValue*>($3)->value().getInt(), x, y );
-				}
-				| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error {
-					PARSER->error().error( @7, "Ожидается ']'" );
-				}
-				| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' error {
-					PARSER->error().error( @6, @7, "Ожидается координата по оси Y" );
-				}
-				| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy error {
-					PARSER->error().error( @5, "Ожидается запятая" );
-				}
-				| RDO_ruler '[' RDO_INT_CONST ',' error {
-					PARSER->error().error( @4, @5, "Ожидается координата по оси X" );
-				}
-				| RDO_ruler '[' RDO_INT_CONST error {
-					PARSER->error().error( @3, "Ожидается запятая" );
-				}
-				| RDO_ruler '[' error {
-					PARSER->error().error( @2, @3, "Ожидается номер рулетки" );
-				}
-				| RDO_ruler error {
-					PARSER->error().error( @1, "Ожидается '['" );
-				};
+frm_ruler
+	: RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']'
+	{
+		const rdoRuntime::RDOFRMFrame::RDOFRMRulet* rulet = RUNTIME->lastFrame()->findRulet( reinterpret_cast<RDOValue*>($3)->value().getInt() );
+		if ( rulet ) {
+			PARSER->error().push_only( @3, rdo::format("Рулетка с номером '%d' уже существует", reinterpret_cast<RDOValue*>($3)->value().getInt()) );
+			PARSER->error().push_only( rulet->src_info(), "См. первое определение" );
+			PARSER->error().push_done();
+		}
+		rdoRuntime::RDOFRMFrame::RDOFRMPosition* x = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($5);
+		rdoRuntime::RDOFRMFrame::RDOFRMPosition* y = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($7);
+		if ( x->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute )
+		{
+			PARSER->error().error( @5, "Коодинаты рулетки должны быть абсолютными" );
+		}
+		if ( y->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute )
+		{
+			PARSER->error().error( @7, "Коодинаты рулетки должны быть абсолютными" );
+		}
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMRulet( RDOParserSrcInfo(@1), reinterpret_cast<RDOValue*>($3)->value().getInt(), x, y );
+	}
+	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
+	{
+		PARSER->error().error( @7, "Ожидается ']'" );
+	}
+	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' error
+	{
+		PARSER->error().error( @6, @7, "Ожидается координата по оси Y" );
+	}
+	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy error
+	{
+		PARSER->error().error( @5, "Ожидается запятая" );
+	}
+	| RDO_ruler '[' RDO_INT_CONST ',' error
+	{
+		PARSER->error().error( @4, @5, "Ожидается координата по оси X" );
+	}
+	| RDO_ruler '[' RDO_INT_CONST error
+	{
+		PARSER->error().error( @3, "Ожидается запятая" );
+	}
+	| RDO_ruler '[' error
+	{
+		PARSER->error().error( @2, @3, "Ожидается номер рулетки" );
+	}
+	| RDO_ruler error
+	{
+		PARSER->error().error( @1, "Ожидается '['" );
+	}
+	;
 
 frm_space:	RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']' {
 				rdoRuntime::RDOFRMFrame::RDOFRMPosition* x      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($3);
