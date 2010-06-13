@@ -318,7 +318,7 @@ dpt_search_begin
 				LPILogic parent = parentDPTPrior->getLogic();
 				$$ = (int)new RDODPTSearch(PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
 			}
-			else if (parentDPTSome)
+			if (parentDPTSome)
 			{
 				LPILogic parent = parentDPTSome->getLogic();
 				$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
@@ -519,8 +519,6 @@ dpt_searcht_activity
 
 dpt_search_header
 	: dp_searcht_compare RDO_Activities dpt_searcht_activity
-	{
-	}
 	| dp_searcht_compare error
 	{
 		PARSER->error().error( @1, @2, "После режима запоминания пройденных вершин ожидается ключевое слово $Activities" );
@@ -608,7 +606,7 @@ dpt_some_begin
 				LPILogic parent = parentDPTPrior->getLogic();
 				$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
 			}
-			else if (parentDPTSome)
+			if (parentDPTSome)
 			{
 				LPILogic parent = parentDPTSome->getLogic();
 				$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
@@ -703,8 +701,6 @@ dpt_some_activity
 
 dpt_some_header
 	: dpt_some_prior RDO_Activities dpt_some_activity
-	{
-	}
 	| dpt_some_prior error
 	{
 		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Activities" );
@@ -792,7 +788,7 @@ dpt_prior_begin
 				LPILogic parent = parentDPTPrior->getLogic();
 				$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
 			}
-			else if (parentDPTSome)
+			if (parentDPTSome)
 			{
 				LPILogic parent = parentDPTSome->getLogic();
 				$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
@@ -918,7 +914,8 @@ dpt_prior_end
 		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
 		dpt->end();
 	}
-	| dpt_prior_header {
+	| dpt_prior_header
+	{
 		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
 	}
 	;
@@ -973,12 +970,14 @@ dpt_free_activity_name
 
 dpt_free_activity_param
 	: /* empty */
-	| dpt_free_activity_param  '*'               { PARSER->getLastDPTFree()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
-	| dpt_free_activity_param  RDO_INT_CONST     { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_free_activity_param  RDO_REAL_CONST    { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_free_activity_param  RDO_BOOL_CONST    { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_free_activity_param  RDO_STRING_CONST  { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-	| dpt_free_activity_param  RDO_IDENTIF       { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+	| dpt_free_activity_param '*'
+	{
+		PARSER->getLastDPTFree()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+	}
+	| dpt_free_activity_param fun_arithm
+	{
+		PARSER->getLastDPTFree()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+	}
 	| dpt_free_activity_param error
 	{
 		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
@@ -1010,18 +1009,17 @@ dpt_free_end
 	;
 
 // ----------------------------------------------------------------------------
-// ---------- $Process
+// ---------- заглушка для $Process
 // ----------------------------------------------------------------------------
 dpt_process_end
 	: RDO_Process error RDO_End
-	; /* заглушка для $Process */
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: '='    { $$ = RDO_eq; }
-	| RDO_eq { $$ = RDO_eq; }
+	: RDO_eq { $$ = RDO_eq; }
 	;
 
 fun_logic
@@ -1058,10 +1056,12 @@ fun_logic
 		logic_not->setSrcText(_T("not ") + logic->src_text());
 		$$ = (int)logic_not;
 	}
-	| '[' fun_logic error {
+	| '[' fun_logic error
+	{
 		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
-	| '(' fun_logic error {
+	| '(' fun_logic error
+	{
 		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
@@ -1223,10 +1223,12 @@ fun_select_header
 		select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
 		$$ = (int)select;
 	}
-	| RDO_Select '(' error {
+	| RDO_Select '(' error
+	{
 		PARSER->error().error(@3, _T("Ожидается имя типа"));
 	}
-	| RDO_Select error {
+	| RDO_Select error
+	{
 		PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
 	}
 	;
