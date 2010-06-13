@@ -224,344 +224,434 @@ OPEN_RDO_PARSER_NAMESPACE
 
 %%
 
-opr_main:	/* empty */
-			| opr_end
-			| error {
-				if ( !PARSER->getLastOperations() ) {
-					PARSER->error().error( @1, "Ожидается ключевое слово $Operations" );
-				} else {
-					PARSER->error().error( @1, rdoSimulator::RDOSyntaxError::UNKNOWN );
-				}
-			};
+opr_main
+	: /* empty */
+	| opr_end
+	| error
+	{
+		if ( !PARSER->getLastOperations() )
+		{
+			PARSER->error().error( @1, "Ожидается ключевое слово $Operations" );
+		}
+		else
+		{
+			PARSER->error().error( @1, rdoSimulator::RDOSyntaxError::UNKNOWN );
+		}
+	}
+	;
 
-opr_prior:	opr_header
-			| RDO_Priority fun_arithm opr_header
-			{
-				if (!PARSER->getLastOperations()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
-				{
-					PARSER->error().error(@3, _T("Операции пока не могут иметь приоритет"));
-				}
-			}
-			| RDO_Priority error opr_header
-			{
-				PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
-			}
-			| error opr_header
-			{
-				PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
-			};
+opr_prior
+	: opr_header
+	| RDO_Priority fun_arithm opr_header
+	{
+		if (!PARSER->getLastOperations()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
+		{
+			PARSER->error().error(@3, _T("Операции пока не могут иметь приоритет"));
+		}
+	}
+	| RDO_Priority error opr_header
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+	}
+	| error opr_header
+	{
+		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+	}
+	;
 
-opr_header:	RDO_Operations {
-				$$ = (int)new RDOOperations( PARSER, @1 );
-			};
+opr_header
+	: RDO_Operations
+	{
+		$$ = (int)new RDOOperations( PARSER, @1 );
+	}
+	;
 
-opr_body:	opr_prior RDO_IDENTIF_COLON RDO_IDENTIF {
-				RDOOperations* oprs    = PARSER->getLastOperations();
-				RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
-				RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
-				RDOOPROperation* opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
-				$$ = (int)opr;
-			}
-			| opr_param RDO_IDENTIF_COLON RDO_IDENTIF {
-				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				opr->endParam( @1 );
-				RDOOperations* oprs    = PARSER->getLastOperations();
-				RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
-				RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
-				opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
-				$$ = (int)opr;
-			}
-			| opr_prior RDO_IDENTIF_COLON error {
-				PARSER->error().error( @2, @3, "Ожидается имя образца" );
-			}
-			| opr_param RDO_IDENTIF_COLON error {
-				PARSER->error().error( @2, @3, "Ожидается имя образца" );
-			}
-			| opr_prior error {
-				PARSER->error().error( @2, "Ожидается имя операции" );
-			};
+opr_body
+	: opr_prior RDO_IDENTIF_COLON RDO_IDENTIF
+	{
+		RDOOperations* oprs    = PARSER->getLastOperations();
+		RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
+		RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
+		RDOOPROperation* opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
+		$$ = (int)opr;
+	}
+	| opr_param RDO_IDENTIF_COLON RDO_IDENTIF
+	{
+		RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+		opr->endParam( @1 );
+		RDOOperations* oprs    = PARSER->getLastOperations();
+		RDOValue*      name    = reinterpret_cast<RDOValue*>($2);
+		RDOValue*      pattern = reinterpret_cast<RDOValue*>($3);
+		opr = oprs->addNewActivity( name->src_info(), pattern->src_info() );
+		$$ = (int)opr;
+	}
+	| opr_prior RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error( @2, @3, "Ожидается имя образца" );
+	}
+	| opr_param RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error( @2, @3, "Ожидается имя образца" );
+	}
+	| opr_prior error
+	{
+		PARSER->error().error( @2, "Ожидается имя операции" );
+	}
+	;
 
-opr_keyb:	opr_body
-			| opr_keyb RDO_STRING_CONST {
-				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      key = reinterpret_cast<RDOValue*>($2)->value().getString();
-				opr->addHotKey( key, @2 );
-			}
-			| opr_keyb '+' RDO_STRING_CONST {
-				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
-				opr->addHotKey( key, @3 );
-			};
+opr_keyb
+	: opr_body
+	| opr_keyb RDO_STRING_CONST
+	{
+		RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+		std::string      key = reinterpret_cast<RDOValue*>($2)->value().getString();
+		opr->addHotKey( key, @2 );
+	}
+	| opr_keyb '+' RDO_STRING_CONST
+	{
+		RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+		std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
+		opr->addHotKey( key, @3 );
+	}
+	;
 
-opr_param:	  opr_param  '*'                 { reinterpret_cast<RDOOPROperation*>($1)->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
-			| opr_param  RDO_INT_CONST       { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-			| opr_param  RDO_REAL_CONST      { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-			| opr_param  RDO_BOOL_CONST      { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-			| opr_param  RDO_STRING_CONST    { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-			| opr_param  RDO_IDENTIF         { reinterpret_cast<RDOOPROperation*>($1)->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-			| opr_keyb;
+opr_param
+	: opr_param  '*'              {reinterpret_cast<RDOOPROperation*>($1)->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));}
+	| opr_param  RDO_INT_CONST    {reinterpret_cast<RDOOPROperation*>($1)->addParam(*reinterpret_cast<RDOValue*>($2)   );}
+	| opr_param  RDO_REAL_CONST   {reinterpret_cast<RDOOPROperation*>($1)->addParam(*reinterpret_cast<RDOValue*>($2)   );}
+	| opr_param  RDO_BOOL_CONST   {reinterpret_cast<RDOOPROperation*>($1)->addParam(*reinterpret_cast<RDOValue*>($2)   );}
+	| opr_param  RDO_STRING_CONST {reinterpret_cast<RDOOPROperation*>($1)->addParam(*reinterpret_cast<RDOValue*>($2)   );}
+	| opr_param  RDO_IDENTIF      {reinterpret_cast<RDOOPROperation*>($1)->addParam(*reinterpret_cast<RDOValue*>($2)   );}
+	| opr_keyb
+	;
 
-opr_end:	opr_param RDO_End {
-				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				opr->endParam( @1 );
-			};
+opr_end
+	: opr_param RDO_End
+	{
+		RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+		opr->endParam(@1);
+	}
+	;
 
+// ----------------------------------------------------------------------------
+// ---------- Общие составные токены для всех объектов РДО
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-fun_logic_eq: '='    { $$ = RDO_eq; }
-			| RDO_eq { $$ = RDO_eq; };
+fun_logic_eq
+	: RDO_eq { $$ = RDO_eq; }
+	;
 
-fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
-			| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
-			| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
-			| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }
-			| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(ARITHM($1) <= ARITHM($3));  }
-			| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(ARITHM($1) >= ARITHM($3));  }
-			| fun_logic   RDO_and       fun_logic    { $$ = (int)(LOGIC($1) && LOGIC($3));    }
-			| fun_logic   RDO_or        fun_logic    { $$ = (int)(LOGIC($1) || LOGIC($3));    }
-			| fun_arithm                             { $$ = (int)new RDOFUNLogic(ARITHM($1)); }
-			| fun_group
-			| fun_select_logic
-			| '[' fun_logic ']'
-			{
-				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				logic->setSrcPos (@1, @3);
-				logic->setSrcText(_T("[") + logic->src_text() + _T("]"));
-				$$ = $2;
-			}
-			| '(' fun_logic ')'
-			{
-				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				logic->setSrcPos (@1, @3);
-				logic->setSrcText(_T("(") + logic->src_text() + _T(")"));
-				$$ = $2;
-			}
-			| RDO_not fun_logic
-			{
-				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				PTR(RDOFUNLogic) logic_not = logic->operator_not();
-				logic_not->setSrcPos (@1, @2);
-				logic_not->setSrcText(_T("not ") + logic->src_text());
-				$$ = (int)logic_not;
-			}
-			| '[' fun_logic error {
-				PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-			}
-			| '(' fun_logic error {
-				PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-			};
+fun_logic
+	: fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
+	| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
+	| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
+	| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }
+	| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(ARITHM($1) <= ARITHM($3));  }
+	| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(ARITHM($1) >= ARITHM($3));  }
+	| fun_logic   RDO_and       fun_logic    { $$ = (int)(LOGIC($1) && LOGIC($3));    }
+	| fun_logic   RDO_or        fun_logic    { $$ = (int)(LOGIC($1) || LOGIC($3));    }
+	| fun_arithm                             { $$ = (int)new RDOFUNLogic(ARITHM($1)); }
+	| fun_group
+	| fun_select_logic
+	| '[' fun_logic ']'
+	{
+		PTR(RDOFUNLogic) logic = P_LOGIC($2);
+		logic->setSrcPos (@1, @3);
+		logic->setSrcText(_T("[") + logic->src_text() + _T("]"));
+		$$ = $2;
+	}
+	| '(' fun_logic ')'
+	{
+		PTR(RDOFUNLogic) logic = P_LOGIC($2);
+		logic->setSrcPos (@1, @3);
+		logic->setSrcText(_T("(") + logic->src_text() + _T(")"));
+		$$ = $2;
+	}
+	| RDO_not fun_logic
+	{
+		PTR(RDOFUNLogic) logic = P_LOGIC($2);
+		PTR(RDOFUNLogic) logic_not = logic->operator_not();
+		logic_not->setSrcPos (@1, @2);
+		logic_not->setSrcText(_T("not ") + logic->src_text());
+		$$ = (int)logic_not;
+	}
+	| '[' fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| '(' fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm:	  RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
-			| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
-			| fun_arithm '+' fun_arithm		     { $$ = (int)(ARITHM($1) + ARITHM($3)); }
-			| fun_arithm '-' fun_arithm		     { $$ = (int)(ARITHM($1) - ARITHM($3)); }
-			| fun_arithm '*' fun_arithm		     { $$ = (int)(ARITHM($1) * ARITHM($3)); }
-			| fun_arithm '/' fun_arithm		     { $$ = (int)(ARITHM($1) / ARITHM($3)); }
-			| fun_arithm_func_call
-			| fun_select_arithm
-			| '(' fun_arithm ')'
-			{
-				PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-				arithm->setSrcPos (@1, @3);
-				arithm->setSrcText(_T("(") + arithm->src_text() + _T(")"));
-				$$ = $2;
-			}
-			| '-' fun_arithm %prec RDO_UMINUS
-			{
-				RDOParserSrcInfo info;
-				info.setSrcPos (@1, @2);
-				info.setSrcText(_T("-") + ARITHM($2).src_text());
-				$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus(RUNTIME, ARITHM($2).createCalc()));
-			};
+fun_arithm
+	: RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
+	| fun_arithm '+' fun_arithm		     { $$ = (int)(ARITHM($1) + ARITHM($3)); }
+	| fun_arithm '-' fun_arithm		     { $$ = (int)(ARITHM($1) - ARITHM($3)); }
+	| fun_arithm '*' fun_arithm		     { $$ = (int)(ARITHM($1) * ARITHM($3)); }
+	| fun_arithm '/' fun_arithm		     { $$ = (int)(ARITHM($1) / ARITHM($3)); }
+	| fun_arithm_func_call
+	| fun_select_arithm
+	| '(' fun_arithm ')'
+	{
+		PTR(RDOFUNArithm) arithm = P_ARITHM($2);
+		arithm->setSrcPos (@1, @3);
+		arithm->setSrcText(_T("(") + arithm->src_text() + _T(")"));
+		$$ = $2;
+	}
+	| '-' fun_arithm %prec RDO_UMINUS
+	{
+		RDOParserSrcInfo info;
+		info.setSrcPos (@1, @2);
+		info.setSrcText(_T("-") + ARITHM($2).src_text());
+		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus(RUNTIME, ARITHM($2).createCalc()));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
-fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
-							PTR(RDOFUNParams) fun = new RDOFUNParams(PARSER);
-							tstring fun_name = RDOVALUE($1)->getIdentificator();
-							fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-							fun->setSrcPos (@1, @3);
-							fun->setSrcText(fun_name + _T("()"));
-							PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-							$$ = (int)arithm;
-						}
-						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
-							PTR(RDOFUNParams) fun      = reinterpret_cast<PTR(RDOFUNParams)>($3);
-							tstring           fun_name = RDOVALUE($1)->getIdentificator();
-							fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-							fun->setSrcPos (@1, @4);
-							fun->setSrcText(fun_name + _T("(") + fun->src_text() + _T(")"));
-							PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-							$$ = (int)arithm;
-						}
-						| RDO_IDENTIF '(' error {
-							PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
-						};
+fun_arithm_func_call
+	: RDO_IDENTIF '(' ')' 
+	{
+		PTR(RDOFUNParams) fun = new RDOFUNParams(PARSER);
+		tstring fun_name = RDOVALUE($1)->getIdentificator();
+		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
+		fun->setSrcPos (@1, @3);
+		fun->setSrcText(fun_name + _T("()"));
+		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
+		$$ = (int)arithm;
+	}
+	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')'
+	{
+		PTR(RDOFUNParams) fun      = reinterpret_cast<PTR(RDOFUNParams)>($3);
+		tstring           fun_name = RDOVALUE($1)->getIdentificator();
+		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
+		fun->setSrcPos (@1, @4);
+		fun->setSrcText(fun_name + _T("(") + fun->src_text() + _T(")"));
+		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
+		$$ = (int)arithm;
+	}
+	| RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
+	}
+	;
 
-fun_arithm_func_call_pars:	fun_arithm {
-								PTR(RDOFUNParams) fun    = new RDOFUNParams(PARSER);
-								PTR(RDOFUNArithm) arithm = P_ARITHM($1);
-								fun->setSrcText  (arithm->src_text());
-								fun->addParameter(arithm);
-								$$ = (int)fun;
-							}
-							| fun_arithm_func_call_pars ',' fun_arithm {
-								PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($1);
-								PTR(RDOFUNArithm) arithm = P_ARITHM($3);
-								fun->setSrcText  (fun->src_text() + _T(", ") + arithm->src_text());
-								fun->addParameter(arithm);
-								$$ = (int)fun;
-							}
-							| fun_arithm_func_call_pars error {
-								PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
-							}
-							| fun_arithm_func_call_pars ',' error {
-								PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-							};
+fun_arithm_func_call_pars
+	: fun_arithm
+	{
+		PTR(RDOFUNParams) fun    = new RDOFUNParams(PARSER);
+		PTR(RDOFUNArithm) arithm = P_ARITHM($1);
+		fun->setSrcText  (arithm->src_text());
+		fun->addParameter(arithm);
+		$$ = (int)fun;
+	}
+	| fun_arithm_func_call_pars ',' fun_arithm
+	{
+		PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($1);
+		PTR(RDOFUNArithm) arithm = P_ARITHM($3);
+		fun->setSrcText  (fun->src_text() + _T(", ") + arithm->src_text());
+		fun->addParameter(arithm);
+		$$ = (int)fun;
+	}
+	| fun_arithm_func_call_pars error
+	{
+		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+	}
+	| fun_arithm_func_call_pars ',' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
-fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_group_keyword
+	: RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; }
+	;
 
-fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						PTR(RDOValue) type_name = P_RDOVALUE($3);
-						$$ = (int)(new RDOFUNGroupLogic(PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
-					}
-					| fun_group_keyword '(' error {
-						PARSER->error().error(@3, _T("Ожидается имя типа"));
-					}
-					| fun_group_keyword error {
-						PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
-					};
+fun_group_header
+	: fun_group_keyword '(' RDO_IDENTIF_COLON
+	{
+		PTR(RDOValue) type_name = P_RDOVALUE($3);
+		$$ = (int)(new RDOFUNGroupLogic(PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+	}
+	| fun_group_keyword '(' error
+	{
+		PARSER->error().error(@3, _T("Ожидается имя типа"));
+	}
+	| fun_group_keyword error
+	{
+		PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+	}
+	;
 
-fun_group:			fun_group_header fun_logic ')' {
-						PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-						groupfun->setSrcPos(@1, @3);
-						$$ = (int)groupfun->createFunLogic(P_LOGIC($2));
-					}
-					| fun_group_header RDO_NoCheck ')' {
-						PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-						groupfun->setSrcPos(@1, @3);
-						PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, new rdoRuntime::RDOCalcConst(RUNTIME, 1));
-						trueLogic->setSrcPos (@2);
-						trueLogic->setSrcText(_T("NoCheck"));
-						$$ = (int)groupfun->createFunLogic(trueLogic);
-					}
-					| fun_group_header fun_logic error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_group_header RDO_NoCheck error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_group_header error {
-						PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
-					};
+fun_group
+	: fun_group_header fun_logic ')'
+	{
+		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
+		groupfun->setSrcPos(@1, @3);
+		$$ = (int)groupfun->createFunLogic(P_LOGIC($2));
+	}
+	| fun_group_header RDO_NoCheck ')'
+	{
+		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
+		groupfun->setSrcPos(@1, @3);
+		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, new rdoRuntime::RDOCalcConst(RUNTIME, 1));
+		trueLogic->setSrcPos (@2);
+		trueLogic->setSrcText(_T("NoCheck"));
+		$$ = (int)groupfun->createFunLogic(trueLogic);
+	}
+	| fun_group_header fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_group_header RDO_NoCheck error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_group_header error
+	{
+		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Select
 // ----------------------------------------------------------------------------
-fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						PTR(RDOValue) type_name  = P_RDOVALUE($3);
-						PTR(RDOFUNSelect) select = new RDOFUNSelect(PARSER, type_name->src_info());
-						select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
-						$$ = (int)select;
-					}
-					| RDO_Select '(' error {
-						PARSER->error().error(@3, _T("Ожидается имя типа"));
-					}
-					| RDO_Select error {
-						PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
-					};
+fun_select_header
+	: RDO_Select '(' RDO_IDENTIF_COLON
+	{
+		PTR(RDOValue) type_name  = P_RDOVALUE($3);
+		PTR(RDOFUNSelect) select = new RDOFUNSelect(PARSER, type_name->src_info());
+		select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		$$ = (int)select;
+	}
+	| RDO_Select '(' error
+	{
+		PARSER->error().error(@3, _T("Ожидается имя типа"));
+	}
+	| RDO_Select error
+	{
+		PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+	}
+	;
 
-fun_select_body:	fun_select_header fun_logic ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						PTR(RDOFUNLogic)  flogic = P_LOGIC($2);
-						select->setSrcText(select->src_text() + flogic->src_text() + _T(")"));
-						select->initSelect(flogic);
-					}
-					| fun_select_header RDO_NoCheck ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
-						select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
-						PTR(rdoRuntime::RDOCalcConst) calc_nocheck = new rdoRuntime::RDOCalcConst(RUNTIME, 1);
-						PTR(RDOFUNLogic)              flogic       = new RDOFUNLogic(select, calc_nocheck, true);
-						flogic->setSrcInfo(logic_info);
-						select->initSelect(flogic);
-					}
-					| fun_select_header fun_logic error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_select_header RDO_NoCheck error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_select_header error {
-						PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
-					};
+fun_select_body
+	: fun_select_header fun_logic ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		PTR(RDOFUNLogic)  flogic = P_LOGIC($2);
+		select->setSrcText(select->src_text() + flogic->src_text() + _T(")"));
+		select->initSelect(flogic);
+	}
+	| fun_select_header RDO_NoCheck ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
+		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
+		PTR(rdoRuntime::RDOCalcConst) calc_nocheck = new rdoRuntime::RDOCalcConst(RUNTIME, 1);
+		PTR(RDOFUNLogic)              flogic       = new RDOFUNLogic(select, calc_nocheck, true);
+		flogic->setSrcInfo(logic_info);
+		select->initSelect(flogic);
+	}
+	| fun_select_header fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_header RDO_NoCheck error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_header error
+	{
+		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+	}
+	;
 
-fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_select_keyword
+	: RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; }
+	;
 
-fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						select->setSrcPos(@1, @6);
-						PTR(RDOFUNLogic) logic = select->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5));
-						$$ = (int)logic;
-					}
-					| fun_select_body '.' fun_select_keyword '(' error {
-						PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
-					}
-					| fun_select_body '.' fun_select_keyword error {
-						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
-					}
-					| fun_select_body '.' RDO_Empty '(' ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						select->setSrcPos(@1, @5);
-						RDOParserSrcInfo empty_info(@3, @5, _T("Empty()"));
-						PTR(RDOFUNLogic) logic = select->createFunSelectEmpty(empty_info);
-						$$ = (int)logic;
-					}
-					| fun_select_body '.' RDO_Empty '(' error {
-						PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_select_body '.' RDO_Empty error {
-						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
-					}
-					| fun_select_body '.' error {
-						PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
-					}
-					| fun_select_body error {
-						PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
-					};
+fun_select_logic
+	: fun_select_body '.' fun_select_keyword '(' fun_logic ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		select->setSrcPos(@1, @6);
+		PTR(RDOFUNLogic) logic = select->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5));
+		$$ = (int)logic;
+	}
+	| fun_select_body '.' fun_select_keyword '(' error
+	{
+		PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+	}
+	| fun_select_body '.' fun_select_keyword error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Empty '(' ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		select->setSrcPos(@1, @5);
+		RDOParserSrcInfo empty_info(@3, @5, _T("Empty()"));
+		PTR(RDOFUNLogic) logic = select->createFunSelectEmpty(empty_info);
+		$$ = (int)logic;
+	}
+	| fun_select_body '.' RDO_Empty '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Empty error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' error
+	{
+		PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+	}
+	| fun_select_body error
+	{
+		PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+	}
+	;
 
-fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						select->setSrcPos(@1, @5);
-						RDOParserSrcInfo size_info(@3, @5, _T("Size()"));
-						PTR(RDOFUNArithm) arithm = select->createFunSelectSize(size_info);
-						$$ = (int)arithm;
-					}
-					| fun_select_body '.' RDO_Size error {
-						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
-					}
-					| fun_select_body '.' RDO_Size '(' error {
-						PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
-					};
+fun_select_arithm
+	: fun_select_body '.' RDO_Size '(' ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		select->setSrcPos(@1, @5);
+		RDOParserSrcInfo size_info(@3, @5, _T("Size()"));
+		PTR(RDOFUNArithm) arithm = select->createFunSelectSize(size_info);
+		$$ = (int)arithm;
+	}
+	| fun_select_body '.' RDO_Size error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Size '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	;
 
 %%
 
