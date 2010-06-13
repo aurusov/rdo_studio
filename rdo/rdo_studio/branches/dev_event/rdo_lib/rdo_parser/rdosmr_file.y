@@ -335,8 +335,6 @@ smr_descr
 		PARSER->error().error( @2, "Ожидается псевдоним внешей модели" );
 	}
 	| smr_descr error
-	{
-	}
 	;
 
 %%
