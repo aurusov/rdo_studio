@@ -143,6 +143,8 @@
 %token RDO_event						380
 %token RDO_Planning						381
 %token RDO_else							382
+%token RDO_IncrEqual					383
+%token RDO_DecrEqual					384
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -1535,7 +1537,73 @@ nochange_statement
 	;
 
 equal_statement
-	: RDO_IDENTIF param_equal_type fun_arithm ';'
+	: RDO_IDENTIF increment_or_decrement_type ';'
+	{
+		tstring                  paramName   = RDOVALUE($1)->getIdentificator();
+		rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($2);
+		PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->m_pCurrRelRes;
+		ASSERT(pRelRes);
+		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
+		if (!param)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		}
+		PTR(rdoRuntime::RDOCalc) pCalc      = NULL;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_INCR:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR>(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+				break;
+			}
+			case rdoRuntime::ET_DECR:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR>(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+				break;
+			}
+			default:
+			{
+				NEVER_REACH_HERE;
+			}
+		}
+		ASSERT(pCalc);
+		//! Проверка на диапазон
+		//! TODO: проверить работоспособность
+		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+		{
+			LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+		}
+		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+		{
+			LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+		}
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_INCR:
+			{
+				oprStr = _T("++");
+				break;
+			}
+			case rdoRuntime::ET_DECR:
+			{
+				oprStr = _T("--");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcPos (@1.first_line, @1.first_column, @2.last_line, @2.last_column);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_IDENTIF param_equal_type fun_arithm ';'
 	{
 		tstring                  paramName   = RDOVALUE($1)->getIdentificator();
 		rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($2);
@@ -1749,6 +1817,17 @@ if_statement
 	| RDO_if '(' fun_logic error
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+increment_or_decrement_type
+	: RDO_IncrEqual
+	{
+		$$ = rdoRuntime::ET_INCR;
+	}
+	| RDO_DecrEqual
+	{
+		$$ = rdoRuntime::ET_DECR;
 	}
 	;
 

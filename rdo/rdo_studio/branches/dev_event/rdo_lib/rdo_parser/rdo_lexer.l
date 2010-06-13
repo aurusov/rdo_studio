@@ -251,6 +251,8 @@ $parent				return(RDO_Parent);
 "-="                return(RDO_MinusEqual);
 "*="                return(RDO_MultiplyEqual);
 "/="                return(RDO_DivideEqual);
+"++"                return(RDO_IncrEqual);
+"--"                return(RDO_DecrEqual);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);
