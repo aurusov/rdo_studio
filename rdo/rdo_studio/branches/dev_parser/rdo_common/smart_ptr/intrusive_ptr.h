@@ -43,7 +43,7 @@ public:
 	 PTR(T) operator-> ();
 
 	template <class P>
-	intrusive_ptr<P> cast() const;
+	intrusive_ptr<P> object_cast() const;
 
 	template <class P>
 	interface_ptr<P> interface_cast();

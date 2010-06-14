@@ -87,7 +87,7 @@ inline PTR(T) intrusive_ptr<T>::operator-> ()
 
 template<class T>
 template<class P>
-inline intrusive_ptr<P> intrusive_ptr<T>::cast() const
+inline intrusive_ptr<P> intrusive_ptr<T>::object_cast() const
 {
 	return intrusive_ptr<P>(static_cast<PTR(P)>(m_object));
 }
