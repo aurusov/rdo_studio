@@ -28,34 +28,34 @@ $Body
 	3 3 3.0
 $End
 
-$Sequence ф_создания_состава : real
+$Sequence ф_создания_состава : real[0..100000]
 $Type = normal 235
 $End
 
-$Sequence ф_погрузки : real
+$Sequence ф_погрузки : real[0..100000]
 $Type = normal 768434
 $End
 
-$Sequence ф_время_в_пути : real
+$Sequence ф_время_в_пути : real[0..100000]
 $Type = normal 0876543
 $End
 
-$Sequence ф_прохождение_таможни : real
+$Sequence ф_прохождение_таможни : real[0..100000]
 $Type = normal 545478
 $End
 
-$Sequence ф_смена_колеи : real
+$Sequence ф_смена_колеи : real[0..100000]
 $Type = normal 54747848
 $End
 
-$Sequence ф_разгрузка : real
+$Sequence ф_разгрузка : real[0..100000]
 $Type = normal 321258
 $End
 
-$Sequence ф_мойка : real
+$Sequence ф_мойка : real[0..100000]
 $Type = normal 45789211
 $End
 
-$Sequence ф_возврата_вагонов_в_парк : real
+$Sequence ф_возврата_вагонов_в_парк : real[0..100000]
 $Type = normal 80504030890
 $End
