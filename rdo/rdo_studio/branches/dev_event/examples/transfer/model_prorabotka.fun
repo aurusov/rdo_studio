@@ -1,12 +1,13 @@
 $Constant
-	тоннаж : real = 30.0
+	тоннаж : real = 60.0
+	вагоны_в_составе: integer = 60
 $End
 
 $Sequence ф_приход_заявок: integer [0..3000]
 $Type = normal 3487478
 $End
 
-$Function ф_приведение_к_ближайшему_неменьшему_целому: integer
+$Function ф_приведение_к_ближайшему_большему_целому: integer = 0
 $Type = algorithmic
 $Parameters
 	параметр: real
