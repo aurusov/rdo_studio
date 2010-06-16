@@ -15,6 +15,7 @@ class RPMethodProc2RDO_MJ: public rpMethod::RPMethod, public RPObject_MJ
 private:
 	virtual ~RPMethodProc2RDO_MJ();
 	tstring getDirectory() const;
+	tstring getName() const;
 
 protected:
 	void registerObject();

@@ -21,6 +21,9 @@
 #include <afxpriv.h>    // äëÿ rdostudioapp
 #include "rdo_studio/rdostudioapp.h"
 #include "rdo_repository/rdorepository.h"
+#include "rdo_studio/stdafx.h"
+#include "rdo_studio/rdostudiomodel.h"
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -102,6 +105,8 @@ void RPMethodProc2RDO_MJ::buttonCommand( int button_id )
 {
 	if ( button_id == btn_generate ) {
 		generate();
+		model->closeModel();
+		model->openModel();
 	} else if ( button_id == btn_generate_setup ) {
 		RP_GENERATION_TYPE_MJ dlg( AfxGetMainWnd() );
 		dlg.DoModal();	
@@ -125,13 +130,23 @@ tstring RPMethodProc2RDO_MJ::getDirectory() const
 	return result;
 }
 
+tstring RPMethodProc2RDO_MJ::getName() const
+{
+	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::PAT);
+	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
+
+	tstring result = data.m_name;
+	return result;
+}
+
 void RPMethodProc2RDO_MJ::generate()
 {
 	//RPConnectorDock* dock = NULL;
 	//if (RPConnectorDock::can_connect(dock));
 //	CreateDirectory("C:/Mymodel01", NULL);
-
-	RDOfiles->resourse.open  (rdo::format(_T("%s.pat"), getDirectory().c_str()).c_str());
+tstring str = rdo::format(_T("%s.pat"), getDirectory().c_str()).c_str();
+	RDOfiles->pattern.open  (rdo::format(_T("%s.pat"), getDirectory().c_str()).c_str());
+	RDOfiles->pattern.is_open();
 	RDOfiles->resourse.open  (rdo::format(_T("%s.rss"), getDirectory().c_str()).c_str());
 	RDOfiles->function.open  (rdo::format(_T("%s.fun"), getDirectory().c_str()).c_str());
 	RDOfiles->typeres.open   (rdo::format(_T("%s.rtp"), getDirectory().c_str()).c_str());
@@ -160,13 +175,13 @@ void RPMethodProc2RDO_MJ::generate()
 					dynamic_cast<RPObject_MJ*>(*block_it)->id_next2 = list.back()->getName();
 					rp::string name2 = dynamic_cast<RPObject_MJ*>(*block_it)->id_next2;
 				}else{
-						TRACE( "%s\n", "ÄÅÑÀÉÄ ÄÎËÆÅÍ ÈÌÅÒÜ 2 ÂÅÒÂÈ!!\nÀ ÍÅ ÎÄÍÓ!!" );
+						TRACE1( "%s\n", "ÄÅÑÀÉÄ ÄÎËÆÅÍ ÈÌÅÒÜ 2 ÂÅÒÂÈ!!\nÀ ÍÅ ÎÄÍÓ!!" );
 				}
 			}
 		}else{
 			if((*block_it)->getClassName()!="RPShapeTerminateMJ")
 			{
-				TRACE( "%s\n", "ÁËÎÊ ÄÎËÆÅÍ ÈÌÅÒÜ ÊÎÍÍÅÊÒÎÐ" );
+				TRACE1( "%s\n", "ÁËÎÊ ÄÎËÆÅÍ ÈÌÅÒÜ ÊÎÍÍÅÊÒÎÐ" );
 			}
 		}
 		block_it++;
@@ -206,7 +221,7 @@ void RPMethodProc2RDO_MJ::generate()
 
 				  while( it != list_pattern_names.end() ) 
 					{
-					TRACE( "%s\n", (*it) );
+					TRACE1( "%s\n", (*it) );
 					RDOfiles->operations<<std::endl
 					<<std::endl<<"operation_"<<amount<<" : "<<(*it);
 
@@ -326,13 +341,13 @@ std::endl<<"$Results";
 
 //ÃÅÍÅÐÈÐÎÂÀÍÈÅ  SMR *.smr
 RDOfiles->smr<<
-std::endl<<"Model_name = RDO_PROCESS"
+std::endl<<"Model_name = "<< getName()
 <<std::endl
-<<std::endl<<"Resource_file  = RDO_PROCESS"
-<<std::endl<<"OprIev_file    = RDO_PROCESS" // OPR
-<<std::endl<<"Trace_file     = RDO_PROCESS"
-<<std::endl<<"Statistic_file = RDO_PROCESS" //PMD
-<<std::endl<<"Results_file   = RDO_PROCESS"
+<<std::endl<<"Resource_file  = "<< getName()
+<<std::endl<<"OprIev_file    = "<< getName() // OPR
+<<std::endl<<"Trace_file     = "<< getName()
+<<std::endl<<"Statistic_file = "<< getName() //PMD
+<<std::endl<<"Results_file   = "<< getName()
 //<<std::endl<<"Frame_file     = RDO_PROCESS"
 //<<std::endl<<"Frame_number   = 1"
 //<<std::endl<<"Show_mode      = Animation"
