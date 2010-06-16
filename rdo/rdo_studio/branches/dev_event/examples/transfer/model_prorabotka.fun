@@ -27,8 +27,12 @@ $Sequence ф_погрузки : real[0..100000]
 $Type = normal 768434
 $End
 
-$Sequence ф_время_в_пути : real[0..100000]
-$Type = normal 0876543
+$Function ф_время_в_пути : real 
+$Type = algorithmic
+$Parameters
+  х : real 
+$Body
+	result = х*10/500
 $End
 
 $Sequence ф_прохождение_таможни : real[0..100000]
