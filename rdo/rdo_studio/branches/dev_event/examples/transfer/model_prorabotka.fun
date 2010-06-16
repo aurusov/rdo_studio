@@ -7,15 +7,6 @@ $Sequence ф_приход_заявок: integer [0..3000]
 $Type = normal 3487478
 $End
 
-$Function ф_приведение_к_ближайшему_большему_целому: integer = 0
-$Type = algorithmic
-$Parameters
-	параметр: real
-$Body
-	if (Round(параметр) <  параметр) result = Round(параметр) + 1
-	if (Round(параметр) >= параметр) result = Round(параметр)
-$End
-
 $Sequence ф_вес_груза : real 
 $Type = uniform 34556
 $End
