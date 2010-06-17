@@ -87,6 +87,6 @@ $End
 
 $Resource_type парки : permanent
 $Parameters
-	количество_вагонов_в_парке: integer [0..1000] = 1000
-	дефицит                   : integer = 40 
+	количество_вагонов_в_парке: integer [0..1000] = 500
+	дефицит                   : integer = 0 
 $End
