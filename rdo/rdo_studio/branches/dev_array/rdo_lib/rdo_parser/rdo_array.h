@@ -29,7 +29,7 @@ DECLARE_FACTORY(RDOArrayType);
 friend class RDOArrayValue;
 
 public:
-	CREF(LPRDOType) arrayType() const;
+	CREF(LPRDOType) getItemType() const;
 	void            dinamicItemCast(CREF(RDOValue) value);
 
 private:
@@ -59,16 +59,16 @@ class RDOArrayValue
 public:
 	RDOArrayValue         (LPRDOArrayType pArrayType);
 
-	void insert_array(CREF(RDOValue) pArray);
+	void insertItem(CREF(RDOValue) pArray);
 	CREF(LPRDOArrayType) getArrayType() const;
 	rdoRuntime::RDOValue getRArray   () const;
 
 private:
-	typedef std::vector<RDOValue> ArrayValue;
+	typedef std::vector<RDOValue> Container;
 
 	virtual ~RDOArrayValue();
 
-	ArrayValue         m_arrayValue;
+	Container          m_Container;
 	LPRDOArrayType     m_arrayType;
 };
 DECLARE_POINTER(RDOArrayValue);

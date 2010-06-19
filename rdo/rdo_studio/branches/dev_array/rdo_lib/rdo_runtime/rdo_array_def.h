@@ -36,7 +36,7 @@ class RDOArrayType;
 class RDOArrayValue
 {
 public:
-	typedef std::vector<RDOValue> ArrayValue;
+	typedef std::vector<RDOValue> Container;
 
 	RDOArrayValue(CREF(RDOArrayType)  type );
 	RDOArrayValue(CREF(RDOArrayValue) value);
@@ -44,13 +44,14 @@ public:
 
 	CREF(RDOArrayType) type() const;
 
-	void insert_array(CREF(RDOValue) pArray);
-	ArrayValue::const_iterator m_containerBegin();
-	ArrayValue::const_iterator m_containerEnd();
+	void insertItem(CREF(RDOValue) pArray);
+	Container::const_iterator m_containerBegin();
+	Container::const_iterator m_containerEnd();
 
+	//tstring getAsString();
 
 private:
-	ArrayValue         m_arrayValue;
+	Container          m_Container;
 	CPTR(RDOArrayType) m_arrayType;
 };
 

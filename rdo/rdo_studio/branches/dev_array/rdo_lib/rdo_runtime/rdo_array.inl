@@ -17,7 +17,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
 inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
-	: m_arrayValue(value.m_arrayValue)
+	: m_Container (value.m_Container)
 	, m_arrayType (value.m_arrayType )
 {}
 
@@ -34,20 +34,30 @@ inline CREF(RDOArrayType) RDOArrayValue::type() const
 	return *m_arrayType;
 }
 
-inline void RDOArrayValue::insert_array(CREF(RDOValue) pArray)
+inline void RDOArrayValue::insertItem(CREF(RDOValue) pArray)
 {
-	m_arrayValue.push_back(pArray);
+	m_Container.push_back(pArray);
 }
 
-inline RDOArrayValue::ArrayValue::const_iterator RDOArrayValue::m_containerBegin()
+inline RDOArrayValue::Container::const_iterator RDOArrayValue::m_containerBegin()
 {
-	return m_arrayValue.begin();
+	return m_Container.begin();
 }
 
-inline RDOArrayValue::ArrayValue::const_iterator RDOArrayValue::m_containerEnd()
+inline RDOArrayValue::Container::const_iterator RDOArrayValue::m_containerEnd()
 {
-	return m_arrayValue.end();
+	return m_Container.end();
 }
+
+//inline tstring RDOArrayValue::getAsString()
+//{
+//	tstring ArrayName = rdo::format(_T('['));
+//	STL_FOR_ALL_CONST(ArrayValue, m_arrayValue, it)
+//	{
+//		ArrayName += it->getAsString();
+//	}
+//	return ArrayName += _T(']');
+//}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType

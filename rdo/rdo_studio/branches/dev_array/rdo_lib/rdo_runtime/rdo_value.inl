@@ -250,6 +250,7 @@ inline tstring RDOValue::getAsString() const
 		case RDOType::t_string       : return __stringV();
 		case RDOType::t_identificator: return __stringV();
 		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
+		//case RDOType::t_array        : return __arrayV().getAsString();
 	}
 	throw RDOValueException();
 }
@@ -722,6 +723,16 @@ inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
 inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
 {
 	return *static_cast<CPTR(RDOFuzzyValue)>(m_value.p_data);
+}
+
+inline REF(RDOArrayValue) RDOValue::__arrayV()
+{
+	return *static_cast<RDOArrayValue*>(m_value.p_data);
+}
+
+inline CREF(RDOArrayValue) RDOValue::__arrayV() const
+{
+	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
 }
 
 inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rdovalue)
