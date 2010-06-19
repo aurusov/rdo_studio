@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2010
  * filename : rdo_array.h
- * author   : Чирков Михаил, Урусов Андрей
+ * author   : Чирков Михаил
  * date     : 
  * bref     : 
  * indent   : 4T
@@ -23,16 +23,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-class RDOArrayType: public RDOType, public rdo::smart_ptr_counter_reference, public RDOParserSrcInfo
+class RDOArrayType: public RDOType, public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(RDOArrayType);
-friend class RDOArrayValue;
-
 public:
-	CREF(LPRDOType) itemType() const;
-
+	CREF(LPRDOType)                   type() const;
 private:
-	RDOArrayType         (CREF(LPRDOType) pItemType, CREF(RDOParserSrcInfo) src_info);
+	RDOArrayType         (CREF(LPRDOType) pType);
 	virtual ~RDOArrayType();
 
 	PTR(rdoRuntime::RDOArrayType) __array() const 
@@ -40,7 +37,7 @@ private:
 		return static_cast<PTR(rdoRuntime::RDOArrayType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type));
 	}
 
-	LPRDOType m_pItemType;
+	LPRDOType m_pType;
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
@@ -52,22 +49,23 @@ DECLARE_POINTER(RDOArrayType)
 // ----------------------------------------------------------------------------
 class RDOArrayValue
 {
-DECLARE_FACTORY(RDOArrayValue);
-public:
-	void                 insertItem  (CREF(RDOValue) value);
-	CREF(LPRDOArrayType) getArrayType() const;
-	rdoRuntime::RDOValue getRValue   () const;
-
+	DECLARE_FACTORY(RDOArrayValue);
 private:
-	typedef std::vector<RDOValue> Container;
+	typedef std::vector<CPTR(RDOValue)> ArrayValue;
 
+	RDOArrayValue         ();
 	RDOArrayValue         (LPRDOArrayType pArrayType);
 	virtual ~RDOArrayValue();
 
-	Container       m_container;
-	LPRDOArrayType  m_pArrayType;
+	//DECLARE_IType;
+	//DECLARE_IModelStructure;
+	ArrayValue         m_arrayValue;
+	LPRDOArrayType     m_arrayType;
+public:
+	void insert_array(CREF(RDOValue) pArray);
 };
 DECLARE_POINTER(RDOArrayValue);
+
 
 CLOSE_RDO_PARSER_NAMESPACE
 

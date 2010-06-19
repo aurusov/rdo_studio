@@ -17,35 +17,40 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
 inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
-	: m_pArrayType(&type)
+	: m_arrayType(&type)
 {}
+
+inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
+	: m_arrayType(value.m_arrayType)
+{
+	m_arrayValue = value.m_arrayValue;
+}
 
 inline RDOArrayValue::~RDOArrayValue()
 {}
 
 inline CREF(RDOArrayType) RDOArrayValue::type() const
 {
-	ASSERT(m_pArrayType);
-	return *m_pArrayType;
+	return *m_arrayType;
 }
 
-inline void RDOArrayValue::insertItem(CREF(RDOValue) value)
+inline void RDOArrayValue::insert_array(CREF(RDOValue) pArray)
 {
-	m_container.push_back(value);
+	m_arrayValue.push_back(&pArray);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, ItemType pItemType)
+inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
-	, m_pItemType     (pItemType       )
+	, m_pArrayType    (pArrayType      )
 {}
 
-inline RDOArrayType::ItemType RDOArrayType::getItemType() const
+inline RDOArrayType::ArrayType RDOArrayType::getArrayType() const
 {
-	return m_pItemType;
+	return m_pArrayType;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

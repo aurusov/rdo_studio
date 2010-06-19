@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2010
  * filename : rdo_array.cpp
- * author   : Чирков Михаил, Урусов Андрей
+ * author   : Чирков Михаил
  * date     : 
  * bref     : 
  * indent   : 4T
@@ -19,17 +19,28 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-//----------------------------------------------------------------------------
-//---------- RDOArrayType
-//----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType(CREF(LPRDOType) pItemType, CREF(RDOParserSrcInfo) src_info)
-	: RDOType         (&rdoRuntime::g_unknow)
-	, RDOParserSrcInfo(src_info             )
-	, m_pItemType     (pItemType            )
+ //----------------------------------------------------------------------------
+ //---------- RDOArrayValue
+ //----------------------------------------------------------------------------
+ RDOArrayValue::RDOArrayValue(LPRDOArrayType pArrayType)
 {
-	ASSERT(m_pItemType);
-	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime(), m_pItemType->type());
-	setSrcText(name());
+	m_arrayType = pArrayType;
+}
+RDOArrayValue::~RDOArrayValue()
+{}
+void RDOArrayValue::insert_array(CREF(RDOValue) pArray)
+{
+	m_arrayValue.push_back(&pArray);
+}
+ //----------------------------------------------------------------------------
+ //---------- RDOArrayType
+ //----------------------------------------------------------------------------
+RDOArrayType::RDOArrayType(CREF(LPRDOType) pType)
+	: RDOType(&rdoRuntime::g_unknow)
+	, m_pType(pType                )
+{
+	ASSERT(m_pType);
+	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime(), m_pType->type());
 	rdoParse::RDOParser::s_parser()->insertArrayType(this);
 }
 
@@ -38,7 +49,7 @@ RDOArrayType::~RDOArrayType()
 
 inline tstring RDOArrayType::name() const
 {
-	return rdo::format(_T("array<%s>"), m_pItemType->name().c_str());
+	return rdo::format(_T("array<%s>"), m_pType->name().c_str());
 }
 
 LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -50,12 +61,11 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 			LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
 			//! Это один и тот же тип
 			if (pArray == from)
-			{
 				return pArray;
-			}
+
 			else
 			{
-				rdoParse::g_error().push_only(src_info,     _T("Несоответствие массивов"));
+				rdoParse::g_error().push_only(src_info,     _T("Несоответствие несоответствие размерности массивов"));
 				rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
 				rdoParse::g_error().push_only(src_info,     _T("и"));
 				rdoParse::g_error().push_only(from_src_info, from_src_info.src_text());
@@ -81,6 +91,13 @@ RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 		if (from.typeID() == rdoRuntime::RDOType::t_array)
 			if (m_type == &from.type()->type())
 				toValue = from;
+
+		//case rdoRuntime::RDOType::t_int:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getInt()),			pArray, from.src_info()); break;
+		//case rdoRuntime::RDOType::t_real:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getDouble()),			pArray, from.src_info()); break;
+		//case rdoRuntime::RDOType::t_bool:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getBool()),			pArray, from.src_info()); break;
+		//case rdoRuntime::RDOType::t_string:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getString()),			pArray, from.src_info()); break;
+		//case rdoRuntime::RDOType::t_enum:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getEnum()),			pArray, from.src_info()); break;
+		//case rdoRuntime::RDOType::t_identificator:	toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getIdentificator()),	pArray, from.src_info()); break;
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -103,6 +120,8 @@ RDOValue RDOArrayType::get_default() const
 {
 	NEVER_REACH_HERE;
 	return RDOValue();
+	//LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
+	//return RDOValue(rdoRuntime::RDOValue(__array()), pArray, RDOParserSrcInfo());
 }
 
 void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
@@ -111,44 +130,9 @@ void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
 	stream << (*pArray).name()<< std::endl;
 }
 
-CREF(LPRDOType) RDOArrayType::itemType() const
+CREF(LPRDOType) RDOArrayType::type() const
 {
-	return m_pItemType;
-}
-
-//----------------------------------------------------------------------------
-//---------- RDOArrayValue
-//----------------------------------------------------------------------------
-RDOArrayValue::RDOArrayValue(LPRDOArrayType pArrayType)
-	: m_pArrayType(pArrayType)
-{
-	ASSERT(m_pArrayType);
-}
-
-RDOArrayValue::~RDOArrayValue()
-{}
-
-void RDOArrayValue::insertItem(CREF(RDOValue) value)
-{
-	m_pArrayType->itemType()->type_cast(value.type(), value.src_info(), m_pArrayType->src_info(), value.src_info());
-	RDOValue itemValue = m_pArrayType->itemType()->value_cast(value, m_pArrayType->src_info(), value.src_info());
-	m_container.push_back(itemValue);
-}
-
-CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
-{
-	return m_pArrayType;
-}
-
-rdoRuntime::RDOValue RDOArrayValue::getRValue() const
-{
-	rdoRuntime::RDOArrayValue arrayValue(*m_pArrayType->__array());
-	STL_FOR_ALL_CONST(Container, m_container, it)
-	{
-		arrayValue.insertItem(it->value());
-	}
-	rdoRuntime::RDOValue value(arrayValue);
-	return value;
+	return m_pType;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
