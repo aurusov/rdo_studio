@@ -583,7 +583,7 @@ param_type_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
 param_value_default:	/* empty */ {
 						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
 					}
-					| '=' default_item {
+					| '=' param_value {
 						$$ = $2;
 					}
 					| '=' error {
@@ -598,9 +598,7 @@ param_value_default:	/* empty */ {
 						}
 					};
 
-					
-
-default_item:	RDO_INT_CONST {
+param_value:	RDO_INT_CONST {
 					$$ = $1;
 				}
 				| RDO_REAL_CONST {
@@ -615,7 +613,7 @@ default_item:	RDO_INT_CONST {
 				| RDO_BOOL_CONST {
 					$$ = $1;
 				}
-				| param_array_item {
+				| param_array_value {
 					$$ = $1;
 				};
 
@@ -626,7 +624,7 @@ param_type_array:		RDO_array '<' param_type '>' {
 						$$ = PARSER->stack().push(pArray);
 					};
 
-param_array_item:	'[' array_item ']' {
+param_array_value:	'[' array_item ']' {
 					LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 					ASSERT(pArrayValue);
 					$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
@@ -635,7 +633,7 @@ param_array_item:	'[' array_item ']' {
 						PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 					};
 
-array_item:			default_item {
+array_item:			param_value {
 						LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOParserSrcInfo(@1));
 						ASSERT(pArrayType);
 						LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
@@ -643,14 +641,14 @@ array_item:			default_item {
 						$$ = PARSER->stack().push(pArrayValue);
 					}
 					|
-					array_item ',' default_item {
+					array_item ',' param_value {
 						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 						ASSERT(pArrayValue);
 						pArrayValue->insertItem(RDOVALUE($3));
 						$$ = PARSER->stack().push(pArrayValue);
 					}
 					|
-					array_item default_item {
+					array_item param_value {
 						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 						ASSERT(pArrayValue);
 						pArrayValue->insertItem(RDOVALUE($2));
