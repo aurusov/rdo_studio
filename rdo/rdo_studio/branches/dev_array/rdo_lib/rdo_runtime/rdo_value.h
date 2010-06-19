@@ -47,13 +47,14 @@ public:
 	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
 	RDOValue(CREF(RDOArrayValue) arrayValue);
 
-	rsint             getInt          () const;
-	rsint             getEnumAsInt    () const;
-	CREF(RDOEnumType) getEnum         () const;
-	double            getDouble       () const;
-	rbool             getBool         () const;
-	CREF(tstring)     getString       () const;
-	CREF(tstring)     getIdentificator() const;
+	rsint               getInt          () const;
+	rsint               getEnumAsInt    () const;
+	CREF(RDOEnumType)   getEnum         () const;
+	double              getDouble       () const;
+	rbool               getBool         () const;
+	CREF(tstring)       getString       () const;
+	CREF(tstring)       getIdentificator() const;
+	CREF(RDOArrayValue) getArray        () const;
 
 	rbool   getAsBool          () const;
 	tstring getAsString        () const;

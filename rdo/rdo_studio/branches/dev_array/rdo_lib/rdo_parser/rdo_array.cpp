@@ -20,28 +20,18 @@
 OPEN_RDO_PARSER_NAMESPACE
 
  //----------------------------------------------------------------------------
- //---------- RDOArrayValue
- //----------------------------------------------------------------------------
- RDOArrayValue::RDOArrayValue(LPRDOArrayType pArrayType)
-{
-	m_arrayType = pArrayType;
-}
-RDOArrayValue::~RDOArrayValue()
-{}
-void RDOArrayValue::insert_array(CREF(RDOValue) pArray)
-{
-	m_arrayValue.push_back(&pArray);
-}
- //----------------------------------------------------------------------------
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType(CREF(LPRDOType) pType)
-	: RDOType(&rdoRuntime::g_unknow)
-	, m_pType(pType                )
+RDOArrayType::RDOArrayType(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info, rbool flag)
+	: RDOType          (&rdoRuntime::g_unknow)
+	, RDOParserSrcInfo (src_info             )
+	, m_pType          (pType                )
+	, plc_call         (flag                 )
 {
 	ASSERT(m_pType);
+	setSrcText(name());
 	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime(), m_pType->type());
-	rdoParse::RDOParser::s_parser()->insertArrayType(this);
+	if(flag) rdoParse::RDOParser::s_parser()->insertArrayType(this);
 }
 
 RDOArrayType::~RDOArrayType()
@@ -59,56 +49,53 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 	case rdoRuntime::RDOType::t_array:
 		{
 			LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
-			//! Это один и тот же тип
-			if (pArray == from)
-				return pArray;
-
-			else
+			LPRDOArrayType from(const_cast<PTR(RDOArrayType)>(static_cast<CPTR(RDOArrayType)>(from.get())));
+			if(pArray->arrayType()->typeID() == rdoRuntime::RDOType::t_enum)
 			{
-				rdoParse::g_error().push_only(src_info,     _T("Несоответствие несоответствие размерности массивов"));
-				rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
-				rdoParse::g_error().push_only(src_info,     _T("и"));
-				rdoParse::g_error().push_only(from_src_info, from_src_info.src_text());
+				return pArray;
+				break;
+			}
+			//! Это один и тот же тип
+			if (pArray->arrayType()->type_cast(from->arrayType(), from->src_info(), pArray->src_info(), from->src_info()))
+			{
+				return pArray;
 			}
 			rdoParse::g_error().push_done();
 			break;
 		}
 	default:
-		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается значение типа массив, найдено: %s"), from_src_info.src_text().c_str()));
-		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-		rdoParse::g_error().push_done();
-		break;
+		{
+			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Несоответствие размерности массива")));
+			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			rdoParse::g_error().push_done();
+			break;
+		}
 	}
 	return rdo::smart_ptr_null();
 }
 
 RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	RDOValue toValue;
-	LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
-	try
+	switch(from->typeID())
 	{
-		if (from.typeID() == rdoRuntime::RDOType::t_array)
-			if (m_type == &from.type()->type())
-				toValue = from;
-
-		//case rdoRuntime::RDOType::t_int:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getInt()),			pArray, from.src_info()); break;
-		//case rdoRuntime::RDOType::t_real:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getDouble()),			pArray, from.src_info()); break;
-		//case rdoRuntime::RDOType::t_bool:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getBool()),			pArray, from.src_info()); break;
-		//case rdoRuntime::RDOType::t_string:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getString()),			pArray, from.src_info()); break;
-		//case rdoRuntime::RDOType::t_enum:			toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getEnum()),			pArray, from.src_info()); break;
-		//case rdoRuntime::RDOType::t_identificator:	toValue = RDOValue(rdoRuntime::RDOValue(getArray(), from->getIdentificator()),	pArray, from.src_info()); break;
-	}
-	catch (CREF(rdoRuntime::RDOValueException))
-	{}
-
-	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
-	{
-		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Неверное значение параметра для массива: %s"), from.src_info().src_text().c_str()));
-		rdoParse::g_error().push_only(to_src_info, rdo::format(_T(": %s"), name().c_str()));
+	case rdoRuntime::RDOType::t_array:
+		{
+			LPRDOArrayType pArrayT(const_cast<PTR(RDOArrayType)>(this));
+			rdoRuntime::RDOArrayValue rArrayV = from->getArray();
+			if(pArrayT->arrayType()->typeID() == rdoRuntime::RDOType::t_enum) break;
+			for(rdoRuntime::RDOArrayValue::ArrayValue::const_iterator it = rArrayV.m_containerBegin(); it != rArrayV.m_containerEnd(); ++it)
+			{
+				pArrayT->arrayType()->value_cast(RDOValue(*it, from.type(), src_info), to_src_info, src_info);
+			}
+			break;
+		}
+	default:
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Несоответствие размерности массива")));
+		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 		rdoParse::g_error().push_done();
+		break;
 	}
-	return toValue;
+	return from;
 }
 
 PTR(rdoRuntime::RDOCalc) RDOArrayType::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
@@ -118,10 +105,8 @@ PTR(rdoRuntime::RDOCalc) RDOArrayType::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc,
 
 RDOValue RDOArrayType::get_default() const
 {
-	NEVER_REACH_HERE;
-	return RDOValue();
-	//LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
-	//return RDOValue(rdoRuntime::RDOValue(__array()), pArray, RDOParserSrcInfo());
+	LPRDOArrayType ArrayType(const_cast<PTR(RDOArrayType)>(this));
+	return RDOValue(rdoRuntime::RDOArrayValue(rdoRuntime::RDOArrayType(NULL, ArrayType->type())), ArrayType, RDOParserSrcInfo());
 }
 
 void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
@@ -130,9 +115,69 @@ void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
 	stream << (*pArray).name()<< std::endl;
 }
 
-CREF(LPRDOType) RDOArrayType::type() const
+CREF(LPRDOType) RDOArrayType::arrayType() const
 {
 	return m_pType;
+}
+
+CREF(LPRDOType) RDOArrayType::getFirstType()
+{
+	if(m_pType->typeID() == rdoRuntime::RDOType::t_array)
+	{
+		LPRDOArrayType ArrayType(const_cast<PTR(RDOArrayType)>(static_cast<CPTR(RDOArrayType)>(m_pType.get())));
+		return ArrayType->getFirstType();
+	}
+	else return m_pType;
+}
+
+void RDOArrayType::dinamicItemCast(CREF(RDOValue) value)
+{
+	switch(value->typeID())
+	{
+	case(rdoRuntime::RDOType::t_array):  break;
+	case(rdoRuntime::RDOType::t_unknow): break;
+	default:
+		{
+			getFirstType()->type_cast(value.type(), value.src_info(), src_info(), value.src_info());
+			break;
+		}
+	}
+}
+
+
+//----------------------------------------------------------------------------
+//---------- RDOArrayValue
+//----------------------------------------------------------------------------
+RDOArrayValue::RDOArrayValue(LPRDOArrayType pArrayType)
+{
+	m_arrayType = pArrayType;
+}
+
+RDOArrayValue::~RDOArrayValue()
+{}
+
+void RDOArrayValue::insert_array(CREF(RDOValue) value)
+{
+	LPRDOArrayType FirstArrayType = RDOParser::s_parser()->getLastArrayType();
+	FirstArrayType->dinamicItemCast(value);
+	m_arrayValue.push_back(value);
+}
+
+CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
+{
+	return m_arrayType;
+}
+
+
+rdoRuntime::RDOValue RDOArrayValue::getRArray() const
+{
+	rdoRuntime::RDOArrayValue arrayValue(*m_arrayType->__array());
+	STL_FOR_ALL_CONST(ArrayValue, m_arrayValue, it)
+	{
+		arrayValue.insert_array(it->value());
+	}
+	rdoRuntime::RDOValue value(arrayValue);
+	return value;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

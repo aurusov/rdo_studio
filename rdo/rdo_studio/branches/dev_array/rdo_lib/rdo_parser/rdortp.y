@@ -396,7 +396,6 @@ param_type:		RDO_integer param_type_range param_value_default
 				}
 				| param_array param_value_default
 				{
-					LEXER->array_cnt_rst();
 					LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
 					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 					$$ = PARSER->stack().push(pType);
@@ -599,76 +598,7 @@ param_value_default:	/* empty */ {
 						}
 					};
 
-param_array:		RDO_array '<' param_type '>' {
-						LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
-						ASSERT(pParamType);
-						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type());
-						$$ = PARSER->stack().push(pArray);
-						LEXER->array_cnt_pls();
-					};
-
-rdo_array_default:	'[' param_array_item ']' {
-						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
-						rdoRuntime::RDOArrayValue(rdoRuntime::RDOArrayType(NULL,pArrayType->type()->typeID()));
-
-						LPRDOTypeParam pArrayValue = rdo::Factory<RDOTypeParam>::create(pArrayType->type(), RDOVALUE($2), RDOParserSrcInfo(@1, @3));
-						$$ = PARSER->stack().push(pArrayValue);
-//					здесь окончательная сборка массива
-					}
-					|'[' param_array_item error {
-						PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
-//					добавлю ошибку на случай отсутствия скобки
-					};
-
-param_array_item:	value_default_item {
-						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
-						ASSERT(pArrayType);
-						if(RDOVALUE($1)->type().typeID() == pArrayType->type()->typeID())
-						{
-							LPRDOArrayValue pArray = rdo::Factory<RDOArrayValue>::create(pArrayType);
-							rdoRuntime::RDOArrayValue pArrayRuntime(rdoRuntime::RDOArrayType(NULL,pArrayType->type()->typeID()));
-							pArrayRuntime.insert_array(RDOVALUE($1)->value());
-							pArray->insert_array(RDOVALUE($1));
-							$$ = PARSER->stack().push(pArray);
-						}
-						else
-						{
-							PARSER->error().error(@1, _T("Несоответствие типа элемента типу массива"));
-						}
-					}
-					|
-					param_array_item ',' value_default_item {
-						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
-						ASSERT(pArrayType);
-						if(RDOVALUE($3)->type().typeID() == pArrayType->type()->typeID())
-						{
-							LPRDOArrayValue pArray = PARSER->stack().pop<RDOArrayValue>($1);
-							pArray->insert_array(RDOVALUE($3));
-							$$ = PARSER->stack().push(pArray);
-						}
-						else
-						{
-							PARSER->error().error(@1, _T("Несоответствие типа элемента типу массива"));
-						}
-					}
-					|
-					param_array_item value_default_item {
-						LPRDOArrayType pArrayType = PARSER->getLastArrayType();
-						ASSERT(pArrayType);
-						if(RDOVALUE($2)->type().typeID() == pArrayType->type()->typeID())
-						{
-							LPRDOArrayValue pArray = PARSER->stack().pop<RDOArrayValue>($1);
-							pArray->insert_array(RDOVALUE($2));
-							$$ = PARSER->stack().push(pArray);
-							PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
-						}
-						else
-						{
-							PARSER->error().error(@1, _T("Несоответствие типа элемента типу массива"));
-						}
-						PARSER->error().error(@1, _T("Несоответствие типа элемента типу массива"));
-//					тоже самое но ещё ругаюсь на отсутствие запятой.
-					};
+					
 
 value_default_item:	RDO_INT_CONST {
 						$$ = $1;
@@ -685,10 +615,48 @@ value_default_item:	RDO_INT_CONST {
 					| RDO_BOOL_CONST {
 						$$ = $1;
 					}
-					|rdo_array_default{
+					|value_array_default{
 						$$ = $1;
 					};
 
+param_array:		RDO_array '<' param_type '>' {
+						LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
+						ASSERT(pParamType);
+						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4), true);
+						$$ = PARSER->stack().push(pArray);
+					};
+
+value_array_default:	'[' param_array_item ']' {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
+						ASSERT(pArrayValue);
+						$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
+					}
+					|'[' param_array_item error {
+						PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
+					};
+
+param_array_item:	value_default_item {
+						LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(),RDOParserSrcInfo(@1), false);
+						ASSERT(pArrayType);
+						LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
+						pArrayValue->insert_array(RDOVALUE($1));
+						$$ = PARSER->stack().push(pArrayValue);
+					}
+					|
+					param_array_item ',' value_default_item {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+						ASSERT(pArrayValue);
+						pArrayValue->insert_array(RDOVALUE($3));
+						$$ = PARSER->stack().push(pArrayValue);
+					}
+					|
+					param_array_item value_default_item {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+						ASSERT(pArrayValue);
+						pArrayValue->insert_array(RDOVALUE($2));
+						$$ = PARSER->stack().push(pArrayValue);
+						PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
+					};
 
 // ----------------------------------------------------------------------------
 

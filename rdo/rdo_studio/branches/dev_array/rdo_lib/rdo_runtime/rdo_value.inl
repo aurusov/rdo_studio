@@ -234,6 +234,11 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 	throw RDOValueException();
 }
 
+inline CREF(RDOArrayValue) RDOValue::getArray() const
+{
+	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
+}
+
 inline tstring RDOValue::getAsString() const
 {
 	switch (typeID())
