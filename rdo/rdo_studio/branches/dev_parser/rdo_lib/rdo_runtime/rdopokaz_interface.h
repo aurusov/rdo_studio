@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdointerface.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 // ----------------------------------------------------------------------------
@@ -34,10 +35,10 @@ public:
 class IPokazWatchQuant
 {
 public:
-	virtual void setLogicCalc(PTR(rdoRuntime::RDOCalc) logicCalc) = 0;
+	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc) = 0;
 };
 #define DECLARE_IPokazWatchQuant \
-	virtual void setLogicCalc(PTR(rdoRuntime::RDOCalc) logicCalc);
+	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc);
 
 class IPokazWatchValue
 {

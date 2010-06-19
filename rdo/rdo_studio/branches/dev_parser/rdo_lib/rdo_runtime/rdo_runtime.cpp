@@ -218,14 +218,14 @@ void RDORuntime::showResources( int node ) const
 }
 #endif
 
-void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
+void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc)
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {
-		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя"), calc );
+		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc.object_cast<RDOCalc>() );
 	}
 	if ( !res->canFree() ) {
-		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
+		error( "Невозможно удалить ресурс, т.к. он еще используется", pCalc.object_cast<RDOCalc>() );
 //		error( "Try to erase used resource", fromCalc );
 	} else {
 		LPIPokazWatchValueList::iterator it = m_pokazWatchValueList.begin();
@@ -542,10 +542,10 @@ void RDORuntime::onAfterCheckPokaz()
 	}
 }
 
-void RDORuntime::error( const std::string& message, const RDOCalc* calc )
+void RDORuntime::error(CREF(tstring) message, CREF(LPRDOCalc) pCalc)
 {
 	if ( !message.empty() ) {
-		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), calc ? calc->src_pos().m_last_line : 0, calc ? calc->src_pos().m_last_pos : 0, calc ? calc->src_filetype() : rdoModelObjects::PAT ) );
+		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), pCalc ? pCalc->src_pos().m_last_line : 0, pCalc ? pCalc->src_pos().m_last_pos : 0, pCalc ? pCalc->src_filetype() : rdoModelObjects::PAT ) );
 	}
 	throw RDORuntimeException( "" );
 }

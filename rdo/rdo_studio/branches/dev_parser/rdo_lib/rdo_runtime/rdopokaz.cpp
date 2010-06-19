@@ -125,9 +125,9 @@ rbool RDOPMDWatchPar::calcStat(PTR(RDOSimulator) sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState( RDORuntime* sim, const tstring& name, rbool trace, RDOCalc* logic ):
+RDOPMDWatchState::RDOPMDWatchState( RDORuntime* sim, const tstring& name, rbool trace, CREF(LPRDOCalc) pLogic ):
 	RDOPMDPokaz( sim, name, trace ),
-	m_logicCalc( logic )
+	m_pLogicCalc( pLogic )
 {
 }
 
@@ -141,7 +141,7 @@ rbool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	m_watchNumber = 0;
-	m_currValue   = fabs(m_logicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
+	m_currValue   = fabs(m_pLogicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
 	m_sum         = 0;
 	m_sumSqr      = 0;
 	m_minValue    = DBL_MAX;
@@ -154,7 +154,7 @@ rbool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 rbool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	rbool newValue = fabs(m_logicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
+	rbool newValue = fabs(m_pLogicCalc->calcValue( runtime ).getDouble()) > DBL_EPSILON;
 	if ( newValue && !m_currValue ) { // from FALSE to TRUE
 		m_timePrev   = runtime->getCurrentTime();
 		m_wasChanged = true;
@@ -205,7 +205,7 @@ rbool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 RDOPMDWatchQuant::RDOPMDWatchQuant( RDORuntime* sim, const tstring& name, rbool trace, const tstring& resTypeName, int rtp_id ):
 	RDOPMDPokaz( sim, name, trace ),
-	m_logicCalc( NULL ),
+	m_pLogicCalc( NULL ),
 	m_rtp_id( rtp_id )
 {
 }
@@ -244,7 +244,7 @@ rbool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if(m_logicCalc->calcValue( runtime ).getAsBool())
+		if(m_pLogicCalc->calcValue( runtime ).getAsBool())
 			newValue++;
 
 		runtime->popGroupFunc();
@@ -294,9 +294,9 @@ rbool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 	return true;
 }
 
-void RDOPMDWatchQuant::setLogicCalc(PTR(RDOCalc) logicCalc)
+void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 {
-	m_logicCalc = logicCalc;
+	m_pLogicCalc = pLogicCalc;
 }
 
 // ----------------------------------------------------------------------------
@@ -304,8 +304,8 @@ void RDOPMDWatchQuant::setLogicCalc(PTR(RDOCalc) logicCalc)
 // ----------------------------------------------------------------------------
 RDOPMDWatchValue::RDOPMDWatchValue( RDORuntime* sim, const tstring& name, rbool trace, const tstring& resTypeName, int rtp_id ):
 	RDOPMDPokaz( sim, name, trace ),
-	m_logicCalc( NULL ),
-	m_arithmCalc( NULL ),
+	m_pLogicCalc( NULL ),
+	m_pArithmCalc( NULL ),
 	m_rtp_id( rtp_id )
 {
 	m_wasChanged = false;
@@ -367,8 +367,8 @@ void RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 		return;
 	}
 	getRuntime()->pushGroupFunc(res);
-	if ( m_logicCalc->calcValue( getRuntime() ).getAsBool() ) {
-		m_currValue = m_arithmCalc->calcValue( getRuntime() );
+	if ( m_pLogicCalc->calcValue( getRuntime() ).getAsBool() ) {
+		m_currValue = m_pArithmCalc->calcValue( getRuntime() );
 		tracePokaz(); // TODO: убрать отсюда ? (и перенести DECLARE_IPokazTrace в приват)
 //		runtime->getTracer()->writePokaz(runtime, this);
 		double curr = m_currValue.getDouble();
@@ -389,20 +389,20 @@ void RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 
 void RDOPMDWatchValue::setLogicCalc(PTR(rdoRuntime::RDOCalc) logicCalc)
 {
-	m_logicCalc = logicCalc;
+	m_pLogicCalc = logicCalc;
 }
 
 void RDOPMDWatchValue::setArithmCalc(PTR(rdoRuntime::RDOCalc) arithmCalc)
 {
-	m_arithmCalc = arithmCalc;
+	m_pArithmCalc = arithmCalc;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue(PTR(RDORuntime) sim, const tstring& name, RDOCalc* arithm):
+RDOPMDGetValue::RDOPMDGetValue(PTR(RDORuntime) sim, const tstring& name, CREF(LPRDOCalc) pArithm):
 	RDOPMDPokaz( sim, name, false ),
-	m_arithmCalc( arithm )
+	m_pArithmCalc( pArithm )
 {
 }
 
@@ -427,7 +427,7 @@ rbool RDOPMDGetValue::calcStat(PTR(RDOSimulator) sim)
 
 	runtime->getResults().width(30);
 	runtime->getResults() << std::left << name() 
-		<< _T("\t") << m_arithmCalc->calcValue( runtime ).getAsString() << _T('\n');
+		<< _T("\t") << m_pArithmCalc->calcValue( runtime ).getAsString() << _T('\n');
 
 	return true;
 }

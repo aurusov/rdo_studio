@@ -18,10 +18,10 @@ RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, b
 	setTraceID( runtime->getFreeActivityId() );
 }
 
-RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, RDOCalc* condition, const std::string& name ):
+RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name ):
 	RDOActivityPattern<RDOPatternOperation>( runtime, pattern, trace, name ),
 	RDOPatternPrior(),
-	additionalCondition( condition )
+	additionalCondition(pCondition)
 {
 	setTrace( trace );
 	haveAdditionalCondition = true;

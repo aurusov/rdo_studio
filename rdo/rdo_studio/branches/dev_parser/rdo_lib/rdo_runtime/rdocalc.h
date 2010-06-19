@@ -25,8 +25,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-PREDECLARE_POINTER(RDOCalc);
-
 OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 {
 DECLARE_FACTORY(RDOCalc)
@@ -48,26 +46,27 @@ protected:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime) = 0;
 };
 
-DECLARE_POINTER(RDOCalc);
-
 #define DECALRE_ICalc \
 	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+
+#define CALC(TYPE) class TYPE: public RDOCalc
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcConst
 // ----------------------------------------------------------------------------
-class RDOCalcConst: public RDOCalc
+CALC(RDOCalcConst)
 {
 DECLARE_FACTORY(RDOCalcConst)
 private:
 	RDOCalcConst(CREF(RDOValue) value);
 	DECALRE_ICalc;
 };
+DECLARE_POINTER(RDOCalcConst);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetResParam (Параметры постоянного ресурса)
 // ----------------------------------------------------------------------------
-class RDOCalcGetResParam: public RDOCalc
+CALC(RDOCalcGetResParam)
 {
 DECLARE_FACTORY(RDOCalcGetResParam)
 protected:
@@ -104,7 +103,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetUnknowResParam (Параметры несуществующего ресурса)
 // ----------------------------------------------------------------------------
-class RDOCalcGetUnknowResParam: public RDOCalc
+CALC(RDOCalcGetUnknowResParam)
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
 private:
@@ -122,7 +121,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetGroupResParam
 // ----------------------------------------------------------------------------
-class RDOCalcGetGroupResParam: public RDOCalc
+CALC(RDOCalcGetGroupResParam)
 {
 DECLARE_FACTORY(RDOCalcGetGroupResParam)
 private:
@@ -138,7 +137,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetRelevantResParam
 // ----------------------------------------------------------------------------
-class RDOCalcGetRelevantResParam: public RDOCalc
+CALC(RDOCalcGetRelevantResParam)
 {
 DECLARE_FACTORY(RDOCalcGetRelevantResParam)
 private:
@@ -156,25 +155,25 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOSetRelParamDiapCalc
 // ----------------------------------------------------------------------------
-class RDOSetRelParamDiapCalc: public RDOCalc
+CALC(RDOSetRelParamDiapCalc)
 {
 DECLARE_FACTORY(RDOSetRelParamDiapCalc)
 private:
-	RDOSetRelParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, PTR(RDOCalc) calc)
+	RDOSetRelParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc)
 		: m_relNumb  (relNumb  )
 		, m_parNumb  (parNumb  )
-		, m_calc     (calc     )
+		, m_pCalc    (pCalc    )
 		, m_min_value(min_value)
 		, m_max_value(max_value)
 	{
 		m_value = true;
-		if (m_calc)
-			setSrcInfo(m_calc->src_info());
+		if (m_pCalc)
+			setSrcInfo(m_pCalc->src_info());
 	}
 
 	int          m_relNumb;
 	int          m_parNumb;
-	PTR(RDOCalc) m_calc;
+	LPRDOCalc    m_pCalc;
 	RDOValue     m_min_value;
 	RDOValue     m_max_value;
 
@@ -184,23 +183,23 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOSetResourceParamCalc
 // ----------------------------------------------------------------------------
-class RDOSetResourceParamCalc: public RDOCalc
+CALC(RDOSetResourceParamCalc)
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)
 private:
-	RDOSetResourceParamCalc(int resNumb, int parNumb, PTR(RDOCalc) calc)
+	RDOSetResourceParamCalc(int resNumb, int parNumb, CREF(LPRDOCalc) pCalc)
 		: m_resNumb(resNumb)
 		, m_parNumb(parNumb)
-		, m_calc   (calc   )
+		, m_pCalc  (pCalc   )
 	{
 		m_value = true;
-		if (m_calc)
-			setSrcInfo(m_calc->src_info());
+		if (m_pCalc)
+			setSrcInfo(m_pCalc->src_info());
 	}
 
-	int          m_resNumb;
-	int          m_parNumb;
-	PTR(RDOCalc) m_calc;
+	int        m_resNumb;
+	int        m_parNumb;
+	LPRDOCalc  m_pCalc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -208,7 +207,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEraseRes
 // ----------------------------------------------------------------------------
-class RDOCalcEraseRes: public RDOCalc
+CALC(RDOCalcEraseRes)
 {
 DECLARE_FACTORY(RDOCalcEraseRes)
 public:
@@ -227,11 +226,12 @@ private:
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOCalcEraseRes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOSetPatternParamCalc
 // ----------------------------------------------------------------------------
-class RDOSetPatternParamCalc: public RDOCalc
+CALC(RDOSetPatternParamCalc)
 {
 DECLARE_FACTORY(RDOSetPatternParamCalc)
 private:
@@ -251,7 +251,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcPatParam
 // ----------------------------------------------------------------------------
-class RDOCalcPatParam: public RDOCalc
+CALC(RDOCalcPatParam)
 {
 DECLARE_FACTORY(RDOCalcPatParam)
 private:
@@ -267,7 +267,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetTimeNow
 // ----------------------------------------------------------------------------
-class RDOCalcGetTimeNow: public RDOCalc
+CALC(RDOCalcGetTimeNow)
 {
 DECLARE_FACTORY(RDOCalcGetTimeNow)
 
@@ -278,7 +278,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetSeconds
 // ----------------------------------------------------------------------------
-class RDOCalcGetSeconds: public RDOCalc
+CALC(RDOCalcGetSeconds)
 {
 DECLARE_FACTORY(RDOCalcGetSeconds)
 private:
@@ -288,7 +288,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetTermNow
 // ----------------------------------------------------------------------------
-class RDOCalcGetTermNow: public RDOCalc
+CALC(RDOCalcGetTermNow)
 {
 DECLARE_FACTORY(RDOCalcGetTermNow)
 private:
@@ -298,12 +298,13 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
-class RDOFunCalc: public RDOCalc
+CALC(RDOFunCalc)
 {
 protected:
 	RDOFunCalc()
 	{}
 };
+DECLARE_POINTER(RDOFunCalc);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFunListCalc
@@ -320,16 +321,16 @@ public:
 	}
 
 private:
-	RDOFuncTableCalc(PTR(RDOCalc) argCalc)
-		: m_argCalc (argCalc)
+	RDOFuncTableCalc(CREF(LPRDOCalc) pArgCalc)
+		: m_pArgCalc(pArgCalc)
 	{}
 
 	std::vector<PTR(RDOCalcConst)> m_results;
-	PTR(RDOCalc)                   m_argCalc;
+	LPRDOCalc                      m_pArgCalc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
-		int index = m_argCalc->calcValue( runtime ).getInt();
+		int index = m_pArgCalc->calcValue( runtime ).getInt();
 		return m_results.at(index)->calcValue( runtime );
 	}
 };
@@ -343,33 +344,33 @@ class RDOFunListCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunListCalc)
 public:
-	void addCase(PTR(RDOCalc) case_calc, PTR(RDOCalcConst) result_calc)
+	void addCase(CREF(LPRDOCalc) pCaseCalc, CREF(LPRDOCalcConst) pResultCalc)
 	{
-		m_cases  .push_back(case_calc  ); 
-		m_results.push_back(result_calc);
+		m_cases  .push_back(pCaseCalc  ); 
+		m_results.push_back(pResultCalc);
 	}
 
 private:
-	RDOFunListCalc(PTR(RDOCalcConst) default_value)
-		: m_default_value(default_value)
+	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue)
+		: m_pDefaultValue(pDefaultValue)
 	{}
 
-	std::vector<PTR(RDOCalc)>       m_cases;
-	std::vector<PTR(RDOCalcConst)>  m_results;
-	PTR(RDOCalcConst)               m_default_value;
+	std::vector<LPRDOCalc>       m_cases;
+	std::vector<LPRDOCalcConst>  m_results;
+	LPRDOCalcConst               m_pDefaultValue;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
 		size_t size = m_cases.size();
 		for (ruint i = 0; i < size; i++)
 		{
-			PTR(RDOCalc) cas = m_cases[i];
+			LPRDOCalc cas = m_cases[i];
 			if (cas->calcValue( runtime ).getAsBool())
 			{
 				return m_results[i]->calcValue(runtime);
 			}
 		}
-		return m_default_value->calcValue(runtime);
+		return m_pDefaultValue->calcValue(runtime);
 	}
 };
 
@@ -382,10 +383,10 @@ class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunAlgorithmicCalc)
 public:
-	void addCalcIf(PTR(RDOCalc) cond, PTR(RDOCalc) act)
+	void addCalcIf(CREF(LPRDOCalc) pCond, CREF(LPRDOCalc) pAct)
 	{
-		m_conditions.push_back(cond);
-		m_actions   .push_back(act );
+		m_conditions.push_back(pCond);
+		m_actions   .push_back(pAct );
 	}
 
 protected:
@@ -394,8 +395,8 @@ protected:
 		m_value = 0;
 	}
 
-	std::vector<PTR(RDOCalc)> m_conditions;
-	std::vector<PTR(RDOCalc)> m_actions;
+	std::vector<LPRDOCalc> m_conditions;
+	std::vector<LPRDOCalc> m_actions;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -426,12 +427,12 @@ private:
 class RDOFunCalcGroup: public RDOFunCalc
 {
 protected:
-	int           m_nResType;
-	PTR(RDOCalc)  m_condition;
+	int        m_nResType;
+	LPRDOCalc  m_pCondition;
 
-	RDOFunCalcGroup(int nResType, PTR(RDOCalc) condition)
-		: m_nResType (nResType )
-		, m_condition(condition)
+	RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
+		: m_nResType  (nResType  )
+		, m_pCondition(pCondition)
 	{}
 };
 
@@ -440,8 +441,8 @@ class RDOFunCalc##CalcName: public RDOFunCalcGroup \
 { \
 DECLARE_FACTORY(RDOFunCalc##CalcName) \
 private: \
-	RDOFunCalc##CalcName(int nResType, PTR(RDOCalc) condition) \
-		: RDOFunCalcGroup(nResType, condition) \
+	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
+		: RDOFunCalcGroup(nResType, pCondition) \
 	{} \
  	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
@@ -461,27 +462,28 @@ class RDOFunCalcSelect: public RDOFunCalcGroup
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
 	mutable std::list<PTR(RDOResource)> res_list;
-	void prepare(PTR(RDORuntime) sim) const;
+	void prepare(PTR(RDORuntime) sim);
 
 private:
-	RDOFunCalcSelect(int nResType, PTR(RDOCalc) condition)
-		: RDOFunCalcGroup(nResType, condition)
+	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition)
+		: RDOFunCalcGroup(nResType, pCondition)
 	{
 		m_value = 1;
 	}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOFunCalcSelect);
 
 class RDOFunCalcSelectBase: public RDOFunCalc
 {
 protected:
-	RDOFunCalcSelectBase(PTR(RDOFunCalcSelect) select, PTR(RDOCalc) condition)
-		: m_select   (select   )
-		, m_condition(condition)
+	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition)
+		: m_pSelect   (pSelect   )
+		, m_pCondition(pCondition)
 	{}
 
-	PTR(RDOFunCalcSelect) m_select;
-	PTR(RDOCalc)          m_condition;
+	LPRDOFunCalcSelect m_pSelect;
+	LPRDOCalc          m_pCondition;
 };
 
 #define DEFINE_CALC_SELECT_GROUP(CalcName) \
@@ -489,8 +491,8 @@ class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
 { \
 DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
 private: \
-	RDOFunCalcSelect##CalcName(PTR(RDOFunCalcSelect) select, PTR(RDOCalc) condition) \
-		: RDOFunCalcSelectBase(select, condition) \
+	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition) \
+		: RDOFunCalcSelectBase(pSelect, pCondition) \
 	{} \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
@@ -500,8 +502,8 @@ class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
 { \
 DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
 private: \
-	RDOFunCalcSelect##CalcName(PTR(RDOFunCalcSelect) select) \
-		: RDOFunCalcSelectBase(select, NULL) \
+	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect) \
+		: RDOFunCalcSelectBase(pSelect, NULL) \
 	{} \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
 };
@@ -555,21 +557,21 @@ DEFINE_RDO_STD_FUN( Power    );
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcBinary
 // ----------------------------------------------------------------------------
-class RDOCalcBinary: public RDOCalc
+CALC(RDOCalcBinary)
 {
 public:
-	PTR(RDOCalc)      getLeft() const              { return m_left; }
-	PTR(RDOCalcConst) getRightAsConst() const      { return dynamic_cast<PTR(RDOCalcConst)>(m_right); }
-	void              setRight(PTR(RDOCalc) right) { m_right = right; }
+	LPRDOCalc      getLeft        () const                 { return m_pLeft;                              }
+	LPRDOCalcConst getRightAsConst() const                 { return m_pRight.object_cast<RDOCalcConst>(); }
+	void           setRight       (CREF(LPRDOCalc) pRight) { m_pRight = pRight;                           }
 
 protected:
-	RDOCalcBinary(PTR(RDOCalc) left, PTR(RDOCalc) right)
-		: m_left (left  )
-		, m_right(right )
+	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+		: m_pLeft (pLeft )
+		, m_pRight(pRight)
 	{}
 
-	PTR(RDOCalc)  m_left;
-	PTR(RDOCalc)  m_right;
+	LPRDOCalc  m_pLeft;
+	LPRDOCalc  m_pRight;
 };
 
 #define DEFINE_BINARY_CALC( CalcName, CalcOpr ) \
@@ -577,18 +579,18 @@ class RDOCalc##CalcName: public RDOCalcBinary \
 { \
 DECLARE_FACTORY(RDOCalc##CalcName) \
 public: \
-	static RDOSrcInfo getStaticSrcInfo(CPTRC(RDOCalc) left, CPTRC(RDOCalc) right) \
+	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight) \
 	{ \
 		RDOSrcInfo src_info; \
-		src_info.setSrcInfo(left->src_info(), CalcOpr, right->src_info()); \
+		src_info.setSrcInfo(pLeft->src_info(), CalcOpr, pRight->src_info()); \
 		return src_info; \
 	} \
  \
 protected: \
-	RDOCalc##CalcName(PTR(RDOCalc) const left, PTR(RDOCalc) const right) \
-		: RDOCalcBinary(left, right) \
+	RDOCalc##CalcName(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight) \
+		: RDOCalcBinary(pLeft, pRight) \
 	{ \
-		setSrcInfo( getStaticSrcInfo(m_left, m_right) ); \
+		setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight)); \
 	} \
 private: \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
@@ -606,8 +608,8 @@ class RDOCalcPlusEnumSafe: public RDOCalcPlus
 {
 DECLARE_FACTORY(RDOCalcPlusEnumSafe)
 private:
-	RDOCalcPlusEnumSafe(PTR(RDOCalc) _left, PTR(RDOCalc) _right)
-		: RDOCalcPlus(_left, _right)
+	RDOCalcPlusEnumSafe(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+		: RDOCalcPlus(pLeft, pRight)
 	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -616,8 +618,8 @@ class RDOCalcMultEnumSafe: public RDOCalcMult
 {
 DECLARE_FACTORY(RDOCalcMultEnumSafe)
 private:
-	RDOCalcMultEnumSafe(PTR(RDOCalc) _left, PTR(RDOCalc) _right)
-		: RDOCalcMult(_left, _right)
+	RDOCalcMultEnumSafe(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+		: RDOCalcMult(pLeft, pRight)
 	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -629,20 +631,20 @@ class RDOCalcAnd: public RDOCalcBinary
 {
 DECLARE_FACTORY(RDOCalcAnd)
 public:
-	static RDOSrcInfo getStaticSrcInfo(CPTR(RDOCalc) left, CPTR(RDOCalc) right)
+	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 	{
 		RDOSrcInfo src_info;
-		src_info.setSrcInfo(left->src_info(), _T(" and "), right->src_info());
+		src_info.setSrcInfo(pLeft->src_info(), _T(" and "), pRight->src_info());
 		return src_info;
 	}
 
 private:
-	RDOCalcAnd(PTR(RDOCalc) left, PTR(RDOCalc) right)
-		: RDOCalcBinary(left, right)
+	RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+		: RDOCalcBinary(pLeft, pRight)
 	{
 		m_value_true  = 1;
 		m_value_false = 0;
-		setSrcInfo( getStaticSrcInfo(m_left, m_right) );
+		setSrcInfo( getStaticSrcInfo(m_pLeft, m_pRight) );
 	}
 	RDOValue m_value_true;
 	RDOValue m_value_false;
@@ -654,20 +656,20 @@ class RDOCalcOr: public RDOCalcBinary
 {
 DECLARE_FACTORY(RDOCalcOr)
 public:
-	static RDOSrcInfo getStaticSrcInfo(CPTR(RDOCalc) left, CPTR(RDOCalc) right)
+	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 	{
 		RDOSrcInfo src_info;
-		src_info.setSrcInfo(left->src_info(), _T(" or "), right->src_info());
+		src_info.setSrcInfo(pLeft->src_info(), _T(" or "), pRight->src_info());
 		return src_info;
 	}
 
 private:
-	RDOCalcOr(PTR(RDOCalc) left, PTR(RDOCalc) right)
-		: RDOCalcBinary(left, right)
+	RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+		: RDOCalcBinary(pLeft, pRight)
 	{
 		m_value_true  = 1;
 		m_value_false = 0;
-		setSrcInfo( getStaticSrcInfo(m_left, m_right) );
+		setSrcInfo( getStaticSrcInfo(m_pLeft, m_pRight) );
 	}
 
 	RDOValue m_value_true;
@@ -676,15 +678,15 @@ private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
-class RDOCalcNot: public RDOCalc
+CALC(RDOCalcNot)
 {
 DECLARE_FACTORY(RDOCalcNot)
 private:
-	RDOCalcNot(PTR(RDOCalc) calc)
-		: m_calc(calc)
+	RDOCalcNot(CREF(LPRDOCalc) pCalc)
+		: m_pCalc(pCalc)
 	{}
 
-	PTR(RDOCalc) m_calc;
+	LPRDOCalc m_pCalc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -699,7 +701,7 @@ DEFINE_BINARY_CALC( IsGEQ     , " >= " );
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcUnary
 // ----------------------------------------------------------------------------
-class RDOCalcUnary: public RDOCalc
+CALC(RDOCalcUnary)
 {
 protected:
 	RDOCalcUnary(CREF(LPRDOCalc) pOperation)
@@ -719,8 +721,8 @@ class RDOCalcUMinus: public RDOCalcUnary
 {
 DECLARE_FACTORY(RDOCalcUMinus)
 private:
-	RDOCalcUMinus(PTR(RDOCalc) _oper)
-		: RDOCalcUnary(_oper)
+	RDOCalcUMinus(CREF(LPRDOCalc) pOper)
+		: RDOCalcUnary(pOper)
 	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
@@ -733,8 +735,8 @@ class RDOCalcDoubleToInt: public RDOCalcUnary
 {
 DECLARE_FACTORY(RDOCalcDoubleToInt)
 private:
-	RDOCalcDoubleToInt(PTR(RDOCalc) _oper)
-		: RDOCalcUnary(_oper)
+	RDOCalcDoubleToInt(CREF(LPRDOCalc) pOper)
+		: RDOCalcUnary(pOper)
 	{}
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
@@ -753,8 +755,8 @@ public:
 	}
 
 private:
-	RDOCalcDoubleToIntByResult(PTR(RDOCalc) _oper)
-		: RDOCalcUnary(_oper)
+	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
+		: RDOCalcUnary(pOper)
 		, m_round     (false)
 	{}
 
@@ -786,7 +788,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- Последовательности
 // ----------------------------------------------------------------------------
-class RDOCalcSeqInit: public RDOCalc
+CALC(RDOCalcSeqInit)
 {
 DECLARE_FACTORY(RDOCalcSeqInit)
 public:
@@ -894,7 +896,7 @@ DEFINE_RANDON_DISTRIBUTION( ByHist     , RandGeneratorCommonNext  );
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcFuncParam
 // ----------------------------------------------------------------------------
-class RDOCalcFuncParam: public RDOCalc
+CALC(RDOCalcFuncParam)
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
 private:
@@ -912,7 +914,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetConst / RDOCalcSetConst
 // ----------------------------------------------------------------------------
-class RDOCalcGetConst: public RDOCalc
+CALC(RDOCalcGetConst)
 {
 DECLARE_FACTORY(RDOCalcGetConst)
 private:
@@ -924,20 +926,20 @@ private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
-class RDOCalcSetConst: public RDOCalc
+CALC(RDOCalcSetConst)
 {
 DECLARE_FACTORY(RDOCalcSetConst)
 private:
-	RDOCalcSetConst(int number, PTR(RDOCalc) calc)
+	RDOCalcSetConst(int number, CREF(LPRDOCalc) pCalc)
 		: m_number(number)
-		, m_calc  (calc  )
+		, m_pCalc (pCalc )
 	{
 		m_value = 0;
-		if (m_calc) setSrcInfo(m_calc->src_info());
+		if (m_pCalc) setSrcInfo(m_pCalc->src_info());
 	}
 
-	int          m_number;
-	PTR(RDOCalc) m_calc;
+	int        m_number;
+	LPRDOCalc  m_pCalc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -949,8 +951,8 @@ class RDOCalcInt: public RDOCalcUnary
 {
 DECLARE_FACTORY(RDOCalcInt)
 private:
-	RDOCalcInt(PTR(RDOCalc) oper)
-		: RDOCalcUnary(oper)
+	RDOCalcInt(CREF(LPRDOCalc) pOperation)
+		: RDOCalcUnary(pOperation)
 	{}
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
@@ -964,26 +966,26 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcFunctionCall
 // ----------------------------------------------------------------------------
-class RDOCalcFunctionCall: public RDOCalc
+CALC(RDOCalcFunctionCall)
 {
 DECLARE_FACTORY(RDOCalcFunctionCall)
 public:
-	void addParameter(PTR(RDOCalc) calc)
+	void addParameter(CREF(LPRDOCalc) pCalc)
 	{
-		m_parameters.push_back(calc);
+		m_parameters.push_back(pCalc);
 	}
-	void setFunctionCalc(PTR(RDOFunCalc) calc)
+	void setFunctionCalc(CREF(LPRDOFunCalc) pFunction)
 	{
-		m_function = calc;
+		m_pFunction = pFunction;
 	}
 
 private:
-	RDOCalcFunctionCall(PTR(RDOFunCalc) function)
-		: m_function(function)
+	RDOCalcFunctionCall(CREF(LPRDOFunCalc) pFunction)
+		: m_pFunction(pFunction)
 	{}
 
-	std::vector<PTR(RDOCalc)>  m_parameters;
-	PTR(RDOFunCalc)            m_function;
+	std::vector<LPRDOCalc>  m_parameters;
+	LPRDOFunCalc            m_pFunction;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -991,7 +993,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateNumberedResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
 // ----------------------------------------------------------------------------
-class RDOCalcCreateNumberedResource: public RDOCalc
+CALC(RDOCalcCreateNumberedResource)
 {
 public:
 	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
@@ -1024,7 +1026,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateEmptyResource (создание нового временного ресурса с пустым списком параметров)
 // ----------------------------------------------------------------------------
-class RDOCalcCreateEmptyResource: public RDOCalc
+CALC(RDOCalcCreateEmptyResource)
 {
 DECLARE_FACTORY(RDOCalcCreateEmptyResource)
 private:
@@ -1041,7 +1043,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- Выбор ресурсов
 // ----------------------------------------------------------------------------
-class RDOSelectResourceCalc: public RDOCalc
+CALC(RDOSelectResourceCalc)
 {
 public:
 	enum Type
@@ -1102,9 +1104,9 @@ class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
 protected:
-	RDOSelectResourceByTypeCalc(int _rel_res_id, int _resType, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
-		: RDOSelectResourceCalc(_rel_res_id, _choice_calc, _order_calc, _order_type)
-		, resType              (_resType                                                   )
+	RDOSelectResourceByTypeCalc(int _rel_res_id, int _resType, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type _order_type = order_empty)
+		: RDOSelectResourceCalc(_rel_res_id, pChoiceCalc, pOrderCalc, _order_type)
+		, resType              (_resType                                         )
 	{}
 
 	int resType;
@@ -1120,7 +1122,7 @@ public:
 	virtual rbool            callChoice        (PTR(RDORuntime) sim) const = 0;
 };
 
-class RDOSelectResourceCommonCalc: public RDOCalc
+CALC(RDOSelectResourceCommonCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceCommonCalc)
 private:
@@ -1165,8 +1167,8 @@ public:
 	virtual rbool    callChoice        (PTR(RDORuntime) sim) const;
 
 private:
-	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, PTR(RDOCalc) _choice_calc = NULL, PTR(RDOCalc) _order_calc = NULL, Type _order_type = order_empty)
-		: RDOSelectResourceByTypeCalc(_relNumb, _resType, _choice_calc, _order_calc, _order_type)
+	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type _order_type = order_empty)
+		: RDOSelectResourceByTypeCalc(_relNumb, _resType, pChoiceCalc, pOrderCalc, _order_type)
 	{}
 };
 

@@ -23,16 +23,16 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEventPlan
 // ----------------------------------------------------------------------------
-class RDOCalcEventPlan: public RDOCalc
+CALC(RDOCalcEventPlan)
 {
 public:
-	RDOCalcEventPlan(PTR(RDOCalc) timeCalc);
+	RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc);
 
 	void setEvent(CREF(LPIBaseOperation) event);
 
 private:
-	LPIBaseOperation m_event;
-	PTR(RDOCalc)     m_timeCalc;
+	LPIBaseOperation  m_event;
+	LPRDOCalc         m_pTimeCalc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };

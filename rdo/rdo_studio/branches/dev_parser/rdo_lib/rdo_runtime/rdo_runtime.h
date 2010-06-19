@@ -21,6 +21,7 @@
 #include "rdo_lib/rdo_runtime/simtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -64,7 +65,6 @@ class RDOPattern;
 class RDOCalcEraseRes;
 class RDOFRMFrame;
 class RDOCalcCreateNumberedResource;
-PREDECLARE_POINTER(RDOCalc);
 
 class RDORuntime: public RDOSimulatorTrace
 {
@@ -90,7 +90,7 @@ public:
 	void fireMessage(ruint message, PTR(void) param);
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
-	void error( const std::string& message, const RDOCalc* calc = NULL );
+	void error(CREF(tstring) message, CREF(LPRDOCalc) pCalc = NULL);
 
 	class RDOHotKeyToolkit
 	{
@@ -167,7 +167,7 @@ public:
 	void showResources( int node ) const;
 #endif
 
-	void onEraseRes( const int res_id, const RDOCalcEraseRes* calc );
+	void onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc);
 	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
 	RDOResource* createNewResource( unsigned int type, rbool trace );
 	void insertNewResource( RDOResource* res );
