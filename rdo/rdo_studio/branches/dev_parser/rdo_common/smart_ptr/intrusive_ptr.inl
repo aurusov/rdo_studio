@@ -55,17 +55,17 @@ inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CR
 	return *this;
 }
 
-//template<class T>
-//inline PTR(T) intrusive_ptr<T>::get()
-//{
-//	return m_object;
-//}
-//
-//template<class T>
-//inline CPTR(T) intrusive_ptr<T>::get() const
-//{
-//	return m_object;
-//}
+template<class T>
+inline PTR(T) intrusive_ptr<T>::get()
+{
+	return m_object;
+}
+
+template<class T>
+inline CPTR(T) intrusive_ptr<T>::get() const
+{
+	return m_object;
+}
 
 template<class T>
 inline intrusive_ptr<T>::operator rbool () const
@@ -117,6 +117,12 @@ inline void intrusive_ptr<T>::release()
 			m_object = NULL;
 		}
 	}
+}
+
+template<class T>
+inline rbool intrusive_ptr<T>::owner() const
+{
+	return static_cast<CPTR(counter_reference)>(m_object)->m_intrusive_counter == 1;
 }
 
 template<class T>
