@@ -1136,6 +1136,7 @@ private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
+PREDECLARE_POINTER(RDOSelectResourceDirectCalc);
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCalc)
@@ -1149,12 +1150,12 @@ protected:
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
-		CPTR(RDOSelectResourceDirectCalc) directCalc = dynamic_cast<CPTR(RDOSelectResourceDirectCalc)>(pCalc.get());
-		if (!directCalc)
+		LPRDOSelectResourceDirectCalc pDirectCalc = pCalc.object_dymamic_cast<RDOSelectResourceDirectCalc>();
+		if (!pDirectCalc)
 		{
 			return false;
 		}
-		return rel_res_id == directCalc->rel_res_id && res_id == directCalc->res_id;
+		return rel_res_id == pDirectCalc->rel_res_id && res_id == pDirectCalc->res_id;
 	}
 
 private:

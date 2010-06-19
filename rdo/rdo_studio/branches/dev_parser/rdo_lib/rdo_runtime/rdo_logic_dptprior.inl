@@ -43,7 +43,7 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOp
 			{
 				RDOValue value = prior->calcValue(runtime);
 				if (value < 0 || value > 1)
-					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior.get());
+					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
 			}
 		}
 	}
