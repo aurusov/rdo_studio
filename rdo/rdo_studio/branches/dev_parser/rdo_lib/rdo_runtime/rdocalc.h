@@ -14,7 +14,7 @@
 #include <list>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/interface_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
@@ -27,7 +27,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOCalc);
 
-S_OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
+OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 {
 DECLARE_FACTORY(RDOCalc)
 
@@ -1113,13 +1113,12 @@ private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
-S_OBJECT(IRDOSelectResourceCommon)
+OBJECT_INTERFACE(IRDOSelectResourceCommon)
 {
 public:
 	virtual std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const = 0;
 	virtual rbool            callChoice        (PTR(RDORuntime) sim) const = 0;
 };
-DECLARE_POINTER(IRDOSelectResourceCommon);
 
 class RDOSelectResourceCommonCalc: public RDOCalc
 {

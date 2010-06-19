@@ -12,7 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 // ===============================================================================
 
@@ -95,16 +95,26 @@ private:
 	 REF(RDOArrayValue) __arrayV ();
 	CREF(RDOArrayValue) __arrayV () const;
 
-	class smart_tstring: public rdo::smart_ptr<tstring>
+	OBJECT(string_class) IS INSTANCE_OF(tstring)
 	{
 	public:
-		typedef rdo::smart_ptr<tstring> parent_type;
-
-		smart_tstring(PTR(tstring) pString)
-			: parent_type(pString, true)
+		string_class(CREF(tstring) string)
+			: tstring(string)
 		{}
-		void addref () { parent_type::addref (); }
-		void release() { parent_type::release(); }
+	};
+
+	class smart_string: public rdo::intrusive_ptr<string_class>
+	{
+	public:
+		typedef rdo::intrusive_ptr<string_class> parent_type;
+
+		smart_string(PTR(string_class) pString)
+			: parent_type(pString)
+		{}
+
+		void  addref () { parent_type::addref ();      }
+		void  release() { parent_type::release();      }
+		rbool owner  () { return parent_type::owner(); }
 	};
 	void deleteString();
 
@@ -112,7 +122,7 @@ private:
 		int                i_value;
 		double             d_value;
 		rbool              b_value;
-		PTR(smart_tstring) s_value;
+		PTR(smart_string)  s_value;
 		PTR(void)          p_data;
 	} m_value;
 };
