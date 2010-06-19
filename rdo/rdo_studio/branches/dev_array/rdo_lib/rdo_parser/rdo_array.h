@@ -33,7 +33,7 @@ public:
 	void            dinamicItemCast(CREF(RDOValue) value);
 
 private:
-	RDOArrayType         (CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info, rbool flag);
+	RDOArrayType         (CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOArrayType();
 
 	PTR(rdoRuntime::RDOArrayType) __array() const 
@@ -44,7 +44,6 @@ private:
 	CREF(LPRDOType) getFirstType();
 
 	LPRDOType m_pType;
-	rbool     plc_call;
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;

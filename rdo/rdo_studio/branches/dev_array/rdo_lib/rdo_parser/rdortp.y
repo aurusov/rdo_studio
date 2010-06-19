@@ -622,7 +622,7 @@ value_default_item:	RDO_INT_CONST {
 param_array:		RDO_array '<' param_type '>' {
 						LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
 						ASSERT(pParamType);
-						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4), true);
+						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4));
 						$$ = PARSER->stack().push(pArray);
 					};
 
@@ -636,7 +636,7 @@ value_array_default:	'[' param_array_item ']' {
 					};
 
 param_array_item:	value_default_item {
-						LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(),RDOParserSrcInfo(@1), false);
+						LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOParserSrcInfo(@1));
 						ASSERT(pArrayType);
 						LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
 						pArrayValue->insert_array(RDOVALUE($1));

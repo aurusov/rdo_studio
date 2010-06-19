@@ -22,16 +22,14 @@ OPEN_RDO_PARSER_NAMESPACE
  //----------------------------------------------------------------------------
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info, rbool flag)
+RDOArrayType::RDOArrayType(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info)
 	: RDOType          (&rdoRuntime::g_unknow)
 	, RDOParserSrcInfo (src_info             )
 	, m_pType          (pType                )
-	, plc_call         (flag                 )
 {
 	ASSERT(m_pType);
 	setSrcText(name());
 	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime(), m_pType->type());
-	if(flag) rdoParse::RDOParser::s_parser()->insertArrayType(this);
 }
 
 RDOArrayType::~RDOArrayType()
@@ -158,9 +156,10 @@ RDOArrayValue::~RDOArrayValue()
 
 void RDOArrayValue::insert_array(CREF(RDOValue) value)
 {
-	LPRDOArrayType FirstArrayType = RDOParser::s_parser()->getLastArrayType();
-	FirstArrayType->dinamicItemCast(value);
-	m_arrayValue.push_back(value);
+	NEVER_REACH_HERE;
+	//LPRDOArrayType FirstArrayType = RDOParser::s_parser()->getLastArrayType();
+	//FirstArrayType->dinamicItemCast(value);
+	//m_arrayValue.push_back(value);
 }
 
 CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
