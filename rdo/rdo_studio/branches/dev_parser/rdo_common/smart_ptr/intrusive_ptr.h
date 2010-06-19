@@ -35,9 +35,6 @@ public:
 
 	REF(this_type) operator= (CREF(this_type) sptr);
 
-	PTR(T)   get();
-	CPTR(T)  get() const;
-
 	operator rbool     () const;
 	CPTR(T) operator-> () const;
 	 PTR(T) operator-> ();
@@ -52,6 +49,9 @@ public:
 	interface_ptr<P> interface_cast();
 
 protected:
+	PTR(T)   get();
+	CPTR(T)  get() const;
+
 	void  addref ();
 	void  release();
 	rbool owner  () const;
