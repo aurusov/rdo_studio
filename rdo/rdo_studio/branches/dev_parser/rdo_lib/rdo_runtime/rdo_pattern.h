@@ -124,7 +124,6 @@ public:
 	LPIEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
 
 private:
-	LPRDOCalc         m_timeCalc;
 	CalcList          m_convertor;
 	ConvertStatusList m_convertorStatus;
 	CalcList          m_erase;
