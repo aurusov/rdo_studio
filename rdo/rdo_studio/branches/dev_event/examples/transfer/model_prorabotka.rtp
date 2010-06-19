@@ -1,3 +1,8 @@
+$Resource_type системы: permanent
+$Parameters
+	число: integer = 0
+$End
+
 $Resource_type счетчики: permanent
 $Parameters
     количество_обслуженных_заявок: integer = 0

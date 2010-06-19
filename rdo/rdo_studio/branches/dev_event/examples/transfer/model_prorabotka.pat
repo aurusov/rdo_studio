@@ -1,3 +1,13 @@
+//Продвижение модельного времени вперед
+$Pattern Образец_счетчик: irregular_event
+$Relevant_resources
+	_система: система Keep
+$Time = 0.1
+$Body
+_система
+	Convert_event
+$End
+
 //Приход заявки (номер по порядку, вес и маршрут случайно)
 $Pattern Образец_прихода_заявок : irregular_event
 $Relevant_resources
