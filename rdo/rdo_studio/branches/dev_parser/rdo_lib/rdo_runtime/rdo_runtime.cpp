@@ -30,9 +30,9 @@ RDORuntime::RDORuntime()
 	, key_found           (false              )
 	, m_currentTerm       (0                  )
 {
-	m_parent        = NULL;
+	m_parent         = NULL;
 	detach();
-	terminateIfCalc = NULL;
+	pTerminateIfCalc = NULL;
 }
 
 RDORuntime::~RDORuntime()
@@ -101,22 +101,22 @@ void RDORuntime::fireMessage(ruint message, PTR(void) param)
 
 bool RDORuntime::endCondition()
 {
-	if ( !terminateIfCalc ) {
+	if ( !pTerminateIfCalc ) {
 		return false;	// forever
 	}
-	return fabs( terminateIfCalc->calcValue( this ).getDouble() ) > DBL_EPSILON;
+	return fabs( pTerminateIfCalc->calcValue( this ).getDouble() ) > DBL_EPSILON;
 }
 
-void RDORuntime::setTerminateIf( RDOCalc* _terminateIfCalc )
+void RDORuntime::setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc)
 {
-	terminateIfCalc = _terminateIfCalc;
+	pTerminateIfCalc = _pTerminateIfCalc;
 }
 
 bool RDORuntime::breakPoints()
 {
 	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
 	while ( it != breakPointsCalcs.end() ) {
-		if ( (*it)->calc->calcValue( this ).getAsBool() ) {
+		if ( (*it)->pCalc->calcValue( this ).getAsBool() ) {
 			lastActiveBreakPoint = *it;
 			return true;
 		}
@@ -125,17 +125,17 @@ bool RDORuntime::breakPoints()
 	return false;
 }
 
-void RDORuntime::insertBreakPoint( const std::string& name, RDOCalc* calc )
+void RDORuntime::insertBreakPoint( const std::string& name, CREF(LPRDOCalc) pCalc )
 {
-	breakPointsCalcs.push_back( new BreakPoint( this, name, calc ) );
+	breakPointsCalcs.push_back( new BreakPoint( this, name, pCalc ) );
 }
 
-RDOCalc* RDORuntime::findBreakPoint( const std::string& name )
+LPRDOCalc RDORuntime::findBreakPoint( const std::string& name )
 {
 	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
 	while ( it != breakPointsCalcs.end() ) {
 		if ( (*it)->name == name ) {
-			return (*it)->calc;
+			return (*it)->pCalc;
 		}
 		it++;
 	}
@@ -144,7 +144,7 @@ RDOCalc* RDORuntime::findBreakPoint( const std::string& name )
 
 std::string RDORuntime::getLastBreakPointName() const
 {
-	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->calc->src_text() : "";
+	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->pCalc->src_text() : "";
 }
 
 void RDORuntime::setConstValue( unsigned int numberOfConst, RDOValue value )

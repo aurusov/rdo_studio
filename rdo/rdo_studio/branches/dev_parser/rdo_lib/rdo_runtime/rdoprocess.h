@@ -8,8 +8,6 @@
 
 namespace rdoRuntime {
 
-class RDOCalc;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
@@ -125,14 +123,14 @@ public:
 	void calcNextTimeInterval( RDOSimulator* sim );
 
 private:
-	RDOPROCGenerate(LPIPROCProcess process, PTR(RDOCalc) time)
+	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime)
 		: RDOPROCBlock(process)
 		, timeNext    (NULL   )
-		, timeCalc    (time   )
+		, pTimeCalc   (pTime  )
 	{}
 
-	double       timeNext;
-	PTR(RDOCalc) timeCalc;
+	double     timeNext;
+	LPRDOCalc  pTimeCalc;
 
 	DECLARE_IBaseOperation;
 };
@@ -303,7 +301,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOCalc* delayCalc;
+	LPRDOCalc pDelayCalc;
 
 	struct LeaveTr {
 		RDOPROCTransact* transact;
@@ -317,9 +315,9 @@ protected:
 	std::list< LeaveTr > leave_list;
 
 private:
-	RDOPROCAdvance(LPIPROCProcess process, RDOCalc* _delayCalc)
-		: RDOPROCBlock(process   )
-		, delayCalc   (_delayCalc)
+	RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc)
+		: RDOPROCBlock(process    )
+		, pDelayCalc  (_pDelayCalc)
 	{}
 	DECLARE_IBaseOperation;
 };
@@ -360,18 +358,18 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCAssign(LPIPROCProcess process, RDOCalc* value, int Id_res, int Id_param)
+	RDOPROCAssign(LPIPROCProcess process, CREF(LPRDOCalc) pValue, int Id_res, int Id_param)
 		: RDOPROCBlock(process )
-		, paramValue  (value   )
+		, pParamValue (pValue  )
 		, t_resId     (Id_res  )
 		, t_parId     (Id_param)
 	{
 		int i = 0;
 	}
 
-	RDOCalc* paramValue;
-	int t_resId;
-	int t_parId;
+	LPRDOCalc pParamValue;
+	int       t_resId;
+	int       t_parId;
 
 	DECLARE_IBaseOperation;
 };

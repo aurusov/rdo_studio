@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-RDODPTSearchActivity::RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, PTR(RDOCalc) cost)
+RDODPTSearchActivity::RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, CREF(LPRDOCalc) pCost)
 	: RDOTraceableObject(false    )
 	, m_rule            (rule     )
-	, m_cost            (cost     )
+	, m_pCost           (pCost    )
 	, m_valueTime       (valueTime)
 {
 	LPITrace trace = m_rule;
@@ -36,7 +36,7 @@ REF(LPIRule) RDODPTSearchActivity::rule()
 
 double RDODPTSearchActivity::cost(PTR(RDOSimulator) runtime)
 {
-	return m_cost->calcValue(static_cast<PTR(RDORuntime)>(runtime)).getDouble();
+	return m_pCost->calcValue(static_cast<PTR(RDORuntime)>(runtime)).getDouble();
 }
 
 IDPTSearchActivity::ValueTime RDODPTSearchActivity::valueTime() const

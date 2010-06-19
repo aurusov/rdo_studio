@@ -15,22 +15,22 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOSimulator;
-class RDOCalc;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 class ILogic
 {
 public:
-	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim  ) = 0;
-	virtual void setCondition   (PTR (rdoRuntime::RDOCalc)      calc ) = 0;
+	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim       ) = 0;
+	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition) = 0;
 };
 #define DECLARE_ILogic \
-	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim  ); \
-	virtual void setCondition   (PTR (rdoRuntime::RDOCalc)      calc );
+	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim       ); \
+	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition);
 
 class IBaseOperationContainer
 {

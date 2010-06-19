@@ -22,8 +22,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOCalc;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOLogicBase
 // ----------------------------------------------------------------------------
@@ -47,7 +45,7 @@ protected:
 
 	DECLARE_IBaseOperationContainer;
 
-	PTR(RDOCalc)               m_condition;
+	LPRDOCalc                  m_pCondition;
 	rbool                      m_lastCondition;
 	ChildList                  m_childList;
 	LPIBaseOperation           m_first;

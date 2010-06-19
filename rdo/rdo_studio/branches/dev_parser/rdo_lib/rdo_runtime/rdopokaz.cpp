@@ -387,14 +387,14 @@ void RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 	return;
 }
 
-void RDOPMDWatchValue::setLogicCalc(PTR(rdoRuntime::RDOCalc) logicCalc)
+void RDOPMDWatchValue::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 {
-	m_pLogicCalc = logicCalc;
+	m_pLogicCalc = pLogicCalc;
 }
 
-void RDOPMDWatchValue::setArithmCalc(PTR(rdoRuntime::RDOCalc) arithmCalc)
+void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 {
-	m_pArithmCalc = arithmCalc;
+	m_pArithmCalc = pArithmCalc;
 }
 
 // ----------------------------------------------------------------------------

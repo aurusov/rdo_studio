@@ -43,13 +43,13 @@ public:
 class IPokazWatchValue
 {
 public:
-	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) res   ) = 0;
-	virtual void setLogicCalc       (PTR(rdoRuntime::RDOCalc) logicCalc ) = 0;
-	virtual void setArithmCalc      (PTR(rdoRuntime::RDOCalc) arithmCalc) = 0;
+	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) res       ) = 0;
+	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc) pLogicCalc ) = 0;
+	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc) pArithmCalc) = 0;
 };
-#define DECLARE_IPokazWatchValue                                           \
-	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) res   ); \
-	virtual void setLogicCalc       (PTR(rdoRuntime::RDOCalc) logicCalc ); \
-	virtual void setArithmCalc      (PTR(rdoRuntime::RDOCalc) arithmCalc);
+#define DECLARE_IPokazWatchValue                                               \
+	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) res       ); \
+	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc) pLogicCalc ); \
+	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc) pArithmCalc);
 
 #endif //! _RDOPOKAZ_INTERFACE_H_

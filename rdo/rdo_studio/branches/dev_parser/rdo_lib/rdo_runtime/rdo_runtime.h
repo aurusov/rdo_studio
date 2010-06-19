@@ -183,11 +183,11 @@ public:
 	void popFuncTop()                      { currFuncTop = funcStack.back().getInt(); funcStack.pop_back(); }
 
 	virtual rbool endCondition();
-	void setTerminateIf( RDOCalc* _terminateIfCalc );
+	void setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc);
 
 	virtual rbool breakPoints();
-	void insertBreakPoint( const std::string& name, RDOCalc* calc );
-	RDOCalc* findBreakPoint( const std::string& name );
+	void insertBreakPoint( const std::string& name, CREF(LPRDOCalc) pCalc );
+	LPRDOCalc findBreakPoint( const std::string& name );
 	std::string getLastBreakPointName() const;
 
 	RDOResource* getResourceByID( const int num ) const { return num >= 0 ? allResourcesByID.at( num ) : NULL; }
@@ -244,13 +244,12 @@ private:
 	{
 	public:
 		std::string name;
-		RDOCalc*    calc;
-		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, RDOCalc* _calc ):
+		LPRDOCalc   pCalc;
+		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, CREF(LPRDOCalc) _pCalc ):
 			RDORuntimeObject( _parent ),
-			name( _name ),
-			calc( _calc )
-		{
-		}
+			name ( _name  ),
+			pCalc( _pCalc )
+		{}
 	};
 	std::list< BreakPoint* > breakPointsCalcs;
 	BreakPoint*              lastActiveBreakPoint;
@@ -292,7 +291,7 @@ private:
 	RDOResults* results;
 	RDOResults* results_info;
 
-	RDOCalc* terminateIfCalc;
+	LPRDOCalc pTerminateIfCalc;
 	std::vector< RDOValue > allConstants;
 
 	virtual RDOSimulator* clone();

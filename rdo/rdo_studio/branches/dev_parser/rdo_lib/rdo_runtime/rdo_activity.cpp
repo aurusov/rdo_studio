@@ -9,9 +9,9 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOActivity
 // ----------------------------------------------------------------------------
-void RDOActivity::addParamCalc(PTR(rdoRuntime::RDOCalc) calc)
+void RDOActivity::addParamCalc(CREF(LPRDOCalc) pCalc)
 {
-	m_paramsCalcs.push_back( calc );
+	m_paramsCalcs.push_back(pCalc);
 }
 
 int RDOActivity::getResByRelRes(ruint rel_res_id) const

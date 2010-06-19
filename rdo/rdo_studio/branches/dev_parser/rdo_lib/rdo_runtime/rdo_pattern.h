@@ -7,7 +7,6 @@
 
 namespace rdoRuntime {
 
-class RDOCalc;
 class RDORuntime;
 class RDOIrregEvent;
 class RDORule;
