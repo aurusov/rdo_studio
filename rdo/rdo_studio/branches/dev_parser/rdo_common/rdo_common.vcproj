@@ -400,14 +400,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdosmart_ptr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdosmart_ptr.inl"
-				>
-			</File>
-			<File
 				RelativePath=".\rdosmart_ptr_wrapper.h"
 				>
 			</File>
