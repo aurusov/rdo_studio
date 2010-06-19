@@ -1032,9 +1032,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 			if ( *deltaStyle ) saveStr += deltaStyle;
 			styleCurrent = style;
 		}
-		if (ch == '{')       saveStr += "\\{";
-		else if (ch == '}')  saveStr += "\\}";
-		else if (ch == '\\') saveStr += "\\\\";
+		if (ch == '\\') saveStr += "\\\\";
 		else if (ch == '\t') saveStr += RTF_TAB;
 		else if (ch == '\n') {
 			if ( !prevCR ) saveStr += RTF_EOLN;

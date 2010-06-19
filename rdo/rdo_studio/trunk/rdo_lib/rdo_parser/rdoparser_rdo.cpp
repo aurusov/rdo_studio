@@ -150,9 +150,6 @@ void RDOParserPATPost::parse()
 	{
 		LPRDOEvent pEvent = *eventIt;
 
-		if (pEvent->getCalcList().empty())
-			continue;
-
 		CPTR(RDOPATPattern) pPattern = m_parser->findPATPattern(pEvent->name());
 		if (!pPattern)
 		{
@@ -171,11 +168,12 @@ void RDOParserPATPost::parse()
 			m_parser->error().push_done();
 		}
 
+		LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
+		ASSERT(pRuntimeEvent);
+		pEvent->setRuntimeEvent(pRuntimeEvent);
+
 		STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
 		{
-			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
-			ASSERT(pRuntimeEvent);
-
 			(*calcIt)->setEvent(pRuntimeEvent);
 		}
 	}

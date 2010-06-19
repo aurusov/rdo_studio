@@ -30,14 +30,16 @@ enum EqualType
 	ET_PLUS,
 	ET_MINUS,
 	ET_MULTIPLY,
-	ET_DIVIDE
+	ET_DIVIDE,
+	ET_INCR,
+	ET_DECR
 };
 
 template <EqualType equalType>
 class RDOSetRelParamCalc: public RDOCalc
 {
 public:
-	RDOSetRelParamCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, PTR(RDOCalc) calc)
+	RDOSetRelParamCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, PTR(RDOCalc) calc = NULL)
 		: RDOCalc  (parent )
 		, m_relNumb(relNumb)
 		, m_parNumb(parNumb)
@@ -94,6 +96,22 @@ inline REF(RDOValue) RDOSetRelParamCalc<ET_DIVIDE>::doCalc(PTR(RDORuntime) runti
 {
 	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
 	runtime->getResParamValRaw(resID, m_parNumb) /= m_calc->calcValue(runtime);
+	return m_value;
+}
+
+template <>
+inline REF(RDOValue) RDOSetRelParamCalc<ET_INCR>::doCalc(PTR(RDORuntime) runtime)
+{
+	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
+	runtime->getResParamValRaw(resID, m_parNumb) += RDOValue(1);
+	return m_value;
+}
+
+template <>
+inline REF(RDOValue) RDOSetRelParamCalc<ET_DECR>::doCalc(PTR(RDORuntime) runtime)
+{
+	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
+	runtime->getResParamValRaw(resID, m_parNumb) -= RDOValue(1);
 	return m_value;
 }
 
