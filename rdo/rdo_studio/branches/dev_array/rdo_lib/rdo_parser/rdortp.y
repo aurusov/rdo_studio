@@ -617,7 +617,7 @@ param_value:	RDO_INT_CONST {
 					$$ = $1;
 				};
 
-param_type_array:		RDO_array '<' param_type '>' {
+param_type_array:	RDO_array '<' param_type '>' {
 						LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
 						ASSERT(pParamType);
 						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4));
@@ -625,9 +625,9 @@ param_type_array:		RDO_array '<' param_type '>' {
 					};
 
 param_array_value:	'[' array_item ']' {
-					LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
-					ASSERT(pArrayValue);
-					$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
+						ASSERT(pArrayValue);
+						$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
 					}
 					|'[' array_item error {
 						PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
