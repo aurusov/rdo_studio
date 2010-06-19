@@ -1,0 +1,51 @@
+$Decision_point dptmain : prior
+$Condition nocheck
+$Activities
+$End
+
+$Decision_point dptsearch : search
+$Parent dptmain
+$Condition 1 = 2
+$Term_condition false
+$Evaluate_by 1
+$Compare_tops = YES
+$Activities
+$End
+
+$Decision_point dpt11 : some
+$Parent dptmain
+$Condition Система.количество_прибывших_деталей < 20
+$Activities
+	Поступление_детали                           : Образец_поступления_новой_детали
+$End
+
+$Decision_point dpt21 : some
+$Parent dpt11
+$Activities
+	Захват_детали                                : Образец_захвата_детали_роботом
+$End
+
+$Decision_point dpt22 : some
+$Parent dpt11
+$Activities
+	Транспортировка_детали                       : Образец_транспортировки_детали_роботом
+$End
+
+$Decision_point dpt31 : some
+$Parent dpt21
+$Activities
+	Возврат_робота                               : Образец_возврата_робота
+$End
+
+$Decision_point dpt12 : prior
+$Parent dptmain
+$Activities
+	Ориентирование_детали_против_часовой_стрелки : Образец_ориентирования_детали против_часовой_стрелки cf = Как_ориентирована_деталь(Система.как_ориентированна_текущая_деталь)
+$End
+
+$Decision_point dpt23 : prior
+$Parent dpt12
+$Priority 1 - Как_ориентирована_деталь(Система.как_ориентированна_текущая_деталь)
+$Activities
+	Ориентирование_детали_по_часовой_стрелке     : Образец_ориентирования_детали по_часовой_стрелке //cf = 1 - Как_ориентирована_деталь(Система.как_ориентированна_текущая_деталь)
+$End

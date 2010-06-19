@@ -1,0 +1,7 @@
+$Resource_type resType: permanent
+$Parameters
+	id      : integer
+	param   : integer
+	tmpParam: integer = 0
+	state   : integer = 0
+$End
