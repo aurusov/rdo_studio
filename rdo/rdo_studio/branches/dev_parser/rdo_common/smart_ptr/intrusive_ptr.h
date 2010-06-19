@@ -46,6 +46,9 @@ public:
 	intrusive_ptr<P> object_cast() const;
 
 	template <class P>
+	intrusive_ptr<P> object_dymamic_cast() const;
+
+	template <class P>
 	interface_ptr<P> interface_cast();
 
 protected:
