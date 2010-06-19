@@ -142,6 +142,9 @@
 %token RDO_array						379
 %token RDO_event						380
 %token RDO_Planning						381
+%token RDO_else							382
+%token RDO_IncrEqual					383
+%token RDO_DecrEqual					384
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -236,963 +239,1103 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- DPT
 // ----------------------------------------------------------------------------
-dpt_main:
-		| dpt_main dpt_search_end
-		| dpt_main dpt_some_end
-		| dpt_main dpt_prior_end
-		| dpt_main dpt_free_end
-		| dpt_main dpt_process_end
-		| error
-		{
-			PARSER->error().error( @1, "Ожидается описание точки или свободного блока активностей" );
-		};
+dpt_main
+	: /* empty */
+	| dpt_main dpt_search_end
+	| dpt_main dpt_some_end
+	| dpt_main dpt_prior_end
+	| dpt_main dpt_free_end
+	| dpt_main dpt_process_end
+	| error
+	{
+		PARSER->error().error( @1, "Ожидается описание точки или свободного блока активностей" );
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- DPTSearch
 // ----------------------------------------------------------------------------
-dpt_search_trace:		/* empty */
-						{
-							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
-						}
-						| RDO_no_trace
-						{
-							$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
-						}
-						| RDO_trace
-						{
-							PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа search" );
-						}
-						| RDO_trace_stat
-						{
-							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_stat;
-						}
-						| RDO_trace_tops
-						{
-							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_tops;
-						}
-						| RDO_trace_all
-						{
-							$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
-						};
+dpt_search_trace
+	: /* empty */
+	{
+		$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
+	}
+	| RDO_no_trace
+	{
+		$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
+	}
+	| RDO_trace
+	{
+		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа search" );
+	}
+	| RDO_trace_stat
+	{
+		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_stat;
+	}
+	| RDO_trace_tops
+	{
+		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_tops;
+	}
+	| RDO_trace_all
+	{
+		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
+	}
+	;
 
-dpt_search_parent:		/* empty */
-						{
-							$$ = 0;
-						}
-						| RDO_Parent RDO_IDENTIF
-						{
-							$$ = $2;
-						}
-						| RDO_Parent error
-						{
-							PARSER->error().error( @1, "Ошибка в имени родительской точки" );
-						};
+dpt_search_parent
+	: /* empty */
+	{
+		$$ = 0;
+	}
+	| RDO_Parent RDO_IDENTIF
+	{
+		$$ = $2;
+	}
+	| RDO_Parent error
+	{
+		PARSER->error().error( @1, "Ошибка в имени родительской точки" );
+	}
+	;
 
-dpt_search_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_parent dpt_search_trace
-						{
-							PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
-							PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
-							if (parent_name)
-							{
-								CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
-								CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
-								CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
-								if (!parentDPTPrior && !parentDPTSearch && !parentDPTSome)
-								{
-									PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
-								}
-								if (parentDPTSearch)
-								{
-									PARSER->error().error(@1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
-								}
-								if (parentDPTPrior)
-								{
-									LPILogic parent = parentDPTPrior->getLogic();
-									$$ = (int)new RDODPTSearch(PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
-								}
-								else if (parentDPTSome)
-								{
-									LPILogic parent = parentDPTSome->getLogic();
-									$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
-								}
-							}
-							else
-							{
-								$$ = (int)new RDODPTSearch(PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
-							}
-						}
-						| RDO_Decision_point RDO_IDENTIF_COLON error
-						{
-							PARSER->error().error( @2, @3, "Ожидается тип точки" );
-						}
-						| RDO_Decision_point RDO_IDENTIF error
-						{
-							PARSER->error().error( @2, "Ожидается двоеточие" );
-						}
-						| RDO_Decision_point error
-						{
-							PARSER->error().error( @1, @2, "После ключевого слова $Decision_point ожидается имя точки" );
-						};
+dpt_search_begin
+	: RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_parent dpt_search_trace
+	{
+		PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
+		PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
+		if (parent_name)
+		{
+			CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
+			CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
+			CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
+			if (!parentDPTPrior && !parentDPTSearch && !parentDPTSome)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
+			}
+			if (parentDPTSearch)
+			{
+				PARSER->error().error(@1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
+			}
+			if (parentDPTPrior)
+			{
+				LPILogic parent = parentDPTPrior->getLogic();
+				$$ = (int)new RDODPTSearch(PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
+			}
+			if (parentDPTSome)
+			{
+				LPILogic parent = parentDPTSome->getLogic();
+				$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
+			}
+		}
+		else
+		{
+			$$ = (int)new RDODPTSearch(PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
+		}
+	}
+	| RDO_Decision_point RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error( @2, @3, "Ожидается тип точки" );
+	}
+	| RDO_Decision_point RDO_IDENTIF error
+	{
+		PARSER->error().error( @2, "Ожидается двоеточие" );
+	}
+	| RDO_Decision_point error
+	{
+		PARSER->error().error( @1, @2, "После ключевого слова $Decision_point ожидается имя точки" );
+	}
+	;
 
-dpt_search_condition:	dpt_search_begin RDO_Condition fun_logic
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->setCondition((RDOFUNLogic *)$3);
-						}
-						| dpt_search_begin RDO_Condition RDO_NoCheck
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->setCondition();
-						}
-						| dpt_search_begin RDO_Condition error
-						{
-							PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие начала поиска (начальная вершина)" );
-						}
-						| dpt_search_begin error
-						{
-							PARSER->error().error( @2, "Ожидается ключевое слово $Condition" );
-						};
+dpt_search_condition
+	: dpt_search_begin RDO_Condition fun_logic
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->setCondition((RDOFUNLogic *)$3);
+	}
+	| dpt_search_begin RDO_Condition RDO_NoCheck
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->setCondition();
+	}
+	| dpt_search_begin RDO_Condition error
+	{
+		PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие начала поиска (начальная вершина)" );
+	}
+	| dpt_search_begin error
+	{
+		PARSER->error().error( @2, "Ожидается ключевое слово $Condition" );
+	}
+	;
 
-dpt_search_prior:		dpt_search_condition
-						| dpt_search_condition RDO_Priority fun_arithm
-						{
-							if (!PARSER->getLastDPTSearch()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
-							{
-								PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
-							}
-						}
-						| dpt_search_condition RDO_Priority error
-						{
-							PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
-						}
-						| dpt_search_condition error
-						{
-							PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
-						};
+dpt_search_prior
+	: dpt_search_condition
+	| dpt_search_condition RDO_Priority fun_arithm
+	{
+		if (!PARSER->getLastDPTSearch()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		{
+			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
+		}
+	}
+	| dpt_search_condition RDO_Priority error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+	}
+	| dpt_search_condition error
+	{
+		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+	}
+	;
 
-dpt_search_term:		dpt_search_prior RDO_Term_condition fun_logic
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->setTermCondition((RDOFUNLogic *)$3);
-						}
-						| dpt_search_prior RDO_Term_condition RDO_NoCheck
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->setTermCondition();
-						}
-						| dpt_search_prior RDO_Term_condition error
-						{
-							PARSER->error().error( @2, @3, "После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)" );
-						}
-						| dpt_search_prior error
-						{
-							PARSER->error().error( @2, "Ожидается ключевое слово $Term_condition" );
-						};
+dpt_search_term
+	: dpt_search_prior RDO_Term_condition fun_logic
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->setTermCondition((RDOFUNLogic *)$3);
+	}
+	| dpt_search_prior RDO_Term_condition RDO_NoCheck
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->setTermCondition();
+	}
+	| dpt_search_prior RDO_Term_condition error
+	{
+		PARSER->error().error( @2, @3, "После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)" );
+	}
+	| dpt_search_prior error
+	{
+		PARSER->error().error( @2, "Ожидается ключевое слово $Term_condition" );
+	}
+	;
 
-dpt_search_evaluate:	dpt_search_term RDO_Evaluate_by fun_arithm
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->setEvaluateBy((RDOFUNArithm *)$3);
-						}
-						| dpt_search_term RDO_Evaluate_by error
-						{
-							PARSER->error().error( @2, @3, "После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину" );
-						}
-						| dpt_search_term error
-						{
-							PARSER->error().error( @2, "Ожидается ключевое слово $Evaluate_by" );
-						};
+dpt_search_evaluate
+	: dpt_search_term RDO_Evaluate_by fun_arithm
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->setEvaluateBy((RDOFUNArithm *)$3);
+	}
+	| dpt_search_term RDO_Evaluate_by error
+	{
+		PARSER->error().error( @2, @3, "После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину" );
+	}
+	| dpt_search_term error
+	{
+		PARSER->error().error( @2, "Ожидается ключевое слово $Evaluate_by" );
+	}
+	;
 
-dp_searcht_compare:		dpt_search_evaluate RDO_Compare_tops '=' RDO_NO
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->setCompareTops(false);
-						}
-						| dpt_search_evaluate RDO_Compare_tops '=' RDO_YES
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->setCompareTops(true);
-						}
-						| dpt_search_evaluate RDO_Compare_tops '=' error
-						{
-							PARSER->error().error( @3, @4, "Ожидается режим запоминания пройденных вершин (YES или NO)" );
-						}
-						| dpt_search_evaluate RDO_Compare_tops error
-						{
-							PARSER->error().error( @2, @3, "Ожидается знак равенства" );
-						}
-						| dpt_search_evaluate error
-						{
-							PARSER->error().error( @2, "Ожидается ключевое слово $Compare_tops" );
-						};
+dp_searcht_compare
+	: dpt_search_evaluate RDO_Compare_tops '=' RDO_NO
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->setCompareTops(false);
+	}
+	| dpt_search_evaluate RDO_Compare_tops '=' RDO_YES
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->setCompareTops(true);
+	}
+	| dpt_search_evaluate RDO_Compare_tops '=' error
+	{
+		PARSER->error().error( @3, @4, "Ожидается режим запоминания пройденных вершин (YES или NO)" );
+	}
+	| dpt_search_evaluate RDO_Compare_tops error
+	{
+		PARSER->error().error( @2, @3, "Ожидается знак равенства" );
+	}
+	| dpt_search_evaluate error
+	{
+		PARSER->error().error( @2, "Ожидается ключевое слово $Compare_tops" );
+	}
+	;
 
-dpt_search_descr_param:	/* empty */
-						| dpt_search_descr_param  '*'
-						{
-							PARSER->getLastDPTSearch()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) )
-						}
-						| dpt_search_descr_param  RDO_INT_CONST
-						{
-							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_search_descr_param  RDO_REAL_CONST
-						{
-							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_search_descr_param  RDO_BOOL_CONST
-						{
-							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_search_descr_param  RDO_STRING_CONST
-						{
-							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_search_descr_param  RDO_IDENTIF
-						{
-							PARSER->getLastDPTSearch()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						};
+dpt_search_descr_param
+	: /* empty */
+	| dpt_search_descr_param '*'
+	{
+		PARSER->getLastDPTSearch()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+	}
+	| dpt_search_descr_param fun_arithm
+	{
+		PARSER->getLastDPTSearch()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+	}
+	| dpt_search_descr_param error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+	}
+	;
 
-dpt_search_descr_value:	RDO_value_before fun_arithm
-						{
-							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
-						}
-						| RDO_value_after fun_arithm
-						{
-							RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-							dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
-						}
-						| RDO_value_before error
-						{
-							PARSER->error().error( @1, @2, "Ошибка в арифметическом выражении" );
-						}
-						| RDO_value_after error
-						{
-							PARSER->error().error( @1, @2, "Ошибка в арифметическом выражении" );
-						};
+dpt_search_descr_value
+	: RDO_value_before fun_arithm
+	{
+		RDODPTSearch* dpt = PARSER->getLastDPTSearch();
+		dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
+	}
+	| RDO_value_after fun_arithm
+	{
+		RDODPTSearch* dpt = PARSER->getLastDPTSearch();
+		dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
+	}
+	| RDO_value_before error
+	{
+		PARSER->error().error( @1, @2, "Ошибка в арифметическом выражении" );
+	}
+	| RDO_value_after error
+	{
+		PARSER->error().error( @1, @2, "Ошибка в арифметическом выражении" );
+	}
+	;
 
-dpt_search_name:		RDO_IDENTIF_COLON RDO_IDENTIF
-						{
-							RDODPTSearch* dpt   = PARSER->getLastDPTSearch();
-							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
-							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
-							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
-						}
-						| RDO_IDENTIF_COLON error
-						{
-							PARSER->error().error( @1, @2, "Ожидается имя образца" );
-						}
-						| RDO_IDENTIF
-						{
-							PARSER->error().error( @1, "Ожидается ':'" );
-						}
-						| error
-						{
-							PARSER->error().error( @1, "Ожидается имя активности" );
-						};
+dpt_search_name
+	: RDO_IDENTIF_COLON RDO_IDENTIF
+	{
+		RDODPTSearch* dpt   = PARSER->getLastDPTSearch();
+		RDOValue* name    = reinterpret_cast<RDOValue*>($1);
+		RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
+		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+	}
+	| RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+	}
+	| RDO_IDENTIF
+	{
+		PARSER->error().error( @1, "Ожидается ':'" );
+	}
+	| error
+	{
+		PARSER->error().error( @1, "Ожидается имя активности" );
+	}
+	;
 
-dpt_searcht_activity:	/* empty */
-						| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
-						{
-							RDODPTSearchActivity* activity = reinterpret_cast<RDODPTSearchActivity*>($2);
-							activity->endParam( @3 );
-						}
-						| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
-						{
-							PARSER->error().error( @3, @4, "Ожидаются ключевые слова value before или value after и стоимость применения правила" );
-						};
+dpt_searcht_activity
+	: /* empty */
+	| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
+	{
+		RDODPTSearchActivity* activity = reinterpret_cast<RDODPTSearchActivity*>($2);
+		activity->endParam( @3 );
+	}
+	| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
+	{
+		PARSER->error().error( @3, @4, "Ожидаются ключевые слова value before или value after и стоимость применения правила" );
+	}
+	;
 
-dpt_search_header:		dp_searcht_compare RDO_Activities dpt_searcht_activity
-						{
-						}
-						| dp_searcht_compare error
-						{
-							PARSER->error().error( @1, @2, "После режима запоминания пройденных вершин ожидается ключевое слово $Activities" );
-						};
+dpt_search_header
+	: dp_searcht_compare RDO_Activities dpt_searcht_activity
+	| dp_searcht_compare error
+	{
+		PARSER->error().error( @1, @2, "После режима запоминания пройденных вершин ожидается ключевое слово $Activities" );
+	}
+	;
 
-dpt_search_end:			dpt_search_header RDO_End
-						{
-							RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-							dpt->end();
-						}
-						| dpt_search_header
-						{
-							PARSER->error().error( @1, "Ожидается ключевое слово $End" );
-						};
+dpt_search_end
+	: dpt_search_header RDO_End
+	{
+		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
+		dpt->end();
+	}
+	| dpt_search_header
+	{
+		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- DPTSome
 // ----------------------------------------------------------------------------
-dpt_some_trace:			/* empty */
-						{
-							$$ = 1;
-						}
-						| RDO_no_trace
-						{
-							$$ = 1;
-						}
-						| RDO_trace
-						{
-							$$ = 2;
-						}
-						| RDO_trace_stat
-						{
-							PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
-						}
-						| RDO_trace_tops
-						{
-							PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
-						}
-						| RDO_trace_all
-						{
-							PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
-						};
+dpt_some_trace
+	: /* empty */
+	{
+		$$ = 1;
+	}
+	| RDO_no_trace
+	{
+		$$ = 1;
+	}
+	| RDO_trace
+	{
+		$$ = 2;
+	}
+	| RDO_trace_stat
+	{
+		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
+	}
+	| RDO_trace_tops
+	{
+		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
+	}
+	| RDO_trace_all
+	{
+		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
+	}
+	;
 
-dpt_some_parent:		/* empty */
-						{
-							$$ = 0;
-						}
-						| RDO_Parent RDO_IDENTIF
-						{
-							$$ = $2;
-						}
-						| RDO_Parent error
-						{
-							PARSER->error().error( @1, "Ошибка в имени родительской точки" );
-						};
+dpt_some_parent
+	: /* empty */
+	{
+		$$ = 0;
+	}
+	| RDO_Parent RDO_IDENTIF
+	{
+		$$ = $2;
+	}
+	| RDO_Parent error
+	{
+		PARSER->error().error( @1, "Ошибка в имени родительской точки" );
+	}
+	;
 
-dpt_some_begin:			RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
-						{
-							// TODO: а где признак трассировки для some ?
-							PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
-							PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
-							if (parent_name)
-							{
-								CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
-								CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
-								CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
-								if (!parentDPTPrior && !parentDPTSearch && !parentDPTSome)
-								{
-									PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
-								}
-								if (parentDPTSearch)
-								{
-									PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
-								}
-								if (parentDPTPrior)
-								{
-									LPILogic parent = parentDPTPrior->getLogic();
-									$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
-								}
-								else if (parentDPTSome)
-								{
-									LPILogic parent = parentDPTSome->getLogic();
-									$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
-								}
-							}
-							else
-							{
-								$$ = (int)new RDODPTSome( PARSER, name->src_info() );
-							}
-						};
+dpt_some_begin
+	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
+	{
+		// TODO: а где признак трассировки для some ?
+		PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
+		PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
+		if (parent_name)
+		{
+			CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
+			CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
+			CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
+			if (!parentDPTPrior && !parentDPTSearch && !parentDPTSome)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
+			}
+			if (parentDPTSearch)
+			{
+				PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
+			}
+			if (parentDPTPrior)
+			{
+				LPILogic parent = parentDPTPrior->getLogic();
+				$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
+			}
+			if (parentDPTSome)
+			{
+				LPILogic parent = parentDPTSome->getLogic();
+				$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
+			}
+		}
+		else
+		{
+			$$ = (int)new RDODPTSome( PARSER, name->src_info() );
+		}
+	}
+	;
 
-dpt_some_condition:		dpt_some_begin RDO_Condition fun_logic
-						{
-							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-							dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
-						}
-						| dpt_some_begin RDO_Condition RDO_NoCheck
-						{
-							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-							dpt->setCondition();
-						}
-						| dpt_some_begin RDO_Condition error
-						{
-							PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
-						}
-						| dpt_some_begin
-						{
-							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-							dpt->setCondition();
-						};
+dpt_some_condition
+	: dpt_some_begin RDO_Condition fun_logic
+	{
+		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
+		dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
+	}
+	| dpt_some_begin RDO_Condition RDO_NoCheck
+	{
+		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
+		dpt->setCondition();
+	}
+	| dpt_some_begin RDO_Condition error
+	{
+		PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
+	}
+	| dpt_some_begin
+	{
+		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
+		dpt->setCondition();
+	}
+	;
 
-dpt_some_prior:			dpt_some_condition
-						| dpt_some_condition RDO_Priority fun_arithm
-						{
-							if (!PARSER->getLastDPTSome()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
-							{
-								PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
-							}
-						}
-						| dpt_some_condition RDO_Priority error
-						{
-							PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
-						}
-						| dpt_some_condition error
-						{
-							PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
-						};
+dpt_some_prior
+	: dpt_some_condition
+	| dpt_some_condition RDO_Priority fun_arithm
+	{
+		if (!PARSER->getLastDPTSome()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		{
+			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
+		}
+	}
+	| dpt_some_condition RDO_Priority error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+	}
+	| dpt_some_condition error
+	{
+		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+	}
+	;
 
-dpt_some_name:			RDO_IDENTIF_COLON RDO_IDENTIF
-						{
-							RDODPTSome* dpt   = PARSER->getLastDPTSome();
-							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
-							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
-							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
-						}
-						| RDO_IDENTIF_COLON error
-						{
-							PARSER->error().error( @1, @2, "Ожидается имя образца" );
-						};
+dpt_some_name
+	: RDO_IDENTIF_COLON RDO_IDENTIF
+	{
+		RDODPTSome* dpt   = PARSER->getLastDPTSome();
+		RDOValue* name    = reinterpret_cast<RDOValue*>($1);
+		RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
+		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+	}
+	| RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+	}
+	;
 
-dpt_some_descr_param:	/* empty */
-						| dpt_some_descr_param  '*'
-						{
-							PARSER->getLastDPTSome()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) )
-						}
-						| dpt_some_descr_param  RDO_INT_CONST
-						{
-							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_some_descr_param  RDO_REAL_CONST
-						{
-							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_some_descr_param  RDO_BOOL_CONST
-						{
-							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_some_descr_param  RDO_STRING_CONST
-						{
-							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_some_descr_param  RDO_IDENTIF
-						{
-							PARSER->getLastDPTSome()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) )
-						}
-						| dpt_some_descr_param error
-						{
-							PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
-						};
+dpt_some_descr_param
+	: /* empty */
+	| dpt_some_descr_param '*'
+	{
+		PARSER->getLastDPTSome()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+	}
+	| dpt_some_descr_param fun_arithm
+	{
+		PARSER->getLastDPTSome()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+	}
+	| dpt_some_descr_param error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+	}
+	;
 
-dpt_some_activity:		/* empty */
-						| dpt_some_activity dpt_some_name dpt_some_descr_param
-						{
-							RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
-							activity->endParam( @3 );
-						};
+dpt_some_activity
+	: /* empty */
+	| dpt_some_activity dpt_some_name dpt_some_descr_param
+	{
+		RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
+		activity->endParam( @3 );
+	}
+	;
 
-dpt_some_header:		dpt_some_prior RDO_Activities dpt_some_activity
-						{
-						}
-						| dpt_some_prior error
-						{
-							PARSER->error().error( @1, @2, "Ожидается ключевое слово $Activities" );
-						};
+dpt_some_header
+	: dpt_some_prior RDO_Activities dpt_some_activity
+	| dpt_some_prior error
+	{
+		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Activities" );
+	}
+	;
 
-dpt_some_end:			dpt_some_header RDO_End
-						{
-							RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-							dpt->end();
-						}
-						| dpt_some_header
-						{
-							PARSER->error().error( @1, "Ожидается ключевое слово $End" );
-						};
+dpt_some_end
+	: dpt_some_header RDO_End
+	{
+		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
+		dpt->end();
+	}
+	| dpt_some_header
+	{
+		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- DPT Prior
 // ----------------------------------------------------------------------------
-dpt_prior_trace:		/* empty */ {
-							$$ = 1;
-						}
-						| RDO_no_trace {
-							$$ = 1;
-						}
-						| RDO_trace {
-							$$ = 2;
-						}
-						| RDO_trace_stat {
-							PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
-						}
-						| RDO_trace_tops {
-							PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
-						}
-						| RDO_trace_all {
-							PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
-						};
+dpt_prior_trace
+	: /* empty */
+	{
+		$$ = 1;
+	}
+	| RDO_no_trace
+	{
+		$$ = 1;
+	}
+	| RDO_trace
+	{
+		$$ = 2;
+	}
+	| RDO_trace_stat
+	{
+		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
+	}
+	| RDO_trace_tops
+	{
+		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
+	}
+	| RDO_trace_all
+	{
+		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
+	}
+	;
 
-dpt_prior_parent:		/* empty */
-						{
-							$$ = 0;
-						}
-						| RDO_Parent RDO_IDENTIF
-						{
-							$$ = $2;
-						}
-						| RDO_Parent error
-						{
-							PARSER->error().error( @1, "Ошибка в имени родительской точки" );
-						};
+dpt_prior_parent
+	: /* empty */
+	{
+		$$ = 0;
+	}
+	| RDO_Parent RDO_IDENTIF
+	{
+		$$ = $2;
+	}
+	| RDO_Parent error
+	{
+		PARSER->error().error( @1, "Ошибка в имени родительской точки" );
+	}
+	;
 
-dpt_prior_begin:		RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
-						{
-							// TODO: а где признак трассировки для prior ?
-							PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
-							PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
-							if (parent_name)
-							{
-								CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
-								CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
-								CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
-								if (!parentDPTPrior && !parentDPTSome && !parentDPTSearch)
-								{
-									PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
-								}
-								if (parentDPTSearch)
-								{
-									PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
-								}
-								if (parentDPTPrior)
-								{
-									LPILogic parent = parentDPTPrior->getLogic();
-									$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
-								}
-								else if (parentDPTSome)
-								{
-									LPILogic parent = parentDPTSome->getLogic();
-									$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
-								}
-							}
-							else
-							{
-								$$ = (int)new RDODPTPrior(PARSER, name->src_info());
-							}
-						};
+dpt_prior_begin
+	: RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
+	{
+		// TODO: а где признак трассировки для prior ?
+		PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
+		PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
+		if (parent_name)
+		{
+			CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
+			CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
+			CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
+			if (!parentDPTPrior && !parentDPTSome && !parentDPTSearch)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
+			}
+			if (parentDPTSearch)
+			{
+				PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
+			}
+			if (parentDPTPrior)
+			{
+				LPILogic parent = parentDPTPrior->getLogic();
+				$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
+			}
+			if (parentDPTSome)
+			{
+				LPILogic parent = parentDPTSome->getLogic();
+				$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
+			}
+		}
+		else
+		{
+			$$ = (int)new RDODPTPrior(PARSER, name->src_info());
+		}
+	}
+	;
 
-dpt_prior_condition:	dpt_prior_begin RDO_Condition fun_logic {
-							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-							dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
-						}
-						| dpt_prior_begin RDO_Condition RDO_NoCheck {
-							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-							dpt->setCondition();
-						}
-						| dpt_prior_begin RDO_Condition error {
-							PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
-						}
-						| dpt_prior_begin {
-							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-							dpt->setCondition();
-						};
+dpt_prior_condition
+	: dpt_prior_begin RDO_Condition fun_logic
+	{
+		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+		dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
+	}
+	| dpt_prior_begin RDO_Condition RDO_NoCheck
+	{
+		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+		dpt->setCondition();
+	}
+	| dpt_prior_begin RDO_Condition error
+	{
+		PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
+	}
+	| dpt_prior_begin
+	{
+		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+		dpt->setCondition();
+	}
+	;
 
-dpt_prior_prior:		dpt_prior_condition
-						| dpt_prior_condition RDO_Priority fun_arithm
-						{
-							if (!PARSER->getLastDPTPrior()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
-							{
-								PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
-							}
-						}
-						| dpt_prior_condition RDO_Priority error
-						{
-							PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
-						}
-						| dpt_some_condition error
-						{
-							PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
-						};
+dpt_prior_prior
+	: dpt_prior_condition
+	| dpt_prior_condition RDO_Priority fun_arithm
+	{
+		if (!PARSER->getLastDPTPrior()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		{
+			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
+		}
+	}
+	| dpt_prior_condition RDO_Priority error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+	}
+	| dpt_some_condition error
+	{
+		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+	}
+	;
 
-dpt_prior_name:			RDO_IDENTIF_COLON RDO_IDENTIF {
-							RDODPTPrior* dpt  = PARSER->getLastDPTPrior();
-							RDOValue* name    = reinterpret_cast<RDOValue*>($1);
-							RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
-							$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
-						}
-						| RDO_IDENTIF_COLON error {
-							PARSER->error().error( @1, @2, "Ожидается имя образца" );
-						};
+dpt_prior_name
+	: RDO_IDENTIF_COLON RDO_IDENTIF
+	{
+		RDODPTPrior* dpt  = PARSER->getLastDPTPrior();
+		RDOValue* name    = reinterpret_cast<RDOValue*>($1);
+		RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
+		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+	}
+	| RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+	}
+	;
 
-dpt_prior_descr_param:	/* empty */
-						| dpt_prior_descr_param  '*'               { PARSER->getLastDPTPrior()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
-						| dpt_prior_descr_param  RDO_INT_CONST     { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_prior_descr_param  RDO_REAL_CONST    { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_prior_descr_param  RDO_BOOL_CONST    { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_prior_descr_param  RDO_STRING_CONST  { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-						| dpt_prior_descr_param  RDO_IDENTIF       { PARSER->getLastDPTPrior()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+dpt_prior_descr_param
+	: /* empty */
+	| dpt_prior_descr_param '*'
+	{
+		PARSER->getLastDPTPrior()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+	}
+	| dpt_prior_descr_param fun_arithm
+	{
+		PARSER->getLastDPTPrior()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+	}
+	| dpt_prior_descr_param error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+	}
+	;
 
-						| dpt_prior_descr_param error
-						{
-							PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
-						};
+dpt_prior_activ_prior
+	: /* empty */
+	| RDO_CF '=' fun_arithm
+	{
+		if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		{
+			PARSER->error().error(@3, _T("Активность не может иметь приоритет"));
+		}
+	}
+	| RDO_CF '=' error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания приоритета активности" )
+	}
+	| RDO_CF error
+	{
+		PARSER->error().error( @1, @2, "Ошибка: ожидается знак равенства" )
+	}
+	;
 
-dpt_prior_activ_prior:	/* empty */
-						| RDO_CF '=' fun_arithm
-						{
-							if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
-							{
-								PARSER->error().error(@3, _T("Активность не может иметь приоритет"));
-							}
-						}
-						| RDO_CF '=' error
-						{
-							PARSER->error().error( @1, @2, "Ошибка описания приоритета активности" )
-						}
-						| RDO_CF error
-						{
-							PARSER->error().error( @1, @2, "Ошибка: ожидается знак равенства" )
-						};
+dpt_prior_activity
+	: /* empty */
+	| dpt_prior_activity dpt_prior_name dpt_prior_descr_param dpt_prior_activ_prior
+	{
+		RDODPTPriorActivity* activity = reinterpret_cast<RDODPTPriorActivity*>($2);
+		activity->endParam( @3 );
+	}
+	;
 
-dpt_prior_activity:		/* empty */
-						| dpt_prior_activity dpt_prior_name dpt_prior_descr_param dpt_prior_activ_prior{
-							RDODPTPriorActivity* activity = reinterpret_cast<RDODPTPriorActivity*>($2);
-							activity->endParam( @3 );
-						};
+dpt_prior_header
+	: dpt_prior_prior RDO_Activities dpt_prior_activity
+	| dpt_prior_prior error
+	{
+		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Activities" );
+	}
+	;
 
-dpt_prior_header:		dpt_prior_prior RDO_Activities dpt_prior_activity {
-						}
-						| dpt_prior_prior error {
-							PARSER->error().error( @1, @2, "Ожидается ключевое слово $Activities" );
-						};
-
-dpt_prior_end:			dpt_prior_header RDO_End {
-							RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-							dpt->end();
-						}
-						| dpt_prior_header {
-							PARSER->error().error( @1, "Ожидается ключевое слово $End" );
-						};
+dpt_prior_end
+	: dpt_prior_header RDO_End
+	{
+		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
+		dpt->end();
+	}
+	| dpt_prior_header
+	{
+		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- DPT Free
 // ----------------------------------------------------------------------------
-dpt_free_prior:				dpt_free_header
-							| RDO_Priority fun_arithm dpt_free_header
-							{
-								if (!PARSER->getLastDPTFree()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
-								{
-									PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
-								}
-							}
-							| RDO_Priority error dpt_free_header
-							{
-								PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
-							}
-							| error dpt_free_header
-							{
-								PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
-							};
+dpt_free_prior
+	: dpt_free_header
+	| RDO_Priority fun_arithm dpt_free_header
+	{
+		if (!PARSER->getLastDPTFree()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
+		{
+			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
+		}
+	}
+	| RDO_Priority error dpt_free_header
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+	}
+	| error dpt_free_header
+	{
+		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+	}
+	;
 
-dpt_free_header:			RDO_Activities {
-								$$ = (int)new RDODPTFree( PARSER, @1 );
-							};
+dpt_free_header
+	: RDO_Activities
+	{
+		$$ = (int)new RDODPTFree( PARSER, @1 );
+	}
+	;
 
-dpt_free_activity:			/* empty */
-							| dpt_free_activity dpt_free_activity_name dpt_free_activity_param dpt_free_activity_keys {
-							};
+dpt_free_activity
+	: /* empty */
+	| dpt_free_activity dpt_free_activity_name dpt_free_activity_param dpt_free_activity_keys
+	;
 
-dpt_free_activity_name:		RDO_IDENTIF_COLON RDO_IDENTIF {
-								RDODPTFree* dpt     = PARSER->getLastDPTFree();
-								RDOValue*   name    = reinterpret_cast<RDOValue*>($1);
-								RDOValue*   pattern = reinterpret_cast<RDOValue*>($2);
-								$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
-							}
-							| RDO_IDENTIF_COLON error {
-								PARSER->error().error( @1, @2, "Ожидается имя образца" );
-							};
+dpt_free_activity_name
+	: RDO_IDENTIF_COLON RDO_IDENTIF
+	{
+		RDODPTFree* dpt     = PARSER->getLastDPTFree();
+		RDOValue*   name    = reinterpret_cast<RDOValue*>($1);
+		RDOValue*   pattern = reinterpret_cast<RDOValue*>($2);
+		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+	}
+	| RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+	}
+	;
 
-dpt_free_activity_param:	/* empty */
-							| dpt_free_activity_param  '*'               { PARSER->getLastDPTFree()->getLastActivity()->addParam( RDOValue(RDOParserSrcInfo(@2, "*")) ) }
-							| dpt_free_activity_param  RDO_INT_CONST     { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-							| dpt_free_activity_param  RDO_REAL_CONST    { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-							| dpt_free_activity_param  RDO_BOOL_CONST    { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-							| dpt_free_activity_param  RDO_STRING_CONST  { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
-							| dpt_free_activity_param  RDO_IDENTIF       { PARSER->getLastDPTFree()->getLastActivity()->addParam( *reinterpret_cast<RDOValue*>($2) ) }
+dpt_free_activity_param
+	: /* empty */
+	| dpt_free_activity_param '*'
+	{
+		PARSER->getLastDPTFree()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+	}
+	| dpt_free_activity_param fun_arithm
+	{
+		PARSER->getLastDPTFree()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+	}
+	| dpt_free_activity_param error
+	{
+		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+	}
+	;
 
-							| dpt_free_activity_param error
-							{
-								PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
-							};
+dpt_free_activity_keys
+	: /* empty */
+	| dpt_free_activity_keys RDO_STRING_CONST
+	{
+		RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
+		std::string         key      = reinterpret_cast<RDOValue*>($2)->value().getString();
+		activity->addHotKey( key, @2 );
+	}
+	| dpt_free_activity_keys '+' RDO_STRING_CONST
+	{
+		RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
+		std::string         key      = reinterpret_cast<RDOValue*>($3)->value().getString();
+		activity->addHotKey( key, @3 );
+	}
+	;
 
-dpt_free_activity_keys:		/* empty */
-							| dpt_free_activity_keys RDO_STRING_CONST {
-								RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
-								std::string         key      = reinterpret_cast<RDOValue*>($2)->value().getString();
-								activity->addHotKey( key, @2 );
-							}
-							| dpt_free_activity_keys '+' RDO_STRING_CONST {
-								RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
-								std::string         key      = reinterpret_cast<RDOValue*>($3)->value().getString();
-								activity->addHotKey( key, @3 );
-							};
-
-dpt_free_end:				dpt_free_prior dpt_free_activity RDO_End {
-							}
-							| dpt_free_header error {
-								PARSER->error().error( @1, "Ожидается ключевое слово $End" );
-							};
+dpt_free_end
+	: dpt_free_prior dpt_free_activity RDO_End
+	| dpt_free_header error
+	{
+		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+	}
+	;
 
 // ----------------------------------------------------------------------------
-// ---------- $Process
+// ---------- заглушка для $Process
 // ----------------------------------------------------------------------------
-dpt_process_end:	RDO_Process error RDO_End; /* заглушка для $Process */
+dpt_process_end
+	: RDO_Process error RDO_End
+	;
 
+// ----------------------------------------------------------------------------
+// ---------- Общие составные токены для всех объектов РДО
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-fun_logic_eq: '='    { $$ = RDO_eq; }
-			| RDO_eq { $$ = RDO_eq; };
+fun_logic_eq
+	: RDO_eq { $$ = RDO_eq; }
+	;
 
-fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
-			| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
-			| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
-			| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }
-			| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(ARITHM($1) <= ARITHM($3));  }
-			| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(ARITHM($1) >= ARITHM($3));  }
-			| fun_logic   RDO_and       fun_logic    { $$ = (int)(LOGIC($1) && LOGIC($3));    }
-			| fun_logic   RDO_or        fun_logic    { $$ = (int)(LOGIC($1) || LOGIC($3));    }
-			| fun_arithm                             { $$ = (int)new RDOFUNLogic(ARITHM($1)); }
-			| fun_group
-			| fun_select_logic
-			| '[' fun_logic ']'
-			{
-				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				logic->setSrcPos (@1, @3);
-				logic->setSrcText(_T("[") + logic->src_text() + _T("]"));
-				$$ = $2;
-			}
-			| '(' fun_logic ')'
-			{
-				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				logic->setSrcPos (@1, @3);
-				logic->setSrcText(_T("(") + logic->src_text() + _T(")"));
-				$$ = $2;
-			}
-			| RDO_not fun_logic
-			{
-				PTR(RDOFUNLogic) logic = P_LOGIC($2);
-				PTR(RDOFUNLogic) logic_not = logic->operator_not();
-				logic_not->setSrcPos (@1, @2);
-				logic_not->setSrcText(_T("not ") + logic->src_text());
-				$$ = (int)logic_not;
-			}
-			| '[' fun_logic error {
-				PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-			}
-			| '(' fun_logic error {
-				PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-			};
+fun_logic
+	: fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
+	| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
+	| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
+	| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }
+	| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(ARITHM($1) <= ARITHM($3));  }
+	| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(ARITHM($1) >= ARITHM($3));  }
+	| fun_logic   RDO_and       fun_logic    { $$ = (int)(LOGIC($1) && LOGIC($3));    }
+	| fun_logic   RDO_or        fun_logic    { $$ = (int)(LOGIC($1) || LOGIC($3));    }
+	| fun_arithm                             { $$ = (int)new RDOFUNLogic(ARITHM($1)); }
+	| fun_group
+	| fun_select_logic
+	| '[' fun_logic ']'
+	{
+		PTR(RDOFUNLogic) logic = P_LOGIC($2);
+		logic->setSrcPos (@1, @3);
+		logic->setSrcText(_T("[") + logic->src_text() + _T("]"));
+		$$ = $2;
+	}
+	| '(' fun_logic ')'
+	{
+		PTR(RDOFUNLogic) logic = P_LOGIC($2);
+		logic->setSrcPos (@1, @3);
+		logic->setSrcText(_T("(") + logic->src_text() + _T(")"));
+		$$ = $2;
+	}
+	| RDO_not fun_logic
+	{
+		PTR(RDOFUNLogic) logic = P_LOGIC($2);
+		PTR(RDOFUNLogic) logic_not = logic->operator_not();
+		logic_not->setSrcPos (@1, @2);
+		logic_not->setSrcText(_T("not ") + logic->src_text());
+		$$ = (int)logic_not;
+	}
+	| '[' fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| '(' fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm:	  RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-			| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
-			| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
-			| fun_arithm '+' fun_arithm		     { $$ = (int)(ARITHM($1) + ARITHM($3)); }
-			| fun_arithm '-' fun_arithm		     { $$ = (int)(ARITHM($1) - ARITHM($3)); }
-			| fun_arithm '*' fun_arithm		     { $$ = (int)(ARITHM($1) * ARITHM($3)); }
-			| fun_arithm '/' fun_arithm		     { $$ = (int)(ARITHM($1) / ARITHM($3)); }
-			| fun_arithm_func_call
-			| fun_select_arithm
-			| '(' fun_arithm ')'
-			{
-				PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-				arithm->setSrcPos (@1, @3);
-				arithm->setSrcText(_T("(") + arithm->src_text() + _T(")"));
-				$$ = $2;
-			}
-			| '-' fun_arithm %prec RDO_UMINUS
-			{
-				RDOParserSrcInfo info;
-				info.setSrcPos (@1, @2);
-				info.setSrcText(_T("-") + ARITHM($2).src_text());
-				$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus(RUNTIME, ARITHM($2).createCalc()));
-			};
+fun_arithm
+	: RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
+	| fun_arithm '+' fun_arithm		     { $$ = (int)(ARITHM($1) + ARITHM($3)); }
+	| fun_arithm '-' fun_arithm		     { $$ = (int)(ARITHM($1) - ARITHM($3)); }
+	| fun_arithm '*' fun_arithm		     { $$ = (int)(ARITHM($1) * ARITHM($3)); }
+	| fun_arithm '/' fun_arithm		     { $$ = (int)(ARITHM($1) / ARITHM($3)); }
+	| fun_arithm_func_call
+	| fun_select_arithm
+	| '(' fun_arithm ')'
+	{
+		PTR(RDOFUNArithm) arithm = P_ARITHM($2);
+		arithm->setSrcPos (@1, @3);
+		arithm->setSrcText(_T("(") + arithm->src_text() + _T(")"));
+		$$ = $2;
+	}
+	| '-' fun_arithm %prec RDO_UMINUS
+	{
+		RDOParserSrcInfo info;
+		info.setSrcPos (@1, @2);
+		info.setSrcText(_T("-") + ARITHM($2).src_text());
+		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus(RUNTIME, ARITHM($2).createCalc()));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
-fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
-							PTR(RDOFUNParams) fun = new RDOFUNParams(PARSER);
-							tstring fun_name = RDOVALUE($1)->getIdentificator();
-							fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-							fun->setSrcPos (@1, @3);
-							fun->setSrcText(fun_name + _T("()"));
-							PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-							$$ = (int)arithm;
-						}
-						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
-							PTR(RDOFUNParams) fun      = reinterpret_cast<PTR(RDOFUNParams)>($3);
-							tstring           fun_name = RDOVALUE($1)->getIdentificator();
-							fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-							fun->setSrcPos (@1, @4);
-							fun->setSrcText(fun_name + _T("(") + fun->src_text() + _T(")"));
-							PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-							$$ = (int)arithm;
-						}
-						| RDO_IDENTIF '(' error {
-							PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
-						};
+fun_arithm_func_call
+	: RDO_IDENTIF '(' ')' 
+	{
+		PTR(RDOFUNParams) fun = new RDOFUNParams(PARSER);
+		tstring fun_name = RDOVALUE($1)->getIdentificator();
+		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
+		fun->setSrcPos (@1, @3);
+		fun->setSrcText(fun_name + _T("()"));
+		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
+		$$ = (int)arithm;
+	}
+	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')'
+	{
+		PTR(RDOFUNParams) fun      = reinterpret_cast<PTR(RDOFUNParams)>($3);
+		tstring           fun_name = RDOVALUE($1)->getIdentificator();
+		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
+		fun->setSrcPos (@1, @4);
+		fun->setSrcText(fun_name + _T("(") + fun->src_text() + _T(")"));
+		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
+		$$ = (int)arithm;
+	}
+	| RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
+	}
+	;
 
-fun_arithm_func_call_pars:	fun_arithm {
-								PTR(RDOFUNParams) fun    = new RDOFUNParams(PARSER);
-								PTR(RDOFUNArithm) arithm = P_ARITHM($1);
-								fun->setSrcText  (arithm->src_text());
-								fun->addParameter(arithm);
-								$$ = (int)fun;
-							}
-							| fun_arithm_func_call_pars ',' fun_arithm {
-								PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($1);
-								PTR(RDOFUNArithm) arithm = P_ARITHM($3);
-								fun->setSrcText  (fun->src_text() + _T(", ") + arithm->src_text());
-								fun->addParameter(arithm);
-								$$ = (int)fun;
-							}
-							| fun_arithm_func_call_pars error {
-								PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
-							}
-							| fun_arithm_func_call_pars ',' error {
-								PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-							};
+fun_arithm_func_call_pars
+	: fun_arithm
+	{
+		PTR(RDOFUNParams) fun    = new RDOFUNParams(PARSER);
+		PTR(RDOFUNArithm) arithm = P_ARITHM($1);
+		fun->setSrcText  (arithm->src_text());
+		fun->addParameter(arithm);
+		$$ = (int)fun;
+	}
+	| fun_arithm_func_call_pars ',' fun_arithm
+	{
+		PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($1);
+		PTR(RDOFUNArithm) arithm = P_ARITHM($3);
+		fun->setSrcText  (fun->src_text() + _T(", ") + arithm->src_text());
+		fun->addParameter(arithm);
+		$$ = (int)fun;
+	}
+	| fun_arithm_func_call_pars error
+	{
+		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+	}
+	| fun_arithm_func_call_pars ',' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
-fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_group_keyword
+	: RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; }
+	;
 
-fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						PTR(RDOValue) type_name = P_RDOVALUE($3);
-						$$ = (int)(new RDOFUNGroupLogic(PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
-					}
-					| fun_group_keyword '(' error {
-						PARSER->error().error(@3, _T("Ожидается имя типа"));
-					}
-					| fun_group_keyword error {
-						PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
-					};
+fun_group_header
+	: fun_group_keyword '(' RDO_IDENTIF_COLON
+	{
+		PTR(RDOValue) type_name = P_RDOVALUE($3);
+		$$ = (int)(new RDOFUNGroupLogic(PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+	}
+	| fun_group_keyword '(' error
+	{
+		PARSER->error().error(@3, _T("Ожидается имя типа"));
+	}
+	| fun_group_keyword error
+	{
+		PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+	}
+	;
 
-fun_group:			fun_group_header fun_logic ')' {
-						PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-						groupfun->setSrcPos(@1, @3);
-						$$ = (int)groupfun->createFunLogic(P_LOGIC($2));
-					}
-					| fun_group_header RDO_NoCheck ')' {
-						PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-						groupfun->setSrcPos(@1, @3);
-						PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, new rdoRuntime::RDOCalcConst(RUNTIME, 1));
-						trueLogic->setSrcPos (@2);
-						trueLogic->setSrcText(_T("NoCheck"));
-						$$ = (int)groupfun->createFunLogic(trueLogic);
-					}
-					| fun_group_header fun_logic error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_group_header RDO_NoCheck error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_group_header error {
-						PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
-					};
+fun_group
+	: fun_group_header fun_logic ')'
+	{
+		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
+		groupfun->setSrcPos(@1, @3);
+		$$ = (int)groupfun->createFunLogic(P_LOGIC($2));
+	}
+	| fun_group_header RDO_NoCheck ')'
+	{
+		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
+		groupfun->setSrcPos(@1, @3);
+		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, new rdoRuntime::RDOCalcConst(RUNTIME, 1));
+		trueLogic->setSrcPos (@2);
+		trueLogic->setSrcText(_T("NoCheck"));
+		$$ = (int)groupfun->createFunLogic(trueLogic);
+	}
+	| fun_group_header fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_group_header RDO_NoCheck error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_group_header error
+	{
+		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Select
 // ----------------------------------------------------------------------------
-fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						PTR(RDOValue) type_name  = P_RDOVALUE($3);
-						PTR(RDOFUNSelect) select = new RDOFUNSelect(PARSER, type_name->src_info());
-						select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
-						$$ = (int)select;
-					}
-					| RDO_Select '(' error {
-						PARSER->error().error(@3, _T("Ожидается имя типа"));
-					}
-					| RDO_Select error {
-						PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
-					};
+fun_select_header
+	: RDO_Select '(' RDO_IDENTIF_COLON
+	{
+		PTR(RDOValue) type_name  = P_RDOVALUE($3);
+		PTR(RDOFUNSelect) select = new RDOFUNSelect(PARSER, type_name->src_info());
+		select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		$$ = (int)select;
+	}
+	| RDO_Select '(' error
+	{
+		PARSER->error().error(@3, _T("Ожидается имя типа"));
+	}
+	| RDO_Select error
+	{
+		PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+	}
+	;
 
-fun_select_body:	fun_select_header fun_logic ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						PTR(RDOFUNLogic)  flogic = P_LOGIC($2);
-						select->setSrcText(select->src_text() + flogic->src_text() + _T(")"));
-						select->initSelect(flogic);
-					}
-					| fun_select_header RDO_NoCheck ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
-						select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
-						PTR(rdoRuntime::RDOCalcConst) calc_nocheck = new rdoRuntime::RDOCalcConst(RUNTIME, 1);
-						PTR(RDOFUNLogic)              flogic       = new RDOFUNLogic(select, calc_nocheck, true);
-						flogic->setSrcInfo(logic_info);
-						select->initSelect(flogic);
-					}
-					| fun_select_header fun_logic error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_select_header RDO_NoCheck error {
-						PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_select_header error {
-						PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
-					};
+fun_select_body
+	: fun_select_header fun_logic ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		PTR(RDOFUNLogic)  flogic = P_LOGIC($2);
+		select->setSrcText(select->src_text() + flogic->src_text() + _T(")"));
+		select->initSelect(flogic);
+	}
+	| fun_select_header RDO_NoCheck ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
+		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
+		PTR(rdoRuntime::RDOCalcConst) calc_nocheck = new rdoRuntime::RDOCalcConst(RUNTIME, 1);
+		PTR(RDOFUNLogic)              flogic       = new RDOFUNLogic(select, calc_nocheck, true);
+		flogic->setSrcInfo(logic_info);
+		select->initSelect(flogic);
+	}
+	| fun_select_header fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_header RDO_NoCheck error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_header error
+	{
+		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+	}
+	;
 
-fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_select_keyword
+	: RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; }
+	;
 
-fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						select->setSrcPos(@1, @6);
-						PTR(RDOFUNLogic) logic = select->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5));
-						$$ = (int)logic;
-					}
-					| fun_select_body '.' fun_select_keyword '(' error {
-						PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
-					}
-					| fun_select_body '.' fun_select_keyword error {
-						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
-					}
-					| fun_select_body '.' RDO_Empty '(' ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						select->setSrcPos(@1, @5);
-						RDOParserSrcInfo empty_info(@3, @5, _T("Empty()"));
-						PTR(RDOFUNLogic) logic = select->createFunSelectEmpty(empty_info);
-						$$ = (int)logic;
-					}
-					| fun_select_body '.' RDO_Empty '(' error {
-						PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
-					}
-					| fun_select_body '.' RDO_Empty error {
-						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
-					}
-					| fun_select_body '.' error {
-						PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
-					}
-					| fun_select_body error {
-						PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
-					};
+fun_select_logic
+	: fun_select_body '.' fun_select_keyword '(' fun_logic ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		select->setSrcPos(@1, @6);
+		PTR(RDOFUNLogic) logic = select->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5));
+		$$ = (int)logic;
+	}
+	| fun_select_body '.' fun_select_keyword '(' error
+	{
+		PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+	}
+	| fun_select_body '.' fun_select_keyword error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Empty '(' ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		select->setSrcPos(@1, @5);
+		RDOParserSrcInfo empty_info(@3, @5, _T("Empty()"));
+		PTR(RDOFUNLogic) logic = select->createFunSelectEmpty(empty_info);
+		$$ = (int)logic;
+	}
+	| fun_select_body '.' RDO_Empty '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Empty error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' error
+	{
+		PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+	}
+	| fun_select_body error
+	{
+		PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+	}
+	;
 
-fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
-						PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-						select->setSrcPos(@1, @5);
-						RDOParserSrcInfo size_info(@3, @5, _T("Size()"));
-						PTR(RDOFUNArithm) arithm = select->createFunSelectSize(size_info);
-						$$ = (int)arithm;
-					}
-					| fun_select_body '.' RDO_Size error {
-						PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
-					}
-					| fun_select_body '.' RDO_Size '(' error {
-						PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
-					};
+fun_select_arithm
+	: fun_select_body '.' RDO_Size '(' ')'
+	{
+		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
+		select->setSrcPos(@1, @5);
+		RDOParserSrcInfo size_info(@3, @5, _T("Size()"));
+		PTR(RDOFUNArithm) arithm = select->createFunSelectSize(size_info);
+		$$ = (int)arithm;
+	}
+	| fun_select_body '.' RDO_Size error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Size '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	;
 
 %%
 

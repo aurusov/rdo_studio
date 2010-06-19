@@ -3,7 +3,7 @@
  * filename : calc_event_plan.h
  * author   : Лущан Дмитрий
  * date     : 26.05.2010
- * bref     : 
+ * bref     : RDOCalc для планирование событий
  * indent   : 4T
  */
 

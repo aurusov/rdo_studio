@@ -16,6 +16,7 @@
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdosmart_ptr.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/rdo_event.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -29,16 +30,19 @@ DECLARE_FACTORY(RDOEvent);
 public:
 	typedef std::list<PTR(rdoRuntime::RDOCalcEventPlan)> CalcList;
 
-	CREF(tstring)  name       () const;
-	void           attachCalc (PTR(rdoRuntime::RDOCalcEventPlan) pCalc);
-	CREF(CalcList) getCalcList() const;
+	CREF(tstring)    name           () const;
+	void             attachCalc     (PTR(rdoRuntime::RDOCalcEventPlan) pCalc);
+	CREF(CalcList)   getCalcList    () const;
+	LPIBaseOperation getRuntimeEvent() const;
+	void             setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
 
 private:
 	RDOEvent(CREF(tstring) name);
 	virtual ~RDOEvent();
 
-	tstring  m_name;
-	CalcList m_calcList;
+	tstring          m_name;
+	CalcList         m_calcList;
+	LPIBaseOperation m_runtimeEvent;
 };
 
 DECLARE_POINTER(RDOEvent);

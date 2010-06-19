@@ -110,7 +110,6 @@ public:
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc                 ) { m_convertor.push_back( pCalc );        }
 	void addConvertorStatus( RDOResource::ConvertStatus status     ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( CREF(LPRDOCalc) pCalc                 ) { m_erase.push_back( pCalc );            }
-	void setTime           ( CREF(LPRDOCalc) timeCalc              ) { m_timeCalc = timeCalc;	              }
 
 	void convertEvent( PTR(RDORuntime) runtime )
 	{
@@ -121,8 +120,6 @@ public:
 	{
 		runCalcs( m_erase, runtime );
 	}
-
-	double getNextTimeInterval( PTR(RDORuntime) runtime );
 
 	LPIEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
 

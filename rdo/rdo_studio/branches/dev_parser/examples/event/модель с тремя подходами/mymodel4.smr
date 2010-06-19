@@ -1,0 +1,12 @@
+Model_name     = mymodel4
+
+Resource_file  = mymodel4
+Statistic_file = mymodel4
+Results_file   = mymodel4
+Trace_file     = mymodel4
+Show_mode      = NoShow
+Show_rate      = 3600.0
+
+Событие_прихода_клиента.planning(Интервал_прихода(30))
+
+Terminate_if Time_now >= 12 * 7 * 60

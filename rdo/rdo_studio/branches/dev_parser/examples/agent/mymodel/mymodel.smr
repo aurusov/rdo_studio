@@ -1,0 +1,12 @@
+Model_name     = mymodel
+
+Resource_file  = mymodel
+Statistic_file = mymodel
+Results_file   = mymodel
+Trace_file     = mymodel
+Show_mode      = NoShow
+Show_rate      = 3600.0
+
+приход_заявки.planning(время_между_приходами_заявок(100))
+
+Terminate_if Time_now >= 200

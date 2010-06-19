@@ -296,6 +296,67 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcIf
+// ----------------------------------------------------------------------------
+class RDOCalcIf: public RDOCalc
+{
+public:
+	RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pStatement);
+
+private:
+	PTR(RDOCalc) m_condition;
+	PTR(RDOCalc) m_statement;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcIfElse
+// ----------------------------------------------------------------------------
+class RDOCalcIfElse: public RDOCalc
+{
+public:
+	RDOCalcIfElse(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pIfStatement, PTR(RDOCalc) pElseStatement);
+
+private:
+	PTR(RDOCalc) m_condition;
+	PTR(RDOCalc) m_ifStatement;
+	PTR(RDOCalc) m_elseStatement;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcList
+// ----------------------------------------------------------------------------
+class RDOCalcList: public RDOCalc
+{
+public:
+	RDOCalcList(PTR(RDORuntimeParent) parent);
+	
+	void addCalc(PTR(RDOCalc) pCalc);
+
+	typedef std::vector<PTR(RDOCalc)> CalcList;
+
+private:
+	CalcList m_calcList;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcNoChange
+// ----------------------------------------------------------------------------
+class RDOCalcNoChange: public RDOCalc
+{
+public:
+	RDOCalcNoChange(PTR(RDORuntimeParent) parent);
+
+private:
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 CALC(RDOFunCalc)

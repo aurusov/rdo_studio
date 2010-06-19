@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdopat.y
- * author   : Александ Барс, Урусов Андрей, Лущан Дмитри
+ * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
  * date     : 
  * bref     : 
  * indent   : 4T
@@ -142,6 +142,9 @@
 %token RDO_array						379
 %token RDO_event						380
 %token RDO_Planning						381
+%token RDO_else							382
+%token RDO_IncrEqual					383
+%token RDO_DecrEqual					384
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -487,8 +490,7 @@ param_value_default
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: '='    {}
-	| RDO_eq {}
+	: RDO_eq {}
 	;
 
 fun_logic

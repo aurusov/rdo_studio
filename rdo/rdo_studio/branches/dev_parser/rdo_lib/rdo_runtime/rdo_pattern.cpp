@@ -47,17 +47,8 @@ LPIIrregEvent RDOPatternIrregEvent::createActivity(LPIBaseOperationContainer par
 // ---------- RDOPatternEvent
 // ----------------------------------------------------------------------------
 RDOPatternEvent::RDOPatternEvent( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace ),
-	m_timeCalc( NULL )
+	RDOPattern( rTime, trace )
 {
-}
-
-double RDOPatternEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
-{
-	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
-	if ( time_next >= 0 ) return time_next;
-	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), m_timeCalc );
-	return 0;
 }
 
 LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName)

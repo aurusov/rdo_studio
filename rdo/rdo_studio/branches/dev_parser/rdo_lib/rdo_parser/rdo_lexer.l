@@ -41,7 +41,6 @@
 %}
 %option yylineno
 %option c++
-%x comment_rdo
 %x comment_cpp
 %x comment_line
 %%
@@ -82,6 +81,7 @@ list				return(RDO_list);
 Calculate_if		return(RDO_Calculate_if);
 calculate_if		return(RDO_Calculate_if);
 if					return(RDO_if);
+else				return(RDO_else);
 result				return(RDO_result);
 $Sequence			return(RDO_Sequence);
 $sequence			return(RDO_Sequence);
@@ -251,6 +251,8 @@ $parent				return(RDO_Parent);
 "-="                return(RDO_MinusEqual);
 "*="                return(RDO_MultiplyEqual);
 "/="                return(RDO_DivideEqual);
+"++"                return(RDO_IncrEqual);
+"--"                return(RDO_DecrEqual);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);
@@ -320,11 +322,6 @@ Planning			return(RDO_Planning);
 						return RDO_STRING_CONST_BAD;
 					}
 
-"{"						BEGIN(comment_rdo);
-<comment_rdo>[^}.]*		;
-<comment_rdo>[^}\n\r]*	;
-<comment_rdo>"}"		BEGIN(INITIAL);
-
 "/*"					BEGIN(comment_cpp);
 <comment_cpp>[^*.]*		;
 <comment_cpp>[^*\n\r]*	;
@@ -333,13 +330,13 @@ Planning			return(RDO_Planning);
 "//"					BEGIN(comment_line);
 <comment_line>[\n\r]+	BEGIN(INITIAL);
 
-"}"|"*/"			{
+"*/"				{
 						LEXER->loc_delta_pos( YYLeng() );
 						PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
 					}
 
 [\r\n\t ]+						;
-[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
+[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\\{\}]	return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText());

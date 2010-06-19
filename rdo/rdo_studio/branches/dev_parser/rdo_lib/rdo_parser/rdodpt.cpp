@@ -77,32 +77,43 @@ RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserS
 	}
 }
 
-void RDODPTActivity::addParam( const RDOValue& param )
+void RDODPTActivity::addParam(const RDOValue& param)
 {
-	if ( m_pattern->m_paramList.size() <= m_currParam ) {
-		if ( param.src_pos().m_first_line == src_pos().m_first_line ) {
-			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error().push_only( param, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()) );
-			} else {
-				parser()->error().push_only( param, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()) );
+	if (m_pattern->m_paramList.size() <= m_currParam)
+	{
+		if (param.src_pos().m_first_line == src_pos().m_first_line)
+		{
+			if (dynamic_cast<RDOOPROperation*>(this))
+			{
+				parser()->error().push_only(param, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()));
 			}
-			parser()->error().push_only( m_pattern->src_info(), "См. образец" );
+			else
+			{
+				parser()->error().push_only(param, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()));
+			}
+			parser()->error().push_only(m_pattern->src_info(), "См. образец");
 			parser()->error().push_done();
-		} else {
-			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error().error( param, "Имя операции должно заканчиваться двоеточием" );
-			} else {
-				parser()->error().error( param, "Имя активности должно заканчиваться двоеточием" );
+		}
+		else
+		{
+			if (dynamic_cast<RDOOPROperation*>(this))
+			{
+				parser()->error().error(param, "Имя операции должно заканчиваться двоеточием");
+			}
+			else
+			{
+				parser()->error().error(param, "Имя активности должно заканчиваться двоеточием");
 			}
 		}
 	}
 	rdoRuntime::RDOValue val;
-	RDOFUNFunctionParam* pat_param = m_pattern->m_paramList.at( m_currParam );
-	if ( param->getAsString() == "*" )
+	RDOFUNFunctionParam* pat_param = m_pattern->m_paramList.at(m_currParam);
+	if (param->getAsString() == "*")
 	{
-		if ( !pat_param->getType()->default().defined() ) {
-			parser()->error().push_only( param, rdo::format("Нет значения по-умолчанию для параметра '%s'", pat_param->src_text().c_str()) );
-			parser()->error().push_only( pat_param->src_info(), rdo::format("См. параметр '%s', тип '%s'", pat_param->src_text().c_str(), pat_param->getType()->src_text().c_str()) );
+		if (!pat_param->getType()->default().defined())
+		{
+			parser()->error().push_only(param, rdo::format("Нет значения по-умолчанию для параметра '%s'", pat_param->src_text().c_str()));
+			parser()->error().push_only(pat_param->src_info(), rdo::format("См. параметр '%s', тип '%s'", pat_param->src_text().c_str(), pat_param->getType()->src_text().c_str()));
 			parser()->error().push_done();
 		}
 		val = pat_param->getType()->default().value();
@@ -111,9 +122,9 @@ void RDODPTActivity::addParam( const RDOValue& param )
 	{
 		val = pat_param->getType()->value_cast(param).value();
 	}
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), m_currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(param.getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), pat_param->name().c_str(), param->getAsString().c_str())) );
-	m_activity->addParamCalc( calc );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc(parser()->runtime(), m_currParam, val);
+	calc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), pat_param->name().c_str(), param->getAsString().c_str())));
+	m_activity->addParamCalc(calc);
 	m_currParam++;
 }
 
@@ -169,11 +180,6 @@ RDODPTActivityHotKey::RDODPTActivityHotKey( LPIBaseOperationContainer dpt, const
 		case RDOPATPattern::PT_IE:
 		{
 			m_activity = static_cast<rdoRuntime::RDOPatternIrregEvent*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
-			break;
-		}
-		case RDOPATPattern::PT_Event:
-		{
-			m_activity = static_cast<rdoRuntime::RDOPatternEvent*>(pattern()->getPatRuntime())->createActivity( dpt, parser()->runtime(), name() );
 			break;
 		}
 		case RDOPATPattern::PT_Rule:

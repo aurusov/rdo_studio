@@ -30,7 +30,9 @@ enum EqualType
 	ET_PLUS,
 	ET_MINUS,
 	ET_MULTIPLY,
-	ET_DIVIDE
+	ET_DIVIDE,
+	ET_INCR,
+	ET_DECR
 };
 
 template <EqualType equalType>
@@ -94,6 +96,22 @@ inline REF(RDOValue) RDOSetRelParamCalc<ET_DIVIDE>::doCalc(PTR(RDORuntime) runti
 {
 	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
 	runtime->getResParamValRaw(resID, m_parNumb) /= m_pCalc->calcValue(runtime);
+	return m_value;
+}
+
+template <>
+inline REF(RDOValue) RDOSetRelParamCalc<ET_INCR>::doCalc(PTR(RDORuntime) runtime)
+{
+	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
+	runtime->getResParamValRaw(resID, m_parNumb) += RDOValue(1);
+	return m_value;
+}
+
+template <>
+inline REF(RDOValue) RDOSetRelParamCalc<ET_DECR>::doCalc(PTR(RDORuntime) runtime)
+{
+	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
+	runtime->getResParamValRaw(resID, m_parNumb) -= RDOValue(1);
 	return m_value;
 }
 
