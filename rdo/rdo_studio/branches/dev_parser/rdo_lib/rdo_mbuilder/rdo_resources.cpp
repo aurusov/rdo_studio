@@ -133,7 +133,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type
 	, m_id   (-1  )
 {}
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__int>) type, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>) type, CREF(rdoParse::RDOValue) default)
 	: m_name (name)
 	, m_exist(true)
 	, m_id   (-1  )
@@ -142,7 +142,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOTy
 	setDefault(default);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) default)
 	: m_name (name)
 	, m_exist(true)
 	, m_id   (-1  )

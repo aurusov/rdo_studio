@@ -127,9 +127,9 @@ public:
 	public:
 		explicit Param(CREF(rdoParse::LPRDORTPParam) param);
 		explicit Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type);
-		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__int>)  type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__real>) type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)          enums, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>)  type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)              enums, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
 
 		CREF(rdoParse::LPRDOTypeParam)     type() const       { return m_type;                   }
 		const rdoRuntime::RDOType::TypeID  typeID() const     { return m_type->type()->typeID(); }
@@ -149,7 +149,7 @@ public:
 		rdoParse::LPRDOEnumType   getEnum() const
 		{
 			ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
-			return type()->type().lp_cast<rdoParse::LPRDOEnumType>();
+			return type()->type().object_cast<rdoParse::RDOEnumType>();
 		}
 
 		rbool operator== (CREF(Param) param) const;
@@ -176,7 +176,7 @@ public:
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}
 //			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_default.value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
-			m_type    = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum, rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
+			m_type    = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum.object_cast<rdoParse::RDOType>(), rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
 			ASSERT(m_type);
 		}
 	};

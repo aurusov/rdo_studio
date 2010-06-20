@@ -551,14 +551,14 @@ frm_postype_wh
 frm_position_xy
 	: fun_arithm frm_postype_xy 
 	{
-		rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
+		rdoRuntime::LPRDOCalc pCalc = reinterpret_cast<PTR(RDOFUNArithm)>($1)->createCalc();
 		if ( $2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet )
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), pCalc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
 		}
 		else
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), pCalc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
 		}
 	}
 	;
@@ -566,14 +566,14 @@ frm_position_xy
 frm_position_wh
 	: fun_arithm frm_postype_wh
 	{
-		rdoRuntime::RDOCalc* calc = reinterpret_cast<RDOFUNArithm*>($1)->createCalc();
+		rdoRuntime::LPRDOCalc pCalc = reinterpret_cast<PTR(RDOFUNArithm)>($1)->createCalc();
 		if ( $2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet )
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), pCalc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet );
 		}
 		else
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), calc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
+			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), pCalc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2 );
 		}
 	}
 	;

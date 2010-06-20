@@ -17,7 +17,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -144,7 +144,7 @@ public:
 	{
 		return obj->name() == m_name;
 	}
-	rbool operator() (CREF(rdo::smart_ptr<T>) pObj)
+	rbool operator() (CREF(rdo::intrusive_ptr<T>) pObj)
 	{
 		return pObj->name() == m_name;
 	}

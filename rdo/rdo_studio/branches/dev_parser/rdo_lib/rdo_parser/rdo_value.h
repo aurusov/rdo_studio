@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 // ===============================================================================
 
@@ -22,9 +23,6 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
-class RDOType;
-DECLARE_POINTER(RDOType);
-
 class RDOValue: public RDOParserSrcInfo
 {
 public:
