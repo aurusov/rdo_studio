@@ -3,18 +3,9 @@ $Constant
 	вагоны_в_составе: integer = 60
 $End
 
-/*$Sequence ф_приход_за€вок: real [0..3000]
+$Sequence ф_приход_за€вок: real [0..3000]
 $Type = uniform 3487478
-$End*/
-
-$Function ф_приход_за€вок : real
-$Type = algorithmic
-$Parameters
-	x: integer
-$Body
-	result = 720/x
 $End
-
 
 $Sequence ф_вес_груза : real 
 $Type = uniform 34556
@@ -24,7 +15,7 @@ $Sequence ф_тип_маршрута: such_as за€вки.маршрут
 $Type = by_hist 1111
 $Body
     1 2 5.0
-	2 3 2.0
+	2 3 3.0
 	3 3 3.0
 $End
 
