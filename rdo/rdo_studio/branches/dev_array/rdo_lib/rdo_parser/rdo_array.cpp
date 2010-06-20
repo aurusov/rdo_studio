@@ -48,17 +48,11 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 		{
 			LPRDOArrayType pArray(const_cast<PTR(RDOArrayType)>(this));
 			LPRDOArrayType from(const_cast<PTR(RDOArrayType)>(static_cast<CPTR(RDOArrayType)>(from.get())));
-			if(pArray->getItemType()->typeID() == rdoRuntime::RDOType::t_enum)
-			{
-				return pArray;
-				break;
-			}
 			//! Это один и тот же тип
 			if (pArray->getItemType()->type_cast(from->getItemType(), from->src_info(), pArray->src_info(), from->src_info()))
 			{
 				return pArray;
 			}
-			rdoParse::g_error().push_done();
 			break;
 		}
 	default:
@@ -74,24 +68,26 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 
 RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	switch(from->typeID())
+	switch(from.typeID())
 	{
 	case rdoRuntime::RDOType::t_array:
 		{
 			LPRDOArrayType pArrayT(const_cast<PTR(RDOArrayType)>(this));
 			rdoRuntime::RDOArrayValue rArrayV = from->getArray();
-			if(pArrayT->getItemType()->typeID() == rdoRuntime::RDOType::t_enum) break;
-			for(rdoRuntime::RDOArrayValue::Container::const_iterator it = rArrayV.m_containerBegin(); it != rArrayV.m_containerEnd(); ++it)
+			for(rdoRuntime::RDOArrayValue::Container::iterator it = rArrayV.m_containerBegin(); it != rArrayV.m_containerEnd(); ++it)
 			{
-				pArrayT->getItemType()->value_cast(RDOValue(*it, from.type(), src_info), to_src_info, src_info);
+				*it = pArrayT->getItemType()->value_cast(RDOValue(*it, from.type(), src_info), to_src_info, src_info).value();
 			}
+			return from;
 			break;
 		}
 	default:
+	{
 		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Несоответствие размерности массива")));
 		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 		rdoParse::g_error().push_done();
 		break;
+	}
 	}
 	return from;
 }
@@ -118,31 +114,6 @@ CREF(LPRDOType) RDOArrayType::getItemType() const
 	return m_pType;
 }
 
-CREF(LPRDOType) RDOArrayType::getFirstType()
-{
-	if(m_pType->typeID() == rdoRuntime::RDOType::t_array)
-	{
-		LPRDOArrayType ArrayType(const_cast<PTR(RDOArrayType)>(static_cast<CPTR(RDOArrayType)>(m_pType.get())));
-		return ArrayType->getFirstType();
-	}
-	else return m_pType;
-}
-
-void RDOArrayType::dinamicItemCast(CREF(RDOValue) value)
-{
-	switch(value->typeID())
-	{
-	case(rdoRuntime::RDOType::t_array):  break;
-	case(rdoRuntime::RDOType::t_unknow): break;
-	default:
-		{
-			getFirstType()->type_cast(value.type(), value.src_info(), src_info(), value.src_info());
-			break;
-		}
-	}
-}
-
-
 //----------------------------------------------------------------------------
 //---------- RDOArrayValue
 //----------------------------------------------------------------------------
@@ -155,10 +126,9 @@ RDOArrayValue::~RDOArrayValue()
 
 void RDOArrayValue::insertItem(CREF(RDOValue) value)
 {
-	NEVER_REACH_HERE;
-	//LPRDOArrayType FirstArrayType = RDOParser::s_parser()->getLastArrayType();
-	//FirstArrayType->dinamicItemCast(value);
-	//m_Container.push_back(value);
+	m_arrayType->getItemType()->type_cast(value.type(), value.src_info(), m_arrayType->src_info(), value.src_info());
+	RDOValue ItemValue = m_arrayType->getItemType()->value_cast(value, m_arrayType->src_info(), value.src_info());
+	m_Container.push_back(ItemValue);
 }
 
 CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const

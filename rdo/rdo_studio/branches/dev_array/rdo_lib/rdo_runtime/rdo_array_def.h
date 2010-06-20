@@ -45,10 +45,10 @@ public:
 	CREF(RDOArrayType) type() const;
 
 	void insertItem(CREF(RDOValue) pArray);
-	Container::const_iterator m_containerBegin();
-	Container::const_iterator m_containerEnd();
+	Container::iterator m_containerBegin();
+	Container::iterator m_containerEnd();
 
-	//tstring getAsString();
+	tstring getAsString() const;
 
 private:
 	Container          m_Container;

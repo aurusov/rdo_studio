@@ -30,7 +30,6 @@ friend class RDOArrayValue;
 
 public:
 	CREF(LPRDOType) getItemType() const;
-	void            dinamicItemCast(CREF(RDOValue) value);
 
 private:
 	RDOArrayType         (CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
@@ -40,8 +39,6 @@ private:
 	{ 
 		return static_cast<PTR(rdoRuntime::RDOArrayType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type));
 	}
-
-	CREF(LPRDOType) getFirstType();
 
 	LPRDOType m_pType;
 
@@ -59,7 +56,7 @@ class RDOArrayValue
 public:
 	RDOArrayValue         (LPRDOArrayType pArrayType);
 
-	void insertItem(CREF(RDOValue) pArray);
+	void insertItem(CREF(RDOValue)     value);
 	CREF(LPRDOArrayType) getArrayType() const;
 	rdoRuntime::RDOValue getRArray   () const;
 
