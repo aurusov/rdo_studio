@@ -43,14 +43,16 @@ public:
 	intrusive_ptr<P> object_cast() const;
 
 	template <class P>
-	intrusive_ptr<P> object_dymamic_cast() const;
+	intrusive_ptr<P> object_dynamic_cast() const;
 
 	template <class P>
 	interface_ptr<P> interface_cast();
 
-protected:
+	//! TODO: переместить в protected
 	PTR(T)   get();
 	CPTR(T)  get() const;
+
+protected:
 
 	void  addref ();
 	void  release();
