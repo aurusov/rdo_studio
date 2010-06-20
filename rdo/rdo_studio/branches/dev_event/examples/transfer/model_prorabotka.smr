@@ -5,4 +5,4 @@ Results_file   = model_prorabotka
 Trace_file     = model_prorabotka
 Show_mode      = NoShow
 Show_rate      = 3600.0
-Terminate_if Time_now >= 720
+Terminate_if счетчик.количество_удаленных_заявок >= 2
