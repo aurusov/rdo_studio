@@ -51,6 +51,11 @@ DECLARE_FACTORY(MyClass2)
 public:
 	ruint m_k;
 
+	rbool operator== (CREF(MyClass2) obj) const
+	{
+		return m_k == obj.m_k;
+	}
+
 protected:
 	MyClass2()
 		: m_k(20)
@@ -172,7 +177,7 @@ void main()
 		pMyClass21 = LPIMyClass21();
 	}
 
-	{ //! Равенство указателей
+	{ //! Сравнение указателей
 
 		LPMyClass2 pMyClass1 = rdo::Factory<MyClass2>::create();
 		LPMyClass  pMyClass2 = pMyClass1.object_cast<MyClass>();
@@ -182,6 +187,15 @@ void main()
 		LPMyClass3 pMyClass3 = rdo::Factory<MyClass3>::create();
 		ASSERT(pMyClass1 != pMyClass3);
 		ASSERT(!(pMyClass1 == pMyClass3));
+	}
+
+	{ //! Сравнение значений
+
+		LPMyClass2 pMyClass1 = rdo::Factory<MyClass2>::create();
+		LPMyClass2 pMyClass2 = rdo::Factory<MyClass2>::create();
+		ASSERT(pMyClass1.compare(pMyClass2));
+		pMyClass2->m_k++;
+		ASSERT(!pMyClass1.compare(pMyClass2));
 	}
 
 	int i = 1;

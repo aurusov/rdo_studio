@@ -36,10 +36,15 @@ public:
 
 	REF(this_type) operator= (CREF(this_type) sptr);
 
+	//! Сравнивает по указателям
 	template <class P>
 	rbool operator== (CREF(intrusive_ptr<P>) sptr) const;
 	template <class P>
 	rbool operator!= (CREF(intrusive_ptr<P>) sptr) const;
+
+	//! Сравнивает по значениям
+	template<class P>
+	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
 
 	operator rbool     () const;
 	CPTR(T) operator-> () const;

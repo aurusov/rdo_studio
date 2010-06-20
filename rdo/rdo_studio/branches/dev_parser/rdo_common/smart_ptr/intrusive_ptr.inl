@@ -70,6 +70,13 @@ inline rbool intrusive_ptr<T>::operator!= (CREF(intrusive_ptr<P>) sptr) const
 }
 
 template<class T>
+template<class P>
+inline rbool intrusive_ptr<T>::compare(CREF(intrusive_ptr<P>) sptr) const
+{
+	return *m_object == *sptr.m_object;
+}
+
+template<class T>
 inline PTR(T) intrusive_ptr<T>::get()
 {
 	return m_object;
