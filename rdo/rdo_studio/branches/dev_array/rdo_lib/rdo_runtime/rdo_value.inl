@@ -252,7 +252,7 @@ inline tstring RDOValue::getAsString() const
 		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
 		case RDOType::t_array        : return __arrayV().getAsString();
 	}
-	throw RDOValueException();
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsString()"));
 }
 
 inline tstring RDOValue::getAsStringForTrace() const
@@ -265,7 +265,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 		case RDOType::t_bool  : return m_value.b_value ? _T("true") : _T("false");
 		case RDOType::t_string: return __stringV();
 	}
-	throw RDOValueException();
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
 }
 
 inline void RDOValue::deleteString()
