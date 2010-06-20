@@ -14,6 +14,7 @@
 #include <list>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/smart_ptr/interface_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
@@ -1067,6 +1068,7 @@ DECLARE_POINTER(RDOCalcFunctionCall);
 // ----------------------------------------------------------------------------
 CALC(RDOCalcCreateNumberedResource)
 {
+DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
 	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
 
@@ -1244,6 +1246,7 @@ private:
 		: RDOSelectResourceByTypeCalc(_relNumb, _resType, pChoiceCalc, pOrderCalc, _order_type)
 	{}
 };
+DECLARE_POINTER(RDOSelectResourceByTypeCommonCalc);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

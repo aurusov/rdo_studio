@@ -267,7 +267,7 @@ smr_cond
 			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
 
-		PTR(rdoRuntime::RDOCalc) pCalcTime = pTimeArithm->createCalc(NULL);
+		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
 		ASSERT(pCalcTime);
 
 		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
