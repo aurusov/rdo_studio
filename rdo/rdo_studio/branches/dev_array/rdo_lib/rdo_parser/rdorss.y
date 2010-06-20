@@ -209,6 +209,9 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
+#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
+#define RDOVALUE(A)   (*P_RDOVALUE(A))
+
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
@@ -306,10 +309,62 @@ rss_value:		'*'                 { PARSER->getLastRSSResource()->addParam( RDOVal
 				| RDO_BOOL_CONST    { PARSER->getLastRSSResource()->addParam( *reinterpret_cast<RDOValue*>($1) )    }
 				| RDO_STRING_CONST  { PARSER->getLastRSSResource()->addParam( *reinterpret_cast<RDOValue*>($1) )    }
 				| RDO_IDENTIF       { PARSER->getLastRSSResource()->addParam( *reinterpret_cast<RDOValue*>($1) )    }
+				| param_array_value { PARSER->getLastRSSResource()->addParam( *reinterpret_cast<RDOValue*>($1) )    }
 
 				| error
 				{
 					PARSER->error().error( @1, rdo::format("Неправильное значение параметра: %s", LEXER->YYText()) );
+				};
+
+param_array_value:	'[' array_item ']' {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
+						ASSERT(pArrayValue);
+						$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
+					}
+					|'[' array_item error {
+						PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
+					};
+
+array_item:			param_value {
+						LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOParserSrcInfo(@1));
+						ASSERT(pArrayType);
+						LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
+						pArrayValue->insertItem(RDOVALUE($1));
+						$$ = PARSER->stack().push(pArrayValue);
+					}
+					|
+					array_item ',' param_value {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+						ASSERT(pArrayValue);
+						pArrayValue->insertItem(RDOVALUE($3));
+						$$ = PARSER->stack().push(pArrayValue);
+					}
+					|
+					array_item param_value {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+						ASSERT(pArrayValue);
+						pArrayValue->insertItem(RDOVALUE($2));
+						$$ = PARSER->stack().push(pArrayValue);
+						PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
+					};
+
+param_value:	RDO_INT_CONST {
+					$$ = $1;
+				}
+				| RDO_REAL_CONST {
+					$$ = $1;
+				}
+				| RDO_STRING_CONST {
+					$$ = $1;
+				}
+				| RDO_IDENTIF {
+					$$ = $1;
+				}
+				| RDO_BOOL_CONST {
+					$$ = $1;
+				}
+				| param_array_value {
+					$$ = $1;
 				};
 
 %%
