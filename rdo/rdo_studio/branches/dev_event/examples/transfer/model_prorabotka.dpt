@@ -4,7 +4,7 @@ $Activities
 $End
 
 $Decision_point вход: some
-$Condition счетчик.счет_заявок < 1
+$Condition счетчик.счет_заявок < 2
 $Activities
 	создание_заявок                  : Образец_прихода_заявок
 $End
