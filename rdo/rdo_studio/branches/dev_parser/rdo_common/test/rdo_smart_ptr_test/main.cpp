@@ -172,5 +172,17 @@ void main()
 		pMyClass21 = LPIMyClass21();
 	}
 
+	{ //! Равенство указателей
+
+		LPMyClass2 pMyClass1 = rdo::Factory<MyClass2>::create();
+		LPMyClass  pMyClass2 = pMyClass1.object_cast<MyClass>();
+		ASSERT(pMyClass1 == pMyClass2);
+		ASSERT(!(pMyClass1 != pMyClass2));
+
+		LPMyClass3 pMyClass3 = rdo::Factory<MyClass3>::create();
+		ASSERT(pMyClass1 != pMyClass3);
+		ASSERT(!(pMyClass1 == pMyClass3));
+	}
+
 	int i = 1;
 }

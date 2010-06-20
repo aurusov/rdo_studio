@@ -56,6 +56,20 @@ inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CR
 }
 
 template<class T>
+template<class P>
+inline rbool intrusive_ptr<T>::operator== (CREF(intrusive_ptr<P>) sptr) const
+{
+	return &m_object->m_intrusive_counter == &sptr.m_object->m_intrusive_counter;
+}
+
+template<class T>
+template<class P>
+inline rbool intrusive_ptr<T>::operator!= (CREF(intrusive_ptr<P>) sptr) const
+{
+	return !operator==(sptr);
+}
+
+template<class T>
 inline PTR(T) intrusive_ptr<T>::get()
 {
 	return m_object;
@@ -129,13 +143,13 @@ inline void intrusive_ptr<T>::release()
 template<class T>
 inline rbool intrusive_ptr<T>::owner() const
 {
-	return static_cast<CPTR(counter_reference)>(m_object)->m_intrusive_counter == 1;
+	return m_object->m_intrusive_counter == 1;
 }
 
 template<class T>
 inline REF(ruint) intrusive_ptr<T>::counter()
 {
-	return static_cast<PTR(counter_reference)>(m_object)->m_intrusive_counter;
+	return m_object->m_intrusive_counter;
 }
 
 CLOSE_RDO_NAMESPACE
