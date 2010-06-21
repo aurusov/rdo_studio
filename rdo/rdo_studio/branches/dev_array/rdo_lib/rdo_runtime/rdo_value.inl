@@ -61,6 +61,7 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 		case RDOType::t_bool         : m_value.b_value = false; break;
 		case RDOType::t_string       : m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
 		case RDOType::t_identificator: m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
+		case RDOType::t_array        : m_value.p_data = new PTR(void); break;
 		default                      : throw RDOValueException();
 	}
 }
@@ -264,6 +265,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 		case RDOType::t_enum  : return rdo::format(_T("%d"), m_value.i_value);
 		case RDOType::t_bool  : return m_value.b_value ? _T("true") : _T("false");
 		case RDOType::t_string: return __stringV();
+		case RDOType::t_array : return __arrayV().getAsString();
 	}
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
 }
