@@ -7,7 +7,7 @@ $Sequence ф_приход_заявок: real [0..3000]
 $Type = uniform 3487478
 $End
 
-$Sequence ф_вес_груза : real 
+$Sequence ф_вес_груза : real
 $Type = uniform 34556
 $End
 
@@ -27,10 +27,10 @@ $Sequence ф_погрузки : real[0..100000]
 $Type = uniform 768434
 $End
 
-$Function ф_время_в_пути : real 
+$Function ф_время_в_пути : real
 $Type = algorithmic
 $Parameters
-  х : real 
+  х : real
 $Body
 	result = х*24/500
 $End
