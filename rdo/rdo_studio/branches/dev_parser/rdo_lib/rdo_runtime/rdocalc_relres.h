@@ -39,9 +39,8 @@ template <EqualType equalType>
 CALC(RDOSetRelParamCalc)
 {
 public:
-	RDOSetRelParamCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, CREF(LPRDOCalc) pCalc)
-		: RDOCalc  (parent )
-		, m_relNumb(relNumb)
+	RDOSetRelParamCalc(int relNumb, int parNumb, CREF(LPRDOCalc) pCalc = NULL)
+		: m_relNumb(relNumb)
 		, m_parNumb(parNumb)
 		, m_pCalc  (pCalc  )
 	{

@@ -122,7 +122,7 @@ void RDODPTActivity::addParam(const RDOValue& param)
 	{
 		val = pat_param->getType()->value_cast(param).value();
 	}
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc(parser()->runtime(), m_currParam, val);
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val).object_cast<rdoRuntime::RDOCalc>();
 	calc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), pat_param->name().c_str(), param->getAsString().c_str())));
 	m_activity->addParamCalc(calc);
 	m_currParam++;
@@ -369,8 +369,8 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::RDOCalc* condCalc = m_conditon ? m_conditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
-	rdoRuntime::RDOCalc* termCalc = m_termConditon ? m_termConditon->getCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+	rdoRuntime::LPRDOCalc condCalc = m_conditon     ? m_conditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>();
+	rdoRuntime::LPRDOCalc termCalc = m_termConditon ? m_termConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>();
 
 	m_rt_logic = F(rdoRuntime::RDODPTSearchRuntime)::create( parser()->runtime(),
 		m_parent,
@@ -457,7 +457,7 @@ RDOPROCOperator::RDOPROCOperator( RDOPROCProcess* _process, const std::string& _
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time )
+RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, CREF(rdoRuntime::LPRDOCalc) time )
 	: RDOPROCOperator( _process, _name )
 {
 	runtime = F(rdoRuntime::RDOPROCGenerate)::create(parser()->getLastPROCProcess()->getRunTime(), time);
@@ -729,7 +729,7 @@ void RDOPROCRelease::create_runtime_Release ( RDOParser *parser )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time ):
+RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, CREF(rdoRuntime::LPRDOCalc) time ):
 	RDOPROCOperator( _process, _name )
 {
 	runtime = F(rdoRuntime::RDOPROCAdvance)::create(parser()->getLastPROCProcess()->getRunTime(), time);
@@ -747,7 +747,7 @@ RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string&
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-RDOPROCAssign::RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param ):
+RDOPROCAssign::RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, CREF(rdoRuntime::LPRDOCalc) value, int Id_res, int Id_param ):
 	RDOPROCOperator( _process, _name )
 {
 	runtime = F(rdoRuntime::RDOPROCAssign)::create(parser()->getLastPROCProcess()->getRunTime(), value, Id_res, Id_param);

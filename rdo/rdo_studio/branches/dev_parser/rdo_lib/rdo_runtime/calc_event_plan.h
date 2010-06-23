@@ -36,6 +36,7 @@ private:
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOCalcEventPlan);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

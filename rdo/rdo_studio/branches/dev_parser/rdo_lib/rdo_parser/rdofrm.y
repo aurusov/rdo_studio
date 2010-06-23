@@ -443,7 +443,7 @@ frm_color
 		RDOFUNArithm* blue  = new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($4) );
 		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
+		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange.object_cast<RDOType>(), RDOValue(0), RDOParserSrcInfo());
 		red->checkParamType  (pType);
 		green->checkParamType(pType);
 		blue->checkParamType (pType);
@@ -468,7 +468,7 @@ frm_color
 		RDOFUNArithm* blue  = reinterpret_cast<RDOFUNArithm*>($6);
 		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOValue(0), RDOParserSrcInfo());
+		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange.object_cast<RDOType>(), RDOValue(0), RDOParserSrcInfo());
 		red->checkParamType  (pType);
 		green->checkParamType(pType);
 		blue->checkParamType (pType);
@@ -964,7 +964,7 @@ frm_rect
 		rdoRuntime::RDOFRMFrame::RDOFRMPosition* x      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($3);
 		rdoRuntime::RDOFRMFrame::RDOFRMPosition* y      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($5);
 		rdoRuntime::RDOFRMFrame::RDOFRMPosition* width  = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($7);
-		rdoRuntime::RDOFRMFrame::RDOFRMPosition* height = new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), new rdoRuntime::RDOCalcConst( RUNTIME, 0 ), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta );
+		rdoRuntime::RDOFRMFrame::RDOFRMPosition* height = new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), rdo::Factory<rdoRuntime::RDOCalcConst>::create(0).object_cast<rdoRuntime::RDOCalc>(), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta );
 		rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color  = new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame() );
 		rdoRuntime::RDOFRMFrame::RDOFRMColor* fg_color  = new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame() );
 		bg_color->setColorType( rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg );
@@ -975,8 +975,8 @@ frm_rect
 	{
 		rdoRuntime::RDOFRMFrame::RDOFRMPosition* x      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($3);
 		rdoRuntime::RDOFRMFrame::RDOFRMPosition* y      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($5);
-		rdoRuntime::RDOFRMFrame::RDOFRMPosition* width  = new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), new rdoRuntime::RDOCalcConst( RUNTIME, 0 ), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta );
-		rdoRuntime::RDOFRMFrame::RDOFRMPosition* height = new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), new rdoRuntime::RDOCalcConst( RUNTIME, 0 ), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta );
+		rdoRuntime::RDOFRMFrame::RDOFRMPosition* width  = new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), rdo::Factory<rdoRuntime::RDOCalcConst>::create(0).object_cast<rdoRuntime::RDOCalc>(), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta );
+		rdoRuntime::RDOFRMFrame::RDOFRMPosition* height = new rdoRuntime::RDOFRMFrame::RDOFRMPosition( RUNTIME->lastFrame(), rdo::Factory<rdoRuntime::RDOCalcConst>::create(0).object_cast<rdoRuntime::RDOCalc>(), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta );
 		rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color  = new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame() );
 		rdoRuntime::RDOFRMFrame::RDOFRMColor* fg_color  = new rdoRuntime::RDOFRMFrame::RDOFRMColor( RUNTIME->lastFrame() );
 		bg_color->setColorType( rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg );
@@ -1476,7 +1476,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + ARITHM($2).src_text());
-		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus(RUNTIME, ARITHM($2).createCalc()));
+		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()).object_cast<rdoRuntime::RDOCalc>());
 	}
 	;
 
@@ -1574,7 +1574,7 @@ fun_group
 	{
 		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
 		groupfun->setSrcPos(@1, @3);
-		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, new rdoRuntime::RDOCalcConst(RUNTIME, 1));
+		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>());
 		trueLogic->setSrcPos (@2);
 		trueLogic->setSrcText(_T("NoCheck"));
 		$$ = (int)groupfun->createFunLogic(trueLogic);
@@ -1627,8 +1627,8 @@ fun_select_body
 		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
 		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
 		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
-		PTR(rdoRuntime::RDOCalcConst) calc_nocheck = new rdoRuntime::RDOCalcConst(RUNTIME, 1);
-		PTR(RDOFUNLogic)              flogic       = new RDOFUNLogic(select, calc_nocheck, true);
+		rdoRuntime::LPRDOCalcConst calc_nocheck = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck.object_cast<rdoRuntime::RDOCalc>(), true);
 		flogic->setSrcInfo(logic_info);
 		select->initSelect(flogic);
 	}

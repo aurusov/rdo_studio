@@ -417,7 +417,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + ARITHM($2).src_text());
-		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), new rdoRuntime::RDOCalcUMinus(RUNTIME, ARITHM($2).createCalc()));
+		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()).object_cast<rdoRuntime::RDOCalc>());
 	}
 	;
 
@@ -515,7 +515,7 @@ fun_group
 	{
 		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
 		groupfun->setSrcPos(@1, @3);
-		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, new rdoRuntime::RDOCalcConst(RUNTIME, 1));
+		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>());
 		trueLogic->setSrcPos (@2);
 		trueLogic->setSrcText(_T("NoCheck"));
 		$$ = (int)groupfun->createFunLogic(trueLogic);
@@ -568,8 +568,8 @@ fun_select_body
 		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
 		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
 		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
-		PTR(rdoRuntime::RDOCalcConst) calc_nocheck = new rdoRuntime::RDOCalcConst(RUNTIME, 1);
-		PTR(RDOFUNLogic)              flogic       = new RDOFUNLogic(select, calc_nocheck, true);
+		rdoRuntime::LPRDOCalcConst calc_nocheck = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck.object_cast<rdoRuntime::RDOCalc>(), true);
 		flogic->setSrcInfo(logic_info);
 		select->initSelect(flogic);
 	}

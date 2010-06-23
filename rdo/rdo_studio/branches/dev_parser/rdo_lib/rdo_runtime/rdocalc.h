@@ -345,6 +345,7 @@ private:
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOCalcList);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcNoChange

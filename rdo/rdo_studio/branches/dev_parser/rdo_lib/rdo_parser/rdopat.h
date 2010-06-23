@@ -47,9 +47,9 @@ OBJECT(ConvertCmdList)
 {
 DECLARE_FACTORY(ConvertCmdList);
 public:
-	typedef std::vector<PTR(rdoRuntime::RDOCalc)> CalcList;
+	typedef std::vector<rdoRuntime::LPRDOCalc> CalcList;
 
-	void insertCommand(PTR(rdoRuntime::RDOCalc) pCalc)
+	void insertCommand(CREF(rdoRuntime::LPRDOCalc) pCalc)
 	{
 		m_calcList.push_back(pCalc);
 	}

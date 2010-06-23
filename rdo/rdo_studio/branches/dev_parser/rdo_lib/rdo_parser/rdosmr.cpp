@@ -127,8 +127,8 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 	}
 	ASSERT(arithm);
 	arithm->checkParamType(cons->getType());
-	rdoRuntime::RDOCalc* calc = arithm->createCalc( cons->getType() );
-	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(cons->getNumber(), calc));
+	rdoRuntime::LPRDOCalc calc = arithm->createCalc( cons->getType() );
+	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(cons->getNumber(), calc).object_cast<rdoRuntime::RDOCalc>());
 	parser()->insertChanges( cons->src_text(), arithm->src_text() );
 }
 
@@ -150,19 +150,19 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 	ASSERT(arithm);
 	arithm->checkParamType(param->getParamType());
 	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
-	rdoRuntime::RDOCalc* calc = arithm->createCalc( param->getParamType() );
-	parser()->runtime()->addInitCalc( new rdoRuntime::RDOSetResourceParamCalc( parser()->runtime(), res->getID(), parNumb, calc ) );
+	rdoRuntime::LPRDOCalc calc = arithm->createCalc( param->getParamType() );
+	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(res->getID(), parNumb, calc).object_cast<rdoRuntime::RDOCalc>());
 	parser()->insertChanges( res_info.src_text() + "." + par_info.src_text(), arithm->src_text() );
 }
 
 void RDOSMR::setSeed( const RDOParserSrcInfo& seq_info, int base )
 {
-	const RDOFUNSequence* seq = parser()->findFUNSequence( seq_info.src_text() );
+	CPTR(RDOFUNSequence) seq = parser()->findFUNSequence( seq_info.src_text() );
 	if ( !seq ) {
 		parser()->error().error( seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()) );
 //		parser()->error().error( "Undefined sequence: " + seqName );
 	}
-	seq->init_calc->setBase( base );
+	const_cast<PTR(RDOFUNSequence)>(seq)->init_calc->setBase( base );
 	parser()->insertChanges( seq->src_text() + ".Seed", rdo::format("%d", base) );
 }
 

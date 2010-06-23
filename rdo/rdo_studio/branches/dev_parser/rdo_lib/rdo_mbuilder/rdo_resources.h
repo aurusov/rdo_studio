@@ -163,7 +163,7 @@ public:
 		template <class T>
 		void initType(CREF(T) type)
 		{
-			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type, rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
+			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type.object_cast<rdoParse::RDOType>(), rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
 			ASSERT(m_type);
 		}
 		template <>

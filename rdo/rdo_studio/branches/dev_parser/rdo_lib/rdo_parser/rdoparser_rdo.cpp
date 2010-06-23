@@ -172,7 +172,7 @@ void RDOParserPATPost::parse()
 		ASSERT(pRuntimeEvent);
 		pEvent->setRuntimeEvent(pRuntimeEvent);
 
-		STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+		STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
 		{
 			(*calcIt)->setEvent(pRuntimeEvent);
 		}
