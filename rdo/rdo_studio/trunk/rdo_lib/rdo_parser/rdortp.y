@@ -397,7 +397,7 @@ param_type
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(g_int, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		$$ = PARSER->stack().push(pType);
 	}
@@ -412,13 +412,13 @@ param_type
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(g_real, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string param_value_default
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_array param_value_default
@@ -430,7 +430,7 @@ param_type
 	}
 	| RDO_bool param_value_default
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_bool, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_enum param_value_default

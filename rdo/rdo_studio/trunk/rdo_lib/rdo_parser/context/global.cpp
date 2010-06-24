@@ -19,7 +19,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 ContextGlobal::ContextGlobal()
 {
-	m_timeNow = rdo::Factory<ContextTimeNow>::create().object_cast<Context>();
+	m_timeNow = rdo::Factory<ContextTimeNow>::create();
 	ASSERT(m_timeNow);
 }
 
@@ -41,14 +41,14 @@ LPContext ContextGlobal::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
 
 	//else if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
 	//{
-	//	m_value = g_int.cast<RDOType>();
+	//	m_value = rdo::Factory<RDOType__int>::create().cast<RDOType>();
 	//	m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );
 	//	m_calc->setSrcInfo( src_info() );
 	//	return;
 	//}
 	//else if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
 	//{
-	//	m_value = g_real.cast<RDOType>();
+	//	m_value = rdo::Factory<RDOType__real>::create().cast<RDOType>();
 	//	m_calc = new rdoRuntime::RDOCalcGetSeconds( parser()->runtime() );
 	//	m_calc->setSrcInfo( src_info() );
 	//	return;

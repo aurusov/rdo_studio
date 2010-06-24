@@ -51,7 +51,7 @@ inline LPIBaseOperation RDOEvent::getRuntimeEvent() const
 	return m_runtimeEvent;
 }
 
-inline CREF(RDOEvent::CalcList) RDOEvent::getCalcList() const
+inline REF(RDOEvent::CalcList) RDOEvent::getCalcList()
 {
 	return m_calcList;
 }

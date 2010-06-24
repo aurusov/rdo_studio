@@ -23,7 +23,7 @@ rdoRuntime::LPRDOCalc ContextTimeNow::getCalc()
 {
 	if (!m_pCalc)
 	{
-		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create().object_cast<rdoRuntime::RDOCalc>();
+		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create();
 		ASSERT(m_pCalc);
 	}
 	return m_pCalc;

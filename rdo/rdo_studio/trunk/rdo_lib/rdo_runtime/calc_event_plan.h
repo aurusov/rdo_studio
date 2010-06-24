@@ -45,7 +45,7 @@ public:
 private:
 	PTR(RDOCalc) m_timeCalc;
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	DECALRE_ICalc;
 };
 
 // ----------------------------------------------------------------------------

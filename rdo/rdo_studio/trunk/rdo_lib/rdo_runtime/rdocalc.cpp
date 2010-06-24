@@ -285,6 +285,36 @@ REF(RDOValue) RDOCalcNoChange::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFunListCalc
+// ----------------------------------------------------------------------------
+// Функция типа таблица
+// ----------------------------------------------------------------------------
+REF(RDOValue) RDOFuncTableCalc::doCalc(PTR(RDORuntime) runtime)
+{
+	int index = m_pArgCalc->calcValue( runtime ).getInt();
+	return m_results.at(index)->calcValue( runtime );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFunListCalc
+// ----------------------------------------------------------------------------
+// Функция типа список
+// ----------------------------------------------------------------------------
+REF(RDOValue) RDOFunListCalc::doCalc(PTR(RDORuntime) runtime)
+{
+	size_t size = m_cases.size();
+	for (ruint i = 0; i < size; i++)
+	{
+		LPRDOCalc cas = m_cases[i];
+		if (cas->calcValue( runtime ).getAsBool())
+		{
+			return m_results[i]->calcValue(runtime);
+		}
+	}
+	return m_pDefaultValue->calcValue(runtime);
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunAlgorithmicCalc
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(PTR(RDORuntime) runtime)
@@ -723,6 +753,24 @@ DECLARE_BINARY_CALC(IsGEQ     , >=);
 // ----------------------------------------------------------------------------
 // ---------- Унарные операции
 // ----------------------------------------------------------------------------
+REF(RDOValue) RDOCalcUMinus::doCalc(PTR(RDORuntime) runtime)
+{
+	m_value = -m_pOperation->calcValue(runtime);
+	return m_value;
+}
+
+REF(RDOValue) RDOCalcDoubleToInt::doCalc(PTR(RDORuntime) runtime)
+{
+	m_value = m_pOperation->calcValue( runtime ).getInt();
+	return m_value;
+}
+
+REF(RDOValue) RDOCalcDoubleToIntByResult::doCalc(PTR(RDORuntime) runtime)
+{
+	m_value = m_round ? RDOValue(m_pOperation->calcValue(runtime).getInt()) : m_pOperation->calcValue(runtime);
+	return m_value;
+}
+
 REF(RDOValue) RDOCalcCheckDiap::doCalc(PTR(RDORuntime) runtime)
 {
 	m_value = m_pOperation->calcValue(runtime);
@@ -745,6 +793,16 @@ REF(RDOValue) RDOCalcGetConst::doCalc(PTR(RDORuntime) runtime)
 REF(RDOValue) RDOCalcSetConst::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->setConstValue(m_number, m_pCalc->calcValue(runtime));
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcInt (приведение к целому)
+// ----------------------------------------------------------------------------
+REF(RDOValue) RDOCalcInt::doCalc(PTR(RDORuntime) runtime)
+{
+	RDOValue res = m_pOperation->calcValue(runtime);
+	m_value = res > 0 ? RDOValue((int)(res.getDouble() + 0.5)) : RDOValue((int)(res.getDouble() - 0.5));
 	return m_value;
 }
 
