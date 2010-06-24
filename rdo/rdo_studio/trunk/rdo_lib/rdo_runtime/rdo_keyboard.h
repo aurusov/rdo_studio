@@ -20,7 +20,7 @@ QUERY_INTERFACE_END
 
 private:
 	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, const std::string& name );
-	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, RDOCalc* condition, const std::string& name );
+	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
 	virtual ~RDOKeyboard();
 
 	bool m_shift;

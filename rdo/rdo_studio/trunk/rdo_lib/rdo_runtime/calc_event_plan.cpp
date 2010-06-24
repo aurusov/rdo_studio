@@ -42,8 +42,8 @@ RDOCalcEventPlan::RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) ti
 REF(RDOValue) RDOCalcEventPlan::doCalc(PTR(RDORuntime) runtime)
 {
 	ASSERT(m_event);
-	runtime->addTimePoint(m_timeCalc->calcValue(runtime).getDouble(), m_event);
-	return m_timeCalc->calcValue(runtime);
+	runtime->addTimePoint(m_pTimeCalc->calcValue(runtime).getDouble(), m_event);
+	return m_pTimeCalc->calcValue(runtime);
 }
 
 // ----------------------------------------------------------------------------

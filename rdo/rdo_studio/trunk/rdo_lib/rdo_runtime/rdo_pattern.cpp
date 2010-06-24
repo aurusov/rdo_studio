@@ -73,9 +73,9 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDOR
 	return rule;
 }
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
 {
-	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), condition, _oprName);
+	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), pCondition, _oprName);
 	runtime->addRuntimeRule(logic, rule);
 	return rule;
 }
@@ -104,9 +104,9 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer paren
 	return operation;
 }
 
-LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
 {
-	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), condition, _oprName);
+	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), pCondition, _oprName);
 	runtime->addRuntimeOperation(parent, operation);
 	return operation;
 }
@@ -126,9 +126,9 @@ LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent,
 	return keyboard;
 }
 
-LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, PTR(RDOCalc) condition, CREF(tstring) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
 {
-	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), condition, _oprName);
+	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), pCondition, _oprName);
 	runtime->addRuntimeOperation(parent, keyboard);
 	return keyboard;
 }

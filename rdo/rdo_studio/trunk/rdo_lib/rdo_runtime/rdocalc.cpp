@@ -142,7 +142,7 @@ REF(RDOValue) RDOCalcGetRelevantResParam::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
 {
-	m_calc->calcValue(runtime);
+	m_pCalc->calcValue(runtime);
 	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
 	if (m_value < m_min_value || m_value > m_max_value)
 	{
@@ -156,7 +156,7 @@ REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOSetResourceParamCalc::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->setResParamVal(m_resNumb, m_parNumb, m_calc->calcValue(runtime));
+	runtime->setResParamVal(m_resNumb, m_parNumb, m_pCalc->calcValue(runtime));
 	return m_value;
 }
 
@@ -345,7 +345,7 @@ REF(RDOValue) RDOFunCalcExist::doCalc(PTR(RDORuntime) runtime)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if (m_condition->calcValue(runtime).getAsBool())
+		if (m_pCondition->calcValue(runtime).getAsBool())
 			res = true;
 		runtime->popGroupFunc();
 	}
@@ -366,7 +366,7 @@ REF(RDOValue) RDOFunCalcNotExist::doCalc(PTR(RDORuntime) runtime)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if (m_condition->calcValue(runtime).getAsBool())
+		if (m_pCondition->calcValue(runtime).getAsBool())
 			res = false;
 		runtime->popGroupFunc();
 	}
@@ -388,7 +388,7 @@ REF(RDOValue) RDOFunCalcForAll::doCalc(PTR(RDORuntime) runtime)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if (!m_condition->calcValue(runtime).getAsBool())
+		if (!m_pCondition->calcValue(runtime).getAsBool())
 		{
 			res = false;
 		}
@@ -415,7 +415,7 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(PTR(RDORuntime) runtime)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if (!m_condition->calcValue(runtime).getAsBool())
+		if (!m_pCondition->calcValue(runtime).getAsBool())
 			res = true;
 		runtime->popGroupFunc();
 	}
@@ -426,7 +426,7 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOFunCalcSelect
 // ----------------------------------------------------------------------------
-void RDOFunCalcSelect::prepare(PTR(RDORuntime) runtime) const
+void RDOFunCalcSelect::prepare(PTR(RDORuntime) runtime)
 {
 	res_list.clear();
 	RDORuntime::ResCIterator end = runtime->res_end();
@@ -439,7 +439,7 @@ void RDOFunCalcSelect::prepare(PTR(RDORuntime) runtime) const
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if (m_condition->calcValue(runtime).getAsBool())
+		if (m_pCondition->calcValue(runtime).getAsBool())
 			res_list.push_back(*it);
 		runtime->popGroupFunc();
 	}
@@ -453,14 +453,14 @@ REF(RDOValue) RDOFunCalcSelect::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOFunCalcSelectExist::doCalc(PTR(RDORuntime) runtime)
 {
-	m_select->prepare(runtime);
+	m_pSelect->prepare(runtime);
 	rbool res = false;
-	std::list<PTR(RDOResource)>::iterator it  = m_select->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_select->res_list.end();
+	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
+	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
 	while (it != end && !res)
 	{
 		runtime->pushGroupFunc(*it);
-		if (m_condition->calcValue(runtime).getAsBool())
+		if (m_pCondition->calcValue(runtime).getAsBool())
 			res = true;
 		runtime->popGroupFunc();
 		it++;
@@ -471,14 +471,14 @@ REF(RDOValue) RDOFunCalcSelectExist::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(PTR(RDORuntime) runtime)
 {
-	m_select->prepare(runtime);
+	m_pSelect->prepare(runtime);
 	rbool res = true;
-	std::list<PTR(RDOResource)>::iterator it  = m_select->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_select->res_list.end();
+	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
+	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
 	while (it != end && res)
 	{
 		runtime->pushGroupFunc(*it);
-		if (m_condition->calcValue(runtime).getAsBool())
+		if (m_pCondition->calcValue(runtime).getAsBool())
 			res = false;
 		runtime->popGroupFunc();
 		it++;
@@ -489,19 +489,19 @@ REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOFunCalcSelectForAll::doCalc(PTR(RDORuntime) runtime)
 {
-	m_select->prepare(runtime);
-	if (m_select->res_list.empty())
+	m_pSelect->prepare(runtime);
+	if (m_pSelect->res_list.empty())
 	{
 		m_value = false;
 		return m_value;
 	}
 	rbool res = true;
-	std::list<PTR(RDOResource)>::iterator it  = m_select->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_select->res_list.end();
+	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
+	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
 	while (it != end && res)
 	{
 		runtime->pushGroupFunc(*it);
-		if (!m_condition->calcValue(runtime).getAsBool())
+		if (!m_pCondition->calcValue(runtime).getAsBool())
 			res = false;
 		runtime->popGroupFunc();
 		it++;
@@ -512,14 +512,14 @@ REF(RDOValue) RDOFunCalcSelectForAll::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(PTR(RDORuntime) runtime)
 {
-	m_select->prepare(runtime);
+	m_pSelect->prepare(runtime);
 	rbool res = false;
-	std::list<PTR(RDOResource)>::iterator it  = m_select->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_select->res_list.end();
+	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
+	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
 	while (it != end && !res)
 	{
 		runtime->pushGroupFunc(*it);
-		if (!m_condition->calcValue(runtime).getAsBool())
+		if (!m_pCondition->calcValue(runtime).getAsBool())
 			res = true;
 		runtime->popGroupFunc();
 		it++;
@@ -530,15 +530,15 @@ REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOFunCalcSelectSize::doCalc(PTR(RDORuntime) runtime)
 {
-	m_select->prepare(runtime);
-	m_value = m_select->res_list.size();
+	m_pSelect->prepare(runtime);
+	m_value = m_pSelect->res_list.size();
 	return m_value;
 }
 
 REF(RDOValue) RDOFunCalcSelectEmpty::doCalc(PTR(RDORuntime) runtime)
 {
-	m_select->prepare(runtime);
-	m_value = m_select->res_list.empty();
+	m_pSelect->prepare(runtime);
+	m_value = m_pSelect->res_list.empty();
 	return m_value;
 }
 
@@ -643,7 +643,7 @@ REF(RDOValue) RDOCalcFuncParam::doCalc(PTR(RDORuntime) runtime)
 REF(RDOValue) RDOCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
 { \
 	runtime->inc_cnt_calc_logic(); \
-	m_value = m_left->calcValue(runtime) CalcOpr m_right->calcValue(runtime); \
+	m_value = m_pLeft->calcValue(runtime) CalcOpr m_pRight->calcValue(runtime); \
 	return m_value; \
 }
 
@@ -657,27 +657,27 @@ DECLARE_BINARY_CALC(Mult , *);
 REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->inc_cnt_calc_arithm();
-	REF(RDOValue) rVal = m_right->calcValue(runtime);
+	REF(RDOValue) rVal = m_pRight->calcValue(runtime);
 	if (rVal == 0)
 	{
 		runtime->error(_T("Деление на ноль") , this);
 //		runtime->error(_T("Division by zero"), this);
 	}
-	m_value = m_left->calcValue(runtime) / rVal;
+	m_value = m_pLeft->calcValue(runtime) / rVal;
 	return m_value;
 }
 
 REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->inc_cnt_calc_arithm();
-	m_value = m_left->calcValue(runtime).getEnumAsInt() + m_right->calcValue(runtime).getEnumAsInt();
+	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() + m_pRight->calcValue(runtime).getEnumAsInt();
 	return m_value;
 }
 
 REF(RDOValue) RDOCalcMultEnumSafe::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->inc_cnt_calc_arithm();
-	m_value = m_left->calcValue(runtime).getEnumAsInt() * m_right->calcValue(runtime).getEnumAsInt();
+	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() * m_pRight->calcValue(runtime).getEnumAsInt();
 	return m_value;
 }
 
@@ -688,10 +688,10 @@ REF(RDOValue) RDOCalcAnd::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->inc_cnt_calc_logic();
 
-	if (!m_left->calcValue(runtime).getAsBool())
+	if (!m_pLeft->calcValue(runtime).getAsBool())
 		return m_value_false;
 
-	if (!m_right->calcValue(runtime).getAsBool())
+	if (!m_pRight->calcValue(runtime).getAsBool())
 		return m_value_false;
 
 	return m_value_true;
@@ -701,10 +701,10 @@ REF(RDOValue) RDOCalcOr::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->inc_cnt_calc_logic();
 
-	if (m_left->calcValue(runtime).getAsBool())
+	if (m_pLeft->calcValue(runtime).getAsBool())
 		return m_value_true;
 
-	if (m_right->calcValue(runtime).getAsBool())
+	if (m_pRight->calcValue(runtime).getAsBool())
 		return m_value_true;
 
 	return m_value_false;
@@ -713,7 +713,7 @@ REF(RDOValue) RDOCalcOr::doCalc(PTR(RDORuntime) runtime)
 REF(RDOValue) RDOCalcNot::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->inc_cnt_calc_logic();
-	m_value = !m_calc->calcValue(runtime).getAsBool();
+	m_value = !m_pCalc->calcValue(runtime).getAsBool();
 	return m_value;
 }
 
@@ -748,7 +748,7 @@ REF(RDOValue) RDOCalcGetConst::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOCalcSetConst::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->setConstValue(m_number, m_calc->calcValue(runtime));
+	runtime->setConstValue(m_number, m_pCalc->calcValue(runtime));
 	return m_value;
 }
 
@@ -765,7 +765,7 @@ REF(RDOValue) RDOCalcFunctionCall::doCalc(PTR(RDORuntime) runtime)
 		runtime->pushFuncArgument(arg);
 	}
 	runtime->resetFuncTop(m_parameters.size());
-	m_value = m_function->calcValue(runtime);
+	m_value = m_pFunction->calcValue(runtime);
 	size = m_parameters.size();
 	for (int i = 0; i < size; i++)
 	{

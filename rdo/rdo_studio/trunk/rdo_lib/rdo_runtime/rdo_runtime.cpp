@@ -30,9 +30,9 @@ RDORuntime::RDORuntime()
 	, key_found           (false              )
 	, m_currentTerm       (0                  )
 {
-	m_parent        = NULL;
+	m_parent         = NULL;
 	detach();
-	terminateIfCalc = NULL;
+	pTerminateIfCalc = NULL;
 }
 
 RDORuntime::~RDORuntime()
@@ -101,22 +101,22 @@ void RDORuntime::fireMessage(ruint message, PTR(void) param)
 
 bool RDORuntime::endCondition()
 {
-	if ( !terminateIfCalc ) {
+	if ( !pTerminateIfCalc ) {
 		return false;	// forever
 	}
-	return fabs( terminateIfCalc->calcValue( this ).getDouble() ) > DBL_EPSILON;
+	return fabs( pTerminateIfCalc->calcValue( this ).getDouble() ) > DBL_EPSILON;
 }
 
-void RDORuntime::setTerminateIf( RDOCalc* _terminateIfCalc )
+void RDORuntime::setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc)
 {
-	terminateIfCalc = _terminateIfCalc;
+	pTerminateIfCalc = _pTerminateIfCalc;
 }
 
 bool RDORuntime::breakPoints()
 {
 	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
 	while ( it != breakPointsCalcs.end() ) {
-		if ( (*it)->calc->calcValue( this ).getAsBool() ) {
+		if ( (*it)->pCalc->calcValue( this ).getAsBool() ) {
 			lastActiveBreakPoint = *it;
 			return true;
 		}
@@ -125,17 +125,17 @@ bool RDORuntime::breakPoints()
 	return false;
 }
 
-void RDORuntime::insertBreakPoint( const std::string& name, RDOCalc* calc )
+void RDORuntime::insertBreakPoint( const std::string& name, CREF(LPRDOCalc) pCalc )
 {
-	breakPointsCalcs.push_back( new BreakPoint( this, name, calc ) );
+	breakPointsCalcs.push_back( new BreakPoint( this, name, pCalc ) );
 }
 
-RDOCalc* RDORuntime::findBreakPoint( const std::string& name )
+LPRDOCalc RDORuntime::findBreakPoint( const std::string& name )
 {
 	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
 	while ( it != breakPointsCalcs.end() ) {
 		if ( (*it)->name == name ) {
-			return (*it)->calc;
+			return (*it)->pCalc;
 		}
 		it++;
 	}
@@ -144,7 +144,7 @@ RDOCalc* RDORuntime::findBreakPoint( const std::string& name )
 
 std::string RDORuntime::getLastBreakPointName() const
 {
-	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->calc->src_text() : "";
+	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->pCalc->src_text() : "";
 }
 
 void RDORuntime::setConstValue( unsigned int numberOfConst, RDOValue value )
@@ -218,14 +218,14 @@ void RDORuntime::showResources( int node ) const
 }
 #endif
 
-void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
+void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc)
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {
-		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя"), calc );
+		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc.object_cast<RDOCalc>() );
 	}
 	if ( !res->canFree() ) {
-		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
+		error( "Невозможно удалить ресурс, т.к. он еще используется", pCalc.object_cast<RDOCalc>() );
 //		error( "Try to erase used resource", fromCalc );
 	} else {
 		LPIPokazWatchValueList::iterator it = m_pokazWatchValueList.begin();
@@ -542,10 +542,10 @@ void RDORuntime::onAfterCheckPokaz()
 	}
 }
 
-void RDORuntime::error( const std::string& message, const RDOCalc* calc )
+void RDORuntime::error(CREF(tstring) message, CREF(LPRDOCalc) pCalc)
 {
 	if ( !message.empty() ) {
-		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), calc ? calc->src_pos().m_last_line : 0, calc ? calc->src_pos().m_last_pos : 0, calc ? calc->src_filetype() : rdoModelObjects::PAT ) );
+		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), pCalc ? pCalc->src_pos().m_last_line : 0, pCalc ? pCalc->src_pos().m_last_pos : 0, pCalc ? pCalc->src_filetype() : rdoModelObjects::PAT ) );
 	}
 	throw RDORuntimeException( "" );
 }

@@ -59,8 +59,8 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 		case RDOType::t_real         : m_value.d_value = 0; break;
 		case RDOType::t_enum         : m_value.i_value = 0; break;
 		case RDOType::t_bool         : m_value.b_value = false; break;
-		case RDOType::t_string       : m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
-		case RDOType::t_identificator: m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
+		case RDOType::t_string       : m_value.s_value = new smart_string(new string_class(_T(""))); break;
+		case RDOType::t_identificator: m_value.s_value = new smart_string(new string_class(_T(""))); break;
 		default                      : throw RDOValueException();
 	}
 }
@@ -124,13 +124,13 @@ inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: m_type(&g_string)
 {
-	m_value.s_value = new smart_tstring(new tstring(value));
+	m_value.s_value = new smart_string(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CPTR(tchar) value)
 	: m_type(&g_string)
 {
-	m_value.s_value = new smart_tstring(new tstring(value));
+	m_value.s_value = new smart_string(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
@@ -139,7 +139,7 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
 	if (type.typeID() != RDOType::t_identificator)
 		RDOValueException();
 
-	m_value.s_value = new smart_tstring(new tstring(value));
+	m_value.s_value = new smart_string(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
@@ -534,7 +534,7 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 					if (!m_value.s_value->owner())
 					{
 						m_value.s_value->release();
-						m_value.s_value = new smart_tstring(new tstring(__stringV()));
+						m_value.s_value = new smart_string(new string_class(__stringV()));
 					}
 					__stringV() += rdovalue.__stringV();
 					return;

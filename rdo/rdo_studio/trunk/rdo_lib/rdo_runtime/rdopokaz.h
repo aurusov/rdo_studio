@@ -19,6 +19,7 @@
 #include "rdo_lib/rdo_runtime/rdopokaz_interface.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -94,19 +95,19 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDWatchState( RDORuntime* sim, const std::string& name, bool trace, RDOCalc* logic );
+	RDOPMDWatchState( RDORuntime* sim, const std::string& name, bool trace, CREF(LPRDOCalc) pLogic );
 
-	RDOCalc* m_logicCalc;
+	LPRDOCalc m_pLogicCalc;
 
-	int      m_watchNumber;
-	bool     m_currValue;
-	double   m_sum;
-	double   m_sumSqr;
-	double   m_minValue;
-	double   m_maxValue;
+	int       m_watchNumber;
+	bool      m_currValue;
+	double    m_sum;
+	double    m_sumSqr;
+	double    m_minValue;
+	double    m_maxValue;
 
-	double   m_timeBegin;
-	double   m_timePrev;
+	double    m_timeBegin;
+	double    m_timePrev;
 
 	DECLARE_IPokaz;
 	DECLARE_IPokazTraceValue;
@@ -130,18 +131,18 @@ QUERY_INTERFACE_END
 private:
 	RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
 
-	RDOCalc* m_logicCalc;
-	int      m_rtp_id;
+	LPRDOCalc m_pLogicCalc;
+	int       m_rtp_id;
 
-	int      m_watchNumber;
-	int      m_currValue;
-	double   m_sum;
-	double   m_sumSqr;
-	double   m_minValue;
-	double   m_maxValue;
+	int       m_watchNumber;
+	int       m_currValue;
+	double    m_sum;
+	double    m_sumSqr;
+	double    m_minValue;
+	double    m_maxValue;
 
-	double   m_timeBegin;
-	double   m_timePrev;
+	double    m_timeBegin;
+	double    m_timePrev;
 
 	DECLARE_IPokaz;
 	DECLARE_IPokazTraceValue;
@@ -166,9 +167,9 @@ QUERY_INTERFACE_END
 private:
 	RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
 
-	PTR(RDOCalc)  m_logicCalc;
-	PTR(RDOCalc)  m_arithmCalc;
-	int           m_rtp_id;
+	LPRDOCalc m_pLogicCalc;
+	LPRDOCalc m_pArithmCalc;
+	int       m_rtp_id;
 
 	int       m_watchNumber;
 	RDOValue  m_currValue;
@@ -197,9 +198,10 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDGetValue( RDORuntime* sim, const std::string& name, RDOCalc* arithm );
+	RDOPMDGetValue( RDORuntime* sim, const std::string& name, CREF(LPRDOCalc) pArithm );
 
-	PTR(RDOCalc) m_arithmCalc;
+	LPRDOCalc m_pArithmCalc;
+
 	DECLARE_IPokaz;
 	DECLARE_IPokazTraceValue;
 	DECLARE_IModelStructure;

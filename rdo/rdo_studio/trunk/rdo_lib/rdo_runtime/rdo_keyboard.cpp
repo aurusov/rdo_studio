@@ -16,8 +16,8 @@ RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool
 {
 }
 
-RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, RDOCalc* condition, const std::string& name ):
-	RDOOperation( runtime, pattern, trace, condition, name ),
+RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name ):
+	RDOOperation( runtime, pattern, trace, pCondition, name ),
 	m_shift( false ),
 	m_control( false ),
 	m_scan_code( RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY )
