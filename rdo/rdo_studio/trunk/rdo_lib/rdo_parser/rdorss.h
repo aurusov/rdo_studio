@@ -47,7 +47,7 @@ public:
 
 	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPResType) _resType, int id = UNDEFINED_ID );
 
-	virtual rdoRuntime::RDOCalc* createCalc();
+	virtual rdoRuntime::LPRDOCalc createCalc();
 
 	const std::string& name   () const { return src_info().src_text(); }
 	LPRDORTPResType    getType() const { return resType;  }
@@ -83,7 +83,7 @@ public:
 	RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDORTPResType) _resType, int id = UNDEFINED_ID );
 
 private:
-	virtual rdoRuntime::RDOCalc* createCalc();
+	virtual rdoRuntime::LPRDOCalc createCalc();
 };
 
 } // namespace rdoParse

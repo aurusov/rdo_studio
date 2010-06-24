@@ -315,7 +315,7 @@ Stopping			return(RDO_Stopping);
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string name(n1, 1, len-2);
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(name, rdoParse::g_string, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, name) : rdoParse::RDOParserSrcInfo(name))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(name, rdoParse::g_string.object_cast<rdoParse::RDOType>(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, name) : rdoParse::RDOParserSrcInfo(name))) );
 						return RDO_STRING_CONST;
 					}
 
@@ -347,27 +347,27 @@ Stopping			return(RDO_Stopping);
 						unput('.');
 						unput('.');
 						LEXER->loc_delta_pos( -2 );
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(atoi(value.c_str()), rdoParse::g_int, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, value) : rdoParse::RDOParserSrcInfo(value))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(atoi(value.c_str()), rdoParse::g_int.object_cast<rdoParse::RDOType>(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, value) : rdoParse::RDOParserSrcInfo(value))) );
 						return RDO_INT_CONST;
 					}
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(atof(YYText()), rdoParse::g_real, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(atof(YYText()), rdoParse::g_real.object_cast<rdoParse::RDOType>(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
 						return RDO_REAL_CONST;
 					}
 
 [+-]?[0-9]+			{
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), rdoParse::g_int, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), rdoParse::g_int.object_cast<rdoParse::RDOType>(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
 						return RDO_INT_CONST;
 					}
 
 true				{
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), rdoParse::g_bool, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), rdoParse::g_bool.object_cast<rdoParse::RDOType>(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
 						return RDO_BOOL_CONST;
 					}
 
 false				{
-						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), rdoParse::g_bool, LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
+						LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), rdoParse::g_bool.object_cast<rdoParse::RDOType>(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))) );
 						return RDO_BOOL_CONST;
 					}
 

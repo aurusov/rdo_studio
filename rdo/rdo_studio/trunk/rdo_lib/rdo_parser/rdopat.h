@@ -381,8 +381,8 @@ public:
 	}
 
 protected:
-	PTR(rdoRuntime::RDOCalc)                getChoiceCalc() const;
-	PTR(rdoRuntime::RDOCalc)                getSelectCalc() const;
+	rdoRuntime::LPRDOCalc                   getChoiceCalc() const;
+	rdoRuntime::LPRDOCalc                   getSelectCalc() const;
 	rdoRuntime::RDOSelectResourceCalc::Type getSelectType() const;
 
 private:
