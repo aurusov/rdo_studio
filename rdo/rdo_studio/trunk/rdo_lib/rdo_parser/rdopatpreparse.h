@@ -28,9 +28,10 @@ class RDOEvent: public rdo::smart_ptr_counter_reference
 {
 DECLARE_FACTORY(RDOEvent);
 public:
-	typedef std::list<PTR(rdoRuntime::RDOCalcEventPlan)> CalcList;
+	typedef std::list<PTR(rdoRuntime::RDOCalcEvent)> CalcList;
 
 	CREF(tstring)    name           () const;
+	void             attachCalc     (PTR(rdoRuntime::RDOCalcEventStop) pCalc);
 	void             attachCalc     (PTR(rdoRuntime::RDOCalcEventPlan) pCalc);
 	CREF(CalcList)   getCalcList    () const;
 	LPIBaseOperation getRuntimeEvent() const;
