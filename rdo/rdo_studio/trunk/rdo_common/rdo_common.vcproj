@@ -103,7 +103,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				BrowseInformation="1"
@@ -369,6 +368,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\supersubclass.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".smart_ptr"
+			>
+			<File
+				RelativePath=".\smart_ptr\intrusive_ptr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\smart_ptr\intrusive_ptr.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\rdosmart_ptr.h"
 				>
 			</File>
@@ -378,10 +393,6 @@
 			</File>
 			<File
 				RelativePath=".\rdosmart_ptr_wrapper.h"
-				>
-			</File>
-			<File
-				RelativePath=".\supersubclass.h"
 				>
 			</File>
 		</Filter>
