@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdocalc.h
- * author   : Александ Барс, Урусов Андрей
+ * author   : Александ Барс, Урусов Андрей, Дмитрий Лущан
  * date     : 
  * bref     : 
  * indent   : 4T
@@ -298,14 +298,14 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcIf
 // ----------------------------------------------------------------------------
-class RDOCalcIf: public RDOCalc
+CALC(RDOCalcIf)
 {
-public:
-	RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pStatement);
-
+DECLARE_FACTORY(RDOCalcIf)
 private:
-	PTR(RDOCalc) m_condition;
-	PTR(RDOCalc) m_statement;
+	RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement);
+
+	LPRDOCalc m_pCondition;
+	LPRDOCalc m_pStatement;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -313,15 +313,15 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcIfElse
 // ----------------------------------------------------------------------------
-class RDOCalcIfElse: public RDOCalc
+CALC(RDOCalcIfElse)
 {
-public:
-	RDOCalcIfElse(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pIfStatement, PTR(RDOCalc) pElseStatement);
-
+DECLARE_FACTORY(RDOCalcIfElse)
 private:
-	PTR(RDOCalc) m_condition;
-	PTR(RDOCalc) m_ifStatement;
-	PTR(RDOCalc) m_elseStatement;
+	RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement);
+
+	LPRDOCalc m_pCondition;
+	LPRDOCalc m_pIfStatement;
+	LPRDOCalc m_pElseStatement;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
@@ -329,16 +329,17 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcList
 // ----------------------------------------------------------------------------
-class RDOCalcList: public RDOCalc
+CALC(RDOCalcList)
 {
+DECLARE_FACTORY(RDOCalcList)
 public:
-	RDOCalcList(PTR(RDORuntimeParent) parent);
-	
-	void addCalc(PTR(RDOCalc) pCalc);
+	typedef std::vector<LPRDOCalc> CalcList;
 
-	typedef std::vector<PTR(RDOCalc)> CalcList;
+	void addCalc(CREF(LPRDOCalc) pCalc);
 
 private:
+	RDOCalcList();
+
 	CalcList m_calcList;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
@@ -347,12 +348,11 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcNoChange
 // ----------------------------------------------------------------------------
-class RDOCalcNoChange: public RDOCalc
+CALC(RDOCalcNoChange)
 {
-public:
-	RDOCalcNoChange(PTR(RDORuntimeParent) parent);
-
+DECLARE_FACTORY(RDOCalcNoChange)
 private:
+	RDOCalcNoChange();
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 

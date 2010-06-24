@@ -217,48 +217,45 @@ REF(RDOValue) RDOCalcGetTermNow::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcIf
 // ----------------------------------------------------------------------------
-RDOCalcIf::RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pStatement)
-	: RDOCalc    (parent    )
-	, m_condition(pCondition)
-	, m_statement(pStatement)
+RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
+	: m_pCondition(pCondition)
+	, m_pStatement(pStatement)
 {
-	ASSERT(m_condition);
-	ASSERT(m_statement);
+	ASSERT(m_pCondition);
+	ASSERT(m_pStatement);
 }
 
 REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) runtime)
 {
 	m_value = RDOValue(false);
-	return (m_condition->calcValue(runtime).getAsBool()) ? m_statement->calcValue(runtime) : (m_value);
+	return (m_pCondition->calcValue(runtime).getAsBool()) ? m_pStatement->calcValue(runtime) : (m_value);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcIfElse
 // ----------------------------------------------------------------------------
-RDOCalcIfElse::RDOCalcIfElse(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pIfStatement, PTR(RDOCalc) pElseStatement)
-	: RDOCalc        (parent        )
-	, m_condition    (pCondition    )
-	, m_ifStatement  (pIfStatement  )
-	, m_elseStatement(pElseStatement)
+RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement)
+	: m_pCondition    (pCondition    )
+	, m_pIfStatement  (pIfStatement  )
+	, m_pElseStatement(pElseStatement)
 {
-	ASSERT(m_condition    );
-	ASSERT(m_ifStatement  );
-	ASSERT(m_elseStatement);
+	ASSERT(m_pCondition    );
+	ASSERT(m_pIfStatement  );
+	ASSERT(m_pElseStatement);
 }
 
 REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) runtime)
 {
-	return (m_condition->calcValue(runtime).getAsBool()) ? m_ifStatement->calcValue(runtime) : m_elseStatement->calcValue(runtime);
+	return (m_pCondition->calcValue(runtime).getAsBool()) ? m_pIfStatement->calcValue(runtime) : m_pElseStatement->calcValue(runtime);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcList
 // ----------------------------------------------------------------------------
-RDOCalcList::RDOCalcList(PTR(RDORuntimeParent) parent)
-	: RDOCalc (parent)
+RDOCalcList::RDOCalcList()
 {}
 
-void RDOCalcList::addCalc(PTR(RDOCalc) pCalc)
+void RDOCalcList::addCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
@@ -266,7 +263,7 @@ void RDOCalcList::addCalc(PTR(RDOCalc) pCalc)
 
 REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) runtime)
 {
-	STL_FOR_ALL_CONST(CalcList, m_calcList, calc_it)
+	STL_FOR_ALL(CalcList, m_calcList, calc_it)
 	{
 		(*calc_it)->calcValue(runtime);
 	}
@@ -278,8 +275,7 @@ REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcNoChange
 // ----------------------------------------------------------------------------
-RDOCalcNoChange::RDOCalcNoChange(PTR(RDORuntimeParent) parent)
-	: RDOCalc(parent)
+RDOCalcNoChange::RDOCalcNoChange()
 {}
 
 REF(RDOValue) RDOCalcNoChange::doCalc(PTR(RDORuntime) runtime)
