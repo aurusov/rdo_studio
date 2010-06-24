@@ -77,18 +77,6 @@ inline rbool intrusive_ptr<T>::compare(CREF(intrusive_ptr<P>) sptr) const
 }
 
 template<class T>
-inline PTR(T) intrusive_ptr<T>::get()
-{
-	return m_object;
-}
-
-template<class T>
-inline CPTR(T) intrusive_ptr<T>::get() const
-{
-	return m_object;
-}
-
-template<class T>
 inline intrusive_ptr<T>::operator rbool () const
 {
 	return m_object != NULL;
@@ -132,6 +120,18 @@ template<class P>
 inline interface_ptr<P> intrusive_ptr<T>::interface_cast()
 {
 	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPICounterReference>(m_object));
+}
+
+template<class T>
+inline PTR(T) intrusive_ptr<T>::get()
+{
+	return m_object;
+}
+
+template<class T>
+inline CPTR(T) intrusive_ptr<T>::get() const
+{
+	return m_object;
 }
 
 template<class T>
