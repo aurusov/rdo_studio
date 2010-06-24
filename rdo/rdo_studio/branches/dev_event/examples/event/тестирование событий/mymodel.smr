@@ -8,3 +8,6 @@ Show_mode      = NoShow
 Show_rate      = 3600.0
 
 Terminate_if Time_now >= 12 * 7 * 60
+
+событие_прихода_клиента.planning(0)
+событие_окончания_работы.planning(110)
