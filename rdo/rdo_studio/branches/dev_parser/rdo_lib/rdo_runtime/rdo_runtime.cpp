@@ -222,10 +222,10 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc)
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {
-		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc.object_cast<RDOCalc>() );
+		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc.object_parent_cast<RDOCalc>() );
 	}
 	if ( !res->canFree() ) {
-		error( "Невозможно удалить ресурс, т.к. он еще используется", pCalc.object_cast<RDOCalc>() );
+		error( "Невозможно удалить ресурс, т.к. он еще используется", pCalc.object_parent_cast<RDOCalc>() );
 //		error( "Try to erase used resource", fromCalc );
 	} else {
 		LPIPokazWatchValueList::iterator it = m_pokazWatchValueList.begin();

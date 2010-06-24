@@ -149,7 +149,7 @@ public:
 		rdoParse::LPRDOEnumType   getEnum() const
 		{
 			ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
-			return type()->type().object_cast<rdoParse::RDOEnumType>();
+			return type()->type().object_static_cast<rdoParse::RDOEnumType>();
 		}
 
 		rbool operator== (CREF(Param) param) const;
@@ -163,7 +163,7 @@ public:
 		template <class T>
 		void initType(CREF(T) type)
 		{
-			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type.object_cast<rdoParse::RDOType>(), rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
+			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type.object_parent_cast<rdoParse::RDOType>(), rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
 			ASSERT(m_type);
 		}
 		template <>
@@ -176,7 +176,7 @@ public:
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}
 //			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_default.value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
-			m_type    = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum.object_cast<rdoParse::RDOType>(), rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
+			m_type    = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum.object_parent_cast<rdoParse::RDOType>(), rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
 			ASSERT(m_type);
 		}
 	};

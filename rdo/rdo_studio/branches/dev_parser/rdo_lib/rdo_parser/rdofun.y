@@ -458,7 +458,7 @@ fun_func_algorithmic_calc_if
 	}
 	| fun_func_calc_name '=' fun_arithm
 	{
-		rdoRuntime::LPRDOCalc calc_cond = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>();
+		rdoRuntime::LPRDOCalc calc_cond = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>();
 		RDOParserSrcInfo logic_src_info( "Calculate_if 1 = 1" );
 		logic_src_info.setSrcPos( @1.first_line, @1.first_column, @1.first_line, @1.first_column );
 		calc_cond->setSrcInfo( logic_src_info );
@@ -1099,11 +1099,11 @@ param_type
 				PARSER->error().error(@2, _T("ƒиапазон целого типа должен быть целочисленным"));
 			}
 			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pIntRange.object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pIntRange.object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create().object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create().object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		$$ = PARSER->stack().push(pType);
 	}
@@ -1114,29 +1114,29 @@ param_type
 		if (pRange)
 		{
 			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pRealRange.object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pRealRange.object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string param_value_default
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create().object_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create().object_parent_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_bool param_value_default
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create().object_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create().object_parent_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_enum param_value_default
 	{
 		LEXER->enumReset();
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum.object_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum.object_parent_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_such_as param_value_default
@@ -1462,7 +1462,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + ARITHM($2).src_text());
-		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()).object_cast<rdoRuntime::RDOCalc>());
+		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()).object_parent_cast<rdoRuntime::RDOCalc>());
 	}
 	;
 
@@ -1560,7 +1560,7 @@ fun_group
 	{
 		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
 		groupfun->setSrcPos(@1, @3);
-		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>());
+		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>());
 		trueLogic->setSrcPos (@2);
 		trueLogic->setSrcText(_T("NoCheck"));
 		$$ = (int)groupfun->createFunLogic(trueLogic);
@@ -1614,7 +1614,7 @@ fun_select_body
 		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
 		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
 		rdoRuntime::LPRDOCalcConst calc_nocheck = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck.object_cast<rdoRuntime::RDOCalc>(), true);
+		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck.object_parent_cast<rdoRuntime::RDOCalc>(), true);
 		flogic->setSrcInfo(logic_info);
 		select->initSelect(flogic);
 	}

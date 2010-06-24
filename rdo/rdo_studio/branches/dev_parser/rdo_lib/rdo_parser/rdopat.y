@@ -1486,7 +1486,7 @@ statement
 	{
 		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($2);
 		ASSERT(pCalcList);
-		rdoRuntime::LPRDOCalc pCalc = pCalcList.object_cast<rdoRuntime::RDOCalc>();
+		rdoRuntime::LPRDOCalc pCalc = pCalcList.object_parent_cast<rdoRuntime::RDOCalc>();
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1516,7 +1516,7 @@ statement_list
 empty_statement
 	: ';'
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create().object_cast<rdoRuntime::RDOCalc>();
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create().object_parent_cast<rdoRuntime::RDOCalc>();
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1529,7 +1529,7 @@ empty_statement
 nochange_statement
 	: RDO_IDENTIF_NoChange ';'
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create().object_cast<rdoRuntime::RDOCalc>();
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create().object_parent_cast<rdoRuntime::RDOCalc>();
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1556,12 +1556,12 @@ equal_statement
 		{
 			case rdoRuntime::ET_INCR:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName)).object_cast<rdoRuntime::RDOCalc>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName)).object_parent_cast<rdoRuntime::RDOCalc>();
 				break;
 			}
 			case rdoRuntime::ET_DECR:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName)).object_cast<rdoRuntime::RDOCalc>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName)).object_parent_cast<rdoRuntime::RDOCalc>();
 				break;
 			}
 			default:
@@ -1574,13 +1574,13 @@ equal_statement
 		//! TODO: проверить работоспособность
 		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
 		{
-			LPRDOTypeIntRange pRange = param->getParamType()->type().object_cast<RDOTypeIntRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_cast<rdoRuntime::RDOCalc>();
+			LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
+			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_parent_cast<rdoRuntime::RDOCalc>();
 		}
 		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
 		{
-			LPRDOTypeRealRange pRange = param->getParamType()->type().object_cast<RDOTypeRealRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_cast<rdoRuntime::RDOCalc>();
+			LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
+			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_parent_cast<rdoRuntime::RDOCalc>();
 		}
 		tstring oprStr;
 		switch (equalType)
@@ -1628,28 +1628,28 @@ equal_statement
 			}
 			case rdoRuntime::ET_EQUAL:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_cast<rdoRuntime::RDOCalc>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_parent_cast<rdoRuntime::RDOCalc>();
 				pRelRes->getParamSetList().insert(param);
 				break;
 			}
 			case rdoRuntime::ET_PLUS:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_cast<rdoRuntime::RDOCalc>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_parent_cast<rdoRuntime::RDOCalc>();
 				break;
 			}
 			case rdoRuntime::ET_MINUS:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_cast<rdoRuntime::RDOCalc>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_parent_cast<rdoRuntime::RDOCalc>();
 				break;
 			}
 			case rdoRuntime::ET_MULTIPLY:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_cast<rdoRuntime::RDOCalc>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_parent_cast<rdoRuntime::RDOCalc>();
 				break;
 			}
 			case rdoRuntime::ET_DIVIDE:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_cast<rdoRuntime::RDOCalc>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight).object_parent_cast<rdoRuntime::RDOCalc>();
 				break;
 			}
 			default:
@@ -1662,13 +1662,13 @@ equal_statement
 		//! TODO: проверить работоспособность
 		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
 		{
-			LPRDOTypeIntRange pRange = param->getParamType()->type().object_cast<RDOTypeIntRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_cast<rdoRuntime::RDOCalc>();
+			LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
+			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_parent_cast<rdoRuntime::RDOCalc>();
 		}
 		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
 		{
-			LPRDOTypeRealRange pRange = param->getParamType()->type().object_cast<RDOTypeRealRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_cast<rdoRuntime::RDOCalc>();
+			LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
+			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc).object_parent_cast<rdoRuntime::RDOCalc>();
 		}
 		tstring oprStr;
 		switch (equalType)
@@ -1741,7 +1741,7 @@ planning_statement
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
-		$$ = PARSER->stack().push(pCalc.object_cast<rdoRuntime::RDOCalc>());
+		$$ = PARSER->stack().push(pCalc.object_parent_cast<rdoRuntime::RDOCalc>());
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' error
 	{
@@ -1789,7 +1789,7 @@ if_statement
 		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($5);
 		ASSERT(pStatementCalc);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pStatementCalc).object_cast<rdoRuntime::RDOCalc>();
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pStatementCalc).object_parent_cast<rdoRuntime::RDOCalc>();
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);
@@ -1808,7 +1808,7 @@ if_statement
 		rdoRuntime::LPRDOCalc pElseStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
 		ASSERT(pElseStatementCalc);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfStatementCalc, pElseStatementCalc).object_cast<rdoRuntime::RDOCalc>();
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfStatementCalc, pElseStatementCalc).object_parent_cast<rdoRuntime::RDOCalc>();
 		ASSERT(pCalc);
 		
 		$$ = PARSER->stack().push(pCalc);
@@ -1885,11 +1885,11 @@ param_type
 				PARSER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
 			}
 			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pIntRange.object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pIntRange.object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create().object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create().object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		$$ = PARSER->stack().push(pType);
 	}
@@ -1900,29 +1900,29 @@ param_type
 		if (pRange)
 		{
 			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pRealRange.object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pRealRange.object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_parent_cast<RDOType>(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
 		}
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string param_value_default
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create().object_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create().object_parent_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_bool param_value_default
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create().object_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create().object_parent_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_enum param_value_default
 	{
 		LEXER->enumReset();
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum.object_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum.object_parent_cast<RDOType>(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_such_as param_value_default
@@ -2233,7 +2233,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + ARITHM($2).src_text());
-		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()).object_cast<rdoRuntime::RDOCalc>());
+		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()).object_parent_cast<rdoRuntime::RDOCalc>());
 	}
 	;
 
@@ -2331,7 +2331,7 @@ fun_group
 	{
 		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
 		groupfun->setSrcPos(@1, @3);
-		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>());
+		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>());
 		trueLogic->setSrcPos (@2);
 		trueLogic->setSrcText(_T("NoCheck"));
 		$$ = (int)groupfun->createFunLogic(trueLogic);
@@ -2385,7 +2385,7 @@ fun_select_body
 		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
 		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
 		rdoRuntime::LPRDOCalcConst calc_nocheck = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck.object_cast<rdoRuntime::RDOCalc>(), true);
+		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck.object_parent_cast<rdoRuntime::RDOCalc>(), true);
 		flogic->setSrcInfo(logic_info);
 		select->initSelect(flogic);
 	}

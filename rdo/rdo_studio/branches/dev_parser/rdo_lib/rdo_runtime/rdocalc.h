@@ -628,9 +628,9 @@ DEFINE_RDO_STD_FUN( Power    );
 CALC(RDOCalcBinary)
 {
 public:
-	LPRDOCalc      getLeft        () const                 { return m_pLeft;                              }
-	LPRDOCalcConst getRightAsConst() const                 { return m_pRight.object_cast<RDOCalcConst>(); }
-	void           setRight       (CREF(LPRDOCalc) pRight) { m_pRight = pRight;                           }
+	LPRDOCalc      getLeft        () const                 { return m_pLeft;                                     }
+	LPRDOCalcConst getRightAsConst() const                 { return m_pRight.object_static_cast<RDOCalcConst>(); }
+	void           setRight       (CREF(LPRDOCalc) pRight) { m_pRight = pRight;                                  }
 
 protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)

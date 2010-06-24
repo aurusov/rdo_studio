@@ -128,7 +128,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 {
 	LPIPokazWatchQuant quant = m_pokaz;
 	ASSERT(quant);
-	quant->setLogicCalc(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>());
+	quant->setLogicCalc(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>());
 	parser()->getFUNGroupStack().pop_back();
 }
 
@@ -155,7 +155,7 @@ void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 {
 	LPIPokazWatchValue watch = m_pokaz;
 	ASSERT(watch);
-	watch->setLogicCalc (rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_cast<rdoRuntime::RDOCalc>());
+	watch->setLogicCalc (rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>());
 	watch->setArithmCalc(_arithm->createCalc());
 	parser()->getFUNGroupStack().pop_back();
 }

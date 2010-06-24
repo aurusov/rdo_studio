@@ -127,7 +127,7 @@ RDOParser::RDOParser()
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));
 	m_runtime.init();
-	m_contextStack.push(rdo::Factory<ContextGlobal>::create().object_cast<Context>());
+	m_contextStack.push(rdo::Factory<ContextGlobal>::create().object_parent_cast<Context>());
 }
 
 RDOParser::~RDOParser()

@@ -51,7 +51,10 @@ public:
 	 PTR(T) operator-> ();
 
 	template <class P>
-	intrusive_ptr<P> object_cast() const;
+	intrusive_ptr<P> object_parent_cast() const;
+
+	template <class P>
+	intrusive_ptr<P> object_static_cast() const;
 
 	template <class P>
 	intrusive_ptr<P> object_dynamic_cast() const;

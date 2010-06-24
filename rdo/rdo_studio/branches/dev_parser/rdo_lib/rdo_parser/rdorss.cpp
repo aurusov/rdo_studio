@@ -84,7 +84,7 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc()
 		paramList.push_back(it->param().value());
 	}
 	
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateNumberedResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent()).object_cast<rdoRuntime::RDOCalc>();
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateNumberedResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent()).object_parent_cast<rdoRuntime::RDOCalc>();
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;
@@ -106,7 +106,7 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc()
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateProcessResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent()).object_cast<rdoRuntime::RDOCalc>();
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateProcessResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent()).object_parent_cast<rdoRuntime::RDOCalc>();
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;

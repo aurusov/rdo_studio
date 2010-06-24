@@ -19,7 +19,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 ContextGlobal::ContextGlobal()
 {
-	m_timeNow = rdo::Factory<ContextTimeNow>::create().object_cast<Context>();
+	m_timeNow = rdo::Factory<ContextTimeNow>::create().object_parent_cast<Context>();
 	ASSERT(m_timeNow);
 }
 
