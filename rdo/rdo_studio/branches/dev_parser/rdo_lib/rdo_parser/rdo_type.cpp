@@ -27,8 +27,7 @@ OPEN_RDO_PARSER_NAMESPACE
 tstring RDOType__##Type::name() const               \
 {                                                   \
 	return TypeName;                                \
-}                                                   \
-RDOType__##Type g_##Type##_type;                    \
+}
 
 DECLARE_ATOM_TYPE_PARSER(unknow,        _T("unknow")       );
 DECLARE_ATOM_TYPE_PARSER(identificator, _T("identificator"));
