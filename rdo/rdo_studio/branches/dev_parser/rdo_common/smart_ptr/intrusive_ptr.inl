@@ -96,6 +96,13 @@ inline PTR(T) intrusive_ptr<T>::operator-> ()
 
 template<class T>
 template<class P>
+inline intrusive_ptr<T>::operator intrusive_ptr<P>() const
+{
+	return intrusive_ptr<P>(m_object);
+}
+
+template<class T>
+template<class P>
 inline intrusive_ptr<P> intrusive_ptr<T>::object_parent_cast() const
 {
 	return intrusive_ptr<P>(m_object);

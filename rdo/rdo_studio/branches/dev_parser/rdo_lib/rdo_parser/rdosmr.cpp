@@ -128,7 +128,7 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 	ASSERT(arithm);
 	arithm->checkParamType(cons->getType());
 	rdoRuntime::LPRDOCalc calc = arithm->createCalc( cons->getType() );
-	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(cons->getNumber(), calc).object_parent_cast<rdoRuntime::RDOCalc>());
+	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(cons->getNumber(), calc));
 	parser()->insertChanges( cons->src_text(), arithm->src_text() );
 }
 
@@ -151,7 +151,7 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 	arithm->checkParamType(param->getParamType());
 	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
 	rdoRuntime::LPRDOCalc calc = arithm->createCalc( param->getParamType() );
-	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(res->getID(), parNumb, calc).object_parent_cast<rdoRuntime::RDOCalc>());
+	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(res->getID(), parNumb, calc));
 	parser()->insertChanges( res_info.src_text() + "." + par_info.src_text(), arithm->src_text() );
 }
 

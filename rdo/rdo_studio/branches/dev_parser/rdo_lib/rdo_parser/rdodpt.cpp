@@ -122,7 +122,7 @@ void RDODPTActivity::addParam(const RDOValue& param)
 	{
 		val = pat_param->getType()->value_cast(param).value();
 	}
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val).object_parent_cast<rdoRuntime::RDOCalc>();
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val);
 	calc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pattern->name().c_str(), pat_param->name().c_str(), param->getAsString().c_str())));
 	m_activity->addParamCalc(calc);
 	m_currParam++;
@@ -369,8 +369,8 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::LPRDOCalc condCalc = m_conditon     ? m_conditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>();
-	rdoRuntime::LPRDOCalc termCalc = m_termConditon ? m_termConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>();
+	rdoRuntime::LPRDOCalc condCalc = m_conditon     ? m_conditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+	rdoRuntime::LPRDOCalc termCalc = m_termConditon ? m_termConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 
 	m_rt_logic = F(rdoRuntime::RDODPTSearchRuntime)::create( parser()->runtime(),
 		m_parent,

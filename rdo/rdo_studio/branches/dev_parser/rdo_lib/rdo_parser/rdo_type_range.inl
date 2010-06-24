@@ -106,7 +106,7 @@ inline RDOValue RDOTypeRange<T>::value_cast(CREF(RDOValue) from, CREF(RDOParserS
 template<class T>
 inline rdoRuntime::LPRDOCalc RDOTypeRange<T>::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return rdo::Factory<rdoRuntime::RDOCalcCheckDiap>::create(range()->getMin().value(), range()->getMax().value(), T::calc_cast(pCalc, pType)).object_parent_cast<rdoRuntime::RDOCalc>();
+	return rdo::Factory<rdoRuntime::RDOCalcCheckDiap>::create(range()->getMin().value(), range()->getMax().value(), T::calc_cast(pCalc, pType));
 }
 
 template<class T>
@@ -118,13 +118,13 @@ inline CREF(LPRDOTypeRangeRange) RDOTypeRange<T>::range() const
 template<>
 inline RDOValue RDOTypeRange<RDOType__int>::get_default() const
 {
-	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__int>::create().object_parent_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo());
 }
 
 template<>
 inline RDOValue RDOTypeRange<RDOType__real>::get_default() const
 {
-	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__real>::create().object_parent_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

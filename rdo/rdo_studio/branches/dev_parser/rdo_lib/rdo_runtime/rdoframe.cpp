@@ -17,9 +17,9 @@ RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, int _red, int _gree
 	RDORuntimeObject( _parent ),
 	color_type( color_rgb )
 {
-	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(_red  ).object_parent_cast<RDOCalc>();
-	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(_green).object_parent_cast<RDOCalc>();
-	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create(_blue ).object_parent_cast<RDOCalc>();
+	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(_red  );
+	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(_green);
+	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create(_blue );
 	m_pRedCalc->setSrcText( rdo::format("%d, _red") );
 	m_pGreenCalc->setSrcText( rdo::format("%d, _green") );
 	m_pBlueCalc->setSrcText( rdo::format("%d, _blue") );

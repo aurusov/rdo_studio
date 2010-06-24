@@ -215,7 +215,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 				{
 					rdoParse::LPRDOTypeRangeRange pRange    = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
 					rdoParse::LPRDOTypeIntRange   pIntRange = rdo::Factory<rdoParse::RDOTypeIntRange>::create(pRange);
-					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pIntRange.object_parent_cast<rdoParse::RDOType>(), default, rdoParse::RDOParserSrcInfo());
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pIntRange, default, rdoParse::RDOParserSrcInfo());
 				}
 				else
 				{
@@ -230,7 +230,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 				{
 					rdoParse::LPRDOTypeRangeRange pRange     = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
 					rdoParse::LPRDOTypeRealRange  pRealRange = rdo::Factory<rdoParse::RDOTypeRealRange>::create(pRange);
-					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pRealRange.object_parent_cast<rdoParse::RDOType>(), default, rdoParse::RDOParserSrcInfo());
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pRealRange, default, rdoParse::RDOParserSrcInfo());
 				}
 				else
 				{
