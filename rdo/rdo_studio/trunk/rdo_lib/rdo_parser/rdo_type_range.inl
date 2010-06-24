@@ -104,9 +104,9 @@ inline RDOValue RDOTypeRange<T>::value_cast(CREF(RDOValue) from, CREF(RDOParserS
 }
 
 template<class T>
-inline PTR(rdoRuntime::RDOCalc) RDOTypeRange<T>::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+inline rdoRuntime::LPRDOCalc RDOTypeRange<T>::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return new rdoRuntime::RDOCalcCheckDiap(RDOParser::s_parser()->runtime(), range()->getMin().value(), range()->getMax().value(), T::calc_cast(pCalc, pType));
+	return rdo::Factory<rdoRuntime::RDOCalcCheckDiap>::create(range()->getMin().value(), range()->getMax().value(), T::calc_cast(pCalc, pType));
 }
 
 template<class T>

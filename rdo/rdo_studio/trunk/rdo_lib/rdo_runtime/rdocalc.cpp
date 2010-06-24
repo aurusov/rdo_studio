@@ -25,8 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-RDOCalc::RDOCalc(PTR(RDORuntimeParent) parent)
-	: RDORuntimeObject(parent)
+RDOCalc::RDOCalc()
 {}
 
 RDOCalc::~RDOCalc()
@@ -87,10 +86,10 @@ REF(RDOValue) RDOCalcGetResParam::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
 // ----------------------------------------------------------------------------
-RDOCalcGetTempResParamFRM::RDOCalcGetTempResParamFRM(PTR(RDORuntime) runtime, int _resNumb, int _parNumb)
-	: RDOCalcGetResParam(runtime, _resNumb, _parNumb)
+RDOCalcGetTempResParamFRM::RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb)
+	: RDOCalcGetResParam(_resNumb, _parNumb)
 {
-	runtime->connect(this, RDORuntime::RO_BEFOREDELETE);
+//TODO	runtime->connect(this, RDORuntime::RO_BEFOREDELETE);
 }
 
 REF(RDOValue) RDOCalcGetTempResParamFRM::doCalc(PTR(RDORuntime) runtime)
@@ -730,7 +729,7 @@ DECLARE_BINARY_CALC(IsGEQ     , >=);
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOCalcCheckDiap::doCalc(PTR(RDORuntime) runtime)
 {
-	m_value = m_oper->calcValue(runtime);
+	m_value = m_pOperation->calcValue(runtime);
 	if (m_value < m_min_value || m_value > m_max_value)
 	{
 		runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
@@ -822,9 +821,8 @@ RDOValue RDOCalcSeqNextByHist::getNextValue(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateNumberedResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: RDOCalc    (parent      )
-	, type       (_type       )
+RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: type       (_type       )
 	, traceFlag  (_traceFlag  )
 	, number     (_number     )
 	, isPermanent(_isPermanent)
@@ -851,8 +849,8 @@ PTR(RDOResource) RDOCalcCreateNumberedResource::createResource(PTR(RDORuntime) r
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateProcessResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: RDOCalcCreateNumberedResource(parent, _type, _traceFlag, _paramsCalcs, _number, _isPermanent)
+RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: RDOCalcCreateNumberedResource(_type, _traceFlag, _paramsCalcs, _number, _isPermanent)
 {}
 
 PTR(RDOResource) RDOCalcCreateProcessResource::createResource(PTR(RDORuntime) runtime) const
@@ -863,9 +861,8 @@ PTR(RDOResource) RDOCalcCreateProcessResource::createResource(PTR(RDORuntime) ru
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateEmptyResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(PTR(RDORuntimeParent) parent, int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id)
-	: RDOCalc   (parent     )
-	, type      (_type      )
+RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id)
+	: type      (_type      )
 	, traceFlag (_traceFlag )
 	, rel_res_id(_rel_res_id)
 {
@@ -883,9 +880,8 @@ REF(RDOValue) RDOCalcCreateEmptyResource::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- Выбор ресурсов
 // ----------------------------------------------------------------------------
-RDOSelectResourceCalc::RDOSelectResourceCalc(PTR(RDORuntimeParent) parent, int _rel_res_id, PTR(RDOCalc) _choice_calc, PTR(RDOCalc) _order_calc, Type _order_type)
-	: RDOCalc    (parent      )
-	, rel_res_id (_rel_res_id )
+RDOSelectResourceCalc::RDOSelectResourceCalc(int _rel_res_id, CREF(LPRDOCalc) _choice_calc, CREF(LPRDOCalc) _order_calc, Type _order_type)
+	: rel_res_id (_rel_res_id )
 	, choice_calc(_choice_calc)
 	, order_calc (_order_calc )
 	, order_type (_order_type )
@@ -987,7 +983,7 @@ void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) a
 				return; // state not valid
 			}
 		}
-		RDOValue newVal = choice_calc->calcValue(runtime);
+		RDOValue newVal = const_cast<PTR(RDOSelectResourceCommonCalc)>(this)->choice_calc->calcValue(runtime);
 		if (!hasBest || (useCommonWithMax && (newVal > bestVal)) ||
 		   (!useCommonWithMax && (newVal < bestVal))) // found better value
 		{
@@ -1117,12 +1113,12 @@ std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(PTR(RDORu
 
 rbool RDOSelectResourceDirectCommonCalc::callChoice(PTR(RDORuntime) runtime) const
 {
-	return (choice_calc && !choice_calc->calcValue(runtime).getAsBool()) ? false : true;
+	return (choice_calc && !const_cast<PTR(RDOSelectResourceDirectCommonCalc)>(this)->choice_calc->calcValue(runtime).getAsBool()) ? false : true;
 }
 
 rbool RDOSelectResourceByTypeCommonCalc::callChoice(PTR(RDORuntime) runtime) const
 {
-	return (choice_calc && !choice_calc->calcValue(runtime).getAsBool()) ? false : true;
+	return (choice_calc && !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->choice_calc->calcValue(runtime).getAsBool()) ? false : true;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

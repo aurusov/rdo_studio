@@ -57,7 +57,7 @@ RDOValue RDOType__unknow::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo)
 	return RDOValue();
 }
 
-PTR(rdoRuntime::RDOCalc) RDOType__unknow::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdoRuntime::LPRDOCalc RDOType__unknow::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -110,7 +110,7 @@ RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	return toValue;
 }
 
-PTR(rdoRuntime::RDOCalc) RDOType__int::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdoRuntime::LPRDOCalc RDOType__int::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	if (pType->typeID() == rdoRuntime::RDOType::t_real)
 	{
@@ -164,7 +164,7 @@ RDOValue RDOType__real::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	return toValue;
 }
 
-PTR(rdoRuntime::RDOCalc) RDOType__real::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdoRuntime::LPRDOCalc RDOType__real::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -213,7 +213,7 @@ RDOValue RDOType__string::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo)
 	return toValue;
 }
 
-PTR(rdoRuntime::RDOCalc) RDOType__string::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdoRuntime::LPRDOCalc RDOType__string::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -243,7 +243,7 @@ RDOValue RDOType__identificator::value_cast(CREF(RDOValue) from, CREF(RDOParserS
 	return RDOValue();
 }
 
-PTR(rdoRuntime::RDOCalc) RDOType__identificator::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdoRuntime::LPRDOCalc RDOType__identificator::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -293,7 +293,7 @@ RDOValue RDOType__bool::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	return toValue;
 }
 
-PTR(rdoRuntime::RDOCalc) RDOType__bool::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdoRuntime::LPRDOCalc RDOType__bool::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }

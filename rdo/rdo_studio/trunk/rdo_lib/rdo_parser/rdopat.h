@@ -128,8 +128,8 @@ protected:
 
 	PTR(rdoRuntime::RDOPattern) m_pPatRuntime;
 
-	PTR(rdoRuntime::RDOCalc) createRelRes   (rbool trace) const;
-	virtual void             addParamSetCalc(PTR(rdoRuntime::RDOCalc) pCalc);
+	rdoRuntime::LPRDOCalc createRelRes   (rbool trace) const;
+	virtual void          addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
 
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status) = 0;
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status) = 0;
@@ -159,7 +159,7 @@ private:
 		}
 	}
 
-	void addChoiceFromCalc(PTR(rdoRuntime::RDOCalc) pCalc);
+	void addChoiceFromCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
 };
 
 // ----------------------------------------------------------------------------
@@ -261,8 +261,8 @@ protected:
 	//!  онструктор вызываетс€ из RDOPatternKeyboard
 	RDOPatternOperation(PTR(RDOParser) pParser, rbool trace, CREF(RDOParserSrcInfo) name_src_info);
 
-	virtual void rel_res_insert (PTR(RDORelevantResource) pRelevantResource);
-	virtual void addParamSetCalc(PTR(rdoRuntime::RDOCalc) pCalc            );
+	virtual void rel_res_insert (PTR(RDORelevantResource)    pRelevantResource);
+	virtual void addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc            );
 
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
@@ -340,12 +340,12 @@ public:
 	        CREF(tstring)   name   () const  { return src_text(); };
 	virtual LPRDORTPResType getType() const = 0;
 
-	virtual PTR(rdoRuntime::RDOCalc)                 createPreSelectRelResCalc           () = 0; //! ѕредварительный выбор ресурсов в самом списке рел. ресурсов
-	virtual PTR(rdoRuntime::RDOCalc)                 createSelectResourceChoiceCalc      () = 0; //! —амый обыкновенный choice from + first/with_min/with_max
-	virtual PTR(rdoRuntime::RDOCalc)                 createSelectFirstResourceChoiceCalc () = 0; //! common first, который не пашет
-	virtual PTR(rdoRuntime::RDOSelectResourceCommon) createSelectResourceCommonChoiceCalc() = 0; //! common with_min/with_max
+	virtual rdoRuntime::LPRDOCalc                  createPreSelectRelResCalc           () = 0; //! ѕредварительный выбор ресурсов в самом списке рел. ресурсов
+	virtual rdoRuntime::LPRDOCalc                  createSelectResourceChoiceCalc      () = 0; //! —амый обыкновенный choice from + first/with_min/with_max
+	virtual rdoRuntime::LPRDOCalc                  createSelectFirstResourceChoiceCalc () = 0; //! common first, который не пашет
+	virtual rdoRuntime::LPIRDOSelectResourceCommon createSelectResourceCommonChoiceCalc() = 0; //! common with_min/with_max
 
-	virtual rbool isDirect() const                                                          = 0;
+	virtual rbool isDirect() const                                                        = 0;
 
 	class ParamSetList
 	{
@@ -457,11 +457,11 @@ public:
 
 	CPTRC(RDORSSResource) getResource() const { return m_pResource; }
 
-	virtual LPRDORTPResType                          getType                             () const;
-	virtual PTR(rdoRuntime::RDOCalc)                 createPreSelectRelResCalc           ();
-	virtual PTR(rdoRuntime::RDOCalc)                 createSelectFirstResourceChoiceCalc ();
-	virtual PTR(rdoRuntime::RDOCalc)                 createSelectResourceChoiceCalc      ();
-	virtual PTR(rdoRuntime::RDOSelectResourceCommon) createSelectResourceCommonChoiceCalc();
+	virtual LPRDORTPResType                        getType                             () const;
+	virtual rdoRuntime::LPRDOCalc                  createPreSelectRelResCalc           ();
+	virtual rdoRuntime::LPRDOCalc                  createSelectFirstResourceChoiceCalc ();
+	virtual rdoRuntime::LPRDOCalc                  createSelectResourceChoiceCalc      ();
+	virtual rdoRuntime::LPIRDOSelectResourceCommon createSelectResourceCommonChoiceCalc();
 	virtual rbool isDirect() const  { return true; }
 
 private:
@@ -483,10 +483,10 @@ public:
 	{
 		return m_pResType;
 	}
-	virtual PTR(rdoRuntime::RDOCalc)                 createPreSelectRelResCalc           ();
-	virtual PTR(rdoRuntime::RDOCalc)                 createSelectFirstResourceChoiceCalc ();
-	virtual PTR(rdoRuntime::RDOCalc)                 createSelectResourceChoiceCalc      ();
-	virtual PTR(rdoRuntime::RDOSelectResourceCommon) createSelectResourceCommonChoiceCalc();
+	virtual rdoRuntime::LPRDOCalc                  createPreSelectRelResCalc           ();
+	virtual rdoRuntime::LPRDOCalc                  createSelectFirstResourceChoiceCalc ();
+	virtual rdoRuntime::LPRDOCalc                  createSelectResourceChoiceCalc      ();
+	virtual rdoRuntime::LPIRDOSelectResourceCommon createSelectResourceCommonChoiceCalc();
 	virtual rbool isDirect() const  { return false; }
 
 private:
