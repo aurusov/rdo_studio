@@ -1,8 +1,0 @@
-$Results
-		param1   : watch_par res1.param
-		tmpparam1: watch_par res1.tmpParam
-		state1   : watch_par res1.state
-		param2   : watch_par res2.param
-		tmpparam2: watch_par res2.tmpParam
-		state2   : watch_par res2.state
-$End
