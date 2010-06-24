@@ -50,7 +50,6 @@ public:
 	CPTR(T) operator-> () const;
 	 PTR(T) operator-> ();
 
-
 	template <class P>
 	operator intrusive_ptr<P>() const;
 
