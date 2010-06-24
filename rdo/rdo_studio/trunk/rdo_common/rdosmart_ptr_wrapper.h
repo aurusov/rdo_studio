@@ -15,7 +15,7 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -37,8 +37,8 @@ template<class T>
 class smart_ptr_wrapper: public ISmartPtrWrapper
 {
 public:
-	smart_ptr_wrapper(CREF(smart_ptr<T>) smart_ptr)
-		: m_smart_ptr(smart_ptr)
+	smart_ptr_wrapper(CREF(intrusive_ptr<T>) intrusive_ptr)
+		: m_intrusive_ptr(intrusive_ptr)
 	{}
 	~smart_ptr_wrapper()
 	{}
@@ -48,11 +48,11 @@ public:
 	}
 	PTR(void) getSmartPtr()
 	{
-		return &m_smart_ptr;
+		return &m_intrusive_ptr;
 	}
 
 private:
-	smart_ptr<T> m_smart_ptr;
+	intrusive_ptr<T> m_intrusive_ptr;
 };
 
 CLOSE_RDO_NAMESPACE

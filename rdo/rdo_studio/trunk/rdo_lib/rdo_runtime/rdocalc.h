@@ -376,7 +376,7 @@ class RDOFuncTableCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFuncTableCalc)
 public:
-	void addResultCalc(PTR(RDOCalcConst) res)
+	void addResultCalc(CREF(LPRDOCalcConst) res)
 	{
 		m_results.push_back( res );
 	}
@@ -386,8 +386,8 @@ private:
 		: m_pArgCalc(pArgCalc)
 	{}
 
-	std::vector<PTR(RDOCalcConst)> m_results;
-	LPRDOCalc                      m_pArgCalc;
+	std::vector<LPRDOCalcConst> m_results;
+	LPRDOCalc                   m_pArgCalc;
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
 	{
@@ -395,6 +395,7 @@ private:
 		return m_results.at(index)->calcValue( runtime );
 	}
 };
+DECLARE_POINTER(RDOFuncTableCalc);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFunListCalc
@@ -434,6 +435,7 @@ private:
 		return m_pDefaultValue->calcValue(runtime);
 	}
 };
+DECLARE_POINTER(RDOFunListCalc);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFunAlgorithmicCalc
@@ -461,6 +463,7 @@ protected:
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOFunAlgorithmicCalc);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFunAlgorithmicDiapCalc
@@ -496,6 +499,7 @@ protected:
 		, m_pCondition(pCondition)
 	{}
 };
+DECLARE_POINTER(RDOFunCalcGroup);
 
 #define DEFINE_CALC_GROUP( CalcName ) \
 class RDOFunCalc##CalcName: public RDOFunCalcGroup \
@@ -546,6 +550,7 @@ protected:
 	LPRDOFunCalcSelect m_pSelect;
 	LPRDOCalc          m_pCondition;
 };
+DECLARE_POINTER(RDOFunCalcSelectBase);
 
 #define DEFINE_CALC_SELECT_GROUP(CalcName) \
 class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
@@ -655,7 +660,8 @@ protected: \
 	} \
 private: \
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
-};
+}; \
+DECLARE_POINTER(RDOCalc##CalcName)
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические функции
@@ -829,6 +835,7 @@ private:
 		return m_value;
 	}
 };
+DECLARE_POINTER(RDOCalcDoubleToIntByResult);
 
 class RDOCalcCheckDiap: public RDOCalcUnary
 {
@@ -870,6 +877,7 @@ private:
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOCalcSeqInit);
 
 class RDOCalcSeqNext: public RDOFunCalc
 {
@@ -889,6 +897,7 @@ protected:
 
 	virtual RDOValue getNextValue(PTR(RDORuntime) runtime) = 0;
 };
+DECLARE_POINTER(RDOCalcSeqNext);
 
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
@@ -971,6 +980,7 @@ private:
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOCalcFuncParam);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetConst / RDOCalcSetConst
@@ -1050,6 +1060,7 @@ private:
 
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
+DECLARE_POINTER(RDOCalcFunctionCall);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateNumberedResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
@@ -1136,6 +1147,7 @@ private:
 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
+PREDECLARE_POINTER(RDOSelectResourceDirectCalc);
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCalc)
@@ -1149,12 +1161,12 @@ protected:
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
-		CPTR(RDOSelectResourceDirectCalc) directCalc = dynamic_cast<CPTR(RDOSelectResourceDirectCalc)>(pCalc.get());
-		if (!directCalc)
+		LPRDOSelectResourceDirectCalc pDirectCalc = pCalc.object_dynamic_cast<RDOSelectResourceDirectCalc>();
+		if (!pDirectCalc)
 		{
 			return false;
 		}
-		return rel_res_id == directCalc->rel_res_id && res_id == directCalc->res_id;
+		return rel_res_id == pDirectCalc->rel_res_id && res_id == pDirectCalc->res_id;
 	}
 
 private:

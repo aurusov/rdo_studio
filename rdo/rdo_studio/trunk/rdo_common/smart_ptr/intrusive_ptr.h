@@ -35,9 +35,6 @@ public:
 
 	REF(this_type) operator= (CREF(this_type) sptr);
 
-	PTR(T)   get();
-	CPTR(T)  get() const;
-
 	operator rbool     () const;
 	CPTR(T) operator-> () const;
 	 PTR(T) operator-> ();
@@ -46,12 +43,17 @@ public:
 	intrusive_ptr<P> object_cast() const;
 
 	template <class P>
-	intrusive_ptr<P> object_dymamic_cast() const;
+	intrusive_ptr<P> object_dynamic_cast() const;
 
 	template <class P>
 	interface_ptr<P> interface_cast();
 
+	//! TODO: переместить в protected
+	PTR(T)   get();
+	CPTR(T)  get() const;
+
 protected:
+
 	void  addref ();
 	void  release();
 	rbool owner  () const;

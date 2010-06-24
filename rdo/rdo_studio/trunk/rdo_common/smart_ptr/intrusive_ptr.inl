@@ -94,7 +94,7 @@ inline intrusive_ptr<P> intrusive_ptr<T>::object_cast() const
 
 template<class T>
 template<class P>
-inline intrusive_ptr<P> intrusive_ptr<T>::object_dymamic_cast() const
+inline intrusive_ptr<P> intrusive_ptr<T>::object_dynamic_cast() const
 {
 	return intrusive_ptr<P>(dynamic_cast<PTR(P)>(m_object));
 }
