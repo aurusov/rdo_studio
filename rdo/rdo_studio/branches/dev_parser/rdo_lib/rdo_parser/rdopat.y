@@ -1735,11 +1735,11 @@ stopping_statement
 			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
 
-		PTR(rdoRuntime::RDOCalcEventStop) pCalc = new rdoRuntime::RDOCalcEventStop(RUNTIME);
+		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
-		$$ = reinterpret_cast<int>(pCalc);
+		$$ = PARSER->stack().push(pCalc);
 	}
 	| RDO_IDENTIF '.' RDO_Stopping error
 	{
