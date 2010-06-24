@@ -34,9 +34,8 @@ private:
 	LPIBaseOperation  m_event;
 	LPRDOCalc         m_pTimeCalc;
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	DECALRE_ICalc;
 };
-DECLARE_POINTER(RDOCalcEventPlan);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
