@@ -23,10 +23,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEvent
 // ----------------------------------------------------------------------------
-class RDOCalcEvent: public RDOCalc
+CALC(RDOCalcEvent)
 {
 public:
-	RDOCalcEvent(PTR(RDORuntimeParent) parent);
+	RDOCalcEvent();
 
 	void setEvent(CREF(LPIBaseOperation) event);
 
@@ -37,13 +37,13 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEventPlan
 // ----------------------------------------------------------------------------
-class RDOCalcEventPlan: public RDOCalcEvent
+CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
 {
 public:
-	RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) timeCalc);
+	RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc);
 
 private:
-	PTR(RDOCalc) m_timeCalc;
+	LPRDOCalc m_pTimeCalc;
 
 	DECALRE_ICalc;
 };
@@ -51,13 +51,12 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEventStop
 // ----------------------------------------------------------------------------
-class RDOCalcEventStop: public RDOCalcEvent
+CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
 {
 public:
-	RDOCalcEventStop(PTR(RDORuntimeParent) parent);
+	RDOCalcEventStop();
 
-private:
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	DECALRE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -28,13 +28,13 @@ inline CREF(tstring) RDOEvent::name() const
 	return m_name;
 }
 
-inline void RDOEvent::attachCalc(PTR(rdoRuntime::RDOCalcEventStop) pCalc)
+inline void RDOEvent::attachCalc(CREF(rdoRuntime::LPRDOCalcEventStop) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
 }
 
-inline void RDOEvent::attachCalc(PTR(rdoRuntime::RDOCalcEventPlan) pCalc)
+inline void RDOEvent::attachCalc(CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
