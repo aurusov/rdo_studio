@@ -118,13 +118,13 @@ inline CREF(LPRDOTypeRangeRange) RDOTypeRange<T>::range() const
 template<>
 inline RDOValue RDOTypeRange<RDOType__int>::get_default() const
 {
-	return RDOValue(m_range->getMin().value(), g_int.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__int>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 template<>
 inline RDOValue RDOTypeRange<RDOType__real>::get_default() const
 {
-	return RDOValue(m_range->getMin().value(), g_real.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

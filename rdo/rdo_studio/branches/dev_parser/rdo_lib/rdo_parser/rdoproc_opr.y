@@ -338,7 +338,7 @@ dpt_process_line
 				// Создадим тип ресурса
 				rdoMBuilder::RDOResType rtp(rtp_name);
 				// Добавим параметр Время_создания
-				rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, g_real));
+				rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
 				// Добавим тип ресурса
 				if ( !rtpList.append( rtp ) )
 				{

@@ -29,7 +29,6 @@ tstring RDOType__##Type::name() const               \
 	return TypeName;                                \
 }                                                   \
 RDOType__##Type g_##Type##_type;                    \
-rdo::intrusive_ptr<RDOType__##Type> g_##Type(&g_##Type##_type); \
 
 DECLARE_ATOM_TYPE_PARSER(unknow,        _T("unknow")       );
 DECLARE_ATOM_TYPE_PARSER(identificator, _T("identificator"));
@@ -64,7 +63,7 @@ rdoRuntime::LPRDOCalc RDOType__unknow::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCa
 
 RDOValue RDOType__unknow::get_default() const
 {
-	return RDOValue(rdoRuntime::RDOValue(), g_unknow.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOValue(), rdo::Factory<RDOType__unknow>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
@@ -79,10 +78,10 @@ LPRDOType RDOType__int::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 	switch (from->type().typeID())
 	{
 		case rdoRuntime::RDOType::t_int :
-			return g_int.object_cast<RDOType>();
+			return rdo::Factory<RDOType__int>::create().object_cast<RDOType>();
 		case rdoRuntime::RDOType::t_real:
 			rdoParse::g_error().warning(src_info, rdo::format(_T("Преобразование '%s' в '%s', возможна потеря данных"), from->name().c_str(), name().c_str()));
-			return g_real.object_cast<RDOType>();
+			return rdo::Factory<RDOType__real>::create().object_cast<RDOType>();
 		default:
 			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается целочисленное значение, найдено: %s"), from_src_info.src_text().c_str()));
 			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
@@ -96,7 +95,7 @@ RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getInt(), g_int.object_cast<RDOType>(), from.src_info());
+		toValue = RDOValue(from->getInt(), rdo::Factory<RDOType__int>::create().object_cast<RDOType>(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -121,7 +120,7 @@ rdoRuntime::LPRDOCalc RDOType__int::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc,
 
 RDOValue RDOType__int::get_default() const
 {
-	return RDOValue(rdoRuntime::RDOValue(0), g_int.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOValue(0), rdo::Factory<RDOType__int>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
@@ -136,7 +135,7 @@ LPRDOType RDOType__real::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) 
 	{
 		case rdoRuntime::RDOType::t_int :
 		case rdoRuntime::RDOType::t_real:
-			return g_real.object_cast<RDOType>();
+			return rdo::Factory<RDOType__real>::create().object_cast<RDOType>();
 		default:
 			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается вещественное значение, найдено: %s"), from_src_info.src_text().c_str()));
 			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
@@ -150,7 +149,7 @@ RDOValue RDOType__real::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getDouble(), g_real.object_cast<RDOType>(), from.src_info());
+		toValue = RDOValue(from->getDouble(), rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -171,7 +170,7 @@ rdoRuntime::LPRDOCalc RDOType__real::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc
 
 RDOValue RDOType__real::get_default() const
 {
-	return RDOValue(rdoRuntime::RDOValue(0.0), g_real.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOValue(0.0), rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
@@ -185,7 +184,7 @@ LPRDOType RDOType__string::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo
 	switch (from->type().typeID())
 	{
 		case rdoRuntime::RDOType::t_string:
-			return g_string.object_cast<RDOType>();
+			return rdo::Factory<RDOType__string>::create().object_cast<RDOType>();
 		default:
 			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается строковое значение, найдено: %s"), from_src_info.src_text().c_str()));
 			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
@@ -199,7 +198,7 @@ RDOValue RDOType__string::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo)
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getString(), g_string.object_cast<RDOType>(), from.src_info());
+		toValue = RDOValue(from->getString(), rdo::Factory<RDOType__string>::create().object_cast<RDOType>(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -220,7 +219,7 @@ rdoRuntime::LPRDOCalc RDOType__string::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCa
 
 RDOValue RDOType__string::get_default() const
 {
-	return RDOValue(rdoRuntime::RDOValue(_T("")), g_string.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOValue(_T("")), rdo::Factory<RDOType__string>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
@@ -250,7 +249,7 @@ rdoRuntime::LPRDOCalc RDOType__identificator::calc_cast(CREF(rdoRuntime::LPRDOCa
 
 RDOValue RDOType__identificator::get_default() const
 {
-	return RDOValue(rdoRuntime::RDOValue(_T(""), rdoRuntime::g_identificator), g_identificator.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOValue(_T(""), rdoRuntime::g_identificator), rdo::Factory<RDOType__identificator>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
@@ -265,7 +264,7 @@ LPRDOType RDOType__bool::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) 
 	switch (from->type().typeID())
 	{
 		case rdoRuntime::RDOType::t_bool:
-			return g_bool.object_cast<RDOType>();
+			return rdo::Factory<RDOType__bool>::create().object_cast<RDOType>();
 		default:
 			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается булевское значение, найдено: %s"), from_src_info.src_text().c_str()));
 			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
@@ -279,7 +278,7 @@ RDOValue RDOType__bool::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getBool(), g_bool.object_cast<RDOType>(), from.src_info());
+		toValue = RDOValue(from->getBool(), rdo::Factory<RDOType__bool>::create().object_cast<RDOType>(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -300,7 +299,7 @@ rdoRuntime::LPRDOCalc RDOType__bool::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc
 
 RDOValue RDOType__bool::get_default() const
 {
-	return RDOValue(rdoRuntime::RDOValue(false), g_bool.object_cast<RDOType>(), RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOValue(false), rdo::Factory<RDOType__bool>::create().object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const

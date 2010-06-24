@@ -248,7 +248,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	}
 	if ( value->getIdentificator() == "Time_now" || value->getIdentificator() == "time_now" || value->getIdentificator() == "Системное_время" || value->getIdentificator() == "системное_время" )
 	{
-		m_value = g_real.object_cast<RDOType>();
+		m_value = rdo::Factory<RDOType__real>::create().object_cast<RDOType>();
 		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create().object_cast<rdoRuntime::RDOCalc>();
 		m_pCalc->setSrcInfo( src_info() );
 		return;
@@ -256,14 +256,14 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	else
 	if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
 	{
-		m_value = g_int.object_cast<RDOType>();
+		m_value = rdo::Factory<RDOType__int>::create().object_cast<RDOType>();
 		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetTermNow>::create().object_cast<rdoRuntime::RDOCalc>();
 		m_pCalc->setSrcInfo( src_info() );
 		return;
 	}
 	else if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
 	{
-		m_value = g_real.object_cast<RDOType>();
+		m_value = rdo::Factory<RDOType__real>::create().object_cast<RDOType>();
 		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetSeconds>::create().object_cast<rdoRuntime::RDOCalc>();
 		m_pCalc->setSrcInfo( src_info() );
 		return;
@@ -906,7 +906,7 @@ RDOFUNArithm* RDOFUNSequenceUniform::createCallCalc( const RDOFUNParams* const p
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCall funcCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(next_calc.object_cast<rdoRuntime::RDOFunCalc>());
-	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(g_real.object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
+	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
 	rdoRuntime::LPRDOCalc arg1 = param->params[0]->createCalc( realType );
 	rdoRuntime::LPRDOCalc arg2 = param->params[1]->createCalc( realType );
 
@@ -950,7 +950,7 @@ RDOFUNArithm* RDOFUNSequenceExponential::createCallCalc( const RDOFUNParams* con
 
 	rdoRuntime::LPRDOCalcFunctionCall funcCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(next_calc.object_cast<rdoRuntime::RDOFunCalc>());
 	RDOFUNArithm *arithm1 = param->params[0];
-	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(g_real.object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
+	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
 	rdoRuntime::LPRDOCalc arg1 = arithm1->createCalc( realType );
 
 	funcCall->addParameter( arg1 );
@@ -991,7 +991,7 @@ RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* const pa
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCall funcCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(next_calc.object_cast<rdoRuntime::RDOFunCalc>());
-	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(g_real.object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
+	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
 	RDOFUNArithm *arithm1 = param->params[0];
 	RDOFUNArithm *arithm2 = param->params[1];
 	rdoRuntime::LPRDOCalc arg1 = arithm1->createCalc( realType );
@@ -1164,7 +1164,7 @@ rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementIdentif::createResultCalc(CR
 // ----------------------------------------------------------------------------
 rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementReal::createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const
 {
-	rdoRuntime::LPRDOCalcConst const_calc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(retType->value_cast(RDOValue(value, g_real.object_cast<RDOType>(), _src_pos)).value());
+	rdoRuntime::LPRDOCalcConst const_calc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(retType->value_cast(RDOValue(value, rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), _src_pos)).value());
 	const_calc->setSrcInfo( _src_pos );
 	return const_calc;
 }
@@ -1174,7 +1174,7 @@ rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementReal::createResultCalc(CREF(
 // ----------------------------------------------------------------------------
 rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementInt::createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const
 {
-	rdoRuntime::LPRDOCalcConst const_calc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(retType->value_cast(RDOValue(value, g_int.object_cast<RDOType>(), _src_pos)).value());
+	rdoRuntime::LPRDOCalcConst const_calc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(retType->value_cast(RDOValue(value, rdo::Factory<RDOType__int>::create().object_cast<RDOType>(), _src_pos)).value());
 	const_calc->setSrcInfo( _src_pos );
 	return const_calc;
 }
@@ -1573,7 +1573,7 @@ RDOFUNArithm* RDOFUNSelect::createFunSelectSize( const RDOParserSrcInfo& _size_i
 {
 	setSrcText( src_text() + "." + _size_info.src_text() );
 	parser()->getFUNGroupStack().pop_back();
-	RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(g_int.object_cast<RDOType>(), _size_info), rdo::Factory<rdoRuntime::RDOFunCalcSelectSize>::create(select).object_cast<rdoRuntime::RDOCalc>() );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(rdo::Factory<RDOType__int>::create().object_cast<RDOType>(), _size_info), rdo::Factory<rdoRuntime::RDOFunCalcSelectSize>::create(select).object_cast<rdoRuntime::RDOCalc>() );
 	arithm->setSrcInfo( _size_info );
 	return arithm;
 }

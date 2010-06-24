@@ -120,13 +120,13 @@ RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_
 		case rdoRuntime::RDOType::t_identificator:
 			toValue = (getEnums().findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
 				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), pEnum.object_cast<RDOType>(), from.src_info()) :
-				RDOValue(g_unknow.object_cast<RDOType>(), from.src_info());
+				RDOValue(rdo::Factory<RDOType__unknow>::create().object_cast<RDOType>(), from.src_info());
 			break;
 
 		case rdoRuntime::RDOType::t_string:
 			toValue = (getEnums().findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END) ?
 				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), pEnum.object_cast<RDOType>(), from.src_info()) :
-				RDOValue(g_unknow.object_cast<RDOType>(), from.src_info());
+				RDOValue(rdo::Factory<RDOType__unknow>::create().object_cast<RDOType>(), from.src_info());
 			break;
 
 		case rdoRuntime::RDOType::t_enum:

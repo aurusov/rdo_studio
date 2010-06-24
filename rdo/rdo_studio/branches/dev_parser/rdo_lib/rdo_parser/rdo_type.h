@@ -105,7 +105,7 @@ public:                                  \
 	DECLARE_IType;                       \
 	DECLARE_IModelStructure;             \
 };                                       \
-extern rdo::intrusive_ptr<RDOType__##Type> g_##Type;
+DECLARE_POINTER(RDOType__##Type);
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );
 DEFINE_ATOM_TYPE_PARSER(identificator);

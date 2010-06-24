@@ -502,7 +502,7 @@ rdoMBuilder::RDOResType RDOPROCBlockForQueue::createType( RDOParser *parser, con
 	// Создадим тип ресурса
 	rdoMBuilder::RDOResType rtp( rtp_name );
 	// Создадим параметр типа integer
-	rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, g_int, default));
+	rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__int>::create(), default));
 	// Добавим тип ресурса
 	if (!rtpList.append( rtp ))
 	{

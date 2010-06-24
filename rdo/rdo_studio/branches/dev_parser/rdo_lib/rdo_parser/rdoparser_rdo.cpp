@@ -184,8 +184,8 @@ void RDOParserPATPost::parse()
 // ----------------------------------------------------------------------------
 void RDOParserSTDFUN::parse()
 {
-	LPRDOTypeParam intType  = rdo::Factory<RDOTypeParam>::create(g_int.object_cast<RDOType>(),  RDOValue(), RDOParserSrcInfo());
-	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(g_real.object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
+	LPRDOTypeParam intType  = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create().object_cast<RDOType>(),  RDOValue(), RDOParserSrcInfo());
+	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create().object_cast<RDOType>(), RDOValue(), RDOParserSrcInfo());
 
 	PTR(RDOFUNFunction)      fun   = new RDOFUNFunction     (m_parser, _T("Abs"), realType);
 	PTR(RDOFUNFunctionParam) param = new RDOFUNFunctionParam(fun,      _T("p1"),  realType);
