@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<TITLE>Events tracing</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>EVENTS TRACING</H1>
+		<P><B>Information about an event</B> is positioned in a separate line with the following format:</P>
+		<PRE class="syntax">E<A class="syntax" href="#ev_type">&lt;event_kind&gt;</A> <A class="syntax" href="#ev_time">&lt;time&gt;</A> <A class="syntax" href="#ev_info">&lt;information_about_the_event&gt;</A></PRE>
+		<P>Event tracing line starts with symbol "E".</P>
+		<DL class="syntax">
+			<DT class="syntax"><A name="ev_type"></A><I>event_kind</I></DT>
+			<DD class="syntax">The second symbol in that line determines the event's kind. The following kinds and corresponding symbols are allowed:
+				<TABLE class="visible">
+					<TR valign="top">
+						<TH align="left" width="20%">Event kind</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="es"></A><FONT class="syntax">S</FONT></TD>
+						<TD class="visible" width="80%">Service event</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="eb"></A><FONT class="syntax">B</FONT></TD>
+						<TD class="visible" width="80%">The start of an action</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="ef"></A><FONT class="syntax">F</FONT></TD>
+						<TD class="visible" width="80%">The accomplishing of an action</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="ei"></A><FONT class="syntax">I</FONT></TD>
+						<TD class="visible" width="80%">Irregular event</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="er"></A><FONT class="syntax">R</FONT></TD>
+						<TD class="visible" width="80%">Production rule</TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="ev_time"></A><I>time</I></DT>
+			<DD class="syntax">Field "time" contains the moment the event occurs written in real constant format.</DD>
+			<DT class="syntax"><A name="ev_info"></A><I>information_about_the_event</I></DT>
+			<DD class="syntax">Then there is information about the event depending on the event's kind:
+				<P><BR><A name="ser_ev"></A>For <B>service events</B>, that information includes only the service event's number. In the system version considered here, only three service events may take place:</P>
+				<TABLE class="visible">
+					<TR valign="top">
+						<TH align="left" width="20%">Service event's number</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">1</FONT></TD>
+						<TD class="visible" width="80%">Starting the tracing</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">2</FONT></TD>
+						<TD class="visible" width="80%">Accomplishing the tracing</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">3</FONT></TD>
+						<TD class="visible" width="80%">Starting the simulation</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">4</FONT></TD>
+						<TD class="visible" width="80%">Accomplishing the graph search in the decision point</TD>
+					</TR>
+				</TABLE>
+				<P><BR><A name="start_end"></A>For events of <B>starting or finishing an action</B>, the information about such event has the following format:</P>
+				<PRE class="syntax"><A class="syntax" href="#ev_num">&lt;action_number&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;operation_number&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;pattern_number&gt;</A>
+<A class="syntax" href="#ev_rel_res_num">&lt;number_of_relevant_resources&gt;</A> <A class="syntax" href="#ev_rel_res_list">&lt;list_of_numbers&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="ev_num"></A><I>action_number</I></DT>
+					<DD class="syntax">The action number is internal number that applies within the simulator. That number is necessary for connecting the events of starting and finishing some action, it carries no other useful information.</DD>
+					<DT class="syntax"><A name="ev_opr_num"></A><A name="ev_pat_num"></A><I>operation_number, pattern_number</I></DT>
+					<DD class="syntax">This two fields contain the number of the <A href="../html/rdo_obj_opr.htm">operation</A> fulfilled during the action and the <A href="../html/rdo_obj_pat.htm">pattern</A> number for that operation.</DD>
+					<DT class="syntax"><A name="ev_rel_res_num"></A><A name="ev_rel_res_list"></A><I>number_of_relevant_resources, list_of_numbers</I></DT>
+					<DD class="syntax">This two fields contain the quantity of the <A href="../html/rdo_obj_pat.htm#rel_res_desc">relevant resources</A> and the list of their numbers.</DD>
+				</DL>
+				<P><BR><A name="ir_ev"></A>For <B>irregular events</B>, information about an event has the following format:</P>
+				<PRE class="syntax">&lt;irregular_event_number&gt; &lt;pattern_number&gt;
+&lt;number_of_relevant_resources&gt; &lt;list_of_numbers&gt;</PRE>
+				<P><BR><A name="rule"></A>For <B>production rules</B>, information about an event has the following format:</P>
+				<PRE class="syntax">&lt;action_number&gt; &lt;rule_number&gt; &lt;pattern_number&gt;
+&lt;number_of_relevant_resources&gt; &lt;list_of_numbers&gt;</PRE>
+			</DD>
+		</DL>
+		<H4>See Also</H4>
+		<P><A href="../html/rdo_res_trc.htm">Tracing object</A></P>
+		<P><A href="../html/rdo_res_trc_resourses.htm">Resources state tracing</A></P>
+		<P><A href="../html/rdo_res_trc_results.htm">Indexes tracing</A></P>
+		<P><A href="../html/rdo_res_trc_decisionpt.htm">Decision points tracing</A></P>
+	</DIV>
+	<A name="prev_section;../html/rdo_res_intro.htm;Simulation results">
+	<A name="next_section;;">
+	<A name="section_top;../html/rdo_res_trc.htm;Tracing object">
+	<A name="section;Tracing object;">
+	<A name="prev_topic;../html/rdo_res_trc.htm;Tracing object">
+	<A name="next_topic;../html/rdo_res_trc_resourses.htm;Resources state tracing">
+	<A name="title;RAO language help"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>
