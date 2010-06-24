@@ -19,7 +19,7 @@
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdocalc_relres.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -43,7 +43,7 @@ class RDORelevantResource;
 // ----------------------------------------------------------------------------
 // ---------- ConvertCmdList
 // ----------------------------------------------------------------------------
-class ConvertCmdList: public rdo::smart_ptr_counter_reference
+OBJECT(ConvertCmdList)
 {
 DECLARE_FACTORY(ConvertCmdList);
 public:
@@ -61,7 +61,6 @@ public:
 private:
 	CalcList m_calcList;
 };
-DECLARE_POINTER(ConvertCmdList);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPattern

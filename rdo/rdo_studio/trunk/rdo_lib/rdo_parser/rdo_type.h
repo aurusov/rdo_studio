@@ -12,12 +12,12 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,8 +26,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- IType
 // ----------------------------------------------------------------------------
 class RDOValue;
-class RDOType;
-DECLARE_POINTER(RDOType);
+PREDECLARE_POINTER(RDOType);
 
 class IType
 {
@@ -61,7 +60,9 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOType
 // ----------------------------------------------------------------------------
-class RDOType: public IType, public IModelStructure
+OBJECT(RDOType)
+	IS  IMPLEMENTATION_OF(IType          )
+	AND IMPLEMENTATION_OF(IModelStructure)
 {
 DECLARE_FACTORY(RDOType)
 public:
@@ -86,7 +87,6 @@ protected:
 
 	CPTR(rdoRuntime::RDOType) m_type;
 };
-DECLARE_POINTER(RDOType);
 
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
@@ -105,7 +105,7 @@ public:                                  \
 	DECLARE_IType;                       \
 	DECLARE_IModelStructure;             \
 };                                       \
-extern rdo::smart_ptr<RDOType__##Type> g_##Type;
+extern rdo::intrusive_ptr<RDOType__##Type> g_##Type;
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );
 DEFINE_ATOM_TYPE_PARSER(identificator);

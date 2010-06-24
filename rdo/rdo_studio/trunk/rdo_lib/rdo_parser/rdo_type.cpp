@@ -11,11 +11,11 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_type.h"
+#include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_runtime/rdo_exception.h"
+//#include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -29,7 +29,7 @@ tstring RDOType__##Type::name() const               \
 	return TypeName;                                \
 }                                                   \
 RDOType__##Type g_##Type##_type;                    \
-rdo::smart_ptr<RDOType__##Type> g_##Type(&g_##Type##_type, 2); \
+rdo::intrusive_ptr<RDOType__##Type> g_##Type(&g_##Type##_type); \
 
 DECLARE_ATOM_TYPE_PARSER(unknow,        _T("unknow")       );
 DECLARE_ATOM_TYPE_PARSER(identificator, _T("identificator"));
@@ -46,7 +46,7 @@ DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	rdoParse::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу"), from_src_info.src_text().c_str()));
-	return rdo::smart_ptr_null();
+	return NULL;
 }
 
 RDOValue RDOType__unknow::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -64,7 +64,7 @@ rdoRuntime::LPRDOCalc RDOType__unknow::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCa
 
 RDOValue RDOType__unknow::get_default() const
 {
-	return RDOValue(rdoRuntime::RDOValue(), g_unknow, RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOValue(), g_unknow.object_cast<RDOType>(), RDOParserSrcInfo());
 }
 
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
@@ -79,16 +79,16 @@ LPRDOType RDOType__int::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 	switch (from->type().typeID())
 	{
 		case rdoRuntime::RDOType::t_int :
-			return g_int;
+			return g_int.object_cast<RDOType>();
 		case rdoRuntime::RDOType::t_real:
 			rdoParse::g_error().warning(src_info, rdo::format(_T("Преобразование '%s' в '%s', возможна потеря данных"), from->name().c_str(), name().c_str()));
-			return g_real;
+			return g_real.object_cast<RDOType>();
 		default:
 			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается целочисленное значение, найдено: %s"), from_src_info.src_text().c_str()));
 			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 			rdoParse::g_error().push_done();
 	}
-	return rdo::smart_ptr_null();
+	return NULL;
 }
 
 RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -96,7 +96,7 @@ RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	RDOValue toValue;
 	try
 	{
-		toValue = RDOValue(from->getInt(), g_int, from.src_info());
+		toValue = RDOValue(from->getInt(), g_int.object_cast<RDOType>(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}

@@ -67,8 +67,8 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 		{
 			LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
 			//! Это один и тот же тип
-			if (pEnum == from)
-				return pEnum;
+			if (pEnum.object_cast<RDOType>() == from)
+				return pEnum.object_cast<RDOType>();
 
 			//! Типы разные, сгенерим ошибку
 			if (pEnum.compare(from.lp_cast<LPRDOEnumType>()))

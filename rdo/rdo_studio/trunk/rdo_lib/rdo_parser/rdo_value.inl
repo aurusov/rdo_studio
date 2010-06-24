@@ -9,7 +9,6 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -17,25 +16,25 @@ OPEN_RDO_PARSER_NAMESPACE
 inline RDOValue::RDOValue(CREF(rsint) value)
 	: RDOParserSrcInfo(rdoRuntime::RDOValue(value).getAsString())
 	, m_value(value)
-	, m_type (g_int)
+	, m_type (g_int.object_cast<RDOType>())
 {}
 
 inline RDOValue::RDOValue(CREF(ruint) value)
 	: RDOParserSrcInfo(rdoRuntime::RDOValue(value).getAsString())
 	, m_value(value)
-	, m_type (g_int)
+	, m_type (g_int.object_cast<RDOType>())
 {}
 
 inline RDOValue::RDOValue(CREF(double) value)
 	: RDOParserSrcInfo(rdoRuntime::RDOValue(value).getAsString())
 	, m_value(value )
-	, m_type (g_real)
+	, m_type (g_real.object_cast<RDOType>())
 {}
 
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: RDOParserSrcInfo(value   )
 	, m_value         (value   )
-	, m_type          (g_string)
+	, m_type          (g_string.object_cast<RDOType>())
 {}
 
 inline RDOValue::RDOValue(CREF(RDOValue) value)

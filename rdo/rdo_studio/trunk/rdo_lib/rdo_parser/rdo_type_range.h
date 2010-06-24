@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -24,7 +24,7 @@ class RDOParser;
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeRangeRange
 // ----------------------------------------------------------------------------
-class RDOTypeRangeRange: public RDOParserSrcInfo
+OBJECT(RDOTypeRangeRange) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOTypeRangeRange);
 public:

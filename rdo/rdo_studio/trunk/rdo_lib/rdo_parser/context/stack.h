@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- ContextStack
 // ----------------------------------------------------------------------------
-S_OBJECT(ContextStack)
+OBJECT(ContextStack)
 {
 public:
 	ContextStack();
@@ -38,8 +38,6 @@ private:
 
 	Container m_container;
 };
-
-DECLARE_POINTER(ContextStack);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
