@@ -145,6 +145,7 @@
 %token RDO_else							382
 %token RDO_IncrEqual					383
 %token RDO_DecrEqual					384
+%token RDO_Stopping						385
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -1480,6 +1481,7 @@ statement
 	: empty_statement
 	| nochange_statement
 	| equal_statement
+	| stopping_statement
 	| planning_statement
 	| if_statement
 	| '{' statement_list '}'
@@ -1720,6 +1722,28 @@ equal_statement
 	| RDO_IDENTIF error fun_arithm
 	{
 		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
+	}
+	;
+
+stopping_statement
+	: RDO_IDENTIF '.' RDO_Stopping ';'
+	{
+		tstring           eventName   = RDOVALUE($1)->getIdentificator();
+		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		PTR(rdoRuntime::RDOCalcEventStop) pCalc = new rdoRuntime::RDOCalcEventStop(RUNTIME);
+		ASSERT(pCalc);
+		pEvent->attachCalc(pCalc);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_IDENTIF '.' RDO_Stopping error
+	{
+		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
 	;
 

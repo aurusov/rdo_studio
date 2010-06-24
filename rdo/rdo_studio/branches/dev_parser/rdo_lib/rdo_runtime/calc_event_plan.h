@@ -3,7 +3,7 @@
  * filename : calc_event_plan.h
  * author   : Лущан Дмитрий
  * date     : 26.05.2010
- * bref     : RDOCalc для планирование событий
+ * bref     : RDOCalc для планирования и остановки событий
  * indent   : 4T
  */
 
@@ -21,20 +21,43 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcEventPlan
+// ---------- RDOCalcEvent
 // ----------------------------------------------------------------------------
-CALC(RDOCalcEventPlan)
+class RDOCalcEvent: public RDOCalc
 {
 public:
-	RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc);
+	RDOCalcEvent(PTR(RDORuntimeParent) parent);
 
 	void setEvent(CREF(LPIBaseOperation) event);
 
-private:
-	LPIBaseOperation  m_event;
-	LPRDOCalc         m_pTimeCalc;
+protected:
+	LPIBaseOperation m_event;
+};
 
-	DECALRE_ICalc;
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcEventPlan
+// ----------------------------------------------------------------------------
+class RDOCalcEventPlan: public RDOCalcEvent
+{
+public:
+	RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) timeCalc);
+
+private:
+	PTR(RDOCalc) m_timeCalc;
+
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcEventStop
+// ----------------------------------------------------------------------------
+class RDOCalcEventStop: public RDOCalcEvent
+{
+public:
+	RDOCalcEventStop(PTR(RDORuntimeParent) parent);
+
+private:
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

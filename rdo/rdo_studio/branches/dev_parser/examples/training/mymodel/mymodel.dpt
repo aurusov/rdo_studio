@@ -1,6 +1,0 @@
-$Decision_point simple: some
-$Condition NoCheck
-$Activities
-	trueState: patTrueState
-	exchange : patExchange
-$End

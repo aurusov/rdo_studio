@@ -1,4 +1,0 @@
-$Resources
-	res1: resType trace 1 -17 * *
-	res2: resType trace 2 256 * *
-$End

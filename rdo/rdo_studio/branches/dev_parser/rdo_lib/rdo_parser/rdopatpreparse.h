@@ -28,11 +28,12 @@ OBJECT(RDOEvent)
 {
 DECLARE_FACTORY(RDOEvent);
 public:
-	typedef std::list<rdoRuntime::LPRDOCalcEventPlan> CalcList;
+	typedef std::list<PTR(rdoRuntime::RDOCalcEvent)> CalcList;
 
 	CREF(tstring)    name           () const;
-	void             attachCalc     (CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc);
-	REF(CalcList)    getCalcList    ();
+	void             attachCalc     (PTR(rdoRuntime::RDOCalcEventStop) pCalc);
+	void             attachCalc     (PTR(rdoRuntime::RDOCalcEventPlan) pCalc);
+	CREF(CalcList)   getCalcList    () const;
 	LPIBaseOperation getRuntimeEvent() const;
 	void             setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
 

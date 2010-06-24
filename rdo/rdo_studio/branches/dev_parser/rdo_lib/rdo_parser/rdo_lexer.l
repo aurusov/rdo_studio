@@ -308,6 +308,8 @@ $term				return(RDO_Fuzzy_Term);
 set					return(RDO_set);
 planning			return(RDO_Planning);
 Planning			return(RDO_Planning);
+stopping			return(RDO_Stopping);
+Stopping			return(RDO_Stopping);
 
 (\'[^\']*\')		{
 						std::string n1(YYText());
