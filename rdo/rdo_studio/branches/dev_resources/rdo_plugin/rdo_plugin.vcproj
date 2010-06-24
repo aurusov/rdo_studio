@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8,00"
 	Name="rdo_plugin"
 	ProjectGUID="{1FACE2E3-B02E-45E1-9A93-56FD00508301}"
 	RootNamespace="rdo_plugin"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -69,8 +68,6 @@
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)\rdo_studio\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -90,6 +87,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -151,8 +151,6 @@
 				OutputFile="$(SolutionDir)\rdo_studio\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -172,6 +170,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -233,8 +234,6 @@
 				OutputFile="$(SolutionDir)\rdo_studio\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -254,6 +253,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -313,8 +315,6 @@
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)\rdo_studio\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -334,6 +334,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"

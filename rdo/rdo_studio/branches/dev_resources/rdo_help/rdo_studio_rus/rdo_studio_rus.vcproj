@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8,00"
 	Name="rdo_help_studio_rus"
 	ProjectGUID="{083D1F44-0D2E-422B-966D-0AEC03F89807}"
 	RootNamespace="rdo_help_studio_rus"
 	Keyword="MakeFileProj"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -152,197 +151,158 @@
 			>
 			<File
 				RelativePath="html\about.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\intro.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\rdo_lang_help.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\rdo_whats_new.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_help.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_intro.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_chart.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_edit.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_file.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_help.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_insert.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_intro.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_model.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_search.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_view.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_menu_window.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_bookmarks.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_buffer.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_chart.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_complete.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_creation.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_edit.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_find_in_model.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_frame.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_insert.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_intro.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_open.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_results.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_run.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_save.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_search_replace.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_model_tabsheets.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_options.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_options_editor.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_options_general.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_options_plugins.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_options_styles_and_color.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_options_tabs.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath="html\work_run.htm"
-				DeploymentContent="true"
 				>
 			</File>
 		</Filter>

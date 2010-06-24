@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8,00"
 	Name="rdo_help_lang_eng"
 	ProjectGUID="{1D677AC9-AC3E-4027-9163-A621E5341A51}"
 	Keyword="MakeFileProj"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -113,7 +112,6 @@
 			>
 			<File
 				RelativePath="html\rdo_base_alpha.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -126,7 +124,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_base_equations.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -139,7 +136,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_base_intro.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -152,7 +148,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_base_res_types.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -165,7 +160,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_base_resources.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -178,7 +172,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_base_std_var_func.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -191,7 +184,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_base_types.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -204,7 +196,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_intro.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -217,7 +208,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_intro.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -230,7 +220,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_names.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -243,7 +232,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_numeric_const.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -256,7 +244,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_res_words.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -269,7 +256,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_spesial_symbols.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -282,7 +268,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_lex_div_string_const.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -295,7 +280,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_const_fun_sec.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -308,7 +292,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_dpt.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -321,7 +304,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_frm.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -334,7 +316,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_fun.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -347,7 +328,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_intro.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -360,7 +340,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_opr.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -373,7 +352,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_pat.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -386,7 +364,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_pmd.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -399,7 +376,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_sec.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -412,7 +388,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_obj_smr.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -425,7 +400,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_res_intro.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -438,7 +412,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_res_pmv.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -451,7 +424,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_res_trc.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -464,7 +436,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_res_trc_decisionpt.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -477,7 +448,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_res_trc_events.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -490,7 +460,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_res_trc_resourses.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -503,7 +472,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_res_trc_results.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -516,7 +484,6 @@
 			</File>
 			<File
 				RelativePath="html\rdo_terms.htm"
-				DeploymentContent="true"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
