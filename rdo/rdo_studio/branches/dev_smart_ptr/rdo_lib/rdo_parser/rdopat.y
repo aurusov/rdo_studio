@@ -250,27 +250,37 @@ pat_header
 	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace 
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternOperation(PARSER, name->src_info(), $4 != 0);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternOperation>::create(name->src_info(), $4 != 0);
+		ASSERT(pPattern);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternIrregEvent(PARSER, name->src_info(), $4 != 0);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternIrregEvent>::create(name->src_info(), $4 != 0);
+		ASSERT(pPattern);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternEvent(PARSER, name->src_info(), $4 != 0);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternEvent>::create(name->src_info(), $4 != 0);
+		ASSERT(pPattern);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternRule(PARSER, name->src_info(), $4 != 0);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternRule>::create(name->src_info(), $4 != 0);
+		ASSERT(pPattern);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternKeyboard(PARSER, name->src_info(), $4 != 0);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternKeyboard>::create(name->src_info(), $4 != 0);
+		ASSERT(pPattern);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| RDO_Pattern error
 	{
@@ -289,25 +299,34 @@ pat_trace
 	;
 
 pat_params_begin
-	: pat_header RDO_Parameters { $$ = $1; }
+	: pat_header RDO_Parameters
+	{
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		$$ = PARSER->stack().push(pPattern);
+	}
 	;
 
 pat_params
 	: pat_params_begin RDO_IDENTIF_COLON param_type
 	{
-		PTR(RDOPATPattern)       pattern    = reinterpret_cast<PTR(RDOPATPattern)>($1);
+		LPRDOPATPattern          pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
 		PTR(RDOValue)            param_name = P_RDOVALUE($2);
 		LPRDOTypeParam           param_type = PARSER->stack().pop<RDOTypeParam>($3);
-		PTR(RDOFUNFunctionParam) param      = new RDOFUNFunctionParam(pattern, param_name->src_info(), param_type);
-		pattern->add(param);
+		LPRDOFUNFunctionParam    pParam     = rdo::Factory<RDOFUNFunctionParam>::create(param_name->src_info(), param_type);
+		pPattern->add(pParam);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params RDO_IDENTIF_COLON param_type
 	{
-		PTR(RDOPATPattern)       pattern    = reinterpret_cast<PTR(RDOPATPattern)>($1);
+		LPRDOPATPattern          pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
 		PTR(RDOValue)            param_name = P_RDOVALUE($2);
 		LPRDOTypeParam           param_type = PARSER->stack().pop<RDOTypeParam>($3);
-		PTR(RDOFUNFunctionParam) param      = new RDOFUNFunctionParam(pattern, param_name->src_info(), param_type);
-		pattern->add(param);
+		LPRDOFUNFunctionParam    pParam     = rdo::Factory<RDOFUNFunctionParam>::create(param_name->src_info(), param_type);
+		pPattern->add(pParam);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params_begin error
 	{
@@ -396,15 +415,16 @@ pat_rel_res
 	: pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -423,19 +443,21 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -454,12 +476,14 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -473,16 +497,18 @@ pat_rel_res
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				pattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
+				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -496,16 +522,18 @@ pat_rel_res
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				pattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
+				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -515,7 +543,7 @@ pat_rel_res
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.first_line   = convertor_pos.last_line;
 				convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -534,12 +562,14 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -549,7 +579,7 @@ pat_rel_res
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.first_line   = convertor_pos.last_line;
 				convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -568,12 +598,14 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -605,7 +637,7 @@ pat_rel_res
 				YYLTYPE convertor_end_pos = @3;
 				convertor_end_pos.first_line   = convertor_end_pos.last_line;
 				convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -624,12 +656,14 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -661,7 +695,7 @@ pat_rel_res
 				YYLTYPE convertor_end_pos = @3;
 				convertor_end_pos.first_line   = convertor_end_pos.last_line;
 				convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -680,12 +714,14 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange
 	{
 		// проверено дл€ ie,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -702,16 +738,18 @@ pat_rel_res
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.first_line   = convertor_pos.last_line;
 				convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
+				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -728,16 +766,18 @@ pat_rel_res
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.first_line   = convertor_pos.last_line;
 				convertor_pos.first_column = convertor_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
+				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange
 	{
 		// проверено дл€ ie,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -751,7 +791,7 @@ pat_rel_res
 				YYLTYPE convertor_end_pos = @4;
 				convertor_end_pos.first_line   = convertor_end_pos.last_line;
 				convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), pattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -770,12 +810,14 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange
 	{
 		// проверено дл€ ie,event,rule,opr,key
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
@@ -789,7 +831,7 @@ pat_rel_res
 				YYLTYPE convertor_end_pos = @4;
 				convertor_end_pos.first_line   = convertor_end_pos.last_line;
 				convertor_end_pos.first_column = convertor_end_pos.last_column - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), pattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -808,6 +850,7 @@ pat_rel_res
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_params_end error
 	{
@@ -968,20 +1011,21 @@ pat_common_choice
 	: pat_rel_res
 	| pat_rel_res RDO_first
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() == RDOPATPattern::PT_IE || pattern->getType() == RDOPATPattern::PT_Event)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
 		{
 			PARSER->error().error(@2, _T("¬ событи€х не используетс€ способ выбора релевантных ресурсов"));
 		}
 		else
 		{
-			pattern->setCommonChoiceFirst();
+			pPattern->setCommonChoiceFirst();
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_with_min fun_arithm
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() == RDOPATPattern::PT_IE || pattern->getType() == RDOPATPattern::PT_Event)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
 		{
 			PARSER->error().error(@2, _T("¬ событи€х не используетс€ способ выбора релевантных ресурсов"));
 		}
@@ -990,13 +1034,14 @@ pat_common_choice
 			PTR(RDOFUNArithm) arithm = P_ARITHM($3);
 			arithm->setSrcPos (@2, @3);
 			arithm->setSrcText(_T("with_min ") + arithm->src_text());
-			pattern->setCommonChoiceWithMin(arithm);
+			pPattern->setCommonChoiceWithMin(arithm);
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_with_max fun_arithm
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() == RDOPATPattern::PT_IE || pattern->getType() == RDOPATPattern::PT_Event)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
 		{
 			PARSER->error().error(@2, _T("¬ событи€х не используетс€ способ выбора релевантных ресурсов"));
 		}
@@ -1005,8 +1050,9 @@ pat_common_choice
 			PTR(RDOFUNArithm) arithm = P_ARITHM($3);
 			arithm->setSrcPos (@2, @3);
 			arithm->setSrcText(_T("with_max ") + arithm->src_text());
-			pattern->setCommonChoiceWithMax(arithm);
+			pPattern->setCommonChoiceWithMax(arithm);
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_with_min error
 	{
@@ -1021,8 +1067,8 @@ pat_common_choice
 pat_time
 	: pat_common_choice RDO_Body
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_IE       :
 			case RDOPATPattern::PT_Operation:
@@ -1032,11 +1078,12 @@ pat_time
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_common_choice RDO_Time '=' fun_arithm RDO_Body
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Event:
 			{
@@ -1052,7 +1099,8 @@ pat_time
 		PTR(RDOFUNArithm) arithm = P_ARITHM($4);
 		arithm->setSrcPos (@2, @4);
 		arithm->setSrcText(_T("$Time = ") + arithm->src_text());
-		pattern->setTime(arithm);
+		pPattern->setTime(arithm);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_common_choice RDO_Time '=' fun_arithm error
 	{
@@ -1068,8 +1116,8 @@ pat_time
 	}
 	| pat_common_choice error
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		switch (pattern->getType())
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Rule:
 			{
@@ -1089,21 +1137,24 @@ pat_time
 				break;
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	;
 
 pat_body
 	: pat_time RDO_IDENTIF_RELRES
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		tstring            name    = RDOVALUE($2)->getIdentificator();
-		pattern->addRelResBody(RDOParserSrcInfo(@2, name));
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		tstring         name     = RDOVALUE($2)->getIdentificator();
+		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_convert RDO_IDENTIF_RELRES
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		tstring            name    = RDOVALUE($2)->getIdentificator();
-		pattern->addRelResBody(RDOParserSrcInfo(@2, name));
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		tstring         name    = RDOVALUE($2)->getIdentificator();
+		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_time error
 	{
@@ -1120,12 +1171,17 @@ pat_body
 pat_res_usage
 	: pat_body pat_choice pat_order
 	{
-		PTR(RDOPATChoiceFrom) choice_from = reinterpret_cast<PTR(RDOPATChoiceFrom)>($2);
-		choice_from->setSrcPos(@2);
-		PTR(RDOPATChoiceOrder) choice_order = reinterpret_cast<PTR(RDOPATChoiceOrder)>($3);
-		choice_order->setSrcPos(@3);
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		pattern->addRelResUsage(choice_from, choice_order);
+		LPRDOPATChoiceFrom pChoiceFrom = PARSER->stack().pop<RDOPATChoiceFrom>($2);
+		ASSERT(pChoiceFrom);
+		pChoiceFrom->setSrcPos(@2);
+
+		LPRDOPATChoiceOrder pChoiceOrder = PARSER->stack().pop<RDOPATChoiceOrder>($3);
+		pChoiceOrder->setSrcPos(@3);
+
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		pPattern->addRelResUsage(pChoiceFrom, pChoiceOrder);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	;
 
@@ -1133,16 +1189,22 @@ pat_choice
 	: /* empty */
 	{
 		PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceEmpty;
-		$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_empty);
+		LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_empty);
+		ASSERT(pChoiceFrom);
+		$$ = PARSER->stack().push(pChoiceFrom);
 	}
 	| pat_choice_nocheck
 	{
-		$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_nocheck);
+		LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo(_T("Choice NoCheck")), RDOPATChoiceFrom::ch_nocheck);
+		ASSERT(pChoiceFrom);
+		$$ = PARSER->stack().push(pChoiceFrom);
 	}
 	| pat_choice_from fun_logic
 	{
 		PTR(RDOFUNLogic) logic = P_LOGIC($2);
-		$$ = (int) new RDOPATChoiceFrom(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("Choice from ") + logic->src_text()), RDOPATChoiceFrom::ch_from, logic);
+		LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo(_T("Choice from ") + logic->src_text()), RDOPATChoiceFrom::ch_from, logic);
+		ASSERT(pChoiceFrom);
+		$$ = PARSER->stack().push(pChoiceFrom);
 	}
 	| pat_choice_from error
 	{
@@ -1168,21 +1230,29 @@ pat_order
 	: /* empty */
 	{
 		PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderEmpty;
-		$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(), rdoRuntime::RDOSelectResourceCalc::order_empty);
+		LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(), rdoRuntime::RDOSelectResourceCalc::order_empty);
+		ASSERT(pChoiceOrder);
+		$$ = PARSER->stack().push(pChoiceOrder);
 	}
 	| pat_choice_first
 	{
-		$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("first")), rdoRuntime::RDOSelectResourceCalc::order_first);
+		LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(_T("first")), rdoRuntime::RDOSelectResourceCalc::order_first);
+		ASSERT(pChoiceOrder);
+		$$ = PARSER->stack().push(pChoiceOrder);
 	}
 	| pat_choice_with_min fun_arithm
 	{
 		PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-		$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("with_min ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_min, arithm);
+		LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(_T("with_min ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_min, arithm);
+		ASSERT(pChoiceOrder);
+		$$ = PARSER->stack().push(pChoiceOrder);
 	}
 	| pat_choice_with_max fun_arithm
 	{
 		PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-		$$ = (int) new RDOPATChoiceOrder(PARSER->getLastPATPattern()->m_pCurrRelRes, RDOParserSrcInfo(_T("with_max ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_max, arithm);
+		LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(_T("with_max ") + arithm->src_text()), rdoRuntime::RDOSelectResourceCalc::order_with_max, arithm);
+		ASSERT(pChoiceOrder);
+		$$ = PARSER->stack().push(pChoiceOrder);
 	}
 	| pat_choice_with_min error
 	{
@@ -1218,8 +1288,9 @@ pat_choice_with_max
 pat_convert
 	: pat_res_usage
 	{
-		PTR(RDOPATPattern)       pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		PTR(RDORelevantResource) rel_res = pattern->m_pCurrRelRes;
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		LPRDORelevantResource rel_res  = pPattern->m_pCurrRelRes;
 		tstring str;
 		if (rel_res->m_pChoiceOrder->m_type != rdoRuntime::RDOSelectResourceCalc::order_empty)
 		{
@@ -1235,7 +1306,7 @@ pat_convert
 		}
 		if (rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_NoChange && rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_Erase && rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_NonExist)
 		{
-			switch (pattern->getType())
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
 				case RDOPATPattern::PT_Event:
@@ -1258,7 +1329,7 @@ pat_convert
 		}
 		if (rel_res->m_statusEnd != rdoRuntime::RDOResource::CS_NoChange && rel_res->m_statusEnd != rdoRuntime::RDOResource::CS_Erase && rel_res->m_statusEnd != rdoRuntime::RDOResource::CS_NonExist)
 		{
-			switch (pattern->getType())
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
 				case RDOPATPattern::PT_Event:
@@ -1275,14 +1346,16 @@ pat_convert
 				}
 			}
 		}
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_begin pat_trace pat_convert_cmd
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 		{
 			tstring type = _T("");
-			switch (pattern->getType())
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
 				{
@@ -1300,18 +1373,20 @@ pat_convert
 					break;
 				}
 			}
-			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
+			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
-		static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, pCmdList, false, NULL, @2, @2, @3, @3);
+		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pCmdList, false, NULL, @2, @2, @3, @3);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_end pat_trace pat_convert_cmd
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 		{
 			tstring type = _T("");
-			switch (pattern->getType())
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
 				{
@@ -1329,18 +1404,20 @@ pat_convert
 					break;
 				}
 			}
-			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
+			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
-		static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd(false, NULL, $3 != 0, pCmdList, @2, @2, @3, @3);
+		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd(false, NULL, $3 != 0, pCmdList, @2, @2, @3, @3);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_begin pat_trace pat_convert_cmd convert_end pat_trace pat_convert_cmd
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 		{
 			tstring type = _T("");
-			switch (pattern->getType())
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
 				{
@@ -1358,19 +1435,21 @@ pat_convert
 					break;
 				}
 			}
-			PARSER->error().error(@2, rdo::format(_T(" лючевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
+			PARSER->error().error(@2, rdo::format(_T(" лючевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdListBegin = PARSER->stack().pop<ConvertCmdList>($4);
 		LPConvertCmdList pCmdListEnd   = PARSER->stack().pop<ConvertCmdList>($7);
-		static_cast<PTR(RDOPatternOperation)>(pattern)->addRelResConvertBeginEnd($3 != 0, pCmdListBegin, $6 != 0, pCmdListEnd, @2, @5, @3, @6);
+		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pCmdListBegin, $6 != 0, pCmdListEnd, @2, @5, @3, @6);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_rule pat_trace pat_convert_cmd
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() != RDOPATPattern::PT_Rule)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		if (pPattern->getType() != RDOPATPattern::PT_Rule)
 		{
 			tstring type = _T("");
-			switch (pattern->getType())
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
 				{
@@ -1393,19 +1472,21 @@ pat_convert
 					break;
 				}
 			}
-			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
+			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
-		ASSERT(pattern->m_pCurrRelRes);
-		pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->m_pCurrRelRes->m_statusBegin);
+		ASSERT(pPattern->m_pCurrRelRes);
+		pPattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_event pat_trace pat_convert_cmd
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		if (pattern->getType() != RDOPATPattern::PT_IE && pattern->getType() != RDOPATPattern::PT_Event)
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		ASSERT(pPattern);
+		if (pPattern->getType() != RDOPATPattern::PT_IE && pPattern->getType() != RDOPATPattern::PT_Event)
 		{
 			tstring type = _T("");
-			switch (pattern->getType())
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_Rule     :
 				{
@@ -1423,11 +1504,12 @@ pat_convert
 					break;
 				}
 			}
-			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_event может быть использовано в событии или в нерегул€рном событии, но не в %s '%s'"), type.c_str(), pattern->name().c_str()));
+			PARSER->error().error(@2, rdo::format(_T(" лючевое слово Convert_event может быть использовано в событии или в нерегул€рном событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
-		ASSERT(pattern->m_pCurrRelRes);
-		pattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pattern->m_pCurrRelRes->m_statusBegin);
+		ASSERT(pPattern->m_pCurrRelRes);
+		pPattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
+		$$ = PARSER->stack().push(pPattern);
 	}
 	;
 
@@ -1463,7 +1545,7 @@ pat_convert_cmd
 	: /* empty */
 	{
 		LPConvertCmdList pCmdList = rdo::Factory<ConvertCmdList>::create();
-		PTR(RDORelevantResource) pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+		LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
 		pRelRes->getParamSetList().reset();
 		$$ = PARSER->stack().push(pCmdList);
@@ -1544,9 +1626,9 @@ nochange_statement
 equal_statement
 	: RDO_IDENTIF increment_or_decrement_type ';'
 	{
-		tstring                  paramName = RDOVALUE($1)->getIdentificator();
-		rdoRuntime::EqualType    equalType = static_cast<rdoRuntime::EqualType>($2);
-		PTR(RDORelevantResource) pRelRes   = PARSER->getLastPATPattern()->m_pCurrRelRes;
+		tstring                paramName = RDOVALUE($1)->getIdentificator();
+		rdoRuntime::EqualType  equalType = static_cast<rdoRuntime::EqualType>($2);
+		LPRDORelevantResource  pRelRes   = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
@@ -1613,7 +1695,7 @@ equal_statement
 		tstring                  paramName   = RDOVALUE($1)->getIdentificator();
 		rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($2);
 		PTR(RDOFUNArithm)        rightArithm = P_ARITHM($3);
-		PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->m_pCurrRelRes;
+		LPRDORelevantResource    pRelRes     = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
@@ -1888,8 +1970,9 @@ param_equal_type
 pat_pattern
 	: pat_convert RDO_End
 	{
-		PTR(RDOPATPattern) pattern = reinterpret_cast<PTR(RDOPATPattern)>($1);
-		pattern->end();
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		pPattern->end();
+		$$ = PARSER->stack().push(pPattern);
 	}
 	;
 

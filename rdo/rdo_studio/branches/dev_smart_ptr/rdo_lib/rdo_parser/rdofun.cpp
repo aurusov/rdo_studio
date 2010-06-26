@@ -272,7 +272,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	//! Ищем параметр релевантного ресурса
 	if (parser()->getFileToParse() == rdoModelObjects::PAT)
 	{
-		CPTR(RDOPATPattern) pPattern = parser()->getLastPATPattern();
+		LPRDOPATPattern pPattern = parser()->getLastPATPattern();
 		if (pPattern && pPattern->m_pCurrRelRes)
 		{
 			LPRDORTPParam pParam = pPattern->m_pCurrRelRes->getType()->findRTPParam(value->getIdentificator());
@@ -286,7 +286,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	}
 
 	// Ищем параметры паттерна или функции по имени
-	const RDOFUNFunctionParam* param = NULL;
+	LPRDOFUNFunctionParam param;
 	switch ( parser()->getFileToParse() )
 	{
 		case rdoModelObjects::PAT: param = parser()->getLastPATPattern()->findPATPatternParam( value->getIdentificator() ); break;
@@ -410,8 +410,8 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 				if ( parser()->getLastPATPattern() && parser()->getLastPATPattern()->findRelevantResource( res_name->getIdentificator() ) )
 				{
 					// Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
-					RDOPATPattern* pat = parser()->getLastPATPattern();
-					const RDORelevantResource* const rel = pat->findRelevantResource( res_name->getIdentificator() );
+					LPRDOPATPattern pat = parser()->getLastPATPattern();
+					LPRDORelevantResource rel = pat->findRelevantResource( res_name->getIdentificator() );
 					if ( !pat->m_pCurrRelRes )
 					{
 						// Внутри with_min-common-choice или $Time
@@ -518,10 +518,10 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 			{
 				if ( parser()->isCurrentDPTSearch() && parser()->getLastDPTSearch()->getLastActivity() )
 				{
-					const RDOPATPattern* rule = parser()->getLastDPTSearch()->getLastActivity()->pattern();
+					LPRDOPATPattern rule = parser()->getLastDPTSearch()->getLastActivity()->pattern();
 					if ( rule && rule->findRelevantResource( res_name->getIdentificator() ) ) {
 						// Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
-						const RDORelevantResource* const rel = rule->findRelevantResource( res_name->getIdentificator() );
+						LPRDORelevantResource rel = rule->findRelevantResource( res_name->getIdentificator() );
 						int relResNumb = rule->findRelevantResourceNum( res_name->getIdentificator() );
 						unsigned int parNumb = rel->getType()->getRTPParamNumber( par_name->getIdentificator() );
 						if ( parNumb == RDORTPResType::UNDEFINED_PARAM )
@@ -536,10 +536,10 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 				}
 				if ( parser()->isCurrentDPTPrior() && parser()->getLastDPTPrior()->getLastActivity() )
 				{
-					const RDOPATPattern* activity = parser()->getLastDPTPrior()->getLastActivity()->pattern();
+					LPRDOPATPattern activity = parser()->getLastDPTPrior()->getLastActivity()->pattern();
 					if ( activity && activity->findRelevantResource( res_name->getIdentificator() ) ) {
 						// Это ресурс, который используется в выражении приоритета активности DPTPrior
-						const RDORelevantResource* const rel = activity->findRelevantResource( res_name->getIdentificator() );
+						LPRDORelevantResource rel = activity->findRelevantResource( res_name->getIdentificator() );
 						int relResNumb = activity->findRelevantResourceNum( res_name->getIdentificator() );
 						unsigned int parNumb = rel->getType()->getRTPParamNumber( par_name->getIdentificator() );
 						if ( parNumb == RDORTPResType::UNDEFINED_PARAM )
@@ -1233,21 +1233,21 @@ void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) calc)
 	}
 }
 
-const RDOFUNFunctionParam* const RDOFUNFunction::findFUNFunctionParam( const std::string& paramName ) const 
+LPRDOFUNFunctionParam RDOFUNFunction::findFUNFunctionParam( const std::string& paramName ) const 
 {
-	std::vector< const RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
+	ParamList::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
 	return it != params.end() ? *it : NULL;
 }
 
 int RDOFUNFunction::findFUNFunctionParamNum( const std::string& paramName ) const
 {
-	std::vector< const RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
+	ParamList::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
 	return it != params.end() ? it - params.begin() : -1;
 }
 
-void RDOFUNFunction::add( const RDOFUNFunctionParam* const _param )
+void RDOFUNFunction::add(CREF(LPRDOFUNFunctionParam) _param)
 { 
-	const RDOFUNFunctionParam* const param = findFUNFunctionParam( _param->name() );
+	LPRDOFUNFunctionParam param = findFUNFunctionParam( _param->name() );
 	if ( param ) {
 		parser()->error().push_only( _param->src_info(), rdo::format("Параметр уже существует: %s", _param->name().c_str()) );
 		parser()->error().push_only( param->src_info(), "См. первое определение" );
@@ -1289,9 +1289,9 @@ void RDOFUNFunction::createListCalc()
 		rdoRuntime::LPRDOCalc case_calc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(true);
 		case_calc->setSrcInfo( (*elem_it)->src_info() );
 		int currParam_number = 0;
-		std::vector< const RDOFUNFunctionParam* >::const_iterator param_it = params.begin();
+		ParamList::const_iterator param_it = params.begin();
 		while ( param_it != params.end() ) {
-			const RDOFUNFunctionParam* const param = *param_it;
+			LPRDOFUNFunctionParam param = *param_it;
 			if ( elem_it == elements.end() ) {
 				elem_it--;
 				parser()->error().error( (*elem_it)->src_info(), rdo::format("Ожидается значение для параметра '%s'", param->name().c_str()) );
@@ -1354,7 +1354,7 @@ void RDOFUNFunction::createTableCalc( const YYLTYPE& _elements_pos )
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "0" );
 	for ( int currParam = 0; currParam < param_cnt; currParam++ ) {
-		const RDOFUNFunctionParam* const param  = params.at(currParam);
+		LPRDOFUNFunctionParam param  = params.at(currParam);
 		rdoRuntime::LPRDOCalcFuncParam funcParam = rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(currParam, param->src_info());
 		rdoRuntime::LPRDOCalc val2 = funcParam;
 		if ( param->getType()->type()->typeID() != rdoRuntime::RDOType::t_enum ) {

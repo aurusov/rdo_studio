@@ -355,8 +355,9 @@ fun_func_params
 	{
 		RDOValue*        name  = reinterpret_cast<RDOValue*>($2);
 		LPRDOTypeParam   pType = PARSER->stack().pop<RDOTypeParam>($3);
-		RDOFUNFunctionParam* param = new RDOFUNFunctionParam( PARSER->getLastFUNFunction(), name->src_info(), pType );
-		PARSER->getLastFUNFunction()->add( param );
+		LPRDOFUNFunctionParam pParam = rdo::Factory<RDOFUNFunctionParam>::create(name->src_info(), pType);
+		ASSERT(pParam);
+		PARSER->getLastFUNFunction()->add(pParam);
 	}
 	| fun_func_params RDO_IDENTIF_COLON error
 	{

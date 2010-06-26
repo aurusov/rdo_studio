@@ -55,9 +55,9 @@ class RDODPTActivity: public RDOParserObject, public RDOParserSrcInfo
 public:
 	RDODPTActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
-	const std::string&       name() const     { return src_info().src_text(); }
-	CREF(LPIActivity)        activity() const { return m_activity;            }
-	const RDOPATPattern*     pattern() const  { return m_pattern;             }
+	const std::string&  name() const     { return src_info().src_text(); }
+	CREF(LPIActivity)   activity() const { return m_activity;            }
+	LPRDOPATPattern     pattern() const  { return m_pattern;             }
 
 	void addParam( const RDOValue& param  );
 	void endParam( const YYLTYPE& _param_pos );
@@ -68,8 +68,8 @@ protected:
 	LPIActivity           m_activity;
 
 private:
-	unsigned int          m_currParam;
-	const RDOPATPattern*  m_pattern;
+	unsigned int     m_currParam;
+	LPRDOPATPattern  m_pattern;
 };
 
 // ----------------------------------------------------------------------------

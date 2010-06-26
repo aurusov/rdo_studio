@@ -28,6 +28,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
@@ -91,7 +92,7 @@ DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 class RDOParser
 {
 public:
-DEFINE_OBJECT_CONTAINER   (PATPattern     );
+DEFINE_OBJECT_CONTAINER_LP(PATPattern     );
 DEFINE_OBJECT_CONTAINER_LP(RTPResType     );
 DEFINE_OBJECT_CONTAINER   (RSSResource    );
 DEFINE_OBJECT_CONTAINER   (OPROperation   );

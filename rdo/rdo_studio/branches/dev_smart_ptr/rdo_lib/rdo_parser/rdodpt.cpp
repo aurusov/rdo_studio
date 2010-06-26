@@ -107,7 +107,7 @@ void RDODPTActivity::addParam(const RDOValue& param)
 		}
 	}
 	rdoRuntime::RDOValue val;
-	RDOFUNFunctionParam* pat_param = m_pattern->m_paramList.at(m_currParam);
+	LPRDOFUNFunctionParam pat_param = m_pattern->m_paramList.at(m_currParam);
 	if (param->getAsString() == "*")
 	{
 		if (!pat_param->getType()->default().defined())
@@ -131,7 +131,7 @@ void RDODPTActivity::addParam(const RDOValue& param)
 void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 {
 	if ( m_pattern->m_paramList.size() > m_currParam ) {
-		RDOFUNFunctionParam* param = m_pattern->m_paramList.at( m_currParam );
+		LPRDOFUNFunctionParam param = m_pattern->m_paramList.at( m_currParam );
 		parser()->error().push_only( _param_pos, rdo::format("Указаны не все параметра образца '%s':", m_pattern->src_text().c_str()) );
 		for ( unsigned int i = m_currParam; i < m_pattern->m_paramList.size(); i++ ) {
 			param = m_pattern->m_paramList.at( i );
@@ -335,7 +335,7 @@ RDODPTSearchActivity::RDODPTSearchActivity( LPIBaseOperationContainer dpt, const
 		parser()->error().push_only( pattern()->src_info(), "См. образец" );
 		parser()->error().push_done();
 	}
-	for ( std::vector< RDORelevantResource* >::const_iterator i = pattern()->rel_res_begin(); i != pattern()->rel_res_end(); i++ ) {
+	for ( RDOPATPattern::RelResList::const_iterator i = pattern()->rel_res_begin(); i != pattern()->rel_res_end(); i++ ) {
 		if ( ((*i)->m_statusBegin == rdoRuntime::RDOResource::CS_Create) || ((*i)->m_statusBegin == rdoRuntime::RDOResource::CS_Erase) ) {
 			parser()->error().push_only( src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()) );
 			parser()->error().push_only( pattern()->src_info(), "См. образец" );

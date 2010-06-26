@@ -400,26 +400,25 @@ private:
 // ----------------------------------------------------------------------------
 // Параметры, описанные внури самой функции после клювевого слова $Parameters
 // ----------------------------------------------------------------------------
-class RDOFUNFunctionParam: public RDOParserObject, public RDOParserSrcInfo
+OBJECT(RDOFUNFunctionParam) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDOFUNFunctionParam)
 public:
-	RDOFUNFunctionParam(CPTR(RDOParserObject) parent, CREF(tstring) name, CREF(LPRDOTypeParam) type)
-		: RDOParserObject (parent)
-		, RDOParserSrcInfo(name  )
+	CREF(tstring)  name   () const { return src_info().src_text(); }
+	LPRDOTypeParam getType() const { return m_type;                }
+
+private:
+	RDOFUNFunctionParam(CREF(tstring) name, CREF(LPRDOTypeParam) type)
+		: RDOParserSrcInfo(name  )
 		, m_type          (type  )
 	{}
-	RDOFUNFunctionParam(CPTR(RDOParserObject) parent, CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) type)
-		: RDOParserObject (parent  )
-		, RDOParserSrcInfo(src_info)
+	RDOFUNFunctionParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) type)
+		: RDOParserSrcInfo(src_info)
 		, m_type          (type    )
 	{}
 	virtual ~RDOFUNFunctionParam()
 	{}
 
-	CREF(tstring)  name   () const { return src_info().src_text(); }
-	LPRDOTypeParam getType() const { return m_type;                }
-
-private:
 	LPRDOTypeParam m_type;
 };
 
@@ -519,20 +518,22 @@ class RDOFUNFunction: public RDOParserObject, public RDOParserSrcInfo
 {
 friend class RDOParser;
 public:
+	typedef std::vector<LPRDOFUNFunctionParam> ParamList;
+
 	RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src_info, CREF(LPRDOTypeParam) _retType );
 	RDOFUNFunction( RDOParser* _parser, const std::string& _name, CREF(LPRDOTypeParam) _retType );
 	virtual ~RDOFUNFunction() {}
 
-	void add( const RDOFUNFunctionParam* const _param );
+	void add(CREF(LPRDOFUNFunctionParam) _param);
 	void add( const RDOFUNFunctionListElement* const _listElement );
 	void add( const RDOFUNCalculateIf* const _calculateIf );
-	const RDOFUNFunctionParam* const findFUNFunctionParam( const std::string& paramName ) const;
+	LPRDOFUNFunctionParam findFUNFunctionParam( const std::string& paramName ) const;
 	int findFUNFunctionParamNum( const std::string& paramName ) const;
 	void createListCalc();
 	void createTableCalc( const YYLTYPE& _elements_pos );
 	void createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_info );
 	const std::string& name() const                                   { return src_info().src_text(); }
-	const std::vector< const RDOFUNFunctionParam* > getParams() const { return params;                }
+	const ParamList getParams() const { return params;                }
 
 	void setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) calc);
 	rdoRuntime::LPRDOFunCalc getFunctionCalc() const                   { return functionCalc;          }
@@ -545,7 +546,7 @@ public:
 
 private:
 	LPRDOTypeParam retType;
-	std::vector< const RDOFUNFunctionParam* >       params;
+	ParamList      params;
 	std::vector< const RDOFUNFunctionListElement* > elements;    // for list and table
 	std::vector< const RDOFUNCalculateIf* >         calculateIf; // for algorithmic
 	rdoRuntime::LPRDOFunCalc functionCalc;
