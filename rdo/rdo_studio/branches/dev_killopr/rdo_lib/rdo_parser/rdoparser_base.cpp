@@ -74,7 +74,6 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 		case rdoModelObjects::obRSS : min = 300;  max = 399;  break;
 		case rdoModelObjects::obFUN : min = 400;  max = 499;  break;
 		case rdoModelObjects::obPAT : min = 500;  max = 599;  break;
-		case rdoModelObjects::obOPR : min = 600;  max = 699;  break;
 		case rdoModelObjects::obDPT : min = 700;  max = 799;  break;
 		case rdoModelObjects::obPMD : min = 800;  max = 899;  break;
 		case rdoModelObjects::obFRM : min = 900;  max = 999;  break;
@@ -106,8 +105,7 @@ RDOParserContainerModel::RDOParserContainerModel(PTR(RDOParser) parser)
 	insert(rdoModelObjects::obPAT, new RDOParserRDOItem(m_parser, rdoModelObjects::PAT, pat_preparse_parse, pat_preparse_error, pat_preparse_lex));
 	insert(rdoModelObjects::obPAT, new RDOParserRDOItem(m_parser, rdoModelObjects::PAT, patparse, paterror, patlex));
 	insert(rdoModelObjects::obPAT, new RDOParserPATPost(m_parser));
-	insert(rdoModelObjects::obOPR, new RDOParserRDOItem(m_parser, rdoModelObjects::OPR, oprparse, oprerror, oprlex));
-	insert(rdoModelObjects::obOPR, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_opr_parse, proc_opr_error, proc_opr_lex));
+	insert(rdoModelObjects::obDPT, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_opr_parse, proc_opr_error, proc_opr_lex));
 	insert(rdoModelObjects::obDPT, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, dptparse, dpterror, dptlex));
 	insert(rdoModelObjects::obPMD, new RDOParserRDOItem(m_parser, rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
 	insert(rdoModelObjects::obFRM, new RDOParserRDOItem(m_parser, rdoModelObjects::FRM, frmparse, frmerror, frmlex));
