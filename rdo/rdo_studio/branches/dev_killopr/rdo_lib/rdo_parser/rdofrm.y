@@ -211,7 +211,6 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
-#include "rdo_lib/rdo_parser/rdoopr.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -1318,32 +1317,18 @@ frm_active
 	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
 		std::string opr_name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-		const RDOOPROperation* opr = PARSER->findOPROperation( opr_name );
-		if ( !opr )
+		const RDODPTFreeActivity* activity = PARSER->findDPTFreeActivity( opr_name );
+		if ( !activity )
 		{
-			const RDODPTFreeActivity* activity = PARSER->findDPTFreeActivity( opr_name );
-			if ( !activity )
-			{
-				PARSER->error().error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
-			}
-			else
-			{
-				if ( activity->pattern()->getType() != RDOPATPattern::PT_Keyboard )
-				{
-					PARSER->error().push_only(@2, rdo::format("Активность '%s' должна быть клавиатурной", activity->name().c_str()));
-					PARSER->error().push_only(activity->src_info(), "См. акивность");
-					PARSER->error().push_only(activity->pattern()->src_info(), "См. образец");
-					PARSER->error().push_done();
-				}
-			}
+			PARSER->error().error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
 		}
 		else
 		{
-			if ( opr->pattern()->getType() != RDOPATPattern::PT_Keyboard )
+			if ( activity->pattern()->getType() != RDOPATPattern::PT_Keyboard )
 			{
-				PARSER->error().push_only(@2, rdo::format("Операция '%s' должна быть клавиатурной", opr->name().c_str()));
-				PARSER->error().push_only(opr->src_info(), "См. операцию");
-				PARSER->error().push_only(opr->pattern()->src_info(), "См. образец");
+				PARSER->error().push_only(@2, rdo::format("Активность '%s' должна быть клавиатурной", activity->name().c_str()));
+				PARSER->error().push_only(activity->src_info(), "См. акивность");
+				PARSER->error().push_only(activity->pattern()->src_info(), "См. образец");
 				PARSER->error().push_done();
 			}
 		}

@@ -20,7 +20,6 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
-#include "rdo_lib/rdo_parser/rdoopr.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_kernel/rdokernel.h"
