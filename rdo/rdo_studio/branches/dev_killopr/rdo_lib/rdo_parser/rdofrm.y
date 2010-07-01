@@ -1320,7 +1320,7 @@ frm_active
 		const RDODPTFreeActivity* activity = PARSER->findDPTFreeActivity( opr_name );
 		if ( !activity )
 		{
-			PARSER->error().error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
+			PARSER->error().error( @2, rdo::format("Активность '%s' не найдена", opr_name.c_str()) );
 		}
 		else
 		{
