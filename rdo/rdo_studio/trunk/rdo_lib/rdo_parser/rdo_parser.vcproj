@@ -639,67 +639,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="rdoopr.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="rdopmd.cpp"
 				>
 				<FileConfiguration
@@ -846,10 +785,6 @@
 			</File>
 			<File
 				RelativePath="rdofun.h"
-				>
-			</File>
-			<File
-				RelativePath="rdoopr.h"
 				>
 			</File>
 			<File
@@ -1117,70 +1052,6 @@
 						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pfun --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramfun.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramfun.cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="rdoopr.y"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogramopr.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogramopr.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogramopr.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogramopr.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogramopr.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release MT|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogramopr.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -2025,70 +1896,6 @@
 				<File
 					RelativePath="rdogramma.h"
 					>
-				</File>
-				<File
-					RelativePath="rdogramopr.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="rdogrampat.cpp"

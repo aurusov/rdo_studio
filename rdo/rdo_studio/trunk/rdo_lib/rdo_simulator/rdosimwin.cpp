@@ -77,7 +77,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 {
 	CosNaming::NamingContext_var rootContext;
 	
-	try {
+	try
+	{
 	
 		// Obtain a reference to the root context of the Name service:
 		CORBA::Object_var obj;
@@ -85,22 +86,26 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		
 		// Narrow the reference returned.
 		rootContext = CosNaming::NamingContext::_narrow(obj);
-		if( CORBA::is_nil(rootContext) ) {
+		if( CORBA::is_nil(rootContext) )
+		{
 			TRACE( "Failed to narrow the root naming context." );
 			return 0;
 		}
 	}
-	catch (CORBA::NO_RESOURCES&) {
+	catch (CORBA::NO_RESOURCES&)
+	{
 		TRACE( "Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service.");
 		return 0;
 	}
-	catch (CORBA::ORB::InvalidName&) {
+	catch (CORBA::ORB::InvalidName&)
+	{
 		// This should not happen!
 		TRACE( "Service required is invalid [does not exist].");
 		return 0;
 	}
 
-	try {
+	try
+	{
 		// Bind a context called "test" to the root context:
 		CosNaming::Name contextName;
 		contextName.length(1);
@@ -112,11 +117,13 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		// by files (name.type -- e.g. test.ps = postscript etc.)
 		CosNaming::NamingContext_var testContext;
 		
-		try {
+		try
+		{
 			// Bind the context to root.
 			testContext = rootContext->bind_new_context(contextName);
 		}
-		catch(CosNaming::NamingContext::AlreadyBound&) {
+		catch(CosNaming::NamingContext::AlreadyBound&)
+		{
 			// If the context already exists, this exception will be raised.
 			// In this case, just resolve the name and assign testContext
 			// to the object returned:
@@ -125,9 +132,10 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 			
 			testContext = CosNaming::NamingContext::_narrow(obj);
 			
-			if( CORBA::is_nil(testContext) ) {
+			if( CORBA::is_nil(testContext) )
+			{
 				TRACE( "Failed to narrow naming context.");
-			return 0;
+				return 0;
 			}
 		}
 
@@ -141,10 +149,12 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		objectName[0].id = ModelName;
 		objectName[0].kind = (const char*) "Object";
 
-		try {
+		try
+		{
 			testContext->bind(objectName, objref);
 		}
-		catch(CosNaming::NamingContext::AlreadyBound&) {
+		catch(CosNaming::NamingContext::AlreadyBound&)
+		{
 			testContext->rebind(objectName, objref);
 		}
 		
@@ -158,12 +168,14 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		// the Name has not already been bound. [This is incorrect behaviour -
 		// it should just bind].
 	}
-	catch(CORBA::TRANSIENT&) {
+	catch(CORBA::TRANSIENT&)
+	{
 		TRACE( "Caught system exception TRANSIENT -- unable to contact the naming service.");
 		TRACE( "Make sure the naming server is running and that omniORB is configured correctly.");
 		return 0;
 	}
-	catch(CORBA::SystemException& ex) {
+	catch(CORBA::SystemException& ex)
+	{
 		TRACE1( "Caught a CORBA:: %s while using the naming service.", ex._name() );
 		return 0;
 	}
@@ -174,7 +186,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 
 unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 {
-	try {
+	try
+	{
 		int argc = 0;
 		g_orb = CORBA::ORB_init(argc, NULL);
 		
@@ -206,13 +219,16 @@ unsigned int RDOThreadCorba::corbaRunThreadFun( void* param )
 		
 		g_orb->run();
 	}
-	catch(CORBA::SystemException& ex) {
+	catch(CORBA::SystemException& ex)
+	{
 		TRACE1( "Caught CORBA::%s", ex._name());
 	}
-	catch(CORBA::Exception&) {
+	catch(CORBA::Exception&)
+	{
 		TRACE( "Caught CORBA::Exception: " );
 	}	
-	catch(omniORB::fatalException& fe) {
+	catch(omniORB::fatalException& fe)
+	{
 		TRACE3( "Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
 	}
 	
@@ -252,7 +268,8 @@ void RDOThreadCorba::start()
 void RDOThreadCorba::idle()
 {
 #ifdef RDO_MT
-	if ( broadcast_waiting || !was_start || was_close ) {
+	if ( broadcast_waiting || !was_start || was_close )
+	{
 		RDOThread::idle();
 		return;
 	}
@@ -274,8 +291,7 @@ void RDOThreadCorba::stop()
 			g_orb->destroy();
 		}
 		catch (...)
-		{
-		}
+		{}
 	}
 
 	if ( thread_corbaRunThreadFun )
@@ -327,7 +343,8 @@ public:
 	virtual std::ostream&        getOStream()    { return m_stream; }
 	virtual rdoRuntime::RDOEndL& getEOL()        { return *this;    }
 
-	void onEndl() {
+	void onEndl()
+	{
 		const std::string& trace_str = m_stream.str();
 		if ( trace_str.empty()        ) return;
 		if ( !m_simulator->m_canTrace ) return;
@@ -351,7 +368,7 @@ public:
 
 private:
 	RDOThreadSimulator* m_simulator;
-	rdo::textstream   m_stream;
+	rdo::textstream     m_stream;
 };
 
 // --------------------------------------------------------------------
@@ -405,79 +422,96 @@ RDOThreadRunTime::RDOThreadRunTime():
 
 void RDOThreadRunTime::proc( RDOMessageInfo& msg )
 {
-	switch ( msg.message ) {
-		case RT_THREAD_CLOSE: {
+	switch ( msg.message )
+	{
+		case RT_THREAD_CLOSE:
+		{
 			broadcastMessage( RT_RUNTIME_MODEL_STOP_BEFORE );
 			break;
 		}
-		case RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY: {
+		case RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY:
+		{
 			runtime_error = true;
 			break;
 		}
-		case RT_RUNTIME_GET_MODE: {
+		case RT_RUNTIME_GET_MODE:
+		{
 			*static_cast<rdoRuntime::RunTimeMode*>(msg.param) = simulator->runtime->getMode();
 			break;
 		}
-		case RT_RUNTIME_SET_MODE: {
+		case RT_RUNTIME_SET_MODE:
+		{
 			msg.lock();
 			simulator->runtime->setMode( *static_cast<rdoRuntime::RunTimeMode*>(msg.param) );
 			msg.unlock();
 			break;
 		}
-		case RT_RUNTIME_GET_SPEED: {
+		case RT_RUNTIME_GET_SPEED:
+		{
 			*static_cast<double*>(msg.param) = simulator->runtime->getSpeed();
 			break;
 		}
-		case RT_RUNTIME_SET_SPEED: {
+		case RT_RUNTIME_SET_SPEED:
+		{
 			msg.lock();
 			simulator->runtime->setSpeed( *static_cast<double*>(msg.param) );
 			msg.unlock();
 			break;
 		}
-		case RT_RUNTIME_GET_SHOWRATE: {
+		case RT_RUNTIME_GET_SHOWRATE:
+		{
 			*static_cast<double*>(msg.param) = simulator->runtime->getShowRate();
 			break;
 		}
-		case RT_RUNTIME_SET_SHOWRATE: {
+		case RT_RUNTIME_SET_SHOWRATE:
+		{
 			msg.lock();
 			simulator->runtime->setShowRate( *static_cast<double*>(msg.param) );
 			msg.unlock();
 			break;
 		}
-		case RT_RUNTIME_GET_TIMENOW: {
+		case RT_RUNTIME_GET_TIMENOW:
+		{
 			*static_cast<double*>(msg.param) = simulator->runtime->getTimeNow();
 			break;
 		}
-		case RT_RUNTIME_GET_FRAME: {
+		case RT_RUNTIME_GET_FRAME:
+		{
 			msg.lock();
 			GetFrame* getframe = static_cast<GetFrame*>(msg.param);
 			simulator->runtime->allFrames.at(getframe->frame_number)->prepareFrame( getframe->frame, simulator->runtime );
 			msg.unlock();
 			break;
 		}
-		case RT_RUNTIME_GET_LAST_BREAKPOINT: {
+		case RT_RUNTIME_GET_LAST_BREAKPOINT:
+		{
 			msg.lock();
 			*static_cast<std::string*>(msg.param) = simulator->runtime->getLastBreakPointName();
 			msg.unlock();
 			break;
 		}
-		case RT_RUNTIME_KEY_DOWN: {
+		case RT_RUNTIME_KEY_DOWN:
+		{
 			msg.lock();
-			if ( std::find( simulator->runtime->using_scan_codes.begin(), simulator->runtime->using_scan_codes.end(), *static_cast<unsigned int*>(msg.param) ) != simulator->runtime->using_scan_codes.end() ) {
-				if ( !simulator->runtime->keyDown( *static_cast<unsigned int*>(msg.param) ) ) {
+			if ( std::find( simulator->runtime->using_scan_codes.begin(), simulator->runtime->using_scan_codes.end(), *static_cast<unsigned int*>(msg.param) ) != simulator->runtime->using_scan_codes.end() )
+			{
+				if ( !simulator->runtime->keyDown( *static_cast<unsigned int*>(msg.param) ) )
+				{
 					simulator->runtime->setShowRate( simulator->runtime->getShowRate() );
 				}
 			}
 			msg.unlock();
 			break;
 		}
-		case RT_RUNTIME_KEY_UP: {
+		case RT_RUNTIME_KEY_UP:
+		{
 			msg.lock();
 			simulator->runtime->keyUp( *static_cast<unsigned int*>(msg.param) );
 			msg.unlock();
 			break;
 		}
-		case RT_RUNTIME_FRAME_AREA_DOWN: {
+		case RT_RUNTIME_FRAME_AREA_DOWN:
+		{
 			msg.lock();
 			simulator->runtime->activeAreasMouseClicked.push_back( *static_cast<std::string*>(msg.param) );
 			simulator->runtime->setShowRate( simulator->runtime->getShowRate() );
@@ -500,9 +534,12 @@ void RDOThreadRunTime::start()
 	rdoRuntime::RDOResults* results_info;
 
 	// Creating tracer and results //////////////////////////////////
-	if ( !simulator->parser->getSMR()->hasFile( "Trace_file" ) ) {
+	if ( !simulator->parser->getSMR()->hasFile( "Trace_file" ) )
+	{
 		tracer = new RDOTrace();
-	} else {
+	}
+	else
+	{
 		tracer = new rdoSimulator::RDORuntimeTracer( simulator );
 	}
 
@@ -522,28 +559,33 @@ void RDOThreadRunTime::start()
 	// Modelling
 	simulator->m_canTrace = true;
 
-	try {
+	try
+	{
 		simulator->exitCode = rdoSimulator::EC_OK;
 		simulator->runtime->rdoInit(tracer, results, results_info);
-		switch ( simulator->parser->getSMR()->getShowMode() ) {
-			case rdoSimulator::SM_NoShow   : simulator->runtime->setMode( rdoRuntime::RTM_MaxSpeed ); break;
-			case rdoSimulator::SM_Animation: simulator->runtime->setMode( rdoRuntime::RTM_Sync ); break;
-			case rdoSimulator::SM_Monitor  : simulator->runtime->setMode( rdoRuntime::RTM_Pause ); break;
+		switch ( simulator->parser->getSMR()->getShowMode() )
+		{
+			case rdoSimulator::SM_NoShow   : simulator->runtime->setMode(rdoRuntime::RTM_MaxSpeed); break;
+			case rdoSimulator::SM_Animation: simulator->runtime->setMode(rdoRuntime::RTM_Sync    ); break;
+			case rdoSimulator::SM_Monitor  : simulator->runtime->setMode(rdoRuntime::RTM_Pause   ); break;
 		}
 		simulator->runtime->setShowRate( simulator->parser->getSMR()->getShowRate() );
 	}
-	catch ( rdoParse::RDOSyntaxException& ) {
+	catch ( rdoParse::RDOSyntaxException& )
+	{
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 	}
-	catch ( rdoRuntime::RDORuntimeException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex )
+	{
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 		std::string mess = ex.getType() + " : " + ex.message();
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 
-	if ( !runtime_error ) {
+	if ( !runtime_error )
+	{
 		broadcastMessage( RT_RUNTIME_MODEL_START_AFTER );
 	}
 
@@ -555,22 +597,27 @@ void RDOThreadRunTime::start()
 void RDOThreadRunTime::idle()
 {
 #ifdef RDO_MT
-	if ( broadcast_waiting || !was_start || was_close ) {
+	if ( broadcast_waiting || !was_start || was_close )
+	{
 		RDOThread::idle();
 		return;
 	}
 #endif
 //	TRACE( "R. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
-	try {
-		if ( runtime_error || !simulator->runtime->rdoNext() ) {
+	try
+	{
+		if ( runtime_error || !simulator->runtime->rdoNext() )
+		{
 			sendMessage( this, RT_THREAD_CLOSE );
 		}
 	}
-	catch ( rdoParse::RDOSyntaxException& ) {
+	catch ( rdoParse::RDOSyntaxException& )
+	{
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 	}
-	catch ( rdoRuntime::RDORuntimeException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex )
+	{
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 		std::string mess = ex.getType() + " : " + ex.message();
@@ -585,7 +632,8 @@ void RDOThreadRunTime::idle()
 
 void RDOThreadRunTime::writeResultsInfo()
 {
-	switch ( simulator->runtime->whyStop ) {
+	switch ( simulator->runtime->whyStop )
+	{
 		case rdoSimulator::EC_OK:
 			simulator->runtime->getResultsInfo() << "$Status = " << "NORMAL_TERMINATION";
 			break;
@@ -603,38 +651,57 @@ void RDOThreadRunTime::writeResultsInfo()
 	SYSTEMTIME time_stop;
 	::GetSystemTime( &time_stop );
 	double delay = -1;
-	if ( time_start.wYear == time_stop.wYear && time_start.wMonth == time_stop.wMonth ) {
+	if ( time_start.wYear == time_stop.wYear && time_start.wMonth == time_stop.wMonth )
+	{
 		delay = (time_stop.wDay - time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - time_start.wSecond) * 1000 + (time_stop.wMilliseconds - time_start.wMilliseconds );
-	} else if ( time_stop.wYear - time_start.wYear == 1 && time_start.wMonth == 12 && time_stop.wMonth == 1 ) {
-		delay = (time_stop.wDay + 31 - time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - time_start.wSecond) * 1000 + (time_stop.wMilliseconds - time_start.wMilliseconds );
 	}
-	if ( delay != -1 ) {
+	else
+		if ( time_stop.wYear - time_start.wYear == 1 && time_start.wMonth == 12 && time_stop.wMonth == 1 )
+		{
+			delay = (time_stop.wDay + 31 - time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - time_start.wSecond) * 1000 + (time_stop.wMilliseconds - time_start.wMilliseconds );
+		}
+	if ( delay != -1 )
+	{
 		simulator->runtime->getResultsInfo() << "  " << delay / 1000.0;
-	} else {
+	}
+	else
+	{
 		simulator->runtime->getResultsInfo() << "  ?";
 	}
 	simulator->runtime->getResultsInfo() << '\n' << "  EventCount           " << simulator->runtime->get_cnt_events() << "  " << (double)simulator->runtime->get_cnt_events() / simulator->runtime->getTimeNow() << "  ";
-	if ( delay != -1 ) {
+	if ( delay != -1 )
+	{
 		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_events() / delay * 1000);
-	} else {
+	}
+	else
+	{
 		simulator->runtime->getResultsInfo() << "?";
 	}
 	simulator->runtime->getResultsInfo() << '\n' << "  OperRuleCheckCounter " << simulator->runtime->get_cnt_choice_from() << "  " << (double)simulator->runtime->get_cnt_choice_from() / simulator->runtime->getTimeNow() << "  ";
-	if ( delay != -1 ) {
+	if ( delay != -1 )
+	{
 		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_choice_from() / delay * 1000);
-	} else {
+	}
+	else
+	{
 		simulator->runtime->getResultsInfo() << "?";
 	}
 	simulator->runtime->getResultsInfo() << '\n' << "  AExpCalcCounter      " << simulator->runtime->get_cnt_calc_arithm() << "  " << (double)simulator->runtime->get_cnt_calc_arithm() / simulator->runtime->getTimeNow() << "  ";
-	if ( delay != -1 ) {
+	if ( delay != -1 )
+	{
 		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_calc_arithm() / delay * 1000);
-	} else {
+	}
+	else
+	{
 		simulator->runtime->getResultsInfo() << "?";
 	}
 	simulator->runtime->getResultsInfo() << '\n' << "  BExpCalcCounter      " << simulator->runtime->get_cnt_calc_logic() << "  " << (double)simulator->runtime->get_cnt_calc_logic() / simulator->runtime->getTimeNow() << "  ";
-	if ( delay != -1 ) {
+	if ( delay != -1 )
+	{
 		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_calc_logic() / delay * 1000);
-	} else {
+	}
+	else
+	{
 		simulator->runtime->getResultsInfo() << "?";
 	}
 }
@@ -645,15 +712,18 @@ void RDOThreadRunTime::stop()
 	trace( thread_name + " stop begin" );
 #endif
 
-	try {
+	try
+	{
 		simulator->runtime->rdoPostProcess();
 		writeResultsInfo();
 	}
-	catch ( rdoParse::RDOSyntaxException& ) {
+	catch ( rdoParse::RDOSyntaxException& )
+	{
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 	}
-	catch ( rdoRuntime::RDORuntimeException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex )
+	{
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 		std::string mess = ex.getType() + " : " + ex.message();
@@ -709,32 +779,39 @@ RDOThreadSimulator::~RDOThreadSimulator()
 
 void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 {
-	switch ( msg.message ) {
-		case RT_STUDIO_MODEL_BUILD: {
+	switch ( msg.message )
+	{
+		case RT_STUDIO_MODEL_BUILD:
+		{
 			parseModel();
 			break;
 		}
-		case RT_STUDIO_MODEL_RUN: {
+		case RT_STUDIO_MODEL_RUN:
+		{
 			runModel();
 			break;
 		}
-		case RT_STUDIO_MODEL_STOP: {
+		case RT_STUDIO_MODEL_STOP:
+		{
 			stopModel();
 			break;
 		}
-		case RT_SIMULATOR_GET_MODEL_STRUCTURE: {
+		case RT_SIMULATOR_GET_MODEL_STRUCTURE:
+		{
 			msg.lock();
 			*static_cast<rdo::textstream*>(msg.param) << parser->getModelStructure();
 			msg.unlock();
 			break;
 		}
-		case RT_SIMULATOR_GET_MODEL_RESULTS: {
+		case RT_SIMULATOR_GET_MODEL_RESULTS:
+		{
 			msg.lock();
 			*static_cast<rdo::textstream*>(msg.param) << resultString.str();
 			msg.unlock();
 			break;
 		}
-		case RT_SIMULATOR_GET_MODEL_RESULTS_INFO: {
+		case RT_SIMULATOR_GET_MODEL_RESULTS_INFO:
+		{
 			msg.lock();
 			*static_cast<rdo::textstream*>(msg.param) << parser->getChanges();
 			*static_cast<rdo::textstream*>(msg.param) << std::endl << std::endl;
@@ -742,27 +819,31 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
-		case RT_SIMULATOR_GET_MODEL_EXITCODE: {
+		case RT_SIMULATOR_GET_MODEL_EXITCODE:
+		{
 			msg.lock();
 			*static_cast<rdoSimulator::RDOExitCode*>(msg.param) = exitCode;
 			msg.unlock();
 			break;
 		}
-		case RT_CODECOMP_GET_DATA: {
+		case RT_CODECOMP_GET_DATA:
+		{
 			codeCompletion();
 			break;
 		}
 		
 #ifdef CORBA_ENABLE
 
-		case RT_CORBA_PARSER_GET_RTP: {
+		case RT_CORBA_PARSER_GET_RTP:
+		{
 			msg.lock();
 			corbaGetRTP( *static_cast<rdoParse::RDOCorba::GetRTP_var*>(msg.param) );
 			msg.unlock();
 			break;
 		}
 
-		case RT_CORBA_PARSER_GET_RSS: {
+		case RT_CORBA_PARSER_GET_RSS:
+		{
 			msg.lock();
 			corbaGetRSS( *static_cast<rdoParse::RDOCorba::GetRSS_var*>(msg.param) );
 			msg.unlock();
@@ -770,23 +851,31 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		}
 #endif // CORBA_ENABLE
 
-		case RT_SIMULATOR_GET_LIST: {
+		case RT_SIMULATOR_GET_LIST:
+		{
 			msg.lock();
 			GetList* getlist = static_cast<GetList*>(msg.param);
-			switch ( getlist->type ) {
-				case GetList::frames: {
-					if ( runtime ) {
+			switch ( getlist->type )
+			{
+				case GetList::frames:
+				{
+					if ( runtime )
+					{
 						int size = runtime->allFrames.size();
-						for ( int i = 0; i < size; i++ ) {
+						for ( int i = 0; i < size; i++ )
+						{
 							getlist->list->push_back( runtime->allFrames.at(i)->name() );
 						}
 					}
 					break;
 				}
-				case GetList::bitmaps: {
-					if ( runtime ) {
+				case GetList::bitmaps:
+				{
+					if ( runtime )
+					{
 						int size = runtime->allFrames.size();
-						for ( int i = 0; i < size; i++ ) {
+						for ( int i = 0; i < size; i++ )
+						{
 							runtime->allFrames.at(i)->getBitmaps( *getlist->list );
 						}
 					}
@@ -796,7 +885,8 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
-		case RT_SIMULATOR_GET_ERRORS: {
+		case RT_SIMULATOR_GET_ERRORS:
+		{
 			std::vector< RDOSyntaxError > errors = getErrors();
 			msg.lock();
 			std::vector< RDOSyntaxError >* msg_errors = static_cast<std::vector< RDOSyntaxError >*>(msg.param);
@@ -804,17 +894,22 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
-		case RT_THREAD_STOP_AFTER: {
-			if ( msg.from == thread_runtime ) {
+		case RT_THREAD_STOP_AFTER:
+		{
+			if ( msg.from == thread_runtime )
+			{
 				// rdoSimulator::EC_ParserError   - Не используется в run-time
 				// rdoSimulator::EC_ModelNotFound - Не используется в run-time
 				// rdoSimulator::EC_UserBreak     - Устанавливается в simulator, перехват RT_THREAD_STOP_AFTER не срабатывает
 				exitCode = runtime->whyStop;
-				if ( !thread_runtime->runtime_error ) {
+				if ( !thread_runtime->runtime_error )
+				{
 					// Остановились сами нормально
 					broadcastMessage( RT_SIMULATOR_MODEL_STOP_OK );
 					closeModel();
-				} else {
+				}
+				else
+				{
 					// Остановились сами, но не нормально
 					broadcastMessage( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
 					closeModel();
@@ -840,17 +935,20 @@ bool RDOThreadSimulator::parseModel()
 	parser = new rdoParse::RDOParserModel();
 	runtime = parser->runtime();
 
-	try {
+	try
+	{
 		exitCode = rdoSimulator::EC_OK;
 		parser->parse();
 	}
-	catch ( rdoParse::RDOSyntaxException& /*ex*/ ) {
+	catch ( rdoParse::RDOSyntaxException& /*ex*/ )
+	{
 		exitCode = rdoSimulator::EC_ParserError;
 		broadcastMessage( RT_SIMULATOR_PARSE_ERROR );
 		closeModel();
 		return false;
 	}
-	catch ( rdoRuntime::RDORuntimeException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex )
+	{
 		std::string mess = ex.getType() + " : " + ex.message();
 		broadcastMessage( RT_SIMULATOR_PARSE_STRING, &mess );
 		exitCode = rdoSimulator::EC_ParserError;
@@ -869,7 +967,8 @@ bool RDOThreadSimulator::parseModel()
 
 void RDOThreadSimulator::runModel()
 {
-	if ( parseModel() ) {
+	if ( parseModel() )
+	{
 		parser->error().clear();
 		exitCode = rdoSimulator::EC_OK;
 		thread_runtime = new rdoRuntime::RDOThreadRunTime();
@@ -890,7 +989,8 @@ void RDOThreadSimulator::stopModel()
 
 void RDOThreadSimulator::terminateModel()
 {
-	if ( thread_runtime ) {
+	if ( thread_runtime )
+	{
 		// Перестали реагировать на остановку run-time-треды, т.к. закрываем её сами
 #ifdef RDO_MT
 		notifies_mutex.Lock();
@@ -923,23 +1023,31 @@ void RDOThreadSimulator::terminateModel()
 void RDOThreadSimulator::closeModel()
 {
 /*
-	try {
-		if ( runtime ) {
+	try
+	{
+		if ( runtime )
+		{
 			delete runtime;
 			runtime = NULL;
 		}
-	} catch (...) {
+	}
+	catch (...)
+	{
 		runtime = NULL;
 		TRACE( "******************************** Ошибка удаления runtime\n" );
 	}
 */
 	runtime = NULL;
-	try {
-		if ( parser ) {
+	try
+	{
+		if ( parser )
+		{
 			delete parser;
 			parser = NULL;
 		}
-	} catch (...) {
+	}
+	catch (...)
+	{
 		parser = NULL;
 		TRACE(_T("******************************** Ошибка удаления parser\n"));
 	}
@@ -949,29 +1057,34 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::textstream& smr, rdoModelObjects:
 {
 	rdoParse::RDOParserSMRInfo parser;
 
-	try {
+	try
+	{
 		info.error = false;
 		parser.parse( smr );
 	}
-	catch ( rdoParse::RDOSyntaxException& ) {
+	catch ( rdoParse::RDOSyntaxException& )
+	{
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
 		info.error = true;
 	}
-	catch ( rdoRuntime::RDORuntimeException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex )
+	{
 		std::string mess = ex.getType() + " : " + ex.message();
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &mess );
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
 		info.error = true;
 	}
 
-	if ( !parser.hasSMR() ) {
+	if ( !parser.hasSMR() )
+	{
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY );
 		info.error = true;
-	} else {
+	}
+	else
+	{
 		info.model_name     = parser.getSMR()->getFile( "Model_name" );
 		info.resource_file  = parser.getSMR()->getFile( "Resource_file" );
-		info.oprIev_file    = parser.getSMR()->getFile( "OprIev_file" );
 		info.frame_file     = parser.getSMR()->getFile( "Frame_file" );
 		info.statistic_file = parser.getSMR()->getFile( "Statistic_file" );
 		info.results_file   = parser.getSMR()->getFile( "Results_file" );
@@ -1006,8 +1119,7 @@ double RDOThreadSimulator::getInitialShowRate()
 }
 
 void RDOThreadSimulator::codeCompletion()
-{
-}
+{}
 
 #ifdef CORBA_ENABLE
 
@@ -1015,13 +1127,14 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 {
 	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdoParse::RDOParserCorba parser;
-	try {
+	try
+	{
 		parser.parse();
 	}
-	catch ( rdoParse::RDOSyntaxException& ) {
-	}
-	catch ( rdoRuntime::RDORuntimeException& ) {
-	}
+	catch ( rdoParse::RDOSyntaxException& )
+	{}
+	catch ( rdoRuntime::RDORuntimeException& )
+	{}
 
 	::CORBA::Long i = 0, j = 0;
 
@@ -1087,7 +1200,8 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 
 			switch (param_it->typeID())
 			{
-				case rdoRuntime::RDOType::t_int:{
+				case rdoRuntime::RDOType::t_int:
+				{
 					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::int_type;
 
 					if ( param_it->hasDiap() )
@@ -1104,7 +1218,8 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					}
 					break;
 				}
-				case rdoRuntime::RDOType::t_real:{
+				case rdoRuntime::RDOType::t_real:
+				{
 					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::double_type;
 
 					if ( param_it->hasDiap() )
@@ -1121,7 +1236,8 @@ void RDOThreadSimulator::corbaGetRTP( rdoParse::RDOCorba::GetRTP_var& my_rtpList
 					}
 					break;
 				}
-				case rdoRuntime::RDOType::t_enum:{
+				case rdoRuntime::RDOType::t_enum:
+				{
 					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::enum_type;
 					
 					//Считаем количество значений перечислимого типа
@@ -1175,13 +1291,14 @@ void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList
 {
 	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdoParse::RDOParserCorba parser;
-	try {
+	try
+	{
 		parser.parse();
 	}
-	catch ( rdoParse::RDOSyntaxException& ) {
-	}
-	catch ( rdoRuntime::RDORuntimeException& ) {
-	}
+	catch ( rdoParse::RDOSyntaxException& )
+	{}
+	catch ( rdoRuntime::RDORuntimeException& )
+	{}
 	// Пробежались по всем ресурсам и переписали в RSSList
 	rdoMBuilder::RDOResourceList rssList( &parser );
 	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
@@ -1231,21 +1348,24 @@ void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList
 		
 			switch (param_it->second.typeID())
 			{
-				case rdoRuntime::RDOType::t_int:{
+				case rdoRuntime::RDOType::t_int:
+				{
 					
 					my_rssList[i].m_param[j].m_int = param_it->second->getInt();
 					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::int_type;
 
 					break;
 				}
-				case rdoRuntime::RDOType::t_real:{
+				case rdoRuntime::RDOType::t_real:
+				{
 
 					my_rssList[i].m_param[j].m_double = param_it->second->getDouble();
 					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::double_type;
 					
 					break;
 				}
-				case rdoRuntime::RDOType::t_enum:{
+				case rdoRuntime::RDOType::t_enum:
+				{
 
 					my_rssList[i].m_param[j].m_enum = param_it->second->getAsString().c_str();
 					my_rssList[i].m_param[j].m_type = rdoParse::RDOCorba::enum_type;
@@ -1268,13 +1388,14 @@ void RDOThreadSimulator::corbaGetRSS( rdoParse::RDOCorba::GetRSS_var& my_rssList
 /*
 	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdoParse::RDOParserCorba parser;
-	try {
+	try
+	{
 		parser.parse();
 	}
-	catch ( rdoParse::RDOSyntaxException& ) {
-	}
-	catch ( rdoRuntime::RDORuntimeException& ) {
-	}
+	catch ( rdoParse::RDOSyntaxException& )
+	{}
+	catch ( rdoRuntime::RDORuntimeException& )
+	{}
 	// Пробежались по всем ресурсам и переписали в RSSList
 	rdoMBuilder::RDOResourceList rssList( &parser );
 	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
@@ -1305,13 +1426,14 @@ RDOThreadCodeComp::RDOThreadCodeComp():
 }
 
 RDOThreadCodeComp::~RDOThreadCodeComp()
-{
-}
+{}
 
 void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 {
-	switch ( msg.message ) {
-		case RT_CODECOMP_GET_DATA: {
+	switch ( msg.message )
+	{
+		case RT_CODECOMP_GET_DATA:
+		{
 //			if ( rdoParse::parser ) parser = rdoParse::parser;
 			if ( !parser ) break;
 			msg.lock();
@@ -1321,10 +1443,12 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 //			data->result = stream.data();
 			const std::vector< rdoParse::LPRDORTPResType >& rtp_list = parser->getRTPResTypes(); 
 			std::vector< rdoParse::LPRDORTPResType >::const_iterator rtp_it = rtp_list.begin();
-			while ( rtp_it != rtp_list.end() ) {
+			while ( rtp_it != rtp_list.end() )
+			{
 				CREF(rdoParse::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
 				rdoParse::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
-				while ( param_it != param_list.end() ) {
+				while ( param_it != param_list.end() )
+				{
 					data->result += (*param_it)->name() + ' ';
 					param_it++;
 				}

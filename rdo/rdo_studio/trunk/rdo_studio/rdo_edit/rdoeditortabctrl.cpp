@@ -25,12 +25,10 @@ END_MESSAGE_MAP()
 RDOEditorTabCtrl::RDOEditorTabCtrl( RDOStudioEditBaseView* _view ):
 	RDOTabCtrl(),
 	view( _view )
-{
-}
+{}
 
 RDOEditorTabCtrl::~RDOEditorTabCtrl()
-{
-}
+{}
 
 BOOL RDOEditorTabCtrl::PreCreateWindow( CREATESTRUCT& cs )
 {
@@ -52,7 +50,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	RDOEditorEdit* page6  = new RDOEditorEdit( view );
 	RDOEditorEdit* page7  = new RDOEditorEdit( view );
 	RDOEditorEdit* page8  = new RDOEditorEdit( view );
-	RDOEditorEdit* page9  = new RDOEditorEdit( view );
 
 	page1->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page2->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
@@ -62,7 +59,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page6->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page7->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page9->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
 	page1->setEditorStyle( &studioApp.mainFrame->style_editor );
 	page2->setEditorStyle( &studioApp.mainFrame->style_editor );
@@ -72,7 +68,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page6->setEditorStyle( &studioApp.mainFrame->style_editor );
 	page7->setEditorStyle( &studioApp.mainFrame->style_editor );
 	page8->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page9->setEditorStyle( &studioApp.mainFrame->style_editor );
 
 	page1->setPopupMenu( &view->popupMenu );
 	page2->setPopupMenu( &view->popupMenu );
@@ -82,7 +77,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page6->setPopupMenu( &view->popupMenu );
 	page7->setPopupMenu( &view->popupMenu );
 	page8->setPopupMenu( &view->popupMenu );
-	page9->setPopupMenu( &view->popupMenu );
 
 	group.insert( page1 );
 	group.insert( page2 );
@@ -92,8 +86,8 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	group.insert( page6 );
 	group.insert( page7 );
 	group.insert( page8 );
-	group.insert( page9 );
 	page1->setGroup( &group );
+
 	page2->setGroup( &group );
 	page3->setGroup( &group );
 	page4->setGroup( &group );
@@ -101,17 +95,15 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page6->setGroup( &group );
 	page7->setGroup( &group );
 	page8->setGroup( &group );
-	page9->setGroup( &group );
 
 	insertItem( page1, "PAT" );
 	insertItem( page2, "RTP" );
 	insertItem( page3, "RSS" );
-	insertItem( page4, "OPR" );
-	insertItem( page5, "FRM" );
-	insertItem( page6, "FUN" );
-	insertItem( page7, "DPT" );
-	insertItem( page8, "SMR" );
-	insertItem( page9, "PMD" );
+	insertItem( page4, "FRM" );
+	insertItem( page5, "FUN" );
+	insertItem( page6, "DPT" );
+	insertItem( page7, "SMR" );
+	insertItem( page8, "PMD" );
 
 	setCurrentRDOItem( rdoModelObjects::PAT );
 
@@ -120,32 +112,32 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) const
 {
-	switch ( index ) {
+	switch ( index )
+	{
 		case  0: return rdoModelObjects::PAT;
 		case  1: return rdoModelObjects::RTP;
 		case  2: return rdoModelObjects::RSS;
-		case  3: return rdoModelObjects::OPR;
-		case  4: return rdoModelObjects::FRM;
-		case  5: return rdoModelObjects::FUN;
-		case  6: return rdoModelObjects::DPT;
-		case  7: return rdoModelObjects::SMR;
-		case  8: return rdoModelObjects::PMD;
+		case  3: return rdoModelObjects::FRM;
+		case  4: return rdoModelObjects::FUN;
+		case  5: return rdoModelObjects::DPT;
+		case  6: return rdoModelObjects::SMR;
+		case  7: return rdoModelObjects::PMD;
 		default: return rdoModelObjects::PAT;
 	}
 }
 
 int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) const
 {
-	switch ( type ) {
+	switch ( type )
+	{
 		case rdoModelObjects::PAT: return 0;
 		case rdoModelObjects::RTP: return 1;
 		case rdoModelObjects::RSS: return 2;
-		case rdoModelObjects::OPR: return 3;
-		case rdoModelObjects::FRM: return 4;
-		case rdoModelObjects::FUN: return 5;
-		case rdoModelObjects::DPT: return 6;
-		case rdoModelObjects::SMR: return 7;
-		case rdoModelObjects::PMD: return 8;
+		case rdoModelObjects::FRM: return 3;
+		case rdoModelObjects::FUN: return 4;
+		case rdoModelObjects::DPT: return 5;
+		case rdoModelObjects::SMR: return 6;
+		case rdoModelObjects::PMD: return 7;
 	}
 	return -1;
 }

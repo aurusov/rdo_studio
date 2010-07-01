@@ -1,6 +1,5 @@
 #include "rdo_lib/rdo_parser/pch.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
-#include "rdo_lib/rdo_parser/rdoopr.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
@@ -83,27 +82,13 @@ void RDODPTActivity::addParam(const RDOValue& param)
 	{
 		if (param.src_pos().m_first_line == src_pos().m_first_line)
 		{
-			if (dynamic_cast<RDOOPROperation*>(this))
-			{
-				parser()->error().push_only(param, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pattern->name().c_str(), name().c_str()));
-			}
-			else
-			{
-				parser()->error().push_only(param, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()));
-			}
+			parser()->error().push_only(param, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pattern->name().c_str(), name().c_str()));
 			parser()->error().push_only(m_pattern->src_info(), "См. образец");
 			parser()->error().push_done();
 		}
 		else
 		{
-			if (dynamic_cast<RDOOPROperation*>(this))
-			{
-				parser()->error().error(param, "Имя операции должно заканчиваться двоеточием");
-			}
-			else
-			{
-				parser()->error().error(param, "Имя активности должно заканчиваться двоеточием");
-			}
+			parser()->error().error(param, "Имя активности должно заканчиваться двоеточием");
 		}
 	}
 	rdoRuntime::RDOValue val;
@@ -145,14 +130,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 		ASSERT(keyboard);
 		if (!keyboard->hasHotKey())
 		{
-			if (dynamic_cast<RDOOPROperation*>(this))
-			{
-				parser()->error().push_only( _param_pos, "Для клавиатурной операции должна быть указана клавиша" );
-			}
-			else
-			{
-				parser()->error().push_only( _param_pos, "Для активности должна быть указана клавиша" );
-			}
+			parser()->error().push_only( _param_pos, "Для активности должна быть указана клавиша" );
 			parser()->error().push_only( m_pattern->src_info(), "См. образец" );
 			parser()->error().push_done();
 		}
@@ -222,11 +200,7 @@ void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& 
 			break;
 		}
 		case rdoRuntime::RDOKeyboard::addhk_already : {
-			if ( dynamic_cast<RDOOPROperation*>(this) ) {
-				parser()->error().error( hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()) );
-			} else {
-				parser()->error().error( hotkey_pos, rdo::format("Для активности '%s' клавиша уже назначена", src_text().c_str()) );
-			}
+			parser()->error().error( hotkey_pos, rdo::format("Для активности '%s' клавиша уже назначена", src_text().c_str()) );
 			break;
 		}
 		case rdoRuntime::RDOKeyboard::addhk_notfound: {
