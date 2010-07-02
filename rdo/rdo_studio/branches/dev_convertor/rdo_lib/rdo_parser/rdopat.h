@@ -40,6 +40,29 @@ class RDOPATChoiceFrom;
 class RDOPATChoiceOrder;
 class RDORelevantResource;
 
+struct PosCorrection
+{
+	int line;
+	int column;
+	PosCorrection::PosCorrection(int pLine, int pColumn):
+		line(pLine),
+		column(pColumn)
+	{}
+};
+
+enum TypeCorrection {Semicolon = 0, LeftComment, RightComment, Equality};
+
+OBJECT(Correction)
+{
+public:
+	PosCorrection  pos;
+	TypeCorrection type;
+	Correction::Correction(int pLine, int pColumn, TypeCorrection pType):
+		pos(pLine, pColumn),
+		type(pType)
+	{}
+};
+
 // ----------------------------------------------------------------------------
 // ---------- ConvertCmdList
 // ----------------------------------------------------------------------------
@@ -47,6 +70,17 @@ OBJECT(ConvertCmdList)
 {
 DECLARE_FACTORY(ConvertCmdList);
 public:
+	typedef std::vector<LPCorrection> CorrectionList;
+
+	void insertCorrection(CREF(LPCorrection) pCorrection)
+	{
+		m_correctionList.push_back(pCorrection);
+	}
+	CREF(CorrectionList) corrections() const
+	{
+		return m_correctionList;
+	}
+
 	typedef std::vector<rdoRuntime::LPRDOCalc> CalcList;
 
 	void insertCommand(CREF(rdoRuntime::LPRDOCalc) pCalc)
@@ -59,7 +93,8 @@ public:
 	}
 
 private:
-	CalcList m_calcList;
+	CalcList       m_calcList;
+	CorrectionList m_correctionList;
 };
 
 // ----------------------------------------------------------------------------

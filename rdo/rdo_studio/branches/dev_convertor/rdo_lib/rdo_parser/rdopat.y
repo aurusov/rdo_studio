@@ -1475,6 +1475,37 @@ pat_convert_cmd
 		pCmdList->insertCommand(pCalc);
 		$$ = PARSER->stack().push(pCmdList);
 	}
+	| pat_convert_cmd statement_old_style
+	{
+		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
+		YYLTYPE          statement_pos = @2;
+		statement_pos.last_line++;
+		statement_pos.last_column++;
+		LPCorrection     pCorrection = new Correction(statement_pos.last_line, statement_pos.last_column, Semicolon);
+		pCmdList->insertCorrection(pCorrection);
+		$$ = PARSER->stack().push(pCmdList);
+		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает точки с запятой"), statement_pos.last_line, statement_pos.last_column));
+	}
+	;
+
+statement_old_style
+	: nochange_statement_old_style
+	| equal_statement_old_style
+	;
+
+nochange_statement_old_style
+	: RDO_IDENTIF_NoChange
+	;
+
+equal_statement_old_style
+	: RDO_IDENTIF increment_or_decrement_type
+	{
+		$$ = $2;
+	}
+	| RDO_IDENTIF param_equal_type fun_arithm
+	{
+		$$ = $3;
+	}
 	;
 
 statement
