@@ -1479,9 +1479,7 @@ pat_convert_cmd
 	{
 		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
 		YYLTYPE          statement_pos = @2;
-		statement_pos.last_line++;
-		statement_pos.last_column++;
-		LPCorrection     pCorrection = new Correction(statement_pos.last_line, statement_pos.last_column, Semicolon);
+		LPCorrection     pCorrection = new Correction(++statement_pos.last_line, ++statement_pos.last_column, Semicolon);
 		pCmdList->insertCorrection(pCorrection);
 		$$ = PARSER->stack().push(pCmdList);
 		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает точки с запятой"), statement_pos.last_line, statement_pos.last_column));
@@ -2218,6 +2216,12 @@ fun_logic_eq
 fun_logic
 	: fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
 	| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
+	| fun_arithm  '='           fun_arithm
+	{
+		YYLTYPE          equal_pos = @2;
+		LPCorrection     pCorrection = new Correction(++equal_pos.last_line, ++equal_pos.last_column, Equality);
+		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает знака равенства"), equal_pos.last_line, equal_pos.last_column));
+	}
 	| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
 	| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }
 	| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(ARITHM($1) <= ARITHM($3));  }
