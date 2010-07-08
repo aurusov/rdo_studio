@@ -91,21 +91,22 @@ RDOParserContainerModel::RDOParserContainerModel(PTR(RDOParser) parser)
 	insert(rdoModelObjects::obPRE, new RDOParserSTDFUN(m_parser));
 	insert(rdoModelObjects::obPRE, new RDOParserRDOItem(m_parser, rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 	insert(rdoModelObjects::obRTP, new RDOParserRDOItem(m_parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex));
-	insert(rdoModelObjects::obRTP, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
+	insert(rdoModelObjects::obRTP, new RDOParserRDOItem(m_parser, rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjects::obRTP, new RDOParserCorbaRTP(m_parser));
 #endif
 	insert(rdoModelObjects::obRSS, new RDOParserRSS(m_parser));
-	insert(rdoModelObjects::obRSS, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex));
+	insert(rdoModelObjects::obRSS, new RDOParserRDOItem(m_parser, rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjects::obRSS, new RDOParserCorbaRSS(m_parser));
 #endif
 	insert(rdoModelObjects::obFUN, new RDOParserRDOItem(m_parser, rdoModelObjects::FUN, funparse, funerror, funlex));
-	insert(rdoModelObjects::obPAT, new RDOParserRDOItem(m_parser, rdoModelObjects::PAT, pat_preparse_parse, pat_preparse_error, pat_preparse_lex));
+	insert(rdoModelObjects::obEVN, new RDOParserRDOItem(m_parser, rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	insert(rdoModelObjects::obEVN, new RDOParserRDOItem(m_parser, rdoModelObjects::EVN, evnparse, evnerror, evnlex));
 	insert(rdoModelObjects::obPAT, new RDOParserRDOItem(m_parser, rdoModelObjects::PAT, patparse, paterror, patlex));
-	insert(rdoModelObjects::obPAT, new RDOParserPATPost(m_parser));
-	insert(rdoModelObjects::obDPT, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_opr_parse, proc_opr_error, proc_opr_lex));
+	insert(rdoModelObjects::obEVN, new RDOParserEVNPost(m_parser));
 	insert(rdoModelObjects::obDPT, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, dptparse, dpterror, dptlex));
+	insert(rdoModelObjects::obPRC, new RDOParserRDOItem(m_parser, rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
 	insert(rdoModelObjects::obPMD, new RDOParserRDOItem(m_parser, rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
 	insert(rdoModelObjects::obFRM, new RDOParserRDOItem(m_parser, rdoModelObjects::FRM, frmparse, frmerror, frmlex));
 	insert(rdoModelObjects::obSMR, new RDOParserRSSPost(m_parser));

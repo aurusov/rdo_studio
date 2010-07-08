@@ -32,12 +32,14 @@ RDOThreadRepository::RDOThreadRepository()
 	notifies.push_back(RT_RUNTIME_TRACE_STRING              );
 
 	m_files.resize(11);
-	m_files[rdoModelObjects::PAT].extention = _T(".pat");
 	m_files[rdoModelObjects::RTP].extention = _T(".rtp");
 	m_files[rdoModelObjects::RSS].extention = _T(".rss");
+	m_files[rdoModelObjects::EVN].extention = _T(".evn");
+	m_files[rdoModelObjects::PAT].extention = _T(".pat");
+	m_files[rdoModelObjects::DPT].extention = _T(".dpt");
+	m_files[rdoModelObjects::PRC].extention = _T(".prc");
 	m_files[rdoModelObjects::FRM].extention = _T(".frm");
 	m_files[rdoModelObjects::FUN].extention = _T(".fun");
-	m_files[rdoModelObjects::DPT].extention = _T(".dpt");
 	m_files[rdoModelObjects::SMR].extention = _T(".smr");
 	m_files[rdoModelObjects::PMD].extention = _T(".pmd");
 	m_files[rdoModelObjects::PMV].extention = _T(".pmv");
@@ -171,33 +173,39 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 	kernel->simulator()->parseSMRFileInfo(smrStream, fileInfo);
 	if ( !fileInfo.error )
 	{
-		m_files[rdoModelObjects::PAT].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
  		m_files[rdoModelObjects::RTP].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
  		m_files[rdoModelObjects::RSS].filename = fileInfo.resource_file.empty()  ? m_files[rdoModelObjects::SMR].filename : fileInfo.resource_file;
+		m_files[rdoModelObjects::EVN].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
+		m_files[rdoModelObjects::PAT].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
+ 		m_files[rdoModelObjects::DPT].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
+ 		m_files[rdoModelObjects::PRC].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
  		m_files[rdoModelObjects::FRM].filename = fileInfo.frame_file.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.frame_file;
  		m_files[rdoModelObjects::FUN].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
- 		m_files[rdoModelObjects::DPT].filename = fileInfo.model_name.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.model_name;
  		m_files[rdoModelObjects::PMD].filename = fileInfo.statistic_file.empty() ? m_files[rdoModelObjects::SMR].filename : fileInfo.statistic_file;
  		m_files[rdoModelObjects::PMV].filename = fileInfo.results_file.empty()   ? m_files[rdoModelObjects::SMR].filename : fileInfo.results_file;
  		m_files[rdoModelObjects::TRC].filename = fileInfo.trace_file.empty()     ? m_files[rdoModelObjects::SMR].filename : fileInfo.trace_file;
 
-		m_files[rdoModelObjects::PAT].described = !fileInfo.model_name.empty();
 		m_files[rdoModelObjects::RTP].described = !fileInfo.model_name.empty();
 		m_files[rdoModelObjects::RSS].described = !fileInfo.resource_file.empty();
+		m_files[rdoModelObjects::EVN].described = !fileInfo.model_name.empty();
+		m_files[rdoModelObjects::PAT].described = !fileInfo.model_name.empty();
+		m_files[rdoModelObjects::DPT].described = !fileInfo.model_name.empty(); // !m_files[rdoModelObjects::OPR].described;
+		m_files[rdoModelObjects::PRC].described = !fileInfo.model_name.empty(); // !m_files[rdoModelObjects::OPR].described;
 		m_files[rdoModelObjects::FRM].described = !fileInfo.frame_file.empty();
 		m_files[rdoModelObjects::FUN].described = !fileInfo.model_name.empty();
-		m_files[rdoModelObjects::DPT].described = !fileInfo.model_name.empty(); // !m_files[rdoModelObjects::OPR].described;
 		m_files[rdoModelObjects::SMR].described = true;
 		m_files[rdoModelObjects::PMD].described = !fileInfo.statistic_file.empty();
 		m_files[rdoModelObjects::PMV].described = !fileInfo.results_file.empty();
 		m_files[rdoModelObjects::TRC].described = !fileInfo.trace_file.empty();
 
-		m_files[rdoModelObjects::PAT].mustexist = true;
-		m_files[rdoModelObjects::RTP].mustexist = true;
-		m_files[rdoModelObjects::RSS].mustexist = true;
+		m_files[rdoModelObjects::RTP].mustexist = false;
+		m_files[rdoModelObjects::RSS].mustexist = false;
+		m_files[rdoModelObjects::EVN].mustexist = false;
+		m_files[rdoModelObjects::PAT].mustexist = false;
+		m_files[rdoModelObjects::DPT].mustexist = false; // m_files[rdoModelObjects::DPT].described;
+		m_files[rdoModelObjects::PRC].mustexist = false;
 		m_files[rdoModelObjects::FRM].mustexist = !fileInfo.frame_file.empty();
 		m_files[rdoModelObjects::FUN].mustexist = false;
-		m_files[rdoModelObjects::DPT].mustexist = false; // m_files[rdoModelObjects::DPT].described;
 		m_files[rdoModelObjects::SMR].mustexist = true;
 		m_files[rdoModelObjects::PMD].mustexist = !fileInfo.statistic_file.empty();
 		m_files[rdoModelObjects::PMV].mustexist = false;

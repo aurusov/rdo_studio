@@ -641,12 +641,14 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 		if ( tab ) {
 			rdoModelObjects::RDOFileType edit_type;
 			switch ( file_type ) {
-				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
 				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
 				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
+				case rdoPlugin::EVN: edit_type = rdoModelObjects::EVN; break;
+				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
+				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
+				case rdoPlugin::PRC: edit_type = rdoModelObjects::PRC; break;
 				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
 				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
-				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
 				case rdoPlugin::SMR: edit_type = rdoModelObjects::SMR; break;
 				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
 				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;
@@ -674,12 +676,14 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 		if ( tab ) {
 			rdoModelObjects::RDOFileType edit_type;
 			switch ( file_type ) {
-				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
 				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
 				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
+				case rdoPlugin::EVN: edit_type = rdoModelObjects::EVN; break;
+				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
+				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
+				case rdoPlugin::PRC: edit_type = rdoModelObjects::PRC; break;
 				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
 				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
-				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
 				case rdoPlugin::SMR: edit_type = rdoModelObjects::SMR; break;
 				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
 				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;

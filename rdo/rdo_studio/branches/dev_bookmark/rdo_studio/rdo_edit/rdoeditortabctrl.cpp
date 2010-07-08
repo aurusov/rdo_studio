@@ -50,33 +50,41 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	RDOEditorEdit* page6  = new RDOEditorEdit( view );
 	RDOEditorEdit* page7  = new RDOEditorEdit( view );
 	RDOEditorEdit* page8  = new RDOEditorEdit( view );
+	RDOEditorEdit* page9  = new RDOEditorEdit( view );
+	RDOEditorEdit* page10 = new RDOEditorEdit( view );
 
-	page1->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page2->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page3->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page4->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page5->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page6->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page7->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page1->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page2->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page3->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page4->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page5->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page6->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page7->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page8->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page9->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	page10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
-	page1->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page2->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page3->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page4->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page5->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page6->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page7->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page8->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page1->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page2->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page3->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page4->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page5->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page6->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page7->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page8->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page9->setEditorStyle ( &studioApp.mainFrame->style_editor );
+	page10->setEditorStyle( &studioApp.mainFrame->style_editor );
 
-	page1->setPopupMenu( &view->popupMenu );
-	page2->setPopupMenu( &view->popupMenu );
-	page3->setPopupMenu( &view->popupMenu );
-	page4->setPopupMenu( &view->popupMenu );
-	page5->setPopupMenu( &view->popupMenu );
-	page6->setPopupMenu( &view->popupMenu );
-	page7->setPopupMenu( &view->popupMenu );
-	page8->setPopupMenu( &view->popupMenu );
+	page1->setPopupMenu ( &view->popupMenu );
+	page2->setPopupMenu ( &view->popupMenu );
+	page3->setPopupMenu ( &view->popupMenu );
+	page4->setPopupMenu ( &view->popupMenu );
+	page5->setPopupMenu ( &view->popupMenu );
+	page6->setPopupMenu ( &view->popupMenu );
+	page7->setPopupMenu ( &view->popupMenu );
+	page8->setPopupMenu ( &view->popupMenu );
+	page9->setPopupMenu ( &view->popupMenu );
+	page10->setPopupMenu( &view->popupMenu );
 
 	group.insert( page1 );
 	group.insert( page2 );
@@ -86,26 +94,32 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	group.insert( page6 );
 	group.insert( page7 );
 	group.insert( page8 );
+	group.insert( page9 );
+	group.insert( page10);
 	page1->setGroup( &group );
 
-	page2->setGroup( &group );
-	page3->setGroup( &group );
-	page4->setGroup( &group );
-	page5->setGroup( &group );
-	page6->setGroup( &group );
-	page7->setGroup( &group );
-	page8->setGroup( &group );
+	page2->setGroup ( &group );
+	page3->setGroup ( &group );
+	page4->setGroup ( &group );
+	page5->setGroup ( &group );
+	page6->setGroup ( &group );
+	page7->setGroup ( &group );
+	page8->setGroup ( &group );
+	page9->setGroup ( &group );
+	page10->setGroup( &group );
 
-	insertItem( page1, "PAT" );
-	insertItem( page2, "RTP" );
-	insertItem( page3, "RSS" );
-	insertItem( page4, "FRM" );
-	insertItem( page5, "FUN" );
-	insertItem( page6, "DPT" );
-	insertItem( page7, "SMR" );
-	insertItem( page8, "PMD" );
+	insertItem( page1 , "RTP" );
+	insertItem( page2 , "RSS" );
+	insertItem( page3 , "EVN" );
+	insertItem( page4 , "PAT" );
+	insertItem( page5 , "DPT" );
+	insertItem( page6 , "PRC" );
+	insertItem( page7 , "FRM" );
+	insertItem( page8 , "FUN" );
+	insertItem( page9 , "SMR" );
+	insertItem( page10, "PMD" );
 
-	setCurrentRDOItem( rdoModelObjects::PAT );
+	setCurrentRDOItem( rdoModelObjects::RTP );
 
 	return 0;
 }
@@ -114,14 +128,16 @@ rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) co
 {
 	switch ( index )
 	{
-		case  0: return rdoModelObjects::PAT;
-		case  1: return rdoModelObjects::RTP;
-		case  2: return rdoModelObjects::RSS;
-		case  3: return rdoModelObjects::FRM;
-		case  4: return rdoModelObjects::FUN;
-		case  5: return rdoModelObjects::DPT;
-		case  6: return rdoModelObjects::SMR;
-		case  7: return rdoModelObjects::PMD;
+		case  0: return rdoModelObjects::RTP;
+		case  1: return rdoModelObjects::RSS;
+		case  2: return rdoModelObjects::EVN;
+		case  3: return rdoModelObjects::PAT;
+		case  4: return rdoModelObjects::DPT;
+		case  5: return rdoModelObjects::PRC;
+		case  6: return rdoModelObjects::FRM;
+		case  7: return rdoModelObjects::FUN;
+		case  8: return rdoModelObjects::SMR;
+		case  9: return rdoModelObjects::PMD;
 		default: return rdoModelObjects::PAT;
 	}
 }
@@ -130,14 +146,16 @@ int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) con
 {
 	switch ( type )
 	{
-		case rdoModelObjects::PAT: return 0;
-		case rdoModelObjects::RTP: return 1;
-		case rdoModelObjects::RSS: return 2;
-		case rdoModelObjects::FRM: return 3;
-		case rdoModelObjects::FUN: return 4;
-		case rdoModelObjects::DPT: return 5;
-		case rdoModelObjects::SMR: return 6;
-		case rdoModelObjects::PMD: return 7;
+		case rdoModelObjects::RTP: return 0;
+		case rdoModelObjects::RSS: return 1;
+		case rdoModelObjects::EVN: return 2;
+		case rdoModelObjects::PAT: return 3;
+		case rdoModelObjects::DPT: return 4;
+		case rdoModelObjects::PRC: return 5;
+		case rdoModelObjects::FRM: return 6;
+		case rdoModelObjects::FUN: return 7;
+		case rdoModelObjects::SMR: return 8;
+		case rdoModelObjects::PMD: return 9;
 	}
 	return -1;
 }
