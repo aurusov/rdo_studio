@@ -65,12 +65,12 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserPATPost
+// ---------- RDOParserEVNPost
 // ----------------------------------------------------------------------------
-class RDOParserPATPost: public RDOParserItem
+class RDOParserEVNPost: public RDOParserItem
 {
 public:
-	RDOParserPATPost(PTR(RDOParser) parser)
+	RDOParserEVNPost(PTR(RDOParser) parser)
 		: RDOParserItem(parser, rdoModelObjects::PAT, NULL, NULL, NULL)
 	{}
 	virtual void parse();

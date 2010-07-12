@@ -140,9 +140,9 @@ void RDOParserRSSPost::parse()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserPATPost
+// ---------- RDOParserEVNPost
 // ----------------------------------------------------------------------------
-void RDOParserPATPost::parse()
+void RDOParserEVNPost::parse()
 {
 	//! ѕозднее св€зывание дл€ планировани€ событий
 	STL_FOR_ALL_CONST(RDOParser::EventList, m_parser->getEvents(), eventIt)

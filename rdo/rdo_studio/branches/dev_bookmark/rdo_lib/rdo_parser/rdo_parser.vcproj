@@ -928,6 +928,94 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="rdoevn.y"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pevn --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogramevn.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pevn --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogramevn.cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdoevn_preparse.y"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pevn_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogramevn_preparse.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pevn_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogramevn_preparse.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogrampat_preparse.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogrampat_preparse.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogrampat_preparse.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="rdogrampat_preparse.cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="rdofrm.y"
 				>
 				<FileConfiguration
@@ -1116,70 +1204,6 @@
 						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogrampat.cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\rdopat_preparse.y"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogrampat_preparse.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogrampat_preparse.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogrampat_preparse.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogrampat_preparse.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogrampat_preparse.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release MT|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -ppat_preparse_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogrampat_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="rdogrampat_preparse.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1763,6 +1787,134 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="rdogramevn.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdogramevn_preparse.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="rdogramfrm.cpp"
 					>
 					<FileConfiguration
@@ -1957,58 +2109,6 @@
 							Name="VCCLCompilerTool"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\rdogrampat_preparse.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"
 						/>
 					</FileConfiguration>
