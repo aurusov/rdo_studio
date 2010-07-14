@@ -228,21 +228,20 @@ OPEN_RDO_PARSER_NAMESPACE
 %left RDO_not
 %left RDO_UMINUS
 
-%start dptrtp_main
+%start prc_rss_main
 
 %%
 
 // ----------------------------------------------------------------------------
-// ---------- GENERAL PART
+// ---------- General part
 // ----------------------------------------------------------------------------
-dptrtp_main:
-	| dptrtp_main RDO_Decision_point error RDO_End /* заглушка для $Decision_point */
-	| dptrtp_main RDO_Activities error RDO_End     /* заглушка для $Activities     */
-	| dptrtp_main dpt_process_end
+prc_rss_main
+	: /* empty */
+	| prc_rss_main dpt_process_end
 	;
 
 // ----------------------------------------------------------------------------
-// ---------- PROCESS
+// ---------- Process
 // ----------------------------------------------------------------------------
 dpt_process
 	: dpt_process_header dpt_process_input

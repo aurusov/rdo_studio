@@ -405,6 +405,7 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 		// ¬озможно, это релевантный ресурс
 		switch ( parser()->getFileToParse() )
 		{
+			case rdoModelObjects::EVN:
 			case rdoModelObjects::PAT:
 			{
 				if ( parser()->getLastPATPattern() && parser()->getLastPATPattern()->findRelevantResource( res_name->getIdentificator() ) )
@@ -495,7 +496,8 @@ void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 							{
 								if (!pat->m_pCurrRelRes->getParamSetList().find( par_name->getIdentificator()))
 								{
-									if ( !param->getDefault().defined() ) {
+									if ( !param->getDefault().defined() )
+									{
 										parser()->error().error( par_name.src_info(), rdo::format("ѕараметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name->getIdentificator().c_str()) );
 									}
 								}

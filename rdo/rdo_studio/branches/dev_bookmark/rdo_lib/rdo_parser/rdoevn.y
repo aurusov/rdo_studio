@@ -1,9 +1,9 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2010
  * filename : rdoevn.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
+ * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
+ * date     : 12.07.2010
+ * bref     : закладка EVN - описание событий модели
  * indent   : 4T
  */
 
@@ -247,12 +247,7 @@ pat_main
 	;
 
 pat_header
-	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace 
-	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternOperation(PARSER, name->src_info(), $4 != 0);
-	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
+	: RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
 		$$ = (int)new RDOPatternIrregEvent(PARSER, name->src_info(), $4 != 0);
@@ -261,16 +256,6 @@ pat_header
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
 		$$ = (int)new RDOPatternEvent(PARSER, name->src_info(), $4 != 0);
-	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
-	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternRule(PARSER, name->src_info(), $4 != 0);
-	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace
-	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternKeyboard(PARSER, name->src_info(), $4 != 0);
 	}
 	| RDO_Pattern error
 	{
