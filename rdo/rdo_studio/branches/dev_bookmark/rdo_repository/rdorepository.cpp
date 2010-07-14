@@ -31,7 +31,7 @@ RDOThreadRepository::RDOThreadRepository()
 	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
 	notifies.push_back(RT_RUNTIME_TRACE_STRING              );
 
-	m_files.resize(11);
+	m_files.resize(12);
 	m_files[rdoModelObjects::RTP].extention = _T(".rtp");
 	m_files[rdoModelObjects::RSS].extention = _T(".rss");
 	m_files[rdoModelObjects::EVN].extention = _T(".evn");
