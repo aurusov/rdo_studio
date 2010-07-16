@@ -310,6 +310,10 @@ planning			return(RDO_Planning);
 Planning			return(RDO_Planning);
 stopping			return(RDO_Stopping);
 Stopping			return(RDO_Stopping);
+start				return(RDO_Start);
+Start				return(RDO_Start);
+stop				return(RDO_Stop);
+Stop				return(RDO_Stop);
 
 (\'[^\']*\') {
 	std::string n1(YYText());
