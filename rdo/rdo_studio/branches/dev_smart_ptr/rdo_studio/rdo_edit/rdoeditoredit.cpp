@@ -916,7 +916,6 @@ void RDOEditorEdit::OnHelpKeyword()
 				case rdoModelObjects::PAT: keyword = "pat"; break;
 				case rdoModelObjects::RTP: keyword = "rtp"; break;
 				case rdoModelObjects::RSS: keyword = "rss"; break;
-				case rdoModelObjects::OPR: keyword = "opr"; break;
 				case rdoModelObjects::FRM: keyword = "frm"; break;
 				case rdoModelObjects::FUN: keyword = "fun"; break;
 				case rdoModelObjects::DPT: keyword = "dpt"; break;
