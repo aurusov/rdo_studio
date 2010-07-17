@@ -272,12 +272,13 @@ rss_resources
 rss_res_descr
 	: rss_res_type rss_trace rss_values
 	{
-		RDORSSResource* res = reinterpret_cast<RDORSSResource*>($1);
-		if (!res->defined())
+		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
+		ASSERT(pResource);
+		if (!pResource->defined())
 		{
-			PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: %s", res->name().c_str()));
+			PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
 		}
-		res->setTrace( $2 != 0 );
+		pResource->setTrace($2 != 0);
 	}
 	;
 
@@ -291,14 +292,15 @@ rss_res_type
 		{
 			PARSER->error().error( @2, rdo::format("Неизвестный тип ресурса: %s", type->value().getIdentificator().c_str()) );
 		}
-		const RDORSSResource* res = PARSER->findRSSResource( name->value().getIdentificator() );
-		if ( res )
+		LPRDORSSResource pResourceExist = PARSER->findRSSResource( name->value().getIdentificator() );
+		if (pResourceExist)
 		{
-			PARSER->error().push_only( name->src_info(), rdo::format( "Ресурс '%s' уже существует", name->value().getIdentificator().c_str()) );
-			PARSER->error().push_only( res->src_info(), "См. первое определение" );
+			PARSER->error().push_only(name->src_info(), rdo::format(_T("Ресурс '%s' уже существует"), name->value().getIdentificator().c_str()));
+			PARSER->error().push_only(pResourceExist->src_info(), _T("См. первое определение"));
 			PARSER->error().push_done();
 		}
-		$$ = (int)new RDORSSResource( PARSER, name->src_info(), resType );
+		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(PARSER, name->src_info(), resType);
+		$$ = PARSER->stack().push(pResource);
 	}
 	| RDO_IDENTIF_COLON error
 	{

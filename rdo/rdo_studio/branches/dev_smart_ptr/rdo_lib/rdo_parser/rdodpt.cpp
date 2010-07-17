@@ -515,7 +515,7 @@ rdoMBuilder::RDOResType RDOPROCBlockForQueue::createType( RDOParser *parser, con
 // ----------------------------------------------------------------------------
 void RDOPROCQueue::create_runtime_Queue(RDOParser *parser)
 {
-	CPTR(RDORSSResource) rss = parser->findRSSResource(Res);
+	LPRDORSSResource rss = parser->findRSSResource(Res);
 	if (rss)
 	{
 		const tstring res_name = rss->name();
@@ -539,7 +539,7 @@ void RDOPROCQueue::create_runtime_Queue(RDOParser *parser)
 // ----------------------------------------------------------------------------
 void RDOPROCDepart::create_runtime_Depart( RDOParser *parser )
 {
-	const RDORSSResource* rss = parser->findRSSResource( Res );
+	LPRDORSSResource rss = parser->findRSSResource( Res );
 	if( rss ){
 		const std::string res_name = rss->name();
 		// Получили список всех ресурсов
@@ -641,7 +641,7 @@ void RDOPROCSeize::create_runtime_Seize ( RDOParser *parser )
 	while ( it != Resources.end() ) 
 	{
 		std::string aaa = *it;
-		const RDORSSResource* rss = parser->findRSSResource((*it));
+		LPRDORSSResource rss = parser->findRSSResource((*it));
 		if ( rss )
 		{
 			const std::string res_name = rss->name();
@@ -688,7 +688,7 @@ void RDOPROCRelease::create_runtime_Release ( RDOParser *parser )
 	while ( it != Resources.end() ) 
 	{
 		std::string aaa = *it;
-		const RDORSSResource* rss = parser->findRSSResource((*it));
+		LPRDORSSResource rss = parser->findRSSResource((*it));
 		if ( rss )
 		{
 			const std::string res_name = rss->name();

@@ -411,7 +411,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 	}
 
 	LPRDORelevantResource pRelevantResource;
-	CPTRC(RDORSSResource) res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		switch (beg)
@@ -517,7 +517,7 @@ void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserS
 	}
 
 	LPRDORelevantResource pRelevantResource;
-	CPTRC(RDORSSResource) res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		switch (beg)
@@ -599,7 +599,7 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	}
 
 	LPRDORelevantResource pRelevantResource;
-	CPTRC(RDORSSResource) res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		if (beg == rdoRuntime::RDOResource::CS_Create)
@@ -714,7 +714,7 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	};
 
 	LPRDORelevantResource pRelevantResource;
-	CPTRC(RDORSSResource) res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		if (beg == rdoRuntime::RDOResource::CS_Create)

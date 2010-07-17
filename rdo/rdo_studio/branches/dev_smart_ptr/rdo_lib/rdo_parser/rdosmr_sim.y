@@ -428,22 +428,22 @@ smr_cond
 	}
 	| smr_cond RDO_IDENTIF '.' error
 	{
-		std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-		const RDORSSResource* res = PARSER->findRSSResource( name );
-		if ( res )
+		tstring name = RDOVALUE($2).value().getIdentificator();
+		LPRDORSSResource pResource = PARSER->findRSSResource(name);
+		if (pResource)
 		{
-			PARSER->error().error( @3, @4, "Ожидается параметр" );
+			PARSER->error().error(@3, @4, _T("Ожидается параметр"));
 		}
 		else
 		{
-			const RDOFUNSequence* seq = PARSER->findFUNSequence( name );
-			if ( seq )
+			CPTR(RDOFUNSequence) pSequence = PARSER->findFUNSequence(name);
+			if (pSequence)
 			{
-				PARSER->error().error( @3, @4, "Ожидается ключевое слово Seed" );
+				PARSER->error().error(@3, @4, _T("Ожидается ключевое слово Seed"));
 			}
 			else
 			{
-				PARSER->error().error( @2, "Неизвестный параметр или последовательность" );
+				PARSER->error().error(@2, _T("Неизвестный параметр или последовательность"));
 			}
 		}
 	}

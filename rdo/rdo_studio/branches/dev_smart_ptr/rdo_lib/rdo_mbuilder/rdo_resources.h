@@ -202,7 +202,7 @@ private:
 MBUILDER_OBJECT(RDOResource)
 public:
 	// ѕроинициализировать по существующему ресурсу
-	RDOResource(CREF(rdoParse::RDORSSResource) rss);
+	RDOResource(CREF(rdoParse::LPRDORSSResource) rss);
 	// —оздать новый ресурс
 	RDOResource(CREF(RDOResType) rtp, CREF(tstring) name);
 
@@ -218,25 +218,26 @@ public:
 	REF(Params::mapped_type)   operator[] (CREF(tstring) param);
 	Params::const_iterator     operator[] (CREF(tstring) param) const;
 
-	CPTR(rdoParse::RDORSSResource) getParserResource(CREF(rdoParse::RDOParser) parser) const;
+	rdoParse::LPRDORSSResource getParserResource(CREF(rdoParse::RDOParser) parser) const;
 
 	template <class T>
 	rbool checkParserResourceType(CREF(rdoParse::RDOParser) parser) const
 	{
-		return dynamic_cast<CPTR(T)>(getParserResource(parser)) != NULL;
+		rdoParse::LPRDORSSResource pResource = getParserResource(parser);
+		return pResource.object_dynamic_cast<T>();
 	}
 
 	template <class T>
-	PTR(rdoParse::RDORSSResource) createParserResource(REF(rdoParse::RDOParser) parser, rsint id = rdoParse::RDORSSResource::UNDEFINED_ID) const
+	rdoParse::LPRDORSSResource createParserResource(REF(rdoParse::RDOParser) parser, rsint id = rdoParse::RDORSSResource::UNDEFINED_ID) const
 	{
 		rdoParse::LPRDORTPResType pRTP = parser.findRTPResType(getType().name());
 		if (!pRTP)
 			return NULL;
 
-		return new T(&parser, RDOParserSrcInfo(name()), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
+		return rdo::Factory<T>::create(&parser, RDOParserSrcInfo(name()), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
 
-	rbool fillParserResourceParams(PTR(rdoParse::RDORSSResource) toParserRSS) const;
+	rbool fillParserResourceParams(REF(rdoParse::LPRDORSSResource) pToParserRSS) const;
 
 private:
 	RDOResType  m_rtp;
@@ -270,19 +271,17 @@ public:
 		if (exist(mbuilderRSS.name()))
 			return false;
 
-		std::auto_ptr<rdoParse::RDORSSResource> parserRSS(mbuilderRSS.createParserResource<T>(*m_parser));
-		if (!parserRSS.get())
+		rdoParse::LPRDORSSResource parserRSS(mbuilderRSS.createParserResource<T>(*m_parser));
+		if (!parserRSS)
 			return false;
-		if (!mbuilderRSS.fillParserResourceParams(parserRSS.get()))
+		if (!mbuilderRSS.fillParserResourceParams(parserRSS))
 			return false;
 
-		parserRSS.get()->setTrace(true);
+		parserRSS->setTrace(true);
 
 		mbuilderRSS.m_exist = true;
 		m_list.push_back(mbuilderRSS);
 
-		//! —нимаем моникер на парсер-ресурс, чтобы он не удалилс€ при выходе
-		parserRSS.release();
 		return true;
 	}
 	// --------------------------------------------------------------------
@@ -294,15 +293,15 @@ public:
 		if (mbuilderRSSPrevIt == end())
 			return false;
 
-		CPTR(rdoParse::RDORSSResource) parserRSSPrev = mbuilderRSSPrevIt->getParserResource(*m_parser);
+		rdoParse::LPRDORSSResource parserRSSPrev = mbuilderRSSPrevIt->getParserResource(*m_parser);
 		ASSERT(parserRSSPrev);
 
-		std::auto_ptr<rdoParse::RDORSSResource> parserRSSNew(mbuilderRSSNew.createParserResource<T>(*m_parser, mbuilderRSSPrevIt->getID()));
-		if (!parserRSSNew.get())
+		rdoParse::LPRDORSSResource parserRSSNew(mbuilderRSSNew.createParserResource<T>(*m_parser, mbuilderRSSPrevIt->getID()));
+		if (!parserRSSNew)
 			return false;
-		if (!mbuilderRSSPrevIt->fillParserResourceParams(parserRSSNew.get()))
+		if (!mbuilderRSSPrevIt->fillParserResourceParams(parserRSSNew))
 			return false;
-		parserRSSNew.get()->setTrace(parserRSSPrev->getTrace());
+		parserRSSNew->setTrace(parserRSSPrev->getTrace());
 		mbuilderRSSNew.m_exist = true;
 		m_list.push_back(mbuilderRSSNew);
 
@@ -310,8 +309,6 @@ public:
 		m_parser->removeRSSResource(parserRSSPrev);
 		m_list.erase(mbuilderRSSPrevIt);
 
-		//! —нимаем моникер на парсер-ресурс, чтобы он не удалилс€ при выходе
-		parserRSSNew.release();
 		return true;
 	}
 };

@@ -360,7 +360,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 void RDOFUNArithm::init(CREF(RDOValue) res_name, CREF(RDOValue) par_name)
 {
 	setSrcInfo( res_name.src_info(), ".", par_name.src_info() );
-	const RDORSSResource* const res = parser()->findRSSResource( res_name->getIdentificator() ); 
+	LPRDORSSResource res = parser()->findRSSResource( res_name->getIdentificator() ); 
 	if ( res )
 	{
 		// Это ресурс с закладки RSS

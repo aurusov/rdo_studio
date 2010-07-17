@@ -465,7 +465,7 @@ class RDORelevantResourceDirect: public RDORelevantResource
 {
 DECLARE_FACTORY(RDORelevantResourceDirect)
 public:
-	CPTRC(RDORSSResource) getResource() const { return m_pResource; }
+	LPRDORSSResource getResource() const { return m_pResource; }
 
 	virtual LPRDORTPResType                        getType                             () const;
 	virtual rdoRuntime::LPRDOCalc                  createPreSelectRelResCalc           ();
@@ -475,12 +475,12 @@ public:
 	virtual rbool isDirect() const  { return true; }
 
 private:
-	RDORelevantResourceDirect(CREF(RDOParserSrcInfo) src_info, const int relResID, CPTRC(RDORSSResource) pResource, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
+	RDORelevantResourceDirect(CREF(RDOParserSrcInfo) src_info, const int relResID, CREF(LPRDORSSResource) pResource, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
 		: RDORelevantResource(src_info, relResID, statusBegin, statusEnd)
 		, m_pResource        (pResource)
 	{}
 
-	CPTRC(RDORSSResource) m_pResource;
+	LPRDORSSResource m_pResource;
 };
 
 // ----------------------------------------------------------------------------

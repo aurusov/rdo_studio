@@ -601,11 +601,12 @@ dpt_assign_param
 			RDOFUNArithm*   arithm     = reinterpret_cast<RDOFUNArithm*>($5);
 			if ( arithm ) 
 			{
-				const RDORSSResource* rs = PARSER->findRSSResource( res );
-				LPRDORTPResType rt = rs->getType();
+				LPRDORSSResource pResource = PARSER->findRSSResource(res);
+				ASSERT(pResource);
+				LPRDORTPResType rt = pResource->getType();
 				LPRDORTPParam pr = rt->findRTPParam( param );
 				arithm->checkParamType(pr->getParamType());
-				RDOPROCAssign* assign = new RDOPROCAssign( PARSER->getLastPROCProcess(), "ASSIGN", arithm->createCalc( pr->getParamType() ), rs->getID(), rtp.m_params[param].id() );
+				RDOPROCAssign* assign = new RDOPROCAssign( PARSER->getLastPROCProcess(), "ASSIGN", arithm->createCalc( pr->getParamType() ), pResource->getID(), rtp.m_params[param].id() );
 				$$ = int(assign);
 			}
 		}

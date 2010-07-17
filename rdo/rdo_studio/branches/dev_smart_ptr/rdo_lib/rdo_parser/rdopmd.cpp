@@ -52,7 +52,7 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pokaz)
 RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_src_info, const RDOParserSrcInfo& _par_src_info ):
 	RDOPMDPokaz( _parser, _src_info )
 {
-	const RDORSSResource* const res = parser()->findRSSResource( _res_src_info.src_text() );
+	LPRDORSSResource res = parser()->findRSSResource( _res_src_info.src_text() );
 	if ( !res ) {
 		parser()->error().error( _res_src_info, rdo::format("Ресурс '%s' не найден", _res_src_info.src_text().c_str()) );
 	}

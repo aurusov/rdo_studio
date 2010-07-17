@@ -265,19 +265,19 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 // ---- Инициализация ресурса по существующему в памяти
 // ---- Собирает все параметры существующего в памяти ресурса
 // --------------------------------------------------------------------
-RDOResource::RDOResource(CREF(rdoParse::RDORSSResource) rss)
-	: rdoParse::RDOParserSrcInfo(rss.src_info())
-	, m_name (rss.name()                       )
-	, m_rtp  (rss.getType()                    )
-	, m_exist(true                             )
-	, m_id   (rss.getID()                      )
+RDOResource::RDOResource(CREF(rdoParse::LPRDORSSResource) rss)
+	: rdoParse::RDOParserSrcInfo(rss->src_info())
+	, m_name (rss->name()                       )
+	, m_rtp  (rss->getType()                    )
+	, m_exist(true                              )
+	, m_id   (rss->getID()                      )
 {
-	if (m_rtp.m_params.size() == rss.params().size())
+	if (m_rtp.m_params.size() == rss->params().size())
 	{
 		ruint index = 0;
 		STL_FOR_ALL_CONST(RDOResType::ParamList::List, m_rtp.m_params, param_it)
 		{
-			m_params[param_it->name()] = rss.params()[index].param();
+			m_params[param_it->name()] = rss->params()[index].param();
 			index++;
 		}
 	}
@@ -302,7 +302,7 @@ REF(RDOResource::Params::mapped_type) RDOResource::operator[] (CREF(tstring) par
 	}
 }
 
-CPTR(rdoParse::RDORSSResource) RDOResource::getParserResource(CREF(rdoParse::RDOParser) parser) const
+rdoParse::LPRDORSSResource RDOResource::getParserResource(CREF(rdoParse::RDOParser) parser) const
 {
 	if (!exist())
 		return NULL;
@@ -310,7 +310,7 @@ CPTR(rdoParse::RDORSSResource) RDOResource::getParserResource(CREF(rdoParse::RDO
 	return parser.findRSSResource(name());
 }
 
-rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toParserRSS) const
+rbool RDOResource::fillParserResourceParams(REF(rdoParse::LPRDORSSResource) pToParserRSS) const
 {
 	STL_FOR_ALL_CONST(RDOResType::ParamList::List, getType().m_params, param_it)
 	{
@@ -321,8 +321,8 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toPars
 		rdoParse::RDOValue value(value_it->second);
 		value = param_it->type()->value_cast(value);
 		//! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
-		value.setSrcInfo(toParserRSS->src_info());
-		toParserRSS->addParam(value);
+		value.setSrcInfo(pToParserRSS->src_info());
+		pToParserRSS->addParam(value);
 	}
 	return true;
 }
@@ -361,7 +361,7 @@ RDOResourceList::RDOResourceList(PTR(rdoParse::RDOParser) parser)
 {
 	STL_FOR_ALL_CONST(rdoParse::RDOParser::RSSResourceList, m_parser->getRSSResources(), rss_it)
 	{
-		RDOResource rss(**rss_it);
+		RDOResource rss(*rss_it);
 		m_list.push_back(rss);
 	}
 }

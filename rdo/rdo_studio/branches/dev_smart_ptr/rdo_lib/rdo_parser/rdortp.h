@@ -62,128 +62,128 @@ private:
 };
 DECLARE_POINTER(RDORTPResType);
 
-// ----------------------------------------------------------------------------
-//------------------------------ FOR FUZZY LOGIC ------------------------------	
-// ----------------------------------------------------------------------------
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма
-// ----------------------------------------------------------------------------
-class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPFuzzyMembershiftPoint( RDOParser* _parser, const RDOParserSrcInfo& _src_info, double x_value, double y_value ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo( _src_info),
-		m_x_value( x_value ),
-		m_y_value( y_value )
-		{
-		}
-	virtual ~RDORTPFuzzyMembershiftPoint() {}
-
-	double  getX() const { return m_x_value; }
-	double  getY() const { return m_y_value; }
-
-private:
-	double    m_x_value;
-	double    m_y_value;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности для нечеткого терма
-// ----------------------------------------------------------------------------
-class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
-		RDOParserObject( _parser )
-		{
-		}
-	virtual ~RDORTPFuzzyMembershiftFun() {}
-
-	typedef RDORTPFuzzyMembershiftPoint* Item;
-	typedef std::vector< Item >          Items;
-
-	void add( Item point )
-	{
-		m_points.push_back( point );
-	}
-	double  getVal() const 
-	{ 
-		return m_value; 
-	}
-
-private:
-	Items m_points;	// точки, определяющие ф-ию принадлежности
-	double m_value;	// значение ф-ии принадлежности для конкретного четкого значения
-};
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyTerm - нечеткий термин
-// ----------------------------------------------------------------------------
-class RDORTPFuzzyTerm: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPFuzzyTerm( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDORTPFuzzyMembershiftFun* membersfift_fun):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo( _src_info),
-		m_fun (membersfift_fun)
-		{
-		}
-	virtual ~RDORTPFuzzyTerm() {}
-
-	const	std::string& name()	const	{ return src_info().src_text(); }
-	double  MemberShift()			const	{ return m_fun->getVal(); }
-
-private:
-	RDORTPFuzzyMembershiftFun* m_fun;
-};
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyTermsSet - набор терминов одного параметра
-// ----------------------------------------------------------------------------
-class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPFuzzyTermsSet( RDOParser* _parser )
-		: RDOParserObject( _parser )
-	{
-	}
-	virtual ~RDORTPFuzzyTermsSet() {}
-
-	typedef RDORTPFuzzyTerm*	Item;
-	typedef std::vector< Item >	Items;
-
-	void add( Item term )
-	{
-		m_terms.push_back( term );
-	}
-	rbool empty() const
-	{
-		return m_terms.empty();
-	}
-
-private:
-	Items m_terms; // набор терминов одного параметра
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyParam
-// ----------------------------------------------------------------------------
-class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDORTPFuzzyTermsSet* terms_set ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo( _src_info),
-		m_set (terms_set)
-		{
-		}
-	virtual ~RDORTPFuzzyParam() {}
-
-	const std::string&           name() const       { return src_info().src_text(); }
-
-private:
-	RDORTPFuzzyTermsSet* m_set; // набор терминов параметра
-};
+//// ----------------------------------------------------------------------------
+////------------------------------ FOR FUZZY LOGIC ------------------------------	
+//// ----------------------------------------------------------------------------
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма
+//// ----------------------------------------------------------------------------
+//class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
+//{
+//public:
+//	RDORTPFuzzyMembershiftPoint( RDOParser* _parser, const RDOParserSrcInfo& _src_info, double x_value, double y_value ):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo( _src_info),
+//		m_x_value( x_value ),
+//		m_y_value( y_value )
+//		{
+//		}
+//	virtual ~RDORTPFuzzyMembershiftPoint() {}
+//
+//	double  getX() const { return m_x_value; }
+//	double  getY() const { return m_y_value; }
+//
+//private:
+//	double    m_x_value;
+//	double    m_y_value;
+//};
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности для нечеткого терма
+//// ----------------------------------------------------------------------------
+//class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
+//{
+//public:
+//	RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
+//		RDOParserObject( _parser )
+//		{
+//		}
+//	virtual ~RDORTPFuzzyMembershiftFun() {}
+//
+//	typedef RDORTPFuzzyMembershiftPoint* Item;
+//	typedef std::vector< Item >          Items;
+//
+//	void add( Item point )
+//	{
+//		m_points.push_back( point );
+//	}
+//	double  getVal() const 
+//	{ 
+//		return m_value; 
+//	}
+//
+//private:
+//	Items m_points;	// точки, определяющие ф-ию принадлежности
+//	double m_value;	// значение ф-ии принадлежности для конкретного четкого значения
+//};
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPFuzzyTerm - нечеткий термин
+//// ----------------------------------------------------------------------------
+//class RDORTPFuzzyTerm: public RDOParserObject, public RDOParserSrcInfo
+//{
+//public:
+//	RDORTPFuzzyTerm( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDORTPFuzzyMembershiftFun* membersfift_fun):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo( _src_info),
+//		m_fun (membersfift_fun)
+//		{
+//		}
+//	virtual ~RDORTPFuzzyTerm() {}
+//
+//	const	std::string& name()	const	{ return src_info().src_text(); }
+//	double  MemberShift()			const	{ return m_fun->getVal(); }
+//
+//private:
+//	RDORTPFuzzyMembershiftFun* m_fun;
+//};
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPFuzzyTermsSet - набор терминов одного параметра
+//// ----------------------------------------------------------------------------
+//class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
+//{
+//public:
+//	RDORTPFuzzyTermsSet( RDOParser* _parser )
+//		: RDOParserObject( _parser )
+//	{
+//	}
+//	virtual ~RDORTPFuzzyTermsSet() {}
+//
+//	typedef RDORTPFuzzyTerm*	Item;
+//	typedef std::vector< Item >	Items;
+//
+//	void add( Item term )
+//	{
+//		m_terms.push_back( term );
+//	}
+//	rbool empty() const
+//	{
+//		return m_terms.empty();
+//	}
+//
+//private:
+//	Items m_terms; // набор терминов одного параметра
+//};
+//
+//// ----------------------------------------------------------------------------
+//// ---------- RDORTPFuzzyParam
+//// ----------------------------------------------------------------------------
+//class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
+//{
+//public:
+//	RDORTPFuzzyParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDORTPFuzzyTermsSet* terms_set ):
+//		RDOParserObject( _parser ),
+//		RDOParserSrcInfo( _src_info),
+//		m_set (terms_set)
+//		{
+//		}
+//	virtual ~RDORTPFuzzyParam() {}
+//
+//	const std::string&           name() const       { return src_info().src_text(); }
+//
+//private:
+//	RDORTPFuzzyTermsSet* m_set; // набор терминов параметра
+//};
 
 CLOSE_RDO_PARSER_NAMESPACE
 

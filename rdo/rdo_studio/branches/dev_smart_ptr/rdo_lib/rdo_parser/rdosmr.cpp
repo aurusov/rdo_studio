@@ -134,7 +134,7 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 
 void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, RDOFUNArithm* arithm )
 {
-	const RDORSSResource* res = parser()->findRSSResource( res_info.src_text() );
+	LPRDORSSResource res = parser()->findRSSResource( res_info.src_text() );
 	if ( !res ) {
 		parser()->error().error( res_info.src_info(), rdo::format("Ресурс '%s' не найден", res_info.src_text().c_str()) );
 //		parser()->error().error( res_info.src_info(), "Undefined resource name: " + resName );
