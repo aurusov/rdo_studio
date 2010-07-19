@@ -1783,6 +1783,7 @@ planning_statement
 		}
 
 		rdoRuntime::LPRDOCalcGetTimeNow pCalcTimeNow = rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create();
+		ASSERT(pCalcTimeNow);
 
 		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTimeNow);
 		ASSERT(pCalc);

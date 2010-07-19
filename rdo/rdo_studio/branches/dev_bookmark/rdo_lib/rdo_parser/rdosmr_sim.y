@@ -277,6 +277,19 @@ smr_cond
 		ASSERT(pBaseOperation);
 		RUNTIME->addTimePoint(pCalcTime->calcValue(RUNTIME).getDouble(), pBaseOperation);
 	}
+	| smr_cond RDO_IDENTIF '.' RDO_Start '(' ')'
+	{
+		tstring           eventName   = RDOVALUE($2)->getIdentificator();
+		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Попытка запустить неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
+		ASSERT(pBaseOperation);
+		RUNTIME->addTimePoint(0, pBaseOperation);
+	}
 	| smr_cond RDO_Model_name                 '=' RDO_IDENTIF
 	| smr_cond RDO_Resource_file              '=' RDO_IDENTIF
 	| smr_cond RDO_OprIev_file                '=' RDO_IDENTIF
