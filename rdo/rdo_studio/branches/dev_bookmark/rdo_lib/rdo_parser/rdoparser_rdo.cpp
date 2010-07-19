@@ -167,13 +167,27 @@ void RDOParserEVNPost::parse()
 			m_parser->error().push_done();
 		}
 
-		LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
-		ASSERT(pRuntimeEvent);
-		pEvent->setRuntimeEvent(pRuntimeEvent);
-
-		STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+		if (pEvent->getRegular())
 		{
-			(*calcIt)->setEvent(pRuntimeEvent);
+			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
+			ASSERT(pRuntimeEvent);
+			pEvent->setRuntimeEvent(pRuntimeEvent);
+
+			STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+			{
+				(*calcIt)->setEvent(pRuntimeEvent);
+			}
+		}
+		else
+		{
+			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
+			ASSERT(pRuntimeEvent);
+			pEvent->setRuntimeEvent(pRuntimeEvent);
+
+			STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+			{
+				(*calcIt)->setEvent(pRuntimeEvent);
+			}
 		}
 	}
 }

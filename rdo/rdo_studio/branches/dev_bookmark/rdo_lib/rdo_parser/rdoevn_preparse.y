@@ -247,9 +247,14 @@ pat_main
 pat_header
 	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation       pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {}
+	{
+		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), false);
+		ASSERT(pEvent);
+		PARSER->insertEvent(pEvent);
+	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
 	{
-		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator());
+		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), true);
 		ASSERT(pEvent);
 		PARSER->insertEvent(pEvent);
 	}

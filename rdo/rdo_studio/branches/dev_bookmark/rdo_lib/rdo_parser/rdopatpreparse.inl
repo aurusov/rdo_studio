@@ -16,8 +16,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
 // ----------------------------------------------------------------------------
-inline RDOEvent::RDOEvent(CREF(tstring) name)
-	: m_name(name)
+inline RDOEvent::RDOEvent(CREF(tstring) name, bool pRegular)
+	: m_name(name),
+	m_regullar(pRegular)
 {}
 
 inline RDOEvent::~RDOEvent()
@@ -49,6 +50,11 @@ inline void RDOEvent::setRuntimeEvent(LPIBaseOperation pRuntimeEvent)
 inline LPIBaseOperation RDOEvent::getRuntimeEvent() const
 {
 	return m_runtimeEvent;
+}
+
+inline bool RDOEvent::getRegular() const
+{
+	return m_regullar;
 }
 
 inline REF(RDOEvent::CalcList) RDOEvent::getCalcList()
