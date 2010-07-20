@@ -146,6 +146,8 @@
 %token RDO_IncrEqual					383
 %token RDO_DecrEqual					384
 %token RDO_Stopping						385
+%token RDO_Start						386
+%token RDO_Stop							387
 
 %token RDO_Frame						400
 %token RDO_Show_if						401

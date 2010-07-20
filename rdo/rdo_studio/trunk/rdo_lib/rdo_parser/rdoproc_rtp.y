@@ -146,6 +146,8 @@
 %token RDO_IncrEqual					383
 %token RDO_DecrEqual					384
 %token RDO_Stopping						385
+%token RDO_Start						386
+%token RDO_Stop							387
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -227,21 +229,20 @@ OPEN_RDO_PARSER_NAMESPACE
 %left RDO_not
 %left RDO_UMINUS
 
-%start dptrtp_main
+%start prc_rtp_main
 
 %%
 
 // ----------------------------------------------------------------------------
-// ---------- GENERAL PART
+// ---------- General part
 // ----------------------------------------------------------------------------
-dptrtp_main:
-	| dptrtp_main RDO_Decision_point error RDO_End {@1} /* заглушка для $Decision_point */
-	| dptrtp_main RDO_Activities     error RDO_End      /* заглушка для $Activities     */
-	| dptrtp_main RDO_Process        error RDO_End      /* заглушка для $Process        */
+prc_rtp_main
+	: /* empty */
+	| prc_rtp_main RDO_Process error RDO_End {@1;} /* заглушка для $Process */
 	;
 
 // ----------------------------------------------------------------------------
-// ---------- PROCESS
+// ---------- Process
 // ----------------------------------------------------------------------------
 
 %%

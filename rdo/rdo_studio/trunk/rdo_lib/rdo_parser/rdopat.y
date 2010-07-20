@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdopat.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
+ * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
+ * date     : 12.07.2010
+ * bref     : закладка PAT - описание образцов активностей модели
  * indent   : 4T
  */
 
@@ -146,6 +146,8 @@
 %token RDO_IncrEqual					383
 %token RDO_DecrEqual					384
 %token RDO_Stopping						385
+%token RDO_Start						386
+%token RDO_Stop							387
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -251,16 +253,6 @@ pat_header
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
 		$$ = (int)new RDOPatternOperation(PARSER, name->src_info(), $4 != 0);
-	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
-	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternIrregEvent(PARSER, name->src_info(), $4 != 0);
-	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
-	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		$$ = (int)new RDOPatternEvent(PARSER, name->src_info(), $4 != 0);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
 	{

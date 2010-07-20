@@ -36,11 +36,13 @@ public:
 	REF(CalcList)    getCalcList    ();
 	LPIBaseOperation getRuntimeEvent() const;
 	void             setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
+	bool             getRegular     () const;
 
 private:
-	RDOEvent(CREF(tstring) name);
+	RDOEvent(CREF(tstring) name, bool pRegular);
 	virtual ~RDOEvent();
 
+	bool             m_regullar;
 	tstring          m_name;
 	CalcList         m_calcList;
 	LPIBaseOperation m_runtimeEvent;

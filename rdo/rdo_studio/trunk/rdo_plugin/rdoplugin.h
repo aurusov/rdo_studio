@@ -72,7 +72,7 @@ enum ModelRuntimeMode {
 	MRTM_BreakPoint
 };
 
-enum ModelFileType { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+enum ModelFileType {RTP = 0, RSS, EVN, PAT, DPT, PRC, FRM, FUN, SMR, PMD, PMV, TRC};
 
 typedef bool (__stdcall *PFunCreateModel)( const char* modelName, const char* modelPath );
 typedef bool (__stdcall *PFunOpenModel)( const char* modelName );

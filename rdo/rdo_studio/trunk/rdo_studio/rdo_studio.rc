@@ -3526,6 +3526,7 @@ BEGIN
     IDS_MODEL_LOADING_FAILD "Загрузка модели... failed\n"
     IDS_MODEL_CANNOT_LOAD   "Невозможно загрузить %s (%s)\n"
     IDS_MODEL_PATTERNS      "образцы"
+    IDS_MODEL_EVENTS        "события"
 END
 
 STRINGTABLE 
@@ -4866,6 +4867,7 @@ BEGIN
     IDS_MODEL_LOADING_FAILD "Loading model... failed\n"
     IDS_MODEL_CANNOT_LOAD   "Can't load %s (%s)\n"
     IDS_MODEL_PATTERNS      "patterns"
+    IDS_MODEL_EVENTS        "events"
 END
 
 STRINGTABLE 

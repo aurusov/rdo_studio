@@ -635,6 +635,7 @@
 #define IDS_COLORSTYLE_FRAME_BACKGROUND 40230
 #define IDS_MODEL_FILE_READONLY         40231
 #define IDS_MODEL_DURATION              40232
+#define IDS_MODEL_EVENTS                40233
 #define IDS_CHART_TITLE                 40300
 #define IDS_CHART_OPTIONS               40301
 #define IDS_CHART_OPTIONS_APPLY         40302
