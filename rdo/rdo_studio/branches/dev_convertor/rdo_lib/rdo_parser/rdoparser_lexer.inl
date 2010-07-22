@@ -51,13 +51,16 @@ inline void RDOLexer::loc_action()
 				m_lploc->last_line++;
 				m_lploc->last_column = 0;
 			}
-			else if (YYText()[i] == '\r')
-			{
-				m_lploc->last_column = 0;
-			}
 			else
 			{
-				m_lploc->last_column++;
+				if (YYText()[i] == '\r')
+				{
+					m_lploc->last_column = 0;
+				}
+				else
+				{
+					m_lploc->last_column++;
+				}
 			}
 		}
 	}
