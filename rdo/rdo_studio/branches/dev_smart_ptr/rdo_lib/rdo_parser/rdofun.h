@@ -8,19 +8,6 @@
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 
-namespace rdoRuntime
-{
-class RDOCalcConst;
-class RDOCalcIsEqual;
-class RDOCalcFuncParam;
-class RDOCalcDoubleToIntByResult;
-class RDOCalcFunctionCall;
-class RDOFunCalc;
-class RDOCalcSeqInit;
-class RDOCalcSeqNext;
-class RDOFunCalcSelect;
-}
-
 namespace rdoParse 
 {
 
