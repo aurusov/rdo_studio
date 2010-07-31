@@ -80,9 +80,9 @@ DECLARE_PARSER_OBJECT_CONTAINER_LP   (PATPattern     );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (RTPResType     );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (RSSResource    );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FRMFrame       );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FUNConstant    );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FUNFunction    );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FUNSequence    );
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNConstant    );
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNFunction    );
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNSequence    );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTSearch      );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTSome        );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTPrior       );
@@ -90,7 +90,7 @@ DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTFreeActivity);
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(PMDPokaz       );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (Event          );
 
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(FUNGroup   );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP   (FUNGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(PROCProcess);
 
@@ -326,22 +326,22 @@ void RDOParser::parse(REF(std::istream) stream)
 
 void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 {
-	CPTR(RDOFUNConstant) pConst = findFUNConstant(src_info.src_text());
-	if (pConst)
+	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
+	if (pConstant)
 	{
 		error().push_only(src_info, rdo::format(_T("Константа '%s' уже существует"), src_info.src_text().c_str()));
 //		parser->error(_T("Second appearance of the same constant name: ") + *(_cons->getName()));
-		error().push_only(pConst->src_info(), _T("См. первое определение"));
+		error().push_only(pConstant->src_info(), _T("См. первое определение"));
 		error().push_done();
 	}
-	CPTR(RDOFUNSequence) pSequence = findFUNSequence(src_info.src_text());
+	LPRDOFUNSequence pSequence = findFUNSequence(src_info.src_text());
 	if (pSequence)
 	{
 		error().push_only(src_info, rdo::format(_T("Последовательность '%s' уже существует"), src_info.src_text().c_str()));
 		error().push_only(pSequence->src_info(), _T("См. первое определение"));
 		error().push_done();
 	}
-	CPTR(RDOFUNFunction) pFunction = findFUNFunction(src_info.src_text());
+	LPRDOFUNFunction pFunction = findFUNFunction(src_info.src_text());
 	if (pFunction)
 	{
 		error().push_only(src_info, rdo::format(_T("Функция '%s' уже существует"), src_info.src_text().c_str()));

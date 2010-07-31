@@ -2,8 +2,9 @@
 #define RDOSMR_H
 
 #include "rdo_common/rdocommon.h"
-#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
 
 namespace rdoRuntime
 {
@@ -21,15 +22,9 @@ int  smr_sim_parse (PTR(void) lexer);
 int  smr_sim_lex   (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void smr_sim_error (PTR(char) mes);
 
-class RDOFUNLogic;
-class RDOFUNArithm;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOSMR
 // ----------------------------------------------------------------------------
-class RDOFUNConstant;
-class RDOFUNSequence;
-
 class RDOSMR: public RDOParserObject
 {
 public:
@@ -82,11 +77,11 @@ public:
 	void setTraceStartTime( double value, const YYLTYPE& pos );
 	void setTraceEndTime( double value, const YYLTYPE& pos );
 
-	void setTerminateIf( RDOFUNLogic* logic );
-	void setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm );
-	void setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, RDOFUNArithm* arithm );
+	void setTerminateIf( REF(LPRDOFUNLogic) logic );
+	void setConstValue( const RDOParserSrcInfo& const_info, REF(LPRDOFUNArithm) arithm );
+	void setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, REF(LPRDOFUNArithm) arithm );
 	void setSeed( const RDOParserSrcInfo& seq_info, int base );
-	void insertBreakPoint( const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
+	void insertBreakPoint( const RDOParserSrcInfo& _src_info, REF(LPRDOFUNLogic) _logic );
 
 private:
 	StringTable  files;
@@ -99,11 +94,11 @@ private:
 	double traceEndTime;
 	YYLTYPE traceStartTime_pos;
 	YYLTYPE traceEndTime_pos;
-	RDOFUNLogic* terminateIf;
+	LPRDOFUNLogic terminateIf;
 
 	class BreakPoint: public RDOParserObject, public RDOParserSrcInfo {
 	public:
-		BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
+		BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, REF(LPRDOFUNLogic) _logic );
 	};
 	std::vector< BreakPoint* > breakPoints;
 };

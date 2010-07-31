@@ -3,7 +3,6 @@
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 
@@ -83,7 +82,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, RDOFUNLogic* _logic ):
+RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, REF(LPRDOFUNLogic) _logic ):
 	RDOPMDPokaz( _parser, _src_info )
 {
 	endOfCreation(F(rdoRuntime::RDOPMDWatchState)::create(parser()->runtime(), src_text(), _trace, _logic->getCalc()));
@@ -112,11 +111,12 @@ RDOPMDWatchTemp::RDOPMDWatchTemp( RDOParser* _parser, const RDOParserSrcInfo& _s
 RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info ):
 	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
-	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(_res_type_src_info.src_text()) );
-	endOfCreation(F(rdoRuntime::RDOPMDWatchQuant)::create(parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber()));
+	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(_res_type_src_info.src_text()));
+	ASSERT(pGroupLogic);
+	endOfCreation(F(rdoRuntime::RDOPMDWatchQuant)::create(parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
-void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
+void RDOPMDWatchQuant::setLogic( REF(LPRDOFUNLogic) _logic )
 {
 	LPIPokazWatchQuant quant = m_pokaz;
 	ASSERT(quant);
@@ -138,11 +138,12 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info ):
 	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
-	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(_res_type_src_info.src_text()) );
-	endOfCreation(F(rdoRuntime::RDOPMDWatchValue)::create(parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber()));
+	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(_res_type_src_info.src_text()));
+	ASSERT(pGroupLogic);
+	endOfCreation(F(rdoRuntime::RDOPMDWatchValue)::create(parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
-void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
+void RDOPMDWatchValue::setLogic( REF(LPRDOFUNLogic) _logic, REF(LPRDOFUNArithm) _arithm )
 {
 	LPIPokazWatchValue watch = m_pokaz;
 	ASSERT(watch);
@@ -151,7 +152,7 @@ void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 	parser()->getFUNGroupStack().pop_back();
 }
 
-void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
+void RDOPMDWatchValue::setLogicNoCheck( REF(LPRDOFUNArithm) _arithm )
 {
 	LPIPokazWatchValue watch = m_pokaz;
 	ASSERT(watch);
@@ -163,7 +164,7 @@ void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNArithm* _arithm ):
+RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, REF(LPRDOFUNArithm) _arithm ):
 	RDOPMDPokaz( _parser, _src_info )
 {
 	endOfCreation(F(rdoRuntime::RDOPMDGetValue)::create(parser()->runtime(), src_text(), _arithm->createCalc()));

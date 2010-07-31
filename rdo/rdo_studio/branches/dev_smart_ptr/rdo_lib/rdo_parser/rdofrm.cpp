@@ -1,6 +1,5 @@
 #include "rdo_lib/rdo_parser/pch.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 
@@ -20,7 +19,7 @@ void frmerror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNLogic* logic ):
+RDOFRMFrame::RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPRDOFUNLogic logic ):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _src_info ),
 	m_frame( NULL )

@@ -3,6 +3,7 @@
 
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
 
 namespace rdoParse 
 {
@@ -10,9 +11,6 @@ namespace rdoParse
 int  pmdparse(PTR(void) lexer);
 int  pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void pmderror(PTR(char) mes);
-
-class RDOFUNLogic;
-class RDOFUNArithm;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz
@@ -44,7 +42,7 @@ public:
 class RDOPMDWatchState: public RDOPMDPokaz
 {
 public:
-	RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, RDOFUNLogic* _logic );
+	RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, REF(LPRDOFUNLogic) _logic );
 };
 
 // ----------------------------------------------------------------------------
@@ -63,7 +61,7 @@ class RDOPMDWatchQuant: public RDOPMDWatchTemp
 {
 public:
 	RDOPMDWatchQuant( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info );
-	void setLogic( RDOFUNLogic* _logic );
+	void setLogic( REF(LPRDOFUNLogic) _logic );
 	void setLogicNoCheck();
 };
 
@@ -74,8 +72,8 @@ class RDOPMDWatchValue: public RDOPMDWatchTemp
 {
 public:
 	RDOPMDWatchValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info );
-	void setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm );
-	void setLogicNoCheck( RDOFUNArithm* _arithm );
+	void setLogic( REF(LPRDOFUNLogic) _logic, REF(LPRDOFUNArithm) _arithm );
+	void setLogicNoCheck( REF(LPRDOFUNArithm) _arithm );
 };
 
 // ----------------------------------------------------------------------------
@@ -84,7 +82,7 @@ public:
 class RDOPMDGetValue: public RDOPMDPokaz
 {
 public:
-	RDOPMDGetValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNArithm* _arithm );
+	RDOPMDGetValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, REF(LPRDOFUNArithm) _arithm );
 };
 
 } // namespace rdoParse

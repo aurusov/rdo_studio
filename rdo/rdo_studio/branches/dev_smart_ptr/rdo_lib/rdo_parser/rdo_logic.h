@@ -48,7 +48,7 @@ public:
 	}
 	CREF(ActivityList) getActivities() const { return m_activities; }
 
-	rbool setPrior(PTR(RDOFUNArithm) prior)
+	rbool setPrior(REF(LPRDOFUNArithm) prior)
 	{
 		LPIPriority priority = m_rt_logic;
 		if (priority)

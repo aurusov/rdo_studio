@@ -227,21 +227,21 @@ void RDOPATPattern::setCommonChoiceFirst()
 //	rdoParse::g_error().error(_T("Вызывать нельзя, т.к. в сообщениях об ошибках используется m_pCommonChoice"));
 }
 
-void RDOPATPattern::setCommonChoiceWithMin(PTR(RDOFUNArithm) arithm)
+void RDOPATPattern::setCommonChoiceWithMin(CREF(LPRDOFUNArithm) arithm)
 {
 	m_useCommonChoice  = true;
 	m_useCommonWithMax = false;
 	m_pCommonChoice    = arithm;
 }
 
-void RDOPATPattern::setCommonChoiceWithMax(PTR(RDOFUNArithm) arithm)
+void RDOPATPattern::setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm)
 {
 	m_useCommonChoice  = true;
 	m_useCommonWithMax = true;
 	m_pCommonChoice    = arithm;
 }
 
-void RDOPATPattern::setTime(PTR(RDOFUNArithm) arithm)
+void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
 { 
 	switch (getType())
 	{
@@ -838,7 +838,7 @@ RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbo
 // ----------------------------------------------------------------------------
 // ---------- RDORelevantResource
 // ----------------------------------------------------------------------------
-rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc() const
+rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {
 	if (m_pChoiceFrom && m_pChoiceFrom->m_type == rdoParse::RDOPATChoiceFrom::ch_from)
 	{
@@ -847,7 +847,7 @@ rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc() const
 	return NULL;
 }
 
-rdoRuntime::LPRDOCalc RDORelevantResource::getSelectCalc() const
+rdoRuntime::LPRDOCalc RDORelevantResource::getSelectCalc()
 {
 	if (m_pChoiceOrder && m_pChoiceOrder->m_pArithm)
 	{

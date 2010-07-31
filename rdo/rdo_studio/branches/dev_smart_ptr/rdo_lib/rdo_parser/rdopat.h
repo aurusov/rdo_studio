@@ -108,9 +108,9 @@ public:
 	CREF(tstring) name() const { return src_text(); }
 
 	void setCommonChoiceFirst  ();
-	void setCommonChoiceWithMin(PTR(RDOFUNArithm) arithm);
-	void setCommonChoiceWithMax(PTR(RDOFUNArithm) arithm);
-	void setTime               (PTR(RDOFUNArithm) arithm);
+	void setCommonChoiceWithMin(CREF(LPRDOFUNArithm) arithm);
+	void setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm);
+	void setTime               ( REF(LPRDOFUNArithm) arithm);
 	void addRelResBody         (CREF(RDOParserSrcInfo) body_name);
 	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
 	void addRelResConvert      (rbool trace, CREF(LPConvertCmdList) commands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdoRuntime::RDOResource::ConvertStatus status);
@@ -136,14 +136,14 @@ protected:
 private:
 	typedef std::vector<LPRDOFUNFunctionParam> ParamList;
 
-	ParamList         m_paramList;
-	RelResList        m_relResList;
+	ParamList      m_paramList;
+	RelResList     m_relResList;
 
-	rbool             m_useCommonChoice;
-	rbool             m_useCommonWithMax;
-	PTR(RDOFUNArithm) m_pCommonChoice;
+	rbool          m_useCommonChoice;
+	rbool          m_useCommonWithMax;
+	LPRDOFUNArithm m_pCommonChoice;
 
-	ruint             m_currentRelResIndex;
+	ruint          m_currentRelResIndex;
 
 	tstring typeToString(PatType type)
 	{
@@ -394,8 +394,8 @@ protected:
 		, m_currentState        (stateNone  )
 	{}
 
-	rdoRuntime::LPRDOCalc                   getChoiceCalc() const;
-	rdoRuntime::LPRDOCalc                   getSelectCalc() const;
+	rdoRuntime::LPRDOCalc                   getChoiceCalc();
+	rdoRuntime::LPRDOCalc                   getSelectCalc();
 	rdoRuntime::RDOSelectResourceCalc::Type getSelectType() const;
 
 private:
@@ -416,10 +416,10 @@ public:
 		ch_from
 	} m_type;
 
-	PTR(RDOFUNLogic) m_pLogic;
+	LPRDOFUNLogic m_pLogic;
 
 private:
-	RDOPATChoiceFrom(CREF(RDOParserSrcInfo) src_info, Type type, PTR(RDOFUNLogic) pLogic = NULL)
+	RDOPATChoiceFrom(CREF(RDOParserSrcInfo) src_info, Type type, CREF(LPRDOFUNLogic) pLogic = NULL)
 		: RDOParserSrcInfo(src_info)
 		, m_type          (type    )
 		, m_pLogic        (pLogic  )
@@ -435,7 +435,7 @@ DECLARE_FACTORY(RDOPATChoiceOrder)
 public:
 	rdoRuntime::RDOSelectResourceCalc::Type m_type;
 
-	PTR(RDOFUNArithm) m_pArithm;
+	LPRDOFUNArithm m_pArithm;
 
 	tstring asString() const
 	{
@@ -451,7 +451,7 @@ public:
 	}
 
 private:
-	RDOPATChoiceOrder(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDOSelectResourceCalc::Type type, PTR(RDOFUNArithm) pArithm = NULL)
+	RDOPATChoiceOrder(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDOSelectResourceCalc::Type type, CREF(LPRDOFUNArithm) pArithm = NULL)
 		: RDOParserSrcInfo(src_info)
 		, m_type          (type    )
 		, m_pArithm       (pArithm )

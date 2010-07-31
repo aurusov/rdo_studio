@@ -1,7 +1,6 @@
 #include "rdo_lib/rdo_parser/pch.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
@@ -107,7 +106,7 @@ void RDOSMR::setTraceEndTime( double value, const YYLTYPE& pos )
 	traceEndTime_pos = pos;
 }
 
-void RDOSMR::setTerminateIf( RDOFUNLogic* logic )
+void RDOSMR::setTerminateIf( REF(LPRDOFUNLogic) logic )
 {
 	if ( terminateIf ) {
 		parser()->error().push_only( logic->src_info(), "Terminate_if уже определен" );
@@ -119,20 +118,20 @@ void RDOSMR::setTerminateIf( RDOFUNLogic* logic )
 	parser()->runtime()->setTerminateIf( logic->getCalc() );
 }
 
-void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm )
+void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, REF(LPRDOFUNArithm) arithm )
 {
-	const RDOFUNConstant* const cons = parser()->findFUNConstant( const_info.src_text() );
-	if ( !cons ) {
+	LPRDOFUNConstant pConstant = parser()->findFUNConstant( const_info.src_text() );
+	if ( !pConstant ) {
 		parser()->error().error( const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()) );
 	}
 	ASSERT(arithm);
-	arithm->checkParamType(cons->getType());
-	rdoRuntime::LPRDOCalc calc = arithm->createCalc( cons->getType() );
-	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(cons->getNumber(), calc));
-	parser()->insertChanges( cons->src_text(), arithm->src_text() );
+	arithm->checkParamType(pConstant->getType());
+	rdoRuntime::LPRDOCalc calc = arithm->createCalc( pConstant->getType() );
+	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(pConstant->getNumber(), calc));
+	parser()->insertChanges( pConstant->src_text(), arithm->src_text() );
 }
 
-void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, RDOFUNArithm* arithm )
+void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, REF(LPRDOFUNArithm) arithm )
 {
 	LPRDORSSResource res = parser()->findRSSResource( res_info.src_text() );
 	if ( !res ) {
@@ -157,16 +156,17 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 
 void RDOSMR::setSeed( const RDOParserSrcInfo& seq_info, int base )
 {
-	CPTR(RDOFUNSequence) seq = parser()->findFUNSequence( seq_info.src_text() );
-	if ( !seq ) {
+	LPRDOFUNSequence pSequence = parser()->findFUNSequence( seq_info.src_text() );
+	if ( !pSequence )
+	{
 		parser()->error().error( seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()) );
 //		parser()->error().error( "Undefined sequence: " + seqName );
 	}
-	const_cast<PTR(RDOFUNSequence)>(seq)->init_calc->setBase( base );
-	parser()->insertChanges( seq->src_text() + ".Seed", rdo::format("%d", base) );
+	pSequence->getInitCalc()->setBase(base);
+	parser()->insertChanges( pSequence->src_text() + ".Seed", rdo::format("%d", base) );
 }
 
-void RDOSMR::insertBreakPoint( const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic )
+void RDOSMR::insertBreakPoint( const RDOParserSrcInfo& _src_info, REF(LPRDOFUNLogic) _logic )
 {
 	std::vector< BreakPoint* >::const_iterator it = breakPoints.begin();
 	while ( it != breakPoints.end() ) {
@@ -180,7 +180,7 @@ void RDOSMR::insertBreakPoint( const RDOParserSrcInfo& _src_info, RDOFUNLogic* _
 	breakPoints.push_back( new BreakPoint( this, _src_info, _logic ) );
 }
 
-RDOSMR::BreakPoint::BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic ):
+RDOSMR::BreakPoint::BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, REF(LPRDOFUNLogic) _logic ):
 	RDOParserObject( smr ),
 	RDOParserSrcInfo( _src_info )
 {

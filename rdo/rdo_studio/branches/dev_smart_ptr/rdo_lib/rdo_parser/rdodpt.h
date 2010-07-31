@@ -62,7 +62,7 @@ public:
 	void addParam( const RDOValue& param  );
 	void endParam( const YYLTYPE& _param_pos );
 
-	bool setPrior( RDOFUNArithm* prior );
+	bool setPrior(REF(LPRDOFUNArithm) prior );
 
 protected:
 	LPIActivity           m_activity;
@@ -131,14 +131,14 @@ class RDODPTSome: public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActi
 public:
 	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent = NULL );
 
-	LPILogic getLogic() const                         { return m_rt_logic;     }
-	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
-	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
+	LPILogic      getLogic() const                                { return m_rt_logic;     }
+	LPRDOFUNLogic getConditon() const                  { return m_conditon;     }
+	void          setCondition( CREF(LPRDOFUNLogic) conditon = NULL ) { m_conditon = conditon; }
 
 	void end();
 
 private:
-	RDOFUNLogic* m_conditon;
+	LPRDOFUNLogic m_conditon;
 };
 
 // ----------------------------------------------------------------------------
@@ -149,14 +149,14 @@ class RDODPTPrior: public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorA
 public:
 	RDODPTPrior( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPILogic _parent = NULL  );
 
-	LPILogic getLogic() const                         { return m_rt_logic;     }
-	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
-	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
+	LPILogic getLogic() const                                { return m_rt_logic;     }
+	LPRDOFUNLogic getConditon() const                  { return m_conditon;     }
+	void setCondition( CREF(LPRDOFUNLogic) conditon = NULL ) { m_conditon = conditon; }
 
 	void end();
 
 private:
-	RDOFUNLogic* m_conditon;
+	LPRDOFUNLogic m_conditon;
 };
 
 // ----------------------------------------------------------------------------
@@ -167,15 +167,15 @@ class RDODPTSearchActivity: public RDODPTActivity
 friend class RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>;
 public:
 	IDPTSearchActivity::ValueTime getValue() const { return m_value; }
-	void setValue( IDPTSearchActivity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos );
+	void setValue( IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) ruleCost, const YYLTYPE& _param_pos );
 
-	RDOFUNArithm* getRuleCost() const { return m_ruleCost; }
+	LPRDOFUNArithm getRuleCost() const { return m_ruleCost; }
 
 private:
 	RDODPTSearchActivity( LPIBaseOperationContainer dpt, const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
 
 	IDPTSearchActivity::ValueTime  m_value;
-	RDOFUNArithm*                  m_ruleCost;
+	LPRDOFUNArithm                 m_ruleCost;
 };
 
 // ----------------------------------------------------------------------------
@@ -186,18 +186,18 @@ class RDODPTSearch: public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDO
 public:
 	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic _parent = NULL );
 
-	void setCondition( RDOFUNLogic* conditon = NULL )         { m_conditon     = conditon;     }
-	void setTermCondition( RDOFUNLogic* termConditon = NULL ) { m_termConditon = termConditon; }
-	void setEvaluateBy( RDOFUNArithm* evalBy )                { m_evalBy       = evalBy;       }
-	void setCompareTops( bool compTops )                      { m_compTops     = compTops;     }
+	void setCondition    ( CREF(LPRDOFUNLogic)  conditon     = NULL ) { m_conditon     = conditon;     }
+	void setTermCondition( CREF(LPRDOFUNLogic)  termConditon = NULL ) { m_termConditon = termConditon; }
+	void setEvaluateBy   ( CREF(LPRDOFUNArithm) evalBy              ) { m_evalBy       = evalBy;       }
+	void setCompareTops  ( bool compTops                            ) { m_compTops     = compTops;     }
 
 	void end();
 	bool closed() const { return m_closed; }
 
 private:
-	RDOFUNLogic*                                  m_conditon;
-	RDOFUNLogic*                                  m_termConditon;
-	RDOFUNArithm*                                 m_evalBy;
+	LPRDOFUNLogic                                 m_conditon;
+	LPRDOFUNLogic                                 m_termConditon;
+	LPRDOFUNArithm                                m_evalBy;
 	LPILogic                                      m_parent;
 	bool                                          m_compTops;
 	bool                                          m_closed;
@@ -220,10 +220,10 @@ public:
 	void end();
 	bool closed() const { return m_closed; }
 
-	void setCondition( RDOFUNLogic* conditon = NULL ) { m_conditon = conditon; }
-	RDOFUNLogic* getConditon() const                  { return m_conditon;     }
+	void setCondition(CREF(LPRDOFUNLogic) conditon = NULL ) { m_conditon = conditon; }
+	LPRDOFUNLogic getConditon() const                       { return m_conditon;     }
 
-	bool setPrior(RDOFUNArithm* prior);
+	bool setPrior(REF(LPRDOFUNArithm) prior);
 
 	void insertChild( RDOPROCProcess* value );
 
@@ -237,7 +237,7 @@ protected:
 	LPILogic                      m_runtime;
 
 private:
-	RDOFUNLogic*                  m_conditon;
+	LPRDOFUNLogic                 m_conditon;
 };
 
 // ----------------------------------------------------------------------------

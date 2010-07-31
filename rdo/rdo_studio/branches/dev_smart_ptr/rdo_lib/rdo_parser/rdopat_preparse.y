@@ -217,12 +217,7 @@
 #define RUNTIME PARSER->runtime()
 
 #define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define P_ARITHM(A)   reinterpret_cast<PTR(RDOFUNArithm)>(A)
-#define P_LOGIC(A)    reinterpret_cast<PTR(RDOFUNLogic)>(A)
-
 #define RDOVALUE(A)   (*P_RDOVALUE(A))
-#define ARITHM(A)     (*P_ARITHM(A))
-#define LOGIC(A)      (*P_LOGIC(A))
 
 OPEN_RDO_PARSER_NAMESPACE
 %}

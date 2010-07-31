@@ -186,141 +186,141 @@ void RDOParserSTDFUN::parse()
 	LPRDOTypeParam intType  = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(),  RDOValue(), RDOParserSrcInfo());
 	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOValue(), RDOParserSrcInfo());
 
-	PTR(RDOFUNFunction)   fun   = new RDOFUNFunction     (m_parser, _T("Abs"), realType);
-	LPRDOFUNFunctionParam param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
+	LPRDOFUNFunction      fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Abs"), realType);
+	LPRDOFUNFunctionParam param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"), realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcAbs>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("ArcCos"), realType);
-	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),     realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("ArcCos"), realType);
+	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"), realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcArcCos>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("ArcSin"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("ArcSin"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),     realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcArcSin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("ArcTan"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("ArcTan"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),     realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcArcTan>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Cos"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Cos"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcCos>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Cotan"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Cotan"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcCotan>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Exp"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Exp"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcExp>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Floor"), intType );
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Floor"), intType );
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcFloor>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Frac"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Frac"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcFrac>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("IAbs"), intType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("IAbs"), intType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   intType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIAbs>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("IMax"), intType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("IMax"), intType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   intType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),   intType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIMax>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("IMin"), intType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("IMin"), intType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   intType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),   intType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIMin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Int"), intType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Int"), intType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcInt>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("IntPower"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("IntPower"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),       realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),       intType );
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIntPower>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Ln"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Ln"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"), realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLn>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Log10"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Log10"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLog10>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Log2"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Log2"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLog2>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("LogN"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("LogN"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLogN>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Max"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Max"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcMax>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Min"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Min"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcMin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Power"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Power"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcPower>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Round"), intType );
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Round"), intType );
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcRound>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Sin"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Sin"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcSin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Sqrt"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Sqrt"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcSqrt>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("Tan"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("Tan"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcTan>::create());
@@ -328,141 +328,141 @@ void RDOParserSTDFUN::parse()
 	// -----------------------------------------
 	// И для маленьких букв
 	// -----------------------------------------
-	fun   = new RDOFUNFunction     (m_parser, _T("abs"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("abs"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcAbs>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("arccos"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("arccos"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),     realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcArcCos>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("arcsin"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("arcsin"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),     realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcArcSin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("arctan"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("arctan"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),     realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcArcTan>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("cos"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("cos"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcCos>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("cotan"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("cotan"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcCotan>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("exp"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("exp"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcExp>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("floor"), intType );
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("floor"), intType );
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcFloor>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("frac"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("frac"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcFrac>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("iabs"), intType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("iabs"), intType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   intType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIAbs>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("imax"), intType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("imax"), intType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   intType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),   intType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIMax>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("imin"), intType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("imin"), intType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   intType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),   intType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIMin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("int"), intType );
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("int"), intType );
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcInt>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("intpower"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("intpower"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),       realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),       intType );
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcIntPower>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("ln"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("ln"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"), realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLn>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("log10"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("log10"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLog10>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("log2"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("log2"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLog2>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("logn"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("logn"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcLogN>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("max"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("max"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcMax>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("min"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("min"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcMin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("power"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("power"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p2"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcPower>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("round"), intType );
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("round"), intType );
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),    realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcRound>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("sin"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("sin"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcSin>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("sqrt"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("sqrt"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),   realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcSqrt>::create());
 
-	fun   = new RDOFUNFunction     (m_parser, _T("tan"), realType);
+	fun   = rdo::Factory<RDOFUNFunction>::create     (_T("tan"), realType);
 	param = rdo::Factory<RDOFUNFunctionParam>::create(_T("p1"),  realType);
 	fun->add(param);
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcTan>::create());

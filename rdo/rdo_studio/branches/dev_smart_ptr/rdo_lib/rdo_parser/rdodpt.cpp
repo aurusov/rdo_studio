@@ -137,7 +137,7 @@ void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 	}
 }
 
-bool RDODPTActivity::setPrior(RDOFUNArithm* prior)
+bool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) prior)
 {
 	LPIPriority prior_activity = m_activity;
 	if (prior_activity)
@@ -321,7 +321,7 @@ RDODPTSearchActivity::RDODPTSearchActivity( LPIBaseOperationContainer dpt, const
 	m_activity = F(rdoRuntime::RDORule)::create( parser()->runtime(), static_cast<rdoRuntime::RDOPatternRule*>(pattern()->getPatRuntime()), true, name());
 }
 
-void RDODPTSearchActivity::setValue( IDPTSearchActivity::ValueTime value, RDOFUNArithm* ruleCost, const YYLTYPE& _param_pos )
+void RDODPTSearchActivity::setValue( IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) ruleCost, const YYLTYPE& _param_pos )
 {
 	endParam( _param_pos );
 	m_value    = value;
@@ -389,7 +389,7 @@ RDOPROCProcess::RDOPROCProcess(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) inf
 	m_runtime.query_cast<ILogic>()->init(this->parser()->runtime());
 }
 
-bool RDOPROCProcess::setPrior(RDOFUNArithm* prior)
+bool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) prior)
 {
 	LPILogic runtime_logic = getRunTime();
 	LPIPriority priority = runtime_logic.query_cast<IPriority>();

@@ -2,6 +2,7 @@
 #define RDOFRM_H
 
 #include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 
 namespace rdoParse
@@ -14,12 +15,10 @@ void frmerror(PTR(char) mes);
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-class RDOFUNLogic;
-
 class RDOFRMFrame: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNLogic* logic = NULL );
+	RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPRDOFUNLogic logic = NULL );
 
 	const std::string&       name() const  { return src_info().src_text(); }
 	rdoRuntime::RDOFRMFrame* frame()       { return m_frame;               }
