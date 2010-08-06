@@ -105,24 +105,26 @@ public:
 	}
 	void setSrcPos(CREF(YYLTYPE) pos)
 	{
-		setSrcPos(RDOSrcInfo::Position(pos.first_line, pos.first_column, pos.last_line, pos.last_column));
+		setSrcPos(Position(pos.first_line, pos.first_column, pos.last_line, pos.last_column));
 	}
 	void setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
 	{
-		setSrcPos(RDOSrcInfo::Position(pos_begin.first_line, pos_begin.first_column, pos_end.last_line, pos_end.last_column));
+		setSrcPos(Position(pos_begin.first_line, pos_begin.first_column, pos_end.last_line, pos_end.last_column));
 	}
 	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
 	{
-		setSrcPos(RDOSrcInfo::Position(first_line, first_pos, last_line, last_pos));
+		setSrcPos(Position(first_line, first_pos, last_line, last_pos));
 	}
 	YYLTYPE getPosAsYY() const
 	{
-		YYLTYPE pos1;
-		rdoRuntime::RDOSrcInfo::Position pos2 = src_pos();
-		pos1.first_line   = pos2.m_first_line;
-		pos1.first_column = pos2.m_first_pos;
-		pos1.last_line    = pos2.m_last_line;
-		pos1.last_column  = pos2.m_last_pos;
+		YYLTYPE  pos1;
+		Position pos2 = src_pos();
+		pos1.first_line       = pos2.m_first_line;
+		pos1.first_column     = pos2.m_first_pos;
+		pos1.last_line        = pos2.m_last_line;
+		pos1.last_column      = pos2.m_last_pos;
+		pos1.first_linear_pos = Position::UNDEFINE_POS;
+		pos1.last_linear_pos  = Position::UNDEFINE_POS;
 		return pos1;
 	}
 	static ruint getPosByLength(ruint pos, CREF(tstring) text)

@@ -31,10 +31,12 @@ inline void RDOLexer::loc_init()
 {
 	if (m_lploc)
 	{
-		m_lploc->first_line   = 0;
-		m_lploc->first_column = 0;
-		m_lploc->last_line    = 0;
-		m_lploc->last_column  = 0;
+		m_lploc->first_line       = 0;
+		m_lploc->first_column     = 0;
+		m_lploc->last_line        = 0;
+		m_lploc->last_column      = 0;
+		m_lploc->first_linear_pos = 0;
+		m_lploc->last_linear_pos  = 0;
 	}
 }
 
@@ -42,14 +44,15 @@ inline void RDOLexer::loc_action()
 {
 	if (m_lploc)
 	{
-		m_lploc->first_line   = m_lploc->last_line;
-		m_lploc->first_column = m_lploc->last_column;
+		m_lploc->first_line       = m_lploc->last_line;
+		m_lploc->first_column     = m_lploc->last_column;
+		m_lploc->first_linear_pos = m_lploc->last_linear_pos;
 		for (int i = 0; i < YYLeng(); i++)
 		{
 			if (YYText()[i] == '\n')
 			{
 				m_lploc->last_line++;
-				m_lploc->linear_pos++;
+				m_lploc->last_linear_pos++;
 				m_lploc->last_column = 0;
 			}
 			else
@@ -61,7 +64,7 @@ inline void RDOLexer::loc_action()
 				else
 				{
 					m_lploc->last_column++;
-					m_lploc->linear_pos++;
+					m_lploc->last_linear_pos++;
 				}
 			}
 		}

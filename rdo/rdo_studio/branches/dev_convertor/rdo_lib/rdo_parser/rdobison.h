@@ -10,16 +10,23 @@
 #ifndef _RDOBISON_H_
 #define _RDOBISON_H_
 
+// ====================================================================== PCH
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include "rdo_common/rdotypes.h"
+// ===============================================================================
+
 #ifndef YYLTYPE
 struct yyltype
 {
-  int first_line;
-  int first_column;
+	ruint first_line;
+	ruint first_column;
 
-  int last_line;
-  int last_column;
+	ruint last_line;
+	ruint last_column;
 
-  int linear_pos;
+	ruint first_linear_pos;
+	ruint last_linear_pos;
 };
 
 #define YYLTYPE yyltype

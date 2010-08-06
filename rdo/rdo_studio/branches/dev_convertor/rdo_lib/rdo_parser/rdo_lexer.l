@@ -385,9 +385,10 @@ false				{
 					rdoParse::RDOValue* value;
 					if ( LEXER->m_lploc )
 					{
-						YYLTYPE pos     = *LEXER->m_lploc;
-						pos.last_line   = pos.first_line;
-						pos.last_column = pos.first_column + name.length();
+						YYLTYPE pos         = *LEXER->m_lploc;
+						pos.last_line       = pos.first_line;
+						pos.last_column     = pos.first_column     + name.length();
+						pos.last_linear_pos = pos.first_linear_pos + name.length();
 						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
 					}
 					else
@@ -406,9 +407,10 @@ false				{
 					rdoParse::RDOValue* value;
 					if ( LEXER->m_lploc )
 					{
-						YYLTYPE pos     = *LEXER->m_lploc;
-						pos.last_line   = pos.first_line;
-						pos.last_column = pos.first_column + name.length();
+						YYLTYPE pos         = *LEXER->m_lploc;
+						pos.last_line       = pos.first_line;
+						pos.last_column     = pos.first_column     + name.length();
+						pos.last_linear_pos = pos.first_linear_pos + name.length();
 						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
 					}
 					else
@@ -427,9 +429,10 @@ false				{
 					rdoParse::RDOValue* value;
 					if ( LEXER->m_lploc )
 					{
-						YYLTYPE pos     = *LEXER->m_lploc;
-						pos.last_line   = pos.first_line;
-						pos.last_column = pos.first_column + name.length();
+						YYLTYPE pos         = *LEXER->m_lploc;
+						pos.last_line       = pos.first_line;
+						pos.last_column     = pos.first_column     + name.length();
+						pos.last_linear_pos = pos.first_linear_pos + name.length();
 						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
 					}
 					else

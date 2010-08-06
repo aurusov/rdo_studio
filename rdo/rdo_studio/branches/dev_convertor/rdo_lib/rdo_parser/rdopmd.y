@@ -370,8 +370,9 @@ pmd_end
 	| error
 	{
 		YYLTYPE pos( @1 );
-		pos.last_line = pos.first_line;
-		pos.last_column = pos.first_column;
+		pos.last_line       = pos.first_line;
+		pos.last_column     = pos.first_column;
+		pos.last_linear_pos = pos.first_linear_pos;
 		PARSER->error().error( pos, "Ожидается ключевое слово $Results" );
 	}
 	| RDO_Results pmd_body error
