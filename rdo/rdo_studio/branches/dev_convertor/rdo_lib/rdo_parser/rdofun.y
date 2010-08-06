@@ -461,7 +461,7 @@ fun_func_algorithmic_calc_if
 	{
 		rdoRuntime::LPRDOCalc calc_cond = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 		RDOParserSrcInfo logic_src_info( "Calculate_if 1 = 1" );
-		logic_src_info.setSrcPos( @1.first_line, @1.first_column, @1.first_line, @1.first_column );
+		logic_src_info.setSrcPos( @1.m_first_line, @1.m_first_pos, @1.m_first_line, @1.m_first_pos );
 		calc_cond->setSrcInfo( logic_src_info );
 		RDOFUNLogic* logic = new RDOFUNLogic( PARSER->getLastFUNFunction(), calc_cond, true );
 		logic->setSrcInfo( logic_src_info );

@@ -361,7 +361,7 @@ rtp_param
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		if (PARSER->lexer_loc_line() == @1.last_line)
+		if (PARSER->lexer_loc_line() == @1.m_last_line)
 		{
 			tstring str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format(_T("Неверный тип параметра: %s"), str.c_str()));

@@ -311,7 +311,7 @@ pat_params
 	}
 	| pat_params_begin error
 	{
-		if (@1.last_line != @2.last_line)
+		if (@1.m_last_line != @2.m_last_line)
 		{
 			PARSER->error().error(@2, _T("Ожидается имя параметра образца"));
 		}
@@ -322,7 +322,7 @@ pat_params
 	}
 	| pat_params_begin RDO_IDENTIF error
 	{
-		if (@2.last_line != @3.last_line)
+		if (@2.m_last_line != @3.m_last_line)
 		{
 			PARSER->error().error(@2, @3, _T("Ожидается двоеточие"));
 		}
@@ -333,7 +333,7 @@ pat_params
 	}
 	| pat_params_begin RDO_IDENTIF_COLON error
 	{
-		if (@2.last_line != @3.last_line)
+		if (@2.m_last_line != @3.m_last_line)
 		{
 			PARSER->error().error(@2, @3, _T("Ожидается тип параметра образца"));
 		}
@@ -344,7 +344,7 @@ pat_params
 	}
 	| pat_params error
 	{
-		if (@1.last_line != @2.last_line)
+		if (@1.m_last_line != @2.m_last_line)
 		{
 			PARSER->error().error(@2, _T("Ожидается имя параметра образца"));
 		}
@@ -355,7 +355,7 @@ pat_params
 	}
 	| pat_params RDO_IDENTIF error
 	{
-		if (@2.last_line != @3.last_line)
+		if (@2.m_last_line != @3.m_last_line)
 		{
 			PARSER->error().error(@2, @3, _T("Ожидается двоеточие"));
 		}
@@ -366,7 +366,7 @@ pat_params
 	}
 	| pat_params RDO_IDENTIF_COLON error
 	{
-		if (@2.last_line != @3.last_line)
+		if (@2.m_last_line != @3.m_last_line)
 		{
 			PARSER->error().error(@2, @3, _T("Ожидается тип параметра образца"));
 		}
@@ -513,9 +513,9 @@ pat_rel_res
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
 				YYLTYPE convertor_pos = @3;
-				convertor_pos.first_line       = convertor_pos.last_line;
-				convertor_pos.first_column     = convertor_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_pos.first_linear_pos = convertor_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_line = convertor_pos.m_last_line;
+				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 				break;
 			}
@@ -548,9 +548,9 @@ pat_rel_res
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
 				YYLTYPE convertor_pos = @3;
-				convertor_pos.first_line       = convertor_pos.last_line;
-				convertor_pos.first_column     = convertor_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_pos.first_linear_pos = convertor_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_line = convertor_pos.m_last_line;
+				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 				break;
 			}
@@ -591,26 +591,26 @@ pat_rel_res
 				{
 					if (str[i] == '\n')
 					{
-						convertor_begin_pos.first_line++;
-						convertor_begin_pos.first_linear_pos++;
-						convertor_begin_pos.first_column = 0;
+						convertor_begin_pos.m_first_line++;
+						convertor_begin_pos.m_first_seek++;
+						convertor_begin_pos.m_first_pos = 0;
 					}
 					else if (str[i] != '\r')
 					{
-						convertor_begin_pos.first_column++;
-						convertor_begin_pos.first_linear_pos++;
+						convertor_begin_pos.m_first_pos++;
+						convertor_begin_pos.m_first_seek++;
 					}
 					i++;
 					if (i == first_nochange)
 						break;
 				}
-				convertor_begin_pos.last_line       = convertor_begin_pos.first_line;
-				convertor_begin_pos.last_column     = convertor_begin_pos.first_column     + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_begin_pos.last_linear_pos = convertor_begin_pos.first_linear_pos + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
+				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				YYLTYPE convertor_end_pos = @3;
-				convertor_end_pos.first_line       = convertor_end_pos.last_line;
-				convertor_end_pos.first_column     = convertor_end_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_end_pos.first_linear_pos = convertor_end_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
+				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
@@ -651,26 +651,26 @@ pat_rel_res
 				{
 					if (str[i] == '\n')
 					{
-						convertor_begin_pos.first_line++;
-						convertor_begin_pos.first_linear_pos++;
-						convertor_begin_pos.first_column = 0;
+						convertor_begin_pos.m_first_line++;
+						convertor_begin_pos.m_first_seek++;
+						convertor_begin_pos.m_first_pos = 0;
 					}
 					else if (str[i] != '\r')
 					{
-						convertor_begin_pos.first_column++;
-						convertor_begin_pos.first_linear_pos++;
+						convertor_begin_pos.m_first_pos++;
+						convertor_begin_pos.m_first_seek++;
 					}
 					i++;
 					if (i == first_nochange)
 						break;
 				}
-				convertor_begin_pos.last_line       = convertor_begin_pos.first_line;
-				convertor_begin_pos.last_column     = convertor_begin_pos.first_column     + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_begin_pos.last_linear_pos = convertor_begin_pos.first_linear_pos + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
+				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				YYLTYPE convertor_end_pos = @3;
-				convertor_end_pos.first_line       = convertor_end_pos.last_line;
-				convertor_end_pos.first_column     = convertor_end_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_end_pos.first_linear_pos = convertor_end_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
+				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
@@ -710,9 +710,9 @@ pat_rel_res
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
 				YYLTYPE convertor_pos = @3;
-				convertor_pos.first_line       = convertor_pos.last_line;
-				convertor_pos.first_column     = convertor_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_pos.first_linear_pos = convertor_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_line = convertor_pos.m_last_line;
+				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				pattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 				break;
 			}
@@ -737,9 +737,9 @@ pat_rel_res
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
 				YYLTYPE convertor_pos = @3;
-				convertor_pos.first_line       = convertor_pos.last_line;
-				convertor_pos.first_column     = convertor_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_pos.first_linear_pos = convertor_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_line = convertor_pos.m_last_line;
+				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				pattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 				break;
 			}
@@ -758,13 +758,13 @@ pat_rel_res
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
 				tstring convert_begin = RDOVALUE($4)->getIdentificator();
 				YYLTYPE convertor_begin_pos = @4;
-				convertor_begin_pos.last_line       = convertor_begin_pos.first_line;
-				convertor_begin_pos.last_column     = convertor_begin_pos.first_column     + convert_begin.length();
-				convertor_begin_pos.last_linear_pos = convertor_begin_pos.first_linear_pos + convert_begin.length();
+				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
+				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
+				convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + convert_begin.length();
 				YYLTYPE convertor_end_pos = @4;
-				convertor_end_pos.first_line       = convertor_end_pos.last_line;
-				convertor_end_pos.first_column     = convertor_end_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_end_pos.first_linear_pos = convertor_end_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
+				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), pattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
@@ -798,13 +798,13 @@ pat_rel_res
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
 				tstring convert_begin = RDOVALUE($4)->getIdentificator();
 				YYLTYPE convertor_begin_pos = @4;
-				convertor_begin_pos.last_line       = convertor_begin_pos.first_line;
-				convertor_begin_pos.last_column     = convertor_begin_pos.first_column     + convert_begin.length();
-				convertor_begin_pos.last_linear_pos = convertor_begin_pos.first_linear_pos + convert_begin.length();
+				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
+				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
+				convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + convert_begin.length();
 				YYLTYPE convertor_end_pos = @4;
-				convertor_end_pos.first_line       = convertor_end_pos.last_line;
-				convertor_end_pos.first_column     = convertor_end_pos.last_column     - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				convertor_end_pos.first_linear_pos = convertor_end_pos.last_linear_pos - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
+				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
+				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				static_cast<PTR(RDOPatternOperation)>(pattern)->addRelRes(rel_name->src_info(), type_name->src_info(), pattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
@@ -1495,10 +1495,10 @@ pat_convert_cmd
 	{
 		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
 		YYLTYPE          statement_pos = @2;
-		LPCorrection     pCorrection = new Correction(++statement_pos.last_line, ++statement_pos.last_column, Semicolon);
+		LPCorrection     pCorrection = new Correction(++statement_pos.m_last_line, ++statement_pos.m_last_pos, Semicolon);
 		pCmdList->insertCorrection(pCorrection);
 		$$ = PARSER->stack().push(pCmdList);
-		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает точки с запятой"), statement_pos.last_line, statement_pos.last_column));
+		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает точки с запятой"), statement_pos.m_last_line, statement_pos.m_last_pos));
 	}
 	;
 
@@ -1649,7 +1649,7 @@ equal_statement
 			}
 		}
 		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos (@1.first_line, @1.first_column, @2.last_line, @2.last_column);
+		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
 
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1752,7 +1752,7 @@ equal_statement
 			}
 		}
 		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-		pCalc->setSrcPos (@1.first_line, @1.first_column, @3.last_line, @3.last_column);
+		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
 
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -2235,8 +2235,8 @@ fun_logic
 	| fun_arithm  '='           fun_arithm
 	{
 		YYLTYPE          equal_pos = @2;
-		LPCorrection     pCorrection = new Correction(++equal_pos.last_line, ++equal_pos.last_column, Equality);
-		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает знака равенства"), equal_pos.last_line, equal_pos.last_column));
+		LPCorrection     pCorrection = new Correction(++equal_pos.m_last_line, ++equal_pos.m_last_pos, Equality);
+		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает знака равенства"), equal_pos.m_last_line, equal_pos.m_last_pos));
 	}
 	| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
 	| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }

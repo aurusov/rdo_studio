@@ -105,11 +105,11 @@ public:
 	}
 	void setSrcPos(CREF(YYLTYPE) pos)
 	{
-		setSrcPos(Position(pos.first_line, pos.first_column, pos.last_line, pos.last_column));
+		setSrcPos(Position(pos.m_first_line, pos.m_first_pos, pos.m_last_line, pos.m_last_pos));
 	}
 	void setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
 	{
-		setSrcPos(Position(pos_begin.first_line, pos_begin.first_column, pos_end.last_line, pos_end.last_column));
+		setSrcPos(Position(pos_begin.m_first_line, pos_begin.m_first_pos, pos_end.m_last_line, pos_end.m_last_pos));
 	}
 	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
 	{
@@ -119,12 +119,12 @@ public:
 	{
 		YYLTYPE  pos1;
 		Position pos2 = src_pos();
-		pos1.first_line       = pos2.m_first_line;
-		pos1.first_column     = pos2.m_first_pos;
-		pos1.last_line        = pos2.m_last_line;
-		pos1.last_column      = pos2.m_last_pos;
-		pos1.first_linear_pos = Position::UNDEFINE_POS;
-		pos1.last_linear_pos  = Position::UNDEFINE_POS;
+		pos1.m_first_line = pos2.m_first_line;
+		pos1.m_first_pos  = pos2.m_first_pos;
+		pos1.m_last_line  = pos2.m_last_line;
+		pos1.m_last_pos   = pos2.m_last_pos;
+		pos1.m_first_seek = Position::UNDEFINE_POS;
+		pos1.m_last_seek  = Position::UNDEFINE_POS;
 		return pos1;
 	}
 	static ruint getPosByLength(ruint pos, CREF(tstring) text)

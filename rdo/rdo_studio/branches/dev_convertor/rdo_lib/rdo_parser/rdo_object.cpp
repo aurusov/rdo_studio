@@ -139,15 +139,15 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_en
 	}
 	else
 	{
-		if (pos_begin.first_line == pos_end.last_line)
+		if (pos_begin.m_first_line == pos_end.m_last_line)
 		{
 			setSrcPos(pos_begin, pos_end);
 		}
 		else
 		{
 			YYLTYPE pos(pos_begin);
-			pos.first_line   = pos.last_line;
-			pos.first_column = pos.last_column;
+			pos.m_first_line = pos.m_last_line;
+			pos.m_first_pos  = pos.m_last_pos;
 			setSrcPos(pos);
 		}
 	}
