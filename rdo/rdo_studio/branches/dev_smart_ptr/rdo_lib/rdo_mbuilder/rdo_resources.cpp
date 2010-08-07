@@ -1,10 +1,23 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_resources.cpp
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_mbuilder/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+// ===============================================================================
 
-namespace rdoMBuilder
-{
+OPEN_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------
 // ---------- Конструкторы копий и операторы присваивания
@@ -366,4 +379,4 @@ RDOResourceList::RDOResourceList(PTR(rdoParse::RDOParser) parser)
 	}
 }
 
-} // rdoMBuilder
+CLOSE_MBUILDER_NAMESPACE

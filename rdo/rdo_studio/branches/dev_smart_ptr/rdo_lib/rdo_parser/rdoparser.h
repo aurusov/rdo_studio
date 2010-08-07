@@ -19,6 +19,7 @@
 #include "rdo_common/rdoindexedstack.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
+
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
@@ -30,6 +31,7 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
@@ -39,23 +41,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RDORTPParam;
-class RDORSSResource;
-class RDOPATPattern;
 class RDOFRMFrame;
-class RDOFUNFunction;
-class RDOFUNSequence;
-class RDOFUNConstant;
-class RDOFUNGroup;
 class RDOSMR;
-class RDOOperations;
-class RDODPTSearch;
-class RDODPTSome;
-class RDODPTPrior;
-class RDODPTFree;
-class RDODPTFreeActivity;
 class RDOPMDPokaz;
-class RDOPROCProcess;
 class RDOTypeParam;
 
 class RDORTPFuzzyParam;
@@ -101,16 +89,16 @@ DEFINE_OBJECT_CONTAINER   (FRMFrame       );
 DEFINE_OBJECT_CONTAINER_LP(FUNConstant    );
 DEFINE_OBJECT_CONTAINER_LP(FUNFunction    );
 DEFINE_OBJECT_CONTAINER_LP(FUNSequence    );
-DEFINE_OBJECT_CONTAINER   (DPTSearch      );
-DEFINE_OBJECT_CONTAINER   (DPTSome        );
-DEFINE_OBJECT_CONTAINER   (DPTPrior       );
-DEFINE_OBJECT_CONTAINER   (DPTFreeActivity);
+DEFINE_OBJECT_CONTAINER_LP(DPTSearch      );
+DEFINE_OBJECT_CONTAINER_LP(DPTSome        );
+DEFINE_OBJECT_CONTAINER_LP(DPTPrior       );
+DEFINE_OBJECT_CONTAINER_LP(DPTFreeActivity);
 DEFINE_OBJECT_CONTAINER   (PMDPokaz       );
 DEFINE_OBJECT_CONTAINER_LP(Event          );
 
 DEFINE_OBJECT_CONTAINER_NONAME_LP(FUNGroup   );
-DEFINE_OBJECT_CONTAINER_NONAME   (DPTFree    );
-DEFINE_OBJECT_CONTAINER_NONAME   (PROCProcess);
+DEFINE_OBJECT_CONTAINER_NONAME_LP(DPTFree    );
+DEFINE_OBJECT_CONTAINER_NONAME_LP(PROCProcess);
 
 public:
 	RDOParser();

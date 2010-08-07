@@ -1312,18 +1312,18 @@ frm_active
 	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
 		std::string opr_name = P_RDOVALUE($2)->value().getIdentificator();
-		const RDODPTFreeActivity* activity = PARSER->findDPTFreeActivity( opr_name );
-		if ( !activity )
+		LPRDODPTFreeActivity pActivity = PARSER->findDPTFreeActivity( opr_name );
+		if ( !pActivity )
 		{
 			PARSER->error().error( @2, rdo::format("Активность '%s' не найдена", opr_name.c_str()) );
 		}
 		else
 		{
-			if ( activity->pattern()->getType() != RDOPATPattern::PT_Keyboard )
+			if ( pActivity->pattern()->getType() != RDOPATPattern::PT_Keyboard )
 			{
-				PARSER->error().push_only(@2, rdo::format("Активность '%s' должна быть клавиатурной", activity->name().c_str()));
-				PARSER->error().push_only(activity->src_info(), "См. акивность");
-				PARSER->error().push_only(activity->pattern()->src_info(), "См. образец");
+				PARSER->error().push_only(@2, rdo::format("Активность '%s' должна быть клавиатурной", pActivity->name().c_str()));
+				PARSER->error().push_only(pActivity->src_info(), "См. акивность");
+				PARSER->error().push_only(pActivity->pattern()->src_info(), "См. образец");
 				PARSER->error().push_done();
 			}
 		}

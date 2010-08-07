@@ -1,28 +1,43 @@
-#ifndef RDO_MB_RESOURCES_H
-#define RDO_MB_RESOURCES_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_resources.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _MBUILDER_RESOURCES_H_
+#define _MBUILDER_RESOURCES_H_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
+// ====================================================================== INCLUDES
 #include <list>
+// ====================================================================== SYNOPSIS
 #include "rdo_common/rdodebug.h"
+
+#include "rdo_lib/rdo_mbuilder/namespace.h"
+
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
+
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
+// ===============================================================================
 
-namespace rdoParse
-{
+OPEN_RDO_PARSER_NAMESPACE
 class RDOParser;
 class RDORTPResType;
 class RDORSSResource;
-}
+CLOSE_RDO_PARSER_NAMESPACE
 
-namespace rdoMBuilder {
+OPEN_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------
 // ---------- RDOList
@@ -313,6 +328,6 @@ public:
 	}
 };
 
-} // rdoMBuilder
+CLOSE_MBUILDER_NAMESPACE
 
-#endif // RDO_MB_RESOURCES_H
+#endif //! _MBUILDER_RESOURCES_H_

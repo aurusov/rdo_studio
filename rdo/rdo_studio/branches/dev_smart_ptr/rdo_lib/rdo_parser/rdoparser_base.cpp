@@ -19,6 +19,7 @@
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

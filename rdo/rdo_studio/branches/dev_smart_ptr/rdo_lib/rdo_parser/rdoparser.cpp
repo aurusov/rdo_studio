@@ -17,7 +17,6 @@
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/context/global.h"
 #include "rdo_common/rdocommon.h"
@@ -83,16 +82,16 @@ DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FRMFrame       );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNConstant    );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNFunction    );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNSequence    );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTSearch      );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTSome        );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTPrior       );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(DPTFreeActivity);
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTSearch      );
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTSome        );
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTPrior       );
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTFreeActivity);
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(PMDPokaz       );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (Event          );
 
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP   (FUNGroup   );
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(DPTFree    );
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(PROCProcess);
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(FUNGroup   );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(DPTFree    );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(PROCProcess);
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
@@ -230,8 +229,9 @@ tstring RDOParser::getModelStructure()
 	{
 		for (ruint j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
 		{
-			PTR(RDODPTSearchActivity) curr = m_allDPTSearch.at(i)->getActivities().at(j);
-			modelStructure << counter++ << _T(" ") << curr->name() << _T(" ") << curr->pattern()->getPatternId() << std::endl;
+			LPRDODPTSearchActivity pSearchActivity = m_allDPTSearch.at(i)->getActivities().at(j);
+			ASSERT(pSearchActivity);
+			modelStructure << counter++ << _T(" ") << pSearchActivity->name() << _T(" ") << pSearchActivity->pattern()->getPatternId() << std::endl;
 		}
 	}
 
@@ -383,13 +383,12 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 			error().push_done();
 		}
 	}
-	CPTR(RDODPTFreeActivity) pFreeAct = findDPTFreeActivity(src_info.src_text());
-	if (pFreeAct)
+	LPRDODPTFreeActivity pFreeActivity = findDPTFreeActivity(src_info.src_text());
+	if (pFreeActivity)
 	{
 		error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFreeAct->src_info(), _T("См. первое определение"));
+		error().push_only(pFreeActivity->src_info(), _T("См. первое определение"));
 		error().push_done();
-//		error(_T("Free activity name: ") + *_name + _T(" already defined"));
 	}
 }
 
