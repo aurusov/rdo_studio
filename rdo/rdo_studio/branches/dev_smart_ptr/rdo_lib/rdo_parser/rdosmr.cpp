@@ -1,13 +1,25 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdosmr.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 int smr_file_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -32,159 +44,167 @@ void smr_sim_error(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDOSMR
 // ----------------------------------------------------------------------------
-RDOSMR::RDOSMR( RDOParser* _parser, const std::string& _modelName ):
-	RDOParserObject( _parser ),
-	frameNumber( 1 ),
-	showRate( 60 ),
-	runStartTime( 0 ),
-	traceStartTime( rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME ),
-	traceEndTime  ( rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME ),
-	showMode( rdoSimulator::SM_NoShow ),
-	terminateIf( NULL )
+RDOSMR::RDOSMR(CREF(tstring) modelName)
+	: m_frameNumber   (1 )
+	, m_showRate      (60)
+	, m_runStartTime  (0 )
+	, m_traceStartTime(rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_traceEndTime  (rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_showMode      (rdoSimulator::SM_NoShow                     )
 {
-	setFile( "Model_name", _modelName );
-	parser()->setSMR( this );
+	setFile(_T("Model_name"), modelName);
+	RDOParser::s_parser()->setSMR(this);
 }
 
-void RDOSMR::setShowMode( rdoSimulator::ShowMode _showMode )
+void RDOSMR::setShowMode(rdoSimulator::ShowMode showMode)
 {
-	showMode = _showMode;
+	m_showMode = showMode;
 }
 
-void RDOSMR::setFrameNumber( int value, const YYLTYPE& pos )
+void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 {
-	if ( value <= 0 ) {
-		parser()->error().error( pos, "Номер кадра должен быть больше нуля" );
-	}
-	if ( parser()->runtime()->allFrames.size() + 1 <= (unsigned int)value ) {
-		parser()->error().error( pos, rdo::format("Несуществующий кадр: %d", value) );
-	}
-	frameNumber = value;
-}
-
-void RDOSMR::setShowRate( double value, const YYLTYPE& pos )
-{
-	if ( value < 0 ) {
-		parser()->error().error( pos, "Масштаб должен быть больше нуля" );
-	}
-	showRate = value;
-}
-
-void RDOSMR::setRunStartTime( double value, const YYLTYPE& pos )
-{
-	if ( value < 0 ) {
-		parser()->error().error( pos, "Начальное модельное время должно быть больше нуля" );
-	}
-	runStartTime = value;
-}
-
-void RDOSMR::setTraceStartTime( double value, const YYLTYPE& pos )
-{
-	if ( value < 0 ) {
-		parser()->error().error( pos, "Начальное время трассировки должно быть больше нуля" );
-	}
-	if ( getTraceEndTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value ){
-		parser()->error().push_only( pos, "Начальное время трассировки должно быть меньше конечного" );
-		parser()->error().push_only( traceEndTime_pos, "См. конечное время трассировки" );
-		parser()->error().push_done();
-	}
-	traceStartTime     = value;
-	traceStartTime_pos = pos;
-}
-
-void RDOSMR::setTraceEndTime( double value, const YYLTYPE& pos )
-{
-	if ( value < 0 ) {
-		parser()->error().error( pos, "Конечное время трассировки должно быть больше нуля" );
-	}
-	if ( getTraceStartTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value ) {
-		parser()->error().push_only( pos, "Конечное время трассировки должно быть больше начального" );
-		parser()->error().push_only( traceStartTime_pos, "См. начальное время трассировки" );
-		parser()->error().push_done();
-	}
-	traceEndTime     = value;
-	traceEndTime_pos = pos;
-}
-
-void RDOSMR::setTerminateIf( REF(LPRDOFUNLogic) logic )
-{
-	if ( terminateIf ) {
-		parser()->error().push_only( logic->src_info(), "Terminate_if уже определен" );
-	//	parser()->error().push_only( logic->src_info(), "Second Terminate_if entry" );
-		parser()->error().push_only( terminateIf->src_info(), "См. первое определение" );
-		parser()->error().push_done();
-	}
-	terminateIf = logic;
-	parser()->runtime()->setTerminateIf( logic->getCalc() );
-}
-
-void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, REF(LPRDOFUNArithm) arithm )
-{
-	LPRDOFUNConstant pConstant = parser()->findFUNConstant( const_info.src_text() );
-	if ( !pConstant ) {
-		parser()->error().error( const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()) );
-	}
-	ASSERT(arithm);
-	arithm->checkParamType(pConstant->getType());
-	rdoRuntime::LPRDOCalc calc = arithm->createCalc( pConstant->getType() );
-	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(pConstant->getNumber(), calc));
-	parser()->insertChanges( pConstant->src_text(), arithm->src_text() );
-}
-
-void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, REF(LPRDOFUNArithm) arithm )
-{
-	LPRDORSSResource res = parser()->findRSSResource( res_info.src_text() );
-	if ( !res ) {
-		parser()->error().error( res_info.src_info(), rdo::format("Ресурс '%s' не найден", res_info.src_text().c_str()) );
-//		parser()->error().error( res_info.src_info(), "Undefined resource name: " + resName );
-	}
-	LPRDORTPParam param = res->getType()->findRTPParam( par_info.src_text() );
-	if ( !param ) {
-		parser()->error().push_only( par_info.src_info(), rdo::format("Параметр '%s' не найден", par_info.src_text().c_str()) );
-		parser()->error().push_only( res->src_info(), "См. ресурс" );
-		parser()->error().push_only( res->getType()->src_info(), "См. тип ресурса" );
-		parser()->error().push_done();
-//		parser()->error().error( par_info.src_info(), "Undefined resource parameter name: " + parName);
-	}
-	ASSERT(arithm);
-	arithm->checkParamType(param->getParamType());
-	unsigned int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
-	rdoRuntime::LPRDOCalc calc = arithm->createCalc( param->getParamType() );
-	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(res->getID(), parNumb, calc));
-	parser()->insertChanges( res_info.src_text() + "." + par_info.src_text(), arithm->src_text() );
-}
-
-void RDOSMR::setSeed( const RDOParserSrcInfo& seq_info, int base )
-{
-	LPRDOFUNSequence pSequence = parser()->findFUNSequence( seq_info.src_text() );
-	if ( !pSequence )
+	if (value <= 0)
 	{
-		parser()->error().error( seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()) );
-//		parser()->error().error( "Undefined sequence: " + seqName );
+		RDOParser::s_parser()->error().error(pos, _T("Номер кадра должен быть больше нуля"));
+	}
+	if (RDOParser::s_parser()->runtime()->allFrames.size() + 1 <= (ruint)value)
+	{
+		RDOParser::s_parser()->error().error(pos, rdo::format(_T("Несуществующий кадр: %d"), value));
+	}
+	m_frameNumber = value;
+}
+
+void RDOSMR::setShowRate(double value, CREF(YYLTYPE) pos)
+{
+	if (value < 0)
+	{
+		RDOParser::s_parser()->error().error(pos, _T("Масштаб должен быть больше нуля"));
+	}
+	m_showRate = value;
+}
+
+void RDOSMR::setRunStartTime(double value, CREF(YYLTYPE) pos)
+{
+	if (value < 0)
+	{
+		RDOParser::s_parser()->error().error(pos, _T("Начальное модельное время должно быть больше нуля"));
+	}
+	m_runStartTime = value;
+}
+
+void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
+{
+	if (value < 0)
+	{
+		RDOParser::s_parser()->error().error(pos, _T("Начальное время трассировки должно быть больше нуля"));
+	}
+	if (getTraceEndTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value)
+	{
+		RDOParser::s_parser()->error().push_only(pos, _T("Начальное время трассировки должно быть меньше конечного"));
+		RDOParser::s_parser()->error().push_only(m_traceEndTime_pos, _T("См. конечное время трассировки"));
+		RDOParser::s_parser()->error().push_done();
+	}
+	m_traceStartTime     = value;
+	m_traceStartTime_pos = pos;
+}
+
+void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
+{
+	if (value < 0)
+	{
+		RDOParser::s_parser()->error().error(pos, _T("Конечное время трассировки должно быть больше нуля"));
+	}
+	if (getTraceStartTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value)
+	{
+		RDOParser::s_parser()->error().push_only(pos, _T("Конечное время трассировки должно быть больше начального"));
+		RDOParser::s_parser()->error().push_only(m_traceStartTime_pos, _T("См. начальное время трассировки"));
+		RDOParser::s_parser()->error().push_done();
+	}
+	m_traceEndTime     = value;
+	m_traceEndTime_pos = pos;
+}
+
+void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
+{
+	if (m_pTerminateIf)
+	{
+		RDOParser::s_parser()->error().push_only(pLogic->src_info(), _T("Terminate_if уже определен"));
+		RDOParser::s_parser()->error().push_only(m_pTerminateIf->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_done();
+	}
+	m_pTerminateIf = pLogic;
+	RDOParser::s_parser()->runtime()->setTerminateIf(pLogic->getCalc());
+}
+
+void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm) pArithm)
+{
+	LPRDOFUNConstant pConstant = RDOParser::s_parser()->findFUNConstant(const_info.src_text());
+	if (!pConstant)
+	{
+		RDOParser::s_parser()->error().error(const_info, rdo::format(_T("Константа '%s' не найдена"), const_info.src_text().c_str()));
+	}
+	ASSERT(pArithm);
+	pArithm->checkParamType(pConstant->getType());
+	rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getType());
+	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
+	RDOParser::s_parser()->insertChanges(pConstant->src_text(), pArithm->src_text());
+}
+
+void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm)
+{
+	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(res_info.src_text());
+	if (!pResource)
+	{
+		RDOParser::s_parser()->error().error(res_info.src_info(), rdo::format(_T("Ресурс '%s' не найден"), res_info.src_text().c_str()));
+	}
+	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_info.src_text());
+	if (!pParam)
+	{
+		RDOParser::s_parser()->error().push_only(par_info.src_info(), rdo::format(_T("Параметр '%s' не найден"), par_info.src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResource->src_info(), _T("См. ресурс"));
+		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_done();
+	}
+	ASSERT(pArithm);
+	pArithm->checkParamType(pParam->getParamType());
+	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
+	rdoRuntime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getParamType());
+	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
+	RDOParser::s_parser()->insertChanges(res_info.src_text() + _T(".") + par_info.src_text(), pArithm->src_text());
+}
+
+void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
+{
+	LPRDOFUNSequence pSequence = RDOParser::s_parser()->findFUNSequence(seq_info.src_text());
+	if (!pSequence)
+	{
+		RDOParser::s_parser()->error().error(seq_info, rdo::format(_T("Последовательность '%s' не найдена"), seq_info.src_text().c_str()));
 	}
 	pSequence->getInitCalc()->setBase(base);
-	parser()->insertChanges( pSequence->src_text() + ".Seed", rdo::format("%d", base) );
+	RDOParser::s_parser()->insertChanges(pSequence->src_text() + _T(".Seed"), rdo::format(_T("%d"), base));
 }
 
-void RDOSMR::insertBreakPoint( const RDOParserSrcInfo& _src_info, REF(LPRDOFUNLogic) _logic )
+void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
 {
-	std::vector< BreakPoint* >::const_iterator it = breakPoints.begin();
-	while ( it != breakPoints.end() ) {
-		if ( (*it)->src_text() == _src_info.src_text() ) {
-			parser()->error().push_only( _src_info, rdo::format("Точка останова с именем '%s' уже существует", _src_info.src_text().c_str()) );
-			parser()->error().push_only( (*it)->src_info(), "См. первое определение" );
-			parser()->error().push_done();
+	STL_FOR_ALL_CONST(BreakPointList, m_breakPointList, it)
+	{
+		if ((*it)->src_text() == src_info.src_text())
+		{
+			RDOParser::s_parser()->error().push_only(src_info, rdo::format(_T("Точка останова с именем '%s' уже существует"), src_info.src_text().c_str()));
+			RDOParser::s_parser()->error().push_only((*it)->src_info(), _T("См. первое определение"));
+			RDOParser::s_parser()->error().push_done();
 		}
-		it++;
 	}
-	breakPoints.push_back( new BreakPoint( this, _src_info, _logic ) );
+	LPBreakPoint pBreakPoint = rdo::Factory<BreakPoint>::create(src_info, pLogic);
+	ASSERT(pBreakPoint);
+	m_breakPointList.push_back(pBreakPoint);
 }
 
-RDOSMR::BreakPoint::BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, REF(LPRDOFUNLogic) _logic ):
-	RDOParserObject( smr ),
-	RDOParserSrcInfo( _src_info )
+RDOSMR::BreakPoint::BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
+	: RDOParserSrcInfo(src_info)
 {
-	parser()->runtime()->insertBreakPoint( src_text(), _logic->getCalc() );
+	ASSERT(pLogic);
+	RDOParser::s_parser()->runtime()->insertBreakPoint(src_text(), pLogic->getCalc());
 }
 
-} // namespace rdoParse 
+CLOSE_RDO_PARSER_NAMESPACE

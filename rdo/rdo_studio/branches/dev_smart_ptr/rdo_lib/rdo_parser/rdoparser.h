@@ -34,6 +34,7 @@
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
@@ -44,7 +45,6 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 OPEN_RDO_PARSER_NAMESPACE
 
 class RDOFRMFrame;
-class RDOSMR;
 class RDOTypeParam;
 
 class RDORTPFuzzyParam;
@@ -144,9 +144,9 @@ public:
 	tstring getModelStructure();
 	tstring getChanges       () const;
 
-	PTR(RDOSMR) getSMR()                const { return m_smr;                }
-	void        setSMR(PTR(RDOSMR) smr)       { m_smr = smr;                 }
-	rbool       hasSMR()                const { return m_smr ? true : false; }
+	LPRDOSMR getSMR() const              { return m_pSMR;                }
+	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
+	rbool    hasSMR() const              { return m_pSMR ? true : false; }
 
 	void parse();
 	void parse(REF(std::istream) stream);
@@ -244,7 +244,7 @@ protected:
 
 private:
 	PTR(RDOParserObject)  m_parsing_object;
-	PTR(RDOSMR)           m_smr;
+	LPRDOSMR              m_pSMR;
 	rbool                 m_have_kw_Resources;
 	rbool                 m_have_kw_ResourcesEnd;
 	Error                 m_error;

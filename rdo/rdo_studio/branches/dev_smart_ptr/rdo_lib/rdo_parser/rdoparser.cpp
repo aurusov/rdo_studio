@@ -115,7 +115,6 @@ RDOParser::RDOParser()
 	, m_parser_item         (NULL )
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
-	, m_smr                 (NULL )
 {
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));
