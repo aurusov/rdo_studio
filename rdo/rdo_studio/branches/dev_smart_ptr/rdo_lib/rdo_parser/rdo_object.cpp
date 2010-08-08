@@ -63,28 +63,6 @@ void RDODeletable::noAutoDelete()
 //#endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserObject
-// ----------------------------------------------------------------------------
-RDOParserObject::RDOParserObject(PTR(RDOParser) parser)
-	: RDODeletable(parser)
-	, m_parent    (NULL  )
-{}
-
-RDOParserObject::RDOParserObject(CPTR(RDOParserObject) parent)
-	: RDODeletable(parent->m_parser)
-	, m_parent    (parent          )
-{}
-
-RDOParserObject::~RDOParserObject()
-{}
-
-void RDOParserObject::reparent(CPTR(RDOParserObject) parent)
-{
-	m_parent = parent;
-	m_parser = parent->m_parser;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOParserSrcInfo
 // ----------------------------------------------------------------------------
 RDOParserSrcInfo::RDOParserSrcInfo()

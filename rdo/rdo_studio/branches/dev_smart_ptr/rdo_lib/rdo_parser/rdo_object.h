@@ -50,26 +50,6 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserObject
-// ----------------------------------------------------------------------------
-class RDOParser;
-
-class RDOParserObject: public RDODeletable
-{
-public:
-	CPTR(RDOParserObject) parent  () const                         { return m_parent; }
-	void                  reparent(CPTR(RDOParserObject) parent);
-	virtual ~RDOParserObject();
-
-protected:
-	RDOParserObject(PTR(RDOParser)        parser);
-	RDOParserObject(CPTR(RDOParserObject) parent);
-
-private:
-	CPTR(RDOParserObject) m_parent;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOParserSrcInfo
 // ----------------------------------------------------------------------------
 class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo

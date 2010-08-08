@@ -26,38 +26,15 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 RDOParser::ParserList RDOParser::s_parserStack;
 
-#define DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(NAME) \
-void RDOParser::insert##NAME(PTR(RDO##NAME) value) \
-{ \
-	m_parsing_object = (RDOParserObject*)value; \
-	m_all##NAME.push_back(value); \
-}
-
-#define DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(NAME) \
+#define DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
 void RDOParser::insert##NAME(LPRDO##NAME value) \
 { \
-	m_parsing_object = (RDOParserObject*)(value.get()); \
+	howIsIt<LPRDO##NAME>(); \
 	m_all##NAME.push_back(value); \
 }
 
-#define DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(NAME) \
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(NAME) \
-const RDO##NAME* RDOParser::find##NAME(CREF(tstring) name) const \
-{ \
-	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
-	return it != m_all##NAME.end() ? *it : NULL; \
-} \
-rbool RDOParser::remove##NAME(const PTR(RDO##NAME) item) \
-{ \
-	NAME##List::iterator it = std::find(m_all##NAME.begin(), m_all##NAME.end(), item); \
-	if (it == m_all##NAME.end()) \
-		return false; \
-	m_all##NAME.erase(it); \
-	return true; \
-}
-
-#define DECLARE_PARSER_OBJECT_CONTAINER_LP(NAME) \
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(NAME) \
+#define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
 const LPRDO##NAME RDOParser::find##NAME(CREF(tstring) name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
@@ -72,23 +49,23 @@ rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
 	return true; \
 }
 
-DECLARE_PARSER_OBJECT_CONTAINER_LP(PATPattern     );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(RTPResType     );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(RSSResource    );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(FRMFrame       );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(FUNConstant    );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(FUNFunction    );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(FUNSequence    );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTSearch      );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTSome        );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTPrior       );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTFreeActivity);
-DECLARE_PARSER_OBJECT_CONTAINER_LP(PMDPokaz       );
-DECLARE_PARSER_OBJECT_CONTAINER_LP(Event          );
+DECLARE_PARSER_OBJECT_CONTAINER(PATPattern     );
+DECLARE_PARSER_OBJECT_CONTAINER(RTPResType     );
+DECLARE_PARSER_OBJECT_CONTAINER(RSSResource    );
+DECLARE_PARSER_OBJECT_CONTAINER(FRMFrame       );
+DECLARE_PARSER_OBJECT_CONTAINER(FUNConstant    );
+DECLARE_PARSER_OBJECT_CONTAINER(FUNFunction    );
+DECLARE_PARSER_OBJECT_CONTAINER(FUNSequence    );
+DECLARE_PARSER_OBJECT_CONTAINER(DPTSearch      );
+DECLARE_PARSER_OBJECT_CONTAINER(DPTSome        );
+DECLARE_PARSER_OBJECT_CONTAINER(DPTPrior       );
+DECLARE_PARSER_OBJECT_CONTAINER(DPTFreeActivity);
+DECLARE_PARSER_OBJECT_CONTAINER(PMDPokaz       );
+DECLARE_PARSER_OBJECT_CONTAINER(Event          );
 
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(FUNGroup   );
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(DPTFree    );
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(PROCProcess);
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup   );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
@@ -111,10 +88,10 @@ PTR(RDOParser) RDOParser::s_parser()
 }
 
 RDOParser::RDOParser()
-	: m_parsing_object      (NULL )
-	, m_parser_item         (NULL )
+	: m_parser_item         (NULL )
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
+	, m_pattern             (false)
 {
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));

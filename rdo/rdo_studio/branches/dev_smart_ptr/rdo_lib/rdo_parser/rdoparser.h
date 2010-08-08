@@ -44,7 +44,6 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RDOFRMFrame;
 class RDOTypeParam;
 
 class RDORTPFuzzyParam;
@@ -67,39 +66,32 @@ public: \
 	rbool      remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
-DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME)
-
-#define DEFINE_OBJECT_CONTAINER_NONAME_LP(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 
 #define DEFINE_OBJECT_CONTAINER(NAME) \
-DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME) \
-DEFINE_OBJECT_CONTAINER_WITHNAME(PTR(RDO##NAME), NAME)
-
-#define DEFINE_OBJECT_CONTAINER_LP(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
 DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
 class RDOParser
 {
 public:
-DEFINE_OBJECT_CONTAINER_LP(PATPattern     );
-DEFINE_OBJECT_CONTAINER_LP(RTPResType     );
-DEFINE_OBJECT_CONTAINER_LP(RSSResource    );
-DEFINE_OBJECT_CONTAINER_LP(FRMFrame       );
-DEFINE_OBJECT_CONTAINER_LP(FUNConstant    );
-DEFINE_OBJECT_CONTAINER_LP(FUNFunction    );
-DEFINE_OBJECT_CONTAINER_LP(FUNSequence    );
-DEFINE_OBJECT_CONTAINER_LP(DPTSearch      );
-DEFINE_OBJECT_CONTAINER_LP(DPTSome        );
-DEFINE_OBJECT_CONTAINER_LP(DPTPrior       );
-DEFINE_OBJECT_CONTAINER_LP(DPTFreeActivity);
-DEFINE_OBJECT_CONTAINER_LP(PMDPokaz       );
-DEFINE_OBJECT_CONTAINER_LP(Event          );
+DEFINE_OBJECT_CONTAINER(PATPattern     );
+DEFINE_OBJECT_CONTAINER(RTPResType     );
+DEFINE_OBJECT_CONTAINER(RSSResource    );
+DEFINE_OBJECT_CONTAINER(FRMFrame       );
+DEFINE_OBJECT_CONTAINER(FUNConstant    );
+DEFINE_OBJECT_CONTAINER(FUNFunction    );
+DEFINE_OBJECT_CONTAINER(FUNSequence    );
+DEFINE_OBJECT_CONTAINER(DPTSearch      );
+DEFINE_OBJECT_CONTAINER(DPTSome        );
+DEFINE_OBJECT_CONTAINER(DPTPrior       );
+DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
+DEFINE_OBJECT_CONTAINER(PMDPokaz       );
+DEFINE_OBJECT_CONTAINER(Event          );
 
-DEFINE_OBJECT_CONTAINER_NONAME_LP(FUNGroup   );
-DEFINE_OBJECT_CONTAINER_NONAME_LP(DPTFree    );
-DEFINE_OBJECT_CONTAINER_NONAME_LP(PROCProcess);
+DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
+DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
+DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 public:
 	RDOParser();
@@ -118,8 +110,8 @@ public:
 		m_allDeletables.erase(std::find(m_allDeletables.begin(), m_allDeletables.end(), value));
 	}
 
-	PTR(RDOParserObject) getLastParsingObject() { return m_parsing_object; }
-	REF(FUNGroupList)    getFUNGroupStack    () { return m_allFUNGroup;    }
+	rbool             isPattern       () const { return m_pattern;     }
+	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
 
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
@@ -243,7 +235,6 @@ protected:
 	void parse(rdoModelObjects::RDOParseType file);
 
 private:
-	PTR(RDOParserObject)  m_parsing_object;
 	LPRDOSMR              m_pSMR;
 	rbool                 m_have_kw_Resources;
 	rbool                 m_have_kw_ResourcesEnd;
@@ -251,6 +242,19 @@ private:
 	Stack                 m_movementObjectList;
 	PreCastTypeList       m_preCastTypeList;
 	ContextStack          m_contextStack;
+	rbool                 m_pattern;
+
+	template <class T>
+	void howIsIt()
+	{
+		m_pattern = false;
+	}
+
+	template <>
+	void howIsIt<LPRDOPATPattern>()
+	{
+		m_pattern = true;
+	}
 
 	struct Changes
 	{

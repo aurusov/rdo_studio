@@ -446,10 +446,14 @@ false				{
 					switch (PARSER->getFileToParse())
 					{
 					case rdoModelObjects::PAT:
-						rdoParse::RDOPATPattern* pattern = dynamic_cast<rdoParse::RDOPATPattern*>(PARSER->getLastParsingObject());
-						if (pattern && pattern->findRelevantResource(name))
+						if (PARSER->isPattern())
 						{
-							return RDO_IDENTIF_RELRES;
+							rdoParse::LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+							ASSERT(pPattern);
+							if (pPattern->findRelevantResource(name))
+							{
+								return RDO_IDENTIF_RELRES;
+							}
 						}
 						break;
 					}
