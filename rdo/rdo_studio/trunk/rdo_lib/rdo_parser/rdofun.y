@@ -472,7 +472,7 @@ fun_func_algorithmic_calc_if
 	{
 		rdoRuntime::LPRDOCalc pCondition = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 		RDOParserSrcInfo logic_src_info(_T("Calculate_if 1 = 1"));
-		logic_src_info.setSrcPos( @1.first_line, @1.first_column, @1.first_line, @1.first_column );
+		logic_src_info.setSrcPos( @1.m_first_line, @1.m_first_pos, @1.m_first_line, @1.m_first_pos );
 		pCondition->setSrcInfo( logic_src_info );
 		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCondition, true);
 		pLogic->setSrcInfo( logic_src_info );

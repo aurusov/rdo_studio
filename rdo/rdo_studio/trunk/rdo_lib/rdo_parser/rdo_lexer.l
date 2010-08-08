@@ -12,6 +12,7 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_parser/rdobison.h"
 #include "rdo_lib/rdo_parser/rdogramma.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
@@ -381,67 +382,70 @@ false				{
 }
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange  {       
-	std::string n1(YYText());
-	std::string::size_type pos = n1.find_first_of("\r\n\t :");
-	std::string name(n1, 0, pos);
-	RUNTIME->memory_insert( name.length() + sizeof(std::string) );
-	rdoParse::RDOValue* value;
-	if ( LEXER->m_lploc )
-	{
-		YYLTYPE pos     = *LEXER->m_lploc;
-		pos.last_line   = pos.first_line;
-		pos.last_column = pos.first_column + name.length();
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
-	}
-	else
-	{
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
-	}
-	LEXER->setvalue( (int)PARSER->addValue(value) );
-	return RDO_IDENTIF_NoChange_NoChange;
-}
+					std::string n1(YYText());
+					std::string::size_type pos = n1.find_first_of("\r\n\t :");
+					std::string name(n1, 0, pos);
+					RUNTIME->memory_insert( name.length() + sizeof(std::string) );
+					rdoParse::RDOValue* value;
+					if ( LEXER->m_lploc )
+					{
+						YYLTYPE pos     = *LEXER->m_lploc;
+						pos.m_last_line = pos.m_first_line;
+						pos.m_last_pos  = pos.m_first_pos  + name.length();
+						pos.m_last_seek = pos.m_first_seek + name.length();
+						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
+					}
+					else
+					{
+						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
+					}
+					LEXER->setvalue( (int)PARSER->addValue(value) );
+					return RDO_IDENTIF_NoChange_NoChange;
+				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+NoChange  {       
-	std::string n1(YYText());
-	std::string::size_type pos = n1.find_first_of("\r\n\t :");
-	std::string name(n1, 0, pos);
-	RUNTIME->memory_insert( name.length() + sizeof(std::string) );
-	rdoParse::RDOValue* value;
-	if ( LEXER->m_lploc )
-	{
-		YYLTYPE pos     = *LEXER->m_lploc;
-		pos.last_line   = pos.first_line;
-		pos.last_column = pos.first_column + name.length();
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
-	}
-	else
-	{
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
-	}
-	LEXER->setvalue( (int)PARSER->addValue(value) );
-	return RDO_IDENTIF_NoChange;
-}
+					std::string n1(YYText());
+					std::string::size_type pos = n1.find_first_of("\r\n\t :");
+					std::string name(n1, 0, pos);
+					RUNTIME->memory_insert( name.length() + sizeof(std::string) );
+					rdoParse::RDOValue* value;
+					if ( LEXER->m_lploc )
+					{
+						YYLTYPE pos     = *LEXER->m_lploc;
+						pos.m_last_line = pos.m_first_line;
+						pos.m_last_pos  = pos.m_first_pos  + name.length();
+						pos.m_last_seek = pos.m_first_seek + name.length();
+						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
+					}
+					else
+					{
+						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
+					}
+					LEXER->setvalue( (int)PARSER->addValue(value) );
+					return RDO_IDENTIF_NoChange;
+				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]*\:  {       
-	std::string n1(YYText());
-	std::string::size_type pos = n1.find_first_of("\r\n\t :");
-	std::string name(n1, 0, pos);
-	RUNTIME->memory_insert( name.length() + sizeof(std::string) );
-	rdoParse::RDOValue* value;
-	if ( LEXER->m_lploc )
-	{
-		YYLTYPE pos     = *LEXER->m_lploc;
-		pos.last_line   = pos.first_line;
-		pos.last_column = pos.first_column + name.length();
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
-	}
-	else
-	{
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
-	}
-	LEXER->setvalue( (int)PARSER->addValue(value) );
-	return RDO_IDENTIF_COLON;
-}
+					std::string n1(YYText());
+					std::string::size_type pos = n1.find_first_of("\r\n\t :");
+					std::string name(n1, 0, pos);
+					RUNTIME->memory_insert( name.length() + sizeof(std::string) );
+					rdoParse::RDOValue* value;
+					if ( LEXER->m_lploc )
+					{
+						YYLTYPE pos     = *LEXER->m_lploc;
+						pos.m_last_line = pos.m_first_line;
+						pos.m_last_pos  = pos.m_first_pos  + name.length();
+						pos.m_last_seek = pos.m_first_seek + name.length();
+						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
+					}
+					else
+					{
+						value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
+					}
+					LEXER->setvalue( (int)PARSER->addValue(value) );
+					return RDO_IDENTIF_COLON;
+				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {       
 					std::string name(YYText());

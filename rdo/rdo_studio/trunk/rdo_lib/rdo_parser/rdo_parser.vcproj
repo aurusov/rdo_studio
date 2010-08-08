@@ -528,6 +528,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdobison.h"
+				>
+			</File>
+			<File
 				RelativePath="rdodpt.y"
 				>
 				<FileConfiguration

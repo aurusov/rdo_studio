@@ -90,7 +90,7 @@ ruint RDOParserRDOItem::lexer_loc_line()
 {
 	if (m_pLexer)
 	{
-		return m_pLexer->m_lploc ? m_pLexer->m_lploc->first_line : m_pLexer->lineno();
+		return m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_line : m_pLexer->lineno();
 	}
 	else
 	{
@@ -100,7 +100,7 @@ ruint RDOParserRDOItem::lexer_loc_line()
 
 ruint RDOParserRDOItem::lexer_loc_pos()
 {
-	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->first_column : 0;
+	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
 
 // ----------------------------------------------------------------------------

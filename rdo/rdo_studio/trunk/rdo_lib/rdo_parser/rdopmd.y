@@ -386,9 +386,10 @@ pmd_end
 	: RDO_Results pmd_body RDO_End
 	| error
 	{
-		YYLTYPE pos(@1);
-		pos.last_line   = pos.first_line;
-		pos.last_column = pos.first_column;
+		YYLTYPE pos( @1 );
+		pos.m_last_line = pos.m_first_line;
+		pos.m_last_pos  = pos.m_first_pos;
+		pos.m_last_seek = pos.m_first_seek;
 		PARSER->error().error(pos, _T("Ожидается ключевое слово $Results"));
 	}
 	| RDO_Results pmd_body error
