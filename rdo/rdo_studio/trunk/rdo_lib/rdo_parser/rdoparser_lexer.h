@@ -27,7 +27,7 @@ class RDOParser;
 class RDOLexer: public yyFlexLexer
 {
 public:
-	RDOLexer(PTR(RDOParser) parser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
+	RDOLexer(PTR(RDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
 
 	void loc_init     ();
 	void loc_action   ();
@@ -55,7 +55,7 @@ protected:
 private:
 	PTR(std::istream) m_yyin;
 	PTR(std::ostream) m_yyout;
-	PTR(RDOParser)    m_parser;
+	PTR(RDOParser)    m_pParser;
 	rbool             m_enumEmpty;
 	rsint             m_array_param_cnt;
 };

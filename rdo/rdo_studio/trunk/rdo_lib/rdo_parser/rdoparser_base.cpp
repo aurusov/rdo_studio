@@ -19,6 +19,7 @@
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,12 +27,16 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOParserContainer
 // ----------------------------------------------------------------------------
-RDOParserContainer::RDOParserContainer(PTR(RDOParser) parser)
-	: RDODeletable(parser)
+RDOParserContainer::RDOParserContainer()
 {}
 
-ruint RDOParserContainer::insert(rdoModelObjects::RDOParseType type, PTR(RDOParserItem) parser)
+RDOParserContainer::~RDOParserContainer()
+{}
+
+ruint RDOParserContainer::insert(rdoModelObjects::RDOParseType type, CREF(LPRDOParserItem) pParser)
 {
+	ASSERT(pParser);
+
 	ruint min, max;
 	RDOParserContainer::getMinMax(type, min, max);
 	if (min != UNDEFINED_ID && max != UNDEFINED_ID)
@@ -39,7 +44,7 @@ ruint RDOParserContainer::insert(rdoModelObjects::RDOParseType type, PTR(RDOPars
 		List::iterator it = m_list.find(min);
 		if (it == m_list.end())
 		{
-			m_list[min] = parser;
+			m_list[min] = pParser;
 			return min;
 		}
 		else
@@ -52,7 +57,7 @@ ruint RDOParserContainer::insert(rdoModelObjects::RDOParseType type, PTR(RDOPars
 			}
 			if (index <= max)
 			{
-				m_list[index] = parser;
+				m_list[index] = pParser;
 				return index;
 			}
 			else
@@ -87,54 +92,54 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 // ----------------------------------------------------------------------------
 // ---------- RDOParserContainerModel
 // ----------------------------------------------------------------------------
-RDOParserContainerModel::RDOParserContainerModel(PTR(RDOParser) parser)
-	: RDOParserContainer(parser)
+RDOParserContainerModel::RDOParserContainerModel()
+	: RDOParserContainer()
 {
-	insert(rdoModelObjects::obPRE, new RDOParserSTDFUN(m_parser));
-	insert(rdoModelObjects::obPRE, new RDOParserRDOItem(m_parser, rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
-	insert(rdoModelObjects::obRTP, new RDOParserRDOItem(m_parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex));
-	insert(rdoModelObjects::obRTP, new RDOParserRDOItem(m_parser, rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
+	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserSTDFUN> ::create());
+	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, rtpparse, rtperror, rtplex));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
 #ifdef CORBA_ENABLE
-	insert(rdoModelObjects::obRTP, new RDOParserCorbaRTP(m_parser));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserCorbaRTP>::create());
 #endif
-	insert(rdoModelObjects::obRSS, new RDOParserRSS(m_parser));
-	insert(rdoModelObjects::obRSS, new RDOParserRDOItem(m_parser, rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
+	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRSS>    ::create());
+	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
 #ifdef CORBA_ENABLE
-	insert(rdoModelObjects::obRSS, new RDOParserCorbaRSS(m_parser));
+	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
-	insert(rdoModelObjects::obFUN, new RDOParserRDOItem(m_parser, rdoModelObjects::FUN, funparse, funerror, funlex));
-	insert(rdoModelObjects::obEVN, new RDOParserRDOItem(m_parser, rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	insert(rdoModelObjects::obEVN, new RDOParserRDOItem(m_parser, rdoModelObjects::EVN, evnparse, evnerror, evnlex));
-	insert(rdoModelObjects::obPAT, new RDOParserRDOItem(m_parser, rdoModelObjects::PAT, patparse, paterror, patlex));
-	insert(rdoModelObjects::obEVN, new RDOParserEVNPost(m_parser));
-	insert(rdoModelObjects::obDPT, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, dptparse, dpterror, dptlex));
-	insert(rdoModelObjects::obPRC, new RDOParserRDOItem(m_parser, rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
-	insert(rdoModelObjects::obPMD, new RDOParserRDOItem(m_parser, rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
-	insert(rdoModelObjects::obFRM, new RDOParserRDOItem(m_parser, rdoModelObjects::FRM, frmparse, frmerror, frmlex));
-	insert(rdoModelObjects::obSMR, new RDOParserRSSPost(m_parser));
-	insert(rdoModelObjects::obSMR, new RDOParserRDOItem(m_parser, rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
+	insert(rdoModelObjects::obFUN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, funparse, funerror, funlex));
+	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
+	insert(rdoModelObjects::obPAT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, patparse, paterror, patlex));
+	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserEVNPost>::create());
+	insert(rdoModelObjects::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, dptparse, dpterror, dptlex));
+	insert(rdoModelObjects::obPRC, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
+	insert(rdoModelObjects::obPMD, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
+	insert(rdoModelObjects::obFRM, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, frmparse, frmerror, frmlex));
+	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
+	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserContainerSMRInfo
 // ----------------------------------------------------------------------------
-RDOParserContainerSMRInfo::RDOParserContainerSMRInfo(PTR(RDOParser) parser)
-	: RDOParserContainer(parser)
+RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
+	: RDOParserContainer()
 {
-	insert(rdoModelObjects::obPRE, new RDOParserRDOItem(m_parser, rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
+	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserContainerCorba
 // ----------------------------------------------------------------------------
-RDOParserContainerCorba::RDOParserContainerCorba(PTR(RDOParser) parser)
-	: RDOParserContainer(parser)
+RDOParserContainerCorba::RDOParserContainerCorba()
+	: RDOParserContainer()
 {
-	insert(rdoModelObjects::obRTP, new RDOParserRDOItem(m_parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex, RDOParserItem::sf_editor));
-	insert(rdoModelObjects::obRTP, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex, RDOParserItem::sf_editor));
-	insert(rdoModelObjects::obRSS, new RDOParserRSS(m_parser, RDOParserItem::sf_editor));
-	insert(rdoModelObjects::obRSS, new RDOParserRDOItem(m_parser, rdoModelObjects::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex, RDOParserItem::sf_editor));
-	insert(rdoModelObjects::obSMR, new RDOParserRSSPost(m_parser));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, rtpparse, rtperror, rtplex, RDOParserItem::sf_editor));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex, RDOParserItem::sf_editor));
+	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRSS>    ::create(RDOParserItem::sf_editor));
+	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex, RDOParserItem::sf_editor));
+	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

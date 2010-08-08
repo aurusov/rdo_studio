@@ -444,21 +444,25 @@ false				{
 }
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {       
-	std::string name(YYText());
-	RUNTIME->memory_insert( name.length() + sizeof(std::string) );
-	LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, name) : rdoParse::RDOParserSrcInfo(name))) );
-	switch (PARSER->getFileToParse())
-	{
-		case rdoModelObjects::EVN:
-		case rdoModelObjects::PAT:
-			rdoParse::RDOPATPattern* pattern = dynamic_cast<rdoParse::RDOPATPattern*>(PARSER->getLastParsingObject());
-			if (pattern && pattern->findRelevantResource(name))
-			{
-				return RDO_IDENTIF_RELRES;
-			}
-			break;
-	}
-	return RDO_IDENTIF;
-}
+					std::string name(YYText());
+					RUNTIME->memory_insert( name.length() + sizeof(std::string) );
+					LEXER->setvalue( (int)PARSER->addValue(new rdoParse::RDOValue(LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(*LEXER->m_lploc, name) : rdoParse::RDOParserSrcInfo(name))) );
+					switch (PARSER->getFileToParse())
+					{
+					case rdoModelObjects::EVN:
+					case rdoModelObjects::PAT:
+						if (PARSER->isPattern())
+						{
+							rdoParse::LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+							ASSERT(pPattern);
+							if (pPattern->findRelevantResource(name))
+							{
+								return RDO_IDENTIF_RELRES;
+							}
+						}
+						break;
+					}
+					return RDO_IDENTIF;
+				}
 
 %%

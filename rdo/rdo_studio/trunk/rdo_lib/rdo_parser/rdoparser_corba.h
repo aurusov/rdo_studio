@@ -24,11 +24,12 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 class RDOParserCorbaRTP: public RDOParserRDOItem
 {
-public:
-	RDOParserCorbaRTP(PTR(RDOParser) parser)
-		: RDOParserRDOItem(parser, rdoModelObjects::RTP, NULL, NULL, NULL)
+DECLARE_FACTORY(RDOParserCorbaRTP);
+private:
+	RDOParserCorbaRTP()
+		: RDOParserRDOItem(rdoModelObjects::RTP, NULL, NULL, NULL)
 	{}
-	virtual void parse();
+	virtual void parse(PTR(RDOParser) pParser);
 };
 
 // ----------------------------------------------------------------------------
@@ -36,11 +37,12 @@ public:
 // ----------------------------------------------------------------------------
 class RDOParserCorbaRSS: public RDOParserRDOItem
 {
-public:
-	RDOParserCorbaRSS(PTR(RDOParser) parser)
-		: RDOParserRDOItem(parser, rdoModelObjects::RSS, NULL, NULL, NULL)
+DECLARE_FACTORY(RDOParserCorbaRSS);
+private:
+	RDOParserCorbaRSS()
+		: RDOParserRDOItem(rdoModelObjects::RSS, NULL, NULL, NULL)
 	{}
-	virtual void parse();
+	virtual void parse(PTR(RDOParser) pParser);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
