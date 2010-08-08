@@ -32,6 +32,7 @@
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
@@ -43,7 +44,6 @@ OPEN_RDO_PARSER_NAMESPACE
 
 class RDOFRMFrame;
 class RDOSMR;
-class RDOPMDPokaz;
 class RDOTypeParam;
 
 class RDORTPFuzzyParam;
@@ -93,7 +93,7 @@ DEFINE_OBJECT_CONTAINER_LP(DPTSearch      );
 DEFINE_OBJECT_CONTAINER_LP(DPTSome        );
 DEFINE_OBJECT_CONTAINER_LP(DPTPrior       );
 DEFINE_OBJECT_CONTAINER_LP(DPTFreeActivity);
-DEFINE_OBJECT_CONTAINER   (PMDPokaz       );
+DEFINE_OBJECT_CONTAINER_LP(PMDPokaz       );
 DEFINE_OBJECT_CONTAINER_LP(Event          );
 
 DEFINE_OBJECT_CONTAINER_NONAME_LP(FUNGroup   );

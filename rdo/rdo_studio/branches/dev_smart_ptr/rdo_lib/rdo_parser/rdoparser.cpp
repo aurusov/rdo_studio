@@ -13,11 +13,9 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/context/global.h"
 #include "rdo_common/rdocommon.h"
 // ===============================================================================
@@ -86,7 +84,7 @@ DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTSearch      );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTSome        );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTPrior       );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTFreeActivity);
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(PMDPokaz       );
+DECLARE_PARSER_OBJECT_CONTAINER_LP   (PMDPokaz       );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (Event          );
 
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(FUNGroup   );

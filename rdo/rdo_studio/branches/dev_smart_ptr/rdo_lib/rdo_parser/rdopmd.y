@@ -256,107 +256,127 @@ pmd_trace
 pmd_pokaz_watch_quant_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_quant RDO_IDENTIF
 	{
-		RDOPMDWatchQuant* pmd = new RDOPMDWatchQuant( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOValue*>($4)->src_info() );
-		$$ = (int)pmd;
+		LPRDOPMDWatchQuant pWatchQuant = rdo::Factory<RDOPMDWatchQuant>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info());
+		ASSERT(pWatchQuant);
+		$$ = PARSER->stack().push(pWatchQuant);
 	}
 	;
 
 pmd_pokaz_watch_value_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_value RDO_IDENTIF
 	{
-		RDOPMDWatchValue* pmd = new RDOPMDWatchValue( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOValue*>($4)->src_info() );
-		$$ = (int)pmd;
+		LPRDOPMDWatchValue pWatchValue = rdo::Factory<RDOPMDWatchValue>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info());
+		ASSERT(pWatchValue);
+		$$ = PARSER->stack().push(pWatchValue);
 	}
 	;
 
 pmd_pokaz
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		$$ = (int)(new RDOPMDWatchPar( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, reinterpret_cast<RDOValue*>($4)->src_info(), reinterpret_cast<RDOValue*>($6)->src_info() ));
+		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchPar>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info(), P_RDOVALUE($6)->src_info());
+		ASSERT(pPokaz);
+		$$ = PARSER->stack().push(pPokaz);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
 	{
-		PARSER->error().error( @5, @6, "Ожидается имя параметра" );
+		PARSER->error().error(@5, @6, _T("Ожидается имя параметра"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF error
 	{
-		PARSER->error().error( @4, "Ожидается '.'" );
+		PARSER->error().error(@4, _T("Ожидается '.'"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par error
 	{
-		PARSER->error().error( @3, @4, "После ключевого слова watch_par ожидается имя ресурса" );
+		PARSER->error().error(@3, @4, _T("После ключевого слова watch_par ожидается имя ресурса"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace error
 	{
-		PARSER->error().error( @2, @3, "Ожидается тип показателя" );
+		PARSER->error().error(@2, @3, _T("Ожидается тип показателя"));
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error( @1, @2, "Ожидается признак трассировки или тип показателя" );
+		PARSER->error().error(@1, @2, _T("Ожидается признак трассировки или тип показателя"));
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error( @1, @2, "Ожидается ':'" );
+		PARSER->error().error(@1, @2, _T("Ожидается ':'"));
 	}
 	| error
 	{
-		PARSER->error().error( @1, "Ожидается имя показателя" );
+		PARSER->error().error(@1, _T("Ожидается имя показателя"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic
 	{
-		$$ = (int)(new RDOPMDWatchState( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), $2 != 0, PARSER->stack().pop<RDOFUNLogic>($4) ));
+		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchState>::create(P_RDOVALUE($1)->src_info(), $2 != 0, PARSER->stack().pop<RDOFUNLogic>($4));
+		ASSERT(pPokaz);
+		$$ = PARSER->stack().push(pPokaz);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error
 	{
-		PARSER->error().error( @3, @4, "После ключевого слова watch_state ожидается логическое выражение" );
+		PARSER->error().error(@3, @4, _T("После ключевого слова watch_state ожидается логическое выражение"));
 	}
 	| pmd_pokaz_watch_quant_begin fun_logic
 	{
-		reinterpret_cast<RDOPMDWatchQuant*>($1)->setLogic( PARSER->stack().pop<RDOFUNLogic>($2) );
+		LPRDOPMDWatchQuant pWatchQuant = PARSER->stack().pop<RDOPMDWatchQuant>($1);
+		ASSERT(pWatchQuant);
+		pWatchQuant->setLogic(PARSER->stack().pop<RDOFUNLogic>($2));
+		$$ = PARSER->stack().push(pWatchQuant);
 	}
 	| pmd_pokaz_watch_quant_begin RDO_NoCheck
 	{
-		reinterpret_cast<RDOPMDWatchQuant*>($1)->setLogicNoCheck();
+		LPRDOPMDWatchQuant pWatchQuant = PARSER->stack().pop<RDOPMDWatchQuant>($1);
+		ASSERT(pWatchQuant);
+		pWatchQuant->setLogicNoCheck();
+		$$ = PARSER->stack().push(pWatchQuant);
 	}
 	| pmd_pokaz_watch_quant_begin error
 	{
-		PARSER->error().error( @1, @2, "После имени типа ожидается логическое выражение" );
+		PARSER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_quant error
 	{
-		PARSER->error().error( @3, @4, "После ключевого слова watch_quant ожидается тип ресурса" );
+		PARSER->error().error(@3, @4, _T("После ключевого слова watch_quant ожидается тип ресурса"));
 	}
 	| pmd_pokaz_watch_value_begin fun_logic fun_arithm
 	{
-		reinterpret_cast<RDOPMDWatchValue*>($1)->setLogic( PARSER->stack().pop<RDOFUNLogic>($2), PARSER->stack().pop<RDOFUNArithm>($3) );
+		LPRDOPMDWatchValue pWatchValue = PARSER->stack().pop<RDOPMDWatchValue>($1);
+		ASSERT(pWatchValue);
+		pWatchValue->setLogic(PARSER->stack().pop<RDOFUNLogic>($2), PARSER->stack().pop<RDOFUNArithm>($3));
+		$$ = PARSER->stack().push(pWatchValue);
 	}
 	| pmd_pokaz_watch_value_begin RDO_NoCheck fun_arithm
 	{
-		reinterpret_cast<RDOPMDWatchValue*>($1)->setLogicNoCheck( PARSER->stack().pop<RDOFUNArithm>($3) );
+		LPRDOPMDWatchValue pWatchValue = PARSER->stack().pop<RDOPMDWatchValue>($1);
+		ASSERT(pWatchValue);
+		pWatchValue->setLogicNoCheck(PARSER->stack().pop<RDOFUNArithm>($3));
+		$$ = PARSER->stack().push(pWatchValue);
 	}
 	| pmd_pokaz_watch_value_begin fun_logic error
 	{
-		PARSER->error().error( @2, @3, "После логического ожидается арифметическое выражение" );
+		PARSER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
 	| pmd_pokaz_watch_value_begin RDO_NoCheck error
 	{
-		PARSER->error().error( @2, @3, "После логического ожидается арифметическое выражение" );
+		PARSER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
 	| pmd_pokaz_watch_value_begin error
 	{
-		PARSER->error().error( @1, @2, "После имени типа ожидается логическое выражение" );
+		PARSER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_value error
 	{
-		PARSER->error().error( @3, @4, "После ключевого слова watch_value ожидается тип ресурса" );
+		PARSER->error().error(@3, @4, _T("После ключевого слова watch_value ожидается тип ресурса"));
 	}
 	| RDO_IDENTIF_COLON RDO_get_value fun_arithm
 	{
-		$$ = (int)(new RDOPMDGetValue( PARSER, reinterpret_cast<RDOValue*>($1)->src_info(), PARSER->stack().pop<RDOFUNArithm>($3) ));
+		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDGetValue>::create(P_RDOVALUE($1)->src_info(), PARSER->stack().pop<RDOFUNArithm>($3));
+		ASSERT(pPokaz);
+		$$ = PARSER->stack().push(pPokaz);
 	}
 	| RDO_IDENTIF_COLON RDO_get_value error
 	{
-		PARSER->error().error( @2, @3, "После ключевого слова get_value ожидается арифметическое выражение" );
+		PARSER->error().error(@2, @3, _T("После ключевого слова get_value ожидается арифметическое выражение"));
 	}
 	;
 
@@ -364,14 +384,14 @@ pmd_end
 	: RDO_Results pmd_body RDO_End
 	| error
 	{
-		YYLTYPE pos( @1 );
-		pos.last_line = pos.first_line;
+		YYLTYPE pos(@1);
+		pos.last_line   = pos.first_line;
 		pos.last_column = pos.first_column;
-		PARSER->error().error( pos, "Ожидается ключевое слово $Results" );
+		PARSER->error().error(pos, _T("Ожидается ключевое слово $Results"));
 	}
 	| RDO_Results pmd_body error
 	{
-		PARSER->error().error( @3, "Ожидается ключевое слово $End" );
+		PARSER->error().error(@3, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
