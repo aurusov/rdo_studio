@@ -1,10 +1,22 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdofrm.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 int frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -19,13 +31,11 @@ void frmerror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info, LPRDOFUNLogic logic ):
-	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	m_frame( NULL )
+RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
+	: RDOParserSrcInfo(src_info)
 {
-	m_frame = new rdoRuntime::RDOFRMFrame( parser()->runtime(), _src_info, logic ? logic->getCalc() : NULL );
-	parser()->insertFRMFrame( this );
+	m_pFrame = new rdoRuntime::RDOFRMFrame(RDOParser::s_parser()->runtime(), src_info, pLogic ? pLogic->getCalc() : NULL);
+	RDOParser::s_parser()->insertFRMFrame(this);
 }
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE

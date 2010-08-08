@@ -33,6 +33,7 @@
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
+#include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
@@ -85,7 +86,7 @@ public:
 DEFINE_OBJECT_CONTAINER_LP(PATPattern     );
 DEFINE_OBJECT_CONTAINER_LP(RTPResType     );
 DEFINE_OBJECT_CONTAINER_LP(RSSResource    );
-DEFINE_OBJECT_CONTAINER   (FRMFrame       );
+DEFINE_OBJECT_CONTAINER_LP(FRMFrame       );
 DEFINE_OBJECT_CONTAINER_LP(FUNConstant    );
 DEFINE_OBJECT_CONTAINER_LP(FUNFunction    );
 DEFINE_OBJECT_CONTAINER_LP(FUNSequence    );

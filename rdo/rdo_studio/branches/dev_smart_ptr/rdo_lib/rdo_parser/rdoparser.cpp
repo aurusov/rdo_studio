@@ -13,7 +13,6 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
-#include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/context/global.h"
@@ -73,19 +72,19 @@ rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
 	return true; \
 }
 
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (PATPattern     );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (RTPResType     );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (RSSResource    );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FRMFrame       );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNConstant    );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNFunction    );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (FUNSequence    );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTSearch      );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTSome        );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTPrior       );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (DPTFreeActivity);
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (PMDPokaz       );
-DECLARE_PARSER_OBJECT_CONTAINER_LP   (Event          );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(PATPattern     );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(RTPResType     );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(RSSResource    );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(FRMFrame       );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(FUNConstant    );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(FUNFunction    );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(FUNSequence    );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTSearch      );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTSome        );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTPrior       );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(DPTFreeActivity);
+DECLARE_PARSER_OBJECT_CONTAINER_LP(PMDPokaz       );
+DECLARE_PARSER_OBJECT_CONTAINER_LP(Event          );
 
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(FUNGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_LP(DPTFree    );
