@@ -15,11 +15,9 @@
 #include <stack>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
-#include "rdo_common/rdosingletone.h"
 #include "rdo_common/rdoindexedstack.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
-
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
@@ -98,17 +96,6 @@ public:
 	virtual ~RDOParser();
 
 	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
-
-	void insertDeletables(PTR(RDODeletable) value)
-	{
-		ASSERT(value);
-		m_allDeletables.push_back(value);
-	}
-	void removeDeletables(PTR(RDODeletable) value)
-	{
-		ASSERT(value);
-		m_allDeletables.erase(std::find(m_allDeletables.begin(), m_allDeletables.end(), value));
-	}
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -208,27 +195,25 @@ public:
 	static PTR(RDOParser)               s_parser      ();
 
 protected:
-	PTR(RDOParserItem) m_parser_item;
+	LPRDOParserItem m_parser_item;
 
-	virtual PTR(RDOParserContainer) getContainer() = 0;
+	virtual REF(LPRDOParserContainer) getContainer() = 0;
 
-	RDOParserContainer::CIterator begin()
+	RDOParserContainer::Iterator begin()
 	{
 		return getContainer()->begin();
 	}
-	RDOParserContainer::CIterator end()
+	RDOParserContainer::Iterator end()
 	{
 		return getContainer()->end();
 	}
-	RDOParserContainer::CIterator find(ruint index)
+	RDOParserContainer::Iterator find(ruint index)
 	{
 		return getContainer()->find(index);
 	}
 
-	typedef std::vector<PTR(RDODeletable)> DeletableList;
-	typedef std::vector<PTR(RDOValue)>     ValueList;
+	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	DeletableList          m_allDeletables;
 	ValueList              m_allValues;
 	rdoRuntime::RDORuntime m_runtime;
 
@@ -284,11 +269,16 @@ public:
 	{}
 
 private:
-	rdo::SingleTone<Container> m_container;
+	LPRDOParserContainer m_container;
 
-	virtual PTR(RDOParserContainer) getContainer()
+	virtual REF(LPRDOParserContainer) getContainer()
 	{
-		return m_container.instance(this);
+		if (!m_container)
+		{
+			m_container = rdo::Factory<Container>::create();
+			ASSERT(m_container);
+		}
+		return m_container;
 	}
 };
 

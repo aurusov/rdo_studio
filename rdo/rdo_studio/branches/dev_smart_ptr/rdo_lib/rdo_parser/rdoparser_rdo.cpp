@@ -32,22 +32,24 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRDOItem
 // ----------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(PTR(RDOParser) parser, rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
-	: RDOParserItem(parser, type, parser_fun, error_fun, lexer_fun, from)
-	, m_lexer(NULL)
+RDOParserRDOItem::RDOParserRDOItem(rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
+	: RDOParserItem(type, parser_fun, error_fun, lexer_fun, from)
+	, m_pLexer(NULL)
 {}
 
 RDOParserRDOItem::~RDOParserRDOItem()
 {
-	if (m_lexer)
+	if (m_pLexer)
 	{
-		delete m_lexer;
-		m_lexer = NULL;
+		delete m_pLexer;
+		m_pLexer = NULL;
 	}
 }
 
-void RDOParserRDOItem::parse()
+void RDOParserRDOItem::parse(PTR(RDOParser) pParser)
 {
+	ASSERT(pParser);
+
 	rdo::binarystream in_stream;
 	switch (m_from)
 	{
@@ -60,32 +62,35 @@ void RDOParserRDOItem::parse()
 	}
 	if (in_stream.good())
 	{
-		parse(in_stream);
+		parse(pParser, in_stream);
 	}
 }
 
-void RDOParserRDOItem::parse(REF(std::istream) in_stream)
+void RDOParserRDOItem::parse(PTR(RDOParser) pParser, REF(std::istream) in_stream)
 {
-	if (m_lexer)
-		delete m_lexer;
+	ASSERT(pParser);
+
+	if (m_pLexer)
+		delete m_pLexer;
 
 	std::ostringstream out_stream;
-	m_lexer = getLexer(&in_stream, &out_stream);
+	m_pLexer = getLexer(pParser, &in_stream, &out_stream);
 
-	if (m_lexer && m_parser_fun)
-		m_parser_fun(m_lexer);
+	if (m_pLexer && m_parser_fun)
+		m_parser_fun(m_pLexer);
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
+PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(RDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
 {
-	return new RDOLexer(m_parser, in_stream, out_stream);
+	ASSERT(pParser);
+	return new RDOLexer(pParser, in_stream, out_stream);
 }
 
 ruint RDOParserRDOItem::lexer_loc_line()
 {
-	if (m_lexer)
+	if (m_pLexer)
 	{
-		return m_lexer->m_lploc ? m_lexer->m_lploc->first_line : m_lexer->lineno();
+		return m_pLexer->m_lploc ? m_pLexer->m_lploc->first_line : m_pLexer->lineno();
 	}
 	else
 	{
@@ -95,41 +100,44 @@ ruint RDOParserRDOItem::lexer_loc_line()
 
 ruint RDOParserRDOItem::lexer_loc_pos()
 {
-	return m_lexer && m_lexer->m_lploc ? m_lexer->m_lploc->first_column : 0;
+	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->first_column : 0;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
-RDOParserRSS::RDOParserRSS(PTR(RDOParser) parser, StreamFrom from)
-	: RDOParserRDOItem(parser, rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
+RDOParserRSS::RDOParserRSS(StreamFrom from)
+	: RDOParserRDOItem(rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
 {}
 
-void RDOParserRSS::parse()
+void RDOParserRSS::parse(PTR(RDOParser) pParser)
 {
-	m_parser->setHaveKWResources   (false);
-	m_parser->setHaveKWResourcesEnd(false);
-	RDOParserRDOItem::parse();
+	ASSERT(pParser);
+	pParser->setHaveKWResources   (false);
+	pParser->setHaveKWResourcesEnd(false);
+	RDOParserRDOItem::parse(pParser);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSSPost
 // ----------------------------------------------------------------------------
-void RDOParserRSSPost::parse()
+void RDOParserRSSPost::parse(PTR(RDOParser) pParser)
 {
-	// В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
+	ASSERT(pParser);
+
+	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(RDOParser::RTPResTypeList, m_parser->getRTPResType(), rtp_it)
+	STL_FOR_ALL_CONST(RDOParser::RTPResTypeList, pParser->getRTPResType(), rtp_it)
 	{
 #endif
-		STL_FOR_ALL_CONST(RDOParser::RSSResourceList, m_parser->getRSSResources(), rss_it)
+		STL_FOR_ALL_CONST(RDOParser::RSSResourceList, pParser->getRSSResources(), rss_it)
 		{
 #ifdef RDOSIM_COMPATIBLE
 			if ((*rss_it)->getType() == *rtp_it)
 			{
 #endif
 				rdoRuntime::LPRDOCalc calc = (*rss_it)->createCalc();
-				m_parser->runtime()->addInitCalc(calc);
+				pParser->runtime()->addInitCalc(calc);
 #ifdef RDOSIM_COMPATIBLE
 			}
 #endif
@@ -142,32 +150,34 @@ void RDOParserRSSPost::parse()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserPATPost
 // ----------------------------------------------------------------------------
-void RDOParserPATPost::parse()
+void RDOParserPATPost::parse(PTR(RDOParser) pParser)
 {
+	ASSERT(pParser);
+
 	//! Позднее связывание для планирования событий
-	STL_FOR_ALL_CONST(RDOParser::EventList, m_parser->getEvents(), eventIt)
+	STL_FOR_ALL_CONST(RDOParser::EventList, pParser->getEvents(), eventIt)
 	{
 		LPRDOEvent pEvent = *eventIt;
 
-		LPRDOPATPattern pPattern = m_parser->findPATPattern(pEvent->name());
+		LPRDOPATPattern pPattern = pParser->findPATPattern(pEvent->name());
 		if (!pPattern)
 		{
 			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
 			{
-				m_parser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
 			}
-			m_parser->error().push_done();
+			pParser->error().push_done();
 		}
 		if (pPattern->getType() != RDOPATPattern::PT_Event)
 		{
 			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
 			{
-				m_parser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
 			}
-			m_parser->error().push_done();
+			pParser->error().push_done();
 		}
 
-		LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(m_parser->runtime()->m_metaLogic, m_parser->runtime(), pEvent->name());
+		LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(pParser->runtime()->m_metaLogic, pParser->runtime(), pEvent->name());
 		ASSERT(pRuntimeEvent);
 		pEvent->setRuntimeEvent(pRuntimeEvent);
 
@@ -181,8 +191,10 @@ void RDOParserPATPost::parse()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-void RDOParserSTDFUN::parse()
+void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 {
+	ASSERT(pParser);
+
 	LPRDOTypeParam intType  = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(),  RDOValue(), RDOParserSrcInfo());
 	LPRDOTypeParam realType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOValue(), RDOParserSrcInfo());
 

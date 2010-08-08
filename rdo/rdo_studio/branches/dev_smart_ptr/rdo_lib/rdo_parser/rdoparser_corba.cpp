@@ -207,7 +207,7 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, CPTR(char) Objec
 //! ----------------------------------------------------------------------------
 //! ---------- RDOParserCorbaRTP
 //! ----------------------------------------------------------------------------
-void RDOParserCorbaRTP::parse()
+void RDOParserCorbaRTP::parse(PTR(RDOParser) pParser)
 {
 	//! Тут надо запросить все типы ресурсов у парного РДО,
 	//! вызвав с помощью корбы некий метод, который вернёт кучу структур
@@ -245,7 +245,7 @@ void RDOParserCorbaRTP::parse()
 			//! Добавляем к существующим типам ресурсов и выводим в трассировке
 	
 			//! Получили список всех описанных типов ресурсов
-			rdoMBuilder::RDOResTypeList rtpList(m_parser);
+			rdoMBuilder::RDOResTypeList rtpList(pParser);
 	
 			for (ruint i = 0; i < my_rtpList->length(); i++)
 			{
@@ -362,7 +362,7 @@ void RDOParserCorbaRTP::parse()
 			//! Добавляем к существующим ресурсам и выводим в трассировке
 
 			//! Переписали имеющиеся ресурсы в rssList
-			rdoMBuilder::RDOResourceList rssList(m_parser);
+			rdoMBuilder::RDOResourceList rssList(pParser);
 
 			for (ruint i = 0; i < my_rssList->length(); i++)
 			{
@@ -443,7 +443,7 @@ void RDOParserCorbaRTP::parse()
 //! ----------------------------------------------------------------------------
 //! ---------- RDOParserCorbaRSS
 //! ----------------------------------------------------------------------------
-void RDOParserCorbaRSS::parse()
+void RDOParserCorbaRSS::parse(PTR(RDOParser) pParser)
 {
 /*
 	//! Тут надо запросить все ресурсы у парного РДО
@@ -452,9 +452,9 @@ void RDOParserCorbaRSS::parse()
 	ruint rss_count = 1;
 
 	//! Получили список всех типов ресурсов
-	rdoMBuilder::RDOResTypeList rtpList(m_parser);
+	rdoMBuilder::RDOResTypeList rtpList(pParser);
 	//! Получили список всех ресурсов
-	rdoMBuilder::RDOResourceList rssList(m_parser);
+	rdoMBuilder::RDOResourceList rssList(pParser);
 
 	for (ruint i = 0; i < rss_count; i++)
 	{

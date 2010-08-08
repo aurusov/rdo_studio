@@ -23,33 +23,6 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDODeletable
-// ----------------------------------------------------------------------------
-class RDOParser;
-
-class RDODeletable
-{
-public:
-	RDODeletable(PTR(RDOParser) parser);
-	virtual ~RDODeletable();
-
-	PTR(RDOParser) parser() const { return m_parser; }
-
-	void noAutoDelete();
-
-//#ifndef _DEBUG
-//	PTR(void) operator new   (size_t   sz);
-//	void      operator delete(PTR(void) v);
-//#endif
-
-protected:
-	PTR(RDOParser) m_parser;
-
-private:
-	size_t m_object_size;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOParserSrcInfo
 // ----------------------------------------------------------------------------
 class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo

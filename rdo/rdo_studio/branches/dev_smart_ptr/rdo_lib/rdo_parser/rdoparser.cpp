@@ -104,14 +104,6 @@ RDOParser::~RDOParser()
 	m_runtime.deinit();
 	rdo::deleteAllObjects(m_allValues);
 	m_movementObjectList.clear();
-
-	DeletableList::reverse_iterator it = m_allDeletables.rbegin();
-	while (it != m_allDeletables.rend())
-	{
-		delete *it;
-		it = m_allDeletables.rbegin();
-	}
-	TRACE1(_T("PARSER : m_allDeletables.size() = %d\n"), m_allDeletables.size());
 	s_parserStack.remove(this);
 }
 
@@ -249,11 +241,11 @@ void RDOParser::parse()
 {
 	parse(rdoModelObjects::obPRE);
 
-	RDOParserContainer::CIterator it = begin();
+	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
 		m_parser_item = it->second;
-		it->second->parse();
+		it->second->parse(this);
 		m_parser_item = NULL;
 		it++;
 	}
@@ -268,13 +260,13 @@ void RDOParser::parse(rdoModelObjects::RDOParseType file)
 	if (min == RDOParserContainer::UNDEFINED_ID || max == RDOParserContainer::UNDEFINED_ID)
 		return;
 
-	RDOParserContainer::CIterator it = find(min);
+	RDOParserContainer::Iterator it = find(min);
 	while (it != end())
 	{
 		if (it->first <= max)
 		{
 			m_parser_item = it->second;
-			it->second->parse();
+			it->second->parse(this);
 			m_parser_item = NULL;
 		}
 		else
@@ -287,11 +279,11 @@ void RDOParser::parse(rdoModelObjects::RDOParseType file)
 
 void RDOParser::parse(REF(std::istream) stream)
 {
-	RDOParserContainer::CIterator it = begin();
+	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
 		m_parser_item = it->second;
-		it->second->parse(stream);
+		it->second->parse(this, stream);
 		m_parser_item = NULL;
 		it++;
 	}
