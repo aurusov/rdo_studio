@@ -1,13 +1,25 @@
-#ifndef RDO_EVENT_H
-#define RDO_EVENT_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_event.h
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_EVENT_H_
+#define _RDO_EVENT_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_event_interface.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
@@ -27,8 +39,11 @@ friend class RDOTrace;
 private:
 	RDOEvent( RDORuntime* runtime, RDOPatternEvent* pattern, bool trace, const std::string& name );
 
+	double  m_time;
+
 	void convertEvent( RDOSimulator* sim );
 
+	double getNextTimeInterval( RDOSimulator* sim );
 	virtual void onBeforeEvent( RDOSimulator* sim );
 	virtual void onAfterEvent( RDOSimulator* sim );
 
@@ -36,6 +51,6 @@ private:
 	DECLARE_IEvent;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_EVENT_H
+#endif //! _RDO_EVENT_H_

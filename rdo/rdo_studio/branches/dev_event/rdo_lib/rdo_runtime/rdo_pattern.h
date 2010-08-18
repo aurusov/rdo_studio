@@ -1,11 +1,23 @@
-#ifndef RDO_PATTERN_H
-#define RDO_PATTERN_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_pattern.h
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_PATTERN_H_
+#define _RDO_PATTERN_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
 class RDOIrregEvent;
@@ -110,6 +122,7 @@ public:
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
 	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( CREF(LPRDOCalc) pCalc             ) { m_erase.push_back( pCalc );            }
+	void setTime           ( CREF(LPRDOCalc) timeCalc          ) { m_timeCalc = timeCalc;	              }
 
 	void convertEvent( PTR(RDORuntime) runtime )
 	{
@@ -121,9 +134,12 @@ public:
 		runCalcs( m_erase, runtime );
 	}
 
+	double getNextTimeInterval( PTR(RDORuntime) runtime );
+
 	LPIEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
 
 private:
+	LPRDOCalc         m_timeCalc;
 	CalcList          m_convertor;
 	ConvertStatusList m_convertorStatus;
 	CalcList          m_erase;
@@ -242,6 +258,6 @@ public:
 	LPIKeyboard createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_PATTERN_H
+#endif //! _RDO_PATTERN_H_

@@ -1,8 +1,20 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_event.cpp
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_event.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
@@ -61,9 +73,15 @@ void RDOEvent::onAfterEvent( RDOSimulator* sim )
 	updateRelRes( sim );
 }
 
+double RDOEvent::getNextTimeInterval( RDOSimulator* sim ) 
+{ 
+	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
+	return m_pattern->getNextTimeInterval( static_cast<RDORuntime*>(sim) ); 
+}
+
 IBaseOperation::BOResult RDOEvent::onContinue(PTR(rdoRuntime::RDOSimulator) sim)
 {
 	return IBaseOperation::BOR_cant_run;
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
