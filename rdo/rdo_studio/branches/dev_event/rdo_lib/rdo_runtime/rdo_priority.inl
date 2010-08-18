@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic.inl
+ * filename : rdo_priority.inl
  * author   : Урусов Андрей
  * date     : 03.10.09
  * bref     : 

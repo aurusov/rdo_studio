@@ -1,8 +1,8 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo.h
- * author   : 
- * date     : 
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.10.2010
  * bref     : 
  * indent   : 4T
  */

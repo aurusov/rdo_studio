@@ -47,4 +47,4 @@ public:
 #define DECLARE_IActivityPatternTrace \
 	virtual CREF(tstring) tracePatternId() const;
 
-#endif //! _RDO_PRIORITY_INTERFACE_H_
+#endif //! _RDO_ACTIVITY_INTERFACE_H_

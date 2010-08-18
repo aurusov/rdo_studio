@@ -19,7 +19,9 @@
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
 class RDOSimulator;
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 class IDPTSearchActivity

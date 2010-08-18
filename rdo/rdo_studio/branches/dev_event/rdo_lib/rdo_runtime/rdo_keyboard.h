@@ -1,11 +1,22 @@
-#ifndef RDO_KEYBOARD_H
-#define RDO_KEYBOARD_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_keyboard.h
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_KEYBOARD_H_
+#define _RDO_KEYBOARD_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_keyboard_interface.h"
+// ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOKeyboard
@@ -32,6 +43,6 @@ private:
 	DECLARE_IKeyboard;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_KEYBOARD_H
+#endif //! _RDO_KEYBOARD_H_
