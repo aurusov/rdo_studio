@@ -74,42 +74,6 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPatternIrregEvent
-// ----------------------------------------------------------------------------
-class RDOPatternIrregEvent: public RDOPattern
-{
-friend class RDOIrregEvent;
-
-public:
-	RDOPatternIrregEvent( PTR(RDORuntime) rTime, bool trace );
-
-	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
-	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
-	void addEraseCalc      ( CREF(LPRDOCalc) pCalc             ) { m_erase.push_back( pCalc );            }
-	void setTime           ( CREF(LPRDOCalc) timeCalc          ) { m_timeCalc = timeCalc;	              }
-
-	void convertEvent(PTR(RDORuntime) runtime)
-	{
-		preSelectRelRes(runtime);
-		runCalcs(m_convertor, runtime);
-	}
-	void convertErase(PTR(RDORuntime) runtime)
-	{
-		runCalcs(m_erase, runtime);
-	}
-
-	double getNextTimeInterval( PTR(RDORuntime) runtime );
-
-	LPIIrregEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
-
-private:
-	LPRDOCalc         m_timeCalc;
-	CalcList          m_convertor;
-	ConvertStatusList m_convertorStatus;
-	CalcList          m_erase;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent
 // ----------------------------------------------------------------------------
 class RDOPatternEvent: public RDOPattern

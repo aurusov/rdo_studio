@@ -247,10 +247,7 @@ pat_main
 pat_header
 	: RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
 	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternIrregEvent>::create(name->src_info(), $4 != 0);
-		ASSERT(pPattern);
-		$$ = PARSER->stack().push(pPattern);
+		PARSER->error().error(@2, @3, _T("Нерегулярных событий больше нет"));
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
 	{

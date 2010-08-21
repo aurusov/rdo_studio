@@ -200,33 +200,6 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPatternIrregEvent
-// ----------------------------------------------------------------------------
-class RDOPatternIrregEvent: public RDOPATPattern
-{
-DECLARE_FACTORY(RDOPatternIrregEvent)
-public:
-	virtual void addRelRes     (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
-	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
-
-	virtual char getModelStructureLetter() const
-	{
-		return _T('I');
-	};
-	virtual PatType getType() const
-	{
-		return PT_IE;
-	}
-
-protected:
-	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
-	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
-
-private:
-	RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent
 // ----------------------------------------------------------------------------
 class RDOPatternEvent: public RDOPATPattern
