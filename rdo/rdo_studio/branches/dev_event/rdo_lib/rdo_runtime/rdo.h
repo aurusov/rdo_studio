@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.10.2010
- * bref     : 
+ * author   : Урусов Андрей
+ * date     : 11.06.2006
+ * bref     : Определение интерфейса IBaseOperation, через него осуществляются базовые операции имитации всех сущностей РДО
  * indent   : 4T
  */
 
@@ -40,7 +40,7 @@ public:
 
 	// Вызывается перед стартом прогона и перед возобновление операции
 	// Например, условие DPT-some поменялось с false на true
-	// Используется для IE и GENERATE, чтобы задать время прихода первого клиента
+	// Используется для GENERATE, чтобы задать время прихода первого клиента
 	virtual void onStart(PTR(rdoRuntime::RDOSimulator) sim) = 0;
 
 	// Вызывается при остановке операции, например, условие DPT-some поменялось с true на false
@@ -52,7 +52,7 @@ public:
 	// Вызывается для выполнения правил/операций
 	virtual BOResult onDoOperation(PTR(rdoRuntime::RDOSimulator) sim) = 0;
 
-	// Вызывается для запланированных в будующем событий: IE, operation_end, keyboard_end
+	// Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
 	// Может не использоваться, например, для rule
 	virtual void onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) = 0;
 
