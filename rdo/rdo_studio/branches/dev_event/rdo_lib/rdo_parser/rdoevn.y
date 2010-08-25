@@ -2,7 +2,7 @@
  * copyright: (c) RDO-Team, 2010
  * filename : rdoevn.y
  * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
- * date     : 12.07.2010
+ * date     : 12.06.2010
  * bref     : закладка EVN - описание событий модели
  * indent   : 4T
  */
@@ -244,11 +244,7 @@ pat_main
 	;
 
 pat_header
-	: RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
-	{
-		PARSER->error().error(@2, @3, _T("Нерегулярных событий больше нет"));
-	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
+	: RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
 		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternEvent>::create(name->src_info(), $4 != 0);

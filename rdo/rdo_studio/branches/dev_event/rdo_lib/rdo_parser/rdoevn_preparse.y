@@ -1,9 +1,9 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdopat.y
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdoevn_preparse.y
  * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
- * date     : 
- * bref     : 
+ * date     : 12.06.2010
+ * bref     : Предварительный поиск названий событий
  * indent   : 4T
  */
 
@@ -239,21 +239,12 @@ pat_main
 	;
 
 pat_header
-	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation       pat_trace {}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {}
-	{
-		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), false);
-		ASSERT(pEvent);
-		PARSER->insertEvent(pEvent);
-	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
+	: RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
 	{
 		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), true);
 		ASSERT(pEvent);
 		PARSER->insertEvent(pEvent);
 	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule            pat_trace {}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard        pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON error                         {}
 	| RDO_Pattern error                                           {}
 	;
