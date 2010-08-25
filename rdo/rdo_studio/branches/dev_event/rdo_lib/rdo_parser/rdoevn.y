@@ -199,7 +199,6 @@
 %token RDO_DEPART						
 %token RDO_ASSIGN						
 
-
 %{
 // ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
@@ -1070,19 +1069,6 @@ pat_time
 	| pat_common_choice RDO_Time '=' fun_arithm RDO_Body
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		switch (pPattern->getType())
-		{
-			case RDOPATPattern::PT_Event:
-			{
-				PARSER->error().error(@2, _T("Поле $Time не используется в событии"));
-				break;
-			}
-			case RDOPATPattern::PT_Rule:
-			{
-				PARSER->error().error(@2, _T("Поле $Time не используется в продукционном правиле"));
-				break;
-			}
-		}
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
 		ASSERT(pArithm);
 		pArithm->setSrcPos (@2, @4);
