@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdodpt.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
+ * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
+ * date     : 11.06.2006
+ * bref     : Синтаксис точек принятия решений DPT
  * indent   : 4T
  */
 
@@ -57,7 +57,6 @@
 
 %token RDO_Pattern						298
 %token RDO_operation					299
-%token RDO_irregular_event				300
 %token RDO_rule							301
 %token RDO_keyboard						302
 %token RDO_Relevant_resources			303
