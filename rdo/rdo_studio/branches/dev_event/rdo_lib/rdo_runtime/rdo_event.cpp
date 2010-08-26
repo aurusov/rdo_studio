@@ -50,6 +50,7 @@ void RDOEvent::onMakePlaned( RDOSimulator* sim, void* param )
 {
 	sim->inc_cnt_events();
 	onBeforeEvent( sim );
+	if (m_pattern->m_timeCalc) sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
 	convertEvent( sim );
 	onAfterEvent( sim );
 }
