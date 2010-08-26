@@ -3,7 +3,7 @@
  * filename : rdo_priority.inl
  * author   : Урусов Андрей
  * date     : 03.10.09
- * bref     : 
+ * bref     : NULL
  * indent   : 4T
  */
 

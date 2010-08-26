@@ -71,4 +71,4 @@ public:
 INTERFACE_PREDECLARATION(IBaseOperation);
 typedef std::vector<LPIBaseOperation> BaseOperationList;
 
-#endif // _RDO_H_
+#endif //! _RDO_H_

@@ -3,7 +3,7 @@
  * filename : rdo_activity_interface.h
  * author   : Урусов Андрей
  * date     : 01.08.2009
- * bref     : 
+ * bref     : Интерфейс IActivity
  * indent   : 4T
  */
 
