@@ -56,7 +56,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
-class RDOIrregEvent;
+class RDOEvent;
 class RDORule;
 class RDOOperation;
 class RDOPROCProcess;

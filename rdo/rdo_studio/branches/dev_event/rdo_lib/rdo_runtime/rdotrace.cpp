@@ -180,38 +180,6 @@ tstring RDOTrace::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim, co
 	return res;
 }
 
-void RDOTrace::writeIrregularEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
-{
-	if (!canTrace())
-		return;
-
-	LPIActivityTrace activityTrace = opr;
-	ASSERT(activityTrace);
-
-#ifdef RDOSIM_COMPATIBLE
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
-#endif
-
-	LPITrace trace = opr;
-	ASSERT(trace);
-
-	if (trace->traceable())
-	{
-		LPIActivityPatternTrace activityPatternTrace = opr;
-		ASSERT(activityPatternTrace);
-
-		getOStream() << "EI " << sim->getCurrentTime()
-		             << " "   << trace->traceId() 
-		             << " "   << activityPatternTrace->tracePatternId() 
-		             << " "   << activityTrace->traceResourcesListNumbers(sim, true)
-		             << std::endl << getEOL();
-	}
-
-#ifndef RDOSIM_COMPATIBLE
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
-#endif
-}
-
 void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
 {
 	if (!canTrace())

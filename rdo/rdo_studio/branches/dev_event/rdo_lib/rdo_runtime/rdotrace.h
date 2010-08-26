@@ -13,7 +13,7 @@ namespace rdoRuntime {
 class RDOSimulator;
 class RDOSimulatorTrace;
 class TreeNodeTrace;
-class RDOIrregEvent;
+class RDOEvent;
 class RDORule;
 class RDOOperation;
 class RDOTraceableObject;
@@ -65,7 +65,6 @@ public:
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
 	virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
 
-	virtual void writeIrregularEvent     (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 	virtual void writeEvent              (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 	virtual void writeRule               (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
 	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);

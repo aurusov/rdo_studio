@@ -20,7 +20,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
-class RDOIrregEvent;
+class RDOEvent;
 class RDORule;
 class RDOKeyboard;
 
