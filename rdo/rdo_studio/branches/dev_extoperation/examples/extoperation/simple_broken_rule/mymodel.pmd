@@ -1,8 +1,0 @@
-$Results
-//	: watch_par
-//	: watch_state
-//	: watch_quant
-//	: watch_value
-	broken	: get_value system.part_broken_count
-	done	: get_value system.part_done_count
-$End
