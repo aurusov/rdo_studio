@@ -409,11 +409,6 @@ pat_rel_res
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 				break;
 			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@5, _T("У события нет события конца, а значит и второго статуса конвертора"));
@@ -442,11 +437,6 @@ pat_rel_res
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 				break;
 			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@5, _T("У события нет события конца, а значит и второго статуса конвертора"));
@@ -473,7 +463,6 @@ pat_rel_res
 				PARSER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
 			case RDOPATPattern::PT_Event: 
 			case RDOPATPattern::PT_Rule :
 			{
@@ -498,7 +487,6 @@ pat_rel_res
 				PARSER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
 			case RDOPATPattern::PT_Event: 
 			case RDOPATPattern::PT_Rule :
 			{
@@ -527,11 +515,6 @@ pat_rel_res
 				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
-				break;
-			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
 			case RDOPATPattern::PT_Event:
@@ -564,11 +547,6 @@ pat_rel_res
 				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
-				break;
-			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
 			case RDOPATPattern::PT_Event:
@@ -628,11 +606,6 @@ pat_rel_res
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@3, _T("У события нет события конца, а значит и второго статуса конвертора"));
@@ -690,11 +663,6 @@ pat_rel_res
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@3, _T("У события нет события конца, а значит и второго статуса конвертора"));
@@ -721,7 +689,6 @@ pat_rel_res
 				PARSER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
 			case RDOPATPattern::PT_Event: 
 			case RDOPATPattern::PT_Rule :
 			{
@@ -750,7 +717,6 @@ pat_rel_res
 				PARSER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
 			case RDOPATPattern::PT_Event: 
 			case RDOPATPattern::PT_Rule :
 			{
@@ -790,11 +756,6 @@ pat_rel_res
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@4, _T("У события нет события конца, а значит и второго статуса конвертора"));
@@ -830,11 +791,6 @@ pat_rel_res
 				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
-				break;
-			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
 			case RDOPATPattern::PT_Event:
@@ -902,11 +858,6 @@ pat_rel_res
 				PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 				break;
 			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
-				break;
-			}
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
@@ -927,11 +878,6 @@ pat_rel_res
 			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
-				break;
-			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
 				break;
 			}
 			case RDOPATPattern::PT_Operation:
@@ -956,11 +902,6 @@ pat_rel_res
 				PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 				break;
 			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
-				break;
-			}
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
@@ -981,11 +922,6 @@ pat_rel_res
 			case RDOPATPattern::PT_Event:
 			{
 				PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
-				break;
-			}
-			case RDOPATPattern::PT_IE:
-			{
-				PARSER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
 				break;
 			}
 			case RDOPATPattern::PT_Operation:
@@ -1010,48 +946,27 @@ pat_common_choice
 	| pat_rel_res RDO_first
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
-		{
-			PARSER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
-		}
-		else
-		{
-			pPattern->setCommonChoiceFirst();
-		}
+		pPattern->setCommonChoiceFirst();
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_with_min fun_arithm
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
-		{
-			PARSER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
-		}
-		else
-		{
-			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
-			ASSERT(pArithm);
-			pArithm->setSrcPos (@2, @3);
-			pArithm->setSrcText(_T("with_min ") + pArithm->src_text());
-			pPattern->setCommonChoiceWithMin(pArithm);
-		}
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		pArithm->setSrcPos (@2, @3);
+		pArithm->setSrcText(_T("with_min ") + pArithm->src_text());
+		pPattern->setCommonChoiceWithMin(pArithm);
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_with_max fun_arithm
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
-		{
-			PARSER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
-		}
-		else
-		{
-			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
-			ASSERT(pArithm);
-			pArithm->setSrcPos (@2, @3);
-			pArithm->setSrcText(_T("with_max ") + pArithm->src_text());
-			pPattern->setCommonChoiceWithMax(pArithm);
-		}
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		pArithm->setSrcPos (@2, @3);
+		pArithm->setSrcText(_T("with_max ") + pArithm->src_text());
+		pPattern->setCommonChoiceWithMax(pArithm);
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_rel_res RDO_with_min error
@@ -1070,7 +985,6 @@ pat_time
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
 		switch (pPattern->getType())
 		{
-			case RDOPATPattern::PT_IE       :
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
@@ -1130,7 +1044,6 @@ pat_time
 				PARSER->error().error(@2, rdo::format(_T("Ожидается $Body, найдено: %s"), LEXER->YYText()));
 				break;
 			}
-			case RDOPATPattern::PT_IE       :
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
@@ -1312,7 +1225,6 @@ pat_convert
 		{
 			switch (pPattern->getType())
 			{
-				case RDOPATPattern::PT_IE:
 				case RDOPATPattern::PT_Event:
 				{
 					PARSER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
@@ -1335,7 +1247,6 @@ pat_convert
 		{
 			switch (pPattern->getType())
 			{
-				case RDOPATPattern::PT_IE:
 				case RDOPATPattern::PT_Event:
 				case RDOPATPattern::PT_Rule:
 				{
@@ -1361,16 +1272,6 @@ pat_convert
 			tstring type = _T("");
 			switch (pPattern->getType())
 			{
-				case RDOPATPattern::PT_IE:
-				{
-					type = _T("нерегулярном событии"); 
-					break;
-				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии"); 
-					break;
-				}
 				case RDOPATPattern::PT_Rule:
 				{
 					type = _T("продукционном правиле");
@@ -1392,16 +1293,6 @@ pat_convert
 			tstring type = _T("");
 			switch (pPattern->getType())
 			{
-				case RDOPATPattern::PT_IE:
-				{
-					type = _T("нерегулярном событии");
-					break;
-				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии");
-					break;
-				}
 				case RDOPATPattern::PT_Rule:
 				{
 					type = _T("продукционном правиле");
@@ -1423,16 +1314,6 @@ pat_convert
 			tstring type = _T("");
 			switch (pPattern->getType())
 			{
-				case RDOPATPattern::PT_IE:
-				{
-					type = _T("нерегулярном событии");
-					break;
-				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии");
-					break;
-				}
 				case RDOPATPattern::PT_Rule:
 				{
 					type = _T("продукционном правиле");
@@ -1455,16 +1336,6 @@ pat_convert
 			tstring type = _T("");
 			switch (pPattern->getType())
 			{
-				case RDOPATPattern::PT_IE:
-				{
-					type = _T("нерегулярном событии");
-					break;
-				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии");
-					break;
-				}
 				case RDOPATPattern::PT_Operation:
 				{
 					type = _T("операции");
@@ -1487,29 +1358,27 @@ pat_convert
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
-		if (pPattern->getType() != RDOPATPattern::PT_IE && pPattern->getType() != RDOPATPattern::PT_Event)
+		tstring type = _T("");
+		switch (pPattern->getType())
 		{
-			tstring type = _T("");
-			switch (pPattern->getType())
+			case RDOPATPattern::PT_Rule     :
 			{
-				case RDOPATPattern::PT_Rule     :
-				{
-					type = _T("продукционном правиле");
-					break;
-				}
-				case RDOPATPattern::PT_Operation:
-				{
-					type = _T("операции");
-					break;
-				}
-				case RDOPATPattern::PT_Keyboard :
-				{
-					type = _T("клавиатурной операции");
-					break;
-				}
+				type = _T("продукционном правиле");
+				break;
 			}
-			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии или в нерегулярном событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
+			case RDOPATPattern::PT_Operation:
+			{
+				type = _T("операции");
+				break;
+			}
+			case RDOPATPattern::PT_Keyboard :
+			{
+				type = _T("клавиатурной операции");
+				break;
+			}
 		}
+		PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
+
 		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
 		ASSERT(pPattern->m_pCurrRelRes);
 		pPattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);

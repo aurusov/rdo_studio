@@ -111,7 +111,6 @@ friend class RDODPTActivity;
 public:
 	enum PatType
 	{
-		PT_IE,
 		PT_Event,
 		PT_Rule,
 		PT_Operation,
@@ -187,7 +186,6 @@ private:
 	{
 		switch (type)
 		{
-		case PT_IE       : return _T("нерегулярное событие");
 		case PT_Event    : return _T("событие");
 		case PT_Rule     : return _T("продукционное правило");
 		case PT_Operation: return _T("операция");
