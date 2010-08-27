@@ -2,7 +2,7 @@
  * copyright: (c) RDO-Team, 2010
  * filename : rdo_activity.cpp
  * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 13.04.208
+ * date     : 13.04.2008
  * bref     : Описание базового класса для событий и активностей -- RDOActivity
  * indent   : 4T
  */
