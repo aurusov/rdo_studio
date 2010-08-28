@@ -50,7 +50,6 @@ void RDOEvent::onMakePlaned( RDOSimulator* sim, void* param )
 {
 	sim->inc_cnt_events();
 	onBeforeEvent( sim );
-	if (m_pattern->m_timeCalc) sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
 	convertEvent( sim );
 	onAfterEvent( sim );
 }
@@ -72,12 +71,6 @@ void RDOEvent::onAfterEvent( RDOSimulator* sim )
 	static_cast<RDOSimulatorTrace*>(sim)->getTracer()->writeEvent( this, static_cast<RDOSimulatorTrace*>(sim) );
 	m_pattern->convertErase( static_cast<RDORuntime*>(sim) );
 	updateRelRes( sim );
-}
-
-double RDOEvent::getNextTimeInterval( RDOSimulator* sim ) 
-{ 
-	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
-	return m_pattern->getNextTimeInterval( static_cast<RDORuntime*>(sim) ); 
 }
 
 IBaseOperation::BOResult RDOEvent::onContinue(PTR(rdoRuntime::RDOSimulator) sim)

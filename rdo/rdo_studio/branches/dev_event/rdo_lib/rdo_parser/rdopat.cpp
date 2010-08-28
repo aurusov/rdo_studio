@@ -253,7 +253,6 @@ void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
 { 
 	switch (getType())
 	{
-	case PT_Event    : static_cast<PTR(rdoRuntime::RDOPatternEvent)>     (getPatRuntime())->setTime(arithm->createCalc(NULL)); break;
 	case PT_Operation: static_cast<PTR(rdoRuntime::RDOPatternOperation)> (getPatRuntime())->setTime(arithm->createCalc(NULL)); break;
 	case PT_Keyboard : static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>  (getPatRuntime())->setTime(arithm->createCalc(NULL)); break;
 	default          : rdoParse::g_error().error(src_info(), rdo::format(_T("Для образца типа %s недопустимо использование выражения времени"), typeToString(getType()).c_str()));

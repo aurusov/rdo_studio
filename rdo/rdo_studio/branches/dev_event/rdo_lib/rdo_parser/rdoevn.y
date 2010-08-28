@@ -950,34 +950,11 @@ pat_time
 	: pat_common_choice RDO_Body
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		switch (pPattern->getType())
-		{
-			case RDOPATPattern::PT_Operation:
-			case RDOPATPattern::PT_Keyboard :
-			{
-				PARSER->error().error(@2, _T("Перед $Body пропущено ключевое слово $Time"));
-				break;
-			}
-		}
 		$$ = PARSER->stack().push(pPattern);
 	}
-	| pat_common_choice RDO_Time '=' fun_arithm RDO_Body
+	| pat_common_choice error
 	{
-		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
-		ASSERT(pArithm);
-		pArithm->setSrcPos (@2, @4);
-		pArithm->setSrcText(_T("$Time = ") + pArithm->src_text());
-		pPattern->setTime(pArithm);
-		$$ = PARSER->stack().push(pPattern);
-	}
-	| pat_common_choice RDO_Time '=' fun_arithm error
-	{
-		PARSER->error().error(@4, @5, _T("Ожидается ключевое слово $Body"));
-	}
-	| pat_common_choice RDO_Time '=' error
-	{
-		PARSER->error().error(@4, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Body"));
 	}
 	| pat_common_choice error
 	{
@@ -1730,7 +1707,7 @@ event_descr_param
 	: /* empty */
 	| event_descr_param ',' '*'
 	{
-		PARSER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
+		PARSER->error().error(@1, @2, "Планировать события с параметрами по умолчанию пока нельзя")
 	}
 	| event_descr_param ',' fun_arithm
 	{
