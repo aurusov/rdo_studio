@@ -90,7 +90,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = D:/rdo/rdo_studio/rdo_lib
+INPUT                  = ../rdo_lib
 INPUT_ENCODING         = windows-1251
 FILE_PATTERNS          = *.c \
                          *.cc \
