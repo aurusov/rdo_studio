@@ -56,6 +56,7 @@ public:
 	CREF(tstring)       getIdentificator() const;
 	CREF(RDOArrayValue) getArray        () const;
 
+
 	rbool   getAsBool          () const;
 	tstring getAsString        () const;
 	tstring getAsStringForTrace() const;

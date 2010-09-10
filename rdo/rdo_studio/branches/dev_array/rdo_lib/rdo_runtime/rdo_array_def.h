@@ -47,6 +47,10 @@ public:
 	void insertItem(CREF(RDOValue) pArray);
 	Container::iterator m_containerBegin();
 	Container::iterator m_containerEnd();
+	CREF(RDOValue) extractItem(rsint num) const;
+	//rbool comparDim(CREF(RDOArrayValue) a_value);
+
+	CREF(RDOArrayValue) operator+ (CREF(RDOValue) rdovalue);
 
 	tstring getAsString() const;
 

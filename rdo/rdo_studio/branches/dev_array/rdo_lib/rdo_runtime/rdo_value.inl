@@ -310,6 +310,11 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 			m_value.p_data = new RDOFuzzyValue(rdovalue.__fuzzyV());
 			break;
 		}
+		case RDOType::t_array:
+		{
+			m_value.p_data = new RDOArrayValue(rdovalue.__arrayV());
+			break;
+		}
 		default:
 		{
 			m_value = rdovalue.m_value;
@@ -558,6 +563,7 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
+		case RDOType::t_array: __arrayV() = __arrayV() + rdovalue; return;
 	}
 	throw RDOValueException();
 }

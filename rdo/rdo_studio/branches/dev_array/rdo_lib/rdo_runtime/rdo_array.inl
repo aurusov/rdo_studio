@@ -61,6 +61,42 @@ inline tstring RDOArrayValue::getAsString() const
 	return ArrayName += _T("]");
 }
 
+inline CREF(RDOValue) RDOArrayValue::extractItem(rsint num) const
+{
+	return m_Container[num];
+}
+//inline rbool RDOArrayValue::comparDim(CREF(RDOArrayValue) a_value)
+//{
+//	if(a_value.m_Container.size() == m_Container.size())
+//	{
+//		rsint ind = 0;
+//		do 
+//		{
+//			if((a_value.m_Container.front().typeID() == RDOType::t_array)&&(m_Container.front().typeID() == RDOType::t_array))
+//			{
+//				m_Container[ind].getArray().comparDim(a_value.m_Container[ind].getArray());
+//				ind++;
+//			}
+//			else
+//			{
+//				if(!((a_value.m_Container.front().typeID() == RDOType::t_array)&&(m_Container.front().typeID() == RDOType::t_array))) break;
+//				else return false;
+//			}
+//		} while (ind < a_value.m_Container.size());
+//		return true;
+//	}
+//	else return false;
+//}
+
+inline CREF(RDOArrayValue) RDOArrayValue::operator+ (CREF(RDOValue) rdovalue) 
+{
+	STL_FOR_ALL(Container, m_Container, it)
+	{
+		*it += rdovalue;
+	}
+	return *this;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
