@@ -47,16 +47,32 @@ public:
 	void insertItem(CREF(RDOValue) pArray);
 	Container::iterator m_containerBegin();
 	Container::iterator m_containerEnd();
-	CREF(RDOValue) extractItem(rsint num) const;
-	//rbool comparDim(CREF(RDOArrayValue) a_value);
-
-	CREF(RDOArrayValue) operator+ (CREF(RDOValue) rdovalue);
+	void insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst);
+	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
+	CREF(RDOValue) operator[] (CREF(RDOValue) ind);
 
 	tstring getAsString() const;
 
 private:
 	Container          m_Container;
 	CPTR(RDOArrayType) m_arrayType;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOArrayIterator
+// ----------------------------------------------------------------------------
+class RDOArrayIterator: public RDOType
+{
+public:
+	typedef RDOArrayValue::Container::iterator arrayIterator;
+
+	RDOArrayIterator(CREF(RDOArrayIterator) aIterator);
+	RDOArrayIterator(arrayIterator          aIterator);
+
+	arrayIterator getIterator() const;
+	arrayIterator operator+ (rsint num);
+private:
+	arrayIterator m_iterator;
 };
 
 // ----------------------------------------------------------------------------

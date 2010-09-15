@@ -13,31 +13,35 @@ using namespace rdoRuntime;
 void main()
 {
 	//RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Значение_1")("Значение_2")("Значение_3"));
-	RDOValue* integerVal1 = new RDOValue(1);
-	RDOValue* integerVal2 = new RDOValue(2);
-	RDOValue* integerVal3 = new RDOValue(3);
-	RDOValue* integerVal4 = new RDOValue(4);
-	RDOValue* integerVal5 = new RDOValue(5);
-	RDOValue* integerVal6 = new RDOValue(6);
-	RDOArrayType* atype1 = new RDOArrayType(NULL,RDOType::TypeID::t_int);
-	RDOArrayType* atype2 = new RDOArrayType(NULL,RDOType::TypeID::t_int);
-	RDOArrayType* atype = new RDOArrayType(NULL,RDOType::TypeID::t_array);
-	RDOArrayValue* avalue1 = new RDOArrayValue(*atype);
-	RDOArrayValue* avalue2 = new RDOArrayValue(*atype);
-	RDOArrayValue* avalue = new RDOArrayValue(*atype);
-	avalue1->insertItem(*integerVal1);
-	avalue1->insertItem(*integerVal2);
-	avalue1->insertItem(*integerVal3);
-	avalue2->insertItem(*integerVal4);
-	avalue2->insertItem(*integerVal5);
-	avalue2->insertItem(*integerVal6);
-	avalue->insertItem(*avalue1);
-	avalue->insertItem(*avalue2);
-	RDOValue* arrayVal = new RDOValue(*avalue);
-	RDOValue extractVal = arrayVal->getArray().extractItem(1).getArray().extractItem(1);
-	tstring w = arrayVal->getAsString();
-	*arrayVal = *arrayVal + *integerVal2;
-	tstring q = arrayVal->getAsString();
+	RDOValue integerVal1(1);
+	RDOValue integerVal2(2);
+	RDOValue integerVal3(3);
+	RDOValue integerVal4(4);
+	RDOValue integerVal5(5);
+	RDOValue integerVal6(6);
+	RDOArrayType atype1(NULL,g_int);
+	RDOArrayType atype2(NULL,g_int);
+	RDOArrayType atype(NULL,RDOType::TypeID::t_array);
+	RDOArrayValue avalue1(atype);
+	RDOArrayValue avalue2(atype);
+	RDOArrayValue avalue(atype);
+	avalue1.insertItem(integerVal1);
+	avalue1.insertItem(integerVal2);
+	avalue1.insertItem(integerVal3);
+	avalue2.insertItem(integerVal4);
+	avalue2.insertItem(integerVal5);
+	avalue2.insertItem(integerVal6);
+	avalue.insertItem(avalue1);
+	avalue.insertItem(avalue2);
+	RDOValue arrayVal1(avalue1);
+	RDOValue arrayVal2(avalue2);
+	RDOValue arrayVal(avalue);
+
+	RDOValue itr(arrayVal.begin());
+
+	itr = itr + RDOValue(1);
+
+	tstring ns = arrayVal.getAsString();
 	
 	int i = 1;
 }

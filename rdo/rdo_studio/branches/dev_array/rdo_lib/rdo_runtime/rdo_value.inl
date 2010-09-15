@@ -62,6 +62,7 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 		case RDOType::t_string       : m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
 		case RDOType::t_identificator: m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
 		case RDOType::t_array        : m_value.p_data = new PTR(void); break;
+		case RDOType::t_iterator     : m_value.p_data = new PTR(void); break;
 		default                      : throw RDOValueException();
 	}
 }
@@ -147,6 +148,12 @@ inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
 	: m_type(&arrayValue.type())
 {
 	m_value.p_data = new RDOArrayValue(arrayValue);
+}
+
+inline RDOValue::RDOValue(CREF(RDOArrayIterator) aIterator)
+	: m_type(&aIterator)
+{
+	m_value.p_data = new RDOArrayIterator(aIterator);
 }
 
 inline rsint RDOValue::getInt() const
@@ -313,6 +320,11 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 		case RDOType::t_array:
 		{
 			m_value.p_data = new RDOArrayValue(rdovalue.__arrayV());
+			break;
+		}
+		case RDOType::t_iterator:
+		{
+			m_value.p_data = new RDOArrayIterator(rdovalue.__arrayItr());
 			break;
 		}
 		default:
@@ -563,7 +575,14 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
-		case RDOType::t_array: __arrayV() = __arrayV() + rdovalue; return;
+		case RDOType::t_iterator:
+		{
+			switch(rdovalue.typeID())
+			{
+				case RDOType::t_int: __arrayItr() = __arrayItr() + rdovalue.getInt(); return;
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
 }
@@ -698,6 +717,31 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 	return value2;
 }
 
+inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
+{
+	__arrayV()[rdovalue];
+}
+
+inline RDOValue RDOValue::begin()
+{
+	return RDOValue(RDOArrayIterator(__arrayV().m_containerBegin()));
+}
+
+inline RDOValue RDOValue::end()
+{
+	return RDOValue(RDOArrayIterator(__arrayV().m_containerEnd()));
+}
+
+inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	__arrayV().insertItems(itr.__arrayItr().getIterator(),itrFst.__arrayItr().getIterator(),itrLst.__arrayItr().getIterator());
+}
+
+inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	__arrayV().eraseItems(itrFst.__arrayItr().getIterator(),itrLst.__arrayItr().getIterator());
+}
+
 inline CREF(RDOType) RDOValue::type() const
 {
 	return *m_type;
@@ -741,6 +785,16 @@ inline REF(RDOArrayValue) RDOValue::__arrayV()
 inline CREF(RDOArrayValue) RDOValue::__arrayV() const
 {
 	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
+}
+
+inline REF(RDOArrayIterator) RDOValue::__arrayItr()
+{
+	return *static_cast<RDOArrayIterator*>(m_value.p_data);
+}
+
+inline CREF(RDOArrayIterator) RDOValue::__arrayItr() const
+{
+	return *static_cast<CPTR(RDOArrayIterator)>(m_value.p_data);
 }
 
 inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rdovalue)

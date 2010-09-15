@@ -25,6 +25,7 @@ class RDOType;
 class RDOEnumType;
 class RDOFuzzyValue;
 class RDOArrayValue;
+class RDOArrayIterator;
 
 class RDOValue
 {
@@ -45,7 +46,8 @@ public:
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
-	RDOValue(CREF(RDOArrayValue) arrayValue);
+	RDOValue(CREF(RDOArrayValue)    arrayValue);
+	RDOValue(CREF(RDOArrayIterator) aIterator );
 
 	rsint               getInt          () const;
 	rsint               getEnumAsInt    () const;
@@ -80,6 +82,12 @@ public:
 	RDOValue      operator-  (CREF(RDOValue) rdovalue) const;
 	RDOValue      operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue      operator/  (CREF(RDOValue) rdovalue) const;
+	RDOValue      operator[] (CREF(RDOValue) rdovalue);
+
+	RDOValue  begin();
+	RDOValue    end();
+	void     insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
+	void      erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                    );
 
 	CREF(RDOType)   type  () const;
 	RDOType::TypeID typeID() const;
@@ -89,13 +97,15 @@ private:
 
 	void set(CREF(RDOValue) rdovalue);
 
-	CREF(RDOEnumType)   __enumT  () const;
-	 REF(tstring)       __stringV();
-	CREF(tstring)       __stringV() const;
-	 REF(RDOFuzzyValue) __fuzzyV ();
-	CREF(RDOFuzzyValue) __fuzzyV () const;
-	 REF(RDOArrayValue) __arrayV ();
-	CREF(RDOArrayValue) __arrayV () const;
+	CREF(RDOEnumType)       __enumT   () const;
+	 REF(tstring)           __stringV ();
+	CREF(tstring)           __stringV () const;
+	 REF(RDOFuzzyValue)     __fuzzyV  ();
+	CREF(RDOFuzzyValue)     __fuzzyV  () const;
+	 REF(RDOArrayValue)     __arrayV  ();
+	CREF(RDOArrayValue)     __arrayV  () const;
+	 REF(RDOArrayIterator)  __arrayItr();
+	CREF(RDOArrayIterator)  __arrayItr() const;
 
 	class smart_tstring: public rdo::smart_ptr<tstring>
 	{

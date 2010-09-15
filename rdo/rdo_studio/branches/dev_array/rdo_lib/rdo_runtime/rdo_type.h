@@ -36,6 +36,7 @@ public:
 		t_string,
 		t_enum,
 		t_array,
+		t_iterator,
 		t_fuzzy
 	};
 
