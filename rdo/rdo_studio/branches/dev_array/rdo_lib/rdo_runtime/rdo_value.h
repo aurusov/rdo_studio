@@ -84,6 +84,9 @@ public:
 	RDOValue      operator/  (CREF(RDOValue) rdovalue) const;
 	RDOValue      operator[] (CREF(RDOValue) rdovalue);
 
+	CREF(RDOValue) operator++();
+	RDOValue       operator++(int inc);
+
 	RDOValue  begin();
 	RDOValue    end();
 	void     insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);

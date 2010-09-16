@@ -591,12 +591,29 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 		{
 			switch(rdovalue.typeID())
 			{
-				case RDOType::t_int: __arrayItr() = __arrayItr() + rdovalue.getInt(); return;
+				case RDOType::t_int:
+					PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
+					m_value.p_data = new RDOArrayIterator(__arrayItr() + rdovalue.getInt());
+					delete pPrevIt;
+					return;
 			}
 			break;
 		}
 	}
 	throw RDOValueException();
+}
+
+inline CREF(RDOValue) RDOValue::operator++()
+{
+	operator+=(1);
+	return *this;
+}
+
+inline RDOValue RDOValue::operator++(int inc)
+{
+	RDOValue prevValue(*this);
+	operator+=(1);
+	return prevValue;
 }
 
 inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
