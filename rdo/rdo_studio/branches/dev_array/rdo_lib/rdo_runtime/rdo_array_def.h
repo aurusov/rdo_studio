@@ -72,6 +72,8 @@ public:
 	Iterator getIterator() const;
 	Iterator operator+  (rsint num);
 
+	RDOValue getValue() const;
+
 private:
 	Iterator m_iterator;
 };

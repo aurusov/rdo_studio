@@ -97,6 +97,11 @@ inline RDOArrayIterator::Iterator RDOArrayIterator::operator+ (rsint num)
 	return m_iterator + num;
 }
 
+inline RDOValue RDOArrayIterator::getValue() const
+{
+	return *m_iterator;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------

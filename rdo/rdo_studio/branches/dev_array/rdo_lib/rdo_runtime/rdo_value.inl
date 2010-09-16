@@ -269,6 +269,7 @@ inline tstring RDOValue::getAsString() const
 		case RDOType::t_identificator: return __stringV();
 		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
 		case RDOType::t_array        : return __arrayV().getAsString();
+		case RDOType::t_iterator     : return __arrayItr().getValue().getAsString();
 	}
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsString()"));
 }

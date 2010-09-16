@@ -29,6 +29,7 @@ void main()
 	itr = itr + RDOValue(1);
 
 	tstring arrayStr = arrayVal.getAsString();
+	tstring itStr    = itr.getAsString();
 
 	int i = 1;
 }
