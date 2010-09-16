@@ -63,34 +63,33 @@ public:
 	tstring getAsString        () const;
 	tstring getAsStringForTrace() const;
 
-	REF(RDOValue) operator=  (CREF(RDOValue) rdovalue);
-	rbool         operator== (CREF(RDOValue) rdovalue) const;
-	rbool         operator!= (CREF(RDOValue) rdovalue) const;
-	rbool         operator<  (CREF(RDOValue) rdovalue) const;
-	rbool         operator<  (CREF(RDOValue) rdovalue);
-	rbool         operator>  (CREF(RDOValue) rdovalue) const;
-	rbool         operator<= (CREF(RDOValue) rdovalue) const;
-	rbool         operator>= (CREF(RDOValue) rdovalue) const;
-	RDOValue      operator&& (CREF(RDOValue) rdovalue) const;
-	RDOValue      operator|| (CREF(RDOValue) rdovalue) const;
-	RDOValue      operator-  () const;
-	void          operator+= (CREF(RDOValue) rdovalue);
-	void          operator-= (CREF(RDOValue) rdovalue);
-	void          operator*= (CREF(RDOValue) rdovalue);
-	void          operator/= (CREF(RDOValue) rdovalue);
-	RDOValue      operator+  (CREF(RDOValue) rdovalue) const;
-	RDOValue      operator-  (CREF(RDOValue) rdovalue) const;
-	RDOValue      operator*  (CREF(RDOValue) rdovalue) const;
-	RDOValue      operator/  (CREF(RDOValue) rdovalue) const;
-	RDOValue      operator[] (CREF(RDOValue) rdovalue);
-
-	CREF(RDOValue) operator++();
-	RDOValue       operator++(int inc);
+	REF(RDOValue)  operator=  (CREF(RDOValue) rdovalue);
+	rbool          operator== (CREF(RDOValue) rdovalue) const;
+	rbool          operator!= (CREF(RDOValue) rdovalue) const;
+	rbool          operator<  (CREF(RDOValue) rdovalue) const;
+	rbool          operator<  (CREF(RDOValue) rdovalue);
+	rbool          operator>  (CREF(RDOValue) rdovalue) const;
+	rbool          operator<= (CREF(RDOValue) rdovalue) const;
+	rbool          operator>= (CREF(RDOValue) rdovalue) const;
+	RDOValue       operator&& (CREF(RDOValue) rdovalue) const;
+	RDOValue       operator|| (CREF(RDOValue) rdovalue) const;
+	RDOValue       operator-  () const;
+	CREF(RDOValue) operator++ ();
+	RDOValue       operator++ (int inc);
+	void           operator+= (CREF(RDOValue) rdovalue);
+	void           operator-= (CREF(RDOValue) rdovalue);
+	void           operator*= (CREF(RDOValue) rdovalue);
+	void           operator/= (CREF(RDOValue) rdovalue);
+	RDOValue       operator+  (CREF(RDOValue) rdovalue) const;
+	RDOValue       operator-  (CREF(RDOValue) rdovalue) const;
+	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
+	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
+	RDOValue       operator[] (CREF(RDOValue) rdovalue);
 
 	RDOValue  begin();
 	RDOValue    end();
-	void     insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
-	void      erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                    );
+	void     insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
+	void      erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
 
 	CREF(RDOType)   type  () const;
 	RDOType::TypeID typeID() const;
@@ -124,13 +123,15 @@ private:
 	};
 	void deleteString();
 
-	union {
+	union Value
+	{
 		int                i_value;
 		double             d_value;
 		rbool              b_value;
 		PTR(smart_tstring) s_value;
 		PTR(void)          p_data;
-	} m_value;
+	};
+	Value m_value;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

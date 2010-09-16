@@ -418,7 +418,8 @@ inline rbool RDOValue::operator!= (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 {
-	switch (typeID()) {
+	switch (typeID())
+	{
 		case RDOType::t_int:
 		{
 			switch (rdovalue.typeID())
