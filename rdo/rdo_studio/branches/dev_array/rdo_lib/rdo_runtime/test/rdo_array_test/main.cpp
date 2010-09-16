@@ -31,5 +31,11 @@ void main()
 	tstring arrayStr = arrayVal.getAsString();
 	tstring itStr    = itr.getAsString();
 
+	for (RDOValue it = arrayVal.begin(); it != arrayVal.end(); it = it + 1)
+	{
+		tstring itStr = it.getAsString();
+		int i = 1;
+	}
+
 	int i = 1;
 }

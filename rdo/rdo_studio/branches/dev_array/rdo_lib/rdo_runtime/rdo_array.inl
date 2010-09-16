@@ -102,6 +102,11 @@ inline RDOValue RDOArrayIterator::getValue() const
 	return *m_iterator;
 }
 
+rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
+{
+	return m_iterator == iterator.m_iterator;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------

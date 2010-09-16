@@ -399,6 +399,14 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			}
 			break;
 		}
+		case RDOType::t_iterator:
+		{
+			switch (rdovalue.typeID())
+			{
+				case RDOType::t_iterator: return __arrayItr() == rdovalue.__arrayItr();
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
 }

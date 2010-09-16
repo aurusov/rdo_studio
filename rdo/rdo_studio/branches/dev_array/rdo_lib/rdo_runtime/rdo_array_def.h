@@ -71,6 +71,7 @@ public:
 
 	Iterator getIterator() const;
 	Iterator operator+  (rsint num);
+	rbool    operator== (CREF(RDOArrayIterator) iterator) const;
 
 	RDOValue getValue() const;
 
