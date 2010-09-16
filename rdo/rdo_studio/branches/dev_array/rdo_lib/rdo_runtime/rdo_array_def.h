@@ -45,8 +45,8 @@ public:
 	CREF(RDOArrayType) type() const;
 
 	void insertItem(CREF(RDOValue) pArray);
-	Container::iterator m_containerBegin();
-	Container::iterator m_containerEnd();
+	Container::iterator containerBegin();
+	Container::iterator containerEnd();
 	void insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst);
 	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
 	CREF(RDOValue) operator[] (CREF(RDOValue) ind);
@@ -54,25 +54,26 @@ public:
 	tstring getAsString() const;
 
 private:
-	Container          m_Container;
+	Container          m_container;
 	CPTR(RDOArrayType) m_arrayType;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayIterator
 // ----------------------------------------------------------------------------
-class RDOArrayIterator: public RDOType
+class RDOArrayIterator
 {
 public:
-	typedef RDOArrayValue::Container::iterator arrayIterator;
+	typedef RDOArrayValue::Container::iterator Iterator;
 
-	RDOArrayIterator(CREF(RDOArrayIterator) aIterator);
-	RDOArrayIterator(arrayIterator          aIterator);
+	RDOArrayIterator(CREF(RDOArrayIterator) iterator);
+	RDOArrayIterator(CREF(Iterator)         iterator);
 
-	arrayIterator getIterator() const;
-	arrayIterator operator+ (rsint num);
+	Iterator getIterator() const;
+	Iterator operator+  (rsint num);
+
 private:
-	arrayIterator m_iterator;
+	Iterator m_iterator;
 };
 
 // ----------------------------------------------------------------------------

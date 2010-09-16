@@ -27,20 +27,7 @@ inline RDOValue::RDOValue()
 
 inline RDOValue::~RDOValue()
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			deleteString();
-			break;
-		}
-		case RDOType::t_fuzzy:
-		{
-			delete &__fuzzyV();
-			break;
-		}
-	}
+	deleteValue();
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
@@ -150,10 +137,33 @@ inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
 	m_value.p_data = new RDOArrayValue(arrayValue);
 }
 
-inline RDOValue::RDOValue(CREF(RDOArrayIterator) aIterator)
-	: m_type(&aIterator)
+inline RDOValue::RDOValue(CREF(RDOArrayIterator) iterator)
+	: m_type(&g_iterator)
 {
-	m_value.p_data = new RDOArrayIterator(aIterator);
+	m_value.p_data = new RDOArrayIterator(iterator);
+}
+
+inline void RDOValue::deleteValue()
+{
+	switch (typeID())
+	{
+	case RDOType::t_string       :
+	case RDOType::t_identificator:
+		deleteString();
+		break;
+
+	case RDOType::t_fuzzy:
+		delete &__fuzzyV();
+		break;
+
+	case RDOType::t_array:
+		delete &__arrayV();
+		break;
+
+	case RDOType::t_iterator:
+		delete &__arrayItr();
+		break;
+	}
 }
 
 inline rsint RDOValue::getInt() const
@@ -292,15 +302,8 @@ inline void RDOValue::deleteString()
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			deleteString();
-			break;
-		}
-	}
+	deleteValue();
+
 	m_type = rdovalue.m_type;
 	switch (typeID())
 	{
@@ -724,12 +727,12 @@ inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
 
 inline RDOValue RDOValue::begin()
 {
-	return RDOValue(RDOArrayIterator(__arrayV().m_containerBegin()));
+	return RDOValue(RDOArrayIterator(__arrayV().containerBegin()));
 }
 
 inline RDOValue RDOValue::end()
 {
-	return RDOValue(RDOArrayIterator(__arrayV().m_containerEnd()));
+	return RDOValue(RDOArrayIterator(__arrayV().containerEnd()));
 }
 
 inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)

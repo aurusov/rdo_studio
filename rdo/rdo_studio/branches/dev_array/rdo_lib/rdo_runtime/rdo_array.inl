@@ -21,7 +21,7 @@ inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
 {}
 
 inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
-	: m_Container (value.m_Container)
+	: m_container (value.m_container)
 	, m_arrayType (value.m_arrayType)
 {}
 
@@ -36,36 +36,36 @@ inline CREF(RDOArrayType) RDOArrayValue::type() const
 
 inline void RDOArrayValue::insertItem(CREF(RDOValue) pArray)
 {
-	m_Container.push_back(pArray);
+	m_container.push_back(pArray);
 }
 
-inline RDOArrayValue::Container::iterator RDOArrayValue::m_containerBegin()
+inline RDOArrayValue::Container::iterator RDOArrayValue::containerBegin()
 {
-	return m_Container.begin();
+	return m_container.begin();
 }
 
-inline RDOArrayValue::Container::iterator RDOArrayValue::m_containerEnd()
+inline RDOArrayValue::Container::iterator RDOArrayValue::containerEnd()
 {
-	return m_Container.end();
+	return m_container.end();
 }
 
 inline void RDOArrayValue::insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst)
 {
-	m_Container.insert(itr,itrFst,itrLst);
+	m_container.insert(itr,itrFst,itrLst);
 }
 
 inline void RDOArrayValue::eraseItems(Container::iterator itrFst, Container::iterator itrLst)
 {
-	m_Container.erase(itrFst,itrLst);
+	m_container.erase(itrFst,itrLst);
 }
 
 inline tstring RDOArrayValue::getAsString() const
 {
 	tstring ArrayName = _T("[");
-	STL_FOR_ALL_CONST(Container, m_Container, it)
+	STL_FOR_ALL_CONST(Container, m_container, it)
 	{
 		ArrayName += it->getAsString();
-		if(it != --m_Container.end())
+		if(it != --m_container.end())
 			ArrayName += _T(", ");
 	}
 	return ArrayName += _T("]");
@@ -73,28 +73,26 @@ inline tstring RDOArrayValue::getAsString() const
 
 inline CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
 {
-	return m_Container[ind.getInt()];
+	return m_container[ind.getInt()];
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayIterator
 // ----------------------------------------------------------------------------
-inline RDOArrayIterator::RDOArrayIterator(CREF(RDOArrayIterator) aIterator)
-	: m_iterator(aIterator.m_iterator)
-	, RDOType   (RDOType::t_iterator )
+inline RDOArrayIterator::RDOArrayIterator(CREF(RDOArrayIterator) iterator)
+	: m_iterator(iterator.m_iterator)
 {}
 
-inline RDOArrayIterator::RDOArrayIterator(arrayIterator aIterator)
-	: m_iterator(aIterator          )
-	, RDOType   (RDOType::t_iterator)
+inline RDOArrayIterator::RDOArrayIterator(CREF(Iterator) iterator)
+	: m_iterator(iterator)
 {}
 
-inline RDOArrayIterator::arrayIterator RDOArrayIterator::getIterator() const
+inline RDOArrayIterator::Iterator RDOArrayIterator::getIterator() const
 {
 	return m_iterator;
 }
 
-inline RDOArrayIterator::arrayIterator RDOArrayIterator::operator+ (rsint num)
+inline RDOArrayIterator::Iterator RDOArrayIterator::operator+ (rsint num)
 {
 	return m_iterator + num;
 }

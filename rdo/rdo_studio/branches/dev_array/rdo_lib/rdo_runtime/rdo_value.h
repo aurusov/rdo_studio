@@ -95,7 +95,8 @@ public:
 private:
 	CPTR(RDOType) m_type;
 
-	void set(CREF(RDOValue) rdovalue);
+	void set        (CREF(RDOValue) rdovalue);
+	void deleteValue();
 
 	CREF(RDOEnumType)       __enumT   () const;
 	 REF(tstring)           __stringV ();

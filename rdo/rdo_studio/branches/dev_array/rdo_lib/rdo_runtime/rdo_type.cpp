@@ -31,5 +31,6 @@ DECLARE_ATOM_TYPE(int          );
 DECLARE_ATOM_TYPE(real         );
 DECLARE_ATOM_TYPE(bool         );
 DECLARE_ATOM_TYPE(string       );
+DECLARE_ATOM_TYPE(iterator     );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
