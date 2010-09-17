@@ -59,7 +59,7 @@ inline void RDOArrayValue::eraseItems(Container::iterator itrFst, Container::ite
 	m_container.erase(itrFst,itrLst);
 }
 
-inline tstring RDOArrayValue::getAsString() const
+tstring RDOArrayValue::getAsString() const
 {
 	tstring ArrayName = _T("[");
 	STL_FOR_ALL_CONST(Container, m_container, it)
@@ -95,6 +95,11 @@ inline RDOArrayIterator::Iterator RDOArrayIterator::getIterator() const
 inline RDOArrayIterator::Iterator RDOArrayIterator::operator+ (rsint num)
 {
 	return m_iterator + num;
+}
+
+RDOArrayIterator::Iterator RDOArrayIterator::operator- (rsint num)
+{
+	return m_iterator - num;
 }
 
 inline RDOValue RDOArrayIterator::getValue() const

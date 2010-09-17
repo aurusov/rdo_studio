@@ -76,6 +76,8 @@ public:
 	RDOValue       operator-  () const;
 	CREF(RDOValue) operator++ ();
 	RDOValue       operator++ (int inc);
+	CREF(RDOValue) operator-- ();
+	RDOValue       operator-- (int inc);
 	void           operator+= (CREF(RDOValue) rdovalue);
 	void           operator-= (CREF(RDOValue) rdovalue);
 	void           operator*= (CREF(RDOValue) rdovalue);

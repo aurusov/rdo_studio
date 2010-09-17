@@ -617,6 +617,19 @@ inline RDOValue RDOValue::operator++(int inc)
 	return prevValue;
 }
 
+inline CREF(RDOValue) RDOValue::operator--()
+{
+	operator-=(1);
+	return *this;
+}
+
+inline RDOValue RDOValue::operator--(int inc)
+{
+	RDOValue prevValue(*this);
+	operator-=(1);
+	return prevValue;
+}
+
 inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
@@ -644,6 +657,18 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 				case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() - rdovalue.__fuzzyV(); return;
+			}
+			break;
+		}
+		case RDOType::t_iterator:
+		{
+			switch(rdovalue.typeID())
+			{
+			case RDOType::t_int:
+				PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
+				m_value.p_data = new RDOArrayIterator(__arrayItr() - rdovalue.getInt());
+				delete pPrevIt;
+				return;
 			}
 			break;
 		}
