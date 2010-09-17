@@ -61,14 +61,14 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	, m_currentRelResIndex(0            )
 	, m_useCommonChoice   (false        )
 {
-	LPRDOPATPattern pPatternExist = RDOParser::s_parser()->findPATPattern(src_info().src_text());
+	LPRDOPATPattern pPatternExist = Converter::s_converter()->findPATPattern(src_info().src_text());
 	if (pPatternExist)
 	{
 		rdoConverter::g_error().push_only(src_info(), rdo::format(_T("Паттерн '%s' уже существует"), name().c_str()));
 		rdoConverter::g_error().push_only(pPatternExist->src_info(), _T("См. первое определение"));
 		rdoConverter::g_error().push_done();
 	}
-	RDOParser::s_parser()->insertPATPattern(this);
+	Converter::s_converter()->insertPATPattern(this);
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)
@@ -408,8 +408,8 @@ void RDOPATPattern::end()
 RDOPatternIrregEvent::RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
 { 
-	m_pPatRuntime = new rdoRuntime::RDOPatternIrregEvent(RDOParser::s_parser()->runtime(), trace); 
-	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
+	m_pPatRuntime = new rdoRuntime::RDOPatternIrregEvent(Converter::s_converter()->runtime(), trace); 
+	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
 void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
@@ -421,7 +421,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 	}
 
 	LPRDORelevantResource pRelevantResource;
-	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = Converter::s_converter()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		switch (beg)
@@ -435,7 +435,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 	}
 	else
 	{
-		LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(type_info.src_text());
+		LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
 			rdoConverter::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
@@ -514,8 +514,8 @@ tstring RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(CREF(tstring) nam
 RDOPatternEvent::RDOPatternEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
 { 
-	m_pPatRuntime = new rdoRuntime::RDOPatternEvent(RDOParser::s_parser()->runtime(), trace); 
-	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
+	m_pPatRuntime = new rdoRuntime::RDOPatternEvent(Converter::s_converter()->runtime(), trace); 
+	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
 void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
@@ -527,7 +527,7 @@ void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserS
 	}
 
 	LPRDORelevantResource pRelevantResource;
-	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = Converter::s_converter()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		switch (beg)
@@ -541,7 +541,7 @@ void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserS
 	}
 	else
 	{
-		LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(type_info.src_text());
+		LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
 			rdoConverter::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
@@ -595,9 +595,9 @@ tstring RDOPatternEvent::getWarningMessage_EmptyConvertor(CREF(tstring) name, rd
 RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
 { 
-//	RDOParser::s_parser()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(RDOParser::s_parser()->runtime(), _trace))); 
-	m_pPatRuntime = new rdoRuntime::RDOPatternRule(RDOParser::s_parser()->runtime(), trace);
-	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
+//	Converter::s_converter()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(Converter::s_converter()->runtime(), _trace))); 
+	m_pPatRuntime = new rdoRuntime::RDOPatternRule(Converter::s_converter()->runtime(), trace);
+	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
 void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
@@ -609,7 +609,7 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	}
 
 	LPRDORelevantResource pRelevantResource;
-	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = Converter::s_converter()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		if (beg == rdoRuntime::RDOResource::CS_Create)
@@ -626,7 +626,7 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	}
 	else
 	{
-		LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(type_info.src_text());
+		LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
 			rdoConverter::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
@@ -665,8 +665,8 @@ RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, r
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
 { 
-	m_pPatRuntime = new rdoRuntime::RDOPatternOperation(RDOParser::s_parser()->runtime(), trace);
-	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
+	m_pPatRuntime = new rdoRuntime::RDOPatternOperation(Converter::s_converter()->runtime(), trace);
+	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
 RDOPatternOperation::RDOPatternOperation(rbool trace, CREF(RDOParserSrcInfo) name_src_info)
@@ -724,7 +724,7 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	};
 
 	LPRDORelevantResource pRelevantResource;
-	LPRDORSSResource res = RDOParser::s_parser()->findRSSResource(type_info.src_text());
+	LPRDORSSResource res = Converter::s_converter()->findRSSResource(type_info.src_text());
 	if (res)
 	{
 		if (beg == rdoRuntime::RDOResource::CS_Create)
@@ -749,7 +749,7 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	}
 	else
 	{
-		LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(type_info.src_text());
+		LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
 			rdoConverter::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
@@ -841,8 +841,8 @@ tstring RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(tstring) name
 RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPatternOperation(trace, name_src_info)
 {
-	m_pPatRuntime = new rdoRuntime::RDOPatternKeyboard(RDOParser::s_parser()->runtime(), trace); 
-	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
+	m_pPatRuntime = new rdoRuntime::RDOPatternKeyboard(Converter::s_converter()->runtime(), trace); 
+	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
 // ----------------------------------------------------------------------------

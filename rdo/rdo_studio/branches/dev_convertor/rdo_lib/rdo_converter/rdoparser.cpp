@@ -22,12 +22,12 @@
 OPEN_RDO_CONVERTER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParser
+// ---------- Converter
 // ----------------------------------------------------------------------------
-RDOParser::ParserList RDOParser::s_parserStack;
+Converter::ParserList Converter::s_parserStack;
 
 #define DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-void RDOParser::insert##NAME(LPRDO##NAME value) \
+void Converter::insert##NAME(LPRDO##NAME value) \
 { \
 	howIsIt<LPRDO##NAME>(); \
 	m_all##NAME.push_back(value); \
@@ -35,12 +35,12 @@ void RDOParser::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME RDOParser::find##NAME(CREF(tstring) name) const \
+const LPRDO##NAME Converter::find##NAME(CREF(tstring) name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : NULL; \
 } \
-rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
+rbool Converter::remove##NAME(const LPRDO##NAME item) \
 { \
 	NAME##List::iterator it = std::find(m_all##NAME.begin(), m_all##NAME.end(), item); \
 	if (it == m_all##NAME.end()) \
@@ -67,39 +67,39 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(PROCProcess);
 
-rdoModelObjects::RDOFileType RDOParser::getFileToParse()
+rdoModelObjects::RDOFileType Converter::getFileToParse()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjects::PAT;
 }
 
-ruint RDOParser::lexer_loc_line()
+ruint Converter::lexer_loc_line()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_line() : ~0;
 }
 
-ruint RDOParser::lexer_loc_pos()
+ruint Converter::lexer_loc_pos()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
-PTR(RDOParser) RDOParser::s_parser()
+PTR(Converter) Converter::s_converter()
 {
 	return !s_parserStack.empty() ? s_parserStack.back() : NULL;
 }
 
-RDOParser::RDOParser()
+Converter::Converter()
 	: m_parser_item         (NULL )
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
 	, m_pattern             (false)
 {
 	s_parserStack.push_back(this);
-	m_runtime.memory_insert(sizeof(RDOParser));
+	m_runtime.memory_insert(sizeof(Converter));
 	m_runtime.init();
 	m_contextStack.push(rdo::Factory<ContextGlobal>::create());
 }
 
-RDOParser::~RDOParser()
+Converter::~Converter()
 {
 	m_runtime.deinit();
 	rdo::deleteAllObjects(m_allValues);
@@ -107,32 +107,32 @@ RDOParser::~RDOParser()
 	s_parserStack.remove(this);
 }
 
-REF(ContextStack) RDOParser::contextStack()
+REF(ContextStack) Converter::contextStack()
 {
 	return m_contextStack;
 }
 
-LPContext RDOParser::context() const
+LPContext Converter::context() const
 {
 	return m_contextStack.top();
 }
 
-rbool RDOParser::isCurrentDPTSearch()
+rbool Converter::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
-rbool RDOParser::isCurrentDPTPrior()
+rbool Converter::isCurrentDPTPrior()
 {
 	return getLastDPTPrior() ? true : false;
 }
 
-void RDOParser::insertChanges(CREF(tstring) name, CREF(tstring) value)
+void Converter::insertChanges(CREF(tstring) name, CREF(tstring) value)
 {
 	m_changes.push_back(Changes(name, value));
 }
 
-tstring RDOParser::getChanges() const
+tstring Converter::getChanges() const
 {
 	rdo::textstream stream;
 	stream << _T("$Changes") << std::endl;
@@ -156,7 +156,7 @@ tstring RDOParser::getChanges() const
 	return stream.str();
 }
 
-tstring RDOParser::getModelStructure()
+tstring Converter::getModelStructure()
 {
 	rdo::textstream modelStructure;
 
@@ -237,7 +237,7 @@ tstring RDOParser::getModelStructure()
 	return modelStructure.str();
 }
 
-void RDOParser::parse()
+void Converter::parse()
 {
 	parse(rdoModelObjects::obPRE);
 
@@ -253,7 +253,7 @@ void RDOParser::parse()
 	parse(rdoModelObjects::obPOST);
 }
 
-void RDOParser::parse(rdoModelObjects::RDOParseType file)
+void Converter::parse(rdoModelObjects::RDOParseType file)
 {
 	ruint min, max;
 	RDOParserContainer::getMinMax(file, min, max);
@@ -277,7 +277,7 @@ void RDOParser::parse(rdoModelObjects::RDOParseType file)
 	}
 }
 
-void RDOParser::parse(REF(std::istream) stream)
+void Converter::parse(REF(std::istream) stream)
 {
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
@@ -289,7 +289,7 @@ void RDOParser::parse(REF(std::istream) stream)
 	}
 }
 
-void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
+void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 {
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
@@ -315,7 +315,7 @@ void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
+void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 {
 	STL_FOR_ALL_CONST(DPTSearchList, getDPTSearchs(), it_search)
 	{
@@ -357,7 +357,7 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
+void Converter::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 {
 	if (src_info.src_text().empty())
 	{

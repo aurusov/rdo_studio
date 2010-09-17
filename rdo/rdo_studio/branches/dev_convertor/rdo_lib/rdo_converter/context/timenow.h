@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_CONTEXT_TIMENOW_H_
-#define _RDOPARSER_CONTEXT_TIMENOW_H_
+#ifndef _RDOCONVERTER_CONTEXT_TIMENOW_H_
+#define _RDOCONVERTER_CONTEXT_TIMENOW_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -29,4 +29,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/context/timenow.inl"
 
-#endif //! _RDOPARSER_CONTEXT_TIMENOW_H_
+#endif //! _RDOCONVERTER_CONTEXT_TIMENOW_H_

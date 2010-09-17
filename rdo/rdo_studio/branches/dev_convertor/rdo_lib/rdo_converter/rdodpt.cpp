@@ -77,11 +77,11 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 	: RDOParserSrcInfo(src_info)
 	, m_currParam     (0       )
 {
-	RDOParser::s_parser()->checkActivityName(src_info);
-	m_pPattern = RDOParser::s_parser()->findPATPattern(pattern_src_info.src_text());
+	Converter::s_converter()->checkActivityName(src_info);
+	m_pPattern = Converter::s_converter()->findPATPattern(pattern_src_info.src_text());
 	if (!m_pPattern)
 	{
-		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format(_T("Не найден образец: %s"), pattern_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(pattern_src_info, rdo::format(_T("Не найден образец: %s"), pattern_src_info.src_text().c_str()));
 	}
 }
 
@@ -94,13 +94,13 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 	{
 		if (param.src_pos().m_first_line == src_pos().m_first_line)
 		{
-			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
-			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
-			RDOParser::s_parser()->error().push_done();
+			Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
+			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
+			Converter::s_converter()->error().push_done();
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(param, _T("Имя активности должно заканчиваться двоеточием"));
+			Converter::s_converter()->error().error(param, _T("Имя активности должно заканчиваться двоеточием"));
 		}
 	}
 	rdoRuntime::RDOValue val;
@@ -109,9 +109,9 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 	{
 		if (!pPatternParam->getType()->default().defined())
 		{
-			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_text().c_str()));
-			RDOParser::s_parser()->error().push_done();
+			Converter::s_converter()->error().push_only(param, rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
+			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_text().c_str()));
+			Converter::s_converter()->error().push_done();
 		}
 		val = pPatternParam->getType()->default().value();
 	}
@@ -131,13 +131,13 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	if (m_pPattern->m_paramList.size() > m_currParam)
 	{
 		LPRDOFUNFunctionParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
-		RDOParser::s_parser()->error().push_only(param_pos, rdo::format(_T("Указаны не все параметра образца '%s':"), m_pPattern->src_text().c_str()));
+		Converter::s_converter()->error().push_only(param_pos, rdo::format(_T("Указаны не все параметра образца '%s':"), m_pPattern->src_text().c_str()));
 		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ожидаемый параметр '%s' имеет тип '%s'"), pPatternParam->name().c_str(), pPatternParam->getType()->src_text().c_str()));
+			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ожидаемый параметр '%s' имеет тип '%s'"), pPatternParam->name().c_str(), pPatternParam->getType()->src_text().c_str()));
 		}
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_done();
 	}
 	if (m_pPattern->getType() == RDOPATPattern::PT_Keyboard)
 	{
@@ -145,9 +145,9 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 		ASSERT(pKeyboard);
 		if (!pKeyboard->hasHotKey())
 		{
-			RDOParser::s_parser()->error().push_only(param_pos, _T("Для активности должна быть указана клавиша"));
-			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
-			RDOParser::s_parser()->error().push_done();
+			Converter::s_converter()->error().push_only(param_pos, _T("Для активности должна быть указана клавиша"));
+			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
+			Converter::s_converter()->error().push_done();
 		}
 	}
 }
@@ -171,21 +171,21 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 	switch (pattern()->getType())
 	{
 	case RDOPATPattern::PT_Rule:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Operation:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternOperation)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternOperation)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Keyboard:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
 		break;
 
 	default:
-		RDOParser::s_parser()->error().push_only(this->src_info(), _T("Неизвестный тип образца"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(this->src_info(), _T("Неизвестный тип образца"));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		Converter::s_converter()->error().push_done();
 	}
 }
 
@@ -193,33 +193,33 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{
-		RDOParser::s_parser()->error().push_only(hotkey_pos, _T("Горячие клавиши используются только в клавиатурных операциях"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(hotkey_pos, _T("Горячие клавиши используются только в клавиатурных операциях"));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		Converter::s_converter()->error().push_done();
 	}
 	LPIKeyboard pKeyboard = m_pActivity;
 	ASSERT(pKeyboard);
-	switch (pKeyboard->addHotKey(RDOParser::s_parser()->runtime(), hotKey))
+	switch (pKeyboard->addHotKey(Converter::s_converter()->runtime(), hotKey))
 	{
 	case rdoRuntime::RDOKeyboard::addhk_ok:
 		break;
 
 	case rdoRuntime::RDOKeyboard::addhk_already:
-		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Для активности '%s' клавиша уже назначена"), src_text().c_str()));
+		Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Для активности '%s' клавиша уже назначена"), src_text().c_str()));
 		break;
 
 	case rdoRuntime::RDOKeyboard::addhk_notfound:
-		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Неизвестная клавиша: %s"), hotKey.c_str()));
+		Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Неизвестная клавиша: %s"), hotKey.c_str()));
 		break;
 
 	case rdoRuntime::RDOKeyboard::addhk_dont:
-		RDOParser::s_parser()->error().push_only(src_info(), rdo::format(_T("Операция '%s' не является клавиатурной"), src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(src_info(), rdo::format(_T("Операция '%s' не является клавиатурной"), src_text().c_str()));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		Converter::s_converter()->error().push_done();
 		break;
 
 	default:
-		RDOParser::s_parser()->error().error(src_info(), _T("Внутренная ошибка: RDOOPROperation::addHotKey"));
+		Converter::s_converter()->error().error(src_info(), _T("Внутренная ошибка: RDOOPROperation::addHotKey"));
 	}
 }
 
@@ -229,7 +229,7 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {
-	RDOParser::s_parser()->insertDPTFreeActivity(this);
+	Converter::s_converter()->insertDPTFreeActivity(this);
 }
 
 // ----------------------------------------------------------------------------
@@ -238,11 +238,11 @@ RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOP
 RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
 	: RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>(src_info)
 {
-	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTFree)::create(RDOParser::s_parser()->runtime());
+	Converter::s_converter()->checkDPTName(this->src_info());
+	m_pRuntimeLogic = F(rdoRuntime::RDODPTFree)::create(Converter::s_converter()->runtime());
 	ASSERT(m_pRuntimeLogic);
-	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
-	RDOParser::s_parser()->insertDPTFree(this);
+	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
+	Converter::s_converter()->insertDPTFree(this);
 }
 
 // ----------------------------------------------------------------------------
@@ -265,11 +265,11 @@ RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RD
 RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	: RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
-	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTSome)::create(RDOParser::s_parser()->runtime(), pParent);
+	Converter::s_converter()->checkDPTName(this->src_info());
+	m_pRuntimeLogic = F(rdoRuntime::RDODPTSome)::create(Converter::s_converter()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
-	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
-	RDOParser::s_parser()->insertDPTSome(this);
+	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
+	Converter::s_converter()->insertDPTSome(this);
 }
 
 void RDODPTSome::end()
@@ -286,11 +286,11 @@ void RDODPTSome::end()
 RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	: RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
-	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTPrior)::create(RDOParser::s_parser()->runtime(), pParent);
+	Converter::s_converter()->checkDPTName(this->src_info());
+	m_pRuntimeLogic = F(rdoRuntime::RDODPTPrior)::create(Converter::s_converter()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
-	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
-	RDOParser::s_parser()->insertDPTPrior(this);
+	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
+	Converter::s_converter()->insertDPTPrior(this);
 }
 
 void RDODPTPrior::end()
@@ -310,21 +310,21 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Rule)
 	{
-		RDOParser::s_parser()->error().push_only(this->src_info(), _T("Только продукционные правила могут быть использованы в точке принятия решений типа search"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(this->src_info(), _T("Только продукционные правила могут быть использованы в точке принятия решений типа search"));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		Converter::s_converter()->error().push_done();
 	}
 	for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
 	{
 		if (((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Erase))
 		{
-			RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search"), src_text().c_str()));
-			RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
-			RDOParser::s_parser()->error().push_only((*it)->src_info(), _T("См. релевантный ресурс"));
-			RDOParser::s_parser()->error().push_done();
+			Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search"), src_text().c_str()));
+			Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
+			Converter::s_converter()->error().push_only((*it)->src_info(), _T("См. релевантный ресурс"));
+			Converter::s_converter()->error().push_done();
 		}
 	}
-	m_pActivity = F(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime()), true, name());
+	m_pActivity = F(rdoRuntime::RDORule)::create(Converter::s_converter()->runtime(), static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime()), true, name());
 	ASSERT(m_pActivity);
 }
 
@@ -344,8 +344,8 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 	, m_closed (false  )
 	, m_pParent(pParent)
 {
-	RDOParser::s_parser()->checkDPTName   (this->src_info());
-	RDOParser::s_parser()->insertDPTSearch(this);
+	Converter::s_converter()->checkDPTName   (this->src_info());
+	Converter::s_converter()->insertDPTSearch(this);
 }
 
 void RDODPTSearch::end()
@@ -353,7 +353,7 @@ void RDODPTSearch::end()
 	rdoRuntime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 	rdoRuntime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTSearchRuntime)::create(RDOParser::s_parser()->runtime(),
+	m_pRuntimeLogic = F(rdoRuntime::RDODPTSearchRuntime)::create(Converter::s_converter()->runtime(),
 		m_pParent,
 		pCalcCondition,
 		pCalcTerminate,
@@ -361,7 +361,7 @@ void RDODPTSearch::end()
 		m_compTops,
 		m_trace);
 	ASSERT(m_pRuntimeLogic);
-	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
+	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 
 	int size = getActivities().size();
 	for (int i = 0; i < size; i++)
@@ -391,10 +391,10 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
 	: RDOParserSrcInfo(info )
 	, m_closed        (false)
 {
-	RDOParser::s_parser()->insertPROCProcess(this);
-	m_pRuntime = F(rdoRuntime::RDOPROCProcess)::create(info.src_text(), RDOParser::s_parser()->runtime());
+	Converter::s_converter()->insertPROCProcess(this);
+	m_pRuntime = F(rdoRuntime::RDOPROCProcess)::create(info.src_text(), Converter::s_converter()->runtime());
 	ASSERT(m_pRuntime);
-	m_pRuntime.query_cast<ILogic>()->init(RDOParser::s_parser()->runtime());
+	m_pRuntime.query_cast<ILogic>()->init(Converter::s_converter()->runtime());
 }
 
 rbool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
@@ -450,7 +450,7 @@ RDOPROCOperator::~RDOPROCOperator()
 RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = F(rdoRuntime::RDOPROCGenerate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
 	ASSERT(m_pRuntime);
 }
 
@@ -550,7 +550,7 @@ void RDOPROCRelease::addResource(CREF(tstring) name)
 RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCAdvance)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = F(rdoRuntime::RDOPROCAdvance)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
 	ASSERT(m_pRuntime);
 }
 
@@ -560,7 +560,7 @@ RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) na
 RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(ruint) term)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCTerminate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), term);
+	m_pRuntime = F(rdoRuntime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), term);
 	ASSERT(m_pRuntime);
 }
 
@@ -570,7 +570,7 @@ RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring
 RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue, int resID, int paramID)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCAssign)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pValue, resID, paramID);
+	m_pRuntime = F(rdoRuntime::RDOPROCAssign)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pValue, resID, paramID);
 	ASSERT(m_pRuntime);
 }
 

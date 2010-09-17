@@ -70,7 +70,7 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 protected:
-	RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
 	const int       m_id;        //! in system
@@ -88,7 +88,7 @@ class RDOPROCResource: public RDORSSResource
 {
 DECLARE_FACTORY(RDOPROCResource);
 private:
-	RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDOPROCResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 	virtual rdoRuntime::LPRDOCalc createCalc() const;
 };
 DECLARE_POINTER(RDOPROCResource);

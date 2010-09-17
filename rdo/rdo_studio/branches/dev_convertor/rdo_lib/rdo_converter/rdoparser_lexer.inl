@@ -16,7 +16,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOLexer
 // ----------------------------------------------------------------------------
-inline RDOLexer::RDOLexer(PTR(RDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
+inline RDOLexer::RDOLexer(PTR(Converter) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
 	: yyFlexLexer(yyin, yyout)
 	, m_pParser  (pParser    )
 	, m_yyin     (yyin       )
@@ -85,7 +85,7 @@ inline void RDOLexer::setvalue(int value)
 	*m_lpval = value;
 }
 
-inline PTR(RDOParser) RDOLexer::parser()
+inline PTR(Converter) RDOLexer::converter()
 {
 	return m_pParser;
 }

@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_VALUE_H_
-#define _RDOPARSER_VALUE_H_
+#ifndef _RDOCONVERTER_VALUE_H_
+#define _RDOCONVERTER_VALUE_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -58,4 +58,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/rdo_value.inl"
 
-#endif //! _RDOPARSER_VALUE_H_
+#endif //! _RDOCONVERTER_VALUE_H_

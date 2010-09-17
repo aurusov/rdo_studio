@@ -30,7 +30,7 @@ void rtperror(PTR(char) mes);
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-class RDOParser;
+class Converter;
 
 OBJECT(RDORTPResType) IS INSTANCE_OF(RDOParserSrcInfo)
 {
@@ -55,7 +55,7 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 private:
-	RDORTPResType(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
 	const rsint  m_number;
@@ -74,7 +74,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyMembershiftPoint(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, double x_value, double y_value):
+//	RDORTPFuzzyMembershiftPoint(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, double x_value, double y_value):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_x_value(x_value),
@@ -97,7 +97,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyMembershiftFun(PTR(RDOParser) pParser):
+//	RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 //		RDOParserObject(pParser)
 //		{
 //		}
@@ -125,7 +125,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyTerm: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyTerm(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+//	RDORTPFuzzyTerm(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_fun (pMembersfift_fun)
@@ -145,7 +145,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyTermsSet(PTR(RDOParser) pParser)
+//	RDORTPFuzzyTermsSet(PTR(Converter) pParser)
 //		: RDOParserObject(pParser)
 //	{
 //	}
@@ -173,7 +173,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyParam(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyTermsSet) terms_set):
+//	RDORTPFuzzyParam(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyTermsSet) terms_set):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_set (terms_set)

@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_RDO_H_
-#define _RDOPARSER_RDO_H_
+#ifndef _RDOCONVERTER_RDO_H_
+#define _RDOCONVERTER_RDO_H_
 
 // ====================================================================== INCLUDES
 #include <iostream>
@@ -24,13 +24,13 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRDOItem
 // ----------------------------------------------------------------------------
-class RDOParser;
+class Converter;
 
 class RDOParserRDOItem: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRDOItem);
 public:
-	virtual void  parse         (PTR(RDOParser) pParser);
+	virtual void  parse         (PTR(Converter) pParser);
 	virtual ruint lexer_loc_line();
 	virtual ruint lexer_loc_pos ();
 
@@ -42,8 +42,8 @@ protected:
 	YYLTYPE        m_loc;
 
 private:
-	void parse(PTR(RDOParser) pParser, REF(std::istream) in_stream);
-	PTR(RDOLexer) getLexer(PTR(RDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream);
+	void parse(PTR(Converter) pParser, REF(std::istream) in_stream);
+	PTR(RDOLexer) getLexer(PTR(Converter) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream);
 };
 
 // ----------------------------------------------------------------------------
@@ -54,7 +54,7 @@ class RDOParserRSS: public RDOParserRDOItem
 DECLARE_FACTORY(RDOParserRSS);
 private:
 	RDOParserRSS(StreamFrom from = sf_repository);
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(PTR(Converter) pParser);
 };
 
 // ----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ private:
 	RDOParserRSSPost()
 		: RDOParserItem(rdoModelObjects::RSS, NULL, NULL, NULL)
 	{}
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(PTR(Converter) pParser);
 };
 
 // ----------------------------------------------------------------------------
@@ -80,7 +80,7 @@ private:
 	RDOParserEVNPost()
 		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL)
 	{}
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(PTR(Converter) pParser);
 };
 
 // ----------------------------------------------------------------------------
@@ -93,9 +93,9 @@ private:
 	RDOParserSTDFUN()
 		: RDOParserItem(rdoModelObjects::FUN, NULL, NULL, NULL)
 	{}
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(PTR(Converter) pParser);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPARSER_RDO_H_
+#endif //! _RDOCONVERTER_RDO_H_

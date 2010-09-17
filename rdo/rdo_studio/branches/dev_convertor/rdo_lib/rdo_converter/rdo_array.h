@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_ARRAY_H_
-#define _RDOPARSER_ARRAY_H_
+#ifndef _RDOCONVERTER_ARRAY_H_
+#define _RDOCONVERTER_ARRAY_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -42,4 +42,4 @@ DECLARE_POINTER(RDOArrayType);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPARSER_ARRAY_H_
+#endif //! _RDOCONVERTER_ARRAY_H_

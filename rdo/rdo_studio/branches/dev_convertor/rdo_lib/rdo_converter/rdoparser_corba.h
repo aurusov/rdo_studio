@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_CORBA_H_
-#define _RDOPARSER_CORBA_H_
+#ifndef _RDOCONVERTER_CORBA_H_
+#define _RDOCONVERTER_CORBA_H_
 
 #ifdef CORBA_ENABLE
 
@@ -29,7 +29,7 @@ private:
 	RDOParserCorbaRTP()
 		: RDOParserRDOItem(rdoModelObjects::RTP, NULL, NULL, NULL)
 	{}
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(PTR(Converter) pParser);
 };
 
 // ----------------------------------------------------------------------------
@@ -42,11 +42,11 @@ private:
 	RDOParserCorbaRSS()
 		: RDOParserRDOItem(rdoModelObjects::RSS, NULL, NULL, NULL)
 	{}
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(PTR(Converter) pParser);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
 #endif //! CORBA_ENABLE
 
-#endif //! _RDOPARSER_CORBA_H_
+#endif //! _RDOCONVERTER_CORBA_H_

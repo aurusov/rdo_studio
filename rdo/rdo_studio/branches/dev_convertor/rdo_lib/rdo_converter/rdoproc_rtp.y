@@ -215,8 +215,8 @@
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 // ===============================================================================
 
-#define PARSER  LEXER->parser()
-#define RUNTIME PARSER->runtime()
+#define CONVERTER LEXER->converter()
+#define RUNTIME   CONVERTER->runtime()
 
 OPEN_RDO_CONVERTER_NAMESPACE
 %}

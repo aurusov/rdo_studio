@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_LEXER_H_
-#define _RDOPARSER_LEXER_H_
+#ifndef _RDOCONVERTER_LEXER_H_
+#define _RDOCONVERTER_LEXER_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -23,19 +23,19 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOLexer
 // ----------------------------------------------------------------------------
-class RDOParser;
+class Converter;
 
 class RDOLexer: public yyFlexLexer
 {
 public:
-	RDOLexer(PTR(RDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
+	RDOLexer(PTR(Converter) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
 
 	void loc_init     ();
 	void loc_action   ();
 	void loc_delta_pos(int value);
 	void setvalue     (int value);
 
-	PTR(RDOParser)    parser();
+	PTR(Converter)    converter();
 
 	void  enumBegin();
 	void  enumReset();
@@ -56,7 +56,7 @@ protected:
 private:
 	PTR(std::istream) m_yyin;
 	PTR(std::ostream) m_yyout;
-	PTR(RDOParser)    m_pParser;
+	PTR(Converter)    m_pParser;
 	rbool             m_enumEmpty;
 	rsint             m_array_param_cnt;
 };
@@ -68,4 +68,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/rdoparser_lexer.inl"
 
-#endif //! _RDOPARSER_LEXER_H_
+#endif //! _RDOCONVERTER_LEXER_H_

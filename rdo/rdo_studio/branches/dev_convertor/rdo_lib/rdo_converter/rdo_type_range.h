@@ -19,7 +19,7 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-class RDOParser;
+class Converter;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeRangeRange

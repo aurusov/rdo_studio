@@ -217,8 +217,8 @@
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 // ===============================================================================
 
-#define PARSER  LEXER->parser()
-#define RUNTIME PARSER->runtime()
+#define CONVERTER LEXER->converter()
+#define RUNTIME   CONVERTER->runtime()
 
 #define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
 #define RDOVALUE(A)   (*P_RDOVALUE(A))
@@ -285,22 +285,22 @@ dpt_process_line
 	| RDO_QUEUE dpt_queue_param
 	| RDO_QUEUE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		CONVERTER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
 	}
 	| RDO_DEPART dpt_depart_param
 	| RDO_DEPART error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		CONVERTER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
 	}
 	| RDO_SEIZE dpt_seize_param
 	| RDO_SEIZE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		CONVERTER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
 	}
 	| RDO_RELEASE dpt_release_param
 	| RDO_RELEASE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		CONVERTER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
 	}
 	;
 
@@ -310,7 +310,7 @@ dpt_queue_param
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
 	}
 	;
 
@@ -320,7 +320,7 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
 	}
 	;
 
@@ -333,7 +333,7 @@ dpt_seize_param
 	}
 	| dpt_seize_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
 	}
 	;
 
@@ -346,7 +346,7 @@ dpt_release_param
 	}
 	| dpt_release_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
 	}
 	;
 

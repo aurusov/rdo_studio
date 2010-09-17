@@ -37,12 +37,12 @@ void pmderror(PTR(char) mes)
 RDOPMDPokaz::RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 {
-	LPRDOPMDPokaz pPokaz = RDOParser::s_parser()->findPMDPokaz(src_text());
+	LPRDOPMDPokaz pPokaz = Converter::s_converter()->findPMDPokaz(src_text());
 	if (pPokaz)
 	{
-		RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("Показатель '%s' уже существует"), src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pPokaz->src_info(), _T("См. первое определение"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("Показатель '%s' уже существует"), src_text().c_str()));
+		Converter::s_converter()->error().push_only(pPokaz->src_info(), _T("См. первое определение"));
+		Converter::s_converter()->error().push_done();
 	}
 }
 
@@ -55,11 +55,11 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 	LPITrace trace = m_pPokaz;
 	if (trace)
 	{
-		trace->setTraceID(RDOParser::s_parser()->getPMD_id());
+		trace->setTraceID(Converter::s_converter()->getPMD_id());
 	}
-	RDOParser::s_parser()->insertPMDPokaz(this);
+	Converter::s_converter()->insertPMDPokaz(this);
 	//! [TODO]: перенести в конструктор rdoRuntime::RDOPMDPokaz
-	RDOParser::s_parser()->runtime()->addRuntimePokaz(m_pPokaz);
+	Converter::s_converter()->runtime()->addRuntimePokaz(m_pPokaz);
 }
 
 // ----------------------------------------------------------------------------
@@ -68,35 +68,35 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
 	: RDOPMDPokaz(src_info)
 {
-	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(res_src_info.src_text());
+	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_src_info.src_text());
 	if (!pResource)
 	{
-		RDOParser::s_parser()->error().error(res_src_info, rdo::format(_T("Ресурс '%s' не найден"), res_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_src_info, rdo::format(_T("Ресурс '%s' не найден"), res_src_info.src_text().c_str()));
 	}
 /*
 	if (!pResource->getType()->isPermanent())
 	{
-		RDOParser::s_parser()->error().push_only(res_src_info, _T("Наблюдать (watch_par) можно только за параметром постоянного ресурса"));
-		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(res_src_info, _T("Наблюдать (watch_par) можно только за параметром постоянного ресурса"));
+		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_done();
 	}
 */
 	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_src_info.src_text());
 	if (!pParam)
 	{
-		RDOParser::s_parser()->error().push_only(par_src_info, rdo::format(_T("Параметр '%s' не найден"), par_src_info.src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResource->src_info(), _T("См. ресурс"));
-		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(par_src_info, rdo::format(_T("Параметр '%s' не найден"), par_src_info.src_text().c_str()));
+		Converter::s_converter()->error().push_only(pResource->src_info(), _T("См. ресурс"));
+		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_done();
 	}
 	rdoRuntime::RDOType::TypeID typeID = pParam->getParamType()->type()->typeID();
 	if (typeID != rdoRuntime::RDOType::t_int && typeID != rdoRuntime::RDOType::t_real)
 	{
-		RDOParser::s_parser()->error().push_only(par_src_info, _T("Наблюдать можно только за параметром целого или вещественного типа"));
-		RDOParser::s_parser()->error().push_only(pParam->getParamType()->src_info(), _T("См. тип параметра"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(par_src_info, _T("Наблюдать можно только за параметром целого или вещественного типа"));
+		Converter::s_converter()->error().push_only(pParam->getParamType()->src_info(), _T("См. тип параметра"));
+		Converter::s_converter()->error().push_done();
 	}
-	endOfCreation(F(rdoRuntime::RDOPMDWatchPar)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
+	endOfCreation(F(rdoRuntime::RDOPMDWatchPar)::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
 // ----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic)
 	: RDOPMDPokaz(src_info)
 {
-	endOfCreation(F(rdoRuntime::RDOPMDWatchState)::create(RDOParser::s_parser()->runtime(), src_text(), trace, pLogic->getCalc()));
+	endOfCreation(F(rdoRuntime::RDOPMDWatchState)::create(Converter::s_converter()->runtime(), src_text(), trace, pLogic->getCalc()));
 }
 
 // ----------------------------------------------------------------------------
@@ -114,16 +114,16 @@ RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace,
 RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDPokaz(src_info)
 {
-	LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(res_type_src_info.src_text());
+	LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(res_type_src_info.src_text());
 	if (!pResType)
 	{
-		RDOParser::s_parser()->error().error(res_type_src_info, rdo::format(_T("Тип ресурса '%s' не найден"), res_type_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_type_src_info, rdo::format(_T("Тип ресурса '%s' не найден"), res_type_src_info.src_text().c_str()));
 	}
 	if (!pResType->isTemporary())
 	{
-		RDOParser::s_parser()->error().push_only(res_type_src_info, _T("Показатель собирает информацию по временным ресурсам (temporary)"));
-		RDOParser::s_parser()->error().push_only(pResType->src_info(), _T("См. тип ресурса"));
-		RDOParser::s_parser()->error().push_done();
+		Converter::s_converter()->error().push_only(res_type_src_info, _T("Показатель собирает информацию по временным ресурсам (temporary)"));
+		Converter::s_converter()->error().push_only(pResType->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_done();
 	}
 }
 
@@ -135,7 +135,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace,
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(pGroupLogic);
-	endOfCreation(F(rdoRuntime::RDOPMDWatchQuant)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
+	endOfCreation(F(rdoRuntime::RDOPMDWatchQuant)::create(Converter::s_converter()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
 void RDOPMDWatchQuant::setLogic(REF(LPRDOFUNLogic) pLogic)
@@ -143,7 +143,7 @@ void RDOPMDWatchQuant::setLogic(REF(LPRDOFUNLogic) pLogic)
 	LPIPokazWatchQuant pQuant = m_pPokaz;
 	ASSERT(pQuant);
 	pQuant->setLogicCalc(pLogic->getCalc());
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
+	Converter::s_converter()->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchQuant::setLogicNoCheck()
@@ -151,7 +151,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 	LPIPokazWatchQuant pQuant = m_pPokaz;
 	ASSERT(pQuant);
 	pQuant->setLogicCalc(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1));
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
+	Converter::s_converter()->getFUNGroupStack().pop_back();
 }
 
 // ----------------------------------------------------------------------------
@@ -162,7 +162,7 @@ RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace,
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(pGroupLogic);
-	endOfCreation(F(rdoRuntime::RDOPMDWatchValue)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
+	endOfCreation(F(rdoRuntime::RDOPMDWatchValue)::create(Converter::s_converter()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
 void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm)
@@ -171,7 +171,7 @@ void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) p
 	ASSERT(pWatch);
 	pWatch->setLogicCalc (pLogic->getCalc()    );
 	pWatch->setArithmCalc(pArithm->createCalc());
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
+	Converter::s_converter()->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
@@ -180,7 +180,7 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 	ASSERT(pWatch);
 	pWatch->setLogicCalc (rdo::Factory<rdoRuntime::RDOCalcConst>::create(1));
 	pWatch->setArithmCalc(pArithm->createCalc());
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
+	Converter::s_converter()->getFUNGroupStack().pop_back();
 }
 
 // ----------------------------------------------------------------------------
@@ -189,7 +189,7 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 RDOPMDGetValue::RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info, LPRDOFUNArithm pArithm)
 	: RDOPMDPokaz(src_info)
 {
-	endOfCreation(F(rdoRuntime::RDOPMDGetValue)::create(RDOParser::s_parser()->runtime(), src_text(), pArithm->createCalc()));
+	endOfCreation(F(rdoRuntime::RDOPMDGetValue)::create(Converter::s_converter()->runtime(), src_text(), pArithm->createCalc()));
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

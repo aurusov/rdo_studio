@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_H_
-#define _RDOPARSER_H_
+#ifndef _RDOCONVERTER_H_
+#define _RDOCONVERTER_H_
 
 // ====================================================================== INCLUDES
 #include <algorithm>
@@ -47,7 +47,7 @@ class RDOTypeParam;
 class RDORTPFuzzyParam;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParser
+// ---------- Converter
 // ----------------------------------------------------------------------------
 #define DEFINE_OBJECT_CONTAINER_MINIMUM(TYPE, NAME) \
 public: \
@@ -70,7 +70,7 @@ DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
 DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
-class RDOParser
+class Converter
 {
 public:
 DEFINE_OBJECT_CONTAINER(PATPattern     );
@@ -92,8 +92,8 @@ DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
 DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 public:
-	RDOParser();
-	virtual ~RDOParser();
+	Converter();
+	virtual ~Converter();
 
 	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
 
@@ -142,7 +142,7 @@ public:
 
 	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
 	{
-	friend class RDOParser;
+	friend class Converter;
 	public:
 		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
 
@@ -192,7 +192,7 @@ public:
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
-	static PTR(RDOParser)               s_parser      ();
+	static PTR(Converter)               s_converter      ();
 
 protected:
 	LPRDOParserItem m_parser_item;
@@ -253,7 +253,7 @@ private:
 	typedef std::vector<Changes> ChangesList;
 	ChangesList m_changes;
 
-	typedef std::list<PTR(RDOParser)> ParserList;
+	typedef std::list<PTR(Converter)> ParserList;
 	static ParserList s_parserStack;
 };
 
@@ -261,11 +261,11 @@ private:
 // ---------- RDOParserTemplate
 // ----------------------------------------------------------------------------
 template <class Container>
-class RDOParserTemplate: public RDOParser
+class RDOParserTemplate: public Converter
 {
 public:
 	RDOParserTemplate()
-		: RDOParser()
+		: Converter()
 	{}
 
 private:
@@ -299,4 +299,4 @@ typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPARSER_H_
+#endif //! _RDOCONVERTER_H_

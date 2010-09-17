@@ -509,7 +509,7 @@ private:
 OBJECT(RDOFUNFunction) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOFUNFunction)
-friend class RDOParser;
+friend class Converter;
 public:
 	typedef std::vector<LPRDOFUNFunctionParam> ParamList;
 

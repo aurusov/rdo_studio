@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_ERROR_H_
-#define _RDOPARSER_ERROR_H_
+#ifndef _RDOCONVERTER_ERROR_H_
+#define _RDOCONVERTER_ERROR_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -85,4 +85,4 @@ public:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPARSER_ERROR_H_
+#endif //! _RDOCONVERTER_ERROR_H_

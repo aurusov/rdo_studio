@@ -215,8 +215,8 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 // ===============================================================================
 
-#define PARSER  LEXER->parser()
-#define RUNTIME PARSER->runtime()
+#define CONVERTER LEXER->converter()
+#define RUNTIME   CONVERTER->runtime()
 
 #define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
 #define RDOVALUE(A)   (*P_RDOVALUE(A))
@@ -245,13 +245,13 @@ pat_header
 	{
 		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), false);
 		ASSERT(pEvent);
-		PARSER->insertEvent(pEvent);
+		CONVERTER->insertEvent(pEvent);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
 	{
 		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), true);
 		ASSERT(pEvent);
-		PARSER->insertEvent(pEvent);
+		CONVERTER->insertEvent(pEvent);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule            pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard        pat_trace {}

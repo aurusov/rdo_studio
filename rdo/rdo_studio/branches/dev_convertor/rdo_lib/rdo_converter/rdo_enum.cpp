@@ -24,13 +24,13 @@ OPEN_RDO_CONVERTER_NAMESPACE
 RDOEnumType::RDOEnumType()
 	: RDOType(&rdoRuntime::g_unknow)
 {
-	m_type = new rdoRuntime::RDOEnumType(RDOParser::s_parser()->runtime());
+	m_type = new rdoRuntime::RDOEnumType(Converter::s_converter()->runtime());
 }
 
 RDOEnumType::RDOEnumType(CREF(rdoRuntime::RDOEnumType) enumType)
 	: RDOType(&rdoRuntime::g_unknow)
 {
-	m_type = new rdoRuntime::RDOEnumType(RDOParser::s_parser()->runtime());
+	m_type = new rdoRuntime::RDOEnumType(Converter::s_converter()->runtime());
 	STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType::Enums, enumType, it)
 	{
 		__enum()->add(*it);

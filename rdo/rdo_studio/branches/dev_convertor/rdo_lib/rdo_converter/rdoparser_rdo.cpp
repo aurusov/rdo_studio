@@ -46,7 +46,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(RDOParser) pParser)
+void RDOParserRDOItem::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);
 
@@ -66,7 +66,7 @@ void RDOParserRDOItem::parse(PTR(RDOParser) pParser)
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(RDOParser) pParser, REF(std::istream) in_stream)
+void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) in_stream)
 {
 	ASSERT(pParser);
 
@@ -80,7 +80,7 @@ void RDOParserRDOItem::parse(PTR(RDOParser) pParser, REF(std::istream) in_stream
 		m_parser_fun(m_pLexer);
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(RDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
+PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(Converter) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
 {
 	ASSERT(pParser);
 	return new RDOLexer(pParser, in_stream, out_stream);
@@ -110,7 +110,7 @@ RDOParserRSS::RDOParserRSS(StreamFrom from)
 	: RDOParserRDOItem(rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
 {}
 
-void RDOParserRSS::parse(PTR(RDOParser) pParser)
+void RDOParserRSS::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);
@@ -121,16 +121,16 @@ void RDOParserRSS::parse(PTR(RDOParser) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSSPost
 // ----------------------------------------------------------------------------
-void RDOParserRSSPost::parse(PTR(RDOParser) pParser)
+void RDOParserRSSPost::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);
 
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(RDOParser::RTPResTypeList, pParser->getRTPResType(), rtp_it)
+	STL_FOR_ALL_CONST(Converter::RTPResTypeList, pParser->getRTPResType(), rtp_it)
 	{
 #endif
-		STL_FOR_ALL_CONST(RDOParser::RSSResourceList, pParser->getRSSResources(), rss_it)
+		STL_FOR_ALL_CONST(Converter::RSSResourceList, pParser->getRSSResources(), rss_it)
 		{
 #ifdef RDOSIM_COMPATIBLE
 			if ((*rss_it)->getType() == *rtp_it)
@@ -150,12 +150,12 @@ void RDOParserRSSPost::parse(PTR(RDOParser) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserEVNPost
 // ----------------------------------------------------------------------------
-void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
+void RDOParserEVNPost::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);
 
 	//! Позднее связывание для планирования событий
-	STL_FOR_ALL_CONST(RDOParser::EventList, pParser->getEvents(), eventIt)
+	STL_FOR_ALL_CONST(Converter::EventList, pParser->getEvents(), eventIt)
 	{
 		LPRDOEvent pEvent = *eventIt;
 
@@ -205,7 +205,7 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
+void RDOParserSTDFUN::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);
 

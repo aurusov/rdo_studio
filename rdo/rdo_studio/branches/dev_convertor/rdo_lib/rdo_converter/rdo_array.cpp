@@ -24,7 +24,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 RDOArrayType::RDOArrayType()
 	: RDOType(&rdoRuntime::g_unknow)
 {
-	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime());
+	m_type = new rdoRuntime::RDOArrayType(Converter::s_converter()->runtime());
 }
 
 RDOArrayType::~RDOArrayType()

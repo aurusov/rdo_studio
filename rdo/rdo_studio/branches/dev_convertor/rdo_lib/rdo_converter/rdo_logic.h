@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_LOGIC_H_
-#define _RDOPARSER_LOGIC_H_
+#ifndef _RDOCONVERTER_LOGIC_H_
+#define _RDOCONVERTER_LOGIC_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -70,4 +70,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPARSER_LOGIC_H_
+#endif //! _RDOCONVERTER_LOGIC_H_

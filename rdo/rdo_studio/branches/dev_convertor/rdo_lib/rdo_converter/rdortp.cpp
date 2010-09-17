@@ -33,7 +33,7 @@ void rtperror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+RDORTPResType::RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
@@ -48,7 +48,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
 	if (findRTPParam(param->name()))
 	{
-		RDOParser::s_parser()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
+		Converter::s_converter()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
 	}
 	m_params.push_back(param);
 }
@@ -83,7 +83,7 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
 // ----------------------------------------------------------------------------
-RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(RDOParser) pParser):
+RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 	RDOParserObject(pParser)
 {
 /*	for (ruint i = 0; i < m_points.size(); i++)
@@ -101,7 +101,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(RDOParser) pParser):
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyTerm - нечеткий термин
 // ----------------------------------------------------------------------------
-RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
 	RDOParserObject(pParser)
 {
 

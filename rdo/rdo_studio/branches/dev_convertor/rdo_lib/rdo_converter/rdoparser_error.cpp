@@ -134,7 +134,7 @@ rbool Error::blocked() const
 
 REF(Error) g_error()
 {
-	return RDOParser::s_parser()->error();
+	return Converter::s_converter()->error();
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

@@ -26,7 +26,7 @@ ContextGlobal::ContextGlobal()
 ContextGlobal::~ContextGlobal()
 {}
 
-LPContext ContextGlobal::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
+LPContext ContextGlobal::parser(PTR(Converter) pParser, CREF(RDOValue) value)
 {
 	ASSERT(value.typeID() == rdoRuntime::RDOType::t_identificator);
 
@@ -42,14 +42,14 @@ LPContext ContextGlobal::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
 	//else if ( value->getIdentificator() == "Terminate_counter" || value->getIdentificator() == "terminate_counter" )
 	//{
 	//	m_value = rdo::Factory<RDOType__int>::create().cast<RDOType>();
-	//	m_calc = new rdoRuntime::RDOCalcGetTermNow( parser()->runtime() );
+	//	m_calc = new rdoRuntime::RDOCalcGetTermNow( converter()->runtime() );
 	//	m_calc->setSrcInfo( src_info() );
 	//	return;
 	//}
 	//else if ( value->getIdentificator() == "Seconds" || value->getIdentificator() == "seconds" )
 	//{
 	//	m_value = rdo::Factory<RDOType__real>::create().cast<RDOType>();
-	//	m_calc = new rdoRuntime::RDOCalcGetSeconds( parser()->runtime() );
+	//	m_calc = new rdoRuntime::RDOCalcGetSeconds( converter()->runtime() );
 	//	m_calc->setSrcInfo( src_info() );
 	//	return;
 	//}

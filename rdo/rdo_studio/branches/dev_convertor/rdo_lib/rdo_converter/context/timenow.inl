@@ -13,7 +13,7 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-LPContext ContextTimeNow::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
+LPContext ContextTimeNow::parser(PTR(Converter) pParser, CREF(RDOValue) value)
 {
 	NEVER_REACH_HERE;
 	return LPContext();

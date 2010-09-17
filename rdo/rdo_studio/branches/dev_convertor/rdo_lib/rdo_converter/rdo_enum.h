@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_ENUM_H_
-#define _RDOPARSER_ENUM_H_
+#ifndef _RDOCONVERTER_ENUM_H_
+#define _RDOCONVERTER_ENUM_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -57,4 +57,4 @@ DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPARSER_ENUM_H_
+#endif //! _RDOCONVERTER_ENUM_H_

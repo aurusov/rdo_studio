@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_BASE_H_
-#define _RDOPARSER_BASE_H_
+#ifndef _RDOCONVERTER_BASE_H_
+#define _RDOCONVERTER_BASE_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -29,7 +29,7 @@ typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(vo
 // ----------------------------------------------------------------------------
 // ---------- RDOParserItem
 // ----------------------------------------------------------------------------
-class RDOParser;
+class Converter;
 
 OBJECT(RDOParserItem)
 {
@@ -47,8 +47,8 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void  parse(PTR(RDOParser) pParser) = 0;
-	virtual void  parse(PTR(RDOParser) pParser, REF(std::istream) in_stream)
+	virtual void  parse(PTR(Converter) pParser) = 0;
+	virtual void  parse(PTR(Converter) pParser, REF(std::istream) in_stream)
 	{};
 
 	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
@@ -135,4 +135,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPARSER_BASE_H_
+#endif //! _RDOCONVERTER_BASE_H_

@@ -97,11 +97,11 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_en
 
 void RDOParserSrcInfo::init()
 {
-	setSrcFileType(RDOParser::getFileToParse());
+	setSrcFileType(Converter::getFileToParse());
 	rdoRuntime::RDOSrcInfo::Position pos;
-	pos.m_first_pos  = RDOParser::lexer_loc_pos();
+	pos.m_first_pos  = Converter::lexer_loc_pos();
 	pos.m_last_pos   = pos.m_first_pos;
-	pos.m_first_line = RDOParser::lexer_loc_line();
+	pos.m_first_line = Converter::lexer_loc_line();
 	pos.m_last_line  = pos.m_first_line;
 	RDOSrcInfo::setSrcPos(pos);
 }
