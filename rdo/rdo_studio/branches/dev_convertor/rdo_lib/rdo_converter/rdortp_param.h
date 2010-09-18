@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDORTP_PARAM_H_
-#define _RDORTP_PARAM_H_
+#ifndef _CONVERTOR_RDORTP_PARAM_H_
+#define _CONVERTOR_RDORTP_PARAM_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -50,4 +50,4 @@ DECLARE_POINTER(RDORTPParam);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDORTP_PARAM_H_
+#endif //! _CONVERTOR_RDORTP_PARAM_H_

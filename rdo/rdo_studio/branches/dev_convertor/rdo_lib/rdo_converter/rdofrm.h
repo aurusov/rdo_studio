@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOFRM_H_
-#define _RDOFRM_H_
+#ifndef _CONVERTOR_RDOFRM_H_
+#define _CONVERTOR_RDOFRM_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -41,4 +41,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOFRM_H_
+#endif //! _CONVERTOR_RDOFRM_H_

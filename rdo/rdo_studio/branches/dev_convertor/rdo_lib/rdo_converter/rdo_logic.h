@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_LOGIC_H_
-#define _RDOCONVERTER_LOGIC_H_
+#ifndef _CONVERTOR_RDOCONVERTER_LOGIC_H_
+#define _CONVERTOR_RDOCONVERTER_LOGIC_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -70,4 +70,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_LOGIC_H_
+#endif //! _CONVERTOR_RDOCONVERTER_LOGIC_H_

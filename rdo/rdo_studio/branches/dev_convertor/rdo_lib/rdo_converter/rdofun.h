@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOFUN_H_
-#define _RDOFUN_H_
+#ifndef _CONVERTOR_RDOFUN_H_
+#define _CONVERTOR_RDOFUN_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -619,4 +619,4 @@ DECLARE_POINTER(RDOFUNSelect);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOFUN_H_
+#endif //! _CONVERTOR_RDOFUN_H_

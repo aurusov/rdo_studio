@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDO_TYPE_RANGE_H_
-#define _RDO_TYPE_RANGE_H_
+#ifndef _CONVERTOR_RDO_TYPE_RANGE_H_
+#define _CONVERTOR_RDO_TYPE_RANGE_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -71,4 +71,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/rdo_type_range.inl"
 
-#endif //! _RDO_TYPE_RANGE_H_
+#endif //! _CONVERTOR_RDO_TYPE_RANGE_H_

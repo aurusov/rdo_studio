@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_TYPE_H_
-#define _RDOCONVERTER_TYPE_H_
+#ifndef _CONVERTOR_RDOCONVERTER_TYPE_H_
+#define _CONVERTOR_RDOCONVERTER_TYPE_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -116,4 +116,4 @@ DEFINE_ATOM_TYPE_PARSER(string       );
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_TYPE_H_
+#endif //! _CONVERTOR_RDOCONVERTER_TYPE_H_

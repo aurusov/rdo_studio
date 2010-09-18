@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_CONTEXT_TIMENOW_H_
-#define _RDOCONVERTER_CONTEXT_TIMENOW_H_
+#ifndef _CONVERTOR_RDOCONVERTER_CONTEXT_TIMENOW_H_
+#define _CONVERTOR_RDOCONVERTER_CONTEXT_TIMENOW_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -22,11 +22,11 @@ CLASS(ContextTimeNow): IMPLEMENTATION_OF(Context)
 DECLARE_FACTORY(ContextTimeNow);
 private:
 	rdoRuntime::LPRDOCalc m_pCalc;
-	DECLARE_IContext;
+	DECLARE_IConvertorContext;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/context/timenow.inl"
 
-#endif //! _RDOCONVERTER_CONTEXT_TIMENOW_H_
+#endif //! _CONVERTOR_RDOCONVERTER_CONTEXT_TIMENOW_H_

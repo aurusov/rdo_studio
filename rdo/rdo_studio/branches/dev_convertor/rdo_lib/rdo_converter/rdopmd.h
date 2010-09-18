@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPMD_PMD_H_
-#define _RDOPMD_PMD_H_
+#ifndef _CONVERTOR_RDOPMD_PMD_H_
+#define _CONVERTOR_RDOPMD_PMD_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -113,4 +113,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOPMD_PMD_H_
+#endif //! _CONVERTOR_RDOPMD_PMD_H_

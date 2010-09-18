@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDORTP_H_
-#define _RDORTP_H_
+#ifndef _CONVERTOR_RDORTP_H_
+#define _CONVERTOR_RDORTP_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -189,4 +189,4 @@ DECLARE_POINTER(RDORTPResType);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDORTP_H_
+#endif //! _CONVERTOR_RDORTP_H_

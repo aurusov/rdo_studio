@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_TYPE_PARAM_H_
-#define _RDOCONVERTER_TYPE_PARAM_H_
+#ifndef _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_
+#define _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -47,4 +47,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_TYPE_PARAM_H_
+#endif //! _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_

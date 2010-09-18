@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_CONTEXT_GLOBAL_H_
-#define _RDOCONVERTER_CONTEXT_GLOBAL_H_
+#ifndef _CONVERTOR_RDOCONVERTER_CONTEXT_GLOBAL_H_
+#define _CONVERTOR_RDOCONVERTER_CONTEXT_GLOBAL_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -29,11 +29,11 @@ private:
 
 	LPContext m_timeNow;
 
-	DECLARE_IContext;
+	DECLARE_IConvertorContext;
 };
 
 DECLARE_POINTER(ContextGlobal);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_CONTEXT_GLOBAL_H_
+#endif //! _CONVERTOR_RDOCONVERTER_CONTEXT_GLOBAL_H_

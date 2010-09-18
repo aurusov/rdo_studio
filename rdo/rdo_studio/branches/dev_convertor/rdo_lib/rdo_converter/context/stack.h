@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_CONTEXT_STACK_H_
-#define _RDOCONVERTER_CONTEXT_STACK_H_
+#ifndef _CONVERTOR_RDOCONVERTER_CONTEXT_STACK_H_
+#define _CONVERTOR_RDOCONVERTER_CONTEXT_STACK_H_
 
 // ====================================================================== INCLUDES
 #include <list>
@@ -41,4 +41,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_CONTEXT_STACK_H_
+#endif //! _CONVERTOR_RDOCONVERTER_CONTEXT_STACK_H_

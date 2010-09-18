@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_CONTEXT_H_
-#define _RDOCONVERTER_CONTEXT_H_
+#ifndef _CONVERTOR_RDOCONVERTER_CONTEXT_H_
+#define _CONVERTOR_RDOCONVERTER_CONTEXT_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -34,7 +34,7 @@ S_INTERFACE(IContext)
 	virtual rdoRuntime::LPRDOCalc getCalc()                                             = 0;
 };
 
-#define DECLARE_IContext                                                         \
+#define DECLARE_IConvertorContext                                                \
 	LPContext             parser (PTR(Converter) pParser, CREF(RDOValue) value); \
 	rdoRuntime::LPRDOCalc getCalc();
 
@@ -49,4 +49,4 @@ public:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_CONTEXT_H_
+#endif //! _CONVERTOR_RDOCONVERTER_CONTEXT_H_

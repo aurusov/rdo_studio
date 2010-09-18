@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOBISON_H_
-#define _RDOBISON_H_
+#ifndef _CONVERTOR_RDOBISON_H_
+#define _CONVERTOR_RDOBISON_H_
 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
@@ -38,4 +38,4 @@ struct yyltype
 	Current.m_last_pos  = Rhs[N].m_last_pos;
 #endif //! YYLLOC_DEFAULT
 
-#endif //! _RDOBISON_H_
+#endif //! _CONVERTOR_RDOBISON_H_

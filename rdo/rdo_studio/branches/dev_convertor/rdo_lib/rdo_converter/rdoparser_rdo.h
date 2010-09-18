@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_RDO_H_
-#define _RDOCONVERTER_RDO_H_
+#ifndef _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_
+#define _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_
 
 // ====================================================================== INCLUDES
 #include <iostream>
@@ -98,4 +98,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_RDO_H_
+#endif //! _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_

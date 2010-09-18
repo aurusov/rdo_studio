@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDORSS_RSS_H_
-#define _RDORSS_RSS_H_
+#ifndef _CONVERTOR_RDORSS_RSS_H_
+#define _CONVERTOR_RDORSS_RSS_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -95,4 +95,4 @@ DECLARE_POINTER(RDOPROCResource);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDORSS_RSS_H_
+#endif //! _CONVERTOR_RDORSS_RSS_H_

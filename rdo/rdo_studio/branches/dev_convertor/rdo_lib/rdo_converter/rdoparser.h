@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef _RDOCONVERTER_H_
-#define _RDOCONVERTER_H_
+#ifndef _CONVERTOR_RDOCONVERTER_H_
+#define _CONVERTOR_RDOCONVERTER_H_
 
 // ====================================================================== INCLUDES
 #include <algorithm>
@@ -34,6 +34,7 @@
 #include "rdo_lib/rdo_converter/rdofrm.h"
 #include "rdo_lib/rdo_converter/rdosmr.h"
 #include "rdo_lib/rdo_converter/context/stack.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -49,27 +50,6 @@ class RDORTPFuzzyParam;
 // ----------------------------------------------------------------------------
 // ---------- Converter
 // ----------------------------------------------------------------------------
-#define DEFINE_OBJECT_CONTAINER_MINIMUM(TYPE, NAME) \
-public: \
-	typedef std::vector<TYPE> NAME##List; \
-	void                insert##NAME (TYPE value); \
-	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : NULL; } \
-	CREF(NAME##List)    get##NAME##s () const { return m_all##NAME; } \
-private: \
-	NAME##List m_all##NAME;
-
-#define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
-public: \
-	const TYPE find##NAME  (CREF(tstring) name) const; \
-	rbool      remove##NAME(const TYPE item);
-
-#define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
-DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
-
-#define DEFINE_OBJECT_CONTAINER(NAME) \
-DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
-DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
-
 class Converter
 {
 public:
@@ -299,4 +279,4 @@ typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _RDOCONVERTER_H_
+#endif //! _CONVERTOR_RDOCONVERTER_H_
