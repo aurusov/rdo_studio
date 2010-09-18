@@ -23,46 +23,49 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- RDOLogicActivity
 // ----------------------------------------------------------------------------
 template<class RTLogic, class Activity>
-class RDOLogicActivity: public RDOParserObject, public RDOParserSrcInfo
+class RDOLogicActivity: public RDOParserSrcInfo
 {
 public:
-	typedef std::vector<PTR(Activity)> ActivityList;
+	typedef  rdo::intrusive_ptr<Activity> LPActivity;
+	typedef  std::vector<LPActivity>      ActivityList;
 
-	RDOLogicActivity(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) src_info)
-		: RDOParserObject (parser  )
-		, RDOParserSrcInfo(src_info)
+	RDOLogicActivity(CREF(RDOParserSrcInfo) src_info)
+		: RDOParserSrcInfo(src_info)
+	{}
+	virtual ~RDOLogicActivity()
 	{}
 
 	CREF(tstring) name() const { return src_info().src_text(); }
 
-	PTR(Activity) addNewActivity(CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+	LPActivity addNewActivity(CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	{
-		PTR(Activity) activity = new Activity(this->m_rt_logic, this, activity_src_info, pattern_src_info);
-		m_activities.push_back(activity);
-		return activity;
+		LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
+		ASSERT(pAactivity);
+		m_activityList.push_back(pAactivity);
+		return pAactivity;
 	}
 
-	PTR(Activity) getLastActivity() const
+	LPActivity getLastActivity() const
 	{
-		return !m_activities.empty() ? m_activities.back() : NULL;
+		return !m_activityList.empty() ? m_activityList.back() : NULL;
 	}
-	CREF(ActivityList) getActivities() const { return m_activities; }
+	CREF(ActivityList) getActivities() const { return m_activityList; }
 
-	rbool setPrior(PTR(RDOFUNArithm) prior)
+	rbool setPrior(REF(LPRDOFUNArithm) pPrior)
 	{
-		LPIPriority priority = m_rt_logic;
-		if (priority)
+		LPIPriority pPriority = m_pRuntimeLogic;
+		if (pPriority)
 		{
-			return priority->setPrior(prior->createCalc());
+			return pPriority->setPrior(pPrior->createCalc());
 		}
 		return false;
 	}
 
 protected:
-	LPILogic     m_rt_logic;
+	LPILogic     m_pRuntimeLogic;
 
 private:
-	ActivityList m_activities;
+	ActivityList m_activityList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -19,72 +19,6 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDODeletable
-// ----------------------------------------------------------------------------
-RDODeletable::RDODeletable(PTR(RDOParser) parser)
-	: m_parser(parser)
-{
-	if (m_parser)
-	{
-		m_parser->insertDeletables(this);
-		m_parser->runtime()->memory_insert(m_object_size);
-	}
-}
-
-RDODeletable::~RDODeletable()
-{
-	noAutoDelete();
-}
-
-void RDODeletable::noAutoDelete()
-{
-	if (m_parser)
-	{
-		m_parser->removeDeletables(this);
-	}
-}
-
-//#ifndef _DEBUG
-//PTR(void) RDODeletable::operator new(size_t sz)
-//{
-//	PTR(RDODeletable) obj = static_cast<PTR(RDODeletable)>(::operator new(sz));
-//	obj->m_object_size = sz;
-//	return obj;
-//}
-//
-//void RDODeletable::operator delete(PTR(void) v)
-//{
-//	if (static_cast<PTR(RDODeletable)>(v)->m_parser)
-//	{
-//		static_cast<PTR(RDODeletable)>(v)->m_parser->runtime()->memory_remove(static_cast<PTR(RDODeletable)>(v)->m_object_size);
-//	}
-//	::operator delete(v);
-//}
-//#endif
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserObject
-// ----------------------------------------------------------------------------
-RDOParserObject::RDOParserObject(PTR(RDOParser) parser)
-	: RDODeletable(parser)
-	, m_parent    (NULL  )
-{}
-
-RDOParserObject::RDOParserObject(CPTR(RDOParserObject) parent)
-	: RDODeletable(parent->m_parser)
-	, m_parent    (parent          )
-{}
-
-RDOParserObject::~RDOParserObject()
-{}
-
-void RDOParserObject::reparent(CPTR(RDOParserObject) parent)
-{
-	m_parent = parent;
-	m_parser = parent->m_parser;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOParserSrcInfo
 // ----------------------------------------------------------------------------
 RDOParserSrcInfo::RDOParserSrcInfo()
@@ -139,15 +73,15 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_en
 	}
 	else
 	{
-		if (pos_begin.first_line == pos_end.last_line)
+		if (pos_begin.m_first_line == pos_end.m_last_line)
 		{
 			setSrcPos(pos_begin, pos_end);
 		}
 		else
 		{
 			YYLTYPE pos(pos_begin);
-			pos.first_line   = pos.last_line;
-			pos.first_column = pos.last_column;
+			pos.m_first_line = pos.m_last_line;
+			pos.m_first_pos  = pos.m_last_pos;
 			setSrcPos(pos);
 		}
 	}

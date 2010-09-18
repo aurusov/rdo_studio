@@ -146,6 +146,8 @@
 %token RDO_IncrEqual					383
 %token RDO_DecrEqual					384
 %token RDO_Stopping						385
+%token RDO_Start						386
+%token RDO_Stop							387
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -217,12 +219,7 @@
 #define RUNTIME PARSER->runtime()
 
 #define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define P_ARITHM(A)   reinterpret_cast<PTR(RDOFUNArithm)>(A)
-#define P_LOGIC(A)    reinterpret_cast<PTR(RDOFUNLogic)>(A)
-
 #define RDOVALUE(A)   (*P_RDOVALUE(A))
-#define ARITHM(A)     (*P_ARITHM(A))
-#define LOGIC(A)      (*P_LOGIC(A))
 
 OPEN_RDO_PARSER_NAMESPACE
 %}
@@ -245,9 +242,14 @@ pat_main
 pat_header
 	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation       pat_trace {}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace {}
+	{
+		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), false);
+		ASSERT(pEvent);
+		PARSER->insertEvent(pEvent);
+	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
 	{
-		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator());
+		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), true);
 		ASSERT(pEvent);
 		PARSER->insertEvent(pEvent);
 	}

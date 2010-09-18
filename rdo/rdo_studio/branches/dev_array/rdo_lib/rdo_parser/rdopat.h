@@ -12,7 +12,6 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp_param.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
@@ -32,21 +31,54 @@ int  patparse(PTR(void) lexer);
 int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void paterror(PTR(char) mes);
 
-int  pat_preparse_parse(PTR(void) lexer);
-int  pat_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void pat_preparse_error(PTR(char) mes);
+int  evnparse(PTR(void) lexer);
+int  evnlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void evnerror(PTR(char) mes);
 
-class RDOPATChoiceFrom;
-class RDOPATChoiceOrder;
-class RDORelevantResource;
+int  evn_preparse_parse(PTR(void) lexer);
+int  evn_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void evn_preparse_error(PTR(char) mes);
+struct PosCorrection
+{
+	int line;
+	int column;
+	PosCorrection::PosCorrection(int pLine, int pColumn):
+		line(pLine),
+		column(pColumn)
+	{}
+};
+
+enum TypeCorrection {Semicolon = 0, LeftComment, RightComment, Equality};
+
+OBJECT(Correction)
+{
+public:
+	PosCorrection  pos;
+	TypeCorrection type;
+	Correction::Correction(int pLine, int pColumn, TypeCorrection pType):
+		pos(pLine, pColumn),
+		type(pType)
+	{}
+};
 
 // ----------------------------------------------------------------------------
 // ---------- ConvertCmdList
 // ----------------------------------------------------------------------------
 OBJECT(ConvertCmdList)
 {
-DECLARE_FACTORY(ConvertCmdList);
+DECLARE_FACTORY(ConvertCmdList)
 public:
+	typedef std::vector<LPCorrection> CorrectionList;
+
+	void insertCorrection(CREF(LPCorrection) pCorrection)
+	{
+		m_correctionList.push_back(pCorrection);
+	}
+	CREF(CorrectionList) corrections() const
+	{
+		return m_correctionList;
+	}
+
 	typedef std::vector<rdoRuntime::LPRDOCalc> CalcList;
 
 	void insertCommand(CREF(rdoRuntime::LPRDOCalc) pCalc)
@@ -59,14 +91,21 @@ public:
 	}
 
 private:
-	CalcList m_calcList;
+	CalcList       m_calcList;
+	CorrectionList m_correctionList;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPattern
 // ----------------------------------------------------------------------------
-class RDOPATPattern: public RDOParserObject, public RDOParserSrcInfo
+PREDECLARE_POINTER(RDOPATChoiceFrom);
+PREDECLARE_POINTER(RDOPATChoiceOrder);
+PREDECLARE_POINTER(RDORelevantResource);
+
+OBJECT(RDOPATPattern) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDOPATPattern)
+friend class RDOOPROperation;
 friend class RDODPTActivity;
 
 public:
@@ -80,7 +119,7 @@ public:
 	};
 	virtual PatType getType() const = 0;
 
-	typedef std::vector<PTR(RDORelevantResource)> RelResList;
+	typedef std::vector<LPRDORelevantResource> RelResList;
 
 	rbool                       isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
 	PTR(rdoRuntime::RDOPattern) getPatRuntime   () const { return m_pPatRuntime; }
@@ -91,27 +130,27 @@ public:
 	RelResList::const_iterator rel_res_begin () const { return m_relResList.begin(); }
 	RelResList::const_iterator rel_res_end   () const { return m_relResList.end();   }
 	int                        rel_res_count () const { return m_relResList.size();  }
-	virtual void               rel_res_insert(PTR(RDORelevantResource) pRelevantResource);
+	virtual void               rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource);
 
 	void beforeRelRensert(CREF(RDOParserSrcInfo) rel_info);
 	
-	PTR(RDORelevantResource) m_pCurrRelRes;
+	LPRDORelevantResource m_pCurrRelRes;
 
-	void                      add                    (PTR(RDOFUNFunctionParam) const _param);
-	CPTR(RDOFUNFunctionParam) findPATPatternParam    (CREF(tstring) paramName) const;
+	void                      add                    (CREF(LPRDOFUNFunctionParam) pParam);
+	LPRDOFUNFunctionParam     findPATPatternParam    (CREF(tstring) paramName) const;
 	int                       findPATPatternParamNum (CREF(tstring) paramName) const;
-	CPTR(RDORelevantResource) findRelevantResource   (CREF(tstring) resName  ) const;
+	LPRDORelevantResource     findRelevantResource   (CREF(tstring) resName  ) const;
 	int                       findRelevantResourceNum(CREF(tstring) resName  ) const;
 	virtual void              addRelRes              (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos) = 0;
 
 	CREF(tstring) name() const { return src_text(); }
 
 	void setCommonChoiceFirst  ();
-	void setCommonChoiceWithMin(PTR(RDOFUNArithm) arithm);
-	void setCommonChoiceWithMax(PTR(RDOFUNArithm) arithm);
-	void setTime               (PTR(RDOFUNArithm) arithm);
+	void setCommonChoiceWithMin(CREF(LPRDOFUNArithm) arithm);
+	void setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm);
+	void setTime               ( REF(LPRDOFUNArithm) arithm);
 	void addRelResBody         (CREF(RDOParserSrcInfo) body_name);
-	virtual void addRelResUsage(PTR(RDOPATChoiceFrom) choice_from, PTR(RDOPATChoiceOrder) choice_order);
+	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
 	void addRelResConvert      (rbool trace, CREF(LPConvertCmdList) commands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdoRuntime::RDOResource::ConvertStatus status);
 	void end                   ();
 
@@ -120,7 +159,7 @@ public:
 	tstring      getPatternId           () const;
 
 protected:
-	RDOPATPattern(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info);
+	RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info);
 	virtual ~RDOPATPattern()
 	{}
 
@@ -133,16 +172,16 @@ protected:
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status) = 0;
 
 private:
-	typedef std::vector<PTR(RDOFUNFunctionParam)> ParamList;
+	typedef std::vector<LPRDOFUNFunctionParam> ParamList;
 
-	ParamList         m_paramList;
-	RelResList        m_relResList;
+	ParamList      m_paramList;
+	RelResList     m_relResList;
 
-	rbool             m_useCommonChoice;
-	rbool             m_useCommonWithMax;
-	PTR(RDOFUNArithm) m_pCommonChoice;
+	rbool          m_useCommonChoice;
+	rbool          m_useCommonWithMax;
+	LPRDOFUNArithm m_pCommonChoice;
 
-	ruint             m_currentRelResIndex;
+	ruint          m_currentRelResIndex;
 
 	tstring typeToString(PatType type)
 	{
@@ -165,11 +204,10 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPatternIrregEvent: public RDOPATPattern
 {
+DECLARE_FACTORY(RDOPatternIrregEvent)
 public:
-	RDOPatternIrregEvent(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info, rbool trace);
-
 	virtual void addRelRes     (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
-	virtual void addRelResUsage(PTR(RDOPATChoiceFrom) choice_from, PTR(RDOPATChoiceOrder) choice_order);
+	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
 
 	virtual char getModelStructureLetter() const
 	{
@@ -183,6 +221,9 @@ public:
 protected:
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+
+private:
+	RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
 };
 
 // ----------------------------------------------------------------------------
@@ -190,11 +231,10 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPatternEvent: public RDOPATPattern
 {
+DECLARE_FACTORY(RDOPatternEvent)
 public:
-	RDOPatternEvent(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info, rbool trace);
-
 	virtual void addRelRes     (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
-	virtual void addRelResUsage(PTR(RDOPATChoiceFrom) choice_from, PTR(RDOPATChoiceOrder) choice_order);
+	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
 
 	virtual char getModelStructureLetter() const
 	{
@@ -208,6 +248,9 @@ public:
 protected:
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+
+private:
+	RDOPatternEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
 };
 
 // ----------------------------------------------------------------------------
@@ -215,9 +258,8 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPatternRule: public RDOPATPattern
 {
+DECLARE_FACTORY(RDOPatternRule)
 public:
-	RDOPatternRule(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info, rbool trace);
-
 	virtual void addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
 
 	virtual char getModelStructureLetter() const
@@ -232,6 +274,9 @@ public:
 protected:
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
+
+private:
+	RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
 };
 
 // ----------------------------------------------------------------------------
@@ -239,9 +284,8 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPatternOperation: public RDOPATPattern
 {
+DECLARE_FACTORY(RDOPatternOperation)
 public:
-	RDOPatternOperation(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info, rbool trace);
-
 	virtual void addRelRes               (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
 	        void addRelRes               (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, rdoRuntime::RDOResource::ConvertStatus end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos);
 	        void addRelResConvertBeginEnd(rbool trace_begin, CREF(LPConvertCmdList) cmd_begin, rbool trace_end, CREF(LPConvertCmdList) cmd_end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos);
@@ -257,15 +301,17 @@ public:
 
 protected:
 	//! Конструктор вызывается из RDOPatternKeyboard
-	RDOPatternOperation(PTR(RDOParser) pParser, rbool trace, CREF(RDOParserSrcInfo) name_src_info);
+	RDOPatternOperation(rbool trace, CREF(RDOParserSrcInfo) name_src_info);
 
-	virtual void rel_res_insert (PTR(RDORelevantResource)    pRelevantResource);
+	virtual void rel_res_insert (CREF(LPRDORelevantResource) pRelevantResource);
 	virtual void addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc            );
 
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status);
 
 private:
+	RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
+
 	enum ConvertorType
 	{
 		convert_unknow,
@@ -280,9 +326,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPatternKeyboard: public RDOPatternOperation
 {
+DECLARE_FACTORY(RDOPatternKeyboard)
 public:
-	RDOPatternKeyboard(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) name_src_info, rbool trace);
-
 	virtual char getModelStructureLetter() const
 	{
 		return _T('K');
@@ -291,19 +336,23 @@ public:
 	{
 		return PT_Keyboard;
 	}
+
+private:
+	RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDORelevantResource
 // ----------------------------------------------------------------------------
-class RDORelevantResource: public RDOParserObject, public RDOParserSrcInfo
+OBJECT(RDORelevantResource) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDORelevantResource)
 public:
-	int                    m_relResID;
-	rbool                  m_alreadyHaveConverter;
-	PTR(RDOPATChoiceFrom)  m_pChoiceFrom;
-	PTR(RDOPATChoiceOrder) m_pChoiceOrder;
-	RDOParserSrcInfo       m_bodySrcInfo;
+	int                  m_relResID;
+	rbool                m_alreadyHaveConverter;
+	LPRDOPATChoiceFrom   m_pChoiceFrom;
+	LPRDOPATChoiceOrder  m_pChoiceOrder;
+	RDOParserSrcInfo     m_bodySrcInfo;
 
 	const rdoRuntime::RDOResource::ConvertStatus m_statusBegin;
 	const rdoRuntime::RDOResource::ConvertStatus m_statusEnd;
@@ -322,18 +371,6 @@ public:
 		convertEnd
 	} m_currentState;
 	rbool isChoiceFromState() const { return m_currentState == choiceEmpty || m_currentState == choiceNoCheck || m_currentState == choiceFrom; }
-
-	RDORelevantResource(CPTR(RDOPATPattern) parent, CREF(RDOParserSrcInfo) src_info, const int relResID, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd)
-		: RDOParserObject       (parent    )
-		, RDOParserSrcInfo      (src_info  )
-		, m_relResID            (relResID   )
-		, m_statusBegin         (statusBegin)
-		, m_statusEnd           (statusEnd  )
-		, m_alreadyHaveConverter(false      )
-		, m_pChoiceFrom         (NULL       )
-		, m_pChoiceOrder        (NULL       )
-		, m_currentState        (stateNone  )
-	{}
 
 	        CREF(tstring)   name   () const  { return src_text(); };
 	virtual LPRDORTPResType getType() const = 0;
@@ -374,14 +411,29 @@ public:
 
 		List m_list;
 	};
+	CREF(ParamSetList) getParamSetList() const
+	{
+		return m_paramSetList;
+	}
 	REF(ParamSetList) getParamSetList()
 	{
 		return m_paramSetList;
 	}
 
 protected:
-	rdoRuntime::LPRDOCalc                   getChoiceCalc() const;
-	rdoRuntime::LPRDOCalc                   getSelectCalc() const;
+	RDORelevantResource(CREF(RDOParserSrcInfo) src_info, const int relResID, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd)
+		: RDOParserSrcInfo      (src_info  )
+		, m_relResID            (relResID   )
+		, m_statusBegin         (statusBegin)
+		, m_statusEnd           (statusEnd  )
+		, m_alreadyHaveConverter(false      )
+		, m_pChoiceFrom         (NULL       )
+		, m_pChoiceOrder        (NULL       )
+		, m_currentState        (stateNone  )
+	{}
+
+	rdoRuntime::LPRDOCalc                   getChoiceCalc();
+	rdoRuntime::LPRDOCalc                   getSelectCalc();
 	rdoRuntime::RDOSelectResourceCalc::Type getSelectType() const;
 
 private:
@@ -391,8 +443,9 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOPATChoiceFrom
 // ----------------------------------------------------------------------------
-class RDOPATChoiceFrom: public RDOParserObject, public RDOParserSrcInfo
+OBJECT(RDOPATChoiceFrom) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDOPATChoiceFrom)
 public:
 	enum Type
 	{
@@ -401,32 +454,26 @@ public:
 		ch_from
 	} m_type;
 
-	PTR(RDOFUNLogic) m_pLogic;
+	LPRDOFUNLogic m_pLogic;
 
-	RDOPATChoiceFrom(CPTR(RDORelevantResource) pRelevantResource, CREF(RDOParserSrcInfo) src_info, Type type, PTR(RDOFUNLogic) pLogic = NULL)
-		: RDOParserObject (pRelevantResource)
-		, RDOParserSrcInfo(src_info         )
-		, m_type          (type             )
-		, m_pLogic        (pLogic           )
+private:
+	RDOPATChoiceFrom(CREF(RDOParserSrcInfo) src_info, Type type, CREF(LPRDOFUNLogic) pLogic = NULL)
+		: RDOParserSrcInfo(src_info)
+		, m_type          (type    )
+		, m_pLogic        (pLogic  )
 	{}
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATChoiceOrder
 // ----------------------------------------------------------------------------
-class RDOPATChoiceOrder: public RDOParserObject, public RDOParserSrcInfo
+OBJECT(RDOPATChoiceOrder) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDOPATChoiceOrder)
 public:
 	rdoRuntime::RDOSelectResourceCalc::Type m_type;
 
-	PTR(RDOFUNArithm) m_pArithm;
-
-	RDOPATChoiceOrder(CPTR(RDORelevantResource) pRelevantResource, CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDOSelectResourceCalc::Type type, PTR(RDOFUNArithm) pArithm = NULL)
-		: RDOParserObject (pRelevantResource)
-		, RDOParserSrcInfo(src_info         )
-		, m_type          (type             )
-		, m_pArithm       (pArithm          )
-	{}
+	LPRDOFUNArithm m_pArithm;
 
 	tstring asString() const
 	{
@@ -440,6 +487,13 @@ public:
 		}
 		return tstring();
 	}
+
+private:
+	RDOPATChoiceOrder(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDOSelectResourceCalc::Type type, CREF(LPRDOFUNArithm) pArithm = NULL)
+		: RDOParserSrcInfo(src_info)
+		, m_type          (type    )
+		, m_pArithm       (pArithm )
+	{}
 };
 
 // ----------------------------------------------------------------------------
@@ -447,13 +501,9 @@ public:
 // ----------------------------------------------------------------------------
 class RDORelevantResourceDirect: public RDORelevantResource
 {
+DECLARE_FACTORY(RDORelevantResourceDirect)
 public:
-	RDORelevantResourceDirect(CPTR(RDOPATPattern) parent, CREF(RDOParserSrcInfo) src_info, const int relResID, CPTRC(RDORSSResource) pResource, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
-		: RDORelevantResource(parent, src_info, relResID, statusBegin, statusEnd)
-		, m_pResource        (pResource)
-	{}
-
-	CPTRC(RDORSSResource) getResource() const { return m_pResource; }
+	LPRDORSSResource getResource() const { return m_pResource; }
 
 	virtual LPRDORTPResType                        getType                             () const;
 	virtual rdoRuntime::LPRDOCalc                  createPreSelectRelResCalc           ();
@@ -463,7 +513,12 @@ public:
 	virtual rbool isDirect() const  { return true; }
 
 private:
-	CPTRC(RDORSSResource) m_pResource;
+	RDORelevantResourceDirect(CREF(RDOParserSrcInfo) src_info, const int relResID, CREF(LPRDORSSResource) pResource, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
+		: RDORelevantResource(src_info, relResID, statusBegin, statusEnd)
+		, m_pResource        (pResource)
+	{}
+
+	LPRDORSSResource m_pResource;
 };
 
 // ----------------------------------------------------------------------------
@@ -471,12 +526,8 @@ private:
 // ----------------------------------------------------------------------------
 class RDORelevantResourceByType: public RDORelevantResource
 {
+DECLARE_FACTORY(RDORelevantResourceByType)
 public:
-	RDORelevantResourceByType(CPTR(RDOPATPattern) parent, CREF(RDOParserSrcInfo) src_info, const int relResID, LPRDORTPResType pResType, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
-		: RDORelevantResource(parent, src_info, relResID, statusBegin, statusEnd)
-		, m_pResType         (pResType)
-	{}
-
 	virtual LPRDORTPResType getType() const
 	{
 		return m_pResType;
@@ -488,6 +539,11 @@ public:
 	virtual rbool isDirect() const  { return false; }
 
 private:
+	RDORelevantResourceByType(CREF(RDOParserSrcInfo) src_info, const int relResID, LPRDORTPResType pResType, const rdoRuntime::RDOResource::ConvertStatus statusBegin, const rdoRuntime::RDOResource::ConvertStatus statusEnd = rdoRuntime::RDOResource::CS_NoChange)
+		: RDORelevantResource(src_info, relResID, statusBegin, statusEnd)
+		, m_pResType         (pResType)
+	{}
+
 	LPRDORTPResType m_pResType;
 };
 

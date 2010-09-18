@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/namespace.h"
+#include "rdo_lib/rdo_parser/rdobison.h"
 #include "rdo_lib/rdo_parser/rdogramma.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_common/rdomacros.h"
@@ -21,53 +22,6 @@
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
-
-// ----------------------------------------------------------------------------
-// ---------- RDODeletable
-// ----------------------------------------------------------------------------
-class RDOParser;
-
-class RDODeletable
-{
-public:
-	RDODeletable(PTR(RDOParser) parser);
-	virtual ~RDODeletable();
-
-	PTR(RDOParser) parser() const { return m_parser; }
-
-	void noAutoDelete();
-
-//#ifndef _DEBUG
-//	PTR(void) operator new   (size_t   sz);
-//	void      operator delete(PTR(void) v);
-//#endif
-
-protected:
-	PTR(RDOParser) m_parser;
-
-private:
-	size_t m_object_size;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserObject
-// ----------------------------------------------------------------------------
-class RDOParser;
-
-class RDOParserObject: public RDODeletable
-{
-public:
-	CPTR(RDOParserObject) parent  () const                         { return m_parent; }
-	void                  reparent(CPTR(RDOParserObject) parent);
-	virtual ~RDOParserObject();
-
-protected:
-	RDOParserObject(PTR(RDOParser)        parser);
-	RDOParserObject(CPTR(RDOParserObject) parent);
-
-private:
-	CPTR(RDOParserObject) m_parent;
-};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSrcInfo
@@ -104,24 +58,26 @@ public:
 	}
 	void setSrcPos(CREF(YYLTYPE) pos)
 	{
-		setSrcPos(RDOSrcInfo::Position(pos.first_line, pos.first_column, pos.last_line, pos.last_column));
+		setSrcPos(Position(pos.m_first_line, pos.m_first_pos, pos.m_last_line, pos.m_last_pos));
 	}
 	void setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
 	{
-		setSrcPos(RDOSrcInfo::Position(pos_begin.first_line, pos_begin.first_column, pos_end.last_line, pos_end.last_column));
+		setSrcPos(Position(pos_begin.m_first_line, pos_begin.m_first_pos, pos_end.m_last_line, pos_end.m_last_pos));
 	}
 	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
 	{
-		setSrcPos(RDOSrcInfo::Position(first_line, first_pos, last_line, last_pos));
+		setSrcPos(Position(first_line, first_pos, last_line, last_pos));
 	}
 	YYLTYPE getPosAsYY() const
 	{
-		YYLTYPE pos1;
-		rdoRuntime::RDOSrcInfo::Position pos2 = src_pos();
-		pos1.first_line   = pos2.m_first_line;
-		pos1.first_column = pos2.m_first_pos;
-		pos1.last_line    = pos2.m_last_line;
-		pos1.last_column  = pos2.m_last_pos;
+		YYLTYPE  pos1;
+		Position pos2 = src_pos();
+		pos1.m_first_line = pos2.m_first_line;
+		pos1.m_first_pos  = pos2.m_first_pos;
+		pos1.m_last_line  = pos2.m_last_line;
+		pos1.m_last_pos   = pos2.m_last_pos;
+		pos1.m_first_seek = Position::UNDEFINE_POS;
+		pos1.m_last_seek  = Position::UNDEFINE_POS;
 		return pos1;
 	}
 	static ruint getPosByLength(ruint pos, CREF(tstring) text)

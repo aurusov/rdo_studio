@@ -146,6 +146,8 @@
 %token RDO_IncrEqual					383
 %token RDO_DecrEqual					384
 %token RDO_Stopping						385
+%token RDO_Start						386
+%token RDO_Stop							387
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -216,12 +218,7 @@
 #define RUNTIME PARSER->runtime()
 
 #define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define P_ARITHM(A)   reinterpret_cast<PTR(RDOFUNArithm)>(A)
-#define P_LOGIC(A)    reinterpret_cast<PTR(RDOFUNLogic)>(A)
-
 #define RDOVALUE(A)   (*P_RDOVALUE(A))
-#define ARITHM(A)     (*P_ARITHM(A))
-#define LOGIC(A)      (*P_LOGIC(A))
 
 OPEN_RDO_PARSER_NAMESPACE
 %}
@@ -249,7 +246,7 @@ dpt_main
 	| dpt_main dpt_process_end
 	| error
 	{
-		PARSER->error().error( @1, "Ожидается описание точки или свободного блока активностей" );
+		PARSER->error().error(@1, _T("Ожидается описание точки или свободного блока активностей"));
 	}
 	;
 
@@ -267,7 +264,7 @@ dpt_search_trace
 	}
 	| RDO_trace
 	{
-		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа search" );
+		PARSER->error().error(@1, _T("Данный признак трассировки не используется в точке типа search"));
 	}
 	| RDO_trace_stat
 	{
@@ -294,76 +291,85 @@ dpt_search_parent
 	}
 	| RDO_Parent error
 	{
-		PARSER->error().error( @1, "Ошибка в имени родительской точки" );
+		PARSER->error().error(@1, _T("Ошибка в имени родительской точки"));
 	}
 	;
 
 dpt_search_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_parent dpt_search_trace
 	{
-		PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
-		PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
+		PTR(RDOValue)  name        = P_RDOVALUE($2);
+		PTR(RDOValue)  parent_name = P_RDOVALUE($4);
+		LPRDODPTSearch pDPTSearch;
 		if (parent_name)
 		{
-			CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
-			CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
-			CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
-			if (!parentDPTPrior && !parentDPTSearch && !parentDPTSome)
+			LPRDODPTPrior  pParentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
+			LPRDODPTSearch pParentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
+			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
+			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
 			}
-			if (parentDPTSearch)
+			if (pParentDPTSearch)
 			{
 				PARSER->error().error(@1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
-			if (parentDPTPrior)
+			else if (pParentDPTPrior)
 			{
-				LPILogic parent = parentDPTPrior->getLogic();
-				$$ = (int)new RDODPTSearch(PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
+				LPILogic pParent = pParentDPTPrior->getLogic();
+				ASSERT(pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
-			if (parentDPTSome)
+			else if (pParentDPTSome)
 			{
-				LPILogic parent = parentDPTSome->getLogic();
-				$$ = (int)new RDODPTSearch( PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), parent);
+				LPILogic pParent = pParentDPTSome->getLogic();
+				ASSERT(pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
 		}
 		else
 		{
-			$$ = (int)new RDODPTSearch(PARSER, name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
+			pDPTSearch = rdo::Factory<RDODPTSearch>::create(name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
 		}
+		ASSERT(pDPTSearch);
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| RDO_Decision_point RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error( @2, @3, "Ожидается тип точки" );
+		PARSER->error().error(@2, @3, _T("Ожидается тип точки"));
 	}
 	| RDO_Decision_point RDO_IDENTIF error
 	{
-		PARSER->error().error( @2, "Ожидается двоеточие" );
+		PARSER->error().error(@2, _T("Ожидается двоеточие"));
 	}
 	| RDO_Decision_point error
 	{
-		PARSER->error().error( @1, @2, "После ключевого слова $Decision_point ожидается имя точки" );
+		PARSER->error().error(@1, @2, _T("После ключевого слова $Decision_point ожидается имя точки"));
 	}
 	;
 
 dpt_search_condition
 	: dpt_search_begin RDO_Condition fun_logic
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->setCondition((RDOFUNLogic *)$3);
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->setCondition(PARSER->stack().pop<RDOFUNLogic>($3));
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_begin RDO_Condition RDO_NoCheck
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->setCondition();
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->setCondition();
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_begin RDO_Condition error
 	{
-		PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие начала поиска (начальная вершина)" );
+		PARSER->error().error(@2, @3, _T("После ключевого слова $Condition ожидается условие начала поиска (начальная вершина)"));
 	}
 	| dpt_search_begin error
 	{
-		PARSER->error().error( @2, "Ожидается ключевое слово $Condition" );
+		PARSER->error().error(@2, _T("Ожидается ключевое слово $Condition"));
 	}
 	;
 
@@ -371,80 +377,90 @@ dpt_search_prior
 	: dpt_search_condition
 	| dpt_search_condition RDO_Priority fun_arithm
 	{
-		if (!PARSER->getLastDPTSearch()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		if (!PARSER->getLastDPTSearch()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
 		{
 			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| dpt_search_condition RDO_Priority error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| dpt_search_condition error
 	{
-		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
 dpt_search_term
 	: dpt_search_prior RDO_Term_condition fun_logic
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->setTermCondition((RDOFUNLogic *)$3);
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->setTermCondition(PARSER->stack().pop<RDOFUNLogic>($3));
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_prior RDO_Term_condition RDO_NoCheck
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->setTermCondition();
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->setTermCondition();
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_prior RDO_Term_condition error
 	{
-		PARSER->error().error( @2, @3, "После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)" );
+		PARSER->error().error(@2, @3, _T("После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)"));
 	}
 	| dpt_search_prior error
 	{
-		PARSER->error().error( @2, "Ожидается ключевое слово $Term_condition" );
+		PARSER->error().error(@2, _T("Ожидается ключевое слово $Term_condition"));
 	}
 	;
 
 dpt_search_evaluate
 	: dpt_search_term RDO_Evaluate_by fun_arithm
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->setEvaluateBy((RDOFUNArithm *)$3);
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->setEvaluateBy(PARSER->stack().pop<RDOFUNArithm>($3));
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_term RDO_Evaluate_by error
 	{
-		PARSER->error().error( @2, @3, "После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину" );
+		PARSER->error().error(@2, @3, _T("После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину"));
 	}
 	| dpt_search_term error
 	{
-		PARSER->error().error( @2, "Ожидается ключевое слово $Evaluate_by" );
+		PARSER->error().error(@2, _T("Ожидается ключевое слово $Evaluate_by"));
 	}
 	;
 
 dp_searcht_compare
 	: dpt_search_evaluate RDO_Compare_tops '=' RDO_NO
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->setCompareTops(false);
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->setCompareTops(false);
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_evaluate RDO_Compare_tops '=' RDO_YES
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->setCompareTops(true);
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->setCompareTops(true);
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_evaluate RDO_Compare_tops '=' error
 	{
-		PARSER->error().error( @3, @4, "Ожидается режим запоминания пройденных вершин (YES или NO)" );
+		PARSER->error().error(@3, @4, _T("Ожидается режим запоминания пройденных вершин (YES или NO)"));
 	}
 	| dpt_search_evaluate RDO_Compare_tops error
 	{
-		PARSER->error().error( @2, @3, "Ожидается знак равенства" );
+		PARSER->error().error(@2, @3, _T("Ожидается знак равенства"));
 	}
 	| dpt_search_evaluate error
 	{
-		PARSER->error().error( @2, "Ожидается ключевое слово $Compare_tops" );
+		PARSER->error().error(@2, _T("Ожидается ключевое слово $Compare_tops"));
 	}
 	;
 
@@ -452,58 +468,63 @@ dpt_search_descr_param
 	: /* empty */
 	| dpt_search_descr_param '*'
 	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+		PARSER->getLastDPTSearch()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
 	}
 	| dpt_search_descr_param fun_arithm
 	{
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+		PARSER->getLastDPTSearch()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_search_descr_param error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
 dpt_search_descr_value
 	: RDO_value_before fun_arithm
 	{
-		RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-		dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_before, reinterpret_cast<RDOFUNArithm*>($2), @1 );
+		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
+		ASSERT(pDPTSearch);
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2), @1);
 	}
 	| RDO_value_after fun_arithm
 	{
-		RDODPTSearch* dpt = PARSER->getLastDPTSearch();
-		dpt->getLastActivity()->setValue( IDPTSearchActivity::vt_after, reinterpret_cast<RDOFUNArithm*>($2), @1 );
+		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
+		ASSERT(pDPTSearch);
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2), @1);
 	}
 	| RDO_value_before error
 	{
-		PARSER->error().error( @1, @2, "Ошибка в арифметическом выражении" );
+		PARSER->error().error(@1, @2, _T("Ошибка в арифметическом выражении"));
 	}
 	| RDO_value_after error
 	{
-		PARSER->error().error( @1, @2, "Ошибка в арифметическом выражении" );
+		PARSER->error().error(@1, @2, _T("Ошибка в арифметическом выражении"));
 	}
 	;
 
 dpt_search_name
 	: RDO_IDENTIF_COLON RDO_IDENTIF
 	{
-		RDODPTSearch* dpt   = PARSER->getLastDPTSearch();
-		RDOValue* name    = reinterpret_cast<RDOValue*>($1);
-		RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
-		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
+		ASSERT(pDPTSearch);
+		PTR(RDOValue) name    = P_RDOVALUE($1);
+		PTR(RDOValue) pattern = P_RDOVALUE($2);
+		LPRDODPTActivity pActivity = pDPTSearch->addNewActivity(name->src_info(), pattern->src_info());
+		ASSERT(pActivity);
+		$$ = PARSER->stack().push(pActivity);
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+		PARSER->error().error(@1, @2, _T("Ожидается имя образца"));
 	}
 	| RDO_IDENTIF
 	{
-		PARSER->error().error( @1, "Ожидается ':'" );
+		PARSER->error().error(@1, _T("Ожидается ':'"));
 	}
 	| error
 	{
-		PARSER->error().error( @1, "Ожидается имя активности" );
+		PARSER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -511,12 +532,13 @@ dpt_searcht_activity
 	: /* empty */
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
 	{
-		RDODPTSearchActivity* activity = reinterpret_cast<RDODPTSearchActivity*>($2);
-		activity->endParam( @3 );
+		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
+		ASSERT(pActivity)
+		pActivity->endParam(@3);
 	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
 	{
-		PARSER->error().error( @3, @4, "Ожидаются ключевые слова value before или value after и стоимость применения правила" );
+		PARSER->error().error(@3, @4, _T("Ожидаются ключевые слова value before или value after и стоимость применения правила"));
 	}
 	;
 
@@ -524,19 +546,21 @@ dpt_search_header
 	: dp_searcht_compare RDO_Activities dpt_searcht_activity
 	| dp_searcht_compare error
 	{
-		PARSER->error().error( @1, @2, "После режима запоминания пройденных вершин ожидается ключевое слово $Activities" );
+		PARSER->error().error(@1, @2, _T("После режима запоминания пройденных вершин ожидается ключевое слово $Activities"));
 	}
 	;
 
 dpt_search_end
 	: dpt_search_header RDO_End
 	{
-		RDODPTSearch* dpt = reinterpret_cast<RDODPTSearch*>($1);
-		dpt->end();
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($1);
+		ASSERT(pDPTSearch);
+		pDPTSearch->end();
+		$$ = PARSER->stack().push(pDPTSearch);
 	}
 	| dpt_search_header
 	{
-		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
@@ -558,15 +582,15 @@ dpt_some_trace
 	}
 	| RDO_trace_stat
 	{
-		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
+		PARSER->error().error(@1, _T("Данный признак трассировки не используется в точке типа some"));
 	}
 	| RDO_trace_tops
 	{
-		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
+		PARSER->error().error(@1, _T("Данный признак трассировки не используется в точке типа some"));
 	}
 	| RDO_trace_all
 	{
-		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа some" );
+		PARSER->error().error(@1, _T("Данный признак трассировки не используется в точке типа some"));
 	}
 	;
 
@@ -581,7 +605,7 @@ dpt_some_parent
 	}
 	| RDO_Parent error
 	{
-		PARSER->error().error( @1, "Ошибка в имени родительской точки" );
+		PARSER->error().error(@1, _T("Ошибка в имени родительской точки"));
 	}
 	;
 
@@ -589,58 +613,69 @@ dpt_some_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
 	{
 		// TODO: а где признак трассировки для some ?
-		PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
-		PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
+		PTR(RDOValue) name        = P_RDOVALUE($2);
+		PTR(RDOValue) parent_name = P_RDOVALUE($4);
+		LPRDODPTSome  pDPTSome;
 		if (parent_name)
 		{
-			CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
-			CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
-			CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
-			if (!parentDPTPrior && !parentDPTSearch && !parentDPTSome)
+			LPRDODPTPrior  pParentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
+			LPRDODPTSearch pParentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
+			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
+			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
 			}
-			if (parentDPTSearch)
+			if (pParentDPTSearch)
 			{
 				PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
-			if (parentDPTPrior)
+			else if (pParentDPTPrior)
 			{
-				LPILogic parent = parentDPTPrior->getLogic();
-				$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
+				LPILogic pParentLogic = pParentDPTPrior->getLogic();
+				ASSERT(pParentLogic);
+				pDPTSome = rdo::Factory<RDODPTSome>::create(name->src_info(), pParentLogic);
 			}
-			if (parentDPTSome)
+			else if (pParentDPTSome)
 			{
-				LPILogic parent = parentDPTSome->getLogic();
-				$$ = (int)new RDODPTSome(PARSER, name->src_info(), parent);
+				LPILogic pParentLogic = pParentDPTSome->getLogic();
+				ASSERT(pParentLogic);
+				pDPTSome = rdo::Factory<RDODPTSome>::create(name->src_info(), pParentLogic);
 			}
 		}
 		else
 		{
-			$$ = (int)new RDODPTSome( PARSER, name->src_info() );
+			pDPTSome = rdo::Factory<RDODPTSome>::create(name->src_info());
 		}
+		ASSERT(pDPTSome);
+		$$ = PARSER->stack().push(pDPTSome);
 	}
 	;
 
 dpt_some_condition
 	: dpt_some_begin RDO_Condition fun_logic
 	{
-		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-		dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
+		ASSERT(pDPTSome);
+		pDPTSome->setCondition(PARSER->stack().pop<RDOFUNLogic>($3));
+		$$ = PARSER->stack().push(pDPTSome);
 	}
 	| dpt_some_begin RDO_Condition RDO_NoCheck
 	{
-		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-		dpt->setCondition();
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
+		ASSERT(pDPTSome);
+		pDPTSome->setCondition();
+		$$ = PARSER->stack().push(pDPTSome);
 	}
 	| dpt_some_begin RDO_Condition error
 	{
-		PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
+		PARSER->error().error(@2, @3, _T("После ключевого слова $Condition ожидается условие запуска точки"));
 	}
 	| dpt_some_begin
 	{
-		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-		dpt->setCondition();
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
+		ASSERT(pDPTSome);
+		pDPTSome->setCondition();
+		$$ = PARSER->stack().push(pDPTSome);
 	}
 	;
 
@@ -648,32 +683,43 @@ dpt_some_prior
 	: dpt_some_condition
 	| dpt_some_condition RDO_Priority fun_arithm
 	{
-		if (!PARSER->getLastDPTSome()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		if (!PARSER->getLastDPTSome()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
 		{
 			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| dpt_some_condition RDO_Priority error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| dpt_some_condition error
 	{
-		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
 dpt_some_name
 	: RDO_IDENTIF_COLON RDO_IDENTIF
 	{
-		RDODPTSome* dpt   = PARSER->getLastDPTSome();
-		RDOValue* name    = reinterpret_cast<RDOValue*>($1);
-		RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
-		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+		LPRDODPTSome pDPTSome = PARSER->getLastDPTSome();
+		ASSERT(pDPTSome);
+		PTR(RDOValue) name    = P_RDOVALUE($1);
+		PTR(RDOValue) pattern = P_RDOVALUE($2);
+		LPRDODPTActivity pActivity = pDPTSome->addNewActivity(name->src_info(), pattern->src_info());
+		ASSERT(pActivity);
+		$$ = PARSER->stack().push(pActivity);
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+		PARSER->error().error(@1, @2, _T("Ожидается имя образца"));
+	}
+	| RDO_IDENTIF
+	{
+		PARSER->error().error(@1, _T("Ожидается ':'"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -681,15 +727,17 @@ dpt_some_descr_keyb
 	: /* empty */
 	| dpt_some_descr_keyb '+' RDO_STRING_CONST
 	{
-		RDODPTSomeActivity* activity = PARSER->getLastDPTSome()->getLastActivity();
-		std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
-		activity->addHotKey( key, @3 );
+		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTSome()->getLastActivity();
+		ASSERT(pActivityHotKey);
+		tstring key = P_RDOVALUE($3)->value().getString();
+		pActivityHotKey->addHotKey(key, @3);
 	}
 	| RDO_STRING_CONST
 	{
-		RDODPTSomeActivity* activity = PARSER->getLastDPTSome()->getLastActivity();
-		std::string      key = reinterpret_cast<RDOValue*>($1)->value().getString();
-		activity->addHotKey( key, @1 );
+		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTSome()->getLastActivity();
+		ASSERT(pActivityHotKey);
+		tstring key = P_RDOVALUE($1)->value().getString();
+		pActivityHotKey->addHotKey(key, @1);
 	}
 	;
 
@@ -697,15 +745,15 @@ dpt_some_descr_param
 	: /* empty */
 	| dpt_some_descr_param '*'
 	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+		PARSER->getLastDPTSome()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
 	}
 	| dpt_some_descr_param fun_arithm
 	{
-		PARSER->getLastDPTSome()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+		PARSER->getLastDPTSome()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_some_descr_param error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
@@ -713,8 +761,10 @@ dpt_some_activity
 	: /* empty */
 	| dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
 	{
-		RDODPTSomeActivity* activity = reinterpret_cast<RDODPTSomeActivity*>($2);
-		activity->endParam( @3 );
+		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@3);
+		$$ = PARSER->stack().push(pActivity);
 	}
 	;
 
@@ -722,19 +772,21 @@ dpt_some_header
 	: dpt_some_prior RDO_Activities dpt_some_activity
 	| dpt_some_prior error
 	{
-		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Activities" );
+		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Activities"));
 	}
 	;
 
 dpt_some_end
 	: dpt_some_header RDO_End
 	{
-		RDODPTSome* dpt = reinterpret_cast<RDODPTSome*>($1);
-		dpt->end();
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
+		ASSERT(pDPTSome);
+		pDPTSome->end();
+		$$ = PARSER->stack().push(pDPTSome);
 	}
 	| dpt_some_header
 	{
-		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
@@ -756,15 +808,15 @@ dpt_prior_trace
 	}
 	| RDO_trace_stat
 	{
-		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
+		PARSER->error().error(@1, _T("Данный признак трассировки не используется в точке типа prior"));
 	}
 	| RDO_trace_tops
 	{
-		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
+		PARSER->error().error(@1, _T("Данный признак трассировки не используется в точке типа prior"));
 	}
 	| RDO_trace_all
 	{
-		PARSER->error().error( @1, "Данный признак трассировки не используется в точке типа prior" );
+		PARSER->error().error(@1, _T("Данный признак трассировки не используется в точке типа prior"));
 	}
 	;
 
@@ -779,7 +831,7 @@ dpt_prior_parent
 	}
 	| RDO_Parent error
 	{
-		PARSER->error().error( @1, "Ошибка в имени родительской точки" );
+		PARSER->error().error(@1, _T("Ошибка в имени родительской точки"));
 	}
 	;
 
@@ -787,58 +839,69 @@ dpt_prior_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
 	{
 		// TODO: а где признак трассировки для prior ?
-		PTR(RDOValue) name        = reinterpret_cast<PTR(RDOValue)>($2);
-		PTR(RDOValue) parent_name = reinterpret_cast<PTR(RDOValue)>($4);
+		PTR(RDOValue) name        = P_RDOVALUE($2);
+		PTR(RDOValue) parent_name = P_RDOVALUE($4);
+		LPRDODPTPrior pDPTPrior;
 		if (parent_name)
 		{
-			CPTR(RDODPTPrior)  parentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
-			CPTR(RDODPTSearch) parentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
-			CPTR(RDODPTSome)   parentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
-			if (!parentDPTPrior && !parentDPTSome && !parentDPTSearch)
+			LPRDODPTPrior  pParentDPTPrior  = PARSER->findDPTPrior (parent_name->value().getIdentificator());
+			LPRDODPTSearch pParentDPTSearch = PARSER->findDPTSearch(parent_name->value().getIdentificator());
+			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (parent_name->value().getIdentificator());
+			if (!pParentDPTPrior && !pParentDPTSome && !pParentDPTSearch)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
 			}
-			if (parentDPTSearch)
+			if (pParentDPTSearch)
 			{
 				PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
-			if (parentDPTPrior)
+			else if (pParentDPTPrior)
 			{
-				LPILogic parent = parentDPTPrior->getLogic();
-				$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
+				LPILogic pParentLogic = pParentDPTPrior->getLogic();
+				ASSERT(pParentLogic);
+				pDPTPrior = rdo::Factory<RDODPTPrior>::create(name->src_info(), pParentLogic);
 			}
-			if (parentDPTSome)
+			else if (pParentDPTSome)
 			{
-				LPILogic parent = parentDPTSome->getLogic();
-				$$ = (int)new RDODPTPrior(PARSER, name->src_info(), parent);
+				LPILogic pParentLogic = pParentDPTSome->getLogic();
+				ASSERT(pParentLogic);
+				pDPTPrior = rdo::Factory<RDODPTPrior>::create(name->src_info(), pParentLogic);
 			}
 		}
 		else
 		{
-			$$ = (int)new RDODPTPrior(PARSER, name->src_info());
+			pDPTPrior = rdo::Factory<RDODPTPrior>::create(name->src_info());
 		}
+		ASSERT(pDPTPrior);
+		$$ = PARSER->stack().push(pDPTPrior);
 	}
 	;
 
 dpt_prior_condition
 	: dpt_prior_begin RDO_Condition fun_logic
 	{
-		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-		dpt->setCondition( reinterpret_cast<RDOFUNLogic*>($3) );
+		LPRDODPTPrior pDPTPrior = PARSER->stack().pop<RDODPTPrior>($1);
+		ASSERT(pDPTPrior);
+		pDPTPrior->setCondition(PARSER->stack().pop<RDOFUNLogic>($3));
+		$$ = PARSER->stack().push(pDPTPrior);
 	}
 	| dpt_prior_begin RDO_Condition RDO_NoCheck
 	{
-		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-		dpt->setCondition();
+		LPRDODPTPrior pDPTPrior = PARSER->stack().pop<RDODPTPrior>($1);
+		ASSERT(pDPTPrior);
+		pDPTPrior->setCondition();
+		$$ = PARSER->stack().push(pDPTPrior);
 	}
 	| dpt_prior_begin RDO_Condition error
 	{
-		PARSER->error().error( @2, @3, "После ключевого слова $Condition ожидается условие запуска точки" );
+		PARSER->error().error(@2, @3, _T("После ключевого слова $Condition ожидается условие запуска точки"));
 	}
 	| dpt_prior_begin
 	{
-		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-		dpt->setCondition();
+		LPRDODPTPrior pDPTPrior = PARSER->stack().pop<RDODPTPrior>($1);
+		ASSERT(pDPTPrior);
+		pDPTPrior->setCondition();
+		$$ = PARSER->stack().push(pDPTPrior);
 	}
 	;
 
@@ -846,32 +909,43 @@ dpt_prior_prior
 	: dpt_prior_condition
 	| dpt_prior_condition RDO_Priority fun_arithm
 	{
-		if (!PARSER->getLastDPTPrior()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		if (!PARSER->getLastDPTPrior()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
 		{
 			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| dpt_prior_condition RDO_Priority error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| dpt_some_condition error
 	{
-		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
 dpt_prior_name
 	: RDO_IDENTIF_COLON RDO_IDENTIF
 	{
-		RDODPTPrior* dpt  = PARSER->getLastDPTPrior();
-		RDOValue* name    = reinterpret_cast<RDOValue*>($1);
-		RDOValue* pattern = reinterpret_cast<RDOValue*>($2);
-		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+		LPRDODPTPrior pDPTPrior = PARSER->getLastDPTPrior();
+		ASSERT(pDPTPrior);
+		PTR(RDOValue) name    = P_RDOVALUE($1);
+		PTR(RDOValue) pattern = P_RDOVALUE($2);
+		LPRDODPTActivity pActivity = pDPTPrior->addNewActivity(name->src_info(), pattern->src_info());
+		ASSERT(pActivity);
+		$$ = PARSER->stack().push(pActivity);
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+		PARSER->error().error(@1, @2, _T("Ожидается имя образца"));
+	}
+	| RDO_IDENTIF
+	{
+		PARSER->error().error(@1, _T("Ожидается ':'"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -879,15 +953,17 @@ dpt_prior_descr_keyb
 	: /* empty */
 	| dpt_prior_descr_keyb '+' RDO_STRING_CONST
 	{
-		RDODPTPriorActivity* activity = PARSER->getLastDPTPrior()->getLastActivity();
-		std::string      key = reinterpret_cast<RDOValue*>($3)->value().getString();
-		activity->addHotKey( key, @3 );
+		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTPrior()->getLastActivity();
+		ASSERT(pActivityHotKey);
+		tstring key = P_RDOVALUE($3)->value().getString();
+		pActivityHotKey->addHotKey(key, @3);
 	}
 	| RDO_STRING_CONST
 	{
-		RDODPTPriorActivity* activity = PARSER->getLastDPTPrior()->getLastActivity();
-		std::string      key = reinterpret_cast<RDOValue*>($1)->value().getString();
-		activity->addHotKey( key, @1 );
+		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTPrior()->getLastActivity();
+		ASSERT(pActivityHotKey);
+		tstring key = P_RDOVALUE($1)->value().getString();
+		pActivityHotKey->addHotKey(key, @1);
 	}
 	;
 
@@ -895,15 +971,15 @@ dpt_prior_descr_param
 	: /* empty */
 	| dpt_prior_descr_param '*'
 	{
-		PARSER->getLastDPTPrior()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+		PARSER->getLastDPTPrior()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
 	}
 	| dpt_prior_descr_param fun_arithm
 	{
-		PARSER->getLastDPTPrior()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+		PARSER->getLastDPTPrior()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_prior_descr_param error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
@@ -911,18 +987,18 @@ dpt_prior_activ_prior
 	: /* empty */
 	| RDO_CF '=' fun_arithm
 	{
-		if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior( reinterpret_cast<RDOFUNArithm*>($3) ))
+		if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
 		{
 			PARSER->error().error(@3, _T("Активность не может иметь приоритет"));
 		}
 	}
 	| RDO_CF '=' error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания приоритета активности" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета активности"))
 	}
 	| RDO_CF error
 	{
-		PARSER->error().error( @1, @2, "Ошибка: ожидается знак равенства" )
+		PARSER->error().error(@1, @2, _T("Ошибка: ожидается знак равенства"))
 	}
 	;
 
@@ -930,8 +1006,10 @@ dpt_prior_activity
 	: /* empty */
 	| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
 	{
-		RDODPTPriorActivity* activity = reinterpret_cast<RDODPTPriorActivity*>($2);
-		activity->endParam( @3 );
+		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@3);
+		$$ = PARSER->stack().push(pActivity);
 	}
 	;
 
@@ -939,19 +1017,21 @@ dpt_prior_header
 	: dpt_prior_prior RDO_Activities dpt_prior_activity
 	| dpt_prior_prior error
 	{
-		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Activities" );
+		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Activities"));
 	}
 	;
 
 dpt_prior_end
 	: dpt_prior_header RDO_End
 	{
-		RDODPTPrior* dpt = reinterpret_cast<RDODPTPrior*>($1);
-		dpt->end();
+		LPRDODPTPrior pDPTPrior = PARSER->stack().pop<RDODPTPrior>($1);
+		ASSERT(pDPTPrior);
+		pDPTPrior->end();
+		$$ = PARSER->stack().push(pDPTPrior);
 	}
 	| dpt_prior_header
 	{
-		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
@@ -962,25 +1042,27 @@ dpt_free_prior
 	: dpt_free_header
 	| RDO_Priority fun_arithm dpt_free_header
 	{
-		if (!PARSER->getLastDPTFree()->setPrior( reinterpret_cast<RDOFUNArithm*>($2) ))
+		if (!PARSER->getLastDPTFree()->setPrior(PARSER->stack().pop<RDOFUNArithm>($2)))
 		{
 			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| RDO_Priority error dpt_free_header
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания приоритета точки принятия решений" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| error dpt_free_header
 	{
-		PARSER->error().error( @1, @2, "Ожидается ключевое слово $Priority" )
+		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
 dpt_free_header
 	: RDO_Activities
 	{
-		$$ = (int)new RDODPTFree( PARSER, @1 );
+		LPRDODPTFree pDPTFree = rdo::Factory<RDODPTFree>::create(@1);
+		ASSERT(pDPTFree);
+		$$ = PARSER->stack().push(pDPTFree);
 	}
 	;
 
@@ -992,14 +1074,25 @@ dpt_free_activity
 dpt_free_activity_name
 	: RDO_IDENTIF_COLON RDO_IDENTIF
 	{
-		RDODPTFree* dpt     = PARSER->getLastDPTFree();
-		RDOValue*   name    = reinterpret_cast<RDOValue*>($1);
-		RDOValue*   pattern = reinterpret_cast<RDOValue*>($2);
-		$$ = (int)dpt->addNewActivity( name->src_info(), pattern->src_info() );
+		LPRDODPTFree pDPTFree = PARSER->getLastDPTFree();
+		ASSERT(pDPTFree);
+		PTR(RDOValue) name    = P_RDOVALUE($1);
+		PTR(RDOValue) pattern = P_RDOVALUE($2);
+		LPRDODPTActivity pActivity = pDPTFree->addNewActivity(name->src_info(), pattern->src_info());
+		ASSERT(pActivity);
+		$$ = PARSER->stack().push(pActivity);
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error( @1, @2, "Ожидается имя образца" );
+		PARSER->error().error(@1, @2, _T("Ожидается имя образца"));
+	}
+	| RDO_IDENTIF
+	{
+		PARSER->error().error(@1, _T("Ожидается ':'"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -1007,15 +1100,15 @@ dpt_free_activity_param
 	: /* empty */
 	| dpt_free_activity_param '*'
 	{
-		PARSER->getLastDPTFree()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, "*")));
+		PARSER->getLastDPTFree()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
 	}
 	| dpt_free_activity_param fun_arithm
 	{
-		PARSER->getLastDPTFree()->getLastActivity()->addParam(reinterpret_cast<RDOFUNArithm*>($2)->value());
+		PARSER->getLastDPTFree()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_free_activity_param error
 	{
-		PARSER->error().error( @1, @2, "Ошибка описания параметра образца" )
+		PARSER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
@@ -1023,15 +1116,17 @@ dpt_free_activity_keys
 	: /* empty */
 	| dpt_free_activity_keys RDO_STRING_CONST
 	{
-		RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
-		std::string         key      = reinterpret_cast<RDOValue*>($2)->value().getString();
-		activity->addHotKey( key, @2 );
+		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTFree()->getLastActivity();
+		ASSERT(pActivityHotKey);
+		tstring key = P_RDOVALUE($2)->value().getString();
+		pActivityHotKey->addHotKey(key, @2);
 	}
 	| dpt_free_activity_keys '+' RDO_STRING_CONST
 	{
-		RDODPTFreeActivity* activity = PARSER->getLastDPTFree()->getLastActivity();
-		std::string         key      = reinterpret_cast<RDOValue*>($3)->value().getString();
-		activity->addHotKey( key, @3 );
+		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTFree()->getLastActivity();
+		ASSERT(pActivityHotKey);
+		tstring key = P_RDOVALUE($3)->value().getString();
+		pActivityHotKey->addHotKey(key, @3);
 	}
 	;
 
@@ -1039,7 +1134,7 @@ dpt_free_end
 	: dpt_free_prior dpt_free_activity RDO_End
 	| dpt_free_header error
 	{
-		PARSER->error().error( @1, "Ожидается ключевое слово $End" );
+		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
@@ -1060,38 +1155,121 @@ fun_logic_eq
 	;
 
 fun_logic
-	: fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
-	| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
-	| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
-	| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }
-	| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(ARITHM($1) <= ARITHM($3));  }
-	| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(ARITHM($1) >= ARITHM($3));  }
-	| fun_logic   RDO_and       fun_logic    { $$ = (int)(LOGIC($1) && LOGIC($3));    }
-	| fun_logic   RDO_or        fun_logic    { $$ = (int)(LOGIC($1) || LOGIC($3));    }
-	| fun_arithm                             { $$ = (int)new RDOFUNLogic(ARITHM($1)); }
+	: fun_arithm fun_logic_eq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator ==(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm RDO_neq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator !=(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '<' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator <(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '>' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator >(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm RDO_leq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator <=(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm RDO_geq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator >=(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_logic RDO_and fun_logic
+	{
+		LPRDOFUNLogic pLogic1 = PARSER->stack().pop<RDOFUNLogic>($1);
+		LPRDOFUNLogic pLogic2 = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pLogic1);
+		ASSERT(pLogic2);
+		LPRDOFUNLogic pResult = pLogic1->operator &&(pLogic2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_logic RDO_or fun_logic
+	{
+		LPRDOFUNLogic pLogic1 = PARSER->stack().pop<RDOFUNLogic>($1);
+		LPRDOFUNLogic pLogic2 = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pLogic1);
+		ASSERT(pLogic2);
+		LPRDOFUNLogic pResult = pLogic1->operator ||(pLogic2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm
+	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT(pArithm);
+		LPRDOFUNLogic pResult = rdo::Factory<RDOFUNLogic>::create(pArithm);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
 	| fun_group
 	| fun_select_logic
 	| '[' fun_logic ']'
 	{
-		PTR(RDOFUNLogic) logic = P_LOGIC($2);
-		logic->setSrcPos (@1, @3);
-		logic->setSrcText(_T("[") + logic->src_text() + _T("]"));
-		$$ = $2;
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pLogic->setSrcPos (@1, @3);
+		pLogic->setSrcText(_T("[") + pLogic->src_text() + _T("]"));
+		$$ = PARSER->stack().push(pLogic);
 	}
 	| '(' fun_logic ')'
 	{
-		PTR(RDOFUNLogic) logic = P_LOGIC($2);
-		logic->setSrcPos (@1, @3);
-		logic->setSrcText(_T("(") + logic->src_text() + _T(")"));
-		$$ = $2;
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pLogic->setSrcPos (@1, @3);
+		pLogic->setSrcText(_T("(") + pLogic->src_text() + _T(")"));
+		$$ = PARSER->stack().push(pLogic);
 	}
 	| RDO_not fun_logic
 	{
-		PTR(RDOFUNLogic) logic = P_LOGIC($2);
-		PTR(RDOFUNLogic) logic_not = logic->operator_not();
-		logic_not->setSrcPos (@1, @2);
-		logic_not->setSrcText(_T("not ") + logic->src_text());
-		$$ = (int)logic_not;
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
+		ASSERT(pLogicNot);
+		pLogicNot->setSrcPos (@1, @2);
+		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
+		$$ = PARSER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
 	{
@@ -1107,32 +1285,71 @@ fun_logic
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-	| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-	| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-	| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-	| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1)); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm(PARSER, RDOVALUE($1), RDOVALUE($3)); }
-	| fun_arithm '+' fun_arithm		     { $$ = (int)(ARITHM($1) + ARITHM($3)); }
-	| fun_arithm '-' fun_arithm		     { $$ = (int)(ARITHM($1) - ARITHM($3)); }
-	| fun_arithm '*' fun_arithm		     { $$ = (int)(ARITHM($1) * ARITHM($3)); }
-	| fun_arithm '/' fun_arithm		     { $$ = (int)(ARITHM($1) / ARITHM($3)); }
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| fun_arithm '+' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator +(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '-' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator -(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '*' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator *(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '/' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator /(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
 	| fun_arithm_func_call
 	| fun_select_arithm
 	| '(' fun_arithm ')'
 	{
-		PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-		arithm->setSrcPos (@1, @3);
-		arithm->setSrcText(_T("(") + arithm->src_text() + _T(")"));
-		$$ = $2;
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		pArithm->setSrcPos (@1, @3);
+		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		$$ = PARSER->stack().push(pArithm);
 	}
 	| '-' fun_arithm %prec RDO_UMINUS
 	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
-		info.setSrcText(_T("-") + ARITHM($2).src_text());
-		$$ = (int)new RDOFUNArithm(PARSER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()));
+		info.setSrcText(_T("-") + pArithm->src_text());
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
 	}
 	;
 
@@ -1140,25 +1357,29 @@ fun_arithm
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
 fun_arithm_func_call
-	: RDO_IDENTIF '(' ')' 
+	: RDO_IDENTIF '(' ')'
 	{
-		PTR(RDOFUNParams) fun = new RDOFUNParams(PARSER);
-		tstring fun_name = RDOVALUE($1)->getIdentificator();
-		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-		fun->setSrcPos (@1, @3);
-		fun->setSrcText(fun_name + _T("()"));
-		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-		$$ = (int)arithm;
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
+		ASSERT(pFunParams);
+		tstring funName = RDOVALUE($1)->getIdentificator();
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
+		pFunParams->setSrcPos (@1, @3);
+		pFunParams->setSrcText(funName + _T("()"));
+		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')'
 	{
-		PTR(RDOFUNParams) fun      = reinterpret_cast<PTR(RDOFUNParams)>($3);
-		tstring           fun_name = RDOVALUE($1)->getIdentificator();
-		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-		fun->setSrcPos (@1, @4);
-		fun->setSrcText(fun_name + _T("(") + fun->src_text() + _T(")"));
-		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-		$$ = (int)arithm;
+		LPRDOFUNParams pFunParams = PARSER->stack().pop<RDOFUNParams>($3);
+		ASSERT(pFunParams);
+		tstring funName = RDOVALUE($1)->getIdentificator();
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
+		pFunParams->setSrcPos (@1, @4);
+		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
+		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' error
 	{
@@ -1169,19 +1390,23 @@ fun_arithm_func_call
 fun_arithm_func_call_pars
 	: fun_arithm
 	{
-		PTR(RDOFUNParams) fun    = new RDOFUNParams(PARSER);
-		PTR(RDOFUNArithm) arithm = P_ARITHM($1);
-		fun->setSrcText  (arithm->src_text());
-		fun->addParameter(arithm);
-		$$ = (int)fun;
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
+		LPRDOFUNArithm pArithm    = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT(pFunParams);
+		ASSERT(pArithm   );
+		pFunParams->setSrcText  (pArithm->src_text());
+		pFunParams->addParameter(pArithm);
+		$$ = PARSER->stack().push(pFunParams);
 	}
 	| fun_arithm_func_call_pars ',' fun_arithm
 	{
-		PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($1);
-		PTR(RDOFUNArithm) arithm = P_ARITHM($3);
-		fun->setSrcText  (fun->src_text() + _T(", ") + arithm->src_text());
-		fun->addParameter(arithm);
-		$$ = (int)fun;
+		LPRDOFUNParams pFunParams = PARSER->stack().pop<RDOFUNParams>($1);
+		LPRDOFUNArithm pArithm    = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pFunParams);
+		ASSERT(pArithm   );
+		pFunParams->setSrcText  (pFunParams->src_text() + _T(", ") + pArithm->src_text());
+		pFunParams->addParameter(pArithm);
+		$$ = PARSER->stack().push(pFunParams);
 	}
 	| fun_arithm_func_call_pars error
 	{
@@ -1197,17 +1422,17 @@ fun_arithm_func_call_pars
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
 fun_group_keyword
-	: RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-	| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-	| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-	| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; }
+	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
 	;
 
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON
 	{
 		PTR(RDOValue) type_name = P_RDOVALUE($3);
-		$$ = (int)(new RDOFUNGroupLogic(PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
 	}
 	| fun_group_keyword '(' error
 	{
@@ -1222,18 +1447,23 @@ fun_group_header
 fun_group
 	: fun_group_header fun_logic ')'
 	{
-		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-		groupfun->setSrcPos(@1, @3);
-		$$ = (int)groupfun->createFunLogic(P_LOGIC($2));
+		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
+		LPRDOFUNLogic      pLogic    = PARSER->stack().pop<RDOFUNLogic>     ($2);
+		ASSERT(pGroupFun);
+		ASSERT(pLogic   );
+		pGroupFun->setSrcPos(@1, @3);
+		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pLogic));
 	}
 	| fun_group_header RDO_NoCheck ')'
 	{
-		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-		groupfun->setSrcPos(@1, @3);
-		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1));
-		trueLogic->setSrcPos (@2);
-		trueLogic->setSrcText(_T("NoCheck"));
-		$$ = (int)groupfun->createFunLogic(trueLogic);
+		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
+		ASSERT(pGroupFun);
+		pGroupFun->setSrcPos(@1, @3);
+		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
+		ASSERT(pTrueLogic);
+		pTrueLogic->setSrcPos (@2);
+		pTrueLogic->setSrcText(_T("NoCheck"));
+		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
 	{
@@ -1255,10 +1485,11 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name  = P_RDOVALUE($3);
-		PTR(RDOFUNSelect) select = new RDOFUNSelect(PARSER, type_name->src_info());
-		select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
-		$$ = (int)select;
+		PTR(RDOValue)  type_name = P_RDOVALUE($3);
+		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		ASSERT(pSelect);
+		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		$$ = PARSER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error
 	{
@@ -1273,20 +1504,27 @@ fun_select_header
 fun_select_body
 	: fun_select_header fun_logic ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		PTR(RDOFUNLogic)  flogic = P_LOGIC($2);
-		select->setSrcText(select->src_text() + flogic->src_text() + _T(")"));
-		select->initSelect(flogic);
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		LPRDOFUNLogic  pLogic  = PARSER->stack().pop<RDOFUNLogic> ($2);
+		ASSERT(pSelect);
+		ASSERT(pLogic );
+		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + _T(")"));
+		pSelect->initSelect(pLogic);
+		$$ = PARSER->stack().push(pSelect);
 	}
 	| fun_select_header RDO_NoCheck ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
-		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
-		rdoRuntime::LPRDOCalcConst calc_nocheck = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck, true);
-		flogic->setSrcInfo(logic_info);
-		select->initSelect(flogic);
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
+		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
+		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		ASSERT(pCalc);
+		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
+		ASSERT(pLogic);
+		pLogic->setSrcInfo(logicInfo);
+		pSelect->initSelect(pLogic);
+		$$ = PARSER->stack().push(pSelect);
 	}
 	| fun_select_header fun_logic error
 	{
@@ -1312,10 +1550,14 @@ fun_select_keyword
 fun_select_logic
 	: fun_select_body '.' fun_select_keyword '(' fun_logic ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		select->setSrcPos(@1, @6);
-		PTR(RDOFUNLogic) logic = select->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5));
-		$$ = (int)logic;
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		LPRDOFUNLogic  pLogic  = PARSER->stack().pop<RDOFUNLogic> ($5);
+		ASSERT(pSelect);
+		ASSERT(pLogic );
+		pSelect->setSrcPos(@1, @6);
+		LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+		ASSERT(pLogicSelect);
+		$$ = PARSER->stack().push(pLogicSelect);
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
@@ -1327,11 +1569,13 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		select->setSrcPos(@1, @5);
-		RDOParserSrcInfo empty_info(@3, @5, _T("Empty()"));
-		PTR(RDOFUNLogic) logic = select->createFunSelectEmpty(empty_info);
-		$$ = (int)logic;
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo emptyInfo(@3, @5, _T("Empty()"));
+		LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
+		ASSERT(pLogic);
+		$$ = PARSER->stack().push(pLogic);
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
@@ -1354,11 +1598,13 @@ fun_select_logic
 fun_select_arithm
 	: fun_select_body '.' RDO_Size '(' ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		select->setSrcPos(@1, @5);
-		RDOParserSrcInfo size_info(@3, @5, _T("Size()"));
-		PTR(RDOFUNArithm) arithm = select->createFunSelectSize(size_info);
-		$$ = (int)arithm;
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo sizeInfo(@3, @5, _T("Size()"));
+		LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
 	}
 	| fun_select_body '.' RDO_Size error
 	{

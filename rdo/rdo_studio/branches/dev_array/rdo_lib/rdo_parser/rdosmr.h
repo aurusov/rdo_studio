@@ -1,17 +1,28 @@
-#ifndef RDOSMR_H
-#define RDOSMR_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdosmr.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDOSMR_H_
+#define _RDOSMR_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
-#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+// ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
-}
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
 int  smr_file_parse(PTR(void) lexer);
 int  smr_file_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -21,93 +32,91 @@ int  smr_sim_parse (PTR(void) lexer);
 int  smr_sim_lex   (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void smr_sim_error (PTR(char) mes);
 
-class RDOFUNLogic;
-class RDOFUNArithm;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOSMR
 // ----------------------------------------------------------------------------
-class RDOFUNConstant;
-class RDOFUNSequence;
-
-class RDOSMR: public RDOParserObject
+OBJECT(RDOSMR)
 {
+DECLARE_FACTORY(RDOSMR);
 public:
-	typedef std::map<std::string, std::string> StringTable;
+	typedef std::map<tstring, tstring> StringTable;
 
-	RDOSMR( RDOParser* _parser, const std::string& _modelName );
-
-	void setFile( const std::string& file_type, const std::string& file_name )
+	void setFile(CREF(tstring) file_type, CREF(tstring) file_name)
 	{
-		files[ file_type ] = file_name;
+		m_files[file_type] = file_name;
 	}
-	bool hasFile( const std::string& file_type ) const
+	rbool hasFile(CREF(tstring) file_type) const
 	{
-		return files.find( file_type ) != files.end();
+		return m_files.find(file_type) != m_files.end();
 	}
-	std::string getFile( const std::string& file_type ) const
+	tstring getFile(CREF(tstring) file_type) const
 	{
-		StringTable::const_iterator it = files.find(file_type);
-		return it != files.end() ? it->second : _T("");
+		StringTable::const_iterator it = m_files.find(file_type);
+		return it != m_files.end() ? it->second : _T("");
 	}
-	std::string modelName() const
+	tstring modelName() const
 	{
 		return getFile(_T("Model_name"));
 	}
-	void setExternalModelName(const std::string& alias, const std::string& modelID )
+	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
 	{
 		m_extModelList[alias] = modelID;
 	}
-	std::string getExternalModelName( const std::string& alias ) const
+	tstring getExternalModelName(CREF(tstring) alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
-		return it != m_extModelList.end() ? it->second : "";
+		return it != m_extModelList.end() ? it->second : _T("");
 	}
-	const StringTable& getExternalModelList() const
+	CREF(StringTable) getExternalModelList() const
 	{
 		return m_extModelList;
 	}
 
-	rdoSimulator::ShowMode getShowMode() const { return showMode;       }
-	int    getFrameNumber() const              { return frameNumber;    }
-	double getShowRate() const                 { return showRate;       }
-	double getRunStartTime() const             { return runStartTime;   }
-	double getTraceStartTime() const           { return traceStartTime; }
-	double getTraceEndTime() const             { return traceEndTime;   }
+	rdoSimulator::ShowMode getShowMode      () const { return m_showMode;       }
+	int                    getFrameNumber   () const { return m_frameNumber;    }
+	double                 getShowRate      () const { return m_showRate;       }
+	double                 getRunStartTime  () const { return m_runStartTime;   }
+	double                 getTraceStartTime() const { return m_traceStartTime; }
+	double                 getTraceEndTime  () const { return m_traceEndTime;   }
 
-	void setShowMode( rdoSimulator::ShowMode _showMode );
-	void setFrameNumber( int value, const YYLTYPE& pos );
-	void setShowRate( double value, const YYLTYPE& pos );
-	void setRunStartTime( double value, const YYLTYPE& pos );
-	void setTraceStartTime( double value, const YYLTYPE& pos );
-	void setTraceEndTime( double value, const YYLTYPE& pos );
+	void setShowMode      (rdoSimulator::ShowMode showMode);
+	void setFrameNumber   (int value,    CREF(YYLTYPE) pos);
+	void setShowRate      (double value, CREF(YYLTYPE) pos);
+	void setRunStartTime  (double value, CREF(YYLTYPE) pos);
+	void setTraceStartTime(double value, CREF(YYLTYPE) pos);
+	void setTraceEndTime  (double value, CREF(YYLTYPE) pos);
 
-	void setTerminateIf( RDOFUNLogic* logic );
-	void setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm );
-	void setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, RDOFUNArithm* arithm );
-	void setSeed( const RDOParserSrcInfo& seq_info, int base );
-	void insertBreakPoint( const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
+	void setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
+	void setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
+	void setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
+	void setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
+	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
 
 private:
-	StringTable  files;
-	StringTable  m_extModelList;
-	rdoSimulator::ShowMode showMode;
-	int    frameNumber;
-	double showRate;
-	double runStartTime;
-	double traceStartTime;
-	double traceEndTime;
-	YYLTYPE traceStartTime_pos;
-	YYLTYPE traceEndTime_pos;
-	RDOFUNLogic* terminateIf;
+	RDOSMR(CREF(tstring) modelName);
 
-	class BreakPoint: public RDOParserObject, public RDOParserSrcInfo {
-	public:
-		BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
+	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
+	{
+	DECLARE_FACTORY(BreakPoint);
+	private:
+		BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic);
 	};
-	std::vector< BreakPoint* > breakPoints;
+	typedef std::vector<LPBreakPoint> BreakPointList;
+
+	StringTable            m_files;
+	StringTable            m_extModelList;
+	rdoSimulator::ShowMode m_showMode;
+	int                    m_frameNumber;
+	double                 m_showRate;
+	double                 m_runStartTime;
+	double                 m_traceStartTime;
+	double                 m_traceEndTime;
+	YYLTYPE                m_traceStartTime_pos;
+	YYLTYPE                m_traceEndTime_pos;
+	LPRDOFUNLogic          m_pTerminateIf;
+	BreakPointList         m_breakPointList;
 };
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDOSMR_H
+#endif //! _RDOSMR_H_

@@ -15,7 +15,6 @@
 #include <stack>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
-#include "rdo_common/rdosingletone.h"
 #include "rdo_common/rdoindexedstack.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
@@ -28,8 +27,13 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
+#include "rdo_lib/rdo_parser/rdopmd.h"
+#include "rdo_lib/rdo_parser/rdofrm.h"
+#include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
@@ -39,23 +43,6 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RDORTPParam;
-class RDORSSResource;
-class RDOPATPattern;
-class RDOFRMFrame;
-class RDOFUNFunction;
-class RDOFUNSequence;
-class RDOFUNConstant;
-class RDOFUNGroup;
-class RDOSMR;
-class RDOOperations;
-class RDODPTSearch;
-class RDODPTSome;
-class RDODPTPrior;
-class RDODPTFree;
-class RDODPTFreeActivity;
-class RDOPMDPokaz;
-class RDOPROCProcess;
 class RDOTypeParam;
 class RDOArrayType;
 
@@ -79,35 +66,31 @@ public: \
 	rbool      remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
-DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME)
+DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 
 #define DEFINE_OBJECT_CONTAINER_NONAME_LP(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 
 #define DEFINE_OBJECT_CONTAINER(NAME) \
-DEFINE_OBJECT_CONTAINER_MINIMUM(PTR(RDO##NAME), NAME) \
-DEFINE_OBJECT_CONTAINER_WITHNAME(PTR(RDO##NAME), NAME)
-
-#define DEFINE_OBJECT_CONTAINER_LP(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
 DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
 class RDOParser
 {
 public:
-DEFINE_OBJECT_CONTAINER   (PATPattern     );
-DEFINE_OBJECT_CONTAINER_LP(RTPResType     );
-DEFINE_OBJECT_CONTAINER   (RSSResource    );
-DEFINE_OBJECT_CONTAINER   (FRMFrame       );
-DEFINE_OBJECT_CONTAINER   (FUNConstant    );
-DEFINE_OBJECT_CONTAINER   (FUNFunction    );
-DEFINE_OBJECT_CONTAINER   (FUNSequence    );
-DEFINE_OBJECT_CONTAINER   (DPTSearch      );
-DEFINE_OBJECT_CONTAINER   (DPTSome        );
-DEFINE_OBJECT_CONTAINER   (DPTPrior       );
-DEFINE_OBJECT_CONTAINER   (DPTFreeActivity);
-DEFINE_OBJECT_CONTAINER   (PMDPokaz       );
-DEFINE_OBJECT_CONTAINER_LP(Event          );
+DEFINE_OBJECT_CONTAINER(PATPattern     );
+DEFINE_OBJECT_CONTAINER(RTPResType     );
+DEFINE_OBJECT_CONTAINER(RSSResource    );
+DEFINE_OBJECT_CONTAINER(FRMFrame       );
+DEFINE_OBJECT_CONTAINER(FUNConstant    );
+DEFINE_OBJECT_CONTAINER(FUNFunction    );
+DEFINE_OBJECT_CONTAINER(FUNSequence    );
+DEFINE_OBJECT_CONTAINER(DPTSearch      );
+DEFINE_OBJECT_CONTAINER(DPTSome        );
+DEFINE_OBJECT_CONTAINER(DPTPrior       );
+DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
+DEFINE_OBJECT_CONTAINER(PMDPokaz       );
+DEFINE_OBJECT_CONTAINER(Event          );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
@@ -119,19 +102,8 @@ public:
 
 	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
 
-	void insertDeletables(PTR(RDODeletable) value)
-	{
-		ASSERT(value);
-		m_allDeletables.push_back(value);
-	}
-	void removeDeletables(PTR(RDODeletable) value)
-	{
-		ASSERT(value);
-		m_allDeletables.erase(std::find(m_allDeletables.begin(), m_allDeletables.end(), value));
-	}
-
-	PTR(RDOParserObject) getLastParsingObject() { return m_parsing_object; }
-	REF(FUNGroupList)    getFUNGroupStack    () { return m_allFUNGroup;    }
+	rbool             isPattern       () const { return m_pattern;     }
+	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
 
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
@@ -156,9 +128,9 @@ public:
 	tstring getModelStructure();
 	tstring getChanges       () const;
 
-	PTR(RDOSMR) getSMR()                const { return m_smr;                }
-	void        setSMR(PTR(RDOSMR) smr)       { m_smr = smr;                 }
-	rbool       hasSMR()                const { return m_smr ? true : false; }
+	LPRDOSMR getSMR() const              { return m_pSMR;                }
+	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
+	rbool    hasSMR() const              { return m_pSMR ? true : false; }
 
 	void parse();
 	void parse(REF(std::istream) stream);
@@ -228,41 +200,51 @@ public:
 	static PTR(RDOParser)               s_parser      ();
 
 protected:
-	PTR(RDOParserItem) m_parser_item;
+	LPRDOParserItem m_parser_item;
 
-	virtual PTR(RDOParserContainer) getContainer() = 0;
+	virtual REF(LPRDOParserContainer) getContainer() = 0;
 
-	RDOParserContainer::CIterator begin()
+	RDOParserContainer::Iterator begin()
 	{
 		return getContainer()->begin();
 	}
-	RDOParserContainer::CIterator end()
+	RDOParserContainer::Iterator end()
 	{
 		return getContainer()->end();
 	}
-	RDOParserContainer::CIterator find(ruint index)
+	RDOParserContainer::Iterator find(ruint index)
 	{
 		return getContainer()->find(index);
 	}
 
-	typedef std::vector<PTR(RDODeletable)> DeletableList;
-	typedef std::vector<PTR(RDOValue)>     ValueList;
+	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	DeletableList          m_allDeletables;
 	ValueList              m_allValues;
 	rdoRuntime::RDORuntime m_runtime;
 
 	void parse(rdoModelObjects::RDOParseType file);
 
 private:
-	PTR(RDOParserObject)  m_parsing_object;
-	PTR(RDOSMR)           m_smr;
+	LPRDOSMR              m_pSMR;
 	rbool                 m_have_kw_Resources;
 	rbool                 m_have_kw_ResourcesEnd;
 	Error                 m_error;
 	Stack                 m_movementObjectList;
 	PreCastTypeList       m_preCastTypeList;
 	ContextStack          m_contextStack;
+	rbool                 m_pattern;
+
+	template <class T>
+	void howIsIt()
+	{
+		m_pattern = false;
+	}
+
+	template <>
+	void howIsIt<LPRDOPATPattern>()
+	{
+		m_pattern = true;
+	}
 
 	struct Changes
 	{
@@ -292,11 +274,16 @@ public:
 	{}
 
 private:
-	rdo::SingleTone<Container> m_container;
+	LPRDOParserContainer m_container;
 
-	virtual PTR(RDOParserContainer) getContainer()
+	virtual REF(LPRDOParserContainer) getContainer()
 	{
-		return m_container.instance(this);
+		if (!m_container)
+		{
+			m_container = rdo::Factory<Container>::create();
+			ASSERT(m_container);
+		}
+		return m_container;
 	}
 };
 

@@ -109,7 +109,7 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 		{}
 	};
 
-	enum RDOFileType  { PAT = 0, RTP, RSS, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+	enum RDOFileType  {RTP = 0, RSS, EVN, PAT, DPT, PRC, FRM, FUN, SMR, PMD, PMV, TRC};
 
 	enum RDOParseType
 	{
@@ -118,13 +118,15 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 		obRTP  = 0x0002,
 		obRSS  = 0x0004,
 		obFUN  = 0x0008,
-		obPAT  = 0x0010,
+		obEVN  = 0x0010,
+		obPAT  = 0x0020,
 		obDPT  = 0x0040,
-		obPMD  = 0x0080,
-		obFRM  = 0x0100,
-		obSMR  = 0x0200,
-		obPOST = 0x0400,
-		obALL  = 0x07FF
+		obPRC  = 0x0080,
+		obPMD  = 0x0100,
+		obFRM  = 0x0200,
+		obSMR  = 0x0400,
+		obPOST = 0x0800,
+		obALL  = 0x0FFF
 	};
 CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
 

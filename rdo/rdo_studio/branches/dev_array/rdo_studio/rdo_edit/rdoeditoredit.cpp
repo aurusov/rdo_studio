@@ -913,12 +913,14 @@ void RDOEditorEdit::OnHelpKeyword()
 		RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
 			switch( tab->getCurrentRDOItem() ) {
-				case rdoModelObjects::PAT: keyword = "pat"; break;
 				case rdoModelObjects::RTP: keyword = "rtp"; break;
 				case rdoModelObjects::RSS: keyword = "rss"; break;
+				case rdoModelObjects::EVN: keyword = "evn"; break;
+				case rdoModelObjects::PAT: keyword = "pat"; break;
+				case rdoModelObjects::DPT: keyword = "dpt"; break;
+				case rdoModelObjects::PRC: keyword = "prc"; break;
 				case rdoModelObjects::FRM: keyword = "frm"; break;
 				case rdoModelObjects::FUN: keyword = "fun"; break;
-				case rdoModelObjects::DPT: keyword = "dpt"; break;
 				case rdoModelObjects::SMR: keyword = "smr"; break;
 				case rdoModelObjects::PMD: keyword = "pmd"; break;
 				default:                   keyword = ""; break;

@@ -33,12 +33,12 @@ void rtperror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(PTR(RDOParser) parser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
-	: RDOParserSrcInfo(src_info           )
-	, m_number        (parser->getRTP_id())
-	, m_permanent     (permanent          )
+RDORTPResType::RDORTPResType(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+	: RDOParserSrcInfo(src_info            )
+	, m_number        (pParser->getRTP_id())
+	, m_permanent     (permanent           )
 {
-	parser->insertRTPResType(LPRDORTPResType(this));
+	pParser->insertRTPResType(LPRDORTPResType(this));
 }
 
 RDORTPResType::~RDORTPResType()
@@ -69,13 +69,13 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
 }
 
-void RDORTPResType::writeModelStructure( std::ostream& stream ) const
+void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
-	for ( ruint i = 0; i < getParams().size(); i++ )
+	for (ruint i = 0; i < getParams().size(); i++)
 	{
 		stream << "  " << (i+1) << " ";
-		getParams().at(i)->writeModelStructure( stream );
+		getParams().at(i)->writeModelStructure(stream);
 	}
 }
 
@@ -83,16 +83,16 @@ void RDORTPResType::writeModelStructure( std::ostream& stream ) const
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
 // ----------------------------------------------------------------------------
-RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
-	RDOParserObject( _parser )
+RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(RDOParser) pParser):
+	RDOParserObject(pParser)
 {
-/*	for ( ruint i = 0; i < m_points.size(); i++ )
+/*	for (ruint i = 0; i < m_points.size(); i++)
 	{
 //		double x = m_points[i]->getX();
 	}
 
 	Items::iterator it = m_points.begin();
-	while ( it != m_points.end() )
+	while (it != m_points.end())
 	{
 		double x = (*it)->getX();
 		it++;
@@ -101,8 +101,8 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun( RDOParser* _parser ):
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyTerm - нечеткий термин
 // ----------------------------------------------------------------------------
-RDORTPFuzzyTerm::RDORTPFuzzyTerm( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDORTPFuzzyMembershiftFun* membersfift_fun):
-	RDOParserObject( _parser )
+RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+	RDOParserObject(pParser)
 {
 
 }*/
