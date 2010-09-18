@@ -22,9 +22,11 @@
 
 #define  CLASS(A)            class A
 #define STRUCT(A)            struct A
+#define S_INTERFACE(A)       struct A
 #define IS  ,
 #define AND ,
 #define IMPLEMENTATION_OF(A) public A
+#define INSTANCE_OF(A)       public A
 
 #define  CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)

@@ -190,6 +190,7 @@ private:
 	}
 };
 
+#define S_OBJECT(TYPE)           class TYPE: public rdo::smart_ptr_counter_reference
 #define DECLARE_FACTORY(TYPE)    friend class rdo::Factory<TYPE>;
 #define DECLARE_POINTER(TYPE)    typedef rdo::smart_ptr<TYPE> LP##TYPE;
 #define PREDECLARE_POINTER(TYPE) class TYPE; DECLARE_POINTER(TYPE);
