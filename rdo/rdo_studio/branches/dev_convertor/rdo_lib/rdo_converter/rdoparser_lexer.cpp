@@ -67,12 +67,4 @@ void RDOLexer::LexerError(const char msg[])
 	exit(YY_EXIT_FAILURE);
 }
 
-extern "C"
-{
-	int yywrap2(void) 
-	{ 
-		return 1; 
-	}
-}
-
 CLOSE_RDO_CONVERTER_NAMESPACE
