@@ -86,9 +86,9 @@ RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
 	{
 		case rdoRuntime::RDOType::t_int:
 		{
-			if (dynamic_cast<PTR(rdoParse::RDOTypeIntRange)>(param->getParamType()->type().get()))
+			rdoParse::LPRDOTypeIntRange pRange = param->getParamType()->type().object_dynamic_cast<rdoParse::RDOTypeIntRange>();
+			if (pRange)
 			{
-				rdoParse::LPRDOTypeIntRange pRange = param->getParamType()->type().lp_cast<rdoParse::LPRDOTypeIntRange>();
 				m_min = pRange->range()->getMin();
 				m_max = pRange->range()->getMax();
 			}
@@ -96,9 +96,9 @@ RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
 		}
 		case rdoRuntime::RDOType::t_real:
 		{
-			if (dynamic_cast<PTR(rdoParse::RDOTypeRealRange)>(param->getParamType()->type().get()))
+			rdoParse::LPRDOTypeRealRange pRange = param->getParamType()->type().object_dynamic_cast<rdoParse::RDOTypeRealRange>();
+			if (pRange)
 			{
-				rdoParse::LPRDOTypeRealRange pRange = param->getParamType()->type().lp_cast<rdoParse::LPRDOTypeRealRange>();
 				m_min = pRange->range()->getMin();
 				m_max = pRange->range()->getMax();
 			}
@@ -133,7 +133,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type
 	, m_id   (-1  )
 {}
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__int>) type, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>) type, CREF(rdoParse::RDOValue) default)
 	: m_name (name)
 	, m_exist(true)
 	, m_id   (-1  )
@@ -142,7 +142,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOTy
 	setDefault(default);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::smart_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) default)
 	: m_name (name)
 	, m_exist(true)
 	, m_id   (-1  )

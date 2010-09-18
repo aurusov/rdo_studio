@@ -19,8 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEvent
 // ----------------------------------------------------------------------------
-RDOCalcEvent::RDOCalcEvent(PTR(RDORuntimeParent) parent)
-	: RDOCalc   (parent  )
+RDOCalcEvent::RDOCalcEvent()
 {}
 
 void RDOCalcEvent::setEvent(CREF(LPIBaseOperation) event)
@@ -32,11 +31,10 @@ void RDOCalcEvent::setEvent(CREF(LPIBaseOperation) event)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEventPlan
 // ----------------------------------------------------------------------------
-RDOCalcEventPlan::RDOCalcEventPlan(PTR(RDORuntimeParent) parent, PTR(RDOCalc) timeCalc)
-	: RDOCalcEvent(parent  )
-	, m_timeCalc  (timeCalc)
+RDOCalcEventPlan::RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc)
+	: m_pTimeCalc(pTimeCalc)
 {
-	ASSERT(m_timeCalc);
+	ASSERT(m_pTimeCalc);
 }
 
 REF(RDOValue) RDOCalcEventPlan::doCalc(PTR(RDORuntime) runtime)
@@ -49,8 +47,7 @@ REF(RDOValue) RDOCalcEventPlan::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcEventStop
 // ----------------------------------------------------------------------------
-RDOCalcEventStop::RDOCalcEventStop(PTR(RDORuntimeParent) parent)
-	: RDOCalcEvent(parent)
+RDOCalcEventStop::RDOCalcEventStop()
 {}
 
 REF(RDOValue) RDOCalcEventStop::doCalc(PTR(RDORuntime) runtime)

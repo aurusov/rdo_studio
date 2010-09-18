@@ -129,6 +129,9 @@ private:
 			: parent_type(pString)
 		{}
 
+		PTR(string_class)  get()       { return parent_type::get(); }
+		CPTR(string_class) get() const { return parent_type::get(); }
+
 		void  addref () { parent_type::addref ();      }
 		void  release() { parent_type::release();      }
 		rbool owner  () { return parent_type::owner(); }

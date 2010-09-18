@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -24,7 +24,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDORTPResType);
 
-class RDORTPParam: public RDOParserSrcInfo, IModelStructure, IName
+OBJECT(RDORTPParam)
+	IS INSTANCE_OF       (RDOParserSrcInfo)
+	AND IMPLEMENTATION_OF(IModelStructure )
+	AND IMPLEMENTATION_OF(IName           )
 {
 DECLARE_FACTORY(RDORTPParam);
 public:

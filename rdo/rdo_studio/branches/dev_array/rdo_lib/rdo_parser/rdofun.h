@@ -6,10 +6,10 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 
 namespace rdoRuntime
 {
-class RDOCalc;
 class RDOCalcConst;
 class RDOCalcIsEqual;
 class RDOCalcFuncParam;
@@ -35,9 +35,9 @@ class RDOFUNDoubleToIntByResult
 {
 public:
 	void roundCalc();
-	void push_back( rdoRuntime::RDOCalcDoubleToIntByResult* calc )
+	void push_back(CREF(rdoRuntime::LPRDOCalcDoubleToIntByResult) pCalc)
 	{
-		m_int_or_double.push_back( calc );
+		m_int_or_double.push_back(pCalc);
 	}
 	void insert( const RDOFUNDoubleToIntByResult& first )
 	{
@@ -50,7 +50,8 @@ public:
 	}
 
 private:
-	std::vector< rdoRuntime::RDOCalcDoubleToIntByResult* > m_int_or_double;
+	typedef std::vector<rdoRuntime::LPRDOCalcDoubleToIntByResult> CalcList;
+	CalcList m_int_or_double;
 };
 
 // ----------------------------------------------------------------------------
@@ -61,10 +62,10 @@ class RDOFUNLogic: public RDOParserObject, public RDOParserSrcInfo
 friend class RDOFUNArithm;
 
 public:
-	rdoRuntime::RDOCalc* getCalc( rdoRuntime::RDOType::TypeID _id = rdoRuntime::RDOType::t_real );
+	rdoRuntime::LPRDOCalc getCalc( rdoRuntime::RDOType::TypeID _id = rdoRuntime::RDOType::t_real );
 
 	RDOFUNLogic( const RDOFUNArithm& arithm );
-	RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
+	RDOFUNLogic( const RDOParserObject* _parent, CREF(rdoRuntime::LPRDOCalc) pCalc, bool hide_warning = false );
 	virtual ~RDOFUNLogic() {}
 
 	RDOFUNLogic* operator &&( const RDOFUNLogic& second );
@@ -84,7 +85,7 @@ public:
 	}
 
 private:
-	rdoRuntime::RDOCalc*      m_calc;
+	rdoRuntime::LPRDOCalc     m_pCalc;
 	RDOFUNDoubleToIntByResult m_int_or_double;
 };
 
@@ -95,11 +96,11 @@ class RDOFUNArithm: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	RDOFUNArithm( RDOParser* parser, const RDOValue& value );
-	RDOFUNArithm( RDOParser* parser, const RDOValue& value, rdoRuntime::RDOCalc* calc );
+	RDOFUNArithm( RDOParser* parser, const RDOValue& value, CREF(rdoRuntime::LPRDOCalc) pCalc );
 	RDOFUNArithm( RDOParser* parser, const RDOValue& res_name, const RDOValue& par_name );
 
 	RDOFUNArithm( const RDOFUNArithm*    parent, const RDOValue& value );
-	RDOFUNArithm( const RDOParserObject* parent, const RDOValue& value, rdoRuntime::RDOCalc* calc );
+	RDOFUNArithm( const RDOParserObject* parent, const RDOValue& value, CREF(rdoRuntime::LPRDOCalc) pCalc );
 	RDOFUNArithm( const RDOFUNArithm*    parent, const RDOValue& res_name, const RDOValue& par_name );
 
 	virtual ~RDOFUNArithm() {}
@@ -116,11 +117,11 @@ public:
 	RDOFUNLogic* operator <=( RDOFUNArithm& second );
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 
-	rdoRuntime::RDOCalc*           createCalc       (CREF(LPRDOTypeParam) forType = NULL);
-	rdoRuntime::RDOCalc*           calc() const     { return m_calc;                     }
+	rdoRuntime::LPRDOCalc          createCalc       (CREF(LPRDOTypeParam) forType = NULL);
+	rdoRuntime::LPRDOCalc          calc() const     { return m_pCalc;                    }
 	const RDOValue&                value() const    { return m_value;                    }
 	LPRDOType                      type() const     { return m_value.type();             }
-	LPRDOEnumType                  enumType() const { return type().cast<RDOEnumType>(); }
+	LPRDOEnumType                  enumType() const { return type().object_static_cast<RDOEnumType>(); }
 	rdoRuntime::RDOType::TypeID    typeID() const   { return type()->type().typeID();    }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
@@ -143,7 +144,7 @@ public:
 
 private:
 	RDOValue                   m_value;
-	rdoRuntime::RDOCalc*       m_calc;
+	rdoRuntime::LPRDOCalc      m_pCalc;
 	RDOFUNDoubleToIntByResult  m_int_or_double;
 
 	void init( const RDOValue& value );
@@ -234,8 +235,8 @@ public:
 	};
 
 	RDOFUNSequenceHeader* header;
-	rdoRuntime::RDOCalcSeqInit* init_calc;
-	rdoRuntime::RDOCalcSeqNext* next_calc;
+	rdoRuntime::LPRDOCalcSeqInit init_calc;
+	rdoRuntime::LPRDOCalcSeqNext next_calc;
 
 protected:
 	int base;
@@ -434,8 +435,8 @@ public:
 	{
 	}
 	virtual ~RDOFUNFunctionListElement() {}
-	virtual rdoRuntime::RDOCalcIsEqual* createIsEqualCalc(CREF(LPRDOTypeParam) retType, rdoRuntime::RDOCalcFuncParam* const funcParam, const RDOParserSrcInfo& _src_pos ) const;
-	virtual rdoRuntime::RDOCalcConst*   createResultCalc (CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const = 0;
+	virtual rdoRuntime::LPRDOCalcIsEqual createIsEqualCalc(CREF(LPRDOTypeParam) retType, CREF(rdoRuntime::LPRDOCalcFuncParam) funcParam, const RDOParserSrcInfo& _src_pos ) const;
+	virtual rdoRuntime::LPRDOCalcConst   createResultCalc (CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const = 0;
 	virtual bool isEquivalence() const { return false; }
 };
 
@@ -449,7 +450,7 @@ public:
 		RDOFUNFunctionListElement( _parent, _src_info )
 	{
 	}
-	virtual rdoRuntime::RDOCalcConst* createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
+	virtual rdoRuntime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -465,7 +466,7 @@ public:
 		value( _value )
 	{
 	}
-	virtual rdoRuntime::RDOCalcConst* createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
+	virtual rdoRuntime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -481,7 +482,7 @@ public:
 		value( _value )
 	{
 	}
-	virtual rdoRuntime::RDOCalcConst* createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
+	virtual rdoRuntime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -495,7 +496,7 @@ public:
 	{
 	}
 	virtual bool isEquivalence() const { return true; }
-	virtual rdoRuntime::RDOCalcConst* createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
+	virtual rdoRuntime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) retType, const RDOParserSrcInfo& _src_pos ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -533,12 +534,13 @@ public:
 	const std::string& name() const                                   { return src_info().src_text(); }
 	const std::vector< const RDOFUNFunctionParam* > getParams() const { return params;                }
 
-	void setFunctionCalc( rdoRuntime::RDOFunCalc* calc );
-	rdoRuntime::RDOFunCalc* getFunctionCalc() const                   { return functionCalc;          }
+	void setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) calc);
+	rdoRuntime::LPRDOFunCalc getFunctionCalc() const                   { return functionCalc;          }
 
 	CREF(LPRDOTypeParam) getType() const                              { return retType;               }
-	void insertPostLinked( rdoRuntime::RDOCalcFunctionCall* calc ) {
-		post_linked.push_back( calc );
+	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCall) pCalc)
+	{
+		post_linked.push_back(pCalc);
 	}
 
 private:
@@ -546,8 +548,10 @@ private:
 	std::vector< const RDOFUNFunctionParam* >       params;
 	std::vector< const RDOFUNFunctionListElement* > elements;    // for list and table
 	std::vector< const RDOFUNCalculateIf* >         calculateIf; // for algorithmic
-	rdoRuntime::RDOFunCalc* functionCalc;
-	std::vector< rdoRuntime::RDOCalcFunctionCall* > post_linked; // для рекурсивного вызова
+	rdoRuntime::LPRDOFunCalc functionCalc;
+
+	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCall> PostLinkedList;
+	PostLinkedList post_linked; // для рекурсивного вызова
 };
 
 // ----------------------------------------------------------------------------
@@ -605,12 +609,11 @@ public:
 class RDOFUNSelect: public RDOFUNGroup
 {
 private:
-	rdoRuntime::RDOFunCalcSelect* select;
+	rdoRuntime::LPRDOFunCalcSelect select;
 
 public:
 	RDOFUNSelect( RDOParser* _parser, const RDOParserSrcInfo& _res_info ):
-		RDOFUNGroup( _parser, RDOParserSrcInfo(_res_info.src_text()) ),
-		select( NULL )
+		RDOFUNGroup( _parser, RDOParserSrcInfo(_res_info.src_text()) )
 	{
 	}
 	void initSelect( const RDOFUNLogic* cond = NULL );

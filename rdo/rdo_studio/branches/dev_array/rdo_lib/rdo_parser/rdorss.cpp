@@ -76,7 +76,7 @@ bool RDORSSResource::defined() const
 	return m_currParam == getType()->getParams().end();
 }
 
-rdoRuntime::RDOCalc* RDORSSResource::createCalc()
+rdoRuntime::LPRDOCalc RDORSSResource::createCalc()
 {
 	std::vector<rdoRuntime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(Params, params(), it)
@@ -84,7 +84,7 @@ rdoRuntime::RDOCalc* RDORSSResource::createCalc()
 		paramList.push_back(it->param().value());
 	}
 	
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateNumberedResource( parser()->runtime(), getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent() );
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateNumberedResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent());
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;
@@ -98,7 +98,7 @@ RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _s
 {
 }
 
-rdoRuntime::RDOCalc* RDOPROCResource::createCalc()
+rdoRuntime::LPRDOCalc RDOPROCResource::createCalc()
 {
 	std::vector<rdoRuntime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(Params, params(), it)
@@ -106,7 +106,7 @@ rdoRuntime::RDOCalc* RDOPROCResource::createCalc()
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateProcessResource( parser()->runtime(), getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent() );
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateProcessResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent());
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "Создание ресурса " + calc->src_text() );
 	return calc;

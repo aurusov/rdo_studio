@@ -107,9 +107,9 @@ friend class RDOEvent;
 public:
 	RDOPatternEvent( PTR(RDORuntime) rTime, bool trace );
 
-	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc                 ) { m_convertor.push_back( pCalc );        }
-	void addConvertorStatus( RDOResource::ConvertStatus status     ) { m_convertorStatus.push_back( status ); }
-	void addEraseCalc      ( PTR(RDOCalc) calc                     ) { m_erase.push_back( calc );             }
+	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
+	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
+	void addEraseCalc      ( CREF(LPRDOCalc) pCalc             ) { m_erase.push_back( pCalc );            }
 
 	void convertEvent( PTR(RDORuntime) runtime )
 	{
@@ -124,9 +124,9 @@ public:
 	LPIEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
 
 private:
-	std::vector< PTR(RDOCalc) >                   m_convertor;
-	std::vector< RDOResource::ConvertStatus >     m_convertorStatus;
-	std::vector< PTR(RDOCalc) >                   m_erase;
+	CalcList          m_convertor;
+	ConvertStatusList m_convertorStatus;
+	CalcList          m_erase;
 };
 
 // ----------------------------------------------------------------------------

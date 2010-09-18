@@ -359,7 +359,7 @@ void RDOPATPattern::end()
 					resSelectors.push_back(m_relResList.at(i)->createSelectResourceCommonChoiceCalc());
 				}
 			}
-			rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSelectResourceCommonCalc>::create(resSelectors, m_useCommonWithMax, rdo::smart_ptr_null());
+			rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSelectResourceCommonCalc>::create(resSelectors, m_useCommonWithMax, rdoRuntime::LPRDOCalc(NULL));
 			pCalc->setSrcInfo(src_info() );
 			pCalc->setSrcText(_T("first"));
 			addChoiceFromCalc(pCalc      );
@@ -826,7 +826,7 @@ RDOPatternKeyboard::RDOPatternKeyboard(PTR(RDOParser) pParser, CREF(RDOParserSrc
 // ----------------------------------------------------------------------------
 // ---------- RDORelevantResource
 // ----------------------------------------------------------------------------
-PTR(rdoRuntime::RDOCalc) RDORelevantResource::getChoiceCalc() const
+rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc() const
 {
 	if (m_pChoiceFrom && m_pChoiceFrom->m_type == rdoParse::RDOPATChoiceFrom::ch_from)
 	{
@@ -835,7 +835,7 @@ PTR(rdoRuntime::RDOCalc) RDORelevantResource::getChoiceCalc() const
 	return NULL;
 }
 
-PTR(rdoRuntime::RDOCalc) RDORelevantResource::getSelectCalc() const
+rdoRuntime::LPRDOCalc RDORelevantResource::getSelectCalc() const
 {
 	if (m_pChoiceOrder && m_pChoiceOrder->m_pArithm)
 	{
@@ -875,7 +875,8 @@ rdoRuntime::LPRDOCalc RDORelevantResourceDirect::createSelectFirstResourceChoice
 rdoRuntime::LPIRDOSelectResourceCommon RDORelevantResourceDirect::createSelectResourceCommonChoiceCalc()
 {
 	rdoRuntime::LPRDOSelectResourceDirectCommonCalc pDirectCommonCalc = rdo::Factory<rdoRuntime::RDOSelectResourceDirectCommonCalc>::create(m_relResID, m_pResource->getID(), getChoiceCalc());
-	rdoRuntime::LPIRDOSelectResourceCommon pSelectResourceCommon = pDirectCommonCalc;
+	rdoRuntime::LPIRDOSelectResourceCommon pSelectResourceCommon = pDirectCommonCalc.interface_cast<rdoRuntime::IRDOSelectResourceCommon>();
+	ASSERT(pSelectResourceCommon);
 	return pSelectResourceCommon;
 }
 
@@ -957,7 +958,10 @@ rdoRuntime::LPRDOCalc RDORelevantResourceByType::createSelectFirstResourceChoice
 
 rdoRuntime::LPIRDOSelectResourceCommon RDORelevantResourceByType::createSelectResourceCommonChoiceCalc()
 {
-	return rdo::Factory<rdoRuntime::RDOSelectResourceByTypeCommonCalc>::create(m_relResID, m_pResType->getNumber(), getChoiceCalc());
+	rdoRuntime::LPRDOSelectResourceByTypeCommonCalc pByTypeCommonCalc = rdo::Factory<rdoRuntime::RDOSelectResourceByTypeCommonCalc>::create(m_relResID, m_pResType->getNumber(), getChoiceCalc());
+	rdoRuntime::LPIRDOSelectResourceCommon pSelectResourceCommon = pByTypeCommonCalc.interface_cast<rdoRuntime::IRDOSelectResourceCommon>();
+	ASSERT(pSelectResourceCommon);
+	return pSelectResourceCommon;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

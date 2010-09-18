@@ -36,12 +36,11 @@ enum EqualType
 };
 
 template <EqualType equalType>
-CALC(RDOSetRelParamCalc)
+class RDOSetRelParamCalc: public RDOCalc
 {
 public:
-	RDOSetRelParamCalc(PTR(RDORuntimeParent) parent, int relNumb, int parNumb, CREF(LPRDOCalc) pCalc)
-		: RDOCalc  (parent )
-		, m_relNumb(relNumb)
+	RDOSetRelParamCalc(int relNumb, int parNumb, CREF(LPRDOCalc) pCalc = NULL)
+		: m_relNumb(relNumb)
 		, m_parNumb(parNumb)
 		, m_pCalc  (pCalc  )
 	{
@@ -55,8 +54,7 @@ protected:
 	int        m_parNumb;
 	LPRDOCalc  m_pCalc;
 
-private:
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	DECALRE_ICalc;
 };
 
 template <>

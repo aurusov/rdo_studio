@@ -24,6 +24,7 @@ OPEN_RDO_NAMESPACE
 template<class T>
 class intrusive_ptr
 {
+template <typename P> friend class intrusive_ptr;
 public:
 	typedef T                object_type;
 	typedef intrusive_ptr<T> this_type;
@@ -35,21 +36,38 @@ public:
 
 	REF(this_type) operator= (CREF(this_type) sptr);
 
-	PTR(T)   get();
-	CPTR(T)  get() const;
+	//! Сравнивает по указателям
+	template <class P>
+	rbool operator== (CREF(intrusive_ptr<P>) sptr) const;
+	template <class P>
+	rbool operator!= (CREF(intrusive_ptr<P>) sptr) const;
+
+	//! Сравнивает по значениям
+	template<class P>
+	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
 
 	operator rbool     () const;
 	CPTR(T) operator-> () const;
 	 PTR(T) operator-> ();
 
 	template <class P>
-	intrusive_ptr<P> object_cast() const;
+	operator intrusive_ptr<P>() const;
 
 	template <class P>
-	intrusive_ptr<P> object_dymamic_cast() const;
+	intrusive_ptr<P> object_parent_cast() const;
+
+	template <class P>
+	intrusive_ptr<P> object_static_cast() const;
+
+	template <class P>
+	intrusive_ptr<P> object_dynamic_cast() const;
 
 	template <class P>
 	interface_ptr<P> interface_cast();
+
+	//! TODO: переместить в protected
+	PTR(T)   get();
+	CPTR(T)  get() const;
 
 protected:
 	void  addref ();

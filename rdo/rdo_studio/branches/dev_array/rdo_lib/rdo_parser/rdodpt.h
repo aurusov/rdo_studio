@@ -261,7 +261,7 @@ protected:
 	LPIPROCBlock runtime;
 
 public:
-	RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time );
+	RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, CREF(rdoRuntime::LPRDOCalc) time );
 };
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForQueue
@@ -386,7 +386,7 @@ protected:
 	LPIPROCBlock runtime;
 
 public:
-	RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time );
+	RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, CREF(rdoRuntime::LPRDOCalc) time );
 };
 
 // ----------------------------------------------------------------------------
@@ -410,7 +410,7 @@ protected:
 	LPIPROCBlock runtime;
 
 public:
-	RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* value, int Id_res, int Id_param );
+	RDOPROCAssign( RDOPROCProcess* _process, const std::string& _name, CREF(rdoRuntime::LPRDOCalc) value, int Id_res, int Id_param );
 };
 
 } // namespace rdoParse

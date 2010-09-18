@@ -210,7 +210,7 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -382,75 +382,76 @@ rtp_param
 // ----------------------------------------------------------------------------
 param_type
 	: RDO_integer param_type_range param_value_default
-				{
-					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
-					LPRDOTypeParam pType;
-					if (pRange)
-					{
-						if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
-						    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
-						{
-							PARSER->error().error(@2, _T("ƒиапазон целого типа должен быть целочисленным"));
-						}
-						LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-						pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-					}
-					else
-					{
-						pType = rdo::Factory<RDOTypeParam>::create(g_int, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-					}
-					$$ = PARSER->stack().push(pType);
-				}
-				| RDO_real param_type_range param_value_default
-				{
-					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
-					LPRDOTypeParam pType;
-					if (pRange)
-					{
-						LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
-						pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-					}
-					else
-					{
-						pType = rdo::Factory<RDOTypeParam>::create(g_real, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-					}
-					$$ = PARSER->stack().push(pType);
-				}
-				| RDO_string param_value_default
-				{
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-					$$ = PARSER->stack().push(pType);
-				}
-				| param_type_array param_value_default
-				{
-					LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-					$$ = PARSER->stack().push(pType);
-				}
-				| RDO_bool param_value_default
-				{
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_bool, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-					$$ = PARSER->stack().push(pType);
-				}
-				| param_type_enum param_value_default
-				{
-					LEXER->enumReset();
-					LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-					$$ = PARSER->stack().push(pType);
-				}
-				| param_type_such_as param_value_default
-				{
-					LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
-					ASSERT(pTypeSuchAs);
-					RDOValue default = RDOVALUE($2);
-					if (!default.defined())
-					{
-						if (pTypeSuchAs->default().defined())
-							default = pTypeSuchAs->default();
-					}
-					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), default, RDOParserSrcInfo(@1, @2));
-					$$ = PARSER->stack().push(pType);
+	{
+		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+		LPRDOTypeParam pType;
+		if (pRange)
+		{
+			if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
+			    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
+			{
+				PARSER->error().error(@2, _T("ƒиапазон целого типа должен быть целочисленным"));
+			}
+			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+			pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+		}
+		else
+		{
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+		}
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_real param_type_range param_value_default
+	{
+		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+		LPRDOTypeParam pType;
+		if (pRange)
+		{
+			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
+			pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+		}
+		else
+		{
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+		}
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_string param_value_default
+	{
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_array param_value_default
+	{
+		LEXER->array_cnt_rst();
+		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_bool param_value_default
+	{
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_enum param_value_default
+	{
+		LEXER->enumReset();
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_such_as param_value_default
+	{
+		LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
+		ASSERT(pTypeSuchAs);
+		RDOValue default = RDOVALUE($2);
+		if (!default.defined())
+		{
+			if (pTypeSuchAs->default().defined())
+				default = pTypeSuchAs->default();
+		}
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), default, RDOParserSrcInfo(@1, @2));
+		$$ = PARSER->stack().push(pType);
 	}
 /*	| RDO_integer error
 	{

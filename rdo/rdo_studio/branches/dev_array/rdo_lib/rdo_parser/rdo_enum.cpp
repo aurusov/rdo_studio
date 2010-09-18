@@ -71,7 +71,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 				return pEnum;
 
 			//! Типы разные, сгенерим ошибку
-			if (pEnum.compare(from.lp_cast<LPRDOEnumType>()))
+			if (pEnum.compare(from.object_static_cast<RDOEnumType>()))
 			{
 				rdoParse::g_error().push_only(src_info,     _T("Используются различные перечислимые типы с одинаковыми значениями"));
 				rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
@@ -106,7 +106,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 			rdoParse::g_error().push_done();
 			break;
 	}
-	return rdo::smart_ptr_null();
+	return NULL;
 }
 
 RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -120,13 +120,13 @@ RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_
 		case rdoRuntime::RDOType::t_identificator:
 			toValue = (getEnums().findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
 				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), pEnum, from.src_info()) :
-				RDOValue(g_unknow, from.src_info());
+				RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
 			break;
 
 		case rdoRuntime::RDOType::t_string:
 			toValue = (getEnums().findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END) ?
 				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), pEnum, from.src_info()) :
-				RDOValue(g_unknow, from.src_info());
+				RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
 			break;
 
 		case rdoRuntime::RDOType::t_enum:

@@ -16,7 +16,7 @@
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -24,7 +24,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-class RDOTypeParam: public RDOParserSrcInfo, public IModelStructure, public rdo::smart_ptr_counter_reference
+OBJECT(RDOTypeParam)
+	IS INSTANCE_OF       (RDOParserSrcInfo)
+	AND IMPLEMENTATION_OF(IModelStructure )
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
@@ -42,7 +44,6 @@ private:
 	LPRDOType m_type;
 	RDOValue  m_default;
 };
-DECLARE_POINTER(RDOTypeParam);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

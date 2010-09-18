@@ -19,7 +19,7 @@
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdocalc_relres.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -43,13 +43,13 @@ class RDORelevantResource;
 // ----------------------------------------------------------------------------
 // ---------- ConvertCmdList
 // ----------------------------------------------------------------------------
-class ConvertCmdList: public rdo::smart_ptr_counter_reference
+OBJECT(ConvertCmdList)
 {
 DECLARE_FACTORY(ConvertCmdList);
 public:
-	typedef std::vector<PTR(rdoRuntime::RDOCalc)> CalcList;
+	typedef std::vector<rdoRuntime::LPRDOCalc> CalcList;
 
-	void insertCommand(PTR(rdoRuntime::RDOCalc) pCalc)
+	void insertCommand(CREF(rdoRuntime::LPRDOCalc) pCalc)
 	{
 		m_calcList.push_back(pCalc);
 	}
@@ -61,7 +61,6 @@ public:
 private:
 	CalcList m_calcList;
 };
-DECLARE_POINTER(ConvertCmdList);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPattern
@@ -382,8 +381,8 @@ public:
 	}
 
 protected:
-	PTR(rdoRuntime::RDOCalc)                getChoiceCalc() const;
-	PTR(rdoRuntime::RDOCalc)                getSelectCalc() const;
+	rdoRuntime::LPRDOCalc                   getChoiceCalc() const;
+	rdoRuntime::LPRDOCalc                   getSelectCalc() const;
 	rdoRuntime::RDOSelectResourceCalc::Type getSelectType() const;
 
 private:

@@ -258,7 +258,7 @@ void RDOParserCorbaRTP::parse()
 					{
 					case rdoParse::RDOCorba::int_type:
 					{
-						rdoMBuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), g_int);
+						rdoMBuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__int>::create());
 
 						if (my_rtpList[i].m_param[j].m_diap_int == 1)
 							par_int.setDiap(RDOValue(my_rtpList[i].m_param[j].m_min_int), RDOValue(my_rtpList[i].m_param[j].m_max_int));
@@ -271,7 +271,7 @@ void RDOParserCorbaRTP::parse()
 					}
 					case rdoParse::RDOCorba::double_type:
 					{
-						rdoMBuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), g_real);
+						rdoMBuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__real>::create());
 
 						if (my_rtpList[i].m_param[j].m_diap_double == 1)
 							par_double.setDiap(RDOValue(my_rtpList[i].m_param[j].m_min_double), RDOValue(my_rtpList[i].m_param[j].m_max_double));

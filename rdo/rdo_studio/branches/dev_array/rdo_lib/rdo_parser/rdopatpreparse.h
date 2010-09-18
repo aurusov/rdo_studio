@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
-#include "rdo_common/rdosmart_ptr.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
 #include "rdo_lib/rdo_runtime/rdo_event.h"
 // ===============================================================================
@@ -24,16 +24,16 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
 // ----------------------------------------------------------------------------
-class RDOEvent: public rdo::smart_ptr_counter_reference
+OBJECT(RDOEvent)
 {
 DECLARE_FACTORY(RDOEvent);
 public:
-	typedef std::list<PTR(rdoRuntime::RDOCalcEvent)> CalcList;
+	typedef std::list<rdoRuntime::LPRDOCalcEvent> CalcList;
 
 	CREF(tstring)    name           () const;
-	void             attachCalc     (PTR(rdoRuntime::RDOCalcEventStop) pCalc);
-	void             attachCalc     (PTR(rdoRuntime::RDOCalcEventPlan) pCalc);
-	CREF(CalcList)   getCalcList    () const;
+	void             attachCalc     (CREF(rdoRuntime::LPRDOCalcEventStop) pCalc);
+	void             attachCalc     (CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc);
+	REF(CalcList)    getCalcList    ();
 	LPIBaseOperation getRuntimeEvent() const;
 	void             setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
 
@@ -45,8 +45,6 @@ private:
 	CalcList         m_calcList;
 	LPIBaseOperation m_runtimeEvent;
 };
-
-DECLARE_POINTER(RDOEvent);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
