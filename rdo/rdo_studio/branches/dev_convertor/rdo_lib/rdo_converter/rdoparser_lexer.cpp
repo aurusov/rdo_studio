@@ -69,7 +69,7 @@ void RDOLexer::LexerError(const char msg[])
 
 extern "C"
 {
-	int yywrap(void) 
+	int yywrap2(void) 
 	{ 
 		return 1; 
 	}
