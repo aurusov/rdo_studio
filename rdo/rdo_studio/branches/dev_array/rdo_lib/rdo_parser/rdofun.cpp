@@ -88,7 +88,7 @@ GET_ARITHM_PRE_TYPE() \
 CREATE_CALC( CALC, OPR )
 
 #define RETURN_ARITHM() \
-RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(newCalc->calcValue(parser()->runtime()), newType, newCalc->src_info()), newCalc ); \
+RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(newType, newCalc->src_info()), newCalc ); \
 arithm->m_int_or_double.insert( m_int_or_double, second.m_int_or_double ); \
 return arithm;
 
@@ -1375,7 +1375,7 @@ void RDOFUNFunction::createTableCalc( const YYLTYPE& _elements_pos )
 			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getType()->type().get()))
 			{
 				LPRDOTypeIntRange pRange = param->getType()->type().lp_cast<LPRDOTypeIntRange>();
-				if (pRange->range()->getMax().value().getInt() != 1)
+				if (pRange->range()->getMin().value().getInt() != 1)
 				{
 					parser()->error().error(pRange->range()->src_info(), rdo::format(_T("Минимальное значение диапазона должно быть 1, текущий диапазон [%d..%d]"), pRange->range()->getMin().value().getInt(), pRange->range()->getMax().value().getInt()));
 				}

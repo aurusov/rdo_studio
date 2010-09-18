@@ -5,7 +5,7 @@ $End
 
 $Decision_point dptsearch : search
 $Parent dptmain
-$Condition 1 = 2
+$Condition 1 == 2
 $Term_condition false
 $Evaluate_by 1
 $Compare_tops = YES
