@@ -30,14 +30,14 @@ friend class TreeNode;
 
 private:
 	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name );
-	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, RDOCalc* condition, const std::string& name );
+	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
 
 	virtual ~RDORule()
 	{}
 
 	void init();
 
-	RDOCalc* m_additionalCondition;
+	LPRDOCalc m_additionalCondition;
 
 	bool m_traceOFF;
 	void trace();

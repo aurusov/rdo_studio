@@ -30,7 +30,7 @@ protected:
 	std::string               m_oprName;
 	std::list< RDOResource* > m_relevantResources; // Список релевантных ресурсов
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
-	std::vector< RDOCalc* >   m_paramsCalcs;
+	std::vector<LPRDOCalc>    m_paramsCalcs;
 
 	void setPatternParameters( RDOSimulator* sim );
 	void getRelevantResources( RDOSimulator* sim, std::list< RDOResource* >& rel_res_list );

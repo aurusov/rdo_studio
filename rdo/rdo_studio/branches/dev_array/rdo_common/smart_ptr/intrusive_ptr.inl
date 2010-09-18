@@ -13,10 +13,6 @@
 
 OPEN_RDO_NAMESPACE
 
-inline counter_reference::counter_reference()
-	: m_intrusive_counter(0)
-{}
-
 template<class T>
 inline intrusive_ptr<T>::intrusive_ptr()
 	: m_object(NULL)
@@ -59,17 +55,17 @@ inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CR
 	return *this;
 }
 
-//template<class T>
-//inline PTR(T) intrusive_ptr<T>::get()
-//{
-//	return m_object;
-//}
-//
-//template<class T>
-//inline CPTR(T) intrusive_ptr<T>::get() const
-//{
-//	return m_object;
-//}
+template<class T>
+inline PTR(T) intrusive_ptr<T>::get()
+{
+	return m_object;
+}
+
+template<class T>
+inline CPTR(T) intrusive_ptr<T>::get() const
+{
+	return m_object;
+}
 
 template<class T>
 inline intrusive_ptr<T>::operator rbool () const
@@ -91,9 +87,23 @@ inline PTR(T) intrusive_ptr<T>::operator-> ()
 
 template<class T>
 template<class P>
-inline intrusive_ptr<P> intrusive_ptr<T>::cast() const
+inline intrusive_ptr<P> intrusive_ptr<T>::object_cast() const
 {
 	return intrusive_ptr<P>(static_cast<PTR(P)>(m_object));
+}
+
+template<class T>
+template<class P>
+inline intrusive_ptr<P> intrusive_ptr<T>::object_dymamic_cast() const
+{
+	return intrusive_ptr<P>(dynamic_cast<PTR(P)>(m_object));
+}
+
+template<class T>
+template<class P>
+inline interface_ptr<P> intrusive_ptr<T>::interface_cast()
+{
+	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPICounterReference>(m_object));
 }
 
 template<class T>
@@ -114,6 +124,12 @@ inline void intrusive_ptr<T>::release()
 			m_object = NULL;
 		}
 	}
+}
+
+template<class T>
+inline rbool intrusive_ptr<T>::owner() const
+{
+	return static_cast<CPTR(counter_reference)>(m_object)->m_intrusive_counter == 1;
 }
 
 template<class T>

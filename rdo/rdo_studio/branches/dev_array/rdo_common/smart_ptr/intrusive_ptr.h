@@ -15,19 +15,11 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
+#include "rdo_common/smart_ptr/counter_reference.h"
+#include "rdo_common/smart_ptr/interface_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
-
-class counter_reference
-{
-template<class T> friend class intrusive_ptr;
-public:
-	counter_reference();
-
-private:
-	ruint m_intrusive_counter;
-};
 
 template<class T>
 class intrusive_ptr
@@ -43,21 +35,30 @@ public:
 
 	REF(this_type) operator= (CREF(this_type) sptr);
 
-	//PTR(T)   get();
-	//CPTR(T)  get() const;
+	PTR(T)   get();
+	CPTR(T)  get() const;
 
 	operator rbool     () const;
 	CPTR(T) operator-> () const;
 	 PTR(T) operator-> ();
 
 	template <class P>
-	intrusive_ptr<P> cast() const;
+	intrusive_ptr<P> object_cast() const;
+
+	template <class P>
+	intrusive_ptr<P> object_dymamic_cast() const;
+
+	template <class P>
+	interface_ptr<P> interface_cast();
+
+protected:
+	void  addref ();
+	void  release();
+	rbool owner  () const;
 
 private:
 	PTR(T) m_object;
 
-	void       addref ();
-	void       release();
 	REF(ruint) counter();
 };
 
@@ -65,6 +66,7 @@ template <class T>
 class Factory
 {
 friend class intrusive_ptr<T>;
+friend class CounterReferenceReal<T>;
 public:
 	inline static intrusive_ptr<T> create()
 	{

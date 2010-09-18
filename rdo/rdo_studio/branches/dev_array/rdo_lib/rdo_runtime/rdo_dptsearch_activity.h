@@ -30,10 +30,10 @@ QUERY_INTERFACE(IDPTSearchActivity)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, PTR(RDOCalc) cost);
+	RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, CREF(LPRDOCalc) pCost);
 
 	LPIRule                        m_rule;
-	PTR(RDOCalc)                   m_cost;
+	LPRDOCalc                      m_pCost;
 	IDPTSearchActivity::ValueTime  m_valueTime;
 
 	DECLARE_IDPTSearchActivity;
