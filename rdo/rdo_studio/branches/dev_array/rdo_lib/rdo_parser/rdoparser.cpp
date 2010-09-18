@@ -20,6 +20,7 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
+#include "rdo_lib/rdo_parser/context/global.h"
 #include "rdo_common/rdocommon.h"
 // ===============================================================================
 
@@ -133,6 +134,7 @@ RDOParser::RDOParser()
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));
 	m_runtime.init();
+	m_contextStack.push(rdo::Factory<ContextGlobal>::create());
 }
 
 RDOParser::~RDOParser()
@@ -149,6 +151,16 @@ RDOParser::~RDOParser()
 	}
 	TRACE1(_T("PARSER : m_allDeletables.size() = %d\n"), m_allDeletables.size());
 	s_parserStack.remove(this);
+}
+
+REF(ContextStack) RDOParser::contextStack()
+{
+	return m_contextStack;
+}
+
+LPContext RDOParser::context() const
+{
+	return m_contextStack.top();
 }
 
 rbool RDOParser::isCurrentDPTSearch()

@@ -12,6 +12,7 @@
 
 // ====================================================================== INCLUDES
 #include <algorithm>
+#include <stack>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdosingletone.h"
@@ -29,6 +30,7 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
+#include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -220,6 +222,9 @@ public:
 		m_preCastTypeList.push_back(type);
 	}
 
+	REF(ContextStack) contextStack();
+	LPContext         context     () const;
+
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
@@ -260,6 +265,7 @@ private:
 	Error                 m_error;
 	Stack                 m_movementObjectList;
 	PreCastTypeList       m_preCastTypeList;
+	ContextStack          m_contextStack;
 
 	struct Changes
 	{

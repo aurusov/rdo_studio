@@ -128,7 +128,7 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 	ASSERT(arithm);
 	arithm->checkParamType(cons->getType());
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( cons->getType() );
-	parser()->runtime()->addInitCalc( new rdoRuntime::RDOCalcSetConst( parser()->runtime(), cons->getNumber(), calc ) );
+	parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(cons->getNumber(), calc));
 	parser()->insertChanges( cons->src_text(), arithm->src_text() );
 }
 

@@ -431,7 +431,9 @@ void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResult
 
 void RDORuntime::onInit()
 {
-	std::for_each( initCalcs.begin(), initCalcs.end(), std::bind2nd(std::mem_fun1(&RDOCalc::calcValue), this) );
+	STL_FOR_ALL(CalcList, initCalcs, calcIt)
+		(*calcIt)->calcValue(this);
+
 	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();
 	while ( it != allResourcesByID.end() ) {
 		allResourcesByTime.push_back( *it );

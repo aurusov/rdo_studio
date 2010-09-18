@@ -8,35 +8,30 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMColor - объект-цвет
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, ColorType _type ):
-	RDORuntimeObject( _parent ),
-	color_type( _type ),
-	red_calc( NULL ),
-	green_calc( NULL ),
-	blue_calc( NULL )
-{
-}
+RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, ColorType _type )
+	: RDORuntimeObject( _parent )
+	, color_type( _type )
+{}
 
 RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, int _red, int _green, int _blue ):
 	RDORuntimeObject( _parent ),
 	color_type( color_rgb )
 {
-	red_calc   = new RDOCalcConst( _parent, _red );
-	green_calc = new RDOCalcConst( _parent, _green );
-	blue_calc  = new RDOCalcConst( _parent, _blue );
-	red_calc->setSrcText( rdo::format("%d, _red") );
-	green_calc->setSrcText( rdo::format("%d, _green") );
-	blue_calc->setSrcText( rdo::format("%d, _blue") );
+	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(_red  );
+	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(_green);
+	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create(_blue );
+	m_pRedCalc->setSrcText( rdo::format("%d, _red") );
+	m_pGreenCalc->setSrcText( rdo::format("%d, _green") );
+	m_pBlueCalc->setSrcText( rdo::format("%d, _blue") );
 }
 
-RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, RDOCalc* _red_calc, RDOCalc* _green_calc, RDOCalc* _blue_calc ):
-	RDORuntimeObject( _parent ),
-	color_type( color_rgb ),
-	red_calc( _red_calc ),
-	green_calc( _green_calc ),
-	blue_calc( _blue_calc )
-{
-}
+RDOFRMFrame::RDOFRMColor::RDOFRMColor(RDOFRMFrame* _parent, CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc)
+	: RDORuntimeObject(_parent   )
+	, color_type      (color_rgb )
+	, m_pRedCalc      (pRedCalc  )
+	, m_pGreenCalc    (pGreenCalc)
+	, m_pBlueCalc     (pBlueCalc )
+{}
 
 RDOFRMFrame::RDOFRMColor::~RDOFRMColor()
 {
@@ -47,7 +42,10 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(PTR(RDORuntime) sim, P
 	switch (color_type)
 	{
 		case color_none        : return rdoAnimation::RDOColor(50, 200, 50);
-		case color_rgb         : return rdoAnimation::RDOColor(red_calc->calcValue(sim).getInt(), green_calc->calcValue(sim).getInt(), blue_calc->calcValue(sim).getInt());
+		case color_rgb         : return rdoAnimation::RDOColor(
+									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pRedCalc->calcValue(sim).getInt(),
+									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pGreenCalc->calcValue(sim).getInt(),
+									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pBlueCalc->calcValue(sim).getInt());
 		case color_transparent : return rdoAnimation::RDOColor();
 		case color_last_bg     : return frame->color_last_bg;
 		case color_last_fg     : return frame->color_last_fg;

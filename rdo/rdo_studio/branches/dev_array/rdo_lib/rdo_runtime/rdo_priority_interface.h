@@ -18,11 +18,11 @@
 class IPriority
 {
 public:
-	virtual PTR(rdoRuntime::RDOCalc) getPrior()                               = 0;
-	virtual rbool                    setPrior(PTR(rdoRuntime::RDOCalc) prior) = 0;
+	virtual rdoRuntime::LPRDOCalc getPrior()                                   = 0;
+	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior) = 0;
 };
 #define DECLARE_IPriority \
-	virtual PTR(rdoRuntime::RDOCalc) getPrior(); \
-	virtual rbool                    setPrior(PTR(rdoRuntime::RDOCalc) prior);
+	virtual rdoRuntime::LPRDOCalc getPrior(); \
+	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior);
 
 #endif //! _RDO_PRIORITY_INTERFACE_H_
