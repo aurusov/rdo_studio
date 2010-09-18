@@ -644,7 +644,6 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
 				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
 				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
-				case rdoPlugin::OPR: edit_type = rdoModelObjects::OPR; break;
 				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
 				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
 				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
@@ -678,7 +677,6 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
 				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
 				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
-				case rdoPlugin::OPR: edit_type = rdoModelObjects::OPR; break;
 				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
 				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
 				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;

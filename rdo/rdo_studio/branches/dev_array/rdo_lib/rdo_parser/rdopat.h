@@ -67,7 +67,6 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPATPattern: public RDOParserObject, public RDOParserSrcInfo
 {
-friend class RDOOPROperation;
 friend class RDODPTActivity;
 
 public:

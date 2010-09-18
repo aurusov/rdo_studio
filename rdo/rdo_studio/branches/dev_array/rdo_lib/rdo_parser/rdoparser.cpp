@@ -16,7 +16,6 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/rdoopr.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
@@ -87,7 +86,6 @@ rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(PATPattern     );
 DECLARE_PARSER_OBJECT_CONTAINER_LP   (RTPResType     );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(RSSResource    );
-DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(OPROperation   );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FRMFrame       );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FUNConstant    );
 DECLARE_PARSER_OBJECT_CONTAINER_NO_LP(FUNFunction    );
@@ -102,7 +100,6 @@ DECLARE_PARSER_OBJECT_CONTAINER_LP   (Event          );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(FUNGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(PROCProcess);
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME_NO_LP(Operations );
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
@@ -383,6 +380,16 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 			error().push_done();
 		}
 	}
+	STL_FOR_ALL_CONST(DPTPriorList, getDPTPriors(), it_prior)
+	{
+		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
+		if (it_prior_act != (*it_prior)->getActivities().end())
+		{
+			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
+			error().push_only((*it_prior_act)->src_info(), _T("См. первое определение"));
+			error().push_done();
+		}
+	}
 	CPTR(RDODPTFreeActivity) pFreeAct = findDPTFreeActivity(src_info.src_text());
 	if (pFreeAct)
 	{
@@ -390,13 +397,6 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		error().push_only(pFreeAct->src_info(), _T("См. первое определение"));
 		error().push_done();
 //		error(_T("Free activity name: ") + *_name + _T(" already defined"));
-	}
-	CPTR(RDOOPROperation) pOpr = findOPROperation(src_info.src_text());
-	if (pOpr)
-	{
-		error().push_only(src_info, rdo::format(_T("Операция '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pOpr->src_info(), _T("См. первое определение"));
-		error().push_done();
 	}
 }
 
