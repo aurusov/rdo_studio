@@ -233,7 +233,7 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 
-		getOStream() << "VI " << sim->getCurrentTime()
+		getOStream() << "EE " << sim->getCurrentTime()
 		             << " "   << trace->traceId() 
 		             << " "   << activityPatternTrace->tracePatternId() 
 		             << " "   << activityTrace->traceResourcesListNumbers(sim, true)

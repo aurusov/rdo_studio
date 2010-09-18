@@ -88,7 +88,7 @@ GET_ARITHM_PRE_TYPE() \
 CREATE_CALC( CALC, OPR )
 
 #define RETURN_ARITHM() \
-RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(newType, newCalc->src_info()), newCalc ); \
+RDOFUNArithm* arithm = new RDOFUNArithm( this, RDOValue(newCalc->calcValue(parser()->runtime()), newType, newCalc->src_info()), newCalc ); \
 arithm->m_int_or_double.insert( m_int_or_double, second.m_int_or_double ); \
 return arithm;
 

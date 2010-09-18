@@ -34,6 +34,17 @@ inline void RDOEvent::attachCalc(PTR(rdoRuntime::RDOCalcEventPlan) pCalc)
 	m_calcList.push_back(pCalc);
 }
 
+inline void RDOEvent::setRuntimeEvent(LPIBaseOperation pRuntimeEvent)
+{
+	ASSERT(pRuntimeEvent);
+	m_runtimeEvent = pRuntimeEvent;
+}
+
+inline LPIBaseOperation RDOEvent::getRuntimeEvent() const
+{
+	return m_runtimeEvent;
+}
+
 inline CREF(RDOEvent::CalcList) RDOEvent::getCalcList() const
 {
 	return m_calcList;

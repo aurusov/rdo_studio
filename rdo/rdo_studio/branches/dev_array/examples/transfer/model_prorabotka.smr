@@ -1,0 +1,8 @@
+Model_name     = model_prorabotka
+Resource_file  = model_prorabotka
+Statistic_file = model_prorabotka
+Results_file   = model_prorabotka
+Trace_file     = model_prorabotka
+Show_mode      = NoShow
+Show_rate      = 3600.0
+Terminate_if Time_now >= 720

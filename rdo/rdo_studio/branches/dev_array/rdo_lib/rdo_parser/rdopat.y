@@ -142,6 +142,9 @@
 %token RDO_array						379
 %token RDO_event						380
 %token RDO_Planning						381
+%token RDO_else							382
+%token RDO_IncrEqual					383
+%token RDO_DecrEqual					384
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -1464,18 +1467,153 @@ pat_convert_cmd
 		pRelRes->getParamSetList().reset();
 		$$ = PARSER->stack().push(pCmdList);
 	}
-	| pat_convert_cmd RDO_IDENTIF param_equal_type fun_arithm
+	| pat_convert_cmd statement
 	{
 		LPConvertCmdList         pCmdList    = PARSER->stack().pop<ConvertCmdList>($1);
-		tstring                  paramName   = RDOVALUE($2)->getIdentificator();
-		rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($3);
-		PTR(RDOFUNArithm)        rightArithm = P_ARITHM($4);
+		PTR(rdoRuntime::RDOCalc) pCalc       = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($2);
+		pCmdList->insertCommand(pCalc);
+		$$ = PARSER->stack().push(pCmdList);
+	}
+	;
+
+statement
+	: empty_statement
+	| nochange_statement
+	| equal_statement
+	| planning_statement
+	| if_statement
+	| '{' statement_list '}'
+	{
+		$$ = $2;
+	}
+	;
+
+statement_list
+	: /* empty */
+	{
+		PTR(rdoRuntime::RDOCalcList) pCalcList = new rdoRuntime::RDOCalcList(RUNTIME);
+		ASSERT(pCalcList);
+
+		$$ = reinterpret_cast<int>(pCalcList);
+	}
+	| statement_list statement
+	{
+		PTR(rdoRuntime::RDOCalcList) pCalcList = reinterpret_cast<PTR(rdoRuntime::RDOCalcList)>($1);
+		ASSERT(pCalcList);
+
+		PTR(rdoRuntime::RDOCalc    ) pCalc     = reinterpret_cast<PTR(rdoRuntime::RDOCalc    )>($2);
+		ASSERT(pCalc);
+
+		pCalcList->addCalc(pCalc);
+		
+		$$ = reinterpret_cast<int>(pCalcList);
+	}
+	;
+
+empty_statement
+	: ';'
+	{
+		PTR(rdoRuntime::RDOCalcNoChange) pCalc = new rdoRuntime::RDOCalcNoChange(RUNTIME);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| error ';'
+	{
+		PARSER->error().error(@1, _T("Ошибка в инструкции"));
+	}
+	;
+
+nochange_statement
+	: RDO_IDENTIF_NoChange ';'
+	{
+		PTR(rdoRuntime::RDOCalcNoChange) pCalc = new rdoRuntime::RDOCalcNoChange(RUNTIME);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_IDENTIF_NoChange error
+	{
+		PARSER->error().error(@2, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	;
+
+equal_statement
+	: RDO_IDENTIF increment_or_decrement_type ';'
+	{
+		tstring                  paramName   = RDOVALUE($1)->getIdentificator();
+		rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($2);
 		PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
 		{
-			PARSER->error().error(@2, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		}
+		PTR(rdoRuntime::RDOCalc) pCalc      = NULL;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_INCR:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR>(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+				break;
+			}
+			case rdoRuntime::ET_DECR:
+			{
+				pCalc = new rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR>(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+				break;
+			}
+			default:
+			{
+				NEVER_REACH_HERE;
+			}
+		}
+		ASSERT(pCalc);
+		//! Проверка на диапазон
+		//! TODO: проверить работоспособность
+		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+		{
+			LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+		}
+		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+		{
+			LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+		}
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_INCR:
+			{
+				oprStr = _T("++");
+				break;
+			}
+			case rdoRuntime::ET_DECR:
+			{
+				oprStr = _T("--");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcPos (@1.first_line, @1.first_column, @2.last_line, @2.last_column);
+
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_IDENTIF param_equal_type fun_arithm ';'
+	{
+		tstring                  paramName   = RDOVALUE($1)->getIdentificator();
+		rdoRuntime::EqualType    equalType   = static_cast<rdoRuntime::EqualType>($2);
+		PTR(RDOFUNArithm)        rightArithm = P_ARITHM($3);
+		PTR(RDORelevantResource) pRelRes     = PARSER->getLastPATPattern()->m_pCurrRelRes;
+		ASSERT(pRelRes);
+		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
+		if (!param)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 		}
 		PTR(rdoRuntime::RDOCalc) pCalcRight = rightArithm->createCalc(param->getParamType().get());
 		PTR(rdoRuntime::RDOCalc) pCalc      = NULL;
@@ -1516,69 +1654,81 @@ pat_convert_cmd
 				NEVER_REACH_HERE;
 			}
 		}
-		if (pCalc)
+		ASSERT(pCalc);
+		//! Проверка на диапазон
+		//! TODO: проверить работоспособность
+		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
 		{
-			//! Проверка на диапазон
-			//! TODO: проверить работоспособность
-			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
-			{
-				LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
-				pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
-			}
-			else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
-			{
-				LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
-				pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
-			}
-			tstring oprStr;
-			switch (equalType)
-			{
-				case rdoRuntime::ET_EQUAL:
-				{
-					oprStr = _T("=");
-					break;
-				}
-				case rdoRuntime::ET_PLUS:
-				{
-					oprStr = _T("+=");
-					break;
-				}
-				case rdoRuntime::ET_MINUS:
-				{
-					oprStr = _T("-=");
-					break;
-				}
-				case rdoRuntime::ET_MULTIPLY:
-				{
-					oprStr = _T("*=");
-					break;
-				}
-				case rdoRuntime::ET_DIVIDE:
-				{
-					oprStr = _T("/=");
-					break;
-				}
-				default:
-				{
-					oprStr = _T("");
-					break;
-				}
-			}
-			pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-			pCalc->setSrcPos (@2.first_line, @2.first_column, @4.last_line, @4.last_column);
-			pCmdList->insertCommand(pCalc);
+			LPRDOTypeIntRange pRange = param->getParamType()->type().cast<RDOTypeIntRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 		}
-		$$ = PARSER->stack().push(pCmdList);
+		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+		{
+			LPRDOTypeRealRange pRange = param->getParamType()->type().cast<RDOTypeRealRange>();
+			pCalc = new rdoRuntime::RDOSetRelParamDiapCalc(PARSER->runtime(), pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+		}
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_EQUAL:
+			{
+				oprStr = _T("=");
+				break;
+			}
+			case rdoRuntime::ET_PLUS:
+			{
+				oprStr = _T("+=");
+				break;
+			}
+			case rdoRuntime::ET_MINUS:
+			{
+				oprStr = _T("-=");
+				break;
+			}
+			case rdoRuntime::ET_MULTIPLY:
+			{
+				oprStr = _T("*=");
+				break;
+			}
+			case rdoRuntime::ET_DIVIDE:
+			{
+				oprStr = _T("/=");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+		pCalc->setSrcPos (@1.first_line, @1.first_column, @3.last_line, @3.last_column);
+
+		$$ = reinterpret_cast<int>(pCalc);
 	}
-	| pat_convert_cmd RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')'
+	| RDO_IDENTIF param_equal_type error
 	{
-		LPConvertCmdList  pCmdList    = PARSER->stack().pop<ConvertCmdList>($1);
-		tstring           eventName   = RDOVALUE($2)->getIdentificator();
-		PTR(RDOFUNArithm) pTimeArithm = P_ARITHM($6);
+		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+	}
+	| RDO_IDENTIF param_equal_type fun_arithm error
+	{
+		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| RDO_IDENTIF error fun_arithm
+	{
+		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
+	}
+	;
+
+planning_statement
+	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' ';'
+	{
+		tstring           eventName   = RDOVALUE($1)->getIdentificator();
+		PTR(RDOFUNArithm) pTimeArithm = P_ARITHM($5);
 		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
-			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
 
 		PTR(rdoRuntime::RDOCalc) pCalcTime = pTimeArithm->createCalc(NULL);
@@ -1587,18 +1737,97 @@ pat_convert_cmd
 		PTR(rdoRuntime::RDOCalcEventPlan) pCalc = new rdoRuntime::RDOCalcEventPlan(RUNTIME, pCalcTime);
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
-		pCmdList->insertCommand(pCalc);
 
-		$$ = PARSER->stack().push(pCmdList);
+		$$ = reinterpret_cast<int>(pCalc);
 	}
-	| pat_convert_cmd RDO_IDENTIF param_equal_type error
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' error
 	{
-		PARSER->error().error(@4, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
-	| pat_convert_cmd RDO_IDENTIF_NoChange
+	| RDO_IDENTIF '.' RDO_Planning '(' error
 	{
-		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
-		$$ = PARSER->stack().push(pCmdList);
+		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning error
+	{
+		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
+	{
+		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+event_descr_param
+	: /* empty */
+	| event_descr_param ',' '*'
+	{
+		PARSER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
+	}
+	| event_descr_param ',' fun_arithm
+	{
+		PARSER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
+	}
+	| event_descr_param ',' error
+	{
+		PARSER->error().error(@1, @2, "Ошибка описания параметра события")
+	}
+	;
+
+if_statement
+	: RDO_if '(' fun_logic ')' statement
+	{
+		PTR(RDOFUNLogic) pCondition = P_LOGIC($3);
+		ASSERT(pCondition);
+		
+		PTR(rdoRuntime::RDOCalc) pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		PTR(rdoRuntime::RDOCalc) pStatementCalc = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($5);
+		ASSERT(pStatementCalc);
+
+		PTR(rdoRuntime::RDOCalcIf) pCalc = new rdoRuntime::RDOCalcIf(RUNTIME, pConditionCalc, pStatementCalc);
+		ASSERT(pCalc);
+		
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_if '(' fun_logic ')' statement RDO_else statement
+	{
+		PTR(RDOFUNLogic) pCondition = P_LOGIC($3);
+		ASSERT(pCondition);
+		
+		PTR(rdoRuntime::RDOCalc) pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		PTR(rdoRuntime::RDOCalc) pIfStatementCalc = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($5);
+		ASSERT(pIfStatementCalc);
+
+		PTR(rdoRuntime::RDOCalc) pElseStatementCalc = reinterpret_cast<PTR(rdoRuntime::RDOCalc)>($7);
+		ASSERT(pElseStatementCalc);
+
+		PTR(rdoRuntime::RDOCalcIfElse) pCalc = new rdoRuntime::RDOCalcIfElse(RUNTIME, pConditionCalc, pIfStatementCalc, pElseStatementCalc);
+		ASSERT(pCalc);
+		
+		$$ = reinterpret_cast<int>(pCalc);
+	}
+	| RDO_if error fun_logic
+	{
+		PARSER->error().error(@2, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_if '(' fun_logic error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+increment_or_decrement_type
+	: RDO_IncrEqual
+	{
+		$$ = rdoRuntime::ET_INCR;
+	}
+	| RDO_DecrEqual
+	{
+		$$ = rdoRuntime::ET_DECR;
 	}
 	;
 
@@ -1920,11 +2149,12 @@ param_value_default
 	;
 
 // ----------------------------------------------------------------------------
+// ---------- Общие составные токены для всех объектов РДО
+// ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: '='    { $$ = RDO_eq; }
-	| RDO_eq { $$ = RDO_eq; }
+	: RDO_eq { $$ = RDO_eq; }
 	;
 
 fun_logic
@@ -2008,7 +2238,7 @@ fun_arithm
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
 fun_arithm_func_call
-	: RDO_IDENTIF '(' ')'
+	: RDO_IDENTIF '(' ')' 
 	{
 		PTR(RDOFUNParams) fun = new RDOFUNParams(PARSER);
 		tstring fun_name = RDOVALUE($1)->getIdentificator();

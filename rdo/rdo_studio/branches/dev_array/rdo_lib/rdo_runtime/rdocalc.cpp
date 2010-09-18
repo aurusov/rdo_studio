@@ -216,6 +216,80 @@ REF(RDOValue) RDOCalcGetTermNow::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcIf
+// ----------------------------------------------------------------------------
+RDOCalcIf::RDOCalcIf(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pStatement)
+	: RDOCalc    (parent    )
+	, m_condition(pCondition)
+	, m_statement(pStatement)
+{
+	ASSERT(m_condition);
+	ASSERT(m_statement);
+}
+
+REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) runtime)
+{
+	m_value = RDOValue(false);
+	return (m_condition->calcValue(runtime).getAsBool()) ? m_statement->calcValue(runtime) : (m_value);
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcIfElse
+// ----------------------------------------------------------------------------
+RDOCalcIfElse::RDOCalcIfElse(PTR(RDORuntimeParent) parent, PTR(RDOCalc) pCondition, PTR(RDOCalc) pIfStatement, PTR(RDOCalc) pElseStatement)
+	: RDOCalc        (parent        )
+	, m_condition    (pCondition    )
+	, m_ifStatement  (pIfStatement  )
+	, m_elseStatement(pElseStatement)
+{
+	ASSERT(m_condition    );
+	ASSERT(m_ifStatement  );
+	ASSERT(m_elseStatement);
+}
+
+REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) runtime)
+{
+	return (m_condition->calcValue(runtime).getAsBool()) ? m_ifStatement->calcValue(runtime) : m_elseStatement->calcValue(runtime);
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcList
+// ----------------------------------------------------------------------------
+RDOCalcList::RDOCalcList(PTR(RDORuntimeParent) parent)
+	: RDOCalc (parent)
+{}
+
+void RDOCalcList::addCalc(PTR(RDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+	m_calcList.push_back(pCalc);
+}
+
+REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) runtime)
+{
+	STL_FOR_ALL_CONST(CalcList, m_calcList, calc_it)
+	{
+		(*calc_it)->calcValue(runtime);
+	}
+
+	m_value = RDOValue(m_calcList.size());
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcNoChange
+// ----------------------------------------------------------------------------
+RDOCalcNoChange::RDOCalcNoChange(PTR(RDORuntimeParent) parent)
+	: RDOCalc(parent)
+{}
+
+REF(RDOValue) RDOCalcNoChange::doCalc(PTR(RDORuntime) runtime)
+{
+	m_value = RDOValue(0);
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFunAlgorithmicCalc
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(PTR(RDORuntime) runtime)
