@@ -63,7 +63,7 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 			break;
 		}
 	}
-	return rdo::smart_ptr_null();
+	return NULL;
 }
 
 RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -74,7 +74,7 @@ RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 		{
 			LPRDOArrayType pArrayT(const_cast<PTR(RDOArrayType)>(this));
 			rdoRuntime::RDOArrayValue rArrayV = from->getArray();
-			for(rdoRuntime::RDOArrayValue::Container::iterator it = rArrayV.m_containerBegin(); it != rArrayV.m_containerEnd(); ++it)
+			for(rdoRuntime::RDOArrayValue::Container::iterator it = rArrayV.containerBegin(); it != rArrayV.containerEnd(); ++it)
 			{
 				*it = pArrayT->getItemType()->value_cast(RDOValue(*it, from.type(), src_info), to_src_info, src_info).value();
 			}
@@ -92,7 +92,7 @@ RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	return from;
 }
 
-PTR(rdoRuntime::RDOCalc) RDOArrayType::calc_cast(PTR(rdoRuntime::RDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdoRuntime::LPRDOCalc RDOArrayType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return RDOType::calc_cast(pCalc, pType);
 }

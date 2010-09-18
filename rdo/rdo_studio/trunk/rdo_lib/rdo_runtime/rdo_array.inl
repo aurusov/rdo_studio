@@ -59,7 +59,7 @@ inline void RDOArrayValue::eraseItems(Container::iterator itrFst, Container::ite
 	m_container.erase(itrFst,itrLst);
 }
 
-tstring RDOArrayValue::getAsString() const
+inline tstring RDOArrayValue::getAsString() const
 {
 	tstring ArrayName = _T("[");
 	STL_FOR_ALL_CONST(Container, m_container, it)
@@ -97,7 +97,7 @@ inline RDOArrayIterator::Iterator RDOArrayIterator::operator+ (rsint num)
 	return m_iterator + num;
 }
 
-RDOArrayIterator::Iterator RDOArrayIterator::operator- (rsint num)
+inline RDOArrayIterator::Iterator RDOArrayIterator::operator- (rsint num)
 {
 	return m_iterator - num;
 }
@@ -107,7 +107,7 @@ inline RDOValue RDOArrayIterator::getValue() const
 	return *m_iterator;
 }
 
-rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
+inline rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
 {
 	return m_iterator == iterator.m_iterator;
 }
