@@ -23,7 +23,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-class RDOArrayType: public RDOType
+class RDOArrayType: public RDOType, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
 friend class RDOArrayValue;
@@ -50,9 +50,9 @@ DECLARE_POINTER(RDOArrayType)
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-class RDOArrayValue
+class RDOArrayValue: public rdo::counter_reference
 {
-	DECLARE_FACTORY(RDOArrayValue);
+DECLARE_FACTORY(RDOArrayValue);
 public:
 	RDOArrayValue         (LPRDOArrayType pArrayType);
 
@@ -69,7 +69,6 @@ private:
 	LPRDOArrayType     m_arrayType;
 };
 DECLARE_POINTER(RDOArrayValue);
-
 
 CLOSE_RDO_PARSER_NAMESPACE
 
