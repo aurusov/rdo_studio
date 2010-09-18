@@ -692,8 +692,12 @@ param_value_default
 	{
 		$$ = $2;
 	}
-	| '=' error
-	{
+					| '=' rdo_array_default {
+						RDOParserSrcInfo src_info(@1, @2, true);
+						PARSER->error().error(src_info, _T("rdo_array_default работает"));
+						$$ = $2;
+					}
+					| '=' error {
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
@@ -706,14 +710,51 @@ param_value_default
 	}
 	;
 
-param_array
-	: RDO_array '<' param_type '>'
-	{
-		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($2);
-		ASSERT(pArray);
-		$$ = PARSER->stack().push(pArray);
-	}
-	;
+param_array:		RDO_array '<' param_type '>' {
+						LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
+						ASSERT(pParamType);
+						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type());
+						$$ = PARSER->stack().push(pArray);
+						LEXER->array_cnt_pls();
+					};
+
+rdo_array_default:	'[' param_array_item ']' {
+//					здесь окончательная сборка массива
+					}
+					|'[' param_array_item error {
+//					добавлю ошибку на случай отсутствия скобки
+					};
+
+param_array_item:	rdo_array_atom_item {
+//					здесь зделаю создание массива.
+					}
+					|
+					param_array_item ',' rdo_array_atom_item {
+//					здесь проверку на соответствие типов и размерностей массивов и добавление элементов.
+					};
+
+rdo_array_atom_item: RDO_INT_CONST {
+//						здесь не знаю или класическое создание value как в param_value_default или создавать массивы с одним элементом.
+//						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
+//						$$ = $1;
+					}
+					| RDO_REAL_CONST {
+//						$$ = $1;
+					}
+					| RDO_STRING_CONST {
+//						$$ = $1;
+					}
+					| RDO_IDENTIF {
+//						$$ = $1;
+					}
+					| RDO_BOOL_CONST {
+//						$$ = $1;
+					}
+					|rdo_array_default{
+					};
+
+
+// ----------------------------------------------------------------------------
 
 %%
 

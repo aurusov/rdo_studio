@@ -26,17 +26,19 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);
-public:
-	CREF(rdoRuntime::RDOArrayType) getArray() const { return *static_cast<CPTR(rdoRuntime::RDOArrayType)>(m_type); }
+private:
+	RDOArrayType         (CREF(LPRDOType) pType);
+	virtual ~RDOArrayType();
+
+	PTR(rdoRuntime::RDOArrayType) __array() const 
+	{ 
+		return static_cast<PTR(rdoRuntime::RDOArrayType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type));
+	}
+
+	LPRDOType m_pType;
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
-
-private:
-	RDOArrayType         ();
-	virtual ~RDOArrayType();
-
-	PTR(rdoRuntime::RDOArrayType) __array() const { return static_cast<PTR(rdoRuntime::RDOArrayType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
 };
 DECLARE_POINTER(RDOArrayType);
 

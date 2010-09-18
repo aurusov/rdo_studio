@@ -55,17 +55,14 @@ private:
 class RDOArrayType: public RDOType, public RDORuntimeObject
 {
 public:
-	typedef CPTR(RDOType) ArrayType;
+	typedef CREF(RDOType) ArrayType;
 
-	RDOArrayType(PTR(RDORuntimeParent) parent);
-	RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype);
+	RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType);
 
 	ArrayType getArrayType() const;
-	//virtual tstring  asString()                    const;
-	virtual RDOValue cast    (CREF(RDOValue) from) const;
 
 private:
-	ArrayType m_arrayType;
+	ArrayType  m_pArrayType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
