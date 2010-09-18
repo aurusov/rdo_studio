@@ -381,105 +381,88 @@ rtp_param
 // ----------------------------------------------------------------------------
 // ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
-param_type
-	: RDO_integer param_type_range param_value_default
-	{
-		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
-		LPRDOTypeParam pType;
-		if (pRange)
-		{
-			if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
-			    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
-			{
-				PARSER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
-			}
-			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
-			ASSERT(pIntRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-		}
-		else
-		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-		}
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| RDO_real param_type_range param_value_default
-	{
-		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
-		LPRDOTypeParam pType;
-		if (pRange)
-		{
-			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
-			ASSERT(pRealRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-		}
-		else
-		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
-		}
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| RDO_string param_value_default
-	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| param_array param_value_default
-	{
-		LEXER->array_cnt_rst();
-		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
-		ASSERT(pArray);
-		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| RDO_bool param_value_default
-	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| param_type_enum param_value_default
-	{
-		LEXER->enumReset();
-		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
-		ASSERT(pEnum);
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| param_type_such_as param_value_default
-	{
-		LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
-		ASSERT(pTypeSuchAs);
-		RDOValue default = RDOVALUE($2);
-		if (!default.defined())
-		{
-			if (pTypeSuchAs->default().defined())
-			{
-				default = pTypeSuchAs->default();
-			}
-		}
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), default, RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	;
-	//| RDO_integer error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| RDO_real error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| param_type_enum error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию."));
-	//}
+param_type:		RDO_integer param_type_range param_value_default
+				{
+					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+					LPRDOTypeParam pType;
+					if (pRange)
+					{
+						if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
+						    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
+						{
+							PARSER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
+						}
+						LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+						pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+					}
+					else
+					{
+						pType = rdo::Factory<RDOTypeParam>::create(g_int, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+					}
+					$$ = PARSER->stack().push(pType);
+				}
+				| RDO_real param_type_range param_value_default
+				{
+					LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+					LPRDOTypeParam pType;
+					if (pRange)
+					{
+						LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
+						pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+					}
+					else
+					{
+						pType = rdo::Factory<RDOTypeParam>::create(g_real, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+					}
+					$$ = PARSER->stack().push(pType);
+				}
+				| RDO_string param_value_default
+				{
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_string, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
+				}
+				| param_type_array param_value_default
+				{
+					LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
+				}
+				| RDO_bool param_value_default
+				{
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(g_bool, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
+				}
+				| param_type_enum param_value_default
+				{
+					LEXER->enumReset();
+					LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
+				}
+				| param_type_such_as param_value_default
+				{
+					LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
+					ASSERT(pTypeSuchAs);
+					RDOValue default = RDOVALUE($2);
+					if (!default.defined())
+					{
+						if (pTypeSuchAs->default().defined())
+							default = pTypeSuchAs->default();
+					}
+					LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), default, RDOParserSrcInfo(@1, @2));
+					$$ = PARSER->stack().push(pType);
+				};
+/*
+				| RDO_integer error {
+					PARSER->error().error(@2, _T("Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию."));
+				}
+				| RDO_real error {
+					PARSER->error().error(@2, _T("Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию."));
+				}
+				| param_type_enum error {
+					PARSER->error().error(@2, _T("Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию."));
+				};
+*/
 
 param_type_range
 	: /* empty */
@@ -672,31 +655,9 @@ param_value_default
 	{
 		$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
 	}
-	| '=' RDO_INT_CONST
-	{
+					| '=' param_value {
 		$$ = $2;
 	}
-	| '=' RDO_REAL_CONST
-	{
-		$$ = $2;
-	}
-	| '=' RDO_STRING_CONST
-	{
-		$$ = $2;
-	}
-	| '=' RDO_IDENTIF
-	{
-		$$ = $2;
-	}
-	| '=' RDO_BOOL_CONST
-	{
-		$$ = $2;
-	}
-					| '=' rdo_array_default {
-						RDOParserSrcInfo src_info(@1, @2, true);
-						PARSER->error().error(src_info, _T("rdo_array_default работает"));
-						$$ = $2;
-					}
 					| '=' error {
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
@@ -710,49 +671,63 @@ param_value_default
 	}
 	;
 
-param_array:		RDO_array '<' param_type '>' {
+param_value:	RDO_INT_CONST {
+					$$ = $1;
+				}
+				| RDO_REAL_CONST {
+					$$ = $1;
+				}
+				| RDO_STRING_CONST {
+					$$ = $1;
+				}
+				| RDO_IDENTIF {
+					$$ = $1;
+				}
+				| RDO_BOOL_CONST {
+					$$ = $1;
+				}
+				| param_array_value {
+					$$ = $1;
+				};
+
+param_type_array:	RDO_array '<' param_type '>' {
 						LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
 						ASSERT(pParamType);
-						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type());
+						LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4));
 						$$ = PARSER->stack().push(pArray);
-						LEXER->array_cnt_pls();
 					};
 
-rdo_array_default:	'[' param_array_item ']' {
-//					здесь окончательная сборка массива
+param_array_value:	'[' array_item ']' {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
+						ASSERT(pArrayValue);
+						$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
 					}
-					|'[' param_array_item error {
-//					добавлю ошибку на случай отсутствия скобки
+					|'[' array_item error {
+						PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 					};
 
-param_array_item:	rdo_array_atom_item {
-//					здесь зделаю создание массива.
+array_item:			param_value {
+						LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOParserSrcInfo(@1));
+						ASSERT(pArrayType);
+						LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
+						pArrayValue->insertItem(RDOVALUE($1));
+						$$ = PARSER->stack().push(pArrayValue);
 					}
 					|
-					param_array_item ',' rdo_array_atom_item {
-//					здесь проверку на соответствие типов и размерностей массивов и добавление элементов.
+					array_item ',' param_value {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+						ASSERT(pArrayValue);
+						pArrayValue->insertItem(RDOVALUE($3));
+						$$ = PARSER->stack().push(pArrayValue);
+					}
+					|
+					array_item param_value {
+						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+						ASSERT(pArrayValue);
+						pArrayValue->insertItem(RDOVALUE($2));
+						$$ = PARSER->stack().push(pArrayValue);
+						PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
 					};
-
-rdo_array_atom_item: RDO_INT_CONST {
-//						здесь не знаю или класическое создание value как в param_value_default или создавать массивы с одним элементом.
-//						$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
-//						$$ = $1;
-					}
-					| RDO_REAL_CONST {
-//						$$ = $1;
-					}
-					| RDO_STRING_CONST {
-//						$$ = $1;
-					}
-					| RDO_IDENTIF {
-//						$$ = $1;
-					}
-					| RDO_BOOL_CONST {
-//						$$ = $1;
-					}
-					|rdo_array_default{
-					};
-
 
 // ----------------------------------------------------------------------------
 

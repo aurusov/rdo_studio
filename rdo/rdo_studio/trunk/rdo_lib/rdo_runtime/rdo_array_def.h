@@ -36,7 +36,7 @@ class RDOArrayType;
 class RDOArrayValue
 {
 public:
-	typedef std::vector<CPTR(RDOValue)> ArrayValue;
+	typedef std::vector<RDOValue> Container;
 
 	RDOArrayValue(CREF(RDOArrayType)  type );
 	RDOArrayValue(CREF(RDOArrayValue) value);
@@ -44,9 +44,40 @@ public:
 
 	CREF(RDOArrayType) type() const;
 
+	void insertItem(CREF(RDOValue) pArray);
+	Container::iterator containerBegin();
+	Container::iterator containerEnd();
+	void insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst);
+	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
+	CREF(RDOValue) operator[] (CREF(RDOValue) ind);
+
+	tstring getAsString() const;
+
 private:
-	ArrayValue         m_arrayValue;
-	CPTR(RDOArrayType) m_arrayTape;
+	Container          m_container;
+	CPTR(RDOArrayType) m_arrayType;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOArrayIterator
+// ----------------------------------------------------------------------------
+class RDOArrayIterator
+{
+public:
+	typedef RDOArrayValue::Container::iterator Iterator;
+
+	RDOArrayIterator(CREF(RDOArrayIterator) iterator);
+	RDOArrayIterator(CREF(Iterator)         iterator);
+
+	Iterator getIterator() const;
+	Iterator operator+  (rsint num);
+	Iterator operator-  (rsint num);
+	rbool    operator== (CREF(RDOArrayIterator) iterator) const;
+
+	RDOValue getValue() const;
+
+private:
+	Iterator m_iterator;
 };
 
 // ----------------------------------------------------------------------------

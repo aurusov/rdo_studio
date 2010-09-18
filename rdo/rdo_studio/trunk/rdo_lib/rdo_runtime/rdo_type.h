@@ -36,6 +36,7 @@ public:
 		t_string,
 		t_enum,
 		t_array,
+		t_iterator,
 		t_fuzzy
 	};
 
@@ -66,6 +67,7 @@ DEFINE_ATOM_TYPE(int          );
 DEFINE_ATOM_TYPE(real         );
 DEFINE_ATOM_TYPE(bool         );
 DEFINE_ATOM_TYPE(string       );
+DEFINE_ATOM_TYPE(iterator     );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

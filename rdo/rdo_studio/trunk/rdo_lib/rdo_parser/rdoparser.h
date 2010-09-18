@@ -34,6 +34,7 @@
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
+#include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -43,6 +44,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 OPEN_RDO_PARSER_NAMESPACE
 
 class RDOTypeParam;
+class RDOArrayType;
 
 class RDORTPFuzzyParam;
 
@@ -64,6 +66,9 @@ public: \
 	rbool      remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
+
+#define DEFINE_OBJECT_CONTAINER_NONAME_LP(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 
 #define DEFINE_OBJECT_CONTAINER(NAME) \
@@ -90,6 +95,7 @@ DEFINE_OBJECT_CONTAINER(Event          );
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
 DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
+DEFINE_OBJECT_CONTAINER_NONAME(Operations );
 
 public:
 	RDOParser();

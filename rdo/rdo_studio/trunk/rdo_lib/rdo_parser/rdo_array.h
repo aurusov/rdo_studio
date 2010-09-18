@@ -23,11 +23,16 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-class RDOArrayType: public RDOType
+class RDOArrayType: public RDOType, public rdo::smart_ptr_counter_reference, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
+friend class RDOArrayValue;
+
+public:
+	CREF(LPRDOType) getItemType() const;
+
 private:
-	RDOArrayType         (CREF(LPRDOType) pType);
+	RDOArrayType         (CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOArrayType();
 
 	PTR(rdoRuntime::RDOArrayType) __array() const 
@@ -40,7 +45,31 @@ private:
 	DECLARE_IType;
 	DECLARE_IModelStructure;
 };
-DECLARE_POINTER(RDOArrayType);
+DECLARE_POINTER(RDOArrayType)
+
+// ----------------------------------------------------------------------------
+// ---------- RDOArrayValue
+// ----------------------------------------------------------------------------
+class RDOArrayValue
+{
+	DECLARE_FACTORY(RDOArrayValue);
+public:
+	RDOArrayValue         (LPRDOArrayType pArrayType);
+
+	void insertItem(CREF(RDOValue)     value);
+	CREF(LPRDOArrayType) getArrayType() const;
+	rdoRuntime::RDOValue getRArray   () const;
+
+private:
+	typedef std::vector<RDOValue> Container;
+
+	virtual ~RDOArrayValue();
+
+	Container          m_Container;
+	LPRDOArrayType     m_arrayType;
+};
+DECLARE_POINTER(RDOArrayValue);
+
 
 CLOSE_RDO_PARSER_NAMESPACE
 

@@ -1,5 +1,6 @@
 // ====================================================================== INCLUDES
 #include <iostream>
+#include <stdio.h>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib\rdo_runtime\rdo_value.h"
 #include "rdo_lib\rdo_runtime\rdo_enum.h"
@@ -9,46 +10,49 @@
 
 using namespace rdoRuntime;
 
-tstring printType(CPTR(RDOType) pType)
-{
-	switch (pType->typeID())
-	{
-	case RDOType::t_int  : return "int";
-	case RDOType::t_real : return "real";
-	case RDOType::t_bool : return "bool";
-	case RDOType::t_array:
-	{
-		CPTR(RDOArrayType) arrayType = static_cast<CPTR(RDOArrayType)>(pType);
-		return rdo::format(_T("array<%s>"), printType(arrayType->getArrayType()).c_str());
-	}
-	}
-	return "unknown type";
-}
-
 void main()
 {
-	RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Значение_1")("Значение_2")("Значение_3"));
-	RDOValue integer = 1;
-	RDOValue real    = 1.5;
-	RDOValue booling = true;
-	RDOValue string  = "string";
-	PTR(RDOArrayType) arrayType_int    = new RDOArrayType(NULL,&integer.type());
-	PTR(RDOArrayType) arrayType_real   = new RDOArrayType(NULL,&real.type());
-	PTR(RDOArrayType) arrayType_string = new RDOArrayType(NULL,&string.type());
-	PTR(RDOArrayType) arrayType_bool   = new RDOArrayType(NULL,&booling.type());
-	PTR(RDOArrayType) arrayType_enum   = new RDOArrayType(NULL,enumType);
-	PTR(RDOArrayType) arrayType5       = new RDOArrayType(NULL,arrayType_enum);
-	PTR(RDOArrayType) arrayType6       = new RDOArrayType(NULL,(new RDOArrayType(NULL,arrayType_int)));
+	//RDOEnumType* enumType = new RDOEnumType(NULL, RDOEnumType::Enums("Значение_1")("Значение_2")("Значение_3"));
+	RDOValue integerVal1(1);
+	RDOValue integerVal2(2);
+	RDOValue integerVal3(3);
+	RDOValue integerVal4(4);
+	RDOValue integerVal5(5);
+	RDOValue integerVal6(6);
 
-	std::cout << printType(arrayType6) << std::endl;
+	RDOArrayType atype1(NULL, g_int);
+	RDOArrayValue avalue1(atype1);
+	avalue1.insertItem(integerVal1);
+	avalue1.insertItem(integerVal2);
+	avalue1.insertItem(integerVal3);
+	RDOValue arrayVal1(avalue1);
 
-	//std::string className1 = arrayType_int->asString();
-	//std::string className2 = arrayType_real->asString();
-	//std::string className3 = arrayType_string->asString();
-	//std::string className4 = arrayType_bool->asString();
-	//std::string className5 = arrayType_enum->asString();
-	//std::string className6 = arrayType5->asString();
-	//std::string className7 = arrayType6->asString();
+	RDOArrayType atype2(NULL, g_int);
+	RDOArrayValue avalue2(atype2);
+	avalue2.insertItem(integerVal4);
+	avalue2.insertItem(integerVal5);
+	avalue2.insertItem(integerVal6);
+	RDOValue arrayVal2(avalue2);
+
+	arrayVal1.insert(arrayVal1.begin()+RDOValue(1),arrayVal2.begin(),arrayVal2.end());
+	tstring arrayStr1 = arrayVal1.getAsString();
+
+	arrayVal1.erase(arrayVal1.begin()+RDOValue(1),arrayVal1.begin()+RDOValue(4));
+	tstring arrayStr2 = arrayVal1.getAsString();
+
+	for (RDOValue it = arrayVal1.begin(); it != arrayVal1.end(); ++it)
+	{
+		tstring itStr = it.getAsString();
+		int i = 1;
+	}
+
+	RDOValue it = arrayVal2.end();
+	do 
+	{
+		--it;
+		tstring itStr = it.getAsString();
+		int i = 1;
+	} while (it != arrayVal2.begin());
 
 	int i = 1;
 }

@@ -27,20 +27,7 @@ inline RDOValue::RDOValue()
 
 inline RDOValue::~RDOValue()
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			deleteString();
-			break;
-		}
-		case RDOType::t_fuzzy:
-		{
-			delete &__fuzzyV();
-			break;
-		}
-	}
+	deleteValue();
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
@@ -61,6 +48,8 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 		case RDOType::t_bool         : m_value.b_value = false; break;
 		case RDOType::t_string       : m_value.s_value = new smart_string(new string_class(_T(""))); break;
 		case RDOType::t_identificator: m_value.s_value = new smart_string(new string_class(_T(""))); break;
+		case RDOType::t_array        : m_value.p_data = new PTR(void); break;
+		case RDOType::t_iterator     : m_value.p_data = new PTR(void); break;
 		default                      : throw RDOValueException();
 	}
 }
@@ -146,6 +135,35 @@ inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
 	: m_type(&arrayValue.type())
 {
 	m_value.p_data = new RDOArrayValue(arrayValue);
+}
+
+inline RDOValue::RDOValue(CREF(RDOArrayIterator) iterator)
+	: m_type(&g_iterator)
+{
+	m_value.p_data = new RDOArrayIterator(iterator);
+}
+
+inline void RDOValue::deleteValue()
+{
+	switch (typeID())
+	{
+	case RDOType::t_string       :
+	case RDOType::t_identificator:
+		deleteString();
+		break;
+
+	case RDOType::t_fuzzy:
+		delete &__fuzzyV();
+		break;
+
+	case RDOType::t_array:
+		delete &__arrayV();
+		break;
+
+	case RDOType::t_iterator:
+		delete &__arrayItr();
+		break;
+	}
 }
 
 inline rsint RDOValue::getInt() const
@@ -234,6 +252,11 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 	throw RDOValueException();
 }
 
+inline CREF(RDOArrayValue) RDOValue::getArray() const
+{
+	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
+}
+
 inline tstring RDOValue::getAsString() const
 {
 	switch (typeID())
@@ -245,8 +268,10 @@ inline tstring RDOValue::getAsString() const
 		case RDOType::t_string       : return __stringV();
 		case RDOType::t_identificator: return __stringV();
 		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
+		case RDOType::t_array        : return __arrayV().getAsString();
+		case RDOType::t_iterator     : return __arrayItr().getValue().getAsString();
 	}
-	throw RDOValueException();
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsString()"));
 }
 
 inline tstring RDOValue::getAsStringForTrace() const
@@ -258,8 +283,9 @@ inline tstring RDOValue::getAsStringForTrace() const
 		case RDOType::t_enum  : return rdo::format(_T("%d"), m_value.i_value);
 		case RDOType::t_bool  : return m_value.b_value ? _T("true") : _T("false");
 		case RDOType::t_string: return __stringV();
+		case RDOType::t_array : return __arrayV().getAsString();
 	}
-	throw RDOValueException();
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
 }
 
 inline void RDOValue::deleteString()
@@ -277,15 +303,8 @@ inline void RDOValue::deleteString()
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			deleteString();
-			break;
-		}
-	}
+	deleteValue();
+
 	m_type = rdovalue.m_type;
 	switch (typeID())
 	{
@@ -300,6 +319,16 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 		case RDOType::t_fuzzy:
 		{
 			m_value.p_data = new RDOFuzzyValue(rdovalue.__fuzzyV());
+			break;
+		}
+		case RDOType::t_array:
+		{
+			m_value.p_data = new RDOArrayValue(rdovalue.__arrayV());
+			break;
+		}
+		case RDOType::t_iterator:
+		{
+			m_value.p_data = new RDOArrayIterator(rdovalue.__arrayItr());
 			break;
 		}
 		default:
@@ -370,6 +399,14 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			}
 			break;
 		}
+		case RDOType::t_iterator:
+		{
+			switch (rdovalue.typeID())
+			{
+				case RDOType::t_iterator: return __arrayItr() == rdovalue.__arrayItr();
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
 }
@@ -381,7 +418,8 @@ inline rbool RDOValue::operator!= (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 {
-	switch (typeID()) {
+	switch (typeID())
+	{
 		case RDOType::t_int:
 		{
 			switch (rdovalue.typeID())
@@ -550,8 +588,46 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
+		case RDOType::t_iterator:
+		{
+			switch(rdovalue.typeID())
+			{
+				case RDOType::t_int:
+					PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
+					m_value.p_data = new RDOArrayIterator(__arrayItr() + rdovalue.getInt());
+					delete pPrevIt;
+					return;
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
+}
+
+inline CREF(RDOValue) RDOValue::operator++()
+{
+	operator+=(1);
+	return *this;
+}
+
+inline RDOValue RDOValue::operator++(int inc)
+{
+	RDOValue prevValue(*this);
+	operator+=(1);
+	return prevValue;
+}
+
+inline CREF(RDOValue) RDOValue::operator--()
+{
+	operator-=(1);
+	return *this;
+}
+
+inline RDOValue RDOValue::operator--(int inc)
+{
+	RDOValue prevValue(*this);
+	operator-=(1);
+	return prevValue;
 }
 
 inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
@@ -581,6 +657,18 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 				case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() - rdovalue.__fuzzyV(); return;
+			}
+			break;
+		}
+		case RDOType::t_iterator:
+		{
+			switch(rdovalue.typeID())
+			{
+			case RDOType::t_int:
+				PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
+				m_value.p_data = new RDOArrayIterator(__arrayItr() - rdovalue.getInt());
+				delete pPrevIt;
+				return;
 			}
 			break;
 		}
@@ -684,6 +772,31 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 	return value2;
 }
 
+inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
+{
+	__arrayV()[rdovalue];
+}
+
+inline RDOValue RDOValue::begin()
+{
+	return RDOValue(RDOArrayIterator(__arrayV().containerBegin()));
+}
+
+inline RDOValue RDOValue::end()
+{
+	return RDOValue(RDOArrayIterator(__arrayV().containerEnd()));
+}
+
+inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	__arrayV().insertItems(itr.__arrayItr().getIterator(),itrFst.__arrayItr().getIterator(),itrLst.__arrayItr().getIterator());
+}
+
+inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	__arrayV().eraseItems(itrFst.__arrayItr().getIterator(),itrLst.__arrayItr().getIterator());
+}
+
 inline CREF(RDOType) RDOValue::type() const
 {
 	return *m_type;
@@ -717,6 +830,26 @@ inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
 inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
 {
 	return *static_cast<CPTR(RDOFuzzyValue)>(m_value.p_data);
+}
+
+inline REF(RDOArrayValue) RDOValue::__arrayV()
+{
+	return *static_cast<RDOArrayValue*>(m_value.p_data);
+}
+
+inline CREF(RDOArrayValue) RDOValue::__arrayV() const
+{
+	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
+}
+
+inline REF(RDOArrayIterator) RDOValue::__arrayItr()
+{
+	return *static_cast<RDOArrayIterator*>(m_value.p_data);
+}
+
+inline CREF(RDOArrayIterator) RDOValue::__arrayItr() const
+{
+	return *static_cast<CPTR(RDOArrayIterator)>(m_value.p_data);
 }
 
 inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rdovalue)
