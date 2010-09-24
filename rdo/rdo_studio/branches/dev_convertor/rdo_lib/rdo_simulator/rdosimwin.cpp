@@ -944,10 +944,10 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 
 void RDOThreadSimulator::onConvertor()
 {
-	rdoConverter::RDOParserModel converter;
-	converter.parse();
+	//rdoConverter::RDOParserModel converter;
+	//converter.parse();
 
-	int i = 1;
+	//int i = 1;
 }
 
 rbool RDOThreadSimulator::parseModel()
