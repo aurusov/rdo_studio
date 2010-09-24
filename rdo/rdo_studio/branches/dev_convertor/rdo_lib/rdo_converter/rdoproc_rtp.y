@@ -228,16 +228,17 @@ OPEN_RDO_CONVERTER_NAMESPACE
 %left RDO_not
 %left RDO_UMINUS
 
-%start prc_rtp_main
+%start dptrtp_main
 
 %%
 
 // ----------------------------------------------------------------------------
 // ---------- General part
 // ----------------------------------------------------------------------------
-prc_rtp_main
-	: /* empty */
-	| prc_rtp_main RDO_Process error RDO_End {@1;} /* заглушка для $Process */
+dptrtp_main:
+	| dptrtp_main RDO_Decision_point error RDO_End {@1} /* заглушка для $Decision_point */
+	| dptrtp_main RDO_Activities     error RDO_End      /* заглушка для $Activities     */
+	| dptrtp_main RDO_Process        error RDO_End      /* заглушка для $Process        */
 	;
 
 // ----------------------------------------------------------------------------

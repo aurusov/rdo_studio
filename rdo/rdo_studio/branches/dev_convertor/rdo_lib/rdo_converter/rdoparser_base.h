@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdocommon.h"
+#include "rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/rdobison.h"
 #include "rdo_lib/rdo_converter/rdogramma.h"
 #include "rdo_lib/rdo_converter/namespace.h"
@@ -41,7 +42,7 @@ public:
 		sf_editor
 	};
 
-	rdoModelObjects::RDOFileType m_type;
+	rdoModelObjectsConvertor::RDOFileType m_type;
 
 	t_bison_parse_fun m_parser_fun;
 	t_bison_error_fun m_error_fun;
@@ -56,13 +57,13 @@ public:
 
 protected:
 	RDOParserItem()
-		: m_type      (rdoModelObjects::PAT)
+		: m_type      (rdoModelObjectsConvertor::PAT)
 		, m_parser_fun(NULL                )
 		, m_error_fun (NULL                )
 		, m_lexer_fun (NULL                )
 		, m_from      (sf_repository       )
 	{}
-	RDOParserItem(rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from = sf_repository)
+	RDOParserItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from = sf_repository)
 		: m_type      (type      )
 		, m_parser_fun(parser_fun)
 		, m_error_fun (error_fun )
@@ -91,13 +92,13 @@ public:
 	Iterator end  ()            { return m_list.end();       }
 	Iterator find (ruint index) { return m_list.find(index); }
 
-	static void getMinMax(rdoModelObjects::RDOParseType type, REF(ruint) min, REF(ruint) max);
+	static void getMinMax(rdoModelObjectsConvertor::RDOParseType type, REF(ruint) min, REF(ruint) max);
 
 protected:
 	RDOParserContainer();
 	virtual ~RDOParserContainer();
 
-	ruint insert(rdoModelObjects::RDOParseType type, CREF(LPRDOParserItem) pParser);
+	ruint insert(rdoModelObjectsConvertor::RDOParseType type, CREF(LPRDOParserItem) pParser);
 
 private:
 	List m_list;

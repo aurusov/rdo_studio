@@ -52,6 +52,7 @@ rbool Converter::remove##NAME(const LPRDO##NAME item) \
 DECLARE_PARSER_OBJECT_CONTAINER(PATPattern     );
 DECLARE_PARSER_OBJECT_CONTAINER(RTPResType     );
 DECLARE_PARSER_OBJECT_CONTAINER(RSSResource    );
+DECLARE_PARSER_OBJECT_CONTAINER(OPROperation   );
 DECLARE_PARSER_OBJECT_CONTAINER(FRMFrame       );
 DECLARE_PARSER_OBJECT_CONTAINER(FUNConstant    );
 DECLARE_PARSER_OBJECT_CONTAINER(FUNFunction    );
@@ -61,15 +62,15 @@ DECLARE_PARSER_OBJECT_CONTAINER(DPTSome        );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTPrior       );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTFreeActivity);
 DECLARE_PARSER_OBJECT_CONTAINER(PMDPokaz       );
-DECLARE_PARSER_OBJECT_CONTAINER(Event          );
 
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(PROCProcess);
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME(Operations );
 
-rdoModelObjects::RDOFileType Converter::getFileToParse()
+rdoModelObjectsConvertor::RDOFileType Converter::getFileToParse()
 {
-	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjects::PAT;
+	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjectsConvertor::PAT;
 }
 
 ruint Converter::lexer_loc_line()
@@ -239,7 +240,7 @@ tstring Converter::getModelStructure()
 
 void Converter::parse()
 {
-	parse(rdoModelObjects::obPRE);
+	parse(rdoModelObjectsConvertor::obPRE);
 
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
@@ -250,10 +251,10 @@ void Converter::parse()
 		it++;
 	}
 
-	parse(rdoModelObjects::obPOST);
+	parse(rdoModelObjectsConvertor::obPOST);
 }
 
-void Converter::parse(rdoModelObjects::RDOParseType file)
+void Converter::parse(rdoModelObjectsConvertor::RDOParseType file)
 {
 	ruint min, max;
 	RDOParserContainer::getMinMax(file, min, max);
@@ -353,6 +354,13 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 	{
 		error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
 		error().push_only(pFreeActivity->src_info(), _T("См. первое определение"));
+		error().push_done();
+	}
+	LPRDOOPROperation pOperation = findOPROperation(src_info.src_text());
+	if (pOperation)
+	{
+		error().push_only(src_info, rdo::format(_T("Операция '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(pOperation->src_info(), _T("См. первое определение"));
 		error().push_done();
 	}
 }

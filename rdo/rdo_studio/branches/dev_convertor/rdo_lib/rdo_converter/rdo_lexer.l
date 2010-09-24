@@ -46,6 +46,7 @@
 %}
 %option yylineno
 %option c++
+%x comment_rdo
 %x comment_cpp
 %x comment_line
 %%
@@ -60,7 +61,6 @@ longint				return(RDO_integer);
 real				return(RDO_real);
 string				return(RDO_string);
 bool				return(RDO_bool);
-array				return(RDO_array);
 $End				return(RDO_End);
 $end				return(RDO_End);
 temporary			return(RDO_temporary);
@@ -86,7 +86,6 @@ list				return(RDO_list);
 Calculate_if		return(RDO_Calculate_if);
 calculate_if		return(RDO_Calculate_if);
 if					return(RDO_if);
-else				return(RDO_else);
 result				return(RDO_result);
 $Sequence			return(RDO_Sequence);
 $sequence			return(RDO_Sequence);
@@ -120,7 +119,6 @@ $Pattern			return(RDO_Pattern);
 $pattern			return(RDO_Pattern);
 operation			return(RDO_operation);
 irregular_event		return(RDO_irregular_event);
-event				return(RDO_event);
 rule				return(RDO_rule);
 keyboard			return(RDO_keyboard);
 $Relevant_resources	return(RDO_Relevant_resources);
@@ -256,8 +254,6 @@ $parent				return(RDO_Parent);
 "-="                return(RDO_MinusEqual);
 "*="                return(RDO_MultiplyEqual);
 "/="                return(RDO_DivideEqual);
-"++"                return(RDO_IncrEqual);
-"--"                return(RDO_DecrEqual);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);
@@ -311,14 +307,6 @@ $Term				return(RDO_Fuzzy_Term);
 $term				return(RDO_Fuzzy_Term);
 
 set					return(RDO_set);
-planning			return(RDO_Planning);
-Planning			return(RDO_Planning);
-stopping			return(RDO_Stopping);
-Stopping			return(RDO_Stopping);
-start				return(RDO_Start);
-Start				return(RDO_Start);
-stop				return(RDO_Stop);
-Stop				return(RDO_Stop);
 
 (\'[^\']*\') {
 	tstring n1(YYText());
@@ -333,6 +321,11 @@ Stop				return(RDO_Stop);
 	return RDO_STRING_CONST_BAD;
 }
 
+"{"						BEGIN(comment_rdo);
+<comment_rdo>[^}.]*		;
+<comment_rdo>[^}\n\r]*	;
+<comment_rdo>"}"		BEGIN(INITIAL);
+
 "/*"					BEGIN(comment_cpp);
 <comment_cpp>[^*.]*		;
 <comment_cpp>[^*\n\r]*	;
@@ -341,7 +334,7 @@ Stop				return(RDO_Stop);
 "//"					BEGIN(comment_line);
 <comment_line>[\n\r]+	BEGIN(INITIAL);
 
-"*/" {
+"}"|"*/"				{
 	LEXER->loc_delta_pos(YYLeng());
 	CONVERTER->error().error(rdoConverter::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
 }
@@ -349,7 +342,7 @@ Stop				return(RDO_Stop);
 [\r\n\t ]+
 {}
 
-[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\\{\}]	return(YYText()[YYLeng()-1]);
+[#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..") {
 	tstring n1(YYText());
@@ -460,8 +453,8 @@ false {
 	LEXER->setvalue((int)CONVERTER->addValue(new rdoConverter::RDOValue(LEXER->m_lploc ? rdoConverter::RDOParserSrcInfo(LEXER_POS, name) : rdoConverter::RDOParserSrcInfo(name))));
 	switch (CONVERTER->getFileToParse())
 	{
-	case rdoModelObjects::EVN:
-	case rdoModelObjects::PAT:
+	case rdoModelObjectsConvertor::EVN:
+	case rdoModelObjectsConvertor::PAT:
 		if (CONVERTER->isPattern())
 		{
 			rdoConverter::LPRDOPATPattern pPattern = CONVERTER->getLastPATPattern();

@@ -27,7 +27,7 @@ class RDOParserCorbaRTP: public RDOParserRDOItem
 DECLARE_FACTORY(RDOParserCorbaRTP);
 private:
 	RDOParserCorbaRTP()
-		: RDOParserRDOItem(rdoModelObjects::RTP, NULL, NULL, NULL)
+		: RDOParserRDOItem(rdoModelObjectsConvertor::RTP, NULL, NULL, NULL)
 	{}
 	virtual void parse(PTR(Converter) pParser);
 };
@@ -40,7 +40,7 @@ class RDOParserCorbaRSS: public RDOParserRDOItem
 DECLARE_FACTORY(RDOParserCorbaRSS);
 private:
 	RDOParserCorbaRSS()
-		: RDOParserRDOItem(rdoModelObjects::RSS, NULL, NULL, NULL)
+		: RDOParserRDOItem(rdoModelObjectsConvertor::RSS, NULL, NULL, NULL)
 	{}
 	virtual void parse(PTR(Converter) pParser);
 };

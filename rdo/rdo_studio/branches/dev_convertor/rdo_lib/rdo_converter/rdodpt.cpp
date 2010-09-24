@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/rdodpt.h"
+#include "rdo_lib/rdo_converter/rdoopr.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdorss.h"
@@ -94,13 +95,27 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 	{
 		if (param.src_pos().m_first_line == src_pos().m_first_line)
 		{
-			Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
+			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			{
+				Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании операции '%s'"), m_pPattern->name().c_str(), name().c_str()));
+			}
+			else
+			{
+				Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
+			}
 			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
 			Converter::s_converter()->error().push_done();
 		}
 		else
 		{
-			Converter::s_converter()->error().error(param, _T("Имя активности должно заканчиваться двоеточием"));
+			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			{
+				Converter::s_converter()->error().error(param, _T("Имя операции должно заканчиваться двоеточием"));
+			}
+			else
+			{
+				Converter::s_converter()->error().error(param, _T("Имя активности должно заканчиваться двоеточием"));
+			}
 		}
 	}
 	rdoRuntime::RDOValue val;
@@ -145,7 +160,14 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 		ASSERT(pKeyboard);
 		if (!pKeyboard->hasHotKey())
 		{
-			Converter::s_converter()->error().push_only(param_pos, _T("Для активности должна быть указана клавиша"));
+			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			{
+				Converter::s_converter()->error().push_only(param_pos, _T("Для клавиатурной операции должна быть указана клавиша"));
+			}
+			else
+			{
+				Converter::s_converter()->error().push_only(param_pos, _T("Для активности должна быть указана клавиша"));
+			}
 			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
 			Converter::s_converter()->error().push_done();
 		}
@@ -170,6 +192,10 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 {
 	switch (pattern()->getType())
 	{
+	case RDOPATPattern::PT_IE:
+		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
+		break;
+
 	case RDOPATPattern::PT_Rule:
 		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
 		break;
@@ -205,7 +231,14 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 		break;
 
 	case rdoRuntime::RDOKeyboard::addhk_already:
-		Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Для активности '%s' клавиша уже назначена"), src_text().c_str()));
+		if (dynamic_cast<PTR(RDOOPROperation)>(this))
+		{
+			Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Для операции '%s' клавиша уже назначена"), src_text().c_str()));
+		}
+		else
+		{
+			Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Для активности '%s' клавиша уже назначена"), src_text().c_str()));
+		}
 		break;
 
 	case rdoRuntime::RDOKeyboard::addhk_notfound:
@@ -219,7 +252,7 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 		break;
 
 	default:
-		Converter::s_converter()->error().error(src_info(), _T("Внутренная ошибка: RDOOPROperation::addHotKey"));
+		Converter::s_converter()->error().error(src_info(), _T("Внутренная ошибка: RDODPTActivityHotKey::addHotKey"));
 	}
 }
 

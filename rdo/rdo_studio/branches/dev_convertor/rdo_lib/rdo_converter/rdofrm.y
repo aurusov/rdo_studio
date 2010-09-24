@@ -213,6 +213,7 @@
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdofrm.h"
 #include "rdo_lib/rdo_converter/rdopat.h"
+#include "rdo_lib/rdo_converter/rdoopr.h"
 #include "rdo_lib/rdo_converter/rdodpt.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -1306,18 +1307,32 @@ frm_active
 	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
 		tstring opr_name = P_RDOVALUE($2)->value().getIdentificator();
-		LPRDODPTFreeActivity pActivity = CONVERTER->findDPTFreeActivity(opr_name);
-		if (!pActivity)
+		LPRDOOPROperation pOperation = PARSER->findOPROperation(opr_name);
+		if (!pOperation)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Активность '%s' не найдена"), opr_name.c_str()));
+			LPRDODPTFreeActivity pActivity = PARSER->findDPTFreeActivity(opr_name);
+			if (!pActivity)
+			{
+				CONVERTER->error().error(@2, rdo::format(_T("Опереация '%s' не найдена"), opr_name.c_str()));
+			}
+			else
+			{
+				if (pActivity->pattern()->getType() != RDOPATPattern::PT_Keyboard)
+				{
+					CONVERTER->error().push_only(@2, rdo::format(_T("Активность '%s' должна быть клавиатурной"), pActivity->name().c_str()));
+					CONVERTER->error().push_only(pActivity->src_info(), _T("См. акивность"));
+					CONVERTER->error().push_only(pActivity->pattern()->src_info(), _T("См. образец"));
+					CONVERTER->error().push_done();
+				}
+			}
 		}
 		else
 		{
-			if (pActivity->pattern()->getType() != RDOPATPattern::PT_Keyboard)
+			if (pOperation->pattern()->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				CONVERTER->error().push_only(@2, rdo::format(_T("Активность '%s' должна быть клавиатурной"), pActivity->name().c_str()));
-				CONVERTER->error().push_only(pActivity->src_info(), _T("См. акивность"));
-				CONVERTER->error().push_only(pActivity->pattern()->src_info(), _T("См. образец"));
+				CONVERTER->error().push_only(@2, rdo::format(_T("Операция '%s' должна быть клавиатурной"), opr->name().c_str()));
+				CONVERTER->error().push_only(pOperation->src_info(), _T("См. операцию"));
+				CONVERTER->error().push_only(pOperation->pattern()->src_info(), _T("См. образец"));
 				CONVERTER->error().push_done();
 			}
 		}

@@ -35,7 +35,7 @@ public:
 	virtual ruint lexer_loc_pos ();
 
 protected:
-	RDOParserRDOItem(rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
+	RDOParserRDOItem(rdoModelObjectsConvertor::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
 	virtual ~RDOParserRDOItem();
 
 	PTR(RDOLexer)  m_pLexer;
@@ -65,20 +65,7 @@ class RDOParserRSSPost: public RDOParserItem
 DECLARE_FACTORY(RDOParserRSSPost);
 private:
 	RDOParserRSSPost()
-		: RDOParserItem(rdoModelObjects::RSS, NULL, NULL, NULL)
-	{}
-	virtual void parse(PTR(Converter) pParser);
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserEVNPost
-// ----------------------------------------------------------------------------
-class RDOParserEVNPost: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserEVNPost);
-private:
-	RDOParserEVNPost()
-		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL)
+		: RDOParserItem(rdoModelObjectsConvertor::RSS, NULL, NULL, NULL)
 	{}
 	virtual void parse(PTR(Converter) pParser);
 };
@@ -91,7 +78,7 @@ class RDOParserSTDFUN: public RDOParserItem
 DECLARE_FACTORY(RDOParserSTDFUN);
 private:
 	RDOParserSTDFUN()
-		: RDOParserItem(rdoModelObjects::FUN, NULL, NULL, NULL)
+		: RDOParserItem(rdoModelObjectsConvertor::FUN, NULL, NULL, NULL)
 	{}
 	virtual void parse(PTR(Converter) pParser);
 };

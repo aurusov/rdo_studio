@@ -23,12 +23,11 @@
 #include "rdo_lib/rdo_converter/rdo_value.h"
 #include "rdo_lib/rdo_converter/rdoparser_error.h"
 #include "rdo_lib/rdo_converter/rdo_type_param.h"
-#include "rdo_lib/rdo_converter/rdopatpreparse.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdopat.h"
-#include "rdo_lib/rdo_converter/rdopatpreparse.h"
+#include "rdo_lib/rdo_converter/rdoopr.h"
 #include "rdo_lib/rdo_converter/rdodpt.h"
 #include "rdo_lib/rdo_converter/rdopmd.h"
 #include "rdo_lib/rdo_converter/rdofrm.h"
@@ -56,6 +55,7 @@ public:
 DEFINE_OBJECT_CONTAINER(PATPattern     );
 DEFINE_OBJECT_CONTAINER(RTPResType     );
 DEFINE_OBJECT_CONTAINER(RSSResource    );
+DEFINE_OBJECT_CONTAINER(OPROperation   );
 DEFINE_OBJECT_CONTAINER(FRMFrame       );
 DEFINE_OBJECT_CONTAINER(FUNConstant    );
 DEFINE_OBJECT_CONTAINER(FUNFunction    );
@@ -65,11 +65,11 @@ DEFINE_OBJECT_CONTAINER(DPTSome        );
 DEFINE_OBJECT_CONTAINER(DPTPrior       );
 DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
 DEFINE_OBJECT_CONTAINER(PMDPokaz       );
-DEFINE_OBJECT_CONTAINER(Event          );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
 DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
+DEFINE_OBJECT_CONTAINER_NONAME(Operations );
 
 public:
 	Converter();
@@ -169,7 +169,7 @@ public:
 	REF(ContextStack) contextStack();
 	LPContext         context     () const;
 
-	static rdoModelObjects::RDOFileType getFileToParse();
+	static rdoModelObjectsConvertor::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
 	static PTR(Converter)               s_converter      ();
@@ -197,7 +197,7 @@ protected:
 	ValueList              m_allValues;
 	rdoRuntime::RDORuntime m_runtime;
 
-	void parse(rdoModelObjects::RDOParseType file);
+	void parse(rdoModelObjectsConvertor::RDOParseType file);
 
 private:
 	LPRDOSMR              m_pSMR;

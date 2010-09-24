@@ -212,9 +212,7 @@
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
-#include "rdo_lib/rdo_converter/rdo_array.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/calc_event_plan.h"
 // ===============================================================================
 
 #define CONVERTER LEXER->converter()
@@ -249,6 +247,13 @@ pat_header
 	{
 		PTR(RDOValue) name = P_RDOVALUE($2);
 		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternOperation>::create(name->src_info(), $4 != 0);
+		ASSERT(pPattern);
+		$$ = CONVERTER->stack().push(pPattern);
+	}
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
+	{
+		PTR(RDOValue) name = P_RDOVALUE($2);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternIrregEvent>::create(name->src_info(), $4 != 0);
 		ASSERT(pPattern);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -2060,15 +2065,6 @@ param_type
 		ASSERT(pType);
 		$$ = CONVERTER->stack().push(pType);
 	}
-	| param_array param_value_default
-	{
-		LEXER->array_cnt_rst();
-		LPRDOArrayType pArray = CONVERTER->stack().pop<RDOArrayType>($1);
-		ASSERT(pArray);
-		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-		$$ = CONVERTER->stack().push(pType);
-	}
 	| RDO_bool param_value_default
 	{
 		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
@@ -2336,15 +2332,6 @@ param_value_default
 		{
 			CONVERTER->error().error(src_info, _T("Неверное значение по-умолчанию"));
 		}
-	}
-	;
-
-param_array
-	: RDO_array '<' param_type '>'
-	{
-		LPRDOArrayType pArray = CONVERTER->stack().pop<RDOArrayType>($2);
-		ASSERT(pArray);
-		$$ = CONVERTER->stack().push(pArray);
 	}
 	;
 

@@ -211,7 +211,6 @@
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
-#include "rdo_lib/rdo_converter/rdo_array.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
@@ -1280,15 +1279,6 @@ param_type
 		ASSERT(pType);
 		$$ = CONVERTER->stack().push(pType);
 	}
-	| param_array param_value_default
-	{
-		LEXER->array_cnt_rst();
-		LPRDOArrayType pArray = CONVERTER->stack().pop<RDOArrayType>($1);
-		ASSERT(pArray);
-		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-		$$ = CONVERTER->stack().push(pType);
-	}
 	| RDO_bool param_value_default
 	{
 		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
@@ -1556,15 +1546,6 @@ param_value_default
 		{
 			CONVERTER->error().error(src_info, _T("Неверное значение по-умолчанию"));
 		}
-	}
-	;
-
-param_array
-	: RDO_array '<' param_type '>'
-	{
-		LPRDOArrayType pArray = CONVERTER->stack().pop<RDOArrayType>($2);
-		ASSERT(pArray);
-		$$ = CONVERTER->stack().push(pArray);
 	}
 	;
 

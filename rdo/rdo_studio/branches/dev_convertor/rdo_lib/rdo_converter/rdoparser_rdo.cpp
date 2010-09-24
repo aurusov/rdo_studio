@@ -32,7 +32,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRDOItem
 // ----------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
+RDOParserRDOItem::RDOParserRDOItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
 	: RDOParserItem(type, parser_fun, error_fun, lexer_fun, from)
 	, m_pLexer(NULL)
 {}
@@ -107,7 +107,7 @@ ruint RDOParserRDOItem::lexer_loc_pos()
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS(StreamFrom from)
-	: RDOParserRDOItem(rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
+	: RDOParserRDOItem(rdoModelObjectsConvertor::RSS, rssparse, rsserror, rsslex, from)
 {}
 
 void RDOParserRSS::parse(PTR(Converter) pParser)
@@ -145,61 +145,6 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 #ifdef RDOSIM_COMPATIBLE
 	}
 #endif
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserEVNPost
-// ----------------------------------------------------------------------------
-void RDOParserEVNPost::parse(PTR(Converter) pParser)
-{
-	ASSERT(pParser);
-
-	//! Позднее связывание для планирования событий
-	STL_FOR_ALL_CONST(Converter::EventList, pParser->getEvents(), eventIt)
-	{
-		LPRDOEvent pEvent = *eventIt;
-
-		LPRDOPATPattern pPattern = pParser->findPATPattern(pEvent->name());
-		if (!pPattern)
-		{
-			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
-			{
-				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
-			}
-			pParser->error().push_done();
-		}
-		if (pPattern->getType() != RDOPATPattern::PT_Event)
-		{
-			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
-			{
-				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
-			}
-			pParser->error().push_done();
-		}
-
-		if (pEvent->getRegular())
-		{
-			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(pParser->runtime()->m_metaLogic, pParser->runtime(), pEvent->name());
-			ASSERT(pRuntimeEvent);
-			pEvent->setRuntimeEvent(pRuntimeEvent);
-
-			STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
-			{
-				(*calcIt)->setEvent(pRuntimeEvent);
-			}
-		}
-		else
-		{
-			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(pPattern->getPatRuntime())->createActivity(pParser->runtime()->m_metaLogic, pParser->runtime(), pEvent->name());
-			ASSERT(pRuntimeEvent);
-			pEvent->setRuntimeEvent(pRuntimeEvent);
-
-			STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
-			{
-				(*calcIt)->setEvent(pRuntimeEvent);
-			}
-		}
-	}
 }
 
 // ----------------------------------------------------------------------------
