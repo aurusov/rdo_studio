@@ -219,7 +219,8 @@ OPEN_RDO_CONVERTER_NAMESPACE
 %%
 
 pmd_main
-	: pmd_end
+	: /* empty */
+	| pmd_end
 	;
 
 pmd_body
