@@ -156,9 +156,9 @@ inline void RDOValue::deleteValue()
 		delete &__fuzzyV();
 		break;
 
-	case RDOType::t_array:
-		delete &__arrayV();
-		break;
+	//case RDOType::t_array:
+	//	delete &__arrayV();
+	//	break;
 
 	case RDOType::t_iterator:
 		delete &__arrayItr();
