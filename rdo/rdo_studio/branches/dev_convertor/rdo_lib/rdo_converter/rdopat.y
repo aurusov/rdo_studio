@@ -135,19 +135,6 @@
 %token RDO_Priority						372
 %token RDO_prior						373
 %token RDO_Parent						374
-%token RDO_PlusEqual					375
-%token RDO_MinusEqual					376
-%token RDO_MultiplyEqual				377
-%token RDO_DivideEqual					378
-%token RDO_array						379
-%token RDO_event						380
-%token RDO_Planning						381
-%token RDO_else							382
-%token RDO_IncrEqual					383
-%token RDO_DecrEqual					384
-%token RDO_Stopping						385
-%token RDO_Start						386
-%token RDO_Stop							387
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -421,11 +408,6 @@ pat_rel_res
 				CONVERTER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@5, _T("У события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Rule:
 			{
 				CONVERTER->error().error(@5, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
@@ -454,11 +436,6 @@ pat_rel_res
 				CONVERTER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@5, _T("У события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Rule:
 			{
 				CONVERTER->error().error(@5, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
@@ -480,9 +457,8 @@ pat_rel_res
 				CONVERTER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
-			case RDOPATPattern::PT_Event: 
-			case RDOPATPattern::PT_Rule :
+			case RDOPATPattern::PT_IE  :
+			case RDOPATPattern::PT_Rule:
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
@@ -505,9 +481,8 @@ pat_rel_res
 				CONVERTER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
-			case RDOPATPattern::PT_Event: 
-			case RDOPATPattern::PT_Rule :
+			case RDOPATPattern::PT_IE  :
+			case RDOPATPattern::PT_Rule:
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
@@ -541,11 +516,6 @@ pat_rel_res
 				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@4, _T("У события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Rule:
 			{
 				CONVERTER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
@@ -576,11 +546,6 @@ pat_rel_res
 			case RDOPATPattern::PT_IE:
 			{
 				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@4, _T("У события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
@@ -640,11 +605,6 @@ pat_rel_res
 				CONVERTER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@3, _T("У события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Rule:
 			{
 				CONVERTER->error().error(@3, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
@@ -702,11 +662,6 @@ pat_rel_res
 				CONVERTER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@3, _T("У события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Rule:
 			{
 				CONVERTER->error().error(@3, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
@@ -728,9 +683,8 @@ pat_rel_res
 				CONVERTER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
-			case RDOPATPattern::PT_Event: 
-			case RDOPATPattern::PT_Rule :
+			case RDOPATPattern::PT_IE  :
+			case RDOPATPattern::PT_Rule:
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
 				PTR(RDOValue) type_name = P_RDOVALUE($3);
@@ -757,8 +711,7 @@ pat_rel_res
 				CONVERTER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 				break;
 			}
-			case RDOPATPattern::PT_IE   : 
-			case RDOPATPattern::PT_Event: 
+			case RDOPATPattern::PT_IE   :
 			case RDOPATPattern::PT_Rule :
 			{
 				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
@@ -802,11 +755,6 @@ pat_rel_res
 				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@4, _T("У события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
 			case RDOPATPattern::PT_Rule:
 			{
 				CONVERTER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
@@ -842,11 +790,6 @@ pat_rel_res
 			case RDOPATPattern::PT_IE:
 			{
 				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
-				break;
-			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@4, _T("У события нет события конца, а значит и второго статуса конвертора"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
@@ -904,11 +847,6 @@ pat_rel_res
 				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
-				break;
-			}
 			case RDOPATPattern::PT_IE:
 			{
 				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
@@ -927,11 +865,6 @@ pat_rel_res
 		switch (CONVERTER->getLastPATPattern()->getType())
 		{
 			case RDOPATPattern::PT_Rule:
-			{
-				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
-				break;
-			}
-			case RDOPATPattern::PT_Event:
 			{
 				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 				break;
@@ -958,11 +891,6 @@ pat_rel_res
 				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 				break;
 			}
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
-				break;
-			}
 			case RDOPATPattern::PT_IE:
 			{
 				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
@@ -981,11 +909,6 @@ pat_rel_res
 		switch (CONVERTER->getLastPATPattern()->getType())
 		{
 			case RDOPATPattern::PT_Rule:
-			{
-				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
-				break;
-			}
-			case RDOPATPattern::PT_Event:
 			{
 				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
 				break;
@@ -1017,7 +940,7 @@ pat_common_choice
 	| pat_rel_res RDO_first
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
+		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
 			CONVERTER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
 		}
@@ -1030,7 +953,7 @@ pat_common_choice
 	| pat_rel_res RDO_with_min fun_arithm
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
+		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
 			CONVERTER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
 		}
@@ -1047,7 +970,7 @@ pat_common_choice
 	| pat_rel_res RDO_with_max fun_arithm
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-		if (pPattern->getType() == RDOPATPattern::PT_IE || pPattern->getType() == RDOPATPattern::PT_Event)
+		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
 			CONVERTER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
 		}
@@ -1092,11 +1015,6 @@ pat_time
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		switch (pPattern->getType())
 		{
-			case RDOPATPattern::PT_Event:
-			{
-				CONVERTER->error().error(@2, _T("Поле $Time не используется в событии"));
-				break;
-			}
 			case RDOPATPattern::PT_Rule:
 			{
 				CONVERTER->error().error(@2, _T("Поле $Time не используется в продукционном правиле"));
@@ -1128,11 +1046,6 @@ pat_time
 		switch (pPattern->getType())
 		{
 			case RDOPATPattern::PT_Rule:
-			{
-				CONVERTER->error().error(@2, rdo::format(_T("Ожидается $Body, найдено: %s"), LEXER->YYText()));
-				break;
-			}
-			case RDOPATPattern::PT_Event:
 			{
 				CONVERTER->error().error(@2, rdo::format(_T("Ожидается $Body, найдено: %s"), LEXER->YYText()));
 				break;
@@ -1320,7 +1233,6 @@ pat_convert
 			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
-				case RDOPATPattern::PT_Event:
 				{
 					CONVERTER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
 					break;
@@ -1342,8 +1254,7 @@ pat_convert
 		{
 			switch (pPattern->getType())
 			{
-				case RDOPATPattern::PT_IE:
-				case RDOPATPattern::PT_Event:
+				case RDOPATPattern::PT_IE  :
 				case RDOPATPattern::PT_Rule:
 				{
 					CONVERTER->error().error(@1, _T("Внутренняя ошибка"));
@@ -1373,11 +1284,6 @@ pat_convert
 					type = _T("нерегулярном событии"); 
 					break;
 				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии"); 
-					break;
-				}
 				case RDOPATPattern::PT_Rule:
 				{
 					type = _T("продукционном правиле");
@@ -1404,11 +1310,6 @@ pat_convert
 					type = _T("нерегулярном событии");
 					break;
 				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии");
-					break;
-				}
 				case RDOPATPattern::PT_Rule:
 				{
 					type = _T("продукционном правиле");
@@ -1433,11 +1334,6 @@ pat_convert
 				case RDOPATPattern::PT_IE:
 				{
 					type = _T("нерегулярном событии");
-					break;
-				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии");
 					break;
 				}
 				case RDOPATPattern::PT_Rule:
@@ -1467,11 +1363,6 @@ pat_convert
 					type = _T("нерегулярном событии");
 					break;
 				}
-				case RDOPATPattern::PT_Event:
-				{
-					type = _T("событии");
-					break;
-				}
 				case RDOPATPattern::PT_Operation:
 				{
 					type = _T("операции");
@@ -1494,7 +1385,7 @@ pat_convert
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
-		if (pPattern->getType() != RDOPATPattern::PT_IE && pPattern->getType() != RDOPATPattern::PT_Event)
+		if (pPattern->getType() != RDOPATPattern::PT_IE)
 		{
 			tstring type = _T("");
 			switch (pPattern->getType())
@@ -1561,219 +1452,28 @@ pat_convert_cmd
 		pRelRes->getParamSetList().reset();
 		$$ = CONVERTER->stack().push(pCmdList);
 	}
-	| pat_convert_cmd statement
+	| pat_convert_cmd RDO_IDENTIF param_equal_type fun_arithm
 	{
-		LPConvertCmdList      pCmdList = CONVERTER->stack().pop<ConvertCmdList>($1);
-		rdoRuntime::LPRDOCalc pCalc    = CONVERTER->stack().pop<rdoRuntime::RDOCalc>($2);
-		pCmdList->insertCommand(pCalc);
-		$$ = CONVERTER->stack().push(pCmdList);
-	}
-	| pat_convert_cmd statement_old_style
-	{
-		//LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($1);
-		YYLTYPE          statement_pos = @2;
-		//LPCorrection     pCorrection = new Correction(++statement_pos.m_last_line, ++statement_pos.m_last_pos, Semicolon);
-		//pCmdList->insertCorrection(pCorrection);
-		//$$ = CONVERTER->stack().push(pCmdList);
-		CONVERTER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает точки с запятой"), statement_pos.m_last_line, statement_pos.m_last_pos));
-	}
-	;
-
-statement_old_style
-	: nochange_statement_old_style
-	| equal_statement_old_style
-	;
-
-nochange_statement_old_style
-	: RDO_IDENTIF_NoChange
-	;
-
-equal_statement_old_style
-	: RDO_IDENTIF increment_or_decrement_type
-	{
-		$$ = $2;
-	}
-	| RDO_IDENTIF param_equal_type fun_arithm
-	{
-		$$ = $3;
-	}
-	;
-
-statement
-	: empty_statement
-	| nochange_statement
-	| equal_statement
-	| stopping_statement
-	| planning_statement
-	| if_statement
-	| '{' statement_list '}'
-	{
-		rdoRuntime::LPRDOCalcList pCalcList = CONVERTER->stack().pop<rdoRuntime::RDOCalcList>($2);
-		ASSERT(pCalcList);
-		rdoRuntime::LPRDOCalc pCalc = pCalcList;
-		ASSERT(pCalc);
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	;
-
-statement_list
-	: /* empty */
-	{
-		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
-		ASSERT(pCalcList);
-		$$ = CONVERTER->stack().push(pCalcList);
-	}
-	| statement_list statement
-	{
-		rdoRuntime::LPRDOCalcList pCalcList = CONVERTER->stack().pop<rdoRuntime::RDOCalcList>($1);
-		ASSERT(pCalcList);
-
-		rdoRuntime::LPRDOCalc     pCalc     = CONVERTER->stack().pop<rdoRuntime::RDOCalc>($2);
-		ASSERT(pCalc);
-
-		pCalcList->addCalc(pCalc);
-
-		$$ = CONVERTER->stack().push(pCalcList);
-	}
-	;
-
-empty_statement
-	: ';'
-	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
-		ASSERT(pCalc);
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	| error ';'
-	{
-		CONVERTER->error().error(@1, _T("Ошибка в инструкции"));
-	}
-	;
-
-nochange_statement
-	: RDO_IDENTIF_NoChange ';'
-	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
-		ASSERT(pCalc);
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	| RDO_IDENTIF_NoChange error
-	{
-		CONVERTER->error().error(@2, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	;
-
-equal_statement
-	: RDO_IDENTIF increment_or_decrement_type ';'
-	{
-		tstring                paramName = RDOVALUE($1)->getIdentificator();
-		rdoRuntime::EqualType  equalType = static_cast<rdoRuntime::EqualType>($2);
-		LPRDORelevantResource  pRelRes   = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
+		LPConvertCmdList         pCmdList     = CONVERTER->stack().pop<ConvertCmdList>($1);
+		tstring                  paramName    = RDOVALUE($2)->getIdentificator();
+		rdoRuntime::EqualType    equalType    = static_cast<rdoRuntime::EqualType>($3);
+		LPRDOFUNArithm           pRightArithm = CONVERTER->stack().pop<RDOFUNArithm>($4);
+		LPRDORelevantResource    pRelRes      = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
 		{
-			CONVERTER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
-		}
-		rdoRuntime::LPRDOCalc pCalc;
-		switch (equalType)
-		{
-			case rdoRuntime::ET_INCR:
-			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
-				break;
-			}
-			case rdoRuntime::ET_DECR:
-			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
-				break;
-			}
-			default:
-			{
-				NEVER_REACH_HERE;
-			}
-		}
-		ASSERT(pCalc);
-		//! Проверка на диапазон
-		//! TODO: проверить работоспособность
-		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
-		{
-			LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
-		}
-		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
-		{
-			LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
-		}
-		tstring oprStr;
-		switch (equalType)
-		{
-			case rdoRuntime::ET_INCR:
-			{
-				oprStr = _T("++");
-				break;
-			}
-			case rdoRuntime::ET_DECR:
-			{
-				oprStr = _T("--");
-				break;
-			}
-			default:
-			{
-				oprStr = _T("");
-				break;
-			}
-		}
-		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
-
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	| RDO_IDENTIF param_equal_type fun_arithm ';'
-	{
-		tstring               paramName    = RDOVALUE($1)->getIdentificator();
-		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
-		LPRDOFUNArithm        pRightArithm = CONVERTER->stack().pop<RDOFUNArithm>($3);
-		LPRDORelevantResource pRelRes      = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
-		ASSERT(pRelRes);
-		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
-		if (!param)
-		{
-			CONVERTER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 		}
 		rdoRuntime::LPRDOCalc pCalcRight = pRightArithm->createCalc(param->getParamType().get());
 		rdoRuntime::LPRDOCalc pCalc;
 		switch (equalType)
 		{
-			case rdoRuntime::ET_NOCHANGE:
-			{
-				break;
-			}
 			case rdoRuntime::ET_EQUAL:
 			{
 				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				ASSERT(pCalc);
 				pRelRes->getParamSetList().insert(param);
-				break;
-			}
-			case rdoRuntime::ET_PLUS:
-			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-				break;
-			}
-			case rdoRuntime::ET_MINUS:
-			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-				break;
-			}
-			case rdoRuntime::ET_MULTIPLY:
-			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-				break;
-			}
-			case rdoRuntime::ET_DIVIDE:
-			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				break;
 			}
 			default:
@@ -1781,202 +1481,50 @@ equal_statement
 				NEVER_REACH_HERE;
 			}
 		}
-		ASSERT(pCalc);
-		//! Проверка на диапазон
-		//! TODO: проверить работоспособность
-		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+		if (pCalc)
 		{
-			LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+			//! Проверка на диапазон
+			//! TODO: проверить работоспособность
+			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+			{
+				LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				ASSERT(pCalc);
+			}
+			else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+			{
+				LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				ASSERT(pCalc);
+			}
+			tstring oprStr;
+			switch (equalType)
+			{
+				case rdoRuntime::ET_EQUAL:
+				{
+					oprStr = _T("=");
+					break;
+				}
+				default:
+				{
+					oprStr = _T("");
+					break;
+				}
+			}
+			pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+			pCalc->setSrcPos (@2.m_first_line, @2.m_first_pos, @4.m_last_line, @4.m_last_pos);
+			pCmdList->insertCommand(pCalc);
 		}
-		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
-		{
-			LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
-		}
-		tstring oprStr;
-		switch (equalType)
-		{
-			case rdoRuntime::ET_EQUAL:
-			{
-				oprStr = _T("=");
-				break;
-			}
-			case rdoRuntime::ET_PLUS:
-			{
-				oprStr = _T("+=");
-				break;
-			}
-			case rdoRuntime::ET_MINUS:
-			{
-				oprStr = _T("-=");
-				break;
-			}
-			case rdoRuntime::ET_MULTIPLY:
-			{
-				oprStr = _T("*=");
-				break;
-			}
-			case rdoRuntime::ET_DIVIDE:
-			{
-				oprStr = _T("/=");
-				break;
-			}
-			default:
-			{
-				oprStr = _T("");
-				break;
-			}
-		}
-		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
-
-		$$ = CONVERTER->stack().push(pCalc);
+		$$ = CONVERTER->stack().push(pCmdList);
 	}
-	| RDO_IDENTIF param_equal_type error
+	| pat_convert_cmd RDO_IDENTIF param_equal_type error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@4, _T("Ошибка в арифметическом выражении"));
 	}
-	| RDO_IDENTIF param_equal_type fun_arithm error
+	| pat_convert_cmd RDO_IDENTIF_NoChange
 	{
-		CONVERTER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	| RDO_IDENTIF error fun_arithm
-	{
-		CONVERTER->error().error(@2, _T("Ошибка в операторе присваивания"));
-	}
-	;
-
-stopping_statement
-	: RDO_IDENTIF '.' RDO_Stopping ';'
-	{
-		tstring           eventName   = RDOVALUE($1)->getIdentificator();
-		LPRDOEvent        pEvent      = CONVERTER->findEvent(eventName);
-		if (!pEvent)
-		{
-			CONVERTER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	| RDO_IDENTIF '.' RDO_Stopping error
-	{
-		CONVERTER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	;
-
-planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' ';'
-	{
-		tstring        eventName   = RDOVALUE($1)->getIdentificator();
-		LPRDOFUNArithm pTimeArithm = CONVERTER->stack().pop<RDOFUNArithm>($5);
-		LPRDOEvent     pEvent      = CONVERTER->findEvent(eventName);
-		if (!pEvent)
-		{
-			CONVERTER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
-		ASSERT(pCalcTime);
-
-		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' error
-	{
-		CONVERTER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	| RDO_IDENTIF '.' RDO_Planning '(' error
-	{
-		CONVERTER->error().error(@5, _T("Ошибка в арифметическом выражении"));
-	}
-	| RDO_IDENTIF '.' RDO_Planning error
-	{
-		CONVERTER->error().error(@4, _T("Ожидается открывающая скобка"));
-	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
-	{
-		CONVERTER->error().error(@6, _T("Ожидается закрывающая скобка"));
-	}
-	;
-
-event_descr_param
-	: /* empty */
-	| event_descr_param ',' '*'
-	{
-		CONVERTER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
-	}
-	| event_descr_param ',' fun_arithm
-	{
-		CONVERTER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
-	}
-	| event_descr_param ',' error
-	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания параметра события")
-	}
-	;
-
-if_statement
-	: RDO_if '(' fun_logic ')' statement
-	{
-		LPRDOFUNLogic pCondition = CONVERTER->stack().pop<RDOFUNLogic>($3);
-		ASSERT(pCondition);
-		
-		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
-		ASSERT(pConditionCalc);
-
-		rdoRuntime::LPRDOCalc pStatementCalc = CONVERTER->stack().pop<rdoRuntime::RDOCalc>($5);
-		ASSERT(pStatementCalc);
-
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pStatementCalc);
-		ASSERT(pCalc);
-
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	| RDO_if '(' fun_logic ')' statement RDO_else statement
-	{
-		LPRDOFUNLogic pCondition = CONVERTER->stack().pop<RDOFUNLogic>($3);
-		ASSERT(pCondition);
-		
-		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
-		ASSERT(pConditionCalc);
-
-		rdoRuntime::LPRDOCalc pIfStatementCalc = CONVERTER->stack().pop<rdoRuntime::RDOCalc>($5);
-		ASSERT(pIfStatementCalc);
-
-		rdoRuntime::LPRDOCalc pElseStatementCalc = CONVERTER->stack().pop<rdoRuntime::RDOCalc>($7);
-		ASSERT(pElseStatementCalc);
-
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfStatementCalc, pElseStatementCalc);
-		ASSERT(pCalc);
-		
-		$$ = CONVERTER->stack().push(pCalc);
-	}
-	| RDO_if error fun_logic
-	{
-		CONVERTER->error().error(@2, _T("Ожидается открывающая скобка"));
-	}
-	| RDO_if '(' fun_logic error
-	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающая скобка"));
-	}
-	;
-
-increment_or_decrement_type
-	: RDO_IncrEqual
-	{
-		$$ = rdoRuntime::ET_INCR;
-	}
-	| RDO_DecrEqual
-	{
-		$$ = rdoRuntime::ET_DECR;
+		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($1);
+		$$ = CONVERTER->stack().push(pCmdList);
 	}
 	;
 
@@ -1984,26 +1532,6 @@ param_equal_type
 	: RDO_set
 	{
 		$$ = rdoRuntime::ET_EQUAL;
-	}
-	| '='
-	{
-		$$ = rdoRuntime::ET_EQUAL;
-	}
-	| RDO_PlusEqual
-	{
-		$$ = rdoRuntime::ET_PLUS;
-	}
-	| RDO_MinusEqual
-	{
-		$$ = rdoRuntime::ET_MINUS;
-	}
-	| RDO_MultiplyEqual
-	{
-		$$ = rdoRuntime::ET_MULTIPLY;
-	}
-	| RDO_DivideEqual
-	{
-		$$ = rdoRuntime::ET_DIVIDE;
 	}
 	;
 
@@ -2341,7 +1869,8 @@ param_value_default
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: RDO_eq { $$ = RDO_eq; }
+	: '='    { $$ = RDO_eq; }
+	| RDO_eq { $$ = RDO_eq; }
 	;
 
 fun_logic

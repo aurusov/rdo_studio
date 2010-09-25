@@ -135,19 +135,6 @@
 %token RDO_Priority						372
 %token RDO_prior						373
 %token RDO_Parent						374
-%token RDO_PlusEqual					375
-%token RDO_MinusEqual					376
-%token RDO_MultiplyEqual				377
-%token RDO_DivideEqual					378
-%token RDO_array						379
-%token RDO_event						380
-%token RDO_Planning						381
-%token RDO_else							382
-%token RDO_IncrEqual					383
-%token RDO_DecrEqual					384
-%token RDO_Stopping						385
-%token RDO_Start						386
-%token RDO_Stop							387
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -255,24 +242,6 @@ smr_show_mode
 
 smr_cond
 	: /* empty */
-	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')'
-	{
-		tstring    eventName = RDOVALUE($2)->getIdentificator();
-		LPRDOEvent pEvent    = CONVERTER->findEvent(eventName);
-		if (!pEvent)
-		{
-			CONVERTER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		LPRDOFUNArithm pTimeArithm = CONVERTER->stack().pop<RDOFUNArithm>($6);
-		ASSERT(pTimeArithm);
-		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
-		ASSERT(pCalcTime);
-
-		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
-		ASSERT(pBaseOperation);
-		RUNTIME->addTimePoint(pCalcTime->calcValue(RUNTIME).getDouble(), pBaseOperation);
-	}
 	| smr_cond RDO_Model_name                 '=' RDO_IDENTIF
 	| smr_cond RDO_Resource_file              '=' RDO_IDENTIF
 	| smr_cond RDO_OprIev_file                '=' RDO_IDENTIF
@@ -482,7 +451,8 @@ smr_cond
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: RDO_eq { $$ = RDO_eq; }
+	: '='    { $$ = RDO_eq; }
+	| RDO_eq { $$ = RDO_eq; }
 	;
 
 fun_logic

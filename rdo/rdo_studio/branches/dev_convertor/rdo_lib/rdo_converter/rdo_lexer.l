@@ -246,14 +246,10 @@ some				return(RDO_some);
 prior				return(RDO_prior);
 cf					return(RDO_CF);
 CF					return(RDO_CF);
-$Priority           return(RDO_Priority);
-$priority           return(RDO_Priority);
+$Priority			return(RDO_Priority);
+$priority			return(RDO_Priority);
 $Parent				return(RDO_Parent);
 $parent				return(RDO_Parent);
-"+="                return(RDO_PlusEqual);
-"-="                return(RDO_MinusEqual);
-"*="                return(RDO_MultiplyEqual);
-"/="                return(RDO_DivideEqual);
 
 $Frame				return(RDO_Frame);
 $frame				return(RDO_Frame);
@@ -453,7 +449,6 @@ false {
 	LEXER->setvalue((int)CONVERTER->addValue(new rdoConverter::RDOValue(LEXER->m_lploc ? rdoConverter::RDOParserSrcInfo(LEXER_POS, name) : rdoConverter::RDOParserSrcInfo(name))));
 	switch (CONVERTER->getFileToParse())
 	{
-	case rdoModelObjectsConvertor::EVN:
 	case rdoModelObjectsConvertor::PAT:
 		if (CONVERTER->isPattern())
 		{

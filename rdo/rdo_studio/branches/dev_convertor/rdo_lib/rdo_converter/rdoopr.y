@@ -135,17 +135,6 @@
 %token RDO_Priority						372
 %token RDO_prior						373
 %token RDO_Parent						374
-%token RDO_PlusEqual					375
-%token RDO_MinusEqual					376
-%token RDO_MultiplyEqual				377
-%token RDO_DivideEqual					378
-%token RDO_array						379
-%token RDO_event						380
-%token RDO_Planning						381
-%token RDO_else							382
-%token RDO_IncrEqual					383
-%token RDO_DecrEqual					384
-%token RDO_Stopping						385
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -204,11 +193,11 @@
 #include "rdo_lib/rdo_converter/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_converter/rdoparser.h"
+#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdoopr.h"
 #include "rdo_lib/rdo_converter/rdopat.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 // ===============================================================================
 
 #define CONVERTER  LEXER->converter()
@@ -236,7 +225,7 @@ opr_header
 	{
 		LPRDOOperations pOperations = rdo::Factory<RDOOperations>::create(@1);
 		ASSERT(pOperations);
-		$$ = CONVERTOR->stack().push(pOperations);
+		$$ = CONVERTER->stack().push(pOperations);
 	}
 	;
 
@@ -249,7 +238,7 @@ opr_body
 		PTR(RDOValue)  pattern = P_RDOVALUE($3);
 		LPRDOOPROperation pOperation = pOperations->addNewActivity(name->src_info(), pattern->src_info());
 		ASSERT(pOperation);
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_param RDO_IDENTIF_COLON RDO_IDENTIF
 	{
@@ -263,7 +252,7 @@ opr_body
 		PTR(RDOValue) pattern = P_RDOVALUE($3);
 		pOperation = pOperations->addNewActivity(name->src_info(), pattern->src_info());
 		ASSERT(pOperation);
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_header RDO_IDENTIF_COLON error
 	{
@@ -287,7 +276,7 @@ opr_keyb
 		ASSERT(pOperation);
 		tstring key = P_RDOVALUE($2)->value().getString();
 		pOperation->addHotKey(key, @2);
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_keyb '+' RDO_STRING_CONST
 	{
@@ -295,7 +284,7 @@ opr_keyb
 		ASSERT(pOperation);
 		tstring key = P_RDOVALUE($3)->value().getString();
 		pOperation->addHotKey(key, @3);
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	;
 
@@ -305,42 +294,42 @@ opr_param
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
 		pOperation->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_param RDO_INT_CONST
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
 		pOperation->addParam(RDOVALUE($2));
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_param RDO_REAL_CONST
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
 		pOperation->addParam(RDOVALUE($2));
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_param RDO_BOOL_CONST
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
 		pOperation->addParam(RDOVALUE($2));
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_param RDO_STRING_CONST
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
 		pOperation->addParam(RDOVALUE($2));
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_param RDO_IDENTIF
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
 		pOperation->addParam(RDOVALUE($2));
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_keyb
 	;
@@ -351,7 +340,7 @@ opr_end
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
 		pOperation->endParam(@1);
-		$$ = CONVERTOR->stack().push(pOperation);
+		$$ = CONVERTER->stack().push(pOperation);
 	}
 	;
 
@@ -361,42 +350,126 @@ opr_end
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: RDO_eq { $$ = RDO_eq; }
+	: '='    { $$ = RDO_eq; }
+	| RDO_eq { $$ = RDO_eq; }
 	;
 
 fun_logic
-	: fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(ARITHM($1) == ARITHM($3));  }
-	| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(ARITHM($1) != ARITHM($3));  }
-	| fun_arithm  '<'           fun_arithm   { $$ = (int)(ARITHM($1) <  ARITHM($3));  }
-	| fun_arithm  '>'           fun_arithm   { $$ = (int)(ARITHM($1) >  ARITHM($3));  }
-	| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(ARITHM($1) <= ARITHM($3));  }
-	| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(ARITHM($1) >= ARITHM($3));  }
-	| fun_logic   RDO_and       fun_logic    { $$ = (int)(LOGIC($1) && LOGIC($3));    }
-	| fun_logic   RDO_or        fun_logic    { $$ = (int)(LOGIC($1) || LOGIC($3));    }
-	| fun_arithm                             { $$ = (int)new RDOFUNLogic(ARITHM($1)); }
+	: fun_arithm fun_logic_eq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator ==(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm RDO_neq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator !=(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm '<' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator <(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm '>' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator >(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm RDO_leq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator <=(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm RDO_geq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator >=(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_logic RDO_and fun_logic
+	{
+		LPRDOFUNLogic pLogic1 = CONVERTER->stack().pop<RDOFUNLogic>($1);
+		LPRDOFUNLogic pLogic2 = CONVERTER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pLogic1);
+		ASSERT(pLogic2);
+		LPRDOFUNLogic pResult = pLogic1->operator &&(pLogic2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_logic RDO_or fun_logic
+	{
+		LPRDOFUNLogic pLogic1 = CONVERTER->stack().pop<RDOFUNLogic>($1);
+		LPRDOFUNLogic pLogic2 = CONVERTER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pLogic1);
+		ASSERT(pLogic2);
+		LPRDOFUNLogic pResult = pLogic1->operator ||(pLogic2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm
+	{
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		ASSERT(pArithm);
+		LPRDOFUNLogic pResult = rdo::Factory<RDOFUNLogic>::create(pArithm);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
 	| fun_group
 	| fun_select_logic
 	| '[' fun_logic ']'
 	{
-		PTR(RDOFUNLogic) logic = P_LOGIC($2);
-		logic->setSrcPos (@1, @3);
-		logic->setSrcText(_T("[") + logic->src_text() + _T("]"));
-		$$ = $2;
+		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pLogic->setSrcPos (@1, @3);
+		pLogic->setSrcText(_T("[") + pLogic->src_text() + _T("]"));
+		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| '(' fun_logic ')'
 	{
-		PTR(RDOFUNLogic) logic = P_LOGIC($2);
-		logic->setSrcPos (@1, @3);
-		logic->setSrcText(_T("(") + logic->src_text() + _T(")"));
-		$$ = $2;
+		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pLogic->setSrcPos (@1, @3);
+		pLogic->setSrcText(_T("(") + pLogic->src_text() + _T(")"));
+		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| RDO_not fun_logic
 	{
-		PTR(RDOFUNLogic) logic = P_LOGIC($2);
-		PTR(RDOFUNLogic) logic_not = logic->operator_not();
-		logic_not->setSrcPos (@1, @2);
-		logic_not->setSrcText(_T("not ") + logic->src_text());
-		$$ = (int)logic_not;
+		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
+		ASSERT(pLogicNot);
+		pLogicNot->setSrcPos (@1, @2);
+		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
+		$$ = CONVERTER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
 	{
@@ -412,32 +485,71 @@ fun_logic
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = (int)new RDOFUNArithm(CONVERTER, RDOVALUE($1)); }
-	| RDO_REAL_CONST                     { $$ = (int)new RDOFUNArithm(CONVERTER, RDOVALUE($1)); }
-	| RDO_BOOL_CONST                     { $$ = (int)new RDOFUNArithm(CONVERTER, RDOVALUE($1)); }
-	| RDO_STRING_CONST                   { $$ = (int)new RDOFUNArithm(CONVERTER, RDOVALUE($1)); }
-	| RDO_IDENTIF                        { $$ = (int)new RDOFUNArithm(CONVERTER, RDOVALUE($1)); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = (int)new RDOFUNArithm(CONVERTER, RDOVALUE($1), RDOVALUE($3)); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = (int)new RDOFUNArithm(CONVERTER, RDOVALUE($1), RDOVALUE($3)); }
-	| fun_arithm '+' fun_arithm		     { $$ = (int)(ARITHM($1) + ARITHM($3)); }
-	| fun_arithm '-' fun_arithm		     { $$ = (int)(ARITHM($1) - ARITHM($3)); }
-	| fun_arithm '*' fun_arithm		     { $$ = (int)(ARITHM($1) * ARITHM($3)); }
-	| fun_arithm '/' fun_arithm		     { $$ = (int)(ARITHM($1) / ARITHM($3)); }
+	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| fun_arithm '+' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator +(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm '-' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator -(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm '*' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator *(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
+	| fun_arithm '/' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator /(pArithm2);
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
+	}
 	| fun_arithm_func_call
 	| fun_select_arithm
 	| '(' fun_arithm ')'
 	{
-		PTR(RDOFUNArithm) arithm = P_ARITHM($2);
-		arithm->setSrcPos (@1, @3);
-		arithm->setSrcText(_T("(") + arithm->src_text() + _T(")"));
-		$$ = $2;
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		pArithm->setSrcPos (@1, @3);
+		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| '-' fun_arithm %prec RDO_UMINUS
 	{
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
-		info.setSrcText(_T("-") + ARITHM($2).src_text());
-		$$ = (int)new RDOFUNArithm(CONVERTER, RDOValue(ARITHM($2).type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(ARITHM($2).createCalc()));
+		info.setSrcText(_T("-") + pArithm->src_text());
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
 	}
 	;
 
@@ -445,25 +557,29 @@ fun_arithm
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
 fun_arithm_func_call
-	: RDO_IDENTIF '(' ')' 
+	: RDO_IDENTIF '(' ')'
 	{
-		PTR(RDOFUNParams) fun = new RDOFUNParams(CONVERTER);
-		tstring fun_name = RDOVALUE($1)->getIdentificator();
-		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-		fun->setSrcPos (@1, @3);
-		fun->setSrcText(fun_name + _T("()"));
-		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-		$$ = (int)arithm;
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
+		ASSERT(pFunParams);
+		tstring funName = RDOVALUE($1)->getIdentificator();
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
+		pFunParams->setSrcPos (@1, @3);
+		pFunParams->setSrcText(funName + _T("()"));
+		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
+		ASSERT(pArithm);
+		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')'
 	{
-		PTR(RDOFUNParams) fun      = reinterpret_cast<PTR(RDOFUNParams)>($3);
-		tstring           fun_name = RDOVALUE($1)->getIdentificator();
-		fun->funseq_name.setSrcInfo(RDOParserSrcInfo(@1, fun_name));
-		fun->setSrcPos (@1, @4);
-		fun->setSrcText(fun_name + _T("(") + fun->src_text() + _T(")"));
-		PTR(RDOFUNArithm) arithm = fun->createCall(fun_name);
-		$$ = (int)arithm;
+		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
+		ASSERT(pFunParams);
+		tstring funName = RDOVALUE($1)->getIdentificator();
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
+		pFunParams->setSrcPos (@1, @4);
+		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
+		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
+		ASSERT(pArithm);
+		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' error
 	{
@@ -474,19 +590,23 @@ fun_arithm_func_call
 fun_arithm_func_call_pars
 	: fun_arithm
 	{
-		PTR(RDOFUNParams) fun    = new RDOFUNParams(CONVERTER);
-		PTR(RDOFUNArithm) arithm = P_ARITHM($1);
-		fun->setSrcText  (arithm->src_text());
-		fun->addParameter(arithm);
-		$$ = (int)fun;
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
+		LPRDOFUNArithm pArithm    = CONVERTER->stack().pop<RDOFUNArithm>($1);
+		ASSERT(pFunParams);
+		ASSERT(pArithm   );
+		pFunParams->setSrcText  (pArithm->src_text());
+		pFunParams->addParameter(pArithm);
+		$$ = CONVERTER->stack().push(pFunParams);
 	}
 	| fun_arithm_func_call_pars ',' fun_arithm
 	{
-		PTR(RDOFUNParams) fun    = reinterpret_cast<PTR(RDOFUNParams)>($1);
-		PTR(RDOFUNArithm) arithm = P_ARITHM($3);
-		fun->setSrcText  (fun->src_text() + _T(", ") + arithm->src_text());
-		fun->addParameter(arithm);
-		$$ = (int)fun;
+		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($1);
+		LPRDOFUNArithm pArithm    = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pFunParams);
+		ASSERT(pArithm   );
+		pFunParams->setSrcText  (pFunParams->src_text() + _T(", ") + pArithm->src_text());
+		pFunParams->addParameter(pArithm);
+		$$ = CONVERTER->stack().push(pFunParams);
 	}
 	| fun_arithm_func_call_pars error
 	{
@@ -502,17 +622,17 @@ fun_arithm_func_call_pars
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
 fun_group_keyword
-	: RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-	| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-	| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-	| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; }
+	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
 	;
 
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON
 	{
 		PTR(RDOValue) type_name = P_RDOVALUE($3);
-		$$ = (int)(new RDOFUNGroupLogic(CONVERTER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
 	}
 	| fun_group_keyword '(' error
 	{
@@ -527,18 +647,23 @@ fun_group_header
 fun_group
 	: fun_group_header fun_logic ')'
 	{
-		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-		groupfun->setSrcPos(@1, @3);
-		$$ = (int)groupfun->createFunLogic(P_LOGIC($2));
+		LPRDOFUNGroupLogic pGroupFun = CONVERTER->stack().pop<RDOFUNGroupLogic>($1);
+		LPRDOFUNLogic      pLogic    = CONVERTER->stack().pop<RDOFUNLogic>     ($2);
+		ASSERT(pGroupFun);
+		ASSERT(pLogic   );
+		pGroupFun->setSrcPos(@1, @3);
+		$$ = CONVERTER->stack().push(pGroupFun->createFunLogic(pLogic));
 	}
 	| fun_group_header RDO_NoCheck ')'
 	{
-		PTR(RDOFUNGroupLogic) groupfun = reinterpret_cast<PTR(RDOFUNGroupLogic)>($1);
-		groupfun->setSrcPos(@1, @3);
-		PTR(RDOFUNLogic) trueLogic = new RDOFUNLogic(groupfun, rdo::Factory<rdoRuntime::RDOCalcConst>::create(1));
-		trueLogic->setSrcPos (@2);
-		trueLogic->setSrcText(_T("NoCheck"));
-		$$ = (int)groupfun->createFunLogic(trueLogic);
+		LPRDOFUNGroupLogic pGroupFun = CONVERTER->stack().pop<RDOFUNGroupLogic>($1);
+		ASSERT(pGroupFun);
+		pGroupFun->setSrcPos(@1, @3);
+		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
+		ASSERT(pTrueLogic);
+		pTrueLogic->setSrcPos (@2);
+		pTrueLogic->setSrcText(_T("NoCheck"));
+		$$ = CONVERTER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
 	{
@@ -560,10 +685,11 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name  = P_RDOVALUE($3);
-		PTR(RDOFUNSelect) select = new RDOFUNSelect(CONVERTER, type_name->src_info());
-		select->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
-		$$ = (int)select;
+		PTR(RDOValue)  type_name = P_RDOVALUE($3);
+		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		ASSERT(pSelect);
+		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error
 	{
@@ -578,20 +704,27 @@ fun_select_header
 fun_select_body
 	: fun_select_header fun_logic ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		PTR(RDOFUNLogic)  flogic = P_LOGIC($2);
-		select->setSrcText(select->src_text() + flogic->src_text() + _T(")"));
-		select->initSelect(flogic);
+		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
+		LPRDOFUNLogic  pLogic  = CONVERTER->stack().pop<RDOFUNLogic> ($2);
+		ASSERT(pSelect);
+		ASSERT(pLogic );
+		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + _T(")"));
+		pSelect->initSelect(pLogic);
+		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| fun_select_header RDO_NoCheck ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		RDOParserSrcInfo logic_info(@2, _T("NoCheck"));
-		select->setSrcText(select->src_text() + logic_info.src_text() + _T(")"));
-		rdoRuntime::LPRDOCalcConst calc_nocheck = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		PTR(RDOFUNLogic)           flogic       = new RDOFUNLogic(select, calc_nocheck, true);
-		flogic->setSrcInfo(logic_info);
-		select->initSelect(flogic);
+		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
+		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
+		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		ASSERT(pCalc);
+		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
+		ASSERT(pLogic);
+		pLogic->setSrcInfo(logicInfo);
+		pSelect->initSelect(pLogic);
+		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| fun_select_header fun_logic error
 	{
@@ -617,10 +750,14 @@ fun_select_keyword
 fun_select_logic
 	: fun_select_body '.' fun_select_keyword '(' fun_logic ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		select->setSrcPos(@1, @6);
-		PTR(RDOFUNLogic) logic = select->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, P_LOGIC($5));
-		$$ = (int)logic;
+		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
+		LPRDOFUNLogic  pLogic  = CONVERTER->stack().pop<RDOFUNLogic> ($5);
+		ASSERT(pSelect);
+		ASSERT(pLogic );
+		pSelect->setSrcPos(@1, @6);
+		LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+		ASSERT(pLogicSelect);
+		$$ = CONVERTER->stack().push(pLogicSelect);
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
@@ -632,11 +769,13 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		select->setSrcPos(@1, @5);
-		RDOParserSrcInfo empty_info(@3, @5, _T("Empty()"));
-		PTR(RDOFUNLogic) logic = select->createFunSelectEmpty(empty_info);
-		$$ = (int)logic;
+		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo emptyInfo(@3, @5, _T("Empty()"));
+		LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
+		ASSERT(pLogic);
+		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
@@ -659,11 +798,13 @@ fun_select_logic
 fun_select_arithm
 	: fun_select_body '.' RDO_Size '(' ')'
 	{
-		PTR(RDOFUNSelect) select = reinterpret_cast<PTR(RDOFUNSelect)>($1);
-		select->setSrcPos(@1, @5);
-		RDOParserSrcInfo size_info(@3, @5, _T("Size()"));
-		PTR(RDOFUNArithm) arithm = select->createFunSelectSize(size_info);
-		$$ = (int)arithm;
+		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo sizeInfo(@3, @5, _T("Size()"));
+		LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
+		ASSERT(pArithm);
+		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| fun_select_body '.' RDO_Size error
 	{
