@@ -97,7 +97,7 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_en
 
 void RDOParserSrcInfo::init()
 {
-	setSrcFileType(Converter::getFileToParse());
+//	setSrcFileType(Converter::getFileToParse());
 	rdoRuntime::RDOSrcInfo::Position pos;
 	pos.m_first_pos  = Converter::lexer_loc_pos();
 	pos.m_last_pos   = pos.m_first_pos;
