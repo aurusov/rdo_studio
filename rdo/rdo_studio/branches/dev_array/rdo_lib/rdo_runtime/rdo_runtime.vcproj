@@ -2162,6 +2162,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".rdo_matrix"
+				>
+				<File
+					RelativePath=".\rdo_matrix.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_matrix.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_matrix_def.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".interfaces"

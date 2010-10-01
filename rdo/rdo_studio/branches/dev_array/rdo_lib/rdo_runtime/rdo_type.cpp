@@ -25,12 +25,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 #define DECLARE_ATOM_TYPE(Type) RDOType__##Type g_##Type;
 
-DECLARE_ATOM_TYPE(unknow       );
-DECLARE_ATOM_TYPE(identificator);
-DECLARE_ATOM_TYPE(int          );
-DECLARE_ATOM_TYPE(real         );
-DECLARE_ATOM_TYPE(bool         );
-DECLARE_ATOM_TYPE(string       );
-DECLARE_ATOM_TYPE(iterator     );
+DECLARE_ATOM_TYPE(unknow        );
+DECLARE_ATOM_TYPE(identificator );
+DECLARE_ATOM_TYPE(int           );
+DECLARE_ATOM_TYPE(real          );
+DECLARE_ATOM_TYPE(bool          );
+DECLARE_ATOM_TYPE(string        );
+DECLARE_ATOM_TYPE(ArrayIterator );
+DECLARE_ATOM_TYPE(MatrixIterator);
 
 CLOSE_RDO_RUNTIME_NAMESPACE

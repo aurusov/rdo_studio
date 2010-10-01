@@ -26,6 +26,8 @@ class RDOEnumType;
 class RDOFuzzyValue;
 class RDOArrayValue;
 class RDOArrayIterator;
+class RDOMatrixValue;
+class RDOMatrixIterator;
 
 class RDOValue
 {
@@ -46,8 +48,10 @@ public:
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
-	RDOValue(CREF(RDOArrayValue)    arrayValue);
-	RDOValue(CREF(RDOArrayIterator) aIterator );
+	RDOValue(CREF(RDOArrayValue)     arrayValue );
+	RDOValue(CREF(RDOArrayIterator)  aIterator  );
+	RDOValue(CREF(RDOMatrixValue)    matrixValue);
+	RDOValue(CREF(RDOMatrixIterator) mIterator  );
 
 	rsint               getInt          () const;
 	rsint               getEnumAsInt    () const;
@@ -57,6 +61,7 @@ public:
 	CREF(tstring)       getString       () const;
 	CREF(tstring)       getIdentificator() const;
 	CREF(RDOArrayValue) getArray        () const;
+	CREF(RDOMatrixValue)getMatrix       () const;
 
 
 	rbool   getAsBool          () const;
@@ -102,15 +107,19 @@ private:
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
 
-	CREF(RDOEnumType)       __enumT   () const;
-	 REF(tstring)           __stringV ();
-	CREF(tstring)           __stringV () const;
-	 REF(RDOFuzzyValue)     __fuzzyV  ();
-	CREF(RDOFuzzyValue)     __fuzzyV  () const;
-	 REF(RDOArrayValue)     __arrayV  ();
-	CREF(RDOArrayValue)     __arrayV  () const;
-	 REF(RDOArrayIterator)  __arrayItr();
-	CREF(RDOArrayIterator)  __arrayItr() const;
+	CREF(RDOEnumType)       __enumT    () const;
+	 REF(tstring)           __stringV  ();
+	CREF(tstring)           __stringV  () const;
+	 REF(RDOFuzzyValue)     __fuzzyV   ();
+	CREF(RDOFuzzyValue)     __fuzzyV   () const;
+	 REF(RDOArrayValue)     __arrayV   ();
+	CREF(RDOArrayValue)     __arrayV   () const;
+	 REF(RDOArrayIterator)  __arrayItr ();
+	CREF(RDOArrayIterator)  __arrayItr () const;
+	 REF(RDOMatrixValue)    __matrixV  ();
+	CREF(RDOMatrixValue)    __matrixV  () const;
+	 REF(RDOMatrixIterator) __matrixItr();
+	CREF(RDOMatrixIterator) __matrixItr() const;
 
 	OBJECT(string_class) IS INSTANCE_OF(tstring)
 	{
