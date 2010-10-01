@@ -169,6 +169,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Inline Files"
+			>
+			<File
+				RelativePath=".\arrayCreate.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\arrayTestFunction.inl"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
