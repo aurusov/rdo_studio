@@ -2,7 +2,7 @@ void matrixTestCreate()
 {
 #include "rdo_lib\rdo_runtime\test\rdo_matrix_test\matrixCreate.inl"
 
-	if(matrixVal1.getAsString() != _T("[1, 2, 3]")) TRACE("Ошибка в заполнении массива\n");
+	if(matrixVal1.getAsString() != _T("[1, 2, 3]")) TRACE("Ошибка в заполнении матрицы\n");
 }
 
 void matrixTestInsert()
