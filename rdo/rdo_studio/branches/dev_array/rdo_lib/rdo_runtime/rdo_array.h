@@ -6,6 +6,7 @@
  * bref     : 
  * indent   : 4T
  */
+
 #ifndef _RDO_ARRAY_H_
 #define _RDO_ARRAY_H_
 
@@ -13,7 +14,6 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_array_def.h"
-#include "rdo_lib/rdo_runtime/rdo_array.inl"
 // ===============================================================================
 
 #endif //! _RDO_ARRAY_H_

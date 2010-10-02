@@ -1,14 +1,17 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : rdo_matrix.inl
+ * filename : rdo_matrix.cpp
  * author   : Чирков Михаил
  * date     : 01.10.2010
  * bref     : 
  * indent   : 4T
  */
 
+// ====================================================================== PCH
+#include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_runtime/rdo_matrix.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -16,50 +19,50 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOMatrixValue
 // ----------------------------------------------------------------------------
-inline RDOMatrixValue::RDOMatrixValue(CREF(RDOMatrixType) type)
+RDOMatrixValue::RDOMatrixValue(CREF(RDOMatrixType) type)
 	: m_matrixType(&type)
 {}
 
-inline RDOMatrixValue::RDOMatrixValue(CREF(RDOMatrixValue) value)
+RDOMatrixValue::RDOMatrixValue(CREF(RDOMatrixValue) value)
 	: m_container (value.m_container)
 	, m_matrixType (value.m_matrixType)
 {}
 
-inline RDOMatrixValue::~RDOMatrixValue()
+RDOMatrixValue::~RDOMatrixValue()
 {}
 
-inline CREF(RDOMatrixType) RDOMatrixValue::type() const
+CREF(RDOMatrixType) RDOMatrixValue::type() const
 {
 	ASSERT(m_matrixType);
 	return *m_matrixType;
 }
 
-inline void RDOMatrixValue::insertItem(CREF(RDOValue) pMatrix)
+void RDOMatrixValue::insertItem(CREF(RDOValue) pMatrix)
 {
 	m_container.push_back(pMatrix);
 }
 
-inline RDOMatrixValue::Container::iterator RDOMatrixValue::containerBegin()
+RDOMatrixValue::Container::iterator RDOMatrixValue::containerBegin()
 {
 	return m_container.begin();
 }
 
-inline RDOMatrixValue::Container::iterator RDOMatrixValue::containerEnd()
+RDOMatrixValue::Container::iterator RDOMatrixValue::containerEnd()
 {
 	return m_container.end();
 }
 
-inline void RDOMatrixValue::insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst)
+void RDOMatrixValue::insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst)
 {
 	m_container.insert(itr,itrFst,itrLst);
 }
 
-inline void RDOMatrixValue::eraseItems(Container::iterator itrFst, Container::iterator itrLst)
+void RDOMatrixValue::eraseItems(Container::iterator itrFst, Container::iterator itrLst)
 {
 	m_container.erase(itrFst,itrLst);
 }
 
-inline tstring RDOMatrixValue::getAsString() const
+tstring RDOMatrixValue::getAsString() const
 {
 	tstring MatrixName = _T("[");
 	STL_FOR_ALL_CONST(Container, m_container, it)
@@ -71,7 +74,7 @@ inline tstring RDOMatrixValue::getAsString() const
 	return MatrixName += _T("]");
 }
 
-inline CREF(RDOValue) RDOMatrixValue::operator[] (CREF(RDOValue) ind)
+CREF(RDOValue) RDOMatrixValue::operator[] (CREF(RDOValue) ind)
 {
 	return m_container[ind.getInt()];
 }
@@ -79,35 +82,35 @@ inline CREF(RDOValue) RDOMatrixValue::operator[] (CREF(RDOValue) ind)
 // ----------------------------------------------------------------------------
 // ---------- RDOMatrixIterator
 // ----------------------------------------------------------------------------
-inline RDOMatrixIterator::RDOMatrixIterator(CREF(RDOMatrixIterator) iterator)
+RDOMatrixIterator::RDOMatrixIterator(CREF(RDOMatrixIterator) iterator)
 	: m_iterator(iterator.m_iterator)
 {}
 
-inline RDOMatrixIterator::RDOMatrixIterator(CREF(Iterator) iterator)
+RDOMatrixIterator::RDOMatrixIterator(CREF(Iterator) iterator)
 	: m_iterator(iterator)
 {}
 
-inline RDOMatrixIterator::Iterator RDOMatrixIterator::getIterator() const
+RDOMatrixIterator::Iterator RDOMatrixIterator::getIterator() const
 {
 	return m_iterator;
 }
 
-inline RDOMatrixIterator::Iterator RDOMatrixIterator::operator+ (rsint num)
+RDOMatrixIterator::Iterator RDOMatrixIterator::operator+ (rsint num)
 {
 	return m_iterator + num;
 }
 
-inline RDOMatrixIterator::Iterator RDOMatrixIterator::operator- (rsint num)
+RDOMatrixIterator::Iterator RDOMatrixIterator::operator- (rsint num)
 {
 	return m_iterator - num;
 }
 
-inline RDOValue RDOMatrixIterator::getValue() const
+RDOValue RDOMatrixIterator::getValue() const
 {
 	return *m_iterator;
 }
 
-inline rbool RDOMatrixIterator::operator== (CREF(RDOMatrixIterator) iterator) const
+rbool RDOMatrixIterator::operator== (CREF(RDOMatrixIterator) iterator) const
 {
 	return m_iterator == iterator.m_iterator;
 }
@@ -115,13 +118,13 @@ inline rbool RDOMatrixIterator::operator== (CREF(RDOMatrixIterator) iterator) co
 // ----------------------------------------------------------------------------
 // ---------- RDOMatrixType
 // ----------------------------------------------------------------------------
-inline RDOMatrixType::RDOMatrixType(PTR(RDORuntimeParent) parent, MatrixType pMatrixType)
+RDOMatrixType::RDOMatrixType(PTR(RDORuntimeParent) parent, MatrixType pMatrixType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_matrix)
 	, m_pMatrixType    (pMatrixType      )
 {}
 
-inline RDOMatrixType::MatrixType RDOMatrixType::getMatrixType() const
+RDOMatrixType::MatrixType RDOMatrixType::getMatrixType() const
 {
 	return m_pMatrixType;
 }
