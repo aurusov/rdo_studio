@@ -137,8 +137,7 @@ public:
 		RT_CORBA_PARSER_GET_RTP,
 		RT_CORBA_PARSER_GET_RSS,
 		RT_CORBA_PARSER_GET_RTP_COUNT,
-		RT_CORBA_PARSER_GET_RTP_PAR_COUNT,
-		RT_CONVERTOR
+		RT_CORBA_PARSER_GET_RTP_PAR_COUNT
 	};
 	std::string messageToString(RDOTreadMessage message) {
 		switch ( message ) {
