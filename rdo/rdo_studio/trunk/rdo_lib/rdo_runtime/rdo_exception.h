@@ -1,7 +1,16 @@
-#ifndef RDO_EXCEPTION_H
-#define RDO_EXCEPTION_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_exception.h
+ * author   : Урусов Андрей
+ * date     : 22.06.2008
+ * bref     : Определение исключений
+ * indent   : 4T
+ */
 
-namespace rdoRuntime {
+#ifndef _RDO_EXCEPTION_H_
+#define _RDO_EXCEPTION_H_
+
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOException
@@ -9,7 +18,7 @@ namespace rdoRuntime {
 class RDOException
 {
 public:
-	RDOException( const std::string& message ): m_message( message ) {}
+	RDOException(const std::string& message): m_message(message) {}
 	virtual std::string getType() const = 0;
 	
 	const std::string& message() const { return m_message; }
@@ -46,6 +55,6 @@ public:
 	virtual std::string getType() const { return "RDO Internal Error"; }
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_EXCEPTION_H
+#endif //! _RDO_EXCEPTION_H_

@@ -42,7 +42,7 @@ $Type?0 $Watching?0 active?0 AExpCalcCounter?0 after?0 algorithmic?0 all?0 and?0
 BExpCalcCounter?0 bitmap?0 Break_point?0 by_hist?0 Calculate_if?0 Choice?0 Convert_begin?0 \
 Convert_end?0 Convert_event?0 Convert_rule?0 Create?0 ellipse?0 enumerative?0 Erase?0 EventCount?0 \
 exponential?0 first?0 Frame_file?0 Frame_number?0 from?0 get_value?0 Get_value?0 integer?0 \
-irregular_event?0 event?0 Keep?0 keyboard?0 line?0 list?0 longint?0 Model_name?0 Monitor?0 NO?0 Planning?0 Stopping?0 \
+event?0 Keep?0 keyboard?0 line?0 list?0 longint?0 Model_name?0 Monitor?0 NO?0 Planning?0 Stopping?0 \
 NoChange?0 NoCheck?0 NonExist?0 normal?0 NoShow?0 operation?0 \
 OperRuleCheckCounter?0 OprIev_file?0 or?0 permanent?0 r_rect?0 real?0 enum?0 rect?0 Resource_file?0 \
 Results_file?0 rule?0 Run_file?0 Run_StartTime?0 s_bmp?0 search?0 Seconds?0 selected?0 \

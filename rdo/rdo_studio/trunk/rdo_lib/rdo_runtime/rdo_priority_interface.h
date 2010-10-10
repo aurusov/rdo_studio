@@ -3,7 +3,7 @@
  * filename : rdo_priority_interface.h
  * author   : Урусов Андрей
  * date     : 01.08.2009
- * bref     : 
+ * bref     : Интерфейс IPriority
  * indent   : 4T
  */
 

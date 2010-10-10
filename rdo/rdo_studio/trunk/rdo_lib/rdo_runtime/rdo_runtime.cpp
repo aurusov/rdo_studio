@@ -3,7 +3,6 @@
 #include <iomanip>
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
-#include "rdo_lib/rdo_runtime/rdo_ie.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
@@ -278,11 +277,6 @@ void RDORuntime::insertNewResource( RDOResource* res )
 		}
 	}
 	allResourcesByTime.push_back( res );
-}
-
-void RDORuntime::addRuntimeIE(LPIBaseOperationContainer logic, CREF(LPIIrregEvent) ie)
-{
-	appendBaseOperation(logic, ie);
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer logic, CREF(LPIEvent) ev)

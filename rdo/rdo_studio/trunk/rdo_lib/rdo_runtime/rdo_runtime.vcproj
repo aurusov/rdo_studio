@@ -1347,77 +1347,7 @@
 					Name=".rdo_operations"
 					>
 					<Filter
-						Name="1. ie"
-						>
-						<File
-							RelativePath="rdo_ie.cpp"
-							>
-							<FileConfiguration
-								Name="Release|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug MT|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release MT|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath="rdo_ie.h"
-							>
-						</File>
-						<File
-							RelativePath=".\rdo_ie_interface.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="4. operation"
+						Name="3. operation"
 						>
 						<File
 							RelativePath="rdo_operation.cpp"
@@ -1487,7 +1417,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="3. rule"
+						Name="2. rule"
 						>
 						<File
 							RelativePath="rdo_rule.cpp"
@@ -1557,7 +1487,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="5. keyboard"
+						Name="4. keyboard"
 						>
 						<File
 							RelativePath="rdo_keyboard.cpp"
@@ -1833,7 +1763,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="6. dptsearch_activity"
+						Name="5. dptsearch_activity"
 						>
 						<File
 							RelativePath=".\rdo_dptsearch_activity.cpp"
@@ -1849,7 +1779,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="2. event"
+						Name="1. event"
 						>
 						<File
 							RelativePath=".\rdo_event.cpp"

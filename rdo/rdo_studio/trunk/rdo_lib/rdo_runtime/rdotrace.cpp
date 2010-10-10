@@ -1,7 +1,6 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_ie.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
@@ -179,38 +178,6 @@ tstring RDOTrace::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim, co
 		}
 	}
 	return res;
-}
-
-void RDOTrace::writeIrregularEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
-{
-	if (!canTrace())
-		return;
-
-	LPIActivityTrace activityTrace = opr;
-	ASSERT(activityTrace);
-
-#ifdef RDOSIM_COMPATIBLE
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
-#endif
-
-	LPITrace trace = opr;
-	ASSERT(trace);
-
-	if (trace->traceable())
-	{
-		LPIActivityPatternTrace activityPatternTrace = opr;
-		ASSERT(activityPatternTrace);
-
-		getOStream() << "EI " << sim->getCurrentTime()
-		             << " "   << trace->traceId() 
-		             << " "   << activityPatternTrace->tracePatternId() 
-		             << " "   << activityTrace->traceResourcesListNumbers(sim, true)
-		             << std::endl << getEOL();
-	}
-
-#ifndef RDOSIM_COMPATIBLE
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
-#endif
 }
 
 void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)

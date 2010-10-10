@@ -2,8 +2,8 @@
  * copyright: (c) RDO-Team, 2009
  * filename : rdortp.y
  * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
+ * date     : 20.02.2003
+ * bref     : Синтаксис типов ресурсов
  * indent   : 4T
  */
 
@@ -14,192 +14,190 @@
 
 %pure-parser
 
-%token RDO_Resource_type				257
-%token RDO_permanent					258
-%token RDO_Parameters					259
-%token RDO_integer						260
-%token RDO_real							261
-%token RDO_End							262
-%token RDO_temporary					263
-%token RDO_IDENTIF						264
-%token RDO_INT_CONST					265
-%token RDO_REAL_CONST					266
-%token RDO_such_as						267
-%token RDO_dblpoint						268
-%token RDO_Resources					269
-%token RDO_trace						270
-%token RDO_no_trace						271
-%token RDO_IDENTIF_COLON				272
-%token RDO_Constant						273
-%token RDO_Body							274
-%token RDO_Function						275
-%token RDO_Type							276
-%token RDO_algorithmic					277
-%token RDO_table						278
-%token RDO_list							279
-%token RDO_Exist						281
-%token RDO_Not_Exist					282
-%token RDO_For_All						283
-%token RDO_Not_For_All					284
-%token RDO_neq							285
-%token RDO_leq							286
-%token RDO_geq							287
-%token RDO_NoCheck						288
-%token RDO_Calculate_if					289
-%token RDO_or							290
-%token RDO_and							291
-%token RDO_Sequence						292
-%token RDO_uniform						293
-%token RDO_exponential					294
-%token RDO_normal						295
-%token RDO_by_hist						296
-%token RDO_enumerative					297
+%token RDO_Resource_type
+%token RDO_permanent
+%token RDO_Parameters
+%token RDO_integer
+%token RDO_real
+%token RDO_End
+%token RDO_temporary
+%token RDO_IDENTIF
+%token RDO_INT_CONST
+%token RDO_REAL_CONST
+%token RDO_such_as
+%token RDO_dblpoint
+%token RDO_Resources
+%token RDO_trace
+%token RDO_no_trace
+%token RDO_IDENTIF_COLON
+%token RDO_Constant
+%token RDO_Body
+%token RDO_Function
+%token RDO_Type
+%token RDO_algorithmic
+%token RDO_table
+%token RDO_list
+%token RDO_Exist
+%token RDO_Not_Exist
+%token RDO_For_All
+%token RDO_Not_For_All
+%token RDO_neq
+%token RDO_leq
+%token RDO_geq
+%token RDO_NoCheck
+%token RDO_Calculate_if
+%token RDO_or
+%token RDO_and
+%token RDO_Sequence
+%token RDO_uniform
+%token RDO_exponential
+%token RDO_normal
+%token RDO_by_hist
+%token RDO_enumerative
 
-%token RDO_Pattern						298
-%token RDO_operation					299
-%token RDO_irregular_event				300
-%token RDO_rule							301
-%token RDO_keyboard						302
-%token RDO_Relevant_resources			303
-%token RDO_Keep							304
-%token RDO_Create						305
-%token RDO_Erase						306
-%token RDO_NonExist						307
-%token RDO_IDENTIF_NoChange				308
-%token RDO_Time							309
-%token RDO_Choice						310
-%token RDO_from							311
-%token RDO_first						312
-%token RDO_Convert_begin				313
-%token RDO_Convert_end					314
-%token RDO_Convert_rule					315
-%token RDO_Convert_event				316
-%token RDO_with_max						317
-%token RDO_with_min						318
-%token RDO_set							319
-%token RDO_IDENTIF_NoChange_NoChange	320
-%token RDO_Operations					321
-	
-%token RDO_Results						322
-%token RDO_watch_par					323
-%token RDO_watch_state					324
-%token RDO_watch_quant					325
-%token RDO_watch_value					326
-%token RDO_get_value					327
+%token RDO_Pattern
+%token RDO_operation
+%token RDO_rule
+%token RDO_keyboard
+%token RDO_Relevant_resources
+%token RDO_Keep
+%token RDO_Create
+%token RDO_Erase
+%token RDO_NonExist
+%token RDO_IDENTIF_NoChange
+%token RDO_Time
+%token RDO_Choice
+%token RDO_from
+%token RDO_first
+%token RDO_Convert_begin
+%token RDO_Convert_end
+%token RDO_Convert_rule
+%token RDO_Convert_event
+%token RDO_with_max
+%token RDO_with_min
+%token RDO_set
+%token RDO_IDENTIF_NoChange_NoChange
+%token RDO_Operations
 
-%token RDO_Model_name					328
-%token RDO_Resource_file				329
-%token RDO_OprIev_file					330
-%token RDO_Frame_file					331
-%token RDO_Statistic_file				332
-%token RDO_Results_file					333
-%token RDO_Trace_file					334
-%token RDO_Show_mode					335
-%token RDO_Frame_number					336
-%token RDO_Show_rate					337
-%token RDO_Run_StartTime				338
-%token RDO_Trace_StartTime				339
-%token RDO_Trace_EndTime				340
-%token RDO_Terminate_if					341
-%token RDO_Break_point					342
-%token RDO_Seed							343
-%token RDO_NoShow						344
-%token RDO_Monitor						345
-%token RDO_Animation					346
-%token RDO_NoChange						347
+%token RDO_Results
+%token RDO_watch_par
+%token RDO_watch_state
+%token RDO_watch_quant
+%token RDO_watch_value
+%token RDO_get_value
 
-%token RDO_Decision_point				348
-%token RDO_search						349
-%token RDO_trace_stat					350
-%token RDO_trace_tops					351
-%token RDO_trace_all					352
-%token RDO_Condition					353
-%token RDO_Term_condition				354
-%token RDO_Evaluate_by					355
-%token RDO_Compare_tops					356
-%token RDO_NO							357
-%token RDO_YES							358
-%token RDO_Activities					359
-%token RDO_value_before					360
-%token RDO_value_after					361
-%token RDO_some							362
-%token RDO_Process						363
-%token RDO_SEIZE						364
-%token RDO_GENERATE						365
-%token RDO_TERMINATE					366
-%token RDO_ADVANCE						367
-%token RDO_RELEASE						368
-%token RDO_if							369
-%token RDO_result						370
-%token RDO_CF							371
-%token RDO_Priority						372
-%token RDO_prior						373
-%token RDO_Parent						374
-%token RDO_PlusEqual					375
-%token RDO_MinusEqual					376
-%token RDO_MultiplyEqual				377
-%token RDO_DivideEqual					378
-%token RDO_array						379
-%token RDO_event						380
-%token RDO_Planning						381
-%token RDO_else							382
-%token RDO_IncrEqual					383
-%token RDO_DecrEqual					384
-%token RDO_Stopping						385
-%token RDO_Start						386
-%token RDO_Stop							387
+%token RDO_Model_name
+%token RDO_Resource_file
+%token RDO_OprIev_file
+%token RDO_Frame_file
+%token RDO_Statistic_file
+%token RDO_Results_file
+%token RDO_Trace_file
+%token RDO_Show_mode
+%token RDO_Frame_number
+%token RDO_Show_rate
+%token RDO_Run_StartTime
+%token RDO_Trace_StartTime
+%token RDO_Trace_EndTime
+%token RDO_Terminate_if
+%token RDO_Break_point
+%token RDO_Seed
+%token RDO_NoShow
+%token RDO_Monitor
+%token RDO_Animation
+%token RDO_NoChange
 
-%token RDO_Frame						400
-%token RDO_Show_if						401
-%token RDO_Back_picture					402
-%token RDO_Show							403
-%token RDO_frm_cell						404
-%token RDO_text							405
-%token RDO_bitmap						406
-%token RDO_s_bmp						407
-%token RDO_rect							408
-%token RDO_r_rect						409
-%token RDO_line							410
-%token RDO_ellipse						411
-%token RDO_triang						412
-%token RDO_active						413
-%token RDO_ruler						414
-%token RDO_space						415
-%token RDO_color_transparent			416
-%token RDO_color_last					417
-%token RDO_color_white					418
-%token RDO_color_black					419
-%token RDO_color_red					420
-%token RDO_color_green					421
-%token RDO_color_blue					422
-%token RDO_color_cyan					423
-%token RDO_color_magenta				424
-%token RDO_color_yellow					425
-%token RDO_color_gray					426
+%token RDO_Decision_point
+%token RDO_search
+%token RDO_trace_stat
+%token RDO_trace_tops
+%token RDO_trace_all
+%token RDO_Condition
+%token RDO_Term_condition
+%token RDO_Evaluate_by
+%token RDO_Compare_tops
+%token RDO_NO
+%token RDO_YES
+%token RDO_Activities
+%token RDO_value_before
+%token RDO_value_after
+%token RDO_some
+%token RDO_Process
+%token RDO_SEIZE
+%token RDO_GENERATE
+%token RDO_TERMINATE
+%token RDO_ADVANCE
+%token RDO_RELEASE
+%token RDO_if
+%token RDO_result
+%token RDO_CF
+%token RDO_Priority
+%token RDO_prior
+%token RDO_Parent
+%token RDO_PlusEqual
+%token RDO_MinusEqual
+%token RDO_MultiplyEqual
+%token RDO_DivideEqual
+%token RDO_array
+%token RDO_event
+%token RDO_Planning
+%token RDO_else
+%token RDO_IncrEqual
+%token RDO_DecrEqual
+%token RDO_Stopping
+%token RDO_Start
+%token RDO_Stop
 
-%token RDO_IDENTIF_RELRES				427
-%token RDO_typedef						428
-%token RDO_enum							429
+%token RDO_Frame
+%token RDO_Show_if
+%token RDO_Back_picture
+%token RDO_Show
+%token RDO_frm_cell
+%token RDO_text
+%token RDO_bitmap
+%token RDO_s_bmp
+%token RDO_rect
+%token RDO_r_rect
+%token RDO_line
+%token RDO_ellipse
+%token RDO_triang
+%token RDO_active
+%token RDO_ruler
+%token RDO_space
+%token RDO_color_transparent
+%token RDO_color_last
+%token RDO_color_white
+%token RDO_color_black
+%token RDO_color_red
+%token RDO_color_green
+%token RDO_color_blue
+%token RDO_color_cyan
+%token RDO_color_magenta
+%token RDO_color_yellow
+%token RDO_color_gray
 
-%token RDO_STRING_CONST					430
-%token RDO_STRING_CONST_BAD				431
-%token RDO_IDENTIF_BAD					432
-%token RDO_Select						433
-%token RDO_Size							434
-%token RDO_Empty						435
-%token RDO_not							436
-%token RDO_UMINUS						437
-%token RDO_string						438
-%token RDO_bool							439
-%token RDO_BOOL_CONST					440
-%token RDO_Fuzzy						441
-%token RDO_Fuzzy_Term					442
-%token RDO_eq							443
-%token RDO_External_Model				444
-%token RDO_QUEUE						445
-%token RDO_DEPART						446
-%token RDO_ASSIGN						447
+%token RDO_IDENTIF_RELRES
+%token RDO_typedef
+%token RDO_enum
 
+%token RDO_STRING_CONST
+%token RDO_STRING_CONST_BAD
+%token RDO_IDENTIF_BAD
+%token RDO_Select
+%token RDO_Size
+%token RDO_Empty
+%token RDO_not
+%token RDO_UMINUS
+%token RDO_string
+%token RDO_bool
+%token RDO_BOOL_CONST
+%token RDO_Fuzzy
+%token RDO_Fuzzy_Term
+%token RDO_eq
+%token RDO_External_Model
+%token RDO_QUEUE
+%token RDO_DEPART
+%token RDO_ASSIGN
 
 %{
 // ====================================================================== PCH

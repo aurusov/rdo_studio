@@ -21,4 +21,4 @@ public:
 };
 #define DECLARE_IEvent
 
-#endif // _RDO_EVENT_INTERFACE_H_
+#endif //! _RDO_EVENT_INTERFACE_H_
