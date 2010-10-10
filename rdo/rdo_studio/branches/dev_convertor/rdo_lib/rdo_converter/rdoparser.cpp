@@ -16,6 +16,7 @@
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdorss.h"
 #include "rdo_lib/rdo_converter/context/global.h"
+#include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_common/rdocommon.h"
 // ===============================================================================
 
@@ -278,16 +279,50 @@ void Converter::parse(rdoModelObjectsConvertor::RDOParseType file)
 	}
 }
 
-void Converter::parse(REF(std::istream) stream)
+void RDOParserSMRInfo::parseSMR(REF(std::istream) smrStream)
 {
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
 		m_parser_item = it->second;
-		it->second->parse(this, stream);
+		it->second->parse(this, smrStream);
 		m_parser_item = NULL;
 		it++;
 	}
+}
+
+void Converter::parse(REF(std::istream) smrStream)
+{
+	RDOParserSMRInfo                         smrParser;
+	rdoModelObjectsConvertor::RDOSMRFileInfo smrInfo;
+
+	try
+	{
+		smrInfo.error = false;
+		smrParser.parseSMR(smrStream);
+	}
+	catch (REF(rdoParse::RDOSyntaxException) ex)
+	{
+		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		smrInfo.error = true;
+		int i = 1;
+	}
+	catch (REF(rdoRuntime::RDORuntimeException) ex)
+	{
+		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		smrInfo.error = true;
+		int i = 1;
+	}
+
+	if (!smrParser.hasSMR())
+		return;
+
+	smrInfo.model_name     = smrParser.getSMR()->getFile(_T("Model_name")    );
+	smrInfo.resource_file  = smrParser.getSMR()->getFile(_T("Resource_file") );
+	smrInfo.frame_file     = smrParser.getSMR()->getFile(_T("Frame_file")    );
+	smrInfo.statistic_file = smrParser.getSMR()->getFile(_T("Statistic_file"));
+	smrInfo.results_file   = smrParser.getSMR()->getFile(_T("Results_file")  );
+	smrInfo.trace_file     = smrParser.getSMR()->getFile(_T("Trace_file")    );
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)

@@ -24,9 +24,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int  smr_file_parse(PTR(void) lexer);
-int  smr_file_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void smr_file_error(PTR(char) mes);
+int  cnv_smr_file_parse(PTR(void) lexer);
+int  cnv_smr_file_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_smr_file_error(PTR(char) mes);
 
 int  smr_sim_parse (PTR(void) lexer);
 int  smr_sim_lex   (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);

@@ -33,6 +33,7 @@
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_common/rdodebug.h"
 // ===============================================================================
@@ -1062,6 +1063,27 @@ void RDOThreadSimulator::closeModel()
 
 void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjects::RDOSMRFileInfo) info)
 {
+	rdoConverter::RDOParserModel converter;
+
+	try
+	{
+		converter.parse(smr);
+	}
+	catch (REF(rdoConverter::RDOSyntaxException) ex)
+	{
+		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		int i = 1;
+	}
+	catch (REF(rdoRuntime::RDORuntimeException) ex)
+	{
+		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		int i = 1;
+	}
+	catch (...)
+	{
+		int i = 1;
+	}
+
 	rdoParse::RDOParserSMRInfo parser;
 
 	try

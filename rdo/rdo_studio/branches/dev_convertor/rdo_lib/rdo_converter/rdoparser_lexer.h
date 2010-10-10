@@ -15,7 +15,12 @@
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/rdobison.h"
 #include "rdo_lib/rdo_converter/rdogramma.h"
+
+#ifndef __FLEX_LEXER_H
+#undef yyFlexLexer
+#define yyFlexLexer cnvFlexLexer
 #include "thirdparty/bison_flex/FlexLexer.h"
+#endif
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE

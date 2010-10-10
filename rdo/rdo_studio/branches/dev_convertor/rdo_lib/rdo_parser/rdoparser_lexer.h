@@ -15,7 +15,12 @@
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdobison.h"
 #include "rdo_lib/rdo_parser/rdogramma.h"
+
+#ifndef __FLEX_LEXER_H
+#undef yyFlexLexer
+#define yyFlexLexer yyFlexLexer
 #include "thirdparty/bison_flex/FlexLexer.h"
+#endif
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

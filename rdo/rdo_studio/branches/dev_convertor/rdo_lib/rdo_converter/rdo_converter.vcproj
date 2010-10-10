@@ -477,7 +477,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\flex.exe -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\flex.exe -Pcnv -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdolex.cpp"
 					/>
 				</FileConfiguration>
@@ -726,7 +726,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
 				</FileConfiguration>
@@ -735,7 +735,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
 				</FileConfiguration>
@@ -744,7 +744,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
 				</FileConfiguration>
@@ -753,7 +753,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
 				</FileConfiguration>
@@ -762,7 +762,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
 				</FileConfiguration>
@@ -771,7 +771,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -popr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
 				</FileConfiguration>
@@ -1243,7 +1243,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\bison.exe -psmr_file_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pcnv_smr_file_ --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramsmr_file.cpp"
 					/>
 				</FileConfiguration>

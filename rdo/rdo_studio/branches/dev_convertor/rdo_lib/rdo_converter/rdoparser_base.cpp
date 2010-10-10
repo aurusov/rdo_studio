@@ -96,7 +96,7 @@ RDOParserContainerModel::RDOParserContainerModel()
 	: RDOParserContainer()
 {
 	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserSTDFUN> ::create());
-	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR, smr_file_parse, smr_file_error, smr_file_lex));
+	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR, cnv_smr_file_parse, cnv_smr_file_error, cnv_smr_file_lex));
 	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::RTP, rtpparse, rtperror, rtplex));
 	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
 #ifdef CORBA_ENABLE
@@ -124,7 +124,7 @@ RDOParserContainerModel::RDOParserContainerModel()
 RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
 	: RDOParserContainer()
 {
-	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR, smr_file_parse, smr_file_error, smr_file_lex));
+	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR, cnv_smr_file_parse, cnv_smr_file_error, cnv_smr_file_lex));
 }
 
 // ----------------------------------------------------------------------------

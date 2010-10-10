@@ -270,7 +270,11 @@ typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMRInfo
 // ----------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
+class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
+{
+public:
+	void parseSMR(REF(std::istream) smrStream);
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserCorbar
