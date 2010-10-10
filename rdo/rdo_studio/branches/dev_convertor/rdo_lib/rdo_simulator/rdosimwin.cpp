@@ -427,7 +427,6 @@ RDOThreadRunTime::RDOThreadRunTime()
 	notifies.push_back(RT_RUNTIME_KEY_DOWN                  );
 	notifies.push_back(RT_RUNTIME_KEY_UP                    );
 	notifies.push_back(RT_RUNTIME_FRAME_AREA_DOWN           );
-	notifies.push_back(RT_CONVERTOR                         );
 	after_constructor();
 }
 
@@ -527,11 +526,6 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 			m_pSimulator->m_pRuntime->activeAreasMouseClicked.push_back(*static_cast<PTR(tstring)>(msg.param));
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
 			msg.unlock();
-			break;
-		}
-		case RT_CONVERTOR:
-		{
-			NEVER_REACH_HERE;
 			break;
 		}
 	}
