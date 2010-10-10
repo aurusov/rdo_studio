@@ -30,7 +30,7 @@
 
 #define LEXER     reinterpret_cast<PTR(rdoConverter::RDOLexer)>(this)
 #define LEXER_POS (*LEXER->m_lploc)
-#define CONVERTER    LEXER->converter()
+#define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
 #define YY_INTERACTIVE
