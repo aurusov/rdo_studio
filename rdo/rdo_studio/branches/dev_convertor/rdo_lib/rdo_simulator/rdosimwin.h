@@ -211,8 +211,6 @@ private:
 	rdo::textstream m_resultString;
 	rdo::textstream m_resultInfoString;
 
-	void onConvertor();
-
 	
 #ifdef CORBA_ENABLE
 
