@@ -609,7 +609,7 @@ bool RDOStudioModel::buildModel() const
 		output->showBuild();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-		studioApp.broadcastMessage( RDOThread::RT_CONVERTOR );
+		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_BUILD );
 		return true;
 	}
 	return false;
