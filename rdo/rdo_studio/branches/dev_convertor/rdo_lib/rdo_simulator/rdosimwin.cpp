@@ -33,7 +33,6 @@
 #include "rdo_lib/rdo_parser/rdosmr.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_common/rdodebug.h"
 // ===============================================================================
@@ -428,6 +427,7 @@ RDOThreadRunTime::RDOThreadRunTime()
 	notifies.push_back(RT_RUNTIME_KEY_DOWN                  );
 	notifies.push_back(RT_RUNTIME_KEY_UP                    );
 	notifies.push_back(RT_RUNTIME_FRAME_AREA_DOWN           );
+	notifies.push_back(RT_CONVERTOR                         );
 	after_constructor();
 }
 
@@ -527,6 +527,11 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 			m_pSimulator->m_pRuntime->activeAreasMouseClicked.push_back(*static_cast<PTR(tstring)>(msg.param));
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
 			msg.unlock();
+			break;
+		}
+		case RT_CONVERTOR:
+		{
+			NEVER_REACH_HERE;
 			break;
 		}
 	}
@@ -775,7 +780,6 @@ RDOThreadSimulator::RDOThreadSimulator()
 	notifies.push_back(RT_CODECOMP_GET_DATA               );
 	notifies.push_back(RT_CORBA_PARSER_GET_RTP            );
 	notifies.push_back(RT_CORBA_PARSER_GET_RSS            );
-	notifies.push_back(RT_CONVERTOR                       );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
 	after_constructor();
@@ -934,20 +938,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			}
 			break;
 		}
-		case RT_CONVERTOR:
-		{
-			onConvertor();
-			break;
-		}
 	}
-}
-
-void RDOThreadSimulator::onConvertor()
-{
-	rdoConverter::RDOParserModel converter;
-	converter.parse();
-
-	int i = 1;
 }
 
 rbool RDOThreadSimulator::parseModel()
