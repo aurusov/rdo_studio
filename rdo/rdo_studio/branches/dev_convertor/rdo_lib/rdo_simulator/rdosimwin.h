@@ -153,11 +153,6 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOParser;
 CLOSE_RDO_PARSER_NAMESPACE
 
-namespace rdoConverter
-{
-	class Converter;
-}
-
 OPEN_RDO_SIMULATOR_NAMESPACE
 
 // --------------------------------------------------------------------
@@ -196,7 +191,6 @@ public:
 private:
 	PTR(rdoParse::RDOParser)     m_pParser;
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
-	PTR(rdoConverter::Converter) m_pConverter;
 	rbool                        m_canTrace;
 
 	PTR(rdoRuntime::RDOThreadRunTime) m_pThreadRuntime;
