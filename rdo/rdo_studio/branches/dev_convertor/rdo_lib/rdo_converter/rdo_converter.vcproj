@@ -2433,14 +2433,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdoparser_corba.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\rdoparser_corba.h"
-				>
-			</File>
-			<File
 				RelativePath=".\rdoparser_rdo.cpp"
 				>
 			</File>

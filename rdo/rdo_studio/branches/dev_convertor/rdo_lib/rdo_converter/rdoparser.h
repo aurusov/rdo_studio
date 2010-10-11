@@ -276,11 +276,6 @@ public:
 	void parseSMR(REF(std::istream) smrStream);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserCorbar
-// ----------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
-
 CLOSE_RDO_CONVERTER_NAMESPACE
 
 #endif //! _CONVERTOR_RDOCONVERTER_H_
