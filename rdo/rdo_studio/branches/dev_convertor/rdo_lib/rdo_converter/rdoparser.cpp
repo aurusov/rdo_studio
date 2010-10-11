@@ -279,54 +279,60 @@ void Converter::parse(rdoModelObjectsConvertor::RDOParseType file)
 	}
 }
 
-void RDOParserSMRInfo::parseSMR(REF(std::istream) smrStream)
+rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo)
 {
+	std::ifstream stream(smrFullFileName.c_str());
+	if (!stream.is_open())
+		return false;
+
 	RDOParserContainer::Iterator it = begin();
 	ASSERT(it != end());
 
 	m_parser_item = it->second;
-	it->second->parse(this, smrStream);
+	it->second->parse(this, stream);
 	m_parser_item = NULL;
 
-	it++;
+#ifdef _DEBUG
+	++it;
 	ASSERT(it == end());
+#endif
+
+	tstring modelPath = rdo::extractFilePath(smrFullFileName);
+
+	smrInfo.m_model_name     = getSMR()->getFile(_T("Model_name")    );
+	smrInfo.m_resource_file  = rdo::format(_T("%s%s.rss"), modelPath.c_str(), getSMR()->getFile(_T("Resource_file") ).c_str());
+	smrInfo.m_oprIev_file    = rdo::format(_T("%s%s.opr"), modelPath.c_str(), getSMR()->getFile(_T("Resource_file") ).c_str());
+	smrInfo.m_frame_file     = rdo::format(_T("%s%s.frm"), modelPath.c_str(), getSMR()->getFile(_T("Frame_file")    ).c_str());
+	smrInfo.m_statistic_file = rdo::format(_T("%s%s.pmd"), modelPath.c_str(), getSMR()->getFile(_T("Statistic_file")).c_str());
+	smrInfo.m_results_file   = rdo::format(_T("%s%s.pmv"), modelPath.c_str(), getSMR()->getFile(_T("Results_file")  ).c_str());
+	smrInfo.m_trace_file     = rdo::format(_T("%s%s.trc"), modelPath.c_str(), getSMR()->getFile(_T("Trace_file")    ).c_str());
+
+	return true;
 }
 
 void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 {
 	RDOParserSMRInfo                         smrParser;
 	rdoModelObjectsConvertor::RDOSMRFileInfo smrInfo;
-	std::ifstream smrStream(smrFullFileName.c_str());
-	if (!smrStream.is_open())
-		return;
 
 	try
 	{
-		smrInfo.error = false;
-		smrParser.parseSMR(smrStream);
+		if (!smrParser.parseSMR(smrFullFileName, smrInfo))
+			return;
 	}
 	catch (REF(rdoParse::RDOSyntaxException) ex)
 	{
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		smrInfo.error = true;
-		int i = 1;
+		smrInfo.m_error = true;
 	}
 	catch (REF(rdoRuntime::RDORuntimeException) ex)
 	{
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		smrInfo.error = true;
-		int i = 1;
+		smrInfo.m_error = true;
 	}
 
 	if (!smrParser.hasSMR())
 		return;
-
-	smrInfo.model_name     = smrParser.getSMR()->getFile(_T("Model_name")    );
-	smrInfo.resource_file  = smrParser.getSMR()->getFile(_T("Resource_file") );
-	smrInfo.frame_file     = smrParser.getSMR()->getFile(_T("Frame_file")    );
-	smrInfo.statistic_file = smrParser.getSMR()->getFile(_T("Statistic_file"));
-	smrInfo.results_file   = smrParser.getSMR()->getFile(_T("Results_file")  );
-	smrInfo.trace_file     = smrParser.getSMR()->getFile(_T("Trace_file")    );
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)

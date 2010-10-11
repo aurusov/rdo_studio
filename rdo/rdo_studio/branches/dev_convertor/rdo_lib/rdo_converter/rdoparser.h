@@ -276,7 +276,7 @@ public:
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:
-	void parseSMR(REF(std::istream) smrStream);
+	rbool parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
