@@ -107,7 +107,7 @@ ruint RDOParserRDOItem::lexer_loc_pos()
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS(StreamFrom from)
-	: RDOParserRDOItem(rdoModelObjectsConvertor::RSS, rssparse, rsserror, rsslex, from)
+	: RDOParserRDOItem(rdoModelObjectsConvertor::RSS, cnv_rssparse, cnv_rsserror, cnv_rsslex, from)
 {}
 
 void RDOParserRSS::parse(PTR(Converter) pParser)
