@@ -1067,8 +1067,9 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 
 	try
 	{
-		std::stringstream smrFile(smr.str());
-		converter.parse(smrFile);
+		rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
+		kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
+		converter.convert(fileInfo.m_full_name);
 	}
 	catch (REF(rdoConverter::RDOSyntaxException) ex)
 	{

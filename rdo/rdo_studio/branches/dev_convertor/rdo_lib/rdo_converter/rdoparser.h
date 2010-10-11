@@ -108,7 +108,6 @@ public:
 	rbool    hasSMR() const              { return m_pSMR ? true : false; }
 
 	void parse();
-	void parse(REF(std::istream) stream);
 
 	CREF(Error) error() const { return m_error; }
 	 REF(Error) error()       { return m_error; }
@@ -265,7 +264,11 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserModel
 // ----------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
+class RDOParserModel: public RDOParserTemplate<RDOParserContainerModel>
+{
+public:
+	void convert(CREF(tstring) smrFullFileName);
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMRInfo

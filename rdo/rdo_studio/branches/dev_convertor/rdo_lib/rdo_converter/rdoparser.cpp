@@ -282,19 +282,23 @@ void Converter::parse(rdoModelObjectsConvertor::RDOParseType file)
 void RDOParserSMRInfo::parseSMR(REF(std::istream) smrStream)
 {
 	RDOParserContainer::Iterator it = begin();
-	while (it != end())
-	{
-		m_parser_item = it->second;
-		it->second->parse(this, smrStream);
-		m_parser_item = NULL;
-		it++;
-	}
+	ASSERT(it != end());
+
+	m_parser_item = it->second;
+	it->second->parse(this, smrStream);
+	m_parser_item = NULL;
+
+	it++;
+	ASSERT(it == end());
 }
 
-void Converter::parse(REF(std::istream) smrStream)
+void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 {
 	RDOParserSMRInfo                         smrParser;
 	rdoModelObjectsConvertor::RDOSMRFileInfo smrInfo;
+	std::ifstream smrStream(smrFullFileName.c_str());
+	if (!smrStream.is_open())
+		return;
 
 	try
 	{
