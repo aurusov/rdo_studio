@@ -85,7 +85,7 @@ void RDOParserContainer::getMinMax(rdoModelObjectsConvertor::RDOParseType type, 
 		case rdoModelObjectsConvertor::obFRM : min = 900;  max = 999;  break;
 		case rdoModelObjectsConvertor::obSMR : min = 1000; max = 1099; break;
 		case rdoModelObjectsConvertor::obPOST: min = 1100; max = 1199; break;
-		default                     : min = UNDEFINED_ID; max = UNDEFINED_ID; break;
+		default                              : min = UNDEFINED_ID; max = UNDEFINED_ID; break;
 	}
 }
 
@@ -97,25 +97,25 @@ RDOParserContainerModel::RDOParserContainerModel()
 {
 	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserSTDFUN> ::create());
 	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR, cnv_smr_file_parse, cnv_smr_file_error, cnv_smr_file_lex));
-	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::RTP, rtpparse, rtperror, rtplex));
-	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
+	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::RTP, cnv_rtpparse, cnv_rtperror, cnv_rtplex));
+	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, cnv_proc_rtp_parse, cnv_proc_rtp_error, cnv_proc_rtp_lex));
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserCorbaRTP>::create());
 #endif
 	insert(rdoModelObjectsConvertor::obRSS, rdo::Factory<RDOParserRSS>    ::create());
-	insert(rdoModelObjectsConvertor::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex));
+	insert(rdoModelObjectsConvertor::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, cnv_proc_rss_parse, cnv_proc_rss_error, cnv_proc_rss_lex));
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjectsConvertor::obRSS, rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
-	insert(rdoModelObjectsConvertor::obFUN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::FUN, funparse, funerror, funlex));
-	insert(rdoModelObjectsConvertor::obPAT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::PAT, patparse, paterror, patlex));
-	insert(rdoModelObjectsConvertor::obOPR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::OPR, oprparse, oprerror, oprlex));
-	insert(rdoModelObjectsConvertor::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, proc_opr_parse, proc_opr_error, proc_opr_lex));
-	insert(rdoModelObjectsConvertor::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, dptparse, dpterror, dptlex));
-	insert(rdoModelObjectsConvertor::obPMD, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::PMD, pmdparse, pmderror, pmdlex));
-	insert(rdoModelObjectsConvertor::obFRM, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::FRM, frmparse, frmerror, frmlex));
+	insert(rdoModelObjectsConvertor::obFUN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::FUN, cnv_funparse, cnv_funerror, cnv_funlex));
+	insert(rdoModelObjectsConvertor::obPAT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::PAT, cnv_patparse, cnv_paterror, cnv_patlex));
+	insert(rdoModelObjectsConvertor::obOPR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::OPR, cnv_oprparse, cnv_oprerror, cnv_oprlex));
+	insert(rdoModelObjectsConvertor::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, cnv_proc_opr_parse, cnv_proc_opr_error, cnv_proc_opr_lex));
+	insert(rdoModelObjectsConvertor::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, cnv_dptparse, cnv_dpterror, cnv_dptlex));
+	insert(rdoModelObjectsConvertor::obPMD, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::PMD, cnv_pmdparse, cnv_pmderror, cnv_pmdlex));
+	insert(rdoModelObjectsConvertor::obFRM, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::FRM, cnv_frmparse, cnv_frmerror, cnv_frmlex));
 	insert(rdoModelObjectsConvertor::obSMR, rdo::Factory<RDOParserRSSPost>::create());
-	insert(rdoModelObjectsConvertor::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
+	insert(rdoModelObjectsConvertor::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR, cnv_smr_sim_parse, cnv_smr_sim_error, cnv_smr_sim_lex));
 }
 
 // ----------------------------------------------------------------------------
@@ -133,10 +133,10 @@ RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
 RDOParserContainerCorba::RDOParserContainerCorba()
 	: RDOParserContainer()
 {
-	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::RTP, rtpparse, rtperror, rtplex, RDOParserItem::sf_editor));
-	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex, RDOParserItem::sf_editor));
+	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::RTP, cnv_rtpparse, cnv_rtperror, cnv_rtplex, RDOParserItem::sf_editor));
+	insert(rdoModelObjectsConvertor::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, cnv_proc_rtp_parse, cnv_proc_rtp_error, cnv_proc_rtp_lex, RDOParserItem::sf_editor));
 	insert(rdoModelObjectsConvertor::obRSS, rdo::Factory<RDOParserRSS>    ::create(RDOParserItem::sf_editor));
-	insert(rdoModelObjectsConvertor::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex, RDOParserItem::sf_editor));
+	insert(rdoModelObjectsConvertor::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::DPT, cnv_proc_rss_parse, cnv_proc_rss_error, cnv_proc_rss_lex, RDOParserItem::sf_editor));
 	insert(rdoModelObjectsConvertor::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 }
 

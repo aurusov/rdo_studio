@@ -42,21 +42,21 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int  dptparse      (PTR(void) lexer);
-int  dptlex        (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void dpterror      (PTR(char) mes);
+int  cnv_dptparse      (PTR(void) lexer);
+int  cnv_dptlex        (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_dpterror      (PTR(char) mes);
 
-int  proc_rtp_parse(PTR(void) lexer);
-int  proc_rtp_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void proc_rtp_error(PTR(char) mes);
+int  cnv_proc_rtp_parse(PTR(void) lexer);
+int  cnv_proc_rtp_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_proc_rtp_error(PTR(char) mes);
 
-int  proc_rss_parse(PTR(void) lexer);
-int  proc_rss_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void proc_rss_error(PTR(char) mes);
+int  cnv_proc_rss_parse(PTR(void) lexer);
+int  cnv_proc_rss_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_proc_rss_error(PTR(char) mes);
 
-int  proc_opr_parse(PTR(void) lexer);
-int  proc_opr_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void proc_opr_error(PTR(char) mes);
+int  cnv_proc_opr_parse(PTR(void) lexer);
+int  cnv_proc_opr_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_proc_opr_error(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivity
