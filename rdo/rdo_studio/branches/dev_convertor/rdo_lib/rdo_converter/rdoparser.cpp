@@ -18,6 +18,7 @@
 #include "rdo_lib/rdo_converter/context/global.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_common/rdocommon.h"
+#include "rdo_common/rdofile.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -279,6 +280,26 @@ void Converter::parse(rdoModelObjectsConvertor::RDOParseType file)
 	}
 }
 
+void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type,
+                                      CREF(tstring)                         modelPath,
+                                      CREF(tstring)                         modelName,
+                                      CREF(tstring)                         smrFileName,
+                                      CREF(tstring)                         nameFromSMR,
+                                      CREF(tstring)                         fileExt
+)
+{
+	CREF(tstring) fileName = !nameFromSMR.empty() ? nameFromSMR : (!modelName.empty() ? modelName : smrFileName);
+	if (fileName.empty())
+		return;
+
+	tstring fullFileName = rdo::format(_T("%s%s.%s"), modelPath.c_str(), fileName.c_str(), fileExt.c_str());
+
+	if (rdo::File::exist(fullFileName))
+	{
+		m_fileList[type] = fullFileName;
+	}
+}
+
 rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo)
 {
 	std::ifstream stream(smrFullFileName.c_str());
@@ -297,15 +318,23 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 	ASSERT(it == end());
 #endif
 
-	tstring modelPath = rdo::extractFilePath(smrFullFileName);
+	tstring smrFilePath, smrFileName, smrFileExt;
+	if (!rdo::File::splitpath(smrFullFileName, smrFilePath, smrFileName, smrFileExt))
+		return false;
 
-	smrInfo.m_model_name     = getSMR()->getFile(_T("Model_name")    );
-	smrInfo.m_resource_file  = rdo::format(_T("%s%s.rss"), modelPath.c_str(), getSMR()->getFile(_T("Resource_file") ).c_str());
-	smrInfo.m_oprIev_file    = rdo::format(_T("%s%s.opr"), modelPath.c_str(), getSMR()->getFile(_T("Resource_file") ).c_str());
-	smrInfo.m_frame_file     = rdo::format(_T("%s%s.frm"), modelPath.c_str(), getSMR()->getFile(_T("Frame_file")    ).c_str());
-	smrInfo.m_statistic_file = rdo::format(_T("%s%s.pmd"), modelPath.c_str(), getSMR()->getFile(_T("Statistic_file")).c_str());
-	smrInfo.m_results_file   = rdo::format(_T("%s%s.pmv"), modelPath.c_str(), getSMR()->getFile(_T("Results_file")  ).c_str());
-	smrInfo.m_trace_file     = rdo::format(_T("%s%s.trc"), modelPath.c_str(), getSMR()->getFile(_T("Trace_file")    ).c_str());
+	tstring modelName = getSMR()->getFile(_T("Model_name"));
+
+	insertFileName(rdoModelObjectsConvertor::PAT, smrFilePath, modelName, smrFileName, modelName,                               _T("pat"));
+	insertFileName(rdoModelObjectsConvertor::RTP, smrFilePath, modelName, smrFileName, modelName,                               _T("rtp"));
+	insertFileName(rdoModelObjectsConvertor::RSS, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Resource_file")),  _T("rss"));
+	insertFileName(rdoModelObjectsConvertor::OPR, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("OprIev_file")  ),  _T("opr"));
+	insertFileName(rdoModelObjectsConvertor::FRM, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Frame_file")   ),  _T("frm"));
+	insertFileName(rdoModelObjectsConvertor::FUN, smrFilePath, modelName, smrFileName, modelName,                               _T("fun"));
+	insertFileName(rdoModelObjectsConvertor::DPT, smrFilePath, modelName, smrFileName, modelName,                               _T("dpt"));
+	insertFileName(rdoModelObjectsConvertor::PMD, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Statistic_file")), _T("pmd"));
+	insertFileName(rdoModelObjectsConvertor::SMR, smrFilePath, modelName, smrFileName, smrFileName,                             _T("smr"));
+	insertFileName(rdoModelObjectsConvertor::PMV, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Results_file")  ), _T("pmv"));
+	insertFileName(rdoModelObjectsConvertor::TRC, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Trace_file")    ), _T("trc"));
 
 	return true;
 }
