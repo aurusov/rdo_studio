@@ -31,4 +31,20 @@ inline rbool File::unlink(CREF(tstring) name)
 	return _unlink(name.c_str()) == 0;
 }
 
+inline rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
+{
+	char _drive[_MAX_DRIVE];
+	char _dir  [_MAX_DIR  ];
+	char _name [_MAX_FNAME];
+	char _ext  [_MAX_EXT  ];
+
+	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
+		return false;
+
+	fileDir  = rdo::format(_T("%s%s"), _drive, _dir);
+	fileName = _name;
+	fileExt  = _ext;
+	return true;
+}
+
 CLOSE_RDO_NAMESPACE

@@ -25,6 +25,7 @@ public:
 	static rbool exist    (CREF(tstring) name);
 	static rbool read_only(CREF(tstring) name);
 	static rbool unlink   (CREF(tstring) name);
+	static rbool splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt);
 };
 
 CLOSE_RDO_NAMESPACE
