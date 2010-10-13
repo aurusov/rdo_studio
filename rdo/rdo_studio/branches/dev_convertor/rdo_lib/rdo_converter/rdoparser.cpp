@@ -240,44 +240,9 @@ tstring Converter::getModelStructure()
 	return modelStructure.str();
 }
 
-void Converter::parse()
+CREF(RDOParserSMRInfo::FileList) RDOParserSMRInfo::getFileList() const
 {
-	parse(rdoModelObjectsConvertor::obPRE);
-
-	RDOParserContainer::Iterator it = begin();
-	while (it != end())
-	{
-		m_parser_item = it->second;
-		it->second->parse(this);
-		m_parser_item = NULL;
-		it++;
-	}
-
-	parse(rdoModelObjectsConvertor::obPOST);
-}
-
-void Converter::parse(rdoModelObjectsConvertor::RDOParseType file)
-{
-	ruint min, max;
-	RDOParserContainer::getMinMax(file, min, max);
-	if (min == RDOParserContainer::UNDEFINED_ID || max == RDOParserContainer::UNDEFINED_ID)
-		return;
-
-	RDOParserContainer::Iterator it = find(min);
-	while (it != end())
-	{
-		if (it->first <= max)
-		{
-			m_parser_item = it->second;
-			it->second->parse(this);
-			m_parser_item = NULL;
-		}
-		else
-		{
-			break;
-		}
-		it++;
-	}
+	return m_fileList;
 }
 
 void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type,
@@ -318,6 +283,9 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 	ASSERT(it == end());
 #endif
 
+	if (!hasSMR())
+		return false;
+
 	tstring smrFilePath, smrFileName, smrFileExt;
 	if (!rdo::File::splitpath(smrFullFileName, smrFilePath, smrFileName, smrFileExt))
 		return false;
@@ -341,27 +309,68 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 
 void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 {
-	RDOParserSMRInfo                         smrParser;
-	rdoModelObjectsConvertor::RDOSMRFileInfo smrInfo;
+	RDOParserSMRInfo::FileList fileList;
+	{
+		std::auto_ptr<RDOParserSMRInfo> pSMRParser(new RDOParserSMRInfo());
+		rdoModelObjectsConvertor::RDOSMRFileInfo smrInfo;
+
+		try
+		{
+			if (!pSMRParser->parseSMR(smrFullFileName, smrInfo))
+				return;
+		}
+		catch (REF(rdoParse::RDOSyntaxException) ex)
+		{
+			tstring mess = ex.getType() + _T(" : ") + ex.message();
+			smrInfo.m_error = true;
+		}
+		catch (REF(rdoRuntime::RDORuntimeException) ex)
+		{
+			tstring mess = ex.getType() + _T(" : ") + ex.message();
+			smrInfo.m_error = true;
+		}
+		fileList = pSMRParser->getFileList();
+	}
 
 	try
 	{
-		if (!smrParser.parseSMR(smrFullFileName, smrInfo))
-			return;
+		RDOParserContainer::Iterator it = begin();
+		while (it != end())
+		{
+			m_parser_item = it->second;
+			if (m_parser_item->needStream())
+			{
+				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(m_parser_item->m_type);
+				if (it != fileList.end())
+				{
+					std::ifstream stream(it->second.c_str());
+					m_parser_item->parse(this, stream);
+				}
+			}
+			else
+			{
+				m_parser_item->parse(this);
+			}
+			m_parser_item = NULL;
+			++it;
+		}
 	}
-	catch (REF(rdoParse::RDOSyntaxException) ex)
+	catch (REF(rdoConverter::RDOSyntaxException) ex)
 	{
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		smrInfo.m_error = true;
+		int i = 1;
 	}
 	catch (REF(rdoRuntime::RDORuntimeException) ex)
 	{
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		smrInfo.m_error = true;
+		int i = 1;
+	}
+	catch (...)
+	{
+		int i = 1;
 	}
 
-	if (!smrParser.hasSMR())
-		return;
+	int i = 1;
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)

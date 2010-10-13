@@ -107,8 +107,6 @@ public:
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
 	rbool    hasSMR() const              { return m_pSMR ? true : false; }
 
-	void parse();
-
 	CREF(Error) error() const { return m_error; }
 	 REF(Error) error()       { return m_error; }
 
@@ -196,8 +194,6 @@ protected:
 	ValueList              m_allValues;
 	rdoRuntime::RDORuntime m_runtime;
 
-	void parse(rdoModelObjectsConvertor::RDOParseType file);
-
 private:
 	LPRDOSMR              m_pSMR;
 	rbool                 m_have_kw_Resources;
@@ -276,10 +272,12 @@ public:
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:
-	rbool parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo);
+	typedef std::map<rdoModelObjectsConvertor::RDOFileType, tstring> FileList;
+
+	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo);
+	CREF(FileList) getFileList() const;
 
 private:
-	typedef std::map<rdoModelObjectsConvertor::RDOFileType, tstring> FileList;
 	FileList m_fileList;
 
 	void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type,

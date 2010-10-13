@@ -36,44 +36,42 @@ OBJECT(RDOParserItem)
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
-	enum StreamFrom
-	{
-		sf_repository,
-		sf_editor
-	};
-
 	rdoModelObjectsConvertor::RDOFileType m_type;
 
 	t_bison_parse_fun m_parser_fun;
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void  parse(PTR(Converter) pParser) = 0;
-	virtual void  parse(PTR(Converter) pParser, REF(std::istream) in_stream)
-	{};
+	virtual void  parse(PTR(Converter) pParser)                              {};
+	virtual void  parse(PTR(Converter) pParser, REF(std::istream) in_stream) {};
 
 	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
 	virtual ruint lexer_loc_pos()  { return 0;                                               };
 
+	rbool needStream() const
+	{
+		return m_needStream;
+	}
+
 protected:
 	RDOParserItem()
 		: m_type      (rdoModelObjectsConvertor::PAT)
-		, m_parser_fun(NULL                )
-		, m_error_fun (NULL                )
-		, m_lexer_fun (NULL                )
-		, m_from      (sf_repository       )
+		, m_parser_fun(NULL                         )
+		, m_error_fun (NULL                         )
+		, m_lexer_fun (NULL                         )
+		, m_needStream(true                         )
 	{}
-	RDOParserItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from = sf_repository)
+	RDOParserItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
 		: m_type      (type      )
 		, m_parser_fun(parser_fun)
 		, m_error_fun (error_fun )
 		, m_lexer_fun (lexer_fun )
-		, m_from      (from      )
+		, m_needStream(true      )
 	{}
 	virtual ~RDOParserItem()
 	{}
 
-	StreamFrom m_from;
+	rbool m_needStream;
 };
 
 // ----------------------------------------------------------------------------
