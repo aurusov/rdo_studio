@@ -15,7 +15,6 @@
 #include "rdo_lib/rdo_converter/rdoopr.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-//#include "rdo_lib/rdo_converter/rdo_logic_opr.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -45,10 +44,7 @@ RDOOPROperation::RDOOPROperation(LPIBaseOperationContainer pDPT, CREF(RDOParserS
 RDOOperations::RDOOperations(CREF(RDOParserSrcInfo) src_info)
 	: RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>(src_info)
 {
-	//m_pRuntimeLogic = F(rdoRuntime::RDOOperations)::create(Converter::s_converter()->runtime());
-	//ASSERT(m_pRuntimeLogic);
-	//m_pRuntimeLogic->init(Converter::s_converter()->runtime());
-	//Converter::s_converter()->runtime()->insertOperations(this);
+	Converter::s_converter()->insertOperations(this);
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE
