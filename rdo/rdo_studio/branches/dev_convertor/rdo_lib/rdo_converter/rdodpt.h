@@ -19,9 +19,9 @@
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdopat.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_keyboard_interface.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -65,9 +65,8 @@ OBJECT(RDODPTActivity) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDODPTActivity);
 public:
-	CREF(tstring)     name    () const { return src_info().src_text(); }
-	CREF(LPIActivity) activity() const { return m_pActivity;           }
-	LPRDOPATPattern   pattern () const { return m_pPattern;            }
+	CREF(tstring)   name   () const { return src_info().src_text(); }
+	LPRDOPATPattern pattern() const { return m_pPattern;            }
 
 	void addParam(CREF(RDOValue) param    );
 	void endParam(CREF(YYLTYPE)  param_pos);
@@ -77,8 +76,6 @@ public:
 protected:
 	RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
 	virtual ~RDODPTActivity();
-
-	LPIActivity m_pActivity;
 
 private:
 	ruint           m_currParam;
@@ -91,10 +88,17 @@ private:
 class RDODPTActivityHotKey: public RDODPTActivity
 {
 public:
-	void addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos);
+	void  addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos);
+	rbool hasHotKey() const;
 
 protected:
 	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+
+private:
+	IKeyboard::AddHotKeyResult addHotKey(CREF(tstring) hotKey);
+
+	typedef std::vector<ruint> ScanCodeList;
+	ScanCodeList m_scanCodeList;
 };
 DECLARE_POINTER(RDODPTActivityHotKey);
 
