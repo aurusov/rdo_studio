@@ -190,14 +190,7 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 		}
 		else
 		{
-			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(pPattern->getPatRuntime())->createActivity(pParser->runtime()->m_metaLogic, pParser->runtime(), pEvent->name());
-			ASSERT(pRuntimeEvent);
-			pEvent->setRuntimeEvent(pRuntimeEvent);
-
-			STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
-			{
-				(*calcIt)->setEvent(pRuntimeEvent);
-			}
+			NEVER_REACH_HERE; //потому что нерегулярных событий больше нет
 		}
 	}
 }

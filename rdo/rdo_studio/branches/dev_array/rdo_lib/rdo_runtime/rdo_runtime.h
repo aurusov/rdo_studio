@@ -56,7 +56,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
-class RDOIrregEvent;
+class RDOEvent;
 class RDORule;
 class RDOOperation;
 class RDOPROCProcess;
@@ -130,7 +130,6 @@ public:
 	REF(LPIActivity) getCurrentActivity()                           { return m_currActivity;      }
 	void             setCurrentActivity(CREF(LPIActivity) activity) { m_currActivity = activity;  }
 
-	void addRuntimeIE       (LPIBaseOperationContainer logic, CREF(LPIIrregEvent) ie      );
 	void addRuntimeEvent    (LPIBaseOperationContainer logic, CREF(LPIEvent)      ev      );
 	void addRuntimeRule     (LPIBaseOperationContainer logic, CREF(LPIRule)       rule    );
 	void addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation)  opration);

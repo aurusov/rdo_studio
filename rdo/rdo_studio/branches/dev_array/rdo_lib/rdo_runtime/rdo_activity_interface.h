@@ -3,7 +3,7 @@
  * filename : rdo_activity_interface.h
  * author   : Урусов Андрей
  * date     : 01.08.2009
- * bref     : 
+ * bref     : Интерфейс IActivity
  * indent   : 4T
  */
 
@@ -47,4 +47,4 @@ public:
 #define DECLARE_IActivityPatternTrace \
 	virtual CREF(tstring) tracePatternId() const;
 
-#endif //! _RDO_PRIORITY_INTERFACE_H_
+#endif //! _RDO_ACTIVITY_INTERFACE_H_

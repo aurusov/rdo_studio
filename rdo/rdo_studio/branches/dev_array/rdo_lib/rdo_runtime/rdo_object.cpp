@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_object.h
+ * filename : rdo_object.cpp
  * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
+ * date     : 30.01.2007
+ * bref     : Определение базового класса для всех объектов RDORuntime
  * indent   : 4T
  */
 

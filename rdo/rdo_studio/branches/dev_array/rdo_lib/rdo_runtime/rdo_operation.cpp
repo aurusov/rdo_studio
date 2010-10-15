@@ -1,6 +1,18 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_operation.cpp
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -28,8 +40,7 @@ RDOOperation::RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, b
 }
 
 RDOOperation::~RDOOperation()
-{
-}
+{}
 
 bool RDOOperation::onCheckCondition(PTR(RDOSimulator) sim)
 {

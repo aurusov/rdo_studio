@@ -17,8 +17,10 @@
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
 class RDOSimulator;
 class RDORuntime;
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 class IRule

@@ -1,6 +1,17 @@
-#ifndef RDO_OPERATION_H
-#define RDO_OPERATION_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_operation.h
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_OPERATION_H_
+#define _RDO_OPERATION_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
@@ -8,9 +19,9 @@
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdo_operation_interface.h"
+// ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation
@@ -52,6 +63,6 @@ private:
 	DECLARE_IOperationTrace;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_OPERATION_H
+#endif //! _RDO_OPERATION_H_

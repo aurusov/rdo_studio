@@ -2,7 +2,7 @@
  * copyright: (c) RDO-Team, 2010
  * filename : rdobison.h
  * author   : Лущан Дмитрий, Урусов Андрей
- * date     : 
+ * date     : 03.08.2010
  * bref     : Структура координат токена бизона, дополненная линейной позицией
  * indent   : 4T
  */
