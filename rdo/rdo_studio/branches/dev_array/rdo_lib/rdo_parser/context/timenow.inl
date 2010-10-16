@@ -13,13 +13,13 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-LPContext ContextTimeNow::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
+inline LPContext ContextTimeNow::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
 {
 	NEVER_REACH_HERE;
 	return LPContext();
 }
 
-rdoRuntime::LPRDOCalc ContextTimeNow::getCalc()
+inline rdoRuntime::LPRDOCalc ContextTimeNow::getCalc()
 {
 	if (!m_pCalc)
 	{
@@ -27,6 +27,11 @@ rdoRuntime::LPRDOCalc ContextTimeNow::getCalc()
 		ASSERT(m_pCalc);
 	}
 	return m_pCalc;
+}
+
+inline LPLocalVariableList ContextTimeNow::getLocalMemory()
+{
+	return LPLocalVariableList();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

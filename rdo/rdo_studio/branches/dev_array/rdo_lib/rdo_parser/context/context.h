@@ -14,8 +14,11 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
+
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/local_variable.h"
+
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
@@ -30,13 +33,15 @@ PREDECLARE_POINTER(Context);
 
 S_INTERFACE(IContext)
 {
-	virtual LPContext             parser (PTR(RDOParser) pParser, CREF(RDOValue) value) = 0;
-	virtual rdoRuntime::LPRDOCalc getCalc()                                             = 0;
+	virtual LPContext             parser        (PTR(RDOParser) pParser, CREF(RDOValue) value) = 0;
+	virtual rdoRuntime::LPRDOCalc getCalc       ()                                             = 0;
+	virtual LPLocalVariableList   getLocalMemory()                                             = 0;
 };
 
-#define DECLARE_IContext                                                         \
-	LPContext             parser (PTR(RDOParser) pParser, CREF(RDOValue) value); \
-	rdoRuntime::LPRDOCalc getCalc();
+#define DECLARE_IContext                                                                \
+	LPContext             parser        (PTR(RDOParser) pParser, CREF(RDOValue) value); \
+	rdoRuntime::LPRDOCalc getCalc       ();                                             \
+	LPLocalVariableList   getLocalMemory();
 
 // ----------------------------------------------------------------------------
 // ---------- Context

@@ -61,4 +61,9 @@ rdoRuntime::LPRDOCalc ContextGlobal::getCalc()
 	return rdoRuntime::LPRDOCalc();
 }
 
+LPLocalVariableList ContextGlobal::getLocalMemory()
+{
+	return LPLocalVariableList();
+}
+
 CLOSE_RDO_PARSER_NAMESPACE
