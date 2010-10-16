@@ -211,6 +211,7 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
+#include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
 // ===============================================================================
@@ -1467,6 +1468,7 @@ statement
 	| equal_statement
 	| stopping_statement
 	| planning_statement
+	| local_variable_declaration
 	| if_statement
 	| '{' statement_list '}'
 	{
@@ -1790,7 +1792,7 @@ if_statement
 	{
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($3);
 		ASSERT(pCondition);
-		
+
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
@@ -2742,34 +2744,72 @@ fun_select_arithm
 // ---------- Локальная переменная
 // ----------------------------------------------------------------------------
 local_variable_declaration
-	: type_declaration init_declaration_list
+	: type_declaration init_declaration_list ';'
 	{
-		/*Задание локальной переменной*/
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
+		ASSERT(pLocalVariableList);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
+		ASSERT(pCalc);
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 
 type_declaration
-	: /* empty */
+	: RDO_integer
 	{
 		/*Задание типа данных*/
 	}
 	;
 
 init_declaration_list
-	: init_declaration_list ',' init_declaration
+	: init_declaration
 	{
-		/*Задание имени переменной или переменных*/
+		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($1);
+		ASSERT(pLocalVariable);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
+		ASSERT(pLocalVariableList);
+
+		pLocalVariableList->append(pLocalVariable);
+	}
+	| init_declaration_list ',' init_declaration
+	{
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
+		ASSERT(pLocalVariableList);
+
+		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($3);
+		ASSERT(pLocalVariable);
+
+		pLocalVariableList->append(pLocalVariable);
 	}
 	;
 
 init_declaration
 	: RDO_IDENTIF
 	{
-		/*Задание имени переменной*/
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(RDOVALUE($1), LPRDOFUNArithm());
+		ASSERT(pLocalVariable);
+		$$ = PARSER->stack().push(pLocalVariable);
 	}
 	| RDO_IDENTIF '=' fun_arithm
 	{
-		/*Задание имени переменной и её инициация*/
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(RDOVALUE($1), pArithm);
+		ASSERT(pLocalVariable);
+
+		$$ = PARSER->stack().push(pLocalVariable);
 	}
 	;
 

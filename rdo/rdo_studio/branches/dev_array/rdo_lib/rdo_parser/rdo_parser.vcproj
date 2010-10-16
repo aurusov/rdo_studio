@@ -448,6 +448,14 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\local_variable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\local_variable.h"
+				>
+			</File>
+			<File
 				RelativePath=".\namespace.h"
 				>
 			</File>
@@ -3071,6 +3079,18 @@
 				RelativePath=".\rdopatpreparse.inl"
 				>
 			</File>
+			<Filter
+				Name=".context"
+				>
+				<File
+					RelativePath=".\context\pattern.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\context\pattern.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".context"
