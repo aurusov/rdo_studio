@@ -660,14 +660,14 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 	GENERATE_ARITHM_CALC(Div, /, _T("Ќельз€ %s разделить на %s"));
 	//! TODO: перевод вещественного в целое при делении. ј что делать с умножением и т.д. ?
 	//! ќтвет: с умножением надо делать тоже самое, только непон€тно как
-	if (pNewType->type().typeID() == rdoRuntime::RDOType::t_int)
+	if (pNewType->type()->typeID() == rdoRuntime::RDOType::t_int)
 	{
 		rdoRuntime::LPRDOCalc pNewCalc_div = pNewCalc;
 		pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToIntByResult>::create(pNewCalc_div);
 		pNewCalc->setSrcInfo(pNewCalc_div->src_info());
 	}
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(pNewType, pNewCalc->src_info()), pNewCalc);
-	if (pNewType->type().typeID() == rdoRuntime::RDOType::t_int)
+	if (pNewType->type()->typeID() == rdoRuntime::RDOType::t_int)
 	{
 		rdoRuntime::LPRDOCalcDoubleToIntByResult pResult = pNewCalc.object_static_cast<rdoRuntime::RDOCalcDoubleToIntByResult>();
 		pArithm->m_intOrDouble.push_back(pResult);
@@ -1541,7 +1541,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 			}
 			break;
 		case rdoRuntime::RDOType::t_enum:
-			range *= pFunctionParam->getType()->type().object_static_cast<RDOEnumType>()->getEnums().getValues().size();
+			range *= pFunctionParam->getType()->type().object_static_cast<RDOEnumType>()->getEnums()->getValues().size();
 			break;
 		default:
 			RDOParser::s_parser()->error().error(pFunctionParam->getType()->src_info(), _T("ѕараметр табличной функции может быть целого или перечислимого типа"));

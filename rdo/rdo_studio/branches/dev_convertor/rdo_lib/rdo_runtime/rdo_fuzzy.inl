@@ -4,12 +4,12 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyValue
 // ----------------------------------------------------------------------------
-inline RDOFuzzyValue::RDOFuzzyValue(CREF(RDOFuzzyType) type)
-	: m_type(&type)
+inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyType) pType)
+	: m_pType(pType)
 {}
 
 inline RDOFuzzyValue::RDOFuzzyValue(CREF(RDOFuzzyValue) value)
-	: m_type(value.m_type)
+	: m_pType(value.m_pType)
 {
 	m_fuzzySet = value.m_fuzzySet;
 }
@@ -30,7 +30,7 @@ inline REF(RDOFuzzyValue) RDOFuzzyValue::operator() (CREF(RDOValue) rdovalue, do
 
 inline REF(double) RDOFuzzyValue::operator[] (CREF(RDOValue) rdovalue)
 {
-	if (!type().inRange(rdovalue))
+	if (!type()->inRange(rdovalue))
 		throw RDOValueException();
 
 	return m_fuzzySet[rdovalue];
@@ -53,21 +53,22 @@ inline RDOFuzzyValue::FuzzySet::const_iterator RDOFuzzyValue::end  () const { re
 inline RDOFuzzyValue::FuzzySet::iterator       RDOFuzzyValue::begin()       { return m_fuzzySet.begin(); }
 inline RDOFuzzyValue::FuzzySet::iterator       RDOFuzzyValue::end  ()       { return m_fuzzySet.end();   }
 inline rbool                                   RDOFuzzyValue::empty() const { return m_fuzzySet.empty(); }
-inline CREF(RDOFuzzyType)                      RDOFuzzyValue::type () const { return *m_type;            }
+inline CREF(LPRDOFuzzyType)                    RDOFuzzyValue::type () const { return m_pType;            }
 
-inline RDOFuzzyValue RDOFuzzyValue::supplement() const { return type().getSupplement(*this); }
-inline RDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                  }
-inline RDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                  }
+inline RDOFuzzyValue RDOFuzzyValue::supplement() const { return type()->getSupplement(*this); }
+inline RDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
+inline RDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyType
 // ----------------------------------------------------------------------------
 inline RDOFuzzyType::RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition)
-	: RDORuntimeParent    (fuzzySetDefinition->getParent())
-	, RDOType             (t_fuzzy                        )
-	, m_fuzzySetDefinition(fuzzySetDefinition             )
+	: RDOType             (t_fuzzy           )
+	, m_fuzzySetDefinition(fuzzySetDefinition)
 {
-	m_fuzzySetDefinition->reparent(this);
+	//! Было
+	//! m_fuzzySetDefinition->reparent(this);
+	//! TODO: для порядку перевести на умные указатели
 }
 
 inline RDOFuzzyType::~RDOFuzzyType()
@@ -106,8 +107,7 @@ inline RDOFuzzyValue RDOFuzzyType::getSupplement(CREF(RDOFuzzyValue) value) cons
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinition
 // ----------------------------------------------------------------------------
-inline RDOFuzzySetDefinition::RDOFuzzySetDefinition(PTR(RDORuntimeParent) parent)
-	: RDORuntimeObject(parent)
+inline RDOFuzzySetDefinition::RDOFuzzySetDefinition()
 {}
 
 inline RDOFuzzySetDefinition::~RDOFuzzySetDefinition()
@@ -116,8 +116,8 @@ inline RDOFuzzySetDefinition::~RDOFuzzySetDefinition()
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinitionFixed
 // ----------------------------------------------------------------------------
-inline RDOFuzzySetDefinitionFixed::RDOFuzzySetDefinitionFixed(PTR(RDORuntimeParent) parent)
-	: RDOFuzzySetDefinition(parent)
+inline RDOFuzzySetDefinitionFixed::RDOFuzzySetDefinitionFixed()
+	: RDOFuzzySetDefinition()
 {}
 
 inline RDOFuzzySetDefinitionFixed::~RDOFuzzySetDefinitionFixed()
@@ -142,11 +142,11 @@ inline rbool RDOFuzzySetDefinitionFixed::inRange(CREF(RDOValue) rdovalue) const
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinitionRangeDiscret
 // ----------------------------------------------------------------------------
-inline RDOFuzzySetDefinitionRangeDiscret::RDOFuzzySetDefinitionRangeDiscret(PTR(RDORuntimeParent) parent, CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step)
-	: RDOFuzzySetDefinition(parent)
-	, m_from               (from  )
-	, m_till               (till  )
-	, m_step               (step  )
+inline RDOFuzzySetDefinitionRangeDiscret::RDOFuzzySetDefinitionRangeDiscret(CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step)
+	: RDOFuzzySetDefinition(    )
+	, m_from               (from)
+	, m_till               (till)
+	, m_step               (step)
 {}
 
 inline RDOFuzzySetDefinitionRangeDiscret::~RDOFuzzySetDefinitionRangeDiscret()
@@ -155,8 +155,8 @@ inline RDOFuzzySetDefinitionRangeDiscret::~RDOFuzzySetDefinitionRangeDiscret()
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyEmptyType
 // ----------------------------------------------------------------------------
-inline RDOFuzzyEmptyType::RDOFuzzyEmptyType(PTR(RDORuntimeParent) parent)
-	: RDOFuzzyType(new RDOFuzzySetDefinitionEmpty(parent))
+inline RDOFuzzyEmptyType::RDOFuzzyEmptyType()
+	: RDOFuzzyType(new RDOFuzzySetDefinitionEmpty(NULL))
 {}
 
 inline RDOFuzzyEmptyType::~RDOFuzzyEmptyType()
@@ -169,20 +169,20 @@ inline tstring RDOFuzzyEmptyType::asString() const
 	return _T("[empty set]");
 }
 
-inline CREF(RDOFuzzyEmptyType) RDOFuzzyEmptyType::getInstance(PTR(RDORuntimeParent) parent)
+inline LPRDOFuzzyType RDOFuzzyEmptyType::getInstance()
 {
 	if (!RDOFuzzyEmptyType::s_emptyType)
 	{
-		RDOFuzzyEmptyType::s_emptyType = new RDOFuzzyEmptyType(parent);
+		RDOFuzzyEmptyType::s_emptyType = new RDOFuzzyEmptyType();
 	}
-	return *RDOFuzzyEmptyType::s_emptyType;
+	return LPRDOFuzzyType(RDOFuzzyEmptyType::s_emptyType);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinitionEmpty
 // ----------------------------------------------------------------------------
 inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::RDOFuzzySetDefinitionEmpty(PTR(RDORuntimeParent) parent)
-	: RDOFuzzySetDefinition(parent)
+	: RDOFuzzySetDefinition()
 {}
 
 inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::~RDOFuzzySetDefinitionEmpty()
@@ -195,7 +195,7 @@ inline rbool RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::inRange(CREF(RDOValu
 
 inline RDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSupplement(CREF(RDOFuzzyValue) value) const
 {
-	return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance(value.type().getParent()));
+	return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
 }
 
 } // namespace rdoRuntime

@@ -22,13 +22,12 @@ OPEN_RDO_PARSER_NAMESPACE
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
 RDOArrayType::RDOArrayType()
-	: RDOType(&rdoRuntime::g_unknow)
+	: RDOType(rdoRuntime::g_unknow)
 {
-	m_type = new rdoRuntime::RDOArrayType(RDOParser::s_parser()->runtime());
+	m_pType = rdo::Factory<rdoRuntime::RDOArrayType>::create();
 }
 
 RDOArrayType::~RDOArrayType()
-{
-}
+{}
 
 CLOSE_RDO_PARSER_NAMESPACE

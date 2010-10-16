@@ -31,40 +31,41 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-class RDOArrayType;
+PREDECLARE_POINTER(RDOArrayType);
 
 class RDOArrayValue
 {
 public:
 	typedef std::vector<CPTR(RDOValue)> ArrayValue;
 
-	RDOArrayValue(CREF(RDOArrayType)  type );
-	RDOArrayValue(CREF(RDOArrayValue) value);
+	RDOArrayValue(CREF(LPRDOArrayType) pType);
+	RDOArrayValue(CREF(RDOArrayValue)  value);
 	~RDOArrayValue();
 
-	CREF(RDOArrayType) type() const;
+	CREF(LPRDOArrayType) type() const;
 
 private:
-	ArrayValue         m_arrayValue;
-	CPTR(RDOArrayType) m_arrayTape;
+	ArrayValue      m_arrayValue;
+	LPRDOArrayType  m_pArrayType;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-class RDOArrayType: public RDOType, public RDORuntimeObject
+class RDOArrayType: public RDOType
 {
+DECLARE_FACTORY(RDOArrayType);
 public:
-	typedef CPTR(RDOType) ArrayType;
-
-	RDOArrayType(PTR(RDORuntimeParent) parent);
-	RDOArrayType(PTR(RDORuntimeParent) parent,CREF(ArrayType) arraytype);
+	typedef LPRDOType LPArrayType;
 
 	//virtual tstring  asString()                    const;
 	virtual RDOValue cast    (CREF(RDOValue) from) const;
 
 private:
-	ArrayType m_arrayType;
+	RDOArrayType();
+	RDOArrayType(CREF(LPArrayType) pArrayType);
+
+	LPArrayType m_pArrayType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

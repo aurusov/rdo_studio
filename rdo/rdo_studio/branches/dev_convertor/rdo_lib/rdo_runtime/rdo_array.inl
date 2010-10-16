@@ -16,12 +16,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
-	: m_arrayTape(&type)
+inline RDOArrayValue::RDOArrayValue(CREF(LPRDOArrayType) pType)
+	: m_pArrayType(pType)
 {}
 
 inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
-	: m_arrayTape(value.m_arrayTape)
+	: m_pArrayType(value.m_pArrayType)
 {
 	m_arrayValue = value.m_arrayValue;
 }
@@ -29,23 +29,21 @@ inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
 inline RDOArrayValue::~RDOArrayValue()
 {}
 
-inline CREF(RDOArrayType) RDOArrayValue::type() const
+inline CREF(LPRDOArrayType) RDOArrayValue::type() const
 {
-	return *m_arrayTape;
+	return m_pArrayType;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent)
-	: RDORuntimeObject(parent         )
-	, RDOType         (RDOType::t_array)
+inline RDOArrayType::RDOArrayType()
+	: RDOType(RDOType::t_array)
 {}
 
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, CREF(ArrayType) arrayType)
-	: RDORuntimeObject(parent          )
-	, RDOType         (RDOType::t_array)
-	, m_arrayType     (arrayType       )
+inline RDOArrayType::RDOArrayType(CREF(LPArrayType) pArrayType)
+	: RDOType     (RDOType::t_array)
+	, m_pArrayType(pArrayType      )
 {}
 
 inline RDOValue RDOArrayType::cast(CREF(RDOValue) from) const
@@ -54,7 +52,7 @@ inline RDOValue RDOArrayType::cast(CREF(RDOValue) from) const
 	{
 		case RDOType::t_array: 
 		{
-			if (this == &from.type())
+			if (this == from.type().get())
 				return from;
 			break;
 		}

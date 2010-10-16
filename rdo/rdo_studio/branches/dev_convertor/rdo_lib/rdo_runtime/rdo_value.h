@@ -21,10 +21,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
-class RDOType;
 class RDOEnumType;
 class RDOFuzzyValue;
 class RDOArrayValue;
+PREDECLARE_POINTER(RDOEnumType  );
+PREDECLARE_POINTER(RDOFuzzyValue);
+PREDECLARE_POINTER(RDOArrayValue);
 
 class RDOValue
 {
@@ -33,23 +35,23 @@ public:
 	~RDOValue();
 
 	RDOValue(CREF(RDOValue)      rdovalue);
-	RDOValue(CREF(RDOType)       type    );
+	RDOValue(CREF(LPRDOType)     pType   );
 	RDOValue(rsint               value   );
 	RDOValue(ruint               value   );
 	RDOValue(double              value   );
 	RDOValue(rbool               value   );
-	RDOValue(CREF(RDOEnumType)   enums   );
-	RDOValue(CREF(RDOEnumType)   enums, CREF(tstring) value);
-	RDOValue(CREF(RDOEnumType)   enums, ruint index);
+	RDOValue(CREF(LPRDOEnumType) pEnum   );
+	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value);
+	RDOValue(CREF(LPRDOEnumType) pEnum, ruint index);
 	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
-	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
+	RDOValue(CREF(tstring)       value, CREF(LPRDOType) pType);
 	RDOValue(CREF(RDOArrayValue) arrayValue);
 
 	rsint             getInt          () const;
 	rsint             getEnumAsInt    () const;
-	CREF(RDOEnumType) getEnum         () const;
+	LPRDOEnumType     getEnum         () const;
 	double            getDouble       () const;
 	rbool             getBool         () const;
 	CREF(tstring)     getString       () const;
@@ -79,15 +81,15 @@ public:
 	RDOValue      operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue      operator/  (CREF(RDOValue) rdovalue) const;
 
-	CREF(RDOType)   type  () const;
+	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
 private:
-	CPTR(RDOType) m_type;
+	LPRDOType m_pType;
 
 	void set(CREF(RDOValue) rdovalue);
 
-	CREF(RDOEnumType)   __enumT  () const;
+	LPRDOEnumType       __enumT  () const;
 	 REF(tstring)       __stringV();
 	CREF(tstring)       __stringV() const;
 	 REF(RDOFuzzyValue) __fuzzyV ();
