@@ -2746,8 +2746,15 @@ fun_select_arithm
 local_variable_declaration
 	: type_declaration init_declaration_list ';'
 	{
-		LPLocalVariableList pLocalVariableList = PARSER->stack().pop<LocalVariableList>($2);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
 		ASSERT(pLocalVariableList);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
+		ASSERT(pCalc);
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 
@@ -2764,22 +2771,26 @@ init_declaration_list
 		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($1);
 		ASSERT(pLocalVariable);
 
-		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
 		pLocalVariableList->append(pLocalVariable);
-		$$ = PARSER->stack().push(pLocalVariableList);
 	}
 	| init_declaration_list ',' init_declaration
 	{
-		LPLocalVariableList pLocalVariableList = PARSER->stack().pop<LocalVariableList>($1);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
 		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($3);
 		ASSERT(pLocalVariable);
 
 		pLocalVariableList->append(pLocalVariable);
-		$$ = PARSER->stack().push(pLocalVariableList);
 	}
 	;
 
@@ -2790,7 +2801,7 @@ init_declaration
 		ASSERT(pLocalVariable);
 		$$ = PARSER->stack().push(pLocalVariable);
 	}
-	| RDO_IDENTIF '=' fun_arithm
+	| RDO_IDENTIF '=' fun_arithm ';'
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithm);

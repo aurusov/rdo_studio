@@ -18,6 +18,9 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// ---------- LocalVariable
+// ----------------------------------------------------------------------------
 OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
@@ -31,6 +34,9 @@ private:
 	LPRDOFUNArithm  m_pArithm;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- LocalVariableList
+// ----------------------------------------------------------------------------
 OBJECT(LocalVariableList)
 {
 DECLARE_FACTORY(LocalVariableList);
@@ -42,6 +48,22 @@ private:
 
 	typedef std::list<LPLocalVariable> VariableList;
 	VariableList m_variableList;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- LocalVariableType
+// ----------------------------------------------------------------------------
+OBJECT(LocalVariableType)
+{
+	DECLARE_FACTORY(LocalVariableType);
+public:
+	void           rememberType(CREF(LPRDOTypeParam) pType);
+	LPRDOTypeParam getType();
+
+private:
+	LocalVariableType();
+
+	LPRDOTypeParam m_variableType;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
