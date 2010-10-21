@@ -20,9 +20,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- LocalVariable
 // ----------------------------------------------------------------------------
-LocalVariable::LocalVariable(CREF(RDOValue) value, CREF(LPRDOFUNArithm) pArithm)
-	: m_value  (value  )
-	, m_pArithm(pArithm)
+LocalVariable::LocalVariable(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc)
+	: m_value (value)
+	, m_pCalc (pCalc)
 {}
 
 CREF(RDOValue) LocalVariable::getValue() const

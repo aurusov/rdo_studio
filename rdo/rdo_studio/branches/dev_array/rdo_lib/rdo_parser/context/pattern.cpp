@@ -42,6 +42,11 @@ LPLocalVariableList ContextPattern::getLocalMemory()
 	return m_pLocalVariableList;
 }
 
+LPLocalVariableType ContextPattern::getLocalVariableType()
+{
+	return LPLocalVariableType();
+}
+
 // ----------------------------------------------------------------------------
 // ---------- ContextLocalVariableType
 // ----------------------------------------------------------------------------
@@ -66,5 +71,10 @@ rdoRuntime::LPRDOCalc ContextLocalVariableType::getCalc()
 LPLocalVariableType ContextLocalVariableType::getLocalVariableType()
 {
 	return m_pLocalVariableType;
+}
+
+LPLocalVariableList ContextLocalVariableType::getLocalMemory()
+{
+	return LPLocalVariableList();
 }
 CLOSE_RDO_PARSER_NAMESPACE

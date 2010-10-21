@@ -34,4 +34,9 @@ inline LPLocalVariableList ContextTimeNow::getLocalMemory()
 	return LPLocalVariableList();
 }
 
+inline LPLocalVariableType ContextTimeNow::getLocalVariableType()
+{
+	return LPLocalVariableType();
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

@@ -66,4 +66,9 @@ LPLocalVariableList ContextGlobal::getLocalMemory()
 	return LPLocalVariableList();
 }
 
+LPLocalVariableType ContextGlobal::getLocalVariableType()
+{
+	return LPLocalVariableType();
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

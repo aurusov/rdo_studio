@@ -13,7 +13,8 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_parser/rdo_type_param.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -28,10 +29,10 @@ public:
 	CREF(RDOValue) getValue() const;
 
 private:
-	LocalVariable(CREF(RDOValue) value, CREF(LPRDOFUNArithm) pArithm);
+	LocalVariable(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc);
 
-	RDOValue        m_value;
-	LPRDOFUNArithm  m_pArithm;
+	RDOValue              m_value;
+	rdoRuntime::LPRDOCalc m_pCalc;
 };
 
 // ----------------------------------------------------------------------------
@@ -58,7 +59,7 @@ OBJECT(LocalVariableType)
 	DECLARE_FACTORY(LocalVariableType);
 public:
 	void           rememberType(CREF(LPRDOTypeParam) pType);
-	LPRDOTypeParam getType();
+	LPRDOTypeParam getType     ();
 
 private:
 	LocalVariableType();
