@@ -49,10 +49,10 @@ inline void RDOLexer::loc_action()
 		m_lploc->m_first_seek = m_lploc->m_last_seek;
 		for (int i = 0; i < YYLeng(); i++)
 		{
+			m_lploc->m_last_seek++;
 			if (YYText()[i] == '\n')
 			{
 				m_lploc->m_last_line++;
-				m_lploc->m_last_seek++;
 				m_lploc->m_last_pos = 0;
 			}
 			else
@@ -64,7 +64,6 @@ inline void RDOLexer::loc_action()
 				else
 				{
 					m_lploc->m_last_pos++;
-					m_lploc->m_last_seek++;
 				}
 			}
 		}
@@ -75,8 +74,10 @@ inline void RDOLexer::loc_delta_pos(int value)
 {
 	if (m_lploc)
 	{
-		m_lploc->m_first_pos += value;
-		m_lploc->m_last_pos  += value;
+		m_lploc->m_first_pos  += value;
+		m_lploc->m_last_pos   += value;
+		m_lploc->m_first_seek += value;
+		m_lploc->m_last_seek  += value;
 	}
 }
 

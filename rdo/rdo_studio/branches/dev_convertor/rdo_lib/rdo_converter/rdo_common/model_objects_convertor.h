@@ -41,7 +41,7 @@ OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
 		{}
 	};
 
-	enum RDOFileType  { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+	enum RDOFileType  { UNDEFINED = 0, PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC, ENV, PRC };
 
 	enum RDOParseType
 	{

@@ -18,13 +18,12 @@
 #include "rdo_common/rdoindexedstack.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
+
 #include "rdo_lib/rdo_converter/rdo_object.h"
 #include "rdo_lib/rdo_converter/rdoparser_base.h"
 #include "rdo_lib/rdo_converter/rdo_value.h"
 #include "rdo_lib/rdo_converter/rdoparser_error.h"
 #include "rdo_lib/rdo_converter/rdo_type_param.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdopat.h"
 #include "rdo_lib/rdo_converter/rdoopr.h"
@@ -33,7 +32,12 @@
 #include "rdo_lib/rdo_converter/rdofrm.h"
 #include "rdo_lib/rdo_converter/rdosmr.h"
 #include "rdo_lib/rdo_converter/context/stack.h"
+#include "rdo_lib/rdo_converter/update/update_i.h"
+
 #include "rdo_lib/rdo_parser/rdoparser.h"
+
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -166,13 +170,15 @@ public:
 	REF(ContextStack) contextStack();
 	LPContext         context     () const;
 
+	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
+
 	static rdoModelObjectsConvertor::RDOFileType getFileToParse();
-	static ruint                        lexer_loc_line();
-	static ruint                        lexer_loc_pos ();
-	static PTR(Converter)               s_converter      ();
+	static ruint                                 lexer_loc_line();
+	static ruint                                 lexer_loc_pos ();
+	static PTR(Converter)                        s_converter   ();
 
 protected:
-	LPRDOParserItem m_parser_item;
+	LPRDOParserItem m_pParserItem;
 
 	virtual REF(LPRDOParserContainer) getContainer() = 0;
 
