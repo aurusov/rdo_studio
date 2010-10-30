@@ -10,6 +10,7 @@
 // ====================================================================== PCH
 #include "rdo_lib/rdo_converter/pch.h"
 // ====================================================================== INCLUDES
+#include <boost/date_time/posix_time/posix_time_types.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
@@ -361,6 +362,18 @@ void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			m_pParserItem = NULL;
 			++it;
 		}
+
+		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
+		std::stringstream backupDirName;
+		backupDirName << _T("backup ")
+			          << time.date().year          () << _T("-")
+			          << time.date().month         () << _T("-")
+			          << time.date().day           () << _T(" ")
+					  << time.time_of_day().hours  () << _T("-")
+					  << time.time_of_day().minutes() << _T("-")
+					  << time.time_of_day().seconds();
+
+		tstring backup(backupDirName.str());
 
 		it = begin();
 		while (it != end())
