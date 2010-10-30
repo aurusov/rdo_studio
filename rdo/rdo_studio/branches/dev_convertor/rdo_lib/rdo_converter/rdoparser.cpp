@@ -12,7 +12,7 @@
 // ====================================================================== INCLUDES
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/filesystem.hpp>
-#include <iomanip>
+#include <boost/format.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
@@ -367,14 +367,13 @@ void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 
 		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
 		std::stringstream backupDirName;
-		backupDirName << _T("backup ")
-		              << std::setfill(_T('0'))
-		              << std::setw(4) << time.date().year          () << _T("-")
-		              << std::setw(2) << time.date().month         () << _T("-")
-		              << std::setw(2) << time.date().day           () << _T(" ")
-		              << std::setw(2) << time.time_of_day().hours  () << _T("-")
-		              << std::setw(2) << time.time_of_day().minutes() << _T("-")
-		              << std::setw(2) << time.time_of_day().seconds();
+		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+		                 % time.date().year ()
+		                 % time.date().month()
+		                 % time.date().day  ()
+		                 % time.time_of_day().hours  ()
+		                 % time.time_of_day().minutes()
+		                 % time.time_of_day().seconds();
 
 		boost::filesystem::path backupPath(backupDirName.str());
 		// backupPath = _T("c:\\1");
