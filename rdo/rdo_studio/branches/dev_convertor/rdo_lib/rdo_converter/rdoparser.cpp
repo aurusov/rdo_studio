@@ -11,6 +11,7 @@
 #include "rdo_lib/rdo_converter/pch.h"
 // ====================================================================== INCLUDES
 #include <boost/date_time/posix_time/posix_time_types.hpp>
+#include <boost/filesystem.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
@@ -373,7 +374,21 @@ void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 					  << time.time_of_day().minutes() << _T("-")
 					  << time.time_of_day().seconds();
 
-		tstring backup(backupDirName.str());
+		boost::filesystem::path backupPath(backupDirName.str());
+		// backupPath = _T("c:\\1");
+
+		try
+		{
+			if (!boost::filesystem::create_directory(backupPath))
+			{
+				int i = 1;
+			}
+		}
+		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
+		{
+			tstring m1 = ex.what();
+			int i = 1;
+		}
 
 		it = begin();
 		while (it != end())
