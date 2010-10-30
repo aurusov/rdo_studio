@@ -3127,6 +3127,14 @@
 				RelativePath=".\context\timenow.inl"
 				>
 			</File>
+			<File
+				RelativePath=".\context\type.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\context\type.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".dpt"
