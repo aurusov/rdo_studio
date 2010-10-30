@@ -51,22 +51,6 @@ private:
 	VariableList m_variableList;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- LocalVariableType
-// ----------------------------------------------------------------------------
-OBJECT(LocalVariableType)
-{
-	DECLARE_FACTORY(LocalVariableType);
-public:
-	void           rememberType(CREF(LPRDOTypeParam) pType);
-	LPRDOTypeParam getType     ();
-
-private:
-	LocalVariableType();
-
-	LPRDOTypeParam m_variableType;
-};
-
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif //! _LOCAL_VARIABLE_H_
