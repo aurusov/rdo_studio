@@ -29,13 +29,14 @@ S_INTERFACE(ITypeContext)
 	virtual LPRDOTypeParam getType() const = 0;
 };
 #define DECLARE_ITypeContext        \
+public:                             \
 	LPRDOTypeParam getType() const;
 
 // ----------------------------------------------------------------------------
 // ---------- TypeContext
 // ----------------------------------------------------------------------------
-OBJECT(TypeContext)
-	IS  IMPLEMENTATION_OF(IContext    )
+CLASS(TypeContext):
+	    INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(ITypeContext)
 {
 DECLARE_FACTORY(TypeContext);
@@ -47,6 +48,7 @@ private:
 	DECLARE_IContext;
 	DECLARE_ITypeContext;
 };
+DECLARE_POINTER(TypeContext);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
