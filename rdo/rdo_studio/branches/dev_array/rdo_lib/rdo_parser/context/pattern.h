@@ -32,20 +32,6 @@ private:
 };
 DECLARE_POINTER(ContextPattern);
 
-// ----------------------------------------------------------------------------
-// ---------- ContextLocalVariableType
-// ----------------------------------------------------------------------------
-class ContextLocalVariableType: public Context
-{
-	DECLARE_FACTORY(ContextLocalVariableType);
-private:
-	ContextLocalVariableType();
-
-	LPLocalVariableType m_pLocalVariableType;
-
-	DECLARE_IContext;
-};
-
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif //! _CONEXT_PATTERN_H_

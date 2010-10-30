@@ -17,9 +17,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- LocalVariable
-// ----------------------------------------------------------------------------
 LocalVariable::LocalVariable(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc)
 	: m_value (value)
 	, m_pCalc (pCalc)
@@ -30,9 +27,6 @@ CREF(RDOValue) LocalVariable::getValue() const
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- LocalVariableList
-// ----------------------------------------------------------------------------
 LocalVariableList::LocalVariableList()
 {}
 
@@ -51,22 +45,6 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 	}
 
 	m_variableList.push_back(pVariable);
-}
-
-// ----------------------------------------------------------------------------
-// ---------- LocalVariableType
-// ----------------------------------------------------------------------------
-LocalVariableType::LocalVariableType()
-{}
-
-void LocalVariableType::rememberType(CREF(LPRDOTypeParam) pType)
-{
-	m_variableType = pType;
-}
-
-LPRDOTypeParam LocalVariableType::getType()
-{
-	return m_variableType;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -16,9 +16,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- ContextPattern
-// ----------------------------------------------------------------------------
 ContextPattern::ContextPattern()
 {
 	m_pLocalVariableList = rdo::Factory<LocalVariableList>::create();
@@ -42,29 +39,4 @@ LPLocalVariableList ContextPattern::getLocalMemory()
 	return m_pLocalVariableList;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- ContextLocalVariableType
-// ----------------------------------------------------------------------------
-ContextLocalVariableType::ContextLocalVariableType()
-{
-	m_pLocalVariableType = rdo::Factory<LocalVariableType>::create();
-	ASSERT(m_pLocalVariableType);
-}
-
-LPContext ContextLocalVariableType::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
-{
-	NEVER_REACH_HERE;
-	return LPContext();
-}
-
-rdoRuntime::LPRDOCalc ContextLocalVariableType::getCalc()
-{
-	NEVER_REACH_HERE;
-	return rdoRuntime::LPRDOCalc();
-}
-
-LPLocalVariableType ContextLocalVariableType::getLocalVariableType()
-{
-	return m_pLocalVariableType;
-}
 CLOSE_RDO_PARSER_NAMESPACE

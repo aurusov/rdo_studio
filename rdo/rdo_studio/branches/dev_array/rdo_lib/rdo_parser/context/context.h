@@ -33,17 +33,15 @@ PREDECLARE_POINTER(Context);
 
 S_INTERFACE(IContext)
 {
-	virtual LPContext             parser              (PTR(RDOParser) pParser, CREF(RDOValue) value) = 0;
-	virtual rdoRuntime::LPRDOCalc getCalc             ()                                             = 0;
-	virtual LPLocalVariableList   getLocalMemory      ()                                             = 0;
-	virtual LPLocalVariableType   getLocalVariableType()                                             = 0;
+	virtual LPContext             parser        (PTR(RDOParser) pParser, CREF(RDOValue) value) = 0;
+	virtual rdoRuntime::LPRDOCalc getCalc       ()                                             = 0;
+	virtual LPLocalVariableList   getLocalMemory()                                             = 0;
 };
 
-#define DECLARE_IContext                                                                      \
-	LPContext             parser              (PTR(RDOParser) pParser, CREF(RDOValue) value); \
-	rdoRuntime::LPRDOCalc getCalc             ();                                             \
-	LPLocalVariableList   getLocalMemory      ();                                             \
-	LPLocalVariableType   getLocalVariableType();
+#define DECLARE_IContext                                                                \
+	LPContext             parser        (PTR(RDOParser) pParser, CREF(RDOValue) value); \
+	rdoRuntime::LPRDOCalc getCalc       ();                                             \
+	LPLocalVariableList   getLocalMemory();
 
 // ----------------------------------------------------------------------------
 // ---------- Context
