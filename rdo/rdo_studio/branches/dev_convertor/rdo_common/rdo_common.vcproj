@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="3"
@@ -104,7 +104,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BrowseInformation="1"
 			/>
 			<Tool
@@ -164,7 +164,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BrowseInformation="1"
 			/>
 			<Tool
@@ -222,7 +222,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="3"
