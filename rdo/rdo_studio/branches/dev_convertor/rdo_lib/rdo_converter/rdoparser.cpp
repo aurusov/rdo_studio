@@ -317,7 +317,7 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 	return true;
 }
 
-void RDOParserModel::convert(CREF(tstring) smrFullFileName)
+RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 {
 	RDOParserSMRInfo::FileList fileList;
 	{
@@ -327,17 +327,15 @@ void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		try
 		{
 			if (!pSMRParser->parseSMR(smrFullFileName, smrInfo))
-				return;
+				return CNV_NONE;
 		}
-		catch (REF(rdoParse::RDOSyntaxException) ex)
+		catch (REF(rdoParse::RDOSyntaxException))
 		{
-			tstring mess = ex.getType() + _T(" : ") + ex.message();
-			smrInfo.m_error = true;
+			return CNV_NONE;
 		}
-		catch (REF(rdoRuntime::RDORuntimeException) ex)
+		catch (REF(rdoRuntime::RDORuntimeException))
 		{
-			tstring mess = ex.getType() + _T(" : ") + ex.message();
-			smrInfo.m_error = true;
+			return CNV_NONE;
 		}
 		fileList = pSMRParser->getFileList();
 	}
@@ -410,22 +408,20 @@ void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			++it;
 		}
 	}
-	catch (REF(rdoConverter::RDOSyntaxException) ex)
+	catch (REF(rdoConverter::RDOSyntaxException))
 	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		int i = 1;
+		return CNV_NONE;
 	}
-	catch (REF(rdoRuntime::RDORuntimeException) ex)
+	catch (REF(rdoRuntime::RDORuntimeException))
 	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		int i = 1;
+		return CNV_NONE;
 	}
 	catch (...)
 	{
-		int i = 1;
+		return CNV_NONE;
 	}
 
-	int i = 1;
+	return CNV_OK;
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)

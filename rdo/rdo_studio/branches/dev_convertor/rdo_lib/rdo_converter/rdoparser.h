@@ -269,7 +269,13 @@ private:
 class RDOParserModel: public RDOParserTemplate<RDOParserContainerModel>
 {
 public:
-	void convert(CREF(tstring) smrFullFileName);
+	enum Result
+	{
+		CNV_NONE,
+		CNV_OK,
+		CNV_ERROR
+	};
+	Result convert(CREF(tstring) smrFullFileName);
 };
 
 // ----------------------------------------------------------------------------
