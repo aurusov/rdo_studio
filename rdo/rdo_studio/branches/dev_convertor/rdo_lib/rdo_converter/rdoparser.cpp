@@ -362,51 +362,6 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			m_pParserItem = NULL;
 			++it;
 		}
-
-		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
-		std::stringstream backupDirName;
-		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
-		                 % time.date().year ()
-		                 % time.date().month()
-		                 % time.date().day  ()
-		                 % time.time_of_day().hours  ()
-		                 % time.time_of_day().minutes()
-		                 % time.time_of_day().seconds();
-
-		boost::filesystem::path backupPath(backupDirName.str());
-		// backupPath = _T("c:\\1");
-
-		try
-		{
-			if (!boost::filesystem::create_directory(backupPath))
-			{
-				int i = 1;
-			}
-		}
-		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
-		{
-			tstring m1 = ex.what();
-			int i = 1;
-		}
-
-		it = begin();
-		while (it != end())
-		{
-			LPRDOParserItem pParserItem = it->second;
-			ASSERT(pParserItem);
-			if (pParserItem->needStream())
-			{
-				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(pParserItem->m_type);
-				if (it != fileList.end())
-				{
-					std::ifstream streamIn (it->second.c_str(), ios::binary);
-					std::ofstream streamOut(_T("C:\\Users\\Андрей\\Documents\\1.txt"), ios::trunc | ios::binary);
-					pParserItem->convert(this, streamIn, streamOut);
-					streamOut.close();
-				}
-			}
-			++it;
-		}
 	}
 	catch (REF(rdoConverter::RDOSyntaxException))
 	{
@@ -419,6 +374,81 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 	catch (...)
 	{
 		return CNV_NONE;
+	}
+
+	error().clear();
+
+	try
+	{
+		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
+		std::stringstream backupDirName;
+		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+						 % time.date().year ()
+						 % time.date().month()
+						 % time.date().day  ()
+						 % time.time_of_day().hours  ()
+						 % time.time_of_day().minutes()
+						 % time.time_of_day().seconds();
+
+		boost::filesystem::path backupPath(backupDirName.str());
+
+		try
+		{
+			if (!boost::filesystem::create_directory(backupPath))
+			{
+				YYLTYPE pos;
+				pos.m_last_line = 0;
+				pos.m_last_pos  = 0;
+				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.directory_string().c_str()));
+			}
+		}
+		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
+		{
+			tstring message = ex.what();
+			if (message.find(_T("boost")) == 0)
+			{
+				BOOST_AUTO(pos, message.find(_T(' ')));
+				if (pos != tstring::npos)
+				{
+					message = message.substr(pos + 1);
+				}
+			}
+			YYLTYPE pos;
+			pos.m_last_line = 0;
+			pos.m_last_pos  = 0;
+			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.directory_string().c_str(), message.c_str()));
+		}
+	}
+	catch (REF(rdoConverter::RDOSyntaxException))
+	{
+		return CNV_ERROR;
+	}
+	catch (REF(rdoRuntime::RDORuntimeException))
+	{
+		return CNV_ERROR;
+	}
+	catch (...)
+	{
+		return CNV_ERROR;
+	}
+
+	RDOParserContainer::Iterator it = begin();
+	while (it != end())
+	{
+		LPRDOParserItem pParserItem = it->second;
+		ASSERT(pParserItem);
+		if (pParserItem->needStream())
+		{
+			RDOParserSMRInfo::FileList::const_iterator it = fileList.find(pParserItem->m_type);
+			if (it != fileList.end())
+			{
+				std::ifstream streamIn (it->second.c_str(), ios::binary);
+				std::ofstream streamOut(_T("C:\\Users\\Андрей\\Documents\\1.txt"), ios::trunc | ios::binary);
+				pParserItem->convert(this, streamIn, streamOut);
+				streamOut.close();
+			}
+		}
+		++it;
 	}
 
 	return CNV_OK;
