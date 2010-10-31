@@ -418,6 +418,14 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			pos.m_last_pos  = 0;
 			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.directory_string().c_str(), message.c_str()));
 		}
+
+		STL_FOR_ALL(fileList, it)
+		{
+			boost::filesystem::path from(it->second);
+			boost::filesystem::path to  (backupPath.directory_string() + boost::filesystem::slash<boost::filesystem::path>::value + from.filename());
+			boost::filesystem::rename(from, to);
+			it->second = to.file_string();
+		}
 	}
 	catch (REF(rdoConverter::RDOSyntaxException))
 	{
