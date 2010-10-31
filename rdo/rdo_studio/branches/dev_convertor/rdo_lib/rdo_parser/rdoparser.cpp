@@ -137,14 +137,14 @@ tstring RDOParser::getChanges() const
 	rdo::textstream stream;
 	stream << _T("$Changes") << std::endl;
 	ruint changes_max_length = 0;
-	STL_FOR_ALL_CONST(ChangesList, m_changes, change_it)
+	STL_FOR_ALL_CONST(m_changes, change_it)
 	{
 		if (change_it->m_name.length() > changes_max_length)
 		{
 			changes_max_length = change_it->m_name.length();
 		}
 	}
-	STL_FOR_ALL_CONST(ChangesList, m_changes, change_it)
+	STL_FOR_ALL_CONST(m_changes, change_it)
 	{
 		stream << _T("  ") << change_it->m_name;
 		for (ruint i = change_it->m_name.length(); i < changes_max_length; i++)
@@ -165,21 +165,21 @@ tstring RDOParser::getModelStructure()
 
 	// RTP
 	modelStructure << std::endl << std::endl << _T("$Resource_type") << std::endl;
-	STL_FOR_ALL_CONST(RTPResTypeList, m_allRTPResType, rtp_it)
+	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
 	{
 		(*rtp_it)->writeModelStructure(modelStructure);
 	}
 
 	// RSS
 	modelStructure << std::endl << _T("$Resources") << std::endl;
-	STL_FOR_ALL_CONST(RSSResourceList, m_allRSSResource, rss_it)
+	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
 	{
 		(*rss_it)->writeModelStructure(modelStructure);
 	}
 
 	// PAT
 	modelStructure << std::endl << _T("$Pattern") << std::endl;
-	STL_FOR_ALL_CONST(PATPatternList, m_allPATPattern, pat_it)
+	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
 	{
 		(*pat_it)->writeModelStructure(modelStructure);
 	}
@@ -203,7 +203,7 @@ tstring RDOParser::getModelStructure()
 	// PMD
 	modelStructure << std::endl << _T("$Watching") << std::endl;
 	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(rdoRuntime::RDORuntime::LPIPokazList, m_runtime.getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_runtime.getPokaz(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -216,7 +216,7 @@ tstring RDOParser::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(rdoRuntime::RDORuntime::LPIPokazList, m_runtime.getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_runtime.getPokaz(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -317,7 +317,7 @@ void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 
 void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 {
-	STL_FOR_ALL_CONST(DPTSearchList, getDPTSearchs(), it_search)
+	STL_FOR_ALL_CONST(getDPTSearchs(), it_search)
 	{
 		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
 		if (it_search_act != (*it_search)->getActivities().end())
@@ -328,7 +328,7 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 //			error(_T("Activity name: ") + *_name + _T(" already defined"));
 		}
 	}
-	STL_FOR_ALL_CONST(DPTSomeList, getDPTSomes(), it_some)
+	STL_FOR_ALL_CONST(getDPTSomes(), it_some)
 	{
 		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
 		if (it_some_act != (*it_some)->getActivities().end())
@@ -338,7 +338,7 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 			error().push_done();
 		}
 	}
-	STL_FOR_ALL_CONST(DPTPriorList, getDPTPriors(), it_prior)
+	STL_FOR_ALL_CONST(getDPTPriors(), it_prior)
 	{
 		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
 		if (it_prior_act != (*it_prior)->getActivities().end())

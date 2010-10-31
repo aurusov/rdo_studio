@@ -186,7 +186,7 @@ public:
 		{
 			rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create();
 			ASSERT(pEnum)
-			STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType::Enums, enums, it)
+			STL_FOR_ALL_CONST(enums, it)
 			{
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}

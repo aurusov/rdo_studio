@@ -555,7 +555,7 @@ RDOPROCSeize::RDOPROCSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 
 void RDOPROCSeize::createRuntime()
 {
-	STL_FOR_ALL_CONST(ResourceList, m_resourceList, it)
+	STL_FOR_ALL_CONST(m_resourceList, it)
 	{
 		LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource((*it));
 		if (pResource)
@@ -609,7 +609,7 @@ RDOPROCRelease::RDOPROCRelease(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) na
 
 void RDOPROCRelease::createRuntime()
 {
-	STL_FOR_ALL_CONST(ResourceList, m_resourceList, it)
+	STL_FOR_ALL_CONST(m_resourceList, it)
 	{
 		LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource((*it));
 		if (pResource)

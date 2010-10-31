@@ -164,7 +164,7 @@ public:
 	private:
 		void clear()
 		{
-			STL_FOR_ALL(IndexedStack::Stack, m_stack, it)
+			STL_FOR_ALL(m_stack, it)
 			{
 				it->second->destroy();
 			}

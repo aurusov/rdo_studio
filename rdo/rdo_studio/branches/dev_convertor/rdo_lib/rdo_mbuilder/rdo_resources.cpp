@@ -80,7 +80,7 @@ RDOResType::RDOResType(CREF(rdoParse::LPRDORTPResType) rtp)
 	, m_exist(true                                            )
 	, m_id   (rtp->getNumber()                                )
 {
-	STL_FOR_ALL_CONST(rdoParse::RDORTPResType::ParamList, rtp->getParams(), param_it)
+	STL_FOR_ALL_CONST(rtp->getParams(), param_it)
 	{
 		Param param(*param_it);
 		param.m_id = m_params.size();
@@ -200,7 +200,7 @@ rbool RDOResType::Param::operator== (CREF(Param) param) const
 RDOResTypeList::RDOResTypeList(PTR(rdoParse::RDOParser) parser)
 	: RDOList<RDOResType>(parser)
 {
-	STL_FOR_ALL_CONST(rdoParse::RDOParser::RTPResTypeList, m_parser->getRTPResTypes(), rtp_it)
+	STL_FOR_ALL_CONST(m_parser->getRTPResTypes(), rtp_it)
 	{
 		RDOResType rtp(*rtp_it);
 		m_list.push_back(rtp);
@@ -216,7 +216,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 		return false;
 
 	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_parser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
-	STL_FOR_ALL_CONST(RDOResType::ParamList::List, rtp.m_params, param)
+	STL_FOR_ALL_CONST(rtp.m_params, param)
 	{
 		rdoParse::LPRDOTypeParam pParamType;
 		switch (param->typeID())
@@ -288,7 +288,7 @@ RDOResource::RDOResource(CREF(rdoParse::LPRDORSSResource) rss)
 	if (m_rtp.m_params.size() == rss->params().size())
 	{
 		ruint index = 0;
-		STL_FOR_ALL_CONST(RDOResType::ParamList::List, m_rtp.m_params, param_it)
+		STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
 		{
 			m_params[param_it->name()] = rss->params()[index].param();
 			index++;
@@ -325,7 +325,7 @@ rdoParse::LPRDORSSResource RDOResource::getParserResource(CREF(rdoParse::RDOPars
 
 rbool RDOResource::fillParserResourceParams(REF(rdoParse::LPRDORSSResource) pToParserRSS) const
 {
-	STL_FOR_ALL_CONST(RDOResType::ParamList::List, getType().m_params, param_it)
+	STL_FOR_ALL_CONST(getType().m_params, param_it)
 	{
 		RDOResource::Params::const_iterator value_it = operator[](param_it->name());
 		if (value_it == end())
@@ -349,7 +349,7 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 	, m_exist(false                                 )
 	, m_id   (rdoParse::RDORSSResource::UNDEFINED_ID)
 {
-	STL_FOR_ALL_CONST(RDOResType::ParamList::List, m_rtp.m_params, param_it)
+	STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
 	{
 		rdoParse::RDOValue value(param_it->type()->type());
 		if (param_it->hasDefault())
@@ -372,7 +372,7 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 RDOResourceList::RDOResourceList(PTR(rdoParse::RDOParser) parser)
 	: RDOList<RDOResource>(parser)
 {
-	STL_FOR_ALL_CONST(rdoParse::RDOParser::RSSResourceList, m_parser->getRSSResources(), rss_it)
+	STL_FOR_ALL_CONST(m_parser->getRSSResources(), rss_it)
 	{
 		RDOResource rss(*rss_it);
 		m_list.push_back(rss);

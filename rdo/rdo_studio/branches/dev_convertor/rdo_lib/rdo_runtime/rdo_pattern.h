@@ -48,12 +48,12 @@ protected:
 
 	void runCalcs(REF(CalcList) calcList, PTR(RDORuntime) runtime)
 	{
-		STL_FOR_ALL(CalcList, calcList, calcIt)
+		STL_FOR_ALL(calcList, calcIt)
 			(*calcIt)->calcValue(runtime);
 	}
 	bool runCalcsBool(REF(CalcList) calcList, PTR(RDORuntime) runtime)
 	{
-		STL_FOR_ALL(CalcList, calcList, calcIt)
+		STL_FOR_ALL(calcList, calcIt)
 		{
 			if ( !(*calcIt)->calcValue( runtime ).getAsBool() ) return false;
 		}

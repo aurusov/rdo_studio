@@ -148,7 +148,7 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 		rdoConverter::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
 	}
 
-	STL_FOR_ALL_CONST(ConvertCmdList::CalcList, commands->commands(), cmdIt)
+	STL_FOR_ALL_CONST(commands->commands(), cmdIt)
 		addParamSetCalc(*cmdIt);
 
 	ASSERT(m_pCurrRelRes);
@@ -175,7 +175,7 @@ tstring RDOPATPattern::getPatternId() const
 void RDOPATPattern::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << getPatternId() << " " << name() << " " << getModelStructureLetter() << " " << m_relResList.size();
-	STL_FOR_ALL_CONST(RelResList, m_relResList, it)
+	STL_FOR_ALL_CONST(m_relResList, it)
 		stream << " " << (*it)->getType()->getNumber();
 
 	stream << std::endl;
@@ -465,7 +465,7 @@ void RDOPatternIrregEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, 
 rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 {
 	std::vector<rdoRuntime::RDOValue> params_default;
-	STL_FOR_ALL_CONST(RDORTPResType::ParamList, m_pCurrRelRes->getType()->getParams(), it)
+	STL_FOR_ALL_CONST(m_pCurrRelRes->getType()->getParams(), it)
 	{
 		if (!(*it)->getDefault().defined())
 		{

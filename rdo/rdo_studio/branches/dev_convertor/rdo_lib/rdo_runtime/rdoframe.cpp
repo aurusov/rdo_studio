@@ -560,7 +560,7 @@ RDOFRMShow::~RDOFRMShow()
 
 void RDOFRMShow::getBitmaps(REF(std::list<tstring>) list)
 {
-	STL_FOR_ALL(ChildList, m_childList, it)
+	STL_FOR_ALL(m_childList, it)
 	{
 		static_cast<PTR(RDOFRMItem)>(*it)->getBitmaps(list);
 	}

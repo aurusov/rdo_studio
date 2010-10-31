@@ -214,7 +214,7 @@ IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
 
 rbool RDODPTActivityHotKey::hasHotKey() const
 {
-	STL_FOR_ALL_CONST(ScanCodeList, m_scanCodeList, it)
+	STL_FOR_ALL_CONST(m_scanCodeList, it)
 	{
 		if (*it != VK_SHIFT && *it != VK_CONTROL)
 		{

@@ -264,7 +264,7 @@ void RDOCalcList::addCalc(CREF(LPRDOCalc) pCalc)
 
 REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) runtime)
 {
-	STL_FOR_ALL(CalcList, m_calcList, calc_it)
+	STL_FOR_ALL(m_calcList, calc_it)
 	{
 		(*calc_it)->calcValue(runtime);
 	}

@@ -90,7 +90,7 @@ bool RDORSSResource::defined() const
 rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 {
 	std::vector<rdoRuntime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(ParamList, params(), it)
+	STL_FOR_ALL_CONST(params(), it)
 	{
 		paramList.push_back(it->param().value());
 	}
@@ -111,7 +111,7 @@ RDOPROCResource::RDOPROCResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) 
 rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 {
 	std::vector<rdoRuntime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(ParamList, params(), it)
+	STL_FOR_ALL_CONST(params(), it)
 	{
 		paramList.push_back(it->param().value());
 	}

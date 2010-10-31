@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
 	BaseOperationList priorContainer;
-	STL_FOR_ALL_CONST(BaseOperationList, container, it)
+	STL_FOR_ALL_CONST(container, it)
 	{
 		if (it->query_cast<IBaseOperation>()->onCheckCondition(sim))
 		{
@@ -33,7 +33,7 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOp
 		return NULL;
 
 	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
-	STL_FOR_ALL_CONST(BaseOperationList, priorContainer, it)
+	STL_FOR_ALL_CONST(priorContainer, it)
 	{
 		LPIPriority pattern = *it;
 		if (pattern)

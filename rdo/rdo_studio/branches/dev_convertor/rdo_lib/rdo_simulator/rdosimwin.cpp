@@ -22,7 +22,6 @@
 #include <math.h>
 #include <sstream>
 #include <algorithm>
-#include <boost/typeof/typeof.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_kernel/rdokernel.h"
@@ -1485,7 +1484,7 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 //			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData(data->file, stream));
 //			data->result = stream.data();
 			CREF(rdoParse::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes(); 
-			STL_FOR_ALL_CONST(rdoParse::RDOParser::RTPResTypeList, rtp_list, rtp_it)
+			STL_FOR_ALL_CONST(rtp_list, rtp_it)
 			{
 				CREF(rdoParse::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
 				rdoParse::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
