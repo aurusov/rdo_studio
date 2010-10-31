@@ -451,6 +451,8 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			if (it != fileList.end())
 			{
 				std::ifstream streamIn (it->second.c_str(), ios::binary);
+				ASSERT(streamIn.good());
+
 				std::ofstream streamOut(_T("C:\\Users\\Андрей\\Documents\\1.txt"), ios::trunc | ios::binary);
 				pParserItem->convert(this, streamIn, streamOut);
 				streamOut.close();
