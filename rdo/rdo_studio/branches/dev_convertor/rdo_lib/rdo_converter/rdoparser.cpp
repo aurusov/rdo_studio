@@ -338,6 +338,10 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			return CNV_NONE;
 		}
 		fileList = pSMRParser->getFileList();
+		if (fileList.empty())
+		{
+			return CNV_NONE;
+		}
 	}
 
 	try
@@ -380,15 +384,20 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 
 	try
 	{
+		BOOST_AUTO(fileIt, fileList.begin());
+		boost::filesystem::path fullPath(fileIt->second);
+		fullPath.remove_filename();
+
 		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
 		std::stringstream backupDirName;
-		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
-						 % time.date().year ()
-						 % time.date().month()
-						 % time.date().day  ()
-						 % time.time_of_day().hours  ()
-						 % time.time_of_day().minutes()
-						 % time.time_of_day().seconds();
+		backupDirName << fullPath.directory_string()
+		              << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+		                 % time.date().year ()
+		                 % time.date().month()
+		                 % time.date().day  ()
+		                 % time.time_of_day().hours  ()
+		                 % time.time_of_day().minutes()
+		                 % time.time_of_day().seconds();
 
 		boost::filesystem::path backupPath(backupDirName.str());
 
