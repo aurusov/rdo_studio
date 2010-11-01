@@ -286,7 +286,7 @@ class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 public:
 	typedef std::map<rdoModelObjectsConvertor::RDOFileType, tstring> FileList;
 
-	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo);
+	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(tstring) modelName);
 	CREF(FileList) getFileList() const;
 
 private:

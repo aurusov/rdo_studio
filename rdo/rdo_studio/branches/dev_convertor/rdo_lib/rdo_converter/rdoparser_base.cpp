@@ -33,13 +33,15 @@ void RDOParserItem::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 	m_docUpdateList.push_back(pDocUpdate);
 }
 
-void RDOParserItem::convert(PTR(Converter) pParser, REF(std::istream) streamIn, REF(std::ostream) streamOut) const
+void RDOParserItem::convert(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
 {
+	ASSERT(pDocument);
+
 	STL_FOR_ALL_CONST(m_docUpdateList, it)
 	{
 		LPDocUpdate pUpdate = *it;
 		ASSERT(pUpdate);
-		pUpdate->apply(streamIn, streamOut);
+		pUpdate->apply(pDocument, streamIn);
 	}
 }
 

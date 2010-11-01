@@ -17,17 +17,12 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileType fileTo, rdoModelObjectsConvertor::RDOFileType fileFrom)
-	: m_fileTo  (fileTo  )
-	, m_fileFrom(fileFrom)
+DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileType fileTo)
+	: m_fileTo(fileTo)
 {
-	if (m_fileFrom == rdoModelObjectsConvertor::UNDEFINED)
-	{
-		m_fileFrom = Converter::getFileToParse();
-	}
 	if (m_fileTo == rdoModelObjectsConvertor::UNDEFINED)
 	{
-		m_fileTo = m_fileFrom;
+		m_fileTo = Converter::getFileToParse();
 	}
 }
 
@@ -37,10 +32,12 @@ UpdateInsert::UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, rdoM
 	, m_value  (value)
 {}
 
-void UpdateInsert::apply(REF(std::istream) streamIn, REF(std::ostream) streamOut) const
+void UpdateInsert::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
 {
 	std::istream::pos_type pos = streamIn.tellg();
 	ASSERT(pos <= m_pos);
+
+	REF(std::ofstream) streamOut = pDocument->getStream(m_fileTo);
 
 	while (pos < m_pos)
 	{
@@ -60,10 +57,12 @@ UpdateDelete::UpdateDelete(std::istream::pos_type posFrom, std::istream::pos_typ
 	ASSERT(m_posFrom < m_posTo);
 }
 
-void UpdateDelete::apply(REF(std::istream) streamIn, REF(std::ostream) streamOut) const
+void UpdateDelete::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
 {
 	std::istream::pos_type pos = streamIn.tellg();
 	ASSERT(pos <= m_posFrom);
+
+	REF(std::ofstream) streamOut = pDocument->getStream(m_fileTo);
 
 	while (pos < m_posFrom)
 	{

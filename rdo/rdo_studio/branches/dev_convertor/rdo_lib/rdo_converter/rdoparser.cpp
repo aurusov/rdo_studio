@@ -14,6 +14,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 // ====================================================================== SYNOPSIS
+#include "rdo_common/rdocommon.h"
+#include "rdo_common/rdofile.h"
+
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
@@ -21,8 +24,7 @@
 #include "rdo_lib/rdo_converter/context/global.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdofile.h"
+#include "rdo_lib/rdo_converter/update/document.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -275,7 +277,7 @@ void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type
 	}
 }
 
-rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo)
+rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) modelName)
 {
 	std::ifstream stream(smrFullFileName.c_str());
 	if (!stream.is_open())
@@ -300,7 +302,7 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 	if (!rdo::File::splitpath(smrFullFileName, smrFilePath, smrFileName, smrFileExt))
 		return false;
 
-	tstring modelName = getSMR()->getFile(_T("Model_name"));
+	modelName = getSMR()->getFile(_T("Model_name"));
 
 	insertFileName(rdoModelObjectsConvertor::PAT, smrFilePath, modelName, smrFileName, modelName,                               _T("pat"));
 	insertFileName(rdoModelObjectsConvertor::RTP, smrFilePath, modelName, smrFileName, modelName,                               _T("rtp"));
@@ -320,13 +322,13 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 {
 	RDOParserSMRInfo::FileList fileList;
+	tstring                    modelName;
 	{
 		std::auto_ptr<RDOParserSMRInfo> pSMRParser(new RDOParserSMRInfo());
-		rdoModelObjectsConvertor::RDOSMRFileInfo smrInfo;
 
 		try
 		{
-			if (!pSMRParser->parseSMR(smrFullFileName, smrInfo))
+			if (!pSMRParser->parseSMR(smrFullFileName, modelName))
 				return CNV_NONE;
 		}
 		catch (REF(rdoParse::RDOSyntaxException))
@@ -352,7 +354,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			m_pParserItem = it->second;
 			if (m_pParserItem->needStream())
 			{
-				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(m_pParserItem->m_type);
+				BOOST_AUTO(it, fileList.find(m_pParserItem->m_type));
 				if (it != fileList.end())
 				{
 					std::ifstream stream(it->second.c_str(), ios::binary);
@@ -382,12 +384,12 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 
 	error().clear();
 
+	BOOST_AUTO(fileIt, fileList.begin());
+	boost::filesystem::path fullPath(fileIt->second);
+	fullPath.remove_filename();
+
 	try
 	{
-		BOOST_AUTO(fileIt, fileList.begin());
-		boost::filesystem::path fullPath(fileIt->second);
-		fullPath.remove_filename();
-
 		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
 		std::stringstream backupDirName;
 		backupDirName << fullPath.directory_string()
@@ -449,25 +451,26 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		return CNV_ERROR;
 	}
 
-	RDOParserContainer::Iterator it = begin();
-	while (it != end())
 	{
-		LPRDOParserItem pParserItem = it->second;
-		ASSERT(pParserItem);
-		if (pParserItem->needStream())
+		LPDocument pDocument = rdo::Factory<Document>::create(fullPath.directory_string(), modelName);
+		RDOParserContainer::Iterator it = begin();
+		while (it != end())
 		{
-			RDOParserSMRInfo::FileList::const_iterator it = fileList.find(pParserItem->m_type);
-			if (it != fileList.end())
+			LPRDOParserItem pParserItem = it->second;
+			ASSERT(pParserItem);
+			if (pParserItem->needStream())
 			{
-				std::ifstream streamIn (it->second.c_str(), ios::binary);
-				ASSERT(streamIn.good());
+				BOOST_AUTO(it, fileList.find(pParserItem->m_type));
+				if (it != fileList.end())
+				{
+					std::ifstream streamIn (it->second.c_str(), ios::binary);
+					ASSERT(streamIn.good());
 
-				std::ofstream streamOut(_T("C:\\Users\\Андрей\\Documents\\1.txt"), ios::trunc | ios::binary);
-				pParserItem->convert(this, streamIn, streamOut);
-				streamOut.close();
+					pParserItem->convert(pDocument, streamIn);
+				}
 			}
+			++it;
 		}
-		++it;
 	}
 
 	return CNV_OK;

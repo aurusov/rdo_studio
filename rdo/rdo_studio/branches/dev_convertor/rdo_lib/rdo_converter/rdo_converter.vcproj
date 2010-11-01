@@ -2609,6 +2609,14 @@
 			Name=".update"
 			>
 			<File
+				RelativePath=".\update\document.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\update\document.h"
+				>
+			</File>
+			<File
 				RelativePath=".\update\update.cpp"
 				>
 			</File>
