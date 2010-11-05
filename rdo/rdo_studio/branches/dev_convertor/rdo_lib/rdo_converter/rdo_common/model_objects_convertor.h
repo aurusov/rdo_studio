@@ -39,7 +39,37 @@ OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
 		{}
 	};
 
-	enum RDOFileType  { UNDEFINED = 0, PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC, ENV, PRC };
+	enum RDOFileTypeIn
+	{
+		UNDEFINED_IN = 0,
+		PAT_IN,
+		RTP_IN,
+		RSS_IN,
+		OPR_IN,
+		FRM_IN,
+		FUN_IN,
+		DPT_IN,
+		SMR_IN,
+		PMD_IN,
+		PMV_IN,
+		TRC_IN 
+	};
+	enum RDOFileTypeOut
+	{
+		UNDEFINED_OUT = 0,
+		PAT_OUT,
+		RTP_OUT,
+		RSS_OUT,
+		FRM_OUT,
+		FUN_OUT,
+		DPT_OUT,
+		SMR_OUT,
+		PMD_OUT,
+		PMV_OUT,
+		TRC_OUT,
+		ENV_OUT,
+		PRC_OUT
+	};
 
 	enum RDOParseType
 	{

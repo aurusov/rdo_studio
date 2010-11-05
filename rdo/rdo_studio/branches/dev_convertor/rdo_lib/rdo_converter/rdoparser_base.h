@@ -40,7 +40,7 @@ OBJECT(RDOParserItem)
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
-	rdoModelObjectsConvertor::RDOFileType m_type;
+	rdoModelObjectsConvertor::RDOFileTypeIn m_type;
 
 	t_bison_parse_fun m_parser_fun;
 	t_bison_error_fun m_error_fun;
@@ -62,13 +62,13 @@ public:
 
 protected:
 	RDOParserItem()
-		: m_type      (rdoModelObjectsConvertor::PAT)
-		, m_parser_fun(NULL                         )
-		, m_error_fun (NULL                         )
-		, m_lexer_fun (NULL                         )
-		, m_needStream(true                         )
+		: m_type      (rdoModelObjectsConvertor::PAT_IN)
+		, m_parser_fun(NULL                            )
+		, m_error_fun (NULL                            )
+		, m_lexer_fun (NULL                            )
+		, m_needStream(true                            )
 	{}
-	RDOParserItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
+	RDOParserItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
 		: m_type      (type      )
 		, m_parser_fun(parser_fun)
 		, m_error_fun (error_fun )

@@ -17,16 +17,30 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileType fileTo)
+DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileTypeOut fileTo)
 	: m_fileTo(fileTo)
 {
-	if (m_fileTo == rdoModelObjectsConvertor::UNDEFINED)
+	if (m_fileTo == rdoModelObjectsConvertor::UNDEFINED_OUT)
 	{
-		m_fileTo = Converter::getFileToParse();
+		switch (Converter::getFileToParse())
+		{
+		case rdoModelObjectsConvertor::PAT_IN: m_fileTo = rdoModelObjectsConvertor::PAT_OUT; break;
+		case rdoModelObjectsConvertor::RTP_IN: m_fileTo = rdoModelObjectsConvertor::RTP_OUT; break;
+		case rdoModelObjectsConvertor::RSS_IN: m_fileTo = rdoModelObjectsConvertor::RSS_OUT; break;
+		case rdoModelObjectsConvertor::OPR_IN: NEVER_REACH_HERE;
+		case rdoModelObjectsConvertor::FRM_IN: m_fileTo = rdoModelObjectsConvertor::FRM_OUT; break;
+		case rdoModelObjectsConvertor::FUN_IN: m_fileTo = rdoModelObjectsConvertor::FUN_OUT; break;
+		case rdoModelObjectsConvertor::DPT_IN: m_fileTo = rdoModelObjectsConvertor::DPT_OUT; break;
+		case rdoModelObjectsConvertor::SMR_IN: m_fileTo = rdoModelObjectsConvertor::SMR_OUT; break;
+		case rdoModelObjectsConvertor::PMD_IN: m_fileTo = rdoModelObjectsConvertor::PMD_OUT; break;
+		case rdoModelObjectsConvertor::PMV_IN: m_fileTo = rdoModelObjectsConvertor::PMV_OUT; break;
+		case rdoModelObjectsConvertor::TRC_IN: m_fileTo = rdoModelObjectsConvertor::TRC_OUT; break;
+		default    : NEVER_REACH_HERE;
+		}
 	}
 }
 
-UpdateInsert::UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, rdoModelObjectsConvertor::RDOFileType file)
+UpdateInsert::UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, rdoModelObjectsConvertor::RDOFileTypeOut file)
 	: DocUpdate(file )
 	, m_pos    (pos  )
 	, m_value  (value)
