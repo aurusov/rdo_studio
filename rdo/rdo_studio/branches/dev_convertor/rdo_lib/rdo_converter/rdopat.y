@@ -1516,6 +1516,13 @@ pat_convert_cmd
 			pCalc->setSrcPos (@2.m_first_line, @2.m_first_pos, @4.m_last_line, @4.m_last_pos);
 			pCmdList->insertCommand(pCalc);
 		}
+
+		YYLTYPE convertor_pos = @4;
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, _T(";"));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pCmdList);
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error
@@ -1525,6 +1532,11 @@ pat_convert_cmd
 	| pat_convert_cmd RDO_IDENTIF_NoChange
 	{
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($1);
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, _T(";"));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pCmdList);
 	}
 	;
