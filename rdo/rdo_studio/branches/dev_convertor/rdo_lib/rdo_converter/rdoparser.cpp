@@ -460,10 +460,10 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			ASSERT(pParserItem);
 			if (pParserItem->needStream())
 			{
-				BOOST_AUTO(it, fileList.find(pParserItem->m_type));
-				if (it != fileList.end())
+				BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
+				if (fileIt != fileList.end())
 				{
-					std::ifstream streamIn (it->second.c_str(), ios::binary);
+					std::ifstream streamIn (fileIt->second.c_str(), ios::binary);
 					ASSERT(streamIn.good());
 
 					pParserItem->convert(pDocument, streamIn);
