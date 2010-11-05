@@ -199,6 +199,7 @@
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
+#include "rdo_lib/rdo_converter/update/update.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 // ===============================================================================
 
@@ -1869,8 +1870,7 @@ param_value_default
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: '='    { $$ = RDO_eq; }
-	| RDO_eq { $$ = RDO_eq; }
+	: '=' { $$ = RDO_eq; }
 	;
 
 fun_logic
@@ -1882,6 +1882,11 @@ fun_logic
 		ASSERT(pArithm2);
 		LPRDOFUNLogic pResult = pArithm1->operator ==(pArithm2);
 		ASSERT(pResult);
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, _T("="));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pResult);
 	}
 	| fun_arithm RDO_neq fun_arithm
