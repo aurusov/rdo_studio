@@ -1532,6 +1532,14 @@ pat_convert_cmd
 param_equal_type
 	: RDO_set
 	{
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@1.m_first_seek, @1.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("="));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = rdoRuntime::ET_EQUAL;
 	}
 	;
