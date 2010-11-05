@@ -24,6 +24,7 @@
 #include "rdo_lib/rdo_converter/context/global.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
+#include "rdo_lib/rdo_converter/update/update.h"
 #include "rdo_lib/rdo_converter/update/document.h"
 // ===============================================================================
 
@@ -359,6 +360,10 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 				{
 					std::ifstream stream(it->second.c_str(), ios::binary);
 					m_pParserItem->parse(this, stream);
+					if (m_pParserItem->m_type != rdoModelObjectsConvertor::OPR_IN)
+					{
+						m_pParserItem->insertDocUpdate(rdo::Factory<UpdateFlush>::create());
+					}
 				}
 			}
 			else

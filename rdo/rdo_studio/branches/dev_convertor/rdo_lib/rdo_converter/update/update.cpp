@@ -17,6 +17,9 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// ---------- DocUpdate
+// ----------------------------------------------------------------------------
 DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileTypeOut fileTo)
 	: m_fileTo(fileTo)
 {
@@ -35,11 +38,14 @@ DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileTypeOut fileTo)
 		case rdoModelObjectsConvertor::PMD_IN: m_fileTo = rdoModelObjectsConvertor::PMD_OUT; break;
 		case rdoModelObjectsConvertor::PMV_IN: m_fileTo = rdoModelObjectsConvertor::PMV_OUT; break;
 		case rdoModelObjectsConvertor::TRC_IN: m_fileTo = rdoModelObjectsConvertor::TRC_OUT; break;
-		default    : NEVER_REACH_HERE;
+		default: NEVER_REACH_HERE;
 		}
 	}
 }
 
+// ----------------------------------------------------------------------------
+// ---------- UpdateInsert
+// ----------------------------------------------------------------------------
 UpdateInsert::UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, rdoModelObjectsConvertor::RDOFileTypeOut file)
 	: DocUpdate(file )
 	, m_pos    (pos  )
@@ -64,6 +70,9 @@ void UpdateInsert::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) 
 	streamOut.write(m_value.c_str(), m_value.length());
 }
 
+// ----------------------------------------------------------------------------
+// ---------- UpdateDelete
+// ----------------------------------------------------------------------------
 UpdateDelete::UpdateDelete(std::istream::pos_type posFrom, std::istream::pos_type posTo)
 	: m_posFrom(posFrom)
 	, m_posTo  (posTo  )
@@ -87,6 +96,24 @@ void UpdateDelete::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) 
 	}
 
 	streamIn.seekg(m_posTo);
+}
+
+// ----------------------------------------------------------------------------
+// ---------- UpdateFlush
+// ----------------------------------------------------------------------------
+UpdateFlush::UpdateFlush()
+{}
+
+void UpdateFlush::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
+{
+	REF(std::ofstream) streamOut = pDocument->getStream(m_fileTo);
+
+	while (!streamIn.eof())
+	{
+		char byte;
+		streamIn.get(byte);
+		streamOut.write(&byte, 1);
+	}
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

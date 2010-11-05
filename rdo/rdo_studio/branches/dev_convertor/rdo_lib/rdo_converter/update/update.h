@@ -20,6 +20,9 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// ---------- UpdateInsert
+// ----------------------------------------------------------------------------
 CLASS(UpdateInsert): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateInsert)
@@ -32,6 +35,9 @@ private:
 	DECLARE_IDocUpdate;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- UpdateDelete
+// ----------------------------------------------------------------------------
 CLASS(UpdateDelete): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateDelete)
@@ -40,6 +46,18 @@ private:
 
 	std::istream::pos_type   m_posFrom;
 	std::istream::pos_type   m_posTo;
+
+	DECLARE_IDocUpdate;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- UpdateFlush
+// ----------------------------------------------------------------------------
+CLASS(UpdateFlush): INSTANCE_OF(DocUpdate)
+{
+DECLARE_FACTORY(UpdateFlush)
+private:
+	UpdateFlush();
 
 	DECLARE_IDocUpdate;
 };
