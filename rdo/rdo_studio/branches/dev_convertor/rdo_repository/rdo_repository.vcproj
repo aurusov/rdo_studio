@@ -129,7 +129,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
