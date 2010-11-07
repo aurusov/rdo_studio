@@ -328,6 +328,10 @@
 			Name=".file"
 			>
 			<File
+				RelativePath=".\rdofile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\rdofile.h"
 				>
 			</File>
