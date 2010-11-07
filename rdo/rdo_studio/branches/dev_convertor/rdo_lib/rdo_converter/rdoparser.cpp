@@ -132,7 +132,10 @@ LPContext Converter::context() const
 void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 {
 	ASSERT(m_pParserItem);
-	m_pParserItem->insertDocUpdate(pDocUpdate);
+	if (m_pParserItem->m_parser_fun != cnv_smr_file_parse)
+	{
+		m_pParserItem->insertDocUpdate(pDocUpdate);
+	}
 }
 
 rbool Converter::isCurrentDPTSearch()
@@ -362,7 +365,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 				{
 					std::ifstream stream(it->second.c_str(), ios::binary);
 					m_pParserItem->parse(this, stream);
-					if (m_pParserItem->m_type != rdoModelObjectsConvertor::OPR_IN)
+					if (m_pParserItem->m_type != rdoModelObjectsConvertor::OPR_IN && m_pParserItem->m_parser_fun != cnv_smr_file_parse)
 					{
 						m_pParserItem->insertDocUpdate(rdo::Factory<UpdateFlush>::create());
 					}
