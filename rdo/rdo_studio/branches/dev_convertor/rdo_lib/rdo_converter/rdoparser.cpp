@@ -487,6 +487,11 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		return CNV_ERROR;
 	}
 
+	if (!rdo::File::trimLeft(pDocument->getName(rdoModelObjectsConvertor::SMR_OUT)))
+	{
+		return CNV_ERROR;
+	}
+
 	return CNV_OK;
 }
 
