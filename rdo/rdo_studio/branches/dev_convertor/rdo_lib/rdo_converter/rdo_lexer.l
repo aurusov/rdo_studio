@@ -342,8 +342,6 @@ set					return(RDO_set);
 	rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1);
 	ASSERT(pDelete);
 
-	yyltype pos = LEXER_POS;
-
 	rdoConverter::LPDocUpdate pInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(LEXER_POS.m_first_seek + 1, _T("*/"));
 	ASSERT(pInsert);
 
