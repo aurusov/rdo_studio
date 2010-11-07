@@ -47,8 +47,6 @@
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../;../../thirdparty/bison_flex/"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				StringPooling="true"
-				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_parser/pch.h"
 				BrowseInformation="1"
