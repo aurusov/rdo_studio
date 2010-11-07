@@ -26,6 +26,8 @@
 #include "rdo_lib/rdo_converter/update/update_i.h"
 #include "rdo_lib/rdo_converter/update/update.h"
 #include "rdo_lib/rdo_converter/update/document.h"
+
+#include "thirdparty/pugixml/src/pugixml.hpp"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -475,6 +477,19 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 				}
 			}
 			++it;
+		}
+		{
+			pugi::xml_document doc;
+			pugi::xml_node      rootNode           = doc.append_child(_T("Settings"));
+			pugi::xml_node      versionNode        = rootNode.append_child(_T("Version"));
+			pugi::xml_attribute projectVersionAttr = versionNode.append_attribute(_T("ProjectVersion"));
+			pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute(_T("SMRVersion"));
+			projectVersionAttr.set_value(_T("2"));
+			smrVersionAttr    .set_value(_T("2"));
+
+			tstring fileName = rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str());
+			std::ofstream ofs(fileName.c_str());
+			doc.save(ofs);
 		}
 	}
 
