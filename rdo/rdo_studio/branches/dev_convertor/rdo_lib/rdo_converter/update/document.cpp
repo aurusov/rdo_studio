@@ -23,11 +23,7 @@ Document::Document(CREF(tstring) filePath, CREF(tstring) modelName)
 
 Document::~Document()
 {
-	STL_FOR_ALL_CONST(m_fileList, it)
-	{
-		it->second->close();
-		delete it->second;
-	}
+	close();
 }
 
 tstring Document::getName(rdoModelObjectsConvertor::RDOFileTypeOut type) const
@@ -64,6 +60,16 @@ REF(std::ofstream) Document::getStream(rdoModelObjectsConvertor::RDOFileTypeOut 
 		it = result.first;
 	}
 	return *it->second;
+}
+
+void Document::close()
+{
+	STL_FOR_ALL_CONST(m_fileList, it)
+	{
+		it->second->close();
+		delete it->second;
+	}
+	m_fileList.clear();
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

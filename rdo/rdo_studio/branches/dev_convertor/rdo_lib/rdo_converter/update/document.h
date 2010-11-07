@@ -31,6 +31,7 @@ DECLARE_FACTORY(Document)
 public:
 	tstring            getName  (rdoModelObjectsConvertor::RDOFileTypeOut type) const;
 	REF(std::ofstream) getStream(rdoModelObjectsConvertor::RDOFileTypeOut type);
+	void               close    ();
 
 private:
 	 Document(CREF(tstring) filePath, CREF(tstring) modelName);

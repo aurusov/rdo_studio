@@ -461,31 +461,30 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		return CNV_ERROR;
 	}
 
+	LPDocument pDocument = rdo::Factory<Document>::create(fullPath.directory_string(), modelName);
+	RDOParserContainer::Iterator it = begin();
+	while (it != end())
 	{
-		LPDocument pDocument = rdo::Factory<Document>::create(fullPath.directory_string(), modelName);
-		RDOParserContainer::Iterator it = begin();
-		while (it != end())
+		LPRDOParserItem pParserItem = it->second;
+		ASSERT(pParserItem);
+		if (pParserItem->needStream())
 		{
-			LPRDOParserItem pParserItem = it->second;
-			ASSERT(pParserItem);
-			if (pParserItem->needStream())
+			BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
+			if (fileIt != fileList.end())
 			{
-				BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
-				if (fileIt != fileList.end())
-				{
-					std::ifstream streamIn (fileIt->second.c_str(), ios::binary);
-					ASSERT(streamIn.good());
+				std::ifstream streamIn (fileIt->second.c_str(), ios::binary);
+				ASSERT(streamIn.good());
 
-					pParserItem->convert(pDocument, streamIn);
-				}
+				pParserItem->convert(pDocument, streamIn);
 			}
-			++it;
 		}
+		++it;
+	}
+	pDocument->close();
 
-		if (!createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str())))
-		{
-			return CNV_ERROR;
-		}
+	if (!createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str())))
+	{
+		return CNV_ERROR;
 	}
 
 	return CNV_OK;
