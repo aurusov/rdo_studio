@@ -278,7 +278,7 @@ public:
 	Result convert(CREF(tstring) smrFullFileName);
 
 private:
-	void createRDOX(CREF(tstring) smrFileName) const;
+	rbool createRDOX(CREF(tstring) smrFileName) const;
 };
 
 // ----------------------------------------------------------------------------

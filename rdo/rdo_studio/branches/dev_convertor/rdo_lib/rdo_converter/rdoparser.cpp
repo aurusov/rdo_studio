@@ -482,13 +482,16 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			++it;
 		}
 
-		createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str()));
+		if (!createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str())))
+		{
+			return CNV_ERROR;
+		}
 	}
 
 	return CNV_OK;
 }
 
-void RDOParserModel::createRDOX(CREF(tstring) smrFileName) const
+rbool RDOParserModel::createRDOX(CREF(tstring) smrFileName) const
 {
 	pugi::xml_document doc;
 	pugi::xml_node      rootNode           = doc.append_child(_T("Settings"));
@@ -499,7 +502,12 @@ void RDOParserModel::createRDOX(CREF(tstring) smrFileName) const
 	smrVersionAttr    .set_value(_T("2"));
 
 	std::ofstream ofs(smrFileName.c_str());
+	if (!ofs.good())
+	{
+		return false;
+	}
 	doc.save(ofs);
+	return true;
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
