@@ -71,8 +71,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
+				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -157,8 +158,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
+				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -244,8 +246,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(OutDir)\RAO-studio.exe"
+				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -330,8 +333,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(OutDir)\RAO-studio.exe"
+				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -416,8 +420,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
+				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -502,8 +507,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
+				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
