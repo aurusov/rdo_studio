@@ -30,31 +30,35 @@ Document::~Document()
 	}
 }
 
+tstring Document::getName(rdoModelObjectsConvertor::RDOFileTypeOut type) const
+{
+	tstring extention;
+	switch (type)
+	{
+	case rdoModelObjectsConvertor::PAT_OUT: extention = _T("pat"); break;
+	case rdoModelObjectsConvertor::RTP_OUT: extention = _T("rtp"); break;
+	case rdoModelObjectsConvertor::RSS_OUT: extention = _T("rss"); break;
+	case rdoModelObjectsConvertor::FRM_OUT: extention = _T("frm"); break;
+	case rdoModelObjectsConvertor::FUN_OUT: extention = _T("fun"); break;
+	case rdoModelObjectsConvertor::DPT_OUT: extention = _T("dpt"); break;
+	case rdoModelObjectsConvertor::SMR_OUT: extention = _T("smr"); break;
+	case rdoModelObjectsConvertor::PMD_OUT: extention = _T("pmd"); break;
+	case rdoModelObjectsConvertor::PMV_OUT: extention = _T("pmv"); break;
+	case rdoModelObjectsConvertor::TRC_OUT: extention = _T("trc"); break;
+	case rdoModelObjectsConvertor::ENV_OUT: extention = _T("env"); break;
+	case rdoModelObjectsConvertor::PRC_OUT: extention = _T("prc"); break;
+	default: NEVER_REACH_HERE;
+	}
+
+	return rdo::format(_T("%s%s.%s"), m_filePath.c_str(), m_modelName.c_str(), extention.c_str());
+}
+
 REF(std::ofstream) Document::getStream(rdoModelObjectsConvertor::RDOFileTypeOut type)
 {
 	BOOST_AUTO(it, m_fileList.find(type));
 	if (it == m_fileList.end())
 	{
-		tstring extention;
-		switch (type)
-		{
-		case rdoModelObjectsConvertor::PAT_OUT: extention = _T("pat"); break;
-		case rdoModelObjectsConvertor::RTP_OUT: extention = _T("rtp"); break;
-		case rdoModelObjectsConvertor::RSS_OUT: extention = _T("rss"); break;
-		case rdoModelObjectsConvertor::FRM_OUT: extention = _T("frm"); break;
-		case rdoModelObjectsConvertor::FUN_OUT: extention = _T("fun"); break;
-		case rdoModelObjectsConvertor::DPT_OUT: extention = _T("dpt"); break;
-		case rdoModelObjectsConvertor::SMR_OUT: extention = _T("smr"); break;
-		case rdoModelObjectsConvertor::PMD_OUT: extention = _T("pmd"); break;
-		case rdoModelObjectsConvertor::PMV_OUT: extention = _T("pmv"); break;
-		case rdoModelObjectsConvertor::TRC_OUT: extention = _T("trc"); break;
-		case rdoModelObjectsConvertor::ENV_OUT: extention = _T("env"); break;
-		case rdoModelObjectsConvertor::PRC_OUT: extention = _T("prc"); break;
-		default: NEVER_REACH_HERE;
-		}
-
-		tstring fileName = rdo::format(_T("%s%s.%s"), m_filePath.c_str(), m_modelName.c_str(), extention.c_str());
-		PTR(std::ofstream) pStream = new std::ofstream(fileName.c_str(), std::ios::trunc | std::ios::binary);
+		PTR(std::ofstream) pStream = new std::ofstream(getName(type).c_str(), std::ios::trunc | std::ios::binary);
 		std::pair<FileList::iterator, rbool> result = m_fileList.insert(FileList::value_type(type, pStream));
 		ASSERT(result.second);
 		it = result.first;
