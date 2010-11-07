@@ -481,22 +481,25 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			}
 			++it;
 		}
-		{
-			pugi::xml_document doc;
-			pugi::xml_node      rootNode           = doc.append_child(_T("Settings"));
-			pugi::xml_node      versionNode        = rootNode.append_child(_T("Version"));
-			pugi::xml_attribute projectVersionAttr = versionNode.append_attribute(_T("ProjectVersion"));
-			pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute(_T("SMRVersion"));
-			projectVersionAttr.set_value(_T("2"));
-			smrVersionAttr    .set_value(_T("2"));
 
-			tstring fileName = rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str());
-			std::ofstream ofs(fileName.c_str());
-			doc.save(ofs);
-		}
+		createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str()));
 	}
 
 	return CNV_OK;
+}
+
+void RDOParserModel::createRDOX(CREF(tstring) smrFileName) const
+{
+	pugi::xml_document doc;
+	pugi::xml_node      rootNode           = doc.append_child(_T("Settings"));
+	pugi::xml_node      versionNode        = rootNode.append_child(_T("Version"));
+	pugi::xml_attribute projectVersionAttr = versionNode.append_attribute(_T("ProjectVersion"));
+	pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute(_T("SMRVersion"));
+	projectVersionAttr.set_value(_T("2"));
+	smrVersionAttr    .set_value(_T("2"));
+
+	std::ofstream ofs(smrFileName.c_str());
+	doc.save(ofs);
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
