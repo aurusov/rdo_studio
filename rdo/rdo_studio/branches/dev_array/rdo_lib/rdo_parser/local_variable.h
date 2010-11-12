@@ -26,7 +26,8 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(RDOValue) getValue() const;
+	CREF(RDOValue)        getValue() const;
+	rdoRuntime::LPRDOCalc getCalc( ) const;
 
 private:
 	LocalVariable(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc);
@@ -42,12 +43,15 @@ OBJECT(LocalVariableList)
 {
 DECLARE_FACTORY(LocalVariableList);
 public:
-	void append(CREF(LPLocalVariable) pVariable);
+	typedef std::list<LPLocalVariable> VariableList;
+
+	void          append(CREF(LPLocalVariable) pVariable);
+	CREF(rdoRuntime::LPRDOCalc) getCalc();
+	CREF(rdoRuntime::LPRDOCalc) findLocalVariable(CREF(tstring) paramName) const;
 
 private:
 	LocalVariableList();
 
-	typedef std::list<LPLocalVariable> VariableList;
 	VariableList m_variableList;
 };
 

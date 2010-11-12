@@ -17,6 +17,9 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// ---------- LocalVariable
+// ----------------------------------------------------------------------------
 LocalVariable::LocalVariable(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc)
 	: m_value (value)
 	, m_pCalc (pCalc)
@@ -27,6 +30,14 @@ CREF(RDOValue) LocalVariable::getValue() const
 	return m_value;
 }
 
+ rdoRuntime::LPRDOCalc LocalVariable::getCalc( ) const
+ {
+ 	return m_pCalc;
+ }
+
+// ----------------------------------------------------------------------------
+// ---------- LocalVariableList
+// ----------------------------------------------------------------------------
 LocalVariableList::LocalVariableList()
 {}
 
@@ -45,6 +56,27 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 	}
 
 	m_variableList.push_back(pVariable);
+}
+
+CREF(rdoRuntime::LPRDOCalc) LocalVariableList::getCalc()
+{
+	rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
+	STL_FOR_ALL(VariableList, m_variableList, LocalVariable_it)
+	{
+		pCalcList->addCalc((*LocalVariable_it)->getCalc());
+	}
+	rdoRuntime::LPRDOCalc pCalc = pCalcList;
+	return pCalc;
+}
+
+CREF(rdoRuntime::LPRDOCalc) LocalVariableList::findLocalVariable(CREF(tstring) paramName) const
+{
+	STL_FOR_ALL_CONST(VariableList, m_variableList, LocalVariable_it)
+	{
+		if((*LocalVariable_it)->getValue()->getIdentificator() == paramName)
+			return (*LocalVariable_it)->getCalc();
+	}
+	return rdoRuntime::LPRDOCalc();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

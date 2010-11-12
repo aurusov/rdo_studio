@@ -1602,13 +1602,18 @@ equal_statement
 		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
 		LPRDOFUNArithm        pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		LPRDORelevantResource pRelRes      = PARSER->getLastPATPattern()->m_pCurrRelRes;
-		ASSERT(pRelRes);
+		ASSERT(pRelRes);		
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
+		ASSERT(pLocalVariableList);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
-		if (!param)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
-		}
-		rdoRuntime::LPRDOCalc pCalcRight = pRightArithm->createCalc(param->getParamType().get());
+		rdoRuntime::LPRDOCalc pCalcVariable = pLocalVariableList->findLocalVariable(paramName);
+		rdoRuntime::LPRDOCalc pCalcRight = param ? pRightArithm->createCalc(param->getParamType().get()) : pCalcVariable ? pCalcVariable : rdoRuntime::LPRDOCalc();
+ 		if (!pCalcRight)
+ 		{
+ 			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+ 		}
 		rdoRuntime::LPRDOCalc pCalc;
 		switch (equalType)
 		{
@@ -2754,7 +2759,7 @@ local_variable_declaration
 		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
+		rdoRuntime::LPRDOCalc pCalc = pLocalVariableList->getCalc();
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
