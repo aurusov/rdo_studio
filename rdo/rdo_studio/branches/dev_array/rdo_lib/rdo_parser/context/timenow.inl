@@ -29,9 +29,4 @@ inline rdoRuntime::LPRDOCalc ContextTimeNow::getCalc()
 	return m_pCalc;
 }
 
-inline LPLocalVariableList ContextTimeNow::getLocalMemory()
-{
-	return LPLocalVariableList();
-}
-
 CLOSE_RDO_PARSER_NAMESPACE

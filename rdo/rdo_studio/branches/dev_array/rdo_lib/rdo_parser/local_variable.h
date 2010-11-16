@@ -46,7 +46,7 @@ public:
 	typedef std::list<LPLocalVariable> VariableList;
 
 	void          append(CREF(LPLocalVariable) pVariable);
-	CREF(rdoRuntime::LPRDOCalc) getCalc();
+/*	CREF(rdoRuntime::LPRDOCalc) getCalc();*/
 	CREF(rdoRuntime::LPRDOCalc) findLocalVariable(CREF(tstring) paramName) const;
 
 private:

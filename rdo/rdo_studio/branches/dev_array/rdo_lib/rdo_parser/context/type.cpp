@@ -40,10 +40,4 @@ rdoRuntime::LPRDOCalc TypeContext::getCalc()
 	return NULL;
 }
 
-LPLocalVariableList TypeContext::getLocalMemory()
-{
-	NEVER_REACH_HERE;
-	return NULL;
-}
-
 CLOSE_RDO_PARSER_NAMESPACE
