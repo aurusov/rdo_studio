@@ -12,9 +12,6 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_common/rdomacros.h"
-
-#include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_parser/context/context.h"
 // ===============================================================================

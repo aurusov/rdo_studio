@@ -17,7 +17,6 @@
 
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/local_variable.h"
 
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
@@ -35,7 +34,6 @@ S_INTERFACE(IContext)
 {
 	virtual LPContext             parser        (PTR(RDOParser) pParser, CREF(RDOValue) value) = 0;
 	virtual rdoRuntime::LPRDOCalc getCalc       ()                                             = 0;
-/*	virtual LPLocalVariableList   getLocalMemory()                                             = 0;*/
 };
 
 #define DECLARE_IContext                                                                \
