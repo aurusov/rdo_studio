@@ -213,6 +213,7 @@
 #include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_parser/context/type.h"
+#include "rdo_lib/rdo_parser/context/pattern.h"
 
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
@@ -1605,15 +1606,12 @@ equal_statement
 		ASSERT(pRelRes);		
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
-		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
-		ASSERT(pLocalVariableList);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
-		rdoRuntime::LPRDOCalc pCalcVariable = pLocalVariableList->findLocalVariable(paramName);
-		rdoRuntime::LPRDOCalc pCalcRight = param ? pRightArithm->createCalc(param->getParamType().get()) : pCalcVariable ? pCalcVariable : rdoRuntime::LPRDOCalc();
- 		if (!pCalcRight)
- 		{
- 			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
- 		}
+		if (!param)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		}
+		rdoRuntime::LPRDOCalc pCalcRight = pRightArithm->createCalc(param->getParamType().get());
 		rdoRuntime::LPRDOCalc pCalc;
 		switch (equalType)
 		{
@@ -2756,10 +2754,13 @@ local_variable_declaration
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 
-		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
+		LPContextPattern pContextPattern = pContext.object_static_cast<ContextPattern>();
+		ASSERT(pContextPattern);
+
+		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
-		rdoRuntime::LPRDOCalc pCalc = pLocalVariableList->getCalc();
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -2868,7 +2869,10 @@ init_declaration_list
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 
-		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
+		LPContextPattern pContextPattern = pContext.object_static_cast<ContextPattern>();
+		ASSERT(pContextPattern);
+
+		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
 		pLocalVariableList->append(pLocalVariable);
@@ -2878,7 +2882,10 @@ init_declaration_list
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 
-		LPLocalVariableList pLocalVariableList = pContext->getLocalMemory();
+		LPContextPattern pContextPattern = pContext.object_static_cast<ContextPattern>();
+		ASSERT(pContextPattern);
+
+		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
 		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($3);
