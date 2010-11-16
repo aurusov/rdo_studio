@@ -605,6 +605,24 @@ void RDORuntime::postProcess()
 	}
 }
 
+void     RDORuntime::createLocalVarible(tstring name                  )
+{
+	if(m_pLocalMemory.find(name) == m_pLocalMemory.end()) NEVER_REACH_HERE;
+	m_pLocalMemory[name] = RDOValue();
+}
+
+void     RDORuntime::setLocalVarible   (tstring name, RDOValue varible)
+{
+	if(!(m_pLocalMemory.find(name) == m_pLocalMemory.end())) NEVER_REACH_HERE;
+	m_pLocalMemory[name] = varible;
+}
+
+RDOValue RDORuntime::getLocalVarible   (tstring name                  )
+{
+	if(!(m_pLocalMemory.find(name) == m_pLocalMemory.end())) NEVER_REACH_HERE;
+	return m_pLocalMemory[name];
+}
+
 RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
 {														   
 	m_keys.insert(KeySet::value_type("ESCAPE", VK_ESCAPE));

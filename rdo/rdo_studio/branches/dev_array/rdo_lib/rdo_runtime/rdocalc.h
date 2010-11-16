@@ -328,6 +328,49 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateLocalVarible
+// ----------------------------------------------------------------------------
+CALC(RDOCalcCreateLocalVarible)
+{
+	DECLARE_FACTORY(RDOCalcCreateLocalVarible)
+private:
+	RDOCalcCreateLocalVarible(tstring pName);
+
+	tstring m_pName;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcSetLocalVarible
+// ----------------------------------------------------------------------------
+CALC(RDOCalcSetLocalVarible)
+{
+	DECLARE_FACTORY(RDOCalcSetLocalVarible)
+private:
+	RDOCalcSetLocalVarible(tstring pName, CREF(RDOValue) pValue);
+
+	tstring        m_pName ;
+	CREF(RDOValue) m_pValue;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetLocalVarible
+// ----------------------------------------------------------------------------
+CALC(RDOCalcGetLocalVarible)
+{
+	DECLARE_FACTORY(RDOCalcGetLocalVarible)
+private:
+	RDOCalcGetLocalVarible(tstring pName);
+
+	tstring m_pName;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcList
 // ----------------------------------------------------------------------------
 CALC(RDOCalcList)

@@ -250,6 +250,48 @@ REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateLocalVarible
+// ----------------------------------------------------------------------------
+RDOCalcCreateLocalVarible::RDOCalcCreateLocalVarible(tstring pName)
+	: m_pName(pName)
+{}
+
+REF(RDOValue) RDOCalcCreateLocalVarible::doCalc(PTR(RDORuntime) runtime)
+{
+	runtime->createLocalVarible(m_pName);
+	m_value = RDOValue();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcSetLocalVarible
+// ----------------------------------------------------------------------------
+RDOCalcSetLocalVarible::RDOCalcSetLocalVarible(tstring pName, CREF(RDOValue) pValue)
+	: m_pName(pName)
+	, m_pValue(pValue)
+{}
+
+REF(RDOValue) RDOCalcSetLocalVarible::doCalc(PTR(RDORuntime) runtime)
+{
+	runtime->setLocalVarible(m_pName, m_pValue);
+	m_value = RDOValue();
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetLocalVarible
+// ----------------------------------------------------------------------------
+RDOCalcGetLocalVarible::RDOCalcGetLocalVarible(tstring pName)
+	: m_pName(pName)
+{}
+
+REF(RDOValue) RDOCalcGetLocalVarible::doCalc(PTR(RDORuntime) runtime)
+{
+	m_value = runtime->getLocalVarible(m_pName);
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcList
 // ----------------------------------------------------------------------------
 RDOCalcList::RDOCalcList()
