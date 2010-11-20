@@ -13,20 +13,34 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// ---------- IContextTimeNow
+// ----------------------------------------------------------------------------
+S_INTERFACE(IContextTimeNow)
+{
+	virtual rdoRuntime::LPRDOCalc getTimeNowCalc() = 0;
+};
+#define DECLARE_ITypeContext                \
+public:                                     \
+	rdoRuntime::LPRDOCalc getTimeNowCalc();
+
+// ----------------------------------------------------------------------------
+// ---------- ContextTimeNow
+// ----------------------------------------------------------------------------
 CLASS(ContextTimeNow): IMPLEMENTATION_OF(Context)
 {
 DECLARE_FACTORY(ContextTimeNow);
 private:
 	rdoRuntime::LPRDOCalc m_pCalc;
-	DECLARE_IContext;
+
+	DECLARE_ITypeContext;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#include "rdo_lib/rdo_parser/context/timenow.inl"
 
 #endif //! _RDOPARSER_CONTEXT_TIMENOW_H_

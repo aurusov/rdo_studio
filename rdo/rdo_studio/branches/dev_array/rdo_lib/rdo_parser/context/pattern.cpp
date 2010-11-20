@@ -30,16 +30,4 @@ LPLocalVariableList ContextPattern::getLocalMemory()
 	return m_pLocalVariableList;
 }
 
-LPContext ContextPattern::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
-{
-	NEVER_REACH_HERE;
-	return LPContext();
-}
-
-rdoRuntime::LPRDOCalc ContextPattern::getCalc()
-{
-	NEVER_REACH_HERE;
-	return rdoRuntime::LPRDOCalc();
-}
-
 CLOSE_RDO_PARSER_NAMESPACE

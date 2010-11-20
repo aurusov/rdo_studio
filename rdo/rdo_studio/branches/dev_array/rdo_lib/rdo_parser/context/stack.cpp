@@ -17,8 +17,7 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 ContextStack::ContextStack()
-{
-}
+{}
 
 ContextStack::~ContextStack()
 {

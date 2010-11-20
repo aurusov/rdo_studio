@@ -28,16 +28,4 @@ LPRDOTypeParam TypeContext::getType() const
 	return m_pTypeParam;
 }
 
-LPContext TypeContext::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
-{
-	NEVER_REACH_HERE;
-	return NULL;
-}
-
-rdoRuntime::LPRDOCalc TypeContext::getCalc()
-{
-	NEVER_REACH_HERE;
-	return NULL;
-}
-
 CLOSE_RDO_PARSER_NAMESPACE

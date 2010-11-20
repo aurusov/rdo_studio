@@ -25,15 +25,15 @@ S_INTERFACE(IContextPattern)
 {
 	virtual LPLocalVariableList getLocalMemory() = 0;
 };
-#define DECLARE_IContextPattern         \
-public:                                 \
+#define DECLARE_IContextPattern           \
+public:                                   \
 	LPLocalVariableList getLocalMemory();
 
 // ----------------------------------------------------------------------------
 // ---------- ContextPattern
 // ----------------------------------------------------------------------------
 CLASS(ContextPattern):
-	       INSTANCE_OF      (Context     )
+	    INSTANCE_OF      (Context        )
 	AND IMPLEMENTATION_OF(IContextPattern)
 {
 DECLARE_FACTORY(ContextPattern);
@@ -42,7 +42,6 @@ private:
 
 	LPLocalVariableList m_pLocalVariableList;
 
-	DECLARE_IContext;
 	DECLARE_IContextPattern;
 };
 DECLARE_POINTER(ContextPattern);

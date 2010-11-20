@@ -42,7 +42,6 @@ private:
 
 	LPRDOTypeParam m_pTypeParam;
 
-	DECLARE_IContext;
 	DECLARE_ITypeContext;
 };
 DECLARE_POINTER(TypeContext);

@@ -3120,11 +3120,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\context\timenow.h"
+				RelativePath=".\context\timenow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\context\timenow.inl"
+				RelativePath=".\context\timenow.h"
 				>
 			</File>
 			<File
