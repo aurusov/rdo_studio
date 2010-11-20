@@ -2763,6 +2763,8 @@ local_variable_declaration
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
+
+		PARSER->contextStack().pop();
 	}
 	;
 
@@ -2869,7 +2871,8 @@ init_declaration_list
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 
-		LPContextPattern pContextPattern = pContext.object_static_cast<ContextPattern>();
+		NEVER_REACH_HERE;// Здесь нужен кастинг, что бы достучаться до ContextPattern через TypeContext.
+		LPContextPattern pContextPattern = pContext.object_dynamic_cast<ContextPattern>();
 		ASSERT(pContextPattern);
 
 		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
@@ -2882,7 +2885,8 @@ init_declaration_list
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 
-		LPContextPattern pContextPattern = pContext.object_static_cast<ContextPattern>();
+		NEVER_REACH_HERE;// Здесь нужен кастинг, что бы достучаться до ContextPattern через TypeContext.
+		LPContextPattern pContextPattern = pContext.object_dynamic_cast<ContextPattern>();
 		ASSERT(pContextPattern);
 
 		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
