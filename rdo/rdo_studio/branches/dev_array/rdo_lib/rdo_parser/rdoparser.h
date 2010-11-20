@@ -166,6 +166,14 @@ public:
 			pWrapper->destroy();
 			return pObject;
 		}
+
+		rdo::LPISmartPtrWrapper raw_pop(IndexedStack::ID id)
+		{
+			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
+			ASSERT(pWrapper);
+			return pWrapper;
+		}
+
 	private:
 		void clear()
 		{
