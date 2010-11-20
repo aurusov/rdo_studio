@@ -16,30 +16,41 @@
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 
 #include "rdo_lib/rdo_parser/namespace.h"
+#include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- IContext
-// ----------------------------------------------------------------------------
-PREDECLARE_POINTER(Context);
-
-S_INTERFACE(IContext)
-{};
-#define DECLARE_IContext
-
-// ----------------------------------------------------------------------------
 // ---------- Context
 // ----------------------------------------------------------------------------
-OBJECT(Context) IS IMPLEMENTATION_OF(IContext)
+OBJECT(Context)
 {
 DECLARE_FACTORY(Context);
+friend void ContextStack::push(LPContext pContext);
+
+public:
+	template <class T>
+	rdo::intrusive_ptr<T> cast()
+	{
+		LPContext pThis = this;
+		rdo::intrusive_ptr<T> pThisResult = pThis.object_dynamic_cast<T>();
+		if (pThisResult)
+		{
+			return pThisResult;
+		}
+		LPContext pPrev = m_pContextStack->prev(pThis);
+		return pPrev ? pPrev->cast<T>() : rdo::intrusive_ptr<T>();
+	}
+
 protected:
+	Context();
 	virtual ~Context();
 
 private:
-	DECLARE_IContext;
+	LPContextStack m_pContextStack;
+
+	void setContextStack(CREF(LPContextStack) pContextStack);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

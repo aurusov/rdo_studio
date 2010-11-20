@@ -199,8 +199,8 @@ public:
 		m_preCastTypeList.push_back(type);
 	}
 
-	REF(ContextStack) contextStack();
-	LPContext         context     () const;
+	LPContextStack contextStack();
+	LPContext      context     () const;
 
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
@@ -239,7 +239,7 @@ private:
 	Error                 m_error;
 	Stack                 m_movementObjectList;
 	PreCastTypeList       m_preCastTypeList;
-	ContextStack          m_contextStack;
+	LPContextStack        m_pContextStack;
 	rbool                 m_pattern;
 
 	template <class T>

@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/context/stack.h"
+#include "rdo_lib/rdo_parser/context/context.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,9 +26,10 @@ ContextStack::~ContextStack()
 		pop();
 }
 
-void ContextStack::push(CREF(LPContext) pContext)
+void ContextStack::push(LPContext pContext)
 {
 	m_container.push_back(pContext);
+	pContext->setContextStack(this);
 }
 
 void ContextStack::pop()
@@ -45,6 +47,17 @@ LPContext ContextStack::global() const
 {
 	ASSERT(!m_container.empty());
 	return m_container.front();
+}
+
+LPContext ContextStack::prev(CREF(LPContext) pContext) const
+{
+	Container::const_iterator it = std::find(m_container.begin(), m_container.end(), pContext);
+	if (it == m_container.end())
+	{
+		return LPContext();
+	}
+	--it;
+	return it != m_container.end() ? *it : LPContext();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -70,7 +70,7 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	}
 	m_pContext = rdo::Factory<ContextPattern>::create();
 	RDOParser::s_parser()->insertPATPattern(this);
-	RDOParser::s_parser()->contextStack().push(m_pContext);
+	RDOParser::s_parser()->contextStack()->push(m_pContext);
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)
@@ -398,7 +398,7 @@ void RDOPATPattern::end()
 			addChoiceFromCalc(pCalc);
 		}
 	}
-	RDOParser::s_parser()->contextStack().pop();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------
