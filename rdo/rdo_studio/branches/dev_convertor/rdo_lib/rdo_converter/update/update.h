@@ -27,7 +27,7 @@ CLASS(UpdateInsert): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-	UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, rdoModelObjectsConvertor::RDOFileTypeOut file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, Document::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
 
 	std::istream::pos_type m_pos;
 	tstring                m_value;

@@ -26,7 +26,7 @@ Document::~Document()
 	close();
 }
 
-tstring Document::getName(rdoModelObjectsConvertor::RDOFileTypeOut type) const
+tstring Document::getName(Type type) const
 {
 	tstring extention;
 	switch (type)
@@ -49,7 +49,7 @@ tstring Document::getName(rdoModelObjectsConvertor::RDOFileTypeOut type) const
 	return rdo::format(_T("%s%s.%s"), m_filePath.c_str(), m_modelName.c_str(), extention.c_str());
 }
 
-REF(std::ofstream) Document::getStream(rdoModelObjectsConvertor::RDOFileTypeOut type)
+REF(std::ofstream) Document::getStream(Type type)
 {
 	BOOST_AUTO(it, m_fileList.find(type));
 	if (it == m_fileList.end())
@@ -70,6 +70,12 @@ void Document::close()
 		delete it->second;
 	}
 	m_fileList.clear();
+}
+
+void Document::write(Type type, CPTR(char) buffer, ruint size)
+{
+	REF(std::ofstream) streamOut = getStream(type);
+	streamOut.write(buffer, size);
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

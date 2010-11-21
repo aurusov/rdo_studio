@@ -20,7 +20,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- DocUpdate
 // ----------------------------------------------------------------------------
-DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileTypeOut fileTo)
+DocUpdate::DocUpdate(Document::Type fileTo)
 	: m_fileTo(fileTo)
 {
 	if (m_fileTo == rdoModelObjectsConvertor::UNDEFINED_OUT)
@@ -46,7 +46,7 @@ DocUpdate::DocUpdate(rdoModelObjectsConvertor::RDOFileTypeOut fileTo)
 // ----------------------------------------------------------------------------
 // ---------- UpdateInsert
 // ----------------------------------------------------------------------------
-UpdateInsert::UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, rdoModelObjectsConvertor::RDOFileTypeOut file)
+UpdateInsert::UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, Document::Type file)
 	: DocUpdate(file )
 	, m_pos    (pos  )
 	, m_value  (value)
@@ -57,17 +57,15 @@ void UpdateInsert::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) 
 	std::istream::pos_type pos = streamIn.tellg();
 	ASSERT(pos <= m_pos);
 
-	REF(std::ofstream) streamOut = pDocument->getStream(m_fileTo);
-
 	while (pos < m_pos)
 	{
 		char byte;
 		streamIn.get(byte);
-		streamOut.write(&byte, 1);
+		pDocument->write(m_fileTo, &byte, 1);
 		pos = streamIn.tellg();
 	}
 
-	streamOut.write(m_value.c_str(), m_value.length());
+	pDocument->write(m_fileTo, m_value.c_str(), m_value.length());
 }
 
 // ----------------------------------------------------------------------------
@@ -85,13 +83,11 @@ void UpdateDelete::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) 
 	std::istream::pos_type pos = streamIn.tellg();
 	ASSERT(pos <= m_posFrom);
 
-	REF(std::ofstream) streamOut = pDocument->getStream(m_fileTo);
-
 	while (pos < m_posFrom)
 	{
 		char byte;
 		streamIn.get(byte);
-		streamOut.write(&byte, 1);
+		pDocument->write(m_fileTo, &byte, 1);
 		pos = streamIn.tellg();
 	}
 
@@ -106,13 +102,11 @@ UpdateFlush::UpdateFlush()
 
 void UpdateFlush::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
 {
-	REF(std::ofstream) streamOut = pDocument->getStream(m_fileTo);
-
 	while (!streamIn.eof())
 	{
 		char byte;
 		streamIn.get(byte);
-		streamOut.write(&byte, 1);
+		pDocument->write(m_fileTo, &byte, 1);
 	}
 }
 

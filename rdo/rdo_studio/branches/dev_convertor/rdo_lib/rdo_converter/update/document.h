@@ -29,19 +29,23 @@ OBJECT(Document)
 {
 DECLARE_FACTORY(Document)
 public:
-	tstring            getName  (rdoModelObjectsConvertor::RDOFileTypeOut type) const;
-	REF(std::ofstream) getStream(rdoModelObjectsConvertor::RDOFileTypeOut type);
-	void               close    ();
+	typedef rdoModelObjectsConvertor::RDOFileTypeOut Type;
+
+	tstring   getName  (Type type) const;
+	void      close    ();
+	void      write    (Type type, CPTR(char) buffer, ruint size);
 
 private:
 	 Document(CREF(tstring) filePath, CREF(tstring) modelName);
 	~Document();
 
-	typedef std::map<rdoModelObjectsConvertor::RDOFileTypeOut, PTR(std::ofstream)> FileList;
+	typedef std::map<Type, PTR(std::ofstream)> FileList;
 
 	tstring  m_filePath;
 	tstring  m_modelName;
 	FileList m_fileList;
+
+	REF(std::ofstream) getStream(Type type);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

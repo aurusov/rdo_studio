@@ -34,9 +34,9 @@ public:
 OBJECT(DocUpdate) IS IMPLEMENTATION_OF(IDocUpdate)
 {
 protected:
-	DocUpdate(rdoModelObjectsConvertor::RDOFileTypeOut fileTo = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	DocUpdate(Document::Type fileTo = rdoModelObjectsConvertor::UNDEFINED_OUT);
 
-	rdoModelObjectsConvertor::RDOFileTypeOut m_fileTo;
+	Document::Type m_fileTo;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
