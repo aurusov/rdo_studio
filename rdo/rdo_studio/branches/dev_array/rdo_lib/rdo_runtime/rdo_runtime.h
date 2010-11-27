@@ -218,9 +218,9 @@ public:
 
 	virtual void postProcess();
 
-	void     createLocalVarible(tstring name                  );
-	void     setLocalVarible   (tstring name, RDOValue varible);
-	RDOValue getLocalVarible   (tstring name                  );
+	void     createLocalVarible(CREF(tstring) name                        );
+	void     setLocalVarible   (CREF(tstring) name, CREF(RDOValue) varible);
+	RDOValue getLocalVarible   (CREF(tstring) name                        ) const;
 
 	typedef std::list< RDOResource* > ResList;
 	typedef ResList::const_iterator ResCIterator;
@@ -235,15 +235,14 @@ public:
 	}
 
 private:
-	typedef RDOSimulatorTrace    Parent;
-	typedef std::list<LPRDOCalc> CalcList;
+	typedef RDOSimulatorTrace           Parent;
+	typedef std::list<LPRDOCalc>        CalcList;
 	typedef std::map<tstring, RDOValue> LocalMemory;
 	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
-	CalcList initCalcs;
-	LocalMemory m_pLocalMemory;
-	
+	CalcList                    initCalcs;
+	LocalMemory                 m_localMemory;
 	
 	class BreakPoint: public RDORuntimeObject
 	{

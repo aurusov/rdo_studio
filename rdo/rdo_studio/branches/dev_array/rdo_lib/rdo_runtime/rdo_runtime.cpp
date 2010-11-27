@@ -605,22 +605,26 @@ void RDORuntime::postProcess()
 	}
 }
 
-void     RDORuntime::createLocalVarible(tstring name                  )
+void RDORuntime::createLocalVarible(CREF(tstring) name)
 {
-	//if(m_pLocalMemory.find(name) == m_pLocalMemory.end()) NEVER_REACH_HERE;
-	m_pLocalMemory[name] = RDOValue();
+	std::pair<LocalMemory::iterator, rbool> result =
+		m_localMemory.insert(LocalMemory::value_type(name, RDOValue()));
+
+	ASSERT(result.second);
 }
 
-void     RDORuntime::setLocalVarible   (tstring name, RDOValue varible)
+void RDORuntime::setLocalVarible(CREF(tstring) name, CREF(RDOValue) varible)
 {
-	//if(!(m_pLocalMemory.find(name) == m_pLocalMemory.end())) NEVER_REACH_HERE;
-	m_pLocalMemory[name] = varible;
+	LocalMemory::iterator it = m_localMemory.find(name);
+	ASSERT(it != m_localMemory.end());
+	it->second = varible;
 }
 
-RDOValue RDORuntime::getLocalVarible   (tstring name                  )
+RDOValue RDORuntime::getLocalVarible(CREF(tstring) name) const
 {
-	//if(!(m_pLocalMemory.find(name) == m_pLocalMemory.end())) NEVER_REACH_HERE;
-	return m_pLocalMemory[name];
+	LocalMemory::const_iterator it = m_localMemory.find(name);
+	ASSERT(it != m_localMemory.end());
+	return it->second;
 }
 
 RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
