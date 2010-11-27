@@ -13,7 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 // ===============================================================================
 
@@ -26,14 +26,16 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(RDOValue)        getValue() const;
-	rdoRuntime::LPRDOCalc getCalc( ) const;
+	CREF(RDOValue) getValue( ) const;
+	LPRDOFUNArithm getArithm() const;
+	LPRDOTypeParam getParam( ) const;
 
 private:
-	LocalVariable(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc);
+	LocalVariable(CREF(RDOValue) value, CREF(LPRDOFUNArithm) pArithm, CREF(LPRDOTypeParam) pParam);
 
-	RDOValue              m_value;
-	rdoRuntime::LPRDOCalc m_pCalc;
+	RDOValue       m_value  ;
+	LPRDOFUNArithm m_pArithm;
+	LPRDOTypeParam m_pParam ;
 };
 
 // ----------------------------------------------------------------------------
@@ -46,8 +48,7 @@ public:
 	typedef std::list<LPLocalVariable> VariableList;
 
 	void          append(CREF(LPLocalVariable) pVariable);
-/*	CREF(rdoRuntime::LPRDOCalc) getCalc();*/
-	CREF(rdoRuntime::LPRDOCalc) findLocalVariable(CREF(tstring) paramName) const;
+	LPLocalVariable findLocalVariable(CREF(tstring) paramName) const;
 
 private:
 	LocalVariableList();
