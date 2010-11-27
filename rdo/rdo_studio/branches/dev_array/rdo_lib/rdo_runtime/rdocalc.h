@@ -346,12 +346,12 @@ private:
 // ----------------------------------------------------------------------------
 CALC(RDOCalcSetLocalVarible)
 {
-	DECLARE_FACTORY(RDOCalcSetLocalVarible)
+DECLARE_FACTORY(RDOCalcSetLocalVarible)
 private:
-	RDOCalcSetLocalVarible(tstring pName, CREF(RDOValue) pValue);
+	RDOCalcSetLocalVarible(CREF(tstring) name, CREF(RDOValue) value);
 
-	tstring        m_pName ;
-	CREF(RDOValue) m_pValue;
+	tstring  m_name;
+	RDOValue m_value;
 
 	DECALRE_ICalc;
 };
@@ -361,11 +361,11 @@ private:
 // ----------------------------------------------------------------------------
 CALC(RDOCalcGetLocalVarible)
 {
-	DECLARE_FACTORY(RDOCalcGetLocalVarible)
+DECLARE_FACTORY(RDOCalcGetLocalVarible)
 private:
-	RDOCalcGetLocalVarible(tstring pName);
+	RDOCalcGetLocalVarible(CREF(tstring) name);
 
-	tstring m_pName;
+	tstring m_name;
 
 	DECALRE_ICalc;
 };

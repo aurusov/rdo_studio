@@ -266,28 +266,27 @@ REF(RDOValue) RDOCalcCreateLocalVarible::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcSetLocalVarible
 // ----------------------------------------------------------------------------
-RDOCalcSetLocalVarible::RDOCalcSetLocalVarible(tstring pName, CREF(RDOValue) pValue)
-	: m_pName(pName)
-	, m_pValue(pValue)
+RDOCalcSetLocalVarible::RDOCalcSetLocalVarible(CREF(tstring) name, CREF(RDOValue) value)
+	: m_name (name )
+	, m_value(value)
 {}
 
 REF(RDOValue) RDOCalcSetLocalVarible::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->setLocalVarible(m_pName, m_pValue);
-	m_value = RDOValue();
+	runtime->setLocalVarible(m_name, m_value);
 	return m_value;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetLocalVarible
 // ----------------------------------------------------------------------------
-RDOCalcGetLocalVarible::RDOCalcGetLocalVarible(tstring pName)
-	: m_pName(pName)
+RDOCalcGetLocalVarible::RDOCalcGetLocalVarible(CREF(tstring) name)
+	: m_name(name)
 {}
 
 REF(RDOValue) RDOCalcGetLocalVarible::doCalc(PTR(RDORuntime) runtime)
 {
-	m_value = runtime->getLocalVarible(m_pName);
+	m_value = runtime->getLocalVarible(m_name);
 	return m_value;
 }
 
