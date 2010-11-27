@@ -366,6 +366,22 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		}
 	}
 
+	//Ищем локальную переменную
+	LPContext pContext = RDOParser::s_parser()->context();
+	ASSERT(pContext);
+	LPContextPattern pContextPattern = pContext->cast<ContextPattern>();
+	ASSERT(pContextPattern);
+	LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
+	ASSERT(pLocalVariableList);
+	LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(value->getIdentificator());
+	if(pLocalVariable)
+	{
+		m_value = pLocalVariable->getArithm()->value();
+		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetLocalVarible>::create(pLocalVariable->getValue()->getIdentificator());
+		m_pCalc->setSrcInfo(src_info());
+		return;
+	}
+
 	RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value->getIdentificator().c_str()));
 }
 
