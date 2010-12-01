@@ -213,7 +213,7 @@
 #include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_parser/context/type.h"
-#include "rdo_lib/rdo_parser/context/pattern.h"
+#include "rdo_lib/rdo_parser/context/memory.h"
 
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
@@ -1606,9 +1606,9 @@ equal_statement
 		ASSERT(pRelRes);		
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
-		LPContextPattern pContextPattern = pContext->cast<ContextPattern>();
-		ASSERT(pContextPattern);
-		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableList);
 		LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
@@ -2923,10 +2923,10 @@ init_declaration_list
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 
-		LPContextPattern pContextPattern = pContext->cast<ContextPattern>();
-		ASSERT(pContextPattern);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
 
-		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
+		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
 		pLocalVariableList->append(pLocalVariable);
@@ -2949,10 +2949,10 @@ init_declaration_list
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 
-		LPContextPattern pContextPattern = pContext->cast<ContextPattern>();
-		ASSERT(pContextPattern);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
 
-		LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
+		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableList);
 
 		pLocalVariableList->append(pLocalVariable);

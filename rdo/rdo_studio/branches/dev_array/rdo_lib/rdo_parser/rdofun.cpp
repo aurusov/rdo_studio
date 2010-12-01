@@ -369,9 +369,9 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	//»щем локальную переменную
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
-	LPContextPattern pContextPattern = pContext->cast<ContextPattern>();
-	ASSERT(pContextPattern);
-	LPLocalVariableList pLocalVariableList = pContextPattern->getLocalMemory();
+	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+	ASSERT(pContextMemory);
+	LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
 	ASSERT(pLocalVariableList);
 	LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(value->getIdentificator());
 	if(pLocalVariable)

@@ -3079,18 +3079,6 @@
 				RelativePath=".\rdopatpreparse.inl"
 				>
 			</File>
-			<Filter
-				Name=".context"
-				>
-				<File
-					RelativePath=".\context\pattern.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\context\pattern.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name=".context"
@@ -3109,6 +3097,14 @@
 			</File>
 			<File
 				RelativePath=".\context\global.h"
+				>
+			</File>
+			<File
+				RelativePath=".\context\memory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\context\memory.h"
 				>
 			</File>
 			<File
