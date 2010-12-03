@@ -467,6 +467,14 @@
 				RelativePath=".\rdo_object.h"
 				>
 			</File>
+			<File
+				RelativePath=".\varible_container.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\varible_container.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".bison"
