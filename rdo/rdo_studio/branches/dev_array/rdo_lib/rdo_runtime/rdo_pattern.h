@@ -15,11 +15,13 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_memory.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDORuntime;
+//class RDORuntime;
 class RDOEvent;
 class RDORule;
 class RDOKeyboard;
@@ -60,8 +62,11 @@ protected:
 
 	void runCalcs(REF(CalcList) calcList, PTR(RDORuntime) runtime)
 	{
+		LPRDOLocalMemory pLocalMemory = rdo::Factory<RDOLocalMemory>::create();
+		runtime->getMemoryStack()->pushLocalMemory(pLocalMemory);
 		STL_FOR_ALL(CalcList, calcList, calcIt)
 			(*calcIt)->calcValue(runtime);
+		runtime->getMemoryStack()->popLocalMemory();
 	}
 	bool runCalcsBool(REF(CalcList) calcList, PTR(RDORuntime) runtime)
 	{

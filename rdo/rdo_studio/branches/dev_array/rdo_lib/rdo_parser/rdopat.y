@@ -214,6 +214,7 @@
 #include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_parser/context/type.h"
 #include "rdo_lib/rdo_parser/context/memory.h"
+#include "rdo_lib/rdo_parser/varible_container.h"
 
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
@@ -1537,41 +1538,72 @@ equal_statement
 		rdoRuntime::EqualType  equalType = static_cast<rdoRuntime::EqualType>($2);
 		LPRDORelevantResource  pRelRes   = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
-		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
-		if (!param)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
-		}
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableList);
+		LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
-		switch (equalType)
+		if(pLocalVariable)
 		{
-			case rdoRuntime::ET_INCR:
+			switch (equalType)
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
-				break;
-			}
-			case rdoRuntime::ET_DECR:
-			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
-				break;
-			}
-			default:
-			{
-				NEVER_REACH_HERE;
+				case rdoRuntime::ET_INCR:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_INCR> >::create(paramName);
+					break;
+				}
+				case rdoRuntime::ET_DECR:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_DECR> >::create(paramName);
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
 			}
 		}
-		ASSERT(pCalc);
-		//! Проверка на диапазон
-		//! TODO: проверить работоспособность
-		if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+		else
 		{
-			LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
-		}
-		else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
-		{
-			LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+			LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
+			if (!param)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+			}
+			rdoRuntime::LPRDOCalc pCalc;
+			switch (equalType)
+			{
+				case rdoRuntime::ET_INCR:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+					break;
+				}
+				case rdoRuntime::ET_DECR:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
+			}
+			ASSERT(pCalc);
+			//! Проверка на диапазон
+			//! TODO: проверить работоспособность
+			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+			{
+				LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+			}
+			else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+			{
+				LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+			}
 		}
 		tstring oprStr;
 		switch (equalType)
@@ -1592,7 +1624,7 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcText(rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
 		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
 
 		$$ = PARSER->stack().push(pCalc);
@@ -1603,7 +1635,7 @@ equal_statement
 		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
 		LPRDOFUNArithm        pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		LPRDORelevantResource pRelRes      = PARSER->getLastPATPattern()->m_pCurrRelRes;
-		ASSERT(pRelRes);		
+		ASSERT(pRelRes);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -1624,31 +1656,27 @@ equal_statement
 				}
 				case rdoRuntime::ET_EQUAL:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVarible>::create(paramName, pRightArithm->value().value());
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_EQUAL> >::create(paramName, pRightArithm->calc());
 					break;
 				}
 				case rdoRuntime::ET_PLUS:
 				{
-					rdoRuntime::RDOValue pValue = pLocalVariable->getValue().value() + pRightArithm->value().value();
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVarible>::create(paramName, pValue);
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_PLUS> >::create(paramName, pRightArithm->calc());
 					break;
 				}
 				case rdoRuntime::ET_MINUS:
 				{
-					rdoRuntime::RDOValue pValue = pLocalVariable->getValue().value() - pRightArithm->value().value();
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVarible>::create(paramName, pValue);
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_MINUS> >::create(paramName, pRightArithm->calc());
 					break;
 				}
 				case rdoRuntime::ET_MULTIPLY:
 				{
-					rdoRuntime::RDOValue pValue = pLocalVariable->getValue().value() * pRightArithm->value().value();
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVarible>::create(paramName, pValue);
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_MULTIPLY> >::create(paramName, pRightArithm->calc());
 					break;
 				}
 				case rdoRuntime::ET_DIVIDE:
 				{
-					rdoRuntime::RDOValue pValue = pLocalVariable->getValue().value() / pRightArithm->value().value();
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVarible>::create(paramName, pValue);
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_DIVIDE> >::create(paramName, pRightArithm->calc());
 					break;
 				}
 				default:
@@ -2917,7 +2945,10 @@ type_declaration
 init_declaration_list
 	: init_declaration
 	{
-		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($1-1);
+		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($1);
+		ASSERT(pVariableContainer);
+
+		LPLocalVariable pLocalVariable = pVariableContainer->getLocalVarible();
 		ASSERT(pLocalVariable);
 
 		LPContext pContext = PARSER->context();
@@ -2931,19 +2962,22 @@ init_declaration_list
 
 		pLocalVariableList->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($1);
+		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
-		ASSERT(pCalcList);
+		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcLocalVaribleList>::create();
+		ASSERT(pCalcLocalVaribleList);
 
-		pCalcList->addCalc(pCalc);
+		pCalcLocalVaribleList->addCalc(pCalc);
 
-		$$ = PARSER->stack().push(pCalcList);
+		$$ = PARSER->stack().push(pCalcLocalVaribleList);
 	}
 	| init_declaration_list ',' init_declaration
 	{
-		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($3-1);
+		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($3);
+		ASSERT(pVariableContainer);
+
+		LPLocalVariable pLocalVariable = pVariableContainer->getLocalVarible();
 		ASSERT(pLocalVariable);
 
 		LPContext pContext = PARSER->context();
@@ -2957,15 +2991,15 @@ init_declaration_list
 
 		pLocalVariableList->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($3);
+		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($1);
+		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVaribleList>($1);
 		ASSERT(pCalc);
 
-		pCalcList->addCalc(pCalc);
+		pCalcLocalVaribleList->addCalc(pCalc);
 
-		$$ = PARSER->stack().push(pCalcList);
+		$$ = PARSER->stack().push(pCalcLocalVaribleList);
 	}
 	;
 
@@ -2989,17 +3023,17 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		$$ = PARSER->stack().push(pLocalVariable);
-
-		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
-		ASSERT(pCalcList);
+		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcLocalVaribleList>::create();
+		ASSERT(pCalcLocalVaribleList);
 
 		rdoRuntime::LPRDOCalcCreateLocalVarible pCalcCreateLocalVarible = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVarible>::create(variableName->getIdentificator());
 		ASSERT(pCalcCreateLocalVarible);
 
-		pCalcList->addCalc(pCalcCreateLocalVarible);
+		pCalcLocalVaribleList->addCalc(pCalcCreateLocalVarible);
 
-		$$ = PARSER->stack().push(pCalcList);
+		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVaribleList, pLocalVariable);
+
+		$$ = PARSER->stack().push(pVariableContainer);
 	}
 	| RDO_IDENTIF '=' fun_arithm
 	{
@@ -3020,21 +3054,21 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		$$ = PARSER->stack().push(pLocalVariable);
-
-		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
-		ASSERT(pCalcList);
+		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcLocalVaribleList>::create();
+		ASSERT(pCalcLocalVaribleList);
 
 		rdoRuntime::LPRDOCalcCreateLocalVarible pCalcCreateLocalVarible = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVarible>::create(variableName->getIdentificator());
 		ASSERT(pCalcCreateLocalVarible);
 
-		rdoRuntime::LPRDOCalcSetLocalVarible pCalcSetLocalVarible = rdo::Factory<rdoRuntime::RDOCalcSetLocalVarible>::create(variableName->getIdentificator(), pArithm->value().value());
+		rdoRuntime::LPRDOCalcSetLocalVarible pCalcSetLocalVarible = rdo::Factory<rdoRuntime::RDOCalcSetLocalVarible>::create(variableName->getIdentificator(), pArithm->calc());
 		ASSERT(pCalcSetLocalVarible);
 
-		pCalcList->addCalc(pCalcCreateLocalVarible);
-		pCalcList->addCalc(pCalcSetLocalVarible);
+		pCalcLocalVaribleList->addCalc(pCalcCreateLocalVarible);
+		pCalcLocalVaribleList->addCalc(pCalcSetLocalVarible);
 
-		$$ = PARSER->stack().push(pCalcList);
+		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVaribleList, pLocalVariable);
+
+		$$ = PARSER->stack().push(pVariableContainer);
 	}
 	;
 

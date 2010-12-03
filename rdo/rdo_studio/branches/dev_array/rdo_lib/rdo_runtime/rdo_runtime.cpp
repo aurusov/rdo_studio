@@ -32,6 +32,7 @@ RDORuntime::RDORuntime()
 	m_parent         = NULL;
 	detach();
 	pTerminateIfCalc = NULL;
+	m_pMemoryStack = rdo::Factory<RDOMemoryStack>::create();
 }
 
 RDORuntime::~RDORuntime()
@@ -605,26 +606,9 @@ void RDORuntime::postProcess()
 	}
 }
 
-void RDORuntime::createLocalVarible(CREF(tstring) name)
+LPRDOMemoryStack RDORuntime::getMemoryStack()
 {
-	std::pair<LocalMemory::iterator, rbool> result =
-		m_localMemory.insert(LocalMemory::value_type(name, RDOValue()));
-
-	ASSERT(result.second);
-}
-
-void RDORuntime::setLocalVarible(CREF(tstring) name, CREF(RDOValue) varible)
-{
-	LocalMemory::iterator it = m_localMemory.find(name);
-	ASSERT(it != m_localMemory.end());
-	it->second = varible;
-}
-
-RDOValue RDORuntime::getLocalVarible(CREF(tstring) name) const
-{
-	LocalMemory::const_iterator it = m_localMemory.find(name);
-	ASSERT(it != m_localMemory.end());
-	return it->second;
+	return m_pMemoryStack;
 }
 
 RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()

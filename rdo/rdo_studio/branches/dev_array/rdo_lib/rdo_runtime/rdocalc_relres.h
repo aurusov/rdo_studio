@@ -15,6 +15,7 @@
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
+#include "rdo_lib/rdo_runtime/equaltype.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -22,19 +23,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOSetRelParamCalc
 // ----------------------------------------------------------------------------
-enum EqualType
-{
-	ET_UNDEFINED,
-	ET_NOCHANGE,
-	ET_EQUAL,
-	ET_PLUS,
-	ET_MINUS,
-	ET_MULTIPLY,
-	ET_DIVIDE,
-	ET_INCR,
-	ET_DECR
-};
-
 template <EqualType equalType>
 class RDOSetRelParamCalc: public RDOCalc
 {
