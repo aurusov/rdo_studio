@@ -1645,7 +1645,7 @@ equal_statement
 		LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
 		rdoRuntime::LPRDOCalc pCalcRight;
-		if(pLocalVariable)
+		if (pLocalVariable)
 		{
 			pCalcRight = pRightArithm->createCalc(pLocalVariable->getParam());
 			switch (equalType)
