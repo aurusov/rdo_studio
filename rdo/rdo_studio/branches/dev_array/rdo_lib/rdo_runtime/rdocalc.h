@@ -336,7 +336,7 @@ CALC(RDOCalcCreateLocalVarible)
 private:
 	RDOCalcCreateLocalVarible(tstring pName);
 
-	tstring m_pName;
+	tstring m_name;
 
 	DECALRE_ICalc;
 };
@@ -348,10 +348,10 @@ CALC(RDOCalcSetLocalVarible)
 {
 DECLARE_FACTORY(RDOCalcSetLocalVarible)
 private:
-	RDOCalcSetLocalVarible(CREF(tstring) name, CREF(RDOValue) value);
+	RDOCalcSetLocalVarible(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
 
-	tstring  m_name;
-	RDOValue m_value;
+	tstring   m_name;
+	LPRDOCalc m_pCalc;
 
 	DECALRE_ICalc;
 };

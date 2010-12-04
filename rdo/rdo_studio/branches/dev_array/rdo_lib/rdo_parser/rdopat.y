@@ -2966,7 +2966,7 @@ init_declaration_list
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcLocalVaribleList>::create();
+		rdoRuntime::LPRDOCalcList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
 		ASSERT(pCalcLocalVaribleList);
 
 		pCalcLocalVaribleList->addCalc(pCalc);
@@ -2995,7 +2995,7 @@ init_declaration_list
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVaribleList>($1);
+		rdoRuntime::LPRDOCalcList pCalcLocalVaribleList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($1);
 		ASSERT(pCalc);
 
 		pCalcLocalVaribleList->addCalc(pCalc);
@@ -3024,7 +3024,7 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcLocalVaribleList>::create();
+		rdoRuntime::LPRDOCalcList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
 		ASSERT(pCalcLocalVaribleList);
 
 		rdoRuntime::LPRDOCalcCreateLocalVarible pCalcCreateLocalVarible = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVarible>::create(variableName->getIdentificator());
@@ -3055,7 +3055,7 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcLocalVaribleList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcLocalVaribleList>::create();
+		rdoRuntime::LPRDOCalcList pCalcLocalVaribleList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
 		ASSERT(pCalcLocalVaribleList);
 
 		rdoRuntime::LPRDOCalcCreateLocalVarible pCalcCreateLocalVarible = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVarible>::create(variableName->getIdentificator());
