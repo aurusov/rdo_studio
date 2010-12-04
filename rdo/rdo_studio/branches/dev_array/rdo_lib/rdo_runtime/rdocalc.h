@@ -336,7 +336,7 @@ CALC(RDOCalcCreateLocalVarible)
 private:
 	RDOCalcCreateLocalVarible(tstring pName);
 
-	tstring m_Name;
+	tstring m_pName;
 
 	DECALRE_ICalc;
 };
@@ -348,10 +348,10 @@ CALC(RDOCalcSetLocalVarible)
 {
 DECLARE_FACTORY(RDOCalcSetLocalVarible)
 private:
-	RDOCalcSetLocalVarible(CREF(tstring) name, LPRDOCalc pCalc);
+	RDOCalcSetLocalVarible(CREF(tstring) name, CREF(RDOValue) value);
 
-	tstring   m_name;
-	LPRDOCalc m_calc;
+	tstring  m_name;
+	RDOValue m_value;
 
 	DECALRE_ICalc;
 };
@@ -366,25 +366,6 @@ private:
 	RDOCalcGetLocalVarible(CREF(tstring) name);
 
 	tstring m_name;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcLocalVaribleList
-// ----------------------------------------------------------------------------
-CALC(RDOCalcLocalVaribleList)
-{
-	DECLARE_FACTORY(RDOCalcLocalVaribleList)
-public:
-	typedef std::vector<LPRDOCalc> CalcLocalVaribleList;
-
-	void addCalc(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcLocalVaribleList();
-
-	CalcLocalVaribleList m_calcLocalVaribleList;
 
 	DECALRE_ICalc;
 };
