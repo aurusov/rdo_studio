@@ -15,7 +15,7 @@
 #include "rdo_lib/rdo_parser/rdortp_param.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/context/memory.h"
+#include "rdo_lib/rdo_parser/context/pattern.h"
 
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -185,7 +185,7 @@ private:
 	LPRDOFUNArithm   m_pCommonChoice;
 
 	ruint            m_currentRelResIndex;
-	LPContextMemory  m_pContext;
+	LPContextPattern m_pContext;
 
 	tstring typeToString(PatType type)
 	{

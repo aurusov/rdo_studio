@@ -13,36 +13,19 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/local_variable.h"
-#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/memory.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- IContextPattern
-// ----------------------------------------------------------------------------
-S_INTERFACE(IContextPattern)
-{
-	virtual LPLocalVariableList getLocalMemory() = 0;
-};
-#define DECLARE_IContextPattern           \
-public:                                   \
-	LPLocalVariableList getLocalMemory();
-
-// ----------------------------------------------------------------------------
 // ---------- ContextPattern
 // ----------------------------------------------------------------------------
-CLASS(ContextPattern):
-	    INSTANCE_OF      (Context        )
-	AND IMPLEMENTATION_OF(IContextPattern)
+CLASS(ContextPattern): INSTANCE_OF(ContextMemory)
 {
 DECLARE_FACTORY(ContextPattern);
 private:
 	ContextPattern();
-
-	LPLocalVariableList m_pLocalVariableList;
-
-	DECLARE_IContextPattern;
 };
 DECLARE_POINTER(ContextPattern);
 

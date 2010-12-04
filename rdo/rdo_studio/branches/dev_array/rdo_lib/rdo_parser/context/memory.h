@@ -25,7 +25,7 @@ S_INTERFACE(IContextMemory)
 {
 	virtual LPLocalVariableList getLocalMemory() = 0;
 };
-#define DECLARE_IContextMemory           \
+#define DECLARE_IContextMemory            \
 public:                                   \
 	LPLocalVariableList getLocalMemory();
 
@@ -33,13 +33,14 @@ public:                                   \
 // ---------- ContextMemory
 // ----------------------------------------------------------------------------
 CLASS(ContextMemory):
-	    INSTANCE_OF      (Context        )
+	    INSTANCE_OF      (Context       )
 	AND IMPLEMENTATION_OF(IContextMemory)
 {
 DECLARE_FACTORY(ContextMemory);
-private:
+protected:
 	ContextMemory();
 
+private:
 	LPLocalVariableList m_pLocalVariableList;
 
 	DECLARE_IContextMemory;

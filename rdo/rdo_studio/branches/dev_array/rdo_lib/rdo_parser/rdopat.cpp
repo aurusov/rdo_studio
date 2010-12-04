@@ -68,7 +68,7 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 		rdoParse::g_error().push_only(pPatternExist->src_info(), _T("См. первое определение"));
 		rdoParse::g_error().push_done();
 	}
-	m_pContext = rdo::Factory<ContextMemory>::create();
+	m_pContext = rdo::Factory<ContextPattern>::create();
 	RDOParser::s_parser()->insertPATPattern(this);
 	RDOParser::s_parser()->contextStack()->push(m_pContext);
 }
