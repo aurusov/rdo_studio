@@ -19,17 +19,17 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- VariableContainer
 // ----------------------------------------------------------------------------
-VariableContainer::VariableContainer(rdoRuntime::LPRDOCalc pCalc, LPLocalVariable pLocalVarible)
+VariableContainer::VariableContainer(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPLocalVariable) pLocalVarible)
 	: m_pCalc        (pCalc        )
 	, m_pLocalVarible(pLocalVarible)
 {}
 
-rdoRuntime::LPRDOCalc VariableContainer::getCalc()
+CREF(rdoRuntime::LPRDOCalc) VariableContainer::getCalc() const
 {
 	return m_pCalc;
 }
 
-LPLocalVariable VariableContainer::getLocalVarible()
+CREF(LPLocalVariable) VariableContainer::getLocalVarible() const
 {
 	return m_pLocalVarible;
 }
