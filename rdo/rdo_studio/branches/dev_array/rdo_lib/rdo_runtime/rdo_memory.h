@@ -20,22 +20,22 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOLocalMemory
+// ---------- RDOMemory
 // ----------------------------------------------------------------------------
-OBJECT(RDOLocalMemory)
+OBJECT(RDOMemory)
 {
-DECLARE_FACTORY(RDOLocalMemory);
+DECLARE_FACTORY(RDOMemory);
 public:
 	typedef std::map<tstring, RDOValue> LocalMemory;
 
-	void     createLocalVarible(CREF(tstring) varibleName);
-	void     setLocalVarible(CREF(tstring) varibleName, CREF(RDOValue) varible);
-	RDOValue getLocalVarible(CREF(tstring) varibleName) const;
+	void     createVariable(CREF(tstring) name);
+	RDOValue getVariable   (CREF(tstring) name) const;
+	void     setVariable   (CREF(tstring) name, CREF(RDOValue) varible);
 
 private:
-	RDOLocalMemory();
-	LocalMemory m_localMemory;
+	RDOMemory();
 
+	LocalMemory m_localMemory;
 };
 
 // ----------------------------------------------------------------------------
@@ -45,16 +45,17 @@ OBJECT(RDOMemoryStack)
 {
 DECLARE_FACTORY(RDOMemoryStack);
 public:
-	typedef std::list<LPRDOLocalMemory> MemoryStack;
+	typedef std::list<LPRDOMemory> MemoryStack;
 
-	void             pushLocalMemory(LPRDOLocalMemory pMemory);
-	LPRDOLocalMemory getLocalMemory();
-	void             popLocalMemory();
+	void        push(LPRDOMemory pMemory);
+	void        pop ();
+
+	LPRDOMemory top();
 
 private:
 	RDOMemoryStack();
-	MemoryStack m_pMemoryStack;
 
+	MemoryStack m_pMemoryStack;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

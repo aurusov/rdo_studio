@@ -62,11 +62,11 @@ protected:
 
 	void runCalcs(REF(CalcList) calcList, PTR(RDORuntime) runtime)
 	{
-		LPRDOLocalMemory pLocalMemory = rdo::Factory<RDOLocalMemory>::create();
-		runtime->getMemoryStack()->pushLocalMemory(pLocalMemory);
+		LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
+		runtime->getMemoryStack()->push(pLocalMemory);
 		STL_FOR_ALL(CalcList, calcList, calcIt)
 			(*calcIt)->calcValue(runtime);
-		runtime->getMemoryStack()->popLocalMemory();
+		runtime->getMemoryStack()->pop();
 	}
 	bool runCalcsBool(REF(CalcList) calcList, PTR(RDORuntime) runtime)
 	{

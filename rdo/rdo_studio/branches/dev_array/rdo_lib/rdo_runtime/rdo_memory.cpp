@@ -16,31 +16,31 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
-// ---------- RDOLocalMemory
+// ---------- RDOMemory
 // ----------------------------------------------------------------------------
-RDOLocalMemory::RDOLocalMemory()
+RDOMemory::RDOMemory()
 {}
 
-void RDOLocalMemory::createLocalVarible(CREF(tstring) varibleName)
+void RDOMemory::createVariable(CREF(tstring) name)
 {
 	std::pair<LocalMemory::iterator, rbool> result =
-		m_localMemory.insert(LocalMemory::value_type(varibleName, RDOValue()));
+		m_localMemory.insert(LocalMemory::value_type(name, RDOValue()));
 
 	ASSERT(result.second);
 }
 
-void RDOLocalMemory::setLocalVarible(CREF(tstring) varibleName, CREF(RDOValue) varible)
+RDOValue RDOMemory::getVariable(CREF(tstring) name) const
 {
-	LocalMemory::iterator it = m_localMemory.find(varibleName);
-	ASSERT(it != m_localMemory.end());
-	it->second = varible;
-}
-
-RDOValue RDOLocalMemory::getLocalVarible(CREF(tstring) varibleName) const
-{
-	LocalMemory::const_iterator it = m_localMemory.find(varibleName);
+	LocalMemory::const_iterator it = m_localMemory.find(name);
 	ASSERT(it != m_localMemory.end());
 	return it->second;
+}
+
+void RDOMemory::setVariable(CREF(tstring) name, CREF(RDOValue) varible)
+{
+	LocalMemory::iterator it = m_localMemory.find(name);
+	ASSERT(it != m_localMemory.end());
+	it->second = varible;
 }
 
 // ----------------------------------------------------------------------------
@@ -49,19 +49,23 @@ RDOValue RDOLocalMemory::getLocalVarible(CREF(tstring) varibleName) const
 RDOMemoryStack::RDOMemoryStack()
 {}
 
-void RDOMemoryStack::pushLocalMemory(LPRDOLocalMemory pMemory)
+void RDOMemoryStack::push(LPRDOMemory pMemory)
 {
 	m_pMemoryStack.push_back(pMemory);
 }
 
-LPRDOLocalMemory RDOMemoryStack::getLocalMemory()
+void RDOMemoryStack::pop()
 {
-	return m_pMemoryStack.back();
+	ASSERT(!m_pMemoryStack.empty());
+
+	m_pMemoryStack.pop_back();
 }
 
-void RDOMemoryStack::popLocalMemory()
+LPRDOMemory RDOMemoryStack::top()
 {
-	m_pMemoryStack.pop_back();
+	ASSERT(!m_pMemoryStack.empty());
+
+	return m_pMemoryStack.back();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -26,71 +26,71 @@ OPEN_RDO_RUNTIME_NAMESPACE
 template <EqualType equalType>
 class RDOCalcSetLocalVaribleEqualType: public RDOCalc
 {
-	DECLARE_FACTORY(RDOCalcSetLocalVaribleEqualType)
+DECLARE_FACTORY(RDOCalcSetLocalVaribleEqualType)
 private:
 	RDOCalcSetLocalVaribleEqualType(CREF(tstring) name, LPRDOCalc pCalc = NULL)
-		: m_name   (name )
-		, m_calc   (pCalc)
+		: m_name (name )
+		, m_pCalc(pCalc)
 	{}
 
 	tstring   m_name;
-	LPRDOCalc m_calc;
+	LPRDOCalc m_pCalc;
 
 	DECALRE_ICalc;
 };
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_EQUAL>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_EQUAL>::doCalc(PTR(RDORuntime) pRuntime)
 {
-	runtime->getMemoryStack()->getLocalMemory()->setLocalVarible(m_name, m_calc->calcValue(runtime));
+	pRuntime->getMemoryStack()->top()->setVariable(m_name, m_pCalc->calcValue(pRuntime));
 	return m_value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_PLUS>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_PLUS>::doCalc(PTR(RDORuntime) pRuntime)
 {
-	rdoRuntime::RDOValue pValue = runtime->getMemoryStack()->getLocalMemory()->getLocalVarible(m_name) + m_calc->calcValue(runtime);
-	runtime->getMemoryStack()->getLocalMemory()->setLocalVarible(m_name, pValue);
+	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->top()->getVariable(m_name) + m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->top()->setVariable(m_name, pValue);
 	return m_value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_MINUS>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_MINUS>::doCalc(PTR(RDORuntime) pRuntime)
 {
-	rdoRuntime::RDOValue pValue = runtime->getMemoryStack()->getLocalMemory()->getLocalVarible(m_name) - m_calc->calcValue(runtime);
-	runtime->getMemoryStack()->getLocalMemory()->setLocalVarible(m_name, pValue);
+	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->top()->getVariable(m_name) - m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->top()->setVariable(m_name, pValue);
 	return m_value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_MULTIPLY>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_MULTIPLY>::doCalc(PTR(RDORuntime) pRuntime)
 {
-	rdoRuntime::RDOValue pValue = runtime->getMemoryStack()->getLocalMemory()->getLocalVarible(m_name) * m_calc->calcValue(runtime);
-	runtime->getMemoryStack()->getLocalMemory()->setLocalVarible(m_name, pValue);
+	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->top()->getVariable(m_name) * m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->top()->setVariable(m_name, pValue);
 	return m_value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_DIVIDE>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_DIVIDE>::doCalc(PTR(RDORuntime) pRuntime)
 {
-	rdoRuntime::RDOValue pValue = runtime->getMemoryStack()->getLocalMemory()->getLocalVarible(m_name) / m_calc->calcValue(runtime);
-	runtime->getMemoryStack()->getLocalMemory()->setLocalVarible(m_name, pValue);
+	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->top()->getVariable(m_name) / m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->top()->setVariable(m_name, pValue);
 	return m_value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_INCR>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_INCR>::doCalc(PTR(RDORuntime) pRuntime)
 {
-	rdoRuntime::RDOValue pValue = runtime->getMemoryStack()->getLocalMemory()->getLocalVarible(m_name) + RDOValue(1);
-	runtime->getMemoryStack()->getLocalMemory()->setLocalVarible(m_name, pValue);
+	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->top()->getVariable(m_name) + RDOValue(1);
+	pRuntime->getMemoryStack()->top()->setVariable(m_name, pValue);
 	return m_value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_DECR>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcSetLocalVaribleEqualType<ET_DECR>::doCalc(PTR(RDORuntime) pRuntime)
 {
-	rdoRuntime::RDOValue pValue = runtime->getMemoryStack()->getLocalMemory()->getLocalVarible(m_name) - RDOValue(1);
-	runtime->getMemoryStack()->getLocalMemory()->setLocalVarible(m_name, pValue);
+	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->top()->getVariable(m_name) - RDOValue(1);
+	pRuntime->getMemoryStack()->top()->setVariable(m_name, pValue);
 	return m_value;
 }
 
