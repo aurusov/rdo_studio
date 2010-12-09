@@ -1543,9 +1543,9 @@ equal_statement
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 		ASSERT(pContextMemory);
-		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableList);
-		LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(paramName);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
 		if(pLocalVariable)
 		{
@@ -1641,9 +1641,9 @@ equal_statement
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 		ASSERT(pContextMemory);
-		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableList);
-		LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(paramName);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
 		rdoRuntime::LPRDOCalc pCalcRight;
 		if (pLocalVariable)
@@ -1657,27 +1657,27 @@ equal_statement
 				}
 				case rdoRuntime::ET_EQUAL:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_EQUAL> >::create(paramName, pRightArithm->calc());
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_EQUAL> >::create(paramName, pCalcRight);
 					break;
 				}
 				case rdoRuntime::ET_PLUS:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_PLUS> >::create(paramName, pRightArithm->calc());
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_PLUS> >::create(paramName, pCalcRight);
 					break;
 				}
 				case rdoRuntime::ET_MINUS:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_MINUS> >::create(paramName, pRightArithm->calc());
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_MINUS> >::create(paramName, pCalcRight);
 					break;
 				}
 				case rdoRuntime::ET_MULTIPLY:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_MULTIPLY> >::create(paramName, pRightArithm->calc());
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_MULTIPLY> >::create(paramName, pCalcRight);
 					break;
 				}
 				case rdoRuntime::ET_DIVIDE:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_DIVIDE> >::create(paramName, pRightArithm->calc());
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVaribleEqualType<rdoRuntime::ET_DIVIDE> >::create(paramName, pCalcRight);
 					break;
 				}
 				default:
@@ -2958,10 +2958,10 @@ init_declaration_list
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 		ASSERT(pContextMemory);
 
-		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableList);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
 
-		pLocalVariableList->append(pLocalVariable);
+		pLocalVariableListStack->append(pLocalVariable);
 
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
@@ -2987,10 +2987,10 @@ init_declaration_list
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 		ASSERT(pContextMemory);
 
-		LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableList);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
 
-		pLocalVariableList->append(pLocalVariable);
+		pLocalVariableListStack->append(pLocalVariable);
 
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);

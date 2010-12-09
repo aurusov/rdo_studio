@@ -371,9 +371,9 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	ASSERT(pContext);
 	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 	ASSERT(pContextMemory);
-	LPLocalVariableList pLocalVariableList = pContextMemory->getLocalMemory();
-	ASSERT(pLocalVariableList);
-	LPLocalVariable pLocalVariable = pLocalVariableList->findLocalVariable(value->getIdentificator());
+	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+	ASSERT(pLocalVariableListStack);
+	LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(value->getIdentificator());
 	if(pLocalVariable)
 	{
 		m_value = pLocalVariable->getArithm()->value();

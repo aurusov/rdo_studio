@@ -21,13 +21,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 ContextMemory::ContextMemory()
 {
-	m_pLocalVariableList = rdo::Factory<LocalVariableList>::create();
-	ASSERT(m_pLocalVariableList);
+	m_pLocalVariableListStack = rdo::Factory<LocalVariableListStack>::create();
+	ASSERT(m_pLocalVariableListStack);
 }
 
-LPLocalVariableList ContextMemory::getLocalMemory()
+LPLocalVariableListStack ContextMemory::getLocalMemory()
 {
-	return m_pLocalVariableList;
+	return m_pLocalVariableListStack;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

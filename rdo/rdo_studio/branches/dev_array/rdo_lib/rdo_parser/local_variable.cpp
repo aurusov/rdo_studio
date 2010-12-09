@@ -74,4 +74,41 @@ LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) paramName) co
 	return NULL;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- LocalVariableListStack
+// ----------------------------------------------------------------------------
+LocalVariableListStack::LocalVariableListStack()
+{}
+
+void LocalVariableListStack::push(CREF(LPLocalVariableList) pVariableList)
+{
+	m_pVariableListStack.push_back(pVariableList);
+}
+
+void LocalVariableListStack::pop()
+{
+	ASSERT(!m_pVariableListStack.empty());
+
+	m_pVariableListStack.pop_back();
+}
+
+void LocalVariableListStack::append(CREF(LPLocalVariable) pVariable)
+{
+	ASSERT(!m_pVariableListStack.empty());
+
+	m_pVariableListStack.back()->append(pVariable);
+}
+
+LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) paramName) const
+{
+	ASSERT(!m_pVariableListStack.empty());
+
+	VariableListStack::const_iterator stack_it = m_pVariableListStack.begin();
+	while(stack_it != m_pVariableListStack.end())
+	{
+		if((*stack_it)->findLocalVariable(paramName)) return (*stack_it)->findLocalVariable(paramName);
+		++stack_it;
+	}
+	return NULL;
+}
 CLOSE_RDO_PARSER_NAMESPACE

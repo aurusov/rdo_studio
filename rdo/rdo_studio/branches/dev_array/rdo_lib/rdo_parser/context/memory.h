@@ -23,11 +23,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 S_INTERFACE(IContextMemory)
 {
-	virtual LPLocalVariableList getLocalMemory() = 0;
+	virtual LPLocalVariableListStack getLocalMemory() = 0;
 };
-#define DECLARE_IContextMemory            \
-public:                                   \
-	LPLocalVariableList getLocalMemory();
+#define DECLARE_IContextMemory               \
+public:                                      \
+	LPLocalVariableListStack getLocalMemory();
 
 // ----------------------------------------------------------------------------
 // ---------- ContextMemory
@@ -41,7 +41,7 @@ protected:
 	ContextMemory();
 
 private:
-	LPLocalVariableList m_pLocalVariableList;
+	LPLocalVariableListStack m_pLocalVariableListStack;
 
 	DECLARE_IContextMemory;
 };

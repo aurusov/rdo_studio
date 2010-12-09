@@ -56,6 +56,27 @@ private:
 	VariableList m_variableList;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- LocalVariableListStack
+// ----------------------------------------------------------------------------
+OBJECT(LocalVariableListStack)
+{
+	DECLARE_FACTORY(LocalVariableListStack);
+public:
+	typedef std::list<LPLocalVariableList> VariableListStack;
+
+	void push(CREF(LPLocalVariableList) pVariableList);
+	void pop ();
+
+	void            append           (CREF(LPLocalVariable) pVariable);
+	LPLocalVariable findLocalVariable(CREF(tstring)         paramName) const;
+
+private:
+	LocalVariableListStack();
+
+	VariableListStack m_pVariableListStack;
+};
+
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif //! _LOCAL_VARIABLE_H_

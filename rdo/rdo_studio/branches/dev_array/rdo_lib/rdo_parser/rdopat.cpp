@@ -16,6 +16,7 @@
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 // ===============================================================================
 
@@ -71,6 +72,17 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	m_pContext = rdo::Factory<ContextPattern>::create();
 	RDOParser::s_parser()->insertPATPattern(this);
 	RDOParser::s_parser()->contextStack()->push(m_pContext);
+
+	LPContextMemory pContextMemory = m_pContext->cast<ContextMemory>();
+	ASSERT(pContextMemory);
+
+	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+	ASSERT(pLocalVariableListStack);
+
+	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+	ASSERT(pLocalVariableList);
+
+	pLocalVariableListStack->push(pLocalVariableList);
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)
