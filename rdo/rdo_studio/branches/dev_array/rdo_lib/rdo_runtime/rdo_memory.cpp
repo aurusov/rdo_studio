@@ -32,19 +32,20 @@ void RDOMemory::createVariable(CREF(tstring) name)
 RDOValue RDOMemory::getVariable(CREF(tstring) name) const
 {
 	LocalMemory::const_iterator it = m_localMemory.find(name);
+	ASSERT(it != m_localMemory.end());
 	return it->second;
 }
 
 void RDOMemory::setVariable(CREF(tstring) name, CREF(RDOValue) varible)
 {
 	LocalMemory::iterator it = m_localMemory.find(name);
+	ASSERT(it != m_localMemory.end());
 	it->second = varible;
 }
 
 rbool RDOMemory::findVarible(CREF(tstring) name) const
 {
-	rbool result = (m_localMemory.find(name) == m_localMemory.end()) ? FALSE : TRUE;
-	return result;
+	return (m_localMemory.find(name) == m_localMemory.end()) ? FALSE : TRUE;
 }
 
 // ----------------------------------------------------------------------------
