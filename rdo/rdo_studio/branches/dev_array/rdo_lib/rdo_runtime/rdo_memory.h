@@ -31,6 +31,7 @@ public:
 	void     createVariable(CREF(tstring) name);
 	RDOValue getVariable   (CREF(tstring) name) const;
 	void     setVariable   (CREF(tstring) name, CREF(RDOValue) varible);
+	rbool    findVarible   (CREF(tstring) name) const;
 
 private:
 	RDOMemory();
@@ -47,10 +48,12 @@ DECLARE_FACTORY(RDOMemoryStack);
 public:
 	typedef std::list<LPRDOMemory> MemoryStack;
 
-	void        push(LPRDOMemory pMemory);
-	void        pop ();
+	void     push  (LPRDOMemory pMemory);
+	void     pop   ();
 
-	LPRDOMemory top();
+	void     create(CREF(tstring) name);
+	RDOValue get   (CREF(tstring) name) const;
+	void     set   (CREF(tstring) name, CREF(RDOValue) varible);
 
 private:
 	RDOMemoryStack();
