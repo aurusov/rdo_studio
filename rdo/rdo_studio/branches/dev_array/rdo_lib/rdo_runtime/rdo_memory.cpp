@@ -77,14 +77,14 @@ RDOValue RDOMemoryStack::get(CREF(tstring) name) const
 {
 	ASSERT(!m_pMemoryStack.empty());
 
-	MemoryStack::const_iterator stack_it = m_pMemoryStack.begin();
-	while (stack_it != m_pMemoryStack.end())
+	MemoryStack::const_reverse_iterator stack_it = m_pMemoryStack.rbegin();
+	while (stack_it != m_pMemoryStack.rend())
 	{
 		if((*stack_it)->findVarible(name)) break;
 		else ++stack_it;
 	};
 
-	ASSERT(stack_it != m_pMemoryStack.end());
+	ASSERT(stack_it != m_pMemoryStack.rend());
 	return (*stack_it)->getVariable(name);
 }
 
@@ -92,14 +92,14 @@ void RDOMemoryStack::set(CREF(tstring) name, CREF(RDOValue) varible)
 {
 	ASSERT(!m_pMemoryStack.empty());
 
-	MemoryStack::iterator stack_it = m_pMemoryStack.begin();
-	while (stack_it != m_pMemoryStack.end())
+	MemoryStack::reverse_iterator stack_it = m_pMemoryStack.rbegin();
+	while (stack_it != m_pMemoryStack.rend())
 	{
 		if((*stack_it)->findVarible(name)) break;
 		else ++stack_it;
 	};
 
-	ASSERT(stack_it != m_pMemoryStack.end());
+	ASSERT(stack_it != m_pMemoryStack.rend());
 	(*stack_it)->setVariable(name, varible);
 }
 

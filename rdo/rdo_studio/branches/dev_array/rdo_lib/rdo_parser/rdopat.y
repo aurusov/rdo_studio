@@ -1475,13 +1475,54 @@ statement
 	| planning_statement
 	| local_variable_declaration
 	| if_statement
-	| '{' statement_list '}'
+	| open_brace statement_list close_brace
 	{
 		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($2);
 		ASSERT(pCalcList);
+
+		rdoRuntime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcList->addCalc(pCalcCloseBrace);
+
 		rdoRuntime::LPRDOCalc pCalc = pCalcList;
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
+	}
+	;
+
+open_brace
+	: '{'
+	{
+		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+		ASSERT(pLocalVariableList);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->push(pLocalVariableList);
+	}
+	;
+
+close_brace
+	: '}'
+	{
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->pop();
 	}
 	;
 
@@ -1490,6 +1531,11 @@ statement_list
 	{
 		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
 		ASSERT(pCalcList);
+
+		rdoRuntime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		pCalcList->addCalc(pCalcOpenBrace);
 		$$ = PARSER->stack().push(pCalcList);
 	}
 	| statement_list statement

@@ -19,6 +19,7 @@
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
+#include "rdo_lib/rdo_runtime/rdo_memory.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -366,6 +367,30 @@ private:
 	RDOCalcGetLocalVarible(CREF(tstring) name);
 
 	tstring m_name;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcOpenBrace
+// ----------------------------------------------------------------------------
+CALC(RDOCalcOpenBrace)
+{
+	DECLARE_FACTORY(RDOCalcOpenBrace)
+private:
+	RDOCalcOpenBrace();
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCloseBrace
+// ----------------------------------------------------------------------------
+CALC(RDOCalcCloseBrace)
+{
+	DECLARE_FACTORY(RDOCalcCloseBrace)
+private:
+	RDOCalcCloseBrace();
 
 	DECALRE_ICalc;
 };

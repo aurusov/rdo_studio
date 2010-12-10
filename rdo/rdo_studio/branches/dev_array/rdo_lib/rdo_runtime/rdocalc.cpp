@@ -291,6 +291,32 @@ REF(RDOValue) RDOCalcGetLocalVarible::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcOpenBrace
+// ----------------------------------------------------------------------------
+RDOCalcOpenBrace::RDOCalcOpenBrace()
+{}
+
+REF(RDOValue) RDOCalcOpenBrace::doCalc(PTR(RDORuntime) runtime)
+{
+	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
+	runtime->getMemoryStack()->push(pLocalMemory);
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCloseBrace
+// ----------------------------------------------------------------------------
+RDOCalcCloseBrace::RDOCalcCloseBrace()
+{}
+
+REF(RDOValue) RDOCalcCloseBrace::doCalc(PTR(RDORuntime) runtime)
+{
+	runtime->getMemoryStack()->pop();
+	return m_value;
+}
+
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcList
 // ----------------------------------------------------------------------------
 RDOCalcList::RDOCalcList()

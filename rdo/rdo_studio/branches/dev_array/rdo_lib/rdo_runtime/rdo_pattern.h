@@ -16,7 +16,6 @@
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_memory.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
