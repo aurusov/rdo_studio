@@ -250,6 +250,32 @@ REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcFor
+// ----------------------------------------------------------------------------
+RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement)
+	:m_pDeclaration(pDeclaration)
+	,m_pCondition  (pCondition  )
+	,m_pExpression (pExpression )
+	,m_pStatement  (pStatement  )
+{
+	ASSERT(m_pDeclaration);
+	ASSERT(m_pCondition  );
+	ASSERT(m_pExpression );
+	ASSERT(m_pStatement  );
+}
+
+REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) runtime)
+{
+	m_value = m_pDeclaration->calcValue(runtime);
+	while(m_pCondition->calcValue(runtime).getAsBool())
+	{
+		m_value = m_pExpression->calcValue(runtime);
+		m_value = m_pStatement->calcValue(runtime);
+	}
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateLocalVariable
 // ----------------------------------------------------------------------------
 RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(tstring name)

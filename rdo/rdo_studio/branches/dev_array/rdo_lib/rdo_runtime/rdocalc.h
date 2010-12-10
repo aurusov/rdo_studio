@@ -329,6 +329,23 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcFor
+// ----------------------------------------------------------------------------
+CALC(RDOCalcFor)
+{
+	DECLARE_FACTORY(RDOCalcFor)
+private:
+	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
+
+	LPRDOCalc m_pDeclaration;
+	LPRDOCalc m_pCondition;
+	LPRDOCalc m_pExpression;
+	LPRDOCalc m_pStatement;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateLocalVariable
 // ----------------------------------------------------------------------------
 CALC(RDOCalcCreateLocalVariable)

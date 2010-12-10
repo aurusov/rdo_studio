@@ -129,6 +129,7 @@
 %token RDO_ADVANCE
 %token RDO_RELEASE
 %token RDO_if
+%token RDO_for
 %token RDO_result
 %token RDO_CF
 %token RDO_Priority
@@ -1475,12 +1476,13 @@ statement
 	| planning_statement
 	| local_variable_declaration
 	| if_statement
+	| for_statement
 	| open_brace statement_list close_brace
 	{
 		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($2);
 		ASSERT(pCalcList);
 
-		rdoRuntime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
 		pCalcList->addCalc(pCalcCloseBrace);
@@ -1532,7 +1534,7 @@ statement_list
 		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
 		ASSERT(pCalcList);
 
-		rdoRuntime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
+		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
 		pCalcList->addCalc(pCalcOpenBrace);
@@ -1962,6 +1964,53 @@ if_statement
 	| RDO_if '(' fun_logic error
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+for_statement
+	: RDO_for '(' local_variable_declaration fun_logic ';' equal_statement ')' statement
+	{
+		rdoRuntime::LPRDOCalc pDeclarationCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($3);
+		ASSERT(pDeclarationCalc);
+
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($4);
+		ASSERT(pCondition);
+		
+		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		rdoRuntime::LPRDOCalc pExpressionCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($6);
+		ASSERT(pExpressionCalc);
+
+		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($8);
+		ASSERT(pStatementCalc);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(pDeclarationCalc, pConditionCalc, pExpressionCalc, pStatementCalc);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_for '(' equal_statement fun_logic ';' equal_statement ')' statement
+	{
+		rdoRuntime::LPRDOCalc pDeclarationCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($3);
+		ASSERT(pDeclarationCalc);
+
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($4);
+		ASSERT(pCondition);
+		
+		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		rdoRuntime::LPRDOCalc pExpressionCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($6);
+		ASSERT(pExpressionCalc);
+
+		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($8);
+		ASSERT(pStatementCalc);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(pDeclarationCalc, pConditionCalc, pExpressionCalc, pStatementCalc);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 
