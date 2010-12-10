@@ -329,13 +329,13 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateLocalVarible
+// ---------- RDOCalcCreateLocalVariable
 // ----------------------------------------------------------------------------
-CALC(RDOCalcCreateLocalVarible)
+CALC(RDOCalcCreateLocalVariable)
 {
-	DECLARE_FACTORY(RDOCalcCreateLocalVarible)
+	DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcCreateLocalVarible(tstring pName);
+	RDOCalcCreateLocalVariable(tstring pName);
 
 	tstring m_name;
 
@@ -343,13 +343,13 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcSetLocalVarible
+// ---------- RDOCalcSetLocalVariable
 // ----------------------------------------------------------------------------
-CALC(RDOCalcSetLocalVarible)
+CALC(RDOCalcSetLocalVariable)
 {
-DECLARE_FACTORY(RDOCalcSetLocalVarible)
+DECLARE_FACTORY(RDOCalcSetLocalVariable)
 private:
-	RDOCalcSetLocalVarible(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
+	RDOCalcSetLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
 
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
@@ -358,13 +358,13 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcGetLocalVarible
+// ---------- RDOCalcGetLocalVariable
 // ----------------------------------------------------------------------------
-CALC(RDOCalcGetLocalVarible)
+CALC(RDOCalcGetLocalVariable)
 {
-DECLARE_FACTORY(RDOCalcGetLocalVarible)
+DECLARE_FACTORY(RDOCalcGetLocalVariable)
 private:
-	RDOCalcGetLocalVarible(CREF(tstring) name);
+	RDOCalcGetLocalVariable(CREF(tstring) name);
 
 	tstring m_name;
 

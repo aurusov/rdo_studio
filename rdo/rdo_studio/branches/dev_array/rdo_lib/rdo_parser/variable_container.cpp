@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/varible_container.h"
+#include "rdo_lib/rdo_parser/variable_container.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -19,9 +19,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- VariableContainer
 // ----------------------------------------------------------------------------
-VariableContainer::VariableContainer(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPLocalVariable) pLocalVarible)
+VariableContainer::VariableContainer(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPLocalVariable) pLocalVariable)
 	: m_pCalc        (pCalc        )
-	, m_pLocalVarible(pLocalVarible)
+	, m_pLocalVariable(pLocalVariable)
 {}
 
 CREF(rdoRuntime::LPRDOCalc) VariableContainer::getCalc() const
@@ -29,9 +29,9 @@ CREF(rdoRuntime::LPRDOCalc) VariableContainer::getCalc() const
 	return m_pCalc;
 }
 
-CREF(LPLocalVariable) VariableContainer::getLocalVarible() const
+CREF(LPLocalVariable) VariableContainer::getLocalVariable() const
 {
-	return m_pLocalVarible;
+	return m_pLocalVariable;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

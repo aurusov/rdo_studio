@@ -250,13 +250,13 @@ REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateLocalVarible
+// ---------- RDOCalcCreateLocalVariable
 // ----------------------------------------------------------------------------
-RDOCalcCreateLocalVarible::RDOCalcCreateLocalVarible(tstring name)
+RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(tstring name)
 	: m_name(name)
 {}
 
-REF(RDOValue) RDOCalcCreateLocalVarible::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcCreateLocalVariable::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->getMemoryStack()->create(m_name);
 	m_value = RDOValue();
@@ -264,27 +264,27 @@ REF(RDOValue) RDOCalcCreateLocalVarible::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcSetLocalVarible
+// ---------- RDOCalcSetLocalVariable
 // ----------------------------------------------------------------------------
-RDOCalcSetLocalVarible::RDOCalcSetLocalVarible(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
+RDOCalcSetLocalVariable::RDOCalcSetLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
 	: m_name (name )
 	, m_pCalc(pCalc)
 {}
 
-REF(RDOValue) RDOCalcSetLocalVarible::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcSetLocalVariable::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->getMemoryStack()->set(m_name, m_pCalc->calcValue(runtime));
 	return m_value;
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcGetLocalVarible
+// ---------- RDOCalcGetLocalVariable
 // ----------------------------------------------------------------------------
-RDOCalcGetLocalVarible::RDOCalcGetLocalVarible(CREF(tstring) name)
+RDOCalcGetLocalVariable::RDOCalcGetLocalVariable(CREF(tstring) name)
 	: m_name(name)
 {}
 
-REF(RDOValue) RDOCalcGetLocalVarible::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcGetLocalVariable::doCalc(PTR(RDORuntime) runtime)
 {
 	m_value = runtime->getMemoryStack()->get(m_name);
 	return m_value;

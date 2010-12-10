@@ -377,7 +377,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	if(pLocalVariable)
 	{
 		m_value = pLocalVariable->getArithm()->value();
-		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetLocalVarible>::create(pLocalVariable->getValue()->getIdentificator());
+		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->getIdentificator());
 		m_pCalc->setSrcInfo(src_info());
 		return;
 	}

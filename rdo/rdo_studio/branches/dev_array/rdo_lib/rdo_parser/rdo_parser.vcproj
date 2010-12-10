@@ -468,11 +468,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\varible_container.cpp"
+				RelativePath=".\variable_container.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\varible_container.h"
+				RelativePath=".\variable_container.h"
 				>
 			</File>
 		</Filter>

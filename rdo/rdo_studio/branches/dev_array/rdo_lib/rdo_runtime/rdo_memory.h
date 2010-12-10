@@ -30,8 +30,8 @@ public:
 
 	void     createVariable(CREF(tstring) name);
 	RDOValue getVariable   (CREF(tstring) name) const;
-	void     setVariable   (CREF(tstring) name, CREF(RDOValue) varible);
-	rbool    findVarible   (CREF(tstring) name) const;
+	void     setVariable   (CREF(tstring) name, CREF(RDOValue) Variable);
+	rbool    findVariable   (CREF(tstring) name) const;
 
 private:
 	RDOMemory();
@@ -53,7 +53,7 @@ public:
 
 	void     create(CREF(tstring) name);
 	RDOValue get   (CREF(tstring) name) const;
-	void     set   (CREF(tstring) name, CREF(RDOValue) varible);
+	void     set   (CREF(tstring) name, CREF(RDOValue) Variable);
 
 private:
 	RDOMemoryStack();

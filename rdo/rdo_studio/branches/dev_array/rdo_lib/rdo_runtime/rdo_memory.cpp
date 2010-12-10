@@ -36,14 +36,14 @@ RDOValue RDOMemory::getVariable(CREF(tstring) name) const
 	return it->second;
 }
 
-void RDOMemory::setVariable(CREF(tstring) name, CREF(RDOValue) varible)
+void RDOMemory::setVariable(CREF(tstring) name, CREF(RDOValue) Variable)
 {
 	LocalMemory::iterator it = m_localMemory.find(name);
 	ASSERT(it != m_localMemory.end());
-	it->second = varible;
+	it->second = Variable;
 }
 
-rbool RDOMemory::findVarible(CREF(tstring) name) const
+rbool RDOMemory::findVariable(CREF(tstring) name) const
 {
 	return (m_localMemory.find(name) == m_localMemory.end()) ? FALSE : TRUE;
 }
@@ -80,7 +80,7 @@ RDOValue RDOMemoryStack::get(CREF(tstring) name) const
 	MemoryStack::const_reverse_iterator stack_it = m_pMemoryStack.rbegin();
 	while (stack_it != m_pMemoryStack.rend())
 	{
-		if((*stack_it)->findVarible(name)) break;
+		if((*stack_it)->findVariable(name)) break;
 		else ++stack_it;
 	};
 
@@ -88,19 +88,19 @@ RDOValue RDOMemoryStack::get(CREF(tstring) name) const
 	return (*stack_it)->getVariable(name);
 }
 
-void RDOMemoryStack::set(CREF(tstring) name, CREF(RDOValue) varible)
+void RDOMemoryStack::set(CREF(tstring) name, CREF(RDOValue) Variable)
 {
 	ASSERT(!m_pMemoryStack.empty());
 
 	MemoryStack::reverse_iterator stack_it = m_pMemoryStack.rbegin();
 	while (stack_it != m_pMemoryStack.rend())
 	{
-		if((*stack_it)->findVarible(name)) break;
+		if((*stack_it)->findVariable(name)) break;
 		else ++stack_it;
 	};
 
 	ASSERT(stack_it != m_pMemoryStack.rend());
-	(*stack_it)->setVariable(name, varible);
+	(*stack_it)->setVariable(name, Variable);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
