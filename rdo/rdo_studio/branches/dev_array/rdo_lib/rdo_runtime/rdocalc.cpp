@@ -278,7 +278,7 @@ REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateLocalVariable
 // ----------------------------------------------------------------------------
-RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(tstring name)
+RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(CREF(tstring) name)
 	: m_name(name)
 {}
 
@@ -340,7 +340,6 @@ REF(RDOValue) RDOCalcCloseBrace::doCalc(PTR(RDORuntime) runtime)
 	runtime->getMemoryStack()->pop();
 	return m_value;
 }
-
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcList

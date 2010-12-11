@@ -333,7 +333,7 @@ private:
 // ----------------------------------------------------------------------------
 CALC(RDOCalcFor)
 {
-	DECLARE_FACTORY(RDOCalcFor)
+DECLARE_FACTORY(RDOCalcFor)
 private:
 	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
 
@@ -350,9 +350,9 @@ private:
 // ----------------------------------------------------------------------------
 CALC(RDOCalcCreateLocalVariable)
 {
-	DECLARE_FACTORY(RDOCalcCreateLocalVariable)
+DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcCreateLocalVariable(tstring pName);
+	RDOCalcCreateLocalVariable(CREF(tstring) name);
 
 	tstring m_name;
 
@@ -393,7 +393,7 @@ private:
 // ----------------------------------------------------------------------------
 CALC(RDOCalcOpenBrace)
 {
-	DECLARE_FACTORY(RDOCalcOpenBrace)
+DECLARE_FACTORY(RDOCalcOpenBrace)
 private:
 	RDOCalcOpenBrace();
 
@@ -405,7 +405,7 @@ private:
 // ----------------------------------------------------------------------------
 CALC(RDOCalcCloseBrace)
 {
-	DECLARE_FACTORY(RDOCalcCloseBrace)
+DECLARE_FACTORY(RDOCalcCloseBrace)
 private:
 	RDOCalcCloseBrace();
 
