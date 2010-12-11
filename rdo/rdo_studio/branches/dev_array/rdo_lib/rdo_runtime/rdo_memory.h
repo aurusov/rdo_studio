@@ -53,7 +53,7 @@ public:
 
 	void     create(CREF(tstring) name);
 	RDOValue get   (CREF(tstring) name) const;
-	void     set   (CREF(tstring) name, CREF(RDOValue) Variable);
+	void     set   (CREF(tstring) name, CREF(RDOValue) variable);
 
 private:
 	RDOMemoryStack();
