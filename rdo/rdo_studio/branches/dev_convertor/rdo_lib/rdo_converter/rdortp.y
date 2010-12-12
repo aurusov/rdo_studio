@@ -198,6 +198,7 @@
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
+#include "rdo_lib/rdo_converter/update/update.h"
 // ===============================================================================
 
 #define CONVERTER LEXER->converter()
@@ -371,6 +372,15 @@ rtp_param
 param_type
 	: RDO_integer param_type_range param_value_default
 	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@1.m_first_seek, @1.m_last_seek);
+		ASSERT(pDelete);
+
+		rdoConverter::LPDocUpdate pInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(@1.m_last_seek, _T("int"));
+		ASSERT(pInsert);
+
+		CONVERTER->insertDocUpdate(pDelete);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		LPRDOTypeRangeRange pRange = CONVERTER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;
 		if (pRange)

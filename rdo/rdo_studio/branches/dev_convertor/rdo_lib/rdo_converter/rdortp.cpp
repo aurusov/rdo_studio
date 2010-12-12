@@ -71,6 +71,12 @@ LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
 void RDORTPResType::finish()
 {
 	Converter::s_converter()->updateStack().pop();
+
+	CREF(UpdateContainer::DocUpdateList) updateList = m_pUpdateContainer->updateList();
+	STL_FOR_ALL_CONST(updateList, it)
+	{
+		Converter::s_converter()->insertDocUpdate(*it);
+	}
 }
 
 ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
