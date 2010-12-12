@@ -30,10 +30,6 @@ public:
 
 	CREF(T) top   () const;
 	 REF(T) top   ();
-	CREF(T) bottom() const;
-	 REF(T) bottom();
-	CREF(T) prev  (CREF(T) item) const;
-	 REF(T) prev  (CREF(T) item);
 
 private:
 	typedef std::list<T> Container;
