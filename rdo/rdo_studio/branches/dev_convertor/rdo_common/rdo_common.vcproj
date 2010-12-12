@@ -376,6 +376,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\stack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stack.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\supersubclass.h"
 				>
 			</File>
