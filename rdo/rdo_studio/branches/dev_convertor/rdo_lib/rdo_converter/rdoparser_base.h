@@ -59,7 +59,8 @@ public:
 		return m_needStream;
 	}
 
-	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
+	void                      insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
+	REF(UpdateContainerStack) updateStack    ();
 
 protected:
 	RDOParserItem();

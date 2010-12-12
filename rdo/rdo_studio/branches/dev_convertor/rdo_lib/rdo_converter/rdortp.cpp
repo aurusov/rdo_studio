@@ -38,6 +38,10 @@ RDORTPResType::RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
 {
+	m_pUpdateContainer = rdo::Factory<UpdateContainer>::create();
+	ASSERT(m_pUpdateContainer);
+
+	Converter::s_converter()->updateStack().push(m_pUpdateContainer);
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
 
@@ -55,12 +59,18 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 
 void RDORTPResType::addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID)
 {
+	NEVER_REACH_HERE;
 }
 
 LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? *it : LPRDORTPParam();
+}
+
+void RDORTPResType::finish()
+{
+	Converter::s_converter()->updateStack().pop();
 }
 
 ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const

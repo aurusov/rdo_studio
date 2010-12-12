@@ -243,6 +243,7 @@ rtp_res_type
 		{
 			CONVERTER->error().warning(@2, rdo::format(_T("Тип ресурса '%s' не содежит параметров"), pResourceType->name().c_str()));
 		}
+		pResourceType->finish();
 		$$ = CONVERTER->stack().push(pResourceType);
 	}
 	| rtp_header RDO_Parameters rtp_body

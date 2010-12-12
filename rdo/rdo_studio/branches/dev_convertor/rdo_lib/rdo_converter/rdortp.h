@@ -17,6 +17,8 @@
 #include "rdo_lib/rdo_converter/rdo_type.h"
 #include "rdo_lib/rdo_converter/rdo_enum.h"
 #include "rdo_lib/rdo_converter/rdortp_param.h"
+#include "rdo_lib/rdo_converter/update/update_container.h"
+
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 // ===============================================================================
@@ -48,6 +50,7 @@ public:
 	void addParam(CREF(LPRDORTPParam) param);
 	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
 	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
+	void finish  ();
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
 	CREF(ParamList) getParams        ()                        const { return m_params; }
@@ -58,9 +61,10 @@ private:
 	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
-	const rsint  m_number;
-	const rbool  m_permanent;
-	ParamList    m_params;
+	const rsint       m_number;
+	const rbool       m_permanent;
+	ParamList         m_params;
+	LPUpdateContainer m_pUpdateContainer;
 };
 DECLARE_POINTER(RDORTPResType);
 

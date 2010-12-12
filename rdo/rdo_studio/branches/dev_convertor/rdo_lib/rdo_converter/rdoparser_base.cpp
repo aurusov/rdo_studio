@@ -62,6 +62,11 @@ void RDOParserItem::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 	m_updateContainerStack.top()->append(pDocUpdate);
 }
 
+REF(UpdateContainerStack) RDOParserItem::updateStack()
+{
+	return m_updateContainerStack;
+}
+
 void RDOParserItem::convert(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
 {
 	ASSERT(pDocument);

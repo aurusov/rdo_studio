@@ -170,7 +170,8 @@ public:
 	REF(ContextStack) contextStack();
 	LPContext         context     () const;
 
-	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
+	void                      insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
+	REF(UpdateContainerStack) updateStack    ();
 
 	static rdoModelObjectsConvertor::RDOFileTypeIn getFileToParse();
 	static ruint                                   lexer_loc_line();

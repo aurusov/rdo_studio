@@ -138,6 +138,12 @@ void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 	}
 }
 
+REF(UpdateContainerStack) Converter::updateStack()
+{
+	ASSERT(m_pParserItem);
+	return m_pParserItem->updateStack();
+}
+
 rbool Converter::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
