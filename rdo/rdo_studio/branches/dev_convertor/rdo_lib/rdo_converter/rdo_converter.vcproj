@@ -2627,6 +2627,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\update\update_container.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\update\update_container.h"
+				>
+			</File>
+			<File
+				RelativePath=".\update\update_container_stack.h"
+				>
+			</File>
+			<File
 				RelativePath=".\update\update_i.h"
 				>
 			</File>
