@@ -32,7 +32,26 @@ http://www.boost.org/
 bootstrap.bat
 Я делал это из Far'а, наверное и cmd.exe подойдет
 
-3.2. Из корня запускаем bjam.exe
+Если вывелось
+Bootstrapping is done. To build, run:
+
+    .\bjam
+, то всё хорошо, переходим к 3.2.
+
+Иначе смотрим на ошибку. У меня в путях (переменная Path) было с виду правильное имя
+"C:\Program Files\Microsoft DirectX SDK (August 2006)\Utilities\Bin\x86"
+Оно в кавычках, всё хорошо, но инсталятор упорно ругался на его концовку
+\Utilities\Bin\x86";"C:\Program...
+Видать ему не понравилась скобка. В общем убираем этот путь из Path хотябы на время установки буста.
+Повторяем 3.1.
+
+3.2. Из корня запускаем bjam.exe с параметрами
+для компиляции дебаговских библиотек
+bjam debug link=static threading=multi
+
+для компиляции релизных
+bjam release link=static threading=multi runtime-link=static
+
 Собранные либы лежат в 'C:\boost_1_43_0\stage\lib'
 
 4. Запускаем Visual Studio, заходим в настройки
@@ -50,3 +69,10 @@ Show Directories for = Library Files
 C:\boost_1_43_0\stage\lib
 
 Теперь можно компилировать rao_studio.
+
+PS: Уже не в первый раз понадобилось описание имён бибилиотек, вот оно
+http://www.boost.org/doc/libs/1_45_0/more/getting_started/unix-variants.html#library-naming
+
+PSS: Параметры запуска bjam
+http://www.boost.org/boost-build2/doc/html/bbv2/overview/invocation.html#bbv2.overview.invocation.properties
+
