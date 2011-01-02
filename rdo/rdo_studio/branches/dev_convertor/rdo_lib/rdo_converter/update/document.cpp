@@ -49,33 +49,58 @@ tstring Document::getName(Type type) const
 	return rdo::format(_T("%s%s.%s"), m_filePath.c_str(), m_modelName.c_str(), extention.c_str());
 }
 
-REF(std::ofstream) Document::getStream(Type type)
+REF(Document::TypeItem) Document::getItem(Type type)
 {
 	BOOST_AUTO(it, m_fileList.find(type));
 	if (it == m_fileList.end())
 	{
-		PTR(std::ofstream) pStream = new std::ofstream(getName(type).c_str(), std::ios::trunc | std::ios::binary);
-		std::pair<FileList::iterator, rbool> result = m_fileList.insert(FileList::value_type(type, pStream));
+		TypeItem item;
+		item.m_pFileStream   = LPFileStream  (new std::ofstream(getName(type).c_str(), std::ios::trunc | std::ios::binary));
+		item.m_pMemoryStream = LPMemoryStream(new MemoryStream());
+		std::pair<FileList::iterator, rbool> result = m_fileList.insert(FileList::value_type(type, item));
 		ASSERT(result.second);
 		it = result.first;
 	}
-	return *it->second;
+	return it->second;
+}
+
+Document::LPFileStream Document::getFileStream(Type type)
+{
+	return getItem(type).m_pFileStream;
+}
+
+Document::LPMemoryStream Document::getMemoryStream(Type type)
+{
+	return getItem(type).m_pMemoryStream;
 }
 
 void Document::close()
 {
 	STL_FOR_ALL_CONST(m_fileList, it)
 	{
-		it->second->close();
-		delete it->second;
+		it->second.m_pMemoryStream->write(*it->second.m_pFileStream.get());
+		it->second.m_pFileStream->close();
 	}
 	m_fileList.clear();
 }
 
+void Document::MemoryStream::write(CPTR(char) buffer, ruint size)
+{
+	for (ruint i = 0; i < size; ++i)
+	{
+		m_buffer.push_back(buffer[i]);
+	}
+}
+
+void Document::MemoryStream::write(REF(std::ofstream) stream) const
+{
+	stream.write(&m_buffer[0], m_buffer.size());
+}
+
 void Document::write(Type type, CPTR(char) buffer, ruint size)
 {
-	REF(std::ofstream) streamOut = getStream(type);
-	streamOut.write(buffer, size);
+	LPMemoryStream streamOut = getMemoryStream(type);
+	streamOut->write(buffer, size);
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

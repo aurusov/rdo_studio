@@ -12,6 +12,7 @@
 
 // ====================================================================== INCLUDES
 #include <fstream>
+#include <boost/shared_ptr.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdomacros.h"
@@ -39,13 +40,35 @@ private:
 	 Document(CREF(tstring) filePath, CREF(tstring) modelName);
 	~Document();
 
-	typedef std::map<Type, PTR(std::ofstream)> FileList;
+	class MemoryStream
+	{
+	public:
+		typedef std::vector<char> Buffer;
+
+		void write(CPTR(char) buffer, ruint size);
+		void write(REF(std::ofstream) stream) const;
+
+	private:
+		Buffer m_buffer;
+	};
+
+	typedef boost::shared_ptr<std::ofstream> LPFileStream;
+	typedef boost::shared_ptr<MemoryStream>  LPMemoryStream;
+
+	struct TypeItem
+	{
+		LPFileStream   m_pFileStream;
+		LPMemoryStream m_pMemoryStream;
+	};
+	typedef std::map<Type, TypeItem> FileList;
 
 	tstring  m_filePath;
 	tstring  m_modelName;
 	FileList m_fileList;
 
-	REF(std::ofstream) getStream(Type type);
+	REF(TypeItem)  getItem        (Type type);
+	LPFileStream   getFileStream  (Type type);
+	LPMemoryStream getMemoryStream(Type type);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
