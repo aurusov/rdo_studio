@@ -20,7 +20,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- DocUpdate
 // ----------------------------------------------------------------------------
-DocUpdate::DocUpdate(Document::Type fileTo)
+DocUpdate::DocUpdate(IDocument::Type fileTo)
 	: m_fileTo(fileTo)
 {
 	if (m_fileTo == rdoModelObjectsConvertor::UNDEFINED_OUT)
@@ -46,68 +46,106 @@ DocUpdate::DocUpdate(Document::Type fileTo)
 // ----------------------------------------------------------------------------
 // ---------- UpdateInsert
 // ----------------------------------------------------------------------------
-UpdateInsert::UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, Document::Type file)
+UpdateInsert::UpdateInsert(ruint pos, CREF(tstring) value, IDocument::Type file)
 	: DocUpdate(file )
 	, m_pos    (pos  )
 	, m_value  (value)
 {}
 
-void UpdateInsert::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
+void UpdateInsert::apply(REF(LPIDocument) pDocument) const
 {
-	std::istream::pos_type pos = streamIn.tellg();
-	ASSERT(pos <= m_pos);
+	pDocument->insert(m_fileTo, m_pos, m_value);
+}
 
-	while (pos < m_pos)
+void UpdateInsert::insert(IDocument::Type type, ruint to, ruint size)
+{
+	if (m_fileTo != type)
+		return;
+
+	ASSERT(to < m_pos || to > m_pos + m_value.length());
+
+	if (to < m_pos)
 	{
-		char byte;
-		streamIn.get(byte);
-		pDocument->write(m_fileTo, &byte, 1);
-		pos = streamIn.tellg();
+		m_pos += size;
 	}
+}
 
-	pDocument->write(m_fileTo, m_value.c_str(), m_value.length());
+void UpdateInsert::remove(IDocument::Type type, ruint from, ruint to)
+{
+	if (m_fileTo != type)
+		return;
+
+	ASSERT(to <= m_pos || (from > m_pos + m_value.length() && to > m_pos + m_value.length()));
+
+	if (to <= m_pos)
+	{
+		m_pos -= to - from;
+	}
 }
 
 // ----------------------------------------------------------------------------
 // ---------- UpdateDelete
 // ----------------------------------------------------------------------------
-UpdateDelete::UpdateDelete(std::istream::pos_type posFrom, std::istream::pos_type posTo)
+UpdateDelete::UpdateDelete(ruint posFrom, ruint posTo)
 	: m_posFrom(posFrom)
 	, m_posTo  (posTo  )
 {
 	ASSERT(m_posFrom < m_posTo);
 }
 
-void UpdateDelete::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
+void UpdateDelete::apply(REF(LPIDocument) pDocument) const
 {
-	std::istream::pos_type pos = streamIn.tellg();
-	ASSERT(pos <= m_posFrom);
+	pDocument->remove(m_fileTo, m_posFrom, m_posTo);
+}
 
-	while (pos < m_posFrom)
+void UpdateDelete::insert(IDocument::Type type, ruint to, ruint size)
+{
+	if (m_fileTo != type)
+		return;
+
+	ASSERT(to <= m_posFrom || to > m_posTo);
+
+	if (to <= m_posFrom)
 	{
-		char byte;
-		streamIn.get(byte);
-		pDocument->write(m_fileTo, &byte, 1);
-		pos = streamIn.tellg();
+		m_posFrom += size;
+		m_posTo   += size;
 	}
+}
 
-	streamIn.seekg(m_posTo);
+void UpdateDelete::remove(IDocument::Type type, ruint from, ruint to)
+{
+	if (m_fileTo != type)
+		return;
+
+	ASSERT(to < m_posFrom || (from > m_posTo && to > m_posTo));
+
+	if (to < m_posFrom)
+	{
+		m_posFrom -= to - from;
+		m_posTo   -= to - from;
+	}
 }
 
 // ----------------------------------------------------------------------------
-// ---------- UpdateFlush
+// ---------- UpdateMove
 // ----------------------------------------------------------------------------
-UpdateFlush::UpdateFlush()
+UpdateMove::UpdateMove(ruint posFromBegin, ruint posFromEnd, ruint posTo, IDocument::Type fileTo)
+	: DocUpdate()
+	, m_posFromBegin(posFromBegin)
+	, m_posFromEnd  (posFromEnd  )
+	, m_posTo       (posTo       )
 {}
 
-void UpdateFlush::apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
+void UpdateMove::apply(REF(LPIDocument) pDocument) const
 {
-	while (!streamIn.eof())
-	{
-		char byte;
-		streamIn.get(byte);
-		pDocument->write(m_fileTo, &byte, 1);
-	}
+}
+
+void UpdateMove::insert(IDocument::Type type, ruint to, ruint size)
+{
+}
+
+void UpdateMove::remove(IDocument::Type type, ruint from, ruint to)
+{
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

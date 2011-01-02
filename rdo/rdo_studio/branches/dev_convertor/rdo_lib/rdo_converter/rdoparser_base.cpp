@@ -51,36 +51,7 @@ RDOParserItem::~RDOParserItem()
 {}
 
 void RDOParserItem::init()
-{
-	LPUpdateContainer pUpdateContainer = rdo::Factory<UpdateContainer>::create();
-	ASSERT(pUpdateContainer);
-	m_updateContainerStack.push(pUpdateContainer);
-}
-
-void RDOParserItem::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
-{
-	m_updateContainerStack.top()->append(pDocUpdate);
-}
-
-REF(UpdateContainerStack) RDOParserItem::updateStack()
-{
-	return m_updateContainerStack;
-}
-
-void RDOParserItem::convert(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
-{
-	ASSERT(pDocument);
-	ASSERT(m_updateContainerStack.size() == 1);
-
-	CREF(UpdateContainer::DocUpdateList) updateList = m_updateContainerStack.top()->updateList();
-
-	STL_FOR_ALL_CONST(updateList, it)
-	{
-		LPDocUpdate pUpdate = *it;
-		ASSERT(pUpdate);
-		pUpdate->apply(pDocument, streamIn);
-	}
-}
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserContainer

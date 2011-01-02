@@ -16,14 +16,72 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-Document::Document(CREF(tstring) filePath, CREF(tstring) modelName)
-	: m_filePath (filePath )
-	, m_modelName(modelName)
+// ----------------------------------------------------------------------------
+// ---------- Document
+// ----------------------------------------------------------------------------
+Document::Document()
 {}
 
 Document::~Document()
 {
 	close();
+}
+
+void Document::create(CREF(tstring) filePath, CREF(tstring) modelName)
+{
+	m_filePath  = filePath;
+	m_modelName = modelName;
+}
+
+void Document::init(rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstream) stream)
+{
+	Type typeOut;
+	switch (type)
+	{
+	case rdoModelObjectsConvertor::PAT_IN: typeOut = rdoModelObjectsConvertor::PAT_OUT; break;
+	case rdoModelObjectsConvertor::RTP_IN: typeOut = rdoModelObjectsConvertor::RTP_OUT; break;
+	case rdoModelObjectsConvertor::RSS_IN: typeOut = rdoModelObjectsConvertor::RSS_OUT; break;
+	case rdoModelObjectsConvertor::OPR_IN: return;
+	case rdoModelObjectsConvertor::FRM_IN: typeOut = rdoModelObjectsConvertor::FRM_OUT; break;
+	case rdoModelObjectsConvertor::FUN_IN: typeOut = rdoModelObjectsConvertor::FUN_OUT; break;
+	case rdoModelObjectsConvertor::DPT_IN: typeOut = rdoModelObjectsConvertor::DPT_OUT; break;
+	case rdoModelObjectsConvertor::SMR_IN: typeOut = rdoModelObjectsConvertor::SMR_OUT; break;
+	case rdoModelObjectsConvertor::PMD_IN: typeOut = rdoModelObjectsConvertor::PMD_OUT; break;
+	case rdoModelObjectsConvertor::PMV_IN: typeOut = rdoModelObjectsConvertor::PMV_OUT; break;
+	default: NEVER_REACH_HERE;
+	}
+	LPMemoryStream streamOut = getMemoryStream(typeOut);
+	streamOut->init(stream);
+}
+
+void Document::insertUpdate(CREF(LPDocUpdate) pUpdate)
+{
+	ASSERT(pUpdate);
+
+	m_updateContainer.push_back(Update(pUpdate, false));
+}
+
+void Document::convert()
+{
+	LPIDocument pDocument = LPDocument(this).interface_cast<IDocument>();
+
+	STL_FOR_ALL(m_updateContainer, it)
+	{
+		it->second = true;
+		LPDocUpdate pUpdate = it->first;
+		ASSERT(pUpdate);
+		pUpdate->apply(pDocument);
+	}
+}
+
+void Document::close()
+{
+	STL_FOR_ALL_CONST(m_fileList, it)
+	{
+		it->second.m_pMemoryStream->get(*it->second.m_pFileStream.get());
+		it->second.m_pFileStream->close();
+	}
+	m_fileList.clear();
 }
 
 tstring Document::getName(Type type) const
@@ -74,33 +132,76 @@ Document::LPMemoryStream Document::getMemoryStream(Type type)
 	return getItem(type).m_pMemoryStream;
 }
 
-void Document::close()
+void Document::insert(Type type, ruint to, CREF(tstring) value)
 {
-	STL_FOR_ALL_CONST(m_fileList, it)
-	{
-		it->second.m_pMemoryStream->write(*it->second.m_pFileStream.get());
-		it->second.m_pFileStream->close();
-	}
-	m_fileList.clear();
-}
+	LPMemoryStream streamOut = getMemoryStream(type);
+	streamOut->insert(to, value);
 
-void Document::MemoryStream::write(CPTR(char) buffer, ruint size)
-{
-	for (ruint i = 0; i < size; ++i)
+	STL_FOR_ALL(m_updateContainer, it)
 	{
-		m_buffer.push_back(buffer[i]);
+		if (!it->second)
+		{
+			LPDocUpdate pUpdate = it->first;
+			ASSERT(pUpdate);
+			pUpdate->insert(type, to, value.length());
+		}
 	}
 }
 
-void Document::MemoryStream::write(REF(std::ofstream) stream) const
+void Document::remove(Type type, ruint from, ruint to)
+{
+	LPMemoryStream streamOut = getMemoryStream(type);
+	streamOut->remove(from, to);
+
+	STL_FOR_ALL(m_updateContainer, it)
+	{
+		if (!it->second)
+		{
+			LPDocUpdate pUpdate = it->first;
+			ASSERT(pUpdate);
+			pUpdate->remove(type, from, to);
+		}
+	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- MemoryStream
+// ----------------------------------------------------------------------------
+void Document::MemoryStream::init(REF(std::ifstream) stream)
+{
+	if (!m_buffer.empty())
+	{
+		return;
+	}
+
+	while (!stream.eof())
+	{
+		char byte;
+		stream.get(byte);
+		m_buffer.push_back(byte);
+	}
+}
+
+void Document::MemoryStream::get(REF(std::ofstream) stream) const
 {
 	stream.write(&m_buffer[0], m_buffer.size());
 }
 
-void Document::write(Type type, CPTR(char) buffer, ruint size)
+void Document::MemoryStream::insert(ruint to, CREF(tstring) value)
 {
-	LPMemoryStream streamOut = getMemoryStream(type);
-	streamOut->write(buffer, size);
+	Buffer::iterator itTo = m_buffer.begin() + to;
+	for (ruint i = 0; i < value.length(); ++i)
+	{
+		itTo = m_buffer.insert(itTo, value[i]);
+		++itTo;
+	}
+}
+
+void Document::MemoryStream::remove(ruint from, ruint to)
+{
+	Buffer::iterator itFrom = m_buffer.begin() + from;
+	Buffer::iterator itTo   = m_buffer.begin() + to;
+	m_buffer.erase(itFrom, itTo);
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

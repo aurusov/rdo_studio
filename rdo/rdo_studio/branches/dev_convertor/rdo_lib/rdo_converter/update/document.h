@@ -19,25 +19,29 @@
 
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
+#include "rdo_lib/rdo_converter/update/document_i.h"
+#include "rdo_lib/rdo_converter/update/update_i.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- IDocument
+// ---------- Document
 // ----------------------------------------------------------------------------
 OBJECT(Document)
+	IS IMPLEMENTATION_OF(IDocument)
 {
 DECLARE_FACTORY(Document)
 public:
-	typedef rdoModelObjectsConvertor::RDOFileTypeOut Type;
-
-	tstring   getName  (Type type) const;
-	void      close    ();
-	void      write    (Type type, CPTR(char) buffer, ruint size);
+	void    create      (CREF(tstring) filePath, CREF(tstring) modelName);
+	void    init        (rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstream) stream);
+	void    insertUpdate(CREF(LPDocUpdate) pUpdate);
+	void    convert     ();
+	void    close       ();
+	tstring getName     (Type type) const;
 
 private:
-	 Document(CREF(tstring) filePath, CREF(tstring) modelName);
+	 Document();
 	~Document();
 
 	class MemoryStream
@@ -45,8 +49,11 @@ private:
 	public:
 		typedef std::vector<char> Buffer;
 
-		void write(CPTR(char) buffer, ruint size);
-		void write(REF(std::ofstream) stream) const;
+		void init  (REF(std::ifstream) stream);
+		void get   (REF(std::ofstream) stream) const;
+
+		void insert(ruint to, CREF(tstring) value);
+		void remove(ruint from, ruint to);
 
 	private:
 		Buffer m_buffer;
@@ -62,13 +69,19 @@ private:
 	};
 	typedef std::map<Type, TypeItem> FileList;
 
-	tstring  m_filePath;
-	tstring  m_modelName;
-	FileList m_fileList;
+	typedef std::pair<LPDocUpdate, rbool> Update;
+	typedef std::list<Update>             UpdateContainer;
+
+	tstring         m_filePath;
+	tstring         m_modelName;
+	FileList        m_fileList;
+	UpdateContainer m_updateContainer;
 
 	REF(TypeItem)  getItem        (Type type);
 	LPFileStream   getFileStream  (Type type);
 	LPMemoryStream getMemoryStream(Type type);
+
+	DECLARE_IDocument;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

@@ -346,6 +346,15 @@ rtp_param
 		PTR(RDOValue)  param_name = P_RDOVALUE($1);
 		LPRDOTypeParam param_type = CONVERTER->stack().pop<RDOTypeParam>($2);
 		LPRDORTPParam  pParam     = rdo::Factory<RDORTPParam>::create(CONVERTER->getLastRTPResType(), param_type, param_name->src_info());
+
+		rdoConverter::LPDocUpdate pNameMove = rdo::Factory<rdoConverter::UpdateMove>::create(@1.m_first_seek, @1.m_last_seek, @2.m_first_seek);
+		ASSERT(pNameMove);
+		CONVERTER->insertDocUpdate(pNameMove);
+
+		rdoConverter::LPDocUpdate pTypeMove = rdo::Factory<rdoConverter::UpdateMove>::create(@2.m_first_seek, @2.m_last_seek, @1.m_first_seek);
+		ASSERT(pTypeMove);
+		CONVERTER->insertDocUpdate(pTypeMove);
+
 		$$ = CONVERTER->stack().push(pParam);
 	}
 	| RDO_IDENTIF_COLON error

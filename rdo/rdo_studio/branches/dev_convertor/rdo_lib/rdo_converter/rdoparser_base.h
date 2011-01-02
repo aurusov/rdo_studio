@@ -21,7 +21,6 @@
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/update/document.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
-#include "rdo_lib/rdo_converter/update/update_container_stack.h"
 
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
@@ -49,7 +48,6 @@ public:
 
 	virtual void  parse  (PTR(Converter) pParser)                             {};
 	virtual void  parse  (PTR(Converter) pParser, REF(std::istream) streamIn) {};
-	        void  convert(REF(LPDocument) pDocument, REF(std::istream) streamIn) const;
 
 	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
 	virtual ruint lexer_loc_pos()  { return 0;                                               };
@@ -58,9 +56,6 @@ public:
 	{
 		return m_needStream;
 	}
-
-	void                      insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
-	REF(UpdateContainerStack) updateStack    ();
 
 protected:
 	RDOParserItem();
@@ -71,8 +66,6 @@ protected:
 
 private:
 	void init();
-
-	UpdateContainerStack  m_updateContainerStack;
 };
 
 // ----------------------------------------------------------------------------

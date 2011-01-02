@@ -33,6 +33,7 @@
 #include "rdo_lib/rdo_converter/rdosmr.h"
 #include "rdo_lib/rdo_converter/context/stack.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
+#include "rdo_lib/rdo_converter/update/document.h"
 
 #include "rdo_lib/rdo_parser/rdoparser.h"
 
@@ -170,8 +171,7 @@ public:
 	REF(ContextStack) contextStack();
 	LPContext         context     () const;
 
-	void                      insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
-	REF(UpdateContainerStack) updateStack    ();
+	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
 
 	static rdoModelObjectsConvertor::RDOFileTypeIn getFileToParse();
 	static ruint                                   lexer_loc_line();
@@ -180,6 +180,7 @@ public:
 
 protected:
 	LPRDOParserItem m_pParserItem;
+	LPDocument      m_pDocument;
 
 	virtual REF(LPRDOParserContainer) getContainer() = 0;
 
@@ -202,14 +203,14 @@ protected:
 	rdoRuntime::RDORuntime m_runtime;
 
 private:
-	LPRDOSMR              m_pSMR;
-	rbool                 m_have_kw_Resources;
-	rbool                 m_have_kw_ResourcesEnd;
-	Error                 m_error;
-	Stack                 m_movementObjectList;
-	PreCastTypeList       m_preCastTypeList;
-	ContextStack          m_contextStack;
-	rbool                 m_pattern;
+	LPRDOSMR        m_pSMR;
+	rbool           m_have_kw_Resources;
+	rbool           m_have_kw_ResourcesEnd;
+	Error           m_error;
+	Stack           m_movementObjectList;
+	PreCastTypeList m_preCastTypeList;
+	ContextStack    m_contextStack;
+	rbool           m_pattern;
 
 	template <class T>
 	void howIsIt()

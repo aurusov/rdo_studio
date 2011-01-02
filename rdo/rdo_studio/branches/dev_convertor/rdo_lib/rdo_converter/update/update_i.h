@@ -15,7 +15,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
-#include "rdo_lib/rdo_converter/update/document.h"
+#include "rdo_lib/rdo_converter/update/document_i.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -26,17 +26,21 @@ OPEN_RDO_CONVERTER_NAMESPACE
 S_INTERFACE(IDocUpdate)
 {
 public:
-	virtual void apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const = 0;
+	virtual void apply (REF(LPIDocument) pDocument) const           = 0;
+	virtual void insert(IDocument::Type type, ruint to, ruint size) = 0;
+	virtual void remove(IDocument::Type type, ruint from, ruint to) = 0;
 };
-#define DECLARE_IDocUpdate \
-	void apply(REF(LPDocument) pDocument, REF(std::istream) streamIn) const;
+#define DECLARE_IDocUpdate                                   \
+	void apply (REF(LPIDocument) pDocument) const;           \
+	void insert(IDocument::Type type, ruint to, ruint size); \
+	void remove(IDocument::Type type, ruint from, ruint to);
 
 OBJECT(DocUpdate) IS IMPLEMENTATION_OF(IDocUpdate)
 {
 protected:
-	DocUpdate(Document::Type fileTo = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	DocUpdate(IDocument::Type fileTo = rdoModelObjectsConvertor::UNDEFINED_OUT);
 
-	Document::Type m_fileTo;
+	IDocument::Type m_fileTo;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

@@ -25,7 +25,6 @@
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
 #include "rdo_lib/rdo_converter/update/update.h"
-#include "rdo_lib/rdo_converter/update/document.h"
 
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // ===============================================================================
@@ -109,6 +108,9 @@ Converter::Converter()
 	m_runtime.memory_insert(sizeof(Converter));
 	m_runtime.init();
 	m_contextStack.push(rdo::Factory<ContextGlobal>::create());
+
+	m_pDocument = rdo::Factory<Document>::create();
+	ASSERT(m_pDocument);
 }
 
 Converter::~Converter()
@@ -134,14 +136,8 @@ void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 	ASSERT(m_pParserItem);
 	if (m_pParserItem->m_parser_fun != cnv_smr_file_parse)
 	{
-		m_pParserItem->insertDocUpdate(pDocUpdate);
+		m_pDocument->insertUpdate(pDocUpdate);
 	}
-}
-
-REF(UpdateContainerStack) Converter::updateStack()
-{
-	ASSERT(m_pParserItem);
-	return m_pParserItem->updateStack();
 }
 
 rbool Converter::isCurrentDPTSearch()
@@ -371,10 +367,6 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 				{
 					std::ifstream stream(it->second.c_str(), ios::binary);
 					m_pParserItem->parse(this, stream);
-					if (m_pParserItem->m_type != rdoModelObjectsConvertor::OPR_IN && m_pParserItem->m_parser_fun != cnv_smr_file_parse)
-					{
-						m_pParserItem->insertDocUpdate(rdo::Factory<UpdateFlush>::create());
-					}
 				}
 			}
 			else
@@ -467,7 +459,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		return CNV_ERROR;
 	}
 
-	LPDocument pDocument = rdo::Factory<Document>::create(fullPath.directory_string(), modelName);
+	m_pDocument->create(fullPath.directory_string(), modelName);
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
@@ -478,22 +470,23 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
 			if (fileIt != fileList.end())
 			{
-				std::ifstream streamIn (fileIt->second.c_str(), ios::binary);
+				std::ifstream streamIn(fileIt->second.c_str(), ios::binary);
 				ASSERT(streamIn.good());
 
-				pParserItem->convert(pDocument, streamIn);
+				m_pDocument->init(pParserItem->m_type, streamIn);
 			}
 		}
 		++it;
 	}
-	pDocument->close();
+	m_pDocument->convert();
+	m_pDocument->close();
 
 	if (!createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str())))
 	{
 		return CNV_ERROR;
 	}
 
-	if (!rdo::File::trimLeft(pDocument->getName(rdoModelObjectsConvertor::SMR_OUT)))
+	if (!rdo::File::trimLeft(m_pDocument->getName(rdoModelObjectsConvertor::SMR_OUT)))
 	{
 		return CNV_ERROR;
 	}
