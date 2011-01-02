@@ -105,7 +105,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				BrowseInformation="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

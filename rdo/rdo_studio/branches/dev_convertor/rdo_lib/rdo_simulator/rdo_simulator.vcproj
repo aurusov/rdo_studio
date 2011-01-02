@@ -112,7 +112,6 @@
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
-				BrowseInformation="1"
 				WarningLevel="3"
 			/>
 			<Tool

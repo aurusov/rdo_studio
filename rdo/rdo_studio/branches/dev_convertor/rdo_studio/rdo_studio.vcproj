@@ -142,7 +142,6 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
-				BrowseInformation="1"
 				WarningLevel="3"
 			/>
 			<Tool

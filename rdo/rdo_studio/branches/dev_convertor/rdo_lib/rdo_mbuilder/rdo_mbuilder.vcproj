@@ -48,7 +48,6 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_mbuilder/pch.h"
-				BrowseInformation="1"
 				WarningLevel="3"
 			/>
 			<Tool

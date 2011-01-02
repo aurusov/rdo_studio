@@ -109,7 +109,6 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_ctrls/rdo_ctrls_pch.h"
-				BrowseInformation="1"
 				WarningLevel="3"
 			/>
 			<Tool
