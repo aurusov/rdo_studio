@@ -31,13 +31,12 @@ inline void RDOLexer::loc_init()
 {
 	if (m_lploc)
 	{
-		m_lploc->m_first_line     = 0;
-		m_lploc->m_first_pos      = 0;
-		m_lploc->m_last_line      = 0;
-		m_lploc->m_last_pos       = 0;
-		m_lploc->m_first_seek     = 0;
-		m_lploc->m_last_seek      = 0;
-		m_lploc->m_last_seek_real = 0;
+		m_lploc->m_first_line = 0;
+		m_lploc->m_first_pos  = 0;
+		m_lploc->m_last_line  = 0;
+		m_lploc->m_last_pos   = 0;
+		m_lploc->m_first_seek = 0;
+		m_lploc->m_last_seek  = 0;
 	}
 }
 
@@ -47,26 +46,27 @@ inline void RDOLexer::loc_action()
 	{
 		m_lploc->m_first_line = m_lploc->m_last_line;
 		m_lploc->m_first_pos  = m_lploc->m_last_pos;
-		m_lploc->m_first_seek = m_lploc->m_last_seek_real;
-		m_lploc->m_last_seek  = m_lploc->m_last_seek_real;
+		m_lploc->m_first_seek = m_lploc->m_last_seek;
 		for (int i = 0; i < YYLeng(); i++)
 		{
-			switch (YYText()[i])
+			if (YYText()[i] == '\n')
 			{
-			case '\n': 
 				m_lploc->m_last_line++;
-				m_lploc->m_last_pos = 0;
-				break;
-			case '\r':
-				m_lploc->m_last_pos = 0;
-				break;
-			default:
-				m_lploc->m_last_pos++;
 				m_lploc->m_last_seek++;
-				break;
+				m_lploc->m_last_pos = 0;
 			}
-
-			m_lploc->m_last_seek_real++;
+			else
+			{
+				if (YYText()[i] == '\r')
+				{
+					m_lploc->m_last_pos = 0;
+				}
+				else
+				{
+					m_lploc->m_last_pos++;
+					m_lploc->m_last_seek++;
+				}
+			}
 		}
 	}
 }
