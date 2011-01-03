@@ -179,12 +179,13 @@ void UpdateMove::apply(REF(LPIDocument) pDocument) const
 	tstring cut = pDocument->get(m_fileFrom, m_posFromBegin, m_posFromEnd);
 	pDocument->remove(m_fileFrom, m_posFromBegin, m_posFromEnd);
 
-	if (m_posFromEnd < m_posTo)
+	ruint pos = m_posTo;
+	if (m_posFromEnd < pos)
 	{
 		//! Удалили перед собой, сдвинемся к началу
-		const_cast<PTR(UpdateMove)>(this)->m_posTo -= m_posFromEnd - m_posFromBegin;
+		pos -= m_posFromEnd - m_posFromBegin;
 	}
-	pDocument->insert(m_fileTo, m_posTo, cut);
+	pDocument->insert(m_fileTo, pos, cut);
 }
 
 void UpdateMove::insert(IDocument::Type type, ruint to, ruint size)
