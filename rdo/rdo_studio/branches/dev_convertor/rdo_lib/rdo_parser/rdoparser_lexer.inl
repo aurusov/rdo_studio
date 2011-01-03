@@ -49,24 +49,21 @@ inline void RDOLexer::loc_action()
 		m_lploc->m_first_seek = m_lploc->m_last_seek;
 		for (int i = 0; i < YYLeng(); i++)
 		{
-			if (YYText()[i] == '\n')
+			switch (YYText()[i])
 			{
+			case '\n': 
 				m_lploc->m_last_line++;
-				m_lploc->m_last_seek++;
 				m_lploc->m_last_pos = 0;
+				break;
+			case '\r':
+				m_lploc->m_last_pos = 0;
+				break;
+			default:
+				m_lploc->m_last_pos++;
+				break;
 			}
-			else
-			{
-				if (YYText()[i] == '\r')
-				{
-					m_lploc->m_last_pos = 0;
-				}
-				else
-				{
-					m_lploc->m_last_pos++;
-					m_lploc->m_last_seek++;
-				}
-			}
+
+			m_lploc->m_last_seek++;
 		}
 	}
 }
