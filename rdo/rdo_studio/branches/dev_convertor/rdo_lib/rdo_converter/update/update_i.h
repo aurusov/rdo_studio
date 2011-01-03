@@ -29,11 +29,13 @@ public:
 	virtual void apply (REF(LPIDocument) pDocument) const           = 0;
 	virtual void insert(IDocument::Type type, ruint to, ruint size) = 0;
 	virtual void remove(IDocument::Type type, ruint from, ruint to) = 0;
+	virtual void dump  (REF(LPIDocument) pDocument) const           = 0;
 };
 #define DECLARE_IDocUpdate                                   \
 	void apply (REF(LPIDocument) pDocument) const;           \
 	void insert(IDocument::Type type, ruint to, ruint size); \
-	void remove(IDocument::Type type, ruint from, ruint to);
+	void remove(IDocument::Type type, ruint from, ruint to); \
+	void dump  (REF(LPIDocument) pDocument) const;
 
 OBJECT(DocUpdate) IS IMPLEMENTATION_OF(IDocUpdate)
 {
@@ -41,6 +43,8 @@ protected:
 	DocUpdate(IDocument::Type fileTo = rdoModelObjectsConvertor::UNDEFINED_OUT);
 
 	IDocument::Type m_fileTo;
+
+	IDocument::Type getCurrentType() const;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

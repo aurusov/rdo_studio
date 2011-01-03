@@ -65,12 +65,34 @@ void Document::convert()
 {
 	LPIDocument pDocument = LPDocument(this).interface_cast<IDocument>();
 
+	{
+		STL_FOR_ALL_CONST(m_updateContainer, it)
+		{
+			LPDocUpdate pUpdate = it->first;
+			ASSERT(pUpdate);
+			pUpdate->dump(pDocument);
+		}
+	}
+
 	STL_FOR_ALL(m_updateContainer, it)
 	{
 		it->second = true;
 		LPDocUpdate pUpdate = it->first;
 		ASSERT(pUpdate);
 		pUpdate->apply(pDocument);
+
+		{
+			TRACE(_T("=================\n"));
+			STL_FOR_ALL_CONST(m_updateContainer, it)
+			{
+				if (!it->second)
+				{
+					LPDocUpdate pUpdate = it->first;
+					ASSERT(pUpdate);
+					pUpdate->dump(pDocument);
+				}
+			}
+		}
 	}
 }
 
@@ -164,6 +186,11 @@ void Document::remove(Type type, ruint from, ruint to)
 	}
 }
 
+tstring Document::get(Type type, ruint from, ruint to)
+{
+	return getMemoryStream(type)->get(from, to);
+}
+
 // ----------------------------------------------------------------------------
 // ---------- MemoryStream
 // ----------------------------------------------------------------------------
@@ -202,6 +229,16 @@ void Document::MemoryStream::remove(ruint from, ruint to)
 	Buffer::iterator itFrom = m_buffer.begin() + from;
 	Buffer::iterator itTo   = m_buffer.begin() + to;
 	m_buffer.erase(itFrom, itTo);
+}
+
+tstring Document::MemoryStream::get(ruint from, ruint to)
+{
+	Buffer::iterator itFrom = m_buffer.begin() + from;
+	Buffer::iterator itTo   = m_buffer.begin() + to;
+	tstring result;
+	result.resize(to - from);
+	std::copy(itFrom, itTo, result.begin());
+	return result;
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

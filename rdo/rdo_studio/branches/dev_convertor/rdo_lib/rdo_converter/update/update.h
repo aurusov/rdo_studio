@@ -57,11 +57,16 @@ CLASS(UpdateMove): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateMove)
 private:
-	UpdateMove(ruint posFromBegin, ruint posFromEnd, ruint posTo, IDocument::Type fileTo = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	UpdateMove(ruint           posFromBegin,
+	           ruint           posFromEnd,
+	           ruint           posTo,
+	           IDocument::Type fileTo   = rdoModelObjectsConvertor::UNDEFINED_OUT,
+	           IDocument::Type fileFrom = rdoModelObjectsConvertor::UNDEFINED_OUT);
 
-	ruint m_posFromBegin;
-	ruint m_posFromEnd;
-	ruint m_posTo;
+	ruint           m_posFromBegin;
+	ruint           m_posFromEnd;
+	ruint           m_posTo;
+	IDocument::Type m_fileFrom;
 
 	DECLARE_IDocUpdate;
 };

@@ -49,11 +49,13 @@ private:
 	public:
 		typedef std::vector<char> Buffer;
 
-		void init  (REF(std::ifstream) stream);
-		void get   (REF(std::ofstream) stream) const;
+		void    init  (REF(std::ifstream) stream);
+		void    get   (REF(std::ofstream) stream) const;
 
-		void insert(ruint to, CREF(tstring) value);
-		void remove(ruint from, ruint to);
+		void    insert(ruint to, CREF(tstring) value);
+		void    remove(ruint from, ruint to);
+
+		tstring get   (ruint from, ruint to);
 
 	private:
 		Buffer m_buffer;

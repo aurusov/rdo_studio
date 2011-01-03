@@ -27,12 +27,14 @@ OBJECT_INTERFACE(IDocument)
 public:
 	typedef rdoModelObjectsConvertor::RDOFileTypeOut Type;
 
-	virtual void insert(Type type, ruint to, CREF(tstring) value) = 0;
-	virtual void remove(Type type, ruint from, ruint to)          = 0;
+	virtual void    insert(Type type, ruint to, CREF(tstring) value) = 0;
+	virtual void    remove(Type type, ruint from, ruint to)          = 0;
+	virtual tstring get   (Type type, ruint from, ruint to)          = 0;
 };
-#define DECLARE_IDocument                                  \
-	void insert(Type type, ruint to, CREF(tstring) value); \
-	void remove(Type type, ruint from, ruint to);
+#define DECLARE_IDocument                                     \
+	void    insert(Type type, ruint to, CREF(tstring) value); \
+	void    remove(Type type, ruint from, ruint to);          \
+	tstring get   (Type type, ruint from, ruint to);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 

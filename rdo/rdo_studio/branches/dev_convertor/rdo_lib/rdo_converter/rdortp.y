@@ -347,11 +347,19 @@ rtp_param
 		LPRDOTypeParam param_type = CONVERTER->stack().pop<RDOTypeParam>($2);
 		LPRDORTPParam  pParam     = rdo::Factory<RDORTPParam>::create(CONVERTER->getLastRTPResType(), param_type, param_name->src_info());
 
-		rdoConverter::LPDocUpdate pNameMove = rdo::Factory<rdoConverter::UpdateMove>::create(@1.m_first_seek, @1.m_last_seek, @2.m_first_seek);
+		rdoConverter::LPDocUpdate pNameMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+			@1.m_first_seek,
+			@1.m_first_seek + param_name->value().getIdentificator().length(),
+			@2.m_first_seek
+		);
 		ASSERT(pNameMove);
 		CONVERTER->insertDocUpdate(pNameMove);
 
-		rdoConverter::LPDocUpdate pTypeMove = rdo::Factory<rdoConverter::UpdateMove>::create(@2.m_first_seek, @2.m_last_seek, @1.m_first_seek);
+		rdoConverter::LPDocUpdate pTypeMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+			@2.m_first_seek,
+			@2.m_last_seek,
+			@1.m_first_seek
+		);
 		ASSERT(pTypeMove);
 		CONVERTER->insertDocUpdate(pTypeMove);
 
