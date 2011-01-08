@@ -86,6 +86,30 @@ private:
 	DECLARE_IDocUpdate;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- UpdateSwap
+// ----------------------------------------------------------------------------
+CLASS(UpdateSwap): INSTANCE_OF(DocUpdate)
+{
+DECLARE_FACTORY(UpdateSwap)
+private:
+	UpdateSwap(ruint           pos1Begin,
+	           ruint           pos1End,
+	           ruint           pos2Begin,
+	           ruint           pos2End,
+	           IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+
+	ruint           m_pos1Begin;
+	ruint           m_pos1End;
+	ruint           m_pos2Begin;
+	ruint           m_pos2End;
+
+	void insert(CREF(ruint) from, CREF(ruint) size, REF(ruint) posBegin, REF(ruint) posEnd);
+	void remove(CREF(ruint) from, CREF(ruint) to,   REF(ruint) posBegin, REF(ruint) posEnd);
+
+	DECLARE_IDocUpdate;
+};
+
 CLOSE_RDO_CONVERTER_NAMESPACE
 
 #endif //! _CONVERTOR_UPDATE_H_

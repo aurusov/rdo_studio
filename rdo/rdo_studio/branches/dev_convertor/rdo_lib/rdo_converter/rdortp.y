@@ -347,21 +347,28 @@ rtp_param
 		LPRDOTypeParam param_type = CONVERTER->stack().pop<RDOTypeParam>($2);
 		LPRDORTPParam  pParam     = rdo::Factory<RDORTPParam>::create(CONVERTER->getLastRTPResType(), param_type, param_name->src_info());
 
-		rdoConverter::LPDocUpdate pNameMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+		rdoConverter::LPDocUpdate pColonDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			@1.m_last_seek - 1,
+			@1.m_last_seek
+		);
+		ASSERT(pColonDelete);
+		CONVERTER->insertDocUpdate(pColonDelete);
+
+		rdoConverter::LPDocUpdate pNameTypeSwap = rdo::Factory<rdoConverter::UpdateSwap>::create(
 			@1.m_first_seek,
 			@1.m_first_seek + param_name->value().getIdentificator().length(),
-			@2.m_first_seek
-		);
-		ASSERT(pNameMove);
-		CONVERTER->insertDocUpdate(pNameMove);
-
-		rdoConverter::LPDocUpdate pTypeMove = rdo::Factory<rdoConverter::UpdateMove>::create(
 			@2.m_first_seek,
-			@2.m_last_seek,
-			@1.m_first_seek
+			@2.m_last_seek
 		);
-		ASSERT(pTypeMove);
-		CONVERTER->insertDocUpdate(pTypeMove);
+		ASSERT(pNameTypeSwap);
+		CONVERTER->insertDocUpdate(pNameTypeSwap);
+
+		rdoConverter::LPDocUpdate pSemicolonInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+			@2.m_last_seek,
+			_T(";")
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
 
 		$$ = CONVERTER->stack().push(pParam);
 	}
@@ -547,6 +554,21 @@ param_type_range
 param_type_enum
 	: '(' param_type_enum_list ')'
 	{
+		rdoConverter::LPDocUpdate pEnumInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+			@1.m_first_seek,
+			_T("enum ")
+		);
+		ASSERT(pEnumInsert);
+		CONVERTER->insertDocUpdate(pEnumInsert);
+
+		rdoConverter::LPDocUpdate pOpenBracketReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("{"));
+		ASSERT(pOpenBracketReplace);
+		CONVERTER->insertDocUpdate(pOpenBracketReplace);
+
+		rdoConverter::LPDocUpdate pCloseBracketReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@3.m_first_seek, @3.m_last_seek, _T("}"));
+		ASSERT(pCloseBracketReplace);
+		CONVERTER->insertDocUpdate(pCloseBracketReplace);
+
 		LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($2);
 		ASSERT(pEnum);
 		$$ = CONVERTER->stack().push(pEnum);
