@@ -389,14 +389,9 @@ rtp_param
 param_type
 	: RDO_integer param_type_range param_value_default
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@1.m_first_seek, @1.m_last_seek);
-		ASSERT(pDelete);
-
-		rdoConverter::LPDocUpdate pInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(@1.m_last_seek, _T("int"));
-		ASSERT(pInsert);
-
-		CONVERTER->insertDocUpdate(pDelete);
-		CONVERTER->insertDocUpdate(pInsert);
+		rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
+		ASSERT(pReplace);
+		CONVERTER->insertDocUpdate(pReplace);
 
 		LPRDOTypeRangeRange pRange = CONVERTER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;

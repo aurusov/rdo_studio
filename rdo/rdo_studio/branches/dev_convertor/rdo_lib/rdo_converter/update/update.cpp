@@ -146,6 +146,45 @@ void UpdateDelete::remove(IDocument::Type type, ruint from, ruint to)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- UpdateReplace
+// ----------------------------------------------------------------------------
+UpdateReplace::UpdateReplace(ruint posFrom, ruint posTo, CREF(tstring) value, IDocument::Type file)
+	: DocUpdate(file)
+{
+	pDelete = rdo::Factory<UpdateDelete>::create(posFrom, posTo);
+	ASSERT(pDelete);
+
+	pInsert = rdo::Factory<UpdateInsert>::create(posFrom, value, file);
+	ASSERT(pInsert);
+}
+
+void UpdateReplace::dump(REF(LPIDocument) pDocument) const
+{
+	TRACE(_T("update replace...\n"));
+	pDelete->dump(pDocument);
+	pInsert->dump(pDocument);
+	TRACE(_T("update replace... ok\n"));
+}
+
+void UpdateReplace::apply(REF(LPIDocument) pDocument) const
+{
+	pDelete->apply(pDocument);
+	pInsert->apply(pDocument);
+}
+
+void UpdateReplace::insert(IDocument::Type type, ruint to, ruint size)
+{
+	pDelete->insert(type, to, size);
+	pInsert->insert(type, to, size);
+}
+
+void UpdateReplace::remove(IDocument::Type type, ruint from, ruint to)
+{
+	pDelete->remove(type, from, to);
+	pInsert->remove(type, from, to);
+}
+
+// ----------------------------------------------------------------------------
 // ---------- UpdateMove
 // ----------------------------------------------------------------------------
 UpdateMove::UpdateMove(ruint posFromBegin, ruint posFromEnd, ruint posTo, IDocument::Type fileTo, IDocument::Type fileFrom)

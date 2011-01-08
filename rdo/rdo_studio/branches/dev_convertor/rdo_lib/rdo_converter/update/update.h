@@ -51,6 +51,21 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- UpdateReplace
+// ----------------------------------------------------------------------------
+CLASS(UpdateReplace): INSTANCE_OF(DocUpdate)
+{
+DECLARE_FACTORY(UpdateReplace)
+private:
+	UpdateReplace(ruint posFrom, ruint posTo, CREF(tstring) value, IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+
+	LPDocUpdate pDelete;
+	LPDocUpdate pInsert;
+
+	DECLARE_IDocUpdate;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- UpdateMove
 // ----------------------------------------------------------------------------
 CLASS(UpdateMove): INSTANCE_OF(DocUpdate)
