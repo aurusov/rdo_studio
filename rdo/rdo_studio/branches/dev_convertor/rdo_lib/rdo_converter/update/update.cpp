@@ -75,7 +75,7 @@ void UpdateInsert::insert(IDocument::Type type, ruint to, ruint size)
 	if (m_file != type)
 		return;
 
-	ASSERT(to <= m_pos || to > m_pos + m_value.length());
+	ASSERT(to <= m_pos || to >= m_pos + m_value.length());
 
 	if (to <= m_pos)
 	{
@@ -88,7 +88,7 @@ void UpdateInsert::remove(IDocument::Type type, ruint from, ruint to)
 	if (m_file != type)
 		return;
 
-	ASSERT(to <= m_pos || (from > m_pos + m_value.length() && to > m_pos + m_value.length()));
+	ASSERT(to <= m_pos || (from >= m_pos + m_value.length() && to > m_pos + m_value.length()));
 
 	if (to <= m_pos)
 	{
