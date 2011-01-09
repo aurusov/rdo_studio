@@ -1688,6 +1688,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdo_param_interface.h"
+							>
+						</File>
+						<File
 							RelativePath="rdo_pattern.cpp"
 							>
 							<FileConfiguration
