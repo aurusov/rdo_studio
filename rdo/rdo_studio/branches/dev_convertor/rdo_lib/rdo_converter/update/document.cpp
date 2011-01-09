@@ -16,6 +16,8 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
+//#define DUMP_DOCUMENT
+
 // ----------------------------------------------------------------------------
 // ---------- Document
 // ----------------------------------------------------------------------------
@@ -65,6 +67,7 @@ void Document::convert()
 {
 	LPIDocument pDocument = LPDocument(this).interface_cast<IDocument>();
 
+#ifdef DUMP_DOCUMENT
 	{
 		STL_FOR_ALL_CONST(m_updateContainer, it)
 		{
@@ -73,6 +76,7 @@ void Document::convert()
 			pUpdate->dump(pDocument);
 		}
 	}
+#endif
 
 	STL_FOR_ALL(m_updateContainer, it)
 	{
@@ -81,6 +85,7 @@ void Document::convert()
 		ASSERT(pUpdate);
 		pUpdate->apply(pDocument);
 
+#ifdef DUMP_DOCUMENT
 		{
 			TRACE(_T("=================\n"));
 			STL_FOR_ALL_CONST(m_updateContainer, it)
@@ -93,6 +98,7 @@ void Document::convert()
 				}
 			}
 		}
+#endif
 	}
 }
 
