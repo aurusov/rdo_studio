@@ -89,11 +89,11 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
 		Converter::s_converter()->error().push_done();
 	}
-	rdoRuntime::RDOType::TypeID typeID = pParam->getParamType()->type()->typeID();
+	rdoRuntime::RDOType::TypeID typeID = pParam->getType()->type()->typeID();
 	if (typeID != rdoRuntime::RDOType::t_int && typeID != rdoRuntime::RDOType::t_real)
 	{
 		Converter::s_converter()->error().push_only(par_src_info, _T("Наблюдать можно только за параметром целого или вещественного типа"));
-		Converter::s_converter()->error().push_only(pParam->getParamType()->src_info(), _T("См. тип параметра"));
+		Converter::s_converter()->error().push_only(pParam->getType()->src_info(), _T("См. тип параметра"));
 		Converter::s_converter()->error().push_done();
 	}
 	endOfCreation(F(rdoRuntime::RDOPMDWatchPar)::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));

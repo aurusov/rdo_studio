@@ -2526,11 +2526,27 @@
 				Name=".param"
 				>
 				<File
+					RelativePath=".\param.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\param.h"
+					>
+				</File>
+				<File
 					RelativePath=".\rdo_type_param.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\rdo_type_param.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_param_suchas.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_param_suchas.h"
 					>
 				</File>
 			</Filter>
