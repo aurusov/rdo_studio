@@ -1,3 +1,5 @@
+0. Проверяем, что на компьютере есть не меньше 1.8Гб свободного места.
+
 1. Выкачиваем буст
 svn://rdo.rk9.bmstu.ru/var/svn/root/rdo/thirdparty/boost/trunk
 или
@@ -31,6 +33,7 @@ http://www.boost.org/
 3.1. Заходим в корень буста и запускаем
 bootstrap.bat
 Я делал это из Far'а, наверное и cmd.exe подойдет
+с cmd.exe проблем также не замечено.
 
 Если вывелось
 Bootstrapping is done. To build, run:
@@ -52,6 +55,7 @@ bjam debug link=static threading=multi
 для компиляции релизных
 bjam release link=static threading=multi runtime-link=static
 
+дело это еще более долгое, чем пункт 2, так что тоже не нервничеам;-)
 Собранные либы лежат в 'C:\boost_1_43_0\stage\lib'
 
 4. Запускаем Visual Studio, заходим в настройки
