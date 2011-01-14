@@ -19,6 +19,7 @@
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
+#include "rdo_lib/rdo_runtime/rdo_memory.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -323,6 +324,90 @@ private:
 	LPRDOCalc m_pCondition;
 	LPRDOCalc m_pIfStatement;
 	LPRDOCalc m_pElseStatement;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFor
+// ----------------------------------------------------------------------------
+CALC(RDOCalcFor)
+{
+DECLARE_FACTORY(RDOCalcFor)
+private:
+	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
+
+	LPRDOCalc m_pDeclaration;
+	LPRDOCalc m_pCondition;
+	LPRDOCalc m_pExpression;
+	LPRDOCalc m_pStatement;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateLocalVariable
+// ----------------------------------------------------------------------------
+CALC(RDOCalcCreateLocalVariable)
+{
+DECLARE_FACTORY(RDOCalcCreateLocalVariable)
+private:
+	RDOCalcCreateLocalVariable(CREF(tstring) name);
+
+	tstring m_name;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcSetLocalVariable
+// ----------------------------------------------------------------------------
+CALC(RDOCalcSetLocalVariable)
+{
+DECLARE_FACTORY(RDOCalcSetLocalVariable)
+private:
+	RDOCalcSetLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
+
+	tstring   m_name;
+	LPRDOCalc m_pCalc;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetLocalVariable
+// ----------------------------------------------------------------------------
+CALC(RDOCalcGetLocalVariable)
+{
+DECLARE_FACTORY(RDOCalcGetLocalVariable)
+private:
+	RDOCalcGetLocalVariable(CREF(tstring) name);
+
+	tstring m_name;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcOpenBrace
+// ----------------------------------------------------------------------------
+CALC(RDOCalcOpenBrace)
+{
+DECLARE_FACTORY(RDOCalcOpenBrace)
+private:
+	RDOCalcOpenBrace();
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCloseBrace
+// ----------------------------------------------------------------------------
+CALC(RDOCalcCloseBrace)
+{
+DECLARE_FACTORY(RDOCalcCloseBrace)
+private:
+	RDOCalcCloseBrace();
 
 	DECALRE_ICalc;
 };

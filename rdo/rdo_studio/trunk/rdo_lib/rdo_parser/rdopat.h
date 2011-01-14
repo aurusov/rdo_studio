@@ -15,9 +15,12 @@
 #include "rdo_lib/rdo_parser/rdortp_param.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/context/pattern.h"
+
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdocalc_relres.h"
+
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
@@ -173,14 +176,15 @@ protected:
 private:
 	typedef std::vector<LPRDOFUNFunctionParam> ParamList;
 
-	ParamList      m_paramList;
-	RelResList     m_relResList;
+	ParamList        m_paramList;
+	RelResList       m_relResList;
 
-	rbool          m_useCommonChoice;
-	rbool          m_useCommonWithMax;
-	LPRDOFUNArithm m_pCommonChoice;
+	rbool            m_useCommonChoice;
+	rbool            m_useCommonWithMax;
+	LPRDOFUNArithm   m_pCommonChoice;
 
-	ruint          m_currentRelResIndex;
+	ruint            m_currentRelResIndex;
+	LPContextPattern m_pContext;
 
 	tstring typeToString(PatType type)
 	{

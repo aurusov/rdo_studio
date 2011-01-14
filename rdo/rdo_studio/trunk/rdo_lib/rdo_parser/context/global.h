@@ -13,25 +13,36 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/rdo_value.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
+// ---------- IContextGlobal
+// ----------------------------------------------------------------------------
+S_INTERFACE(IContextGlobal)
+{
+	virtual LPContext findContext(CREF(RDOValue) value) = 0;
+};
+#define DECLARE_IContextGlobal                   \
+public:                                          \
+	LPContext findContext(CREF(RDOValue) value);
+
+// ----------------------------------------------------------------------------
 // ---------- ContextGlobal
 // ----------------------------------------------------------------------------
-class ContextGlobal: public Context
+CLASS(ContextGlobal): INSTANCE_OF(Context)
 {
 DECLARE_FACTORY(ContextGlobal);
 private:
 	ContextGlobal();
 	virtual ~ContextGlobal();
 
-	LPContext m_timeNow;
+	LPContext m_pTimeNow;
 
-	DECLARE_IContext;
+	DECLARE_IContextGlobal;
 };
-
 DECLARE_POINTER(ContextGlobal);
 
 CLOSE_RDO_PARSER_NAMESPACE

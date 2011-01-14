@@ -129,6 +129,7 @@
 %token RDO_ADVANCE
 %token RDO_RELEASE
 %token RDO_if
+%token RDO_for
 %token RDO_result
 %token RDO_CF
 %token RDO_Priority

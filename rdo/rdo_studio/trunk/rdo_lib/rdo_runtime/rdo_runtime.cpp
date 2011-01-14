@@ -32,6 +32,7 @@ RDORuntime::RDORuntime()
 	m_parent         = NULL;
 	detach();
 	pTerminateIfCalc = NULL;
+	m_pMemoryStack = rdo::Factory<RDOMemoryStack>::create();
 }
 
 RDORuntime::~RDORuntime()
@@ -603,6 +604,11 @@ void RDORuntime::postProcess()
 		getTracer()->stopWriting();
 		throw e;
 	}
+}
+
+LPRDOMemoryStack RDORuntime::getMemoryStack()
+{
+	return m_pMemoryStack;
 }
 
 RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()

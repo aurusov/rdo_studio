@@ -13,7 +13,9 @@
 // ====================================================================== INCLUDES
 #include <list>
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
+
+#include "rdo_lib/rdo_parser/namespace.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -21,19 +23,23 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- ContextStack
 // ----------------------------------------------------------------------------
+PREDECLARE_POINTER(Context);
+
 OBJECT(ContextStack)
 {
+DECLARE_FACTORY(ContextStack);
 public:
-	ContextStack();
-	virtual ~ContextStack();
-
-	void      push  (CREF(LPContext) pContext);
+	void      push  (LPContext pContext);
 	void      pop   ();
 
 	LPContext top   () const;
 	LPContext global() const;
+	LPContext prev  (CREF(LPContext) pContext) const;
 
 private:
+	ContextStack();
+	virtual ~ContextStack();
+
 	typedef std::list<LPContext> Container;
 
 	Container m_container;

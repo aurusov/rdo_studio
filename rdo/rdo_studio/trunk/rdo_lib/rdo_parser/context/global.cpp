@@ -19,20 +19,20 @@ OPEN_RDO_PARSER_NAMESPACE
 
 ContextGlobal::ContextGlobal()
 {
-	m_timeNow = rdo::Factory<ContextTimeNow>::create();
-	ASSERT(m_timeNow);
+	m_pTimeNow = rdo::Factory<ContextTimeNow>::create();
+	ASSERT(m_pTimeNow);
 }
 
 ContextGlobal::~ContextGlobal()
 {}
 
-LPContext ContextGlobal::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
+LPContext ContextGlobal::findContext(CREF(RDOValue) value)
 {
 	ASSERT(value.typeID() == rdoRuntime::RDOType::t_identificator);
 
 	if (value->getIdentificator() == _T("Time_now") || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("Системное_время") || value->getIdentificator() == _T("системное_время"))
 	{
-		return m_timeNow;
+		return m_pTimeNow;
 	}
 
 	NEVER_REACH_HERE;
@@ -53,12 +53,6 @@ LPContext ContextGlobal::parser(PTR(RDOParser) pParser, CREF(RDOValue) value)
 	//	m_calc->setSrcInfo( src_info() );
 	//	return;
 	//}
-}
-
-rdoRuntime::LPRDOCalc ContextGlobal::getCalc()
-{
-	NEVER_REACH_HERE;
-	return rdoRuntime::LPRDOCalc();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

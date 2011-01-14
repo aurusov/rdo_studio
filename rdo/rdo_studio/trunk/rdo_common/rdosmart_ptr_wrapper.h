@@ -50,9 +50,37 @@ public:
 	{
 		return &m_intrusive_ptr;
 	}
+	CREF(intrusive_ptr<T>) get() const
+	{
+		return m_intrusive_ptr;
+	}
 
 private:
 	intrusive_ptr<T> m_intrusive_ptr;
+};
+
+class smart_ptr_wrapper_caster
+{
+public:
+	smart_ptr_wrapper_caster(CREF(LPISmartPtrWrapper) pISmartPtrWrapper)
+		: m_pISmartPtrWrapper(pISmartPtrWrapper)
+	{
+		ASSERT(m_pISmartPtrWrapper);
+	}
+	~smart_ptr_wrapper_caster()
+	{
+		m_pISmartPtrWrapper->destroy();
+	}
+
+	template <class T>
+	intrusive_ptr<T> cast() const
+	{
+		PTR(rdo::smart_ptr_wrapper<T>) pSmartPtrWrapper = dynamic_cast<PTR(rdo::smart_ptr_wrapper<T>)>(m_pISmartPtrWrapper);
+		return pSmartPtrWrapper ? pSmartPtrWrapper->get() : intrusive_ptr<T>();
+	}
+
+private:
+	LPISmartPtrWrapper m_pISmartPtrWrapper;
 };
 
 CLOSE_RDO_NAMESPACE

@@ -22,6 +22,7 @@
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdo_memory.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -218,6 +219,8 @@ public:
 
 	virtual void postProcess();
 
+	LPRDOMemoryStack getMemoryStack();
+
 	typedef std::list< RDOResource* > ResList;
 	typedef ResList::const_iterator ResCIterator;
 
@@ -231,13 +234,13 @@ public:
 	}
 
 private:
-	typedef RDOSimulatorTrace    Parent;
-	typedef std::list<LPRDOCalc> CalcList;
+	typedef RDOSimulatorTrace           Parent;
+	typedef std::list<LPRDOCalc>        CalcList;
 	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
-	CalcList initCalcs;
-	
+	CalcList                    initCalcs;
+	LPRDOMemoryStack            m_pMemoryStack;
 	
 	class BreakPoint: public RDORuntimeObject
 	{

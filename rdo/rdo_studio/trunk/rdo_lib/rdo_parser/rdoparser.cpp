@@ -96,25 +96,31 @@ RDOParser::RDOParser()
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));
 	m_runtime.init();
-	m_contextStack.push(rdo::Factory<ContextGlobal>::create());
+
+	m_pContextStack = rdo::Factory<ContextStack>::create();
+	ASSERT(m_pContextStack);
+
+	m_pContextStack->push(rdo::Factory<ContextGlobal>::create());
 }
 
 RDOParser::~RDOParser()
 {
+	m_pContextStack->pop();
+
 	m_runtime.deinit();
 	rdo::deleteAllObjects(m_allValues);
 	m_movementObjectList.clear();
 	s_parserStack.remove(this);
 }
 
-REF(ContextStack) RDOParser::contextStack()
+LPContextStack RDOParser::contextStack()
 {
-	return m_contextStack;
+	return m_pContextStack;
 }
 
 LPContext RDOParser::context() const
 {
-	return m_contextStack.top();
+	return m_pContextStack->top();
 }
 
 rbool RDOParser::isCurrentDPTSearch()

@@ -14,37 +14,43 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
+
 #include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RDOParser;
-
-// ----------------------------------------------------------------------------
-// ---------- IContext
-// ----------------------------------------------------------------------------
-PREDECLARE_POINTER(Context);
-
-S_INTERFACE(IContext)
-{
-	virtual LPContext             parser (PTR(RDOParser) pParser, CREF(RDOValue) value) = 0;
-	virtual rdoRuntime::LPRDOCalc getCalc()                                             = 0;
-};
-
-#define DECLARE_IContext                                                         \
-	LPContext             parser (PTR(RDOParser) pParser, CREF(RDOValue) value); \
-	rdoRuntime::LPRDOCalc getCalc();
-
 // ----------------------------------------------------------------------------
 // ---------- Context
 // ----------------------------------------------------------------------------
-OBJECT(Context) IS IMPLEMENTATION_OF(IContext)
+OBJECT(Context)
 {
+DECLARE_FACTORY(Context);
+friend void ContextStack::push(LPContext pContext);
+
 public:
-	virtual ~Context() {};
+	template <class T>
+	rdo::intrusive_ptr<T> cast()
+	{
+		LPContext pThis = this;
+		rdo::intrusive_ptr<T> pThisResult = pThis.object_dynamic_cast<T>();
+		if (pThisResult)
+		{
+			return pThisResult;
+		}
+		LPContext pPrev = m_pContextStack->prev(pThis);
+		return pPrev ? pPrev->cast<T>() : rdo::intrusive_ptr<T>();
+	}
+
+protected:
+	Context();
+	virtual ~Context();
+
+private:
+	LPContextStack m_pContextStack;
+
+	void setContextStack(CREF(LPContextStack) pContextStack);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

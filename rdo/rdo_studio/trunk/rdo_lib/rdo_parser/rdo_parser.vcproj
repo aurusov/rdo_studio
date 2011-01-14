@@ -448,6 +448,14 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\local_variable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\local_variable.h"
+				>
+			</File>
+			<File
 				RelativePath=".\namespace.h"
 				>
 			</File>
@@ -457,6 +465,14 @@
 			</File>
 			<File
 				RelativePath=".\rdo_object.h"
+				>
+			</File>
+			<File
+				RelativePath=".\variable_container.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\variable_container.h"
 				>
 			</File>
 		</Filter>
@@ -3092,6 +3108,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\context\memory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\context\memory.h"
+				>
+			</File>
+			<File
 				RelativePath=".\context\stack.cpp"
 				>
 			</File>
@@ -3100,13 +3124,33 @@
 				>
 			</File>
 			<File
+				RelativePath=".\context\timenow.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\context\timenow.h"
 				>
 			</File>
 			<File
-				RelativePath=".\context\timenow.inl"
+				RelativePath=".\context\type.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\context\type.h"
+				>
+			</File>
+			<Filter
+				Name=".pattern"
+				>
+				<File
+					RelativePath=".\context\pattern.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\context\pattern.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".dpt"

@@ -567,6 +567,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_memory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_memory.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdo_object.cpp"
 				>
 			</File>
@@ -1813,6 +1821,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\equaltype.h"
+				>
+			</File>
+			<File
 				RelativePath="rdocalc.cpp"
 				>
 				<FileConfiguration
@@ -1876,6 +1888,10 @@
 			</File>
 			<File
 				RelativePath=".\rdocalc.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\rdocalc_locvar.h"
 				>
 			</File>
 			<File
