@@ -36,7 +36,9 @@ public:
 		t_string,
 		t_enum,
 		t_array,
-		t_iterator,
+		t_ArrayIterator,
+		t_matrix,
+		t_MatrixIterator,
 		t_fuzzy
 	};
 
@@ -61,13 +63,14 @@ public:                               \
 };                                    \
 extern RDOType__##Type g_##Type;
 
-DEFINE_ATOM_TYPE(unknow       );
-DEFINE_ATOM_TYPE(identificator);
-DEFINE_ATOM_TYPE(int          );
-DEFINE_ATOM_TYPE(real         );
-DEFINE_ATOM_TYPE(bool         );
-DEFINE_ATOM_TYPE(string       );
-DEFINE_ATOM_TYPE(iterator     );
+DEFINE_ATOM_TYPE(unknow        );
+DEFINE_ATOM_TYPE(identificator );
+DEFINE_ATOM_TYPE(int           );
+DEFINE_ATOM_TYPE(real          );
+DEFINE_ATOM_TYPE(bool          );
+DEFINE_ATOM_TYPE(string        );
+DEFINE_ATOM_TYPE(ArrayIterator );
+DEFINE_ATOM_TYPE(MatrixIterator);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

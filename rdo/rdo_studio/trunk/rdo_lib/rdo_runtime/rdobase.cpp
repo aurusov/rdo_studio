@@ -138,7 +138,7 @@ bool RDOSimulatorBase::rdoNext()
 				m_msec_wait += (newTime - m_nextTime) * 3600.0 * 1000.0 / m_showRate;
 				if ( m_msec_wait > 0 )
 				{
-					if ( m_nextTime != m_startTime )
+					if ( newTime != m_startTime )
 					{
 						if ( m_speed > DBL_MIN )
 						{

@@ -2084,15 +2084,31 @@
 				Name=".rdo_array"
 				>
 				<File
+					RelativePath=".\rdo_array.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\rdo_array.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_array.inl"
+					RelativePath=".\rdo_array_def.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".rdo_matrix"
+				>
+				<File
+					RelativePath=".\rdo_matrix.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_array_def.h"
+					RelativePath=".\rdo_matrix.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_matrix_def.h"
 					>
 				</File>
 			</Filter>

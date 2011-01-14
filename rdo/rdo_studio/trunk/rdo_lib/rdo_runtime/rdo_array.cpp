@@ -1,14 +1,17 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : rdo_array.inl
+ * filename : rdo_array.cpp
  * author   : Чирков Михаил
  * date     : 14.12.2009
  * bref     : 
  * indent   : 4T
  */
 
+// ====================================================================== PCH
+#include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_runtime/rdo_array.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -16,50 +19,50 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
+RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
 	: m_arrayType(&type)
 {}
 
-inline RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
+RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
 	: m_container (value.m_container)
 	, m_arrayType (value.m_arrayType)
 {}
 
-inline RDOArrayValue::~RDOArrayValue()
+RDOArrayValue::~RDOArrayValue()
 {}
 
-inline CREF(RDOArrayType) RDOArrayValue::type() const
+CREF(RDOArrayType) RDOArrayValue::type() const
 {
 	ASSERT(m_arrayType);
 	return *m_arrayType;
 }
 
-inline void RDOArrayValue::insertItem(CREF(RDOValue) pArray)
+void RDOArrayValue::insertItem(CREF(RDOValue) pArray)
 {
 	m_container.push_back(pArray);
 }
 
-inline RDOArrayValue::Container::iterator RDOArrayValue::containerBegin()
+RDOArrayValue::Container::iterator RDOArrayValue::containerBegin()
 {
 	return m_container.begin();
 }
 
-inline RDOArrayValue::Container::iterator RDOArrayValue::containerEnd()
+RDOArrayValue::Container::iterator RDOArrayValue::containerEnd()
 {
 	return m_container.end();
 }
 
-inline void RDOArrayValue::insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst)
+void RDOArrayValue::insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst)
 {
 	m_container.insert(itr,itrFst,itrLst);
 }
 
-inline void RDOArrayValue::eraseItems(Container::iterator itrFst, Container::iterator itrLst)
+void RDOArrayValue::eraseItems(Container::iterator itrFst, Container::iterator itrLst)
 {
 	m_container.erase(itrFst,itrLst);
 }
 
-inline tstring RDOArrayValue::getAsString() const
+tstring RDOArrayValue::getAsString() const
 {
 	tstring ArrayName = _T("[");
 	STL_FOR_ALL_CONST(Container, m_container, it)
@@ -71,7 +74,7 @@ inline tstring RDOArrayValue::getAsString() const
 	return ArrayName += _T("]");
 }
 
-inline CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
+CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
 {
 	return m_container[ind.getInt()];
 }
@@ -79,35 +82,35 @@ inline CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayIterator
 // ----------------------------------------------------------------------------
-inline RDOArrayIterator::RDOArrayIterator(CREF(RDOArrayIterator) iterator)
+RDOArrayIterator::RDOArrayIterator(CREF(RDOArrayIterator) iterator)
 	: m_iterator(iterator.m_iterator)
 {}
 
-inline RDOArrayIterator::RDOArrayIterator(CREF(Iterator) iterator)
+RDOArrayIterator::RDOArrayIterator(CREF(Iterator) iterator)
 	: m_iterator(iterator)
 {}
 
-inline RDOArrayIterator::Iterator RDOArrayIterator::getIterator() const
+RDOArrayIterator::Iterator RDOArrayIterator::getIterator() const
 {
 	return m_iterator;
 }
 
-inline RDOArrayIterator::Iterator RDOArrayIterator::operator+ (rsint num)
+RDOArrayIterator::Iterator RDOArrayIterator::operator+ (rsint num)
 {
 	return m_iterator + num;
 }
 
-inline RDOArrayIterator::Iterator RDOArrayIterator::operator- (rsint num)
+RDOArrayIterator::Iterator RDOArrayIterator::operator- (rsint num)
 {
 	return m_iterator - num;
 }
 
-inline RDOValue RDOArrayIterator::getValue() const
+RDOValue RDOArrayIterator::getValue() const
 {
 	return *m_iterator;
 }
 
-inline rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
+rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
 {
 	return m_iterator == iterator.m_iterator;
 }
@@ -115,13 +118,13 @@ inline rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) cons
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-inline RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType)
+RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType)
 	: RDORuntimeObject(parent          )
 	, RDOType         (RDOType::t_array)
 	, m_pArrayType    (pArrayType      )
 {}
 
-inline RDOArrayType::ArrayType RDOArrayType::getArrayType() const
+RDOArrayType::ArrayType RDOArrayType::getArrayType() const
 {
 	return m_pArrayType;
 }

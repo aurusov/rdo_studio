@@ -13,6 +13,7 @@
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
 #include "rdo_lib/rdo_runtime/rdo_fuzzy_def.h"
 #include "rdo_lib/rdo_runtime/rdo_array_def.h"
+#include "rdo_lib/rdo_runtime/rdo_matrix_def.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
@@ -41,16 +42,18 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 {
 	switch (typeID())
 	{
-		case RDOType::t_unknow       : break;
-		case RDOType::t_int          : m_value.i_value = 0; break;
-		case RDOType::t_real         : m_value.d_value = 0; break;
-		case RDOType::t_enum         : m_value.i_value = 0; break;
-		case RDOType::t_bool         : m_value.b_value = false; break;
-		case RDOType::t_string       : m_value.s_value = new smart_string(new string_class(_T(""))); break;
-		case RDOType::t_identificator: m_value.s_value = new smart_string(new string_class(_T(""))); break;
-		case RDOType::t_array        : m_value.p_data = new PTR(void); break;
-		case RDOType::t_iterator     : m_value.p_data = new PTR(void); break;
-		default                      : throw RDOValueException();
+		case RDOType::t_unknow        : break;
+		case RDOType::t_int           : m_value.i_value = 0; break;
+		case RDOType::t_real          : m_value.d_value = 0; break;
+		case RDOType::t_enum          : m_value.i_value = 0; break;
+		case RDOType::t_bool          : m_value.b_value = false; break;
+		case RDOType::t_string        : m_value.s_value = new smart_string(new string_class(_T(""))); break;
+		case RDOType::t_identificator : m_value.s_value = new smart_string(new string_class(_T(""))); break;
+		case RDOType::t_array         : m_value.p_data = new PTR(void); break;
+		case RDOType::t_ArrayIterator : m_value.p_data = new PTR(void); break;
+		case RDOType::t_matrix        : m_value.p_data = new PTR(void); break;
+		case RDOType::t_MatrixIterator: m_value.p_data = new PTR(void); break;
+		default                       : throw RDOValueException();
 	}
 }
 
@@ -137,10 +140,22 @@ inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
 	m_value.p_data = new RDOArrayValue(arrayValue);
 }
 
-inline RDOValue::RDOValue(CREF(RDOArrayIterator) iterator)
-	: m_type(&g_iterator)
+inline RDOValue::RDOValue(CREF(RDOArrayIterator) aIterator)
+	: m_type(&g_ArrayIterator)
 {
-	m_value.p_data = new RDOArrayIterator(iterator);
+	m_value.p_data = new RDOArrayIterator(aIterator);
+}
+
+inline RDOValue::RDOValue(CREF(RDOMatrixValue) matrixValue)
+	: m_type(&matrixValue.type())
+{
+	m_value.p_data = new RDOMatrixValue(matrixValue);
+}
+
+inline RDOValue::RDOValue(CREF(RDOMatrixIterator) mIterator)
+: m_type(&g_MatrixIterator)
+{
+	m_value.p_data = new RDOMatrixIterator(mIterator);
 }
 
 inline void RDOValue::deleteValue()
@@ -156,12 +171,16 @@ inline void RDOValue::deleteValue()
 		delete &__fuzzyV();
 		break;
 
-	case RDOType::t_array:
-		delete &__arrayV();
+	//case RDOType::t_array:
+	//	delete &__arrayV();
+	//	break;
+
+	case RDOType::t_ArrayIterator:
+		delete &__arrayItr();
 		break;
 
-	case RDOType::t_iterator:
-		delete &__arrayItr();
+	case RDOType::t_MatrixIterator:
+		delete &__matrixItr();
 		break;
 	}
 }
@@ -257,19 +276,26 @@ inline CREF(RDOArrayValue) RDOValue::getArray() const
 	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
 }
 
+inline CREF(RDOMatrixValue) RDOValue::getMatrix() const
+{
+	return *static_cast<CPTR(RDOMatrixValue)>(m_value.p_data);
+}
+
 inline tstring RDOValue::getAsString() const
 {
 	switch (typeID())
 	{
-		case RDOType::t_int          : return rdo::format(_T("%d"), m_value.i_value);
-		case RDOType::t_real         : return rdo::toString(m_value.d_value);
-		case RDOType::t_enum         : return __enumT().getValues().at(m_value.i_value);
-		case RDOType::t_bool         : return m_value.b_value ? _T("true") : _T("false");
-		case RDOType::t_string       : return __stringV();
-		case RDOType::t_identificator: return __stringV();
-		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
-		case RDOType::t_array        : return __arrayV().getAsString();
-		case RDOType::t_iterator     : return __arrayItr().getValue().getAsString();
+		case RDOType::t_int           : return rdo::format(_T("%d"), m_value.i_value);
+		case RDOType::t_real          : return rdo::toString(m_value.d_value);
+		case RDOType::t_enum          : return __enumT().getValues().at(m_value.i_value);
+		case RDOType::t_bool          : return m_value.b_value ? _T("true") : _T("false");
+		case RDOType::t_string        : return __stringV();
+		case RDOType::t_identificator : return __stringV();
+		case RDOType::t_fuzzy         : return __fuzzyV().getAsString();
+		case RDOType::t_array         : return __arrayV().getAsString();
+		case RDOType::t_ArrayIterator : return __arrayItr().getValue().getAsString();
+		case RDOType::t_matrix        : return __matrixV().getAsString();
+		case RDOType::t_MatrixIterator: return __matrixItr().getValue().getAsString();
 	}
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsString()"));
 }
@@ -284,6 +310,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 		case RDOType::t_bool  : return m_value.b_value ? _T("true") : _T("false");
 		case RDOType::t_string: return __stringV();
 		case RDOType::t_array : return __arrayV().getAsString();
+		case RDOType::t_matrix: return __matrixV().getAsString();
 	}
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
 }
@@ -326,11 +353,21 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 			m_value.p_data = new RDOArrayValue(rdovalue.__arrayV());
 			break;
 		}
-		case RDOType::t_iterator:
+		case RDOType::t_ArrayIterator:
 		{
 			m_value.p_data = new RDOArrayIterator(rdovalue.__arrayItr());
 			break;
 		}
+		case RDOType::t_matrix:
+			{
+				m_value.p_data = new RDOMatrixValue(rdovalue.__matrixV());
+				break;
+			}
+		case RDOType::t_MatrixIterator:
+			{
+				m_value.p_data = new RDOMatrixIterator(rdovalue.__matrixItr());
+				break;
+			}
 		default:
 		{
 			m_value = rdovalue.m_value;
@@ -399,14 +436,22 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			}
 			break;
 		}
-		case RDOType::t_iterator:
+		case RDOType::t_ArrayIterator:
 		{
 			switch (rdovalue.typeID())
 			{
-				case RDOType::t_iterator: return __arrayItr() == rdovalue.__arrayItr();
+				case RDOType::t_ArrayIterator: return __arrayItr() == rdovalue.__arrayItr();
 			}
 			break;
 		}
+		case RDOType::t_MatrixIterator:
+			{
+				switch (rdovalue.typeID())
+				{
+				case RDOType::t_MatrixIterator: return __matrixItr() == rdovalue.__matrixItr();
+				}
+				break;
+			}
 	}
 	throw RDOValueException();
 }
@@ -588,7 +633,7 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
-		case RDOType::t_iterator:
+		case RDOType::t_ArrayIterator:
 		{
 			switch(rdovalue.typeID())
 			{
@@ -597,6 +642,18 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 					m_value.p_data = new RDOArrayIterator(__arrayItr() + rdovalue.getInt());
 					delete pPrevIt;
 					return;
+			}
+			break;
+		}
+		case RDOType::t_MatrixIterator:
+		{
+			switch(rdovalue.typeID())
+			{
+			case RDOType::t_int:
+				PTR(RDOMatrixIterator) pPrevIt = &__matrixItr();
+				m_value.p_data = new RDOMatrixIterator(__matrixItr() + rdovalue.getInt());
+				delete pPrevIt;
+				return;
 			}
 			break;
 		}
@@ -660,13 +717,25 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
-		case RDOType::t_iterator:
+		case RDOType::t_ArrayIterator:
 		{
 			switch(rdovalue.typeID())
 			{
 			case RDOType::t_int:
 				PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
 				m_value.p_data = new RDOArrayIterator(__arrayItr() - rdovalue.getInt());
+				delete pPrevIt;
+				return;
+			}
+			break;
+		}
+		case RDOType::t_MatrixIterator:
+		{
+			switch(rdovalue.typeID())
+			{
+			case RDOType::t_int:
+				PTR(RDOMatrixIterator) pPrevIt = &__matrixItr();
+				m_value.p_data = new RDOMatrixIterator(__matrixItr() - rdovalue.getInt());
 				delete pPrevIt;
 				return;
 			}
@@ -774,27 +843,52 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
 {
-	__arrayV()[rdovalue];
+	switch (typeID())
+	{
+	case RDOType::t_array : return  __arrayV()[rdovalue];
+	case RDOType::t_matrix: return __matrixV()[rdovalue];
+	}
+	throw RDOValueException();
 }
 
 inline RDOValue RDOValue::begin()
 {
-	return RDOValue(RDOArrayIterator(__arrayV().containerBegin()));
+	switch (typeID())
+	{
+	case RDOType::t_array : return RDOValue(RDOArrayIterator( __arrayV( ).containerBegin()));
+	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerBegin()));
+	}
+	throw RDOValueException();	
 }
 
 inline RDOValue RDOValue::end()
 {
-	return RDOValue(RDOArrayIterator(__arrayV().containerEnd()));
+	switch (typeID())
+	{
+	case RDOType::t_array : return RDOValue(RDOArrayIterator( __arrayV( ).containerEnd()));
+	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerEnd()));
+	}
+	throw RDOValueException();
 }
 
 inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
 {
-	__arrayV().insertItems(itr.__arrayItr().getIterator(),itrFst.__arrayItr().getIterator(),itrLst.__arrayItr().getIterator());
+	switch (typeID())
+	{
+	case RDOType::t_array : __arrayV( ).insertItems(itr.__arrayItr( ).getIterator(),itrFst.__arrayItr( ).getIterator(),itrLst.__arrayItr( ).getIterator());
+	case RDOType::t_matrix: __matrixV().insertItems(itr.__matrixItr().getIterator(),itrFst.__matrixItr().getIterator(),itrLst.__matrixItr().getIterator());
+	}
+	throw RDOValueException();	
 }
 
 inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
 {
-	__arrayV().eraseItems(itrFst.__arrayItr().getIterator(),itrLst.__arrayItr().getIterator());
+	switch (typeID())
+	{
+	case RDOType::t_array : __arrayV( ).eraseItems(itrFst.__arrayItr( ).getIterator(),itrLst.__arrayItr( ).getIterator());
+	case RDOType::t_matrix: __matrixV().eraseItems(itrFst.__matrixItr().getIterator(),itrLst.__matrixItr().getIterator());
+	}
+	throw RDOValueException();
 }
 
 inline CREF(RDOType) RDOValue::type() const
@@ -850,6 +944,26 @@ inline REF(RDOArrayIterator) RDOValue::__arrayItr()
 inline CREF(RDOArrayIterator) RDOValue::__arrayItr() const
 {
 	return *static_cast<CPTR(RDOArrayIterator)>(m_value.p_data);
+}
+
+inline REF(RDOMatrixValue) RDOValue::__matrixV()
+{
+	return *static_cast<RDOMatrixValue*>(m_value.p_data);
+}
+
+inline CREF(RDOMatrixValue) RDOValue::__matrixV() const
+{
+	return *static_cast<CPTR(RDOMatrixValue)>(m_value.p_data);
+}
+
+inline REF(RDOMatrixIterator) RDOValue::__matrixItr()
+{
+	return *static_cast<RDOMatrixIterator*>(m_value.p_data);
+}
+
+inline CREF(RDOMatrixIterator) RDOValue::__matrixItr() const
+{
+	return *static_cast<CPTR(RDOMatrixIterator)>(m_value.p_data);
 }
 
 inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rdovalue)

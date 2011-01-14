@@ -77,6 +77,7 @@ rbool RDOValue::constant() const
 		m_value.typeID() == rdoRuntime::RDOType::t_int  ||
 		m_value.typeID() == rdoRuntime::RDOType::t_real ||
 		m_value.typeID() == rdoRuntime::RDOType::t_bool ||
+		m_value.typeID() == rdoRuntime::RDOType::t_array||
 		m_value.typeID() == rdoRuntime::RDOType::t_string;
 }
 
