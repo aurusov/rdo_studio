@@ -63,7 +63,8 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#define LEXER reinterpret_cast<PTR(rdoParse::RDOLexer)>(lexer)
+#define LEXER     reinterpret_cast<PTR(rdoParse::RDOLexer)>(lexer)
+#define LEXER_POS (*LEXER->m_lploc)
 
 #include "rdo_lib/rdo_parser/rdoparser_lexer.inl"
 

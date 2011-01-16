@@ -2284,7 +2284,7 @@ fun_logic
 	| fun_arithm '=' fun_arithm
 	{
 		YYLTYPE          equal_pos = @2;
-		LPCorrection     pCorrection = new Correction(++equal_pos.m_last_line, ++equal_pos.m_last_pos, Equality);
+//		LPCorrection     pCorrection = new Correction(++equal_pos.m_last_line, ++equal_pos.m_last_pos, Equality);
 		PARSER->error().error(@2, rdo::format(_T("¬ позиции Ln %i Col %i не хватает знака равенства"), equal_pos.m_last_line, equal_pos.m_last_pos));
 	}
 	| fun_group

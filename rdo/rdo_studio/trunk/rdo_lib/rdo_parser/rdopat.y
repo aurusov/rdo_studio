@@ -1439,11 +1439,11 @@ pat_convert_cmd
 	}
 	| pat_convert_cmd statement_old_style
 	{
-		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
+		//LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
 		YYLTYPE          statement_pos = @2;
-		LPCorrection     pCorrection = new Correction(++statement_pos.m_last_line, ++statement_pos.m_last_pos, Semicolon);
-		pCmdList->insertCorrection(pCorrection);
-		$$ = PARSER->stack().push(pCmdList);
+		//LPCorrection     pCorrection = new Correction(++statement_pos.m_last_line, ++statement_pos.m_last_pos, Semicolon);
+		//pCmdList->insertCorrection(pCorrection);
+		//$$ = PARSER->stack().push(pCmdList);
 		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает точки с запятой"), statement_pos.m_last_line, statement_pos.m_last_pos));
 	}
 	;
@@ -2544,7 +2544,7 @@ fun_logic
 	| fun_arithm '=' fun_arithm
 	{
 		YYLTYPE          equal_pos = @2;
-		LPCorrection     pCorrection = new Correction(++equal_pos.m_last_line, ++equal_pos.m_last_pos, Equality);
+//		LPCorrection     pCorrection = new Correction(++equal_pos.m_last_line, ++equal_pos.m_last_pos, Equality);
 		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает знака равенства"), equal_pos.m_last_line, equal_pos.m_last_pos));
 	}
 	| fun_group
