@@ -113,7 +113,6 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
-				BrowseInformation="1"
 				WarningLevel="3"
 			/>
 			<Tool
@@ -129,7 +128,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

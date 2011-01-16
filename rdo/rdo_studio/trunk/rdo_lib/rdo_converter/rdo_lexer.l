@@ -322,16 +322,9 @@ set					return(RDO_set);
 "{"						{
 	BEGIN(comment_rdo);
 
-	rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1);
-	ASSERT(pDelete);
-
-	yyltype pos = LEXER_POS;
-
-	rdoConverter::LPDocUpdate pInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(LEXER_POS.m_first_seek + 1, _T("/*"));
-	ASSERT(pInsert);
-
-	CONVERTER->insertDocUpdate(pDelete);
-	CONVERTER->insertDocUpdate(pInsert);
+	rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("/*"));
+	ASSERT(pReplace);
+	CONVERTER->insertDocUpdate(pReplace);
 };
 
 <comment_rdo>[^}.]*		;
@@ -339,16 +332,9 @@ set					return(RDO_set);
 <comment_rdo>"}"		{
 	BEGIN(INITIAL);
 
-	rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1);
-	ASSERT(pDelete);
-
-	yyltype pos = LEXER_POS;
-
-	rdoConverter::LPDocUpdate pInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(LEXER_POS.m_first_seek + 1, _T("*/"));
-	ASSERT(pInsert);
-
-	CONVERTER->insertDocUpdate(pDelete);
-	CONVERTER->insertDocUpdate(pInsert);
+	rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("*/"));
+	ASSERT(pReplace);
+	CONVERTER->insertDocUpdate(pReplace);
 };
 
 "/*"					BEGIN(comment_cpp);

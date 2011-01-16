@@ -64,7 +64,7 @@ void RDORSSResource::addParam(CREF(RDOValue) param)
 			if (!(*m_currParam)->getDefault().defined())
 			{
 				Converter::s_converter()->error().push_only(param.src_info(), _T("Ќевозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
-				Converter::s_converter()->error().push_only((*m_currParam)->getParamType()->src_info(), _T("—м. описание параметра"));
+				Converter::s_converter()->error().push_only((*m_currParam)->getType()->src_info(), _T("—м. описание параметра"));
 				Converter::s_converter()->error().push_done();
 			}
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
@@ -72,7 +72,7 @@ void RDORSSResource::addParam(CREF(RDOValue) param)
 		}
 		else
 		{
-			m_paramList.push_back(Param((*m_currParam)->getParamType()->value_cast(param)));
+			m_paramList.push_back(Param((*m_currParam)->getType()->value_cast(param)));
 			m_currParam++;
 		}
 	}

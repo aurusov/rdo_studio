@@ -19,8 +19,8 @@
 #include "rdo_lib/rdo_converter/rdobison.h"
 #include "rdo_lib/rdo_converter/rdogramma.h"
 #include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/update/update_i.h"
 #include "rdo_lib/rdo_converter/update/document.h"
+#include "rdo_lib/rdo_converter/update/update_i.h"
 
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
@@ -48,7 +48,6 @@ public:
 
 	virtual void  parse  (PTR(Converter) pParser)                             {};
 	virtual void  parse  (PTR(Converter) pParser, REF(std::istream) streamIn) {};
-	        void  convert(REF(LPDocument) pDocument, REF(std::istream) streamIn) const;
 
 	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
 	virtual ruint lexer_loc_pos()  { return 0;                                               };
@@ -58,30 +57,15 @@ public:
 		return m_needStream;
 	}
 
-	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
-
 protected:
-	RDOParserItem()
-		: m_type      (rdoModelObjectsConvertor::PAT_IN)
-		, m_parser_fun(NULL                            )
-		, m_error_fun (NULL                            )
-		, m_lexer_fun (NULL                            )
-		, m_needStream(true                            )
-	{}
-	RDOParserItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
-		: m_type      (type      )
-		, m_parser_fun(parser_fun)
-		, m_error_fun (error_fun )
-		, m_lexer_fun (lexer_fun )
-		, m_needStream(true      )
-	{}
-	virtual ~RDOParserItem()
-	{}
+	RDOParserItem();
+	RDOParserItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
+	virtual ~RDOParserItem();
 
-	typedef std::list<LPDocUpdate> DocUpdateList;
+	rbool m_needStream;
 
-	rbool          m_needStream;
-	DocUpdateList  m_docUpdateList;
+private:
+	void init();
 };
 
 // ----------------------------------------------------------------------------

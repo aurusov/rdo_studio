@@ -1,8 +1,8 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdortp_param.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdo_type_param_suchas.cpp
+ * author   : Урусов Андрей
+ * date     : 09.01.2011
  * bref     : 
  * indent   : 4T
  */
@@ -11,30 +11,25 @@
 #include "rdo_lib/rdo_converter/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_converter/rdortp_param.h"
+#include "rdo_lib/rdo_converter/rdo_type_param_suchas.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDORTPParam
+// ---------- RDOTypeParamSuchAs
 // ----------------------------------------------------------------------------
-RDORTPParam::RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(RDOValue) default, CREF(RDOParserSrcInfo) src_info)
-	: RDOParam(src_info, pParamType, default)
+RDOTypeParamSuchAs::RDOTypeParamSuchAs(CREF(LPRDOParam) pParam)
+	: RDOTypeParam(pParam->getType()->type(), pParam->getType()->src_info())
+	, m_pParam(pParam)
 {}
 
-RDORTPParam::~RDORTPParam()
+RDOTypeParamSuchAs::~RDOTypeParamSuchAs()
 {}
 
-CREF(tstring) RDORTPParam::name() const
+CREF(LPRDOParam) RDOTypeParamSuchAs::getParam() const
 {
-	return RDOParam::name();
-}
-
-void RDORTPParam::writeModelStructure(REF(std::ostream) stream) const
-{
-	stream << name() << _T(" ");
-	getType()->writeModelStructure(stream);
+	return m_pParam;
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

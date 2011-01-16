@@ -27,10 +27,10 @@ CLASS(UpdateInsert): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-	UpdateInsert(std::istream::pos_type pos, CREF(tstring) value, rdoModelObjectsConvertor::RDOFileTypeOut file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	UpdateInsert(ruint pos, CREF(tstring) value, IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
 
-	std::istream::pos_type m_pos;
-	tstring                m_value;
+	ruint    m_pos;
+	tstring  m_value;
 
 	DECLARE_IDocUpdate;
 };
@@ -42,22 +42,70 @@ CLASS(UpdateDelete): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateDelete)
 private:
-	UpdateDelete(std::istream::pos_type posFrom, std::istream::pos_type posTo);
+	UpdateDelete(ruint posFrom, ruint posTo);
 
-	std::istream::pos_type   m_posFrom;
-	std::istream::pos_type   m_posTo;
+	ruint m_posFrom;
+	ruint m_posTo;
 
 	DECLARE_IDocUpdate;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- UpdateFlush
+// ---------- UpdateReplace
 // ----------------------------------------------------------------------------
-CLASS(UpdateFlush): INSTANCE_OF(DocUpdate)
+CLASS(UpdateReplace): INSTANCE_OF(DocUpdate)
 {
-DECLARE_FACTORY(UpdateFlush)
+DECLARE_FACTORY(UpdateReplace)
 private:
-	UpdateFlush();
+	UpdateReplace(ruint posFrom, ruint posTo, CREF(tstring) value, IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+
+	LPDocUpdate pDelete;
+	LPDocUpdate pInsert;
+
+	DECLARE_IDocUpdate;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- UpdateMove
+// ----------------------------------------------------------------------------
+CLASS(UpdateMove): INSTANCE_OF(DocUpdate)
+{
+DECLARE_FACTORY(UpdateMove)
+private:
+	UpdateMove(ruint           posFromBegin,
+	           ruint           posFromEnd,
+	           ruint           posTo,
+	           IDocument::Type fileTo   = rdoModelObjectsConvertor::UNDEFINED_OUT,
+	           IDocument::Type fileFrom = rdoModelObjectsConvertor::UNDEFINED_OUT);
+
+	ruint           m_posFromBegin;
+	ruint           m_posFromEnd;
+	ruint           m_posTo;
+	IDocument::Type m_fileFrom;
+
+	DECLARE_IDocUpdate;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- UpdateSwap
+// ----------------------------------------------------------------------------
+CLASS(UpdateSwap): INSTANCE_OF(DocUpdate)
+{
+DECLARE_FACTORY(UpdateSwap)
+private:
+	UpdateSwap(ruint           pos1Begin,
+	           ruint           pos1End,
+	           ruint           pos2Begin,
+	           ruint           pos2End,
+	           IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+
+	ruint           m_pos1Begin;
+	ruint           m_pos1End;
+	ruint           m_pos2Begin;
+	ruint           m_pos2End;
+
+	void insert(CREF(ruint) from, CREF(ruint) size, REF(ruint) posBegin, REF(ruint) posEnd);
+	void remove(CREF(ruint) from, CREF(ruint) to,   REF(ruint) posBegin, REF(ruint) posEnd);
 
 	DECLARE_IDocUpdate;
 };

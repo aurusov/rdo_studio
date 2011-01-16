@@ -243,15 +243,50 @@ smr_show_mode
 
 smr_cond
 	: /* empty */
-	| smr_cond RDO_Model_name                 '=' RDO_IDENTIF
-	| smr_cond RDO_Resource_file              '=' RDO_IDENTIF
-	| smr_cond RDO_OprIev_file                '=' RDO_IDENTIF
-	| smr_cond RDO_Frame_file                 '=' RDO_IDENTIF
-	| smr_cond RDO_Statistic_file             '=' RDO_IDENTIF
-	| smr_cond RDO_Results_file               '=' RDO_IDENTIF
-	| smr_cond RDO_Trace_file                 '=' RDO_IDENTIF
+	| smr_cond RDO_Model_name '=' RDO_IDENTIF
+	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+	}
+	| smr_cond RDO_Resource_file '=' RDO_IDENTIF
+	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+	}
+	| smr_cond RDO_OprIev_file '=' RDO_IDENTIF
+	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+	}
+	| smr_cond RDO_Frame_file '=' RDO_IDENTIF
+	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+	}
+	| smr_cond RDO_Statistic_file '=' RDO_IDENTIF
+	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+	}
+	| smr_cond RDO_Results_file '=' RDO_IDENTIF
+	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+	}
+	| smr_cond RDO_Trace_file '=' RDO_IDENTIF
+	{
+		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+	}
 	| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
-	| smr_cond RDO_Show_mode                  '=' smr_show_mode
+	| smr_cond RDO_Show_mode '=' smr_show_mode
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);

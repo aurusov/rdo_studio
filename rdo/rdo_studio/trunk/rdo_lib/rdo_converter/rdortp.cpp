@@ -55,6 +55,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 
 void RDORTPResType::addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID)
 {
+	NEVER_REACH_HERE;
 }
 
 LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
@@ -62,6 +63,9 @@ LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? *it : LPRDORTPParam();
 }
+
+void RDORTPResType::finish()
+{}
 
 ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 {

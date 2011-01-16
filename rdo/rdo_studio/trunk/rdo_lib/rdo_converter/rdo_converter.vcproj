@@ -46,12 +46,9 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../;../../thirdparty/bison_flex/"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				StringPooling="true"
-				EnableFunctionLevelLinking="true"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;yyFlexLexer=cnvFlexLexer"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_converter/pch.h"
-				BrowseInformation="1"
 				WarningLevel="3"
 			/>
 			<Tool
@@ -67,8 +64,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4.lib COSDynamic4.lib omniCodeSets4.lib omniDynamic4.lib omniORB4.lib omnisslTP4.lib omnithread.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
+				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -116,7 +112,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../;../../thirdparty/bison_flex/"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT;yyFlexLexer=cnvFlexLexer"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_converter/pch.h"
@@ -186,7 +182,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../;../../thirdparty/bison_flex/;../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT;yyFlexLexer=cnvFlexLexer"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -258,7 +254,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../;../../thirdparty/bison_flex/;../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;BOOST_TYPEOF_SILENT"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;BOOST_TYPEOF_SILENT;yyFlexLexer=cnvFlexLexer"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -328,7 +324,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../;../../thirdparty/bison_flex/"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT;yyFlexLexer=cnvFlexLexer"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_converter/pch.h"
@@ -399,7 +395,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../;../../thirdparty/bison_flex/"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;yyFlexLexer=cnvFlexLexer"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -467,7 +463,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\flex.exe -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\flex.exe -Pcnv -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdolex.cpp"
 					/>
 				</FileConfiguration>
@@ -487,7 +483,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\flex.exe -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\flex.exe -Pcnv -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdolex.cpp"
 					/>
 				</FileConfiguration>
@@ -497,7 +493,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\flex.exe -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\flex.exe -Pcnv -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdolex.cpp"
 					/>
 				</FileConfiguration>
@@ -507,7 +503,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\flex.exe -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\flex.exe -Pcnv -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdolex.cpp"
 					/>
 				</FileConfiguration>
@@ -517,7 +513,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\thirdparty\bison_flex\flex.exe -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="..\..\thirdparty\bison_flex\flex.exe -Pcnv -ordolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdolex.cpp"
 					/>
 				</FileConfiguration>
@@ -726,6 +722,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pcnv_opr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
@@ -735,6 +732,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pcnv_opr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
@@ -744,6 +742,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pcnv_opr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
@@ -753,6 +752,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pcnv_opr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
@@ -762,6 +762,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pcnv_opr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
@@ -771,6 +772,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="build $(InputFileName)"
 						CommandLine="..\..\thirdparty\bison_flex\bison.exe -pcnv_opr --skeleton=..\..\thirdparty\bison_flex\bison.simple -ordogramopr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="rdogramopr.cpp"
 					/>
@@ -2524,11 +2526,27 @@
 				Name=".param"
 				>
 				<File
+					RelativePath=".\param.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\param.h"
+					>
+				</File>
+				<File
 					RelativePath=".\rdo_type_param.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\rdo_type_param.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_param_suchas.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_type_param_suchas.h"
 					>
 				</File>
 			</Filter>
@@ -2614,6 +2632,10 @@
 			</File>
 			<File
 				RelativePath=".\update\document.h"
+				>
+			</File>
+			<File
+				RelativePath=".\update\document_i.h"
 				>
 			</File>
 			<File

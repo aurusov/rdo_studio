@@ -181,9 +181,9 @@ void RDOPATPattern::writeModelStructure(REF(std::ostream) stream) const
 	stream << std::endl;
 }
 
-LPRDOFUNFunctionParam RDOPATPattern::findPATPatternParam(CREF(tstring) paramName) const
+LPRDOParam RDOPATPattern::findPATPatternParam(CREF(tstring) paramName) const
 {
-	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOFUNFunctionParam>(paramName));
+	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
 	return it != m_paramList.end() ? (*it) : NULL;
 }
 
@@ -195,7 +195,7 @@ LPRDORelevantResource RDOPATPattern::findRelevantResource(CREF(tstring) resName)
 
 int RDOPATPattern::findPATPatternParamNum(CREF(tstring) paramName) const
 {
-	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOFUNFunctionParam>(paramName));
+	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
 	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
 }
 
@@ -205,11 +205,11 @@ int RDOPATPattern::findRelevantResourceNum(CREF(tstring) resName) const
 	return it != m_relResList.end() ? it - m_relResList.begin() : -1;
 }
 
-void RDOPATPattern::add(CREF(LPRDOFUNFunctionParam) pParam)
+void RDOPATPattern::add(CREF(LPRDOParam) pParam)
 {
 	ASSERT(pParam);
 
-	LPRDOFUNFunctionParam pParamExist = findPATPatternParam(pParam->name());
+	LPRDOParam pParamExist = findPATPatternParam(pParam->name());
 	if (pParamExist)
 	{
 		rdoConverter::g_error().push_only(pParam->src_info(), rdo::format(_T("Параметр '%s' уже определен"), pParam->src_text().c_str()));

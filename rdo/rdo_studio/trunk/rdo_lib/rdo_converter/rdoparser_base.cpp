@@ -27,23 +27,31 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOParserItem
 // ----------------------------------------------------------------------------
-void RDOParserItem::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
+RDOParserItem::RDOParserItem()
+	: m_type      (rdoModelObjectsConvertor::PAT_IN)
+	, m_parser_fun(NULL                            )
+	, m_error_fun (NULL                            )
+	, m_lexer_fun (NULL                            )
+	, m_needStream(true                            )
 {
-	ASSERT(pDocUpdate);
-	m_docUpdateList.push_back(pDocUpdate);
+	init();
 }
 
-void RDOParserItem::convert(REF(LPDocument) pDocument, REF(std::istream) streamIn) const
+RDOParserItem::RDOParserItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
+	: m_type      (type      )
+	, m_parser_fun(parser_fun)
+	, m_error_fun (error_fun )
+	, m_lexer_fun (lexer_fun )
+	, m_needStream(true      )
 {
-	ASSERT(pDocument);
-
-	STL_FOR_ALL_CONST(m_docUpdateList, it)
-	{
-		LPDocUpdate pUpdate = *it;
-		ASSERT(pUpdate);
-		pUpdate->apply(pDocument, streamIn);
-	}
+	init();
 }
+
+RDOParserItem::~RDOParserItem()
+{}
+
+void RDOParserItem::init()
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserContainer

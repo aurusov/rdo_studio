@@ -119,7 +119,6 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough=""
-				BrowseInformation="1"
 				WarningLevel="3"
 			/>
 			<Tool

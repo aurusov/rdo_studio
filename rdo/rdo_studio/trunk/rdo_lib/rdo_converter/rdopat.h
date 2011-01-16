@@ -15,6 +15,7 @@
 #include "rdo_lib/rdo_converter/rdortp_param.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdorss.h"
+#include "rdo_lib/rdo_converter/param.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdocalc_relres.h"
@@ -93,12 +94,12 @@ public:
 	
 	LPRDORelevantResource m_pCurrRelRes;
 
-	void                      add                    (CREF(LPRDOFUNFunctionParam) pParam);
-	LPRDOFUNFunctionParam     findPATPatternParam    (CREF(tstring) paramName) const;
-	int                       findPATPatternParamNum (CREF(tstring) paramName) const;
-	LPRDORelevantResource     findRelevantResource   (CREF(tstring) resName  ) const;
-	int                       findRelevantResourceNum(CREF(tstring) resName  ) const;
-	virtual void              addRelRes              (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos) = 0;
+	void                  add                    (CREF(LPRDOParam) pParam);
+	LPRDOParam            findPATPatternParam    (CREF(tstring) paramName) const;
+	int                   findPATPatternParamNum (CREF(tstring) paramName) const;
+	LPRDORelevantResource findRelevantResource   (CREF(tstring) resName  ) const;
+	int                   findRelevantResourceNum(CREF(tstring) resName  ) const;
+	virtual void          addRelRes              (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos) = 0;
 
 	CREF(tstring) name() const { return src_text(); }
 
@@ -129,7 +130,7 @@ protected:
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdoRuntime::RDOResource::ConvertStatus status) = 0;
 
 private:
-	typedef std::vector<LPRDOFUNFunctionParam> ParamList;
+	typedef std::vector<LPRDOParam> ParamList;
 
 	ParamList      m_paramList;
 	RelResList     m_relResList;
