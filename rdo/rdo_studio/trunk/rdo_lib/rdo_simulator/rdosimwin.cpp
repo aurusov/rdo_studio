@@ -1074,13 +1074,13 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 		case rdoConverter::RDOParserModel::CNV_OK   : break;
 		case rdoConverter::RDOParserModel::CNV_ERROR:
 			{
-				tstring mess(_T("Ошибка конфертирования"));
-				broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
+				tstring mess(_T("Ошибка конвертора\n"));
+				broadcastMessage(RT_DEBUG_STRING, &mess);
 				CREF(rdoConverter::Error::ErrorList) errorList = converter.error().getList();
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
-					broadcastMessage(RT_SIMULATOR_PARSE_STRING, const_cast<PTR(tstring)>(&it->message));
+					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&it->message));
 					++it;
 				}
 			}

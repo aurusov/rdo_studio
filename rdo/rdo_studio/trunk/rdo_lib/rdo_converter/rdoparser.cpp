@@ -14,6 +14,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 // ====================================================================== SYNOPSIS
+#include "rdo_common/rdocommon.h"
+#include "rdo_common/rdofile.h"
+
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
@@ -21,8 +24,8 @@
 #include "rdo_lib/rdo_converter/context/global.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdofile.h"
+#include "rdo_lib/rdo_converter/update/update.h"
+#include "rdo_lib/rdo_converter/update/document.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -74,9 +77,9 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(PROCProcess);
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(Operations );
 
-rdoModelObjectsConvertor::RDOFileType Converter::getFileToParse()
+rdoModelObjectsConvertor::RDOFileTypeIn Converter::getFileToParse()
 {
-	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->m_type : rdoModelObjectsConvertor::PAT;
+	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->m_type : rdoModelObjectsConvertor::PAT_IN;
 }
 
 ruint Converter::lexer_loc_line()
@@ -255,12 +258,12 @@ CREF(RDOParserSMRInfo::FileList) RDOParserSMRInfo::getFileList() const
 	return m_fileList;
 }
 
-void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type,
-                                      CREF(tstring)                         modelPath,
-                                      CREF(tstring)                         modelName,
-                                      CREF(tstring)                         smrFileName,
-                                      CREF(tstring)                         nameFromSMR,
-                                      CREF(tstring)                         fileExt
+void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileTypeIn type,
+                                      CREF(tstring)                           modelPath,
+                                      CREF(tstring)                           modelName,
+                                      CREF(tstring)                           smrFileName,
+                                      CREF(tstring)                           nameFromSMR,
+                                      CREF(tstring)                           fileExt
 )
 {
 	CREF(tstring) fileName = !nameFromSMR.empty() ? nameFromSMR : (!modelName.empty() ? modelName : smrFileName);
@@ -275,7 +278,7 @@ void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type
 	}
 }
 
-rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo)
+rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) modelName)
 {
 	std::ifstream stream(smrFullFileName.c_str());
 	if (!stream.is_open())
@@ -300,19 +303,19 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 	if (!rdo::File::splitpath(smrFullFileName, smrFilePath, smrFileName, smrFileExt))
 		return false;
 
-	tstring modelName = getSMR()->getFile(_T("Model_name"));
+	modelName = getSMR()->getFile(_T("Model_name"));
 
-	insertFileName(rdoModelObjectsConvertor::PAT, smrFilePath, modelName, smrFileName, modelName,                               _T("pat"));
-	insertFileName(rdoModelObjectsConvertor::RTP, smrFilePath, modelName, smrFileName, modelName,                               _T("rtp"));
-	insertFileName(rdoModelObjectsConvertor::RSS, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Resource_file")),  _T("rss"));
-	insertFileName(rdoModelObjectsConvertor::OPR, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("OprIev_file")  ),  _T("opr"));
-	insertFileName(rdoModelObjectsConvertor::FRM, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Frame_file")   ),  _T("frm"));
-	insertFileName(rdoModelObjectsConvertor::FUN, smrFilePath, modelName, smrFileName, modelName,                               _T("fun"));
-	insertFileName(rdoModelObjectsConvertor::DPT, smrFilePath, modelName, smrFileName, modelName,                               _T("dpt"));
-	insertFileName(rdoModelObjectsConvertor::PMD, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Statistic_file")), _T("pmd"));
-	insertFileName(rdoModelObjectsConvertor::SMR, smrFilePath, modelName, smrFileName, smrFileName,                             _T("smr"));
-	insertFileName(rdoModelObjectsConvertor::PMV, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Results_file")  ), _T("pmv"));
-	insertFileName(rdoModelObjectsConvertor::TRC, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Trace_file")    ), _T("trc"));
+	insertFileName(rdoModelObjectsConvertor::PAT_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("pat"));
+	insertFileName(rdoModelObjectsConvertor::RTP_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("rtp"));
+	insertFileName(rdoModelObjectsConvertor::RSS_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Resource_file")),  _T("rss"));
+	insertFileName(rdoModelObjectsConvertor::OPR_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("OprIev_file")  ),  _T("opr"));
+	insertFileName(rdoModelObjectsConvertor::FRM_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Frame_file")   ),  _T("frm"));
+	insertFileName(rdoModelObjectsConvertor::FUN_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("fun"));
+	insertFileName(rdoModelObjectsConvertor::DPT_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("dpt"));
+	insertFileName(rdoModelObjectsConvertor::PMD_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Statistic_file")), _T("pmd"));
+	insertFileName(rdoModelObjectsConvertor::SMR_IN, smrFilePath, modelName, smrFileName, smrFileName,                             _T("smr"));
+	insertFileName(rdoModelObjectsConvertor::PMV_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Results_file")  ), _T("pmv"));
+	insertFileName(rdoModelObjectsConvertor::TRC_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Trace_file")    ), _T("trc"));
 
 	return true;
 }
@@ -320,13 +323,13 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 {
 	RDOParserSMRInfo::FileList fileList;
+	tstring                    modelName;
 	{
 		std::auto_ptr<RDOParserSMRInfo> pSMRParser(new RDOParserSMRInfo());
-		rdoModelObjectsConvertor::RDOSMRFileInfo smrInfo;
 
 		try
 		{
-			if (!pSMRParser->parseSMR(smrFullFileName, smrInfo))
+			if (!pSMRParser->parseSMR(smrFullFileName, modelName))
 				return CNV_NONE;
 		}
 		catch (REF(rdoParse::RDOSyntaxException))
@@ -338,6 +341,10 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			return CNV_NONE;
 		}
 		fileList = pSMRParser->getFileList();
+		if (fileList.empty())
+		{
+			return CNV_NONE;
+		}
 	}
 
 	try
@@ -348,11 +355,15 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 			m_pParserItem = it->second;
 			if (m_pParserItem->needStream())
 			{
-				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(m_pParserItem->m_type);
+				BOOST_AUTO(it, fileList.find(m_pParserItem->m_type));
 				if (it != fileList.end())
 				{
 					std::ifstream stream(it->second.c_str(), ios::binary);
 					m_pParserItem->parse(this, stream);
+					if (m_pParserItem->m_type != rdoModelObjectsConvertor::OPR_IN)
+					{
+						m_pParserItem->insertDocUpdate(rdo::Factory<UpdateFlush>::create());
+					}
 				}
 			}
 			else
@@ -360,51 +371,6 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 				m_pParserItem->parse(this);
 			}
 			m_pParserItem = NULL;
-			++it;
-		}
-
-		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
-		std::stringstream backupDirName;
-		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
-		                 % time.date().year ()
-		                 % time.date().month()
-		                 % time.date().day  ()
-		                 % time.time_of_day().hours  ()
-		                 % time.time_of_day().minutes()
-		                 % time.time_of_day().seconds();
-
-		boost::filesystem::path backupPath(backupDirName.str());
-		// backupPath = _T("c:\\1");
-
-		try
-		{
-			if (!boost::filesystem::create_directory(backupPath))
-			{
-				int i = 1;
-			}
-		}
-		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
-		{
-			tstring m1 = ex.what();
-			int i = 1;
-		}
-
-		it = begin();
-		while (it != end())
-		{
-			LPRDOParserItem pParserItem = it->second;
-			ASSERT(pParserItem);
-			if (pParserItem->needStream())
-			{
-				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(pParserItem->m_type);
-				if (it != fileList.end())
-				{
-					std::ifstream streamIn (it->second.c_str(), ios::binary);
-					std::ofstream streamOut(_T("C:\\Users\\Андрей\\Documents\\1.txt"), ios::trunc | ios::binary);
-					pParserItem->convert(this, streamIn, streamOut);
-					streamOut.close();
-				}
-			}
 			++it;
 		}
 	}
@@ -419,6 +385,97 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 	catch (...)
 	{
 		return CNV_NONE;
+	}
+
+	error().clear();
+
+	BOOST_AUTO(fileIt, fileList.begin());
+	boost::filesystem::path fullPath(fileIt->second);
+	fullPath.remove_filename();
+
+	try
+	{
+		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
+		std::stringstream backupDirName;
+		backupDirName << fullPath.directory_string()
+		              << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+		                 % time.date().year ()
+		                 % time.date().month()
+		                 % time.date().day  ()
+		                 % time.time_of_day().hours  ()
+		                 % time.time_of_day().minutes()
+		                 % time.time_of_day().seconds();
+
+		boost::filesystem::path backupPath(backupDirName.str());
+
+		try
+		{
+			if (!boost::filesystem::create_directory(backupPath))
+			{
+				YYLTYPE pos;
+				pos.m_last_line = 0;
+				pos.m_last_pos  = 0;
+				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.directory_string().c_str()));
+			}
+		}
+		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
+		{
+			tstring message = ex.what();
+			if (message.find(_T("boost")) == 0)
+			{
+				BOOST_AUTO(pos, message.find(_T(' ')));
+				if (pos != tstring::npos)
+				{
+					message = message.substr(pos + 1);
+				}
+			}
+			YYLTYPE pos;
+			pos.m_last_line = 0;
+			pos.m_last_pos  = 0;
+			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.directory_string().c_str(), message.c_str()));
+		}
+
+		STL_FOR_ALL(fileList, it)
+		{
+			boost::filesystem::path from(it->second);
+			boost::filesystem::path to  (backupPath.directory_string() + boost::filesystem::slash<boost::filesystem::path>::value + from.filename());
+			boost::filesystem::rename(from, to);
+			it->second = to.file_string();
+		}
+	}
+	catch (REF(rdoConverter::RDOSyntaxException))
+	{
+		return CNV_ERROR;
+	}
+	catch (REF(rdoRuntime::RDORuntimeException))
+	{
+		return CNV_ERROR;
+	}
+	catch (...)
+	{
+		return CNV_ERROR;
+	}
+
+	{
+		LPDocument pDocument = rdo::Factory<Document>::create(fullPath.directory_string(), modelName);
+		RDOParserContainer::Iterator it = begin();
+		while (it != end())
+		{
+			LPRDOParserItem pParserItem = it->second;
+			ASSERT(pParserItem);
+			if (pParserItem->needStream())
+			{
+				BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
+				if (fileIt != fileList.end())
+				{
+					std::ifstream streamIn (fileIt->second.c_str(), ios::binary);
+					ASSERT(streamIn.good());
+
+					pParserItem->convert(pDocument, streamIn);
+				}
+			}
+			++it;
+		}
 	}
 
 	return CNV_OK;

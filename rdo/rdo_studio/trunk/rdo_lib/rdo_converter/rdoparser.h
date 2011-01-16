@@ -172,10 +172,10 @@ public:
 
 	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
 
-	static rdoModelObjectsConvertor::RDOFileType getFileToParse();
-	static ruint                                 lexer_loc_line();
-	static ruint                                 lexer_loc_pos ();
-	static PTR(Converter)                        s_converter   ();
+	static rdoModelObjectsConvertor::RDOFileTypeIn getFileToParse();
+	static ruint                                   lexer_loc_line();
+	static ruint                                   lexer_loc_pos ();
+	static PTR(Converter)                          s_converter   ();
 
 protected:
 	LPRDOParserItem m_pParserItem;
@@ -284,20 +284,20 @@ public:
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:
-	typedef std::map<rdoModelObjectsConvertor::RDOFileType, tstring> FileList;
+	typedef std::map<rdoModelObjectsConvertor::RDOFileTypeIn, tstring> FileList;
 
-	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo);
+	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(tstring) modelName);
 	CREF(FileList) getFileList() const;
 
 private:
 	FileList m_fileList;
 
-	void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type,
-	                                      CREF(tstring)                         modelPath,
-	                                      CREF(tstring)                         modelName,
-	                                      CREF(tstring)                         smrFileName,
-	                                      CREF(tstring)                         nameFromSMR,
-	                                      CREF(tstring)                         fileExt);
+	void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileTypeIn type,
+	                                      CREF(tstring)                           modelPath,
+	                                      CREF(tstring)                           modelName,
+	                                      CREF(tstring)                           smrFileName,
+	                                      CREF(tstring)                           nameFromSMR,
+	                                      CREF(tstring)                           fileExt);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

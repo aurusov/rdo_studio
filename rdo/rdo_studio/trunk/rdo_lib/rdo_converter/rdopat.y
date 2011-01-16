@@ -199,6 +199,7 @@
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
+#include "rdo_lib/rdo_converter/update/update.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 // ===============================================================================
 
@@ -1515,6 +1516,13 @@ pat_convert_cmd
 			pCalc->setSrcPos (@2.m_first_line, @2.m_first_pos, @4.m_last_line, @4.m_last_pos);
 			pCmdList->insertCommand(pCalc);
 		}
+
+		YYLTYPE convertor_pos = @4;
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, _T(";"));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pCmdList);
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error
@@ -1524,6 +1532,11 @@ pat_convert_cmd
 	| pat_convert_cmd RDO_IDENTIF_NoChange
 	{
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($1);
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, _T(";"));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pCmdList);
 	}
 	;
@@ -1531,6 +1544,14 @@ pat_convert_cmd
 param_equal_type
 	: RDO_set
 	{
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@1.m_first_seek, @1.m_last_seek);
+		ASSERT(pDelete);
+		CONVERTER->insertDocUpdate(pDelete);
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("="));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = rdoRuntime::ET_EQUAL;
 	}
 	;
@@ -1869,8 +1890,7 @@ param_value_default
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: '='    { $$ = RDO_eq; }
-	| RDO_eq { $$ = RDO_eq; }
+	: '=' { $$ = RDO_eq; }
 	;
 
 fun_logic
@@ -1882,6 +1902,11 @@ fun_logic
 		ASSERT(pArithm2);
 		LPRDOFUNLogic pResult = pArithm1->operator ==(pArithm2);
 		ASSERT(pResult);
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, _T("="));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pResult);
 	}
 	| fun_arithm RDO_neq fun_arithm

@@ -478,7 +478,7 @@ false {
 	LEXER->setvalue((int)CONVERTER->addValue(new rdoConverter::RDOValue(LEXER->m_lploc ? rdoConverter::RDOParserSrcInfo(LEXER_POS, name) : rdoConverter::RDOParserSrcInfo(name))));
 	switch (CONVERTER->getFileToParse())
 	{
-	case rdoModelObjectsConvertor::PAT:
+	case rdoModelObjectsConvertor::PAT_IN:
 		if (CONVERTER->isPattern())
 		{
 			rdoConverter::LPRDOPATPattern pPattern = CONVERTER->getLastPATPattern();

@@ -20,6 +20,7 @@
 #include "rdo_lib/rdo_converter/rdogramma.h"
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
+#include "rdo_lib/rdo_converter/update/document.h"
 
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
@@ -39,15 +40,15 @@ OBJECT(RDOParserItem)
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
-	rdoModelObjectsConvertor::RDOFileType m_type;
+	rdoModelObjectsConvertor::RDOFileTypeIn m_type;
 
 	t_bison_parse_fun m_parser_fun;
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void  parse  (PTR(Converter) pParser)                              {};
+	virtual void  parse  (PTR(Converter) pParser)                             {};
 	virtual void  parse  (PTR(Converter) pParser, REF(std::istream) streamIn) {};
-	        void  convert(PTR(Converter) pParser, REF(std::istream) streamIn, REF(std::ostream) streamOut) const;
+	        void  convert(REF(LPDocument) pDocument, REF(std::istream) streamIn) const;
 
 	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
 	virtual ruint lexer_loc_pos()  { return 0;                                               };
@@ -61,13 +62,13 @@ public:
 
 protected:
 	RDOParserItem()
-		: m_type      (rdoModelObjectsConvertor::PAT)
-		, m_parser_fun(NULL                         )
-		, m_error_fun (NULL                         )
-		, m_lexer_fun (NULL                         )
-		, m_needStream(true                         )
+		: m_type      (rdoModelObjectsConvertor::PAT_IN)
+		, m_parser_fun(NULL                            )
+		, m_error_fun (NULL                            )
+		, m_lexer_fun (NULL                            )
+		, m_needStream(true                            )
 	{}
-	RDOParserItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
+	RDOParserItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
 		: m_type      (type      )
 		, m_parser_fun(parser_fun)
 		, m_error_fun (error_fun )

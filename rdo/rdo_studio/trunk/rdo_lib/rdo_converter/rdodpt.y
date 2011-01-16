@@ -199,6 +199,7 @@
 #include "rdo_lib/rdo_converter/rdodpt.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdorss.h"
+#include "rdo_lib/rdo_converter/update/update.h"
 // ===============================================================================
 
 #define CONVERTER LEXER->converter()
@@ -1138,8 +1139,7 @@ dpt_process_end
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
 fun_logic_eq
-	: '='    { $$ = RDO_eq; }
-	| RDO_eq { $$ = RDO_eq; }
+	: '=' { $$ = RDO_eq; }
 	;
 
 fun_logic
@@ -1151,6 +1151,11 @@ fun_logic
 		ASSERT(pArithm2);
 		LPRDOFUNLogic pResult = pArithm1->operator ==(pArithm2);
 		ASSERT(pResult);
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, _T("="));
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pResult);
 	}
 	| fun_arithm RDO_neq fun_arithm
