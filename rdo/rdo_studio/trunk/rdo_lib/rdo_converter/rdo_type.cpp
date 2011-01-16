@@ -74,7 +74,7 @@ void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 //! RDOType__int
 LPRDOType RDOType__int::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	switch (from->type().typeID())
+	switch (from->type()->typeID())
 	{
 		case rdoRuntime::RDOType::t_int :
 			return rdo::Factory<RDOType__int>::create();
@@ -130,7 +130,7 @@ void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
 //! RDOType__real
 LPRDOType RDOType__real::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	switch (from->type().typeID())
+	switch (from->type()->typeID())
 	{
 		case rdoRuntime::RDOType::t_int :
 		case rdoRuntime::RDOType::t_real:
@@ -180,7 +180,7 @@ void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
 //! RDOType__string
 LPRDOType RDOType__string::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	switch (from->type().typeID())
+	switch (from->type()->typeID())
 	{
 		case rdoRuntime::RDOType::t_string:
 			return rdo::Factory<RDOType__string>::create();
@@ -260,7 +260,7 @@ void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
 //! RDOType__bool
 LPRDOType RDOType__bool::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	switch (from->type().typeID())
+	switch (from->type()->typeID())
 	{
 		case rdoRuntime::RDOType::t_bool:
 			return rdo::Factory<RDOType__bool>::create();

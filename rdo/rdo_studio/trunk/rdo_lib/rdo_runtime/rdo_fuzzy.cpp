@@ -90,15 +90,16 @@ RDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(RDOFuzzyValue) fu
 	}
 	if (!values.empty())
 	{
-		PTR(RDOFuzzySetDefinitionRangeDiscret) fuzzy_setDefinition = new RDOFuzzySetDefinitionRangeDiscret(type().getParent(), values.begin()->first, values.rbegin()->first);
-		PTR(RDOFuzzyType) fuzzy_type = new RDOFuzzyType(fuzzy_setDefinition);
-		RDOFuzzyValue fuzzy_result(*fuzzy_type);
+		PTR(RDOFuzzySetDefinitionRangeDiscret) fuzzy_setDefinition = new RDOFuzzySetDefinitionRangeDiscret(values.begin()->first, values.rbegin()->first);
+		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create(fuzzy_setDefinition);
+		ASSERT(pFuzzyType);
+		RDOFuzzyValue fuzzy_result(pFuzzyType);
 		fuzzy_result.m_fuzzySet = values;
 		return fuzzy_result;
 	}
 	else
 	{
-		return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance(type().getParent()));
+		return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
 	}
 }
 
@@ -123,15 +124,15 @@ RDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 	}
 	if (!values.empty())
 	{
-		PTR(RDOFuzzySetDefinitionRangeDiscret) fuzzy_setDefinition = new RDOFuzzySetDefinitionRangeDiscret(type().getParent(), values.begin()->first, values.rbegin()->first);
-		PTR(RDOFuzzyType) fuzzy_type = new RDOFuzzyType(fuzzy_setDefinition);
-		RDOFuzzyValue fuzzy_result(*fuzzy_type);
+		PTR(RDOFuzzySetDefinitionRangeDiscret) fuzzy_setDefinition = new RDOFuzzySetDefinitionRangeDiscret(values.begin()->first, values.rbegin()->first);
+		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create(fuzzy_setDefinition);
+		RDOFuzzyValue fuzzy_result(pFuzzyType);
 		fuzzy_result.m_fuzzySet = values;
 		return fuzzy_result;
 	}
 	else
 	{
-		return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance(type().getParent()));
+		return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
 	}
 }
 
@@ -155,15 +156,15 @@ RDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) param) const
 	}
 	if (!values.empty())
 	{
-		PTR(RDOFuzzySetDefinitionRangeDiscret) fuzzy_setDefinition = new RDOFuzzySetDefinitionRangeDiscret(type().getParent(), values.begin()->first, values.rbegin()->first);
-		PTR(RDOFuzzyType) fuzzy_type = new RDOFuzzyType(fuzzy_setDefinition);
-		RDOFuzzyValue fuzzy_result(*fuzzy_type);
+		PTR(RDOFuzzySetDefinitionRangeDiscret) fuzzy_setDefinition = new RDOFuzzySetDefinitionRangeDiscret(values.begin()->first, values.rbegin()->first);
+		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create(fuzzy_setDefinition);
+		RDOFuzzyValue fuzzy_result(pFuzzyType);
 		fuzzy_result.m_fuzzySet = values;
 		return fuzzy_result;
 	}
 	else
 	{
-		return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance(type().getParent()));
+		return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
 	}
 }
 

@@ -108,7 +108,7 @@ public:
 	CREF(RDOValue)              value     () const { return m_value;                    }
 	LPRDOType                   type      () const { return m_value.type();             }
 	LPRDOEnumType               enumType  () const { return type().object_static_cast<RDOEnumType>(); }
-	rdoRuntime::RDOType::TypeID typeID    () const { return type()->type().typeID();    }
+	rdoRuntime::RDOType::TypeID typeID    () const { return type()->type()->typeID();   }
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo) src_info);
 	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);

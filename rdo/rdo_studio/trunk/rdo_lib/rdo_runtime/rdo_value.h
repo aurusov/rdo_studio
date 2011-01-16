@@ -21,13 +21,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
-class RDOType;
 class RDOEnumType;
 class RDOFuzzyValue;
 class RDOArrayValue;
 class RDOArrayIterator;
 class RDOMatrixValue;
 class RDOMatrixIterator;
+PREDECLARE_POINTER(RDOEnumType  );
+PREDECLARE_POINTER(RDOFuzzyValue);
+PREDECLARE_POINTER(RDOArrayValue);
 
 class RDOValue
 {
@@ -36,30 +38,30 @@ public:
 	~RDOValue();
 
 	RDOValue(CREF(RDOValue)      rdovalue);
-	RDOValue(CREF(RDOType)       type    );
+	RDOValue(CREF(LPRDOType)     pType   );
 	RDOValue(rsint               value   );
 	RDOValue(ruint               value   );
 	RDOValue(double              value   );
 	RDOValue(rbool               value   );
-	RDOValue(CREF(RDOEnumType)   enums   );
-	RDOValue(CREF(RDOEnumType)   enums, CREF(tstring) value);
-	RDOValue(CREF(RDOEnumType)   enums, ruint index);
+	RDOValue(CREF(LPRDOEnumType) pEnum   );
+	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value);
+	RDOValue(CREF(LPRDOEnumType) pEnum, ruint index);
 	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
-	RDOValue(CREF(tstring)       value, CREF(RDOType) type );
+	RDOValue(CREF(tstring)       value, CREF(LPRDOType) pType);
 	RDOValue(CREF(RDOArrayValue)     arrayValue );
 	RDOValue(CREF(RDOArrayIterator)  aIterator  );
 	RDOValue(CREF(RDOMatrixValue)    matrixValue);
 	RDOValue(CREF(RDOMatrixIterator) mIterator  );
 
-	rsint               getInt          () const;
-	rsint               getEnumAsInt    () const;
-	CREF(RDOEnumType)   getEnum         () const;
-	double              getDouble       () const;
-	rbool               getBool         () const;
-	CREF(tstring)       getString       () const;
-	CREF(tstring)       getIdentificator() const;
+	rsint             getInt          () const;
+	rsint             getEnumAsInt    () const;
+	LPRDOEnumType     getEnum         () const;
+	double            getDouble       () const;
+	rbool             getBool         () const;
+	CREF(tstring)     getString       () const;
+	CREF(tstring)     getIdentificator() const;
 	CREF(RDOArrayValue) getArray        () const;
 	CREF(RDOMatrixValue)getMatrix       () const;
 
@@ -93,27 +95,27 @@ public:
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator[] (CREF(RDOValue) rdovalue);
 
-	RDOValue  begin();
-	RDOValue    end();
-	void     insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
-	void      erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
-
-	CREF(RDOType)   type  () const;
+	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
+	RDOValue  begin();
+	RDOValue  end();
+	void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
+	void      erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
+
 private:
-	CPTR(RDOType) m_type;
+	LPRDOType m_pType;
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
 
-	CREF(RDOEnumType)       __enumT    () const;
-	 REF(tstring)           __stringV  ();
-	CREF(tstring)           __stringV  () const;
-	 REF(RDOFuzzyValue)     __fuzzyV   ();
-	CREF(RDOFuzzyValue)     __fuzzyV   () const;
-	 REF(RDOArrayValue)     __arrayV   ();
-	CREF(RDOArrayValue)     __arrayV   () const;
+	LPRDOEnumType       __enumT  () const;
+	 REF(tstring)       __stringV();
+	CREF(tstring)       __stringV() const;
+	 REF(RDOFuzzyValue) __fuzzyV ();
+	CREF(RDOFuzzyValue) __fuzzyV () const;
+	 REF(RDOArrayValue) __arrayV ();
+	CREF(RDOArrayValue) __arrayV () const;
 	 REF(RDOArrayIterator)  __arrayItr ();
 	CREF(RDOArrayIterator)  __arrayItr () const;
 	 REF(RDOMatrixValue)    __matrixV  ();

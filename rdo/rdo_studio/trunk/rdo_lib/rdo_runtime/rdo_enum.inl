@@ -17,15 +17,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEnumType
 // ----------------------------------------------------------------------------
-inline RDOEnumType::RDOEnumType(PTR(RDORuntimeParent) parent)
-	: RDORuntimeObject(parent         )
-	, RDOType         (RDOType::t_enum)
+inline RDOEnumType::RDOEnumType()
+	: RDOType(RDOType::t_enum)
 {}
 
-inline RDOEnumType::RDOEnumType(PTR(RDORuntimeParent) parent, CREF(Enums) enums)
-	: RDORuntimeObject(parent         )
-	, RDOType         (RDOType::t_enum)
-	, m_enum          (enums          )
+inline RDOEnumType::RDOEnumType(CREF(Enums) enums)
+	: RDOType(RDOType::t_enum)
+	, m_enum (enums          )
 {}
 
 inline void RDOEnumType::add(CREF(tstring) next)

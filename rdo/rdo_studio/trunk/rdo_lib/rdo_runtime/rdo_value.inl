@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
 inline RDOValue::RDOValue()
-	: m_type(&g_unknow)
+	: m_pType(g_unknow)
 {}
 
 inline RDOValue::~RDOValue()
@@ -32,13 +32,13 @@ inline RDOValue::~RDOValue()
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
-	: m_type(&g_unknow)
+	: m_pType(g_unknow)
 {
 	set(rdovalue);
 }
 
-inline RDOValue::RDOValue(CREF(RDOType) type)
-	: m_type(&type)
+inline RDOValue::RDOValue(CREF(LPRDOType) pType)
+	: m_pType(pType)
 {
 	switch (typeID())
 	{
@@ -58,84 +58,84 @@ inline RDOValue::RDOValue(CREF(RDOType) type)
 }
 
 inline RDOValue::RDOValue(rsint value)
-	: m_type(&g_int)
+	: m_pType(g_int)
 {
 	m_value.i_value = value;
 }
 
 inline RDOValue::RDOValue(ruint value)
-	: m_type(&g_int)
+	: m_pType(g_int)
 {
 	m_value.i_value = value;
 }
 
 inline RDOValue::RDOValue(double value)
-	: m_type(&g_real)
+	: m_pType(g_real)
 {
 	m_value.d_value = value;
 }
 
 inline RDOValue::RDOValue(rbool value)
-	: m_type(&g_bool)
+	: m_pType(g_bool)
 {
 	m_value.b_value = value;
 }
 
-inline RDOValue::RDOValue(CREF(RDOEnumType) enums)
-	: m_type(&enums)
+inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
+	: m_pType(pEnum)
 {
-	if (enums.empty())
+	if (pEnum->empty())
 		RDOValueException();
 
-	m_value.i_value = enums.findEnum( enums.getValues()[0] );
+	m_value.i_value = pEnum->findEnum(pEnum->getValues()[0]);
 }
 
-inline RDOValue::RDOValue(CREF(RDOEnumType) enums, CREF(tstring) value)
-	: m_type(&enums)
+inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value)
+	: m_pType(pEnum)
 {
-	m_value.i_value = enums.findEnum(value);
+	m_value.i_value = pEnum->findEnum(value);
 	if (m_value.i_value == RDOEnumType::END)
 		RDOValueException();
 }
 
-inline RDOValue::RDOValue(CREF(RDOEnumType) enums, ruint index)
-	: m_type(&enums)
+inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
+	: m_pType(pEnum)
 {
-	if (index == RDOEnumType::END || index >= enums.getValues().size())
+	if (index == RDOEnumType::END || index >= pEnum->getValues().size())
 		RDOValueException();
 
 	m_value.i_value = index;
 }
 
 inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
-	: m_type(&fuzzy.type())
+	: m_pType(fuzzy.type())
 {
 	m_value.p_data = new RDOFuzzyValue(fuzzy);
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value)
-	: m_type(&g_string)
+	: m_pType(g_string)
 {
 	m_value.s_value = new smart_string(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CPTR(tchar) value)
-	: m_type(&g_string)
+	: m_pType(g_string)
 {
 	m_value.s_value = new smart_string(new string_class(value));
 }
 
-inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
-	: m_type(&g_identificator)
+inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
+	: m_pType(g_identificator)
 {
-	if (type.typeID() != RDOType::t_identificator)
+	if (pType->typeID() != RDOType::t_identificator)
 		RDOValueException();
 
 	m_value.s_value = new smart_string(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
-	: m_type(&arrayValue.type())
+	: m_pType(arrayValue.type())
 {
 	m_value.p_data = new RDOArrayValue(arrayValue);
 }
@@ -210,7 +210,7 @@ inline rsint RDOValue::getEnumAsInt() const
 	throw RDOValueException();
 }
 
-inline CREF(RDOEnumType) RDOValue::getEnum() const
+inline LPRDOEnumType RDOValue::getEnum() const
 {
 	switch (typeID())
 	{
@@ -285,13 +285,13 @@ inline tstring RDOValue::getAsString() const
 {
 	switch (typeID())
 	{
-		case RDOType::t_int           : return rdo::format(_T("%d"), m_value.i_value);
-		case RDOType::t_real          : return rdo::toString(m_value.d_value);
-		case RDOType::t_enum          : return __enumT().getValues().at(m_value.i_value);
-		case RDOType::t_bool          : return m_value.b_value ? _T("true") : _T("false");
-		case RDOType::t_string        : return __stringV();
-		case RDOType::t_identificator : return __stringV();
-		case RDOType::t_fuzzy         : return __fuzzyV().getAsString();
+		case RDOType::t_int          : return rdo::format(_T("%d"), m_value.i_value);
+		case RDOType::t_real         : return rdo::toString(m_value.d_value);
+		case RDOType::t_enum         : return __enumT()->getValues().at(m_value.i_value);
+		case RDOType::t_bool         : return m_value.b_value ? _T("true") : _T("false");
+		case RDOType::t_string       : return __stringV();
+		case RDOType::t_identificator: return __stringV();
+		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
 		case RDOType::t_array         : return __arrayV().getAsString();
 		case RDOType::t_ArrayIterator : return __arrayItr().getValue().getAsString();
 		case RDOType::t_matrix        : return __matrixV().getAsString();
@@ -332,7 +332,7 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
 	deleteValue();
 
-	m_type = rdovalue.m_type;
+	m_pType = rdovalue.m_pType;
 	switch (typeID())
 	{
 		case RDOType::t_string       :
@@ -416,7 +416,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-				case RDOType::t_enum: if (m_type == rdovalue.m_type) return m_value.i_value == rdovalue.m_value.i_value; break;
+				case RDOType::t_enum: if (m_pType == rdovalue.m_pType) return m_value.i_value == rdovalue.m_value.i_value; break;
 			}
 			break;
 		}
@@ -754,7 +754,7 @@ inline void RDOValue::operator*= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 				case RDOType::t_int : m_value.i_value *= rdovalue.m_value.i_value; return;
-				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) * rdovalue.m_value.d_value; m_type = &g_real; return;
+				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) * rdovalue.m_value.d_value; m_pType = g_real; return;
 			}
 			break;
 		}
@@ -788,7 +788,7 @@ inline void RDOValue::operator/= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 				case RDOType::t_int :
-				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) / rdovalue.getDouble(); m_type = &g_real; return;
+				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) / rdovalue.getDouble(); m_pType = g_real; return;
 			}
 			break;
 		}
@@ -841,69 +841,19 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 	return value2;
 }
 
-inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
+inline CREF(LPRDOType) RDOValue::type() const
 {
-	switch (typeID())
-	{
-	case RDOType::t_array : return  __arrayV()[rdovalue];
-	case RDOType::t_matrix: return __matrixV()[rdovalue];
-	}
-	throw RDOValueException();
-}
-
-inline RDOValue RDOValue::begin()
-{
-	switch (typeID())
-	{
-	case RDOType::t_array : return RDOValue(RDOArrayIterator( __arrayV( ).containerBegin()));
-	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerBegin()));
-	}
-	throw RDOValueException();	
-}
-
-inline RDOValue RDOValue::end()
-{
-	switch (typeID())
-	{
-	case RDOType::t_array : return RDOValue(RDOArrayIterator( __arrayV( ).containerEnd()));
-	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerEnd()));
-	}
-	throw RDOValueException();
-}
-
-inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
-{
-	switch (typeID())
-	{
-	case RDOType::t_array : __arrayV( ).insertItems(itr.__arrayItr( ).getIterator(),itrFst.__arrayItr( ).getIterator(),itrLst.__arrayItr( ).getIterator());
-	case RDOType::t_matrix: __matrixV().insertItems(itr.__matrixItr().getIterator(),itrFst.__matrixItr().getIterator(),itrLst.__matrixItr().getIterator());
-	}
-	throw RDOValueException();	
-}
-
-inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
-{
-	switch (typeID())
-	{
-	case RDOType::t_array : __arrayV( ).eraseItems(itrFst.__arrayItr( ).getIterator(),itrLst.__arrayItr( ).getIterator());
-	case RDOType::t_matrix: __matrixV().eraseItems(itrFst.__matrixItr().getIterator(),itrLst.__matrixItr().getIterator());
-	}
-	throw RDOValueException();
-}
-
-inline CREF(RDOType) RDOValue::type() const
-{
-	return *m_type;
+	return m_pType;
 }
 
 inline RDOType::TypeID RDOValue::typeID() const
 {
-	return type().typeID();
+	return m_pType->typeID();
 }
 
-inline CREF(RDOEnumType) RDOValue::__enumT() const
+inline LPRDOEnumType RDOValue::__enumT() const
 {
-	return *static_cast<CPTR(RDOEnumType)>(m_type);
+	return m_pType.object_static_cast<RDOEnumType>();
 }
 
 inline REF(tstring) RDOValue::__stringV()

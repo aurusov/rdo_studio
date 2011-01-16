@@ -23,24 +23,26 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEnumType
 // ----------------------------------------------------------------------------
+PREDECLARE_POINTER(RDOEnumType);
+
 class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
 	void add(CREF(RDOValue) next);
 
-	CREF(rdoRuntime::RDOEnumType) getEnums() const
+	rdoRuntime::LPRDOEnumType getEnums() const
 	{
-		return *static_cast<CPTR(rdoRuntime::RDOEnumType)>(m_type);
+		return m_pType.object_static_cast<rdoRuntime::RDOEnumType>();
 	}
 
-	rbool operator== (CREF(RDOEnumType) enums) const
+	rbool operator== (CREF(RDOEnumType) pEnumType) const
 	{
-		return __enum()->getValues() == enums.__enum()->getValues();
+		return getEnums()->getValues() == pEnumType.getEnums()->getValues();
 	}
-	rbool operator!= (CREF(RDOEnumType) enums) const
+	rbool operator!= (CREF(RDOEnumType) pEnumType) const
 	{
-		return !operator==(enums);
+		return !operator==(pEnumType);
 	}
 
 	DECLARE_IType;
@@ -48,12 +50,9 @@ public:
 
 private:
 	RDOEnumType         ();
-	RDOEnumType         (CREF(rdoRuntime::RDOEnumType) enumType);
+	RDOEnumType         (CREF(rdoRuntime::LPRDOEnumType) pEnumType);
 	virtual ~RDOEnumType();
-
-	PTR(rdoRuntime::RDOEnumType) __enum() const { return static_cast<PTR(rdoRuntime::RDOEnumType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type)); }
 };
-DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 

@@ -66,10 +66,10 @@ OBJECT(RDOType)
 {
 DECLARE_FACTORY(RDOType)
 public:
-	CREF(rdoRuntime::RDOType)        type() const { return *m_type;         }
-	CPTR(rdoRuntime::RDOType) operator-> () const { return  m_type;         }
+	CREF(rdoRuntime::LPRDOType)        type() const { return m_pType;           }
+	CREF(rdoRuntime::LPRDOType) operator-> () const { return m_pType;           }
 
-	rdoRuntime::RDOType::TypeID    typeID() const { return type().typeID(); }
+	rdoRuntime::RDOType::TypeID      typeID() const { return m_pType->typeID(); }
 
 	virtual rdoRuntime::LPRDOCalc calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 	{
@@ -77,15 +77,15 @@ public:
 	}
 
 protected:
-	RDOType(CPTR(rdoRuntime::RDOType) type)
-		: m_type(type)
+	RDOType(CREF(rdoRuntime::LPRDOType) pType)
+		: m_pType(pType)
 	{
-		ASSERT(m_type);
+		ASSERT(m_pType);
 	}
 	virtual ~RDOType()
 	{}
 
-	CPTR(rdoRuntime::RDOType) m_type;
+	rdoRuntime::LPRDOType m_pType;
 };
 
 // ----------------------------------------------------------------------------
@@ -98,7 +98,7 @@ private:                                 \
 typedef RDOType parent_type;             \
 public:                                  \
 	RDOType__##Type():                   \
-		RDOType(&rdoRuntime::g_##Type)   \
+		RDOType(rdoRuntime::g_##Type)    \
 	{}                                   \
 	~RDOType__##Type()                   \
 	{}                                   \

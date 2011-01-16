@@ -100,9 +100,10 @@ REF(RDOValue) RDOCalcGetTempResParamFRM::doCalc(PTR(RDORuntime) runtime)
 	}
 	else if (m_resID == -1)
 	{
-		PTR(RDOEnumType) _enum = new RDOEnumType(runtime);
-		_enum->add(_T("Удален"));
-		m_value = RDOValue(*_enum);
+		LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
+		ASSERT(pEnum);
+		pEnum->add(_T("Удален"));
+		m_value = RDOValue(pEnum);
 		m_resID = -2;
 	}
 	return m_value;

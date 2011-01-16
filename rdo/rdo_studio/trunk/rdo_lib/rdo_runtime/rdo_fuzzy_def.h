@@ -19,7 +19,7 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyValue
 // ----------------------------------------------------------------------------
-class  RDOFuzzyType;
+PREDECLARE_POINTER(RDOFuzzyType);
 
 class RDOFuzzyValue
 {
@@ -27,8 +27,8 @@ public:
 	typedef std::pair<RDOValue, double>                              FuzzyItem;
 	typedef std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySet;
 
-	RDOFuzzyValue(CREF(RDOFuzzyType)  type );
-	RDOFuzzyValue(CREF(RDOFuzzyValue) value);
+	RDOFuzzyValue(CREF(LPRDOFuzzyType) pType);
+	RDOFuzzyValue(CREF(RDOFuzzyValue)  value);
 	~RDOFuzzyValue();
 
 	REF(RDOFuzzyValue)         append     (CREF(RDOValue) rdovalue, double appertain);
@@ -39,7 +39,7 @@ public:
 	FuzzySet::const_iterator   begin      () const;
 	FuzzySet::const_iterator   end        () const;
 	rbool                      empty      () const;
-	CREF(RDOFuzzyType)         type       () const;
+	CREF(LPRDOFuzzyType)       type       () const;
 
 	/* 3.37  */  RDOFuzzyValue operator&& (CREF(RDOFuzzyValue) fuzzy_value) const;
 	/* 3.40  */  RDOFuzzyValue operator|| (CREF(RDOFuzzyValue) fuzzy_value) const;
@@ -64,8 +64,8 @@ public:
 	tstring getAsString() const;
 
 private:
-	FuzzySet            m_fuzzySet;
-	CPTR(RDOFuzzyType)  m_type;
+	FuzzySet        m_fuzzySet;
+	LPRDOFuzzyType  m_pType;
 
 	FuzzySet::iterator  begin();
 	FuzzySet::iterator  end  ();
@@ -85,12 +85,10 @@ private:
 // ----------------------------------------------------------------------------
 class  RDOFuzzySetDefinition;
 
-class RDOFuzzyType: public RDOType, public RDORuntimeParent
+class RDOFuzzyType: public RDOType
 {
+DECLARE_FACTORY(RDOFuzzyType);
 public:
-	RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition);
-	virtual ~RDOFuzzyType();
-
 	virtual tstring  name      ()                    const;
 	virtual RDOValue value_cast(CREF(RDOValue) from) const;
 
@@ -99,6 +97,10 @@ public:
 
 	rbool          inRange      (CREF(RDOValue) rdovalue  ) const;
 	RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
+
+protected:
+	RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition);
+	virtual ~RDOFuzzyType();
 
 private:
 	typedef std::map< tstring, RDOFuzzyValue > Terms;
@@ -110,10 +112,10 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinition
 // ----------------------------------------------------------------------------
-class RDOFuzzySetDefinition: public RDORuntimeObject
+class RDOFuzzySetDefinition
 {
 public:
-	RDOFuzzySetDefinition(PTR(RDORuntimeParent) parent);
+	RDOFuzzySetDefinition();
 	virtual ~RDOFuzzySetDefinition();
 
 	virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const = 0;
@@ -126,7 +128,7 @@ public:
 class RDOFuzzySetDefinitionFixed: public RDOFuzzySetDefinition
 {
 public:
-	RDOFuzzySetDefinitionFixed(PTR(RDORuntimeParent) parent);
+	RDOFuzzySetDefinitionFixed();
 	virtual ~RDOFuzzySetDefinitionFixed();
 
 	REF(RDOFuzzySetDefinitionFixed) append     (CREF(RDOValue) value);
@@ -145,7 +147,7 @@ private:
 class RDOFuzzySetDefinitionRangeDiscret: public RDOFuzzySetDefinition
 {
 public:
-	RDOFuzzySetDefinitionRangeDiscret(PTR(RDORuntimeParent) parent, CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step = 1);
+	RDOFuzzySetDefinitionRangeDiscret(CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step = 1);
 	virtual ~RDOFuzzySetDefinitionRangeDiscret();
 
 	virtual  rbool          inRange      (CREF(RDOValue)      value) const;
@@ -163,7 +165,7 @@ private:
 class RDOFuzzyEmptyType: public RDOFuzzyType
 {
 public:
-	static CREF(RDOFuzzyEmptyType) getInstance(PTR(RDORuntimeParent) parent);
+	static LPRDOFuzzyType getInstance();
 
 private:
 	static PTR(RDOFuzzyEmptyType) s_emptyType;
@@ -181,7 +183,7 @@ private:
 		virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 	};
 
-	RDOFuzzyEmptyType(PTR(RDORuntimeParent) parent);
+	RDOFuzzyEmptyType();
 
 	virtual ~RDOFuzzyEmptyType();
 	virtual tstring asString() const;

@@ -23,9 +23,9 @@ OPEN_RDO_PARSER_NAMESPACE
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
 RDOArrayType::RDOArrayType(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info)
-	: RDOType          (&rdoRuntime::g_unknow)
-	, RDOParserSrcInfo (src_info             )
-	, m_pType          (pType                )
+	: RDOType          (rdoRuntime::g_unknow)
+	, RDOParserSrcInfo (src_info            )
+	, m_pType          (pType               )
 {
 	ASSERT(m_pType);
 	setSrcText(name());

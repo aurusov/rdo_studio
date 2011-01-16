@@ -29,6 +29,10 @@ DECLARE_FACTORY(RDOArrayType);
 friend class RDOArrayValue;
 
 public:
+	rdoRuntime::LPRDOArrayType getArray() const
+	{
+		return m_pType.object_static_cast<rdoRuntime::RDOArrayType>();
+	}
 	CREF(LPRDOType) getItemType() const;
 
 private:

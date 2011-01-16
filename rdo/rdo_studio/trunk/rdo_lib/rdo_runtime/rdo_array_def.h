@@ -31,18 +31,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-class RDOArrayType;
+PREDECLARE_POINTER(RDOArrayType);
 
 class RDOArrayValue
 {
 public:
 	typedef std::vector<RDOValue> Container;
 
-	RDOArrayValue(CREF(RDOArrayType)  type );
-	RDOArrayValue(CREF(RDOArrayValue) value);
+	RDOArrayValue(CREF(LPRDOArrayType) pType);
+	RDOArrayValue(CREF(RDOArrayValue)  value);
 	~RDOArrayValue();
 
-	CREF(RDOArrayType) type() const;
+	CREF(LPRDOArrayType) type() const;
 
 	void insertItem(CREF(RDOValue) pArray);
 	Container::iterator containerBegin();
@@ -54,8 +54,8 @@ public:
 	tstring getAsString() const;
 
 private:
-	Container          m_container;
-	CPTR(RDOArrayType) m_arrayType;
+	Container       m_container;
+	LPRDOArrayType  m_pArrayType;
 };
 
 // ----------------------------------------------------------------------------
@@ -83,17 +83,19 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-class RDOArrayType: public RDOType, public RDORuntimeObject
+class RDOArrayType: public RDOType
 {
+DECLARE_FACTORY(RDOArrayType);
 public:
-	typedef CREF(RDOType) ArrayType;
-
-	RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType);
+	typedef LPRDOType LPArrayType;
 
 	ArrayType getArrayType() const;
 
 private:
-	ArrayType  m_pArrayType;
+	RDOArrayType();
+	RDOArrayType(CREF(LPArrayType) pArrayType);
+
+	LPArrayType m_pArrayType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -14,7 +14,6 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -22,8 +21,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEnumType
 // ----------------------------------------------------------------------------
-class RDOEnumType: public RDOType, public RDORuntimeObject
+class RDOEnumType: public RDOType
 {
+DECLARE_FACTORY(RDOEnumType);
 public:
 	typedef tstring                EnumItem;
 	typedef rdo::vector<EnumItem>  Enums;
@@ -31,9 +31,6 @@ public:
 	typedef Enums::const_iterator  const_iterator;
 
 	enum { END = ~0 };
-
-	RDOEnumType(PTR(RDORuntimeParent) parent);
-	RDOEnumType(PTR(RDORuntimeParent) parent, CREF(Enums) enums);
 
 	void  add     (CREF(tstring) next);
 	ruint findEnum(CREF(tstring) val) const;
@@ -45,8 +42,12 @@ public:
 	CREF(Enums)     getValues() const;
 
 private:
+	RDOEnumType();
+	RDOEnumType(CREF(Enums) enums);
+
 	Enums m_enum;
 };
+DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

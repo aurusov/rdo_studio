@@ -42,7 +42,7 @@ RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 // Неопределенный тип
 RDOValue::RDOValue()
 	: RDOParserSrcInfo()
-	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow))
+	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow.object_parent_cast<rdoRuntime::RDOType>()))
 	, m_type          (rdo::Factory<RDOType__unknow>::create())
 {}
 
@@ -53,7 +53,7 @@ CREF(LPRDOType) RDOValue::type() const
 
 rdoRuntime::RDOType::TypeID RDOValue::typeID() const
 {
-	return m_type->type().typeID();
+	return m_type->type()->typeID();
 }
 
 CREF(rdoRuntime::RDOValue) RDOValue::value() const
