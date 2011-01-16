@@ -22,6 +22,7 @@
 #include <math.h>
 #include <sstream>
 #include <algorithm>
+#include <boost/typeof/typeof.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_kernel/rdokernel.h"
@@ -1063,28 +1064,37 @@ void RDOThreadSimulator::closeModel()
 
 void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjects::RDOSMRFileInfo) info)
 {
-	rdoConverter::RDOParserModel converter;
-
 	try
 	{
+		rdoConverter::RDOParserModel converter;
 		rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
 		kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
-		converter.convert(fileInfo.m_full_name);
+		switch (converter.convert(fileInfo.m_full_name))
+		{
+		case rdoConverter::RDOParserModel::CNV_NONE : break;
+		case rdoConverter::RDOParserModel::CNV_OK   : break;
+		case rdoConverter::RDOParserModel::CNV_ERROR:
+			{
+				tstring mess(_T("Ошибка конфертирования"));
+				broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
+				CREF(rdoConverter::Error::ErrorList) errorList = converter.error().getList();
+				BOOST_AUTO(it, errorList.begin());
+				while (it != errorList.end())
+				{
+					broadcastMessage(RT_SIMULATOR_PARSE_STRING, const_cast<PTR(tstring)>(&it->message));
+					++it;
+				}
+			}
+			break;
+		default: NEVER_REACH_HERE;
+		}
 	}
-	catch (REF(rdoConverter::RDOSyntaxException) ex)
-	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		int i = 1;
-	}
-	catch (REF(rdoRuntime::RDORuntimeException) ex)
-	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		int i = 1;
-	}
+	catch (REF(rdoConverter::RDOSyntaxException))
+	{}
+	catch (REF(rdoRuntime::RDORuntimeException))
+	{}
 	catch (...)
-	{
-		int i = 1;
-	}
+	{}
 
 	rdoParse::RDOParserSMRInfo parser;
 

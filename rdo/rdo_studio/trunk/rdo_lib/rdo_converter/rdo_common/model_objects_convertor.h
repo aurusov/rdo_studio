@@ -27,7 +27,6 @@ OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
 		tstring  m_statistic_file;
 		tstring  m_results_file;
 		tstring  m_trace_file;
-		rbool    m_error;
 
 		RDOSMRFileInfo()
 			: m_model_name    (_T(""))
@@ -37,11 +36,10 @@ OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
 			, m_statistic_file(_T(""))
 			, m_results_file  (_T(""))
 			, m_trace_file    (_T(""))
-			, m_error         (false )
 		{}
 	};
 
-	enum RDOFileType  { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+	enum RDOFileType  { UNDEFINED = 0, PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC, ENV, PRC };
 
 	enum RDOParseType
 	{

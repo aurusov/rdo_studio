@@ -46,27 +46,27 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) in_stream)
+void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
 {
 	ASSERT(pParser);
 
-	if (!in_stream.good())
+	if (!streamIn.good())
 		return;
 
 	if (m_pLexer)
 		delete m_pLexer;
 
-	std::ostringstream out_stream;
-	m_pLexer = getLexer(pParser, &in_stream, &out_stream);
+	std::ostringstream streamOut;
+	m_pLexer = getLexer(pParser, &streamIn, &streamOut);
 
 	if (m_pLexer && m_parser_fun)
 		m_parser_fun(m_pLexer);
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(Converter) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
+PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(Converter) pParser, PTR(std::istream) streamIn, PTR(std::ostream) streamOut)
 {
 	ASSERT(pParser);
-	return new RDOLexer(pParser, in_stream, out_stream);
+	return new RDOLexer(pParser, streamIn, streamOut);
 }
 
 ruint RDOParserRDOItem::lexer_loc_line()
@@ -93,12 +93,12 @@ RDOParserRSS::RDOParserRSS()
 	: RDOParserRDOItem(rdoModelObjectsConvertor::RSS, cnv_rssparse, cnv_rsserror, cnv_rsslex)
 {}
 
-void RDOParserRSS::parse(PTR(Converter) pParser, REF(std::istream) in_stream)
+void RDOParserRSS::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);
 	pParser->setHaveKWResourcesEnd(false);
-	RDOParserRDOItem::parse(pParser, in_stream);
+	RDOParserRDOItem::parse(pParser, streamIn);
 }
 
 // ----------------------------------------------------------------------------

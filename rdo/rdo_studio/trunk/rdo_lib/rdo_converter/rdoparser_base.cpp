@@ -25,6 +25,25 @@
 OPEN_RDO_CONVERTER_NAMESPACE
 
 // ----------------------------------------------------------------------------
+// ---------- RDOParserItem
+// ----------------------------------------------------------------------------
+void RDOParserItem::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
+{
+	ASSERT(pDocUpdate);
+	m_docUpdateList.push_back(pDocUpdate);
+}
+
+void RDOParserItem::convert(PTR(Converter) pParser, REF(std::istream) streamIn, REF(std::ostream) streamOut) const
+{
+	STL_FOR_ALL_CONST(DocUpdateList, m_docUpdateList, it)
+	{
+		LPDocUpdate pUpdate = *it;
+		ASSERT(pUpdate);
+		pUpdate->apply(streamIn, streamOut);
+	}
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOParserContainer
 // ----------------------------------------------------------------------------
 RDOParserContainer::RDOParserContainer()

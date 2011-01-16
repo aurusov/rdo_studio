@@ -10,6 +10,9 @@
 // ====================================================================== PCH
 #include "rdo_lib/rdo_converter/pch.h"
 // ====================================================================== INCLUDES
+#include <boost/date_time/posix_time/posix_time_types.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/format.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
@@ -17,6 +20,7 @@
 #include "rdo_lib/rdo_converter/rdorss.h"
 #include "rdo_lib/rdo_converter/context/global.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
+#include "rdo_lib/rdo_converter/update/update_i.h"
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdofile.h"
 // ===============================================================================
@@ -72,17 +76,17 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME(Operations );
 
 rdoModelObjectsConvertor::RDOFileType Converter::getFileToParse()
 {
-	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjectsConvertor::PAT;
+	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->m_type : rdoModelObjectsConvertor::PAT;
 }
 
 ruint Converter::lexer_loc_line()
 {
-	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_line() : ~0;
+	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_line() : ~0;
 }
 
 ruint Converter::lexer_loc_pos()
 {
-	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
+	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_pos() : 0;
 }
 
 PTR(Converter) Converter::s_converter()
@@ -91,7 +95,7 @@ PTR(Converter) Converter::s_converter()
 }
 
 Converter::Converter()
-	: m_parser_item         (NULL )
+	: m_pParserItem         (NULL )
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
 	, m_pattern             (false)
@@ -118,6 +122,12 @@ REF(ContextStack) Converter::contextStack()
 LPContext Converter::context() const
 {
 	return m_contextStack.top();
+}
+
+void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
+{
+	ASSERT(m_pParserItem);
+	m_pParserItem->insertDocUpdate(pDocUpdate);
 }
 
 rbool Converter::isCurrentDPTSearch()
@@ -274,9 +284,9 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 	RDOParserContainer::Iterator it = begin();
 	ASSERT(it != end());
 
-	m_parser_item = it->second;
+	m_pParserItem = it->second;
 	it->second->parse(this, stream);
-	m_parser_item = NULL;
+	m_pParserItem = NULL;
 
 #ifdef _DEBUG
 	++it;
@@ -307,7 +317,7 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObje
 	return true;
 }
 
-void RDOParserModel::convert(CREF(tstring) smrFullFileName)
+RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 {
 	RDOParserSMRInfo::FileList fileList;
 	{
@@ -317,17 +327,15 @@ void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		try
 		{
 			if (!pSMRParser->parseSMR(smrFullFileName, smrInfo))
-				return;
+				return CNV_NONE;
 		}
-		catch (REF(rdoParse::RDOSyntaxException) ex)
+		catch (REF(rdoParse::RDOSyntaxException))
 		{
-			tstring mess = ex.getType() + _T(" : ") + ex.message();
-			smrInfo.m_error = true;
+			return CNV_NONE;
 		}
-		catch (REF(rdoRuntime::RDORuntimeException) ex)
+		catch (REF(rdoRuntime::RDORuntimeException))
 		{
-			tstring mess = ex.getType() + _T(" : ") + ex.message();
-			smrInfo.m_error = true;
+			return CNV_NONE;
 		}
 		fileList = pSMRParser->getFileList();
 	}
@@ -337,40 +345,83 @@ void RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		RDOParserContainer::Iterator it = begin();
 		while (it != end())
 		{
-			m_parser_item = it->second;
-			if (m_parser_item->needStream())
+			m_pParserItem = it->second;
+			if (m_pParserItem->needStream())
 			{
-				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(m_parser_item->m_type);
+				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(m_pParserItem->m_type);
 				if (it != fileList.end())
 				{
-					std::ifstream stream(it->second.c_str());
-					m_parser_item->parse(this, stream);
+					std::ifstream stream(it->second.c_str(), ios::binary);
+					m_pParserItem->parse(this, stream);
 				}
 			}
 			else
 			{
-				m_parser_item->parse(this);
+				m_pParserItem->parse(this);
 			}
-			m_parser_item = NULL;
+			m_pParserItem = NULL;
+			++it;
+		}
+
+		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
+		std::stringstream backupDirName;
+		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+		                 % time.date().year ()
+		                 % time.date().month()
+		                 % time.date().day  ()
+		                 % time.time_of_day().hours  ()
+		                 % time.time_of_day().minutes()
+		                 % time.time_of_day().seconds();
+
+		boost::filesystem::path backupPath(backupDirName.str());
+		// backupPath = _T("c:\\1");
+
+		try
+		{
+			if (!boost::filesystem::create_directory(backupPath))
+			{
+				int i = 1;
+			}
+		}
+		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
+		{
+			tstring m1 = ex.what();
+			int i = 1;
+		}
+
+		it = begin();
+		while (it != end())
+		{
+			LPRDOParserItem pParserItem = it->second;
+			ASSERT(pParserItem);
+			if (pParserItem->needStream())
+			{
+				RDOParserSMRInfo::FileList::const_iterator it = fileList.find(pParserItem->m_type);
+				if (it != fileList.end())
+				{
+					std::ifstream streamIn (it->second.c_str(), ios::binary);
+					std::ofstream streamOut(_T("C:\\Users\\Андрей\\Documents\\1.txt"), ios::trunc | ios::binary);
+					pParserItem->convert(this, streamIn, streamOut);
+					streamOut.close();
+				}
+			}
 			++it;
 		}
 	}
-	catch (REF(rdoConverter::RDOSyntaxException) ex)
+	catch (REF(rdoConverter::RDOSyntaxException))
 	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		int i = 1;
+		return CNV_NONE;
 	}
-	catch (REF(rdoRuntime::RDORuntimeException) ex)
+	catch (REF(rdoRuntime::RDORuntimeException))
 	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		int i = 1;
+		return CNV_NONE;
 	}
 	catch (...)
 	{
-		int i = 1;
+		return CNV_NONE;
 	}
 
-	int i = 1;
+	return CNV_OK;
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)

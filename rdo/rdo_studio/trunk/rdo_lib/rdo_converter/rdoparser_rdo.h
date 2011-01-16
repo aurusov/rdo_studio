@@ -30,7 +30,7 @@ class RDOParserRDOItem: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRDOItem);
 public:
-	virtual void  parse         (PTR(Converter) pParser, REF(std::istream) in_stream);
+	virtual void  parse         (PTR(Converter) pParser, REF(std::istream) streamIn);
 	virtual ruint lexer_loc_line();
 	virtual ruint lexer_loc_pos ();
 
@@ -42,7 +42,7 @@ protected:
 	YYLTYPE        m_loc;
 
 private:
-	PTR(RDOLexer) getLexer(PTR(Converter) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream);
+	PTR(RDOLexer) getLexer(PTR(Converter) pParser, PTR(std::istream) streamIn, PTR(std::ostream) streamOut);
 };
 
 // ----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ class RDOParserRSS: public RDOParserRDOItem
 DECLARE_FACTORY(RDOParserRSS);
 private:
 	RDOParserRSS();
-	virtual void parse(PTR(Converter) pParser, REF(std::istream) in_stream);
+	virtual void parse(PTR(Converter) pParser, REF(std::istream) streamIn);
 };
 
 // ----------------------------------------------------------------------------

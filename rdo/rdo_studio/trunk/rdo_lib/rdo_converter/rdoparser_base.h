@@ -15,9 +15,12 @@
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/model_objects_convertor.h"
+
 #include "rdo_lib/rdo_converter/rdobison.h"
 #include "rdo_lib/rdo_converter/rdogramma.h"
 #include "rdo_lib/rdo_converter/namespace.h"
+#include "rdo_lib/rdo_converter/update/update_i.h"
+
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
@@ -42,8 +45,9 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void  parse(PTR(Converter) pParser)                              {};
-	virtual void  parse(PTR(Converter) pParser, REF(std::istream) in_stream) {};
+	virtual void  parse  (PTR(Converter) pParser)                              {};
+	virtual void  parse  (PTR(Converter) pParser, REF(std::istream) streamIn) {};
+	        void  convert(PTR(Converter) pParser, REF(std::istream) streamIn, REF(std::ostream) streamOut) const;
 
 	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
 	virtual ruint lexer_loc_pos()  { return 0;                                               };
@@ -52,6 +56,8 @@ public:
 	{
 		return m_needStream;
 	}
+
+	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
 
 protected:
 	RDOParserItem()
@@ -71,7 +77,10 @@ protected:
 	virtual ~RDOParserItem()
 	{}
 
-	rbool m_needStream;
+	typedef std::list<LPDocUpdate> DocUpdateList;
+
+	rbool          m_needStream;
+	DocUpdateList  m_docUpdateList;
 };
 
 // ----------------------------------------------------------------------------
