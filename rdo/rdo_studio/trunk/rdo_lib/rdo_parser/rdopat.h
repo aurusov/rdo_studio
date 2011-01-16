@@ -336,7 +336,7 @@ public:
 		}
 		rbool find(CREF(tstring) name) const
 		{
-			STL_FOR_ALL_CONST(List, m_list, paramIt)
+			STL_FOR_ALL_CONST(m_list, paramIt)
 			{
 				if ((*paramIt)->name() == name)
 					return true;

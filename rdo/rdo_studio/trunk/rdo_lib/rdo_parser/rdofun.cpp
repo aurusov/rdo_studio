@@ -43,7 +43,7 @@ void funerror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 void RDOFUNDoubleToIntByResult::roundCalc()
 {
-	STL_FOR_ALL(CalcList, m_intOrDouble, it)
+	STL_FOR_ALL(m_intOrDouble, it)
 	{
 		(*it)->needRound();
 	}
@@ -355,7 +355,7 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
 	{ErrorBlockMonicker errorBlockMonicker;
 		CREF(RDOParser::PreCastTypeList) typeList = RDOParser::s_parser()->getPreCastTypeList();
-		STL_FOR_ALL_CONST(RDOParser::PreCastTypeList, typeList, it)
+		STL_FOR_ALL_CONST(typeList, it)
 		{
 			RDOValue try_cast_value = (*it)->value_cast(value);
 			if (try_cast_value.defined())
@@ -1370,7 +1370,7 @@ void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc)
 	{
 		m_pFunctionCalc->setSrcInfo(src_info());
 	}
-	STL_FOR_ALL(PostLinkedList, m_postLinkedList, it)
+	STL_FOR_ALL(m_postLinkedList, it)
 	{
 		(*it)->setFunctionCalc(getFunctionCalc());
 	}

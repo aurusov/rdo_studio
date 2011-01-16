@@ -20,14 +20,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 #pragma warning(disable : 4786)
 
-#define LOGIC_FOR_ALL() STL_FOR_ALL(ChildList, m_childList, it)
+#define LOGIC_FOR_ALL() STL_FOR_ALL(m_childList, it)
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOrderSimple
 // ----------------------------------------------------------------------------
 inline LPIBaseOperation RDOOrderSimple::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
-	STL_FOR_ALL(BaseOperationList, container, it)
+	STL_FOR_ALL(container, it)
 	{
 		if ((*it)->onCheckCondition(sim))
 		{
@@ -46,7 +46,7 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 		return NULL;
 
 	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
-	STL_FOR_ALL_CONST(BaseOperationList, container, it)
+	STL_FOR_ALL_CONST(container, it)
 	{
 		LPIPriority pattern = *it;
 		if (pattern)
@@ -61,7 +61,7 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 		}
 	}
 	std::sort(container.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
-	STL_FOR_ALL(BaseOperationList, container, it)
+	STL_FOR_ALL(container, it)
 	{
 		if ((*it)->onCheckCondition(sim))
 		{

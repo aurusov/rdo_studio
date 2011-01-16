@@ -426,7 +426,7 @@ void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResult
 
 void RDORuntime::onInit()
 {
-	STL_FOR_ALL(CalcList, initCalcs, calcIt)
+	STL_FOR_ALL(initCalcs, calcIt)
 		(*calcIt)->calcValue(this);
 
 	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();

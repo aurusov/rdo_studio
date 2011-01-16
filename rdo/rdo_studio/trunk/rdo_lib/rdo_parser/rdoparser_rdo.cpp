@@ -127,10 +127,10 @@ void RDOParserRSSPost::parse(PTR(RDOParser) pParser)
 
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(RDOParser::RTPResTypeList, pParser->getRTPResType(), rtp_it)
+	STL_FOR_ALL_CONST(pParser->getRTPResType(), rtp_it)
 	{
 #endif
-		STL_FOR_ALL_CONST(RDOParser::RSSResourceList, pParser->getRSSResources(), rss_it)
+		STL_FOR_ALL_CONST(pParser->getRSSResources(), rss_it)
 		{
 #ifdef RDOSIM_COMPATIBLE
 			if ((*rss_it)->getType() == *rtp_it)
@@ -155,14 +155,14 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 	ASSERT(pParser);
 
 	//! Позднее связывание для планирования событий
-	STL_FOR_ALL_CONST(RDOParser::EventList, pParser->getEvents(), eventIt)
+	STL_FOR_ALL_CONST(pParser->getEvents(), eventIt)
 	{
 		LPRDOEvent pEvent = *eventIt;
 
 		LPRDOPATPattern pPattern = pParser->findPATPattern(pEvent->name());
 		if (!pPattern)
 		{
-			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
 				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
 			}
@@ -170,7 +170,7 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 		}
 		if (pPattern->getType() != RDOPATPattern::PT_Event)
 		{
-			STL_FOR_ALL_CONST(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
 				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
 			}
@@ -183,7 +183,7 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 			ASSERT(pRuntimeEvent);
 			pEvent->setRuntimeEvent(pRuntimeEvent);
 
-			STL_FOR_ALL(RDOEvent::CalcList, pEvent->getCalcList(), calcIt)
+			STL_FOR_ALL(pEvent->getCalcList(), calcIt)
 			{
 				(*calcIt)->setEvent(pRuntimeEvent);
 			}

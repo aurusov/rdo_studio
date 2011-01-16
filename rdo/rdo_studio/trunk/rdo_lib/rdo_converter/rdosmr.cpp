@@ -186,7 +186,7 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 
 void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
 {
-	STL_FOR_ALL_CONST(BreakPointList, m_breakPointList, it)
+	STL_FOR_ALL_CONST(m_breakPointList, it)
 	{
 		if ((*it)->src_text() == src_info.src_text())
 		{

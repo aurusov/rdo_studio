@@ -220,7 +220,7 @@ void RDOParserCorbaRTP::parse(PTR(RDOParser) pParser)
 	CPTR(char) right;
 
 	rdoParse::RDOSMR::StringTable tmp = parser.getSMR()->getExternalModelList();
-	STL_FOR_ALL_CONST(rdoParse::RDOSMR::StringTable, tmp, it)
+	STL_FOR_ALL_CONST(tmp, it)
 	{
 		left  = it->first.c_str();
 		right = it->second.c_str();
@@ -323,10 +323,10 @@ void RDOParserCorbaRTP::parse(PTR(RDOParser) pParser)
 			}
 
 			//! Вывели все типы ресурсов (исключительно для теста)
-			STL_FOR_ALL_CONST(rdoMBuilder::RDOResTypeList, rtpList, rtp_it)
+			STL_FOR_ALL_CONST(rtpList, rtp_it)
 			{
 				TRACE1(_T("rtp.name = %s\n"), rtp_it->name().c_str());
-				STL_FOR_ALL_CONST(rdoMBuilder::RDOResType::ParamList, rtp_it->m_params, param_it)
+				STL_FOR_ALL_CONST(rtp_it->m_params, param_it)
 				{
 					tstring info = rdo::format("  param: %s: %s", param_it->name().c_str() , param_it->typeStr().c_str());
 					if (param_it->hasDiap())
@@ -341,7 +341,7 @@ void RDOParserCorbaRTP::parse(PTR(RDOParser) pParser)
 
 					if (param_it->typeID() ==  rdoRuntime::RDOType::t_enum)
 					{
-						STL_FOR_ALL_CONST(rdoRuntime::RDOEnumType::Enums, param_it->getEnum()->getEnums(), enum_it)
+						STL_FOR_ALL_CONST(param_it->getEnum()->getEnums(), enum_it)
 						{
 							TRACE1(_T("  - enum - %s\n"), enum_it->c_str());
 						}
@@ -409,10 +409,10 @@ void RDOParserCorbaRTP::parse(PTR(RDOParser) pParser)
 
 			//! Вывели все ресурсы для теста
 			//! rdoMBuilder::RDOResourceList rssList(&parser);
-			STL_FOR_ALL_CONST(rdoMBuilder::RDOResourceList::List, rssList, rss_it)
+			STL_FOR_ALL_CONST(rssList, rss_it)
 			{
 				TRACE2(_T("rss.name = %s: %s\n"), rss_it->name().c_str(), rss_it->getType().name().c_str());
-				STL_FOR_ALL_CONST(rdoMBuilder::RDOResource::Params, (*rss_it), param_it)
+				STL_FOR_ALL_CONST((*rss_it), param_it)
 				{
 					TRACE2(_T("  %s = %s\n"), param_it->first.c_str(), param_it->second->getAsString().c_str());
 				}
