@@ -284,6 +284,10 @@
 			Name=".common"
 			>
 			<File
+				RelativePath=".\model_objects.h"
+				>
+			</File>
+			<File
 				RelativePath=".\namespace.h"
 				>
 			</File>

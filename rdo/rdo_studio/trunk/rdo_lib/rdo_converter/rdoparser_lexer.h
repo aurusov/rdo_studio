@@ -7,48 +7,48 @@
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_LEXER_H_
-#define _RDOPARSER_LEXER_H_
+#ifndef _CONVERTOR_RDOCONVERTER_LEXER_H_
+#define _CONVERTOR_RDOCONVERTER_LEXER_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdobison.h"
-#include "rdo_lib/rdo_parser/rdogramma.h"
+#include "rdo_lib/rdo_converter/namespace.h"
+#include "rdo_lib/rdo_converter/rdobison.h"
+#include "rdo_lib/rdo_converter/rdogramma.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
-#define yyFlexLexer yyFlexLexer
+#define yyFlexLexer cnvFlexLexer
 #include "thirdparty/bison_flex/FlexLexer.h"
 #endif
 // ===============================================================================
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_CONVERTER_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLexer
 // ----------------------------------------------------------------------------
-class RDOParser;
+class Converter;
 
 class RDOLexer: public yyFlexLexer
 {
 public:
-	RDOLexer(PTR(RDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
+	RDOLexer(PTR(Converter) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
 
 	void loc_init     ();
 	void loc_action   ();
 	void loc_delta_pos(int value);
 	void setvalue     (int value);
 
-	PTR(RDOParser)    parser();
+	PTR(Converter)    converter();
 
 	void  enumBegin();
 	void  enumReset();
 	rbool enumEmpty();
 
-	void  array_cnt_pls();
-	void  array_cnt_rst();
-	rsint array_cnt_shw();
+	void array_cnt_pls();
+	void array_cnt_rst();
+	int  array_cnt_shw();
 
 	PTR(int)         m_lpval;
 	PTR(YYLTYPE)     m_lploc;
@@ -61,16 +61,16 @@ protected:
 private:
 	PTR(std::istream) m_yyin;
 	PTR(std::ostream) m_yyout;
-	PTR(RDOParser)    m_pParser;
+	PTR(Converter)    m_pParser;
 	rbool             m_enumEmpty;
 	rsint             m_array_param_cnt;
 };
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_CONVERTER_NAMESPACE
 
-#define LEXER     reinterpret_cast<PTR(rdoParse::RDOLexer)>(lexer)
+#define LEXER     reinterpret_cast<PTR(rdoConverter::RDOLexer)>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
-#include "rdo_lib/rdo_parser/rdoparser_lexer.inl"
+#include "rdo_lib/rdo_converter/rdoparser_lexer.inl"
 
-#endif //! _RDOPARSER_LEXER_H_
+#endif //! _CONVERTOR_RDOCONVERTER_LEXER_H_
