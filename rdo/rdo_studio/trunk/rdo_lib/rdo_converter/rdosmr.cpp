@@ -31,14 +31,14 @@ int cnv_smr_file_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void cnv_smr_file_error(PTR(char) mes)
 {}
 
-int smr_sim_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_smr_sim_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void smr_sim_error(PTR(char) mes)
+void cnv_smr_sim_error(PTR(char) mes)
 {}
 
 // ----------------------------------------------------------------------------

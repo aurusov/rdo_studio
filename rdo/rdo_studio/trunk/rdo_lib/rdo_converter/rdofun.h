@@ -22,9 +22,9 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int  funparse(PTR(void) lexer);
-int  funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void funerror(PTR(char) mes);
+int  cnv_funparse(PTR(void) lexer);
+int  cnv_funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_funerror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNDoubleToIntByResult

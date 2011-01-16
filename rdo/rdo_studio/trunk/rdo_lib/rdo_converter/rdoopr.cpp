@@ -15,19 +15,18 @@
 #include "rdo_lib/rdo_converter/rdoopr.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-//#include "rdo_lib/rdo_converter/rdo_logic_opr.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int oprlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_oprlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void oprerror(PTR(char) mes)
+void cnv_oprerror(PTR(char) mes)
 {}
 
 // ----------------------------------------------------------------------------
@@ -45,10 +44,7 @@ RDOOPROperation::RDOOPROperation(LPIBaseOperationContainer pDPT, CREF(RDOParserS
 RDOOperations::RDOOperations(CREF(RDOParserSrcInfo) src_info)
 	: RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>(src_info)
 {
-	//m_pRuntimeLogic = F(rdoRuntime::RDOOperations)::create(Converter::s_converter()->runtime());
-	//ASSERT(m_pRuntimeLogic);
-	//m_pRuntimeLogic->init(Converter::s_converter()->runtime());
-	//Converter::s_converter()->runtime()->insertOperations(this);
+	Converter::s_converter()->insertOperations(this);
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

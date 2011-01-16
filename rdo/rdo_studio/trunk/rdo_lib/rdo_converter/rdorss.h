@@ -24,9 +24,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int  rssparse(PTR(void)    lexer);
-int  rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void rsserror(PTR(char)    message);
+int  cnv_rssparse(PTR(void)    lexer);
+int  cnv_rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_rsserror(PTR(char)    message);
 
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource

@@ -21,9 +21,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int  oprparse(PTR(void) lexer);
-int  oprlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void oprerror(PTR(char) mes);
+int  cnv_oprparse(PTR(void) lexer);
+int  cnv_oprlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_oprerror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOPROperation

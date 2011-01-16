@@ -32,8 +32,8 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRDOItem
 // ----------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
-	: RDOParserItem(type, parser_fun, error_fun, lexer_fun, from)
+RDOParserRDOItem::RDOParserRDOItem(rdoModelObjectsConvertor::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
+	: RDOParserItem(type, parser_fun, error_fun, lexer_fun)
 	, m_pLexer(NULL)
 {}
 
@@ -46,29 +46,12 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(Converter) pParser)
-{
-	ASSERT(pParser);
-
-	rdo::binarystream in_stream;
-	switch (m_from)
-	{
-		case sf_repository:
-//			kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData(m_type, in_stream));
-			break;
-		case sf_editor:
-//			kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData(m_type, in_stream));
-			break;
-	}
-	if (in_stream.good())
-	{
-		parse(pParser, in_stream);
-	}
-}
-
 void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) in_stream)
 {
 	ASSERT(pParser);
+
+	if (!in_stream.good())
+		return;
 
 	if (m_pLexer)
 		delete m_pLexer;
@@ -106,21 +89,27 @@ ruint RDOParserRDOItem::lexer_loc_pos()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
-RDOParserRSS::RDOParserRSS(StreamFrom from)
-	: RDOParserRDOItem(rdoModelObjectsConvertor::RSS, rssparse, rsserror, rsslex, from)
+RDOParserRSS::RDOParserRSS()
+	: RDOParserRDOItem(rdoModelObjectsConvertor::RSS, cnv_rssparse, cnv_rsserror, cnv_rsslex)
 {}
 
-void RDOParserRSS::parse(PTR(Converter) pParser)
+void RDOParserRSS::parse(PTR(Converter) pParser, REF(std::istream) in_stream)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);
 	pParser->setHaveKWResourcesEnd(false);
-	RDOParserRDOItem::parse(pParser);
+	RDOParserRDOItem::parse(pParser, in_stream);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSSPost
 // ----------------------------------------------------------------------------
+RDOParserRSSPost::RDOParserRSSPost()
+	: RDOParserItem(rdoModelObjectsConvertor::RSS, NULL, NULL, NULL)
+{
+	m_needStream = false;
+}
+
 void RDOParserRSSPost::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);
@@ -150,6 +139,12 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
+RDOParserSTDFUN::RDOParserSTDFUN()
+	: RDOParserItem(rdoModelObjectsConvertor::FUN, NULL, NULL, NULL)
+{
+	m_needStream = false;
+}
+
 void RDOParserSTDFUN::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);

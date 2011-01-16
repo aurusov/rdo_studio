@@ -20,14 +20,14 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void rtperror(PTR(char) mes)
+void cnv_rtperror(PTR(char) mes)
 {}
 
 // ----------------------------------------------------------------------------

@@ -18,14 +18,14 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void frmerror(PTR(char) mes)
+void cnv_frmerror(PTR(char) mes)
 {}
 
 // ----------------------------------------------------------------------------

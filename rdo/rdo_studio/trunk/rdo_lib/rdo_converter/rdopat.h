@@ -27,9 +27,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int  patparse(PTR(void) lexer);
-int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void paterror(PTR(char) mes);
+int  cnv_patparse(PTR(void) lexer);
+int  cnv_patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_paterror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- ConvertCmdList

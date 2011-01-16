@@ -23,9 +23,9 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int  rtpparse(PTR(void) lexer);
-int  rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void rtperror(PTR(char) mes);
+int  cnv_rtpparse(PTR(void) lexer);
+int  cnv_rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void cnv_rtperror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType

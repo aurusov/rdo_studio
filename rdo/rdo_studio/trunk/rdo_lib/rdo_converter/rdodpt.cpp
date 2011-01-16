@@ -31,44 +31,44 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void dpterror(PTR(char) mes)
+void cnv_dpterror(PTR(char) mes)
 {}
 
-int proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void proc_rtp_error(PTR(char) mes)
+void cnv_proc_rtp_error(PTR(char) mes)
 {}
 
-int proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void proc_rss_error(PTR(char) mes)
+void cnv_proc_rss_error(PTR(char) mes)
 {}
 
-int proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void proc_opr_error(PTR(char) mes)
+void cnv_proc_opr_error(PTR(char) mes)
 {}
 
 // ----------------------------------------------------------------------------
@@ -137,7 +137,6 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val);
 	ASSERT(pCalc);
 	pCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
-	m_pActivity->addParamCalc(pCalc);
 	m_currParam++;
 }
 
@@ -156,9 +155,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	}
 	if (m_pPattern->getType() == RDOPATPattern::PT_Keyboard)
 	{
-		LPIKeyboard pKeyboard = m_pActivity;
-		ASSERT(pKeyboard);
-		if (!pKeyboard->hasHotKey())
+		if (!static_cast<PTR(RDODPTActivityHotKey)>(this)->hasHotKey())
 		{
 			if (dynamic_cast<PTR(RDOOPROperation)>(this))
 			{
@@ -176,11 +173,6 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 
 rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
-	LPIPriority pPriorActivity = m_pActivity;
-	if (pPriorActivity)
-	{
-		return pPriorActivity->setPrior(pPrior->createCalc());
-	}
 	return false;
 }
 
@@ -192,20 +184,10 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 {
 	switch (pattern()->getType())
 	{
-	case RDOPATPattern::PT_IE:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
-		break;
-
-	case RDOPATPattern::PT_Rule:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
-		break;
-
+	case RDOPATPattern::PT_IE       :
+	case RDOPATPattern::PT_Rule     :
 	case RDOPATPattern::PT_Operation:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternOperation)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
-		break;
-
-	case RDOPATPattern::PT_Keyboard:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>(pattern()->getPatRuntime())->createActivity(pDPT, Converter::s_converter()->runtime(), name());
+	case RDOPATPattern::PT_Keyboard :
 		break;
 
 	default:
@@ -213,6 +195,33 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		Converter::s_converter()->error().push_done();
 	}
+}
+
+IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
+{
+	rdoRuntime::RDORuntime::RDOHotKeyToolkit::KeyCode scan_code = Converter::s_converter()->runtime()->rdoHotKeyToolkit.codeFromString( hotKey );
+	if (scan_code == rdoRuntime::RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
+	{
+		return IKeyboard::addhk_notfound;
+	}
+	if (std::find(m_scanCodeList.begin(), m_scanCodeList.end(), scan_code) != m_scanCodeList.end())
+	{
+		return IKeyboard::addhk_already;
+	}
+	m_scanCodeList.push_back(scan_code);
+	return IKeyboard::addhk_ok;
+}
+
+rbool RDODPTActivityHotKey::hasHotKey() const
+{
+	STL_FOR_ALL_CONST(ScanCodeList, m_scanCodeList, it)
+	{
+		if (*it != VK_SHIFT && *it != VK_CONTROL)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos)
@@ -223,9 +232,8 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		Converter::s_converter()->error().push_done();
 	}
-	LPIKeyboard pKeyboard = m_pActivity;
-	ASSERT(pKeyboard);
-	switch (pKeyboard->addHotKey(Converter::s_converter()->runtime(), hotKey))
+
+	switch (addHotKey(hotKey))
 	{
 	case rdoRuntime::RDOKeyboard::addhk_ok:
 		break;
@@ -357,8 +365,6 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 			Converter::s_converter()->error().push_done();
 		}
 	}
-	m_pActivity = F(rdoRuntime::RDORule)::create(Converter::s_converter()->runtime(), static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime()), true, name());
-	ASSERT(m_pActivity);
 }
 
 void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost, CREF(YYLTYPE) param_pos)
@@ -401,15 +407,8 @@ void RDODPTSearch::end()
 	{
 		LPRDODPTSearchActivity pSearchActivity = getActivities().at(i);
 		ASSERT(pSearchActivity);
-		LPIDPTSearchActivity pActivity = F(rdoRuntime::RDODPTSearchActivity)::create(
-			pSearchActivity->activity(),
-			pSearchActivity->getValue(),
-			pSearchActivity->getRuleCost()->createCalc()
-		);
-		ASSERT(pActivity);
 		LPIDPTSearchLogic pSearchLogic = m_pRuntimeLogic;
 		ASSERT(pSearchLogic);
-		pSearchLogic->addActivity(pActivity);
 	}
 	m_closed = true;
 }

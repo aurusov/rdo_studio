@@ -107,9 +107,6 @@ public:
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
 	rbool    hasSMR() const              { return m_pSMR ? true : false; }
 
-	void parse();
-	void parse(REF(std::istream) stream);
-
 	CREF(Error) error() const { return m_error; }
 	 REF(Error) error()       { return m_error; }
 
@@ -197,8 +194,6 @@ protected:
 	ValueList              m_allValues;
 	rdoRuntime::RDORuntime m_runtime;
 
-	void parse(rdoModelObjectsConvertor::RDOParseType file);
-
 private:
 	LPRDOSMR              m_pSMR;
 	rbool                 m_have_kw_Resources;
@@ -265,7 +260,11 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserModel
 // ----------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
+class RDOParserModel: public RDOParserTemplate<RDOParserContainerModel>
+{
+public:
+	void convert(CREF(tstring) smrFullFileName);
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMRInfo
@@ -273,13 +272,21 @@ typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:
-	void parseSMR(REF(std::istream) smrStream);
-};
+	typedef std::map<rdoModelObjectsConvertor::RDOFileType, tstring> FileList;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserCorbar
-// ----------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
+	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) smrInfo);
+	CREF(FileList) getFileList() const;
+
+private:
+	FileList m_fileList;
+
+	void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileType type,
+	                                      CREF(tstring)                         modelPath,
+	                                      CREF(tstring)                         modelName,
+	                                      CREF(tstring)                         smrFileName,
+	                                      CREF(tstring)                         nameFromSMR,
+	                                      CREF(tstring)                         fileExt);
+};
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
