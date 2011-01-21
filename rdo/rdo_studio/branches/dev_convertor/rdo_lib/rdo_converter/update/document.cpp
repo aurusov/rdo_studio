@@ -128,7 +128,7 @@ tstring Document::getName(Type type) const
 	case rdoModelObjectsConvertor::PMD_OUT: extention = _T("pmd"); break;
 	case rdoModelObjectsConvertor::PMV_OUT: extention = _T("pmv"); break;
 	case rdoModelObjectsConvertor::TRC_OUT: extention = _T("trc"); break;
-	case rdoModelObjectsConvertor::ENV_OUT: extention = _T("env"); break;
+	case rdoModelObjectsConvertor::EVN_OUT: extention = _T("evn"); break;
 	case rdoModelObjectsConvertor::PRC_OUT: extention = _T("prc"); break;
 	default: NEVER_REACH_HERE;
 	}
