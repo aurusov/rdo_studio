@@ -31,7 +31,7 @@ DECLARE_ATOM_TYPE(int           );
 DECLARE_ATOM_TYPE(real          );
 DECLARE_ATOM_TYPE(bool          );
 DECLARE_ATOM_TYPE(string        );
-DECLARE_ATOM_TYPE(ArrayIterator );
-DECLARE_ATOM_TYPE(MatrixIterator);
+DECLARE_ATOM_TYPE(arrayIterator );
+DECLARE_ATOM_TYPE(matrixIterator);
 
 CLOSE_RDO_RUNTIME_NAMESPACE

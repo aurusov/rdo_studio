@@ -37,9 +37,9 @@ public:
 		t_string,
 		t_enum,
 		t_array,
-		t_ArrayIterator,
+		t_arrayIterator,
 		t_matrix,
-		t_MatrixIterator,
+		t_matrixIterator,
 		t_fuzzy
 	};
 
@@ -70,8 +70,8 @@ DEFINE_ATOM_TYPE(int           );
 DEFINE_ATOM_TYPE(real          );
 DEFINE_ATOM_TYPE(bool          );
 DEFINE_ATOM_TYPE(string        );
-DEFINE_ATOM_TYPE(ArrayIterator );
-DEFINE_ATOM_TYPE(MatrixIterator);
+DEFINE_ATOM_TYPE(arrayIterator );
+DEFINE_ATOM_TYPE(matrixIterator);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
