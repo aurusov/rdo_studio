@@ -141,19 +141,19 @@ inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
 }
 
 inline RDOValue::RDOValue(CREF(RDOArrayIterator) aIterator)
-	: m_type(&g_ArrayIterator)
+	: m_pType(g_ArrayIterator)
 {
 	m_value.p_data = new RDOArrayIterator(aIterator);
 }
 
 inline RDOValue::RDOValue(CREF(RDOMatrixValue) matrixValue)
-	: m_type(&matrixValue.type())
+	: m_pType(matrixValue.type())
 {
 	m_value.p_data = new RDOMatrixValue(matrixValue);
 }
 
 inline RDOValue::RDOValue(CREF(RDOMatrixIterator) mIterator)
-: m_type(&g_MatrixIterator)
+	: m_pType(g_MatrixIterator)
 {
 	m_value.p_data = new RDOMatrixIterator(mIterator);
 }

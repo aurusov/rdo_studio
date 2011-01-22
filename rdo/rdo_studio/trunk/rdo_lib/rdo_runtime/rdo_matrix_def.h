@@ -31,18 +31,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOMatrixValue
 // ----------------------------------------------------------------------------
-class RDOMatrixType;
+PREDECLARE_POINTER(RDOMatrixType);
 
 class RDOMatrixValue
 {
 public:
 	typedef std::vector<RDOValue> Container;
 
-	RDOMatrixValue(CREF(RDOMatrixType)  type );
-	RDOMatrixValue(CREF(RDOMatrixValue) value);
+	RDOMatrixValue(CREF(LPRDOMatrixType) pType);
+	RDOMatrixValue(CREF(RDOMatrixValue)  value);
 	~RDOMatrixValue();
 
-	CREF(RDOMatrixType) type() const;
+	CREF(LPRDOMatrixType) type() const;
 
 	void insertItem(CREF(RDOValue) pMatrix);
 	Container::iterator containerBegin();
@@ -54,8 +54,8 @@ public:
 	tstring getAsString() const;
 
 private:
-	Container          m_container;
-	CPTR(RDOMatrixType) m_matrixType;
+	Container       m_container;
+	LPRDOMatrixType m_pMatrixType;
 };
 
 // ----------------------------------------------------------------------------

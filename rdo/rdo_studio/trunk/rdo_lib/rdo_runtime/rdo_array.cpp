@@ -19,22 +19,22 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-RDOArrayValue::RDOArrayValue(CREF(RDOArrayType) type)
-	: m_arrayType(&type)
+RDOArrayValue::RDOArrayValue(CREF(LPRDOArrayType) pType)
+	: m_pArrayType(pType)
 {}
 
 RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
-	: m_container (value.m_container)
-	, m_arrayType (value.m_arrayType)
+	: m_container (value.m_container )
+	, m_pArrayType(value.m_pArrayType)
 {}
 
 RDOArrayValue::~RDOArrayValue()
 {}
 
-CREF(RDOArrayType) RDOArrayValue::type() const
+CREF(LPRDOArrayType) RDOArrayValue::type() const
 {
-	ASSERT(m_arrayType);
-	return *m_arrayType;
+	ASSERT(m_pArrayType);
+	return m_pArrayType;
 }
 
 void RDOArrayValue::insertItem(CREF(RDOValue) pArray)
@@ -65,7 +65,7 @@ void RDOArrayValue::eraseItems(Container::iterator itrFst, Container::iterator i
 tstring RDOArrayValue::getAsString() const
 {
 	tstring ArrayName = _T("[");
-	STL_FOR_ALL_CONST(Container, m_container, it)
+	STL_FOR_ALL_CONST(m_container, it)
 	{
 		ArrayName += it->getAsString();
 		if(it != --m_container.end())
@@ -118,13 +118,12 @@ rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType(PTR(RDORuntimeParent) parent, ArrayType pArrayType)
-	: RDORuntimeObject(parent          )
-	, RDOType         (RDOType::t_array)
-	, m_pArrayType    (pArrayType      )
+RDOArrayType::RDOArrayType(CREF(LPArrayType) pArrayType)
+	: RDOType     (RDOType::t_array)
+	, m_pArrayType(pArrayType      )
 {}
 
-RDOArrayType::ArrayType RDOArrayType::getArrayType() const
+RDOArrayType::LPArrayType RDOArrayType::getArrayType() const
 {
 	return m_pArrayType;
 }

@@ -19,22 +19,22 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOMatrixValue
 // ----------------------------------------------------------------------------
-RDOMatrixValue::RDOMatrixValue(CREF(RDOMatrixType) type)
-	: m_matrixType(&type)
+RDOMatrixValue::RDOMatrixValue(CREF(LPRDOMatrixType) pType)
+	: m_pMatrixType(pType)
 {}
 
 RDOMatrixValue::RDOMatrixValue(CREF(RDOMatrixValue) value)
-	: m_container (value.m_container)
-	, m_matrixType (value.m_matrixType)
+	: m_container  (value.m_container  )
+	, m_pMatrixType(value.m_pMatrixType)
 {}
 
 RDOMatrixValue::~RDOMatrixValue()
 {}
 
-CREF(RDOMatrixType) RDOMatrixValue::type() const
+CREF(LPRDOMatrixType) RDOMatrixValue::type() const
 {
-	ASSERT(m_matrixType);
-	return *m_matrixType;
+	ASSERT(m_pMatrixType);
+	return m_pMatrixType;
 }
 
 void RDOMatrixValue::insertItem(CREF(RDOValue) pMatrix)
@@ -65,7 +65,7 @@ void RDOMatrixValue::eraseItems(Container::iterator itrFst, Container::iterator 
 tstring RDOMatrixValue::getAsString() const
 {
 	tstring MatrixName = _T("[");
-	STL_FOR_ALL_CONST(Container, m_container, it)
+	STL_FOR_ALL_CONST(m_container, it)
 	{
 		MatrixName += it->getAsString();
 		if(it != --m_container.end())

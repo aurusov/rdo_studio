@@ -89,10 +89,9 @@ DECLARE_FACTORY(RDOArrayType);
 public:
 	typedef LPRDOType LPArrayType;
 
-	ArrayType getArrayType() const;
+	LPArrayType getArrayType() const;
 
 private:
-	RDOArrayType();
 	RDOArrayType(CREF(LPArrayType) pArrayType);
 
 	LPArrayType m_pArrayType;
