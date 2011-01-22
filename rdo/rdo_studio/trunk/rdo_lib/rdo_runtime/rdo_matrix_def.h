@@ -83,17 +83,18 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOMatrixType
 // ----------------------------------------------------------------------------
-class RDOMatrixType: public RDOType, public RDORuntimeObject
+class RDOMatrixType: public RDOType
 {
+DECLARE_FACTORY(RDOMatrixType);
 public:
-	typedef CREF(RDOType) MatrixType;
+	typedef LPRDOType LPMatrixType;
 
-	RDOMatrixType(PTR(RDORuntimeParent) parent, MatrixType pMatrixType);
-
-	MatrixType getMatrixType() const;
+	LPMatrixType getMatrixType() const;
 
 private:
-	MatrixType  m_pMatrixType;
+	RDOMatrixType(CREF(LPMatrixType) pMatrixType);
+
+	LPMatrixType  m_pMatrixType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

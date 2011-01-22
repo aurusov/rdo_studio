@@ -118,13 +118,12 @@ rbool RDOMatrixIterator::operator== (CREF(RDOMatrixIterator) iterator) const
 // ----------------------------------------------------------------------------
 // ---------- RDOMatrixType
 // ----------------------------------------------------------------------------
-RDOMatrixType::RDOMatrixType(PTR(RDORuntimeParent) parent, MatrixType pMatrixType)
-	: RDORuntimeObject(parent          )
-	, RDOType         (RDOType::t_matrix)
-	, m_pMatrixType    (pMatrixType      )
+RDOMatrixType::RDOMatrixType(CREF(LPMatrixType) pMatrixType)
+	: RDOType      (RDOType::t_matrix)
+	, m_pMatrixType(pMatrixType      )
 {}
 
-RDOMatrixType::MatrixType RDOMatrixType::getMatrixType() const
+RDOMatrixType::LPMatrixType RDOMatrixType::getMatrixType() const
 {
 	return m_pMatrixType;
 }
