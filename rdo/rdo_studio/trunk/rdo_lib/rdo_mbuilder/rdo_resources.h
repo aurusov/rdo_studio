@@ -141,7 +141,7 @@ public:
 	friend class RDOResType;
 	public:
 		explicit Param(CREF(rdoParse::LPRDORTPParam) param);
-		explicit Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type);
+		explicit Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type,  CREF(rdoParse::RDOValue) default);
 		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>)  type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
 		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) type,  CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
 		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)              enums, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
@@ -157,8 +157,8 @@ public:
 		CREF(rdoParse::RDOValue)  getMax () const     { return m_max; }
 		void                      setDiap(CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max);
 
-		rbool                     hasDefault() const  { return m_type->default().defined(); }
-		CREF(rdoParse::RDOValue)  getDefault() const  { return m_type->default();           }
+		rbool                     hasDefault() const  { return m_default.defined(); }
+		CREF(rdoParse::RDOValue)  getDefault() const  { return m_default;           }
 		void                      setDefault(CREF(rdoParse::RDOValue) default);
 
 		rdoParse::LPRDOEnumType   getEnum() const
@@ -173,12 +173,13 @@ public:
 		rdoParse::LPRDOTypeParam   m_type;
 		rdoParse::RDOValue         m_min;
 		rdoParse::RDOValue         m_max;
+		rdoParse::RDOValue         m_default;
 		rsint                      m_id;
 
 		template <class T>
 		void initType(CREF(T) type)
 		{
-			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type, rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
+			m_type = rdo::Factory<rdoParse::RDOTypeParam>::create(type, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_type);
 		}
 		template <>
@@ -191,7 +192,7 @@ public:
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}
 //			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_default.value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
-			m_type    = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum, rdoParse::RDOValue(), rdoParse::RDOParserSrcInfo());
+			m_type    = rdo::Factory<rdoParse::RDOTypeParam>::create(pEnum, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_type);
 		}
 	};

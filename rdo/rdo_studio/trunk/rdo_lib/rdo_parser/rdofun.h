@@ -15,6 +15,7 @@
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/param.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -144,22 +145,19 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNConstant
 // ----------------------------------------------------------------------------
-OBJECT(RDOFUNConstant) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOFUNConstant): INSTANCE_OF(RDOParam)
 {
 DECLARE_FACTORY(RDOFUNConstant);
 public:
-	CREF(tstring)        name     () const { return m_name;   }
-	CREF(LPRDOTypeParam) getType  () const { return m_pType;  }
-	int                  getNumber() const { return m_number; }
+	int getNumber() const { return m_number; }
 
 private:
-	RDOFUNConstant(CREF(tstring) name, CREF(LPRDOTypeParam) pType);
+	RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(RDOValue) default);
 	virtual ~RDOFUNConstant();
 
-	tstring         m_name;
-	LPRDOTypeParam  m_pType;
-	int             m_number;
+	int m_number;
 };
+DECLARE_POINTER(RDOFUNConstant);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNParams
@@ -382,31 +380,6 @@ DECLARE_POINTER(RDOFUNSequenceEnumerative);
 // ----------------------------------------------------------------------------
 // ---------- Функции
 // ----------------------------------------------------------------------------
-// ---------- RDOFUNFunctionParam
-// ----------------------------------------------------------------------------
-// Параметры, описанные внури самой функции после клювевого слова $Parameters
-// ----------------------------------------------------------------------------
-OBJECT(RDOFUNFunctionParam) IS INSTANCE_OF(RDOParserSrcInfo)
-{
-DECLARE_FACTORY(RDOFUNFunctionParam)
-public:
-	CREF(tstring)  name   () const { return src_info().src_text(); }
-	LPRDOTypeParam getType() const { return m_pType;               }
-
-private:
-	RDOFUNFunctionParam(CREF(tstring) name, CREF(LPRDOTypeParam) pType)
-		: RDOParserSrcInfo(name )
-		, m_pType         (pType)
-	{}
-	RDOFUNFunctionParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType)
-		: RDOParserSrcInfo(src_info)
-		, m_pType         (pType   )
-	{}
-	virtual ~RDOFUNFunctionParam()
-	{}
-
-	LPRDOTypeParam m_pType;
-};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNFunctionListElement
@@ -509,22 +482,22 @@ private:
 OBJECT(RDOFUNFunction) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOFUNFunction)
-friend class RDOParser;
+friend class Converter;
 public:
-	typedef std::vector<LPRDOFUNFunctionParam> ParamList;
+	typedef std::vector<LPRDOParam> ParamList;
 
-	void                  add                    (CREF(LPRDOFUNFunctionParam)       pParam       );
-	void                  add                    (CREF(LPRDOFUNFunctionListElement) pListElement );
-	void                  add                    (CREF(LPRDOFUNCalculateIf)         pCalculateIf );
-	LPRDOFUNFunctionParam findFUNFunctionParam   (CREF(tstring)                     paramName    ) const;
-	int                   findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
-	void                  createListCalc         ();
-	void                  createTableCalc        (CREF(YYLTYPE)                     elements_pos );
-	void                  createAlgorithmicCalc  (CREF(RDOParserSrcInfo)            body_src_info);
+	void       add                    (CREF(LPRDOParam)                  pParam       );
+	void       add                    (CREF(LPRDOFUNFunctionListElement) pListElement );
+	void       add                    (CREF(LPRDOFUNCalculateIf)         pCalculateIf );
+	LPRDOParam findFUNFunctionParam   (CREF(tstring)                     paramName    ) const;
+	int        findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
+	void       createListCalc         ();
+	void       createTableCalc        (CREF(YYLTYPE)                     elements_pos );
+	void       createAlgorithmicCalc  (CREF(RDOParserSrcInfo)            body_src_info);
 
-	CREF(tstring)        name     () const { return src_info().src_text(); }
-	CREF(LPRDOTypeParam) getType  () const { return m_pRetType;            }
-	const ParamList      getParams() const { return m_paramList;           }
+	CREF(tstring)    name     () const { return src_info().src_text(); }
+	CREF(LPRDOParam) getReturn() const { return m_pReturn;             }
+	const ParamList  getParams() const { return m_paramList;           }
 
 	void                     setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc);
 	rdoRuntime::LPRDOFunCalc getFunctionCalc() const { return m_pFunctionCalc; }
@@ -536,15 +509,15 @@ public:
 	}
 
 private:
-	RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pRetType);
-	RDOFUNFunction(CREF(tstring) name, CREF(LPRDOTypeParam) pRetType);
+	RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam) pReturn);
+	RDOFUNFunction(CREF(tstring) name,              CREF(LPRDOParam) pReturn);
 	virtual ~RDOFUNFunction();
 
 	typedef std::vector<LPRDOFUNFunctionListElement>       ElementList;
 	typedef std::vector<LPRDOFUNCalculateIf>               CalculateIfList;
 	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCall> PostLinkedList;
 
-	LPRDOTypeParam           m_pRetType;
+	LPRDOParam               m_pReturn;
 	ParamList                m_paramList;
 	ElementList              m_elementList;     //! for list and table
 	CalculateIfList          m_calculateIfList; //! for algorithmic

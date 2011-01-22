@@ -166,9 +166,9 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 		RDOParser::s_parser()->error().push_done();
 	}
 	ASSERT(pArithm);
-	pArithm->checkParamType(pParam->getParamType());
+	pArithm->checkParamType(pParam->getType());
 	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
-	rdoRuntime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getParamType());
+	rdoRuntime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getType());
 	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	RDOParser::s_parser()->insertChanges(res_info.src_text() + _T(".") + par_info.src_text(), pArithm->src_text());
 }

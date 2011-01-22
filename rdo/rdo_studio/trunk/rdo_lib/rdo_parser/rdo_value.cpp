@@ -46,6 +46,13 @@ RDOValue::RDOValue()
 	, m_type          (rdo::Factory<RDOType__unknow>::create())
 {}
 
+void RDOValue::operator= (CREF(RDOValue) value)
+{
+	m_value = value.m_value;
+	m_type  = value.m_type;
+	setSrcInfo(value.src_info());
+}
+
 CREF(LPRDOType) RDOValue::type() const
 {
 	return m_type;

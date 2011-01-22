@@ -33,16 +33,14 @@ public:
 	LPRDOType type      ()                     const;
 	RDOValue  value_cast(CREF(RDOValue) value) const;
 
-	CREF(RDOValue) default() const;
-
 	DECLARE_IModelStructure;
 
-private:
-	RDOTypeParam(CREF(LPRDOType) type, CREF(RDOValue) default, CREF(RDOParserSrcInfo) src_info);
+protected:
+	RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeParam();
 
+private:
 	LPRDOType m_type;
-	RDOValue  m_default;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -211,6 +211,7 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
+#include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
@@ -271,20 +272,15 @@ fun_const_body
 	;
 
 fun_const_param_desc
-	: RDO_IDENTIF_COLON param_type
+	: RDO_IDENTIF_COLON param_type param_value_default
 	{
 		PTR(RDOValue) name = P_RDOVALUE($1);
 		PARSER->checkFunctionName(name->src_info());
 		LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($2);
 		ASSERT(pParamType);
-		if (!pParamType->default().defined())
-		{
-			PARSER->error().error(@2, _T("Константа должна иметь значение"));
-		}
-		LPRDOFUNConstant pConstant = rdo::Factory<RDOFUNConstant>::create(name->src_text(), pParamType);
+		LPRDOFUNConstant pConstant = rdo::Factory<RDOFUNConstant>::create(name->src_info(), pParamType, RDOVALUE($3));
 		ASSERT(pConstant);
-		pConstant->setSrcInfo( name->src_info() );
-		RUNTIME->setConstValue(pConstant->getNumber(), pConstant->getType()->default().value());
+		RUNTIME->setConstValue(pConstant->getNumber(), pConstant->getDefault().value());
 		$$ = PARSER->stack().push(pConstant);
 	}
 	| RDO_IDENTIF_COLON
@@ -324,13 +320,15 @@ fun_func_descr
 	;
 
 fun_func_header
-	: RDO_Function RDO_IDENTIF_COLON param_type
+	: RDO_Function RDO_IDENTIF_COLON param_type param_value_default
 	{
 		PTR(RDOValue) name = reinterpret_cast<PTR(RDOValue)>($2);
-		PARSER->checkFunctionName( name->src_info() );
+		PARSER->checkFunctionName(name->src_info());
 		LPRDOTypeParam pRetType = PARSER->stack().pop<RDOTypeParam>($3);
-		ASSERT(pRetType)
-		LPRDOFUNFunction pFunction = rdo::Factory<RDOFUNFunction>::create(name->src_info(), pRetType);
+		ASSERT(pRetType);
+		LPRDOParam pReturn = rdo::Factory<RDOParam>::create(name->src_info(), pRetType, RDOVALUE($4));
+		ASSERT(pReturn);
+		LPRDOFUNFunction pFunction = rdo::Factory<RDOFUNFunction>::create(name->src_info(), pReturn);
 		ASSERT(pFunction);
 		$$ = PARSER->stack().push(pFunction);
 	}
@@ -352,12 +350,12 @@ fun_func_parameters
 
 fun_func_params
 	: /* empty */
-	| fun_func_params RDO_IDENTIF_COLON param_type
+	| fun_func_params RDO_IDENTIF_COLON param_type param_value_default
 	{
 		PTR(RDOValue)  name  = P_RDOVALUE($2);
 		LPRDOTypeParam pType = PARSER->stack().pop<RDOTypeParam>($3);
 		ASSERT(pType);
-		LPRDOFUNFunctionParam pParam = rdo::Factory<RDOFUNFunctionParam>::create(name->src_info(), pType);
+		LPRDOParam pParam = rdo::Factory<RDOParam>::create(name->src_info(), pType, RDOVALUE($4));
 		ASSERT(pParam);
 		PARSER->getLastFUNFunction()->add(pParam);
 	}
@@ -1234,7 +1232,7 @@ fun_seq_enumerative_body
 // ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
 param_type
-	: RDO_integer param_type_range param_value_default
+	: RDO_integer param_type_range
 	{
 		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;
@@ -1247,16 +1245,16 @@ param_type
 			}
 			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			ASSERT(pIntRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo(@1, @2));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1, @2));
 		}
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| RDO_real param_type_range param_value_default
+	| RDO_real param_type_range
 	{
 		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;
@@ -1264,74 +1262,54 @@ param_type
 		{
 			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
 			ASSERT(pRealRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOParserSrcInfo(@1, @2));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo(@1, @2));
 		}
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| RDO_string param_value_default
+	| RDO_string
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_array param_value_default
+	| param_type_array
 	{
 		LEXER->array_cnt_rst();
 		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
 		ASSERT(pArray);
-		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| RDO_bool param_value_default
+	| RDO_bool
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_enum param_value_default
+	| param_type_enum
 	{
 		LEXER->enumReset();
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
 		ASSERT(pEnum);
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_such_as param_value_default
+	| param_type_such_as
 	{
-		LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
+		LPRDOTypeParamSuchAs pTypeSuchAs = PARSER->stack().pop<RDOTypeParamSuchAs>($1);
 		ASSERT(pTypeSuchAs);
-		RDOValue default = RDOVALUE($2);
-		if (!default.defined())
-		{
-			if (pTypeSuchAs->default().defined())
-			{
-				default = pTypeSuchAs->default();
-			}
-		}
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), default, RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = pTypeSuchAs.object_parent_cast<RDOTypeParam>();
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
 	;
-	//| RDO_integer error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| RDO_real error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| param_type_enum error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию."));
-	//}
 
 param_type_range
 	: /* empty */
@@ -1483,12 +1461,16 @@ param_type_such_as
 		{
 			PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
 		}
-		LPRDORTPParam pParam = pResType->findRTPParam(param);
-		if (!pParam)
+		LPRDORTPParam pRTPParam = pResType->findRTPParam(param);
+		if (!pRTPParam)
 		{
 			PARSER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
 		}
-		$$ = PARSER->stack().push(pParam->getParamType());
+		LPRDOParam pParam = pRTPParam.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
@@ -1498,7 +1480,11 @@ param_type_such_as
 		{
 			PARSER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
 		}
-		$$ = PARSER->stack().push(pConstant->getType());
+		LPRDOParam pParam = pConstant.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{

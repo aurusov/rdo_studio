@@ -581,8 +581,8 @@ dpt_assign_param
 				ASSERT(pResource);
 				LPRDORTPResType pResType = pResource->getType();
 				LPRDORTPParam   pParam   = pResType->findRTPParam(param);
-				pArithm->checkParamType(pParam->getParamType());
-				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pArithm->createCalc(pParam->getParamType()), pResource->getID(), rtp.m_params[param].id());
+				pArithm->checkParamType(pParam->getType());
+				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pArithm->createCalc(pParam->getType()), pResource->getID(), rtp.m_params[param].id());
 				ASSERT(pBlock);
 				$$ = PARSER->stack().push(pBlock);
 			}

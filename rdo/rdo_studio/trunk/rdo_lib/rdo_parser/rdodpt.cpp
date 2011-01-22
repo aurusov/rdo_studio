@@ -105,16 +105,16 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 		}
 	}
 	rdoRuntime::RDOValue val;
-	LPRDOFUNFunctionParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
+	LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 	if (param->getAsString() == _T("*"))
 	{
-		if (!pPatternParam->getType()->default().defined())
+		if (!pPatternParam->getDefault().defined())
 		{
 			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
 			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_text().c_str()));
 			RDOParser::s_parser()->error().push_done();
 		}
-		val = pPatternParam->getType()->default().value();
+		val = pPatternParam->getDefault().value();
 	}
 	else
 	{
@@ -131,7 +131,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 {
 	if (m_pPattern->m_paramList.size() > m_currParam)
 	{
-		LPRDOFUNFunctionParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
+		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 		RDOParser::s_parser()->error().push_only(param_pos, rdo::format(_T("Указаны не все параметра образца '%s':"), m_pPattern->src_text().c_str()));
 		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{

@@ -44,6 +44,8 @@ public:
 	CREF(rdoRuntime::RDOValue)       value() const;
 	CPTR(rdoRuntime::RDOValue) operator-> () const;
 
+	void operator= (CREF(RDOValue) value);
+
 	rbool defined () const;
 	rbool constant() const;
 

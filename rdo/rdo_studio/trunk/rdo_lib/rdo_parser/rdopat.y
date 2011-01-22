@@ -213,6 +213,7 @@
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_lib/rdo_parser/local_variable.h"
+#include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
 #include "rdo_lib/rdo_parser/context/type.h"
 #include "rdo_lib/rdo_parser/context/memory.h"
 #include "rdo_lib/rdo_parser/variable_container.h"
@@ -297,23 +298,23 @@ pat_params_begin
 	;
 
 pat_params
-	: pat_params_begin RDO_IDENTIF_COLON param_type
+	: pat_params_begin RDO_IDENTIF_COLON param_type param_value_default
 	{
-		LPRDOPATPattern          pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
+		LPRDOPATPattern pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
-		PTR(RDOValue)            param_name = P_RDOVALUE($2);
-		LPRDOTypeParam           param_type = PARSER->stack().pop<RDOTypeParam>($3);
-		LPRDOFUNFunctionParam    pParam     = rdo::Factory<RDOFUNFunctionParam>::create(param_name->src_info(), param_type);
+		PTR(RDOValue)   param_name = P_RDOVALUE($2);
+		LPRDOTypeParam  param_type = PARSER->stack().pop<RDOTypeParam>($3);
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
 		pPattern->add(pParam);
 		$$ = PARSER->stack().push(pPattern);
 	}
-	| pat_params RDO_IDENTIF_COLON param_type
+	| pat_params RDO_IDENTIF_COLON param_type param_value_default
 	{
-		LPRDOPATPattern          pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
+		LPRDOPATPattern pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
-		PTR(RDOValue)            param_name = P_RDOVALUE($2);
-		LPRDOTypeParam           param_type = PARSER->stack().pop<RDOTypeParam>($3);
-		LPRDOFUNFunctionParam    pParam     = rdo::Factory<RDOFUNFunctionParam>::create(param_name->src_info(), param_type);
+		PTR(RDOValue)   param_name = P_RDOVALUE($2);
+		LPRDOTypeParam  param_type = PARSER->stack().pop<RDOTypeParam>($3);
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
 		pPattern->add(pParam);
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1617,8 +1618,8 @@ equal_statement
 		}
 		else
 		{
-			LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
-			if (!param)
+			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
+			if (!pParam)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 			}
@@ -1643,14 +1644,14 @@ equal_statement
 			ASSERT(pCalc);
 			//! Проверка на диапазон
 			//! TODO: проверить работоспособность
-			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+			if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getType().get()))
 			{
-				LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
+				LPRDOTypeIntRange pRange = pParam->getType()->type().object_static_cast<RDOTypeIntRange>();
 				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
-			else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+			else if (dynamic_cast<PTR(RDOTypeRealRange)>(pParam->getType().get()))
 			{
-				LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
+				LPRDOTypeRealRange pRange = pParam->getType()->type().object_static_cast<RDOTypeRealRange>();
 				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
 		}
@@ -1736,12 +1737,12 @@ equal_statement
 		}
 		else
 		{
-			LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
-			if (!param)
+			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
+			if (!pParam)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 			}
-			pCalcRight = pRightArithm->createCalc(param->getParamType().get());
+			pCalcRight = pRightArithm->createCalc(pParam->getType().get());
 			switch (equalType)
 			{
 				case rdoRuntime::ET_NOCHANGE:
@@ -1751,7 +1752,7 @@ equal_statement
 				case rdoRuntime::ET_EQUAL:
 				{
 					pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-					pRelRes->getParamSetList().insert(param);
+					pRelRes->getParamSetList().insert(pParam);
 					break;
 				}
 				case rdoRuntime::ET_PLUS:
@@ -1782,14 +1783,14 @@ equal_statement
 			ASSERT(pCalc);
 			//! Проверка на диапазон
 			//! TODO: проверить работоспособность
-			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getParamType().get()))
+			if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getType().get()))
 			{
-				LPRDOTypeIntRange pRange = param->getParamType()->type().object_static_cast<RDOTypeIntRange>();
+				LPRDOTypeIntRange pRange = pParam->getType()->type().object_static_cast<RDOTypeIntRange>();
 				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
-			else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getParamType().get()))
+			else if (dynamic_cast<PTR(RDOTypeRealRange)>(pParam->getType().get()))
 			{
-				LPRDOTypeRealRange pRange = param->getParamType()->type().object_static_cast<RDOTypeRealRange>();
+				LPRDOTypeRealRange pRange = pParam->getType()->type().object_static_cast<RDOTypeRealRange>();
 				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
 		}
@@ -1909,7 +1910,7 @@ event_descr_param
 	: /* empty */
 	| event_descr_param ',' '*'
 	{
-		PARSER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
+		PARSER->error().error(@1, @2, "Планировать события с параметрами по умолчанию пока нельзя")
 	}
 	| event_descr_param ',' fun_arithm
 	{
@@ -2065,7 +2066,7 @@ pat_pattern
 // ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
 param_type
-	: RDO_integer param_type_range param_value_default
+	: RDO_integer param_type_range
 	{
 		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;
@@ -2078,16 +2079,16 @@ param_type
 			}
 			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			ASSERT(pIntRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo(@1, @2));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1, @2));
 		}
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| RDO_real param_type_range param_value_default
+	| RDO_real param_type_range
 	{
 		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;
@@ -2095,74 +2096,54 @@ param_type
 		{
 			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
 			ASSERT(pRealRange);
-			pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOParserSrcInfo(@1, @2));
 		}
 		else
 		{
-			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOVALUE($3), RDOParserSrcInfo(@1, @3));
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo(@1, @2));
 		}
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| RDO_string param_value_default
+	| RDO_string
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_array param_value_default
+	| param_type_array
 	{
 		LEXER->array_cnt_rst();
 		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
 		ASSERT(pArray);
-		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| RDO_bool param_value_default
+	| RDO_bool
 	{
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_enum param_value_default
+	| param_type_enum
 	{
 		LEXER->enumReset();
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
 		ASSERT(pEnum);
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOVALUE($2), RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_such_as param_value_default
+	| param_type_such_as
 	{
-		LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
+		LPRDOTypeParamSuchAs pTypeSuchAs = PARSER->stack().pop<RDOTypeParamSuchAs>($1);
 		ASSERT(pTypeSuchAs);
-		RDOValue default = RDOVALUE($2);
-		if (!default.defined())
-		{
-			if (pTypeSuchAs->default().defined())
-			{
-				default = pTypeSuchAs->default();
-			}
-		}
-		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), default, RDOParserSrcInfo(@1, @2));
+		LPRDOTypeParam pType = pTypeSuchAs.object_parent_cast<RDOTypeParam>();
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
 	;
-	//| RDO_integer error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| RDO_real error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| param_type_enum error
-	//{
-	//	PARSER->error().error(@2, _T("Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию."));
-	//}
 
 param_type_range
 	: /* empty */
@@ -2314,12 +2295,16 @@ param_type_such_as
 		{
 			PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
 		}
-		LPRDORTPParam pParam = pResType->findRTPParam(param);
-		if (!pParam)
+		LPRDORTPParam pRTPParam = pResType->findRTPParam(param);
+		if (!pRTPParam)
 		{
 			PARSER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
 		}
-		$$ = PARSER->stack().push(pParam->getParamType());
+		LPRDOParam pParam = pRTPParam.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
@@ -2329,7 +2314,11 @@ param_type_such_as
 		{
 			PARSER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
 		}
-		$$ = PARSER->stack().push(pConstant->getType());
+		LPRDOParam pParam = pConstant.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
@@ -2540,12 +2529,6 @@ fun_logic
 		LPRDOFUNLogic pResult = rdo::Factory<RDOFUNLogic>::create(pArithm);
 		ASSERT(pResult);
 		$$ = PARSER->stack().push(pResult);
-	}
-	| fun_arithm '=' fun_arithm
-	{
-		YYLTYPE          equal_pos = @2;
-//		LPCorrection     pCorrection = new Correction(++equal_pos.m_last_line, ++equal_pos.m_last_pos, Equality);
-		PARSER->error().error(@2, rdo::format(_T("В позиции Ln %i Col %i не хватает знака равенства"), equal_pos.m_last_line, equal_pos.m_last_pos));
 	}
 	| fun_group
 	| fun_select_logic
@@ -2943,7 +2926,7 @@ type_declaration
 		ASSERT(pBaseType);
 
 		LPRDOTypeParam pType;
-		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, rdoParse::RDOValue(pBaseType, RDOParserSrcInfo(@1)), RDOParserSrcInfo(@1));
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2957,7 +2940,7 @@ type_declaration
 		ASSERT(pBaseType);
 
 		LPRDOTypeParam pType;
-		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, rdoParse::RDOValue(pBaseType, RDOParserSrcInfo(@1)), RDOParserSrcInfo(@1));
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2971,7 +2954,7 @@ type_declaration
 		ASSERT(pBaseType);
 
 		LPRDOTypeParam pType;
-		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, rdoParse::RDOValue(pBaseType, RDOParserSrcInfo(@1)), RDOParserSrcInfo(@1));
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2985,7 +2968,7 @@ type_declaration
 		ASSERT(pArray);
 
 		LPRDOTypeParam pType;
-		pType = rdo::Factory<RDOTypeParam>::create(pArray, rdoParse::RDOValue(pArray, RDOParserSrcInfo(@1)), RDOParserSrcInfo(@1));
+		pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2999,7 +2982,7 @@ type_declaration
 		ASSERT(pBaseType);
 
 		LPRDOTypeParam pType;
-		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, rdoParse::RDOValue(pBaseType, RDOParserSrcInfo(@1)), RDOParserSrcInfo(@1));
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -3014,7 +2997,7 @@ type_declaration
 		ASSERT(pEnum);
 
 		LPRDOTypeParam pType;
-		pType = rdo::Factory<RDOTypeParam>::create(pEnum, rdoParse::RDOValue(pEnum, RDOParserSrcInfo(@1)), RDOParserSrcInfo(@1));
+		pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -3028,7 +3011,7 @@ type_declaration
 		ASSERT(pTypeSuchAs);
 
 		LPRDOTypeParam pType;
-		pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), rdoParse::RDOValue(pTypeSuchAs->type(), RDOParserSrcInfo(@1)), RDOParserSrcInfo(@1));
+		pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
