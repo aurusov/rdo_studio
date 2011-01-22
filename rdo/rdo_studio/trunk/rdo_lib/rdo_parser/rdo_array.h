@@ -31,18 +31,13 @@ friend class RDOArrayValue;
 public:
 	rdoRuntime::LPRDOArrayType getArray() const
 	{
-		return m_pType.object_static_cast<rdoRuntime::RDOArrayType>();
+		return m_pType->type().object_static_cast<rdoRuntime::RDOArrayType>();
 	}
 	CREF(LPRDOType) getItemType() const;
 
 private:
 	RDOArrayType         (CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOArrayType();
-
-	PTR(rdoRuntime::RDOArrayType) __array() const 
-	{ 
-		return static_cast<PTR(rdoRuntime::RDOArrayType)>(const_cast<PTR(rdoRuntime::RDOType)>(m_type));
-	}
 
 	LPRDOType m_pType;
 
