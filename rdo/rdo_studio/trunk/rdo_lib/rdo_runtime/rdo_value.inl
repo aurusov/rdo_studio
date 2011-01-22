@@ -49,10 +49,10 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 		case RDOType::t_bool          : m_value.b_value = false; break;
 		case RDOType::t_string        : m_value.s_value = new smart_string(new string_class(_T(""))); break;
 		case RDOType::t_identificator : m_value.s_value = new smart_string(new string_class(_T(""))); break;
-		case RDOType::t_array         : m_value.p_data = new PTR(void); break;
-		case RDOType::t_arrayIterator : m_value.p_data = new PTR(void); break;
-		case RDOType::t_matrix        : m_value.p_data = new PTR(void); break;
-		case RDOType::t_matrixIterator: m_value.p_data = new PTR(void); break;
+		case RDOType::t_array         : m_value.p_data  = new RDOArrayValue(pType.object_static_cast<RDOArrayType>()); break;
+		case RDOType::t_arrayIterator : m_value.p_data  = new PTR(void); break;
+		case RDOType::t_matrix        : m_value.p_data  = new PTR(void); break;
+		case RDOType::t_matrixIterator: m_value.p_data  = new PTR(void); break;
 		default                       : throw RDOValueException();
 	}
 }
