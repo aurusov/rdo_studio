@@ -51,7 +51,7 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 {
 	ASSERT(pVariable);
 
-	STL_FOR_ALL_CONST(VariableList, m_variableList, it)
+	STL_FOR_ALL_CONST(m_variableList, it)
 	{
 		if ((*it)->getValue()->getIdentificator() == pVariable->getValue()->getIdentificator())
 		{
@@ -66,7 +66,7 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 
 LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) paramName) const
 {
-	STL_FOR_ALL_CONST(VariableList, m_variableList, LocalVariable_it)
+	STL_FOR_ALL_CONST(m_variableList, LocalVariable_it)
 	{
 		if((*LocalVariable_it)->getValue()->getIdentificator() == paramName)
 			return (*LocalVariable_it);
