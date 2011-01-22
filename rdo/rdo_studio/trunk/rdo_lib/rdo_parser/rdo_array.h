@@ -26,20 +26,15 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOArrayType: public RDOType, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
-friend class RDOArrayValue;
-
 public:
-	rdoRuntime::LPRDOArrayType getArray() const
-	{
-		return m_pType->type().object_static_cast<rdoRuntime::RDOArrayType>();
-	}
-	CREF(LPRDOType) getItemType() const;
+	CREF(LPRDOType)            getItemType        () const;
+	rdoRuntime::LPRDOArrayType getRuntimeArrayType() const;
 
 private:
-	RDOArrayType         (CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
+	RDOArrayType         (CREF(LPRDOType) pItemType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOArrayType();
 
-	LPRDOType m_pType;
+	LPRDOType m_pItemType;
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
@@ -49,25 +44,24 @@ DECLARE_POINTER(RDOArrayType)
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-class RDOArrayValue: public rdo::counter_reference
+OBJECT(RDOArrayValue)
 {
-	DECLARE_FACTORY(RDOArrayValue);
+DECLARE_FACTORY(RDOArrayValue);
 public:
-	RDOArrayValue         (LPRDOArrayType pArrayType);
+	void insertItem(CREF(RDOValue) value);
 
-	void insertItem(CREF(RDOValue)     value);
 	CREF(LPRDOArrayType) getArrayType() const;
 	rdoRuntime::RDOValue getRArray   () const;
 
 private:
-	typedef std::vector<RDOValue> Container;
-
+	RDOArrayValue(CREF(LPRDOArrayType) pArrayType);
 	virtual ~RDOArrayValue();
 
-	Container          m_Container;
-	LPRDOArrayType     m_arrayType;
+	typedef std::vector<RDOValue> Container;
+
+	Container      m_Container;
+	LPRDOArrayType m_pArrayType;
 };
-DECLARE_POINTER(RDOArrayValue);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

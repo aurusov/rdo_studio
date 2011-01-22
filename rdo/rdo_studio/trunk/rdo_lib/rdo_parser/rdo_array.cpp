@@ -22,15 +22,15 @@ OPEN_RDO_PARSER_NAMESPACE
  //----------------------------------------------------------------------------
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info)
+RDOArrayType::RDOArrayType(CREF(LPRDOType) pItemType, CREF(RDOParserSrcInfo) src_info)
 	: RDOType          (rdoRuntime::g_unknow)
 	, RDOParserSrcInfo (src_info            )
-	, m_pType          (pType               )
+	, m_pItemType      (pItemType           )
 {
-	ASSERT(pType);
+	ASSERT(pItemType);
 	setSrcText(name());
-	//m_pType = rdo::Factory<rdoRuntime::RDOArrayType>::create(pType);
-	//ASSERT(m_pType);
+	m_pType = rdo::Factory<rdoRuntime::RDOArrayType>::create(pItemType->type());
+	ASSERT(m_pType);
 }
 
 RDOArrayType::~RDOArrayType()
@@ -38,7 +38,7 @@ RDOArrayType::~RDOArrayType()
 
 inline tstring RDOArrayType::name() const
 {
-	return rdo::format(_T("array<%s>"), m_pType->name().c_str());
+	return rdo::format(_T("array<%s>"), m_pItemType->name().c_str());
 }
 
 LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -101,7 +101,7 @@ rdoRuntime::LPRDOCalc RDOArrayType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc,
 RDOValue RDOArrayType::get_default() const
 {
 	LPRDOArrayType pArrayType(const_cast<PTR(RDOArrayType)>(this));
-	return RDOValue(rdoRuntime::RDOArrayValue(getArray()), pArrayType, RDOParserSrcInfo());
+	return RDOValue(rdoRuntime::RDOArrayValue(getRuntimeArrayType()), pArrayType, RDOParserSrcInfo());
 }
 
 void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
@@ -112,14 +112,19 @@ void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
 
 CREF(LPRDOType) RDOArrayType::getItemType() const
 {
-	return m_pType;
+	return m_pItemType;
+}
+
+rdoRuntime::LPRDOArrayType RDOArrayType::getRuntimeArrayType() const
+{
+	return m_pType.object_static_cast<rdoRuntime::RDOArrayType>();
 }
 
 //----------------------------------------------------------------------------
 //---------- RDOArrayValue
 //----------------------------------------------------------------------------
-RDOArrayValue::RDOArrayValue(LPRDOArrayType pArrayType)
-	: m_arrayType(pArrayType)
+RDOArrayValue::RDOArrayValue(CREF(LPRDOArrayType) pArrayType)
+	: m_pArrayType(pArrayType)
 {}
 
 RDOArrayValue::~RDOArrayValue()
@@ -127,19 +132,19 @@ RDOArrayValue::~RDOArrayValue()
 
 void RDOArrayValue::insertItem(CREF(RDOValue) value)
 {
-	m_arrayType->getItemType()->type_cast(value.type(), value.src_info(), m_arrayType->src_info(), value.src_info());
-	RDOValue ItemValue = m_arrayType->getItemType()->value_cast(value, m_arrayType->src_info(), value.src_info());
+	m_pArrayType->getItemType()->type_cast(value.type(), value.src_info(), m_pArrayType->src_info(), value.src_info());
+	RDOValue ItemValue = m_pArrayType->getItemType()->value_cast(value, m_pArrayType->src_info(), value.src_info());
 	m_Container.push_back(ItemValue);
 }
 
 CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
 {
-	return m_arrayType;
+	return m_pArrayType;
 }
 
 rdoRuntime::RDOValue RDOArrayValue::getRArray() const
 {
-	rdoRuntime::RDOArrayValue arrayValue(m_arrayType->getArray());
+	rdoRuntime::RDOArrayValue arrayValue(m_pArrayType->getRuntimeArrayType());
 	STL_FOR_ALL_CONST(m_Container, it)
 	{
 		arrayValue.insertItem(it->value());
