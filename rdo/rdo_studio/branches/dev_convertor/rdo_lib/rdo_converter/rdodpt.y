@@ -232,6 +232,16 @@ dpt_main
 	| dpt_main dpt_prior_end
 	| dpt_main dpt_free_end
 	| dpt_main dpt_process_end
+	{
+		rdoConverter::LPDocUpdate pProcessMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+			@2.m_first_seek,
+			@2.m_last_seek,
+			0,
+			rdoModelObjectsConvertor::PRC_OUT
+		);
+		ASSERT(pProcessMove);
+		CONVERTER->insertDocUpdate(pProcessMove);
+	}
 	| error
 	{
 		CONVERTER->error().error(@1, _T("Ожидается описание точки или свободного блока активностей"));
