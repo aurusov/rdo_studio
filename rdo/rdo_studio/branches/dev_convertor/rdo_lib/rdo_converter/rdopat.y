@@ -225,6 +225,25 @@ OPEN_RDO_CONVERTER_NAMESPACE
 pat_main
 	: /* empty */
 	| pat_main pat_pattern
+	{
+		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($2);
+		ASSERT(pPattern);
+		switch (pPattern->getType())
+		{
+			case RDOPATPattern::PT_IE:
+			{
+				rdoConverter::LPDocUpdate pEventMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+					@2.m_first_seek,
+					@2.m_last_seek,
+					0,
+					rdoModelObjectsConvertor::EVN_OUT
+				);
+				ASSERT(pEventMove);
+				CONVERTER->insertDocUpdate(pEventMove);
+			}
+		}
+		CONVERTER->stack().push(pPattern);
+	}
 	| error
 	{
 		CONVERTER->error().error(@1, _T("Неизвестная ошибка"));
