@@ -21,15 +21,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
-class RDOEnumType;
 class RDOFuzzyValue;
 class RDOArrayValue;
 class RDOArrayIterator;
 class RDOMatrixValue;
 class RDOMatrixIterator;
-PREDECLARE_POINTER(RDOEnumType  );
-PREDECLARE_POINTER(RDOFuzzyValue);
-PREDECLARE_POINTER(RDOArrayValue);
+PREDECLARE_POINTER(RDOEnumType);
 
 class RDOValue
 {
@@ -98,10 +95,10 @@ public:
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
-	RDOValue  begin();
-	RDOValue  end();
+	RDOValue  begin ();
+	RDOValue  end   ();
 	void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
-	void      erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
+	void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
 
 private:
 	LPRDOType m_pType;
