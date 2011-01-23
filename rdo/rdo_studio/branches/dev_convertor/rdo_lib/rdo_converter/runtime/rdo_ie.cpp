@@ -21,13 +21,6 @@ double RDOPatternIrregEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
 	return 0;
 }
 
-void RDOPatternIrregEvent::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName)
-{
-	//LPIIrregEvent ie = F(RDOIrregEvent)::create(runtime, this, traceable(), oprName);
-	//runtime->addRuntimeIE(parent, ie);
-	//return ie;
-}
-
 // ----------------------------------------------------------------------------
 // ---------- RDOIrregEvent
 // ----------------------------------------------------------------------------
@@ -36,7 +29,6 @@ RDOIrregEvent::RDOIrregEvent( RDORuntime* runtime, RDOPatternIrregEvent* pattern
 {
 	setTrace( trace );
 	setTraceID( ~0 );
-//	setTraceID( runtime->getFreeIrregEventId() );
 }
 
 void RDOIrregEvent::onStart( RDOSimulator* sim )
@@ -71,21 +63,17 @@ void RDOIrregEvent::onMakePlaned( RDOSimulator* sim, void* param )
 
 void RDOIrregEvent::convertEvent( RDOSimulator* sim ) 
 { 
-	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
-	m_pattern->convertEvent( static_cast<RDORuntime*>(sim) ); 
+	NEVER_REACH_HERE;
 }
 
 void RDOIrregEvent::onBeforeIrregularEvent( RDOSimulator* sim )
 {
-	setPatternParameters( sim );
+	NEVER_REACH_HERE;
 }
 
 void RDOIrregEvent::onAfterIrregularEvent( RDOSimulator* sim )
 {
-	updateConvertStatus( sim, m_pattern->m_convertorStatus );
-//	static_cast<RDOSimulatorTrace*>(sim)->getTracer()->writeIrregularEvent( this, static_cast<RDOSimulatorTrace*>(sim) );
-	m_pattern->convertErase( static_cast<RDORuntime*>(sim) );
-	updateRelRes( sim );
+	NEVER_REACH_HERE;
 }
 
 double RDOIrregEvent::getNextTimeInterval( RDOSimulator* sim ) 

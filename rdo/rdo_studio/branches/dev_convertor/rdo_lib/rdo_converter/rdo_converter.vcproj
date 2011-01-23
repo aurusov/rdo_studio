@@ -2662,10 +2662,6 @@
 				RelativePath=".\runtime\rdo_ie.h"
 				>
 			</File>
-			<File
-				RelativePath=".\runtime\rdo_ie_interface.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

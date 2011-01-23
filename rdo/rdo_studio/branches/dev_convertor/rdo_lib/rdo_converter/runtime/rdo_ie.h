@@ -5,7 +5,6 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
-#include "rdo_lib/rdo_converter/runtime/rdo_ie_interface.h"
 
 namespace rdoRuntime {
 
@@ -36,8 +35,6 @@ public:
 
 	double getNextTimeInterval( PTR(RDORuntime) runtime );
 
-	void createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
-
 private:
 	LPRDOCalc         m_timeCalc;
 	CalcList          m_convertor;
@@ -48,14 +45,13 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOIrregEvent
 // ----------------------------------------------------------------------------
-class RDOIrregEvent: public IBaseOperation, public IIrregEvent, public RDOActivityPattern<RDOPatternIrregEvent>
+class RDOIrregEvent: public IBaseOperation, public RDOActivityPattern<RDOPatternIrregEvent>
 {
 typedef RDOActivityPattern<RDOPatternIrregEvent> pattern_type;
 DEFINE_IFACTORY(RDOIrregEvent);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(pattern_type)
 	QUERY_INTERFACE(IBaseOperation)
-//	QUERY_INTERFACE(IIrregEvent)
 QUERY_INTERFACE_END
 
 friend class RDOTrace;
@@ -72,7 +68,6 @@ private:
 	virtual void onAfterIrregularEvent( RDOSimulator* sim );
 
 	DECLARE_IBaseOperation;
-	DECLARE_IIrregEvent;
 };
 
 } // namespace rdoRuntime
