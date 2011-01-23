@@ -21,15 +21,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
-class RDOEnumType;
 class RDOFuzzyValue;
 class RDOArrayValue;
 class RDOArrayIterator;
 class RDOMatrixValue;
 class RDOMatrixIterator;
-PREDECLARE_POINTER(RDOEnumType  );
-PREDECLARE_POINTER(RDOFuzzyValue);
-PREDECLARE_POINTER(RDOArrayValue);
+PREDECLARE_POINTER(RDOEnumType);
 
 class RDOValue
 {
