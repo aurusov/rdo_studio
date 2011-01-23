@@ -98,10 +98,10 @@ public:
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
-	RDOValue  begin();
-	RDOValue  end();
+	RDOValue  begin ();
+	RDOValue  end   ();
 	void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
-	void      erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
+	void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
 
 private:
 	LPRDOType m_pType;
