@@ -171,9 +171,9 @@ inline void RDOValue::deleteValue()
 		delete &__fuzzyV();
 		break;
 
-	//case RDOType::t_array:
-	//	delete &__arrayV();
-	//	break;
+	case RDOType::t_array:
+		delete &__arrayV();
+		break;
 
 	case RDOType::t_arrayIterator:
 		delete &__arrayItr();
@@ -841,6 +841,56 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 	return value2;
 }
 
+inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : return __arrayV ()[rdovalue];
+	case RDOType::t_matrix: return __matrixV()[rdovalue];
+	}
+	throw RDOValueException();
+}
+
+inline RDOValue RDOValue::begin()
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : return RDOValue(RDOArrayIterator (__arrayV ().containerBegin()));
+	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerBegin()));
+	}
+	throw RDOValueException();	
+}
+
+inline RDOValue RDOValue::end()
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : return RDOValue(RDOArrayIterator ( __arrayV().containerEnd()));
+	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerEnd()));
+	}
+	throw RDOValueException();
+}
+
+inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : __arrayV ().insertItems(itr.__arrayItr( ).getIterator(), itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); break;
+	case RDOType::t_matrix: __matrixV().insertItems(itr.__matrixItr().getIterator(), itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); break;
+	}
+	throw RDOValueException();	
+}
+
+inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : __arrayV ().eraseItems(itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); break;
+	case RDOType::t_matrix: __matrixV().eraseItems(itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); break;
+	}
+	throw RDOValueException();
+}
+
 inline CREF(LPRDOType) RDOValue::type() const
 {
 	return m_pType;
@@ -878,7 +928,7 @@ inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
 
 inline REF(RDOArrayValue) RDOValue::__arrayV()
 {
-	return *static_cast<RDOArrayValue*>(m_value.p_data);
+	return *static_cast<PTR(RDOArrayValue)>(m_value.p_data);
 }
 
 inline CREF(RDOArrayValue) RDOValue::__arrayV() const
