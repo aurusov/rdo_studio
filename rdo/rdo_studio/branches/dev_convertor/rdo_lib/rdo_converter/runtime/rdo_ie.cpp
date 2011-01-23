@@ -1,90 +1,105 @@
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdo_ie.h
+ * author   : 
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_converter/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/runtime/rdo_ie.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternIrregEvent
 // ----------------------------------------------------------------------------
-RDOPatternIrregEvent::RDOPatternIrregEvent( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace ),
-	m_timeCalc( NULL )
-{
-}
+RDOPatternIrregEvent::RDOPatternIrregEvent(PTR(RDORuntime) rTime, rbool trace)
+	: RDOPattern(rTime, trace)
+	, m_timeCalc(NULL        )
+{}
 
-double RDOPatternIrregEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
+double RDOPatternIrregEvent::getNextTimeInterval(PTR(RDORuntime) pRuntime)
 {
-	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
-	if ( time_next >= 0 ) return time_next;
-	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), m_timeCalc );
+	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
+	if (time_next >= 0)
+	{
+		return time_next;
+	}
+	pRuntime->error(rdo::format(_T("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f"), time_next), m_timeCalc);
 	return 0;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOIrregEvent
 // ----------------------------------------------------------------------------
-RDOIrregEvent::RDOIrregEvent( RDORuntime* runtime, RDOPatternIrregEvent* pattern, bool trace, const std::string& name ):
-	RDOActivityPattern<RDOPatternIrregEvent>( runtime, pattern, trace, name )
+RDOIrregEvent::RDOIrregEvent(PTR(RDORuntime) pRuntime, PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name)
+	: RDOActivityPattern<RDOPatternIrregEvent>(pRuntime, pPattern, trace, name)
 {
-	setTrace( trace );
-	setTraceID( ~0 );
+	setTrace  (trace);
+	setTraceID(~0   );
 }
 
-void RDOIrregEvent::onStart( RDOSimulator* sim )
+void RDOIrregEvent::onStart(PTR(RDOSimulator) pSimulator)
 {
-	onBeforeIrregularEvent( sim );
-	sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
+	onBeforeIrregularEvent(pSimulator);
+	pSimulator->addTimePoint(getNextTimeInterval(pSimulator) + pSimulator->getCurrentTime(), this);
 }
 
-void RDOIrregEvent::onStop( RDOSimulator* sim )
+void RDOIrregEvent::onStop(PTR(RDOSimulator) pSimulator)
 {
-	sim->removeTimePoint( this );
+	pSimulator->removeTimePoint(this);
 }
 
-bool RDOIrregEvent::onCheckCondition(RDOSimulator *sim)
+rbool RDOIrregEvent::onCheckCondition(PTR(RDOSimulator) pSimulator)
 {
 	return false;
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOIrregEvent::onDoOperation(PTR(RDOSimulator) pSimulator)
 {
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOIrregEvent::onMakePlaned( RDOSimulator* sim, void* param )
+void RDOIrregEvent::onMakePlaned(PTR(RDOSimulator) pSimulator, PTR(void) pParam)
 {
-	sim->inc_cnt_events();
-	onBeforeIrregularEvent( sim );
-	convertEvent( sim );
-	sim->addTimePoint( getNextTimeInterval(sim) + sim->getCurrentTime(), this );
-	onAfterIrregularEvent( sim );
+	pSimulator->inc_cnt_events();
+	onBeforeIrregularEvent(pSimulator);
+	convertEvent(pSimulator);
+	pSimulator->addTimePoint(getNextTimeInterval(pSimulator) + pSimulator->getCurrentTime(), this);
+	onAfterIrregularEvent(pSimulator);
 }
 
-void RDOIrregEvent::convertEvent( RDOSimulator* sim ) 
+void RDOIrregEvent::convertEvent(PTR(RDOSimulator) pSimulator) 
 { 
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onBeforeIrregularEvent( RDOSimulator* sim )
+void RDOIrregEvent::onBeforeIrregularEvent(PTR(RDOSimulator) pSimulator)
 {
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onAfterIrregularEvent( RDOSimulator* sim )
+void RDOIrregEvent::onAfterIrregularEvent(PTR(RDOSimulator) pSimulator)
 {
 	NEVER_REACH_HERE;
 }
 
-double RDOIrregEvent::getNextTimeInterval( RDOSimulator* sim ) 
+double RDOIrregEvent::getNextTimeInterval(PTR(RDOSimulator) pSimulator) 
 { 
-	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
-	return m_pattern->getNextTimeInterval( static_cast<RDORuntime*>(sim) ); 
+	static_cast<PTR(RDORuntime)>(pSimulator)->setCurrentActivity(this);
+	return m_pattern->getNextTimeInterval(static_cast<PTR(RDORuntime)>(pSimulator)); 
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onContinue(PTR(rdoRuntime::RDOSimulator) sim)
+IBaseOperation::BOResult RDOIrregEvent::onContinue(PTR(rdoRuntime::RDOSimulator) pSimulator)
 {
 	return IBaseOperation::BOR_cant_run;
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
