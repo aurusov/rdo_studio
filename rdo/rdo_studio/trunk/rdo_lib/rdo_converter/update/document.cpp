@@ -40,16 +40,16 @@ void Document::init(rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstr
 	Type typeOut;
 	switch (type)
 	{
-	case rdoModelObjectsConvertor::PAT_IN: typeOut = rdoModelObjectsConvertor::PAT_OUT; break;
-	case rdoModelObjectsConvertor::RTP_IN: typeOut = rdoModelObjectsConvertor::RTP_OUT; break;
-	case rdoModelObjectsConvertor::RSS_IN: typeOut = rdoModelObjectsConvertor::RSS_OUT; break;
-	case rdoModelObjectsConvertor::OPR_IN: typeOut = rdoModelObjectsConvertor::OPR_OUT; break;
-	case rdoModelObjectsConvertor::FRM_IN: typeOut = rdoModelObjectsConvertor::FRM_OUT; break;
-	case rdoModelObjectsConvertor::FUN_IN: typeOut = rdoModelObjectsConvertor::FUN_OUT; break;
-	case rdoModelObjectsConvertor::DPT_IN: typeOut = rdoModelObjectsConvertor::DPT_OUT; break;
-	case rdoModelObjectsConvertor::SMR_IN: typeOut = rdoModelObjectsConvertor::SMR_OUT; break;
-	case rdoModelObjectsConvertor::PMD_IN: typeOut = rdoModelObjectsConvertor::PMD_OUT; break;
-	case rdoModelObjectsConvertor::PMV_IN: typeOut = rdoModelObjectsConvertor::PMV_OUT; break;
+	case rdoModelObjectsConvertor::PAT_IN: typeOut = PAT; break;
+	case rdoModelObjectsConvertor::RTP_IN: typeOut = RTP; break;
+	case rdoModelObjectsConvertor::RSS_IN: typeOut = RSS; break;
+	case rdoModelObjectsConvertor::OPR_IN: typeOut = OPR; break;
+	case rdoModelObjectsConvertor::FRM_IN: typeOut = FRM; break;
+	case rdoModelObjectsConvertor::FUN_IN: typeOut = FUN; break;
+	case rdoModelObjectsConvertor::DPT_IN: typeOut = DPT; break;
+	case rdoModelObjectsConvertor::SMR_IN: typeOut = SMR; break;
+	case rdoModelObjectsConvertor::PMD_IN: typeOut = PMD; break;
+	case rdoModelObjectsConvertor::PMV_IN: typeOut = PMV; break;
 	default: NEVER_REACH_HERE;
 	}
 	LPMemoryStream streamOut = getMemoryStream(typeOut);
@@ -102,27 +102,57 @@ void Document::convert()
 	}
 }
 
-void Document::close()
+Document::TypeOut Document::typeToOut(CREF(Type) typeIn) const
 {
-	STL_FOR_ALL_CONST(m_fileList, it)
+	switch (typeIn)
 	{
-		it->second.m_pMemoryStream->get(*it->second.m_pFileStream.get());
-		it->second.m_pFileStream->close();
+	case PAT: return rdoModelObjectsConvertor::PAT_OUT;
+	case RTP: return rdoModelObjectsConvertor::RTP_OUT;
+	case RSS: return rdoModelObjectsConvertor::RSS_OUT;
+	case FRM: return rdoModelObjectsConvertor::FRM_OUT;
+	case FUN: return rdoModelObjectsConvertor::FUN_OUT;
+	case DPT: return rdoModelObjectsConvertor::DPT_OUT;
+	case SMR: return rdoModelObjectsConvertor::SMR_OUT;
+	case PMD: return rdoModelObjectsConvertor::PMD_OUT;
+	case PMV: return rdoModelObjectsConvertor::PMV_OUT;
+	case TRC: return rdoModelObjectsConvertor::TRC_OUT;
+	case EVN: return rdoModelObjectsConvertor::EVN_OUT;
+	case PRC: return rdoModelObjectsConvertor::PRC_OUT;
 	}
-	m_fileList.clear();
+	return rdoModelObjectsConvertor::UNDEFINED_OUT;
 }
 
-tstring Document::getName(Type type) const
+void Document::close()
+{
+	STL_FOR_ALL_CONST(m_memoryFileList, memoryIt)
+	{
+		TypeOut typeOut = typeToOut(memoryIt->first);
+		if (typeOut != rdoModelObjectsConvertor::UNDEFINED_OUT)
+		{
+			LPFileStream pFileStream = getFileStream(typeOut);
+			ASSERT(pFileStream);
+			memoryIt->second->get(*pFileStream.get());
+		}
+	}
+	m_memoryFileList.clear();
+
+	STL_FOR_ALL_CONST(m_streamFileList, fileIt)
+	{
+		fileIt->second->close();
+	}
+	m_streamFileList.clear();
+}
+
+tstring Document::getName(TypeOut typeOut) const
 {
 	tstring extention;
-	switch (type)
+	switch (typeOut)
 	{
 	case rdoModelObjectsConvertor::PAT_OUT: extention = _T("pat"); break;
 	case rdoModelObjectsConvertor::RTP_OUT: extention = _T("rtp"); break;
 	case rdoModelObjectsConvertor::RSS_OUT: extention = _T("rss"); break;
 	case rdoModelObjectsConvertor::FRM_OUT: extention = _T("frm"); break;
 	case rdoModelObjectsConvertor::FUN_OUT: extention = _T("fun"); break;
-	case rdoModelObjectsConvertor::OPR_OUT: extention = _T("pat"); break;
 	case rdoModelObjectsConvertor::DPT_OUT: extention = _T("dpt"); break;
 	case rdoModelObjectsConvertor::SMR_OUT: extention = _T("smr"); break;
 	case rdoModelObjectsConvertor::PMD_OUT: extention = _T("pmd"); break;
@@ -136,29 +166,30 @@ tstring Document::getName(Type type) const
 	return rdo::format(_T("%s%s.%s"), m_filePath.c_str(), m_modelName.c_str(), extention.c_str());
 }
 
-REF(Document::TypeItem) Document::getItem(Type type)
+Document::LPMemoryStream Document::getMemoryStream(Type type)
 {
-	BOOST_AUTO(it, m_fileList.find(type));
-	if (it == m_fileList.end())
+	BOOST_AUTO(it, m_memoryFileList.find(type));
+	if (it == m_memoryFileList.end())
 	{
-		TypeItem item;
-		item.m_pFileStream   = LPFileStream  (new std::ofstream(getName(type).c_str(), std::ios::trunc | std::ios::binary));
-		item.m_pMemoryStream = LPMemoryStream(new MemoryStream());
-		std::pair<FileList::iterator, rbool> result = m_fileList.insert(FileList::value_type(type, item));
+		LPMemoryStream pMemoryStream = LPMemoryStream(new MemoryStream());
+		std::pair<MemoryFileList::iterator, rbool> result = m_memoryFileList.insert(MemoryFileList::value_type(type, pMemoryStream));
 		ASSERT(result.second);
 		it = result.first;
 	}
 	return it->second;
 }
 
-Document::LPFileStream Document::getFileStream(Type type)
+Document::LPFileStream Document::getFileStream(TypeOut type)
 {
-	return getItem(type).m_pFileStream;
-}
-
-Document::LPMemoryStream Document::getMemoryStream(Type type)
-{
-	return getItem(type).m_pMemoryStream;
+	BOOST_AUTO(it, m_streamFileList.find(type));
+	if (it == m_streamFileList.end())
+	{
+		LPFileStream pFileStream = LPFileStream(new std::ofstream(getName(type).c_str(), std::ios::trunc | std::ios::binary));
+		std::pair<StreamFileList::iterator, rbool> result = m_streamFileList.insert(StreamFileList::value_type(type, pFileStream));
+		ASSERT(result.second);
+		it = result.first;
+	}
+	return it->second;
 }
 
 void Document::insert(Type type, ruint to, CREF(tstring) value)

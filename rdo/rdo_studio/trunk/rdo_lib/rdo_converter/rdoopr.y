@@ -220,7 +220,7 @@ opr_main
 			@1.m_first_seek,
 			@1.m_last_seek,
 			0,
-			rdoModelObjectsConvertor::DPT_OUT
+			rdoConverter::IDocument::DPT
 		);
 		ASSERT(pOperationsMove);
 		CONVERTER->insertDocUpdate(pOperationsMove);

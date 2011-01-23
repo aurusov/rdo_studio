@@ -2651,6 +2651,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".runtime"
+			>
+			<File
+				RelativePath=".\runtime\rdo_ie.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\runtime\rdo_ie.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

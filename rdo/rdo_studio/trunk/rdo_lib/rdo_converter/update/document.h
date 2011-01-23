@@ -33,12 +33,14 @@ OBJECT(Document)
 {
 DECLARE_FACTORY(Document)
 public:
+	typedef rdoModelObjectsConvertor::RDOFileTypeOut TypeOut;
+
 	void    create      (CREF(tstring) filePath, CREF(tstring) modelName);
 	void    init        (rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstream) stream);
 	void    insertUpdate(CREF(LPDocUpdate) pUpdate);
 	void    convert     ();
 	void    close       ();
-	tstring getName     (Type type) const;
+	tstring getName     (TypeOut typeOut) const;
 
 private:
 	 Document();
@@ -61,27 +63,24 @@ private:
 		Buffer m_buffer;
 	};
 
-	typedef boost::shared_ptr<std::ofstream> LPFileStream;
 	typedef boost::shared_ptr<MemoryStream>  LPMemoryStream;
-
-	struct TypeItem
-	{
-		LPFileStream   m_pFileStream;
-		LPMemoryStream m_pMemoryStream;
-	};
-	typedef std::map<Type, TypeItem> FileList;
+	typedef boost::shared_ptr<std::ofstream> LPFileStream;
+	typedef std::map<Type, LPMemoryStream>   MemoryFileList;
+	typedef std::map<TypeOut, LPFileStream>  StreamFileList;
 
 	typedef std::pair<LPDocUpdate, rbool> Update;
 	typedef std::list<Update>             UpdateContainer;
 
 	tstring         m_filePath;
 	tstring         m_modelName;
-	FileList        m_fileList;
+	MemoryFileList  m_memoryFileList;
+	StreamFileList  m_streamFileList;
 	UpdateContainer m_updateContainer;
 
-	REF(TypeItem)  getItem        (Type type);
-	LPFileStream   getFileStream  (Type type);
-	LPMemoryStream getMemoryStream(Type type);
+	LPMemoryStream getMemoryStream(Type    type);
+	LPFileStream   getFileStream  (TypeOut type);
+
+	TypeOut typeToOut(CREF(Type) typeIn) const;
 
 	DECLARE_IDocument;
 };

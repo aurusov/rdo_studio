@@ -236,7 +236,7 @@ pat_main
 					@2.m_first_seek,
 					@2.m_last_seek,
 					0,
-					rdoModelObjectsConvertor::EVN_OUT
+					rdoConverter::IDocument::EVN
 				);
 				ASSERT(pEventMove);
 				CONVERTER->insertDocUpdate(pEventMove);

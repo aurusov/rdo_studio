@@ -40,7 +40,7 @@ public:
 OBJECT(DocUpdate) IS IMPLEMENTATION_OF(IDocUpdate)
 {
 protected:
-	DocUpdate(IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	DocUpdate(IDocument::Type file = IDocument::UNDEFINED);
 
 	IDocument::Type m_file;
 
