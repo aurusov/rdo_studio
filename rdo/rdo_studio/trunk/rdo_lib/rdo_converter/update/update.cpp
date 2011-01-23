@@ -36,7 +36,7 @@ IDocument::Type DocUpdate::getCurrentType() const
 	case rdoModelObjectsConvertor::PAT_IN: return rdoModelObjectsConvertor::PAT_OUT;
 	case rdoModelObjectsConvertor::RTP_IN: return rdoModelObjectsConvertor::RTP_OUT;
 	case rdoModelObjectsConvertor::RSS_IN: return rdoModelObjectsConvertor::RSS_OUT;
-	case rdoModelObjectsConvertor::OPR_IN: NEVER_REACH_HERE;
+	case rdoModelObjectsConvertor::OPR_IN: return rdoModelObjectsConvertor::OPR_OUT;
 	case rdoModelObjectsConvertor::FRM_IN: return rdoModelObjectsConvertor::FRM_OUT;
 	case rdoModelObjectsConvertor::FUN_IN: return rdoModelObjectsConvertor::FUN_OUT;
 	case rdoModelObjectsConvertor::DPT_IN: return rdoModelObjectsConvertor::DPT_OUT;

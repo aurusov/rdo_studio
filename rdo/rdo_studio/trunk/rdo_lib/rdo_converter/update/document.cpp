@@ -43,7 +43,7 @@ void Document::init(rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstr
 	case rdoModelObjectsConvertor::PAT_IN: typeOut = rdoModelObjectsConvertor::PAT_OUT; break;
 	case rdoModelObjectsConvertor::RTP_IN: typeOut = rdoModelObjectsConvertor::RTP_OUT; break;
 	case rdoModelObjectsConvertor::RSS_IN: typeOut = rdoModelObjectsConvertor::RSS_OUT; break;
-	case rdoModelObjectsConvertor::OPR_IN: return;
+	case rdoModelObjectsConvertor::OPR_IN: typeOut = rdoModelObjectsConvertor::OPR_OUT; break;
 	case rdoModelObjectsConvertor::FRM_IN: typeOut = rdoModelObjectsConvertor::FRM_OUT; break;
 	case rdoModelObjectsConvertor::FUN_IN: typeOut = rdoModelObjectsConvertor::FUN_OUT; break;
 	case rdoModelObjectsConvertor::DPT_IN: typeOut = rdoModelObjectsConvertor::DPT_OUT; break;
@@ -122,12 +122,13 @@ tstring Document::getName(Type type) const
 	case rdoModelObjectsConvertor::RSS_OUT: extention = _T("rss"); break;
 	case rdoModelObjectsConvertor::FRM_OUT: extention = _T("frm"); break;
 	case rdoModelObjectsConvertor::FUN_OUT: extention = _T("fun"); break;
+	case rdoModelObjectsConvertor::OPR_OUT: extention = _T("pat"); break;
 	case rdoModelObjectsConvertor::DPT_OUT: extention = _T("dpt"); break;
 	case rdoModelObjectsConvertor::SMR_OUT: extention = _T("smr"); break;
 	case rdoModelObjectsConvertor::PMD_OUT: extention = _T("pmd"); break;
 	case rdoModelObjectsConvertor::PMV_OUT: extention = _T("pmv"); break;
 	case rdoModelObjectsConvertor::TRC_OUT: extention = _T("trc"); break;
-	case rdoModelObjectsConvertor::ENV_OUT: extention = _T("env"); break;
+	case rdoModelObjectsConvertor::EVN_OUT: extention = _T("evn"); break;
 	case rdoModelObjectsConvertor::PRC_OUT: extention = _T("prc"); break;
 	default: NEVER_REACH_HERE;
 	}

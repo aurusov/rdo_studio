@@ -215,6 +215,16 @@ OPEN_RDO_CONVERTER_NAMESPACE
 opr_main
 	: /* empty */
 	| opr_end
+	{
+		rdoConverter::LPDocUpdate pOperationsMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+			@1.m_first_seek,
+			@1.m_last_seek,
+			0,
+			rdoModelObjectsConvertor::DPT_OUT
+		);
+		ASSERT(pOperationsMove);
+		CONVERTER->insertDocUpdate(pOperationsMove);
+	}
 	| error
 	{
 		CONVERTER->error().error(@1, _T("Неизвестная ошибка"));
