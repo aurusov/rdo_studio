@@ -129,9 +129,9 @@ void Document::close()
 		TypeOut typeOut = typeToOut(memoryIt->first);
 		if (typeOut != rdoModelObjectsConvertor::UNDEFINED_OUT)
 		{
-			BOOST_AUTO(file, m_streamFileList.find(typeOut));
-			ASSERT(file != m_streamFileList.end());
-			memoryIt->second->get(*file->second.get());
+			LPFileStream pFileStream = getFileStream(typeOut);
+			ASSERT(pFileStream);
+			memoryIt->second->get(*pFileStream.get());
 		}
 	}
 	m_memoryFileList.clear();
