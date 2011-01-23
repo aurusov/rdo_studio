@@ -23,7 +23,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 DocUpdate::DocUpdate(IDocument::Type file)
 	: m_file(file)
 {
-	if (m_file == rdoModelObjectsConvertor::UNDEFINED_OUT)
+	if (m_file == IDocument::UNDEFINED)
 	{
 		m_file = getCurrentType();
 	}
@@ -33,21 +33,21 @@ IDocument::Type DocUpdate::getCurrentType() const
 {
 	switch (Converter::getFileToParse())
 	{
-	case rdoModelObjectsConvertor::PAT_IN: return rdoModelObjectsConvertor::PAT_OUT;
-	case rdoModelObjectsConvertor::RTP_IN: return rdoModelObjectsConvertor::RTP_OUT;
-	case rdoModelObjectsConvertor::RSS_IN: return rdoModelObjectsConvertor::RSS_OUT;
-	case rdoModelObjectsConvertor::OPR_IN: return rdoModelObjectsConvertor::OPR_OUT;
-	case rdoModelObjectsConvertor::FRM_IN: return rdoModelObjectsConvertor::FRM_OUT;
-	case rdoModelObjectsConvertor::FUN_IN: return rdoModelObjectsConvertor::FUN_OUT;
-	case rdoModelObjectsConvertor::DPT_IN: return rdoModelObjectsConvertor::DPT_OUT;
-	case rdoModelObjectsConvertor::SMR_IN: return rdoModelObjectsConvertor::SMR_OUT;
-	case rdoModelObjectsConvertor::PMD_IN: return rdoModelObjectsConvertor::PMD_OUT;
-	case rdoModelObjectsConvertor::PMV_IN: return rdoModelObjectsConvertor::PMV_OUT;
-	case rdoModelObjectsConvertor::TRC_IN: return rdoModelObjectsConvertor::TRC_OUT;
+	case rdoModelObjectsConvertor::PAT_IN: return IDocument::PAT;
+	case rdoModelObjectsConvertor::RTP_IN: return IDocument::RTP;
+	case rdoModelObjectsConvertor::RSS_IN: return IDocument::RSS;
+	case rdoModelObjectsConvertor::OPR_IN: return IDocument::OPR;
+	case rdoModelObjectsConvertor::FRM_IN: return IDocument::FRM;
+	case rdoModelObjectsConvertor::FUN_IN: return IDocument::FUN;
+	case rdoModelObjectsConvertor::DPT_IN: return IDocument::DPT;
+	case rdoModelObjectsConvertor::SMR_IN: return IDocument::SMR;
+	case rdoModelObjectsConvertor::PMD_IN: return IDocument::PMD;
+	case rdoModelObjectsConvertor::PMV_IN: return IDocument::PMV;
+	case rdoModelObjectsConvertor::TRC_IN: return IDocument::TRC;
 	default: NEVER_REACH_HERE;
 	}
 	NEVER_REACH_HERE;
-	return rdoModelObjectsConvertor::TRC_OUT;
+	return IDocument::TRC;
 }
 
 // ----------------------------------------------------------------------------

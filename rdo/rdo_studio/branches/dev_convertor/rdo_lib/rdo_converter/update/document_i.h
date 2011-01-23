@@ -25,7 +25,13 @@ OPEN_RDO_CONVERTER_NAMESPACE
 OBJECT_INTERFACE(IDocument)
 {
 public:
-	typedef rdoModelObjectsConvertor::RDOFileTypeOut Type;
+	enum Type
+	{
+		UNDEFINED = 0,
+		PAT, RTP, RSS, OPR, FRM,
+		FUN, DPT, SMR, PMD, PMV,
+		TRC, EVN, PRC
+	};
 
 	virtual void    insert(Type type, ruint to, CREF(tstring) value) = 0;
 	virtual void    remove(Type type, ruint from, ruint to)          = 0;

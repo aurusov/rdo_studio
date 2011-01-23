@@ -237,7 +237,7 @@ dpt_main
 			@2.m_first_seek,
 			@2.m_last_seek,
 			0,
-			rdoModelObjectsConvertor::PRC_OUT
+			rdoConverter::IDocument::PRC
 		);
 		ASSERT(pProcessMove);
 		CONVERTER->insertDocUpdate(pProcessMove);

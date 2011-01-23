@@ -27,7 +27,7 @@ CLASS(UpdateInsert): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-	UpdateInsert(ruint pos, CREF(tstring) value, IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	UpdateInsert(ruint pos, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
 
 	ruint    m_pos;
 	tstring  m_value;
@@ -57,7 +57,7 @@ CLASS(UpdateReplace): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateReplace)
 private:
-	UpdateReplace(ruint posFrom, ruint posTo, CREF(tstring) value, IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	UpdateReplace(ruint posFrom, ruint posTo, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
 
 	LPDocUpdate pDelete;
 	LPDocUpdate pInsert;
@@ -75,8 +75,8 @@ private:
 	UpdateMove(ruint           posFromBegin,
 	           ruint           posFromEnd,
 	           ruint           posTo,
-	           IDocument::Type fileTo   = rdoModelObjectsConvertor::UNDEFINED_OUT,
-	           IDocument::Type fileFrom = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	           IDocument::Type fileTo   = IDocument::UNDEFINED,
+	           IDocument::Type fileFrom = IDocument::UNDEFINED);
 
 	ruint           m_posFromBegin;
 	ruint           m_posFromEnd;
@@ -97,7 +97,7 @@ private:
 	           ruint           pos1End,
 	           ruint           pos2Begin,
 	           ruint           pos2End,
-	           IDocument::Type file = rdoModelObjectsConvertor::UNDEFINED_OUT);
+	           IDocument::Type file = IDocument::UNDEFINED);
 
 	ruint           m_pos1Begin;
 	ruint           m_pos1End;
