@@ -254,7 +254,14 @@ void Document::MemoryStream::get(REF(std::ofstream) stream) const
 
 void Document::MemoryStream::insert(ruint to, CREF(tstring) value)
 {
-	Buffer::iterator itTo = m_buffer.begin() + to;
+	Buffer::iterator itTo;
+	switch (to)
+	{
+	case IDocUpdate::POSITION_BEGIN: itTo = m_buffer.begin();      break;
+	case IDocUpdate::POSITION_END  : itTo = m_buffer.end();        break;
+	default                        : itTo = m_buffer.begin() + to; break;
+	}
+
 	for (ruint i = 0; i < value.length(); ++i)
 	{
 		itTo = m_buffer.insert(itTo, value[i]);

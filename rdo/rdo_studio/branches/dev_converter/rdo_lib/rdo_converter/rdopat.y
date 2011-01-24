@@ -235,7 +235,7 @@ pat_main
 				rdoConverter::LPDocUpdate pEventMove = rdo::Factory<rdoConverter::UpdateMove>::create(
 					@2.m_first_seek,
 					@2.m_last_seek,
-					0,
+					IDocUpdate::POSITION_END,
 					rdoConverter::IDocument::EVN
 				);
 				ASSERT(pEventMove);

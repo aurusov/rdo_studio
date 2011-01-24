@@ -26,6 +26,12 @@ OPEN_RDO_CONVERTER_NAMESPACE
 S_INTERFACE(IDocUpdate)
 {
 public:
+	enum
+	{
+		POSITION_BEGIN = ~0,
+		POSITION_END   = ~1
+	};
+
 	virtual void apply (REF(LPIDocument) pDocument) const           = 0;
 	virtual void insert(IDocument::Type type, ruint to, ruint size) = 0;
 	virtual void remove(IDocument::Type type, ruint from, ruint to) = 0;

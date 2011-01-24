@@ -219,47 +219,65 @@ void UpdateMove::apply(REF(LPIDocument) pDocument) const
 	pDocument->remove(m_fileFrom, m_posFromBegin, m_posFromEnd);
 
 	ruint pos = m_posTo;
-	if (m_posFromEnd < pos)
+	if (pos != POSITION_BEGIN && pos != POSITION_END)
 	{
-		//! Удалили перед собой, сдвинемся к началу
-		pos -= m_posFromEnd - m_posFromBegin;
+		if (m_posFromEnd < pos)
+		{
+			//! Удалили перед собой, сдвинемся к началу
+			pos -= m_posFromEnd - m_posFromBegin;
+		}
 	}
 	pDocument->insert(m_file, pos, cut);
 }
 
 void UpdateMove::insert(IDocument::Type type, ruint to, ruint size)
 {
+	if (to == POSITION_END)
+		return;
+
 	if (m_fileFrom == type)
 	{
-		if (to < m_posFromBegin && m_posFromBegin != m_posFromEnd)
+		if (to == POSITION_BEGIN)
 		{
 			//! Вставка до, сдвинемся к концу
 			m_posFromBegin += size;
 			m_posFromEnd   += size;
 		}
-		else if (to == m_posFromBegin && to + size <= m_posFromEnd && m_posFromBegin != m_posFromEnd)
+		else
 		{
-			//! Вставка внутри, расширим конец
-			m_posFromEnd += size;
-		}
-		else if (to == m_posFromBegin && m_posFromBegin == m_posFromEnd)
-		{
-			//! Вставка в пустой интервал, расширим конец
-			m_posFromEnd += size;
-		}
-		else if (to > m_posFromBegin && to <= m_posFromEnd)
-		{
-			//! Вставка внутрь, расширим конец
-			m_posFromEnd += size;
+			if (to < m_posFromBegin && m_posFromBegin != m_posFromEnd)
+			{
+				//! Вставка до, сдвинемся к концу
+				m_posFromBegin += size;
+				m_posFromEnd   += size;
+			}
+			else if (to == m_posFromBegin && to + size <= m_posFromEnd && m_posFromBegin != m_posFromEnd)
+			{
+				//! Вставка внутри, расширим конец
+				m_posFromEnd += size;
+			}
+			else if (to == m_posFromBegin && m_posFromBegin == m_posFromEnd)
+			{
+				//! Вставка в пустой интервал, расширим конец
+				m_posFromEnd += size;
+			}
+			else if (to > m_posFromBegin && to <= m_posFromEnd)
+			{
+				//! Вставка внутрь, расширим конец
+				m_posFromEnd += size;
+			}
 		}
 	}
 
 	if (m_file == type)
 	{
-		if (to < m_posTo)
+		if (m_posTo != POSITION_BEGIN && m_posTo != POSITION_END)
 		{
-			//! Вставка до, сдвинемся к концу
-			m_posTo += size;
+			if (to == POSITION_BEGIN || to < m_posTo)
+			{
+				//! Вставка до, сдвинемся к концу
+				m_posTo += size;
+			}
 		}
 	}
 }
@@ -283,10 +301,13 @@ void UpdateMove::remove(IDocument::Type type, ruint from, ruint to)
 
 	if (m_file == type)
 	{
-		if (to < m_posTo)
+		if (m_posTo != POSITION_BEGIN && m_posTo != POSITION_END)
 		{
-			//! Удаление до, сдвинемся к началу
-			m_posTo -= to - from;
+			if (to < m_posTo)
+			{
+				//! Удаление до, сдвинемся к началу
+				m_posTo -= to - from;
+			}
 		}
 	}
 }
