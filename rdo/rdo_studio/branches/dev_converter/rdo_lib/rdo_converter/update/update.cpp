@@ -229,59 +229,65 @@ void UpdateMove::apply(REF(LPIDocument) pDocument) const
 
 void UpdateMove::insert(IDocument::Type type, ruint to, ruint size)
 {
-	if (m_file != type)
-		return;
+	if (m_fileFrom == type)
+	{
+		if (to < m_posFromBegin && m_posFromBegin != m_posFromEnd)
+		{
+			//! Вставка до, сдвинемся к концу
+			m_posFromBegin += size;
+			m_posFromEnd   += size;
+		}
+		else if (to == m_posFromBegin && to + size <= m_posFromEnd && m_posFromBegin != m_posFromEnd)
+		{
+			//! Вставка внутри, расширим конец
+			m_posFromEnd += size;
+		}
+		else if (to == m_posFromBegin && m_posFromBegin == m_posFromEnd)
+		{
+			//! Вставка в пустой интервал, расширим конец
+			m_posFromEnd += size;
+		}
+		else if (to > m_posFromBegin && to <= m_posFromEnd)
+		{
+			//! Вставка внутрь, расширим конец
+			m_posFromEnd += size;
+		}
+	}
 
-	if (to < m_posFromBegin && m_posFromBegin != m_posFromEnd)
+	if (m_file == type)
 	{
-		//! Вставка до, сдвинемся к концу
-		m_posFromBegin += size;
-		m_posFromEnd   += size;
-	}
-	else if (to == m_posFromBegin && to + size <= m_posFromEnd && m_posFromBegin != m_posFromEnd)
-	{
-		//! Вставка внутри, расширим конец
-		m_posFromEnd += size;
-	}
-	else if (to == m_posFromBegin && m_posFromBegin == m_posFromEnd)
-	{
-		//! Вставка в пустой интервал, расширим конец
-		m_posFromEnd += size;
-	}
-	else if (to > m_posFromBegin && to <= m_posFromEnd)
-	{
-		//! Вставка внутрь, расширим конец
-		m_posFromEnd += size;
-	}
-
-	if (to < m_posTo)
-	{
-		//! Вставка до, сдвинемся к концу
-		m_posTo += size;
+		if (to < m_posTo)
+		{
+			//! Вставка до, сдвинемся к концу
+			m_posTo += size;
+		}
 	}
 }
 
 void UpdateMove::remove(IDocument::Type type, ruint from, ruint to)
 {
-	if (m_file != type)
-		return;
-
-	if (to < m_posFromBegin)
+	if (m_fileFrom == type)
 	{
-		//! Удаление до, сдвинемся к началу
-		m_posFromBegin -= to - from;
-		m_posFromEnd   -= to - from;
+		if (to < m_posFromBegin)
+		{
+			//! Удаление до, сдвинемся к началу
+			m_posFromBegin -= to - from;
+			m_posFromEnd   -= to - from;
+		}
+		else if (m_posFromBegin <= from && to <= m_posFromEnd)
+		{
+			//! Удаление внутри, подрежем конец
+			m_posFromEnd -= to - from;
+		}
 	}
-	else if (m_posFromBegin <= from && to <= m_posFromEnd)
-	{
-		//! Удаление внутри, подрежем конец
-		m_posFromEnd -= to - from;
-	}
 
-	if (to < m_posTo)
+	if (m_file == type)
 	{
-		//! Удаление до, сдвинемся к началу
-		m_posTo -= to - from;
+		if (to < m_posTo)
+		{
+			//! Удаление до, сдвинемся к началу
+			m_posTo -= to - from;
+		}
 	}
 }
 
