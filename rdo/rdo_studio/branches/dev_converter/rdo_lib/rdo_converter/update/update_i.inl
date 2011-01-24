@@ -84,82 +84,62 @@ inline IDocUpdate::Position IDocUpdate::Position::operator- (CREF(Position) pos)
 
 inline rbool IDocUpdate::Position::operator<= (CREF(Position) pos) const
 {
-	if (real() && pos.real())
+	switch(get())
 	{
-		return m_position <= pos.m_position;
+	case POSITION_BEGIN: return true;
+	case POSITION_END  : return pos.end() ? true : false;
+	default            : switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return false;
+	                     case POSITION_END  : return true;
+	                     default            : return m_position <= pos.m_position;
+	                     }
 	}
-
-	if (begin())
-	{
-		return true;
-	}
-	else if (end())
-	{
-		return pos.end() ? true : false;
-	}
-
-	NEVER_REACH_HERE;
-	return false;
 }
 
 inline rbool IDocUpdate::Position::operator>= (CREF(Position) pos) const
 {
-	if (real() && pos.real())
+	switch(get())
 	{
-		return m_position >= pos.m_position;
+	case POSITION_BEGIN: return pos.begin() ? true : false;
+	case POSITION_END  : return true;
+	default            : switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return true;
+	                     case POSITION_END  : return false;
+	                     default            : return m_position >= pos.m_position;
+	                     }
 	}
-
-	if (begin())
-	{
-		return pos.begin() ? true : false;
-	}
-	else if (end())
-	{
-		return true;
-	}
-
-	NEVER_REACH_HERE;
-	return false;
 }
 
 inline rbool IDocUpdate::Position::operator< (CREF(Position) pos) const
 {
-	if (real() && pos.real())
+	switch(get())
 	{
-		return m_position < pos.m_position;
+	case POSITION_BEGIN: return pos.begin() ? false : true;
+	case POSITION_END  : NEVER_REACH_HERE; return false;
+	default            : switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return false;
+	                     case POSITION_END  : return true;
+	                     default            : return m_position < pos.m_position;
+	                     }
 	}
-
-	if (begin())
-	{
-		return pos.begin() ? false : true;
-	}
-	else if (end())
-	{
-		return false;
-	}
-
-	NEVER_REACH_HERE;
-	return false;
 }
 
 inline rbool IDocUpdate::Position::operator> (CREF(Position) pos) const
 {
-	if (real() && pos.real())
+	switch(get())
 	{
-		return m_position > pos.m_position;
+	case POSITION_BEGIN: NEVER_REACH_HERE; return false;
+	case POSITION_END  : return pos.end() ? false : true;
+	default            : switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return true;
+	                     case POSITION_END  : return false;
+	                     default            : return m_position > pos.m_position;
+	                     }
 	}
-
-	if (begin())
-	{
-		return false;
-	}
-	else if (end())
-	{
-		return pos.end() ? false : true;
-	}
-
-	NEVER_REACH_HERE;
-	return false;
 }
 
 inline rbool IDocUpdate::Position::operator== (CREF(Position) pos) const
