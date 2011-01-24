@@ -27,9 +27,9 @@ CLASS(UpdateInsert): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-	UpdateInsert(ruint pos, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateInsert(CREF(Position) pos, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
 
-	ruint    m_pos;
+	Position m_pos;
 	tstring  m_value;
 
 	DECLARE_IDocUpdate;
@@ -42,10 +42,10 @@ CLASS(UpdateDelete): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateDelete)
 private:
-	UpdateDelete(ruint posFrom, ruint posTo);
+	UpdateDelete(CREF(Position) posFrom, CREF(Position) posTo);
 
-	ruint m_posFrom;
-	ruint m_posTo;
+	Position m_posFrom;
+	Position m_posTo;
 
 	DECLARE_IDocUpdate;
 };
@@ -57,7 +57,7 @@ CLASS(UpdateReplace): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateReplace)
 private:
-	UpdateReplace(ruint posFrom, ruint posTo, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
 
 	LPDocUpdate pDelete;
 	LPDocUpdate pInsert;
@@ -72,15 +72,15 @@ CLASS(UpdateMove): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateMove)
 private:
-	UpdateMove(ruint           posFromBegin,
-	           ruint           posFromEnd,
-	           ruint           posTo,
+	UpdateMove(CREF(Position)  posFromBegin,
+	           CREF(Position)  posFromEnd,
+	           CREF(Position)  posTo,
 	           IDocument::Type fileTo   = IDocument::UNDEFINED,
 	           IDocument::Type fileFrom = IDocument::UNDEFINED);
 
-	ruint           m_posFromBegin;
-	ruint           m_posFromEnd;
-	ruint           m_posTo;
+	Position        m_posFromBegin;
+	Position        m_posFromEnd;
+	Position        m_posTo;
 	IDocument::Type m_fileFrom;
 
 	DECLARE_IDocUpdate;
@@ -93,19 +93,19 @@ CLASS(UpdateSwap): INSTANCE_OF(DocUpdate)
 {
 DECLARE_FACTORY(UpdateSwap)
 private:
-	UpdateSwap(ruint           pos1Begin,
-	           ruint           pos1End,
-	           ruint           pos2Begin,
-	           ruint           pos2End,
+	UpdateSwap(CREF(Position)  pos1Begin,
+	           CREF(Position)  pos1End,
+	           CREF(Position)  pos2Begin,
+	           CREF(Position)  pos2End,
 	           IDocument::Type file = IDocument::UNDEFINED);
 
-	ruint           m_pos1Begin;
-	ruint           m_pos1End;
-	ruint           m_pos2Begin;
-	ruint           m_pos2End;
+	Position m_pos1Begin;
+	Position m_pos1End;
+	Position m_pos2Begin;
+	Position m_pos2End;
 
-	void insert(CREF(ruint) from, CREF(ruint) size, REF(ruint) posBegin, REF(ruint) posEnd);
-	void remove(CREF(ruint) from, CREF(ruint) to,   REF(ruint) posBegin, REF(ruint) posEnd);
+	void insert(CREF(Position) from, CREF(ruint)  size, REF(Position) posBegin, REF(Position) posEnd);
+	void remove(CREF(Position) from, CREF(Position) to, REF(Position) posBegin, REF(Position) posEnd);
 
 	DECLARE_IDocUpdate;
 };

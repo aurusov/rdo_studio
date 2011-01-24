@@ -257,9 +257,9 @@ void Document::MemoryStream::insert(ruint to, CREF(tstring) value)
 	Buffer::iterator itTo;
 	switch (to)
 	{
-	case IDocUpdate::POSITION_BEGIN: itTo = m_buffer.begin();      break;
-	case IDocUpdate::POSITION_END  : itTo = m_buffer.end();        break;
-	default                        : itTo = m_buffer.begin() + to; break;
+	case IDocUpdate::Position::POSITION_BEGIN: itTo = m_buffer.begin();      break;
+	case IDocUpdate::Position::POSITION_END  : itTo = m_buffer.end();        break;
+	default                                  : itTo = m_buffer.begin() + to; break;
 	}
 
 	for (ruint i = 0; i < value.length(); ++i)
@@ -271,8 +271,22 @@ void Document::MemoryStream::insert(ruint to, CREF(tstring) value)
 
 void Document::MemoryStream::remove(ruint from, ruint to)
 {
-	Buffer::iterator itFrom = m_buffer.begin() + from;
-	Buffer::iterator itTo   = m_buffer.begin() + to;
+	Buffer::iterator itFrom;
+	switch (from)
+	{
+	case IDocUpdate::Position::POSITION_BEGIN: itFrom = m_buffer.begin();        break;
+	case IDocUpdate::Position::POSITION_END  : itFrom = m_buffer.end();          break;
+	default                                  : itFrom = m_buffer.begin() + from; break;
+	}
+
+	Buffer::iterator itTo;
+	switch (to)
+	{
+	case IDocUpdate::Position::POSITION_BEGIN: itTo = m_buffer.begin();      break;
+	case IDocUpdate::Position::POSITION_END  : itTo = m_buffer.end();        break;
+	default                                  : itTo = m_buffer.begin() + to; break;
+	}
+
 	m_buffer.erase(itFrom, itTo);
 }
 

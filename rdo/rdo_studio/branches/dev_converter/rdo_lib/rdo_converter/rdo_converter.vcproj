@@ -2650,6 +2650,10 @@
 				RelativePath=".\update\update_i.h"
 				>
 			</File>
+			<File
+				RelativePath=".\update\update_i.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".runtime"
