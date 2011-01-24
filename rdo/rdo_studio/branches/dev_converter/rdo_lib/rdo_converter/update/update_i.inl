@@ -87,7 +87,12 @@ inline rbool IDocUpdate::Position::operator<= (CREF(Position) pos) const
 	switch(get())
 	{
 	case POSITION_BEGIN: return true;
-	case POSITION_END  : return pos.end() ? true : false;
+	case POSITION_END  : switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return false;
+	                     case POSITION_END  : return true;
+	                     default            : return false;
+	                     }
 	default            : switch (pos.get())
 	                     {
 	                     case POSITION_BEGIN: return false;
@@ -101,7 +106,12 @@ inline rbool IDocUpdate::Position::operator>= (CREF(Position) pos) const
 {
 	switch(get())
 	{
-	case POSITION_BEGIN: return pos.begin() ? true : false;
+	case POSITION_BEGIN: switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return true;
+	                     case POSITION_END  : return false;
+	                     default            : return false;
+	                     }
 	case POSITION_END  : return true;
 	default            : switch (pos.get())
 	                     {
@@ -116,8 +126,18 @@ inline rbool IDocUpdate::Position::operator< (CREF(Position) pos) const
 {
 	switch(get())
 	{
-	case POSITION_BEGIN: return pos.begin() ? false : true;
-	case POSITION_END  : NEVER_REACH_HERE; return false;
+	case POSITION_BEGIN: switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: NEVER_REACH_HERE; return false;
+	                     case POSITION_END  : return true;
+	                     default            : return true;
+	                     }
+	case POSITION_END  : switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return false;
+	                     case POSITION_END  : NEVER_REACH_HERE; return false;
+	                     default            : return false;
+	                     }
 	default            : switch (pos.get())
 	                     {
 	                     case POSITION_BEGIN: return false;
@@ -131,8 +151,18 @@ inline rbool IDocUpdate::Position::operator> (CREF(Position) pos) const
 {
 	switch(get())
 	{
-	case POSITION_BEGIN: NEVER_REACH_HERE; return false;
-	case POSITION_END  : return pos.end() ? false : true;
+	case POSITION_BEGIN: switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: NEVER_REACH_HERE; return false;
+	                     case POSITION_END  : return false;
+	                     default            : return false;
+	                     }
+	case POSITION_END  : switch (pos.get())
+	                     {
+	                     case POSITION_BEGIN: return true;
+	                     case POSITION_END  : NEVER_REACH_HERE; return false;
+	                     default            : return true;
+	                     }
 	default            : switch (pos.get())
 	                     {
 	                     case POSITION_BEGIN: return true;
