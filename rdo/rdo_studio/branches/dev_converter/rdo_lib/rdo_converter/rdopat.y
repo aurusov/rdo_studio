@@ -240,6 +240,14 @@ pat_main
 				);
 				ASSERT(pEventMove);
 				CONVERTER->insertDocUpdate(pEventMove);
+
+				rdoConverter::LPDocUpdate pReturnInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+					IDocUpdate::Position::POSITION_END,
+					_T("\r\n\r\n"),
+					rdoConverter::IDocument::EVN
+				);
+				ASSERT(pReturnInsert);
+				CONVERTER->insertDocUpdate(pReturnInsert);
 			}
 		}
 		CONVERTER->stack().push(pPattern);
