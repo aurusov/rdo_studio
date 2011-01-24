@@ -91,7 +91,7 @@ inline rbool IDocUpdate::Position::operator<= (CREF(Position) pos) const
 
 	if (begin())
 	{
-		return pos.begin() ? true : false;
+		return true;
 	}
 	else if (end())
 	{
