@@ -16,9 +16,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
 // ----------------------------------------------------------------------------
-inline RDOEvent::RDOEvent(CREF(tstring) name, bool pRegular)
-	: m_name(name),
-	m_regullar(pRegular)
+inline RDOEvent::RDOEvent(CREF(tstring) name, rbool regular)
+	: m_name    (name   )
+	, m_regullar(regular)
 {}
 
 inline RDOEvent::~RDOEvent()
@@ -52,7 +52,7 @@ inline LPIBaseOperation RDOEvent::getRuntimeEvent() const
 	return m_runtimeEvent;
 }
 
-inline bool RDOEvent::getRegular() const
+inline rbool RDOEvent::getRegular() const
 {
 	return m_regullar;
 }
@@ -60,6 +60,17 @@ inline bool RDOEvent::getRegular() const
 inline REF(RDOEvent::CalcList) RDOEvent::getCalcList()
 {
 	return m_calcList;
+}
+
+inline rdoRuntime::LPRDOCalc RDOEvent::getInitCalc() const
+{
+	return m_pInitCalc;
+}
+
+inline void RDOEvent::setInitCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+	m_pInitCalc = pCalc;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

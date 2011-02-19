@@ -118,6 +118,7 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obFRM, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, frmparse, frmerror, frmlex));
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
+	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserSMRPost>::create());
 }
 
 // ----------------------------------------------------------------------------

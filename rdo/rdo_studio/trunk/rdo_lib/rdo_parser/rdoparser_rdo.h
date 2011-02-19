@@ -71,6 +71,17 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOParserSMRPost
+// ----------------------------------------------------------------------------
+class RDOParserSMRPost: public RDOParserItem
+{
+DECLARE_FACTORY(RDOParserSMRPost);
+private:
+	RDOParserSMRPost();
+	virtual void parse(PTR(RDOParser) pParser);
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOParserEVNPost
 // ----------------------------------------------------------------------------
 class RDOParserEVNPost: public RDOParserItem

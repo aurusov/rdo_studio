@@ -25,13 +25,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 CALC(RDOCalcEvent)
 {
+DECLARE_FACTORY(RDOCalcEvent)
 public:
-	RDOCalcEvent();
-
-	void setEvent(CREF(LPIBaseOperation) event);
+	void setEvent(CREF(LPIBaseOperation) pEvent);
 
 protected:
-	LPIBaseOperation m_event;
+	RDOCalcEvent();
+
+	LPIBaseOperation m_pEvent;
 };
 
 // ----------------------------------------------------------------------------
@@ -39,10 +40,10 @@ protected:
 // ----------------------------------------------------------------------------
 CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
 {
-public:
+DECLARE_FACTORY(RDOCalcEventPlan)
+private:
 	RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc);
 
-private:
 	LPRDOCalc m_pTimeCalc;
 
 	DECALRE_ICalc;
@@ -53,7 +54,8 @@ private:
 // ----------------------------------------------------------------------------
 CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
 {
-public:
+DECLARE_FACTORY(RDOCalcEventStop)
+private:
 	RDOCalcEventStop();
 
 	DECALRE_ICalc;

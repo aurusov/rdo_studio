@@ -148,6 +148,31 @@ void RDOParserRSSPost::parse(PTR(RDOParser) pParser)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOParserSMRPost
+// ----------------------------------------------------------------------------
+RDOParserSMRPost::RDOParserSMRPost()
+	: RDOParserItem(rdoModelObjects::SMR, NULL, NULL, NULL)
+{}
+
+void RDOParserSMRPost::parse(PTR(RDOParser) pParser)
+{
+	ASSERT(pParser);
+
+	//! Планирование событий, описанных в SMR
+	STL_FOR_ALL_CONST(pParser->getEvents(), eventIt)
+	{
+		LPRDOEvent pEvent = *eventIt;
+		ASSERT(pEvent);
+
+		rdoRuntime::LPRDOCalc pInitCalc = pEvent->getInitCalc();
+		if (pInitCalc)
+		{
+			pParser->runtime()->addInitCalc(pInitCalc);
+		}
+	}
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOParserEVNPost
 // ----------------------------------------------------------------------------
 void RDOParserEVNPost::parse(PTR(RDOParser) pParser)

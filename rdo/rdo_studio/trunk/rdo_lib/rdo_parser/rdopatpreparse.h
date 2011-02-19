@@ -30,22 +30,25 @@ DECLARE_FACTORY(RDOEvent);
 public:
 	typedef std::list<rdoRuntime::LPRDOCalcEvent> CalcList;
 
-	CREF(tstring)    name           () const;
-	void             attachCalc     (CREF(rdoRuntime::LPRDOCalcEventStop) pCalc);
-	void             attachCalc     (CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc);
-	REF(CalcList)    getCalcList    ();
-	LPIBaseOperation getRuntimeEvent() const;
-	void             setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
-	bool             getRegular     () const;
+	CREF(tstring)          name           () const;
+	void                   attachCalc     (CREF(rdoRuntime::LPRDOCalcEventStop) pCalc);
+	void                   attachCalc     (CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc);
+	REF(CalcList)          getCalcList    ();
+	LPIBaseOperation       getRuntimeEvent() const;
+	void                   setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
+	rbool                  getRegular     () const;
+	rdoRuntime::LPRDOCalc  getInitCalc    () const;
+	void                   setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
 
 private:
-	RDOEvent(CREF(tstring) name, bool pRegular);
+	RDOEvent(CREF(tstring) name, rbool regular);
 	virtual ~RDOEvent();
 
-	bool             m_regullar;
-	tstring          m_name;
-	CalcList         m_calcList;
-	LPIBaseOperation m_runtimeEvent;
+	tstring                m_name;
+	rbool                  m_regullar;
+	CalcList               m_calcList;
+	LPIBaseOperation       m_runtimeEvent;
+	rdoRuntime::LPRDOCalc  m_pInitCalc;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

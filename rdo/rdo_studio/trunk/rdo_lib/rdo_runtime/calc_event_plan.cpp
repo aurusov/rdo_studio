@@ -22,10 +22,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcEvent::RDOCalcEvent()
 {}
 
-void RDOCalcEvent::setEvent(CREF(LPIBaseOperation) event)
+void RDOCalcEvent::setEvent(CREF(LPIBaseOperation) pEvent)
 {
-	ASSERT(event);
-	m_event = event;
+	ASSERT(pEvent);
+	m_pEvent = pEvent;
 }
 
 // ----------------------------------------------------------------------------
@@ -39,9 +39,10 @@ RDOCalcEventPlan::RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc)
 
 REF(RDOValue) RDOCalcEventPlan::doCalc(PTR(RDORuntime) runtime)
 {
-	ASSERT(m_event);
-	runtime->addTimePoint(m_pTimeCalc->calcValue(runtime).getDouble(), m_event);
-	return m_pTimeCalc->calcValue(runtime);
+	ASSERT(m_pEvent);
+	m_value = m_pTimeCalc->calcValue(runtime);
+	runtime->addTimePoint(m_value.getDouble(), m_pEvent);
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
@@ -52,8 +53,8 @@ RDOCalcEventStop::RDOCalcEventStop()
 
 REF(RDOValue) RDOCalcEventStop::doCalc(PTR(RDORuntime) runtime)
 {
-	ASSERT(m_event);
-	runtime->removeTimePoint(m_event);
+	ASSERT(m_pEvent);
+	runtime->removeTimePoint(m_pEvent);
 	m_value = RDOValue(0);
 	return m_value;
 }

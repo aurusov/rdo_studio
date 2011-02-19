@@ -270,7 +270,11 @@ smr_cond
 
 		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
 		ASSERT(pBaseOperation);
-		RUNTIME->addTimePoint(pCalcTime->calcValue(RUNTIME).getDouble(), pBaseOperation);
+
+		rdoRuntime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
+		ASSERT(pEventPlan);
+		pEventPlan->setEvent(pBaseOperation);
+		pEvent->setInitCalc(pEventPlan);
 	}
 	| smr_cond RDO_IDENTIF '.' RDO_Start '(' ')'
 	{
