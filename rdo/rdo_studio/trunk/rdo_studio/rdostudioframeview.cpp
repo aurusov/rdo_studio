@@ -117,12 +117,14 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioFrameView::updateFont()
 {
-	int index = model->frameManager.findFrameIndex( this );
-	if ( index != -1 ) {
-		model->frameManager.getFrameMutexDraw( index )->Lock();
+	int index = model->m_frameManager.findFrameIndex( this );
+	if ( index != -1 )
+	{
+		model->m_frameManager.getFrameMutexDraw( index )->Lock();
 	}
 
-	if ( hfontCurrent ) {
+	if ( hfontCurrent )
+	{
 		::SelectObject( hmemdc, hfontInit );
 		::DeleteObject( hfontCurrent );
 	}
@@ -142,8 +144,9 @@ void RDOStudioFrameView::updateFont()
 	hfontCurrent = ::CreateFontIndirect( &lf );
 	::SelectObject( hmemdc, hfontCurrent );
 
-	if ( index != -1 ) {
-		model->frameManager.getFrameMutexDraw( index )->Unlock();
+	if ( index != -1 )
+	{
+		model->m_frameManager.getFrameMutexDraw( index )->Unlock();
 	}
 }
 
@@ -180,11 +183,11 @@ RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
 
 void RDOStudioFrameView::OnDestroy() 
 {
-	int index = model->frameManager.findFrameIndex( this );
+	int index = model->m_frameManager.findFrameIndex( this );
 	if ( index != -1 ) {
-		model->frameManager.getFrameEventClose( index )->SetEvent();
-		model->frameManager.disconnectFrameDoc( GetDocument() );
-		model->frameManager.resetCurrentShowingFrame( index );
+		model->m_frameManager.getFrameEventClose( index )->SetEvent();
+		model->m_frameManager.disconnectFrameDoc( GetDocument() );
+		model->m_frameManager.resetCurrentShowingFrame( index );
 	}
 	if ( hdc ) {
 		::RestoreDC( hdc, saved_hdc );
@@ -332,7 +335,7 @@ void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 
 void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	RDOStudioFrameManager* frameManager = &model->frameManager;
+	RDOStudioFrameManager* frameManager = &model->m_frameManager;
 	int index = frameManager->findFrameIndex( this );
 	CSingleLock lock_draw( frameManager->getFrameMutexDraw( index ) );
 	lock_draw.Lock();
@@ -368,9 +371,9 @@ void RDOStudioFrameView::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)
 {
 	if ( bActivate ) {
-		int index = model->frameManager.findFrameIndex( this );
-		model->frameManager.setLastShowedFrame( index );
-		model->frameManager.setCurrentShowingFrame( index );
+		int index = model->m_frameManager.findFrameIndex( this );
+		model->m_frameManager.setLastShowedFrame( index );
+		model->m_frameManager.setCurrentShowingFrame( index );
 	}
 	RDOStudioView::OnActivateView( bActivate, pActivateView, pDeactiveView );
 }
@@ -400,8 +403,8 @@ BOOL RDOStudioFrameView::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 
 void RDOStudioFrameView::OnPaint()
 {
-	int index = model->frameManager.findFrameIndex( this );
-	CSingleLock lock_draw( model->frameManager.getFrameMutexDraw( index ) );
+	int index = model->m_frameManager.findFrameIndex( this );
+	CSingleLock lock_draw( model->m_frameManager.getFrameMutexDraw( index ) );
 	lock_draw.Lock();
 
 	PAINTSTRUCT ps;
@@ -410,7 +413,7 @@ void RDOStudioFrameView::OnPaint()
 	::EndPaint( hwnd, &ps );
 
 	lock_draw.Unlock();
-	model->frameManager.getFrameEventTimer( index )->SetEvent();
+	model->m_frameManager.getFrameEventTimer( index )->SetEvent();
 }
 
 void RDOStudioFrameView::OnDraw( CDC* pDC )

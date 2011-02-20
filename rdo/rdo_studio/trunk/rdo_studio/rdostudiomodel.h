@@ -41,38 +41,38 @@ friend class RDOThreadStudioGUI;
 friend class RDOStudioPlugins;
 
 private:
-	PTR(CMultiDocTemplate) modelDocTemplate;
-	RDOStudioFrameManager frameManager;
+	PTR(CMultiDocTemplate)    m_pModelDocTemplate;
+	RDOStudioFrameManager     m_frameManager;
 
-	int                       useTemplate;
-	rbool                     autoDeleteDoc;
-	rbool                     showCanNotCloseModelMessage;
+	int                       m_useTemplate;
+	rbool                     m_autoDeleteDoc;
+	rbool                     m_showCanNotCloseModelMessage;
 
-	rbool                     GUI_HAS_MODEL;
-	rbool                     GUI_CAN_RUN;
-	rbool                     GUI_IS_RUNING;
-	rbool                     GUI_ACTION_NEW;
-	rbool                     GUI_ACTION_OPEN;
-	rbool                     GUI_ACTION_SAVE;
-	rbool                     GUI_ACTION_CLOSE;
-	rbool                     GUI_ACTION_BUILD;
-	rbool                     GUI_ACTION_RUN;
+	rbool                     m_GUI_HAS_MODEL;
+	rbool                     m_GUI_CAN_RUN;
+	rbool                     m_GUI_IS_RUNING;
+	rbool                     m_GUI_ACTION_NEW;
+	rbool                     m_GUI_ACTION_OPEN;
+	rbool                     m_GUI_ACTION_SAVE;
+	rbool                     m_GUI_ACTION_CLOSE;
+	rbool                     m_GUI_ACTION_BUILD;
+	rbool                     m_GUI_ACTION_RUN;
 
-	SYSTEMTIME                time_start;
+	SYSTEMTIME                m_timeStart;
 
-	mutable rbool             openError;
-	mutable rbool             smrEmptyError;
-	mutable rbool             modelClosed;
+	mutable rbool             m_openError;
+	mutable rbool             m_smrEmptyError;
+	mutable rbool             m_modelClosed;
 
-	rbool                     frmDescribed;
-	double                    timeNow;
-	double                    speed;
-	double                    showRate;
-	rbool                     tempPause;
-	rdoRuntime::RunTimeMode   runtimeMode;
-	rdoRuntime::RunTimeMode   runtimeMode_prev;
-	rdoSimulator::RDOExitCode exitCode;
-	mutable rbool             prevModify;
+	rbool                     m_frmDescribed;
+	double                    m_timeNow;
+	double                    m_speed;
+	double                    m_showRate;
+	rbool                     m_tempPause;
+	rdoRuntime::RunTimeMode   m_runtimeMode;
+	rdoRuntime::RunTimeMode   m_runtimeModePrev;
+	rdoSimulator::RDOExitCode m_exitCode;
+	mutable rbool             m_prevModify;
 
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();
@@ -84,8 +84,8 @@ private:
 
 	PTR(RDOStudioModelDoc) getModelDoc() const
 	{
-		POSITION pos = modelDocTemplate->GetFirstDocPosition();
-		return pos ? static_cast<PTR(RDOStudioModelDoc)>(modelDocTemplate->GetNextDoc(pos)) : NULL;
+		POSITION pos = m_pModelDocTemplate->GetFirstDocPosition();
+		return pos ? static_cast<PTR(RDOStudioModelDoc)>(m_pModelDocTemplate->GetNextDoc(pos)) : NULL;
 	}
 
 	struct TemplateData
@@ -143,9 +143,9 @@ public:
 	{
 		PTR(RDOStudioModelDoc) pDoc = getModelDoc();
 		rbool result = pDoc ? pDoc->isModify() : false;
-		if (prevModify != result)
+		if (m_prevModify != result)
 		{
-			prevModify = result;
+			m_prevModify = result;
 			if (plugins)
 			{
 				plugins->pluginProc(rdoPlugin::PM_MODEL_MODIFY);
@@ -153,34 +153,34 @@ public:
 		}
 		return result;
 	}
-	rbool  canNew        () const { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_NEW;   }
-	rbool  canOpen       () const { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_OPEN;  }
-	rbool  canSave       () const { return isModify()                                   && GUI_ACTION_SAVE;  }
-	rbool  canClose      () const { return hasModel() && !isRunning()                   && GUI_ACTION_CLOSE; }
-	rbool  canBuild      () const { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_BUILD; }
-	rbool  canRun        () const { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_RUN;   }
-	rbool  isRunning     () const { return GUI_IS_RUNING;                                                    }
-	rbool  isFrmDescribed() const { return frmDescribed;                                                     }
-	double getTimeNow    () const { return timeNow;                                                          }
+	rbool  canNew        () const { return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_NEW;   }
+	rbool  canOpen       () const { return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_OPEN;  }
+	rbool  canSave       () const { return isModify()                                     && m_GUI_ACTION_SAVE;  }
+	rbool  canClose      () const { return hasModel() && !isRunning()                     && m_GUI_ACTION_CLOSE; }
+	rbool  canBuild      () const { return hasModel() && m_GUI_CAN_RUN                    && m_GUI_ACTION_BUILD; }
+	rbool  canRun        () const { return hasModel() && m_GUI_CAN_RUN                    && m_GUI_ACTION_RUN;   }
+	rbool  isRunning     () const { return m_GUI_IS_RUNING;                                                      }
+	rbool  isFrmDescribed() const { return m_frmDescribed;                                                       }
+	double getTimeNow    () const { return m_timeNow;                                                            }
 
-	rdoSimulator::RDOExitCode getExitCode   () const { return exitCode;    }
-	rdoRuntime::RunTimeMode   getRuntimeMode() const { return runtimeMode; }
+	rdoSimulator::RDOExitCode getExitCode   () const { return m_exitCode;    }
+	rdoRuntime::RunTimeMode   getRuntimeMode() const { return m_runtimeMode; }
 	void    setRuntimeMode       (const rdoRuntime::RunTimeMode value);
 	tstring getLastBreakPointName();
-	double  getSpeed             () const            { return speed;       }
+	double  getSpeed             () const            { return m_speed;       }
 	void    setSpeed             (double persent);
-	double  getShowRate          ()                  { return showRate;    }
+	double  getShowRate          ()                  { return m_showRate;    }
 	void    setShowRate          (double value);
 
-	void       showNextFrame   ()                { frameManager.showNextFrame();                    }
-	void       showPrevFrame   ()                { frameManager.showPrevFrame();                    }
-	rbool      canShowNextFrame() const          { return frameManager.canShowNextFrame();          }
-	rbool      canShowPrevFrame() const          { return frameManager.canShowPrevFrame();          }
-	int        getFrameCount   () const          { return frameManager.count();                     }
-	CPTR(char) getFrameName    (int index) const { return frameManager.getFrameName(index).c_str(); }
-	void       showFrame       (int index)       { frameManager.showFrame(index);                   }
-	void       closeAllFrame   ()                { frameManager.closeAll();                         }
-	rbool      hasModel        () const          { return GUI_HAS_MODEL;                            }
+	void       showNextFrame   ()                { m_frameManager.showNextFrame();                    }
+	void       showPrevFrame   ()                { m_frameManager.showPrevFrame();                    }
+	rbool      canShowNextFrame() const          { return m_frameManager.canShowNextFrame();          }
+	rbool      canShowPrevFrame() const          { return m_frameManager.canShowPrevFrame();          }
+	int        getFrameCount   () const          { return m_frameManager.count();                     }
+	CPTR(char) getFrameName    (int index) const { return m_frameManager.getFrameName(index).c_str(); }
+	void       showFrame       (int index)       { m_frameManager.showFrame(index);                   }
+	void       closeAllFrame   ()                { m_frameManager.closeAll();                         }
+	rbool      hasModel        () const          { return m_GUI_HAS_MODEL;                            }
 
 	PTR(rdoEditor::RDOEditorTabCtrl) getTab() const
 	{
@@ -197,7 +197,7 @@ public:
 	}
 
 	void  updateStyleOfAllModel() const;
-	rbool isPrevModelClosed    () const { return modelClosed; }
+	rbool isPrevModelClosed    () const { return m_modelClosed; }
 };
 
 // ----------------------------------------------------------------------------

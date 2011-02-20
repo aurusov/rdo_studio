@@ -507,12 +507,12 @@ void RDOStudioPlugins::actionEnable( rdoPlugin::ModelActionType action )
 		if ( it != plugins->actionDisabled.end() ) {
 			plugins->actionDisabled.erase( it );
 			switch ( action ) {
-				case rdoPlugin::maCreate: model->GUI_ACTION_NEW   = true; break;
-				case rdoPlugin::maOpen  : model->GUI_ACTION_OPEN  = true; break;
-				case rdoPlugin::maSave  : model->GUI_ACTION_SAVE  = true; break;
-				case rdoPlugin::maClose : model->GUI_ACTION_CLOSE = true; break;
-				case rdoPlugin::maBuild : model->GUI_ACTION_BUILD = true; break;
-				case rdoPlugin::maRun   : model->GUI_ACTION_RUN   = true; break;
+				case rdoPlugin::maCreate: model->m_GUI_ACTION_NEW   = true; break;
+				case rdoPlugin::maOpen  : model->m_GUI_ACTION_OPEN  = true; break;
+				case rdoPlugin::maSave  : model->m_GUI_ACTION_SAVE  = true; break;
+				case rdoPlugin::maClose : model->m_GUI_ACTION_CLOSE = true; break;
+				case rdoPlugin::maBuild : model->m_GUI_ACTION_BUILD = true; break;
+				case rdoPlugin::maRun   : model->m_GUI_ACTION_RUN   = true; break;
 			}
 		}
 	}
@@ -523,12 +523,12 @@ void RDOStudioPlugins::actionDisable( rdoPlugin::ModelActionType action )
 	if ( plugins && std::find( plugins->actionDisabled.begin(), plugins->actionDisabled.end(), action ) == plugins->actionDisabled.end() ) {
 		plugins->actionDisabled.push_back( action );
 		switch ( action ) {
-			case rdoPlugin::maCreate: model->GUI_ACTION_NEW   = false; break;
-			case rdoPlugin::maOpen  : model->GUI_ACTION_OPEN  = false; break;
-			case rdoPlugin::maSave  : model->GUI_ACTION_SAVE  = false; break;
-			case rdoPlugin::maClose : model->GUI_ACTION_CLOSE = false; break;
-			case rdoPlugin::maBuild : model->GUI_ACTION_BUILD = false; break;
-			case rdoPlugin::maRun   : model->GUI_ACTION_RUN   = false; break;
+			case rdoPlugin::maCreate: model->m_GUI_ACTION_NEW   = false; break;
+			case rdoPlugin::maOpen  : model->m_GUI_ACTION_OPEN  = false; break;
+			case rdoPlugin::maSave  : model->m_GUI_ACTION_SAVE  = false; break;
+			case rdoPlugin::maClose : model->m_GUI_ACTION_CLOSE = false; break;
+			case rdoPlugin::maBuild : model->m_GUI_ACTION_BUILD = false; break;
+			case rdoPlugin::maRun   : model->m_GUI_ACTION_RUN   = false; break;
 		}
 	}
 }
