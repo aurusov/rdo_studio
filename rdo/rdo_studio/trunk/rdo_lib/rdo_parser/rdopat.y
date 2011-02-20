@@ -1623,7 +1623,6 @@ equal_statement
 			{
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 			}
-			rdoRuntime::LPRDOCalc pCalc;
 			switch (equalType)
 			{
 				case rdoRuntime::ET_INCR:
