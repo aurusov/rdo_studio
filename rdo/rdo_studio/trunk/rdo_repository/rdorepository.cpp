@@ -316,14 +316,13 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 			}
 			if (rdo::File::exist(m_modelPath + m_modelName + m_files[rdoModelObjects::SMR].m_extention))
 			{
-
 				m_files[rdoModelObjects::SMR].m_fileName = m_modelName;
 				m_hasModel = true;
 				switch (updateModelNames())
 				{
-					case fm_ok       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
-					case fm_smr_error: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
-					case fm_smr_empty: return false;
+				case fm_ok       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
+				case fm_smr_error: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
+				case fm_smr_empty: return false;
 				}
 			}
 			else
