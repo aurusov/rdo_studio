@@ -97,6 +97,7 @@ RDOStudioModel::RDOStudioModel():
 	model_templates[3] = template_id;
 
 	template_id.clear();
+	template_id[ rdoModelObjects::EVN ] = TemplateData( IDR_MODEL_TMP4_EVN, 0 );
 	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP4_PAT, 0 );
 	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP4_RTP, 0 );
 	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP4_RSS, 0 );

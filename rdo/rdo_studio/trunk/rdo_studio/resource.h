@@ -76,6 +76,7 @@
 #define IDR_MODEL_TMP6_SMR              225
 #define IDR_MODEL_TMP6_DPT              226
 #define IDD_GOTO_LINE_DIALOG            227
+#define IDR_MODEL_TMP4_EVN              228
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
