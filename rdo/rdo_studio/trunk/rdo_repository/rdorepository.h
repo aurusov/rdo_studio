@@ -149,14 +149,14 @@ private:
 	rbool     canCloseModel   ();
 	void      realCloseModel  ();
 	void      extractName     (CREF(tstring) fullName);
-	void      setName         (CREF(tstring) str);
+	void      setName         (CREF(tstring) name);
 
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
 	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
 
 	void      beforeModelStart   ();
 	void      stopModel          ();
-	void      trace              (CREF(tstring) str);
+	void      trace              (CREF(tstring) message);
 	void      writeModelFilesInfo(REF(std::ofstream) stream) const;
 
 protected:

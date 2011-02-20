@@ -463,9 +463,9 @@ void RDOThreadRepository::extractName(CREF(tstring) fullName)
 	}
 }
 
-void RDOThreadRepository::setName(CREF(tstring) str)
+void RDOThreadRepository::setName(CREF(tstring) name)
 {
-	m_modelName = str;
+	m_modelName = name;
 	static char szDelims[] = _T(" \t\n\r");
 	m_modelName.erase(0, m_modelName.find_first_not_of(szDelims));
 	m_modelName.erase(m_modelName.find_last_not_of(szDelims) + 1, tstring::npos);
@@ -644,11 +644,11 @@ void RDOThreadRepository::stopModel()
 	}
 }
 
-void RDOThreadRepository::trace(CREF(tstring) str)
+void RDOThreadRepository::trace(CREF(tstring) message)
 {
 	if (m_traceFile.is_open())
 	{
-		m_traceFile.write(str.c_str(), str.length());
+		m_traceFile.write(message.c_str(), message.length());
 		m_traceFile.write(_T("\n"), 1);
 		m_traceFile.flush();
 	}
