@@ -148,7 +148,7 @@ private:
 	rbool     saveAsDlg       ();
 	rbool     canCloseModel   ();
 	void      realCloseModel  ();
-	void      extractName     (CREF(tstring) fullname);
+	void      extractName     (CREF(tstring) fullName);
 	void      setName         (CREF(tstring) str);
 
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;

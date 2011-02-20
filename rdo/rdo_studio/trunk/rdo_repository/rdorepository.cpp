@@ -432,11 +432,11 @@ void RDOThreadRepository::closeModel()
 	}
 }
 
-void RDOThreadRepository::extractName(CREF(tstring) fullname)
+void RDOThreadRepository::extractName(CREF(tstring) fullName)
 {
-	m_modelPath = rdo::extractFilePath(fullname);
+	m_modelPath = rdo::extractFilePath(fullName);
 
-	tstring name = fullname;
+	tstring name = fullName;
 	tstring::size_type pos = name.find_last_of(_T('.'));
 	if (pos != tstring::npos)
 	{
