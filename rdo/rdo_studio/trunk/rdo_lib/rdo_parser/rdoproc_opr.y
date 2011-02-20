@@ -327,7 +327,9 @@ dpt_process_line
 	}
 	| RDO_GENERATE fun_arithm
 	{
-		int time = PARSER->stack().pop<RDOFUNArithm>($2)->createCalc()->calcValue(RUNTIME).getInt();
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		int time = pArithm->createCalc()->calcValue(RUNTIME).getInt();
 		tstring rtp_name       = _T("Транзакты");
 		tstring rtp_param_name = _T("Время_создания");
 
@@ -362,7 +364,7 @@ dpt_process_line
 			}
 			rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 		}
-		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), PARSER->stack().pop<RDOFUNArithm>($2)->createCalc());
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), pArithm->createCalc());
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
