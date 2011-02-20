@@ -170,11 +170,9 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 
 void RDOThreadRepository::resetModelNames()
 {
-	FileList::iterator it = m_files.begin();
-	while (it != m_files.end())
+	STL_FOR_ALL(m_files, it)
 	{
 		it->resetname();
-		it++;
 	}
 }
 
@@ -227,14 +225,15 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 	}
 	else
 	{
-		if (fileInfo.m_modelName.empty()) return fm_smr_empty;
-		std::vector< RDOThreadRepository::fileInfo >::iterator it = m_files.begin();
-		while (it != m_files.end())
+		if (fileInfo.m_modelName.empty())
+		{
+			return fm_smr_empty;
+		}
+		STL_FOR_ALL(m_files, it)
 		{
 			it->m_fileName  = m_files[rdoModelObjects::SMR].m_fileName;
 			it->m_described = true;
 			it->m_mustExist = true;
-			it++;
 		}
 		return fm_smr_error;
 	}
@@ -268,11 +267,9 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 			m_modelName = _T("noname");
 			m_modelPath = _T("");
 		}
-		FileList::iterator it = m_files.begin();
-		while (it != m_files.end())
+		STL_FOR_ALL(m_files, it)
 		{
 			it->m_fileName = m_modelName;
-			++it;
 		}
 		m_hasModel = true;
 		broadcastMessage(RT_REPOSITORY_MODEL_NEW);
@@ -289,7 +286,7 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 	{
 		realCloseModel();
 
-		rbool can_open = true;
+		rbool canOpen   = true;
 		m_realOnlyInDlg = false;
 		if (modelFileName.empty())
 		{
@@ -302,22 +299,20 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 			}
 			else
 			{
-				can_open = false;
+				canOpen = false;
 			}
 		}
 		else
 		{
 			extractName(modelFileName);
-			can_open = !m_modelName.empty();
+			canOpen = !m_modelName.empty();
 		}
 
-		if (can_open)
+		if (canOpen)
 		{
-			FileList::iterator it = m_files.begin();
-			while (it != m_files.end())
+			STL_FOR_ALL(m_files, it)
 			{
 				it->m_readOnly = m_realOnlyInDlg;
-				it++;
 			}
 			if (rdo::File::exist(m_modelPath + m_modelName + m_files[rdoModelObjects::SMR].m_extention))
 			{
@@ -330,7 +325,6 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 					case fm_smr_error: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
 					case fm_smr_empty: return false;
 				}
-
 			}
 			else
 			{
@@ -338,7 +332,6 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 				setName(_T(""));
 			}
 		}
-
 	}
 	else
 	{
@@ -378,12 +371,12 @@ rbool RDOThreadRepository::saveAsDlg()
 	{
 		extractName(data.m_name);
 		if (m_modelName.empty())
+		{
 			return false;
-		FileList::iterator it = m_files.begin();
-		while (it != m_files.end())
+		}
+		STL_FOR_ALL(m_files, it)
 		{
 			it->m_fileName = m_modelName;
-			++it;
 		}
 		return true;
 	}
@@ -414,8 +407,8 @@ void RDOThreadRepository::realCloseModel()
 //	if (!m_modelName.empty()) {
 		m_hasModel = false;
 		broadcastMessage(RT_REPOSITORY_MODEL_CLOSE);
-		m_modelName   = _T("");
-		m_modelPath   = _T("");
+		m_modelName = _T("");
+		m_modelPath = _T("");
 		resetModelNames();
 	}
 }
@@ -524,7 +517,10 @@ void RDOThreadRepository::loadFile(CREF(tstring) fileName, REF(rdo::stream) stre
 		else
 		{
 			stream.setstate(std::ios_base::badbit);
-			if (mustExist) stream.setstate(stream.rdstate() | std::ios_base::failbit);
+			if (mustExist)
+			{
+				stream.setstate(stream.rdstate() | std::ios_base::failbit);
+			}
 		}
 	}
 	else
