@@ -133,7 +133,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 			msg.lock();
 			PTR(FileInfo) data = static_cast<PTR(FileInfo)>(msg.param);
 			data->m_name      = getFileName    (data->m_type);
-			data->m_full_name = getFullFileName(data->m_type);
+			data->m_fullName  = getFullFileName(data->m_type);
 			data->m_extention = getExtention   (data->m_type);
 			data->m_described = isDescribed    (data->m_type);
 			data->m_readOnly  = isReadOnly     (data->m_type);

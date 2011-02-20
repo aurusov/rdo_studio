@@ -1,16 +1,28 @@
-#ifndef RDOSTUDIOMODEL_H
-#define RDOSTUDIOMODEL_H
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdostudiomodel.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _RDOSTUDIOMODEL_H_
+#define _RDOSTUDIOMODEL_H_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_studio/rdostudioframemanager.h"
 #include "rdo_studio/rdostudiomodeldoc.h"
 #include "rdo_studio/rdostudiomodelview.h"
 #include "rdo_studio/rdostudioplugins.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_kernel/rdothread.h"
+// ===============================================================================
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
@@ -29,151 +41,166 @@ friend class RDOThreadStudioGUI;
 friend class RDOStudioPlugins;
 
 private:
-	CMultiDocTemplate* modelDocTemplate;
+	PTR(CMultiDocTemplate) modelDocTemplate;
 	RDOStudioFrameManager frameManager;
 
-	int  useTemplate;
-	bool autoDeleteDoc;
-	bool showCanNotCloseModelMessage;
+	int                       useTemplate;
+	rbool                     autoDeleteDoc;
+	rbool                     showCanNotCloseModelMessage;
 
-	bool GUI_HAS_MODEL;
-	bool GUI_CAN_RUN;
-	bool GUI_IS_RUNING;
-	bool GUI_ACTION_NEW;
-	bool GUI_ACTION_OPEN;
-	bool GUI_ACTION_SAVE;
-	bool GUI_ACTION_CLOSE;
-	bool GUI_ACTION_BUILD;
-	bool GUI_ACTION_RUN;
+	rbool                     GUI_HAS_MODEL;
+	rbool                     GUI_CAN_RUN;
+	rbool                     GUI_IS_RUNING;
+	rbool                     GUI_ACTION_NEW;
+	rbool                     GUI_ACTION_OPEN;
+	rbool                     GUI_ACTION_SAVE;
+	rbool                     GUI_ACTION_CLOSE;
+	rbool                     GUI_ACTION_BUILD;
+	rbool                     GUI_ACTION_RUN;
 
-	SYSTEMTIME time_start;
+	SYSTEMTIME                time_start;
 
-	mutable bool openError;
-	mutable bool smrEmptyError;
-	mutable bool modelClosed;
+	mutable rbool             openError;
+	mutable rbool             smrEmptyError;
+	mutable rbool             modelClosed;
 
-	bool frmDescribed;
-	double timeNow;
-	double speed;
-	double showRate;
-	bool                    tempPause;
-	rdoRuntime::RunTimeMode runtimeMode;
-	rdoRuntime::RunTimeMode runtimeMode_prev;
+	rbool                     frmDescribed;
+	double                    timeNow;
+	double                    speed;
+	double                    showRate;
+	rbool                     tempPause;
+	rdoRuntime::RunTimeMode   runtimeMode;
+	rdoRuntime::RunTimeMode   runtimeMode_prev;
 	rdoSimulator::RDOExitCode exitCode;
-	void updateFrmDescribed();
+	mutable rbool             prevModify;
 
-	mutable bool prevModify;
+	void  updateFrmDescribed      ();
+	void  newModelFromRepository  ();
+	void  openModelFromRepository ();
+	void  saveModelToRepository   ();
+	void  closeModelFromRepository();
+	rbool canCloseModel           ();
+	void  afterModelStart         ();
 
-	void newModelFromRepository();
-	void openModelFromRepository();
-	void saveModelToRepository();
-	void closeModelFromRepository();
-
-	bool canCloseModel();
-
-	void afterModelStart();
-
-	RDOStudioModelDoc* getModelDoc() const {
+	PTR(RDOStudioModelDoc) getModelDoc() const
+	{
 		POSITION pos = modelDocTemplate->GetFirstDocPosition();
-		return pos ? static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos )) : NULL;
+		return pos ? static_cast<PTR(RDOStudioModelDoc)>(modelDocTemplate->GetNextDoc(pos)) : NULL;
 	}
 
-	struct TemplateData {
-		unsigned int res_id;
-		int          position;
-		TemplateData()                                     : res_id( -1 )         , position( -1 )            {}
-		TemplateData( const TemplateData& copy )           : res_id( copy.res_id ), position( copy.position ) {}
-		TemplateData( unsigned int _res_id, int _position ): res_id( _res_id )    , position( _position )     {}
+	struct TemplateData
+	{
+		ruint m_resID;
+		int   m_position;
+
+		TemplateData()
+			: m_resID   (~0)
+			, m_position(~0)
+		{}
+		TemplateData(CREF(TemplateData) copy)
+			: m_resID   (copy.m_resID   )
+			, m_position(copy.m_position)
+		{}
+		TemplateData(ruint resID, int position)
+			: m_resID   (resID   )
+			, m_position(position)
+		{}
 	};
-	std::map< int, std::map< rdoModelObjects::RDOFileType, TemplateData > > model_templates;
+	typedef  std::map<rdoModelObjects::RDOFileType, TemplateData>  TemplateDataList;
+	typedef  std::map<int, TemplateDataList>                       TemplateList;
+	TemplateList m_modelTemplates;
 
 	void show_result();
 
 protected:
-	virtual void proc( RDOThread::RDOMessageInfo& msg );
+	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
 
 public:
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
-	bool newModel( std::string _model_name = "", std::string _model_path = "", const int _useTemplate = -1 );
-	bool openModel( const std::string& modelName = "" ) const;
-	bool saveModel() const;
-	void saveAsModel() const;
-	bool closeModel() const;
+	rbool newModel      (tstring _model_name = _T(""), tstring _model_path = _T(""), const int _useTemplate = -1);
+	rbool openModel     (CREF(tstring) modelName = _T("")) const;
+	rbool saveModel     () const;
+	void  saveAsModel   () const;
+	rbool closeModel    () const;
+	rbool buildModel    () const;
+	rbool runModel      ();
+	rbool stopModel     () const;
+	void  update        ();
+	void  setGUIPause   ();
+	void  setGUIContinue();
 
-	bool buildModel() const;
-	bool runModel();
-	bool stopModel() const;
-
-	void update();
-
-	void setGUIPause();
-	void setGUIContinue();
-
-	std::string getName() const {
-		RDOStudioModelDoc* doc = getModelDoc();
-		return doc ? doc->getName() : "";
+	tstring getName() const
+	{
+		PTR(RDOStudioModelDoc) pDoc = getModelDoc();
+		return pDoc ? pDoc->getName() : _T("");
 	}
-	void setName( const std::string& str );
-	std::string getFullName() const;
+	void    setName    (CREF(tstring) str);
+	tstring getFullName() const;
 
-	bool isModify() const {
-		RDOStudioModelDoc* doc = getModelDoc();
-		bool result = doc ? doc->isModify() : false;
-		if ( prevModify != result ) {
+	rbool   isModify   () const
+	{
+		PTR(RDOStudioModelDoc) pDoc = getModelDoc();
+		rbool result = pDoc ? pDoc->isModify() : false;
+		if (prevModify != result)
+		{
 			prevModify = result;
-			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
+			if (plugins)
+			{
+				plugins->pluginProc(rdoPlugin::PM_MODEL_MODIFY);
+			}
 		}
 		return result;
 	}
-	bool canNew() const                                         { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_NEW;   }
-	bool canOpen() const                                        { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_OPEN;  }
-	bool canSave() const                                        { return isModify()                                   && GUI_ACTION_SAVE;  }
-	bool canClose() const                                       { return hasModel() && !isRunning()                   && GUI_ACTION_CLOSE; }
-	bool canBuild() const                                       { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_BUILD; }
-	bool canRun() const                                         { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_RUN;   }
-	bool isRunning() const                                      { return GUI_IS_RUNING;             }
-	bool isFrmDescribed() const                                 { return frmDescribed;              }
-	double getTimeNow() const                                   { return timeNow;                   }
+	rbool  canNew        () const { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_NEW;   }
+	rbool  canOpen       () const { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_OPEN;  }
+	rbool  canSave       () const { return isModify()                                   && GUI_ACTION_SAVE;  }
+	rbool  canClose      () const { return hasModel() && !isRunning()                   && GUI_ACTION_CLOSE; }
+	rbool  canBuild      () const { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_BUILD; }
+	rbool  canRun        () const { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_RUN;   }
+	rbool  isRunning     () const { return GUI_IS_RUNING;                                                    }
+	rbool  isFrmDescribed() const { return frmDescribed;                                                     }
+	double getTimeNow    () const { return timeNow;                                                          }
 
-	rdoRuntime::RunTimeMode getRuntimeMode() const              { return runtimeMode;               }
-	void setRuntimeMode( const rdoRuntime::RunTimeMode value );
-	std::string getLastBreakPointName();
-	double getSpeed() const                                     { return speed;                     }
-	void setSpeed( double persent );
-	double getShowRate()                                        { return showRate;                  }
-	void setShowRate( double value );
-	rdoSimulator::RDOExitCode getExitCode() const               { return exitCode;                  }
+	rdoSimulator::RDOExitCode getExitCode   () const { return exitCode;    }
+	rdoRuntime::RunTimeMode   getRuntimeMode() const { return runtimeMode; }
+	void    setRuntimeMode       (const rdoRuntime::RunTimeMode value);
+	tstring getLastBreakPointName();
+	double  getSpeed             () const            { return speed;       }
+	void    setSpeed             (double persent);
+	double  getShowRate          ()                  { return showRate;    }
+	void    setShowRate          (double value);
 
-	void showNextFrame()                        { frameManager.showNextFrame();                      }
-	void showPrevFrame()                        { frameManager.showPrevFrame();                      }
-	bool canShowNextFrame() const               { return frameManager.canShowNextFrame();            }
-	bool canShowPrevFrame() const               { return frameManager.canShowPrevFrame();            }
-	int  getFrameCount() const                  { return frameManager.count();                       }
-	const char* getFrameName( int index ) const { return frameManager.getFrameName( index ).c_str(); }
-	void showFrame( int index )                 { frameManager.showFrame( index );                   }
-	void closeAllFrame()                        { frameManager.closeAll();                           }
+	void       showNextFrame   ()                { frameManager.showNextFrame();                    }
+	void       showPrevFrame   ()                { frameManager.showPrevFrame();                    }
+	rbool      canShowNextFrame() const          { return frameManager.canShowNextFrame();          }
+	rbool      canShowPrevFrame() const          { return frameManager.canShowPrevFrame();          }
+	int        getFrameCount   () const          { return frameManager.count();                     }
+	CPTR(char) getFrameName    (int index) const { return frameManager.getFrameName(index).c_str(); }
+	void       showFrame       (int index)       { frameManager.showFrame(index);                   }
+	void       closeAllFrame   ()                { frameManager.closeAll();                         }
+	rbool      hasModel        () const          { return GUI_HAS_MODEL;                            }
 
-	bool hasModel() const                       { return GUI_HAS_MODEL;                              }
-
-	rdoEditor::RDOEditorTabCtrl* getTab() const {
-		RDOStudioModelDoc* doc = getModelDoc();
-		if ( doc ) {
-			RDOStudioModelView* view = doc->getView();
-			if ( view ) {
-				return view->tab;
+	PTR(rdoEditor::RDOEditorTabCtrl) getTab() const
+	{
+		PTR(RDOStudioModelDoc) pDoc = getModelDoc();
+		if (pDoc)
+		{
+			PTR(RDOStudioModelView) pView = pDoc->getView();
+			if (pView)
+			{
+				return pView->tab;
 			}
 		}
 		return NULL;
 	}
 
-	void updateStyleOfAllModel() const;
-
-	bool isPrevModelClosed() const { return modelClosed; }
+	void  updateStyleOfAllModel() const;
+	rbool isPrevModelClosed    () const { return modelClosed; }
 };
 
 // ----------------------------------------------------------------------------
-extern RDOStudioModel* model;
+extern PTR(RDOStudioModel) model;
 
-#endif // RDOSTUDIOMODEL_H
+#endif //! _RDOSTUDIOMODEL_H_

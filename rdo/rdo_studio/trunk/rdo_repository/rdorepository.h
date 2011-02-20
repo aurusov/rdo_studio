@@ -7,8 +7,8 @@
  * indent   : 4T
  */
 
-#ifndef RDOREPOSITORYFILE_H
-#define RDOREPOSITORYFILE_H
+#ifndef _RDOREPOSITORYFILE_H_
+#define _RDOREPOSITORYFILE_H_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -82,7 +82,7 @@ public:
 	{
 		rdoModelObjects::RDOFileType  m_type;
 		tstring                       m_name;
-		tstring                       m_full_name;
+		tstring                       m_fullName;
 		tstring                       m_extention;
 		rbool                         m_readOnly;
 		rbool                         m_described;
@@ -96,7 +96,7 @@ public:
 		)
 		: m_type     (type     )
 		, m_name     (name     )
-		, m_full_name(fullName )
+		, m_fullName (fullName )
 		, m_extention(extention)
 		, m_readOnly (readOnly )
 		, m_described(described)
@@ -185,4 +185,4 @@ protected:
 
 CLOSE_RDO_REPOSITORY_NAMESPACE
 
-#endif //! RDOREPOSITORYFILE_H
+#endif //! _RDOREPOSITORYFILE_H_
