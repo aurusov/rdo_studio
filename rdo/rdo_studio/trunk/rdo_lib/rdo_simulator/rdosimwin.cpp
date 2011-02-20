@@ -1099,36 +1099,36 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 
 	try
 	{
-		info.error = false;
+		info.m_error = false;
 		parser.parse(smr);
 	}
 	catch (REF(rdoParse::RDOSyntaxException))
 	{
 		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR);
-		info.error = true;
+		info.m_error = true;
 	}
 	catch (REF(rdoRuntime::RDORuntimeException) ex)
 	{
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
 		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_STRING, &mess);
 		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR);
-		info.error = true;
+		info.m_error = true;
 	}
 
 	if (!parser.hasSMR())
 	{
 		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR);
 		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY);
-		info.error = true;
+		info.m_error = true;
 	}
 	else
 	{
-		info.model_name     = parser.getSMR()->getFile(_T("Model_name")    );
-		info.resource_file  = parser.getSMR()->getFile(_T("Resource_file") );
-		info.frame_file     = parser.getSMR()->getFile(_T("Frame_file")    );
-		info.statistic_file = parser.getSMR()->getFile(_T("Statistic_file"));
-		info.results_file   = parser.getSMR()->getFile(_T("Results_file")  );
-		info.trace_file     = parser.getSMR()->getFile(_T("Trace_file")    );
+		info.m_modelName     = parser.getSMR()->getFile(_T("Model_name")    );
+		info.m_resourceFile  = parser.getSMR()->getFile(_T("Resource_file") );
+		info.m_frameFile     = parser.getSMR()->getFile(_T("Frame_file")    );
+		info.m_statisticFile = parser.getSMR()->getFile(_T("Statistic_file"));
+		info.m_resultsFile   = parser.getSMR()->getFile(_T("Results_file")  );
+		info.m_traceFile     = parser.getSMR()->getFile(_T("Trace_file")    );
 	}
 }
 

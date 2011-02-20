@@ -218,7 +218,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			CFileDialog dlg( true, "smr", "", 0, filter, AfxGetMainWnd() );
 			data->m_result   = dlg.DoModal() == IDOK;
 			data->m_name     = dlg.GetPathName();
-			data->m_readonly = dlg.GetReadOnlyPref() == TRUE;
+			data->m_readOnly = dlg.GetReadOnlyPref() == TRUE;
 			msg.unlock();
 			break;
 		}
@@ -787,8 +787,8 @@ void RDOStudioModel::openModelFromRepository()
 					if ( !stream_error )
 					{
 						edit->load( stream );
-						edit->setReadOnly( data.m_readonly );
-						if ( data.m_readonly )
+						edit->setReadOnly( data.m_readOnly );
+						if ( data.m_readOnly )
 						{
 							output->appendStringToDebug( rdo::format( IDS_MODEL_FILE_READONLY, std::string( data.m_name + data.m_extention).c_str() ) );
 						}

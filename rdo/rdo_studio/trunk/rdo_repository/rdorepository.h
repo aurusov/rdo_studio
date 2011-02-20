@@ -1,3 +1,12 @@
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdorepository.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
 #ifndef RDOREPOSITORYFILE_H
 #define RDOREPOSITORYFILE_H
 
@@ -5,13 +14,19 @@
 #pragma once
 #endif
 
+// ====================================================================== INCLUDES
 #include <string>
 #include <fstream>
+// ====================================================================== SYNOPSIS
 #include "rdo_kernel/rdothread.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_common/rdocommon.h"
+// ===============================================================================
 
-namespace rdoRepository {
+#define OPEN_RDO_REPOSITORY_NAMESPACE  namespace rdoRepository {
+#define CLOSE_RDO_REPOSITORY_NAMESPACE };
+
+OPEN_RDO_REPOSITORY_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOThreadRepository
@@ -19,6 +34,8 @@ namespace rdoRepository {
 class RDOThreadRepository: public RDOThreadMT
 {
 public:
+	RDOThreadRepository();
+
 	struct FileData
 	{
 		rdoModelObjects::RDOFileType  m_type;
@@ -42,12 +59,12 @@ public:
 	struct OpenFile
 	{
 		tstring  m_name;
-		rbool    m_readonly;
+		rbool    m_readOnly;
 		rbool    m_result;
 
-		OpenFile(CREF(tstring) name = _T(""), rbool readonly = false)
+		OpenFile(CREF(tstring) name = _T(""), rbool readOnly = false)
 			: m_name    (name    )
-			, m_readonly(readonly)
+			, m_readOnly(readOnly)
 			, m_result  (false   )
 		{}
 	};
@@ -67,109 +84,105 @@ public:
 		tstring                       m_name;
 		tstring                       m_full_name;
 		tstring                       m_extention;
-		rbool                         m_readonly;
+		rbool                         m_readOnly;
 		rbool                         m_described;
 
 		FileInfo(  rdoModelObjects::RDOFileType type      = rdoModelObjects::SMR
 		         , CREF(tstring)                name      = _T("")
-		         , CREF(tstring)                full_name = _T("")
+		         , CREF(tstring)                fullName  = _T("")
 		         , CREF(tstring)                extention = _T("smr")
-		         , rbool                        readonly  = false
+		         , rbool                        readOnly  = false
 		         , rbool                        described = false
 		)
 		: m_type     (type     )
 		, m_name     (name     )
-		, m_full_name(full_name)
+		, m_full_name(fullName )
 		, m_extention(extention)
-		, m_readonly (readonly )
+		, m_readOnly (readOnly )
 		, m_described(described)
 		{}
 	};
 
 private:
-	tstring modelName;
-	tstring modelPath;
-	rbool   hasModel;
+	struct fileInfo
+	{
+		tstring  m_fileName;
+		tstring  m_extention;
+		rbool    m_described;
+		rbool    m_mustExist;
+		rbool    m_deleteIfEmpty;
+		rbool    m_readOnly;
 
-	struct fileInfo {
-		tstring filename;
-		tstring extention;
-		rbool   described;
-		rbool   mustexist;
-		rbool   deleteifempty;
-		rbool   readonly;
-
-		fileInfo(): extention( "" ), deleteifempty( false ), readonly( false ) {
+		fileInfo()
+			: m_extention    (_T(""))
+			, m_deleteIfEmpty(false )
+			, m_readOnly     (false )
+		{
 			resetname();
-		};
+		}
 
-		void resetname() {
-			filename  = "";
-			described = false;
-			mustexist = true;
+		void resetname()
+		{
+			m_fileName  = _T("");
+			m_described = false;
+			m_mustExist = true;
 		}
 	};
-
 	typedef std::vector<fileInfo> FileList;
-	FileList m_files;
-
-	void resetModelNames();
 
 	enum FindModel {
 		fm_ok,
 		fm_smr_error,
 		fm_smr_empty
 	};
+
+	tstring        m_modelName;
+	tstring        m_modelPath;
+	rbool          m_hasModel;
+	std::ofstream  m_traceFile;
+	FileList       m_files;
+	rbool          m_realOnlyInDlg;
+
+	void      resetModelNames ();
 	FindModel updateModelNames();
+	rbool     saveAsDlg       ();
+	rbool     canCloseModel   ();
+	void      realCloseModel  ();
+	void      extractName     (CREF(tstring) fullname);
+	void      setName         (CREF(tstring) str);
 
-	rbool realOnlyInDlg;
+	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
+	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
 
-	rbool saveAsDlg();
-	rbool canCloseModel();
-	void realCloseModel();
-
-	void extractName(CREF(tstring) fullname);
-
-	void setName(CREF(tstring) str);
-
-	void loadFile(CREF(tstring) filename, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
-	void saveFile(CREF(tstring) filename, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
-
-//	void changeLastModelPath();
-
-	std::ofstream trace_file;
-	void beforeModelStart();
-	void stopModel();
-	void trace( CREF(tstring) str );
-	void writeModelFilesInfo(REF(std::ofstream) stream) const;
+	void      beforeModelStart   ();
+	void      stopModel          ();
+	void      trace              (CREF(tstring) str);
+	void      writeModelFilesInfo(REF(std::ofstream) stream) const;
 
 protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	void newModel   (CPTRC(NewModel) data                  );
+	void  newModel   (CPTRC(NewModel) data                  );
 	rbool openModel  (CREF(tstring)   modelFileName = _T(""));
-	void closeModel ();
+	void  closeModel ();
 	rbool saveModel  ();
-	void saveAsModel();
+	void  saveAsModel();
 
-	void load( rdoModelObjects::RDOFileType type, REF(rdo::stream) stream );
-	void save( rdoModelObjects::RDOFileType type, REF(rdo::stream) stream ) const;
+	void load(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream);
+	void save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const;
 
-	tstring getFileName    (rdoModelObjects::RDOFileType type) const { return m_files[type].filename;  }
-	tstring getExtention   (rdoModelObjects::RDOFileType type) const { return m_files[type].extention; }
-	tstring getFileExtName (rdoModelObjects::RDOFileType type) const { return m_files[type].filename + m_files[type].extention; }
-	tstring getFullFileName(rdoModelObjects::RDOFileType type) const { return modelPath + getFileExtName(type);                 }
-	rbool   isReadOnly     (rdoModelObjects::RDOFileType type) const { return m_files[type].readonly;  }
-	rbool   isDescribed    (rdoModelObjects::RDOFileType type) const { return m_files[type].described; }
-	rbool   isMustExist    (rdoModelObjects::RDOFileType type) const { return m_files[type].mustexist; }
+	tstring getFileName    (rdoModelObjects::RDOFileType type) const { return m_files[type].m_fileName;  }
+	tstring getExtention   (rdoModelObjects::RDOFileType type) const { return m_files[type].m_extention; }
+	tstring getFileExtName (rdoModelObjects::RDOFileType type) const { return m_files[type].m_fileName + m_files[type].m_extention; }
+	tstring getFullFileName(rdoModelObjects::RDOFileType type) const { return m_modelPath + getFileExtName(type);               }
+	rbool   isReadOnly     (rdoModelObjects::RDOFileType type) const { return m_files[type].m_readOnly;  }
+	rbool   isDescribed    (rdoModelObjects::RDOFileType type) const { return m_files[type].m_described; }
+	rbool   isMustExist    (rdoModelObjects::RDOFileType type) const { return m_files[type].m_mustExist; }
 
-	void loadBMP( CREF(tstring) name, REF(rdo::stream) stream ) const;
-
-public:
-	RDOThreadRepository();
+	void loadBMP(CREF(tstring) name, REF(rdo::stream) stream) const;
 };
 
-}; // namespace rdoRepository
+CLOSE_RDO_REPOSITORY_NAMESPACE
 
-#endif // RDOREPOSITORYFILE_H
+#endif //! RDOREPOSITORYFILE_H

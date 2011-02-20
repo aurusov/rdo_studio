@@ -415,8 +415,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			Name=".repository"
 			>
 			<File
 				RelativePath="rdorepository.cpp"
@@ -476,11 +475,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl"
-			>
 			<File
 				RelativePath="rdorepository.h"
 				>
