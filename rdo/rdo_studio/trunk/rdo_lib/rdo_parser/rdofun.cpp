@@ -370,16 +370,18 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
 	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-	ASSERT(pContextMemory);
-	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-	ASSERT(pLocalVariableListStack);
-	LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(value->getIdentificator());
-	if(pLocalVariable)
+	if (pContextMemory)
 	{
-		m_value = pLocalVariable->getArithm()->value();
-		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->getIdentificator());
-		m_pCalc->setSrcInfo(src_info());
-		return;
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(value->getIdentificator());
+		if (pLocalVariable)
+		{
+			m_value = pLocalVariable->getArithm()->value();
+			m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->getIdentificator());
+			m_pCalc->setSrcInfo(src_info());
+			return;
+		}
 	}
 
 	RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value->getIdentificator().c_str()));
