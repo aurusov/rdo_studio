@@ -88,27 +88,27 @@ private:
 		return pos ? static_cast<PTR(RDOStudioModelDoc)>(m_pModelDocTemplate->GetNextDoc(pos)) : NULL;
 	}
 
-	struct TemplateData
+	struct ModelTemplateItem
 	{
 		ruint m_resID;
 		int   m_position;
 
-		TemplateData()
+		ModelTemplateItem()
 			: m_resID   (~0)
 			, m_position(~0)
 		{}
-		TemplateData(CREF(TemplateData) copy)
+		ModelTemplateItem(CREF(ModelTemplateItem) copy)
 			: m_resID   (copy.m_resID   )
 			, m_position(copy.m_position)
 		{}
-		TemplateData(ruint resID, int position)
+		ModelTemplateItem(ruint resID, int position)
 			: m_resID   (resID   )
 			, m_position(position)
 		{}
 	};
-	typedef  std::map<rdoModelObjects::RDOFileType, TemplateData>  TemplateDataList;
-	typedef  std::map<int, TemplateDataList>                       TemplateList;
-	TemplateList m_modelTemplates;
+	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
+	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;
+	ModelTemplateList m_modelTemplates;
 
 	void show_result();
 
