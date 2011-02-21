@@ -648,11 +648,14 @@ void RDOStudioApp::setShowCaptionFullName( const bool value )
 
 void RDOStudioApp::setupFileAssociation()
 {
-	std::string strFileTypeId   = _T("RAO.FileInfo");
-	std::string strFileTypeName = _T("RAO FileInfo");
-	std::string strParam        = _T(" \"%1\"");
-	std::string strPathName     = RDOStudioApp::getFullFileName();
-	std::string strRAOExt       = _T(".smr");
+	std::string strFileTypeId    = _T("RAO.Project");
+	std::string strFileTypeName  = _T("RAO Project");
+	std::string strParam         = _T(" \"%1\"");
+	std::string strPathName      = RDOStudioApp::getFullFileName();
+	std::string strRAOExt        = _T(".rdox");
+
+	std::string strFileTypeIdOld = _T("RAO.FileInfo");
+	std::string strRAOExtOld     = _T(".smr");
 
 	bool win2000 = false;
 	OSVERSIONINFO osvi;
@@ -702,6 +705,12 @@ void RDOStudioApp::setupFileAssociation()
 				}
 			}
 			if ( mustBeRegistered ) {
+				::RegDeleteKeyEx( hCurUserSoftClasses, strFileTypeIdOld.c_str(), KEY_WOW64_32KEY, 0 );
+				::RegDeleteKeyEx( hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\DefaultIcon")).c_str(), KEY_WOW64_32KEY, 0 );
+				::RegDeleteKeyEx( hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\shell\\open\\command")).c_str(), KEY_WOW64_32KEY, 0 );
+				::RegDeleteKeyEx( hCurUserSoftClasses, std::string(strRAOExtOld + _T("\\ShellNew")).c_str(), KEY_WOW64_32KEY, 0 );
+				::RegDeleteKeyEx( hCurUserSoftClasses, strRAOExtOld.c_str(), KEY_WOW64_32KEY, 0 );
+
 				HKEY hKey_tmp;
 				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
 					std::string s = strFileTypeName;
@@ -715,11 +724,6 @@ void RDOStudioApp::setupFileAssociation()
 				}
 				if ( ::RegCreateKeyEx( hCurUserSoftClasses, std::string(strFileTypeId + _T("\\shell\\open\\command")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
 					std::string s = strPathName + strParam;
-					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
-					::RegCloseKey( hKey_tmp );
-				}
-				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strRAOExt.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
-					std::string s = strFileTypeId;
 					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
 					::RegCloseKey( hKey_tmp );
 				}
