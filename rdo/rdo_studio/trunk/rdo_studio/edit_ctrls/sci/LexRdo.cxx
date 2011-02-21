@@ -127,8 +127,8 @@ static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordLi
 		} else {
 			if ( str.length() ) {
 				if (
-					str == "$Pattern" || str == "$Resource_type" || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence"  || str == "$Function" || str == "$Decision_point" || str == "$Results" ||
-					str == "$pattern" || str == "$resource_type" || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence"  || str == "$function" || str == "$decision_point" || str == "$results" )
+					str == "$Pattern" || str == "$Resource_type" || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence"  || str == "$Function" || str == "$Decision_point" || str == "$Process" || str == "$Results" ||
+					str == "$pattern" || str == "$resource_type" || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence"  || str == "$function" || str == "$decision_point" || str == "$Process" || str == "$results" )
 				{
 					levelCurrent++;
 				} else if ( str == "$End" ) {
