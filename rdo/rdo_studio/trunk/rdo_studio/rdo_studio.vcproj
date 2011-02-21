@@ -5379,6 +5379,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".win.registry"
+				>
+				<File
+					RelativePath=".\win_registry\Registry.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\win_registry\Registry.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="2. RDO-Model"

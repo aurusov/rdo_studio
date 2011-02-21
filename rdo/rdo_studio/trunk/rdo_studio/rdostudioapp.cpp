@@ -11,6 +11,7 @@
 #include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
+#include "rdo_studio/win_registry/registry.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_plugin/rdoplugin.h"
@@ -705,11 +706,11 @@ void RDOStudioApp::setupFileAssociation()
 				}
 			}
 			if ( mustBeRegistered ) {
-				::RegDeleteKeyEx( hCurUserSoftClasses, strFileTypeIdOld.c_str(), KEY_WOW64_32KEY, 0 );
-				::RegDeleteKeyEx( hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\DefaultIcon")).c_str(), KEY_WOW64_32KEY, 0 );
-				::RegDeleteKeyEx( hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\shell\\open\\command")).c_str(), KEY_WOW64_32KEY, 0 );
-				::RegDeleteKeyEx( hCurUserSoftClasses, std::string(strRAOExtOld + _T("\\ShellNew")).c_str(), KEY_WOW64_32KEY, 0 );
-				::RegDeleteKeyEx( hCurUserSoftClasses, strRAOExtOld.c_str(), KEY_WOW64_32KEY, 0 );
+				DeleteRegistryKey(hCurUserSoftClasses, strFileTypeIdOld.c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\DefaultIcon")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\shell\\open\\command")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, std::string(strRAOExtOld + _T("\\ShellNew")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, strRAOExtOld.c_str());
 
 				HKEY hKey_tmp;
 				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {

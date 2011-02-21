@@ -5,10 +5,10 @@
 * 24-Jan-00 | Created
 *  6-Feb-01 | [2.0.0.1223] REQ #278: close key
 *****************************************************************************/
-#include "stdafx.h"
-#include "registry.h"
+#include "rdo_studio/stdafx.h"
 #include "shlwapi.h"
-#include "resource.h"
+#include "rdo_studio/win_registry/registry.h"
+#include "rdo_studio/win_registry/resource.h"
 
 /****************************************************************************
 *                                   makeKey
@@ -94,8 +94,10 @@ static void makePath(CString & path, const CString & var, CString & name)
 	} /* no path */
 
      // append the prefix of the var to the path, leaving only the name
-     if(path[path.GetLength() - 1] != _T('\\'))
-	path += _T("\\");
+	if (!path.IsEmpty() && path[path.GetLength() - 1] != _T('\\'))
+	{
+		path += _T("\\");
+	}
      path += var.Left(i);
      name = var.Right(var.GetLength() - i - 1);
     }
