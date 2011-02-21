@@ -131,6 +131,7 @@ RDOStudioModel::RDOStudioModel()
 	m_modelTemplates[5] = modelTemplate;
 
 	modelTemplate.clear();
+	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP6_EVN, 0);
 	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP6_PAT, 0);
 	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP6_RTP, 0);
 	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP6_RSS, 0);
