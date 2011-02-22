@@ -44,19 +44,19 @@ RDOThreadRepository::RDOThreadRepository()
 	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
 	notifies.push_back(RT_RUNTIME_TRACE_STRING              );
 
-	m_files.resize(12);
-	m_files[rdoModelObjects::RTP].m_extention = _T(".rtp");
-	m_files[rdoModelObjects::RSS].m_extention = _T(".rss");
-	m_files[rdoModelObjects::EVN].m_extention = _T(".evn");
-	m_files[rdoModelObjects::PAT].m_extention = _T(".pat");
-	m_files[rdoModelObjects::DPT].m_extention = _T(".dpt");
-	m_files[rdoModelObjects::PRC].m_extention = _T(".prc");
-	m_files[rdoModelObjects::FRM].m_extention = _T(".frm");
-	m_files[rdoModelObjects::FUN].m_extention = _T(".fun");
-	m_files[rdoModelObjects::SMR].m_extention = _T(".smr");
-	m_files[rdoModelObjects::PMD].m_extention = _T(".pmd");
-	m_files[rdoModelObjects::PMV].m_extention = _T(".pmv");
-	m_files[rdoModelObjects::TRC].m_extention = _T(".trc");
+	m_files[rdoModelObjects::RDOX].m_extention = _T(".rdox");
+	m_files[rdoModelObjects::RTP ].m_extention = _T(".rtp");
+	m_files[rdoModelObjects::RSS ].m_extention = _T(".rss");
+	m_files[rdoModelObjects::EVN ].m_extention = _T(".evn");
+	m_files[rdoModelObjects::PAT ].m_extention = _T(".pat");
+	m_files[rdoModelObjects::DPT ].m_extention = _T(".dpt");
+	m_files[rdoModelObjects::PRC ].m_extention = _T(".prc");
+	m_files[rdoModelObjects::FRM ].m_extention = _T(".frm");
+	m_files[rdoModelObjects::FUN ].m_extention = _T(".fun");
+	m_files[rdoModelObjects::SMR ].m_extention = _T(".smr");
+	m_files[rdoModelObjects::PMD ].m_extention = _T(".pmd");
+	m_files[rdoModelObjects::PMV ].m_extention = _T(".pmv");
+	m_files[rdoModelObjects::TRC ].m_extention = _T(".trc");
 
 //	m_files[rdoModelObjects::OPR].deleteifempty = true;
 //	m_files[rdoModelObjects::DPT].deleteifempty = true;
@@ -172,7 +172,7 @@ void RDOThreadRepository::resetModelNames()
 {
 	STL_FOR_ALL(m_files, it)
 	{
-		it->resetname();
+		it->second.resetname();
 	}
 }
 
@@ -182,10 +182,10 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 	{
 		STL_FOR_ALL(m_files, it)
 		{
-			it->m_fileName      = m_modelName;
-			it->m_described     = true;
-			it->m_mustExist     = false;
-			it->m_deleteIfEmpty = true;
+			it->second.m_fileName      = m_modelName;
+			it->second.m_described     = true;
+			it->second.m_mustExist     = false;
+			it->second.m_deleteIfEmpty = true;
 		}
 		return fm_ok;
 	}
@@ -243,9 +243,9 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		}
 		STL_FOR_ALL(m_files, it)
 		{
-			it->m_fileName  = m_files[rdoModelObjects::SMR].m_fileName;
-			it->m_described = true;
-			it->m_mustExist = true;
+			it->second.m_fileName  = m_files[rdoModelObjects::SMR].m_fileName;
+			it->second.m_described = true;
+			it->second.m_mustExist = true;
 		}
 		return fm_smr_error;
 	}
@@ -281,7 +281,7 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 		}
 		STL_FOR_ALL(m_files, it)
 		{
-			it->m_fileName = m_modelName;
+			it->second.m_fileName = m_modelName;
 		}
 		m_hasModel = true;
 		broadcastMessage(RT_REPOSITORY_MODEL_NEW);
@@ -324,25 +324,24 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 		{
 			STL_FOR_ALL(m_files, it)
 			{
-				it->m_readOnly = m_realOnlyInDlg;
+				it->second.m_readOnly = m_realOnlyInDlg;
 			}
 
-			tstring rdoxFileName = m_modelPath + m_modelName + _T(".rdox");
-			tstring smrFileName  = m_modelPath + m_modelName + m_files[rdoModelObjects::SMR].m_extention;
+			tstring rdoxFileName = m_modelPath + m_modelName + m_files[rdoModelObjects::RDOX].m_extention;
+			tstring smrFileName  = m_modelPath + m_modelName + m_files[rdoModelObjects::SMR ].m_extention;
 
 			if (rdo::File::exist(rdoxFileName))
 			{
 				m_projectName.m_fullFileName = rdoxFileName;
 				m_projectName.m_rdox         = true;
-				m_files[rdoModelObjects::SMR].m_fileName = m_modelName;
-				m_hasModel = true;
+				m_hasModel                   = true;
 			}
 			else if (rdo::File::exist(smrFileName))
 			{
-				m_projectName.m_fullFileName = smrFileName;
-				m_projectName.m_rdox         = false;
+				m_projectName.m_fullFileName             = smrFileName;
+				m_projectName.m_rdox                     = false;
 				m_files[rdoModelObjects::SMR].m_fileName = m_modelName;
-				m_hasModel = true;
+				m_hasModel                               = true;
 			}
 
 			if (m_hasModel)
@@ -356,7 +355,7 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 			}
 			else
 			{
-				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, &tstring(m_modelPath + m_modelName + m_files[rdoModelObjects::SMR].m_extention));
+				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, &tstring(m_projectName.m_fullFileName));
 				setName(_T(""));
 			}
 		}
@@ -404,7 +403,7 @@ rbool RDOThreadRepository::saveAsDlg()
 		}
 		STL_FOR_ALL(m_files, it)
 		{
-			it->m_fileName = m_modelName;
+			it->second.m_fileName = m_modelName;
 		}
 		return true;
 	}
@@ -594,7 +593,7 @@ void RDOThreadRepository::load(rdoModelObjects::RDOFileType type, REF(rdo::strea
 
 void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const
 {
-	saveFile(getFullFileName(type), stream, m_files[type].m_deleteIfEmpty);
+	saveFile(getFullFileName(type), stream, isDeleteIfEmpty(type));
 	if (type == rdoModelObjects::SMR)
 	{
 		const_cast<PTR(RDOThreadRepository)>(this)->updateModelNames();
@@ -620,8 +619,8 @@ void RDOThreadRepository::writeModelFilesInfo(REF(std::ofstream) stream) const
 {
 	stream << _T("Results_file   = ") << getFileExtName(rdoModelObjects::PMV) << _T("    ") << rdo::Time::local().asString() << std::endl;
 	stream << _T("Run_file       = ") << getFileExtName(rdoModelObjects::SMR) << std::endl;
-	stream << _T("Model_name     = ") << m_files[rdoModelObjects::SMR].m_fileName << std::endl;
-	stream << _T("Resource_file  = ") << m_files[rdoModelObjects::RSS].m_fileName << m_files[rdoModelObjects::RSS].m_extention << std::endl;
+	stream << _T("Model_name     = ") << getFileName(rdoModelObjects::SMR) << std::endl;
+	stream << _T("Resource_file  = ") << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
 }
 
 void RDOThreadRepository::beforeModelStart()
@@ -676,6 +675,88 @@ void RDOThreadRepository::trace(CREF(tstring) message)
 		m_traceFile.write(_T("\n"), 1);
 		m_traceFile.flush();
 	}
+}
+
+tstring RDOThreadRepository::getFileName(rdoModelObjects::RDOFileType type) const
+{
+	BOOST_AUTO(it, m_files.find(type));
+	if (it == m_files.end())
+	{
+		NEVER_REACH_HERE;
+	}
+
+	return it->second.m_fileName;
+}
+
+tstring RDOThreadRepository::getExtention(rdoModelObjects::RDOFileType type) const
+{
+	BOOST_AUTO(it, m_files.find(type));
+	if (it == m_files.end())
+	{
+		NEVER_REACH_HERE;
+	}
+
+	return it->second.m_extention;
+}
+
+tstring RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) const
+{
+	BOOST_AUTO(it, m_files.find(type));
+	if (it == m_files.end())
+	{
+		NEVER_REACH_HERE;
+	}
+
+	return it->second.m_fileName + it->second.m_extention;
+}
+
+tstring RDOThreadRepository::getFullFileName(rdoModelObjects::RDOFileType type) const
+{
+	return m_modelPath + getFileExtName(type);
+}
+
+rbool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const
+{
+	BOOST_AUTO(it, m_files.find(type));
+	if (it == m_files.end())
+	{
+		NEVER_REACH_HERE;
+	}
+
+	return it->second.m_readOnly;
+}
+
+rbool RDOThreadRepository::isDescribed(rdoModelObjects::RDOFileType type) const
+{
+	BOOST_AUTO(it, m_files.find(type));
+	if (it == m_files.end())
+	{
+		NEVER_REACH_HERE;
+	}
+
+	return it->second.m_described;
+}
+
+rbool RDOThreadRepository::isMustExist(rdoModelObjects::RDOFileType type) const
+{
+	BOOST_AUTO(it, m_files.find(type));
+	if (it == m_files.end())
+	{
+		NEVER_REACH_HERE;
+	}
+
+	return it->second.m_mustExist;
+}
+
+rbool RDOThreadRepository::isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const
+{
+	BOOST_AUTO(it, m_files.find(type));
+	if (it == m_files.end())
+	{
+		NEVER_REACH_HERE;
+	}
+
+	return it->second.m_deleteIfEmpty;
 }
 
 CLOSE_RDO_REPOSITORY_NAMESPACE

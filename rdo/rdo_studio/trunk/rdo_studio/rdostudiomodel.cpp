@@ -713,7 +713,7 @@ void RDOStudioModel::newModelFromRepository()
 		}
 
 		m_pModelDocTemplate->OpenDocumentFile(NULL);
-		rdoRepository::RDOThreadRepository::FileInfo data_smr;
+		rdoRepository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 		studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 		setName(data_smr.m_name);
 
@@ -805,7 +805,7 @@ void RDOStudioModel::openModelFromRepository()
 
 		PTR(CWnd) active = CWnd::GetActiveWindow();
 		m_pModelDocTemplate->OpenDocumentFile(NULL);
-		rdoRepository::RDOThreadRepository::FileInfo data_smr;
+		rdoRepository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 		studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 		setName(data_smr.m_name);
 
@@ -960,7 +960,7 @@ void RDOStudioModel::saveModelToRepository()
 			wasSaved = true;
 		}
 	}
-	rdoRepository::RDOThreadRepository::FileInfo data;
+	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
@@ -979,7 +979,7 @@ void RDOStudioModel::saveModelToRepository()
 
 tstring RDOStudioModel::getFullName() const
 {
-	rdoRepository::RDOThreadRepository::FileInfo data;
+	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	return data.m_fullName;
 }

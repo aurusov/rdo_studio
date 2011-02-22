@@ -39,7 +39,7 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 		{}
 	};
 
-	enum RDOFileType  {RTP = 0, RSS, EVN, PAT, DPT, PRC, FRM, FUN, SMR, PMD, PMV, TRC};
+	enum RDOFileType  {RTP = 0, RSS, EVN, PAT, DPT, PRC, FRM, FUN, SMR, PMD, PMV, TRC, RDOX};
 
 	enum RDOParseType
 	{
