@@ -82,6 +82,10 @@
 #define IDR_MODEL_TMP2_PMD              231
 #define IDR_MODEL_TMP2_EVN              232
 #define IDR_MODEL_TMP2_PRC              233
+#define IDR_MODEL_TMP3_EVN              324
+#define IDR_MODEL_TMP3_PRC              325
+#define IDR_MODEL_TMP3_PMD              326
+#define IDR_MODEL_TMP7_EVN              327
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003

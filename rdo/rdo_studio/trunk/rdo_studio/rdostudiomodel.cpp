@@ -103,6 +103,9 @@ RDOStudioModel::RDOStudioModel()
 	m_modelTemplates[2] = modelTemplate;
 
 	modelTemplate.clear();
+	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP3_PMD, 0  );
+	modelTemplate[ rdoModelObjects::PRC ] = ModelTemplateItem(IDR_MODEL_TMP3_PRC, 0  );
+	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP3_EVN, 0  );
 	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP3_PAT, 131);
 	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP3_RTP, 98 );
 	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP3_RSS, 0  );
@@ -146,6 +149,7 @@ RDOStudioModel::RDOStudioModel()
 	m_modelTemplates[6] = modelTemplate;
 
 	modelTemplate.clear();
+	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP7_EVN, 0);
 	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP7_PAT, 0);
 	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP7_RTP, 0);
 	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP7_RSS, 0);
