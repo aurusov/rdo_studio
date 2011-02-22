@@ -178,23 +178,35 @@ void RDOThreadRepository::resetModelNames()
 
 RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 {
+	if (m_projectName.m_rdox)
+	{
+		STL_FOR_ALL(m_files, it)
+		{
+			it->m_fileName      = m_modelName;
+			it->m_described     = true;
+			it->m_mustExist     = false;
+			it->m_deleteIfEmpty = true;
+		}
+		return fm_ok;
+	}
+
 	rdo::textstream smrStream;
 	loadFile(getFullFileName(rdoModelObjects::SMR), smrStream, true, true, m_files[rdoModelObjects::SMR].m_readOnly);
 	rdoModelObjects::RDOSMRFileInfo fileInfo;
 	kernel->simulator()->parseSMRFileInfo(smrStream, fileInfo);
 	if (!fileInfo.m_error)
 	{
- 		m_files[rdoModelObjects::RTP].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
- 		m_files[rdoModelObjects::RSS].m_fileName = fileInfo.m_resourceFile.empty()  ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_resourceFile;
+		m_files[rdoModelObjects::RTP].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
+		m_files[rdoModelObjects::RSS].m_fileName = fileInfo.m_resourceFile.empty()  ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_resourceFile;
 		m_files[rdoModelObjects::EVN].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
 		m_files[rdoModelObjects::PAT].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
- 		m_files[rdoModelObjects::DPT].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
- 		m_files[rdoModelObjects::PRC].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
- 		m_files[rdoModelObjects::FRM].m_fileName = fileInfo.m_frameFile.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_frameFile;
- 		m_files[rdoModelObjects::FUN].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
- 		m_files[rdoModelObjects::PMD].m_fileName = fileInfo.m_statisticFile.empty() ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_statisticFile;
- 		m_files[rdoModelObjects::PMV].m_fileName = fileInfo.m_resultsFile.empty()   ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_resultsFile;
- 		m_files[rdoModelObjects::TRC].m_fileName = fileInfo.m_traceFile.empty()      ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_traceFile;
+		m_files[rdoModelObjects::DPT].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
+		m_files[rdoModelObjects::PRC].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
+		m_files[rdoModelObjects::FRM].m_fileName = fileInfo.m_frameFile.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_frameFile;
+		m_files[rdoModelObjects::FUN].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
+		m_files[rdoModelObjects::PMD].m_fileName = fileInfo.m_statisticFile.empty() ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_statisticFile;
+		m_files[rdoModelObjects::PMV].m_fileName = fileInfo.m_resultsFile.empty()   ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_resultsFile;
+		m_files[rdoModelObjects::TRC].m_fileName = fileInfo.m_traceFile.empty()      ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_traceFile;
 
 		m_files[rdoModelObjects::RTP].m_described = !fileInfo.m_modelName.empty();
 		m_files[rdoModelObjects::RSS].m_described = !fileInfo.m_resourceFile.empty();
@@ -314,10 +326,27 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 			{
 				it->m_readOnly = m_realOnlyInDlg;
 			}
-			if (rdo::File::exist(m_modelPath + m_modelName + m_files[rdoModelObjects::SMR].m_extention))
+
+			tstring rdoxFileName = m_modelPath + m_modelName + _T(".rdox");
+			tstring smrFileName  = m_modelPath + m_modelName + m_files[rdoModelObjects::SMR].m_extention;
+
+			if (rdo::File::exist(rdoxFileName))
 			{
+				m_projectName.m_fullFileName = rdoxFileName;
+				m_projectName.m_rdox         = true;
 				m_files[rdoModelObjects::SMR].m_fileName = m_modelName;
 				m_hasModel = true;
+			}
+			else if (rdo::File::exist(smrFileName))
+			{
+				m_projectName.m_fullFileName = smrFileName;
+				m_projectName.m_rdox         = false;
+				m_files[rdoModelObjects::SMR].m_fileName = m_modelName;
+				m_hasModel = true;
+			}
+
+			if (m_hasModel)
+			{
 				switch (updateModelNames())
 				{
 				case fm_ok       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
