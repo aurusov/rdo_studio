@@ -426,8 +426,8 @@ void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
 void RDOEditorEdit::commentSelection() const
 {
 	if ( GUI_IS_SELECTED ) {
-		std::string startComment( "{ " );
-		std::string endComment( " }" );
+		std::string startComment( "/*" );
+		std::string endComment( "*/" );
 		int startCommentLength = startComment.length();
 		CharacterRange cr = getSelectionRange();
 		int caretPosition = getCurrentPos();
