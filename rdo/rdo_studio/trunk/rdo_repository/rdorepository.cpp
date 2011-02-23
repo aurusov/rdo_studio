@@ -179,77 +179,30 @@ void RDOThreadRepository::resetModelNames()
 
 RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 {
-	if (m_projectName.m_rdox)
+	if (!m_projectName.m_rdox)
 	{
-		STL_FOR_ALL(m_files, it)
+		rdo::textstream smrStream;
+		loadFile(getFullFileName(rdoModelObjects::SMR), smrStream, true, true, m_files[rdoModelObjects::SMR].m_readOnly);
+		rdoModelObjectsConvertor::RDOSMRFileInfo fileInfo;
+		kernel->simulator()->parseSMRFileInfo(smrStream, fileInfo);
+		if (fileInfo.m_error)
 		{
-			it->second.m_fileName      = m_modelName;
-			it->second.m_described     = true;
-			it->second.m_mustExist     = false;
-			it->second.m_deleteIfEmpty = true;
+			if (fileInfo.m_modelName.empty())
+			{
+				return fm_smr_empty;
+			}
+			return fm_smr_error;
 		}
-		return fm_ok;
 	}
 
-	rdo::textstream smrStream;
-	loadFile(getFullFileName(rdoModelObjects::SMR), smrStream, true, true, m_files[rdoModelObjects::SMR].m_readOnly);
-	rdoModelObjectsConvertor::RDOSMRFileInfo fileInfo;
-	kernel->simulator()->parseSMRFileInfo(smrStream, fileInfo);
-	if (!fileInfo.m_error)
+	STL_FOR_ALL(m_files, it)
 	{
-		m_files[rdoModelObjects::RTP].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
-		m_files[rdoModelObjects::RSS].m_fileName = fileInfo.m_resourceFile.empty()  ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_resourceFile;
-		m_files[rdoModelObjects::EVN].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
-		m_files[rdoModelObjects::PAT].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
-		m_files[rdoModelObjects::DPT].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
-		m_files[rdoModelObjects::PRC].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
-		m_files[rdoModelObjects::FRM].m_fileName = fileInfo.m_frameFile.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_frameFile;
-		m_files[rdoModelObjects::FUN].m_fileName = fileInfo.m_modelName.empty()     ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_modelName;
-		m_files[rdoModelObjects::PMD].m_fileName = fileInfo.m_statisticFile.empty() ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_statisticFile;
-		m_files[rdoModelObjects::PMV].m_fileName = fileInfo.m_resultsFile.empty()   ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_resultsFile;
-		m_files[rdoModelObjects::TRC].m_fileName = fileInfo.m_traceFile.empty()      ? m_files[rdoModelObjects::SMR].m_fileName : fileInfo.m_traceFile;
-
-		m_files[rdoModelObjects::RTP].m_described = !fileInfo.m_modelName.empty();
-		m_files[rdoModelObjects::RSS].m_described = !fileInfo.m_resourceFile.empty();
-		m_files[rdoModelObjects::EVN].m_described = !fileInfo.m_modelName.empty();
-		m_files[rdoModelObjects::PAT].m_described = !fileInfo.m_modelName.empty();
-		m_files[rdoModelObjects::DPT].m_described = !fileInfo.m_modelName.empty(); // !m_files[rdoModelObjects::OPR].m_described;
-		m_files[rdoModelObjects::PRC].m_described = !fileInfo.m_modelName.empty(); // !m_files[rdoModelObjects::OPR].m_described;
-		m_files[rdoModelObjects::FRM].m_described = !fileInfo.m_frameFile.empty();
-		m_files[rdoModelObjects::FUN].m_described = !fileInfo.m_modelName.empty();
-		m_files[rdoModelObjects::SMR].m_described = true;
-		m_files[rdoModelObjects::PMD].m_described = !fileInfo.m_statisticFile.empty();
-		m_files[rdoModelObjects::PMV].m_described = !fileInfo.m_resultsFile.empty();
-		m_files[rdoModelObjects::TRC].m_described = !fileInfo.m_traceFile.empty();
-
-		m_files[rdoModelObjects::RTP].m_mustExist = false;
-		m_files[rdoModelObjects::RSS].m_mustExist = false;
-		m_files[rdoModelObjects::EVN].m_mustExist = false;
-		m_files[rdoModelObjects::PAT].m_mustExist = false;
-		m_files[rdoModelObjects::DPT].m_mustExist = false; // m_files[rdoModelObjects::DPT].m_described;
-		m_files[rdoModelObjects::PRC].m_mustExist = false;
-		m_files[rdoModelObjects::FRM].m_mustExist = !fileInfo.m_frameFile.empty();
-		m_files[rdoModelObjects::FUN].m_mustExist = false;
-		m_files[rdoModelObjects::SMR].m_mustExist = true;
-		m_files[rdoModelObjects::PMD].m_mustExist = !fileInfo.m_statisticFile.empty();
-		m_files[rdoModelObjects::PMV].m_mustExist = false;
-		m_files[rdoModelObjects::TRC].m_mustExist = false;
-		return fm_ok;
+		it->second.m_fileName      = m_modelName;
+		it->second.m_described     = true;
+		it->second.m_mustExist     = false;
+		it->second.m_deleteIfEmpty = true;
 	}
-	else
-	{
-		if (fileInfo.m_modelName.empty())
-		{
-			return fm_smr_empty;
-		}
-		STL_FOR_ALL(m_files, it)
-		{
-			it->second.m_fileName  = m_files[rdoModelObjects::SMR].m_fileName;
-			it->second.m_described = true;
-			it->second.m_mustExist = true;
-		}
-		return fm_smr_error;
-	}
+	return fm_ok;
 }
 
 void RDOThreadRepository::newModel(CPTRC(NewModel) data)
