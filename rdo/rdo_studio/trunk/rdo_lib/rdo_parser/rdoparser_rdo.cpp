@@ -204,7 +204,7 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 
 		if (pEvent->getRegular())
 		{
-			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(pParser->runtime()->m_metaLogic, pParser->runtime(), pEvent->name());
+			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
 			ASSERT(pRuntimeEvent);
 			pEvent->setRuntimeEvent(pRuntimeEvent);
 
