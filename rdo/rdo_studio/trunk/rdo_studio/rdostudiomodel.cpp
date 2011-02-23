@@ -928,29 +928,22 @@ void RDOStudioModel::saveModelToRepository()
 				PTR(RDOEditorEdit) edit = pTab->getItemEdit(i);
 				if (smr_modified || edit->isModify())
 				{
-					if (!edit->isEmpty())
+					rdo::binarystream stream;
+					edit->save(stream);
+					studioApp.mainFrame->stepProgress();
+					rdoModelObjects::RDOFileType type = pTab->indexToType(i);
+					switch (type)
 					{
-						rdo::binarystream stream;
-						edit->save(stream);
-						studioApp.mainFrame->stepProgress();
-						rdoModelObjects::RDOFileType type = pTab->indexToType(i);
-						switch (type)
-						{
-						case rdoModelObjects::RTP:
-						case rdoModelObjects::RSS:
-						case rdoModelObjects::EVN:
-						case rdoModelObjects::PAT:
-						case rdoModelObjects::DPT:
-						case rdoModelObjects::PRC:
-						case rdoModelObjects::FRM:
-						case rdoModelObjects::FUN:
-						case rdoModelObjects::PMD: studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData(type, stream)); break;
-						default: break;
-						}
-					}
-					else
-					{
-						studioApp.mainFrame->stepProgress();
+					case rdoModelObjects::RTP:
+					case rdoModelObjects::RSS:
+					case rdoModelObjects::EVN:
+					case rdoModelObjects::PAT:
+					case rdoModelObjects::DPT:
+					case rdoModelObjects::PRC:
+					case rdoModelObjects::FRM:
+					case rdoModelObjects::FUN:
+					case rdoModelObjects::PMD: studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData(type, stream)); break;
+					default: break;
 					}
 					edit->setModifyFalse();
 				}
