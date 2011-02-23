@@ -298,7 +298,7 @@ private:
 
 	virtual RDOSimulator* clone();
 	virtual void operator=  (const RDORuntime& other);
-	virtual rbool operator== (RDOSimulator& other);
+	virtual rbool operator== (CREF(RDOSimulator) other);
 
 	void writeExitCode();
 

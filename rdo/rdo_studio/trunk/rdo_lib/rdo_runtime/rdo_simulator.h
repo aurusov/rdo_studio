@@ -1,52 +1,59 @@
-#ifndef RDO_SIMULATOR_H
-#define RDO_SIMULATOR_H
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdo_simulator.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_SIMULATOR_H_
+#define _RDO_SIMULATOR_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdobase.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOSimulator - один из базовых классов для RDORuntime
 // ----------------------------------------------------------------------------
 class RDOSimulator: public RDOSimulatorBase
 {
-//friend class RDOTrace;
-
 public:
 	RDOSimulator();
 	virtual ~RDOSimulator();
 
-	void appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer parent);
+	void             appendLogic       (CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent);
+	LPIBaseOperation getMustContinueOpr() const                            { return m_pOprMustContinue;       }
+	void             setMustContinueOpr(CREF(LPIBaseOperation) pOperation) { m_pOprMustContinue = pOperation; }
+	virtual void     onPutToTreeNode   () = 0;
 
-	LPIBaseOperation getMustContinueOpr() const           { return opr_must_continue;  }
-	void setMustContinueOpr(CREF(LPIBaseOperation) value) { opr_must_continue = value; }
+	tstring          writeActivitiesStructure(REF(ruint) counter);
 
-	virtual void onPutToTreeNode() = 0;
+	PTR(RDOSimulator) createCopy();
 
-	tstring writeActivitiesStructure(REF(ruint) counter);
-
-	RDOSimulator* createCopy();
 	// Для DPT необходимо перекрыть две нижеследующие функции:
 	// 1. Создает клон RDOSimulator с копиями всех ресурсов, но не более
-	virtual RDOSimulator* clone()                    = 0;
+	virtual PTR(RDOSimulator) clone()                   = 0;
 	// 2. Сравнение двух симуляторов по ресурсам
-	virtual bool operator == ( RDOSimulator& other ) = 0;
+	virtual rbool operator== (CREF(RDOSimulator) other) = 0;
 
 	ruint getSizeofSim() const
 	{
-		return m_sizeof_sim;
+		return m_sizeofSim;
 	}
 
-	LPIBaseOperationContainer m_metaLogic;
+	LPIBaseOperationContainer m_pMetaLogic;
 
 protected:
 	void appendBaseOperation(LPIBaseOperationContainer logic, CREF(LPIBaseOperation) op)
 	{
 		ASSERT(op);
-//		ASSERT(!m_metaLogic->empty());
-//		LPIBaseOperationContainer logic = m_metaLogic->back();
 		ASSERT(logic);
 		logic->append(op);
 	}
@@ -54,17 +61,18 @@ protected:
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
 	virtual void preProcess();
 
-	virtual void onResetPokaz()      = 0;
-	virtual void onCheckPokaz()      = 0;
+	virtual void onResetPokaz     () = 0;
+	virtual void onCheckPokaz     () = 0;
 	virtual void onAfterCheckPokaz() = 0;
 
-	ruint m_sizeof_sim;
+	ruint m_sizeofSim;
 
 private:
-	LPIBaseOperation opr_must_continue;
-	virtual bool doOperation();
+	LPIBaseOperation m_pOprMustContinue;
+
+	virtual rbool doOperation();
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_SIMULATOR_H
+#endif //! _RDO_SIMULATOR_H_

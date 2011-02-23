@@ -79,7 +79,7 @@ inline RDOLogic<Order>::RDOLogic(PTR(RDOSimulator) sim, LPIBaseOperationContaine
 	: m_pCondition   (NULL       )
 	, m_lastCondition(false      )
 	, m_first        (NULL       )
-	, m_parent       (parent ? parent : (sim ? sim->m_metaLogic : NULL))
+	, m_parent       (parent ? parent : (sim ? sim->m_pMetaLogic : NULL))
 {}
 
 template <class Order>

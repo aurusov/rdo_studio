@@ -1,128 +1,144 @@
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdo_simulator.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_common/rdostream.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
 #include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+// ===============================================================================
 
 #pragma warning(disable : 4786)  
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOSimulator - один из базовых классов для RDORuntime
 // ----------------------------------------------------------------------------
 RDOSimulator::RDOSimulator()
 	: RDOSimulatorBase( )
-	, m_sizeof_sim    (0)
+	, m_sizeofSim     (0)
 {
-	m_metaLogic = F(RDOLogicMeta)::create();
+	m_pMetaLogic = F(RDOLogicMeta)::create();
 }
 
 RDOSimulator::~RDOSimulator()
 {}
 
-void RDOSimulator::appendLogic(CREF(LPIBaseOperation) logic, LPIBaseOperationContainer parent)
+void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent)
 {
-	ASSERT(parent);
-	parent->append(logic);
+	ASSERT(pParent);
+	pParent->append(pLogic);
 }
 
-bool RDOSimulator::doOperation()
+rbool RDOSimulator::doOperation()
 {
-	bool res;
-	if ( getMustContinueOpr() )
+	rbool res;
+	if (getMustContinueOpr())
 	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
-		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue( this );
-		if ( result != IBaseOperation::BOR_must_continue )
+		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue(this);
+		if (result != IBaseOperation::BOR_must_continue)
 		{
-			setMustContinueOpr( NULL );
+			setMustContinueOpr(NULL);
 		}
 		return result != IBaseOperation::BOR_cant_run;
 	}
 	else
 	{
-		bool found_planed = false;
+		rbool foundPlaned = false;
 		// Отработаем все запланированные на данный момент события
-		if ( !m_check_operation && !m_timePoints.empty() )
+		if (!m_checkOperation && !m_timePoints.empty())
 		{
-			m_check_operation = true;
-			double newTime = m_timePoints.begin()->first;
-			if ( getCurrentTime() >= newTime )
+			m_checkOperation = true;
+			double newTime   = m_timePoints.begin()->first;
+			if (getCurrentTime() >= newTime)
 			{
-				BOPlannedItem* list = m_timePoints.begin()->second;
-				if ( list && !list->empty() )
+				PTR(BOPlannedItem) pList = m_timePoints.begin()->second;
+				if (pList && !pList->empty())
 				{
 #ifdef RDOSIM_COMPATIBLE
 					// Дисциплина списка текущих событий LIFO
-					LPIBaseOperation opr   = list->back().m_opr;
-					void*            param = list->back().m_param;
-					list->pop_back();
+					LPIBaseOperation pOperation = pList->back().m_opr;
+					PTR(void)        pParam     = pList->back().m_param;
+					pList->pop_back();
 #else
 					// Дисциплина списка текущих событий FIFO
-					LPIBaseOperation opr   = list->front().m_opr;
-					void*            param = list->front().m_param;
-					list->pop_front();
+					LPIBaseOperation pOperation = pList->front().m_opr;
+					PTR(void)        pParam     = pList->front().m_param;
+					pList->pop_front();
 #endif
-					if ( list->empty() )
+					if (pList->empty())
 					{
-						delete list;
-						m_timePoints.erase( m_timePoints.begin() );
+						delete pList;
+						m_timePoints.erase(m_timePoints.begin());
 					}
 					else
 					{
-						m_check_operation = false;
+						m_checkOperation = false;
 					}
-					opr->onMakePlaned( this, param );
-					found_planed = true;
+					pOperation->onMakePlaned(this, pParam);
+					foundPlaned = true;
 				}
 			}
 		}
-		res = found_planed;
-		if ( !found_planed )
+		res = foundPlaned;
+		if (!foundPlaned)
 		{
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
-			res = m_metaLogic.query_cast<IBaseOperation>()->onCheckCondition(this);
-			if ( res )
+			LPIBaseOperation pMetaLogic = m_pMetaLogic.query_cast<IBaseOperation>();
+			res = pMetaLogic->onCheckCondition(this);
+			if (res)
 			{
-				res = m_metaLogic.query_cast<IBaseOperation>()->onDoOperation(this) != IBaseOperation::BOR_cant_run;
+				res = pMetaLogic->onDoOperation(this) != IBaseOperation::BOR_cant_run;
 			}
-			if ( !res ) m_check_operation = false;
+			if (!res)
+			{
+				m_checkOperation = false;
+			}
 		}
 	}
-	onCheckPokaz();
+	onCheckPokaz     ();
 	onAfterCheckPokaz();
 	return res;
 }
 
 void RDOSimulator::preProcess()
 {
-	m_metaLogic.query_cast<IBaseOperation>()->onStart( this );
+	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(this);
 	onResetPokaz();
 }
 
-RDOSimulator* RDOSimulator::createCopy()
+PTR(RDOSimulator) RDOSimulator::createCopy()
 {
-	RDOSimulator* sim_clone = clone();
-	sim_clone->setCurrentTime( getCurrentTime() );
-	return sim_clone;
+	PTR(RDOSimulator) pSimClone = clone();
+	pSimClone->setCurrentTime(getCurrentTime());
+	return pSimClone;
 }
 
-
-tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logic, REF(ruint) counter)
+tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
 {
 	rdo::textstream stream;
-	IBaseOperationContainer::CIterator it = logic->begin();
-	while (it != logic->end())
+	IBaseOperationContainer::CIterator it = pLogic->begin();
+	while (it != pLogic->end())
 	{
 		LPIModelStructure pModelStructure = *it;
 		if (pModelStructure && (pModelStructure.query_cast<IRule>() || pModelStructure.query_cast<IOperation>()))
 		{
-			stream << counter++ << " ";
+			stream << counter++ << _T(" ");
 			pModelStructure->writeModelStructure(stream);
 		}
-		it++;
+		++it;
 	}
 #ifdef RDOSIM_COMPATIBLE
 #else
@@ -130,28 +146,28 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logic, R
 #endif
 
 	ruint _counter = 1;
-	it = logic->begin();
-	while ( it != logic->end() )
+	it = pLogic->begin();
+	while (it != pLogic->end())
 	{
 		LPIModelStructure pModelStructure = *it;
 		if (pModelStructure && pModelStructure.query_cast<IEvent>())
 		{
-			stream << _counter++ << " ";
+			stream << _counter++ << _T(" ");
 			counter++;
 			pModelStructure->writeModelStructure(stream);
 		}
-		it++;
+		++it;
 	}
 
-	it = logic->begin();
-	while (it != logic->end())
+	it = pLogic->begin();
+	while (it != pLogic->end())
 	{
-		LPILogic logic = *it;
-		if (logic)
+		LPILogic pLogic = *it;
+		if (pLogic)
 		{
-			stream << writeActivitiesStructureRecurse(logic, counter);
+			stream << writeActivitiesStructureRecurse(pLogic, counter);
 		}
-		it++;
+		++it;
 	}
 
 	return stream.str();
@@ -159,7 +175,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) logic, R
 
 tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
 {
-	return writeActivitiesStructureRecurse(m_metaLogic, counter);
+	return writeActivitiesStructureRecurse(m_pMetaLogic, counter);
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

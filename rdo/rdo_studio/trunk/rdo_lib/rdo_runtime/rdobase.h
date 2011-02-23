@@ -81,7 +81,7 @@ protected:
 	typedef  std::map<double, PTR(BOPlannedItem)>  BOPlannedMap;
 
 	BOPlannedMap m_timePoints;
-	rbool        m_check_operation;
+	rbool        m_checkOperation;
 
 	void setCurrentTime(double value) { m_currentTime = value; }
 

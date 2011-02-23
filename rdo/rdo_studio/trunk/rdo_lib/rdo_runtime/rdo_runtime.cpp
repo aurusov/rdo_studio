@@ -459,7 +459,7 @@ RDOValue RDORuntime::getFuncArgument( int numberOfParam )
 RDOSimulator* RDORuntime::clone()
 {
 	RDORuntime* other = new RDORuntime();
-	other->m_sizeof_sim = sizeof( RDORuntime );
+	other->m_sizeofSim = sizeof( RDORuntime );
 
 	*other = *this;
 
@@ -480,7 +480,7 @@ void RDORuntime::operator= (const RDORuntime& other)
 			RDOResource* res = new RDOResource( *other.allResourcesByID.at(i) );
 			res->setRuntime(this);
 			res->setTraceID( res->getTraceID(), res->getTraceID() + 1 );
-			m_sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
+			m_sizeofSim += sizeof( RDOResource ) + sizeof( void* ) * 2;
 			allResourcesByID.push_back( res );
 			allResourcesByTime.push_back( res );
 		}
@@ -491,9 +491,9 @@ void RDORuntime::operator= (const RDORuntime& other)
 	Parent::operator= (*static_cast<const Parent*>(&other));
 }
 
-bool RDORuntime::operator== (RDOSimulator& other)
+bool RDORuntime::operator== (CREF(RDOSimulator) other)
 {
-	RDORuntime* otherRuntime = dynamic_cast<RDORuntime*>(&other);
+	CPTR(RDORuntime) otherRuntime = dynamic_cast<CPTR(RDORuntime)>(&other);
 
 	if ( otherRuntime->allResourcesByID.size() != allResourcesByID.size() ) return false;
 

@@ -322,8 +322,8 @@ void RDOTrace::writeStatus(PTR(RDOSimulatorTrace) sim, char* status)
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
-	IBaseOperationContainer::CIterator it = sim->m_metaLogic->begin();
-	while (it != sim->m_metaLogic->end())
+	IBaseOperationContainer::CIterator it = sim->m_pMetaLogic->begin();
+	while (it != sim->m_pMetaLogic->end())
 	{
 		LPIDPTSearchTraceStatistics dp_stat = (*it);
 		if (dp_stat)

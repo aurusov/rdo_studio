@@ -24,15 +24,15 @@ RDOSimulatorBase::RDOSimulatorBase():
 	m_cnt_choice_from( 0 ),
 	m_cnt_calc_arithm( 0 ),
 	m_cnt_calc_logic( 0 ),
-	m_check_operation( true )
+	m_checkOperation( true )
 {
 }
 
 void RDOSimulatorBase::rdoInit()
 {
-	m_currentTime     = m_startTime;
-	m_nextTime        = m_currentTime;
-	m_check_operation = true;
+	m_currentTime    = m_startTime;
+	m_nextTime       = m_currentTime;
+	m_checkOperation = true;
 	onInit();
 
 	if (m_timePoints.find(m_currentTime) == m_timePoints.end())
