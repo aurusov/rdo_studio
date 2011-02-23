@@ -1468,9 +1468,9 @@ pat_convert
 		ASSERT(pPlanningInsert);
 		CONVERTER->insertDocUpdate(pPlanningInsert);
 
-		LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(1, _T(pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " )\r\n"), IDocument::SMR);
+		LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(0, _T(pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " )\r\n"), IDocument::SMR);
 		ASSERT(pPlanningInsertSMR);
-		//CONVERTER->insertDocUpdate(pPlanningInsertSMR);
+		CONVERTER->insertDocUpdate(pPlanningInsertSMR);
 
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($4);
 		ASSERT(pPattern->m_pCurrRelRes);
