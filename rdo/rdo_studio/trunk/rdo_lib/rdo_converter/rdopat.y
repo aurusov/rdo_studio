@@ -1062,8 +1062,25 @@ pat_time
 		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($4);
 		ASSERT(pArithm);
 		pArithm->setSrcPos (@2, @4);
-		pArithm->setSrcText(_T("$Time = ") + pArithm->src_text());
+		//pArithm->setSrcText(_T("$Time = ") + pArithm->src_text());
 		pPattern->setTime(pArithm);
+		switch (pPattern->getType())
+		{
+			case RDOPATPattern::PT_IE:
+			{
+				LPDocUpdate pTimeDelete1 = rdo::Factory<UpdateInsert>::create(@2.m_first_seek, _T("//"));
+				ASSERT(pTimeDelete1);
+				CONVERTER->insertDocUpdate(pTimeDelete1);
+
+				LPDocUpdate pTimeDelete2 = rdo::Factory<UpdateInsert>::create(@3.m_first_seek, _T("//"));
+				ASSERT(pTimeDelete2);
+				CONVERTER->insertDocUpdate(pTimeDelete2);
+
+				LPDocUpdate pTimeDelete3 = rdo::Factory<UpdateInsert>::create(@4.m_first_seek, _T("//"));
+				ASSERT(pTimeDelete3);
+				CONVERTER->insertDocUpdate(pTimeDelete3);
+			}
+		}
 		$$ = CONVERTER->stack().push(pPattern);
 	}
 	| pat_common_choice RDO_Time '=' fun_arithm error
@@ -1446,6 +1463,15 @@ pat_convert
 			}
 			CONVERTER->error().error(@2, rdo::format(_T(" лючевое слово Convert_event может быть использовано в событии или в нерегул€рном событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
+
+		LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, _T("\r\t\t" + pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " );"));
+		ASSERT(pPlanningInsert);
+		CONVERTER->insertDocUpdate(pPlanningInsert);
+
+		LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(1, _T(pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " )\r\n"), IDocument::SMR);
+		ASSERT(pPlanningInsertSMR);
+		//CONVERTER->insertDocUpdate(pPlanningInsertSMR);
+
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($4);
 		ASSERT(pPattern->m_pCurrRelRes);
 		pPattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);

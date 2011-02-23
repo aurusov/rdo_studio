@@ -94,6 +94,8 @@ public:
 	
 	LPRDORelevantResource m_pCurrRelRes;
 
+	LPRDOFUNArithm        time;
+
 	void                  add                    (CREF(LPRDOParam) pParam);
 	LPRDOParam            findPATPatternParam    (CREF(tstring) paramName) const;
 	int                   findPATPatternParamNum (CREF(tstring) paramName) const;
