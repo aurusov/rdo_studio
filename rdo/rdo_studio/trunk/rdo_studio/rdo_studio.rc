@@ -248,7 +248,7 @@ CAPTION "Основные"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Привязка к расширению",IDC_FILEASSOCIATION_STATIC,0,4,292,40,0,0,HIDC_FILEASSOCIATION_STATIC
-    CONTROL         "Установить привязку для файла проекта (*.smr)",IDC_FILEASSOCIATION_SETUP_CHECK,
+    CONTROL         "Установить привязку для файла проекта (*.rdox)",IDC_FILEASSOCIATION_SETUP_CHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,16,177,10,0,HIDC_FILEASSOCIATION_SETUP_CHECK
     CONTROL         "Проверять в будущем",IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,28,91,10,0,HIDC_FILEASSOCIATION_CHECKINFUTURE_CHECK
@@ -3220,7 +3220,7 @@ IDR_RT_MANIFEST1        RT_MANIFEST             "res\\RAO-studio.manifest"
 STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
-    IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
+    IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.rdox)\n.rdox\nRAOStudio.Document\nRAO Document"
     IDR_EDIT_TYPE           "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILE_TOOLBAR        "Файл"
     IDR_CHARTTYPE           "\nГрафик\nChart\n\n\nRAOStudio.Document\nRAO Document"
@@ -3356,7 +3356,7 @@ BEGIN
     ID_BUFFER_NAME          "Буфер"
     ID_PROGRESSSTATUSBAR    " "
     ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT "Точка останова: %s"
-    ID_MODEL_FILETYPE       "РДО-файлы (*.smr)|*.smr|Все файлы (*.*)|*.*||"
+    ID_MODEL_FILETYPE       "РДО-проект (*.rdox)|*.rdox|РДО-конвертор (*.smr)|*.smr|Все файлы (*.*)|*.*||"
     ID_OPTIONS              "Настройки"
     ID_DOCK_WORKSPACE       "Панель объектов"
     ID_DOCK_OUTPUT          "Панель вывода"
@@ -3888,7 +3888,7 @@ CAPTION "General"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "File Association",IDC_FILEASSOCIATION_STATIC,0,4,292,40,0,0,HIDC_FILEASSOCIATION_STATIC
-    CONTROL         "Setup file association for project file (*.smr)",IDC_FILEASSOCIATION_SETUP_CHECK,
+    CONTROL         "Setup file association for project file (*.rdox)",IDC_FILEASSOCIATION_SETUP_CHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,16,148,10,0,HIDC_FILEASSOCIATION_SETUP_CHECK
     CONTROL         "Check association in future",IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,28,101,10,0,HIDC_FILEASSOCIATION_CHECKINFUTURE_CHECK
@@ -4563,7 +4563,7 @@ END
 STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
-    IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
+    IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.rdox)\n.rdox\nRAOStudio.Document\nRAO Document"
     IDR_EDIT_TYPE           "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILE_TOOLBAR        "File"
     IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"
@@ -4699,7 +4699,7 @@ BEGIN
     ID_BUFFER_NAME          "Buffer"
     ID_PROGRESSSTATUSBAR    " "
     ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT "Break point: %s"
-    ID_MODEL_FILETYPE       "RAO Files (*.smr)|*.smr|All Files (*.*)|*.*||"
+    ID_MODEL_FILETYPE       "RAO Project (*.rdox)|*.rdox|RAO Convertor (*.smr)|*.smr|All Files (*.*)|*.*||"
     ID_OPTIONS              "Options"
     ID_DOCK_WORKSPACE       "Workspace"
     ID_DOCK_OUTPUT          "Output"
