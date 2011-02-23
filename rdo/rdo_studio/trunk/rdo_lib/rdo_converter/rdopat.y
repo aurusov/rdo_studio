@@ -271,6 +271,15 @@ pat_header
 		PTR(RDOValue) name = P_RDOVALUE($2);
 		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternIrregEvent>::create(name->src_info(), $4 != 0);
 		ASSERT(pPattern);
+
+		rdoConverter::LPDocUpdate pIEReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+			@3.m_first_seek,
+			@3.m_last_seek,
+			_T("event")
+		);
+		ASSERT(pIEReplace);
+		CONVERTER->insertDocUpdate(pIEReplace);
+
 		$$ = CONVERTER->stack().push(pPattern);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
