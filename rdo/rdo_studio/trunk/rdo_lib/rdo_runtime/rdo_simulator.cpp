@@ -69,6 +69,10 @@ bool RDOSimulator::doOperation()
 						delete list;
 						m_timePoints.erase( m_timePoints.begin() );
 					}
+					else
+					{
+						m_check_operation = false;
+					}
 					opr->onMakePlaned( this, param );
 					found_planed = true;
 				}
