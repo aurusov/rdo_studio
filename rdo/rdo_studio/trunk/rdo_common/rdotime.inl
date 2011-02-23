@@ -54,15 +54,15 @@ inline tstring Time::asString() const
 		size = ::GetTimeFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, timeFormat.c_str(), NULL, 0);
 		ASSERT(size != 0);
 		tstring time;
-		time.resize(size);
-		::GetTimeFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, timeFormat.c_str(), &time[0], size);
+		time.resize(size - 1);
+		::GetTimeFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, timeFormat.c_str(), &time[0], size - 1);
 		//! Вытащим дату
 		const tstring dateTimeFormat = rdo::format(_T("ddd MMM dd %s yyyy"), time.c_str());
 		size = ::GetDateFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, dateTimeFormat.c_str(), NULL, 0);
 		ASSERT(size != 0);
 		tstring dateTime;
-		dateTime.resize(size);
-		::GetDateFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, dateTimeFormat.c_str(), &dateTime[0], size);
+		dateTime.resize(size - 1);
+		::GetDateFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, dateTimeFormat.c_str(), &dateTime[0], size - 1);
 		return dateTime;
 	}
 }
