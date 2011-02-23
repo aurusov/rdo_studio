@@ -9,6 +9,7 @@
 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
+#include "thirdparty/pugixml/src/pugixml.hpp"
 // ====================================================================== SYNOPSIS
 #include "rdo_repository/rdorepository.h"
 #include "rdo_kernel/rdokernel.h"
@@ -582,6 +583,28 @@ void RDOThreadRepository::saveFile(CREF(tstring) fileName, REF(rdo::stream) stre
 			{
 				rdo::File::unlink(fileName);
 			}
+		}
+	}
+
+	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
+	ASSERT(it != m_files.end());
+	tstring rdoxFileName = m_modelPath + m_modelName + it->second.m_extention;
+	if (!rdo::File::exist(rdoxFileName))
+	{
+		pugi::xml_document doc;
+		pugi::xml_node      rootNode           = doc.append_child(_T("Settings"));
+		pugi::xml_node      versionNode        = rootNode.append_child(_T("Version"));
+		pugi::xml_attribute projectVersionAttr = versionNode.append_attribute(_T("ProjectVersion"));
+		pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute(_T("SMRVersion"));
+		projectVersionAttr.set_value(_T("2"));
+		smrVersionAttr    .set_value(_T("2"));
+
+		std::ofstream ofs(rdoxFileName.c_str());
+		if (ofs.good())
+		{
+			doc.save(ofs);
+			const_cast<PTR(RDOThreadRepository)>(this)->m_projectName.m_fullFileName = rdoxFileName;
+			const_cast<PTR(RDOThreadRepository)>(this)->m_projectName.m_rdox         = true;
 		}
 	}
 }

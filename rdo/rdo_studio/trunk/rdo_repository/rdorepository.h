@@ -144,7 +144,7 @@ private:
 		rbool    m_rdox;
 
 		ProjectName()
-			: m_rdox(false)
+			: m_rdox(true)
 		{}
 	};
 
