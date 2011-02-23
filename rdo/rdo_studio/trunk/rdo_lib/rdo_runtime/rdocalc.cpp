@@ -1268,4 +1268,16 @@ rbool RDOSelectResourceByTypeCommonCalc::callChoice(PTR(RDORuntime) runtime) con
 	return (choice_calc && !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->choice_calc->calcValue(runtime).getAsBool()) ? false : true;
 }
 
+IRDOSelectResourceCommon::IRDOSelectResourceCommon()
+{}
+
+IRDOSelectResourceCommon::~IRDOSelectResourceCommon()
+{}
+
+RDOSelectResourceDirectCommonCalc::~RDOSelectResourceDirectCommonCalc()
+{}
+
+RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()
+{}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -1228,9 +1228,14 @@ protected:
 
 OBJECT_INTERFACE(IRDOSelectResourceCommon)
 {
+DECLARE_FACTORY(IRDOSelectResourceCommon)
 public:
 	virtual std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const = 0;
 	virtual rbool            callChoice        (PTR(RDORuntime) sim) const = 0;
+
+protected:
+	IRDOSelectResourceCommon();
+	virtual ~IRDOSelectResourceCommon();
 };
 
 CALC(RDOSelectResourceCommonCalc)
@@ -1265,10 +1270,11 @@ public:
 	std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const;
 	virtual rbool    callChoice        (PTR(RDORuntime) sim) const;
 
-protected:
+private:
 	RDOSelectResourceDirectCommonCalc(int _relNumb, int _resNumb, CREF(LPRDOCalc) _choice_calc = NULL, CREF(LPRDOCalc) _order_calc = NULL, Type _order_type = order_empty)
 		: RDOSelectResourceDirectCalc(_relNumb, _resNumb, _choice_calc, _order_calc, _order_type)
 	{}
+	virtual ~RDOSelectResourceDirectCommonCalc();
 };
 
 CALC_SUB(RDOSelectResourceByTypeCommonCalc, RDOSelectResourceByTypeCalc)
@@ -1283,6 +1289,7 @@ private:
 	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type _order_type = order_empty)
 		: RDOSelectResourceByTypeCalc(_relNumb, _resType, pChoiceCalc, pOrderCalc, _order_type)
 	{}
+	virtual ~RDOSelectResourceByTypeCommonCalc();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
