@@ -269,11 +269,12 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 			{
 				path += _T('\\');
 			}
-			extractName(path + data->m_name + _T(".smr"));
+			extractName(path + data->m_name + m_files[rdoModelObjects::RDOX].m_extention);
 			if (!rdo::File::exist(path))
 			{
 				::CreateDirectory(path.c_str(), NULL);
 			}
+			createRDOX();
 		}
 		else
 		{
@@ -585,7 +586,10 @@ void RDOThreadRepository::saveFile(CREF(tstring) fileName, REF(rdo::stream) stre
 			}
 		}
 	}
+}
 
+void RDOThreadRepository::createRDOX()
+{
 	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
 	ASSERT(it != m_files.end());
 	tstring rdoxFileName = m_modelPath + m_modelName + it->second.m_extention;
@@ -603,8 +607,8 @@ void RDOThreadRepository::saveFile(CREF(tstring) fileName, REF(rdo::stream) stre
 		if (ofs.good())
 		{
 			doc.save(ofs);
-			const_cast<PTR(RDOThreadRepository)>(this)->m_projectName.m_fullFileName = rdoxFileName;
-			const_cast<PTR(RDOThreadRepository)>(this)->m_projectName.m_rdox         = true;
+			m_projectName.m_fullFileName = rdoxFileName;
+			m_projectName.m_rdox         = true;
 		}
 	}
 }

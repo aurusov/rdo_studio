@@ -163,6 +163,7 @@ private:
 	void      realCloseModel  ();
 	void      extractName     (CREF(tstring) fullName);
 	void      setName         (CREF(tstring) name);
+	void      createRDOX      ();
 
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
 	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
