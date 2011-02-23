@@ -257,6 +257,20 @@ opr_body
 		PTR(RDOValue)  pattern = P_RDOVALUE($3);
 		LPRDOOPROperation pOperation = pOperations->addNewActivity(name->src_info(), pattern->src_info());
 		ASSERT(pOperation);
+
+		switch (pOperation->pattern()->getType())
+		{
+			case RDOPATPattern::PT_IE:
+			{
+				rdoConverter::LPDocUpdate pIEDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+					@2.m_first_seek,
+					@3.m_last_seek
+				);
+				ASSERT(pIEDelete);
+				CONVERTER->insertDocUpdate(pIEDelete);
+			}
+		}
+
 		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_param RDO_IDENTIF_COLON RDO_IDENTIF
