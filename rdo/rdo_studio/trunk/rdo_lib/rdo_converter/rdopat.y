@@ -235,11 +235,19 @@ pat_main
 				rdoConverter::LPDocUpdate pEventMove = rdo::Factory<rdoConverter::UpdateMove>::create(
 					@2.m_first_seek,
 					@2.m_last_seek,
-					0,
+					IDocUpdate::Position::POSITION_END,
 					rdoConverter::IDocument::EVN
 				);
 				ASSERT(pEventMove);
 				CONVERTER->insertDocUpdate(pEventMove);
+
+				rdoConverter::LPDocUpdate pReturnInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+					IDocUpdate::Position::POSITION_END,
+					_T("\r\n\r\n"),
+					rdoConverter::IDocument::EVN
+				);
+				ASSERT(pReturnInsert);
+				CONVERTER->insertDocUpdate(pReturnInsert);
 			}
 		}
 		CONVERTER->stack().push(pPattern);

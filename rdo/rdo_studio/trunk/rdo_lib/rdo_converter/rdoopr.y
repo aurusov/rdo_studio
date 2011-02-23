@@ -234,6 +234,14 @@ opr_main
 opr_header
 	: RDO_Operations
 	{
+		rdoConverter::LPDocUpdate pOperationsReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+			@1.m_first_seek,
+			@1.m_last_seek,
+			_T("$Decision_point Operations: some\n$Activities")
+		);
+		ASSERT(pOperationsReplace);
+		CONVERTER->insertDocUpdate(pOperationsReplace);
+
 		LPRDOOperations pOperations = rdo::Factory<RDOOperations>::create(@1);
 		ASSERT(pOperations);
 		$$ = CONVERTER->stack().push(pOperations);
