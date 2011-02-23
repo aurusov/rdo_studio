@@ -360,8 +360,9 @@ int RDOStudioApp::ExitInstance()
 void RDOStudioApp::OnFileNew() 
 {
 	RDOStudioModelNew dlg;
-	if ( dlg.DoModal() == IDOK ) {
-		model->newModel( std::string(dlg.m_modelName), std::string(dlg.m_modelPath + dlg.m_modelName), dlg.m_model_template * 2 + dlg.m_comment );
+	if (dlg.DoModal() == IDOK)
+	{
+		model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
 	}
 }
 
