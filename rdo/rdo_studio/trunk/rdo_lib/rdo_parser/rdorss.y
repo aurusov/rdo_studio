@@ -86,13 +86,6 @@
 %token RDO_watch_value
 %token RDO_get_value
 
-%token RDO_Model_name
-%token RDO_Resource_file
-%token RDO_OprIev_file
-%token RDO_Frame_file
-%token RDO_Statistic_file
-%token RDO_Results_file
-%token RDO_Trace_file
 %token RDO_Show_mode
 %token RDO_Frame_number
 %token RDO_Show_rate

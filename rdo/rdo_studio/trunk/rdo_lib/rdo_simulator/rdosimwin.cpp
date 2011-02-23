@@ -544,15 +544,8 @@ void RDOThreadRunTime::start()
 	PTR(rdoRuntime::RDOResults) pResults;
 	PTR(rdoRuntime::RDOResults) pResultsInfo;
 
-	//! Creating tracer and results //////////////////////////////////
-	if (!m_pSimulator->m_pParser->getSMR()->hasFile(_T("Trace_file")))
-	{
-		pTracer = new RDOTrace();
-	}
-	else
-	{
-		pTracer = new rdoSimulator::RDORuntimeTracer(m_pSimulator);
-	}
+	//! Creating tracer and results
+	pTracer = new rdoSimulator::RDORuntimeTracer(m_pSimulator);
 
 	m_pSimulator->m_resultString.str(_T(""));
 	pResults = new rdoSimulator::RDOSimResulter(m_pSimulator->m_resultString);
@@ -1061,14 +1054,14 @@ void RDOThreadSimulator::closeModel()
 	}
 }
 
-void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjects::RDOSMRFileInfo) info)
+void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info)
 {
 	try
 	{
 		rdoConverter::RDOParserModel converter;
 		rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
 		kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
-		switch (converter.convert(fileInfo.m_fullName))
+		switch (converter.convert(fileInfo.m_fullName, info))
 		{
 		case rdoConverter::RDOParserModel::CNV_NONE : break;
 		case rdoConverter::RDOParserModel::CNV_OK   : break;
@@ -1094,42 +1087,6 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 	{}
 	catch (...)
 	{}
-
-	rdoParse::RDOParserSMRInfo parser;
-
-	try
-	{
-		info.m_error = false;
-		parser.parse(smr);
-	}
-	catch (REF(rdoParse::RDOSyntaxException))
-	{
-		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR);
-		info.m_error = true;
-	}
-	catch (REF(rdoRuntime::RDORuntimeException) ex)
-	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_STRING, &mess);
-		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR);
-		info.m_error = true;
-	}
-
-	if (!parser.hasSMR())
-	{
-		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR);
-		broadcastMessage(RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY);
-		info.m_error = true;
-	}
-	else
-	{
-		info.m_modelName     = parser.getSMR()->getFile(_T("Model_name")    );
-		info.m_resourceFile  = parser.getSMR()->getFile(_T("Resource_file") );
-		info.m_frameFile     = parser.getSMR()->getFile(_T("Frame_file")    );
-		info.m_statisticFile = parser.getSMR()->getFile(_T("Statistic_file"));
-		info.m_resultsFile   = parser.getSMR()->getFile(_T("Results_file")  );
-		info.m_traceFile     = parser.getSMR()->getFile(_T("Trace_file")    );
-	}
 }
 
 RDOThreadSimulator::SyntaxErrorList RDOThreadSimulator::getErrors()

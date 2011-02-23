@@ -41,23 +41,6 @@ DECLARE_FACTORY(RDOSMR);
 public:
 	typedef std::map<tstring, tstring> StringTable;
 
-	void setFile(CREF(tstring) file_type, CREF(tstring) file_name)
-	{
-		m_files[file_type] = file_name;
-	}
-	rbool hasFile(CREF(tstring) file_type) const
-	{
-		return m_files.find(file_type) != m_files.end();
-	}
-	tstring getFile(CREF(tstring) file_type) const
-	{
-		StringTable::const_iterator it = m_files.find(file_type);
-		return it != m_files.end() ? it->second : _T("");
-	}
-	tstring modelName() const
-	{
-		return getFile(_T("Model_name"));
-	}
 	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
 	{
 		m_extModelList[alias] = modelID;
@@ -93,7 +76,7 @@ public:
 	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
 
 private:
-	RDOSMR(CREF(tstring) modelName);
+	RDOSMR();
 
 	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
 	{
@@ -103,7 +86,6 @@ private:
 	};
 	typedef std::vector<LPBreakPoint> BreakPointList;
 
-	StringTable            m_files;
 	StringTable            m_extModelList;
 	rdoSimulator::ShowMode m_showMode;
 	int                    m_frameNumber;

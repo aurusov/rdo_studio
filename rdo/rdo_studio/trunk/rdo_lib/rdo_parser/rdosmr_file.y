@@ -86,13 +86,6 @@
 %token RDO_watch_value
 %token RDO_get_value
 
-%token RDO_Model_name
-%token RDO_Resource_file
-%token RDO_OprIev_file
-%token RDO_Frame_file
-%token RDO_Statistic_file
-%token RDO_Results_file
-%token RDO_Trace_file
 %token RDO_Show_mode
 %token RDO_Frame_number
 %token RDO_Show_rate
@@ -224,112 +217,11 @@ OPEN_RDO_PARSER_NAMESPACE
 %%
 
 smr_main
-	: smr_model smr_descr
-	;
-
-smr_model
-	: RDO_Model_name '=' RDO_IDENTIF 
-	{
-		LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create(P_RDOVALUE($3)->value().getIdentificator());
-		ASSERT(pSMR);
-		$$ = PARSER->stack().push(pSMR);
-	}
-	| RDO_Model_name '=' error
-	{
-		PARSER->error().error( @2, @3, "ќжидаетс€ им€ модели" );
-	}
-	| RDO_Model_name error
-	{
-		PARSER->error().error( @1, "ќжидаетс€ '='" );
-	}
+	: smr_descr
 	;
 
 smr_descr
 	: /* empty */
-	| smr_descr RDO_Resource_file '=' RDO_IDENTIF
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		pSMR->setFile( "Resource_file", P_RDOVALUE($4)->value().getIdentificator() );
-	}
-	| smr_descr RDO_Resource_file '=' error
-	{
-		PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла ресурсов" );
-	}
-	| smr_descr RDO_Resource_file error
-	{
-		PARSER->error().error( @2, "ќжидаетс€ '='" );
-	}
-	| smr_descr RDO_OprIev_file '=' RDO_IDENTIF
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		pSMR->setFile( "OprIev_file", P_RDOVALUE($4)->value().getIdentificator() );
-	}
-	| smr_descr RDO_OprIev_file '=' error
-	{
-		PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла операций" );
-	}
-	| smr_descr RDO_OprIev_file error
-	{
-		PARSER->error().error( @2, "ќжидаетс€ '='" );
-	}
-	| smr_descr RDO_Frame_file '=' RDO_IDENTIF
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		pSMR->setFile( "Frame_file", P_RDOVALUE($4)->value().getIdentificator() );
-	}
-	| smr_descr RDO_Frame_file '=' error
-	{
-		PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла анимации" );
-	}
-	| smr_descr RDO_Frame_file error
-	{
-		PARSER->error().error( @2, "ќжидаетс€ '='" );
-	}
-	| smr_descr RDO_Statistic_file '=' RDO_IDENTIF
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		pSMR->setFile( "Statistic_file", P_RDOVALUE($4)->value().getIdentificator() );
-	}
-	| smr_descr RDO_Statistic_file '=' error
-	{
-		PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла собираемых показателей" );
-	}
-	| smr_descr RDO_Statistic_file error
-	{
-		PARSER->error().error( @2, "ќжидаетс€ '='" );
-	}
-	| smr_descr RDO_Results_file '=' RDO_IDENTIF
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		pSMR->setFile( "Results_file", P_RDOVALUE($4)->value().getIdentificator() );
-	}
-	| smr_descr RDO_Results_file '=' error
-	{
-		PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла результатов" );
-	}
-	| smr_descr RDO_Results_file error
-	{
-		PARSER->error().error( @2, "ќжидаетс€ '='" );
-	}
-	| smr_descr RDO_Trace_file '=' RDO_IDENTIF
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		pSMR->setFile( "Trace_file", P_RDOVALUE($4)->value().getIdentificator() );
-	}
-	| smr_descr RDO_Trace_file '=' error
-	{
-		PARSER->error().error( @3, @4, "ќжидаетс€ им€ файла трассировки" );
-	}
-	| smr_descr RDO_Trace_file error
-	{
-		PARSER->error().error( @2, "ќжидаетс€ '='" );
-	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	{
 		tstring alias = P_RDOVALUE($3)->value().getIdentificator();

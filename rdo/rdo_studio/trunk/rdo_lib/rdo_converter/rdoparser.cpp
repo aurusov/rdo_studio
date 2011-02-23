@@ -327,8 +327,10 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) mod
 	return true;
 }
 
-RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
+RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info)
 {
+	info.m_error = true;
+
 	RDOParserSMRInfo::FileList fileList;
 	tstring                    modelName;
 	{
@@ -338,6 +340,14 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName)
 		{
 			if (!pSMRParser->parseSMR(smrFullFileName, modelName))
 				return CNV_NONE;
+
+			info.m_modelName     = pSMRParser->getSMR()->getFile(_T("Model_name")    );
+			info.m_resourceFile  = pSMRParser->getSMR()->getFile(_T("Resource_file") );
+			info.m_frameFile     = pSMRParser->getSMR()->getFile(_T("Frame_file")    );
+			info.m_statisticFile = pSMRParser->getSMR()->getFile(_T("Statistic_file"));
+			info.m_resultsFile   = pSMRParser->getSMR()->getFile(_T("Results_file")  );
+			info.m_traceFile     = pSMRParser->getSMR()->getFile(_T("Trace_file")    );
+			info.m_error         = false;
 		}
 		catch (REF(rdoParse::RDOSyntaxException))
 		{

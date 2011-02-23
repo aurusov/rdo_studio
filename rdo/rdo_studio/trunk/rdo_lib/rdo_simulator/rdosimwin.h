@@ -26,6 +26,7 @@
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_lib/rdo_parser/namespace.h"
+#include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 // ===============================================================================
 
 //#define DISABLE_CORBA
@@ -235,7 +236,7 @@ protected:
 public:
 	RDOThreadSimulator();
 
-	void parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjects::RDOSMRFileInfo) info);
+	void parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info);
 
 	ShowMode getInitialShowMode   () const;
 	int      getInitialFrameNumber() const;

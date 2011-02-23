@@ -193,7 +193,7 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 
 	rdo::textstream smrStream;
 	loadFile(getFullFileName(rdoModelObjects::SMR), smrStream, true, true, m_files[rdoModelObjects::SMR].m_readOnly);
-	rdoModelObjects::RDOSMRFileInfo fileInfo;
+	rdoModelObjectsConvertor::RDOSMRFileInfo fileInfo;
 	kernel->simulator()->parseSMRFileInfo(smrStream, fileInfo);
 	if (!fileInfo.m_error)
 	{

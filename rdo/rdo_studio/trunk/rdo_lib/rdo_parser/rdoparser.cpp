@@ -101,6 +101,10 @@ RDOParser::RDOParser()
 	ASSERT(m_pContextStack);
 
 	m_pContextStack->push(rdo::Factory<ContextGlobal>::create());
+
+	LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create();
+	ASSERT(pSMR);
+	setSMR(pSMR);
 }
 
 RDOParser::~RDOParser()

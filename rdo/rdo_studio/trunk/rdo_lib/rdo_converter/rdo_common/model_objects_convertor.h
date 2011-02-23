@@ -20,22 +20,22 @@
 OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
 	struct RDOSMRFileInfo
 	{
-		tstring  m_model_name;
-		tstring  m_resource_file;
-		tstring  m_oprIev_file;
-		tstring  m_frame_file;
-		tstring  m_statistic_file;
-		tstring  m_results_file;
-		tstring  m_trace_file;
+		tstring  m_modelName;
+		tstring  m_resourceFile;
+		tstring  m_frameFile;
+		tstring  m_statisticFile;
+		tstring  m_resultsFile;
+		tstring  m_traceFile;
+		rbool    m_error;
 
 		RDOSMRFileInfo()
-			: m_model_name    (_T(""))
-			, m_resource_file (_T(""))
-			, m_oprIev_file   (_T(""))
-			, m_frame_file    (_T(""))
-			, m_statistic_file(_T(""))
-			, m_results_file  (_T(""))
-			, m_trace_file    (_T(""))
+			: m_modelName    (_T(""))
+			, m_resourceFile (_T(""))
+			, m_frameFile    (_T(""))
+			, m_statisticFile(_T(""))
+			, m_resultsFile  (_T(""))
+			, m_traceFile    (_T(""))
+			, m_error        (false )
 		{}
 	};
 

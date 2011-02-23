@@ -18,27 +18,6 @@
 #define CLOSE_RDO_MODEL_OBJECTS_NAMESPACE	};
 
 OPEN_RDO_MODEL_OBJECTS_NAMESPACE
-	struct RDOSMRFileInfo
-	{
-		tstring  m_modelName;
-		tstring  m_resourceFile;
-		tstring  m_frameFile;
-		tstring  m_statisticFile;
-		tstring  m_resultsFile;
-		tstring  m_traceFile;
-		rbool    m_error;
-
-		RDOSMRFileInfo()
-			: m_modelName    (_T(""))
-			, m_resourceFile (_T(""))
-			, m_frameFile    (_T(""))
-			, m_statisticFile(_T(""))
-			, m_resultsFile  (_T(""))
-			, m_traceFile    (_T(""))
-			, m_error        (false )
-		{}
-	};
-
 	enum RDOFileType  {RTP = 0, RSS, EVN, PAT, DPT, PRC, FRM, FUN, SMR, PMD, PMV, TRC, RDOX};
 
 	enum RDOParseType

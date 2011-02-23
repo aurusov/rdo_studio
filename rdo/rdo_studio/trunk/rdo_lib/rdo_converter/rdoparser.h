@@ -277,7 +277,7 @@ public:
 		CNV_OK,
 		CNV_ERROR
 	};
-	Result convert(CREF(tstring) smrFullFileName);
+	Result convert(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info);
 
 private:
 	rbool createRDOX(CREF(tstring) smrFileName) const;

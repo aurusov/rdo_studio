@@ -44,17 +44,14 @@ void smr_sim_error(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDOSMR
 // ----------------------------------------------------------------------------
-RDOSMR::RDOSMR(CREF(tstring) modelName)
+RDOSMR::RDOSMR()
 	: m_frameNumber   (1 )
 	, m_showRate      (60)
 	, m_runStartTime  (0 )
 	, m_traceStartTime(rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime  (rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_showMode      (rdoSimulator::SM_NoShow                     )
-{
-	setFile(_T("Model_name"), modelName);
-	RDOParser::s_parser()->setSMR(this);
-}
+{}
 
 void RDOSMR::setShowMode(rdoSimulator::ShowMode showMode)
 {
