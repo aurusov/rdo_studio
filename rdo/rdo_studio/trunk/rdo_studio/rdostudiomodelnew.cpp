@@ -24,34 +24,33 @@ BEGIN_MESSAGE_MAP(RDOStudioModelNew, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioModelNew::RDOStudioModelNew():
-	CDialog( IDD ),
-	color_red( RGB(0xFF, 0x00, 0x00) ),
-	need_red( false )
+RDOStudioModelNew::RDOStudioModelNew()
+	: CDialog  (IDD                  )
+	, color_red(RGB(0xFF, 0x00, 0x00))
+	, need_red (false                )
 {
 	//{{AFX_DATA_INIT(RDOStudioModelNew)
-	m_modelName = _T("mymodel");
-	m_modelPath = getMyDocFolder();
-	m_info = _T("");
-	m_comment = TRUE;
+	m_modelName      = _T("mymodel");
+	m_modelPath      = getMyDocFolder();
+	m_info           = _T("");
+	m_comment        = FALSE;
 	m_model_template = 1;
 	//}}AFX_DATA_INIT
 }
 
 RDOStudioModelNew::~RDOStudioModelNew()
-{
-}
+{}
 
 void RDOStudioModelNew::DoDataExchange(CDataExchange* pDX) 
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RDOStudioModelNew)
-	DDX_Control(pDX, IDOK, m_ok);
-	DDX_Text(pDX, IDC_MODEL_NAME, m_modelName);
-	DDX_Text(pDX, IDC_MODEL_PATH, m_modelPath);
-	DDX_Text(pDX, IDC_INFO, m_info);
-	DDX_Check(pDX, IDC_COMMENT, m_comment);
-	DDX_Radio(pDX, IDC_MODEL_EMPTY, m_model_template);
+	DDX_Control(pDX, IDOK,            m_ok            );
+	DDX_Text   (pDX, IDC_MODEL_NAME,  m_modelName     );
+	DDX_Text   (pDX, IDC_MODEL_PATH,  m_modelPath     );
+	DDX_Text   (pDX, IDC_INFO,        m_info          );
+	DDX_Check  (pDX, IDC_COMMENT,     m_comment       );
+	DDX_Radio  (pDX, IDC_MODEL_EMPTY, m_model_template);
 	//}}AFX_DATA_MAP
 }
 
