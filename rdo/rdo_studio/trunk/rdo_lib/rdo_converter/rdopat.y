@@ -1464,14 +1464,6 @@ pat_convert
 			CONVERTER->error().error(@2, rdo::format(_T(" лючевое слово Convert_event может быть использовано в событии или в нерегул€рном событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 
-		LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, _T("\r\t\t" + pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " );"));
-		ASSERT(pPlanningInsert);
-		CONVERTER->insertDocUpdate(pPlanningInsert);
-
-		LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(0, _T(pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " )\r\n"), IDocument::SMR);
-		ASSERT(pPlanningInsertSMR);
-		CONVERTER->insertDocUpdate(pPlanningInsertSMR);
-
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($4);
 		ASSERT(pPattern->m_pCurrRelRes);
 		pPattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
@@ -1623,6 +1615,16 @@ pat_pattern
 	: pat_convert RDO_End
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
+		if (pPattern->getType() == RDOPATPattern::PT_IE)
+		{
+			LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("\r\t\t" + pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " );"));
+			ASSERT(pPlanningInsert);
+			CONVERTER->insertDocUpdate(pPlanningInsert);
+
+			LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(0, _T(pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " )\r\n"), IDocument::SMR);
+			ASSERT(pPlanningInsertSMR);
+			CONVERTER->insertDocUpdate(pPlanningInsertSMR);
+		}
 		pPattern->end();
 		$$ = CONVERTER->stack().push(pPattern);
 	}
