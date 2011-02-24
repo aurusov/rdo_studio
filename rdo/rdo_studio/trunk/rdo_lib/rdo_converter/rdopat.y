@@ -1636,7 +1636,7 @@ param_type
 	{
 		rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
 		ASSERT(pReplace);
-		CONVERTER->insertDocUpdate(pReplace);
+		//CONVERTER->insertDocUpdate(pReplace);
 
 		LPRDOTypeRangeRange pRange = CONVERTER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;
