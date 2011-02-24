@@ -282,6 +282,17 @@ opr_body
 		PTR(RDOValue) pattern = P_RDOVALUE($3);
 		pOperation = pOperations->addNewActivity(name->src_info(), pattern->src_info());
 		ASSERT(pOperation);
+
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+		{
+			rdoConverter::LPDocUpdate pIEDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@3.m_last_seek
+			);
+			ASSERT(pIEDelete);
+			CONVERTER->insertDocUpdate(pIEDelete);
+		}
+
 		$$ = CONVERTER->stack().push(pOperation);
 	}
 	| opr_header RDO_IDENTIF_COLON error
