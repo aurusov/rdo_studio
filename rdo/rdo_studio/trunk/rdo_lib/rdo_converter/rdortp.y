@@ -363,7 +363,7 @@ rtp_param
 			@1.m_last_seek
 		);
 		ASSERT(pColonDelete);
-		CONVERTER->insertDocUpdate(pColonDelete);
+		//CONVERTER->insertDocUpdate(pColonDelete);
 
 		rdoConverter::LPDocUpdate pNameTypeSwap = rdo::Factory<rdoConverter::UpdateSwap>::create(
 			@1.m_first_seek,
@@ -372,14 +372,14 @@ rtp_param
 			@2.m_last_seek
 		);
 		ASSERT(pNameTypeSwap);
-		CONVERTER->insertDocUpdate(pNameTypeSwap);
+		//CONVERTER->insertDocUpdate(pNameTypeSwap);
 
 		rdoConverter::LPDocUpdate pSemicolonInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
 			@3.m_last_seek,
 			_T(";")
 		);
 		ASSERT(pSemicolonInsert);
-		CONVERTER->insertDocUpdate(pSemicolonInsert);
+		//CONVERTER->insertDocUpdate(pSemicolonInsert);
 
 		$$ = CONVERTER->stack().push(pParam);
 	}
@@ -409,7 +409,7 @@ param_type
 	{
 		rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
 		ASSERT(pReplace);
-		CONVERTER->insertDocUpdate(pReplace);
+		//CONVERTER->insertDocUpdate(pReplace);
 
 		LPRDOTypeRangeRange pRange = CONVERTER->stack().pop<RDOTypeRangeRange>($2);
 		LPRDOTypeParam pType;
@@ -562,15 +562,15 @@ param_type_enum
 			_T("enum ")
 		);
 		ASSERT(pEnumInsert);
-		CONVERTER->insertDocUpdate(pEnumInsert);
+		//CONVERTER->insertDocUpdate(pEnumInsert);
 
 		rdoConverter::LPDocUpdate pOpenBracketReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("{"));
 		ASSERT(pOpenBracketReplace);
-		CONVERTER->insertDocUpdate(pOpenBracketReplace);
+		//CONVERTER->insertDocUpdate(pOpenBracketReplace);
 
 		rdoConverter::LPDocUpdate pCloseBracketReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@3.m_first_seek, @3.m_last_seek, _T("}"));
 		ASSERT(pCloseBracketReplace);
-		CONVERTER->insertDocUpdate(pCloseBracketReplace);
+		//CONVERTER->insertDocUpdate(pCloseBracketReplace);
 
 		LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($2);
 		ASSERT(pEnum);
