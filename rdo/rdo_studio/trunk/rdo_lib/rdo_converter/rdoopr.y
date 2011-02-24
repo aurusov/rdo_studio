@@ -258,17 +258,14 @@ opr_body
 		LPRDOOPROperation pOperation = pOperations->addNewActivity(name->src_info(), pattern->src_info());
 		ASSERT(pOperation);
 
-		switch (pOperation->pattern()->getType())
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			case RDOPATPattern::PT_IE:
-			{
-				rdoConverter::LPDocUpdate pIEDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
-					@2.m_first_seek,
-					@3.m_last_seek
-				);
-				ASSERT(pIEDelete);
-				CONVERTER->insertDocUpdate(pIEDelete);
-			}
+			rdoConverter::LPDocUpdate pIEDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@3.m_last_seek
+			);
+			ASSERT(pIEDelete);
+			CONVERTER->insertDocUpdate(pIEDelete);
 		}
 
 		$$ = CONVERTER->stack().push(pOperation);
@@ -326,6 +323,17 @@ opr_param
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
+
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+		{
+			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@2.m_last_seek
+			);
+			ASSERT(pIEParamDelete);
+			CONVERTER->insertDocUpdate(pIEParamDelete);
+		}
+
 		pOperation->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -333,6 +341,17 @@ opr_param
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
+
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+		{
+			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@2.m_last_seek
+			);
+			ASSERT(pIEParamDelete);
+			CONVERTER->insertDocUpdate(pIEParamDelete);
+		}
+
 		pOperation->addParam(RDOVALUE($2));
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -340,6 +359,17 @@ opr_param
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
+
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+		{
+			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@2.m_last_seek
+			);
+			ASSERT(pIEParamDelete);
+			CONVERTER->insertDocUpdate(pIEParamDelete);
+		}
+
 		pOperation->addParam(RDOVALUE($2));
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -347,6 +377,17 @@ opr_param
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
+
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+		{
+			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@2.m_last_seek
+			);
+			ASSERT(pIEParamDelete);
+			CONVERTER->insertDocUpdate(pIEParamDelete);
+		}
+
 		pOperation->addParam(RDOVALUE($2));
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -354,6 +395,17 @@ opr_param
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
+
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+		{
+			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@2.m_last_seek
+			);
+			ASSERT(pIEParamDelete);
+			CONVERTER->insertDocUpdate(pIEParamDelete);
+		}
+
 		pOperation->addParam(RDOVALUE($2));
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -361,6 +413,17 @@ opr_param
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
+
+		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+		{
+			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+				@2.m_first_seek,
+				@2.m_last_seek
+			);
+			ASSERT(pIEParamDelete);
+			CONVERTER->insertDocUpdate(pIEParamDelete);
+		}
+
 		pOperation->addParam(RDOVALUE($2));
 		$$ = CONVERTER->stack().push(pOperation);
 	}
