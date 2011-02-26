@@ -27,14 +27,9 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
-				Outputs="rdo_studio/res"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -126,9 +121,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
-				Outputs="rdo_studio/res"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -215,9 +207,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
-				Outputs="rdo_studio/res"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -310,9 +299,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
-				Outputs="rdo_studio/res"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -400,9 +386,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
-				Outputs="rdo_studio/res"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -494,9 +477,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
-				Outputs="rdo_studio/res"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
