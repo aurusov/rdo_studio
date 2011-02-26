@@ -27,10 +27,13 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 				Outputs="rdo_studio/res"
 			/>
 			<Tool
@@ -118,10 +121,13 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 				Outputs="rdo_studio/res"
 			/>
 			<Tool
@@ -204,10 +210,13 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 				Outputs="rdo_studio/res"
 			/>
 			<Tool
@@ -296,10 +305,13 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 				Outputs="rdo_studio/res"
 			/>
 			<Tool
@@ -383,10 +395,13 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 				Outputs="rdo_studio/res"
 			/>
 			<Tool
@@ -474,10 +489,13 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
+				Description="Check svn revision..."
+				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 				Outputs="rdo_studio/res"
 			/>
 			<Tool
