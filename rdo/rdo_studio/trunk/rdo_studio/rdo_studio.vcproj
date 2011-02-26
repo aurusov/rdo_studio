@@ -27,6 +27,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -116,6 +117,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -200,6 +202,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -290,6 +293,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -375,6 +379,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -464,6 +469,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="@echo off&#x0D;&#x0A;set /p strTemp=#define FILEVER        1,1,0,&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;..\thirdparty\svnversion\svnversion ../rdo_lib &gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define PRODUCTVER     FILEVER&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STRCONVERT(x)  #x&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;echo #define STR(x)         STRCONVERT(x)&gt;&gt; ..\rdo_studio\res\version.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -4539,6 +4545,10 @@
 			</File>
 			<File
 				RelativePath="res\tracertreectrl.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\version.h"
 				>
 			</File>
 			<File
