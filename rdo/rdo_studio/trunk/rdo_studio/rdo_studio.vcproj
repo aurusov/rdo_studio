@@ -116,8 +116,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -202,8 +200,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -294,8 +290,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -381,8 +375,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -472,8 +464,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Check svn revision..."
-				CommandLine="..\thirdparty\svnversion\svnversion ../rdo_lib | ..\thirdparty\svnversion\version_diff.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
