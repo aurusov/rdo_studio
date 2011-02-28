@@ -370,8 +370,10 @@ param_array_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
-		rdoRuntime::RDOValue value = pArrayValue->getRArray();
-		$$ = (int)PARSER->addValue(new RDOValue(value, pArrayValue->getArrayType(), RDOParserSrcInfo(@1, @3, value.getAsString())));
+		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
+		pArrayValue->setSrcInfo(srcInfo);
+		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
+		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
 	}
 	| '[' array_enumeration error
 	{
@@ -385,6 +387,7 @@ array_enumeration
 		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOVALUE($1).src_info());
 		ASSERT(pArrayType);
 		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
+		ASSERT(pArrayValue);
 		pArrayValue->insertItem(RDOVALUE($1));
 		$$ = PARSER->stack().push(pArrayValue);
 	}

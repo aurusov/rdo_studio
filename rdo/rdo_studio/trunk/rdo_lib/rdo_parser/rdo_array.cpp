@@ -73,22 +73,24 @@ RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	{
 	case rdoRuntime::RDOType::t_array:
 		{
-			LPRDOArrayType pArrayT(const_cast<PTR(RDOArrayType)>(this));
-			rdoRuntime::RDOArrayValue rArrayV = from->getArray();
-			for(rdoRuntime::RDOArrayValue::Container::iterator it = rArrayV.containerBegin(); it != rArrayV.containerEnd(); ++it)
+			LPRDOArrayType pThisArray(const_cast<PTR(RDOArrayType)>(this));
+			LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pThisArray);
+			ASSERT(pArrayValue);
+			LPRDOArrayValue pFromArrayValue = from.getArray();
+			ASSERT(pFromArrayValue);
+			CREF(RDOArrayValue::Container) container = pFromArrayValue->getContainer();
+			STL_FOR_ALL_CONST(container, it)
 			{
-				*it = pArrayT->getItemType()->value_cast(RDOValue(*it, from.type(), src_info), to_src_info, src_info).value();
+				pArrayValue->insertItem(pThisArray->getItemType()->value_cast(*it, to_src_info, it->src_info()));
 			}
-			return from;
+			return RDOValue(pArrayValue);
 			break;
 		}
 	default:
-	{
 		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Несоответствие размерности массива")));
 		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 		rdoParse::g_error().push_done();
 		break;
-	}
 	}
 	return from;
 }
@@ -142,6 +144,11 @@ CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
 	return m_pArrayType;
 }
 
+REF(LPRDOArrayType) RDOArrayValue::getArrayType()
+{
+	return m_pArrayType;
+}
+
 rdoRuntime::RDOValue RDOArrayValue::getRArray() const
 {
 	rdoRuntime::RDOArrayValue arrayValue(m_pArrayType->getRuntimeArrayType());
@@ -151,6 +158,28 @@ rdoRuntime::RDOValue RDOArrayValue::getRArray() const
 	}
 	rdoRuntime::RDOValue value(arrayValue);
 	return value;
+}
+
+tstring RDOArrayValue::getAsString() const
+{
+	tstring arrayValue;
+	STL_FOR_ALL_CONST(m_container, it)
+	{
+		if (it == m_container.begin())
+		{
+			arrayValue = rdo::format(_T("[%s"), it->value().getAsString().c_str());
+		}
+		else
+		{
+			arrayValue = rdo::format(_T("%s, %s"), arrayValue.c_str(), it->value().getAsString().c_str());
+		}
+	}
+	return rdo::format(_T("%s]"), arrayValue.c_str());
+}
+
+CREF(RDOArrayValue::Container) RDOArrayValue::getContainer() const
+{
+	return m_container;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

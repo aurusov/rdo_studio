@@ -20,16 +20,19 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
+PREDECLARE_POINTER(RDOArrayValue);
+
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
 class RDOValue: public RDOParserSrcInfo
 {
 public:
-	explicit RDOValue(CREF(rsint)   value);
-	explicit RDOValue(CREF(ruint)   value);
-	explicit RDOValue(CREF(double)  value);
-	explicit RDOValue(CREF(tstring) value);
+	explicit RDOValue(CREF(rsint)           value );
+	explicit RDOValue(CREF(ruint)           value );
+	explicit RDOValue(CREF(double)          value );
+	explicit RDOValue(CREF(tstring)         value );
+	explicit RDOValue(CREF(LPRDOArrayValue) pValue);
 
 	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(RDOValue) value);
@@ -43,6 +46,7 @@ public:
 	rdoRuntime::RDOType::TypeID     typeID() const;
 	CREF(rdoRuntime::RDOValue)       value() const;
 	CPTR(rdoRuntime::RDOValue) operator-> () const;
+	CREF(LPRDOArrayValue)         getArray() const;
 
 	void operator= (CREF(RDOValue) value);
 
@@ -53,6 +57,7 @@ public:
 
 private:
 	rdoRuntime::RDOValue m_value;
+	LPRDOArrayValue      m_pArray;
 	LPRDOType            m_type;
 };
 

@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_type.h"
+#include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -20,6 +21,20 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
+RDOValue::RDOValue()
+	: RDOParserSrcInfo()
+	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow.object_parent_cast<rdoRuntime::RDOType>()))
+	, m_type          (rdo::Factory<RDOType__unknow>::create())
+{}
+
+RDOValue::RDOValue(CREF(LPRDOArrayValue) pValue)
+	: RDOParserSrcInfo(pValue->src_info()    )
+	, m_pArray        (pValue                )
+	, m_type          (pValue->getArrayType())
+{
+	m_value = m_pArray->getRArray();
+}
+
 RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
@@ -34,22 +49,16 @@ RDOValue::RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 
 // Для t_identificator известно только имя, но не тип
 RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
+	: RDOParserSrcInfo(src_info                                                              )
 	, m_value         (rdoRuntime::RDOValue(src_info.src_text(), rdoRuntime::g_identificator))
-	, m_type          (rdo::Factory<RDOType__identificator>::create())
-{}
-
-// Неопределенный тип
-RDOValue::RDOValue()
-	: RDOParserSrcInfo()
-	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow.object_parent_cast<rdoRuntime::RDOType>()))
-	, m_type          (rdo::Factory<RDOType__unknow>::create())
+	, m_type          (rdo::Factory<RDOType__identificator>::create()                        )
 {}
 
 void RDOValue::operator= (CREF(RDOValue) value)
 {
-	m_value = value.m_value;
-	m_type  = value.m_type;
+	m_value  = value.m_value;
+	m_type   = value.m_type;
+	m_pArray = value.m_pArray;
 	setSrcInfo(value.src_info());
 }
 
@@ -71,6 +80,11 @@ CREF(rdoRuntime::RDOValue) RDOValue::value() const
 CPTR(rdoRuntime::RDOValue) RDOValue::operator-> () const
 {
 	return &m_value;
+}
+
+CREF(LPRDOArrayValue) RDOValue::getArray() const
+{
+	return m_pArray;
 }
 
 rbool RDOValue::defined() const

@@ -44,20 +44,23 @@ DECLARE_POINTER(RDOArrayType)
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayValue
 // ----------------------------------------------------------------------------
-OBJECT(RDOArrayValue)
+OBJECT(RDOArrayValue) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOArrayValue);
 public:
+	typedef std::vector<RDOValue> Container;
+
 	void insertItem(CREF(RDOValue) value);
 
 	CREF(LPRDOArrayType) getArrayType() const;
+	 REF(LPRDOArrayType) getArrayType();
 	rdoRuntime::RDOValue getRArray   () const;
+	tstring              getAsString () const;
+	CREF(Container)      getContainer() const;
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType) pArrayType);
 	virtual ~RDOArrayValue();
-
-	typedef std::vector<RDOValue> Container;
 
 	Container      m_container;
 	LPRDOArrayType m_pArrayType;
