@@ -87,14 +87,14 @@ class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	typedef LPRDOType LPArrayType;
+	typedef LPRDOType LPItemType;
 
-	LPArrayType getArrayType() const;
+	LPItemType getItemType() const;
 
 private:
-	RDOArrayType(CREF(LPArrayType) pArrayType);
+	RDOArrayType(CREF(LPItemType) pItemType);
 
-	LPArrayType m_pArrayType;
+	LPItemType m_pItemType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

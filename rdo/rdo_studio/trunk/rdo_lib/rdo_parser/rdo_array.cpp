@@ -134,7 +134,7 @@ void RDOArrayValue::insertItem(CREF(RDOValue) value)
 {
 	m_pArrayType->getItemType()->type_cast(value.type(), value.src_info(), m_pArrayType->src_info(), value.src_info());
 	RDOValue ItemValue = m_pArrayType->getItemType()->value_cast(value, m_pArrayType->src_info(), value.src_info());
-	m_Container.push_back(ItemValue);
+	m_container.push_back(ItemValue);
 }
 
 CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
@@ -145,7 +145,7 @@ CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
 rdoRuntime::RDOValue RDOArrayValue::getRArray() const
 {
 	rdoRuntime::RDOArrayValue arrayValue(m_pArrayType->getRuntimeArrayType());
-	STL_FOR_ALL_CONST(m_Container, it)
+	STL_FOR_ALL_CONST(m_container, it)
 	{
 		arrayValue.insertItem(it->value());
 	}

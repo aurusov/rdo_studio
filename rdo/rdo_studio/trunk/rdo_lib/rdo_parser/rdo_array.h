@@ -59,7 +59,7 @@ private:
 
 	typedef std::vector<RDOValue> Container;
 
-	Container      m_Container;
+	Container      m_container;
 	LPRDOArrayType m_pArrayType;
 };
 

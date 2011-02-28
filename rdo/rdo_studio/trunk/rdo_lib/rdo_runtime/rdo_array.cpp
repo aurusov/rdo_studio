@@ -118,14 +118,14 @@ rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayType
 // ----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType(CREF(LPArrayType) pArrayType)
-	: RDOType     (RDOType::t_array)
-	, m_pArrayType(pArrayType      )
+RDOArrayType::RDOArrayType(CREF(LPItemType) pItemType)
+	: RDOType    (RDOType::t_array)
+	, m_pItemType(pItemType       )
 {}
 
-RDOArrayType::LPArrayType RDOArrayType::getArrayType() const
+RDOArrayType::LPItemType RDOArrayType::getItemType() const
 {
-	return m_pArrayType;
+	return m_pItemType;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
