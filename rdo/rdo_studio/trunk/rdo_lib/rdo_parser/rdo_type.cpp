@@ -15,7 +15,6 @@
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
-//#include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -229,15 +228,27 @@ void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
 //! RDOType__identificator
 LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	rdoParse::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору"), from_src_info.src_text().c_str()));
+	switch (from->type()->typeID())
+	{
+	case rdoRuntime::RDOType::t_identificator:
+		return rdo::Factory<RDOType__identificator>::create();
+	default:
+		rdoParse::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору"), from_src_info.src_text().c_str()));
+	}
 	return NULL;
 }
 
 RDOValue RDOType__identificator::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к типу идентификатор"), from.src_info().src_text().c_str()));
-	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-	rdoParse::g_error().push_done();
+	switch (from.typeID())
+	{
+	case rdoRuntime::RDOType::t_identificator:
+		return from;
+	default:
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к типу идентификатор"), from.src_info().src_text().c_str()));
+		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		rdoParse::g_error().push_done();
+	}
 	return RDOValue();
 }
 
