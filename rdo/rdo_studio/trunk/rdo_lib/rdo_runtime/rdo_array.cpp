@@ -64,14 +64,19 @@ void RDOArrayValue::eraseItems(Container::iterator itrFst, Container::iterator i
 
 tstring RDOArrayValue::getAsString() const
 {
-	tstring ArrayName = _T("[");
+	tstring arrayValue;
 	STL_FOR_ALL_CONST(m_container, it)
 	{
-		ArrayName += it->getAsString();
-		if(it != --m_container.end())
-			ArrayName += _T(", ");
+		if (it == m_container.begin())
+		{
+			arrayValue = rdo::format(_T("[%s"), it->getAsString().c_str());
+		}
+		else
+		{
+			arrayValue = rdo::format(_T("%s, %s"), arrayValue.c_str(), it->getAsString().c_str());
+		}
 	}
-	return ArrayName += _T("]");
+	return rdo::format(_T("%s]"), arrayValue.c_str());
 }
 
 CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
