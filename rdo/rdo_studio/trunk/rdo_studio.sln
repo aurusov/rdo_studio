@@ -66,7 +66,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help_studio_rus", "rdo_
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".resources (not for compiler)", ".resources (not for compiler)", "{9ECFE882-0486-4248-9A76-7F44E9732861}"
 	ProjectSection(SolutionItems) = preProject
-		rdo_help\rdo_user_guide\RAO-studio User Guide.doc = rdo_help\rdo_user_guide\RAO-studio User Guide.doc
+		rdo_help\Doxyfile = rdo_help\Doxyfile
 		rdo_help\rdodoc-src-html.doxyfile = rdo_help\rdodoc-src-html.doxyfile
 	EndProjectSection
 EndProject
