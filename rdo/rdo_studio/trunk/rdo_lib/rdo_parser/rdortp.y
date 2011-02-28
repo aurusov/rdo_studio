@@ -719,19 +719,19 @@ param_value
 	;
 
 param_array_value
-	: '[' array_item ']'
+	: '[' array_enumeration ']'
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
 		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
 	}
-	| '[' array_item error
+	| '[' array_enumeration error
 	{
 		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 	}
 	;
 
-array_item
+array_enumeration
 	: param_value
 	{
 		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOParserSrcInfo(@1));
@@ -740,14 +740,14 @@ array_item
 		pArrayValue->insertItem(RDOVALUE($1));
 		$$ = PARSER->stack().push(pArrayValue);
 	}
-	| array_item ',' param_value
+	| array_enumeration ',' param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
 		pArrayValue->insertItem(RDOVALUE($3));
 		$$ = PARSER->stack().push(pArrayValue);
 	}
-	| array_item param_value
+	| array_enumeration param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
