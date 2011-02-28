@@ -658,6 +658,16 @@ param_type_such_as
 	}
 	;
 
+param_type_array
+	: RDO_array '<' param_type '>'
+	{
+		LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
+		ASSERT(pParamType);
+		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4));
+		$$ = PARSER->stack().push(pArray);
+	}
+	;
+
 param_value_default
 	: /* empty */
 	{
@@ -686,41 +696,37 @@ param_value
 	{
 		$$ = $1;
 	}
-	| RDO_REAL_CONST {
-		$$ = $1;
-	}
-	| RDO_STRING_CONST {
-		$$ = $1;
-	}
-	| RDO_IDENTIF {
-		$$ = $1;
-	}
-	| RDO_BOOL_CONST {
-		$$ = $1;
-	}
-	| param_array_value {
-		$$ = $1;
-	}
-	;
-
-param_type_array
-	: RDO_array '<' param_type '>'
+	| RDO_REAL_CONST
 	{
-		LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
-		ASSERT(pParamType);
-		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4));
-		$$ = PARSER->stack().push(pArray);
+		$$ = $1;
+	}
+	| RDO_STRING_CONST
+	{
+		$$ = $1;
+	}
+	| RDO_IDENTIF
+	{
+		$$ = $1;
+	}
+	| RDO_BOOL_CONST
+	{
+		$$ = $1;
+	}
+	| param_array_value
+	{
+		$$ = $1;
 	}
 	;
 
 param_array_value
-	:	'[' array_item ']'
+	: '[' array_item ']'
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
 		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
 	}
-	|'[' array_item error {
+	| '[' array_item error
+	{
 		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 	}
 	;
