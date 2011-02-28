@@ -331,12 +331,12 @@ rss_value
 	| RDO_BOOL_CONST    {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
 	| RDO_STRING_CONST  {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
 	| RDO_IDENTIF       {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
+	| param_array_value {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
 	| error
 	{
 		PARSER->error().error(@1, rdo::format(_T("Неправильное значение параметра: %s"), LEXER->YYText()));
 	}
 	;
-				| param_array_value { PARSER->getLastRSSResource()->addParam( *reinterpret_cast<RDOValue*>($1) )    }
 
 param_array_value:	'[' array_item ']' {
 						LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
