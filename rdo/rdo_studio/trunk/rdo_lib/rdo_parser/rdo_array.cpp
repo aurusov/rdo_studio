@@ -108,8 +108,8 @@ RDOValue RDOArrayType::get_default() const
 
 void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
 {
-	CPTR(RDOArrayType) pArray(const_cast<PTR(RDOArrayType)>(this));
-	stream << (*pArray).name()<< std::endl;
+	stream << "A ";
+	m_pItemType->writeModelStructure(stream);
 }
 
 CREF(LPRDOType) RDOArrayType::getItemType() const

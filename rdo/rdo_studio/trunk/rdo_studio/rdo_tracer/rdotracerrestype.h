@@ -10,7 +10,8 @@
 enum RDOTracerResParamType {
 	RDOPT_INTEGER = 0,
 	RDOPT_REAL,
-	RDOPT_ENUMERATIVE
+	RDOPT_ENUMERATIVE,
+	RDOPT_ARRAY
 };
 	
 typedef std::vector <std::string> RDOStringVector;

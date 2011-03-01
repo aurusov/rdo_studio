@@ -43,39 +43,68 @@ RDOTracerBase::~RDOTracerBase()
 	deleteTrace();
 }
 
+RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
+{
+	std::string            par_type;
+	RDOTracerResParamType  parType;
+	ruint                  enum_count = 0;
+	stream >> par_type;
+	if ( par_type == "E" )
+	{
+		parType = RDOPT_ENUMERATIVE;
+		stream >> enum_count;
+	}
+	if ( par_type == "I" )
+	{
+		parType = RDOPT_INTEGER;
+	}
+	else if ( par_type == "R" )
+	{
+		parType = RDOPT_REAL;
+	}
+	else if ( par_type == "A" )
+	{
+		parType = RDOPT_ARRAY;
+	}
+	RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
+	if ( parType == RDOPT_ENUMERATIVE )
+	{
+		std::string en_name;
+		for ( ruint j = 0; j < enum_count; j++ )
+		{
+			stream >> en_name;
+			stream >> en_name;
+			param->addEnumValue( en_name );
+		}
+	}
+	else if ( parType == RDOPT_ARRAY )
+	{
+		RDOTracerResParamInfo* arrayItem = getParamType(stream);
+		int i = 1;
+	}
+	return param;
+}
+
+RDOTracerResParamInfo* RDOTracerBase::getParam( rdo::textstream& stream )
+{
+	std::string par_type;
+	std::string par_name;
+	stream >> par_type;
+	stream >> par_name;
+	RDOTracerResParamInfo* param = getParamType(stream);
+	param->Name = par_name;
+	return param;
+}
+
 void RDOTracerBase::addResourceType( std::string& s, rdo::textstream& stream )
 {
 	RDOTracerResType* type = new RDOTracerResType( RDOTK_PERMANENT );
 	stream >> type->Name;
 	int paramcount;
 	stream >> paramcount;
-	std::string par_type;
-	std::string par_name;
-	RDOTracerResParamType parType;
-	int enum_count;
-	for ( int i = 0; i < paramcount; i++ ) {
-		enum_count = 0;
-		stream >> par_type;
-		stream >> par_name;
-		stream >> par_type;
-		if ( par_type == "E" ) {
-			parType = RDOPT_ENUMERATIVE;
-			stream >> enum_count;
-		} if ( par_type == "I" )
-			parType = RDOPT_INTEGER;
-		else if ( par_type == "R" )
-			parType = RDOPT_REAL;
-		RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
-		param->Name = par_name;
-		if ( parType == RDOPT_ENUMERATIVE ) {
-			std::string en_name;
-			for ( int j = 0; j < enum_count; j++ ) {
-				stream >> en_name;
-				stream >> en_name;
-				param->addEnumValue( en_name );
-			}
-		}
-		type->addParamInfo( param );
+	for ( int i = 0; i < paramcount; i++ )
+	{
+		type->addParamInfo( getParam(stream) );
 	}
 	resTypes.push_back( type );
 	tree->addResourceType( type );
