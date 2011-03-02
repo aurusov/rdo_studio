@@ -16,6 +16,7 @@
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/context/context.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -43,14 +44,41 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- ResultGroup
+// ----------------------------------------------------------------------------
+CLASS(ResultGroup):
+	    INSTANCE_OF(RDOParserSrcInfo)
+	AND INSTANCE_OF(Context         )
+{
+DECLARE_FACTORY(ResultGroup);
+public:
+	void          append(CREF(LPRDOPMDPokaz) pResult   );
+	LPRDOPMDPokaz find  (CREF(tstring)       resultName) const;
+
+private:
+	ResultGroup(CREF(RDOParserSrcInfo) src_info);
+	virtual ~ResultGroup();
+
+	typedef std::list<LPRDOPMDPokaz> ResultList;
+
+	ResultList m_resultList;
+};
+DECLARE_POINTER(ResultGroup);
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
 class RDOPMDWatchPar: public RDOPMDPokaz
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
+public:
+	void init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
+
 private:
-	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
+	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOPMDWatchPar();
 };
+DECLARE_POINTER(RDOPMDWatchPar);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
@@ -58,9 +86,14 @@ private:
 class RDOPMDWatchState: public RDOPMDPokaz
 {
 DECLARE_FACTORY(RDOPMDWatchState);
+public:
+	void init(rbool trace, LPRDOFUNLogic pLogic);
+
 private:
-	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic);
+	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOPMDWatchState();
 };
+DECLARE_POINTER(RDOPMDWatchState);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchTemp
@@ -69,6 +102,7 @@ class RDOPMDWatchTemp: public RDOPMDPokaz
 {
 protected:
 	RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
+	virtual ~RDOPMDWatchTemp();
 };
 
 // ----------------------------------------------------------------------------
@@ -78,11 +112,13 @@ class RDOPMDWatchQuant: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchQuant);
 public:
+	void init           (rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
 	void setLogic       (REF(LPRDOFUNLogic) pLogic);
 	void setLogicNoCheck();
 
 private:
-	RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
+	virtual ~RDOPMDWatchQuant();
 };
 DECLARE_POINTER(RDOPMDWatchQuant);
 
@@ -93,11 +129,13 @@ class RDOPMDWatchValue: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchValue);
 public:
+	void init           (rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
 	void setLogic       (REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm);
 	void setLogicNoCheck(REF(LPRDOFUNArithm) pArithm);
 
 private:
-	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
+	virtual ~RDOPMDWatchValue();
 };
 DECLARE_POINTER(RDOPMDWatchValue);
 
@@ -107,9 +145,14 @@ DECLARE_POINTER(RDOPMDWatchValue);
 class RDOPMDGetValue: public RDOPMDPokaz
 {
 DECLARE_FACTORY(RDOPMDGetValue);
+public:
+	void init(LPRDOFUNArithm pArithm);
+
 private:
-	RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info, LPRDOFUNArithm pArithm);
+	RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOPMDGetValue();
 };
+DECLARE_POINTER(RDOPMDGetValue);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

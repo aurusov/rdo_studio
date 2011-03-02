@@ -317,8 +317,9 @@ dpt_queue_param
 		{
 			rtp = rssList[res_name].getType();
 			rdoMBuilder::BlockForQueue::checkType(rtp, info);
-			LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name), false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+			LPRDOPMDWatchPar pPokaz = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 			ASSERT(pPokaz);
+			pPokaz->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
 		}
 		else
 		{
@@ -329,8 +330,9 @@ dpt_queue_param
 				if (rdoMBuilder::BlockForQueue::checkType(rtp_, info))
 				{
 					rdoMBuilder::BlockForQueue::createRes(rtp_, res_name);
-					LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name), false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+					LPRDOPMDWatchPar pPokaz = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pPokaz);
+					pPokaz->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
 				}
 			}
 			else
@@ -339,8 +341,9 @@ dpt_queue_param
 				if (rdoMBuilder::BlockForQueue::checkType(rtp_, info))
 				{
 					rdoMBuilder::BlockForQueue::createRes(rtp_, res_name);
-					LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name), false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+					LPRDOPMDWatchPar pPokaz = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pPokaz);
+					pPokaz->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
 				}
 			}
 		}

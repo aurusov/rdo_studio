@@ -36,37 +36,79 @@ void pmderror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 RDOPMDPokaz::RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
-{
-	LPRDOPMDPokaz pPokaz = RDOParser::s_parser()->findPMDPokaz(src_text());
-	if (pPokaz)
-	{
-		RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("Показатель '%s' уже существует"), src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pPokaz->src_info(), _T("См. первое определение"));
-		RDOParser::s_parser()->error().push_done();
-	}
-}
+{}
 
 RDOPMDPokaz::~RDOPMDPokaz()
 {}
 
 void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 {
+	LPContext pContext = RDOParser::s_parser()->context();
+	ASSERT(pContext);
+
+	LPResultGroup pResultGroup = pContext.object_static_cast<ResultGroup>();
+	ASSERT(pResultGroup);
+
+	pResultGroup->append(this);
+
 	m_pPokaz = pPokaz;
-	LPITrace trace = m_pPokaz;
-	if (trace)
+	LPITrace pTrace = m_pPokaz;
+	if (pTrace)
 	{
-		trace->setTraceID(RDOParser::s_parser()->getPMD_id());
+		pTrace->setTraceID(RDOParser::s_parser()->getPMD_id());
 	}
-	RDOParser::s_parser()->insertPMDPokaz(this);
 	//! [TODO]: перенести в конструктор rdoRuntime::RDOPMDPokaz
 	RDOParser::s_parser()->runtime()->addRuntimePokaz(m_pPokaz);
 }
 
 // ----------------------------------------------------------------------------
+// ---------- ResultGroup
+// ----------------------------------------------------------------------------
+ResultGroup::ResultGroup(CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+{
+}
+
+ResultGroup::~ResultGroup()
+{
+}
+
+void ResultGroup::append(CREF(LPRDOPMDPokaz) pResult)
+{
+	ASSERT(pResult);
+	LPRDOPMDPokaz pResultFound = find(pResult->name());
+	if (pResultFound)
+	{
+		RDOParser::s_parser()->error().push_only(pResult->src_info(), rdo::format(_T("Показатель '%s' уже существует"), pResult->src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResultFound->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_done();
+	}
+	m_resultList.push_back(pResult);
+}
+
+LPRDOPMDPokaz ResultGroup::find(CREF(tstring) resultName) const
+{
+	STL_FOR_ALL_CONST(m_resultList, it)
+	{
+		if ((*it)->name() == resultName)
+		{
+			return *it;
+		}
+	}
+	return NULL;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
+RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info)
 	: RDOPMDPokaz(src_info)
+{}
+
+RDOPMDWatchPar::~RDOPMDWatchPar()
+{}
+
+void RDOPMDWatchPar::init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
 {
 	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(res_src_info.src_text());
 	if (!pResource)
@@ -102,8 +144,14 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic)
+RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info)
 	: RDOPMDPokaz(src_info)
+{}
+
+RDOPMDWatchState::~RDOPMDWatchState()
+{}
+
+void RDOPMDWatchState::init(rbool trace, LPRDOFUNLogic pLogic)
 {
 	endOfCreation(F(rdoRuntime::RDOPMDWatchState)::create(RDOParser::s_parser()->runtime(), src_text(), trace, pLogic->getCalc()));
 }
@@ -127,11 +175,20 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 	}
 }
 
+RDOPMDWatchTemp::~RDOPMDWatchTemp()
+{}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
+{}
+
+RDOPMDWatchQuant::~RDOPMDWatchQuant()
+{}
+
+void RDOPMDWatchQuant::init(rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(pGroupLogic);
@@ -157,8 +214,14 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
+{}
+
+RDOPMDWatchValue::~RDOPMDWatchValue()
+{}
+
+void RDOPMDWatchValue::init(rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(pGroupLogic);
@@ -186,8 +249,14 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info, LPRDOFUNArithm pArithm)
+RDOPMDGetValue::RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOPMDPokaz(src_info)
+{}
+
+RDOPMDGetValue::~RDOPMDGetValue()
+{}
+
+void RDOPMDGetValue::init(LPRDOFUNArithm pArithm)
 {
 	endOfCreation(F(rdoRuntime::RDOPMDGetValue)::create(RDOParser::s_parser()->runtime(), src_text(), pArithm->createCalc()));
 }

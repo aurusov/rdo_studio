@@ -18,6 +18,7 @@
 #include "rdo_common/rdoindexedstack.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
+#include "rdo_common/rdoidgenerator.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
@@ -89,7 +90,6 @@ DEFINE_OBJECT_CONTAINER(DPTSearch      );
 DEFINE_OBJECT_CONTAINER(DPTSome        );
 DEFINE_OBJECT_CONTAINER(DPTPrior       );
 DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
-DEFINE_OBJECT_CONTAINER(PMDPokaz       );
 DEFINE_OBJECT_CONTAINER(Event          );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
@@ -122,7 +122,7 @@ public:
 	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
 	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
 	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
-	ruint getPMD_id     () const { return m_allPMDPokaz.size()    + 1; }
+	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 
 	tstring getModelStructure();
@@ -241,6 +241,7 @@ private:
 	PreCastTypeList       m_preCastTypeList;
 	LPContextStack        m_pContextStack;
 	rbool                 m_pattern;
+	rdo::IDGenerator      m_resultGeneratorID;
 
 	template <class T>
 	void howIsIt()

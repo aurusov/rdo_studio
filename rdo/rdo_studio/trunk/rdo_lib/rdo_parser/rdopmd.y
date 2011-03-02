@@ -224,7 +224,42 @@ OPEN_RDO_PARSER_NAMESPACE
 %%
 
 pmd_main
-	: pmd_end
+	: /* empty */
+	| pmd_main pmd_result_group
+	;
+
+pmd_result_group_name
+	: /* empty */
+	{
+		LPResultGroup pResultGroup = rdo::Factory<ResultGroup>::create(RDOParserSrcInfo());
+		ASSERT(pResultGroup);
+		PARSER->contextStack()->push(pResultGroup);
+	}
+	| RDO_IDENTIF
+	{
+		LPResultGroup pResultGroup = rdo::Factory<ResultGroup>::create(RDOParserSrcInfo(@1, RDOVALUE($1)->getIdentificator()));
+		ASSERT(pResultGroup);
+		PARSER->contextStack()->push(pResultGroup);
+	}
+	;
+
+pmd_result_group
+	: RDO_Results pmd_result_group_name pmd_body RDO_End
+	{
+		PARSER->contextStack()->pop();
+	}
+	| RDO_Results pmd_result_group_name pmd_body error
+	{
+		PARSER->error().error(@3, _T("Ожидается ключевое слово $End"));
+	}
+	| error
+	{
+		YYLTYPE pos( @1 );
+		pos.m_last_line = pos.m_first_line;
+		pos.m_last_pos  = pos.m_first_pos;
+		pos.m_last_seek = pos.m_first_seek;
+		PARSER->error().error(pos, _T("Ожидается ключевое слово $Results"));
+	}
 	;
 
 pmd_body
@@ -250,8 +285,9 @@ pmd_trace
 pmd_pokaz_watch_quant_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_quant RDO_IDENTIF
 	{
-		LPRDOPMDWatchQuant pWatchQuant = rdo::Factory<RDOPMDWatchQuant>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info());
+		LPRDOPMDWatchQuant pWatchQuant = rdo::Factory<RDOPMDWatchQuant>::create(P_RDOVALUE($1)->src_info(), P_RDOVALUE($4)->src_info());
 		ASSERT(pWatchQuant);
+		pWatchQuant->init($2 != 0, P_RDOVALUE($4)->src_info());
 		$$ = PARSER->stack().push(pWatchQuant);
 	}
 	;
@@ -259,8 +295,9 @@ pmd_pokaz_watch_quant_begin
 pmd_pokaz_watch_value_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_value RDO_IDENTIF
 	{
-		LPRDOPMDWatchValue pWatchValue = rdo::Factory<RDOPMDWatchValue>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info());
+		LPRDOPMDWatchValue pWatchValue = rdo::Factory<RDOPMDWatchValue>::create(P_RDOVALUE($1)->src_info(), P_RDOVALUE($4)->src_info());
 		ASSERT(pWatchValue);
+		pWatchValue->init($2 != 0, P_RDOVALUE($4)->src_info());
 		$$ = PARSER->stack().push(pWatchValue);
 	}
 	;
@@ -268,8 +305,9 @@ pmd_pokaz_watch_value_begin
 pmd_pokaz
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchPar>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info(), P_RDOVALUE($6)->src_info());
+		LPRDOPMDWatchPar pPokaz = rdo::Factory<RDOPMDWatchPar>::create(P_RDOVALUE($1)->src_info());
 		ASSERT(pPokaz);
+		pPokaz->init($2 != 0, P_RDOVALUE($4)->src_info(), P_RDOVALUE($6)->src_info());
 		$$ = PARSER->stack().push(pPokaz);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
@@ -302,8 +340,9 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic
 	{
-		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchState>::create(P_RDOVALUE($1)->src_info(), $2 != 0, PARSER->stack().pop<RDOFUNLogic>($4));
+		LPRDOPMDWatchState pPokaz = rdo::Factory<RDOPMDWatchState>::create(P_RDOVALUE($1)->src_info());
 		ASSERT(pPokaz);
+		pPokaz->init($2 != 0, PARSER->stack().pop<RDOFUNLogic>($4));
 		$$ = PARSER->stack().push(pPokaz);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error
@@ -364,29 +403,14 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON RDO_get_value fun_arithm
 	{
-		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDGetValue>::create(P_RDOVALUE($1)->src_info(), PARSER->stack().pop<RDOFUNArithm>($3));
+		LPRDOPMDGetValue pPokaz = rdo::Factory<RDOPMDGetValue>::create(P_RDOVALUE($1)->src_info());
 		ASSERT(pPokaz);
+		pPokaz->init(PARSER->stack().pop<RDOFUNArithm>($3));
 		$$ = PARSER->stack().push(pPokaz);
 	}
 	| RDO_IDENTIF_COLON RDO_get_value error
 	{
 		PARSER->error().error(@2, @3, _T("После ключевого слова get_value ожидается арифметическое выражение"));
-	}
-	;
-
-pmd_end
-	: RDO_Results pmd_body RDO_End
-	| error
-	{
-		YYLTYPE pos( @1 );
-		pos.m_last_line = pos.m_first_line;
-		pos.m_last_pos  = pos.m_first_pos;
-		pos.m_last_seek = pos.m_first_seek;
-		PARSER->error().error(pos, _T("Ожидается ключевое слово $Results"));
-	}
-	| RDO_Results pmd_body error
-	{
-		PARSER->error().error(@3, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
