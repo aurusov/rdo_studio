@@ -29,6 +29,9 @@ RDOPMDPokaz::RDOPMDPokaz( RDORuntime* sim, const tstring& name, rbool trace ):
 	setTrace( trace );
 }
 
+RDOPMDPokaz::~RDOPMDPokaz()
+{}
+
 CREF(tstring) RDOPMDPokaz::name() const
 {
 	return m_name;
@@ -44,6 +47,9 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDORuntime* sim, const tstring& name, rbool trac
 {
 	static_cast<RDORuntime*>(sim)->connect( this, RDORuntime::RO_BEFOREDELETE );
 }
+
+RDOPMDWatchPar::~RDOPMDWatchPar()
+{}
 
 void RDOPMDWatchPar::notify(ruint message, PTR(void) param)
 {
@@ -128,8 +134,10 @@ rbool RDOPMDWatchPar::calcStat(PTR(RDOSimulator) sim)
 RDOPMDWatchState::RDOPMDWatchState( RDORuntime* sim, const tstring& name, rbool trace, CREF(LPRDOCalc) pLogic ):
 	RDOPMDPokaz( sim, name, trace ),
 	m_pLogicCalc( pLogic )
-{
-}
+{}
+
+RDOPMDWatchState::~RDOPMDWatchState()
+{}
 
 tstring RDOPMDWatchState::traceValue() const
 {
@@ -207,8 +215,10 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDORuntime* sim, const tstring& name, rbool 
 	RDOPMDPokaz( sim, name, trace ),
 	m_pLogicCalc( NULL ),
 	m_rtp_id( rtp_id )
-{
-}
+{}
+
+RDOPMDWatchQuant::~RDOPMDWatchQuant()
+{}
 
 tstring RDOPMDWatchQuant::traceValue() const
 {
@@ -311,6 +321,9 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDORuntime* sim, const tstring& name, rbool 
 	m_wasChanged = false;
 }
 
+RDOPMDWatchValue::~RDOPMDWatchValue()
+{}
+
 tstring RDOPMDWatchValue::traceValue() const
 {
 	return rdo::toString( m_currValue );
@@ -403,8 +416,10 @@ void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 RDOPMDGetValue::RDOPMDGetValue(PTR(RDORuntime) sim, const tstring& name, CREF(LPRDOCalc) pArithm):
 	RDOPMDPokaz( sim, name, false ),
 	m_pArithmCalc( pArithm )
-{
-}
+{}
+
+RDOPMDGetValue::~RDOPMDGetValue()
+{}
 
 tstring RDOPMDGetValue::traceValue() const
 {

@@ -36,7 +36,8 @@ QUERY_INTERFACE_END
 
 protected:
 	RDOPMDPokaz( RDORuntime* sim, const std::string& name, bool trace );
-	virtual ~RDOPMDPokaz() {}
+	virtual ~RDOPMDPokaz();
+
 	DECLARE_IName;
 
 private:
@@ -59,6 +60,7 @@ QUERY_INTERFACE_END
 
 private:
 	RDOPMDWatchPar( RDORuntime* sim, const std::string& name, bool trace, const std::string& resName, const std::string& parName, int resNumber, int parNumber );
+	virtual ~RDOPMDWatchPar();
 
 	int       m_resNumber;
 	int       m_parNumber;
@@ -96,6 +98,7 @@ QUERY_INTERFACE_END
 
 private:
 	RDOPMDWatchState( RDORuntime* sim, const std::string& name, bool trace, CREF(LPRDOCalc) pLogic );
+	virtual ~RDOPMDWatchState();
 
 	LPRDOCalc m_pLogicCalc;
 
@@ -130,6 +133,7 @@ QUERY_INTERFACE_END
 
 private:
 	RDOPMDWatchQuant( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
+	virtual ~RDOPMDWatchQuant();
 
 	LPRDOCalc m_pLogicCalc;
 	int       m_rtp_id;
@@ -166,6 +170,7 @@ QUERY_INTERFACE_END
 
 private:
 	RDOPMDWatchValue( RDORuntime* sim, const std::string& name, bool trace, const std::string& resTypeName, int rtp_id );
+	virtual ~RDOPMDWatchValue();
 
 	LPRDOCalc m_pLogicCalc;
 	LPRDOCalc m_pArithmCalc;
@@ -199,6 +204,7 @@ QUERY_INTERFACE_END
 
 private:
 	RDOPMDGetValue( RDORuntime* sim, const std::string& name, CREF(LPRDOCalc) pArithm );
+	virtual ~RDOPMDGetValue();
 
 	LPRDOCalc m_pArithmCalc;
 
