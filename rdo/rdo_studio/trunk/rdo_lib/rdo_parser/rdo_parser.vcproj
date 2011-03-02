@@ -2475,6 +2475,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\context\context.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\context\global.cpp"
 				>
 			</File>
