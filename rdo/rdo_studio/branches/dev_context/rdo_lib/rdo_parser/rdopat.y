@@ -1466,8 +1466,9 @@ statement
 	: empty_statement
 	| nochange_statement
 	| equal_statement
-	| stopping_statement
-	| planning_statement
+	| member_statement ';'
+//	| stopping_statement
+//	| planning_statement
 	| local_variable_declaration
 	| if_statement
 	| for_statement
@@ -1571,6 +1572,35 @@ nochange_statement
 	| RDO_IDENTIF_NoChange error
 	{
 		PARSER->error().error(@2, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	;
+
+member_statement_parent
+	: RDO_IDENTIF
+	{
+		LPContext pCurrentContext = PARSER->context();
+		ASSERT(pCurrentContext);
+
+		LPContext pContext = pCurrentContext->find(RDOVALUE($1)->getIdentificator());
+		if (!pContext)
+		{
+			PARSER->error().error(@1, _T("Неизвестный идентификатор"));
+		}
+
+		$$ = PARSER->stack().push(pContext);
+	}
+	;
+
+member_statement
+	: member_statement_parent '.' RDO_IDENTIF
+	{
+		LPContext pContext = PARSER->stack().pop<Context>($1);
+		ASSERT(pContext);
+
+		rdoRuntime::LPRDOCalc pCalc = pContext->create(RDOVALUE($3)->getIdentificator());
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 
@@ -2570,7 +2600,11 @@ fun_arithm
 	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
 	| param_array_value					 { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| member_statement
+	{
+		int i = 1;
+	}
+//	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
 	| fun_arithm '+' fun_arithm
 	{

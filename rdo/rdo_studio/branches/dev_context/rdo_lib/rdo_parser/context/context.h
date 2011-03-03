@@ -17,6 +17,7 @@
 
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -32,6 +33,9 @@ friend void ContextStack::push(LPContext pContext);
 public:
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
+
+	LPContext             find  (CREF(tstring) name) const;
+	rdoRuntime::LPRDOCalc create(CREF(tstring) name);
 
 protected:
 	Context();
