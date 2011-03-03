@@ -15,7 +15,7 @@
 #include "rdo_lib/rdo_parser/rdo_type.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_model_i.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 

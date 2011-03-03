@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/rdo_object.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_i.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE

@@ -902,7 +902,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdoprocess_interface.h"
+							RelativePath=".\rdoprocess_i.h"
 							>
 						</File>
 					</Filter>
@@ -976,7 +976,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_logic_interface.h"
+							RelativePath=".\rdo_logic_i.h"
 							>
 						</File>
 					</Filter>
@@ -1116,7 +1116,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_logic_dptsearch_interface.h"
+							RelativePath=".\rdo_logic_dptsearch_i.h"
 							>
 						</File>
 						<File
@@ -1186,7 +1186,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\searchtrace_interface.h"
+							RelativePath=".\searchtrace_i.h"
 							>
 						</File>
 						<File
@@ -1354,7 +1354,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_operation_interface.h"
+							RelativePath=".\rdo_operation_i.h"
 							>
 						</File>
 					</Filter>
@@ -1424,7 +1424,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_rule_interface.h"
+							RelativePath=".\rdo_rule_i.h"
 							>
 						</File>
 					</Filter>
@@ -1494,7 +1494,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_keyboard_interface.h"
+							RelativePath=".\rdo_keyboard_i.h"
 							>
 						</File>
 					</Filter>
@@ -1626,11 +1626,11 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_activity_interface.h"
+							RelativePath=".\rdo_activity_i.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_param_interface.h"
+							RelativePath=".\rdo_param_i.h"
 							>
 						</File>
 						<File
@@ -1704,7 +1704,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_priority_interface.h"
+							RelativePath=".\rdo_priority_i.h"
 							>
 						</File>
 					</Filter>
@@ -1720,7 +1720,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_dptsearch_activity_interface.h"
+							RelativePath=".\rdo_dptsearch_activity_i.h"
 							>
 						</File>
 					</Filter>
@@ -1736,7 +1736,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_event_interface.h"
+							RelativePath=".\rdo_event_i.h"
 							>
 						</File>
 					</Filter>
@@ -1907,7 +1907,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdotrace_interface.h"
+				RelativePath=".\rdotrace_i.h"
 				>
 			</File>
 		</Filter>
@@ -2067,7 +2067,7 @@
 			Name=".interfaces"
 			>
 			<File
-				RelativePath=".\rdo_model_interface.h"
+				RelativePath=".\rdo_model_i.h"
 				>
 			</File>
 			<File

@@ -2,7 +2,7 @@
 #define SEARCHTREE_H
 
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
 
 namespace rdoRuntime
 {

@@ -14,7 +14,7 @@
 #include "rdo_common/rdostream.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
-#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_model_i.h"
 // ===============================================================================
 
 #pragma warning(disable : 4786)  

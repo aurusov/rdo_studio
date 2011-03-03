@@ -15,9 +15,9 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdotrace_interface.h"
+#include "rdo_lib/rdo_runtime/rdotrace_i.h"
 #include "rdo_lib/rdo_runtime/rdopokaz_i.h"
-#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_model_i.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================

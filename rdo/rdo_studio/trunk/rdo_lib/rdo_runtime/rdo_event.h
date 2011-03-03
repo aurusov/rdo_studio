@@ -16,7 +16,7 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
-#include "rdo_lib/rdo_runtime/rdo_event_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_event_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

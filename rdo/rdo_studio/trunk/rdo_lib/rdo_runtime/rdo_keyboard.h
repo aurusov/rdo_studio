@@ -13,7 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
-#include "rdo_lib/rdo_runtime/rdo_keyboard_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_keyboard_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
