@@ -46,7 +46,7 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
 
-	LPResultGroup pResultGroup = pContext.object_static_cast<ResultGroup>();
+	LPRDOResultGroup pResultGroup = pContext.object_static_cast<RDOResultGroup>();
 	ASSERT(pResultGroup);
 
 	pResultGroup->append(this);
@@ -64,16 +64,29 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 // ----------------------------------------------------------------------------
 // ---------- ResultGroup
 // ----------------------------------------------------------------------------
-ResultGroup::ResultGroup(CREF(RDOParserSrcInfo) src_info)
+RDOResultGroup::RDOResultGroup(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 {
+	LPRDOResultGroup pResultGroupFound = RDOParser::s_parser()->findResultGroup(name());
+	if (pResultGroupFound)
+	{
+		RDOParser::s_parser()->error().push_only(src_info, rdo::format(_T("Группа показателей '%s' уже существует"), src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResultGroupFound->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_done();
+	}
+	RDOParser::s_parser()->insertResultGroup(this);
 }
 
-ResultGroup::~ResultGroup()
+RDOResultGroup::~RDOResultGroup()
 {
 }
 
-void ResultGroup::append(CREF(LPRDOPMDPokaz) pResult)
+CREF(tstring) RDOResultGroup::name() const
+{
+	return src_text();
+}
+
+void RDOResultGroup::append(CREF(LPRDOPMDPokaz) pResult)
 {
 	ASSERT(pResult);
 	LPRDOPMDPokaz pResultFound = find(pResult->name());
@@ -86,7 +99,7 @@ void ResultGroup::append(CREF(LPRDOPMDPokaz) pResult)
 	m_resultList.push_back(pResult);
 }
 
-LPRDOPMDPokaz ResultGroup::find(CREF(tstring) resultName) const
+LPRDOPMDPokaz RDOResultGroup::find(CREF(tstring) resultName) const
 {
 	STL_FOR_ALL_CONST(m_resultList, it)
 	{

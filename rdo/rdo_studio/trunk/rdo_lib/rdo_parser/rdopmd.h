@@ -44,26 +44,27 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- ResultGroup
+// ---------- RDOResultGroup
 // ----------------------------------------------------------------------------
-CLASS(ResultGroup):
+CLASS(RDOResultGroup):
 	    INSTANCE_OF(RDOParserSrcInfo)
 	AND INSTANCE_OF(Context         )
 {
-DECLARE_FACTORY(ResultGroup);
+DECLARE_FACTORY(RDOResultGroup);
 public:
+	CREF(tstring) name  () const;
 	void          append(CREF(LPRDOPMDPokaz) pResult   );
 	LPRDOPMDPokaz find  (CREF(tstring)       resultName) const;
 
 private:
-	ResultGroup(CREF(RDOParserSrcInfo) src_info);
-	virtual ~ResultGroup();
+	RDOResultGroup(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOResultGroup();
 
 	typedef std::list<LPRDOPMDPokaz> ResultList;
 
 	ResultList m_resultList;
 };
-DECLARE_POINTER(ResultGroup);
+DECLARE_POINTER(RDOResultGroup);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
