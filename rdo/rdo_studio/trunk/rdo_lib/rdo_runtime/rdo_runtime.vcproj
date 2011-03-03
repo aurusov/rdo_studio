@@ -489,7 +489,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdopokaz_interface.h"
+				RelativePath=".\rdopokaz_i.h"
 				>
 			</File>
 		</Filter>

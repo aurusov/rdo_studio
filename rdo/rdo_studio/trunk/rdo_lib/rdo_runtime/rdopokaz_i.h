@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdopokaz_interface.h
+ * filename : rdopokaz_i.h
  * author   : Урусов Андрей
  * date     : 28.07.2009
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDOPOKAZ_INTERFACE_H_
-#define _RDOPOKAZ_INTERFACE_H_
+#ifndef _RDOPOKAZ_I_H_
+#define _RDOPOKAZ_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -52,4 +52,4 @@ public:
 	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc) pLogicCalc ); \
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc) pArithmCalc);
 
-#endif //! _RDOPOKAZ_INTERFACE_H_
+#endif //! _RDOPOKAZ_I_H_
