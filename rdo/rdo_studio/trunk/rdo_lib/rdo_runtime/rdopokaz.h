@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdopokaz.cpp
+ * filename : rdopokaz.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 
  * bref     : 
