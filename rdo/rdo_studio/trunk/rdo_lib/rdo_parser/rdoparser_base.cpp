@@ -77,11 +77,11 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 		case rdoModelObjects::obRTP : min = 200;  max = 299;  break;
 		case rdoModelObjects::obRSS : min = 300;  max = 399;  break;
 		case rdoModelObjects::obFUN : min = 400;  max = 499;  break;
-		case rdoModelObjects::obEVN : min = 500;  max = 599;  break;
-		case rdoModelObjects::obPAT : min = 600;  max = 699;  break;
-		case rdoModelObjects::obDPT : min = 700;  max = 799;  break;
-		case rdoModelObjects::obPRC : min = 800;  max = 899;  break;
-		case rdoModelObjects::obPMD : min = 900;  max = 999;  break;
+		case rdoModelObjects::obPMD : min = 500;  max = 599;  break;
+		case rdoModelObjects::obEVN : min = 600;  max = 699;  break;
+		case rdoModelObjects::obPAT : min = 700;  max = 799;  break;
+		case rdoModelObjects::obDPT : min = 800;  max = 899;  break;
+		case rdoModelObjects::obPRC : min = 900;  max = 999;  break;
 		case rdoModelObjects::obFRM : min = 1000; max = 1099; break;
 		case rdoModelObjects::obSMR : min = 1100; max = 1199; break;
 		case rdoModelObjects::obPOST: min = 1200; max = 1299; break;
@@ -108,13 +108,13 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
 	insert(rdoModelObjects::obFUN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, funparse, funerror, funlex));
+	insert(rdoModelObjects::obPMD, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
 	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
 	insert(rdoModelObjects::obPAT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, patparse, paterror, patlex));
 	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserEVNPost>::create());
 	insert(rdoModelObjects::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, dptparse, dpterror, dptlex));
 	insert(rdoModelObjects::obPRC, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
-	insert(rdoModelObjects::obPMD, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
 	insert(rdoModelObjects::obFRM, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, frmparse, frmerror, frmlex));
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
