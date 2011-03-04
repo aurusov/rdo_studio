@@ -21,8 +21,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOPMDPokaz
 // ----------------------------------------------------------------------------
 RDOPMDPokazGroup::RDOPMDPokazGroup(CREF(tstring) name)
-	: m_name (name                                 )
-	, m_state(m_name.empty() ? RGS_START : RGS_STOP)
+	: m_name (name                               )
+	, m_state(name.empty() ? RGS_START : RGS_STOP)
 {}
 
 RDOPMDPokazGroup::~RDOPMDPokazGroup()
@@ -57,12 +57,11 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator)
 	if (m_state == RGS_STOP)
 		return;
 
-	static ruint s_index = 1;
 	if (!m_name.empty())
 	{
 		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 		double timeStop = pRuntime->getCurrentTime();
-		pRuntime->getResults() << rdo::format(_T("%d ---> %s, %f -> %f = %f\n"), s_index, m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
+		pRuntime->getResults() << rdo::format(_T("---> %s, %f -> %f = %f\n"), m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
 	}
 
 	STL_FOR_ALL(m_resultList, it)
@@ -73,8 +72,7 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator)
 	if (!m_name.empty())
 	{
 		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-		pRuntime->getResults() << rdo::format(_T("%d <--- %s\n"), s_index, m_name.c_str());
-		++s_index;
+		pRuntime->getResults() << rdo::format(_T("<--- %s\n"), m_name.c_str());
 	}
 }
 
