@@ -100,6 +100,7 @@ public:
 		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
 		RT_REPOSITORY_LOAD_BINARY,             // param = rdoRepository::RDOThreadRepository::BinaryFile* = { name:std::string, result:rdo::binarystream& }
+		RT_REPOSITORY_CREATE_FILE,             // param = rdoRepository::RDOThreadRepository::CreateFile*
 		RT_SIMULATOR_PARSE_OK,
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,
@@ -170,6 +171,7 @@ public:
 			case RT_REPOSITORY_LOAD                   : return _T("RT_REPOSITORY_LOAD");
 			case RT_REPOSITORY_SAVE                   : return _T("RT_REPOSITORY_SAVE");
 			case RT_REPOSITORY_LOAD_BINARY            : return _T("RT_REPOSITORY_LOAD_BINARY");
+			case RT_REPOSITORY_CREATE_FILE            : return _T("RT_REPOSITORY_CREATE_FILE");
 			case RT_SIMULATOR_PARSE_OK                : return _T("RT_SIMULATOR_PARSE_OK");
 			case RT_SIMULATOR_PARSE_ERROR             : return _T("RT_SIMULATOR_PARSE_ERROR");
 			case RT_SIMULATOR_PARSE_ERROR_SMR         : return _T("RT_SIMULATOR_PARSE_ERROR_SMR");
