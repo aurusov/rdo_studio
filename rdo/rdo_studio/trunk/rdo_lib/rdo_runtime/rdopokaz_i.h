@@ -23,14 +23,14 @@
 class IPokaz
 {
 public:
-	virtual rbool resetPokaz(PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual rbool checkPokaz(PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual rbool calcStat  (PTR(rdoRuntime::RDOSimulator) sim) = 0;
+	virtual void resetPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator) = 0;
+	virtual void checkPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator) = 0;
+	virtual void calcStat  (PTR(rdoRuntime::RDOSimulator) pSimulator) = 0;
 };
-#define DECLARE_IPokaz                                           \
-	virtual rbool resetPokaz(PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual rbool checkPokaz(PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual rbool calcStat  (PTR(rdoRuntime::RDOSimulator) sim);
+#define DECLARE_IPokaz                                                 \
+	virtual void resetPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator); \
+	virtual void checkPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator); \
+	virtual void calcStat  (PTR(rdoRuntime::RDOSimulator) pSimulator);
 
 // ----------------------------------------------------------------------------
 // ---------- IPokazWatchQuant
@@ -49,13 +49,13 @@ public:
 class IPokazWatchValue
 {
 public:
-	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) res       ) = 0;
-	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc) pLogicCalc ) = 0;
-	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc) pArithmCalc) = 0;
+	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) pResource  ) = 0;
+	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)  pLogicCalc ) = 0;
+	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)  pArithmCalc) = 0;
 };
-#define DECLARE_IPokazWatchValue                                               \
-	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) res       ); \
-	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc) pLogicCalc ); \
-	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc) pArithmCalc);
+#define DECLARE_IPokazWatchValue                                                \
+	virtual void checkResourceErased(PTR(rdoRuntime::RDOResource) pResource  ); \
+	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)  pLogicCalc ); \
+	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)  pArithmCalc);
 
 #endif //! _RDOPOKAZ_I_H_
