@@ -377,8 +377,8 @@ public:
 		m_stream.str(_T(""));
 	}
 
-	RDORuntimeTracer(PTR(RDOThreadSimulator) m_pSimulator)
-		: m_pSimulator(m_pSimulator)
+	RDORuntimeTracer(PTR(RDOThreadSimulator) pSimulator)
+		: m_pSimulator(pSimulator)
 	{
 		m_isNullTracer = false;
 	}
