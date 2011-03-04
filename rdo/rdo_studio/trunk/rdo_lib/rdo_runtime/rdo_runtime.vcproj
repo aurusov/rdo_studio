@@ -489,6 +489,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdopokaz_group.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdopokaz_group.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdopokaz_group_i.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdopokaz_i.h"
 				>
 			</File>
@@ -1830,6 +1842,14 @@
 			</File>
 			<File
 				RelativePath=".\rdocalc_relres.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdocalc_result.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdocalc_result.h"
 				>
 			</File>
 		</Filter>

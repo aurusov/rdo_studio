@@ -216,6 +216,7 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
 #include "rdo_lib/rdo_runtime/rdocalc_locvar.h"
+#include "rdo_lib/rdo_runtime/rdocalc_result.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -1470,6 +1471,8 @@ statement
 	| equal_statement
 	| stopping_statement
 	| planning_statement
+	| watch_start
+	| watch_stop
 	| local_variable_declaration
 	| if_statement
 	| for_statement
@@ -1897,6 +1900,40 @@ planning_statement
 	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+watch_start
+	: RDO_IDENTIF '.' RDO_WatchStart '(' ')' ';'
+	{
+		tstring          name         = RDOVALUE($1)->getIdentificator();
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+		if (!pResultGroup)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
+		}
+
+		rdoRuntime::LPRDOCalcResultGroupStart pCalc = rdo::Factory<rdoRuntime::RDOCalcResultGroupStart>::create(pResultGroup->getRuntime());
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	;
+
+watch_stop
+	: RDO_IDENTIF '.' RDO_WatchStop '(' ')' ';'
+	{
+		tstring          name         = RDOVALUE($1)->getIdentificator();
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+		if (!pResultGroup)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
+		}
+
+		rdoRuntime::LPRDOCalcResultGroupStop pCalc = rdo::Factory<rdoRuntime::RDOCalcResultGroupStop>::create(pResultGroup->getRuntime());
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 
