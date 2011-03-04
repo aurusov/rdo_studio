@@ -236,6 +236,8 @@ public:
 		return allResourcesByTime.end();
 	}
 
+	CREF(LPIThreadProxy) getThreadProxy() const { return m_pThreadProxy; }
+
 private:
 	typedef RDOSimulatorTrace           Parent;
 	typedef std::list<LPRDOCalc>        CalcList;
