@@ -459,11 +459,16 @@ protected:
 			if (this != getKernel())
 				sendMessage(getKernel(), RT_THREAD_DISCONNECTION);
 			stop();
-			delete this;
+			destroy();
 			return;
 		}
 	}
 #endif
+
+	virtual void destroy()
+	{
+		delete this;
+	}
 };
 
 // --------------------------------------------------------------------

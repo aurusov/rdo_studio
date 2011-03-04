@@ -776,6 +776,10 @@
 				RelativePath="simtrace.h"
 				>
 			</File>
+			<File
+				RelativePath=".\thread_proxy_i.h"
+				>
+			</File>
 			<Filter
 				Name=".rdo_db"
 				>

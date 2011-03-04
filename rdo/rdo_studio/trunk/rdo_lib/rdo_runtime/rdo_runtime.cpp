@@ -415,12 +415,15 @@ bool RDORuntime::isKeyDown()
 	return key_found || !activeAreasMouseClicked.empty();
 }
 
-void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo )
+void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy )
 {
-	m_tracer     = tracer;
-	results      = customResults;
-	results_info = customResultsInfo;
-	currFuncTop  = 0;
+	ASSERT(pThreadProxy);
+
+	m_tracer       = tracer;
+	results        = customResults;
+	results_info   = customResultsInfo;
+	currFuncTop    = 0;
+	m_pThreadProxy = pThreadProxy;
 	Parent::rdoInit();
 }
 
