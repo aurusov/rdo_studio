@@ -364,9 +364,15 @@ public:
 			tstring::size_type next = trace_str.find('\n', pos);
 			tstring str = trace_str.substr(pos, next-pos);
 			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RUNTIME_TRACE_STRING, &str, true);
-			if (next == tstring::npos) break;
+			if (next == tstring::npos)
+			{
+				break;
+			}
 			pos = next + 1;
-			if (pos >= trace_str.length()) break;
+			if (pos >= trace_str.length())
+			{
+				break;
+			}
 		}
 		m_stream.str(_T(""));
 	}
@@ -388,7 +394,58 @@ private:
 class RDOSimResulter: public rdoRuntime::RDOResults
 {
 public:
-	RDOSimResulter(REF(std::ostream) stream)
+	RDOSimResulter(PTR(RDOThreadSimulator) pSimulator, REF(std::ostream) stream)
+		: m_pSimulator(pSimulator)
+		, m_stream    (stream    )
+	{}
+
+private:
+	PTR(RDOThreadSimulator) m_pSimulator;
+	REF(std::ostream)       m_stream;
+	rdo::textstream         m_buffer;
+
+	virtual REF(std::ostream) getOStream()
+	{
+		return m_buffer;
+	}
+
+	void flush()
+	{
+		CREF(tstring) bufferStr = m_buffer.str();
+		if (bufferStr.empty())
+		{
+			return;
+		}
+
+		m_stream << bufferStr;
+
+		tstring::size_type pos = 0;
+		while (true)
+		{
+			tstring::size_type next = bufferStr.find('\n', pos);
+			tstring str = bufferStr.substr(pos, next-pos+1);
+			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RESULT_STRING, &str, true);
+			if (next == tstring::npos)
+			{
+				break;
+			}
+			pos = next + 1;
+			if (pos >= bufferStr.length())
+			{
+				break;
+			}
+		}
+		m_buffer.str(_T(""));
+	}
+};
+
+// --------------------------------------------------------------------
+// ---------- RDOSimResultInformer
+// --------------------------------------------------------------------
+class RDOSimResultInformer: public rdoRuntime::RDOResults
+{
+public:
+	RDOSimResultInformer(REF(std::ostream) stream)
 		: m_stream(stream)
 	{}
 
@@ -398,6 +455,11 @@ private:
 	virtual REF(std::ostream) getOStream()
 	{
 		return m_stream;
+	}
+
+	void flush()
+	{
+		NEVER_REACH_HERE;
 	}
 };
 
@@ -548,10 +610,10 @@ void RDOThreadRunTime::start()
 	pTracer = new rdoSimulator::RDORuntimeTracer(m_pSimulator);
 
 	m_pSimulator->m_resultString.str(_T(""));
-	pResults = new rdoSimulator::RDOSimResulter(m_pSimulator->m_resultString);
+	pResults = new rdoSimulator::RDOSimResulter(m_pSimulator, m_pSimulator->m_resultString);
 
 	m_pSimulator->m_resultInfoString.str(_T(""));
-	pResultsInfo = new rdoSimulator::RDOSimResulter(m_pSimulator->m_resultInfoString);
+	pResultsInfo = new rdoSimulator::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
 	m_pSimulator->m_pRuntime->keysDown.clear();

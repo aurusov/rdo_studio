@@ -134,6 +134,7 @@ public:
 		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
 		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< std::string >& }
 		RT_DEBUG_STRING,                       // param = std::string*
+		RT_RESULT_STRING,                      // param = std::string*
 		RT_CORBA_PARSER_GET_RTP,
 		RT_CORBA_PARSER_GET_RSS,
 		RT_CORBA_PARSER_GET_RTP_COUNT,
@@ -203,6 +204,7 @@ public:
 			case RT_RUNTIME_FRAME_AREA_DOWN           : return _T("RT_RUNTIME_FRAME_AREA_DOWN");
 			case RT_CODECOMP_GET_DATA                 : return _T("RT_CODECOMP_GET_DATA");
 			case RT_DEBUG_STRING                      : return _T("RT_DEBUG_STRING");
+			case RT_RESULT_STRING                     : return _T("RT_RESULT_STRING");
 			case RT_CORBA_PARSER_GET_RTP              : return _T("RT_CORBA_PARSER_GET_RTP");
 			case RT_CORBA_PARSER_GET_RSS              : return _T("RT_CORBA_PARSER_GET_RSS");
 			case RT_CORBA_PARSER_GET_RTP_COUNT        : return _T("RT_CORBA_PARSER_GET_RTP_COUNT");

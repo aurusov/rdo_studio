@@ -163,6 +163,7 @@ class RDOThreadSimulator: public RDOThreadMT
 {
 friend class rdoRuntime::RDOThreadRunTime;
 friend class RDORuntimeTracer;
+friend class RDOSimResulter;
 
 public:
 	struct RTP

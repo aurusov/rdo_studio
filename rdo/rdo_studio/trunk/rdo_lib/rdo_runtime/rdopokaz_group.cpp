@@ -57,9 +57,9 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator)
 	if (m_state == RGS_STOP)
 		return;
 
+	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 	if (!m_name.empty())
 	{
-		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 		double timeStop = pRuntime->getCurrentTime();
 		pRuntime->getResults() << rdo::format(_T("---> %s, %f -> %f = %f\n"), m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
 	}
@@ -71,9 +71,9 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator)
 
 	if (!m_name.empty())
 	{
-		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 		pRuntime->getResults() << rdo::format(_T("<--- %s\n"), m_name.c_str());
 	}
+	pRuntime->getResults().flush();
 }
 
 void RDOPMDPokazGroup::onStart(PTR(rdoRuntime::RDOSimulator) pSimulator)
