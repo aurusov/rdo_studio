@@ -119,12 +119,12 @@ void RDOPMDWatchPar::calcStat(PTR(RDOSimulator) pSimulator)
 	double average  = m_sum / (currTime - m_timeBegin);
 
 	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name() 
+	pRuntime->getResults() << std::left << name()
 		<< _T("\t") << traceValue()
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average 
-		<< _T("\t") << m_sumSqr 
-		<< _T("\t") << m_minValue 
+		<< _T("\t") << average
+		<< _T("\t") << m_sumSqr
+		<< _T("\t") << m_minValue
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
@@ -199,12 +199,12 @@ void RDOPMDWatchState::calcStat(PTR(RDOSimulator) pSimulator)
 
 	pRuntime->getResults().width(30);
 	pRuntime->getResults() << std::left
-		<< name() 
-		<< _T("\t") << traceValue() 
+		<< name()
+		<< _T("\t") << traceValue()
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average 
-		<< _T("\t") << m_sumSqr 
-		<< _T("\t") << m_minValue 
+		<< _T("\t") << average
+		<< _T("\t") << m_sumSqr
+		<< _T("\t") << m_minValue
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
@@ -294,12 +294,12 @@ void RDOPMDWatchQuant::calcStat(PTR(RDOSimulator) pSimulator)
 	double average  = m_sum / (currTime - m_timeBegin);
 
 	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name() 
+	pRuntime->getResults() << std::left << name()
 		<< _T("\t") << traceValue()
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average 
-		<< _T("\t") << m_sumSqr 
-		<< _T("\t") << m_minValue 
+		<< _T("\t") << average
+		<< _T("\t") << m_sumSqr
+		<< _T("\t") << m_minValue
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
@@ -359,12 +359,12 @@ void RDOPMDWatchValue::calcStat(PTR(RDOSimulator) pSimulator)
 	}
 
 	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name() 
+	pRuntime->getResults() << std::left << name()
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average 
+		<< _T("\t") << average
 		<< _T("\t") << averageSqr
 		<< _T("\t") << deviation
-		<< _T("\t") << m_minValue 
+		<< _T("\t") << m_minValue
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
@@ -435,7 +435,7 @@ void RDOPMDGetValue::calcStat(PTR(RDOSimulator) pSimulator)
 	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 
 	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name() 
+	pRuntime->getResults() << std::left << name()
 		<< _T("\t") << m_pArithmCalc->calcValue(pRuntime).getAsString() << _T('\n');
 }
 
