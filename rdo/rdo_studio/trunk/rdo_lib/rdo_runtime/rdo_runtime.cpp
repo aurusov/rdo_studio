@@ -487,6 +487,8 @@ void RDORuntime::operator= (const RDORuntime& other)
 	}
 	allConstants      = other.allConstants;
 	patternParameters = other.patternParameters;
+	results           = other.results;
+	setCurrentTime(other.getCurrentTime());
 
 	Parent::operator= (*static_cast<const Parent*>(&other));
 }
