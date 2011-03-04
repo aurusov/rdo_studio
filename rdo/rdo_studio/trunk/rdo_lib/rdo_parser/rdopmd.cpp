@@ -84,7 +84,7 @@ void RDOResultGroup::init(CREF(RDOParserSrcInfo) src_info)
 		RDOParser::s_parser()->error().push_done();
 	}
 	RDOParser::s_parser()->insertResultGroup(this);
-	m_pPokazGroup = F(rdoRuntime::RDOPMDPokazGroup)::create(name().empty());
+	m_pPokazGroup = F(rdoRuntime::RDOPMDPokazGroup)::create(name());
 	ASSERT(m_pPokazGroup);
 	RDOParser::s_parser()->runtime()->addRuntimePokaz(m_pPokazGroup);
 }

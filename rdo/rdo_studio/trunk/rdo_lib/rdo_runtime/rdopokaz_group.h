@@ -30,7 +30,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDPokazGroup(rbool autoStart);
+	RDOPMDPokazGroup(CREF(tstring) name);
 	virtual ~RDOPMDPokazGroup();
 
 	enum State
@@ -42,6 +42,8 @@ private:
 	typedef std::vector<LPIPokaz> ResultList;
 	ResultList  m_resultList;
 	State       m_state;
+	tstring     m_name;
+	double      m_timeStart;
 
 	DECLARE_IPokaz;
 	DECLARE_IPokazGroup;

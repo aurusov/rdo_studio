@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdopokaz_group.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -19,8 +20,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz
 // ----------------------------------------------------------------------------
-RDOPMDPokazGroup::RDOPMDPokazGroup(rbool autoStart)
-	: m_state(autoStart ? RGS_START : RGS_STOP)
+RDOPMDPokazGroup::RDOPMDPokazGroup(CREF(tstring) name)
+	: m_name (name                                 )
+	, m_state(m_name.empty() ? RGS_START : RGS_STOP)
 {}
 
 RDOPMDPokazGroup::~RDOPMDPokazGroup()
@@ -30,6 +32,8 @@ void RDOPMDPokazGroup::resetPokaz(PTR(RDOSimulator) pSimulator)
 {
 	if (m_state == RGS_STOP)
 		return;
+
+	m_timeStart = pSimulator->getCurrentTime();
 
 	STL_FOR_ALL(m_resultList, it)
 	{
@@ -53,9 +57,24 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator)
 	if (m_state == RGS_STOP)
 		return;
 
+	static ruint s_index = 1;
+	if (!m_name.empty())
+	{
+		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
+		double timeStop = pRuntime->getCurrentTime();
+		pRuntime->getResults() << rdo::format(_T("%d ---> %s, %f -> %f = %f\n"), s_index, m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
+	}
+
 	STL_FOR_ALL(m_resultList, it)
 	{
 		(*it)->calcStat(pSimulator);
+	}
+
+	if (!m_name.empty())
+	{
+		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
+		pRuntime->getResults() << rdo::format(_T("%d <--- %s\n"), s_index, m_name.c_str());
+		++s_index;
 	}
 }
 
