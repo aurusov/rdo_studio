@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdopokaz_group.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
@@ -43,30 +44,38 @@ RDOPMDPokaz::~RDOPMDPokaz()
 
 void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 {
+	ASSERT(pPokaz);
+
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
 
 	LPRDOResultGroup pResultGroup = pContext.object_static_cast<RDOResultGroup>();
 	ASSERT(pResultGroup);
 
+	m_pPokaz = pPokaz;
 	pResultGroup->append(this);
 
-	m_pPokaz = pPokaz;
 	LPITrace pTrace = m_pPokaz;
 	if (pTrace)
 	{
 		pTrace->setTraceID(RDOParser::s_parser()->getPMD_id());
 	}
-	//! [TODO]: перенести в конструктор rdoRuntime::RDOPMDPokaz
-	RDOParser::s_parser()->runtime()->addRuntimePokaz(m_pPokaz);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- ResultGroup
 // ----------------------------------------------------------------------------
-RDOResultGroup::RDOResultGroup(CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
+RDOResultGroup::RDOResultGroup()
 {
+}
+
+RDOResultGroup::~RDOResultGroup()
+{}
+
+void RDOResultGroup::init(CREF(RDOParserSrcInfo) src_info)
+{
+	setSrcInfo(src_info);
+
 	LPRDOResultGroup pResultGroupFound = RDOParser::s_parser()->findResultGroup(name());
 	if (pResultGroupFound)
 	{
@@ -75,15 +84,19 @@ RDOResultGroup::RDOResultGroup(CREF(RDOParserSrcInfo) src_info)
 		RDOParser::s_parser()->error().push_done();
 	}
 	RDOParser::s_parser()->insertResultGroup(this);
-}
-
-RDOResultGroup::~RDOResultGroup()
-{
+	m_pPokazGroup = F(rdoRuntime::RDOPMDPokazGroup)::create(name());
+	ASSERT(m_pPokazGroup);
+	RDOParser::s_parser()->runtime()->addRuntimePokaz(m_pPokazGroup);
 }
 
 CREF(tstring) RDOResultGroup::name() const
 {
 	return src_text();
+}
+
+CREF(LPIPokazGroup) RDOResultGroup::getRuntime() const
+{
+	return m_pPokazGroup;
 }
 
 void RDOResultGroup::append(CREF(LPRDOPMDPokaz) pResult)
@@ -97,6 +110,7 @@ void RDOResultGroup::append(CREF(LPRDOPMDPokaz) pResult)
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_resultList.push_back(pResult);
+	m_pPokazGroup->onAppend(pResult->getRuntime());
 }
 
 LPRDOPMDPokaz RDOResultGroup::find(CREF(tstring) resultName) const

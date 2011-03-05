@@ -364,15 +364,21 @@ public:
 			tstring::size_type next = trace_str.find('\n', pos);
 			tstring str = trace_str.substr(pos, next-pos);
 			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RUNTIME_TRACE_STRING, &str, true);
-			if (next == tstring::npos) break;
+			if (next == tstring::npos)
+			{
+				break;
+			}
 			pos = next + 1;
-			if (pos >= trace_str.length()) break;
+			if (pos >= trace_str.length())
+			{
+				break;
+			}
 		}
 		m_stream.str(_T(""));
 	}
 
-	RDORuntimeTracer(PTR(RDOThreadSimulator) m_pSimulator)
-		: m_pSimulator(m_pSimulator)
+	RDORuntimeTracer(PTR(RDOThreadSimulator) pSimulator)
+		: m_pSimulator(pSimulator)
 	{
 		m_isNullTracer = false;
 	}
@@ -388,7 +394,58 @@ private:
 class RDOSimResulter: public rdoRuntime::RDOResults
 {
 public:
-	RDOSimResulter(REF(std::ostream) stream)
+	RDOSimResulter(PTR(RDOThreadSimulator) pSimulator, REF(std::ostream) stream)
+		: m_pSimulator(pSimulator)
+		, m_stream    (stream    )
+	{}
+
+private:
+	PTR(RDOThreadSimulator) m_pSimulator;
+	REF(std::ostream)       m_stream;
+	rdo::textstream         m_buffer;
+
+	virtual REF(std::ostream) getOStream()
+	{
+		return m_buffer;
+	}
+
+	void flush()
+	{
+		CREF(tstring) bufferStr = m_buffer.str();
+		if (bufferStr.empty())
+		{
+			return;
+		}
+
+		m_stream << bufferStr;
+
+		tstring::size_type pos = 0;
+		while (true)
+		{
+			tstring::size_type next = bufferStr.find('\n', pos);
+			tstring str = bufferStr.substr(pos, next-pos+1);
+			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RESULT_STRING, &str, true);
+			if (next == tstring::npos)
+			{
+				break;
+			}
+			pos = next + 1;
+			if (pos >= bufferStr.length())
+			{
+				break;
+			}
+		}
+		m_buffer.str(_T(""));
+	}
+};
+
+// --------------------------------------------------------------------
+// ---------- RDOSimResultInformer
+// --------------------------------------------------------------------
+class RDOSimResultInformer: public rdoRuntime::RDOResults
+{
+public:
+	RDOSimResultInformer(REF(std::ostream) stream)
 		: m_stream(stream)
 	{}
 
@@ -399,6 +456,11 @@ private:
 	{
 		return m_stream;
 	}
+
+	void flush()
+	{
+		NEVER_REACH_HERE;
+	}
 };
 
 CLOSE_RDO_SIMULATOR_NAMESPACE
@@ -408,11 +470,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOThreadRunTime
 // --------------------------------------------------------------------
 RDOThreadRunTime::RDOThreadRunTime()
-	: RDOThreadMT    (_T("RDOThreadRunTime"))
-	, m_pSimulator   (NULL                  )
-	, m_runtime_error(false                 )
+	: RDOThreadMT   (_T("RDOThreadRunTime"))
+	, m_pSimulator  (NULL                  )
+	, m_runtimeError(false                 )
 {
-	::GetSystemTime(&m_time_start);
+	::GetSystemTime(&m_timeStart);
 
 	m_pSimulator = kernel->simulator();
 
@@ -442,7 +504,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY:
 		{
-			m_runtime_error = true;
+			m_runtimeError = true;
 			break;
 		}
 		case RT_RUNTIME_GET_MODE:
@@ -548,10 +610,10 @@ void RDOThreadRunTime::start()
 	pTracer = new rdoSimulator::RDORuntimeTracer(m_pSimulator);
 
 	m_pSimulator->m_resultString.str(_T(""));
-	pResults = new rdoSimulator::RDOSimResulter(m_pSimulator->m_resultString);
+	pResults = new rdoSimulator::RDOSimResulter(m_pSimulator, m_pSimulator->m_resultString);
 
 	m_pSimulator->m_resultInfoString.str(_T(""));
-	pResultsInfo = new rdoSimulator::RDOSimResulter(m_pSimulator->m_resultInfoString);
+	pResultsInfo = new rdoSimulator::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
 	m_pSimulator->m_pRuntime->keysDown.clear();
@@ -565,8 +627,9 @@ void RDOThreadRunTime::start()
 
 	try
 	{
+		LPRDOThreadRunTime pThis(this);
 		m_pSimulator->m_exitCode = rdoSimulator::EC_OK;
-		m_pSimulator->m_pRuntime->rdoInit(pTracer, pResults, pResultsInfo);
+		m_pSimulator->m_pRuntime->rdoInit(pTracer, pResults, pResultsInfo, pThis.interface_cast<IThreadProxy>());
 		switch (m_pSimulator->m_pParser->getSMR()->getShowMode())
 		{
 			case rdoSimulator::SM_NoShow   : m_pSimulator->m_pRuntime->setMode(rdoRuntime::RTM_MaxSpeed); break;
@@ -577,18 +640,18 @@ void RDOThreadRunTime::start()
 	}
 	catch (REF(rdoParse::RDOSyntaxException))
 	{
-		m_runtime_error = true;
+		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 	}
 	catch (REF(rdoRuntime::RDORuntimeException) ex)
 	{
-		m_runtime_error = true;
+		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
+		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
-	if (!m_runtime_error)
+	if (!m_runtimeError)
 	{
 		broadcastMessage(RT_RUNTIME_MODEL_START_AFTER);
 	}
@@ -610,25 +673,26 @@ void RDOThreadRunTime::idle()
 //	TRACE(_T("R. %d, %d, %d, %d\n"), ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId());
 	try
 	{
-		if (m_runtime_error || !m_pSimulator->m_pRuntime->rdoNext())
+		if (m_runtimeError || !m_pSimulator->m_pRuntime->rdoNext())
 		{
-			sendMessage(this, RT_THREAD_CLOSE);
+			LPRDOThreadRunTime pThis(this); //! Увеличим на себя ссылку, чтобы нас не удалил симулятор раньше времени
+			RDOThreadMT::sendMessage(this, RT_THREAD_CLOSE);
 		}
 	}
 	catch (REF(rdoParse::RDOSyntaxException))
 	{
-		m_runtime_error = true;
+		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 	}
 	catch (REF(rdoRuntime::RDORuntimeException) ex)
 	{
-		m_runtime_error = true;
+		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
+		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 //	catch (...) {
-//		m_runtime_error = true;
+//		m_runtimeError = true;
 //		TRACE(_T("******************************** Ошибка rdoNext()\n"));
 //		m_pSimulator->m_pRuntime->onRuntimeError();
 //	}
@@ -655,13 +719,13 @@ void RDOThreadRunTime::writeResultsInfo()
 	SYSTEMTIME time_stop;
 	::GetSystemTime(&time_stop);
 	double delay = -1;
-	if (m_time_start.wYear == time_stop.wYear && m_time_start.wMonth == time_stop.wMonth)
+	if (m_timeStart.wYear == time_stop.wYear && m_timeStart.wMonth == time_stop.wMonth)
 	{
-		delay = (time_stop.wDay - m_time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - m_time_start.wSecond) * 1000 + (time_stop.wMilliseconds - m_time_start.wMilliseconds);
+		delay = (time_stop.wDay - m_timeStart.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_timeStart.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_timeStart.wMinute) * 60 * 1000 + (time_stop.wSecond - m_timeStart.wSecond) * 1000 + (time_stop.wMilliseconds - m_timeStart.wMilliseconds);
 	}
-	else if (time_stop.wYear - m_time_start.wYear == 1 && m_time_start.wMonth == 12 && time_stop.wMonth == 1)
+	else if (time_stop.wYear - m_timeStart.wYear == 1 && m_timeStart.wMonth == 12 && time_stop.wMonth == 1)
 	{
-		delay = (time_stop.wDay + 31 - m_time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - m_time_start.wSecond) * 1000 + (time_stop.wMilliseconds - m_time_start.wMilliseconds);
+		delay = (time_stop.wDay + 31 - m_timeStart.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_timeStart.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_timeStart.wMinute) * 60 * 1000 + (time_stop.wSecond - m_timeStart.wSecond) * 1000 + (time_stop.wMilliseconds - m_timeStart.wMilliseconds);
 	}
 	if (delay != -1)
 	{
@@ -722,15 +786,15 @@ void RDOThreadRunTime::stop()
 	}
 	catch (REF(rdoParse::RDOSyntaxException))
 	{
-		m_runtime_error = true;
+		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 	}
 	catch (REF(rdoRuntime::RDORuntimeException) ex)
 	{
-		m_runtime_error = true;
+		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
+		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
 	broadcastMessage(RT_RUNTIME_MODEL_STOP_AFTER);
@@ -740,6 +804,29 @@ void RDOThreadRunTime::stop()
 #ifdef TR_TRACE
 	trace(thread_name + _T(" stop end"));
 #endif
+}
+
+void RDOThreadRunTime::destroy()
+{}
+
+rbool RDOThreadRunTime::runtimeError() const
+{
+	return m_runtimeError;
+}
+
+void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam)
+{
+	PTR(RDOThread) pThread;
+	switch (threadID)
+	{
+	case TID_REPOSITORY: pThread = kernel->repository(); break;
+	default            : pThread = NULL; break;
+	}
+
+	if (pThread)
+	{
+		RDOThreadMT::sendMessage(pThread, static_cast<RDOTreadMessage>(messageID), pParam);
+	}
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
@@ -898,13 +985,13 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_THREAD_STOP_AFTER:
 		{
-			if (msg.from == m_pThreadRuntime)
+			if (msg.from == m_pThreadRuntime.get())
 			{
 				//! rdoSimulator::EC_ParserError   - Не используется в run-time
 				//! rdoSimulator::EC_ModelNotFound - Не используется в run-time
 				//! rdoSimulator::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
 				m_exitCode = m_pRuntime->whyStop;
-				if (!m_pThreadRuntime->m_runtime_error)
+				if (!m_pThreadRuntime->runtimeError())
 				{
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
@@ -973,7 +1060,7 @@ void RDOThreadSimulator::runModel()
 	{
 		m_pParser->error().clear();
 		m_exitCode = rdoSimulator::EC_OK;
-		m_pThreadRuntime = new rdoRuntime::RDOThreadRunTime();
+		m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
 	}
 }
 
@@ -1002,7 +1089,7 @@ void RDOThreadSimulator::terminateModel()
 		PTR(CEvent) thread_destroy = m_pThreadRuntime->thread_destroy;
 #endif
 
-		sendMessage(m_pThreadRuntime, RDOThread::RT_THREAD_CLOSE);
+		sendMessage(m_pThreadRuntime.get(), RDOThread::RT_THREAD_CLOSE);
 
 #ifdef RDO_MT
 		thread_destroy->Lock();

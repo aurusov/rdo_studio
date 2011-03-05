@@ -261,6 +261,8 @@ Size                           return(RDO_Size);
 size                           return(RDO_Size);
 empty                          return(RDO_Empty);
 Empty                          return(RDO_Empty);
+watch_start                    return(RDO_WatchStart);
+watch_stop                     return(RDO_WatchStop);
 
 $Frame                         return(RDO_Frame);
 $frame                         return(RDO_Frame);

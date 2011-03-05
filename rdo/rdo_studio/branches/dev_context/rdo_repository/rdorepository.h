@@ -18,6 +18,7 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include <boost/date_time/posix_time/posix_time_types.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_kernel/rdothread.h"
 #include "rdo_common/rdostream.h"
@@ -54,6 +55,18 @@ public:
 
 		BinaryFile(CREF(tstring) name, REF(rdo::stream) stream)
 			: m_name  (name  )
+			, m_stream(stream)
+		{}
+	};
+	struct CreateFileInfo
+	{
+		tstring            m_name;
+		tstring            m_ext;
+		REF(std::ofstream) m_stream;
+
+		CreateFileInfo(CREF(tstring) name, CREF(tstring) ext, REF(std::ofstream) stream)
+			: m_name  (name  )
+			, m_ext   (ext   )
 			, m_stream(stream)
 		{}
 	};
@@ -148,6 +161,8 @@ private:
 		{}
 	};
 
+	typedef boost::posix_time::ptime SystemTime;
+
 	tstring        m_modelName;
 	tstring        m_modelPath;
 	rbool          m_hasModel;
@@ -155,6 +170,7 @@ private:
 	FileList       m_files;
 	rbool          m_realOnlyInDlg;
 	ProjectName    m_projectName;
+	SystemTime     m_systemTime;
 
 	void      resetModelNames ();
 	FindModel updateModelNames();
@@ -167,6 +183,8 @@ private:
 
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
 	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
+
+	rbool     createFile(CREF(tstring) name, CREF(tstring) ext, REF(std::ofstream) stream) const;
 
 	void      beforeModelStart   ();
 	void      stopModel          ();

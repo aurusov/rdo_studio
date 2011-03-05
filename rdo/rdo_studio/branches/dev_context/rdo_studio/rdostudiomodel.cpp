@@ -23,6 +23,7 @@
 #include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
 #include "rdo_studio/edit_ctrls/rdobuildedit.h"
 #include "rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "rdo_studio/rdo_edit/rdoeditorresults.h"
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/resource.h"
 #include "rdo_kernel/rdokernel.h"
@@ -180,6 +181,7 @@ RDOStudioModel::RDOStudioModel()
 	notifies.push_back(RT_RUNTIME_MODEL_START_AFTER         );
 	notifies.push_back(RT_RUNTIME_MODEL_STOP_BEFORE         );
 	notifies.push_back(RT_DEBUG_STRING                      );
+	notifies.push_back(RT_RESULT_STRING                     );
 
 	after_constructor();
 }
@@ -514,6 +516,13 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			msg.unlock();
 			break;
 		}
+		case RDOThread::RT_RESULT_STRING:
+		{
+			msg.lock();
+			studioApp.mainFrame->output.appendStringToResults(*static_cast<PTR(tstring)>(msg.param));
+			msg.unlock();
+			break;
+		}
 	}
 }
 
@@ -531,6 +540,7 @@ void RDOStudioModel::show_result()
 		{
 			output->appendStringToDebug(_T("Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
 		}
+		output->getResults()->clearAll();
 		output->showResults();
 		output->appendStringToResults(str);
 	}

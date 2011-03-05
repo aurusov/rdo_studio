@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdoprocess_interface.h
+ * filename : rdoprocess_i.h
  * author   : Урусов Андрей
  * date     : 31.07.2009
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDOPROCESS_INTERFACE_H_
-#define _RDOPROCESS_INTERFACE_H_
+#ifndef _RDOPROCESS_I_H_
+#define _RDOPROCESS_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -52,4 +52,4 @@ public:
 	virtual void setParent  (LPIPROCProcess                   process ); \
 	virtual void next       (PTR(rdoRuntime::RDOPROCTransact) transact);
 
-#endif //! _RDOPROCESS_INTERFACE_H_
+#endif //! _RDOPROCESS_I_H_

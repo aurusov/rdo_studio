@@ -15,8 +15,8 @@
 #include "rdo_common/rdostream.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
-#include "rdo_lib/rdo_runtime/rdo_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_model_i.h"
+#include "rdo_lib/rdo_runtime/rdo_activity_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

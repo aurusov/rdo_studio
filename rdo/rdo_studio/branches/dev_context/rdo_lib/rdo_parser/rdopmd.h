@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
+#include "rdo_lib/rdo_runtime/rdopokaz_group_i.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/context/context.h"
@@ -32,7 +33,8 @@ OBJECT(RDOPMDPokaz) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOPMDPokaz);
 public:
-	CREF(tstring) name() const { return src_text(); }
+	CREF(tstring)  name      () const { return src_text(); }
+	CREF(LPIPokaz) getRuntime() const { return m_pPokaz;   }
 
 protected:
 	RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info);
@@ -52,17 +54,20 @@ CLASS(RDOResultGroup):
 {
 DECLARE_FACTORY(RDOResultGroup);
 public:
-	CREF(tstring) name  () const;
-	void          append(CREF(LPRDOPMDPokaz) pResult   );
-	LPRDOPMDPokaz find  (CREF(tstring)       resultName) const;
+	void                init      (CREF(RDOParserSrcInfo) src_info);
+	CREF(tstring)       name      () const;
+	CREF(LPIPokazGroup) getRuntime() const;
+	void                append    (CREF(LPRDOPMDPokaz) pResult   );
+	LPRDOPMDPokaz       find      (CREF(tstring)       resultName) const;
 
 private:
-	RDOResultGroup(CREF(RDOParserSrcInfo) src_info);
+	RDOResultGroup();
 	virtual ~RDOResultGroup();
 
 	typedef std::list<LPRDOPMDPokaz> ResultList;
 
-	ResultList m_resultList;
+	ResultList     m_resultList;
+	LPIPokazGroup  m_pPokazGroup;
 };
 DECLARE_POINTER(RDOResultGroup);
 

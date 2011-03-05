@@ -3,7 +3,7 @@
 
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdoprocess_interface.h"
+#include "rdo_lib/rdo_runtime/rdoprocess_i.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
 
 namespace rdoRuntime {

@@ -100,6 +100,7 @@ public:
 		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
 		RT_REPOSITORY_LOAD_BINARY,             // param = rdoRepository::RDOThreadRepository::BinaryFile* = { name:std::string, result:rdo::binarystream& }
+		RT_REPOSITORY_CREATE_FILE,             // param = rdoRepository::RDOThreadRepository::CreateFile*
 		RT_SIMULATOR_PARSE_OK,
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,
@@ -134,6 +135,7 @@ public:
 		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
 		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< std::string >& }
 		RT_DEBUG_STRING,                       // param = std::string*
+		RT_RESULT_STRING,                      // param = std::string*
 		RT_CORBA_PARSER_GET_RTP,
 		RT_CORBA_PARSER_GET_RSS,
 		RT_CORBA_PARSER_GET_RTP_COUNT,
@@ -169,6 +171,7 @@ public:
 			case RT_REPOSITORY_LOAD                   : return _T("RT_REPOSITORY_LOAD");
 			case RT_REPOSITORY_SAVE                   : return _T("RT_REPOSITORY_SAVE");
 			case RT_REPOSITORY_LOAD_BINARY            : return _T("RT_REPOSITORY_LOAD_BINARY");
+			case RT_REPOSITORY_CREATE_FILE            : return _T("RT_REPOSITORY_CREATE_FILE");
 			case RT_SIMULATOR_PARSE_OK                : return _T("RT_SIMULATOR_PARSE_OK");
 			case RT_SIMULATOR_PARSE_ERROR             : return _T("RT_SIMULATOR_PARSE_ERROR");
 			case RT_SIMULATOR_PARSE_ERROR_SMR         : return _T("RT_SIMULATOR_PARSE_ERROR_SMR");
@@ -203,6 +206,7 @@ public:
 			case RT_RUNTIME_FRAME_AREA_DOWN           : return _T("RT_RUNTIME_FRAME_AREA_DOWN");
 			case RT_CODECOMP_GET_DATA                 : return _T("RT_CODECOMP_GET_DATA");
 			case RT_DEBUG_STRING                      : return _T("RT_DEBUG_STRING");
+			case RT_RESULT_STRING                     : return _T("RT_RESULT_STRING");
 			case RT_CORBA_PARSER_GET_RTP              : return _T("RT_CORBA_PARSER_GET_RTP");
 			case RT_CORBA_PARSER_GET_RSS              : return _T("RT_CORBA_PARSER_GET_RSS");
 			case RT_CORBA_PARSER_GET_RTP_COUNT        : return _T("RT_CORBA_PARSER_GET_RTP_COUNT");
@@ -455,11 +459,16 @@ protected:
 			if (this != getKernel())
 				sendMessage(getKernel(), RT_THREAD_DISCONNECTION);
 			stop();
-			delete this;
+			destroy();
 			return;
 		}
 	}
 #endif
+
+	virtual void destroy()
+	{
+		delete this;
+	}
 };
 
 // --------------------------------------------------------------------

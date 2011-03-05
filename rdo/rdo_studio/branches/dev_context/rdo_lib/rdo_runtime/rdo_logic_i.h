@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_interface.h
+ * filename : rdo_logic_i.h
  * author   : Урусов Андрей
  * date     : 30.07.2009
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDO_LOGIC_INTERFACE_H_
-#define _RDO_LOGIC_INTERFACE_H_
+#ifndef _RDO_LOGIC_I_H_
+#define _RDO_LOGIC_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -60,4 +60,4 @@ public:
 	virtual REF(LPIBaseOperation) back  ();                \
 	virtual void                  clear ();
 
-#endif //! _RDO_LOGIC_INTERFACE_H_
+#endif //! _RDO_LOGIC_I_H_

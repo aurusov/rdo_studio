@@ -141,6 +141,8 @@
 %token RDO_Stopping
 %token RDO_Start
 %token RDO_Stop
+%token RDO_WatchStart
+%token RDO_WatchStop
 
 %token RDO_Frame
 %token RDO_Show_if
@@ -231,14 +233,16 @@ pmd_main
 pmd_result_group_name
 	: /* empty */
 	{
-		LPRDOResultGroup pResultGroup = rdo::Factory<RDOResultGroup>::create(RDOParserSrcInfo());
+		LPRDOResultGroup pResultGroup = rdo::Factory<RDOResultGroup>::create();
 		ASSERT(pResultGroup);
+		pResultGroup->init(RDOParserSrcInfo());
 		PARSER->contextStack()->push(pResultGroup);
 	}
 	| RDO_IDENTIF
 	{
-		LPRDOResultGroup pResultGroup = rdo::Factory<RDOResultGroup>::create(RDOParserSrcInfo(@1, RDOVALUE($1)->getIdentificator()));
+		LPRDOResultGroup pResultGroup = rdo::Factory<RDOResultGroup>::create();
 		ASSERT(pResultGroup);
+		pResultGroup->init(RDOParserSrcInfo(@1, RDOVALUE($1)->getIdentificator()));
 		PARSER->contextStack()->push(pResultGroup);
 	}
 	;

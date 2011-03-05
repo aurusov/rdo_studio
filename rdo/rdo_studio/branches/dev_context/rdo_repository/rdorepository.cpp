@@ -9,6 +9,7 @@
 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
+#include <boost/format.hpp>
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // ====================================================================== SYNOPSIS
 #include "rdo_repository/rdorepository.h"
@@ -39,6 +40,7 @@ RDOThreadRepository::RDOThreadRepository()
 	notifies.push_back(RT_REPOSITORY_LOAD                   );
 	notifies.push_back(RT_REPOSITORY_SAVE                   );
 	notifies.push_back(RT_REPOSITORY_LOAD_BINARY            );
+	notifies.push_back(RT_REPOSITORY_CREATE_FILE            );
 	notifies.push_back(RT_SIMULATOR_MODEL_STOP_OK           );
 	notifies.push_back(RT_SIMULATOR_MODEL_STOP_BY_USER      );
 	notifies.push_back(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
@@ -162,6 +164,14 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 			msg.lock();
 			PTR(BinaryFile) data = static_cast<PTR(BinaryFile)>(msg.param);
 			loadBMP(data->m_name, data->m_stream);
+			msg.unlock();
+			break;
+		}
+		case RT_REPOSITORY_CREATE_FILE:
+		{
+			msg.lock();
+			PTR(CreateFileInfo) data = static_cast<PTR(CreateFileInfo)>(msg.param);
+			createFile(data->m_name, data->m_ext, data->m_stream);
 			msg.unlock();
 			break;
 		}
@@ -603,8 +613,30 @@ void RDOThreadRepository::writeModelFilesInfo(REF(std::ofstream) stream) const
 	stream << _T("Resource_file  = ") << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
 }
 
+rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(std::ofstream) stream) const
+{
+	std::stringstream backupDirName;
+	backupDirName << m_modelPath
+	              << boost::format(_T("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s"))
+	                 % m_systemTime.date().year ()
+	                 % m_systemTime.date().month()
+	                 % m_systemTime.date().day  ()
+	                 % m_systemTime.time_of_day().hours  ()
+	                 % m_systemTime.time_of_day().minutes()
+	                 % m_systemTime.time_of_day().seconds()
+	                 % name
+	                 % ext
+	                 ;
+
+	tstring fullFileName = backupDirName.str();
+	stream.open(fullFileName.c_str(), std::ios::out | std::ios::binary);
+	return stream.is_open();
+}
+
 void RDOThreadRepository::beforeModelStart()
 {
+	m_systemTime = boost::posix_time::second_clock::local_time();
+
 	if (m_traceFile.is_open())
 	{
 		m_traceFile.close();
