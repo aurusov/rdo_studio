@@ -426,9 +426,16 @@ void RDOPMDGetValue::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) st
 {
 	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 
+	m_value = m_pArithmCalc->calcValue(pRuntime);
+
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << m_pArithmCalc->calcValue(pRuntime).getAsString() << _T('\n');
+		<< _T("\t") << m_value.getAsString() << _T('\n');
+}
+
+CREF(RDOValue) RDOPMDGetValue::getValue() const
+{
+	return m_value;
 }
 
 void RDOPMDWatchPar::writeModelStructure(REF(std::ostream) stream) const

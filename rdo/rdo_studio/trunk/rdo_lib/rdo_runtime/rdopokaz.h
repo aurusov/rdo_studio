@@ -192,7 +192,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IModelStructure
+class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IPokazGetValue, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDGetValue);
 QUERY_INTERFACE_BEGIN
@@ -200,6 +200,7 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE       (IPokaz          )
 	QUERY_INTERFACE       (IModelStructure )
 	QUERY_INTERFACE       (IPokazTraceValue)
+	QUERY_INTERFACE       (IPokazGetValue  )
 QUERY_INTERFACE_END
 
 private:
@@ -207,9 +208,11 @@ private:
 	virtual ~RDOPMDGetValue();
 
 	LPRDOCalc m_pArithmCalc;
+	RDOValue  m_value;
 
 	DECLARE_IPokaz;
 	DECLARE_IPokazTraceValue;
+	DECLARE_IPokazGetValue;
 	DECLARE_IModelStructure;
 };
 

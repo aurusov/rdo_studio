@@ -58,4 +58,15 @@ public:
 	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)  pLogicCalc ); \
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)  pArithmCalc);
 
+// ----------------------------------------------------------------------------
+// ---------- IPokazGetValue
+// ----------------------------------------------------------------------------
+class IPokazGetValue
+{
+public:
+	virtual CREF(rdoRuntime::RDOValue) getValue() const = 0;
+};
+#define DECLARE_IPokazGetValue \
+	CREF(rdoRuntime::RDOValue) getValue() const;
+
 #endif //! _RDOPOKAZ_I_H_

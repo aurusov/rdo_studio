@@ -44,7 +44,8 @@ private:
 	State          m_state;
 	tstring        m_name;
 	double         m_timeStart;
-	std::ofstream  m_stream;
+	std::ofstream  m_streamFull;
+	std::ofstream  m_streamTable;
 
 	DECLARE_IPokaz;
 	DECLARE_IPokazGroup;

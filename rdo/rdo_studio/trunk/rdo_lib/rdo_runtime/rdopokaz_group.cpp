@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdopokaz_group.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_model_i.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_repository/rdorepository.h"
 // ===============================================================================
@@ -37,14 +38,40 @@ void RDOPMDPokazGroup::resetPokaz(PTR(RDOSimulator) pSimulator)
 
 	m_timeStart = pSimulator->getCurrentTime();
 
-	if (!m_name.empty() && !m_stream.is_open())
+	if (!m_name.empty())
 	{
-		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-		ASSERT(pRuntime);
-		LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
-		ASSERT(pThreadProxy);
-		rdoRepository::RDOThreadRepository::CreateFileInfo file(m_name, _T("pmv"), m_stream);
-		pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
+		if (!m_streamFull.is_open())
+		{
+			PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
+			ASSERT(pRuntime);
+			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
+			ASSERT(pThreadProxy);
+			rdoRepository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - full"), m_name.c_str()), _T("txt"), m_streamFull);
+			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
+		}
+		if (!m_streamTable.is_open())
+		{
+			PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
+			ASSERT(pRuntime);
+			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
+			ASSERT(pThreadProxy);
+			rdoRepository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - table"), m_name.c_str()), _T("txt"), m_streamTable);
+			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
+			if (m_streamTable.is_open())
+			{
+				STL_FOR_ALL_CONST(m_resultList, it)
+				{
+					LPIPokazGetValue pGetValue = (*it);
+					if (pGetValue)
+					{
+						LPIName pName = pGetValue;
+						ASSERT(pName);
+						m_streamTable << pName->name() << _T("\t");
+					}
+				}
+				m_streamTable << std::endl;
+			}
+		}
 	}
 
 	STL_FOR_ALL(m_resultList, it)
@@ -76,12 +103,13 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) 
 		rdo::textstream textStream;
 		textStream << rdo::format(_T("---> %s, %f -> %f = %f\n"), m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
 		stream << textStream.str();
-		if (m_stream.is_open())
+		if (m_streamFull.is_open())
 		{
-			m_stream << textStream.str();
+			m_streamFull << textStream.str();
 		}
 	}
 
+	rbool tableWrite = false;
 	STL_FOR_ALL(m_resultList, it)
 	{
 		rdo::textstream textStream;
@@ -89,10 +117,30 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) 
 		(*it)->calcStat(pSimulator, textStream);
 
 		stream << textStream.str();
-		if (m_stream.is_open())
+		if (m_streamFull.is_open())
 		{
-			m_stream << textStream.str();
+			m_streamFull << textStream.str();
 		}
+
+		LPIPokazGetValue pGetValue = (*it);
+		if (pGetValue)
+		{
+			if (pGetValue->getValue().typeID() != RDOType::t_real)
+			{
+				m_streamTable << pGetValue->getValue().getAsString() << _T("\t");
+			}
+			else
+			{
+				setlocale(LC_NUMERIC, _T("rus"));
+				m_streamTable << rdo::format(_T("%f"), pGetValue->getValue().getDouble()) << _T("\t");
+				setlocale(LC_NUMERIC, _T("eng"));
+			}
+			tableWrite = true;
+		}
+	}
+	if (tableWrite)
+	{
+		m_streamTable << std::endl;
 	}
 
 	if (!m_name.empty())
@@ -100,9 +148,9 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) 
 		rdo::textstream textStream;
 		textStream << rdo::format(_T("<--- %s\n"), m_name.c_str());
 		stream << textStream.str();
-		if (m_stream.is_open())
+		if (m_streamFull.is_open())
 		{
-			m_stream << textStream.str();
+			m_streamFull << textStream.str();
 		}
 	}
 	pRuntime->getResults().flush();
