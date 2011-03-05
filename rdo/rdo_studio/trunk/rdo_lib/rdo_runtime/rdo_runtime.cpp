@@ -591,7 +591,7 @@ void RDORuntime::postProcess()
 	{
 		try
 		{
-			(*it)->calcStat(this);
+			(*it)->calcStat(this, getResults().getOStream());
 		}
 		catch (REF(RDORuntimeException))
 		{}

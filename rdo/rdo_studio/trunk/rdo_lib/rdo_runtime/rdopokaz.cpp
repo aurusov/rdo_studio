@@ -108,18 +108,16 @@ void RDOPMDWatchPar::checkPokaz(PTR(RDOSimulator) pSimulator)
 	}
 }
 
-void RDOPMDWatchPar::calcStat(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchPar::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
-	double currTime = m_resNumber == -1 ? m_timeErase : pRuntime->getCurrentTime();
+	double currTime = m_resNumber == -1 ? m_timeErase : pSimulator->getCurrentTime();
 	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
 	m_sum	       += val;
 	m_sumSqr       += val * val;
 	double average  = m_sum / (currTime - m_timeBegin);
 
-	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name()
+	stream.width(30);
+	stream << std::left << name()
 		<< _T("\t") << traceValue()
 		<< _T("\t") << m_watchNumber
 		<< _T("\t") << average
@@ -187,18 +185,16 @@ void RDOPMDWatchState::checkPokaz(PTR(RDOSimulator) pSimulator)
 	m_currValue = newValue;
 }
 
-void RDOPMDWatchState::calcStat(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchState::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
-	double currTime = pRuntime->getCurrentTime();
+	double currTime = pSimulator->getCurrentTime();
 	double val      = m_currValue * (currTime - m_timePrev);
 	m_sum          += val;
 	m_sumSqr       += val * val;
 	double average  = m_sum / (currTime - m_timeBegin);
 
-	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left
+	stream.width(30);
+	stream << std::left
 		<< name()
 		<< _T("\t") << traceValue()
 		<< _T("\t") << m_watchNumber
@@ -283,18 +279,16 @@ void RDOPMDWatchQuant::checkPokaz(PTR(RDOSimulator) pSimulator)
 	}
 }
 
-void RDOPMDWatchQuant::calcStat(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchQuant::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
-	double currTime = pRuntime->getCurrentTime();
+	double currTime = pSimulator->getCurrentTime();
 	double val      = m_currValue * (currTime - m_timePrev);
 	m_sum          += val;
 	m_sumSqr       += val * val;
 	double average  = m_sum / (currTime - m_timeBegin);
 
-	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name()
+	stream.width(30);
+	stream << std::left << name()
 		<< _T("\t") << traceValue()
 		<< _T("\t") << m_watchNumber
 		<< _T("\t") << average
@@ -341,10 +335,8 @@ void RDOPMDWatchValue::resetPokaz(PTR(RDOSimulator) pSimulator)
 void RDOPMDWatchValue::checkPokaz(PTR(RDOSimulator) pSimulator)
 {}
 
-void RDOPMDWatchValue::calcStat(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchValue::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
 	double average, averageSqr, deviation;
 	if (m_watchNumber < 2)
 	{
@@ -358,8 +350,8 @@ void RDOPMDWatchValue::calcStat(PTR(RDOSimulator) pSimulator)
 		deviation  = averageSqr / sqrt((double)m_watchNumber); // qq а почему корень берем от m_watchNumber ?
 	}
 
-	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name()
+	stream.width(30);
+	stream << std::left << name()
 		<< _T("\t") << m_watchNumber
 		<< _T("\t") << average
 		<< _T("\t") << averageSqr
@@ -430,12 +422,12 @@ void RDOPMDGetValue::resetPokaz(PTR(RDOSimulator) pSimulator)
 void RDOPMDGetValue::checkPokaz(PTR(RDOSimulator) pSimulator)
 {}
 
-void RDOPMDGetValue::calcStat(PTR(RDOSimulator) pSimulator)
+void RDOPMDGetValue::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
 {
 	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 
-	pRuntime->getResults().width(30);
-	pRuntime->getResults() << std::left << name()
+	stream.width(30);
+	stream << std::left << name()
 		<< _T("\t") << m_pArithmCalc->calcValue(pRuntime).getAsString() << _T('\n');
 }
 

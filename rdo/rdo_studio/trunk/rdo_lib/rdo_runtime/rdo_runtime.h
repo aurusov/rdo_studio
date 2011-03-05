@@ -51,9 +51,7 @@ public:
 		return *this;
 	}
 
-	virtual void flush() = 0;
-
-private:
+	virtual void              flush     () = 0;
 	virtual REF(std::ostream) getOStream() = 0;
 };
 

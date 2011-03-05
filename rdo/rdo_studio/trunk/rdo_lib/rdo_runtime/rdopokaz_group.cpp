@@ -13,6 +13,8 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdopokaz_group.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_kernel/rdothread.h"
+#include "rdo_repository/rdorepository.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -35,6 +37,16 @@ void RDOPMDPokazGroup::resetPokaz(PTR(RDOSimulator) pSimulator)
 
 	m_timeStart = pSimulator->getCurrentTime();
 
+	if (!m_name.empty() && !m_stream.is_open())
+	{
+		PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
+		ASSERT(pRuntime);
+		LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
+		ASSERT(pThreadProxy);
+		rdoRepository::RDOThreadRepository::CreateFileInfo file(m_name, _T("pmv"), m_stream);
+		pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
+	}
+
 	STL_FOR_ALL(m_resultList, it)
 	{
 		(*it)->resetPokaz(pSimulator);
@@ -52,7 +64,7 @@ void RDOPMDPokazGroup::checkPokaz(PTR(RDOSimulator) pSimulator)
 	}
 }
 
-void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator)
+void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -61,17 +73,37 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator)
 	if (!m_name.empty())
 	{
 		double timeStop = pRuntime->getCurrentTime();
-		pRuntime->getResults() << rdo::format(_T("---> %s, %f -> %f = %f\n"), m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
+		rdo::textstream textStream;
+		textStream << rdo::format(_T("---> %s, %f -> %f = %f\n"), m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
+		stream << textStream.str();
+		if (m_stream.is_open())
+		{
+			m_stream << textStream.str();
+		}
 	}
 
 	STL_FOR_ALL(m_resultList, it)
 	{
-		(*it)->calcStat(pSimulator);
+		rdo::textstream textStream;
+
+		(*it)->calcStat(pSimulator, textStream);
+
+		stream << textStream.str();
+		if (m_stream.is_open())
+		{
+			m_stream << textStream.str();
+		}
 	}
 
 	if (!m_name.empty())
 	{
-		pRuntime->getResults() << rdo::format(_T("<--- %s\n"), m_name.c_str());
+		rdo::textstream textStream;
+		textStream << rdo::format(_T("<--- %s\n"), m_name.c_str());
+		stream << textStream.str();
+		if (m_stream.is_open())
+		{
+			m_stream << textStream.str();
+		}
 	}
 	pRuntime->getResults().flush();
 }
@@ -84,7 +116,8 @@ void RDOPMDPokazGroup::onStart(PTR(rdoRuntime::RDOSimulator) pSimulator)
 
 void RDOPMDPokazGroup::onStop(PTR(rdoRuntime::RDOSimulator) pSimulator)
 {
-	calcStat(pSimulator);
+	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
+	calcStat(pSimulator, pRuntime->getResults().getOStream());
 	m_state = RGS_STOP;
 }
 
