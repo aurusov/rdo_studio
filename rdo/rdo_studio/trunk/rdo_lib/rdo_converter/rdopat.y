@@ -328,7 +328,7 @@ pat_params
 		ASSERT(pPattern);
 		PTR(RDOValue)   param_name = P_RDOVALUE($2);
 		LPRDOTypeParam  param_type = CONVERTER->stack().pop<RDOTypeParam>($3);
-		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($3));
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
 		pPattern->add(pParam);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -338,7 +338,7 @@ pat_params
 		ASSERT(pPattern);
 		PTR(RDOValue)   param_name = P_RDOVALUE($2);
 		LPRDOTypeParam  param_type = CONVERTER->stack().pop<RDOTypeParam>($3);
-		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($3));
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
 		pPattern->add(pParam);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
