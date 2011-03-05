@@ -296,7 +296,8 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	LPRDOParam pFunctionParam;
 	switch (RDOParser::s_parser()->getFileToParse())
 	{
-	case rdoModelObjects::PAT: pFunctionParam = RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParam (value->getIdentificator()); break;
+	case rdoModelObjects::PAT:
+	case rdoModelObjects::EVN: pFunctionParam = RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParam (value->getIdentificator()); break;
 	case rdoModelObjects::FUN: pFunctionParam = RDOParser::s_parser()->getLastFUNFunction()->findFUNFunctionParam(value->getIdentificator()); break;
 	}
 
@@ -341,7 +342,8 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		m_value = pFunctionParam->getType()->type();
 		switch (RDOParser::s_parser()->getFileToParse())
 		{
-		case rdoModelObjects::PAT: m_pCalc = rdo::Factory<rdoRuntime::RDOCalcPatParam> ::create(RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParamNum (value->getIdentificator())); break;
+		case rdoModelObjects::PAT:
+		case rdoModelObjects::EVN: m_pCalc = rdo::Factory<rdoRuntime::RDOCalcPatParam> ::create(RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParamNum (value->getIdentificator())); break;
 		case rdoModelObjects::FUN: m_pCalc = rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(RDOParser::s_parser()->getLastFUNFunction()->findFUNFunctionParamNum(value->getIdentificator()), pFunctionParam->src_info()); break;
 		}
 		if (m_pCalc)
