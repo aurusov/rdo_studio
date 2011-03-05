@@ -276,6 +276,21 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		return;
 	}
 
+	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	{ErrorBlockMonicker errorBlockMonicker;
+		CREF(RDOParser::PreCastTypeList) typeList = RDOParser::s_parser()->getPreCastTypeList();
+		STL_FOR_ALL_CONST(typeList, it)
+		{
+			RDOValue try_cast_value = (*it)->value_cast(value);
+			if (try_cast_value.defined())
+			{
+				m_value = value;
+				return;
+			}
+		}
+	}
+
 	//! Ищем параметр релевантного ресурса
 	if (RDOParser::s_parser()->getFileToParse() == rdoModelObjects::PAT)
 	{
@@ -351,21 +366,6 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 			m_pCalc->setSrcInfo(src_info());
 		}
 		return;
-	}
-
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(RDOParser::PreCastTypeList) typeList = RDOParser::s_parser()->getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
-		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
-			{
-				m_value = value;
-				return;
-			}
-		}
 	}
 
 	//Ищем локальную переменную
