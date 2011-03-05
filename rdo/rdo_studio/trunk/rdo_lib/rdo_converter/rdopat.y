@@ -1068,15 +1068,15 @@ pat_time
 		{
 			case RDOPATPattern::PT_IE:
 			{
-				LPDocUpdate pTimeDelete1 = rdo::Factory<UpdateInsert>::create(@2.m_first_seek, _T("//"));
+				LPDocUpdate pTimeDelete1 = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @2.m_last_seek);
 				ASSERT(pTimeDelete1);
 				CONVERTER->insertDocUpdate(pTimeDelete1);
 
-				LPDocUpdate pTimeDelete2 = rdo::Factory<UpdateInsert>::create(@3.m_first_seek, _T("//"));
+				LPDocUpdate pTimeDelete2 = rdo::Factory<UpdateDelete>::create(@3.m_first_seek, @3.m_last_seek);
 				ASSERT(pTimeDelete2);
 				CONVERTER->insertDocUpdate(pTimeDelete2);
 
-				LPDocUpdate pTimeDelete3 = rdo::Factory<UpdateInsert>::create(@4.m_first_seek, _T("//"));
+				LPDocUpdate pTimeDelete3 = rdo::Factory<UpdateDelete>::create(@4.m_first_seek, @4.m_last_seek);
 				ASSERT(pTimeDelete3);
 				CONVERTER->insertDocUpdate(pTimeDelete3);
 			}
