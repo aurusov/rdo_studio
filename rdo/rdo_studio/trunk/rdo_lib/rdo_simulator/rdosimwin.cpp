@@ -816,6 +816,17 @@ rbool RDOThreadRunTime::runtimeError() const
 
 void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam)
 {
+	PTR(RDOThread) pThread;
+	switch (threadID)
+	{
+	case TID_REPOSITORY: pThread = kernel->repository(); break;
+	default            : pThread = NULL; break;
+	}
+
+	if (pThread)
+	{
+		RDOThreadMT::sendMessage(pThread, static_cast<RDOTreadMessage>(messageID), pParam);
+	}
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
