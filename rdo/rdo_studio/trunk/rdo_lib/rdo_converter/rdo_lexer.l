@@ -469,6 +469,16 @@ false {
 		{
 			rdoConverter::LPRDOPATPattern pPattern = CONVERTER->getLastPATPattern();
 			ASSERT(pPattern);
+			rdoConverter::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
+			if (pCurrRelRes)
+			{
+				rdoConverter::LPRDORTPResType pResType = pCurrRelRes->getType();
+				ASSERT(pResType);
+				if (pResType->findRTPParam(name))
+				{
+					return RDO_IDENTIF;
+				}
+			}
 			if (pPattern->findRelevantResource(name))
 			{
 				return RDO_IDENTIF_RELRES;

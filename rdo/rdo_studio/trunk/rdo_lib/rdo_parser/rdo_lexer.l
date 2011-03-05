@@ -455,6 +455,16 @@ false {
 		{
 			rdoParse::LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
 			ASSERT(pPattern);
+			rdoParse::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
+			if (pCurrRelRes)
+			{
+				rdoParse::LPRDORTPResType pResType = pCurrRelRes->getType();
+				ASSERT(pResType);
+				if (pResType->findRTPParam(name))
+				{
+					return RDO_IDENTIF;
+				}
+			}
 			if (pPattern->findRelevantResource(name))
 			{
 				return RDO_IDENTIF_RELRES;
