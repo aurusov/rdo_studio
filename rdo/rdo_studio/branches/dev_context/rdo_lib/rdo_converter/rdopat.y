@@ -328,7 +328,7 @@ pat_params
 		ASSERT(pPattern);
 		PTR(RDOValue)   param_name = P_RDOVALUE($2);
 		LPRDOTypeParam  param_type = CONVERTER->stack().pop<RDOTypeParam>($3);
-		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type);
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
 		pPattern->add(pParam);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -338,7 +338,7 @@ pat_params
 		ASSERT(pPattern);
 		PTR(RDOValue)   param_name = P_RDOVALUE($2);
 		LPRDOTypeParam  param_type = CONVERTER->stack().pop<RDOTypeParam>($3);
-		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type);
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
 		pPattern->add(pParam);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -1068,15 +1068,15 @@ pat_time
 		{
 			case RDOPATPattern::PT_IE:
 			{
-				LPDocUpdate pTimeDelete1 = rdo::Factory<UpdateInsert>::create(@2.m_first_seek, _T("//"));
+				LPDocUpdate pTimeDelete1 = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @2.m_last_seek);
 				ASSERT(pTimeDelete1);
 				CONVERTER->insertDocUpdate(pTimeDelete1);
 
-				LPDocUpdate pTimeDelete2 = rdo::Factory<UpdateInsert>::create(@3.m_first_seek, _T("//"));
+				LPDocUpdate pTimeDelete2 = rdo::Factory<UpdateDelete>::create(@3.m_first_seek, @3.m_last_seek);
 				ASSERT(pTimeDelete2);
 				CONVERTER->insertDocUpdate(pTimeDelete2);
 
-				LPDocUpdate pTimeDelete3 = rdo::Factory<UpdateInsert>::create(@4.m_first_seek, _T("//"));
+				LPDocUpdate pTimeDelete3 = rdo::Factory<UpdateDelete>::create(@4.m_first_seek, @4.m_last_seek);
 				ASSERT(pTimeDelete3);
 				CONVERTER->insertDocUpdate(pTimeDelete3);
 			}
@@ -1617,7 +1617,7 @@ pat_pattern
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("\r\t\t" + pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " );"));
+			LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("\r\n\t\t" + pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " );"));
 			ASSERT(pPlanningInsert);
 			CONVERTER->insertDocUpdate(pPlanningInsert);
 

@@ -276,6 +276,21 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		return;
 	}
 
+	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	{ErrorBlockMonicker errorBlockMonicker;
+		CREF(RDOParser::PreCastTypeList) typeList = RDOParser::s_parser()->getPreCastTypeList();
+		STL_FOR_ALL_CONST(typeList, it)
+		{
+			RDOValue try_cast_value = (*it)->value_cast(value);
+			if (try_cast_value.defined())
+			{
+				m_value = value;
+				return;
+			}
+		}
+	}
+
 	//! Ищем параметр релевантного ресурса
 	if (RDOParser::s_parser()->getFileToParse() == rdoModelObjects::PAT)
 	{
@@ -296,7 +311,8 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 	LPRDOParam pFunctionParam;
 	switch (RDOParser::s_parser()->getFileToParse())
 	{
-	case rdoModelObjects::PAT: pFunctionParam = RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParam (value->getIdentificator()); break;
+	case rdoModelObjects::PAT:
+	case rdoModelObjects::EVN: pFunctionParam = RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParam (value->getIdentificator()); break;
 	case rdoModelObjects::FUN: pFunctionParam = RDOParser::s_parser()->getLastFUNFunction()->findFUNFunctionParam(value->getIdentificator()); break;
 	}
 
@@ -341,7 +357,8 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		m_value = pFunctionParam->getType()->type();
 		switch (RDOParser::s_parser()->getFileToParse())
 		{
-		case rdoModelObjects::PAT: m_pCalc = rdo::Factory<rdoRuntime::RDOCalcPatParam> ::create(RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParamNum (value->getIdentificator())); break;
+		case rdoModelObjects::PAT:
+		case rdoModelObjects::EVN: m_pCalc = rdo::Factory<rdoRuntime::RDOCalcPatParam> ::create(RDOParser::s_parser()->getLastPATPattern ()->findPATPatternParamNum (value->getIdentificator())); break;
 		case rdoModelObjects::FUN: m_pCalc = rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(RDOParser::s_parser()->getLastFUNFunction()->findFUNFunctionParamNum(value->getIdentificator()), pFunctionParam->src_info()); break;
 		}
 		if (m_pCalc)
@@ -349,21 +366,6 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 			m_pCalc->setSrcInfo(src_info());
 		}
 		return;
-	}
-
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(RDOParser::PreCastTypeList) typeList = RDOParser::s_parser()->getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
-		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
-			{
-				m_value = value;
-				return;
-			}
-		}
 	}
 
 	//Ищем локальную переменную
