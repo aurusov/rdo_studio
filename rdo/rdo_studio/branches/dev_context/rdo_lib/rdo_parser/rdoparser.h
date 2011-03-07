@@ -222,7 +222,7 @@ protected:
 
 	LPRDOParserItem m_parser_item;
 
-	virtual REF(LPRDOParserContainer) getContainer() = 0;
+	virtual CREF(LPRDOParserContainer) getContainer() const = 0;
 
 	RDOParserContainer::Iterator begin()
 	{
@@ -317,7 +317,7 @@ private:
 		parent_type::deinit();
 	}
 
-	virtual REF(LPRDOParserContainer) getContainer()
+	virtual CREF(LPRDOParserContainer) getContainer() const
 	{
 		return m_pContainer;
 	}
