@@ -17,7 +17,7 @@
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

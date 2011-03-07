@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_activity_interface.h
+ * filename : rdo_activity_i.h
  * author   : Урусов Андрей
  * date     : 01.08.2009
  * bref     : Интерфейс IActivity
  * indent   : 4T
  */
 
-#ifndef _RDO_ACTIVITY_INTERFACE_H_
-#define _RDO_ACTIVITY_INTERFACE_H_
+#ifndef _RDO_ACTIVITY_I_H_
+#define _RDO_ACTIVITY_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -47,4 +47,4 @@ public:
 #define DECLARE_IActivityPatternTrace \
 	virtual CREF(tstring) tracePatternId() const;
 
-#endif //! _RDO_ACTIVITY_INTERFACE_H_
+#endif //! _RDO_ACTIVITY_I_H_

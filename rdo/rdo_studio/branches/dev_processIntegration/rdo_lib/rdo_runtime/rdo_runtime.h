@@ -23,6 +23,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
+#include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -50,7 +51,7 @@ public:
 		return *this;
 	}
 
-private:
+	virtual void              flush     () = 0;
 	virtual REF(std::ostream) getOStream() = 0;
 };
 
@@ -117,7 +118,7 @@ public:
 
 	void setConstValue( unsigned int numberOfConst, RDOValue value );
 	RDOValue getConstValue( int numberOfConst );
-	void rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo );
+	void rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy );
 
 	RDOResults& getResults()     { return *results;      }
 	RDOResults& getResultsInfo() { return *results_info; }
@@ -233,6 +234,8 @@ public:
 		return allResourcesByTime.end();
 	}
 
+	CREF(LPIThreadProxy) getThreadProxy() const { return m_pThreadProxy; }
+
 private:
 	typedef RDOSimulatorTrace           Parent;
 	typedef std::list<LPRDOCalc>        CalcList;
@@ -241,6 +244,7 @@ private:
 	std::list  < RDOResource* > allResourcesBeforeSim; // ќни же, только упор€дочены по типу перед запуском
 	CalcList                    initCalcs;
 	LPRDOMemoryStack            m_pMemoryStack;
+	LPIThreadProxy              m_pThreadProxy;
 	
 	class BreakPoint: public RDORuntimeObject
 	{

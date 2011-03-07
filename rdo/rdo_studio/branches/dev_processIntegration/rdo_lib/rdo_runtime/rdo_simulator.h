@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdobase.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

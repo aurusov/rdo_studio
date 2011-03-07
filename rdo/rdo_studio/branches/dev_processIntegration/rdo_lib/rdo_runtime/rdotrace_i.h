@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdotrace_interface.h
+ * filename : rdotrace_i.h
  * author   : Урусов Андрей
  * date     : 28.07.2009
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDOTRACE_INTERFACE_H_
-#define _RDOTRACE_INTERFACE_H_
+#ifndef _RDOTRACE_I_H_
+#define _RDOTRACE_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -53,4 +53,4 @@ public:
 #define DECLARE_IPokazTrace \
 	virtual void tracePokaz();
 
-#endif //! _RDOTRACE_INTERFACE_H_
+#endif //! _RDOTRACE_I_H_

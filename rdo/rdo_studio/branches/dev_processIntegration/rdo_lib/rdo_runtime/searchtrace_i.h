@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : searchtrace_interface.h
+ * filename : searchtrace_i.h
  * author   : Урусов Андрей
  * date     : 30.07.2009
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _SEARCHTRACE_INTERFACE_H_
-#define _SEARCHTRACE_INTERFACE_H_
+#ifndef _SEARCHTRACE_I_H_
+#define _SEARCHTRACE_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -39,4 +39,4 @@ public:
 	virtual void  getStatsDOUBLE    (Type type, REF(double) min, REF(double) max, REF(double) med) const; \
 	virtual void  getStatsRUINT     (Type type, REF(ruint)  min, REF(ruint)  max, REF(double) med) const;
 
-#endif //! _SEARCHTRACE_INTERFACE_H_
+#endif //! _SEARCHTRACE_I_H_

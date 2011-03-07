@@ -16,8 +16,8 @@
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

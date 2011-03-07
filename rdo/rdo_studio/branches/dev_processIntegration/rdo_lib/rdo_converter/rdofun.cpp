@@ -276,6 +276,21 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		return;
 	}
 
+	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	{ErrorBlockMonicker errorBlockMonicker;
+		CREF(Converter::PreCastTypeList) typeList = Converter::s_converter()->getPreCastTypeList();
+		STL_FOR_ALL_CONST(typeList, it)
+		{
+			RDOValue try_cast_value = (*it)->value_cast(value);
+			if (try_cast_value.defined())
+			{
+				m_value = value;
+				return;
+			}
+		}
+	}
+
 	//! Ищем параметр релевантного ресурса
 	if (Converter::s_converter()->getFileToParse() == rdoModelObjectsConvertor::PAT_IN)
 	{
@@ -349,21 +364,6 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 			m_pCalc->setSrcInfo(src_info());
 		}
 		return;
-	}
-
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(Converter::PreCastTypeList) typeList = Converter::s_converter()->getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
-		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
-			{
-				m_value = value;
-				return;
-			}
-		}
 	}
 
 	Converter::s_converter()->error().error(value.src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value->getIdentificator().c_str()));

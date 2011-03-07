@@ -17,7 +17,7 @@
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
-#include "rdo_lib/rdo_runtime/rdo_rule_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_rule_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

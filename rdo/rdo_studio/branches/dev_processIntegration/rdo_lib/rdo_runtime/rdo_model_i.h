@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_model_interface.h
+ * filename : rdo_model_i.h
  * author   : Урусов Андрей
  * date     : 28.07.2009
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDO_MODEL_INTERFACE_H_
-#define _RDO_MODEL_INTERFACE_H_
+#ifndef _RDO_MODEL_I_H_
+#define _RDO_MODEL_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -31,4 +31,4 @@ public:
 #define DECLARE_IName \
 	virtual CREF(tstring) name() const;
 
-#endif //! _RDO_MODEL_INTERFACE_H_
+#endif //! _RDO_MODEL_I_H_
