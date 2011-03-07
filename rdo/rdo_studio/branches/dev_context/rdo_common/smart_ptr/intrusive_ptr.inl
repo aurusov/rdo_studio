@@ -83,7 +83,7 @@ inline intrusive_ptr<T>::operator rbool () const
 }
 
 template<class T>
-inline CPTR(T) intrusive_ptr<T>::operator-> () const
+inline PTR(T) intrusive_ptr<T>::operator-> () const
 {
 	return m_object;
 }
