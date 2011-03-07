@@ -78,10 +78,14 @@ DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
 DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
+PREDECLARE_POINTER(RDOParser);
+
 CLASS(RDOParser):
 	    INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
 {
+DECLARE_FACTORY(RDOParser);
+
 public:
 DEFINE_OBJECT_CONTAINER(PATPattern     );
 DEFINE_OBJECT_CONTAINER(RTPResType     );
@@ -102,8 +106,8 @@ DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
 DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 public:
-	RDOParser();
-	virtual ~RDOParser();
+	void init  ();
+	void deinit();
 
 	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
 
@@ -210,9 +214,12 @@ public:
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
-	static PTR(RDOParser)               s_parser      ();
+	static LPRDOParser                  s_parser      ();
 
 protected:
+	RDOParser();
+	virtual ~RDOParser();
+
 	LPRDOParserItem m_parser_item;
 
 	virtual REF(LPRDOParserContainer) getContainer() = 0;
@@ -272,11 +279,12 @@ private:
 	typedef std::vector<Changes> ChangesList;
 	ChangesList m_changes;
 
-	typedef std::list<PTR(RDOParser)> ParserList;
+	typedef std::list<LPRDOParser> ParserList;
 	static ParserList s_parserStack;
 
 	DECLARE_IContextFind;
 };
+DECLARE_POINTER(RDOParser);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserTemplate
@@ -284,12 +292,13 @@ private:
 template <class Container>
 class RDOParserTemplate: public RDOParser
 {
-public:
+DECLARE_FACTORY(RDOParserTemplate<Container>);
+
+private:
 	RDOParserTemplate()
 		: RDOParser()
 	{}
 
-private:
 	LPRDOParserContainer m_container;
 
 	virtual REF(LPRDOParserContainer) getContainer()

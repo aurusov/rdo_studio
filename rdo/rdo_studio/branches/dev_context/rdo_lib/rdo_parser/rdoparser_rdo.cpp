@@ -46,7 +46,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(RDOParser) pParser)
+void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
@@ -66,7 +66,7 @@ void RDOParserRDOItem::parse(PTR(RDOParser) pParser)
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(RDOParser) pParser, REF(std::istream) in_stream)
+void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
 {
 	ASSERT(pParser);
 
@@ -80,7 +80,7 @@ void RDOParserRDOItem::parse(PTR(RDOParser) pParser, REF(std::istream) in_stream
 		m_parser_fun(m_pLexer);
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(RDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
+PTR(RDOLexer) RDOParserRDOItem::getLexer(CREF(LPRDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
 {
 	ASSERT(pParser);
 	return new RDOLexer(pParser, in_stream, out_stream);
@@ -110,7 +110,7 @@ RDOParserRSS::RDOParserRSS(StreamFrom from)
 	: RDOParserRDOItem(rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
 {}
 
-void RDOParserRSS::parse(PTR(RDOParser) pParser)
+void RDOParserRSS::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);
@@ -121,7 +121,7 @@ void RDOParserRSS::parse(PTR(RDOParser) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSSPost
 // ----------------------------------------------------------------------------
-void RDOParserRSSPost::parse(PTR(RDOParser) pParser)
+void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
@@ -154,7 +154,7 @@ RDOParserSMRPost::RDOParserSMRPost()
 	: RDOParserItem(rdoModelObjects::SMR, NULL, NULL, NULL)
 {}
 
-void RDOParserSMRPost::parse(PTR(RDOParser) pParser)
+void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
@@ -175,7 +175,7 @@ void RDOParserSMRPost::parse(PTR(RDOParser) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserEVNPost
 // ----------------------------------------------------------------------------
-void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
+void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
@@ -223,7 +223,7 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
+void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 

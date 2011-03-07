@@ -29,7 +29,7 @@ typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(vo
 // ----------------------------------------------------------------------------
 // ---------- RDOParserItem
 // ----------------------------------------------------------------------------
-class RDOParser;
+PREDECLARE_POINTER(RDOParser);
 
 OBJECT(RDOParserItem)
 {
@@ -47,8 +47,8 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void  parse(PTR(RDOParser) pParser) = 0;
-	virtual void  parse(PTR(RDOParser) pParser, REF(std::istream) in_stream)
+	virtual void  parse(CREF(LPRDOParser) pParser) = 0;
+	virtual void  parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
 	{};
 
 	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };

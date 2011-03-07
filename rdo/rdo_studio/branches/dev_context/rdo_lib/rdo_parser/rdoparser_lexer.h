@@ -15,6 +15,7 @@
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdobison.h"
 #include "rdo_lib/rdo_parser/rdogramma.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
@@ -28,19 +29,19 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOLexer
 // ----------------------------------------------------------------------------
-class RDOParser;
+PREDECLARE_POINTER(RDOParser);
 
 class RDOLexer: public yyFlexLexer
 {
 public:
-	RDOLexer(PTR(RDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
+	RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
 
 	void loc_init     ();
 	void loc_action   ();
 	void loc_delta_pos(int value);
 	void setvalue     (int value);
 
-	PTR(RDOParser)    parser();
+	CREF(LPRDOParser) parser() const;
 
 	void  enumBegin();
 	void  enumReset();
@@ -61,7 +62,7 @@ protected:
 private:
 	PTR(std::istream) m_yyin;
 	PTR(std::ostream) m_yyout;
-	PTR(RDOParser)    m_pParser;
+	LPRDOParser       m_pParser;
 	rbool             m_enumEmpty;
 	rsint             m_array_param_cnt;
 };

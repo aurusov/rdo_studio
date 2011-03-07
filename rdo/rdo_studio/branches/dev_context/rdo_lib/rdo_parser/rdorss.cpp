@@ -33,7 +33,7 @@ void rsserror(PTR(char) message)
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-RDORSSResource::RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -112,7 +112,7 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDOPROCResource::RDOPROCResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDORSSResource(pParser, src_info, pResType, id)
 {}
 
