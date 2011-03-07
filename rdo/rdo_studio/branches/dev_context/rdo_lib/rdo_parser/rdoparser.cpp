@@ -92,12 +92,10 @@ RDOParser::RDOParser()
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
 	, m_pattern             (false)
-{
-}
+{}
 
 RDOParser::~RDOParser()
-{
-}
+{}
 
 void RDOParser::init()
 {

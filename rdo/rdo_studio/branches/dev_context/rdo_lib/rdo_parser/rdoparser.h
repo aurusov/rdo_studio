@@ -305,24 +305,24 @@ private:
 
 	virtual void init()
 	{
-		m_container = rdo::Factory<Container>::create();
-		ASSERT(m_container);
+		m_pContainer = rdo::Factory<Container>::create();
+		ASSERT(m_pContainer);
 		parent_type::init();
 	}
 
 	virtual void deinit()
 	{
-		ASSERT(m_container)
-		m_container->clear();
+		ASSERT(m_pContainer)
+		m_pContainer->clear();
 		parent_type::deinit();
 	}
 
-	LPRDOParserContainer m_container;
-
 	virtual REF(LPRDOParserContainer) getContainer()
 	{
-		return m_container;
+		return m_pContainer;
 	}
+
+	LPRDOParserContainer m_pContainer;
 };
 
 // ----------------------------------------------------------------------------
