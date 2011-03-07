@@ -33,6 +33,11 @@ RDOParserContainer::RDOParserContainer()
 RDOParserContainer::~RDOParserContainer()
 {}
 
+void RDOParserContainer::clear()
+{
+	m_list.clear();
+}
+
 ruint RDOParserContainer::insert(rdoModelObjects::RDOParseType type, CREF(LPRDOParserItem) pParser)
 {
 	ASSERT(pParser);
