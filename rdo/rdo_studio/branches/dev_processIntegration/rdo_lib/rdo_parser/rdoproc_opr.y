@@ -297,12 +297,12 @@ dpt_process_prior
 	{
 		if (!PARSER->getLastPROCProcess()->setPrior(PARSER->stack().pop<RDOFUNArithm>($2)))
 		{
-			PARSER->error().error(@2, _T("Процесс пока не может иметь приоритет"));
+			PARSER->error().error(@2, _T("Процесс не может иметь приоритет"));
 		}
 	}
 	| RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
+		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета процесса"))
 	}
 	| error
 	{
@@ -363,7 +363,7 @@ dpt_process_line
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
-	| RDO_GENERATE fun_arithm error
+	| RDO_GENERATE error
 	{
 		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 	}
@@ -383,7 +383,7 @@ dpt_process_line
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
-	| RDO_ADVANCE fun_arithm error
+	| RDO_ADVANCE error
 	{
 		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 	}
