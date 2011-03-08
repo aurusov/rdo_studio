@@ -250,14 +250,11 @@ pmd_result_group_name
 pmd_result_group
 	: RDO_Results pmd_result_group_name pmd_body RDO_End
 	{
-		LPRDOPMDPokaz pResult = PARSER->stack().pop<RDOPMDPokaz>($3);
-		ASSERT(pResult);
 		PARSER->contextStack()->pop();
 	}
 	| RDO_Results pmd_result_group_name pmd_body error
 	{
-		LPRDOPMDPokaz pResult = PARSER->stack().pop<RDOPMDPokaz>($3);
-		ASSERT(pResult);
+		PARSER->contextStack()->pop();
 		PARSER->error().error(@3, _T("Ожидается ключевое слово $End"));
 	}
 	| error
