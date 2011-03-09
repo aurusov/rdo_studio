@@ -233,9 +233,13 @@ pmd_main
 pmd_result_group_name
 	: /* empty */
 	{
-		LPRDOResultGroup pResultGroup = rdo::Factory<RDOResultGroup>::create();
-		ASSERT(pResultGroup);
-		pResultGroup->init(RDOParserSrcInfo());
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(_T(""));
+		if (!pResultGroup)
+		{
+			pResultGroup = rdo::Factory<RDOResultGroup>::create();
+			ASSERT(pResultGroup);
+			pResultGroup->init(RDOParserSrcInfo());
+		}
 		PARSER->contextStack()->push(pResultGroup);
 	}
 	| RDO_IDENTIF

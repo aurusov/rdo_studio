@@ -49,8 +49,20 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
 
-	LPRDOResultGroup pResultGroup = pContext.object_static_cast<RDOResultGroup>();
-	ASSERT(pResultGroup);
+	LPRDOResultGroup pResultGroup = pContext->cast<RDOResultGroup>();
+	if (!pResultGroup)
+	{
+		//! Показатель создаётся не в контексте группы
+		//! Такое может быть из rdoproc_rss.y
+		pResultGroup = rdoParse::RDOParser::s_parser()->findResultGroup(_T(""));
+		if (!pResultGroup)
+		{
+			//! Нет даже группы по-умолчанию
+			pResultGroup = rdo::Factory<RDOResultGroup>::create();
+			ASSERT(pResultGroup);
+			pResultGroup->init(RDOParserSrcInfo());
+		}
+	}
 
 	m_pPokaz = pPokaz;
 	pResultGroup->append(this);
