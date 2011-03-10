@@ -198,6 +198,7 @@ trace_stat                     return(RDO_trace_stat);
 trace_tops                     return(RDO_trace_tops);
 trace_all                      return(RDO_trace_all);
 
+ProcessStart                   return(RDO_ProcessStart);
 $Process                       return(RDO_Process);
 $process                       return(RDO_Process);
 QUEUE                          return(RDO_QUEUE);

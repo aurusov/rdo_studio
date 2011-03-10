@@ -100,6 +100,7 @@
 %token RDO_Animation
 %token RDO_NoChange
 
+%token RDO_ProcessStart
 %token RDO_Decision_point
 %token RDO_search
 %token RDO_trace_stat
@@ -1641,6 +1642,19 @@ stopping_statement
 	| RDO_IDENTIF '.' RDO_Stop '(' ')' error
 	{
 		PARSER->error().error(@4, _T("Ќе найден символ окончани€ инструкции - точка с зап€той"));
+	}
+	;
+
+process_input_statement
+	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
+	{
+		tstring        processName  = RDOVALUE($1)->getIdentificator();
+		tstring        resourceName = RDOVALUE($5)->getIdentificator();
+
+//ѕроверить, правильность resourceName
+//„тобы можно было проверить правильность processName PRC должен парситьс€ раньше EVN (хот€ бы простой препарс с поиском имен процессов),
+//но проверить processName можно уже во врем€ выполнени€ RDOCalcProcessControl - этот должно быть проще, хот€ вр€д ли правильно.
+
 	}
 	;
 

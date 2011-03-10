@@ -42,6 +42,7 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 			// Находим перемещаемый транзакт в списке его транзактов
 			RDOPROCBlock::TransactIt it_res = block->transactFind(transact);
 			// Если транзакт найден
+			// XXX: только что созданный транзакт не привязывается к блоку GENERATE!!!
 			if (it_res != block->transactEnd()) 
 			{
 				// Удаляем его из списка транзактов этого блока
