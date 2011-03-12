@@ -16,6 +16,8 @@
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdo_logic.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -29,6 +31,7 @@ DECLARE_FACTORY(RDOCalcProcessControl)
 public:
 protected:
 	RDOCalcProcessControl();
+	DECALRE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -24,5 +24,23 @@ RDOCalcProcessControl::RDOCalcProcessControl()
 //создать от параметра-ресурса транзакт и проинициализировать его первым блоком процесса
 }
 
+REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) runtime)
+{
+	LPIBaseOperation process = *(runtime->m_pMetaLogic->begin());
+	if (process->query_cast<IPROCProcess>())
+	{
+		LPIBaseOperation block = dynamic_cast<RDOPROCProcess>(process)->begin();
+		if (dynamic_cast<LPIPROCBlock>(block))
+		{
+			new RDOPROCTransact( runtime, block );
+		}
+
+	}
+//	LPIPROCBlock   block     = dynamic_cast<LPIPROCBlock>(process-begin());
+//	RDOLogicSimple process = std::find(metaLogic->begin(), metaLogic->end(), 'Process');
+//	process->begin();//первый блок
+//в простейшей модели (без БЗ), только с одним процессом должен сработать халявный вызов:
+//	new RDOPROCTransact( runtime, block );
+}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
