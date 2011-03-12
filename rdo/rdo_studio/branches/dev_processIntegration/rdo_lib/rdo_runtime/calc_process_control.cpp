@@ -24,23 +24,32 @@ RDOCalcProcessControl::RDOCalcProcessControl()
 //создать от параметра-ресурса транзакт и проинициализировать его первым блоком процесса
 }
 
-REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
 {
-	LPIBaseOperation process = *(runtime->m_pMetaLogic->begin());
-	if (process->query_cast<IPROCProcess>())
+	LPIBaseOperation pLogic = *pRuntime->m_pMetaLogic->begin();
+	if (pLogic)
 	{
-		LPIBaseOperation block = dynamic_cast<RDOPROCProcess>(process)->begin();
-		if (dynamic_cast<LPIPROCBlock>(block))
+		LPIPROCProcess pProcess = pLogic.query_cast<IPROCProcess>();
+		if (pProcess)
 		{
-			new RDOPROCTransact( runtime, block );
+			LPIBaseOperationContainer pBlockContainer = pProcess.query_cast<IBaseOperationContainer>();
+			ASSERT(pBlockContainer);
+			if (!pBlockContainer->empty())
+			{
+				LPIBaseOperation pBlock = *pBlockContainer->begin();
+				ASSERT(pBlock);
+				PTR(RDOPROCTransact) pTransact = new RDOPROCTransact(pRuntime, pBlock);
+				ASSERT(pTransact);
+			}
 		}
-
 	}
+
 //	LPIPROCBlock   block     = dynamic_cast<LPIPROCBlock>(process-begin());
 //	RDOLogicSimple process = std::find(metaLogic->begin(), metaLogic->end(), 'Process');
 //	process->begin();//первый блок
 //в простейшей модели (без БЗ), только с одним процессом должен сработать халявный вызов:
-//	new RDOPROCTransact( runtime, block );
+//	new RDOPROCTransact( pRuntime, block );
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
