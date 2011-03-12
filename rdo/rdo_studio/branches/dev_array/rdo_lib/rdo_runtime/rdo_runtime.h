@@ -219,19 +219,14 @@ public:
 
 	virtual void postProcess();
 
-
-
 	enum FunBreakFlag
 	{
-		sContinue = 0,
-		sBreak,
-		sReturn
+		FBF_CONTINUE = 0,
+		FBF_BREAK,
+		FBF_RETURN
 	};
-	void               setFunBreakFlag(CREF(FunBreakFlag) pFlag);
+	void               setFunBreakFlag(CREF(FunBreakFlag) flag);
 	CREF(FunBreakFlag) getFunBreakFlag() const;
-
-	void  setFunReturnFlag(rbool pFlag) {m_FunReturnFlag = pFlag;}
-	rbool getFunReturnFlag()            {return m_FunReturnFlag; }
 
 	LPRDOMemoryStack getMemoryStack();
 
@@ -255,9 +250,8 @@ private:
 	std::list  < RDOResource* > allResourcesBeforeSim; // ќни же, только упор€дочены по типу перед запуском
 	CalcList                    initCalcs;
 	LPRDOMemoryStack            m_pMemoryStack;
-	FunBreakFlag                m_FunBreakFlag;
-	rbool                       m_FunReturnFlag;
-	
+	FunBreakFlag                m_funBreakFlag;
+
 	class BreakPoint: public RDORuntimeObject
 	{
 	public:
