@@ -123,6 +123,8 @@
 %token RDO_RELEASE
 %token RDO_if
 %token RDO_for
+%token RDO_Return
+%token RDO_Break
 %token RDO_result
 %token RDO_CF
 %token RDO_Priority
@@ -3036,10 +3038,10 @@ init_declaration_list
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
 		ASSERT(pCalcLocalVariableList);
 
-		pCalcLocalVariableList->addCalc(pCalc);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
 
 		$$ = PARSER->stack().push(pCalcLocalVariableList);
 	}
@@ -3065,10 +3067,10 @@ init_declaration_list
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($1);
-		ASSERT(pCalc);
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
+		ASSERT(pCalcLocalVariableList);
 
-		pCalcLocalVariableList->addCalc(pCalc);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
 
 		$$ = PARSER->stack().push(pCalcLocalVariableList);
 	}
@@ -3094,13 +3096,13 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
-		ASSERT(pCalcLocalVariableList);
-
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
 		ASSERT(pCalcCreateLocalVariable);
 
-		pCalcLocalVariableList->addCalc(pCalcCreateLocalVariable);
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
+		ASSERT(pCalcLocalVariableList);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
 
 		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
 
@@ -3125,7 +3127,7 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
 		ASSERT(pCalcLocalVariableList);
 
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
@@ -3134,8 +3136,8 @@ init_declaration
 		rdoRuntime::LPRDOCalcSetLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable>::create(variableName->getIdentificator(), pArithm->calc());
 		ASSERT(pCalcSetLocalVariable);
 
-		pCalcLocalVariableList->addCalc(pCalcCreateLocalVariable);
-		pCalcLocalVariableList->addCalc(pCalcSetLocalVariable);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalcSetLocalVariable);
 
 		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
 

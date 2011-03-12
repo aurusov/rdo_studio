@@ -877,8 +877,8 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
 	}
 
-	rdoRuntime::LPRDOCalcFunctionCall pFuncCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pFunction->getFunctionCalc());
-	pFunction->insertPostLinked(pFuncCall);
+	rdoRuntime::LPRDOCalc pFuncCall = pFunction->getFunctionCalc();
+	/*pFunction->insertPostLinked(pFuncCall);
 	pFuncCall->setSrcInfo(src_info());
 	for (int i = 0; i < nParams; i++)
 	{
@@ -887,12 +887,11 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		ASSERT(pArithm);
 		pArithm->checkParamType(pFuncParam);
 		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->type()));
-	}
+	}*/
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(pFunction->getReturn()->getType()->type(), src_pos()), pFuncCall);
 	ASSERT(pArithm);
 	pArithm->setSrcInfo(src_info());
-
 	return pArithm;
 }
 
@@ -1358,7 +1357,21 @@ RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam)
 	: RDOParserSrcInfo(src_info)
 	, m_pReturn       (pReturn )
 {
+
+	LPContextPattern pContext = rdo::Factory<ContextPattern>::create();
 	RDOParser::s_parser()->insertFUNFunction(this);
+	RDOParser::s_parser()->contextStack()->push(pContext);
+
+	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+	ASSERT(pContextMemory);
+
+	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+	ASSERT(pLocalVariableListStack);
+
+	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+	ASSERT(pLocalVariableList);
+
+	pLocalVariableListStack->push(pLocalVariableList);
 }
 
 RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
@@ -1371,17 +1384,17 @@ RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
 RDOFUNFunction::~RDOFUNFunction()
 {}
 
-void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc)
+void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 {
 	m_pFunctionCalc = pCalc;
-	if (m_pFunctionCalc->src_empty())
+	/*if (m_pFunctionCalc->src_empty())
 	{
 		m_pFunctionCalc->setSrcInfo(src_info());
 	}
 	STL_FOR_ALL(m_postLinkedList, it)
 	{
 		(*it)->setFunctionCalc(getFunctionCalc());
-	}
+	}*/
 }
 
 LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const 
@@ -1592,98 +1605,10 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	setFunctionCalc(pFuncTableCalc);
 }
 
-void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_info */)
+void RDOFUNFunction::createAlgorithmicCalc(CREF(rdoRuntime::LPRDOCalc)pCalc, CREF(RDOParserSrcInfo) body_src_info)
 {
-	rdoRuntime::LPRDOFunAlgorithmicCalc pFunAlgorithmicCalc;
-	//! Фильтр на функцию
-	switch (m_pReturn->getType()->type()->typeID())
-	{
-		case rdoRuntime::RDOType::t_int:
-		{
-			LPRDOTypeIntRange pRange = m_pReturn->getType()->type().object_dynamic_cast<RDOTypeIntRange>();
-			if (pRange)
-			{
-				pFunAlgorithmicCalc = rdo::Factory<rdoRuntime::RDOFunAlgorithmicDiapCalc>::create(pRange->range()->getMin().value(), pRange->range()->getMax().value());
-				ASSERT(pFunAlgorithmicCalc);
-			}
-			break;
-		}
-		case rdoRuntime::RDOType::t_real:
-		{
-			LPRDOTypeRealRange pRange = m_pReturn->getType()->type().object_dynamic_cast<RDOTypeRealRange>();
-			if (pRange)
-			{
-				pFunAlgorithmicCalc = rdo::Factory<rdoRuntime::RDOFunAlgorithmicDiapCalc>::create(pRange->range()->getMin().value(), pRange->range()->getMax().value());
-				ASSERT(pFunAlgorithmicCalc);
-			}
-			break;
-		}
-	}
-	if (!pFunAlgorithmicCalc)
-	{
-		pFunAlgorithmicCalc = rdo::Factory<rdoRuntime::RDOFunAlgorithmicCalc>::create();
-		ASSERT(pFunAlgorithmicCalc);
-	}
-	pFunAlgorithmicCalc->setSrcInfo(src_info());
-	rbool defaultFlag = false;
-	rbool trueConst   = false;
-	rdoRuntime::LPRDOCalcConst pCondition;
-	int size = m_calculateIfList.size();
-	int cnt  = 0;
-	for (int i = 0; i < size; i++)
-	{
-		rdoRuntime::LPRDOCalc pLogicCalc = m_calculateIfList[i]->getCondition()->getCalc(m_pReturn->getType()->type()->typeID());
-		ASSERT(pLogicCalc);
-		rdoRuntime::LPRDOCalcConst pConditionLast = pLogicCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
-		if (trueConst)
-		{
-			RDOParser::s_parser()->error().warning(m_calculateIfList[i]->getCondition()->src_info(), rdo::format(_T("Условие не используется: %s"), m_calculateIfList[i]->getCondition()->src_text().c_str()));
-			RDOParser::s_parser()->error().warning(pCondition->src_info(), rdo::format(_T("Последнее рабочее условие функции: %s"), pCondition->src_text().c_str()));
-		}
-		else if (!pConditionLast || pConditionLast->calcValue(RDOParser::s_parser()->runtime()).getAsBool())
-		{
-			//! Игнорируем чистые false-условия предыдущей проверкой
-			pFunAlgorithmicCalc->addCalcIf(pLogicCalc, m_calculateIfList[i]->getAction()->createCalc(m_pReturn->getType()));
-			cnt++;
-		}
-		if (!defaultFlag && pConditionLast && pConditionLast->calcValue(RDOParser::s_parser()->runtime()).getAsBool())
-		{
-			trueConst   = true;
-			defaultFlag = true;
-			pCondition  = pConditionLast;
-		}
-	}
-	if (!cnt)
-	{
-		RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Отсутствует тело функции '%s'"), name().c_str()));
-	}
-	if (!trueConst)
-	{
-		if (m_pReturn->getDefault().defined())
-		{
-			rdoRuntime::LPRDOCalcConst pCalcCondition = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-			rdoRuntime::LPRDOCalcConst pCalcAction    = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pReturn->getType()->value_cast(m_pReturn->getDefault()).value());
-			ASSERT(pCalcCondition);
-			ASSERT(pCalcAction   );
-			pCalcCondition->setSrcInfo(m_pReturn->getType()->src_info());
-			pCalcAction->setSrcInfo(m_pReturn->getType()->src_info());
-			pFunAlgorithmicCalc->addCalcIf(pCalcCondition, pCalcAction);
-			defaultFlag = true;
-		}
-	}
-	if (!defaultFlag)
-	{
-		//! Присвоить автоматическое значение по-умолчанию, если оно не задано в явном виде
-		rdoRuntime::LPRDOCalcConst pCalcCondition = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		rdoRuntime::LPRDOCalcConst pCalcAction    = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pReturn->getType()->type()->get_default().value());
-		ASSERT(pCalcCondition);
-		ASSERT(pCalcAction   );
-		pCalcCondition->setSrcInfo(m_pReturn->getType()->src_info());
-		pCalcAction->setSrcInfo(m_pReturn->getType()->src_info());
-		pFunAlgorithmicCalc->addCalcIf(pCalcCondition, pCalcAction);
-		RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по-умолчанию"), name().c_str()));
-	}
-	setFunctionCalc(pFunAlgorithmicCalc);
+	if(!pCalc->isReturn()) RDOParser::s_parser()->error().error(body_src_info, rdo::format(_T("Не горантированно возвращение значания функции")));
+	setFunctionCalc(pCalc);
 }
 
 // ----------------------------------------------------------------------------

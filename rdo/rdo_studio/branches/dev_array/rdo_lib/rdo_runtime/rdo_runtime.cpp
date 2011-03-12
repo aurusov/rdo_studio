@@ -28,6 +28,8 @@ RDORuntime::RDORuntime()
 	, whyStop             (rdoSimulator::EC_OK)
 	, key_found           (false              )
 	, m_currentTerm       (0                  )
+	, m_FunBreakFlag      (sContinue          )
+	, m_FunReturnFlag     (FALSE              )
 {
 	m_parent         = NULL;
 	detach();
@@ -609,6 +611,16 @@ void RDORuntime::postProcess()
 LPRDOMemoryStack RDORuntime::getMemoryStack()
 {
 	return m_pMemoryStack;
+}
+
+void RDORuntime::setFunBreakFlag(CREF(FunBreakFlag) pFlag)
+{
+	m_FunBreakFlag = pFlag;
+}
+
+CREF(RDORuntime::FunBreakFlag) RDORuntime::getFunBreakFlag() const
+{
+	return m_FunBreakFlag;
 }
 
 RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()

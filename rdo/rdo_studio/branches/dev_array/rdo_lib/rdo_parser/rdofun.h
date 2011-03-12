@@ -493,14 +493,14 @@ public:
 	int        findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
 	void       createListCalc         ();
 	void       createTableCalc        (CREF(YYLTYPE)                     elements_pos );
-	void       createAlgorithmicCalc  (CREF(RDOParserSrcInfo)            body_src_info);
+	void       createAlgorithmicCalc  (CREF(rdoRuntime::LPRDOCalc)pCalc, CREF(RDOParserSrcInfo)            body_src_info);
 
 	CREF(tstring)    name     () const { return src_info().src_text(); }
 	CREF(LPRDOParam) getReturn() const { return m_pReturn;             }
 	const ParamList  getParams() const { return m_paramList;           }
 
-	void                     setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc);
-	rdoRuntime::LPRDOFunCalc getFunctionCalc() const { return m_pFunctionCalc; }
+	void                     setFunctionCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
+	rdoRuntime::LPRDOCalc    getFunctionCalc() const { return m_pFunctionCalc; }
 
 	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCall) pCalc)
 	{
@@ -522,7 +522,7 @@ private:
 	ElementList              m_elementList;     //! for list and table
 	CalculateIfList          m_calculateIfList; //! for algorithmic
 	PostLinkedList           m_postLinkedList;  //! для рекурсивного вызова
-	rdoRuntime::LPRDOFunCalc m_pFunctionCalc;
+	rdoRuntime::LPRDOCalc    m_pFunctionCalc;
 };
 
 // ----------------------------------------------------------------------------
