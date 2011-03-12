@@ -3067,7 +3067,7 @@ init_declaration_list
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVariableList>($1);
 		ASSERT(pCalcLocalVariableList);
 
 		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
