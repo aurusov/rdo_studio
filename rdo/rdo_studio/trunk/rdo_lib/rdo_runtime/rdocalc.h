@@ -684,7 +684,7 @@ DEFINE_RDO_STD_FUN( Min      );
 DEFINE_RDO_STD_FUN( Power    );
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcBinary
+// ---------- OperatorName
 // ----------------------------------------------------------------------------
 template <typename ret_type>
 class OperatorName
