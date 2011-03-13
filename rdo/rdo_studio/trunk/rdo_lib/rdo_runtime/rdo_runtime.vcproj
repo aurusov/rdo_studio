@@ -1873,6 +1873,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\std_fun.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\std_fun.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\watch.cpp"
 				>
 			</File>

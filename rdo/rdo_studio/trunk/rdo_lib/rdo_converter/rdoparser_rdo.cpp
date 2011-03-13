@@ -24,7 +24,7 @@
 #include "rdo_common/rdostream.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_repository/rdorepository.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/std_fun.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
