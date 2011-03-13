@@ -20,14 +20,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- Стандартные функции языка
 // ----------------------------------------------------------------------------
-#define DEFINE_RDO_STD_FUN(CalcName) \
+#define DEFINE_RDO_STD_FUN(CalcName)       \
 CALC_SUB(RDOFunCalc##CalcName, RDOFunCalc) \
-{ \
-DECLARE_FACTORY(RDOFunCalc##CalcName) \
-private: \
-	RDOFunCalc##CalcName() \
-	{} \
-	DECALRE_ICalc; \
+{                                          \
+DECLARE_FACTORY(RDOFunCalc##CalcName)      \
+private:                                   \
+	RDOFunCalc##CalcName()                 \
+	{}                                     \
+	DECALRE_ICalc;                         \
 };
 
 DEFINE_RDO_STD_FUN( Sin      );
