@@ -758,28 +758,6 @@ REF(RDOValue) RDOCalcFuncParam::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- Арифметические функции
 // ----------------------------------------------------------------------------
-//template <class RET_TYPE, RET_TYPE (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const>
-//class ValueOperator
-//{
-//public:
-//	ValueOperator()
-//	{}
-//
-//	RET_TYPE run(CREF(RDOValue) value1, CREF(RDOValue) value2) const
-//	{
-//		return (value1.*pOperator)(value2);
-//	}
-//};
-
-//REF(RDOValue) RDOCalcPlus::doCalc(PTR(RDORuntime) runtime)
-//{
-//	runtime->inc_cnt_calc_logic();
-//	typedef ValueOperator<RDOValue, &RDOValue::operator+> Plus;
-//	Plus opr;
-//	m_value = opr.run(m_pLeft->calcValue(runtime), m_pRight->calcValue(runtime));
-//	return m_value;
-//}
-
 REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->inc_cnt_calc_arithm();
