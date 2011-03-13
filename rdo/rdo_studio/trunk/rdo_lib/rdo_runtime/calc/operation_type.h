@@ -31,23 +31,9 @@ public:
 	template <Type>
 	static REF(ruint) getCalcCounter()
 	{
-		static ruint s_arithmCounter = 0;
-		return s_arithmCounter;
+		static ruint s_ñounter = 0;
+		return s_ñounter;
 	}
-
-	//template <>
-	//static REF(ruint) getCalcCounter<OT_ARITHM>()
-	//{
-	//	static ruint s_arithmCounter = 0;
-	//	return s_arithmCounter;
-	//}
-
-	//template <>
-	//static REF(ruint) getCalcCounter<OT_LOGIC>()
-	//{
-	//	static ruint s_logicCounter = 0;
-	//	return s_logicCounter;
-	//}
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
