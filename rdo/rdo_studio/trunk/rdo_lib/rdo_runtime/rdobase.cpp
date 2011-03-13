@@ -25,8 +25,6 @@ RDOSimulatorBase::RDOSimulatorBase():
 	m_cnt_choice_from( 0 ),
 	m_checkOperation( true )
 {
-	OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
-	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
 }
 
 ruint RDOSimulatorBase::get_cnt_calc_arithm() const
@@ -45,6 +43,8 @@ void RDOSimulatorBase::rdoInit()
 	m_nextTime       = m_currentTime;
 	m_checkOperation = true;
 	onInit();
+	OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
+	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
 
 	if (m_timePoints.find(m_currentTime) == m_timePoints.end())
 		m_timePoints[m_currentTime] = NULL;
