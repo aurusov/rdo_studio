@@ -216,7 +216,7 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc/event_plan.h"
 #include "rdo_lib/rdo_runtime/rdocalc_locvar.h"
-#include "rdo_lib/rdo_runtime/rdocalc_result.h"
+#include "rdo_lib/rdo_runtime/calc/watch.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()

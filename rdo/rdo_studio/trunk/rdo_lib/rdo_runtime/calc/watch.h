@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdocalc_result.h
+ * filename : watch.h
  * author   : Урусов Андрей
  * date     : 04.03.2011
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDOCALC_RESULT_H_
-#define _RDOCALC_RESULT_H_
+#ifndef _RDOCALC_WATCH_H_
+#define _RDOCALC_WATCH_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -50,4 +50,4 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_RESULT_H_
+#endif //! _RDOCALC_WATCH_H_

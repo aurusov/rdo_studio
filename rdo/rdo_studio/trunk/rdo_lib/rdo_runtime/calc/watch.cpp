@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdocalc_result.cpp
+ * filename : watch.cpp
  * author   : Урусов Андрей
  * date     : 04.03.2011
  * bref     : 
@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdocalc_result.h"
+#include "rdo_lib/rdo_runtime/calc/watch.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
