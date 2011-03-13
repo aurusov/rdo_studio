@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : calc_event_plan.h
+ * filename : event_plan.h
  * author   : Лущан Дмитрий
  * date     : 26.05.2010
  * bref     : RDOCalc для планирования и остановки событий

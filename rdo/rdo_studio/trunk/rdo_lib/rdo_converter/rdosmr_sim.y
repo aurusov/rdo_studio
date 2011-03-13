@@ -203,7 +203,7 @@
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
 #include "rdo_lib/rdo_converter/update/update.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/calc/event_plan.h"
 // ===============================================================================
 
 #define CONVERTER LEXER->converter()

@@ -1779,15 +1779,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc_event_plan.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc_event_plan.h"
-				>
-			</File>
-			<File
 				RelativePath=".\equaltype.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\event_plan.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\event_plan.h"
 				>
 			</File>
 			<File
