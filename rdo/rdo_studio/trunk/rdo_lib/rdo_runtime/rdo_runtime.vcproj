@@ -1779,6 +1779,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\choice_from.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.h"
+				>
+			</File>
+			<File
 				RelativePath=".\equaltype.h"
 				>
 			</File>
