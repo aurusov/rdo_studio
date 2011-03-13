@@ -1913,7 +1913,7 @@ watch_start
 			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
 		}
 
-		rdoRuntime::LPRDOCalcResultGroupStart pCalc = rdo::Factory<rdoRuntime::RDOCalcResultGroupStart>::create(pResultGroup->getRuntime());
+		rdoRuntime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdoRuntime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);
@@ -1930,7 +1930,7 @@ watch_stop
 			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
 		}
 
-		rdoRuntime::LPRDOCalcResultGroupStop pCalc = rdo::Factory<rdoRuntime::RDOCalcResultGroupStop>::create(pResultGroup->getRuntime());
+		rdoRuntime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdoRuntime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);

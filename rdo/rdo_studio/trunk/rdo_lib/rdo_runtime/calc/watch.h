@@ -19,14 +19,14 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcResultGroupStart
+// ---------- RDOCalcWatchGroupStart
 // ----------------------------------------------------------------------------
-CALC(RDOCalcResultGroupStart)
+CALC(RDOCalcWatchGroupStart)
 {
-DECLARE_FACTORY(RDOCalcResultGroupStart)
+DECLARE_FACTORY(RDOCalcWatchGroupStart)
 protected:
-	RDOCalcResultGroupStart(CREF(LPIPokazGroup) pResultGroup);
-	virtual ~RDOCalcResultGroupStart();
+	RDOCalcWatchGroupStart(CREF(LPIPokazGroup) pResultGroup);
+	virtual ~RDOCalcWatchGroupStart();
 
 	LPIPokazGroup m_pResultGroup;
 
@@ -34,14 +34,14 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcResultGroupStop
+// ---------- RDOCalcWatchGroupStop
 // ----------------------------------------------------------------------------
-CALC(RDOCalcResultGroupStop)
+CALC(RDOCalcWatchGroupStop)
 {
-DECLARE_FACTORY(RDOCalcResultGroupStop)
+DECLARE_FACTORY(RDOCalcWatchGroupStop)
 protected:
-	RDOCalcResultGroupStop(CREF(LPIPokazGroup) pResultGroup);
-	virtual ~RDOCalcResultGroupStop();
+	RDOCalcWatchGroupStop(CREF(LPIPokazGroup) pResultGroup);
+	virtual ~RDOCalcWatchGroupStop();
 
 	LPIPokazGroup m_pResultGroup;
 

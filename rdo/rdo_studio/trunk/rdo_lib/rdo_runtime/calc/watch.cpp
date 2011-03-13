@@ -18,18 +18,18 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcResultGroupStart
+// ---------- RDOCalcWatchGroupStart
 // ----------------------------------------------------------------------------
-RDOCalcResultGroupStart::RDOCalcResultGroupStart(CREF(LPIPokazGroup) pResultGroup)
+RDOCalcWatchGroupStart::RDOCalcWatchGroupStart(CREF(LPIPokazGroup) pResultGroup)
 	: m_pResultGroup(pResultGroup)
 {
 	m_value = RDOValue(0);
 }
 
-RDOCalcResultGroupStart::~RDOCalcResultGroupStart()
+RDOCalcWatchGroupStart::~RDOCalcWatchGroupStart()
 {}
 
-REF(RDOValue) RDOCalcResultGroupStart::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcWatchGroupStart::doCalc(PTR(RDORuntime) pRuntime)
 {
 	ASSERT(m_pResultGroup);
 	m_pResultGroup->onStart(pRuntime);
@@ -37,18 +37,18 @@ REF(RDOValue) RDOCalcResultGroupStart::doCalc(PTR(RDORuntime) pRuntime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcResultGroupStop
+// ---------- RDOCalcWatchGroupStop
 // ----------------------------------------------------------------------------
-RDOCalcResultGroupStop::RDOCalcResultGroupStop(CREF(LPIPokazGroup) pResultGroup)
+RDOCalcWatchGroupStop::RDOCalcWatchGroupStop(CREF(LPIPokazGroup) pResultGroup)
 	: m_pResultGroup(pResultGroup)
 {
 	m_value = RDOValue(0);
 }
 
-RDOCalcResultGroupStop::~RDOCalcResultGroupStop()
+RDOCalcWatchGroupStop::~RDOCalcWatchGroupStop()
 {}
 
-REF(RDOValue) RDOCalcResultGroupStop::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcWatchGroupStop::doCalc(PTR(RDORuntime) pRuntime)
 {
 	ASSERT(m_pResultGroup);
 	m_pResultGroup->onStop(pRuntime);
