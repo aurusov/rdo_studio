@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2011
  * filename : arithm.h
- * author   : Александ Барс, Урусов Андрей, Дмитрий Лущан
+ * author   : Александ Барс, Урусов Андрей
  * date     : 
  * bref     : 
  * indent   : 4T

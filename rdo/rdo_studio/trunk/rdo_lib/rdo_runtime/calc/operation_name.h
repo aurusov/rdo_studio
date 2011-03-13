@@ -2,7 +2,7 @@
  * copyright: (c) RDO-Team, 2011
  * filename : operation_name.h
  * author   : Урусов Андрей
- * date     : 
+ * date     : 13.03.2011
  * bref     : 
  * indent   : 4T
  */
