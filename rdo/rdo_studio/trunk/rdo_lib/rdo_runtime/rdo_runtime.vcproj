@@ -1880,6 +1880,18 @@
 				RelativePath=".\rdocalc_result.h"
 				>
 			</File>
+			<Filter
+				Name=".operation"
+				>
+				<File
+					RelativePath=".\calc\operation_name.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation_name.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".rdo_fun"
