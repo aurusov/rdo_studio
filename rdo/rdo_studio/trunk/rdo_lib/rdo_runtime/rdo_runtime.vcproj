@@ -1763,6 +1763,22 @@
 			Name=".rdo_calc"
 			>
 			<File
+				RelativePath=".\calc\arithm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\arithm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\binary.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\binary.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc_event_plan.cpp"
 				>
 			</File>
@@ -1772,6 +1788,14 @@
 			</File>
 			<File
 				RelativePath=".\equaltype.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\logic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\logic.h"
 				>
 			</File>
 			<File

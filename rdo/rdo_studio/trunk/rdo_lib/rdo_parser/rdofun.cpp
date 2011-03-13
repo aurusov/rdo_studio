@@ -24,6 +24,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/arithm.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
