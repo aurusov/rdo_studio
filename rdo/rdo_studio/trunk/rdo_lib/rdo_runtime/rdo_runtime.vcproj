@@ -1881,6 +1881,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\unary.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\unary.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\watch.cpp"
 				>
 			</File>

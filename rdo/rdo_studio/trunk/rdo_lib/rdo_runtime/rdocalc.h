@@ -645,81 +645,6 @@ DEFINE_CALC_SELECT_METHOD( Empty     );
 DEFINE_CALC_SELECT_METHOD( Size      );
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcUnary
-// ----------------------------------------------------------------------------
-CALC(RDOCalcUnary)
-{
-protected:
-	RDOCalcUnary(CREF(LPRDOCalc) pOperation)
-		: m_pOperation(pOperation)
-	{
-		if (m_pOperation)
-			setSrcInfo(m_pOperation->src_info());
-	}
-
-	LPRDOCalc m_pOperation;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- Унарные операции
-// ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcUMinus, RDOCalcUnary)
-{
-DECLARE_FACTORY(RDOCalcUMinus)
-private:
-	RDOCalcUMinus(CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper)
-	{}
-	DECALRE_ICalc;
-};
-
-CALC_SUB(RDOCalcDoubleToInt, RDOCalcUnary)
-{
-DECLARE_FACTORY(RDOCalcDoubleToInt)
-private:
-	RDOCalcDoubleToInt(CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper)
-	{}
-	DECALRE_ICalc;
-};
-
-CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalcUnary)
-{
-DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
-public:
-	void needRound()
-	{
-		m_round = true;
-	}
-
-private:
-	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper)
-		, m_round     (false)
-	{}
-
-	rbool m_round;
-
-	DECALRE_ICalc;
-};
-
-CALC_SUB(RDOCalcCheckDiap, RDOCalcUnary)
-{
-DECLARE_FACTORY(RDOCalcCheckDiap)
-private:
-	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper    )
-		, m_min_value (min_value)
-		, m_max_value (max_value)
-	{}
-
-	RDOValue m_min_value;
-	RDOValue m_max_value;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- Последовательности
 // ----------------------------------------------------------------------------
 CALC(RDOCalcSeqInit)
@@ -874,20 +799,6 @@ private:
 
 	int        m_number;
 	LPRDOCalc  m_pCalc;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcInt (приведение к целому)
-// ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcInt, RDOCalcUnary)
-{
-DECLARE_FACTORY(RDOCalcInt)
-private:
-	RDOCalcInt(CREF(LPRDOCalc) pOperation)
-		: RDOCalcUnary(pOperation)
-	{}
 
 	DECALRE_ICalc;
 };
