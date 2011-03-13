@@ -686,9 +686,85 @@ DEFINE_RDO_STD_FUN( Power    );
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcBinary
 // ----------------------------------------------------------------------------
-CALC(RDOCalcBinary)
+template <typename ret_type>
+class OperatorName
 {
 public:
+	typedef ret_type (RDOValue::*opr_type)(CREF(RDOValue) rdovalue) const;
+
+	static tstring name(CREF(opr_type) pOperator)
+	{
+		BOOST_AUTO(it, std::find(getList().begin(), getList().end(), pOperator));
+		ASSERT(it != getList().end());
+		return it->m_name;
+	}
+
+private:
+	struct OprItem
+	{
+		opr_type m_pOperator;
+		tstring  m_name;
+
+		OprItem(CREF(opr_type) pOperator, CREF(tstring) name)
+			: m_pOperator(pOperator)
+			, m_name     (name     )
+		{}
+		rbool operator== (CREF(opr_type) pOperator) const
+		{
+			return m_pOperator == pOperator;
+		}
+	};
+	typedef std::list<OprItem> NameList;
+	static CREF(NameList) getList();
+};
+
+template <>
+inline static CREF(OperatorName<RDOValue>::NameList) OperatorName<RDOValue>::getList()
+{
+	static NameList s_nameList;
+	if (s_nameList.empty())
+	{
+		s_nameList.push_back(OprItem(&RDOValue::operator+,  _T("+"  )));
+		s_nameList.push_back(OprItem(&RDOValue::operator-,  _T("-"  )));
+		s_nameList.push_back(OprItem(&RDOValue::operator*,  _T("*"  )));
+		s_nameList.push_back(OprItem(&RDOValue::operator/,  _T("/"  )));
+		s_nameList.push_back(OprItem(&RDOValue::operator&&, _T("and")));
+		s_nameList.push_back(OprItem(&RDOValue::operator||, _T("or" )));
+	}
+	return s_nameList;
+}
+
+template <>
+inline static CREF(OperatorName<rbool>::NameList) OperatorName<rbool>::getList()
+{
+	static NameList s_nameList;
+	if (s_nameList.empty())
+	{
+		s_nameList.push_back(OprItem(&RDOValue::operator==, _T("==")));
+		s_nameList.push_back(OprItem(&RDOValue::operator!=, _T("<>")));
+		s_nameList.push_back(OprItem(&RDOValue::operator<,  _T("<" )));
+		s_nameList.push_back(OprItem(&RDOValue::operator>,  _T(">" )));
+		s_nameList.push_back(OprItem(&RDOValue::operator<=, _T("<=")));
+		s_nameList.push_back(OprItem(&RDOValue::operator>=, _T(">=")));
+	}
+	return s_nameList;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcBinary
+// ----------------------------------------------------------------------------
+template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const>
+class RDOCalcBinary: public RDOCalc
+{
+friend class rdo::Factory<RDOCalcBinary<ret_type, pOperator> >;
+public:
+	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+	{
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo(pLeft->src_info(), rdo::format(_T(" %s "), OperatorName<ret_type>::name(pOperator).c_str()), pRight->src_info());
+		return src_info;
+	}
+
 	LPRDOCalc      getLeft        () const                 { return m_pLeft;                                     }
 	LPRDOCalcConst getRightAsConst() const                 { return m_pRight.object_static_cast<RDOCalcConst>(); }
 	void           setRight       (CREF(LPRDOCalc) pRight) { m_pRight = pRight;                                  }
@@ -697,41 +773,39 @@ protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 		: m_pLeft (pLeft )
 		, m_pRight(pRight)
-	{}
+	{
+		setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
+	}
 
 	LPRDOCalc  m_pLeft;
 	LPRDOCalc  m_pRight;
-};
 
-#define DEFINE_BINARY_CALC(CalcName, CalcOpr) \
-CALC_SUB(RDOCalc##CalcName, RDOCalcBinary) \
-{ \
-DECLARE_FACTORY(RDOCalc##CalcName) \
-public: \
-	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight) \
-	{ \
-		RDOSrcInfo src_info; \
-		src_info.setSrcInfo(pLeft->src_info(), CalcOpr, pRight->src_info()); \
-		return src_info; \
-	} \
- \
-protected: \
-	RDOCalc##CalcName(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight) \
-		: RDOCalcBinary(pLeft, pRight) \
-	{ \
-		setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight)); \
-	} \
-private: \
-	DECALRE_ICalc; \
+private:
+	REF(RDOValue) doCalc(PTR(RDORuntime) runtime)
+	{
+//		runtime->inc_cnt_calc_logic();
+		m_value = (m_pLeft->calcValue(runtime).*pOperator)(m_pRight->calcValue(runtime));
+		return m_value;
+	}
 };
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические функции
 // ----------------------------------------------------------------------------
-DEFINE_BINARY_CALC( Plus , " + "  );
-DEFINE_BINARY_CALC( Minus, " - "  );
-DEFINE_BINARY_CALC( Mult , " * "  );
-DEFINE_BINARY_CALC( Div  , " / "  );
+typedef RDOCalcBinary<RDOValue, (&RDOValue::operator+)> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
+typedef RDOCalcBinary<RDOValue, (&RDOValue::operator-)> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
+typedef RDOCalcBinary<RDOValue, (&RDOValue::operator*)> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
+
+class RDOCalcDiv: public RDOCalcBinary<RDOValue, (&RDOValue::operator/)>
+{
+DECLARE_FACTORY(RDOCalcDiv);
+private:
+	RDOCalcDiv(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+		: RDOCalcBinary(pLeft, pRight)
+	{}
+	DECALRE_ICalc;
+};
+DECLARE_POINTER(RDOCalcDiv);
 
 CALC_SUB(RDOCalcPlusEnumSafe, RDOCalcPlus)
 {
@@ -756,24 +830,16 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- Логические функции
 // ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcAnd, RDOCalcBinary)
+class RDOCalcAnd: public RDOCalcBinary<RDOValue, (&RDOValue::operator&&)>
 {
 DECLARE_FACTORY(RDOCalcAnd)
-public:
-	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-	{
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo(pLeft->src_info(), _T(" and "), pRight->src_info());
-		return src_info;
-	}
-
 private:
 	RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 		: RDOCalcBinary(pLeft, pRight)
 	{
 		m_value_true  = 1;
 		m_value_false = 0;
-		setSrcInfo( getStaticSrcInfo(m_pLeft, m_pRight) );
+		setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
 	}
 	RDOValue m_value_true;
 	RDOValue m_value_false;
@@ -781,24 +847,16 @@ private:
 	DECALRE_ICalc;
 };
 
-CALC_SUB(RDOCalcOr, RDOCalcBinary)
+class RDOCalcOr: public RDOCalcBinary<RDOValue, (&RDOValue::operator||)>
 {
 DECLARE_FACTORY(RDOCalcOr)
-public:
-	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-	{
-		RDOSrcInfo src_info;
-		src_info.setSrcInfo(pLeft->src_info(), _T(" or "), pRight->src_info());
-		return src_info;
-	}
-
 private:
 	RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 		: RDOCalcBinary(pLeft, pRight)
 	{
 		m_value_true  = 1;
 		m_value_false = 0;
-		setSrcInfo( getStaticSrcInfo(m_pLeft, m_pRight) );
+		setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
 	}
 
 	RDOValue m_value_true;
@@ -820,12 +878,12 @@ private:
 	DECALRE_ICalc;
 };
 
-DEFINE_BINARY_CALC( IsEqual   , " = "  );
-DEFINE_BINARY_CALC( IsNotEqual, " <> " );
-DEFINE_BINARY_CALC( IsLess    , " < "  );
-DEFINE_BINARY_CALC( IsGreater , " > "  );
-DEFINE_BINARY_CALC( IsLEQ     , " <= " );
-DEFINE_BINARY_CALC( IsGEQ     , " >= " );
+typedef RDOCalcBinary<rbool, (&RDOValue::operator==)> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator!=)> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator< )> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator> )> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator<=)> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator>=)> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcUnary

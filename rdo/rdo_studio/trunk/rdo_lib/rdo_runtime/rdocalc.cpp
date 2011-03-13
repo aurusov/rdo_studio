@@ -756,22 +756,29 @@ REF(RDOValue) RDOCalcFuncParam::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcBinary
-// ----------------------------------------------------------------------------
-#define DECLARE_BINARY_CALC(CalcName, CalcOpr) \
-REF(RDOValue) RDOCalc##CalcName::doCalc(PTR(RDORuntime) runtime) \
-{ \
-	runtime->inc_cnt_calc_logic(); \
-	m_value = m_pLeft->calcValue(runtime) CalcOpr m_pRight->calcValue(runtime); \
-	return m_value; \
-}
-
-// ----------------------------------------------------------------------------
 // ---------- Арифметические функции
 // ----------------------------------------------------------------------------
-DECLARE_BINARY_CALC(Plus , +);
-DECLARE_BINARY_CALC(Minus, -);
-DECLARE_BINARY_CALC(Mult , *);
+//template <class RET_TYPE, RET_TYPE (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const>
+//class ValueOperator
+//{
+//public:
+//	ValueOperator()
+//	{}
+//
+//	RET_TYPE run(CREF(RDOValue) value1, CREF(RDOValue) value2) const
+//	{
+//		return (value1.*pOperator)(value2);
+//	}
+//};
+
+//REF(RDOValue) RDOCalcPlus::doCalc(PTR(RDORuntime) runtime)
+//{
+//	runtime->inc_cnt_calc_logic();
+//	typedef ValueOperator<RDOValue, &RDOValue::operator+> Plus;
+//	Plus opr;
+//	m_value = opr.run(m_pLeft->calcValue(runtime), m_pRight->calcValue(runtime));
+//	return m_value;
+//}
 
 REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
 {
@@ -835,13 +842,6 @@ REF(RDOValue) RDOCalcNot::doCalc(PTR(RDORuntime) runtime)
 	m_value = !m_pCalc->calcValue(runtime).getAsBool();
 	return m_value;
 }
-
-DECLARE_BINARY_CALC(IsEqual   , ==);
-DECLARE_BINARY_CALC(IsNotEqual, !=);
-DECLARE_BINARY_CALC(IsLess    , < );
-DECLARE_BINARY_CALC(IsGreater , > );
-DECLARE_BINARY_CALC(IsLEQ     , <=);
-DECLARE_BINARY_CALC(IsGEQ     , >=);
 
 // ----------------------------------------------------------------------------
 // ---------- Унарные операции
