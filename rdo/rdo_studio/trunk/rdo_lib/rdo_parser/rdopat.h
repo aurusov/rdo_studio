@@ -20,7 +20,7 @@
 
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdocalc_relres.h"
+#include "rdo_lib/rdo_runtime/calc/relres.h"
 
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================

@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdocalc_relres.h
+ * filename : relres.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 28.12.09
  * bref     : 

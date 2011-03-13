@@ -1869,15 +1869,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdocalc_relres.h"
-				>
-			</File>
-			<File
 				RelativePath=".\rdocalc_result.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\rdocalc_result.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\relres.h"
 				>
 			</File>
 			<Filter
