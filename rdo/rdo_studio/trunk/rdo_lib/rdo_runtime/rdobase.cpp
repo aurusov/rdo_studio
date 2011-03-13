@@ -1,6 +1,7 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 #include <limits>
 #include "rdo_lib/rdo_runtime/rdobase.h"
+#include "rdo_lib/rdo_runtime/calc/operation_type.h"
 
 #pragma warning(disable : 4786)  
 
@@ -22,10 +23,20 @@ RDOSimulatorBase::RDOSimulatorBase():
 	m_msec_prev( 0 ),
 	m_cnt_events( 0 ),
 	m_cnt_choice_from( 0 ),
-	m_cnt_calc_arithm( 0 ),
-	m_cnt_calc_logic( 0 ),
 	m_checkOperation( true )
 {
+	OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
+	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
+}
+
+ruint RDOSimulatorBase::get_cnt_calc_arithm() const
+{
+	return OperatorType::getCalcCounter<OperatorType::OT_ARITHM>();
+}
+
+ruint RDOSimulatorBase::get_cnt_calc_logic() const
+{
+	return OperatorType::getCalcCounter<OperatorType::OT_LOGIC>();
 }
 
 void RDOSimulatorBase::rdoInit()

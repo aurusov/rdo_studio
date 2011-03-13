@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/operation_type.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -20,11 +21,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcBinary
 // ----------------------------------------------------------------------------
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const>
+template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalc
 {
-friend class rdo::Factory<RDOCalcBinary<ret_type, pOperator> >;
+friend class rdo::Factory<RDOCalcBinary<ret_type, pOperator, CalcType> >;
 public:
+	enum { calc_type = CalcType };
+
 	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 	LPRDOCalc      getLeft        () const;

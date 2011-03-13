@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- Логические функции
 // ----------------------------------------------------------------------------
-class RDOCalcAnd: public RDOCalcBinary<RDOValue, (&RDOValue::operator&&)>
+class RDOCalcAnd: public RDOCalcBinary<RDOValue, (&RDOValue::operator&&), OperatorType::OT_LOGIC>
 {
 DECLARE_FACTORY(RDOCalcAnd)
 private:
@@ -37,7 +37,7 @@ private:
 	DECALRE_ICalc;
 };
 
-class RDOCalcOr: public RDOCalcBinary<RDOValue, (&RDOValue::operator||)>
+class RDOCalcOr: public RDOCalcBinary<RDOValue, (&RDOValue::operator||), OperatorType::OT_LOGIC>
 {
 DECLARE_FACTORY(RDOCalcOr)
 private:
@@ -68,12 +68,12 @@ private:
 	DECALRE_ICalc;
 };
 
-typedef RDOCalcBinary<rbool, (&RDOValue::operator==)> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
-typedef RDOCalcBinary<rbool, (&RDOValue::operator!=)> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
-typedef RDOCalcBinary<rbool, (&RDOValue::operator< )> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
-typedef RDOCalcBinary<rbool, (&RDOValue::operator> )> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
-typedef RDOCalcBinary<rbool, (&RDOValue::operator<=)> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
-typedef RDOCalcBinary<rbool, (&RDOValue::operator>=)> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator==), OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator!=), OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator< ), OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator> ), OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator<=), OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
+typedef RDOCalcBinary<rbool, (&RDOValue::operator>=), OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

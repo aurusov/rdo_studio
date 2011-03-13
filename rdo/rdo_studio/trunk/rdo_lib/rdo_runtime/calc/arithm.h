@@ -20,11 +20,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- Арифметические функции
 // ----------------------------------------------------------------------------
-typedef RDOCalcBinary<RDOValue, (&RDOValue::operator+)> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
-typedef RDOCalcBinary<RDOValue, (&RDOValue::operator-)> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
-typedef RDOCalcBinary<RDOValue, (&RDOValue::operator*)> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
+typedef RDOCalcBinary<RDOValue, (&RDOValue::operator+), OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
+typedef RDOCalcBinary<RDOValue, (&RDOValue::operator-), OperatorType::OT_ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
+typedef RDOCalcBinary<RDOValue, (&RDOValue::operator*), OperatorType::OT_ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
 
-class RDOCalcDiv: public RDOCalcBinary<RDOValue, (&RDOValue::operator/)>
+class RDOCalcDiv: public RDOCalcBinary<RDOValue, (&RDOValue::operator/), OperatorType::OT_ARITHM>
 {
 DECLARE_FACTORY(RDOCalcDiv);
 private:

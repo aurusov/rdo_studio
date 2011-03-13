@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->inc_cnt_calc_arithm();
+	++OperatorType::getCalcCounter<calc_type>();
 	REF(RDOValue) rVal = m_pRight->calcValue(runtime);
 	if (rVal == 0)
 	{
@@ -35,14 +35,14 @@ REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->inc_cnt_calc_arithm();
+	++OperatorType::getCalcCounter<calc_type>();
 	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() + m_pRight->calcValue(runtime).getEnumAsInt();
 	return m_value;
 }
 
 REF(RDOValue) RDOCalcMultEnumSafe::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->inc_cnt_calc_arithm();
+	++OperatorType::getCalcCounter<calc_type>();
 	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() * m_pRight->calcValue(runtime).getEnumAsInt();
 	return m_value;
 }

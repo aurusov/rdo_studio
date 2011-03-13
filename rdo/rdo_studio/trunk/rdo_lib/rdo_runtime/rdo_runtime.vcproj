@@ -1891,6 +1891,10 @@
 					RelativePath=".\calc\operation_name.inl"
 					>
 				</File>
+				<File
+					RelativePath=".\calc\operation_type.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

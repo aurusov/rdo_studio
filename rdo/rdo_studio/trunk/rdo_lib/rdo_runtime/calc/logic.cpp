@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOCalcAnd::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->inc_cnt_calc_logic();
+	++OperatorType::getCalcCounter<calc_type>();
 
 	if (!m_pLeft->calcValue(runtime).getAsBool())
 		return m_value_false;
@@ -35,7 +35,7 @@ REF(RDOValue) RDOCalcAnd::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOCalcOr::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->inc_cnt_calc_logic();
+	++OperatorType::getCalcCounter<calc_type>();
 
 	if (m_pLeft->calcValue(runtime).getAsBool())
 		return m_value_true;
@@ -48,7 +48,7 @@ REF(RDOValue) RDOCalcOr::doCalc(PTR(RDORuntime) runtime)
 
 REF(RDOValue) RDOCalcNot::doCalc(PTR(RDORuntime) runtime)
 {
-	runtime->inc_cnt_calc_logic();
+	++OperatorType::getCalcCounter<OperatorType::OT_LOGIC>();
 	m_value = !m_pCalc->calcValue(runtime).getAsBool();
 	return m_value;
 }
