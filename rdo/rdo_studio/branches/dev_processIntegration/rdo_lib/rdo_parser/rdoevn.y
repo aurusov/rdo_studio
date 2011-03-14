@@ -211,6 +211,7 @@
 #include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/calc_process_control.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -1362,6 +1363,7 @@ statement
 	| equal_statement
 	| stopping_statement
 	| planning_statement
+	| process_input_statement
 	| if_statement
 	| '{' statement_list '}'
 	{
@@ -1646,15 +1648,19 @@ stopping_statement
 	;
 
 process_input_statement
-	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
+	: RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
 	{
-		tstring        processName  = RDOVALUE($1)->getIdentificator();
-		tstring        resourceName = RDOVALUE($5)->getIdentificator();
+//		tstring        processName  = RDOVALUE($1)->getIdentificator();
+//		tstring        resourceName = RDOVALUE($5)->getIdentificator();
 
 //Проверить, правильность resourceName
 //Чтобы можно было проверить правильность processName PRC должен парситься раньше EVN (хотя бы простой препарс с поиском имен процессов),
 //но проверить processName можно уже во время выполнения RDOCalcProcessControl - этот должно быть проще, хотя вряд ли правильно.
+		
+		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create();
+		ASSERT(pCalc);
 
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 

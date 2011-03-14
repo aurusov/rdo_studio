@@ -26,7 +26,7 @@ RDOCalcProcessControl::RDOCalcProcessControl()
 
 REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
 {
-	LPIBaseOperation pLogic = *pRuntime->m_pMetaLogic->begin();
+	LPIBaseOperation pLogic = *(++(pRuntime->m_pMetaLogic->begin()));
 	if (pLogic)
 	{
 		LPIPROCProcess pProcess = pLogic.query_cast<IPROCProcess>();
@@ -40,6 +40,10 @@ REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
 				ASSERT(pBlock);
 				PTR(RDOPROCTransact) pTransact = new RDOPROCTransact(pRuntime, pBlock);
 				ASSERT(pTransact);
+
+				pTransact->setBlock(pBlock);
+				// Записываем в конец списка этого блока перемещаемый транзакт
+				pBlock.query_cast<IPROCBlock>()->transactGoIn(pTransact);
 			}
 		}
 	}
