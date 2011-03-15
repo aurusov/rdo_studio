@@ -2,6 +2,19 @@
 #include <iostream>
 #include <list>
 
+#ifdef WIN32
+#    pragma warning ( push )
+#    pragma warning ( disable : 4244 ) // Boost 1.35 pre release - warning C4244: '=' : conversion from '__w64 int' to 'unsigned int', possible loss of data
+#    pragma warning ( disable : 4267 ) // Boost 1.35 pre release - warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+#    pragma warning ( disable : 4311 ) // Boost 1.35 pre release - warning C4311: 'type cast' : pointer truncation from 'void *const ' to 'long'
+#    pragma warning ( disable : 4312 ) // Boost 1.35 pre release - warning C4312: 'type cast' : conversion from 'long' to 'void *' of greater size
+#endif
+#include <boost/thread/thread.hpp>
+#include <boost/thread/condition.hpp>
+#ifdef WIN32
+#    pragma warning ( pop )
+#endif
+
 class ICaller
 {
 public:
@@ -9,11 +22,17 @@ public:
 };
 typedef ICaller* LPICaller;
 
-class Apartment
+class Apartment: boost::thread
 {
 public:
 	Apartment()
+		: boost::thread(&Apartment::qqq1, this)
 	{}
+
+	void start()
+	{
+		m_pThread = new boost::thread(&Apartment::qqq2, this);
+	}
 
 	void call(LPICaller pCall)
 	{
@@ -33,7 +52,17 @@ public:
 
 private:
 	typedef std::list<LPICaller> CallerList;
-	CallerList m_callerList;
+	CallerList     m_callerList;
+	boost::thread* m_pThread;
+
+	void qqq1()
+	{
+		int i = 1;
+	}
+	void qqq2()
+	{
+		int i = 1;
+	}
 };
 
 template <class T>
@@ -161,6 +190,8 @@ void main()
 	B b;
 	a.setApartment(&apartment);
 	b.setApartment(&apartment);
+
+	apartment.start();
 
 	ApartmentPointer<A> pA(&a);
 	ApartmentPointer<B> pB(&b);
