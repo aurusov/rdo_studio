@@ -28,9 +28,6 @@ public:
 };
 typedef ICaller* LPICaller;
 
-typedef void (A::*AFun)();
-typedef int  (B::*BFun)(double, int);
-
 template <class T, class F>
 class CallerAdapterBase
 {
