@@ -2,31 +2,89 @@
 #include <iostream>
 #include <list>
 
-class A
-{
-public:
-	void fun()
-	{
-		std::cout << "A::fun()" << std::endl;
-	}
-};
-
-class B
-{
-public:
-	int fun2(double d, int i)
-	{
-		std::cout << "B::fun1(" << d << ", " << i << ")" << std::endl;
-		return i + 1;
-	}
-};
-
 class ICaller
 {
 public:
 	virtual void call() = 0;
 };
 typedef ICaller* LPICaller;
+
+class Apartment
+{
+public:
+	Apartment()
+	{}
+
+	void call(LPICaller pCall)
+	{
+		m_callerList.push_back(pCall);
+	}
+
+	void internal_call()
+	{
+		CallerList::const_iterator it = m_callerList.begin();
+		while (it != m_callerList.end())
+		{
+			(*it)->call();
+			delete *it;
+			++it;
+		}
+	}
+
+private:
+	typedef std::list<LPICaller> CallerList;
+	CallerList m_callerList;
+};
+
+template <class T>
+class ApartmentPointer
+{
+public:
+	ApartmentPointer(T* pObject)
+		: m_pObject(pObject)
+	{
+		m_pApartment = m_pObject->getApartment();
+	}
+
+	template <class F>
+	void dispatch(F pFunction)
+	{
+		CallerAdapter0<T, F>* pAdapter = new CallerAdapter0<T, F>(m_pObject, pFunction);
+		m_pApartment->call(pAdapter);
+	}
+
+	template <class F, class P1, class P2>
+	void dispatch(F pFunction, const P1& p1, const P2& p2)
+	{
+		CallerAdapter2<T, F, P1, P2>* pAdapter = new CallerAdapter2<T, F, P1, P2>(m_pObject, pFunction, p1, p2);
+		m_pApartment->call(pAdapter);
+	}
+
+private:
+	T*         m_pObject;
+	Apartment* m_pApartment;
+};
+
+class ApartmentObject
+{
+public:
+	ApartmentObject()
+		: m_pApartment(NULL)
+	{}
+
+	void setApartment(Apartment* pApartment)
+	{
+		m_pApartment = pApartment;
+	}
+
+	Apartment* getApartment() const
+	{
+		return m_pApartment;
+	}
+
+private:
+	Apartment* m_pApartment;
+};
 
 template <class T, class F>
 class CallerAdapterBase
@@ -77,48 +135,39 @@ private:
 	}
 };
 
-class Sender
+class A: public ApartmentObject
 {
 public:
-	template <class T, class F>
-	void dispatch(T* pObject, F pFunction)
+	void fun()
 	{
-		CallerAdapter0<T, F>* pAdapter = new CallerAdapter0<T, F>(pObject, pFunction);
-		m_callerList.push_back(pAdapter);
+		std::cout << "A::fun()" << std::endl;
 	}
+};
 
-	template <class T, class F, class P1, class P2>
-	void dispatch(T* pObject, F pFunction, const P1& p1, const P2& p2)
+class B: public ApartmentObject
+{
+public:
+	int fun2(double d, int i)
 	{
-		CallerAdapter2<T, F, P1, P2>* pAdapter = new CallerAdapter2<T, F, P1, P2>(pObject, pFunction, p1, p2);
-		m_callerList.push_back(pAdapter);
+		std::cout << "B::fun1(" << d << ", " << i << ")" << std::endl;
+		return i + 1;
 	}
-
-	void call()
-	{
-		CallerList::const_iterator it = m_callerList.begin();
-		while (it != m_callerList.end())
-		{
-			(*it)->call();
-			delete *it;
-			++it;
-		}
-	}
-
-private:
-	typedef std::list<LPICaller> CallerList;
-	CallerList m_callerList;
 };
 
 void main()
 {
+	Apartment apartment;
 	A a;
 	B b;
+	a.setApartment(&apartment);
+	b.setApartment(&apartment);
 
-	Sender sender;
-	sender.dispatch(&a, &A::fun);
-	sender.dispatch(&b, &B::fun2, 10, 20);
-	sender.call();
+	ApartmentPointer<A> pA(&a);
+	ApartmentPointer<B> pB(&b);
+	pA.dispatch(&A::fun);
+	pB.dispatch(&B::fun2, 10, 20);
+
+	apartment.internal_call();
 
 	int i = 1;
 }
