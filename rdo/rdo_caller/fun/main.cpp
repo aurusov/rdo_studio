@@ -116,9 +116,7 @@ private:
 void main()
 {
 	A a;
-	CallerAdapter0<A, AFun> adapter(&a, &A::fun);
 	B b;
-	CallerAdapter2<B, BFun, double, int> adapter2(&b, &B::fun2, 10, 20);
 
 	Sender sender;
 	sender.dispatch(&a, &A::fun);
