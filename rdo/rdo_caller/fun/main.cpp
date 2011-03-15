@@ -1,6 +1,9 @@
 
 #include <iostream>
 #include <list>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/condition.hpp>
+#include <boost/interprocess/sync/interprocess_condition.hpp>
 
 #ifdef WIN32
 #    pragma warning ( push )
@@ -22,46 +25,103 @@ public:
 };
 typedef ICaller* LPICaller;
 
-class Apartment: boost::thread
+class MutexMonicker
+{
+public:
+	MutexMonicker(const boost::mutex& mutex)
+		: m_mutex(mutex)
+	{
+		const_cast<boost::mutex&>(m_mutex).lock();
+	}
+	~MutexMonicker()
+	{
+		const_cast<boost::mutex&>(m_mutex).unlock();
+	}
+
+private:
+	const boost::mutex& m_mutex;
+};
+#define MUTEX_MONICKER(NAME) MutexMonicker __##NAME##_MutexMonicker(NAME)
+
+class Apartment
 {
 public:
 	Apartment()
-		: boost::thread(&Apartment::qqq1, this)
-	{}
-
-	void start()
+		: m_stoped(false)
 	{
-		m_pThread = new boost::thread(&Apartment::qqq2, this);
+		m_pThread = new boost::thread(&Apartment::main, this);
+	}
+
+	void stop()
+	{
+		m_stoped = true;
+		m_signal.notify_all();
+	}
+
+	bool empty() const
+	{MUTEX_MONICKER(m_callerListMutext);
+		return m_callerList.empty();
 	}
 
 	void call(LPICaller pCall)
 	{
-		m_callerList.push_back(pCall);
-	}
-
-	void internal_call()
-	{
-		CallerList::const_iterator it = m_callerList.begin();
-		while (it != m_callerList.end())
-		{
-			(*it)->call();
-			delete *it;
-			++it;
+		{MUTEX_MONICKER(m_callerListMutext);
+			m_callerList.push_back(pCall);
 		}
+		m_signal.notify_all();
 	}
 
 private:
 	typedef std::list<LPICaller> CallerList;
-	CallerList     m_callerList;
-	boost::thread* m_pThread;
+	CallerList       m_callerList;
+	boost::mutex     m_callerListMutext;
+	boost::condition m_signal;
+	boost::mutex     m_signalMutex;
+	boost::thread*   m_pThread;
+	volatile bool    m_stoped;
 
-	void qqq1()
+	void main()
 	{
-		int i = 1;
-	}
-	void qqq2()
-	{
-		int i = 1;
+		std::cout << "thread start" << std::endl;
+
+		while (true)
+		{
+			{
+				boost::interprocess::scoped_lock<boost::mutex> monicker(m_signalMutex);
+				m_signal.wait(monicker);
+			}
+
+			while (true)
+			{
+				LPICaller pCaller = NULL;
+				{MUTEX_MONICKER(m_callerListMutext);
+
+					if (!m_callerList.empty())
+					{
+						CallerList::iterator it = m_callerList.begin();
+						pCaller = *it;
+						m_callerList.erase(it);
+					}
+				}
+
+				if (pCaller)
+				{
+					pCaller->call();
+					delete pCaller;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			if (m_stoped)
+			{
+				break;
+			}
+		}
+
+		std::cout << "thread stop" << std::endl;
 	}
 };
 
@@ -191,14 +251,22 @@ void main()
 	a.setApartment(&apartment);
 	b.setApartment(&apartment);
 
-	apartment.start();
-
 	ApartmentPointer<A> pA(&a);
 	ApartmentPointer<B> pB(&b);
-	pA.dispatch(&A::fun);
-	pB.dispatch(&B::fun2, 10, 20);
+	for (unsigned int i = 0; i < 100; ++i)
+	{
+		pA.dispatch(&A::fun);
+		pB.dispatch(&B::fun2, 10, 20);
+	}
 
-	apartment.internal_call();
+	while (!apartment.empty())
+	{}
 
+	apartment.stop();
+
+	boost::xtime delay;
+	boost::xtime_get(&delay, boost::TIME_UTC);
+	delay.sec += 1;
+	boost::thread::sleep(delay);
 	int i = 1;
 }
