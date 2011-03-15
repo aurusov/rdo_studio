@@ -43,6 +43,12 @@ private:
 };
 #define MUTEX_MONICKER(NAME) MutexMonicker __##NAME##_MutexMonicker(NAME)
 
+#define EVENT_WAIT(SIGNAL, MUTEX)                                   \
+{                                                                   \
+	boost::interprocess::scoped_lock<boost::mutex> monicker(MUTEX); \
+	SIGNAL.wait(monicker);                                          \
+}
+
 class Apartment
 {
 public:
@@ -50,12 +56,13 @@ public:
 		: m_stoped(false)
 	{
 		m_pThread = new boost::thread(&Apartment::main, this);
+		EVENT_WAIT(m_signalStart, m_signalMutex);
 	}
 
 	void stop()
 	{
 		m_stoped = true;
-		m_signal.notify_all();
+		m_signalNext.notify_all();
 	}
 
 	bool empty() const
@@ -68,14 +75,15 @@ public:
 		{MUTEX_MONICKER(m_callerListMutext);
 			m_callerList.push_back(pCall);
 		}
-		m_signal.notify_all();
+		m_signalNext.notify_all();
 	}
 
 private:
 	typedef std::list<LPICaller> CallerList;
 	CallerList       m_callerList;
 	boost::mutex     m_callerListMutext;
-	boost::condition m_signal;
+	boost::condition m_signalNext;
+	boost::condition m_signalStart;
 	boost::mutex     m_signalMutex;
 	boost::thread*   m_pThread;
 	volatile bool    m_stoped;
@@ -84,12 +92,11 @@ private:
 	{
 		std::cout << "thread start" << std::endl;
 
+		m_signalStart.notify_all();
+
 		while (true)
 		{
-			{
-				boost::interprocess::scoped_lock<boost::mutex> monicker(m_signalMutex);
-				m_signal.wait(monicker);
-			}
+			EVENT_WAIT(m_signalNext, m_signalMutex);
 
 			while (true)
 			{
@@ -268,5 +275,6 @@ void main()
 	boost::xtime_get(&delay, boost::TIME_UTC);
 	delay.sec += 1;
 	boost::thread::sleep(delay);
+
 	int i = 1;
 }
