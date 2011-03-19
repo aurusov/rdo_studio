@@ -161,7 +161,6 @@ RDOStudioModel::RDOStudioModel():
 	notifies.push_back( RT_RUNTIME_MODEL_START_AFTER );
 	notifies.push_back( RT_RUNTIME_MODEL_STOP_BEFORE );
 	notifies.push_back( RT_DEBUG_STRING );
-	notifies.push_back( RT_CORBA_PARSER_GET_RTP_PAR_COUNT );
 
 	after_constructor();
 }
@@ -175,11 +174,6 @@ RDOStudioModel::~RDOStudioModel()
 void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
-		case RDOThread::RT_CORBA_PARSER_GET_RTP_PAR_COUNT:
-			{
-				int i = 1;
-				break;
-			}
 		case RDOThread::RT_STUDIO_MODEL_GET_TEXT: {
 			msg.lock();
 			rdoRepository::RDOThreadRepository::FileData* fdata = static_cast<rdoRepository::RDOThreadRepository::FileData*>(msg.param);

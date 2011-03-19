@@ -23,8 +23,6 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 // ===============================================================================
 
-class RDOThread;
-
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
@@ -228,15 +226,13 @@ public:
 		return allResourcesByTime.end();
 	}
 
-	void setStudioThread(RDOThread* pStudioThread);
-
 private:
 	typedef RDOSimulatorTrace Parent;
 	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
 	std::list  < RDOCalc*     > initCalcs;
-	RDOThread*                  m_pStudioThread;
+	
 	
 	class BreakPoint: public RDORuntimeObject
 	{
