@@ -439,7 +439,9 @@ RDOTracerResource* RDOTracerBase::getResource( std::string& line )
 
 RDOTracerResource* RDOTracerBase::resourceCreation( std::string& line, RDOTracerTimeNow* const time  )
 {
-	RDOTracerResType* type = resTypes.at( atoi( getNextValue( line ).c_str() ) - 1 );
+	ruint typeID = atoi( getNextValue( line ).c_str() ) - 1;
+	ASSERT(typeID < resTypes.size());
+	RDOTracerResType* type = resTypes.at( typeID );
 	int id = atoi( getNextValue( line ).c_str() );
 	RDOTracerResource* res = new RDOTracerResource( type, rdo::format( "%s #%d", type->Name.c_str(), id ) );
 	res->id = id;
