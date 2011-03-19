@@ -866,6 +866,7 @@ void RDOThreadSimulator::runModel()
 	if ( parseModel() ) {
 		parser->m_errors.clear();
 		exitCode = rdoSimulator::EC_OK;
+		runtime->setStudioThread(kernel->studio());
 		thread_runtime = new rdoRuntime::RDOThreadRunTime();
 	}
 }

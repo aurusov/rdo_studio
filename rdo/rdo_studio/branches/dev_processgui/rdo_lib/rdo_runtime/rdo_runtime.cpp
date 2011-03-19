@@ -11,6 +11,7 @@
 #include "rdo_lib/rdo_runtime/rdodptrtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_common/rdodebug.h"
+#include "rdo_kernel/rdothread.h"
 
 #pragma warning(disable : 4786)  
 
@@ -28,7 +29,8 @@ RDORuntime::RDORuntime():
 	lastActiveBreakPoint( NULL ),
 	whyStop( rdoSimulator::EC_OK ),
 	key_found( false ),
-	m_currentTerm( 0 )
+	m_currentTerm( 0 ),
+	m_pStudioThread(NULL)
 {
 	m_parent = NULL;
 	detach();
@@ -660,6 +662,12 @@ RDORuntime::RDOHotKeyToolkit::KeyCode RDORuntime::RDOHotKeyToolkit::codeFromStri
 //		throw RDORuntimeException( "Unknown key name: " + key );
 	}
 	return (*it).second;
+}
+
+void RDORuntime::setStudioThread(RDOThread* pStudioThread)
+{
+	m_pStudioThread = pStudioThread;
+	m_pStudioThread->sendMessage(m_pStudioThread, RDOThread::RT_CORBA_PARSER_GET_RTP_PAR_COUNT, NULL);
 }
 
 } // namespace rdoRuntime
