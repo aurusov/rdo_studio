@@ -87,11 +87,11 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-int RDOPROCTransact::typeID = -1;
+int RDOPROCTransact::s_typeID = -1;
 
 RDOPROCTransact::RDOPROCTransact(PTR(RDOSimulator) sim, CREF(LPIPROCBlock) block)
-	: RDOResource(static_cast<PTR(RDORuntime)>(sim), -1, typeID, true)
-	, m_block    (block                                              )
+	: RDOResource(static_cast<PTR(RDORuntime)>(sim), -1, s_typeID, true)
+	, m_block    (block                                                )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource(this);
 	setTrace( true );

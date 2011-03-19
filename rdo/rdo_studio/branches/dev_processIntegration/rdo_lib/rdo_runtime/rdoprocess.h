@@ -66,7 +66,7 @@ class RDOPROCResource;
 class RDOPROCTransact: public RDOResource
 {
 public:
-	static int typeID;
+	static int s_typeID;
 
 	PTR(RDOPROCResource) getRes()
 	{

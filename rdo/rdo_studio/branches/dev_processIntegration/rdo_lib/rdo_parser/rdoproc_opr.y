@@ -343,7 +343,7 @@ dpt_process_line
 			{
 				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 			}
-			rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 		}
 		else
 		{
@@ -358,7 +358,7 @@ dpt_process_line
 			{
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является перечислимым типом"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
-			rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 		}
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), pArithm->createCalc());
 		ASSERT(pBlock);
