@@ -1,33 +1,44 @@
-#ifndef RDOFRM_H
-#define RDOFRM_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdofrm.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
+#ifndef _RDOFRM_H_
+#define _RDOFRM_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdoframe.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdofun.h"
+// ===============================================================================
 
-namespace rdoParse
-{
+OPEN_RDO_PARSER_NAMESPACE
 
-int frmparse( void* lexer );
-int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void frmerror( char* mes );
+int  frmparse(PTR(void) lexer);
+int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void frmerror(PTR(char) mes);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-class RDOFUNLogic;
-
-class RDOFRMFrame: public RDOParserObject, public RDOParserSrcInfo
+OBJECT(RDOFRMFrame) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDOFRMFrame);
 public:
-	RDOFRMFrame( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNLogic* logic = NULL );
-
-	const std::string&       name() const  { return src_info().src_text(); }
-	rdoRuntime::RDOFRMFrame* frame()       { return m_frame;               }
+	CREF(tstring)                name () const  { return src_info().src_text(); }
+	PTR(rdoRuntime::RDOFRMFrame) frame()        { return m_pFrame;              }
 
 private:
-	rdoRuntime::RDOFRMFrame* m_frame;
+	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
+
+	PTR(rdoRuntime::RDOFRMFrame) m_pFrame;
 };
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDOFRM_H
+#endif //! _RDOFRM_H_

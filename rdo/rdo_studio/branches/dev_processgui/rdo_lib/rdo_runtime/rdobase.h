@@ -2,7 +2,7 @@
 #define RDOBASE_H
 
 #include <map>
-#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_common/rdocommon.h"
 
@@ -42,13 +42,11 @@ public:
 
 	void inc_cnt_events()      { m_cnt_events++;      }
 	void inc_cnt_choice_from() { m_cnt_choice_from++; }
-	void inc_cnt_calc_arithm() { m_cnt_calc_arithm++; }
-	void inc_cnt_calc_logic()  { m_cnt_calc_logic++;  }
 
 	ruint get_cnt_events()      { return m_cnt_events;      }
 	ruint get_cnt_choice_from() { return m_cnt_choice_from; }
-	ruint get_cnt_calc_arithm() { return m_cnt_calc_arithm; }
-	ruint get_cnt_calc_logic()  { return m_cnt_calc_logic;  }
+	ruint get_cnt_calc_arithm() const;
+	ruint get_cnt_calc_logic()  const;
 
 	static ruint getMSec(CREF(SYSTEMTIME) systime)
 	{
@@ -81,7 +79,7 @@ protected:
 	typedef  std::map<double, PTR(BOPlannedItem)>  BOPlannedMap;
 
 	BOPlannedMap m_timePoints;
-	rbool        m_check_operation;
+	rbool        m_checkOperation;
 
 	void setCurrentTime(double value) { m_currentTime = value; }
 
@@ -140,8 +138,6 @@ private:
 
 	ruint        m_cnt_events;
 	ruint        m_cnt_choice_from;
-	ruint        m_cnt_calc_arithm;
-	ruint        m_cnt_calc_logic;
 };
 
 } // namespace rdoRuntime;

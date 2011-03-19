@@ -507,12 +507,12 @@ void RDOStudioPlugins::actionEnable( rdoPlugin::ModelActionType action )
 		if ( it != plugins->actionDisabled.end() ) {
 			plugins->actionDisabled.erase( it );
 			switch ( action ) {
-				case rdoPlugin::maCreate: model->GUI_ACTION_NEW   = true; break;
-				case rdoPlugin::maOpen  : model->GUI_ACTION_OPEN  = true; break;
-				case rdoPlugin::maSave  : model->GUI_ACTION_SAVE  = true; break;
-				case rdoPlugin::maClose : model->GUI_ACTION_CLOSE = true; break;
-				case rdoPlugin::maBuild : model->GUI_ACTION_BUILD = true; break;
-				case rdoPlugin::maRun   : model->GUI_ACTION_RUN   = true; break;
+				case rdoPlugin::maCreate: model->m_GUI_ACTION_NEW   = true; break;
+				case rdoPlugin::maOpen  : model->m_GUI_ACTION_OPEN  = true; break;
+				case rdoPlugin::maSave  : model->m_GUI_ACTION_SAVE  = true; break;
+				case rdoPlugin::maClose : model->m_GUI_ACTION_CLOSE = true; break;
+				case rdoPlugin::maBuild : model->m_GUI_ACTION_BUILD = true; break;
+				case rdoPlugin::maRun   : model->m_GUI_ACTION_RUN   = true; break;
 			}
 		}
 	}
@@ -523,12 +523,12 @@ void RDOStudioPlugins::actionDisable( rdoPlugin::ModelActionType action )
 	if ( plugins && std::find( plugins->actionDisabled.begin(), plugins->actionDisabled.end(), action ) == plugins->actionDisabled.end() ) {
 		plugins->actionDisabled.push_back( action );
 		switch ( action ) {
-			case rdoPlugin::maCreate: model->GUI_ACTION_NEW   = false; break;
-			case rdoPlugin::maOpen  : model->GUI_ACTION_OPEN  = false; break;
-			case rdoPlugin::maSave  : model->GUI_ACTION_SAVE  = false; break;
-			case rdoPlugin::maClose : model->GUI_ACTION_CLOSE = false; break;
-			case rdoPlugin::maBuild : model->GUI_ACTION_BUILD = false; break;
-			case rdoPlugin::maRun   : model->GUI_ACTION_RUN   = false; break;
+			case rdoPlugin::maCreate: model->m_GUI_ACTION_NEW   = false; break;
+			case rdoPlugin::maOpen  : model->m_GUI_ACTION_OPEN  = false; break;
+			case rdoPlugin::maSave  : model->m_GUI_ACTION_SAVE  = false; break;
+			case rdoPlugin::maClose : model->m_GUI_ACTION_CLOSE = false; break;
+			case rdoPlugin::maBuild : model->m_GUI_ACTION_BUILD = false; break;
+			case rdoPlugin::maRun   : model->m_GUI_ACTION_RUN   = false; break;
 		}
 	}
 }
@@ -641,13 +641,14 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 		if ( tab ) {
 			rdoModelObjects::RDOFileType edit_type;
 			switch ( file_type ) {
-				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
 				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
 				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
-				case rdoPlugin::OPR: edit_type = rdoModelObjects::OPR; break;
+				case rdoPlugin::EVN: edit_type = rdoModelObjects::EVN; break;
+				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
+				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
+				case rdoPlugin::PRC: edit_type = rdoModelObjects::PRC; break;
 				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
 				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
-				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
 				case rdoPlugin::SMR: edit_type = rdoModelObjects::SMR; break;
 				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
 				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;
@@ -675,13 +676,14 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 		if ( tab ) {
 			rdoModelObjects::RDOFileType edit_type;
 			switch ( file_type ) {
-				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
 				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
 				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
-				case rdoPlugin::OPR: edit_type = rdoModelObjects::OPR; break;
+				case rdoPlugin::EVN: edit_type = rdoModelObjects::EVN; break;
+				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
+				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
+				case rdoPlugin::PRC: edit_type = rdoModelObjects::PRC; break;
 				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
 				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
-				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
 				case rdoPlugin::SMR: edit_type = rdoModelObjects::SMR; break;
 				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
 				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;

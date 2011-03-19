@@ -11,6 +11,7 @@
 #define _RDOMACROS_H_
 
 // ====================================================================== INCLUDES
+#include <boost/typeof/typeof.hpp>
 // ====================================================================== SYNOPSIS
 // ===============================================================================
 
@@ -22,14 +23,16 @@
 
 #define  CLASS(A)            class A
 #define STRUCT(A)            struct A
+#define S_INTERFACE(A)       struct A
 #define IS  ,
 #define AND ,
 #define IMPLEMENTATION_OF(A) public A
+#define INSTANCE_OF(A)       public A
 
 #define  CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
 
-#define STL_FOR_ALL(TYPE, CONTAINER, IT)       for (TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
-#define STL_FOR_ALL_CONST(TYPE, CONTAINER, IT) for (TYPE::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define STL_FOR_ALL(CONTAINER, IT)       for (BOOST_TYPEOF(CONTAINER)::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define STL_FOR_ALL_CONST(CONTAINER, IT) for (BOOST_TYPEOF(CONTAINER)::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 
 #endif //! _RDOMACROS_H_

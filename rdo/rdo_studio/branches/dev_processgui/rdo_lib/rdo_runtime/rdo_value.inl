@@ -12,6 +12,8 @@
 #include "rdo_common/rdodebug.h"
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
 #include "rdo_lib/rdo_runtime/rdo_fuzzy_def.h"
+#include "rdo_lib/rdo_runtime/rdo_array_def.h"
+#include "rdo_lib/rdo_runtime/rdo_matrix_def.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // ===============================================================================
 
@@ -21,124 +23,166 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOValue
 // ----------------------------------------------------------------------------
 inline RDOValue::RDOValue()
-	: m_type(&g_unknow)
+	: m_pType(g_unknow)
 {}
 
 inline RDOValue::~RDOValue()
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			deleteString();
-			break;
-		}
-		case RDOType::t_fuzzy:
-		{
-			delete &__fuzzyV();
-			break;
-		}
-	}
+	deleteValue();
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
-	: m_type(&g_unknow)
+	: m_pType(g_unknow)
 {
 	set(rdovalue);
 }
 
-inline RDOValue::RDOValue(CREF(RDOType) type)
-	: m_type(&type)
+inline RDOValue::RDOValue(CREF(LPRDOType) pType)
+	: m_pType(pType)
 {
 	switch (typeID())
 	{
-		case RDOType::t_unknow       : break;
-		case RDOType::t_int          : m_value.i_value = 0; break;
-		case RDOType::t_real         : m_value.d_value = 0; break;
-		case RDOType::t_enum         : m_value.i_value = 0; break;
-		case RDOType::t_bool         : m_value.b_value = false; break;
-		case RDOType::t_string       : m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
-		case RDOType::t_identificator: m_value.s_value = new smart_tstring(new tstring(_T(""))); break;
-		default                      : throw RDOValueException();
+		case RDOType::t_unknow        : break;
+		case RDOType::t_int           : m_value.i_value = 0; break;
+		case RDOType::t_real          : m_value.d_value = 0; break;
+		case RDOType::t_enum          : m_value.i_value = 0; break;
+		case RDOType::t_bool          : m_value.b_value = false; break;
+		case RDOType::t_string        : m_value.s_value = new smart_string(new string_class(_T(""))); break;
+		case RDOType::t_identificator : m_value.s_value = new smart_string(new string_class(_T(""))); break;
+		case RDOType::t_array         : m_value.p_data  = new RDOArrayValue(pType.object_static_cast<RDOArrayType>()); break;
+		case RDOType::t_arrayIterator : m_value.p_data  = new PTR(void); break;
+		case RDOType::t_matrix        : m_value.p_data  = new PTR(void); break;
+		case RDOType::t_matrixIterator: m_value.p_data  = new PTR(void); break;
+		default                       : throw RDOValueException();
 	}
 }
 
 inline RDOValue::RDOValue(rsint value)
-	: m_type(&g_int)
+	: m_pType(g_int)
 {
 	m_value.i_value = value;
 }
 
 inline RDOValue::RDOValue(ruint value)
-	: m_type(&g_int)
+	: m_pType(g_int)
 {
 	m_value.i_value = value;
 }
 
 inline RDOValue::RDOValue(double value)
-	: m_type(&g_real)
+	: m_pType(g_real)
 {
 	m_value.d_value = value;
 }
 
 inline RDOValue::RDOValue(rbool value)
-	: m_type(&g_bool)
+	: m_pType(g_bool)
 {
 	m_value.b_value = value;
 }
 
-inline RDOValue::RDOValue(REF(RDOEnumType) enums)
-	: m_type(&enums)
+inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
+	: m_pType(pEnum)
 {
-	if (enums.empty())
+	if (pEnum->empty())
 		RDOValueException();
 
-	m_value.i_value = enums.findEnum( enums.getValues()[0] );
+	m_value.i_value = pEnum->findEnum(pEnum->getValues()[0]);
 }
 
-inline RDOValue::RDOValue(CREF(RDOEnumType) enums, CREF(tstring) value)
-	: m_type(&enums)
+inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value)
+	: m_pType(pEnum)
 {
-	m_value.i_value = enums.findEnum(value);
+	m_value.i_value = pEnum->findEnum(value);
 	if (m_value.i_value == RDOEnumType::END)
 		RDOValueException();
 }
 
-inline RDOValue::RDOValue(CREF(RDOEnumType) enums, ruint index)
-	: m_type(&enums)
+inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
+	: m_pType(pEnum)
 {
-	if (index == RDOEnumType::END || index >= enums.getValues().size())
+	if (index == RDOEnumType::END || index >= pEnum->getValues().size())
 		RDOValueException();
 
 	m_value.i_value = index;
 }
 
 inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
-	: m_type(&fuzzy.type())
+	: m_pType(fuzzy.type())
 {
 	m_value.p_data = new RDOFuzzyValue(fuzzy);
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value)
-	: m_type(&g_string)
+	: m_pType(g_string)
 {
-	m_value.s_value = new smart_tstring(new tstring(value));
+	m_value.s_value = new smart_string(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CPTR(tchar) value)
-	: m_type(&g_string)
+	: m_pType(g_string)
 {
-	m_value.s_value = new smart_tstring(new tstring(value));
+	m_value.s_value = new smart_string(new string_class(value));
 }
 
-inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOType) type)
-	: m_type(&g_identificator)
+inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
+	: m_pType(g_identificator)
 {
-	if (type.typeID() != RDOType::t_identificator)
+	if (pType->typeID() != RDOType::t_identificator)
 		RDOValueException();
 
-	m_value.s_value = new smart_tstring(new tstring(value));
+	m_value.s_value = new smart_string(new string_class(value));
+}
+
+inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
+	: m_pType(arrayValue.type())
+{
+	m_value.p_data = new RDOArrayValue(arrayValue);
+}
+
+inline RDOValue::RDOValue(CREF(RDOArrayIterator) aIterator)
+	: m_pType(g_arrayIterator)
+{
+	m_value.p_data = new RDOArrayIterator(aIterator);
+}
+
+inline RDOValue::RDOValue(CREF(RDOMatrixValue) matrixValue)
+	: m_pType(matrixValue.type())
+{
+	m_value.p_data = new RDOMatrixValue(matrixValue);
+}
+
+inline RDOValue::RDOValue(CREF(RDOMatrixIterator) mIterator)
+	: m_pType(g_matrixIterator)
+{
+	m_value.p_data = new RDOMatrixIterator(mIterator);
+}
+
+inline void RDOValue::deleteValue()
+{
+	switch (typeID())
+	{
+	case RDOType::t_string       :
+	case RDOType::t_identificator:
+		deleteString();
+		break;
+
+	case RDOType::t_fuzzy:
+		delete &__fuzzyV();
+		break;
+
+	case RDOType::t_array:
+		delete &__arrayV();
+		break;
+
+	case RDOType::t_arrayIterator:
+		delete &__arrayItr();
+		break;
+
+	case RDOType::t_matrixIterator:
+		delete &__matrixItr();
+		break;
+	}
 }
 
 inline rsint RDOValue::getInt() const
@@ -166,7 +210,7 @@ inline rsint RDOValue::getEnumAsInt() const
 	throw RDOValueException();
 }
 
-inline CREF(RDOEnumType) RDOValue::getEnum() const
+inline LPRDOEnumType RDOValue::getEnum() const
 {
 	switch (typeID())
 	{
@@ -227,19 +271,33 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 	throw RDOValueException();
 }
 
+inline CREF(RDOArrayValue) RDOValue::getArray() const
+{
+	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
+}
+
+inline CREF(RDOMatrixValue) RDOValue::getMatrix() const
+{
+	return *static_cast<CPTR(RDOMatrixValue)>(m_value.p_data);
+}
+
 inline tstring RDOValue::getAsString() const
 {
 	switch (typeID())
 	{
 		case RDOType::t_int          : return rdo::format(_T("%d"), m_value.i_value);
 		case RDOType::t_real         : return rdo::toString(m_value.d_value);
-		case RDOType::t_enum         : return __enumT().getValues().at(m_value.i_value);
+		case RDOType::t_enum         : return __enumT()->getValues().at(m_value.i_value);
 		case RDOType::t_bool         : return m_value.b_value ? _T("true") : _T("false");
 		case RDOType::t_string       : return __stringV();
 		case RDOType::t_identificator: return __stringV();
 		case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
+		case RDOType::t_array         : return __arrayV().getAsString();
+		case RDOType::t_arrayIterator : return __arrayItr().getValue().getAsString();
+		case RDOType::t_matrix        : return __matrixV().getAsString();
+		case RDOType::t_matrixIterator: return __matrixItr().getValue().getAsString();
 	}
-	throw RDOValueException();
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsString()"));
 }
 
 inline tstring RDOValue::getAsStringForTrace() const
@@ -251,8 +309,10 @@ inline tstring RDOValue::getAsStringForTrace() const
 		case RDOType::t_enum  : return rdo::format(_T("%d"), m_value.i_value);
 		case RDOType::t_bool  : return m_value.b_value ? _T("true") : _T("false");
 		case RDOType::t_string: return __stringV();
+		case RDOType::t_array : return __arrayV().getAsString();
+		case RDOType::t_matrix: return __matrixV().getAsString();
 	}
-	throw RDOValueException();
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
 }
 
 inline void RDOValue::deleteString()
@@ -270,16 +330,9 @@ inline void RDOValue::deleteString()
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
-	switch (typeID())
-	{
-		case RDOType::t_string       :
-		case RDOType::t_identificator:
-		{
-			deleteString();
-			break;
-		}
-	}
-	m_type = rdovalue.m_type;
+	deleteValue();
+
+	m_pType = rdovalue.m_pType;
 	switch (typeID())
 	{
 		case RDOType::t_string       :
@@ -295,6 +348,26 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 			m_value.p_data = new RDOFuzzyValue(rdovalue.__fuzzyV());
 			break;
 		}
+		case RDOType::t_array:
+		{
+			m_value.p_data = new RDOArrayValue(rdovalue.__arrayV());
+			break;
+		}
+		case RDOType::t_arrayIterator:
+		{
+			m_value.p_data = new RDOArrayIterator(rdovalue.__arrayItr());
+			break;
+		}
+		case RDOType::t_matrix:
+			{
+				m_value.p_data = new RDOMatrixValue(rdovalue.__matrixV());
+				break;
+			}
+		case RDOType::t_matrixIterator:
+			{
+				m_value.p_data = new RDOMatrixIterator(rdovalue.__matrixItr());
+				break;
+			}
 		default:
 		{
 			m_value = rdovalue.m_value;
@@ -343,7 +416,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-				case RDOType::t_enum: if (m_type == rdovalue.m_type) return m_value.i_value == rdovalue.m_value.i_value; break;
+				case RDOType::t_enum: if (m_pType == rdovalue.m_pType) return m_value.i_value == rdovalue.m_value.i_value; break;
 			}
 			break;
 		}
@@ -363,6 +436,22 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			}
 			break;
 		}
+		case RDOType::t_arrayIterator:
+		{
+			switch (rdovalue.typeID())
+			{
+				case RDOType::t_arrayIterator: return __arrayItr() == rdovalue.__arrayItr();
+			}
+			break;
+		}
+		case RDOType::t_matrixIterator:
+			{
+				switch (rdovalue.typeID())
+				{
+				case RDOType::t_matrixIterator: return __matrixItr() == rdovalue.__matrixItr();
+				}
+				break;
+			}
 	}
 	throw RDOValueException();
 }
@@ -374,7 +463,8 @@ inline rbool RDOValue::operator!= (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 {
-	switch (typeID()) {
+	switch (typeID())
+	{
 		case RDOType::t_int:
 		{
 			switch (rdovalue.typeID())
@@ -527,7 +617,7 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 					if (!m_value.s_value->owner())
 					{
 						m_value.s_value->release();
-						m_value.s_value = new smart_tstring(new tstring(__stringV()));
+						m_value.s_value = new smart_string(new string_class(__stringV()));
 					}
 					__stringV() += rdovalue.__stringV();
 					return;
@@ -543,8 +633,58 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
+		case RDOType::t_arrayIterator:
+		{
+			switch(rdovalue.typeID())
+			{
+				case RDOType::t_int:
+					PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
+					m_value.p_data = new RDOArrayIterator(__arrayItr() + rdovalue.getInt());
+					delete pPrevIt;
+					return;
+			}
+			break;
+		}
+		case RDOType::t_matrixIterator:
+		{
+			switch(rdovalue.typeID())
+			{
+			case RDOType::t_int:
+				PTR(RDOMatrixIterator) pPrevIt = &__matrixItr();
+				m_value.p_data = new RDOMatrixIterator(__matrixItr() + rdovalue.getInt());
+				delete pPrevIt;
+				return;
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
+}
+
+inline CREF(RDOValue) RDOValue::operator++()
+{
+	operator+=(1);
+	return *this;
+}
+
+inline RDOValue RDOValue::operator++(int inc)
+{
+	RDOValue prevValue(*this);
+	operator+=(1);
+	return prevValue;
+}
+
+inline CREF(RDOValue) RDOValue::operator--()
+{
+	operator-=(1);
+	return *this;
+}
+
+inline RDOValue RDOValue::operator--(int inc)
+{
+	RDOValue prevValue(*this);
+	operator-=(1);
+	return prevValue;
 }
 
 inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
@@ -577,6 +717,30 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
+		case RDOType::t_arrayIterator:
+		{
+			switch(rdovalue.typeID())
+			{
+			case RDOType::t_int:
+				PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
+				m_value.p_data = new RDOArrayIterator(__arrayItr() - rdovalue.getInt());
+				delete pPrevIt;
+				return;
+			}
+			break;
+		}
+		case RDOType::t_matrixIterator:
+		{
+			switch(rdovalue.typeID())
+			{
+			case RDOType::t_int:
+				PTR(RDOMatrixIterator) pPrevIt = &__matrixItr();
+				m_value.p_data = new RDOMatrixIterator(__matrixItr() - rdovalue.getInt());
+				delete pPrevIt;
+				return;
+			}
+			break;
+		}
 	}
 	throw RDOValueException();
 }
@@ -590,7 +754,7 @@ inline void RDOValue::operator*= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 				case RDOType::t_int : m_value.i_value *= rdovalue.m_value.i_value; return;
-				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) * rdovalue.m_value.d_value; m_type = &g_real; return;
+				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) * rdovalue.m_value.d_value; m_pType = g_real; return;
 			}
 			break;
 		}
@@ -624,7 +788,7 @@ inline void RDOValue::operator/= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 				case RDOType::t_int :
-				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) / rdovalue.getDouble(); m_type = &g_real; return;
+				case RDOType::t_real: m_value.d_value = ((double)m_value.i_value) / rdovalue.getDouble(); m_pType = g_real; return;
 			}
 			break;
 		}
@@ -677,19 +841,69 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 	return value2;
 }
 
-inline CREF(RDOType) RDOValue::type() const
+inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
 {
-	return *m_type;
+	switch (typeID())
+	{
+	case RDOType::t_array : return __arrayV ()[rdovalue];
+	case RDOType::t_matrix: return __matrixV()[rdovalue];
+	}
+	throw RDOValueException();
+}
+
+inline RDOValue RDOValue::begin()
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : return RDOValue(RDOArrayIterator (__arrayV ().containerBegin()));
+	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerBegin()));
+	}
+	throw RDOValueException();	
+}
+
+inline RDOValue RDOValue::end()
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : return RDOValue(RDOArrayIterator ( __arrayV().containerEnd()));
+	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerEnd()));
+	}
+	throw RDOValueException();
+}
+
+inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : __arrayV ().insertItems(itr.__arrayItr( ).getIterator(), itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); break;
+	case RDOType::t_matrix: __matrixV().insertItems(itr.__matrixItr().getIterator(), itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); break;
+	}
+	throw RDOValueException();	
+}
+
+inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
+{
+	switch (typeID())
+	{
+	case RDOType::t_array : __arrayV ().eraseItems(itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); break;
+	case RDOType::t_matrix: __matrixV().eraseItems(itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); break;
+	}
+	throw RDOValueException();
+}
+
+inline CREF(LPRDOType) RDOValue::type() const
+{
+	return m_pType;
 }
 
 inline RDOType::TypeID RDOValue::typeID() const
 {
-	return type().typeID();
+	return m_pType->typeID();
 }
 
-inline CREF(RDOEnumType) RDOValue::__enumT() const
+inline LPRDOEnumType RDOValue::__enumT() const
 {
-	return *static_cast<CPTR(RDOEnumType)>(m_type);
+	return m_pType.object_static_cast<RDOEnumType>();
 }
 
 inline REF(tstring) RDOValue::__stringV()
@@ -710,6 +924,46 @@ inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
 inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
 {
 	return *static_cast<CPTR(RDOFuzzyValue)>(m_value.p_data);
+}
+
+inline REF(RDOArrayValue) RDOValue::__arrayV()
+{
+	return *static_cast<PTR(RDOArrayValue)>(m_value.p_data);
+}
+
+inline CREF(RDOArrayValue) RDOValue::__arrayV() const
+{
+	return *static_cast<CPTR(RDOArrayValue)>(m_value.p_data);
+}
+
+inline REF(RDOArrayIterator) RDOValue::__arrayItr()
+{
+	return *static_cast<RDOArrayIterator*>(m_value.p_data);
+}
+
+inline CREF(RDOArrayIterator) RDOValue::__arrayItr() const
+{
+	return *static_cast<CPTR(RDOArrayIterator)>(m_value.p_data);
+}
+
+inline REF(RDOMatrixValue) RDOValue::__matrixV()
+{
+	return *static_cast<RDOMatrixValue*>(m_value.p_data);
+}
+
+inline CREF(RDOMatrixValue) RDOValue::__matrixV() const
+{
+	return *static_cast<CPTR(RDOMatrixValue)>(m_value.p_data);
+}
+
+inline REF(RDOMatrixIterator) RDOValue::__matrixItr()
+{
+	return *static_cast<RDOMatrixIterator*>(m_value.p_data);
+}
+
+inline CREF(RDOMatrixIterator) RDOValue::__matrixItr() const
+{
+	return *static_cast<CPTR(RDOMatrixIterator)>(m_value.p_data);
 }
 
 inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rdovalue)

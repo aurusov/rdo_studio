@@ -12,9 +12,9 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_rule_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_rule_i.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 // ===============================================================================
@@ -23,17 +23,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDODPTSearchActivity: public IDPTSearchActivity, public RDOTraceableObject
 {
-DEFINE_FACTORY(RDODPTSearchActivity);
+DEFINE_IFACTORY(RDODPTSearchActivity);
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOTraceableObject)
 QUERY_INTERFACE(IDPTSearchActivity)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, PTR(RDOCalc) cost);
+	RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, CREF(LPRDOCalc) pCost);
 
 	LPIRule                        m_rule;
-	PTR(RDOCalc)                   m_cost;
+	LPRDOCalc                      m_pCost;
 	IDPTSearchActivity::ValueTime  m_valueTime;
 
 	DECLARE_IDPTSearchActivity;

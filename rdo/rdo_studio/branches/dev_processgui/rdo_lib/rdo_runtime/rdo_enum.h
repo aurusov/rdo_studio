@@ -1,32 +1,40 @@
-#ifndef RDO_ENUM_H
-#define RDO_ENUM_H
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdo_enum.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_ENUM_H_
+#define _RDO_ENUM_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEnumType
 // ----------------------------------------------------------------------------
-class RDOEnumType: public RDOType, public RDORuntimeObject
+class RDOEnumType: public RDOType
 {
+DECLARE_FACTORY(RDOEnumType);
 public:
-	typedef tstring                  EnumItem;
-	typedef rdo::vector< EnumItem >  Enums;
-	typedef Enums::const_iterator    CIterator;
+	typedef tstring                EnumItem;
+	typedef rdo::vector<EnumItem>  Enums;
+	typedef Enums::const_iterator  CIterator;
+	typedef Enums::const_iterator  const_iterator;
 
 	enum { END = ~0 };
-
-	RDOEnumType(PTR(RDORuntimeParent) parent);
-	RDOEnumType(PTR(RDORuntimeParent) parent, CREF(Enums) enums);
 
 	void  add     (CREF(tstring) next);
 	ruint findEnum(CREF(tstring) val) const;
 	rbool exist   (CREF(tstring) val) const;
-	virtual tstring  asString()                    const;
-	virtual RDOValue cast    (CREF(RDOValue) from) const;
 
 	rbool           empty    () const;
 	const CIterator begin    () const;
@@ -34,13 +42,15 @@ public:
 	CREF(Enums)     getValues() const;
 
 private:
+	RDOEnumType();
+	RDOEnumType(CREF(Enums) enums);
+
 	Enums m_enum;
-
-	tstring str() const;
 };
+DECLARE_POINTER(RDOEnumType);
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_enum.inl"
 
-#endif // RDO_ENUM_H
+#endif //! _RDO_ENUM_H_

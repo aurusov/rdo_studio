@@ -1,3 +1,12 @@
+/*
+ * copyright: (c) RDO-Team, 2009
+ * filename : rdofun.y
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 20.02.2003
+ * bref     : Синтаксис функций, констант и последовательностей
+ * indent   : 4T
+ */
+
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer
@@ -5,196 +14,209 @@
 
 %pure-parser
 
-%token RDO_Resource_type				257
-%token RDO_permanent					258
-%token RDO_Parameters					259
-%token RDO_integer						260
-%token RDO_real							261
-%token RDO_End							262
-%token RDO_temporary					263
-%token RDO_IDENTIF						264
-%token RDO_INT_CONST					265
-%token RDO_REAL_CONST					266
-%token RDO_such_as						267
-%token RDO_dblpoint						268
-%token RDO_Resources					269
-%token RDO_trace						270
-%token RDO_no_trace						271
-%token RDO_IDENTIF_COLON				272
-%token RDO_Constant						273
-%token RDO_Body							274
-%token RDO_Function						275
-%token RDO_Type							276
-%token RDO_algorithmic					277
-%token RDO_table						278
-%token RDO_list							279
-%token RDO_Exist						281
-%token RDO_Not_Exist					282
-%token RDO_For_All						283
-%token RDO_Not_For_All					284
-%token RDO_neq							285
-%token RDO_leq							286
-%token RDO_geq							287
-%token RDO_NoCheck						288
-%token RDO_Calculate_if					289
-%token RDO_or							290
-%token RDO_and							291
-%token RDO_Sequence						292
-%token RDO_uniform						293
-%token RDO_exponential					294
-%token RDO_normal						295
-%token RDO_by_hist						296
-%token RDO_enumerative					297
+%token RDO_Resource_type
+%token RDO_permanent
+%token RDO_Parameters
+%token RDO_integer
+%token RDO_real
+%token RDO_End
+%token RDO_temporary
+%token RDO_IDENTIF
+%token RDO_INT_CONST
+%token RDO_REAL_CONST
+%token RDO_such_as
+%token RDO_dblpoint
+%token RDO_Resources
+%token RDO_trace
+%token RDO_no_trace
+%token RDO_IDENTIF_COLON
+%token RDO_Constant
+%token RDO_Body
+%token RDO_Function
+%token RDO_Type
+%token RDO_algorithmic
+%token RDO_table
+%token RDO_list
+%token RDO_Exist
+%token RDO_Not_Exist
+%token RDO_For_All
+%token RDO_Not_For_All
+%token RDO_neq
+%token RDO_leq
+%token RDO_geq
+%token RDO_NoCheck
+%token RDO_Calculate_if
+%token RDO_or
+%token RDO_and
+%token RDO_Sequence
+%token RDO_uniform
+%token RDO_exponential
+%token RDO_normal
+%token RDO_by_hist
+%token RDO_enumerative
 
-%token RDO_Pattern						298
-%token RDO_operation					299
-%token RDO_irregular_event				300
-%token RDO_rule							301
-%token RDO_keyboard						302
-%token RDO_Relevant_resources			303
-%token RDO_Keep							304
-%token RDO_Create						305
-%token RDO_Erase						306
-%token RDO_NonExist						307
-%token RDO_IDENTIF_NoChange				308
-%token RDO_Time							309
-%token RDO_Choice						310
-%token RDO_from							311
-%token RDO_first						312
-%token RDO_Convert_begin				313
-%token RDO_Convert_end					314
-%token RDO_Convert_rule					315
-%token RDO_Convert_event				316
-%token RDO_with_max						317
-%token RDO_with_min						318
-%token RDO_set							319
-%token RDO_IDENTIF_NoChange_NoChange	320
-%token RDO_Operations					321
-	
-%token RDO_Results						322
-%token RDO_watch_par					323
-%token RDO_watch_state					324
-%token RDO_watch_quant					325
-%token RDO_watch_value					326
-%token RDO_get_value					327
+%token RDO_Pattern
+%token RDO_operation
+%token RDO_rule
+%token RDO_keyboard
+%token RDO_Relevant_resources
+%token RDO_Keep
+%token RDO_Create
+%token RDO_Erase
+%token RDO_NonExist
+%token RDO_IDENTIF_NoChange
+%token RDO_Time
+%token RDO_Choice
+%token RDO_from
+%token RDO_first
+%token RDO_Convert_begin
+%token RDO_Convert_end
+%token RDO_Convert_rule
+%token RDO_Convert_event
+%token RDO_with_max
+%token RDO_with_min
+%token RDO_set
+%token RDO_IDENTIF_NoChange_NoChange
+%token RDO_Operations
 
-%token RDO_Model_name					328
-%token RDO_Resource_file				329
-%token RDO_OprIev_file					330
-%token RDO_Frame_file					331
-%token RDO_Statistic_file				332
-%token RDO_Results_file					333
-%token RDO_Trace_file					334
-%token RDO_Show_mode					335
-%token RDO_Frame_number					336
-%token RDO_Show_rate					337
-%token RDO_Run_StartTime				338
-%token RDO_Trace_StartTime				339
-%token RDO_Trace_EndTime				340
-%token RDO_Terminate_if					341
-%token RDO_Break_point					342
-%token RDO_Seed							343
-%token RDO_NoShow						344
-%token RDO_Monitor						345
-%token RDO_Animation					346
-%token RDO_NoChange						347
+%token RDO_Results
+%token RDO_watch_par
+%token RDO_watch_state
+%token RDO_watch_quant
+%token RDO_watch_value
+%token RDO_get_value
 
-%token RDO_Decision_point				348
-%token RDO_search						349
-%token RDO_trace_stat					350
-%token RDO_trace_tops					351
-%token RDO_trace_all					352
-%token RDO_Condition					353
-%token RDO_Term_condition				354
-%token RDO_Evaluate_by					355
-%token RDO_Compare_tops					356
-%token RDO_NO							357
-%token RDO_YES							358
-%token RDO_Activities					359
-%token RDO_value_before					360
-%token RDO_value_after					361
-%token RDO_some							362
-%token RDO_Process						363
-%token RDO_SEIZE						364
-%token RDO_GENERATE						365
-%token RDO_TERMINATE					366
-%token RDO_ADVANCE						367
-%token RDO_RELEASE						368
-%token RDO_if							369
-%token RDO_result						370
-%token RDO_CF							371
-%token RDO_Priority						372
-%token RDO_prior						373
-%token RDO_Parent						374
-%token RDO_PlusEqual					375
-%token RDO_MinusEqual					376
-%token RDO_MultiplyEqual				377
-%token RDO_DivideEqual					378
+%token RDO_Show_mode
+%token RDO_Frame_number
+%token RDO_Show_rate
+%token RDO_Run_StartTime
+%token RDO_Trace_StartTime
+%token RDO_Trace_EndTime
+%token RDO_Terminate_if
+%token RDO_Break_point
+%token RDO_Seed
+%token RDO_NoShow
+%token RDO_Monitor
+%token RDO_Animation
+%token RDO_NoChange
 
-%token RDO_Frame						400
-%token RDO_Show_if						401
-%token RDO_Back_picture					402
-%token RDO_Show							403
-%token RDO_frm_cell						404
-%token RDO_text							405
-%token RDO_bitmap						406
-%token RDO_s_bmp						407
-%token RDO_rect							408
-%token RDO_r_rect						409
-%token RDO_line							410
-%token RDO_ellipse						411
-%token RDO_triang						412
-%token RDO_active						413
-%token RDO_ruler						414
-%token RDO_space						415
-%token RDO_color_transparent			416
-%token RDO_color_last					417
-%token RDO_color_white					418
-%token RDO_color_black					419
-%token RDO_color_red					420
-%token RDO_color_green					421
-%token RDO_color_blue					422
-%token RDO_color_cyan					423
-%token RDO_color_magenta				424
-%token RDO_color_yellow					425
-%token RDO_color_gray					426
+%token RDO_Decision_point
+%token RDO_search
+%token RDO_trace_stat
+%token RDO_trace_tops
+%token RDO_trace_all
+%token RDO_Condition
+%token RDO_Term_condition
+%token RDO_Evaluate_by
+%token RDO_Compare_tops
+%token RDO_NO
+%token RDO_YES
+%token RDO_Activities
+%token RDO_value_before
+%token RDO_value_after
+%token RDO_some
+%token RDO_Process
+%token RDO_SEIZE
+%token RDO_GENERATE
+%token RDO_TERMINATE
+%token RDO_ADVANCE
+%token RDO_RELEASE
+%token RDO_if
+%token RDO_for
+%token RDO_result
+%token RDO_CF
+%token RDO_Priority
+%token RDO_prior
+%token RDO_Parent
+%token RDO_PlusEqual
+%token RDO_MinusEqual
+%token RDO_MultiplyEqual
+%token RDO_DivideEqual
+%token RDO_array
+%token RDO_event
+%token RDO_Planning
+%token RDO_else
+%token RDO_IncrEqual
+%token RDO_DecrEqual
+%token RDO_Stopping
+%token RDO_Start
+%token RDO_Stop
+%token RDO_WatchStart
+%token RDO_WatchStop
 
-%token RDO_IDENTIF_RELRES				427
+%token RDO_Frame
+%token RDO_Show_if
+%token RDO_Back_picture
+%token RDO_Show
+%token RDO_frm_cell
+%token RDO_text
+%token RDO_bitmap
+%token RDO_s_bmp
+%token RDO_rect
+%token RDO_r_rect
+%token RDO_line
+%token RDO_ellipse
+%token RDO_triang
+%token RDO_active
+%token RDO_ruler
+%token RDO_space
+%token RDO_color_transparent
+%token RDO_color_last
+%token RDO_color_white
+%token RDO_color_black
+%token RDO_color_red
+%token RDO_color_green
+%token RDO_color_blue
+%token RDO_color_cyan
+%token RDO_color_magenta
+%token RDO_color_yellow
+%token RDO_color_gray
 
-%token RDO_STRING_CONST					430
-%token RDO_STRING_CONST_BAD				431
-%token RDO_IDENTIF_BAD					432
-%token RDO_Select						433
-%token RDO_Size							434
-%token RDO_Empty						435
-%token RDO_not							436
-%token RDO_UMINUS						437
-%token RDO_string						438
-%token RDO_bool							439
-%token RDO_BOOL_CONST					440
-%token RDO_Fuzzy						441
-%token RDO_Fuzzy_Term					442
-%token RDO_eq							443
-%token RDO_External_Model				444
-%token RDO_QUEUE						445
-%token RDO_DEPART						446
-%token RDO_ASSIGN						447
+%token RDO_IDENTIF_RELRES
+%token RDO_typedef
+%token RDO_enum
 
+%token RDO_STRING_CONST
+%token RDO_STRING_CONST_BAD
+%token RDO_IDENTIF_BAD
+%token RDO_Select
+%token RDO_Size
+%token RDO_Empty
+%token RDO_not
+%token RDO_UMINUS
+%token RDO_string
+%token RDO_bool
+%token RDO_BOOL_CONST
+%token RDO_Fuzzy
+%token RDO_Fuzzy_Term
+%token RDO_eq
+%token RDO_External_Model
+%token RDO_QUEUE
+%token RDO_DEPART
+%token RDO_ASSIGN
 
 %{
+// ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"
-
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/rdo_array.h"
+#include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+// ===============================================================================
 
-#define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-namespace rdoParse 
-{
+#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
+#define RDOVALUE(A)   (*P_RDOVALUE(A))
+
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %left RDO_or
@@ -208,1257 +230,1841 @@ namespace rdoParse
 
 %%
 
-fun_list:	fun_consts fun_func_seq;
-			| error {
-				if ( PARSER->getFUNConstants().empty() ) {
-					PARSER->error( @1, "Ожидается описание функции, последовательности или константы" );
-				} else {
-					PARSER->error( @1, "Ожидается описание функции или последовательности" );
-				}
-			};
+fun_list
+	: fun_consts fun_func_seq
+	| error
+	{
+		if (PARSER->getFUNConstants().empty())
+		{
+			PARSER->error().error(@1, _T("Ожидается описание функции, последовательности или константы"));
+		}
+		else
+		{
+			PARSER->error().error(@1, _T("Ожидается описание функции или последовательности"));
+		}
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Константы
 // ----------------------------------------------------------------------------
-fun_consts:		/* empty */
-				| RDO_Constant fun_const_body RDO_End
-				| RDO_Constant fun_const_body
-				{
-					PARSER->error( @2, "После описания констант ожидается ключевое слово $End" );
-				};
+fun_consts
+	: /* empty */
+	| RDO_Constant fun_const_body RDO_End
+	| RDO_Constant fun_const_body
+	{
+		PARSER->error().error(@2, _T("После описания констант ожидается ключевое слово $End"));
+	}
+	;
 
-fun_const_body:	/* empty */
-				| fun_const_body fun_const_param_desc
-				| fun_const_body error
-				{
-					PARSER->error( @2, "Ожидается описание константы" );
-				};
+fun_const_body
+	: /* empty */
+	| fun_const_body fun_const_param_desc
+	| fun_const_body error
+	{
+		PARSER->error().error(@2, _T("Ожидается описание константы"));
+	}
+	;
 
-fun_const_param_desc:	RDO_IDENTIF_COLON param_type
-						{
-							RDOValue* name = reinterpret_cast<RDOValue*>($1);
-							PARSER->checkFunctionName( name->src_info() );
-							RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
-							if ( !parType->getDV().isExist() )
-							{
-								PARSER->error( @2, "Константа должна иметь значение" );
-							}
-							RDOFUNConst* param = new RDOFUNConst( PARSER, name->src_info(), parType );
-							RDOFUNConstant* newConst = new RDOFUNConstant( PARSER, param );
-							newConst->setSrcInfo( name->src_info() );
-							RUNTIME->setConstValue( newConst->getNumber(), newConst->getType()->getDefaultValue( RDOParserSrcInfo(param->src_info()) ) );
-							$$ = (int)newConst;
-						}
-						| RDO_IDENTIF_COLON
-						{
-							PARSER->error( @1, "Ожидается тип константы" );
-						}
-						| RDO_IDENTIF_COLON error
-						{
-							PARSER->error( @2, "Ошибка описания типа константы" );
-						};
-
-// ----------------------------------------------------------------------------
-// ---------- Описание типа параметра
-// ----------------------------------------------------------------------------
-param_type:		RDO_integer param_int_diap param_int_default_val
-				{
-					RDORTPIntDiap*    diap = reinterpret_cast<RDORTPIntDiap*>($2);
-					RDORTPDefVal*       dv = reinterpret_cast<RDORTPDefVal*>($3);
-					RDORTPIntParamType* rp = new RDORTPIntParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
-					$$ = (int)rp;
-				}
-				| RDO_real param_real_diap param_real_default_val
-				{
-					RDORTPRealDiap*    diap = reinterpret_cast<RDORTPRealDiap*>($2);
-					RDORTPDefVal*        dv = reinterpret_cast<RDORTPDefVal*>($3);
-					RDORTPRealParamType* rp = new RDORTPRealParamType( PARSER->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
-					$$ = (int)rp;
-				}
-				| RDO_string param_string_default_val
-				{
-					RDORTPDefVal*          dv = reinterpret_cast<RDORTPDefVal*>($2);
-					RDORTPStringParamType* rp = new RDORTPStringParamType( PARSER->getLastParsingObject(), dv, RDOParserSrcInfo( @1, @2 ) );
-					$$ = (int)rp;
-				}
-				| RDO_bool param_bool_default_val
-				{
-					RDORTPDefVal*        dv = reinterpret_cast<RDORTPDefVal*>($2);
-					RDORTPBoolParamType* rp = new RDORTPBoolParamType( PARSER->getLastParsingObject(), dv, RDOParserSrcInfo( @1, @2 ) );
-					$$ = (int)rp;
-				}
-				| param_enum param_enum_default_val
-				{
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 0;
-					RDORTPEnum*  enu = reinterpret_cast<RDORTPEnum*>($1);
-					RDORTPDefVal* dv = reinterpret_cast<RDORTPDefVal*>($2);
-					if ( dv->isExist() )
-					{
-						enu->findEnumValueWithThrow( dv->value().src_pos(), dv->value().value().getAsString() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
-					}
-					RDORTPEnumParamType* rp = new RDORTPEnumParamType( PARSER->getLastParsingObject(), enu, dv, RDOParserSrcInfo( @1, @2 ) );
-					$$ = (int)rp;
-				}
-				| param_such_as
-				{
-					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
-					RDOParserSrcInfo src_info( @1 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructorSuchAs( src_info );
-				}
-				| param_such_as '=' RDO_INT_CONST
-				{
-					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
-					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructorSuchAs( src_info, *reinterpret_cast<RDOValue*>($3) );
-				}
-				| param_such_as '=' RDO_REAL_CONST
-				{
-					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
-					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructorSuchAs( src_info, *reinterpret_cast<RDOValue*>($3) );
-				}
-				| param_such_as '=' RDO_IDENTIF
-				{
-					const RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
-					RDOParserSrcInfo src_info( @1, @3 );
-					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->name() + "." : "") + param->name() );
-					$$ = (int)param->getType()->constructorSuchAs( src_info, *reinterpret_cast<RDOValue*>($3) );
-				}
-				| param_such_as '=' error
-				{
-					PARSER->error( "Ожидается зачение по-умолчанию" );
-				}
-				| param_such_as error
-				{
-					PARSER->error( "Ожидается окончание описания параметра-ссылки, например, зачение по-умолчанию" );
-				};
-/*
-				| RDO_integer error {
-					PARSER->error( @2, "Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию." );
-				}
-				| RDO_real error {
-					PARSER->error( @2, "Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию." );
-				}
-				| param_enum error {
-					PARSER->error( @2, "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
-				};
-*/
-param_int_diap:	/* empty */ {
-					YYLTYPE pos = @0;
-					pos.first_line   = pos.last_line;
-					pos.first_column = pos.last_column;
-					RDORTPIntDiap* diap = new RDORTPIntDiap( PARSER, pos );
-					$$ = (int)diap;
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					RDORTPIntDiap* diap = new RDORTPIntDiap( PARSER, reinterpret_cast<RDOValue*>($2)->value().getInt(), reinterpret_cast<RDOValue*>($4)->value().getInt(), RDOParserSrcInfo( @1, @5 ), @4 );
-					$$ = (int)diap;
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST {
-					PARSER->error( @2, "Требуется целочисленный диапазон, указан вещественный" );
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST {
-					PARSER->error( @2, "Требуется целочисленный диапазон, указан вещественный" );
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST {
-					PARSER->error( @4, "Требуется целочисленный диапазон, указан вещественный" );
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' error {
-					PARSER->error( @2, "Диапазон задан неверно" );
-				};
-
-param_real_diap:	/* empty */ {
-					YYLTYPE pos = @0;
-					pos.first_line   = pos.last_line;
-					pos.first_column = pos.last_column;
-					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, pos );
-					$$ = (int)diap;
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
-					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
-					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
-					$$ = (int)diap;
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
-					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
-					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
-					$$ = (int)diap;
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']' {
-					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
-					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
-					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
-					$$ = (int)diap;
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']' {
-					double min = reinterpret_cast<RDOValue*>($2)->value().getDouble();
-					double max = reinterpret_cast<RDOValue*>($4)->value().getDouble();
-					RDORTPRealDiap* diap = new RDORTPRealDiap( PARSER, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
-					$$ = (int)diap;
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' RDO_REAL_CONST RDO_dblpoint error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' RDO_INT_CONST RDO_dblpoint error {
-					PARSER->error( @4, "Диапазон задан неверно" );
-				}
-				| '[' error {
-					PARSER->error( @2, "Диапазон задан неверно" );
-				};
-
-param_int_default_val:	/* empty */ {
-						$$ = (int)new RDORTPDefVal(PARSER);
-					}
-					| '=' RDO_INT_CONST {
-						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2) );
-					}
-					| '=' RDO_REAL_CONST {
-						PARSER->error( @2, rdo::format("Целое число инициализируется вещественным: %f", reinterpret_cast<RDOValue*>($2)->value().getDouble()) );
-					}
-					| '=' {
-						PARSER->error( @1, "Не указано значение по-умолчанию для целого типа" );
-					}
-					| '=' error {
-						PARSER->error( @2, "Неверное значение по-умолчанию для целого типа" );
-					};
-
-param_real_default_val:	/* empty */ {
-						$$ = (int)new RDORTPDefVal(PARSER);
-					}
-					| '=' RDO_REAL_CONST {
-						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
-					}
-					| '=' RDO_INT_CONST {
-						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
-					}
-					| '=' {
-						PARSER->error( @1, "Не указано значение по-умолчанию для вещественного типа" );
-					}
-					| '=' error {
-						PARSER->error( @2, "Неверное значение по-умолчанию для вещественного типа" );
-					};
-
-param_string_default_val:	/* empty */
-					{
-						$$ = (int)new RDORTPDefVal(PARSER);
-					}
-					| '=' RDO_STRING_CONST
-					{
-						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
-					}
-					| '='
-					{
-						PARSER->error( @1, "Не указано значение по-умолчанию для строчного типа" );
-					}
-					| '=' error
-					{
-						PARSER->error( @2, "Неверное значение по-умолчанию для строчного типа" );
-					};
-
-param_bool_default_val:	/* empty */
-					{
-						$$ = (int)new RDORTPDefVal(PARSER);
-					}
-					| '=' RDO_BOOL_CONST
-					{
-						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
-					}
-					| '='
-					{
-						PARSER->error( @1, "Не указано значение по-умолчанию для булевского типа" );
-					}
-					| '=' error
-					{
-						PARSER->error( @2, "Неверное значение по-умолчанию для булевского типа" );
-					};
-
-param_enum:	'(' param_enum_list ')' {
-				RDORTPEnum* enu = reinterpret_cast<RDORTPEnum*>($2);
-				enu->setSrcPos( @1, @3 );
-				enu->setSrcText( enu->getEnums().asString() );
-				$$ = $2;
-			}
-			| '(' param_enum_list {
-				PARSER->error( @2, "Перечисление должно заканчиваться скобкой" );
-			};
-
-param_enum_list: RDO_IDENTIF {
-					RDORTPEnum* enu = new RDORTPEnum( PARSER->getLastParsingObject(), *reinterpret_cast<RDOValue*>($1) );
-					enu->setSrcInfo( reinterpret_cast<RDOValue*>($1)->src_info() );
-					reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt = 1;
-					$$ = (int)enu;
-				}
-				| param_enum_list ',' RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
-						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
-						enu->add( *reinterpret_cast<RDOValue*>($3) );
-						$$ = (int)enu;
-					} else {
-						PARSER->error( @3, "Ошибка в описании значений перечислимого типа" );
-					}
-				}
-				| param_enum_list RDO_IDENTIF {
-					if ( reinterpret_cast<RDOLexer*>(lexer)->m_enum_param_cnt >= 1 ) {
-						PARSER->error( @1, rdo::format("Пропущена запятая перед: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
-					} else {
-						PARSER->error( @2, "Ошибка в описании значений перечислимого типа" );
-					}
-				}
-				| param_enum_list error {
-					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-					if ( str.empty() ) {
-						PARSER->error( @1, "Ошибка в описании значений перечислимого типа" );
-					} else {
-						PARSER->error( @2, rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
-					}
-				}
-				| param_enum_list ',' RDO_INT_CONST {
-					PARSER->error( @3, "Значение перечислимого типа не может начинаться с цифры" );
-				}
-				| param_enum_list ',' RDO_REAL_CONST {
-					PARSER->error( @3, "Значение перечислимого типа не может начинаться с цифры" );
-				}
-				| RDO_INT_CONST {
-					PARSER->error( @1, "Значение перечислимого типа не может начинаться с цифры" );
-				}
-				| RDO_REAL_CONST {
-					PARSER->error( @1, "Значение перечислимого типа не может начинаться с цифры" );
-				}
-				| error {
-					PARSER->error( @1, "Ошибка в описании значений перечислимого типа" );
-				};
-
-param_enum_default_val:	/* empty */ {
-						$$ = (int)new RDORTPDefVal(PARSER);
-					}
-					| '=' RDO_IDENTIF {
-						$$ = (int)new RDORTPDefVal(PARSER, *reinterpret_cast<RDOValue*>($2));
-					}
-					| '=' {
-						PARSER->error( @1, "Не указано значение по-умолчанию для перечислимого типа" );
-					}
-					| '=' error {
-						PARSER->error( @2, "Неверное значение по-умолчанию для перечислимого типа" );
-					};
-
-param_such_as:	RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {
-					std::string type  = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					std::string param = reinterpret_cast<RDOValue*>($4)->value().getIdentificator();
-					const RDORTPResType* const rt = PARSER->findRTPResType( type );
-					if ( !rt ) {
-						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
-					}
-					const RDORTPParam* const rp = rt->findRTPParam( param );
-					if ( !rp ) {
-						PARSER->error( @4, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", type.c_str(), param.c_str()) );
-					}
-					$$ = (int)rp;
-				}
-				| RDO_such_as RDO_IDENTIF {
-					std::string constName = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					const RDOFUNConstant* const cons = PARSER->findFUNConstant( constName );
-					if ( !cons ) {
-						PARSER->error( @2, rdo::format("Ссылка на несуществующую константу: %s", constName.c_str()) );
-					}
-					$$ = (int)cons->getDescr();
-				}
-				| RDO_such_as RDO_IDENTIF '.' {
-					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					const RDORTPResType* const rt = PARSER->findRTPResType( type );
-					if ( !rt ) {
-						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
-					} else {
-						PARSER->error( @3, "Не указан параметер" );
-					}
-				}
-				| RDO_such_as RDO_IDENTIF '.' error {
-					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					const RDORTPResType* const rt = PARSER->findRTPResType( type );
-					if ( !rt ) {
-						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
-					} else {
-						PARSER->error( @4, "Ошибка при указании параметра" );
-					}
-				}
-				| RDO_such_as RDO_IDENTIF error {
-					std::string type = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-					const RDORTPResType* const rt = PARSER->findRTPResType( type );
-					if ( !rt ) {
-						PARSER->error( @2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()) );
-					} else {
-						PARSER->error( @2, "После имени типа должен быть указан параметер через точку" );
-					}
-				}
-				| RDO_such_as error {
-					PARSER->error( @2, "После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки" );
-				};
-// ----------------------------------------------------------------------------
+fun_const_param_desc
+	: RDO_IDENTIF_COLON param_type param_value_default
+	{
+		PTR(RDOValue) name = P_RDOVALUE($1);
+		PARSER->checkFunctionName(name->src_info());
+		LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($2);
+		ASSERT(pParamType);
+		LPRDOFUNConstant pConstant = rdo::Factory<RDOFUNConstant>::create(name->src_info(), pParamType, RDOVALUE($3));
+		ASSERT(pConstant);
+		RUNTIME->setConstValue(pConstant->getNumber(), pConstant->getDefault().value());
+		$$ = PARSER->stack().push(pConstant);
+	}
+	| RDO_IDENTIF_COLON
+	{
+		PARSER->error().error(@1, _T("Ожидается тип константы"));
+	}
+	| RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error(@2, _T("Ошибка описания типа константы"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Последовательности и функции
 // ----------------------------------------------------------------------------
-fun_func_seq:	/* empty */
-			| fun_func_seq fun_func_descr
-			| fun_func_seq fun_seq_descr
-			| fun_func_seq RDO_Constant {
-				PARSER->error( @2, "Константы долны быть описаны первыми, перед функциями и последовательностями" );
-			};
+fun_func_seq
+	: /* empty */
+	| fun_func_seq fun_func_descr
+	| fun_func_seq fun_seq_descr
+	| fun_func_seq RDO_Constant
+	{
+		PARSER->error().error(@2, _T("Константы долны быть описаны первыми, перед функциями и последовательностями"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Функции
 // ----------------------------------------------------------------------------
-fun_func_descr:	fun_func_header fun_func_footer
-				| fun_func_header error {
-					RDOFUNFunction* fun = reinterpret_cast<RDOFUNFunction*>($1);
-					PARSER->error( @2, rdo::format("Ожидается ключевое слово $Type с указанием типа функции '%s'", fun->name().c_str()) );
-				};
+fun_func_descr
+	: fun_func_header fun_func_footer
+	| fun_func_header error
+	{
+		LPRDOFUNFunction pFunction = PARSER->stack().pop<RDOFUNFunction>($1);
+		ASSERT(pFunction);
+		PARSER->error().error(@2, rdo::format(_T("Ожидается ключевое слово $Type с указанием типа функции '%s'"), pFunction->name().c_str()));
+	}
+	;
 
-fun_func_header:	RDO_Function RDO_IDENTIF_COLON param_type {
-						RDOValue* name = reinterpret_cast<RDOValue*>($2);
-						PARSER->checkFunctionName( name->src_info() );
-						RDORTPParamType* retType = reinterpret_cast<RDORTPParamType*>($3);
-						RDOFUNFunction* fun = new RDOFUNFunction( PARSER, name->src_info(), retType );
-						if ( retType->typeID() == rdoRuntime::RDOType::t_enum && static_cast<RDORTPEnumParamType*>(retType)->enum_name.empty() ) {
-							static_cast<RDORTPEnumParamType*>(retType)->enum_name = name->value().getIdentificator();
-							static_cast<RDORTPEnumParamType*>(retType)->enum_fun  = true;
-						}
-						$$ = (int)fun;
-					}
-					| RDO_Function RDO_IDENTIF_COLON error {
-						std::string name = reinterpret_cast<RDOValue*>($2)->value().getIdentificator();
-						PARSER->error( @3, rdo::format("Ожидается тип возвращаемого значения функции '%s'", name.c_str()) );
-					}
-					| RDO_Function error {
-						PARSER->error( @2, "После ключевого слова $Function ожидается имя фунции" );
-					};
+fun_func_header
+	: RDO_Function RDO_IDENTIF_COLON param_type param_value_default
+	{
+		PTR(RDOValue) name = reinterpret_cast<PTR(RDOValue)>($2);
+		PARSER->checkFunctionName(name->src_info());
+		LPRDOTypeParam pRetType = PARSER->stack().pop<RDOTypeParam>($3);
+		ASSERT(pRetType);
+		LPRDOParam pReturn = rdo::Factory<RDOParam>::create(name->src_info(), pRetType, RDOVALUE($4));
+		ASSERT(pReturn);
+		LPRDOFUNFunction pFunction = rdo::Factory<RDOFUNFunction>::create(name->src_info(), pReturn);
+		ASSERT(pFunction);
+		$$ = PARSER->stack().push(pFunction);
+	}
+	| RDO_Function RDO_IDENTIF_COLON error
+	{
+		tstring name = P_RDOVALUE($2)->value().getIdentificator();
+		PARSER->error().error(@3, rdo::format(_T("Ожидается тип возвращаемого значения функции '%s'"), name.c_str()));
+	}
+	| RDO_Function error
+	{
+		PARSER->error().error(@2, _T("После ключевого слова $Function ожидается имя фунции"));
+	}
+	;
 
-fun_func_parameters:	/* empty */
-					| RDO_Parameters fun_func_params {
-					};
+fun_func_parameters
+	: /* empty */
+	| RDO_Parameters fun_func_params
+	;
 
-fun_func_params:	/* empty */
-				| fun_func_params RDO_IDENTIF_COLON param_type {
-					RDOValue*        name = reinterpret_cast<RDOValue*>($2);
-					RDORTPParamType* type = reinterpret_cast<RDORTPParamType*>($3);
-					RDOFUNFunctionParam* param = new RDOFUNFunctionParam( PARSER->getLastFUNFunction(), name->src_info(), type );
-					PARSER->getLastFUNFunction()->add( param );
-				}
-				| fun_func_params RDO_IDENTIF_COLON error {
-					PARSER->error( @3, "Ожидается тип параметра функции" );
-				}
-				| fun_func_params error {
-					PARSER->error( @2, "Ожидается описание параметра функции в формате <имя>: <тип>" );
-				};
+fun_func_params
+	: /* empty */
+	| fun_func_params RDO_IDENTIF_COLON param_type param_value_default
+	{
+		PTR(RDOValue)  name  = P_RDOVALUE($2);
+		LPRDOTypeParam pType = PARSER->stack().pop<RDOTypeParam>($3);
+		ASSERT(pType);
+		LPRDOParam pParam = rdo::Factory<RDOParam>::create(name->src_info(), pType, RDOVALUE($4));
+		ASSERT(pParam);
+		PARSER->getLastFUNFunction()->add(pParam);
+	}
+	| fun_func_params RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error(@3, _T("Ожидается тип параметра функции"));
+	}
+	| fun_func_params error
+	{
+		PARSER->error().error(@2, _T("Ожидается описание параметра функции в формате <имя>: <тип>"));
+	}
+	;
 
-fun_func_footer:	RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body fun_func_algorithmic_body RDO_End {
-						RDOFUNFunction* currFunc = PARSER->getLastFUNFunction();
-						currFunc->createAlgorithmicCalc( @5 );
-					}
-					| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End {
-						RDOFUNFunction* currFunc = PARSER->getLastFUNFunction();
-						currFunc->createListCalc();
-					}
-					| RDO_Type '=' RDO_table fun_func_parameters RDO_Body fun_func_list_body RDO_End {
-						RDOFUNFunction* currFunc = PARSER->getLastFUNFunction();
-						currFunc->createTableCalc( @6 );
-					}
-					| RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body fun_func_algorithmic_body error {
-						PARSER->error( @7, "Ожидается ключевое слово $End" );
-					}
-					| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body error {
-						PARSER->error( @7, "Ожидается ключевое слово $End" );
-					}
-					| RDO_Type '=' RDO_table fun_func_parameters RDO_Body fun_func_list_body error {
-						PARSER->error( @7, "Ожидается ключевое слово $End" );
-					}
-					| RDO_Type '=' RDO_algorithmic error {
-						PARSER->error( @4, "Ожидается ключевое слово $Parameters" );
-					}
-					| RDO_Type '=' RDO_list error {
-						PARSER->error( @4, "Ожидается ключевое слово $Parameters" );
-					}
-					| RDO_Type '=' RDO_table error {
-						PARSER->error( @4, "Ожидается ключевое слово $Parameters" );
-					}
-					| RDO_Type '=' error {
-						PARSER->error( @3, "Неизвестный тип функции" );
-					}
-					| RDO_Type error {
-						PARSER->error( @2, "После ключевого слова $Type ожидается тип функции" );
-					};
+fun_func_footer
+	:	RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body fun_func_algorithmic_body RDO_End
+	{
+		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
+		ASSERT(pFunction);
+		pFunction->createAlgorithmicCalc(@5);
+	}
+	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
+	{
+		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
+		ASSERT(pFunction);
+		pFunction->createListCalc();
+	}
+	| RDO_Type '=' RDO_table fun_func_parameters RDO_Body fun_func_list_body RDO_End
+	{
+		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
+		ASSERT(pFunction);
+		pFunction->createTableCalc(@6);
+	}
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body fun_func_algorithmic_body error
+	{
+		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
+	}
+	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body error
+	{
+		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
+	}
+	| RDO_Type '=' RDO_table fun_func_parameters RDO_Body fun_func_list_body error
+	{
+		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
+	}
+	| RDO_Type '=' RDO_algorithmic error
+	{
+		PARSER->error().error(@4, _T("Ожидается ключевое слово $Parameters"));
+	}
+	| RDO_Type '=' RDO_list error
+	{
+		PARSER->error().error(@4, _T("Ожидается ключевое слово $Parameters"));
+	}
+	| RDO_Type '=' RDO_table error
+	{
+		PARSER->error().error(@4, _T("Ожидается ключевое слово $Parameters"));
+	}
+	| RDO_Type '=' error
+	{
+		PARSER->error().error(@3, _T("Неизвестный тип функции"));
+	}
+	| RDO_Type error
+	{
+		PARSER->error().error(@2, _T("После ключевого слова $Type ожидается тип функции"));
+	}
+	;
 
-fun_func_algorithmic_body:	/* empty */
-							| fun_func_algorithmic_body fun_func_algorithmic_calc_if {
-								RDOFUNCalculateIf* calculateIf = reinterpret_cast<RDOFUNCalculateIf*>($2);
-								PARSER->getLastFUNFunction()->add( calculateIf );
-							};
+fun_func_algorithmic_body
+	: /* empty */
+	| fun_func_algorithmic_body fun_func_algorithmic_calc_if
+	{
+		LPRDOFUNCalculateIf pCalculateIf = PARSER->stack().pop<RDOFUNCalculateIf>($2);
+		ASSERT(pCalculateIf);
+		PARSER->getLastFUNFunction()->add(pCalculateIf);
+	}
+	;
 
-fun_func_calc_if:	RDO_Calculate_if {
-					}
-					| RDO_if {
-					};
+fun_func_calc_if
+	: RDO_Calculate_if
+	| RDO_if
+	;
 
-fun_func_calc_name:	RDO_result {
-					}
-					| RDO_IDENTIF {
-						std::string name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						if ( name != PARSER->getLastFUNFunction()->name() ) {
-							PARSER->error( @1, rdo::format("Ожидается имя функции '%s'", PARSER->getLastFUNFunction()->name().c_str()) );
-						}
-					};
+fun_func_calc_name
+	: RDO_result
+	| RDO_IDENTIF
+	{
+		tstring name = P_RDOVALUE($1)->value().getIdentificator();
+		if ( name != PARSER->getLastFUNFunction()->name() )
+		{
+			PARSER->error().error(@1, rdo::format(_T("Ожидается имя функции '%s'"), PARSER->getLastFUNFunction()->name().c_str()));
+		}
+	}
+	;
 
-fun_func_algorithmic_calc_if:	fun_func_calc_if fun_logic fun_func_calc_name '=' fun_arithm {
-									RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-									logic->setSrcText( "Calculate_if " + logic->src_text() );
-									RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($5);
-									RDOFUNCalculateIf* calculateIf = new RDOFUNCalculateIf( PARSER->getLastFUNFunction(), logic, arithm );
-									$$ = (int)calculateIf;
-								}
-								| fun_func_calc_if fun_logic fun_func_calc_name '=' error {
-									PARSER->error( @5, "Ошибка в арифметическом выражении" );
-								}
-								| fun_func_calc_name '=' fun_arithm {
-									rdoRuntime::RDOCalcConst* calc_cond = new rdoRuntime::RDOCalcConst( RUNTIME, 1 );
-									RDOParserSrcInfo logic_src_info( "Calculate_if 1 = 1" );
-									logic_src_info.setSrcPos( @1.first_line, @1.first_column, @1.first_line, @1.first_column );
-									calc_cond->setSrcInfo( logic_src_info );
-									RDOFUNLogic* logic = new RDOFUNLogic( PARSER->getLastFUNFunction(), calc_cond, true );
-									logic->setSrcInfo( logic_src_info );
-									RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
-									RDOFUNCalculateIf* calculateIf = new RDOFUNCalculateIf( PARSER->getLastFUNFunction(), logic, arithm );
-									$$ = (int)calculateIf;
-								}
-								| fun_func_calc_name '=' error {
-									PARSER->error( @3, "Ошибка в арифметическом выражении" );
-								}
-								| fun_func_calc_if fun_logic fun_func_calc_name error {
-									PARSER->error( @4, "Ожидается '='" );
-								}
-								| fun_func_calc_name error {
-									PARSER->error( @2, "Ожидается '='" );
-								}
-								| fun_func_calc_if fun_logic error {
-									PARSER->error( @2, @3, "После логического выражения ожидается <имя_функции> = <результат_функции>" );
-								}
-								| fun_func_calc_if error {
-									PARSER->error( @2, "Ошибка в логическом выражении" );
-								}
-								| error {
-									PARSER->error( @1, "Ожидается ключевое слово Calculate_if" );
-								};
+fun_func_algorithmic_calc_if
+	: fun_func_calc_if fun_logic fun_func_calc_name '=' fun_arithm
+	{
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pLogic->setSrcText(_T("Calculate_if ") + pLogic->src_text());
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
+		ASSERT(pArithm);
+		LPRDOFUNCalculateIf pCalculateIf = rdo::Factory<RDOFUNCalculateIf>::create(pLogic, pArithm);
+		ASSERT(pCalculateIf);
+		$$ = PARSER->stack().push(pCalculateIf);
+	}
+	| fun_func_calc_if fun_logic fun_func_calc_name '=' error
+	{
+		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+	}
+	| fun_func_calc_name '=' fun_arithm
+	{
+		rdoRuntime::LPRDOCalc pCondition = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		RDOParserSrcInfo logic_src_info(_T("Calculate_if 1 = 1"));
+		logic_src_info.setSrcPos( @1.m_first_line, @1.m_first_pos, @1.m_first_line, @1.m_first_pos );
+		pCondition->setSrcInfo( logic_src_info );
+		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCondition, true);
+		pLogic->setSrcInfo( logic_src_info );
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		LPRDOFUNCalculateIf pCalculateIf = rdo::Factory<RDOFUNCalculateIf>::create(pLogic, pArithm);
+		ASSERT(pCalculateIf);
+		$$ = PARSER->stack().push(pCalculateIf);
+	}
+	| fun_func_calc_name '=' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+	}
+	| fun_func_calc_if fun_logic fun_func_calc_name error
+	{
+		PARSER->error().error(@4, _T("Ожидается '='"));
+	}
+	| fun_func_calc_name error
+	{
+		PARSER->error().error(@2, _T("Ожидается '='"));
+	}
+	| fun_func_calc_if fun_logic error
+	{
+		PARSER->error().error(@2, @3, _T("После логического выражения ожидается <имя_функции> = <результат_функции>"));
+	}
+	| fun_func_calc_if error
+	{
+		PARSER->error().error(@2, _T("Ошибка в логическом выражении"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Ожидается ключевое слово Calculate_if"));
+	}
+	;
 
-fun_func_list_body:	/* empty */
-			| fun_func_list_body fun_func_list_value;
+fun_func_list_body
+	: /* empty */
+	| fun_func_list_body fun_func_list_value
+	;
 
-fun_func_list_value: RDO_IDENTIF {
-						std::string str = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-						RDOFUNFunctionListElementIdentif* value = new RDOFUNFunctionListElementIdentif( PARSER->getLastFUNFunction(), RDOParserSrcInfo( @1, str ) );
-						PARSER->getLastFUNFunction()->add( value );
-						$$ = (int)value;
-					}
-					| RDO_REAL_CONST {
-						RDOFUNFunctionListElementReal* value = new RDOFUNFunctionListElementReal( PARSER->getLastFUNFunction(), @1, reinterpret_cast<RDOValue*>($1)->value().getDouble() );
-						PARSER->getLastFUNFunction()->add( value );
-						$$ = (int)value;
-					}
-					| RDO_INT_CONST {
-						RDOFUNFunctionListElementInt* value = new RDOFUNFunctionListElementInt( PARSER->getLastFUNFunction(), @1, reinterpret_cast<RDOValue*>($1)->value().getInt() );
-						PARSER->getLastFUNFunction()->add( value );
-						$$ = (int)value;
-					}
-					| '=' {
-						RDOFUNFunctionListElementEq* value = new RDOFUNFunctionListElementEq( PARSER->getLastFUNFunction(), @1 );
-						PARSER->getLastFUNFunction()->add( value );
-						$$ = (int)value;
-					};
+fun_func_list_value
+	: RDO_IDENTIF
+	{
+		tstring str = P_RDOVALUE($1)->value().getIdentificator();
+		LPRDOFUNFunctionListElementIdentif pValue = rdo::Factory<RDOFUNFunctionListElementIdentif>::create(RDOParserSrcInfo(@1, str));
+		ASSERT(pValue);
+		PARSER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
+		$$ = PARSER->stack().push(pValue);
+	}
+	| RDO_REAL_CONST
+	{
+		LPRDOFUNFunctionListElementReal pValue = rdo::Factory<RDOFUNFunctionListElementReal>::create(@1, P_RDOVALUE($1)->value().getDouble());
+		ASSERT(pValue);
+		PARSER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
+		$$ = PARSER->stack().push(pValue);
+	}
+	| RDO_INT_CONST
+	{
+		LPRDOFUNFunctionListElementInt pValue = rdo::Factory<RDOFUNFunctionListElementInt>::create(@1, P_RDOVALUE($1)->value().getInt());
+		ASSERT(pValue);
+		PARSER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
+		$$ = PARSER->stack().push(pValue);
+	}
+	| '='
+	{
+		LPRDOFUNFunctionListElementEq pValue = rdo::Factory<RDOFUNFunctionListElementEq>::create(@1);
+		ASSERT(pValue);
+		PARSER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
+		$$ = PARSER->stack().push(pValue);
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Последовательности
 // ----------------------------------------------------------------------------
-fun_seq_descr:		fun_seq_uniform
-					| fun_seq_exponential
-					| fun_seq_normal
-					| fun_seq_by_hist
-					| fun_seq_enumerative;
+fun_seq_descr
+	: fun_seq_uniform
+	| fun_seq_exponential
+	| fun_seq_normal
+	| fun_seq_by_hist
+	| fun_seq_enumerative
+	;
 
-fun_seq_header:		RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '=' {
-						RDOValue* name = reinterpret_cast<RDOValue*>($2);
-						PARSER->checkFunctionName( name->src_info() );
-						$$ = (int)(new RDOFUNSequence::RDOFUNSequenceHeader( PARSER, reinterpret_cast<RDORTPParamType*>($3), name->src_info() ));
-					}
-					| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '=' error {
-						PARSER->error( @6, "После знака равенства ожидается тип последовательности" );
-					}
-					| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type error {
-						PARSER->error( @5, "После ключевого слова $Type ожидается знак равенства и тип последовательности" );
-					}
-					| RDO_Sequence RDO_IDENTIF_COLON param_type error {
-						PARSER->error( @4, "Ожидается ключевое слово $Type" );
-					}
-					| RDO_Sequence RDO_IDENTIF_COLON error {
-						PARSER->error( @2, @3, "После имени последовательности ожидается тип возвращаемого значения" );
-					}
-					| RDO_Sequence error {
-						PARSER->error( @1, @2, "После ключевого слова $Sequence ожидаются имя и тип результата последовательности в формате '<имя> : <тип>'" );
-					};
+fun_seq_header
+	: RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '='
+	{
+		PTR(RDOValue) name = P_RDOVALUE($2);
+		PARSER->checkFunctionName( name->src_info() );
+		LPRDOTypeParam pType = PARSER->stack().pop<RDOTypeParam>($3);
+		ASSERT(pType);
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = rdo::Factory<RDOFUNSequence::RDOFUNSequenceHeader>::create(pType, name->src_info());
+		ASSERT(pHeader);
+		$$ = PARSER->stack().push(pHeader);
+	}
+	| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '=' error
+	{
+		PARSER->error().error(@6, _T("После знака равенства ожидается тип последовательности"));
+	}
+	| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type error
+	{
+		PARSER->error().error(@5, _T("После ключевого слова $Type ожидается знак равенства и тип последовательности"));
+	}
+	| RDO_Sequence RDO_IDENTIF_COLON param_type error
+	{
+		PARSER->error().error(@4, _T("Ожидается ключевое слово $Type"));
+	}
+	| RDO_Sequence RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error(@2, @3, _T("После имени последовательности ожидается тип возвращаемого значения"));
+	}
+	| RDO_Sequence error
+	{
+		PARSER->error().error(@1, @2, _T("После ключевого слова $Sequence ожидаются имя и тип результата последовательности в формате '<имя> : <тип>'"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Датчики случайных чисел
 // ----------------------------------------------------------------------------
-fun_seq_uniform:	fun_seq_header RDO_uniform RDO_End {
-						RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-						RDOFUNSequence* seq = new RDOFUNSequenceUniform( PARSER, header );
-						seq->createCalcs();
-						$$ = (int)seq;
-					}
-					| fun_seq_header RDO_uniform RDO_INT_CONST RDO_End {
-						RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-						RDOFUNSequence* seq = new RDOFUNSequenceUniform( PARSER, header, reinterpret_cast<RDOValue*>($3)->value().getInt() );
-						seq->createCalcs();
-						$$ = (int)seq;
-					}
-					| fun_seq_header RDO_uniform RDO_INT_CONST error {
-						PARSER->error( @4, "После базы ожидается ключевое слово $End" );
-					}
-					| fun_seq_header RDO_uniform error {
-						PARSER->error( @3, "После типа последовательности ожидается база генератора или ключевое слово $End" );
-					};
+fun_seq_uniform
+	: fun_seq_header RDO_uniform RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceUniform>::create(pHeader);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_uniform RDO_INT_CONST RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceUniform>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_uniform RDO_INT_CONST error
+	{
+		PARSER->error().error(@4, _T("После базы ожидается ключевое слово $End"));
+	}
+	| fun_seq_header RDO_uniform error
+	{
+		PARSER->error().error(@3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+	}
+	;
 
-fun_seq_exponential: fun_seq_header RDO_exponential RDO_End {
-						RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-						RDOFUNSequence* seq = new RDOFUNSequenceExponential( PARSER, header, $3 );
-						seq->createCalcs();
-						$$ = (int)seq;
-					}
-					| fun_seq_header RDO_exponential RDO_INT_CONST RDO_End {
-						RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-						RDOFUNSequence* seq = new RDOFUNSequenceExponential( PARSER, header, reinterpret_cast<RDOValue*>($3)->value().getInt() );
-						seq->createCalcs();
-						$$ = (int)seq;
-					}
-					| fun_seq_header RDO_exponential RDO_INT_CONST error {
-						PARSER->error( @4, "После базы ожидается ключевое слово $End" );
-					}
-					| fun_seq_header RDO_exponential error {
-						PARSER->error( @3, "После типа последовательности ожидается база генератора или ключевое слово $End" );
-					};
+fun_seq_exponential
+	: fun_seq_header RDO_exponential RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceExponential>::create(pHeader);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_exponential RDO_INT_CONST RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceExponential>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_exponential RDO_INT_CONST error
+	{
+		PARSER->error().error( @4, _T("После базы ожидается ключевое слово $End"));
+	}
+	| fun_seq_header RDO_exponential error
+	{
+		PARSER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+	}
+	;
 
-fun_seq_normal:		fun_seq_header RDO_normal RDO_End {
-						RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-						RDOFUNSequence* seq = new RDOFUNSequenceNormal( PARSER, header );
-						seq->createCalcs();
-						$$ = (int)seq;
-					}
-					| fun_seq_header RDO_normal RDO_INT_CONST RDO_End {
-						RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-						RDOFUNSequence* seq = new RDOFUNSequenceNormal( PARSER, header, reinterpret_cast<RDOValue*>($3)->value().getInt() );
-						seq->createCalcs();
-						$$ = (int)seq;
-					}
-					| fun_seq_header RDO_normal RDO_INT_CONST error {
-						PARSER->error( @4, "После базы ожидается ключевое слово $End" );
-					}
-					| fun_seq_header RDO_normal error {
-						PARSER->error( @3, "После типа последовательности ожидается база генератора или ключевое слово $End" );
-					};
+fun_seq_normal
+	: fun_seq_header RDO_normal RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceNormal>::create(pHeader);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_normal RDO_INT_CONST RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceNormal>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_normal RDO_INT_CONST error
+	{
+		PARSER->error().error( @4, _T("После базы ожидается ключевое слово $End"));
+	}
+	| fun_seq_header RDO_normal error
+	{
+		PARSER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Гистограмма
 // ----------------------------------------------------------------------------
-fun_seq_by_hist_header:		fun_seq_header RDO_by_hist RDO_Body {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-								$$ = (int)new RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader( PARSER, header );
-							}
-							| fun_seq_header RDO_by_hist RDO_INT_CONST RDO_Body {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequence::RDOFUNSequenceHeader*>($1);
-								$$ = (int)new RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader( PARSER, header, reinterpret_cast<RDOValue*>($3)->value().getInt() );
-							}
-							| fun_seq_header RDO_by_hist RDO_INT_CONST error {
-								PARSER->error( @4, "После базы ожидается ключевое слово $Body" );
-							}
-							| fun_seq_header RDO_by_hist error {
-								PARSER->error( @3, "После типа последовательности ожидается база генератора или ключевое слово $Body" );
-							};
+fun_seq_by_hist_header
+	: fun_seq_header RDO_by_hist RDO_Body
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pByHistHeader = rdo::Factory<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>::create(pHeader);
+		ASSERT(pByHistHeader);
+		$$ = PARSER->stack().push(pByHistHeader);
+	}
+	| fun_seq_header RDO_by_hist RDO_INT_CONST RDO_Body
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pByHistHeader = rdo::Factory<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		ASSERT(pByHistHeader);
+		$$ = PARSER->stack().push(pByHistHeader);
+	}
+	| fun_seq_header RDO_by_hist RDO_INT_CONST error
+	{
+		PARSER->error().error( @4, _T("После базы ожидается ключевое слово $Body"));
+	}
+	| fun_seq_header RDO_by_hist error
+	{
+		PARSER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $Body"));
+	}
+	;
 
-fun_seq_by_hist_body_real:	fun_seq_by_hist_header RDO_REAL_CONST RDO_REAL_CONST RDO_REAL_CONST
-							{
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								if ( header->header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->header->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_header RDO_INT_CONST RDO_REAL_CONST RDO_REAL_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								if ( header->header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->header->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_header RDO_REAL_CONST RDO_INT_CONST RDO_REAL_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								if ( header->header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->header->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_header RDO_REAL_CONST RDO_REAL_CONST RDO_INT_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								if ( header->header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->header->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_header RDO_INT_CONST RDO_INT_CONST RDO_REAL_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_header RDO_REAL_CONST RDO_INT_CONST RDO_INT_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								if ( header->header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->header->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_header RDO_INT_CONST RDO_REAL_CONST RDO_INT_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								if ( header->header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->header->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_header RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistReal( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-							}
-							| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST RDO_REAL_CONST {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->src_text().c_str()) );
-								}
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST RDO_REAL_CONST {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->src_text().c_str()) );
-								}
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST RDO_REAL_CONST {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->src_text().c_str()) );
-								}
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST RDO_INT_CONST {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->src_text().c_str()) );
-								}
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST RDO_REAL_CONST {
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST RDO_INT_CONST {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->src_text().c_str()) );
-								}
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST RDO_INT_CONST {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->getType()->typeID() == rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", header->src_text().c_str()) );
-								}
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST {
-								reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->addReal( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3), *reinterpret_cast<RDOValue*>($4) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_header RDO_REAL_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								PARSER->error( @2, @3, "Ожидается конец диапазона" );
-							}
-							| fun_seq_by_hist_header RDO_INT_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								PARSER->error( @2, @3, "Ожидается конец диапазона" );
-							}
-							| fun_seq_by_hist_header RDO_REAL_CONST RDO_REAL_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_header RDO_INT_CONST RDO_REAL_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_header RDO_REAL_CONST RDO_INT_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_header RDO_INT_CONST RDO_INT_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_real && header->header->getType()->typeID() != rdoRuntime::RDOType::t_int ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_body_real RDO_REAL_CONST error {
-								PARSER->error( @2, @3, "Ожидается конец диапазона" );
-							}
-							| fun_seq_by_hist_body_real RDO_INT_CONST error {
-								PARSER->error( @2, @3, "Ожидается конец диапазона" );
-							}
-							| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST error {
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST error {
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST error {
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST error {
-								PARSER->error( @3, @4, "Ожидается относительная вероятность" );
-							}
-							| fun_seq_by_hist_header RDO_End {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								PARSER->error( header->src_info(), rdo::format("Последовательность '%s' не должна быть пустой", header->src_text().c_str()) );
-							};
+fun_seq_by_hist_body_real
+	: fun_seq_by_hist_header RDO_REAL_CONST RDO_REAL_CONST RDO_REAL_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		if ( pHeader->getHeader()->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_INT_CONST RDO_REAL_CONST RDO_REAL_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		if ( pHeader->getHeader()->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_REAL_CONST RDO_INT_CONST RDO_REAL_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		if ( pHeader->getHeader()->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_REAL_CONST RDO_REAL_CONST RDO_INT_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		if ( pHeader->getHeader()->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_INT_CONST RDO_INT_CONST RDO_REAL_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_REAL_CONST RDO_INT_CONST RDO_INT_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		if ( pHeader->getHeader()->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_INT_CONST RDO_REAL_CONST RDO_INT_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		if ( pHeader->getHeader()->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST RDO_REAL_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
+		ASSERT(pHeader);
+		if ( pHeader->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+		}
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST RDO_REAL_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
+		ASSERT(pHeader);
+		if ( pHeader->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+		}
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST RDO_REAL_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
+		ASSERT(pHeader);
+		if ( pHeader->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+		}
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST RDO_INT_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
+		ASSERT(pHeader);
+		if ( pHeader->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+		}
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST RDO_REAL_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST RDO_INT_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
+		ASSERT(pHeader);
+		if ( pHeader->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+		}
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST RDO_INT_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
+		ASSERT(pHeader);
+		if ( pHeader->getType()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+		}
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST
+	{
+		LPRDOFUNSequenceByHistReal pSequence = PARSER->stack().pop<RDOFUNSequenceByHistReal>($1);
+		ASSERT(pSequence);
+		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_REAL_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if (pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int)
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		PARSER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+	}
+	| fun_seq_by_hist_header RDO_INT_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		PARSER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+	}
+	| fun_seq_by_hist_header RDO_REAL_CONST RDO_REAL_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+	}
+	| fun_seq_by_hist_header RDO_INT_CONST RDO_REAL_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+	}
+	| fun_seq_by_hist_header RDO_REAL_CONST RDO_INT_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность"));
+	}
+	| fun_seq_by_hist_header RDO_INT_CONST RDO_INT_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+	}
+	| fun_seq_by_hist_body_real RDO_REAL_CONST error
+	{
+		PARSER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+	}
+	| fun_seq_by_hist_body_real RDO_INT_CONST error
+	{
+		PARSER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+	}
+	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST error
+	{
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+	}
+	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST error
+	{
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+	}
+	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST error
+	{
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+	}
+	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST error
+	{
+		PARSER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+	}
+	| fun_seq_by_hist_header RDO_End
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		PARSER->error().error( pHeader->src_info(), rdo::format(_T("Последовательность '%s' не должна быть пустой"), pHeader->src_text().c_str()) );
+	}
+	;
 
-fun_seq_by_hist_body_enum:	fun_seq_by_hist_header RDO_IDENTIF RDO_REAL_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_enum ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistEnum( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3) );
-							}
-							| fun_seq_by_hist_header RDO_IDENTIF RDO_INT_CONST {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_enum ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								$$ = (int)new RDOFUNSequenceByHistEnum( PARSER, header, *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3) );
-							}
-							| fun_seq_by_hist_body_enum RDO_IDENTIF RDO_REAL_CONST {
-								reinterpret_cast<RDOFUNSequenceByHistEnum*>($1)->addEnum( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_body_enum RDO_IDENTIF RDO_INT_CONST {
-								reinterpret_cast<RDOFUNSequenceByHistEnum*>($1)->addEnum( *reinterpret_cast<RDOValue*>($2), *reinterpret_cast<RDOValue*>($3) );
-								$$ = $1;
-							}
-							| fun_seq_by_hist_header RDO_IDENTIF error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->getType()->typeID() != rdoRuntime::RDOType::t_enum ) {
-									PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-								}
-								PARSER->error( @2, @3, rdo::format("Ожидается относительная вероятность для значения: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
-							}
-							| fun_seq_by_hist_body_enum RDO_IDENTIF error {
-								PARSER->error( @2, @3, rdo::format("Ожидается относительная вероятность для значения: %s", reinterpret_cast<RDOValue*>($2)->value().getIdentificator().c_str()) );
-							}
-							| fun_seq_by_hist_body_enum RDO_REAL_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-							}
-							| fun_seq_by_hist_body_enum RDO_INT_CONST error {
-								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								PARSER->error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", header->header->getType()->src_text().c_str()) );
-							};
+fun_seq_by_hist_body_enum
+	: fun_seq_by_hist_header RDO_IDENTIF RDO_REAL_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_enum )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, RDOVALUE($2), RDOVALUE($3));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_IDENTIF RDO_INT_CONST
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_enum )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, RDOVALUE($2), RDOVALUE($3));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_enum RDO_IDENTIF RDO_REAL_CONST
+	{
+		LPRDOFUNSequenceByHistEnum pSequence = PARSER->stack().pop<RDOFUNSequenceByHistEnum>($1);
+		ASSERT(pSequence);
+		pSequence->addEnum(RDOVALUE($2), RDOVALUE($3));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_enum RDO_IDENTIF RDO_INT_CONST
+	{
+		LPRDOFUNSequenceByHistEnum pSequence = PARSER->stack().pop<RDOFUNSequenceByHistEnum>($1);
+		ASSERT(pSequence);
+		pSequence->addEnum(RDOVALUE($2), RDOVALUE($3));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_header RDO_IDENTIF error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		if ( pHeader->getHeader()->getType()->type()->typeID() != rdoRuntime::RDOType::t_enum )
+		{
+			PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		}
+		PARSER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), P_RDOVALUE($2)->value().getIdentificator().c_str()) );
+	}
+	| fun_seq_by_hist_body_enum RDO_IDENTIF error
+	{
+		PARSER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), P_RDOVALUE($2)->value().getIdentificator().c_str()) );
+	}
+	| fun_seq_by_hist_body_enum RDO_REAL_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+	}
+	| fun_seq_by_hist_body_enum RDO_INT_CONST error
+	{
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
+		ASSERT(pHeader);
+		PARSER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+	}
+	;
 
-fun_seq_by_hist:	fun_seq_by_hist_body_real RDO_End {
-						RDOFUNSequence* seq = reinterpret_cast<RDOFUNSequence*>($1);
-						seq->createCalcs();
-					}
-					| fun_seq_by_hist_body_enum RDO_End {
-						RDOFUNSequence* seq = reinterpret_cast<RDOFUNSequence*>($1);
-						seq->createCalcs();
-					}
-					| fun_seq_by_hist_body_real error {
-						PARSER->error( @2, "Ошибка в описании последовательности" );
-					}
-					| fun_seq_by_hist_body_enum error {
-						PARSER->error( @2, "Ошибка в описании последовательности" );
-					}
-					| fun_seq_by_hist_body_real {
-						PARSER->error( @1, "Ожидается ключевое слово $End" );
-					}
-					| fun_seq_by_hist_body_enum {
-						PARSER->error( @1, "Ожидается ключевое слово $End" );
-					};
+fun_seq_by_hist
+	: fun_seq_by_hist_body_real RDO_End
+	{
+		LPRDOFUNSequence pSequence = PARSER->stack().pop<RDOFUNSequence>($1);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_enum RDO_End
+	{
+		LPRDOFUNSequence pSequence = PARSER->stack().pop<RDOFUNSequence>($1);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_by_hist_body_real error
+	{
+		PARSER->error().error( @2, _T("Ошибка в описании последовательности") );
+	}
+	| fun_seq_by_hist_body_enum error
+	{
+		PARSER->error().error( @2, _T("Ошибка в описании последовательности") );
+	}
+	| fun_seq_by_hist_body_real
+	{
+		PARSER->error().error( @1, _T("Ожидается ключевое слово $End") );
+	}
+	| fun_seq_by_hist_body_enum
+	{
+		PARSER->error().error( @1, _T("Ожидается ключевое слово $End") );
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Перечень значений
 // ----------------------------------------------------------------------------
-fun_seq_enumerative:		fun_seq_enumerative_body RDO_End
-							{
-								reinterpret_cast<RDOFUNSequence*>($1)->createCalcs();
-							}
-							| fun_seq_enumerative_header RDO_End
-							{
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
-								PARSER->error( header->src_info(), rdo::format("Последовательность '%s' не должна быть пустой", header->src_text().c_str()) );
-							};
+fun_seq_enumerative
+	: fun_seq_enumerative_body RDO_End
+	{
+		LPRDOFUNSequence pSequence = PARSER->stack().pop<RDOFUNSequence>($1);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_header RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		PARSER->error().error( pHeader->src_info(), rdo::format(_T("Последовательность '%s' не должна быть пустой"), pHeader->src_text().c_str()) );
+	}
+	;
 
-fun_seq_enumerative_header:	fun_seq_header RDO_enumerative RDO_Body {
-							}
-							| fun_seq_header RDO_enumerative RDO_INT_CONST error {
-								PARSER->error( @3, "У последовательности типа enumerative нет базы генератора" );
-							}
-							| fun_seq_header RDO_enumerative RDO_Parameters error {
-								PARSER->error( @3, "У последовательности типа enumerative нет параметров" );
-							}
-							| fun_seq_header RDO_enumerative error {
-								PARSER->error( @3, "После типа последовательности ожидается ключевое слово $Body" );
-							};
+fun_seq_enumerative_header
+	: fun_seq_header RDO_enumerative RDO_Body
+	| fun_seq_header RDO_enumerative RDO_INT_CONST error
+	{
+		PARSER->error().error( @3, _T("У последовательности типа enumerative нет базы генератора") );
+	}
+	| fun_seq_header RDO_enumerative RDO_Parameters error
+	{
+		PARSER->error().error( @3, _T("У последовательности типа enumerative нет параметров") );
+	}
+	| fun_seq_header RDO_enumerative error
+	{
+		PARSER->error().error( @3, _T("После типа последовательности ожидается ключевое слово $Body") );
+	}
+	;
 
-fun_seq_enumerative_body:	  fun_seq_enumerative_header RDO_INT_CONST      { $$ = (int)new RDOFUNSequenceEnumerative( PARSER, reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1), *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_header RDO_REAL_CONST     { $$ = (int)new RDOFUNSequenceEnumerative( PARSER, reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1), *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_header RDO_BOOL_CONST     { $$ = (int)new RDOFUNSequenceEnumerative( PARSER, reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1), *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_header RDO_STRING_CONST   { $$ = (int)new RDOFUNSequenceEnumerative( PARSER, reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1), *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_header RDO_IDENTIF        { $$ = (int)new RDOFUNSequenceEnumerative( PARSER, reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1), *reinterpret_cast<RDOValue*>($2) ); }
+fun_seq_enumerative_body
+	: fun_seq_enumerative_header RDO_INT_CONST
+	{
+		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_header RDO_REAL_CONST
+	{
+		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_header RDO_BOOL_CONST
+	{
+		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_header RDO_STRING_CONST
+	{
+		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_header RDO_IDENTIF
+	{
+		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		ASSERT(pSequence);
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_body RDO_INT_CONST
+	{
+		LPRDOFUNSequenceEnumerative pSequence = PARSER->stack().pop<RDOFUNSequenceEnumerative>($1);
+		ASSERT(pSequence);
+		pSequence->addValue(RDOVALUE($2));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_body RDO_REAL_CONST
+	{
+		LPRDOFUNSequenceEnumerative pSequence = PARSER->stack().pop<RDOFUNSequenceEnumerative>($1);
+		ASSERT(pSequence);
+		pSequence->addValue(RDOVALUE($2));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_body RDO_BOOL_CONST
+	{
+		LPRDOFUNSequenceEnumerative pSequence = PARSER->stack().pop<RDOFUNSequenceEnumerative>($1);
+		ASSERT(pSequence);
+		pSequence->addValue(RDOVALUE($2));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_body RDO_STRING_CONST
+	{
+		LPRDOFUNSequenceEnumerative pSequence = PARSER->stack().pop<RDOFUNSequenceEnumerative>($1);
+		ASSERT(pSequence);
+		pSequence->addValue(RDOVALUE($2));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_body RDO_IDENTIF
+	{
+		LPRDOFUNSequenceEnumerative pSequence = PARSER->stack().pop<RDOFUNSequenceEnumerative>($1);
+		ASSERT(pSequence);
+		pSequence->addValue(RDOVALUE($2));
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_enumerative_body error
+	{
+		PARSER->error().error(@1, @2, _T("Ожидается элемент последовательности или ключевое слово $End"));
+	}
+	;
 
-							| fun_seq_enumerative_body   RDO_INT_CONST      { reinterpret_cast<RDOFUNSequenceEnumerative*>($1)->addValue( *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_body   RDO_REAL_CONST     { reinterpret_cast<RDOFUNSequenceEnumerative*>($1)->addValue( *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_body   RDO_BOOL_CONST     { reinterpret_cast<RDOFUNSequenceEnumerative*>($1)->addValue( *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_body   RDO_STRING_CONST   { reinterpret_cast<RDOFUNSequenceEnumerative*>($1)->addValue( *reinterpret_cast<RDOValue*>($2) ); }
-							| fun_seq_enumerative_body   RDO_IDENTIF        { reinterpret_cast<RDOFUNSequenceEnumerative*>($1)->addValue( *reinterpret_cast<RDOValue*>($2) ); }
+// ----------------------------------------------------------------------------
+// ---------- Описание типа параметра
+// ----------------------------------------------------------------------------
+param_type
+	: RDO_integer param_type_range
+	{
+		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+		LPRDOTypeParam pType;
+		if (pRange)
+		{
+			if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
+			    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
+			{
+				PARSER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
+			}
+			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+			ASSERT(pIntRange);
+			pType = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo(@1, @2));
+		}
+		else
+		{
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1, @2));
+		}
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_real param_type_range
+	{
+		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+		LPRDOTypeParam pType;
+		if (pRange)
+		{
+			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
+			ASSERT(pRealRange);
+			pType = rdo::Factory<RDOTypeParam>::create(pRealRange, RDOParserSrcInfo(@1, @2));
+		}
+		else
+		{
+			pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo(@1, @2));
+		}
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_string
+	{
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_array
+	{
+		LEXER->array_cnt_rst();
+		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+		ASSERT(pArray);
+		LPRDOTypeParam pType  = rdo::Factory<RDOTypeParam>::create(pArray, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_bool
+	{
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_enum
+	{
+		LEXER->enumReset();
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+		ASSERT(pEnum);
+		LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_such_as
+	{
+		LPRDOTypeParamSuchAs pTypeSuchAs = PARSER->stack().pop<RDOTypeParamSuchAs>($1);
+		ASSERT(pTypeSuchAs);
+		LPRDOTypeParam pType = pTypeSuchAs.object_parent_cast<RDOTypeParam>();
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	;
 
-							| fun_seq_enumerative_body error
-							{
-								PARSER->error( @1, @2, "Ожидается элемент последовательности или ключевое слово $End" );
-							};
+param_type_range
+	: /* empty */
+	{
+		$$ = PARSER->stack().push<RDOTypeRangeRange>(LPRDOTypeRangeRange());
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' error
+	{
+		PARSER->error().error(@2, _T("Диапазон задан неверно"));
+	}
+	;
 
+param_type_enum
+	: '(' param_type_enum_list ')'
+	{
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($2);
+		ASSERT(pEnum);
+		$$ = PARSER->stack().push(pEnum);
+	}
+	| '(' param_type_enum_list error
+	{
+		PARSER->error().error(@2, _T("Перечисление должно заканчиваться скобкой"));
+	}
+	;
+
+param_type_enum_list
+	: RDO_IDENTIF
+	{
+		LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
+		ASSERT(pEnum);
+		pEnum->add(RDOVALUE($1));
+		LEXER->enumBegin();
+		$$ = PARSER->stack().push(pEnum);
+	}
+	| param_type_enum_list ',' RDO_IDENTIF
+	{
+		if (!LEXER->enumEmpty())
+		{
+			LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+			ASSERT(pEnum);
+			pEnum->add(RDOVALUE($3));
+			$$ = PARSER->stack().push(pEnum);
+		}
+		else
+		{
+			PARSER->error().error(@3, _T("Ошибка в описании значений перечислимого типа"));
+		}
+	}
+	| param_type_enum_list RDO_IDENTIF
+	{
+		if (!LEXER->enumEmpty())
+		{
+			LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+			ASSERT(pEnum);
+			pEnum->add(RDOVALUE($2));
+			$$ = PARSER->stack().push(pEnum);
+			PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
+		}
+		else
+		{
+			PARSER->error().error(@2, _T("Ошибка в описании значений перечислимого типа"));
+		}
+	}
+	| param_type_enum_list ',' RDO_INT_CONST
+	{
+		PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| param_type_enum_list ',' RDO_REAL_CONST
+	{
+		PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| param_type_enum_list RDO_INT_CONST
+	{
+		PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| param_type_enum_list RDO_REAL_CONST
+	{
+		PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| RDO_INT_CONST
+	{
+		PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+	}
+	| RDO_REAL_CONST
+	{
+		PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+	}
+	;
+
+param_type_such_as
+	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
+	{
+		tstring type  = RDOVALUE($2)->getIdentificator();
+		tstring param = RDOVALUE($4)->getIdentificator();
+		LPRDORTPResType pResType = PARSER->findRTPResType(type);
+		if (!pResType)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+		}
+		LPRDORTPParam pRTPParam = pResType->findRTPParam(param);
+		if (!pRTPParam)
+		{
+			PARSER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
+		}
+		LPRDOParam pParam = pRTPParam.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
+	}
+	| RDO_such_as RDO_IDENTIF
+	{
+		tstring constName = RDOVALUE($2)->getIdentificator();
+		LPRDOFUNConstant pConstant = PARSER->findFUNConstant(constName);
+		if (!pConstant)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
+		}
+		LPRDOParam pParam = pConstant.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
+	}
+	| RDO_such_as RDO_IDENTIF '.' error
+	{
+		tstring type = RDOVALUE($2)->getIdentificator();
+		LPRDORTPResType pResType = PARSER->findRTPResType(type);
+		if (!pResType)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+		}
+		else
+		{
+			PARSER->error().error(@4, _T("Ошибка при указании параметра"));
+		}
+	}
+	| RDO_such_as error
+	{
+		PARSER->error().error(@2, _T("После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки"));
+	}
+	;
+
+param_value_default
+	: /* empty */
+	{
+		$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
+	}
+	| '=' param_value
+	{
+		$$ = $2;
+	}
+	| '=' error
+	{
+		RDOParserSrcInfo src_info(@1, @2, true);
+		if (src_info.src_pos().point())
+		{
+			PARSER->error().error(src_info, _T("Не указано значение по-умолчанию"));
+		}
+		else
+		{
+			PARSER->error().error(src_info, _T("Неверное значение по-умолчанию"));
+		}
+	}
+	;
+
+param_value
+	: RDO_INT_CONST
+	{
+		$$ = $1;
+	}
+	| RDO_REAL_CONST {
+		$$ = $1;
+	}
+	| RDO_STRING_CONST {
+		$$ = $1;
+	}
+	| RDO_IDENTIF {
+		$$ = $1;
+	}
+	| RDO_BOOL_CONST {
+		$$ = $1;
+	}
+	| param_array_value {
+		$$ = $1;
+	}
+	;
+
+param_type_array
+	: RDO_array '<' param_type '>'
+	{
+		LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
+		ASSERT(pParamType);
+		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4));
+		$$ = PARSER->stack().push(pArray);
+	}
+	;
+
+param_array_value
+	:	'[' array_item ']'
+	{
+		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
+		ASSERT(pArrayValue);
+		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
+	}
+	|'[' array_item error {
+		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
+	}
+	;
+
+array_item
+	: param_value
+	{
+		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOParserSrcInfo(@1));
+		ASSERT(pArrayType);
+		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
+		pArrayValue->insertItem(RDOVALUE($1));
+		$$ = PARSER->stack().push(pArrayValue);
+	}
+	| array_item ',' param_value
+	{
+		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+		ASSERT(pArrayValue);
+		pArrayValue->insertItem(RDOVALUE($3));
+		$$ = PARSER->stack().push(pArrayValue);
+	}
+	| array_item param_value
+	{
+		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+		ASSERT(pArrayValue);
+		pArrayValue->insertItem(RDOVALUE($2));
+		$$ = PARSER->stack().push(pArrayValue);
+		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
+	}
+	;
+
+// ----------------------------------------------------------------------------
+// ---------- Общие составные токены для всех объектов РДО
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-fun_logic_eq: '='    { $1 = RDO_eq; }
-			| RDO_eq { $1 = RDO_eq; };
+fun_logic_eq
+	: RDO_eq { $$ = RDO_eq; }
+	;
 
-fun_logic:	  fun_arithm  fun_logic_eq  fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) == *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm  RDO_neq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) != *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm  '<'           fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <  *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm  '>'           fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >  *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm  RDO_leq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) <= *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm  RDO_geq       fun_arithm   { $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) >= *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_logic   RDO_and       fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) && *reinterpret_cast<RDOFUNLogic*>($3));   }
-			| fun_logic   RDO_or        fun_logic    { $$ = (int)(*reinterpret_cast<RDOFUNLogic*>($1) || *reinterpret_cast<RDOFUNLogic*>($3));   }
-			| fun_arithm                             { $$ = (int)new RDOFUNLogic( *reinterpret_cast<RDOFUNArithm*>($1) );                        }
-			| fun_group
-			| fun_select_logic
-			| '[' fun_logic ']'
-			{
-				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1, @3 );
-				logic->setSrcText( "[" + logic->src_text() + "]" );
-				$$ = $2;
-			}
-			| '(' fun_logic ')'
-			{
-				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1, @3 );
-				logic->setSrcText( "(" + logic->src_text() + ")" );
-				$$ = $2;
-			}
-			| RDO_not fun_logic
-			{
-				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				RDOFUNLogic* logic_not = logic->operator_not();
-				logic_not->setSrcPos( @1, @2 );
-				logic_not->setSrcText( "not " + logic->src_text() );
-				$$ = (int)logic_not;
-			}
-			| '[' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			}
-			| '(' fun_logic error {
-				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-			};
+fun_logic
+	: fun_arithm fun_logic_eq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator ==(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm RDO_neq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator !=(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '<' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator <(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '>' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator >(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm RDO_leq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator <=(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm RDO_geq fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNLogic pResult = pArithm1->operator >=(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_logic RDO_and fun_logic
+	{
+		LPRDOFUNLogic pLogic1 = PARSER->stack().pop<RDOFUNLogic>($1);
+		LPRDOFUNLogic pLogic2 = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pLogic1);
+		ASSERT(pLogic2);
+		LPRDOFUNLogic pResult = pLogic1->operator &&(pLogic2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_logic RDO_or fun_logic
+	{
+		LPRDOFUNLogic pLogic1 = PARSER->stack().pop<RDOFUNLogic>($1);
+		LPRDOFUNLogic pLogic2 = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pLogic1);
+		ASSERT(pLogic2);
+		LPRDOFUNLogic pResult = pLogic1->operator ||(pLogic2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm
+	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT(pArithm);
+		LPRDOFUNLogic pResult = rdo::Factory<RDOFUNLogic>::create(pArithm);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_group
+	| fun_select_logic
+	| '[' fun_logic ']'
+	{
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pLogic->setSrcPos (@1, @3);
+		pLogic->setSrcText(_T("[") + pLogic->src_text() + _T("]"));
+		$$ = PARSER->stack().push(pLogic);
+	}
+	| '(' fun_logic ')'
+	{
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pLogic->setSrcPos (@1, @3);
+		pLogic->setSrcText(_T("(") + pLogic->src_text() + _T(")"));
+		$$ = PARSER->stack().push(pLogic);
+	}
+	| RDO_not fun_logic
+	{
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
+		ASSERT(pLogicNot);
+		pLogicNot->setSrcPos (@1, @2);
+		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
+		$$ = PARSER->stack().push(pLogicNot);
+	}
+	| '[' fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| '(' fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
-fun_arithm:	  RDO_INT_CONST                 { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_REAL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_BOOL_CONST                { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_STRING_CONST              { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_IDENTIF                   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1) ); }
-			| RDO_IDENTIF '.' RDO_IDENTIF   { $$ = (int)new RDOFUNArithm( PARSER, *reinterpret_cast<RDOValue*>($1), *reinterpret_cast<RDOValue*>($3) ); }
-			| fun_arithm '+' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) + *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm '-' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) - *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm '*' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) * *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm '/' fun_arithm		{ $$ = (int)(*reinterpret_cast<RDOFUNArithm*>($1) / *reinterpret_cast<RDOFUNArithm*>($3)); }
-			| fun_arithm_func_call
-			| fun_select_arithm
-			| '(' fun_arithm ')'
-			{
-				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
-				arithm->setSrcPos( @1, @3 );
-				arithm->setSrcText( "(" + arithm->src_text() + ")" );
-				$$ = $2;
-			}
-			| '-' fun_arithm %prec RDO_UMINUS
-			{
-				RDOParserSrcInfo info;
-				info.setSrcPos( @1, @2 );
-				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, RDOValue(reinterpret_cast<RDOFUNArithm*>($2)->type(), info), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ) );
-			};
+fun_arithm
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| param_array_value					 { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| fun_arithm '+' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator +(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '-' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator -(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '*' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator *(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '/' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator /(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm_func_call
+	| fun_select_arithm
+	| '(' fun_arithm ')'
+	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		pArithm->setSrcPos (@1, @3);
+		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| '-' fun_arithm %prec RDO_UMINUS
+	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		RDOParserSrcInfo info;
+		info.setSrcPos (@1, @2);
+		info.setSrcText(_T("-") + pArithm->src_text());
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
-fun_arithm_func_call:	RDO_IDENTIF '(' ')' {
-							RDOFUNParams* fun = new RDOFUNParams( PARSER );
-							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
-							fun->setSrcPos( @1, @3 );
-							fun->setSrcText( fun_name + "()" );
-							RDOFUNArithm* arithm = fun->createCall( fun_name );
-							$$ = (int)arithm;
-						}
-						| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {
-							RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($3);
-							std::string fun_name = reinterpret_cast<RDOValue*>($1)->value().getIdentificator();
-							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
-							fun->setSrcPos( @1, @4 );
-							fun->setSrcText( fun_name + "(" + fun->src_text() + ")" );
-							RDOFUNArithm* arithm = fun->createCall( fun_name );
-							$$ = (int)arithm;
-						}
-						| RDO_IDENTIF '(' error {
-							PARSER->error( @3, "Ошибка в параметрах функции" );
-						};
+fun_arithm_func_call
+	: RDO_IDENTIF '(' ')'
+	{
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
+		ASSERT(pFunParams);
+		tstring funName = RDOVALUE($1)->getIdentificator();
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
+		pFunParams->setSrcPos (@1, @3);
+		pFunParams->setSrcText(funName + _T("()"));
+		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')'
+	{
+		LPRDOFUNParams pFunParams = PARSER->stack().pop<RDOFUNParams>($3);
+		ASSERT(pFunParams);
+		tstring funName = RDOVALUE($1)->getIdentificator();
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
+		pFunParams->setSrcPos (@1, @4);
+		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
+		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
+	}
+	;
 
-fun_arithm_func_call_pars:	fun_arithm {
-								RDOFUNParams* fun = new RDOFUNParams( PARSER );
-								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
-								fun->setSrcText( arithm->src_text() );
-								fun->addParameter( arithm );
-								$$ = (int)fun;
-							}
-							| fun_arithm_func_call_pars ',' fun_arithm {
-								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
-								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
-								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
-								fun->addParameter( arithm );
-								$$ = (int)fun;
-							}
-							| fun_arithm_func_call_pars error {
-								PARSER->error( @2, "Ошибка в арифметическом выражении" );
-							}
-							| fun_arithm_func_call_pars ',' error {
-								PARSER->error( @3, "Ошибка в арифметическом выражении" );
-							};
+fun_arithm_func_call_pars
+	: fun_arithm
+	{
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
+		LPRDOFUNArithm pArithm    = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT(pFunParams);
+		ASSERT(pArithm   );
+		pFunParams->setSrcText  (pArithm->src_text());
+		pFunParams->addParameter(pArithm);
+		$$ = PARSER->stack().push(pFunParams);
+	}
+	| fun_arithm_func_call_pars ',' fun_arithm
+	{
+		LPRDOFUNParams pFunParams = PARSER->stack().pop<RDOFUNParams>($1);
+		LPRDOFUNArithm pArithm    = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pFunParams);
+		ASSERT(pArithm   );
+		pFunParams->setSrcText  (pFunParams->src_text() + _T(", ") + pArithm->src_text());
+		pFunParams->addParameter(pArithm);
+		$$ = PARSER->stack().push(pFunParams);
+	}
+	| fun_arithm_func_call_pars error
+	{
+		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+	}
+	| fun_arithm_func_call_pars ',' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
-fun_group_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_group_keyword
+	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
+	;
 
-fun_group_header:	fun_group_keyword '(' RDO_IDENTIF_COLON {
-						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
-						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, type_name->value().getIdentificator() ));
-					}
-					| fun_group_keyword '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
-					}
-					| fun_group_keyword error {
-						PARSER->error( @1, "После имени функции ожидается октрывающаяся скобка" );
-					};
+fun_group_header
+	: fun_group_keyword '(' RDO_IDENTIF_COLON
+	{
+		PTR(RDOValue) type_name = P_RDOVALUE($3);
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+	}
+	| fun_group_keyword '(' error
+	{
+		PARSER->error().error(@3, _T("Ожидается имя типа"));
+	}
+	| fun_group_keyword error
+	{
+		PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+	}
+	;
 
-fun_group:			fun_group_header fun_logic ')' {
-						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
-						groupfun->setSrcPos( @1, @3 );
-						$$ = (int)groupfun->createFunLogic( reinterpret_cast<RDOFUNLogic*>($2) );
-					}
-					| fun_group_header RDO_NoCheck ')' {
-						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
-						groupfun->setSrcPos( @1, @3 );
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( RUNTIME, 1 ) );
-						trueLogic->setSrcPos( @2 );
-						trueLogic->setSrcText( "NoCheck" );
-						$$ = (int)groupfun->createFunLogic( trueLogic );
-					}
-					| fun_group_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-					}
-					| fun_group_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-					}
-					| fun_group_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
-					};
+fun_group
+	: fun_group_header fun_logic ')'
+	{
+		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
+		LPRDOFUNLogic      pLogic    = PARSER->stack().pop<RDOFUNLogic>     ($2);
+		ASSERT(pGroupFun);
+		ASSERT(pLogic   );
+		pGroupFun->setSrcPos(@1, @3);
+		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pLogic));
+	}
+	| fun_group_header RDO_NoCheck ')'
+	{
+		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
+		ASSERT(pGroupFun);
+		pGroupFun->setSrcPos(@1, @3);
+		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
+		ASSERT(pTrueLogic);
+		pTrueLogic->setSrcPos (@2);
+		pTrueLogic->setSrcText(_T("NoCheck"));
+		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
+	}
+	| fun_group_header fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_group_header RDO_NoCheck error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_group_header error
+	{
+		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+	}
+	;
 
 // ----------------------------------------------------------------------------
 // ---------- Select
 // ----------------------------------------------------------------------------
-fun_select_header:	RDO_Select '(' RDO_IDENTIF_COLON {
-						RDOValue* type_name = reinterpret_cast<RDOValue*>($3);
-						RDOFUNSelect* select = new RDOFUNSelect( PARSER, type_name->src_info() );
-						select->setSrcText( "Select(" + type_name->value().getIdentificator() + ": " );
-						$$ = (int)select;
-					}
-					| RDO_Select '(' error {
-						PARSER->error( @3, "Ожидается имя типа" );
-					}
-					| RDO_Select error {
-						PARSER->error( @1, "Ожидается октрывающаяся скобка" );
-					};
+fun_select_header
+	: RDO_Select '(' RDO_IDENTIF_COLON
+	{
+		PTR(RDOValue)  type_name = P_RDOVALUE($3);
+		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		ASSERT(pSelect);
+		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		$$ = PARSER->stack().push(pSelect);
+	}
+	| RDO_Select '(' error
+	{
+		PARSER->error().error(@3, _T("Ожидается имя типа"));
+	}
+	| RDO_Select error
+	{
+		PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+	}
+	;
 
-fun_select_body:	fun_select_header fun_logic ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						RDOFUNLogic*  flogic = reinterpret_cast<RDOFUNLogic*>($2);
-						select->setSrcText( select->src_text() + flogic->src_text() + ")" );
-						select->initSelect( flogic );
-					}
-					| fun_select_header RDO_NoCheck ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						RDOParserSrcInfo logic_info(@2, "NoCheck");
-						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
-						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( RUNTIME, 1 );
-						RDOFUNLogic* flogic = new RDOFUNLogic( select, calc_nocheck, true );
-						flogic->setSrcInfo( logic_info );
-						select->initSelect( flogic );
-					}
-					| fun_select_header fun_logic error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-					}
-					| fun_select_header RDO_NoCheck error {
-						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
-					}
-					| fun_select_header error {
-						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
-					};
+fun_select_body
+	: fun_select_header fun_logic ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		LPRDOFUNLogic  pLogic  = PARSER->stack().pop<RDOFUNLogic> ($2);
+		ASSERT(pSelect);
+		ASSERT(pLogic );
+		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + _T(")"));
+		pSelect->initSelect(pLogic);
+		$$ = PARSER->stack().push(pSelect);
+	}
+	| fun_select_header RDO_NoCheck ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
+		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
+		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		ASSERT(pCalc);
+		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
+		ASSERT(pLogic);
+		pLogic->setSrcInfo(logicInfo);
+		pSelect->initSelect(pLogic);
+		$$ = PARSER->stack().push(pSelect);
+	}
+	| fun_select_header fun_logic error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_header RDO_NoCheck error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_header error
+	{
+		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+	}
+	;
 
-fun_select_keyword:	RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
-					| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
-					| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
-					| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
+fun_select_keyword
+	: RDO_Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+	| RDO_Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+	| RDO_For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+	| RDO_Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; }
+	;
 
-fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcPos( @1, @6 );
-						RDOFUNLogic* logic = select->createFunSelectGroup( (RDOFUNGroupLogic::FunGroupType)$3, reinterpret_cast<RDOFUNLogic*>($5) );
-						$$ = (int)logic;
-					}
-					| fun_select_body '.' fun_select_keyword '(' error {
-						PARSER->error( @4, @5, "Ошибка в логическом выражении" )
-					}
-					| fun_select_body '.' fun_select_keyword error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
-					}
-					| fun_select_body '.' RDO_Empty '(' ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcPos( @1, @5 );
-						RDOParserSrcInfo empty_info(@3, @5, "Empty()");
-						RDOFUNLogic* logic = select->createFunSelectEmpty( empty_info );
-						$$ = (int)logic;
-					}
-					| fun_select_body '.' RDO_Empty '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
-					}
-					| fun_select_body '.' RDO_Empty error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
-					}
-					| fun_select_body '.' error {
-						PARSER->error( @2, @3, "Ожидается метод списка ресурсов" );
-					}
-					| fun_select_body error {
-						PARSER->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
-					};
+fun_select_logic
+	: fun_select_body '.' fun_select_keyword '(' fun_logic ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		LPRDOFUNLogic  pLogic  = PARSER->stack().pop<RDOFUNLogic> ($5);
+		ASSERT(pSelect);
+		ASSERT(pLogic );
+		pSelect->setSrcPos(@1, @6);
+		LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+		ASSERT(pLogicSelect);
+		$$ = PARSER->stack().push(pLogicSelect);
+	}
+	| fun_select_body '.' fun_select_keyword '(' error
+	{
+		PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+	}
+	| fun_select_body '.' fun_select_keyword error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Empty '(' ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo emptyInfo(@3, @5, _T("Empty()"));
+		LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
+		ASSERT(pLogic);
+		$$ = PARSER->stack().push(pLogic);
+	}
+	| fun_select_body '.' RDO_Empty '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Empty error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' error
+	{
+		PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+	}
+	| fun_select_body error
+	{
+		PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+	}
+	;
 
-fun_select_arithm:	fun_select_body '.' RDO_Size '(' ')' {
-						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcPos( @1, @5 );
-						RDOParserSrcInfo size_info(@3, @5, "Size()");
-						RDOFUNArithm* arithm = select->createFunSelectSize( size_info );
-						$$ = (int)arithm;
-					}
-					| fun_select_body '.' RDO_Size error {
-						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
-					}
-					| fun_select_body '.' RDO_Size '(' error {
-						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
-					};
+fun_select_arithm
+	: fun_select_body '.' RDO_Size '(' ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo sizeInfo(@3, @5, _T("Size()"));
+		LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| fun_select_body '.' RDO_Size error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Size '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	;
 
 %%
 
-}
+CLOSE_RDO_PARSER_NAMESPACE

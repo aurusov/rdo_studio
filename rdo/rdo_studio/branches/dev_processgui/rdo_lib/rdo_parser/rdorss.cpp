@@ -1,67 +1,84 @@
-#include "rdo_lib/rdo_parser/pch.h"
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdorss.cpp
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
+// ====================================================================== PCH
+#include "rdo_lib/rdo_parser/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+// ===============================================================================
 
-namespace rdoParse 
-{
+OPEN_RDO_PARSER_NAMESPACE
 
-int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
-	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+	LEXER->m_lpval = lpval;
+	LEXER->m_lploc = llocp;
+	return LEXER->yylex();
 }
-void rsserror( char* mes )
-{
-}
+
+void rsserror(PTR(char) message)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-RDORSSResource::RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id )
-	: RDOParserObject (_parser                                       )
-	, RDOParserSrcInfo(_src_info                                     )
-	, resType         (_resType                                      )
-	, m_id            (id == UNDEFINED_ID ? _parser->getRSS_id() : id)
+RDORSSResource::RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+	: RDOParserSrcInfo(src_info                                      )
+	, m_pResType      (pResType                                      )
+	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
 	, trace           (false                                         )
 {
-	parser()->insertRSSResource( this );
-	m_currParam = resType->getParams().begin();
+	ASSERT(m_pResType);
+	pParser->insertRSSResource(LPRDORSSResource(this));
+	m_currParam = m_pResType->getParams().begin();
 }
 
-void RDORSSResource::writeModelStructure( std::ostream& stream ) const
+void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
+	stream << (getID() + 1) << _T(" ") << name() << _T(" ") << getType()->getNumber() << std::endl;
 }
 
-void RDORSSResource::addParam( const RDOValue& param )
+void RDORSSResource::addParam(CREF(RDOValue) param)
 {
-	if ( m_currParam == getType()->getParams().end() )
+	if (m_currParam == getType()->getParams().end())
 	{
-		parser()->error_push_only( param.src_info(), "Слишком много параметров" );
-		parser()->error_push_only( getType()->src_info(), "См. тип ресурса" );
-		parser()->error_push_done();
+		RDOParser::s_parser()->error().push_only(param.src_info(), _T("Слишком много параметров"));
+		RDOParser::s_parser()->error().push_only(getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_done();
 	}
 	try
 	{
-		if ( param->getAsString() == "*" )
+		if (param->getAsString() == _T("*"))
 		{
-			m_params.push_back( (*m_currParam)->getType()->getDefaultValue( param ) );
+			if (!(*m_currParam)->getDefault().defined())
+			{
+				RDOParser::s_parser()->error().push_only(param.src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
+				RDOParser::s_parser()->error().push_only((*m_currParam)->getType()->src_info(), _T("См. описание параметра"));
+				RDOParser::s_parser()->error().push_done();
+			}
+			m_paramList.push_back(Param((*m_currParam)->getDefault()));
 			m_currParam++;
 		}
 		else
 		{
-			m_params.push_back( (*m_currParam)->getType()->getValue( param ) );
+			m_paramList.push_back(Param((*m_currParam)->getType()->value_cast(param)));
 			m_currParam++;
 		}
 	}
-	catch( RDOSyntaxException& )
+	catch(REF(RDOSyntaxException))
 	{
-		parser()->error_modify( rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()) );
+		RDOParser::s_parser()->error().modify(rdo::format(_T("Для параметра '%s': "), (*m_currParam)->name().c_str()));
 	}
 }
 
@@ -70,28 +87,39 @@ bool RDORSSResource::defined() const
 	return m_currParam == getType()->getParams().end();
 }
 
-rdoRuntime::RDOCalc* RDORSSResource::createCalc()
+rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 {
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateNumberedResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getID(), getType()->isPermanent() );
-	calc->setSrcInfo( src_info() );
-	calc->setSrcText( "Создание ресурса " + calc->src_text() );
+	std::vector<rdoRuntime::RDOValue> paramList;
+	STL_FOR_ALL_CONST(params(), it)
+	{
+		paramList.push_back(it->param().value());
+	}
+
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateNumberedResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent());
+	calc->setSrcInfo(src_info());
+	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
 	return calc;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id ):
-	RDORSSResource( _parser, _src_info, _resType, id )
-{
-}
+RDOPROCResource::RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+	: RDORSSResource(pParser, src_info, pResType, id)
+{}
 
-rdoRuntime::RDOCalc* RDOPROCResource::createCalc()
+rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 {
-	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateProcessResource( parser()->runtime(), getType()->getNumber(), getTrace(), params(), getID(), getType()->isPermanent() );
-	calc->setSrcInfo( src_info() );
-	calc->setSrcText( "Создание ресурса " + calc->src_text() );
+	std::vector<rdoRuntime::RDOValue> paramList;
+	STL_FOR_ALL_CONST(params(), it)
+	{
+		paramList.push_back(it->param().value());
+	}
+
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateProcessResource>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent());
+	calc->setSrcInfo(src_info());
+	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
 	return calc;
 }
 
-} // namespace rdoParse 
+CLOSE_RDO_PARSER_NAMESPACE

@@ -34,13 +34,14 @@ std::string RDOLogEditLineInfo::getMessage() const
 {
 	std::string file;
 	switch ( fileType ) {
-		case rdoModelObjects::PAT: file = "PAT"; break;
 		case rdoModelObjects::RTP: file = "RTP"; break;
 		case rdoModelObjects::RSS: file = "RSS"; break;
-		case rdoModelObjects::OPR: file = "OPR"; break;
+		case rdoModelObjects::EVN: file = "EVN"; break;
+		case rdoModelObjects::PAT: file = "PAT"; break;
+		case rdoModelObjects::DPT: file = "DPT"; break;
+		case rdoModelObjects::PRC: file = "PRC"; break;
 		case rdoModelObjects::FRM: file = "FRM"; break;
 		case rdoModelObjects::FUN: file = "FUN"; break;
-		case rdoModelObjects::DPT: file = "DPT"; break;
 		case rdoModelObjects::SMR: file = "SMR"; break;
 		case rdoModelObjects::PMD: file = "PMD"; break;
 		default: file = "";

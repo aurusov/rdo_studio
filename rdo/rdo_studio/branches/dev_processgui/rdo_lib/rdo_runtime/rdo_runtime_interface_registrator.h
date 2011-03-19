@@ -25,7 +25,7 @@ INTERFACE_REGISTRATOR(IModelStructure,            7);
 INTERFACE_REGISTRATOR(ITrace,                     8);
 INTERFACE_REGISTRATOR(IName,                      9);
 INTERFACE_REGISTRATOR(IBaseOperation,            10);
-INTERFACE_REGISTRATOR(IIrregEvent,               11);
+INTERFACE_REGISTRATOR(IEvent,                    11);
 INTERFACE_REGISTRATOR(IRule,                     12);
 INTERFACE_REGISTRATOR(IOperation,                13);
 INTERFACE_REGISTRATOR(IKeyboard,                 14);
@@ -41,5 +41,7 @@ INTERFACE_REGISTRATOR(IOperationTrace,           23);
 INTERFACE_REGISTRATOR(IDPTSearchActivity,        24);
 INTERFACE_REGISTRATOR(IDPTSearchLogic,           25);
 INTERFACE_REGISTRATOR(IPROCProcess,              26);
+INTERFACE_REGISTRATOR(IPokazGroup,               27);
+INTERFACE_REGISTRATOR(IPokazGetValue,            28);
 
 #endif //! _RDO_RUNTIME_INTERFACE_REGISTRATOR_H_

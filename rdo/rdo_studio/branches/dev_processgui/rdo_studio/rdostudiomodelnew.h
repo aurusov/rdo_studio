@@ -1,62 +1,77 @@
-#ifndef RDOSTUDIOMODEL_NEW_H
-#define RDOSTUDIOMODEL_NEW_H
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdostudiomodelnew.h
+ * author   : Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
+
+#ifndef _RDOSTUDIOMODEL_NEW_H_
+#define _RDOSTUDIOMODEL_NEW_H_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_studio/resource.h"
+// ===============================================================================
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsGeneral
 // ----------------------------------------------------------------------------
 class RDOStudioModelNew: public CDialog
 {
-friend class RDOStudioApp;
+public:
+	RDOStudioModelNew();
+	virtual ~RDOStudioModelNew();
+
+	tstring getModelName    () const;
+	tstring getModelPath    () const;
+	ruint   getModelTemplate() const;
+
+	virtual void OnOK();
 
 protected:
 	//{{AFX_DATA(RDOStudioModelNew)
 	enum { IDD = IDD_MODEL_NEW };
-	CButton	m_ok;
-	CString	m_modelName;
-	CString	m_modelPath;
-	CString	m_info;
-	BOOL	m_comment;
-	int		m_model_template;
+	CButton  m_ok;
+	CString  m_modelName;
+	CString  m_modelPath;
+	CString  m_info;
+	BOOL     m_comment;
+	int      m_modelTemplate;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(RDOStudioModelNew)
-	public:
-	virtual void OnOK();
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+
+private:
+	virtual void DoDataExchange(PTR(CDataExchange) pDX);
+	virtual BOOL OnNotify      (WPARAM wParam, LPARAM lParam, PTR(LRESULT) pResult);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioModelNew)
-	afx_msg void OnModelPathButton();
-	afx_msg void OnChangeModelName();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnModelEmpty();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void   OnModelPathButton();
+	afx_msg void   OnChangeModelName();
+	virtual BOOL   OnInitDialog     ();
+	afx_msg void   OnModelEmpty     ();
+	afx_msg HBRUSH OnCtlColor       (PTR(CDC) pDC, PTR(CWnd) pWnd, UINT nCtlColor);
 	//}}AFX_MSG
 
 	CString getMyDocFolder() const;
-	void updateInfo();
+	void    updateInfo    ();
 
-	CFont    font_normal;
-	CFont    font_red;
-	COLORREF color_normal;
-	COLORREF color_red;
-	bool     need_red;
+	CFont     m_fontNormal;
+	CFont     m_fontRed;
+	COLORREF  m_colorNormal;
+	COLORREF  m_colorRed;
+	rbool     m_needRed;
 
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioModelNew();
-	virtual ~RDOStudioModelNew();
 };
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOMODEL_NEW_H
+#endif //! _RDOSTUDIOMODEL_NEW_H_

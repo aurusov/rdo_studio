@@ -5,14 +5,14 @@
 #include "rdo_lib/rdo_runtime/searchtree.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
-#include "rdo_lib/rdo_runtime/searchtrace_interface.h"
+#include "rdo_lib/rdo_runtime/searchtrace_i.h"
 
 namespace rdoRuntime
 {
 
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
-DEFINE_FACTORY(RDODPTSearchTrace);
+DEFINE_IFACTORY(RDODPTSearchTrace);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDODPTSearch)
 	QUERY_INTERFACE_PARENT(RDOTraceableObject)

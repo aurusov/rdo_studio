@@ -17,12 +17,10 @@
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_logic_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
-
-class RDOCalc;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogicBase
@@ -47,7 +45,7 @@ protected:
 
 	DECLARE_IBaseOperationContainer;
 
-	PTR(RDOCalc)               m_condition;
+	LPRDOCalc                  m_pCondition;
 	rbool                      m_lastCondition;
 	ChildList                  m_childList;
 	LPIBaseOperation           m_first;
@@ -86,7 +84,7 @@ public:
 class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicSimple);
+	DEFINE_IFACTORY(RDOLogicSimple);
 
 	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent = NULL)
 		: RDOLogic<RDOOrderSimple>(sim, parent)
@@ -101,7 +99,7 @@ protected:
 class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
 protected:
-	DEFINE_FACTORY(RDOLogicMeta);
+	DEFINE_IFACTORY(RDOLogicMeta);
 
 	RDOLogicMeta()
 		: RDOLogic<RDOOrderMeta>()

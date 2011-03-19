@@ -21,6 +21,9 @@
 #include "rdo_lib/rdo_runtime/simtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/rdo_memory.h"
+#include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -48,14 +51,14 @@ public:
 		return *this;
 	}
 
-private:
+	virtual void              flush     () = 0;
 	virtual REF(std::ostream) getOStream() = 0;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
-class RDOIrregEvent;
+class RDOEvent;
 class RDORule;
 class RDOOperation;
 class RDOPROCProcess;
@@ -70,6 +73,9 @@ class RDORuntime: public RDOSimulatorTrace
 public:
 	RDORuntime();
 	virtual ~RDORuntime();
+
+	void init  ();
+	void deinit();
 
 	typedef  std::vector<LPIPokaz>           LPIPokazList;
 	typedef  std::vector<LPIPokazTrace>      LPIPokazTraceList;
@@ -86,7 +92,7 @@ public:
 	void fireMessage(ruint message, PTR(void) param);
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
-	void error( const std::string& message, const RDOCalc* calc = NULL );
+	void error(CREF(tstring) message, CREF(LPRDOCalc) pCalc = NULL);
 
 	class RDOHotKeyToolkit
 	{
@@ -112,7 +118,7 @@ public:
 
 	void setConstValue( unsigned int numberOfConst, RDOValue value );
 	RDOValue getConstValue( int numberOfConst );
-	void rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo );
+	void rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy );
 
 	RDOResults& getResults()     { return *results;      }
 	RDOResults& getResultsInfo() { return *results_info; }
@@ -126,7 +132,7 @@ public:
 	REF(LPIActivity) getCurrentActivity()                           { return m_currActivity;      }
 	void             setCurrentActivity(CREF(LPIActivity) activity) { m_currActivity = activity;  }
 
-	void addRuntimeIE       (LPIBaseOperationContainer logic, CREF(LPIIrregEvent) ie      );
+	void addRuntimeEvent    (LPIBaseOperationContainer logic, CREF(LPIEvent)      ev      );
 	void addRuntimeRule     (LPIBaseOperationContainer logic, CREF(LPIRule)       rule    );
 	void addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation)  opration);
 	void addRuntimePokaz    (CREF(LPIPokaz)      pokaz   );
@@ -136,7 +142,7 @@ public:
 
 	CREF(LPIPokazList) getPokaz() const { return m_pokazAllList; }
 
-	void addInitCalc( RDOCalc* initCalc) { initCalcs.push_back( initCalc ); }
+	void addInitCalc(CREF(LPRDOCalc) initCalc) { initCalcs.push_back( initCalc ); }
 
 	// ѕараметры ресурса
 	RDOValue getResParamVal(ruint resID, ruint paramID) const
@@ -162,7 +168,7 @@ public:
 	void showResources( int node ) const;
 #endif
 
-	void onEraseRes( const int res_id, const RDOCalcEraseRes* calc );
+	void onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc);
 	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
 	RDOResource* createNewResource( unsigned int type, rbool trace );
 	void insertNewResource( RDOResource* res );
@@ -178,11 +184,11 @@ public:
 	void popFuncTop()                      { currFuncTop = funcStack.back().getInt(); funcStack.pop_back(); }
 
 	virtual rbool endCondition();
-	void setTerminateIf( RDOCalc* _terminateIfCalc );
+	void setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc);
 
 	virtual rbool breakPoints();
-	void insertBreakPoint( const std::string& name, RDOCalc* calc );
-	RDOCalc* findBreakPoint( const std::string& name );
+	void insertBreakPoint( const std::string& name, CREF(LPRDOCalc) pCalc );
+	LPRDOCalc findBreakPoint( const std::string& name );
 	std::string getLastBreakPointName() const;
 
 	RDOResource* getResourceByID( const int num ) const { return num >= 0 ? allResourcesByID.at( num ) : NULL; }
@@ -214,6 +220,8 @@ public:
 
 	virtual void postProcess();
 
+	LPRDOMemoryStack getMemoryStack();
+
 	typedef std::list< RDOResource* > ResList;
 	typedef ResList::const_iterator ResCIterator;
 
@@ -226,25 +234,28 @@ public:
 		return allResourcesByTime.end();
 	}
 
+	CREF(LPIThreadProxy) getThreadProxy() const { return m_pThreadProxy; }
+
 private:
-	typedef RDOSimulatorTrace Parent;
+	typedef RDOSimulatorTrace           Parent;
+	typedef std::list<LPRDOCalc>        CalcList;
 	std::vector< RDOResource* > allResourcesByID;      // ¬се ресурсы симул€тора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // ќни же, только упор€дочены по времени создани€ и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // ќни же, только упор€дочены по типу перед запуском
-	std::list  < RDOCalc*     > initCalcs;
-	
+	CalcList                    initCalcs;
+	LPRDOMemoryStack            m_pMemoryStack;
+	LPIThreadProxy              m_pThreadProxy;
 	
 	class BreakPoint: public RDORuntimeObject
 	{
 	public:
 		std::string name;
-		RDOCalc*    calc;
-		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, RDOCalc* _calc ):
+		LPRDOCalc   pCalc;
+		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, CREF(LPRDOCalc) _pCalc ):
 			RDORuntimeObject( _parent ),
-			name( _name ),
-			calc( _calc )
-		{
-		}
+			name ( _name  ),
+			pCalc( _pCalc )
+		{}
 	};
 	std::list< BreakPoint* > breakPointsCalcs;
 	BreakPoint*              lastActiveBreakPoint;
@@ -286,12 +297,12 @@ private:
 	RDOResults* results;
 	RDOResults* results_info;
 
-	RDOCalc* terminateIfCalc;
+	LPRDOCalc pTerminateIfCalc;
 	std::vector< RDOValue > allConstants;
 
 	virtual RDOSimulator* clone();
 	virtual void operator=  (const RDORuntime& other);
-	virtual rbool operator== (RDOSimulator& other);
+	virtual rbool operator== (CREF(RDOSimulator) other);
 
 	void writeExitCode();
 

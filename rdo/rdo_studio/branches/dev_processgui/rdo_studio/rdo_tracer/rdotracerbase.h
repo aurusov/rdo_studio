@@ -18,6 +18,7 @@ class RDOTracerEvent;
 class RDOTracerResult;
 class RDOTracerTimeNow;
 class RDOTracerSerie;
+class RDOTracerResParamInfo;
 
 class RDOTracerTreeCtrl;
 class RDOStudioChartDoc;
@@ -36,6 +37,8 @@ private:
 	rdoTracerLog::RDOTracerLogCtrl* log;
 	RDOTracerTreeCtrl*  tree;
 
+	RDOTracerResParamInfo* getParam( rdo::textstream& stream );
+	RDOTracerResParamInfo* getParamType( rdo::textstream& stream );
 	std::vector <RDOTracerResType*> resTypes;
 	void addResourceType( std::string& s, rdo::textstream& stream );
 	std::vector <RDOTracerResource*> resources;

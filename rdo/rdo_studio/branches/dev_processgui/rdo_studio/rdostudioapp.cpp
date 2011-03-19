@@ -10,6 +10,7 @@
 #include "rdo_studio/rdostudiomodelnew.h"
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
+#include "rdo_studio/win_registry/registry.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_plugin/rdoplugin.h"
@@ -412,8 +413,9 @@ int RDOStudioApp::ExitInstance()
 void RDOStudioApp::OnFileNew() 
 {
 	RDOStudioModelNew dlg;
-	if ( dlg.DoModal() == IDOK ) {
-		model->newModel( std::string(dlg.m_modelName), std::string(dlg.m_modelPath + dlg.m_modelName), dlg.m_model_template * 2 + dlg.m_comment );
+	if (dlg.DoModal() == IDOK)
+	{
+		model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
 	}
 }
 
@@ -701,11 +703,14 @@ void RDOStudioApp::setShowCaptionFullName( const bool value )
 
 void RDOStudioApp::setupFileAssociation()
 {
-	std::string strFileTypeId   = _T("RAO.FileInfo");
-	std::string strFileTypeName = _T("RAO FileInfo");
-	std::string strParam        = _T(" \"%1\"");
-	std::string strPathName     = RDOStudioApp::getFullFileName();
-	std::string strRAOExt       = _T(".smr");
+	std::string strFileTypeId    = _T("RAO.Project");
+	std::string strFileTypeName  = _T("RAO Project");
+	std::string strParam         = _T(" \"%1\"");
+	std::string strPathName      = RDOStudioApp::getFullFileName();
+	std::string strRAOExt        = _T(".rdox");
+
+	std::string strFileTypeIdOld = _T("RAO.FileInfo");
+	std::string strRAOExtOld     = _T(".smr");
 
 	bool win2000 = false;
 	OSVERSIONINFO osvi;
@@ -755,6 +760,12 @@ void RDOStudioApp::setupFileAssociation()
 				}
 			}
 			if ( mustBeRegistered ) {
+				DeleteRegistryKey(hCurUserSoftClasses, strFileTypeIdOld.c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\DefaultIcon")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\shell\\open\\command")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, std::string(strRAOExtOld + _T("\\ShellNew")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, strRAOExtOld.c_str());
+
 				HKEY hKey_tmp;
 				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
 					std::string s = strFileTypeName;
@@ -768,11 +779,6 @@ void RDOStudioApp::setupFileAssociation()
 				}
 				if ( ::RegCreateKeyEx( hCurUserSoftClasses, std::string(strFileTypeId + _T("\\shell\\open\\command")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
 					std::string s = strPathName + strParam;
-					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
-					::RegCloseKey( hKey_tmp );
-				}
-				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strRAOExt.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
-					std::string s = strFileTypeId;
 					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
 					::RegCloseKey( hKey_tmp );
 				}

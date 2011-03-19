@@ -17,9 +17,6 @@
 #define OPEN_RDO_NAMESPACE					namespace rdo {
 #define CLOSE_RDO_NAMESPACE					};
 
-#define OPEN_RDO_MODEL_OBJECTS_NAMESPACE	namespace rdoModelObjects {
-#define CLOSE_RDO_MODEL_OBJECTS_NAMESPACE	};
-
 #define OPEN_RDO_RUNTIME_NAMESPACE			namespace rdoRuntime {
 #define CLOSE_RDO_RUNTIME_NAMESPACE			};
 

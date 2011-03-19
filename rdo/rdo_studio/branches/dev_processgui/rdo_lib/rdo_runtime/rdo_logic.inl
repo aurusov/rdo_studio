@@ -20,14 +20,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 #pragma warning(disable : 4786)
 
-#define LOGIC_FOR_ALL() STL_FOR_ALL(ChildList, m_childList, it)
+#define LOGIC_FOR_ALL() STL_FOR_ALL(m_childList, it)
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOrderSimple
 // ----------------------------------------------------------------------------
 inline LPIBaseOperation RDOOrderSimple::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
 {
-	STL_FOR_ALL(BaseOperationList, container, it)
+	STL_FOR_ALL(container, it)
 	{
 		if ((*it)->onCheckCondition(sim))
 		{
@@ -46,12 +46,12 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 		return NULL;
 
 	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
-	STL_FOR_ALL_CONST(BaseOperationList, container, it)
+	STL_FOR_ALL_CONST(container, it)
 	{
 		LPIPriority pattern = *it;
 		if (pattern)
 		{
-			PTR(RDOCalc) prior = pattern->getPrior();
+			LPRDOCalc prior = pattern->getPrior();
 			if (prior)
 			{
 				RDOValue value = prior->calcValue(runtime);
@@ -61,7 +61,7 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 		}
 	}
 	std::sort(container.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
-	STL_FOR_ALL(BaseOperationList, container, it)
+	STL_FOR_ALL(container, it)
 	{
 		if ((*it)->onCheckCondition(sim))
 		{
@@ -76,10 +76,10 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 // ----------------------------------------------------------------------------
 template <class Order>
 inline RDOLogic<Order>::RDOLogic(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
-	: m_condition    (NULL       )
+	: m_pCondition   (NULL       )
 	, m_lastCondition(false      )
 	, m_first        (NULL       )
-	, m_parent       (parent ? parent : (sim ? sim->m_metaLogic : NULL))
+	, m_parent       (parent ? parent : (sim ? sim->m_pMetaLogic : NULL))
 {}
 
 template <class Order>
@@ -94,9 +94,9 @@ inline void RDOLogic<Order>::init(PTR(RDOSimulator) sim)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::setCondition(PTR(RDOCalc) calc)
+inline void RDOLogic<Order>::setCondition(CREF(LPRDOCalc) pCondition)
 {
-	m_condition = calc;
+	m_pCondition = pCondition;
 }
 
 template <class Order>
@@ -175,7 +175,7 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(PTR(RDOSimulator) si
 template <class Order>
 inline rbool RDOLogic<Order>::checkSelfCondition(PTR(RDOSimulator) sim)
 {
-	return m_condition ? m_condition->calcValue(static_cast<PTR(RDORuntime)>(sim)).getAsBool() : true;
+	return m_pCondition ? m_pCondition->calcValue(static_cast<PTR(RDORuntime)>(sim)).getAsBool() : true;
 }
 
 template <class Order>

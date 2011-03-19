@@ -1,9 +1,20 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_keyboard.cpp
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_keyboard.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOKeyboard
@@ -13,20 +24,17 @@ RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool
 	m_shift( false ),
 	m_control( false ),
 	m_scan_code( RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY )
-{
-}
+{}
 
-RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, RDOCalc* condition, const std::string& name ):
-	RDOOperation( runtime, pattern, trace, condition, name ),
+RDOKeyboard::RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name ):
+	RDOOperation( runtime, pattern, trace, pCondition, name ),
 	m_shift( false ),
 	m_control( false ),
 	m_scan_code( RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY )
-{
-}
+{}
 
 RDOKeyboard::~RDOKeyboard()
-{
-}
+{}
 
 rbool RDOKeyboard::hasHotKey() const
 {
@@ -57,4 +65,4 @@ bool RDOKeyboard::choiceFrom( RDOSimulator *sim )
 	return RDOOperation::choiceFrom( sim ); 
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

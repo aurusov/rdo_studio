@@ -3,12 +3,10 @@
 
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdoprocess_interface.h"
+#include "rdo_lib/rdo_runtime/rdoprocess_i.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
 
 namespace rdoRuntime {
-
-class RDOCalc;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
@@ -42,7 +40,7 @@ class RDOPROCTransact;
 
 class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatternPrior
 {
-DEFINE_FACTORY(RDOPROCProcess)
+DEFINE_IFACTORY(RDOPROCProcess)
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE       (IPROCProcess)
 	QUERY_INTERFACE_PARENT(RDOLogic    )
@@ -115,7 +113,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
 {
-DEFINE_FACTORY(RDOPROCGenerate);
+DEFINE_IFACTORY(RDOPROCGenerate);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
@@ -125,14 +123,14 @@ public:
 	void calcNextTimeInterval( RDOSimulator* sim );
 
 private:
-	RDOPROCGenerate(LPIPROCProcess process, PTR(RDOCalc) time)
+	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime)
 		: RDOPROCBlock(process)
 		, timeNext    (NULL   )
-		, timeCalc    (time   )
+		, pTimeCalc   (pTime  )
 	{}
 
-	double       timeNext;
-	PTR(RDOCalc) timeCalc;
+	double     timeNext;
+	LPRDOCalc  pTimeCalc;
 
 	DECLARE_IBaseOperation;
 };
@@ -167,7 +165,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCQueue);
+DEFINE_IFACTORY(RDOPROCQueue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -190,7 +188,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCDepart);
+DEFINE_IFACTORY(RDOPROCDepart);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -245,7 +243,7 @@ protected:
 // ----------------------------------------------------------------------------
 class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCSeize);
+DEFINE_IFACTORY(RDOPROCSeize);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -272,7 +270,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCRelease);
+DEFINE_IFACTORY(RDOPROCRelease);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
 	QUERY_INTERFACE       (IBaseOperation      )
@@ -296,14 +294,14 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCAdvance);
+DEFINE_IFACTORY(RDOPROCAdvance);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
 QUERY_INTERFACE_END
 
 protected:
-	RDOCalc* delayCalc;
+	LPRDOCalc pDelayCalc;
 
 	struct LeaveTr {
 		RDOPROCTransact* transact;
@@ -317,9 +315,9 @@ protected:
 	std::list< LeaveTr > leave_list;
 
 private:
-	RDOPROCAdvance(LPIPROCProcess process, RDOCalc* _delayCalc)
-		: RDOPROCBlock(process   )
-		, delayCalc   (_delayCalc)
+	RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc)
+		: RDOPROCBlock(process    )
+		, pDelayCalc  (_pDelayCalc)
 	{}
 	DECLARE_IBaseOperation;
 };
@@ -329,7 +327,7 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCTerminate);
+DEFINE_IFACTORY(RDOPROCTerminate);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
@@ -353,25 +351,25 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCAssign: public RDOPROCBlock, public IBaseOperation
 {
-DEFINE_FACTORY(RDOPROCAssign);
+DEFINE_IFACTORY(RDOPROCAssign);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCAssign(LPIPROCProcess process, RDOCalc* value, int Id_res, int Id_param)
+	RDOPROCAssign(LPIPROCProcess process, CREF(LPRDOCalc) pValue, int Id_res, int Id_param)
 		: RDOPROCBlock(process )
-		, paramValue  (value   )
+		, pParamValue (pValue  )
 		, t_resId     (Id_res  )
 		, t_parId     (Id_param)
 	{
 		int i = 0;
 	}
 
-	RDOCalc* paramValue;
-	int t_resId;
-	int t_parId;
+	LPRDOCalc pParamValue;
+	int       t_resId;
+	int       t_parId;
 
 	DECLARE_IBaseOperation;
 };

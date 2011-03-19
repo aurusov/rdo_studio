@@ -1,8 +1,20 @@
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_rule.cpp
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDORule
@@ -16,11 +28,11 @@ RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, cons
 	init();
 }
 
-RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, RDOCalc* condition, const std::string& name )
+RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name )
 	: RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name )
 	, RDOPatternPrior()
-	, RDORuntimeContainer  (runtime  )
-	, m_additionalCondition(condition)
+	, RDORuntimeContainer  (runtime   )
+	, m_additionalCondition(pCondition)
 {
 	init();
 }
@@ -47,8 +59,7 @@ rbool RDORule::choiceFrom(PTR(rdoRuntime::RDORuntime) runtime)
 }
 
 void RDORule::onBeforeRule(PTR(rdoRuntime::RDOSimulator) sim)
-{
-}
+{}
 
 void RDORule::convertRule(PTR(rdoRuntime::RDORuntime) runtime)
 { 
@@ -111,4 +122,4 @@ void                     RDORule::onStop      (PTR(rdoRuntime::RDOSimulator) sim
 void                     RDORule::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
 IBaseOperation::BOResult RDORule::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

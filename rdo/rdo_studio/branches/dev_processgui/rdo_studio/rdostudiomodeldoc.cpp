@@ -103,10 +103,10 @@ BOOL RDOStudioModelDoc::SaveModified()
 		}
 	}
 	if ( flag ) {
-		model->autoDeleteDoc = false;
+		model->m_autoDeleteDoc = false;
 		model->closeModel();
-		model->autoDeleteDoc = true;
-		model->GUI_HAS_MODEL = false;
+		model->m_autoDeleteDoc = true;
+		model->m_GUI_HAS_MODEL = false;
 	}
 	return flag;
 }

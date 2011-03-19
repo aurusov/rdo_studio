@@ -1,16 +1,27 @@
-#ifndef RDO_OPERATION_H
-#define RDO_OPERATION_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_operation.h
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_OPERATION_H_
+#define _RDO_OPERATION_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
-#include "rdo_lib/rdo_runtime/rdo_operation_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_operation_i.h"
+// ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation
@@ -18,7 +29,7 @@ namespace rdoRuntime
 class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior, public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
-DEFINE_FACTORY(RDOOperation);
+DEFINE_IFACTORY(RDOOperation);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(pattern_type)
 	QUERY_INTERFACE_PARENT(RDOPatternPrior)
@@ -33,7 +44,7 @@ friend class RDOSimulator;
 
 protected:
 	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name );
-	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, RDOCalc* condition, const std::string& name );
+	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
 	virtual ~RDOOperation();
 	DECLARE_IOperation;
 
@@ -43,8 +54,8 @@ private:
 	typedef std::vector<LPIOperation> CloneList;
 	CloneList m_cloneList;
 
-	bool     haveAdditionalCondition;
-	RDOCalc* additionalCondition;
+	bool      haveAdditionalCondition;
+	LPRDOCalc additionalCondition;
 
 	int m_operId;
 
@@ -52,6 +63,6 @@ private:
 	DECLARE_IOperationTrace;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_OPERATION_H
+#endif //! _RDO_OPERATION_H_

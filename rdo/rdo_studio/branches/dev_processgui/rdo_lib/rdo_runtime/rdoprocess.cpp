@@ -181,7 +181,7 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
 
 void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 {
-	sim->addTimePoint( timeNext = timeCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime(), m_process, this );
+	sim->addTimePoint( timeNext = pTimeCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime(), m_process, this );
 }
 
 void                     RDOPROCGenerate::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
@@ -466,7 +466,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation( RDOSimulator* sim )
 	if ( !m_transacts.empty() )
 	{
 //		TRACE1(_T("%7.1f ADVANCE BEGIN\n"), sim->getCurrentTime());
-		double timeLeave = delayCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime();
+		double timeLeave = pDelayCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime();
 		leave_list.push_back( LeaveTr(m_transacts.front(), timeLeave) );
 		m_transacts.erase( m_transacts.begin() );
 		sim->addTimePoint( timeLeave, m_process, this );
@@ -537,7 +537,7 @@ bool RDOPROCAssign::onCheckCondition( RDOSimulator* sim )
 IBaseOperation::BOResult RDOPROCAssign::onDoOperation( RDOSimulator* sim )
 {
 	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( t_resId );
-	res->setParam( t_parId, paramValue->calcValue( static_cast<RDORuntime*>(sim) ) );	
+	res->setParam( t_parId, pParamValue->calcValue( static_cast<RDORuntime*>(sim) ) );	
 	TRACE1(_T("%7.1f ASSIGN\n"), sim->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;

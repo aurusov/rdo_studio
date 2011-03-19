@@ -1,18 +1,29 @@
-#ifndef RDO_KEYBOARD_H
-#define RDO_KEYBOARD_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_keyboard.h
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 18.08.2010
+ * bref     : 
+ * indent   : 4T
+ */
 
+#ifndef _RDO_KEYBOARD_H_
+#define _RDO_KEYBOARD_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
-#include "rdo_lib/rdo_runtime/rdo_keyboard_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_keyboard_i.h"
+// ===============================================================================
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOKeyboard
 // ----------------------------------------------------------------------------
 class RDOKeyboard: public RDOOperation, public IKeyboard
 {
-DEFINE_FACTORY(RDOKeyboard);
+DEFINE_IFACTORY(RDOKeyboard);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOOperation)
 	QUERY_INTERFACE(IKeyboard)
@@ -20,7 +31,7 @@ QUERY_INTERFACE_END
 
 private:
 	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, const std::string& name );
-	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, RDOCalc* condition, const std::string& name );
+	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
 	virtual ~RDOKeyboard();
 
 	bool m_shift;
@@ -32,6 +43,6 @@ private:
 	DECLARE_IKeyboard;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_KEYBOARD_H
+#endif //! _RDO_KEYBOARD_H_

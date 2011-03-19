@@ -1,7 +1,6 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_ie.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
@@ -181,7 +180,7 @@ tstring RDOTrace::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim, co
 	return res;
 }
 
-void RDOTrace::writeIrregularEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
+void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
 {
 	if (!canTrace())
 		return;
@@ -201,7 +200,7 @@ void RDOTrace::writeIrregularEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorT
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 
-		getOStream() << "EI " << sim->getCurrentTime()
+		getOStream() << "EE " << sim->getCurrentTime()
 		             << " "   << trace->traceId() 
 		             << " "   << activityPatternTrace->tracePatternId() 
 		             << " "   << activityTrace->traceResourcesListNumbers(sim, true)
@@ -323,8 +322,8 @@ void RDOTrace::writeStatus(PTR(RDOSimulatorTrace) sim, char* status)
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
-	IBaseOperationContainer::CIterator it = sim->m_metaLogic->begin();
-	while (it != sim->m_metaLogic->end())
+	IBaseOperationContainer::CIterator it = sim->m_pMetaLogic->begin();
+	while (it != sim->m_pMetaLogic->end())
 	{
 		LPIDPTSearchTraceStatistics dp_stat = (*it);
 		if (dp_stat)

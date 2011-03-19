@@ -1,15 +1,14 @@
-#ifndef CORBA_ENABLE
+#ifdef RDO_MT
+#include <afxwin.h>
+#else
 #include <windows.h>
 #endif
+
 #include <fstream>
 #include <algorithm>
 #include "rdo_kernel/rdothread.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_common/rdocommon.h"
-
-#ifdef RDO_MT
-#include <afxwin.h>
-#endif
 
 #ifdef TR_TRACE
 #ifdef RDO_MT

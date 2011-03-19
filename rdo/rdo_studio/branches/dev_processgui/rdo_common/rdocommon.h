@@ -17,9 +17,10 @@
 #include <vector>
 #include <sstream>
 // ====================================================================== SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
+#include "namespace.h"
+#include "rdotypes.h"
+#include "rdomacros.h"
+#include "rdo_common/model_objects.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -87,50 +88,6 @@ OPEN_RDO_NAMESPACE
 	};
 CLOSE_RDO_NAMESPACE
 
-OPEN_RDO_MODEL_OBJECTS_NAMESPACE
-	struct RDOSMRFileInfo
-	{
-		tstring  model_name;
-		tstring  resource_file;
-		tstring  oprIev_file;
-		tstring  frame_file;
-		tstring  statistic_file;
-		tstring  results_file;
-		tstring  trace_file;
-		rbool    error;
-
-		RDOSMRFileInfo()
-			: model_name    (_T(""))
-			, resource_file (_T(""))
-			, oprIev_file   (_T(""))
-			, frame_file    (_T(""))
-			, statistic_file(_T(""))
-			, results_file  (_T(""))
-			, trace_file    (_T(""))
-			, error         (false )
-		{}
-	};
-
-	enum RDOFileType  { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
-
-	enum RDOParseType
-	{
-		obNONE = 0x0000,
-		obPRE  = 0x0001,
-		obRTP  = 0x0002,
-		obRSS  = 0x0004,
-		obFUN  = 0x0008,
-		obPAT  = 0x0010,
-		obOPR  = 0x0020,
-		obDPT  = 0x0040,
-		obPMD  = 0x0080,
-		obFRM  = 0x0100,
-		obSMR  = 0x0200,
-		obPOST = 0x0400,
-		obALL  = 0x07FF
-	};
-CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
-
 OPEN_RDO_RUNTIME_NAMESPACE
 	enum RunTimeMode
 	{
@@ -185,6 +142,6 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 	};
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
-#include "rdo_common/rdocommon.inl"
+#include "rdocommon.inl"
 
 #endif //! _RDOCOMMON_H_

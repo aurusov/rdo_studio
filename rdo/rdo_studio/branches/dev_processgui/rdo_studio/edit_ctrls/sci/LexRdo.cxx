@@ -51,7 +51,7 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 				} else if ( traces.InList(s) ) {
 					sc.ChangeState( SCE_RDO_TRACE );
 				} else if ( colors.InList(s) ) {
-					sc.ChangeState( SCE_RDO_COLOR );
+					sc.ChangeState( SCE_RDO_FRAME_COLOR );
 				}
 				sc.SetState( SCE_RDO_DEFAULT );
 			}
@@ -63,10 +63,6 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 			}
 		} else if ( sc.state == SCE_RDO_STRING ) {
 			if ( sc.ch == '\'' ) {
-				sc.ForwardSetState( SCE_RDO_DEFAULT );
-			}
-		} else if ( sc.state == SCE_RDO_COMMENT_RDO ) {
-			if ( sc.ch == '}' ) {
 				sc.ForwardSetState( SCE_RDO_DEFAULT );
 			}
 		} else if ( sc.state == SCE_RDO_COMMENT_CPP ) {
@@ -83,8 +79,6 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 		if ( sc.state == SCE_RDO_DEFAULT ) {
 			if ( sc.ch == '\'' ) {
 				sc.SetState( SCE_RDO_STRING );
-			} else if ( sc.ch == '{' ) {
-				sc.SetState( SCE_RDO_COMMENT_RDO );
 			} else if ( sc.Match('/', '*') ) {
 				sc.SetState( SCE_RDO_COMMENT_CPP );
 				sc.Forward();	// Eat the * so it isn't used for the end of the comment
@@ -121,7 +115,7 @@ static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordLi
 		style = styleNext;
 		styleNext = styler.StyleAt(i + 1);
 		bool atEOL = ( ch == '\r' && chNext != '\n') || (ch == '\n' );
-		if ( (style == SCE_RDO_COMMENT_RDO || style == SCE_RDO_COMMENT_CPP) && styler.GetPropertyInt( "CommentFold" ) != 0 ) {
+		if ( style == SCE_RDO_COMMENT_CPP && styler.GetPropertyInt( "CommentFold" ) != 0 ) {
 			if ( style != stylePrev ) {
 				levelCurrent++;
 			} else if ( (style != styleNext) && !atEOL ) {
@@ -133,8 +127,8 @@ static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordLi
 		} else {
 			if ( str.length() ) {
 				if (
-					str == "$Pattern" || str == "$Resource_type" || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence"  || str == "$Function" || str == "$Decision_point" || str == "$Results" ||
-					str == "$pattern" || str == "$resource_type" || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence"  || str == "$function" || str == "$decision_point" || str == "$results" )
+					str == "$Pattern" || str == "$Resource_type" || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence"  || str == "$Function" || str == "$Decision_point" || str == "$Process" || str == "$Results" ||
+					str == "$pattern" || str == "$resource_type" || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence"  || str == "$function" || str == "$decision_point" || str == "$Process" || str == "$results" )
 				{
 					levelCurrent++;
 				} else if ( str == "$End" ) {

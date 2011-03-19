@@ -1,13 +1,25 @@
-#ifndef RDO_ACTIVITY_H
-#define RDO_ACTIVITY_H
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_activity.h
+ * author   : Урусов Андрей, Лущан Дмитрий
+ * date     : 13.04.2008
+ * bref     : Описание базового класса для событий и активностей -- RDOActivity
+ * indent   : 4T
+ */
 
+#ifndef _RDO_ACTIVITY_H_
+#define _RDO_ACTIVITY_H_
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_common/rdostream.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdo_model_interface.h"
-#include "rdo_lib/rdo_runtime/rdo_activity_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_model_i.h"
+#include "rdo_lib/rdo_runtime/rdo_activity_i.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOActivity
@@ -30,7 +42,7 @@ protected:
 	std::string               m_oprName;
 	std::list< RDOResource* > m_relevantResources; // Список релевантных ресурсов
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
-	std::vector< RDOCalc* >   m_paramsCalcs;
+	std::vector<LPRDOCalc>    m_paramsCalcs;
 
 	void setPatternParameters( RDOSimulator* sim );
 	void getRelevantResources( RDOSimulator* sim, std::list< RDOResource* >& rel_res_list );
@@ -81,6 +93,6 @@ private:
 	}
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_ACTIVITY_H
+#endif //! _RDO_ACTIVITY_H_

@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
 			/>
@@ -106,7 +106,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
@@ -173,7 +173,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -240,7 +240,136 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1049"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug MT|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				BrowseInformation="1"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1049"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release MT|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="../../"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
 			/>
@@ -295,54 +424,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".rdo_frame"
-			>
-			<File
-				RelativePath="rdoframe.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="rdoframe.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name=".rdo_pokaz"
 			>
 			<File
@@ -384,13 +465,43 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="rdopokaz.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdopokaz_interface.h"
+				RelativePath=".\rdopokaz_group.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdopokaz_group.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdopokaz_group_i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdopokaz_i.h"
 				>
 			</File>
 		</Filter>
@@ -399,6 +510,22 @@
 			>
 			<File
 				RelativePath=".\rdo_exception.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_memory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_memory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_object.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_object.h"
 				>
 			</File>
 			<File
@@ -433,6 +560,24 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -484,6 +629,24 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="rdo_simulator.h"
@@ -528,53 +691,27 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="rdobase.h"
-				>
-			</File>
-			<File
-				RelativePath="rdoruntime_object.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="rdoruntime_object.h"
 				>
 			</File>
 			<File
@@ -616,9 +753,31 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="simtrace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\thread_proxy_i.h"
 				>
 			</File>
 			<Filter
@@ -656,6 +815,24 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -717,13 +894,31 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdoprocess.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdoprocess_interface.h"
+							RelativePath=".\rdoprocess_i.h"
 							>
 						</File>
 					</Filter>
@@ -769,6 +964,24 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdo_logic.h"
@@ -779,59 +992,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_logic_interface.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="2. opr"
-						>
-						<File
-							RelativePath="rdo_logic_opr.cpp"
-							>
-							<FileConfiguration
-								Name="Release|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath="rdo_logic_opr.h"
-							>
-						</File>
-						<File
-							RelativePath=".\rdo_logic_opr.inl"
+							RelativePath=".\rdo_logic_i.h"
 							>
 						</File>
 					</Filter>
@@ -870,6 +1031,24 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release Corba|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
 								>
 								<Tool
 									Name="VCCLCompilerTool"
@@ -929,13 +1108,31 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdo_logic_dptsearch.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_logic_dptsearch_interface.h"
+							RelativePath=".\rdo_logic_dptsearch_i.h"
 							>
 						</File>
 						<File
@@ -981,13 +1178,31 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="searchtrace.h"
 							>
 						</File>
 						<File
-							RelativePath=".\searchtrace_interface.h"
+							RelativePath=".\searchtrace_i.h"
 							>
 						</File>
 						<File
@@ -1022,6 +1237,24 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release Corba|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
 								>
 								<Tool
 									Name="VCCLCompilerTool"
@@ -1072,58 +1305,6 @@
 					Name=".rdo_operations"
 					>
 					<Filter
-						Name="1. ie"
-						>
-						<File
-							RelativePath="rdo_ie.cpp"
-							>
-							<FileConfiguration
-								Name="Release|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath="rdo_ie.h"
-							>
-						</File>
-						<File
-							RelativePath=".\rdo_ie_interface.h"
-							>
-						</File>
-					</Filter>
-					<Filter
 						Name="3. operation"
 						>
 						<File
@@ -1165,13 +1346,31 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdo_operation.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_operation_interface.h"
+							RelativePath=".\rdo_operation_i.h"
 							>
 						</File>
 					</Filter>
@@ -1217,13 +1416,31 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdo_rule.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_rule_interface.h"
+							RelativePath=".\rdo_rule_i.h"
 							>
 						</File>
 					</Filter>
@@ -1269,13 +1486,31 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdo_keyboard.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_keyboard_interface.h"
+							RelativePath=".\rdo_keyboard_i.h"
 							>
 						</File>
 					</Filter>
@@ -1314,6 +1549,24 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release Corba|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
 								>
 								<Tool
 									Name="VCCLCompilerTool"
@@ -1365,13 +1618,35 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdo_activity.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_activity_interface.h"
+							RelativePath=".\rdo_activity_i.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_param_i.h"
 							>
 						</File>
 						<File
@@ -1413,6 +1688,24 @@
 									PreprocessorDefinitions=""
 								/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release MT|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									AdditionalIncludeDirectories=""
+									PreprocessorDefinitions=""
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="rdo_pattern.h"
@@ -1427,7 +1720,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_priority_interface.h"
+							RelativePath=".\rdo_priority_i.h"
 							>
 						</File>
 					</Filter>
@@ -1443,7 +1736,23 @@
 							>
 						</File>
 						<File
-							RelativePath=".\rdo_dptsearch_activity_interface.h"
+							RelativePath=".\rdo_dptsearch_activity_i.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="1. event"
+						>
+						<File
+							RelativePath=".\rdo_event.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_event.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdo_event_i.h"
 							>
 						</File>
 					</Filter>
@@ -1453,6 +1762,50 @@
 		<Filter
 			Name=".rdo_calc"
 			>
+			<File
+				RelativePath=".\calc\arithm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\arithm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\binary.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\binary.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.h"
+				>
+			</File>
+			<File
+				RelativePath=".\equaltype.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\event_plan.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\event_plan.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\logic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\logic.h"
+				>
+			</File>
 			<File
 				RelativePath="rdocalc.cpp"
 				>
@@ -1492,6 +1845,24 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="rdocalc.h"
@@ -1502,9 +1873,61 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdocalc_relres.h"
+				RelativePath=".\rdocalc_locvar.h"
 				>
 			</File>
+			<File
+				RelativePath=".\calc\relres.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\sequence.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\sequence.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\std_fun.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\std_fun.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\unary.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\unary.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\watch.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\watch.h"
+				>
+			</File>
+			<Filter
+				Name=".operation"
+				>
+				<File
+					RelativePath=".\calc\operation_name.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation_name.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation_type.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".rdo_fun"
@@ -1556,13 +1979,31 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="rdotrace.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdotrace_interface.h"
+				RelativePath=".\rdotrace_i.h"
 				>
 			</File>
 		</Filter>
@@ -1604,6 +2045,26 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1665,16 +2126,114 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".rdo_array"
+				>
+				<File
+					RelativePath=".\rdo_array.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_array.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_array_def.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".rdo_matrix"
+				>
+				<File
+					RelativePath=".\rdo_matrix.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_matrix.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_matrix_def.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".interfaces"
 			>
 			<File
-				RelativePath=".\rdo_model_interface.h"
+				RelativePath=".\rdo_model_i.h"
 				>
 			</File>
 			<File
 				RelativePath=".\rdo_runtime_interface_registrator.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".rdo_frame"
+			>
+			<File
+				RelativePath="rdoframe.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdoframe.h"
 				>
 			</File>
 		</Filter>

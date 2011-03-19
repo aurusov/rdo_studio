@@ -63,7 +63,7 @@ public:
 	const rdoEditCtrl::RDOBuildEdit*      getBuild() const   { return build;   };
 	const rdoEditCtrl::RDODebugEdit*      getDebug() const   { return debug;   };
 	const rdoTracerLog::RDOTracerLogCtrl* getTrace() const   { return trace;   };
-	const rdoEditor::RDOEditorResults*    getResults() const { return results; };
+	      rdoEditor::RDOEditorResults*    getResults() const { return results; };
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
 	void appendStringToBuild( const std::string& str ) const;

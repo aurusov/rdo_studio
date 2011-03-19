@@ -12,7 +12,7 @@ namespace rdoRuntime {
 
 class RDODPTSearchTrace;
 class RDODPTSearchTrace;
-class RDOIrregEvent;
+class RDOEvent;
 class RDORule;
 class RDOOperation;
 
@@ -58,9 +58,9 @@ public:
 	int getFreeOperationId(); 
 	void onResourceErase( RDOResource* res );
 
-	int getFreeIrregEventId()
+	int getFreeEventId()
 	{
-		return m_ieCounter++;
+		return m_eventCounter++;
 	}
 	int getFreeActivityId()
 	{
@@ -79,6 +79,7 @@ protected:
 		traceStartTime( UNDEFINE_TIME ),
 		traceEndTime( UNDEFINE_TIME ),
 		m_ieCounter( 1 ),
+		m_eventCounter( 1 ),
 		m_activityCounter( 1 ),
 		m_dptCounter( 1 ),
 		maxResourcesId( 0 ),
@@ -115,11 +116,12 @@ private:
 	void eraseFreeResourceId( int id );
 
 	int m_ieCounter;
+	int m_eventCounter;
 	int m_activityCounter;
 	int m_dptCounter;
 
 	void addTemplateDecisionPoint ( RDODPTSearchTrace *dp   );
-	void addTemplateIrregularEvent( RDOIrregEvent     *ev   );
+	void addTemplateEvent         ( RDOEvent          *ev   );
 	void addTemplateRule          ( RDORule           *rule );
 	void addTemplateOperation     ( RDOOperation      *op   );
 

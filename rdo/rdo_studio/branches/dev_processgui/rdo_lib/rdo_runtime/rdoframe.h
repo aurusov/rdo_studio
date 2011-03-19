@@ -15,7 +15,7 @@
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdoanimation.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -42,26 +42,26 @@ public:
 			mult,
 			rulet
 		};
-		RDOCalc*     calc;
+		LPRDOCalc    pCalc;
 		PositionType type;
 		int          rulet_id;
 
 		RDOFRMPosition( RDOFRMFrame* _parent ):
 			RDORuntimeObject( _parent ),
-			calc( NULL ),
+			pCalc( NULL ),
 			type( absolute ),
 			rulet_id( 0 )
 		{
 		}
-		RDOFRMPosition( RDOFRMFrame* _parent, RDOCalc* _calc, PositionType _type = absolute, int _rulet_id = 0 ):
+		RDOFRMPosition( RDOFRMFrame* _parent, CREF(LPRDOCalc) _pCalc, PositionType _type = absolute, int _rulet_id = 0 ):
 			RDORuntimeObject( _parent ),
-			calc( _calc ),
+			pCalc( _pCalc ),
 			type( _type ),
 			rulet_id( _rulet_id )
 		{
 		}
 		int getX( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValue( sim );
+			RDOValue res = pCalc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_x;                     break;
 				case RDOFRMPosition::gabarit: res += frame->last_x + frame->last_width; break;
@@ -71,7 +71,7 @@ public:
 			return res.getInt();
 		}
 		int getY( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValue( sim );
+			RDOValue res = pCalc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_y;                      break;
 				case RDOFRMPosition::gabarit: res += frame->last_y + frame->last_height; break;
@@ -81,7 +81,7 @@ public:
 			return res.getInt();
 		}
 		int getWidth( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValue( sim );
+			RDOValue res = pCalc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_width; break;
 				case RDOFRMPosition::mult   : res *= frame->last_width; break;
@@ -90,7 +90,7 @@ public:
 			return res.getInt();
 		}
 		int getHeight( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = calc->calcValue( sim );
+			RDOValue res = pCalc->calcValue( sim );
 			switch ( type ) {
 				case RDOFRMPosition::delta  : res += frame->last_height; break;
 				case RDOFRMPosition::mult   : res *= frame->last_height; break;
@@ -119,14 +119,14 @@ public:
 
 	private:
 		ColorType color_type;
-		RDOCalc* red_calc;
-		RDOCalc* green_calc;
-		RDOCalc* blue_calc;
+		LPRDOCalc m_pRedCalc;
+		LPRDOCalc m_pGreenCalc;
+		LPRDOCalc m_pBlueCalc;
 
 	public:
-		RDOFRMColor( RDOFRMFrame* _parent, ColorType _type = color_none );
-		RDOFRMColor( RDOFRMFrame* _parent, int _red, int _green, int _blue );
-		RDOFRMColor( RDOFRMFrame* _parent, RDOCalc* _red_calc, RDOCalc* _green_calc, RDOCalc* _blue_calc );
+		RDOFRMColor(RDOFRMFrame* _parent, ColorType _type = color_none);
+		RDOFRMColor(RDOFRMFrame* _parent, int _red, int _green, int _blue);
+		RDOFRMColor(RDOFRMFrame* _parent, CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
 		~RDOFRMColor();
 
 		rdoAnimation::RDOColor getColor( RDORuntime* sim, RDOFRMFrame* frame ) const;
@@ -163,12 +163,12 @@ public:
 	};
 
 public:
-	RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, RDOCalc* _conditionCalc = NULL );
+	RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, CREF(LPRDOCalc) _pConditionCalc = NULL );
 	virtual ~RDOFRMFrame();
 	void setBackgroundColor( RDOFRMColor* _background_color );
 	void setBackPicture( const std::string& _picFileName );
 	void setBackPicture( int _width, int _height );
-	void startShow( RDOCalc* calc = NULL );
+	void startShow(CREF(LPRDOCalc) pCalc = NULL);
 	const RDOFRMShow* getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
 	void addItem( RDOFRMItem* item );
 	void addRulet( RDOFRMRulet* rulet );
@@ -195,7 +195,7 @@ public:
 	int getRuletX( RDORuntime* sim, int rulet_id ) {
 		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->x->calc->calcValue( sim ).getInt();
+			if ( (*it)->index == rulet_id ) return (*it)->x->pCalc->calcValue( sim ).getInt();
 			it++;
 		}
 		return 0;
@@ -203,7 +203,7 @@ public:
 	int getRuletY( RDORuntime* sim, int rulet_id ) {
 		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->y->calc->calcValue( sim ).getInt();
+			if ( (*it)->index == rulet_id ) return (*it)->y->pCalc->calcValue( sim ).getInt();
 			it++;
 		}
 		return 0;
@@ -221,7 +221,7 @@ private:
 	typedef std::list  <PTR(RDOFRMShow) > ShowList;
 	typedef std::vector<PTR(RDOFRMRulet)> RuletList;
 
-	RDOCalc*     conditionCalc;
+	LPRDOCalc    pConditionCalc;
 	RDOFRMColor* background_color;
 	tstring      picFileName;
 	ruint        width;
@@ -355,7 +355,7 @@ class RDOFRMText: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMCol
 {
 private:
 	rdoAnimation::RDOTextElement::TextAlign align;
-	RDOCalc* value;
+	LPRDOCalc            pValue;
 	std::string          txt;
 	bool                 isTextString;
 
@@ -364,7 +364,7 @@ protected:
 
 public:
 	RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-	void setText( rdoAnimation::RDOTextElement::TextAlign _align, RDOCalc* _value );
+	void setText( rdoAnimation::RDOTextElement::TextAlign _align, CREF(LPRDOCalc) _pValue );
 	void setText( rdoAnimation::RDOTextElement::TextAlign _align, const std::string& _txt );
 };
 
@@ -531,16 +531,16 @@ class RDOFRMShow: public RDORuntimeParent
 friend class RDOFRMFrame;
 
 private:
-	RDOCalc* conditionCalc;
+	LPRDOCalc pConditionCalc;
 
 public:
-	RDOFRMShow( RDOFRMFrame* _parent, RDOCalc* _conditionCalc );
+	RDOFRMShow( RDOFRMFrame* _parent, CREF(LPRDOCalc) _pConditionCalc );
 	virtual ~RDOFRMShow();
 
-	bool isShowIf() const { return conditionCalc != NULL; }
+	bool isShowIf() const { return pConditionCalc != NULL; }
 
 	bool checkCondition( RDORuntime* sim );
-	virtual void getBitmaps( std::list< std::string >& list );
+	virtual void getBitmaps(REF(std::list<tstring>) list);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

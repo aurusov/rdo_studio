@@ -426,8 +426,8 @@ void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
 void RDOEditorEdit::commentSelection() const
 {
 	if ( GUI_IS_SELECTED ) {
-		std::string startComment( "{ " );
-		std::string endComment( " }" );
+		std::string startComment( "/*" );
+		std::string endComment( "*/" );
 		int startCommentLength = startComment.length();
 		CharacterRange cr = getSelectionRange();
 		int caretPosition = getCurrentPos();
@@ -913,13 +913,14 @@ void RDOEditorEdit::OnHelpKeyword()
 		RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
 			switch( tab->getCurrentRDOItem() ) {
-				case rdoModelObjects::PAT: keyword = "pat"; break;
 				case rdoModelObjects::RTP: keyword = "rtp"; break;
 				case rdoModelObjects::RSS: keyword = "rss"; break;
-				case rdoModelObjects::OPR: keyword = "opr"; break;
+				case rdoModelObjects::EVN: keyword = "evn"; break;
+				case rdoModelObjects::PAT: keyword = "pat"; break;
+				case rdoModelObjects::DPT: keyword = "dpt"; break;
+				case rdoModelObjects::PRC: keyword = "prc"; break;
 				case rdoModelObjects::FRM: keyword = "frm"; break;
 				case rdoModelObjects::FUN: keyword = "fun"; break;
-				case rdoModelObjects::DPT: keyword = "dpt"; break;
 				case rdoModelObjects::SMR: keyword = "smr"; break;
 				case rdoModelObjects::PMD: keyword = "pmd"; break;
 				default:                   keyword = ""; break;

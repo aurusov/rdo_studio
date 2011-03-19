@@ -200,9 +200,12 @@ void RDOStudioOutput::appendStringToDebug( const std::string& str ) const
 
 void RDOStudioOutput::appendStringToResults( const std::string& str ) const
 {
-	results->setReadOnly( false );
-	results->appendText( str );
-	results->setReadOnly( true );
+	int pos = results->getCurrentPos();
+	results->setCurrentPos(results->getLength());
+	results->setReadOnly  (false);
+	results->appendText   (str  );
+	results->setReadOnly  (true );
+	results->setCurrentPos(pos  );
 }
 
 void RDOStudioOutput::appendStringToFind( const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const

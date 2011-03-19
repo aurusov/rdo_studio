@@ -1,26 +1,40 @@
-#include "rdo_lib/rdo_mbuilder/pch.h"
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdo_resources.cpp
+ * author   : ”русов јндрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
-namespace rdoMBuilder
-{
+// ====================================================================== PCH
+#include "rdo_lib/rdo_mbuilder/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/rdo_type_range.h"
+// ===============================================================================
+
+OPEN_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------
 // ----------  онструкторы копий и операторы присваивани€
 // --------------------------------------------------------------------
 RDOResType::RDOResType(CREF(RDOResType) obj)
 {
-	operator=( obj );
+	operator=(obj);
 }
 
 RDOResType::Param::Param(CREF(RDOResType::Param) obj)
 {
-	operator=( obj );
+	operator=(obj);
 }
 
 RDOResource::RDOResource(CREF(RDOResource) obj)
 {
-	operator=( obj );
+	operator=(obj);
 }
 
 void RDOResType::operator= (CREF(RDOResType) obj)
@@ -60,54 +74,51 @@ void RDOResource::operator= (CREF(RDOResource) obj)
 // ---- »нициализаци€ типа ресурса по существующему в пам€ти
 // ---- —обирает все параметры существующего в пам€ти типа ресурса
 // --------------------------------------------------------------------
-RDOResType::RDOResType(CREF(rdoParse::RDORTPResType) rtp)
-	: m_name (rtp.name()                                     )
-	, m_type (rtp.isPermanent() ? rt_permanent : rt_temporary)
-	, m_exist(true                                           )
-	, m_id   (rtp.getNumber()                                )
+RDOResType::RDOResType(CREF(rdoParse::LPRDORTPResType) rtp)
+	: rdoParse::RDOParserSrcInfo(rtp->src_info()              )
+	, m_name (rtp->name()                                     )
+	, m_type (rtp->isPermanent() ? rt_permanent : rt_temporary)
+	, m_exist(true                                            )
+	, m_id   (rtp->getNumber()                                )
 {
-	rdoParse::RDORTPResType::ParamList::const_iterator param_it = rtp.getParams().begin();
-	while (param_it != rtp.getParams().end())
+	STL_FOR_ALL_CONST(rtp->getParams(), param_it)
 	{
-		Param param(**param_it);
+		Param param(*param_it);
 		param.m_id = m_params.size();
 		m_params.append(param);
-		param_it++;
 	}
 }
 
-RDOResType::Param::Param(CREF(rdoParse::RDORTPParam) param)
-	: m_name (param.name()                   )
-	, m_type (&param.getType()->type().type())
-	, m_exist(true                           )
-	, m_id   (-1                             )
+RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
+	: rdoParse::RDOParserSrcInfo(param->src_info())
+	, m_name   (param->name()                     )
+	, m_type   (param->getType()                  )
+	, m_exist  (true                              )
+	, m_id     (-1                                )
+	, m_default(param->getDefault()               )
 {
 	switch ( typeID() )
 	{
 		case rdoRuntime::RDOType::t_int:
 		{
-			CPTR(rdoParse::RDORTPIntParamType) param_type = static_cast<CPTR(rdoParse::RDORTPIntParamType)>(param.getType());
-			if (param_type->getDiap().isExist())
+			rdoParse::LPRDOTypeIntRange pRange = param->getType()->type().object_dynamic_cast<rdoParse::RDOTypeIntRange>();
+			if (pRange)
 			{
-				m_min = param_type->getDiap().getMin();
-				m_max = param_type->getDiap().getMax();
+				m_min = pRange->range()->getMin();
+				m_max = pRange->range()->getMax();
 			}
 			break;
 		}
 		case rdoRuntime::RDOType::t_real:
 		{
-			CPTR(rdoParse::RDORTPRealParamType) param_type = static_cast<CPTR(rdoParse::RDORTPRealParamType)>(param.getType());
-			if (param_type->getDiap().isExist())
+			rdoParse::LPRDOTypeRealRange pRange = param->getType()->type().object_dynamic_cast<rdoParse::RDOTypeRealRange>();
+			if (pRange)
 			{
-				m_min = param_type->getDiap().getMin();
-				m_max = param_type->getDiap().getMax();
+				m_min = pRange->range()->getMin();
+				m_max = pRange->range()->getMax();
 			}
 			break;
 		}
-	}
-	if (param.getType()->getDV().isExist())
-	{
-		m_default = param.getType()->getDefaultValue(param.getType()->getDV().value());
 	}
 }
 
@@ -126,54 +137,59 @@ rbool RDOResType::ParamList::append(REF(Param) param)
 	if (std::find_if(begin(), end(), rdoParse::compareNameRef<Param>(param.name())) != end())
 		return false;
 
-	m_list.push_back( param );
+	m_list.push_back(param);
 	return true;
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CPTR(rdoRuntime::RDOType) type, CREF(rdoRuntime::RDOValue) def)
-	: m_name   (name)
-	, m_type   (type)
-	, m_default(def )
-	, m_exist  (true)
-	, m_id     (-1  )
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) default)
+	: m_name   (name   )
+	, m_type   (type   )
+	, m_exist  (true   )
+	, m_id     (-1     )
+	, m_default(default)
+{}
+
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>) type, CREF(rdoParse::RDOValue) default)
+	: m_name   (name   )
+	, m_exist  (true   )
+	, m_id     (-1     )
+	, m_default(default)
 {
-	if (type->typeID() == rdoRuntime::RDOType::t_enum && def.typeID() == rdoRuntime::RDOType::t_string)
-	{
-		m_default = rdoRuntime::RDOValue(getEnum(), def.getAsString());
-	}
+	initType(type);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) def)
-	: m_name   (name       )
-	, m_type   (&def.type())
-	, m_default(def        )
-	, m_exist  (true       )
-	, m_id     (-1         )
-{}
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) default)
+	: m_name   (name   )
+	, m_exist  (true   )
+	, m_id     (-1     )
+	, m_default(default)
+{
+	initType(type);
+}
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max, CREF(rdoRuntime::RDOValue) def)
-	: m_name   (name                                           )
-	, m_type   (&rdoRuntime::RDOType::getTypeByID(min.typeID()))
-	, m_min    (min                                            )
-	, m_max    (max                                            )
-	, m_default(def                                            )
-	, m_exist  (true                                           )
-	, m_id     (-1                                             )
-{}
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums) enums, CREF(rdoParse::RDOValue) default)
+	: m_name   (name   )
+	, m_exist  (true   )
+	, m_id     (-1     )
+	, m_default(default)
+{
+	initType(enums);
+}
 
-void RDOResType::Param::setDiap(CREF(rdoRuntime::RDOValue) min, CREF(rdoRuntime::RDOValue) max)
+void RDOResType::Param::setDiap(CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max)
 {
 	m_min = min;
 	m_max = max;
 }
 
-void RDOResType::Param::setDefault(CREF(rdoRuntime::RDOValue) def)
+void RDOResType::Param::setDefault(CREF(rdoParse::RDOValue) default)
 {
-	m_default = def;
+	m_default = default;
 }
 
 rbool RDOResType::Param::operator== (CREF(Param) param) const
 {
+	NEVER_REACH_HERE;
 	return true;
 }
 
@@ -185,12 +201,10 @@ rbool RDOResType::Param::operator== (CREF(Param) param) const
 RDOResTypeList::RDOResTypeList(PTR(rdoParse::RDOParser) parser)
 	: RDOList<RDOResType>(parser)
 {
-	rdoParse::RDOParser::RTPResTypeList::const_iterator rtp_it = m_parser->getRTPResTypes().begin();
-	while (rtp_it != m_parser->getRTPResTypes().end())
+	STL_FOR_ALL_CONST(m_parser->getRTPResTypes(), rtp_it)
 	{
-		RDOResType rtp(**rtp_it);
+		RDOResType rtp(*rtp_it);
 		m_list.push_back(rtp);
-		rtp_it++;
 	}
 }
 
@@ -202,73 +216,58 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 	if (std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResType>(rtp.name())) != end())
 		return false;
 
-	PTR(rdoParse::RDORTPResType) pRTP = new rdoParse::RDORTPResType(m_parser, rtp.name(), rtp.isPermanent());
-	RDOResType::ParamList::List::const_iterator param = rtp.m_params.begin();
-	while (param != rtp.m_params.end())
+	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_parser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
+	STL_FOR_ALL_CONST(rtp.m_params, param)
 	{
-		PTR(rdoParse::RDORTPParamType) pParamType = NULL;
+		rdoParse::LPRDOTypeParam pParamType;
+		rdoParse::RDOValue       default = param->hasDefault() ? param->getDefault() : rdoParse::RDOValue();
 		switch (param->typeID())
 		{
 			case rdoRuntime::RDOType::t_int:
 			{
-				PTR(rdoParse::RDORTPIntDiap) pDiap = param->hasDiap() ?
-					new rdoParse::RDORTPIntDiap(m_parser, param->getMin().getInt(), param->getMax().getInt()) :
-					new rdoParse::RDORTPIntDiap(m_parser);
-
-				PTR(rdoParse::RDORTPDefVal) pDef = param->hasDefault() ?
-					new rdoParse::RDORTPDefVal(m_parser, param->getDefault()) :
-					new rdoParse::RDORTPDefVal(m_parser);
-					
-				pParamType = new rdoParse::RDORTPIntParamType(m_parser, pDiap, pDef);
+				if (param->hasDiap())
+				{
+					rdoParse::LPRDOTypeRangeRange pRange    = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
+					rdoParse::LPRDOTypeIntRange   pIntRange = rdo::Factory<rdoParse::RDOTypeIntRange>::create(pRange);
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pIntRange, rdoParse::RDOParserSrcInfo());
+				}
+				else
+				{
+					pParamType = param->type();
+				}
 				break;
 			}
 			case rdoRuntime::RDOType::t_real:
 			{
-				PTR(rdoParse::RDORTPRealDiap) pDiap = param->hasDiap() ?
-					new rdoParse::RDORTPRealDiap(m_parser, param->getMin().getDouble(), param->getMax().getDouble()) :
-					new rdoParse::RDORTPRealDiap(m_parser);
-
-				PTR(rdoParse::RDORTPDefVal) pDef = param->hasDefault() ?
-					new rdoParse::RDORTPDefVal(m_parser, param->getDefault()) :
-					new rdoParse::RDORTPDefVal(m_parser);
-
-				pParamType = new rdoParse::RDORTPRealParamType( m_parser, pDiap, pDef );
+				if (param->hasDiap())
+				{
+					rdoParse::LPRDOTypeRangeRange pRange     = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
+					rdoParse::LPRDOTypeRealRange  pRealRange = rdo::Factory<rdoParse::RDOTypeRealRange>::create(pRange);
+					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pRealRange, rdoParse::RDOParserSrcInfo());
+				}
+				else
+				{
+					pParamType = param->type();
+				}
 				break;
 			}
 			case rdoRuntime::RDOType::t_enum:
 			{
-				PTR(rdoParse::RDORTPEnum) pEnum = NULL;
-				rdoRuntime::RDOEnumType::CIterator enum_it = param->getEnum().begin();
-				while (enum_it != param->getEnum().end())
-				{
-					if (!pEnum)
-					{
-						pEnum = new rdoParse::RDORTPEnum(pRTP, rdoParse::RDOValue::getIdentificator(*enum_it));
-					}
-					else
-					{
-						pEnum->add(rdoParse::RDOValue::getIdentificator(*enum_it));
-					}
-					enum_it++;
-				}
-				PTR(rdoParse::RDORTPDefVal) pEnumDefValue = param->hasDefault() ?
-					new rdoParse::RDORTPDefVal(m_parser, rdoParse::RDOValue(param->getDefault(), *pEnum, rdoParse::RDOParserSrcInfo())) :
-					new rdoParse::RDORTPDefVal(m_parser);
-
-				pParamType = new rdoParse::RDORTPEnumParamType(pRTP, pEnum, pEnumDefValue, rtp.name());
+				pParamType = param->type();
 				break;
 			}
 			default:
 			{
-				delete pRTP;
+				m_parser->removeRTPResType(pResourceType);
 				return false;
 			}
 		}
-		pRTP->addParam(new rdoParse::RDORTPParam(pRTP, param->name(), pParamType));
-		param++;
+		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pParamType, default, rdoParse::RDOParserSrcInfo(param->name()));
+		ASSERT(pParam);
+		pResourceType->addParam(pParam);
 	}
 	rtp.m_exist = true;
-	rtp.m_id    = pRTP->getNumber();
+	rtp.m_id    = pResourceType->getNumber();
 	m_list.push_back(rtp);
 	return true;
 }
@@ -279,21 +278,20 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 // ---- »нициализаци€ ресурса по существующему в пам€ти
 // ---- —обирает все параметры существующего в пам€ти ресурса
 // --------------------------------------------------------------------
-RDOResource::RDOResource(CREF(rdoParse::RDORSSResource) rss)
-	: m_name (rss.name()    )
-	, m_rtp  (*rss.getType())
-	, m_exist(true          )
-	, m_id   (rss.getID()   )
+RDOResource::RDOResource(CREF(rdoParse::LPRDORSSResource) rss)
+	: rdoParse::RDOParserSrcInfo(rss->src_info())
+	, m_name (rss->name()                       )
+	, m_rtp  (rss->getType()                    )
+	, m_exist(true                              )
+	, m_id   (rss->getID()                      )
 {
-	if (m_rtp.m_params.size() == rss.params().size())
+	if (m_rtp.m_params.size() == rss->params().size())
 	{
 		ruint index = 0;
-		RDOResType::ParamList::List::const_iterator param_it = m_rtp.m_params.begin();
-		while (param_it != m_rtp.m_params.end())
+		STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
 		{
-			m_params[param_it->name()] = rss.params()[index];
+			m_params[param_it->name()] = rss->params()[index].param();
 			index++;
-			++param_it;
 		}
 	}
 }
@@ -317,7 +315,7 @@ REF(RDOResource::Params::mapped_type) RDOResource::operator[] (CREF(tstring) par
 	}
 }
 
-CPTR(rdoParse::RDORSSResource) RDOResource::getParserResource(CREF(rdoParse::RDOParser) parser) const
+rdoParse::LPRDORSSResource RDOResource::getParserResource(CREF(rdoParse::RDOParser) parser) const
 {
 	if (!exist())
 		return NULL;
@@ -325,19 +323,19 @@ CPTR(rdoParse::RDORSSResource) RDOResource::getParserResource(CREF(rdoParse::RDO
 	return parser.findRSSResource(name());
 }
 
-rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toParserRSS) const
+rbool RDOResource::fillParserResourceParams(REF(rdoParse::LPRDORSSResource) pToParserRSS) const
 {
-	RDOResType::ParamList::List::const_iterator param_it = getType().m_params.begin();
-	while ( param_it != getType().m_params.end() )
+	STL_FOR_ALL_CONST(getType().m_params, param_it)
 	{
 		RDOResource::Params::const_iterator value_it = operator[](param_it->name());
 		if (value_it == end())
 			return false;
 
-		rdoRuntime::RDOValue value = param_it->type()->cast(value_it->second);
+		rdoParse::RDOValue value(value_it->second);
+		value = param_it->type()->value_cast(value);
 		//! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
-		toParserRSS->addParam(rdoParse::RDOValue(value, value.type(), toParserRSS->src_info()));
-		param_it++;
+		value.setSrcInfo(pToParserRSS->src_info());
+		pToParserRSS->addParam(value);
 	}
 	return true;
 }
@@ -345,16 +343,15 @@ rbool RDOResource::fillParserResourceParams(PTR(rdoParse::RDORSSResource) toPars
 // --------------------------------------------------------------------
 // ---- »нициализаци€ *нового* ресурса
 // --------------------------------------------------------------------
-RDOResource::RDOResource(CREF( RDOResType) rtp, CREF(tstring) name)
+RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 	: m_name (name                                  )
 	, m_rtp  (rtp                                   )
 	, m_exist(false                                 )
 	, m_id   (rdoParse::RDORSSResource::UNDEFINED_ID)
 {
-	RDOResType::ParamList::List::const_iterator param_it = m_rtp.m_params.begin();
-	while (param_it != m_rtp.m_params.end())
+	STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
 	{
-		rdoRuntime::RDOValue value(*param_it->type());
+		rdoParse::RDOValue value(param_it->type()->type());
 		if (param_it->hasDefault())
 		{
 			value = param_it->getDefault();
@@ -364,7 +361,6 @@ RDOResource::RDOResource(CREF( RDOResType) rtp, CREF(tstring) name)
 			value = param_it->getMin();
 		}
 		m_params[param_it->name()] = value;
-		++param_it;
 	}
 }
 
@@ -376,13 +372,11 @@ RDOResource::RDOResource(CREF( RDOResType) rtp, CREF(tstring) name)
 RDOResourceList::RDOResourceList(PTR(rdoParse::RDOParser) parser)
 	: RDOList<RDOResource>(parser)
 {
-	rdoParse::RDOParser::RSSResourceList::const_iterator rss_it = m_parser->getRSSResources().begin();
-	while (rss_it != m_parser->getRSSResources().end())
+	STL_FOR_ALL_CONST(m_parser->getRSSResources(), rss_it)
 	{
-		RDOResource rss(**rss_it);
+		RDOResource rss(*rss_it);
 		m_list.push_back(rss);
-		++rss_it;
 	}
 }
 
-} // rdoMBuilder
+CLOSE_MBUILDER_NAMESPACE

@@ -1,61 +1,84 @@
-#ifndef RDORSS_RSS
-#define RDORSS_RSS
+/*
+ * copyright: (c) RDO-Team, 2010
+ * filename : rdorss.h
+ * author   : Александ Барс, Урусов Андрей
+ * date     : 
+ * bref     : 
+ * indent   : 4T
+ */
 
-#include "rdo_lib/rdo_parser/rdoparser_object.h"
-#include "rdo_lib/rdo_parser/rdoparser_value.h"
-#include "rdo_lib/rdo_runtime/rdoruntime_object.h"
+#ifndef _RDORSS_RSS_H_
+#define _RDORSS_RSS_H_
 
-namespace rdoRuntime
-{
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_parser/rdo_object.h"
+#include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
+// ===============================================================================
+
+OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
-}
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-namespace rdoParse
-{
+OPEN_RDO_PARSER_NAMESPACE
 
-int rssparse( void* lexer );
-int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void rsserror( char* mes );
+int  rssparse(PTR(void)    lexer);
+int  rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+void rsserror(PTR(char)    message);
 
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-class RDORTPResType;
-class RDORTPParam;
-
-class RDORSSResource: public RDOParserObject, public RDOParserSrcInfo
+OBJECT(RDORSSResource) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDORSSResource);
 public:
-	typedef std::vector< rdoRuntime::RDOValue > Params;
+	class Param
+	{
+	public:
+		explicit Param(CREF(RDOValue) value)
+			: m_value(value)
+		{}
+
+		CREF(RDOValue) param() const
+		{
+			return m_value;
+		}
+
+	private:
+		RDOValue m_value;
+	};
+	typedef std::vector<Param> ParamList;
 	enum { UNDEFINED_ID = ~0 };
 
-	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id = UNDEFINED_ID );
+	virtual rdoRuntime::LPRDOCalc createCalc() const;
 
-	virtual rdoRuntime::RDOCalc* createCalc();
+	CREF(tstring)    name   () const { return src_info().src_text(); }
+	LPRDORTPResType  getType() const { return m_pResType;            }
 
-	const std::string&         name() const    { return src_info().src_text(); }
-	const RDORTPResType* const getType() const { return resType;  }
+	int              getID  () const { return m_id;                  }
 
-	int getID() const                          { return m_id;     }
+	CREF(ParamList)  params () const { return m_paramList;           }
 
-	const Params& params() const { return m_params;  }
-	void addParam( const RDOValue& param );
+	void  addParam(CREF(RDOValue) param);
+	rbool getTrace() const      { return trace;  }
+	void  setTrace(rbool value) { trace = value; }
+	rbool defined () const;
 
-	void writeModelStructure( std::ostream& stream ) const;
-
-	bool getTrace() const       { return trace;  }
-	void setTrace( bool value ) { trace = value; }
-	
-	bool defined() const;
+	void writeModelStructure(REF(std::ostream) stream) const;
 
 protected:
-	const RDORTPResType* const resType;
-	const int                  m_id;        // in system
-	Params                     m_params;
-	bool                       trace;
+	RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+
+	LPRDORTPResType m_pResType;
+	const int       m_id;        //! in system
+	ParamList       m_paramList;
+	rbool           trace;
 
 private:
-	std::vector< const RDORTPParam* >::const_iterator m_currParam;
+	RDORTPResType::ParamList::const_iterator m_currParam;
 };
 
 // ----------------------------------------------------------------------------
@@ -63,13 +86,13 @@ private:
 // ----------------------------------------------------------------------------
 class RDOPROCResource: public RDORSSResource
 {
-public:
-	RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType, int id = UNDEFINED_ID );
-
+DECLARE_FACTORY(RDOPROCResource);
 private:
-	virtual rdoRuntime::RDOCalc* createCalc();
+	RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	virtual rdoRuntime::LPRDOCalc createCalc() const;
 };
+DECLARE_POINTER(RDOPROCResource);
 
-} // namespace rdoParse
+CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // RDORSS_RSS
+#endif //! _RDORSS_RSS_H_

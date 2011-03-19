@@ -14,28 +14,28 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
-DEFINE_FACTORY(RDODPTSearchRuntime);
+DEFINE_IFACTORY(RDODPTSearchRuntime);
 
 private:
-	RDODPTSearchRuntime( RDORuntime* runtime, LPIBaseOperationContainer parent, RDOCalc* _condition, RDOCalc* _termCondition, RDOCalc* _evaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
+	RDODPTSearchRuntime( RDORuntime* runtime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
 		RDODPTSearchTrace( runtime, parent ),
-		condition( _condition ),
-		termCondition( _termCondition ),
-		evaluateBy( _evaluateBy ),
+		pCondition( _pCondition ),
+		pTermCondition( _pTermCondition ),
+		pEvaluateBy( _pEvaluateBy ),
 		compTops( _compTops )
 	{
 		setTraceID( runtime->getFreeDPTId() );
 		traceFlag = _traceFlag;
 	}
 
-	RDOCalc* condition;
-	RDOCalc* termCondition;
-	RDOCalc* evaluateBy;
-	bool compTops;
+	LPRDOCalc pCondition;
+	LPRDOCalc pTermCondition;
+	LPRDOCalc pEvaluateBy;
+	bool      compTops;
 
-	virtual bool   onCheckCondition( RDOSimulator* sim ) { return condition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool();     }
-	virtual bool   TermCondition( RDOSimulator* sim )    { return termCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool(); }
-	virtual double EvaluateBy( RDOSimulator* sim )       { return evaluateBy->calcValue( static_cast<RDORuntime*>(sim) ).getDouble();    }
+	virtual bool   onCheckCondition( RDOSimulator* sim ) { return pCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool();     }
+	virtual bool   TermCondition( RDOSimulator* sim )    { return pTermCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool(); }
+	virtual double EvaluateBy( RDOSimulator* sim )       { return pEvaluateBy->calcValue( static_cast<RDORuntime*>(sim) ).getDouble();    }
 	virtual bool   NeedCompareTops()                     { return compTops; }
 };
 

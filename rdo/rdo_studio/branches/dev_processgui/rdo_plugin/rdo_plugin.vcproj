@@ -50,8 +50,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;_USRDLL;RDO_PLUGIN_EXPORTS;WINVER=0x0501"
-				BrowseInformation="1"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;_USRDLL;RDO_PLUGIN_EXPORTS;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				WarningLevel="3"
 			/>
 			<Tool
@@ -131,7 +130,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;WINVER=0x0501;_USRDLL;RDO_PLUGIN_EXPORTS"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;WINVER=0x0501;_USRDLL;RDO_PLUGIN_EXPORTS;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="3"
@@ -181,7 +180,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug Corba|Win32"
+			Name="Debug MT|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
@@ -215,7 +214,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;WINVER=0x0501;_USRDLL;RDO_PLUGIN_EXPORTS"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;WINVER=0x0501;_USRDLL;RDO_PLUGIN_EXPORTS;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="3"
@@ -265,7 +264,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release Corba|Win32"
+			Name="Release MT|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
@@ -300,7 +299,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;_USRDLL;RDO_PLUGIN_EXPORTS;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;_USRDLL;RDO_PLUGIN_EXPORTS;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -374,7 +373,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="Debug MT|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -382,7 +381,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="Release MT|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

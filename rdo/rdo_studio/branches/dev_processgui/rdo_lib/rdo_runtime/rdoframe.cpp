@@ -8,35 +8,30 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMColor - объект-цвет
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, ColorType _type ):
-	RDORuntimeObject( _parent ),
-	color_type( _type ),
-	red_calc( NULL ),
-	green_calc( NULL ),
-	blue_calc( NULL )
-{
-}
+RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, ColorType _type )
+	: RDORuntimeObject( _parent )
+	, color_type( _type )
+{}
 
 RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, int _red, int _green, int _blue ):
 	RDORuntimeObject( _parent ),
 	color_type( color_rgb )
 {
-	red_calc   = new RDOCalcConst( _parent, _red );
-	green_calc = new RDOCalcConst( _parent, _green );
-	blue_calc  = new RDOCalcConst( _parent, _blue );
-	red_calc->setSrcText( rdo::format("%d, _red") );
-	green_calc->setSrcText( rdo::format("%d, _green") );
-	blue_calc->setSrcText( rdo::format("%d, _blue") );
+	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(_red  );
+	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(_green);
+	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create(_blue );
+	m_pRedCalc->setSrcText( rdo::format("%d, _red") );
+	m_pGreenCalc->setSrcText( rdo::format("%d, _green") );
+	m_pBlueCalc->setSrcText( rdo::format("%d, _blue") );
 }
 
-RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, RDOCalc* _red_calc, RDOCalc* _green_calc, RDOCalc* _blue_calc ):
-	RDORuntimeObject( _parent ),
-	color_type( color_rgb ),
-	red_calc( _red_calc ),
-	green_calc( _green_calc ),
-	blue_calc( _blue_calc )
-{
-}
+RDOFRMFrame::RDOFRMColor::RDOFRMColor(RDOFRMFrame* _parent, CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc)
+	: RDORuntimeObject(_parent   )
+	, color_type      (color_rgb )
+	, m_pRedCalc      (pRedCalc  )
+	, m_pGreenCalc    (pGreenCalc)
+	, m_pBlueCalc     (pBlueCalc )
+{}
 
 RDOFRMFrame::RDOFRMColor::~RDOFRMColor()
 {
@@ -47,7 +42,10 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(PTR(RDORuntime) sim, P
 	switch (color_type)
 	{
 		case color_none        : return rdoAnimation::RDOColor(50, 200, 50);
-		case color_rgb         : return rdoAnimation::RDOColor(red_calc->calcValue(sim).getInt(), green_calc->calcValue(sim).getInt(), blue_calc->calcValue(sim).getInt());
+		case color_rgb         : return rdoAnimation::RDOColor(
+									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pRedCalc->calcValue(sim).getInt(),
+									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pGreenCalc->calcValue(sim).getInt(),
+									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pBlueCalc->calcValue(sim).getInt());
 		case color_transparent : return rdoAnimation::RDOColor();
 		case color_last_bg     : return frame->color_last_bg;
 		case color_last_fg     : return frame->color_last_fg;
@@ -61,10 +59,10 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(PTR(RDORuntime) sim, P
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, RDOCalc* _conditionCalc ):
+RDOFRMFrame::RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, CREF(LPRDOCalc) _pConditionCalc):
 	RDORuntimeParent( _runtime ),
 	RDOSrcInfo( _src_info ),
-	conditionCalc( _conditionCalc ),
+	pConditionCalc( _pConditionCalc ),
 	background_color( NULL ),
 	picFileName(_T("")),
 	width( 800 ),
@@ -135,9 +133,9 @@ void RDOFRMFrame::setBackPicture( int _width, int _height )
 	height = _height;
 }
 
-void RDOFRMFrame::startShow( RDOCalc* calc )
+void RDOFRMFrame::startShow(CREF(LPRDOCalc) pCalc)
 {
-	shows.push_back( new RDOFRMShow( this, calc ) );
+	shows.push_back( new RDOFRMShow( this, pCalc ) );
 }
 
 void RDOFRMFrame::addItem( RDOFRMItem* item )
@@ -153,8 +151,8 @@ void RDOFRMFrame::addRulet( RDOFRMRulet* rulet )
 
 bool RDOFRMFrame::checkCondition( RDORuntime* sim )
 {
-	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValue( sim ).getAsBool();
+	if ( !pConditionCalc ) return true;
+	return pConditionCalc->calcValue( sim ).getAsBool();
 }
 
 rdoAnimation::RDOFrame* RDOFRMFrame::prepareFrame( rdoAnimation::RDOFrame* frame, RDORuntime* sim )
@@ -188,8 +186,8 @@ rdoAnimation::RDOFrame* RDOFRMFrame::prepareFrame( rdoAnimation::RDOFrame* frame
 		std::list< RDOFRMShow* >::iterator it_show = shows.begin();
 		while ( it_show != shows.end() ) {
 			if ( (*it_show)->checkCondition(sim) ) {
-				std::vector< RDORuntimeObject* >::iterator it_obj = (*it_show)->m_objects.begin();
-				while ( it_obj != (*it_show)->m_objects.end() ) {
+				ChildList::iterator it_obj = (*it_show)->m_childList.begin();
+				while ( it_obj != (*it_show)->m_childList.end() ) {
 					rdoAnimation::FrameItem* element = static_cast<RDOFRMItem*>(*it_obj)->createElement(sim);
 					if ( element ) {
 						frame->m_elements.push_back( element );
@@ -224,17 +222,17 @@ RDOFRMText::RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, R
 	RDOFRMBoundingItem( _x, _y, _width, _height ),
 	RDOFRMColoredItem( bgColor, fgColor ),
 	align(rdoAnimation::RDOTextElement::TETA_LEFT),
-	value( NULL ),
+	pValue( NULL ),
 	txt( "" ),
 	isTextString( true )
 {
 	color_reparent( this );
 }
 
-void RDOFRMText::setText( rdoAnimation::RDOTextElement::TextAlign _align, RDOCalc* _value )
+void RDOFRMText::setText( rdoAnimation::RDOTextElement::TextAlign _align, CREF(LPRDOCalc) _pValue )
 {
-	align = _align;
-	value = _value;
+	align  = _align;
+	pValue = _pValue;
 
 	isTextString = false;
 }
@@ -259,7 +257,7 @@ rdoAnimation::FrameItem* RDOFRMText::createElement( RDORuntime* sim )
 	if ( isTextString ) {
 		t = txt;
 	} else {
-		RDOValue val = value->calcValue( sim );
+		RDOValue val = pValue->calcValue( sim );
 		t = val.getAsString();
 	}
 
@@ -550,9 +548,9 @@ rdoAnimation::FrameItem* RDOFRMSpace::createElement( RDORuntime* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMShow
 // ----------------------------------------------------------------------------
-RDOFRMShow::RDOFRMShow( RDOFRMFrame* _parent, RDOCalc* _conditionCalc ):
+RDOFRMShow::RDOFRMShow( RDOFRMFrame* _parent, CREF(LPRDOCalc) _pConditionCalc ):
 	RDORuntimeParent( _parent ),
-	conditionCalc( _conditionCalc )
+	pConditionCalc( _pConditionCalc )
 {
 }
 
@@ -560,19 +558,18 @@ RDOFRMShow::~RDOFRMShow()
 {
 }
 
-void RDOFRMShow::getBitmaps( std::list< std::string >& list )
+void RDOFRMShow::getBitmaps(REF(std::list<tstring>) list)
 {
-	std::vector< RDORuntimeObject* >::iterator it = m_objects.begin();
-	while ( it != m_objects.end() ) {
-		static_cast<RDOFRMItem*>(*it)->getBitmaps( list );
-		it++;
+	STL_FOR_ALL(m_childList, it)
+	{
+		static_cast<PTR(RDOFRMItem)>(*it)->getBitmaps(list);
 	}
 }
 
 bool RDOFRMShow::checkCondition( RDORuntime* sim )
 {
-	if ( !conditionCalc ) return true;
-	return conditionCalc->calcValue( sim ).getAsBool();
+	if ( !pConditionCalc ) return true;
+	return pConditionCalc->calcValue( sim ).getAsBool();
 }
 
 } // namespace rdoRuntime
