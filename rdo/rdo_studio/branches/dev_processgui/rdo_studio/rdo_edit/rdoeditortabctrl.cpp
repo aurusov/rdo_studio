@@ -51,7 +51,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	PTR(RDOEditorEdit) pPage7  = new RDOEditorEdit( view );
 	PTR(RDOEditorEdit) pPage8  = new RDOEditorEdit( view );
 	PTR(RDOEditorEdit) pPage9  = new RDOEditorEdit( view );
-	RDOEditorEdit* page10 = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage10 = new RDOEditorEdit( view );
 
 	pPage1->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	pPage2->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
@@ -62,7 +62,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	pPage7->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	pPage8->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	pPage9->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
+	pPage10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
 	pPage1->setEditorStyle( &studioApp.mainFrame->style_editor );
 	pPage2->setEditorStyle( &studioApp.mainFrame->style_editor );
@@ -73,7 +73,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	pPage7->setEditorStyle( &studioApp.mainFrame->style_editor );
 	pPage8->setEditorStyle( &studioApp.mainFrame->style_editor );
 	pPage9->setEditorStyle( &studioApp.mainFrame->style_editor );
-	page10->setEditorStyle( &studioApp.mainFrame->style_editor );
+	pPage10->setEditorStyle( &studioApp.mainFrame->style_editor );
 
 	pPage1->setPopupMenu( &view->popupMenu );
 	pPage2->setPopupMenu( &view->popupMenu );
@@ -84,40 +84,40 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	pPage7->setPopupMenu( &view->popupMenu );
 	pPage8->setPopupMenu( &view->popupMenu );
 	pPage9->setPopupMenu( &view->popupMenu );
-	page10->setPopupMenu( &view->popupMenu );
+	pPage10->setPopupMenu( &view->popupMenu );
 
-	group.insert( page1 );
-	group.insert( page2 );
-	group.insert( page3 );
-	group.insert( page4 );
-	group.insert( page5 );
-	group.insert( page6 );
-	group.insert( page7 );
-	group.insert( page8 );
-	group.insert( page9 );
-	group.insert( page10);
-	page1->setGroup( &group );
+	group.insert( pPage1 );
+	group.insert( pPage2 );
+	group.insert( pPage3 );
+	group.insert( pPage4 );
+	group.insert( pPage5 );
+	group.insert( pPage6 );
+	group.insert( pPage7 );
+	group.insert( pPage8 );
+	group.insert( pPage9 );
+	group.insert( pPage10);
+	pPage1->setGroup( &group );
 
-	page2->setGroup ( &group );
-	page3->setGroup ( &group );
-	page4->setGroup ( &group );
-	page5->setGroup ( &group );
-	page6->setGroup ( &group );
-	page7->setGroup ( &group );
-	page8->setGroup ( &group );
-	page9->setGroup ( &group );
-	page10->setGroup( &group );
+	pPage2->setGroup ( &group );
+	pPage3->setGroup ( &group );
+	pPage4->setGroup ( &group );
+	pPage5->setGroup ( &group );
+	pPage6->setGroup ( &group );
+	pPage7->setGroup ( &group );
+	pPage8->setGroup ( &group );
+	pPage9->setGroup ( &group );
+	pPage10->setGroup( &group );
 
-	insertItem( page1 , "RTP" );
-	insertItem( page2 , "RSS" );
-	insertItem( page3 , "EVN" );
-	insertItem( page4 , "PAT" );
-	insertItem( page5 , "DPT" );
-	insertItem( page6 , "PRC" );
-	insertItem( page7 , "FRM" );
-	insertItem( page8 , "FUN" );
-	insertItem( page9 , "SMR" );
-	insertItem( page10, "PMD" );
+	insertItem( pPage1 , "RTP" );
+	insertItem( pPage2 , "RSS" );
+	insertItem( pPage3 , "EVN" );
+	insertItem( pPage4 , "PAT" );
+	insertItem( pPage5 , "DPT" );
+	insertItem( pPage6 , "PRC" );
+	insertItem( pPage7 , "FRM" );
+	insertItem( pPage8 , "FUN" );
+	insertItem( pPage9 , "SMR" );
+	insertItem( pPage10, "PMD" );
 
 	setCurrentRDOItem( rdoModelObjects::RTP );
 
@@ -138,7 +138,7 @@ rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) co
 		case  7: return rdoModelObjects::FUN;
 		case  8: return rdoModelObjects::SMR;
 		case  9: return rdoModelObjects::PMD;
-		default: NEVER_REACH_HERE;
+		default: return rdoModelObjects::PAT;
 	}
 }
 
@@ -157,7 +157,6 @@ int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) con
 		case rdoModelObjects::SMR: return 8;
 		case rdoModelObjects::PMD: return 9;
 	}
-	NEVER_REACH_HERE;
 	return -1;
 }
 
