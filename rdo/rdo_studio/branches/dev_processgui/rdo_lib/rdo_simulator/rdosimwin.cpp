@@ -1060,6 +1060,7 @@ void RDOThreadSimulator::runModel()
 	{
 		m_pParser->error().clear();
 		m_exitCode = rdoSimulator::EC_OK;
+		m_pRuntime->setStudioThread(kernel->studio());
 		m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
 	}
 }

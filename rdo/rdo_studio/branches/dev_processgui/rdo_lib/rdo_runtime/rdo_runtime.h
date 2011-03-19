@@ -26,6 +26,8 @@
 #include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 // ===============================================================================
 
+class RDOThread;
+
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
@@ -236,6 +238,8 @@ public:
 
 	CREF(LPIThreadProxy) getThreadProxy() const { return m_pThreadProxy; }
 
+	void setStudioThread(PTR(RDOThread) pStudioThread);
+
 private:
 	typedef RDOSimulatorTrace           Parent;
 	typedef std::list<LPRDOCalc>        CalcList;
@@ -245,6 +249,7 @@ private:
 	CalcList                    initCalcs;
 	LPRDOMemoryStack            m_pMemoryStack;
 	LPIThreadProxy              m_pThreadProxy;
+	PTR(RDOThread)              m_pStudioThread;
 	
 	class BreakPoint: public RDORuntimeObject
 	{

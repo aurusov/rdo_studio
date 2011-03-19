@@ -10,6 +10,7 @@
 #include "rdo_lib/rdo_runtime/rdodptrtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_common/rdodebug.h"
+#include "rdo_kernel/rdothread.h"
 
 #pragma warning(disable : 4786)  
 
@@ -28,6 +29,7 @@ RDORuntime::RDORuntime()
 	, whyStop             (rdoSimulator::EC_OK)
 	, key_found           (false              )
 	, m_currentTerm       (0                  )
+	, m_pStudioThread     (NULL               )
 {
 	m_parent         = NULL;
 	detach();
@@ -97,6 +99,12 @@ void RDORuntime::fireMessage(ruint message, PTR(void) param)//как работает?
 		it->second->notify(message, param);
 		it++;
 	}
+}
+
+void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
+{
+	m_pStudioThread = pStudioThread;
+	m_pStudioThread->sendMessage(m_pStudioThread, RDOThread::RT_CORBA_PARSER_GET_RTP_PAR_COUNT, NULL);
 }
 
 bool RDORuntime::endCondition()
