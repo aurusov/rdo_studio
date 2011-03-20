@@ -25,6 +25,7 @@
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_lib/rdo_runtime/calc/std_fun.h"
+#include "rdo_lib/rdo_runtime/rdobase.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -223,6 +224,39 @@ void RDOParserEVNPost::parse(PTR(RDOParser) pParser)
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
+//#define SPEED_TEST
+
+#ifdef SPEED_TEST
+#include "rdo_lib/rdo_runtime/rdobase.h"
+
+class Test: public rdoRuntime::RDOFunCalc
+{
+public:
+	REF(rdoRuntime::RDOValue) doCalc(PTR(rdoRuntime::RDORuntime) runtime)
+	{
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOFunCalcSin>::create();
+		ASSERT(pCalc);
+
+		SYSTEMTIME tnow;
+		::GetSystemTime(&tnow);
+		ruint tnow1 = rdoRuntime::RDOSimulatorBase::getMSec(tnow);
+
+		for (ruint i = 0; i < 10000000; i++)
+		{
+			pCalc->calcValue(runtime);
+		}
+
+		::GetSystemTime(&tnow);
+		ruint tnow2 = rdoRuntime::RDOSimulatorBase::getMSec(tnow);
+		ruint delta = tnow2 - tnow1;
+		YYLTYPE pos = {1, 1, 1, 1, 1, 1};
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(pos), rdo::format(_T("delay %d"), delta));
+
+		return m_value;
+	}
+};
+#endif
+
 void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 {
 	ASSERT(pParser);
@@ -359,7 +393,11 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Sin"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
 	fun->add(param);
+#ifndef SPEED_TEST
 	fun->setFunctionCalc(rdo::Factory<rdoRuntime::RDOFunCalcSin>::create());
+#else
+	fun->setFunctionCalc(rdo::Factory<Test>::create());
+#endif
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Sqrt"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
