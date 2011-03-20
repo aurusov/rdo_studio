@@ -25,7 +25,6 @@
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_lib/rdo_runtime/calc/std_fun.h"
-#include "rdo_lib/rdo_runtime/rdobase.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
