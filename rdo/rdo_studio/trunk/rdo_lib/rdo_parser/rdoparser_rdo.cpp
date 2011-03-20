@@ -271,15 +271,22 @@ int roundLocal(double value)
 #ifdef SPEED_TEST
 #include "rdo_lib/rdo_runtime/rdobase.h"
 
+class MaxCalc: public rdoRuntime::RDOFunCalc
+{
+private:
+	REF(rdoRuntime::RDOValue) doCalc(PTR(rdoRuntime::RDORuntime) pRuntime)
+	{
+		m_value = max(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
+		return m_value;
+	}
+};
+
 class Test: public rdoRuntime::RDOFunCalc
 {
 public:
 	REF(rdoRuntime::RDOValue) doCalc(PTR(rdoRuntime::RDORuntime) runtime)
 	{
-		typedef rdoRuntime::std_fun2<double, double, double> StdFun_D_DD;
-		typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DD>       Function_D_DD;
-
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<Function_D_DD>::create(maxLocal<double>);
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<MaxCalc>::create();
 		ASSERT(pCalc);
 
 		SYSTEMTIME tnow;
