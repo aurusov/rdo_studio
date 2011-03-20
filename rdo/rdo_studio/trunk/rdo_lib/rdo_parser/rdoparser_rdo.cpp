@@ -276,10 +276,10 @@ class Test: public rdoRuntime::RDOFunCalc
 public:
 	REF(rdoRuntime::RDOValue) doCalc(PTR(rdoRuntime::RDORuntime) runtime)
 	{
-		typedef rdoRuntime::std_fun1<double, double>  StdFun_D_D;
-		typedef rdoRuntime::RDOFunCalcStd<StdFun_D_D> Function_D_D;
+		typedef rdoRuntime::std_fun2<double, double, double> StdFun_D_DD;
+		typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DD>       Function_D_DD;
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<Function_D_D>::create(sin);
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<Function_D_DD>::create(maxLocal<double>);
 		ASSERT(pCalc);
 
 		SYSTEMTIME tnow;
@@ -442,7 +442,11 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun->add(param);
 	param = rdo::Factory<RDOParam>::create(_T("p2"), realType);
 	fun->add(param);
+#ifndef SPEED_TEST
 	fun->setFunctionCalc(rdo::Factory<Function_D_DD>::create(static_cast<Function_D_DD::function_type>(pow)));
+#else
+	fun->setFunctionCalc(rdo::Factory<Test>::create());
+#endif
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Round"), pIntReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
@@ -452,11 +456,7 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Sin"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
 	fun->add(param);
-#ifndef SPEED_TEST
 	fun->setFunctionCalc(rdo::Factory<Function_D_D>::create(sin));
-#else
-	fun->setFunctionCalc(rdo::Factory<Test>::create());
-#endif
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Sqrt"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
