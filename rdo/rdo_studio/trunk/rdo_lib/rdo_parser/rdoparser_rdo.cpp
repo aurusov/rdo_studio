@@ -266,7 +266,7 @@ int roundLocal(double value)
 	return (int)floor(value + 0.5);
 }
 
-#define SPEED_TEST
+//#define SPEED_TEST
 
 #ifdef SPEED_TEST
 #include "rdo_lib/rdo_runtime/rdobase.h"
