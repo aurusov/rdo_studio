@@ -11,6 +11,7 @@
 #define _RDOCALC_STD_FUN_H_
 
 // ====================================================================== INCLUDES
+#include <boost/function.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
@@ -20,41 +21,54 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- Стандартные функции языка
 // ----------------------------------------------------------------------------
-#define DEFINE_RDO_STD_FUN(CalcName)       \
-CALC_SUB(RDOFunCalc##CalcName, RDOFunCalc) \
-{                                          \
-DECLARE_FACTORY(RDOFunCalc##CalcName)      \
-private:                                   \
-	RDOFunCalc##CalcName()                 \
-	{}                                     \
-	DECALRE_ICalc;                         \
-};
 
-DEFINE_RDO_STD_FUN( Sin      );
-DEFINE_RDO_STD_FUN( Cos      );
-DEFINE_RDO_STD_FUN( Tan      );
-DEFINE_RDO_STD_FUN( Cotan    );
-DEFINE_RDO_STD_FUN( ArcCos   );
-DEFINE_RDO_STD_FUN( ArcSin   );
-DEFINE_RDO_STD_FUN( ArcTan   );
-DEFINE_RDO_STD_FUN( Abs      );
-DEFINE_RDO_STD_FUN( Sqrt     );
-DEFINE_RDO_STD_FUN( Round    );
-DEFINE_RDO_STD_FUN( Exp      );
-DEFINE_RDO_STD_FUN( Floor    );
-DEFINE_RDO_STD_FUN( Frac     );
-DEFINE_RDO_STD_FUN( IAbs     );
-DEFINE_RDO_STD_FUN( IMax     );
-DEFINE_RDO_STD_FUN( IMin     );
-DEFINE_RDO_STD_FUN( Int      );
-DEFINE_RDO_STD_FUN( IntPower );
-DEFINE_RDO_STD_FUN( Ln       );
-DEFINE_RDO_STD_FUN( Log2     );
-DEFINE_RDO_STD_FUN( LogN     );
-DEFINE_RDO_STD_FUN( Log10    );
-DEFINE_RDO_STD_FUN( Max      );
-DEFINE_RDO_STD_FUN( Min      );
-DEFINE_RDO_STD_FUN( Power    );
+template <class F>
+class RDOFunCalcStd: public RDOFunCalc
+{
+public:
+	RDOFunCalcStd(CREF(F) function)
+		: m_function(function)
+	{}
+
+private:
+	F m_function;
+
+	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime)
+	{
+		calc<F::arity>(pRuntime);
+		return m_value;
+	}
+
+	template <int paramCount>
+	inline void calc(PTR(RDORuntime) pRuntime);
+
+	template <>
+	inline void calc<1>(PTR(RDORuntime) pRuntime)
+	{
+		m_value = m_function(getParam<F::arg1_type>(pRuntime, 0));
+	}
+
+	template <>
+	inline void calc<2>(PTR(RDORuntime) pRuntime)
+	{
+		m_value = m_function(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
+	}
+
+	template <class T>
+	inline T getParam(PTR(RDORuntime) pRuntime, ruint paramNumber);
+
+	template <>
+	inline double getParam<double>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	{
+		return pRuntime->getFuncArgument(paramNumber).getDouble();
+	}
+
+	template <>
+	inline int getParam<int>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	{
+		return pRuntime->getFuncArgument(paramNumber).getInt();
+	}
+};
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
