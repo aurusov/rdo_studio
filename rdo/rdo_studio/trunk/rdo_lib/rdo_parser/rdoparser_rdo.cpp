@@ -244,13 +244,13 @@ double logNLocal(double value1, double value2)
 }
 
 template <class T>
-CREF(T) maxLocal(CREF(T) value1, CREF(T) value2)
+T maxLocal(T value1, T value2)
 {
 	return value1 > value2 ? value1 : value2;
 }
 
 template <class T>
-CREF(T) minLocal(CREF(T) value1, CREF(T) value2)
+T minLocal(T value1, T value2)
 {
 	return value1 < value2 ? value1 : value2;
 }
@@ -266,7 +266,7 @@ int roundLocal(double value)
 	return (int)floor(value + 0.5);
 }
 
-//#define SPEED_TEST
+#define SPEED_TEST
 
 #ifdef SPEED_TEST
 #include "rdo_lib/rdo_runtime/rdobase.h"
@@ -276,8 +276,8 @@ class Test: public rdoRuntime::RDOFunCalc
 public:
 	REF(rdoRuntime::RDOValue) doCalc(PTR(rdoRuntime::RDORuntime) runtime)
 	{
-		typedef boost::function<double (double)> BoostFun_D_D;
-		typedef rdoRuntime::RDOFunCalcStd<BoostFun_D_D>  Function_D_D;
+		typedef rdoRuntime::std_fun1<double, double>  StdFun_D_D;
+		typedef rdoRuntime::RDOFunCalcStd<StdFun_D_D> Function_D_D;
 
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<Function_D_D>::create(sin);
 		ASSERT(pCalc);
@@ -306,24 +306,19 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 {
 	ASSERT(pParser);
 
-	typedef boost::function<double (double)>         BoostFun_D_D;
-	typedef boost::function<double (double, double)> BoostFun_D_DD;
-	typedef boost::function<double (double, int)>    BoostFun_D_DI;
-	typedef boost::function<int    (int)>            BoostFun_I_I;
-	typedef boost::function<int    (int, int)>       BoostFun_I_II;
-	typedef boost::function<int    (double)>         BoostFun_I_D;
-	typedef double (*StdFun_D_D )(double);
-	typedef double (*StdFun_D_DD)(double, double);
-	typedef double (*StdFun_D_DI)(double, int);
-	typedef int    (*StdFun_I_I )(int);
-	typedef int    (*StdFun_I_II)(int, int);
+	typedef rdoRuntime::std_fun1<double, double>         StdFun_D_D;
+	typedef rdoRuntime::std_fun2<double, double, double> StdFun_D_DD;
+	typedef rdoRuntime::std_fun2<double, double, int>    StdFun_D_DI;
+	typedef rdoRuntime::std_fun1<int,    int>            StdFun_I_I;
+	typedef rdoRuntime::std_fun2<int,    int, int>       StdFun_I_II;
+	typedef rdoRuntime::std_fun1<int,    double>         StdFun_I_D;
 
-	typedef rdoRuntime::RDOFunCalcStd<BoostFun_D_D>  Function_D_D;
-	typedef rdoRuntime::RDOFunCalcStd<BoostFun_D_DD> Function_D_DD;
-	typedef rdoRuntime::RDOFunCalcStd<BoostFun_D_DI> Function_D_DI;
-	typedef rdoRuntime::RDOFunCalcStd<BoostFun_I_I>  Function_I_I;
-	typedef rdoRuntime::RDOFunCalcStd<BoostFun_I_II> Function_I_II;
-	typedef rdoRuntime::RDOFunCalcStd<BoostFun_I_D>  Function_I_D;
+	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_D>  Function_D_D;
+	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DD> Function_D_DD;
+	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DI> Function_D_DI;
+	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_I>  Function_I_I;
+	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
+	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
 
 	LPRDOTypeParam intType     = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(),  RDOParserSrcInfo());
 	LPRDOTypeParam realType    = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
@@ -378,7 +373,7 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("IAbs"), pIntReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), intType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_I_I>::create(static_cast<StdFun_I_I>(abs)));
+	fun->setFunctionCalc(rdo::Factory<Function_I_I>::create(static_cast<Function_I_I::function_type>(abs)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("IMax"), pIntReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), intType);
@@ -404,7 +399,7 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun->add(param);
 	param = rdo::Factory<RDOParam>::create(_T("p2"), intType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create(static_cast<StdFun_D_DI>(pow)));
+	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create(static_cast<Function_D_DI::function_type>(pow)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Ln"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
@@ -447,7 +442,7 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun->add(param);
 	param = rdo::Factory<RDOParam>::create(_T("p2"), realType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_D_DD>::create(static_cast<StdFun_D_DD>(pow)));
+	fun->setFunctionCalc(rdo::Factory<Function_D_DD>::create(static_cast<Function_D_DD::function_type>(pow)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Round"), pIntReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
@@ -524,7 +519,7 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("iabs"), pIntReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), intType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_I_I>::create(static_cast<StdFun_I_I>(abs)));
+	fun->setFunctionCalc(rdo::Factory<Function_I_I>::create(static_cast<Function_I_I::function_type>(abs)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("imax"), pIntReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), intType);
@@ -550,7 +545,7 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun->add(param);
 	param = rdo::Factory<RDOParam>::create(_T("p2"), intType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create(static_cast<StdFun_D_DI>(pow)));
+	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create(static_cast<Function_D_DI::function_type>(pow)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("ln"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
@@ -593,7 +588,7 @@ void RDOParserSTDFUN::parse(PTR(RDOParser) pParser)
 	fun->add(param);
 	param = rdo::Factory<RDOParam>::create(_T("p2"), realType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_D_DD>::create(static_cast<StdFun_D_DD>(pow)));
+	fun->setFunctionCalc(rdo::Factory<Function_D_DD>::create(static_cast<Function_D_DD::function_type>(pow)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("round"), pIntReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);

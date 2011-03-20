@@ -11,7 +11,6 @@
 #define _RDOCALC_STD_FUN_H_
 
 // ====================================================================== INCLUDES
-#include <boost/function.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
@@ -22,16 +21,41 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- Стандартные функции языка
 // ----------------------------------------------------------------------------
 
+template <class RT, class P1>
+class std_fun1
+{
+public:
+	enum { arity = 1 };
+
+	typedef RT return_type;
+	typedef P1 arg1_type;
+	typedef RT (*function_type)(P1);
+};
+
+template <class RT, class P1, class P2>
+class std_fun2
+{
+public:
+	enum { arity = 2 };
+
+	typedef RT return_type;
+	typedef P1 arg1_type;
+	typedef P2 arg2_type;
+	typedef RT (*function_type)(P1, P2);
+};
+
 template <class F>
 class RDOFunCalcStd: public RDOFunCalc
 {
 public:
-	RDOFunCalcStd(CREF(F) function)
-		: m_function(function)
+	typedef typename F::function_type function_type;
+
+	RDOFunCalcStd(CREF(function_type) pFunction)
+		: m_pFunction(pFunction)
 	{}
 
 private:
-	F m_function;
+	function_type m_pFunction;
 
 	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime)
 	{
@@ -40,31 +64,31 @@ private:
 	}
 
 	template <int paramCount>
-	inline void calc(PTR(RDORuntime) pRuntime);
+	FORCEINLINE void calc(PTR(RDORuntime) pRuntime);
 
 	template <>
-	inline void calc<1>(PTR(RDORuntime) pRuntime)
+	FORCEINLINE void calc<1>(PTR(RDORuntime) pRuntime)
 	{
-		m_value = m_function(getParam<F::arg1_type>(pRuntime, 0));
+		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
 	}
 
 	template <>
-	inline void calc<2>(PTR(RDORuntime) pRuntime)
+	FORCEINLINE void calc<2>(PTR(RDORuntime) pRuntime)
 	{
-		m_value = m_function(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
+		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
 	}
 
 	template <class T>
-	inline T getParam(PTR(RDORuntime) pRuntime, ruint paramNumber);
+	FORCEINLINE T getParam(PTR(RDORuntime) pRuntime, ruint paramNumber);
 
 	template <>
-	inline double getParam<double>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	FORCEINLINE double getParam<double>(PTR(RDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getDouble();
 	}
 
 	template <>
-	inline int getParam<int>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	FORCEINLINE int getParam<int>(PTR(RDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getInt();
 	}
