@@ -49,7 +49,7 @@ REF(RDOValue) RDOCalcOr::doCalc(PTR(RDORuntime) runtime)
 REF(RDOValue) RDOCalcNot::doCalc(PTR(RDORuntime) runtime)
 {
 	++OperatorType::getCalcCounter<OperatorType::OT_LOGIC>();
-	m_value = !m_pCalc->calcValue(runtime).getAsBool();
+	m_value = !m_pCalc->calcValue(runtime);
 	return m_value;
 }
 

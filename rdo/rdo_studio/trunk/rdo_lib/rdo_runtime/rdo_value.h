@@ -78,6 +78,7 @@ public:
 	RDOValue       operator&& (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator|| (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator-  () const;
+	rbool          operator!  () const;
 	CREF(RDOValue) operator++ ();
 	RDOValue       operator++ (int inc);
 	CREF(RDOValue) operator-- ();
