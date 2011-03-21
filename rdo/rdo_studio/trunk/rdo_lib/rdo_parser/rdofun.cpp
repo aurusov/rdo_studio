@@ -161,7 +161,7 @@ rdoRuntime::LPRDOCalc RDOFUNLogic::getCalc(rdoRuntime::RDOType::TypeID id)
 }
 
 template <class T>
-rdoRuntime::LPRDOCalc RDOFUNLogic::generateCalc(CREF(rdoRuntime::LPRDOCalc) pFirst, typename T::value_operator pOperator, CREF(rdoRuntime::LPRDOCalc) pSecond)
+rdoRuntime::LPRDOCalc RDOFUNLogic::generateCalc(CREF(rdoRuntime::LPRDOCalc) pFirst, CREF(rdoRuntime::LPRDOCalc) pSecond)
 {
 	ASSERT(pFirst );
 	ASSERT(pSecond);
@@ -171,7 +171,8 @@ rdoRuntime::LPRDOCalc RDOFUNLogic::generateCalc(CREF(rdoRuntime::LPRDOCalc) pFir
 	rdoRuntime::LPRDOCalc pCalc;
 	if (pConstCalc1 && pConstCalc2)
 	{
-		pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create((pConstCalc1->calcValue(NULL).*pOperator)(pConstCalc2->calcValue(NULL)));
+		T::value_operator pOperation = T::getOperation();
+		pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create((pConstCalc1->calcValue(NULL).*pOperation)(pConstCalc2->calcValue(NULL)));
 		pCalc->setSrcInfo(T::getStaticSrcInfo(pConstCalc1, pConstCalc2));
 	}
 	else
@@ -183,11 +184,11 @@ rdoRuntime::LPRDOCalc RDOFUNLogic::generateCalc(CREF(rdoRuntime::LPRDOCalc) pFir
 }
 
 template <class T>
-LPRDOFUNLogic RDOFUNLogic::generateLogic(typename T::value_operator pOperator, CREF(LPRDOFUNLogic) pSecond)
+LPRDOFUNLogic RDOFUNLogic::generateLogic(CREF(LPRDOFUNLogic) pSecond)
 {
 	ASSERT(pSecond);
 
-	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(m_pCalc, pOperator, pSecond->m_pCalc);
+	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(m_pCalc, pSecond->m_pCalc);
 	ASSERT(pCalc);
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, false);
 	pLogic->setSrcInfo(pCalc->src_info());
@@ -198,12 +199,12 @@ LPRDOFUNLogic RDOFUNLogic::generateLogic(typename T::value_operator pOperator, C
 
 LPRDOFUNLogic RDOFUNLogic::operator&& (CREF(LPRDOFUNLogic) pSecond)
 {
-	return generateLogic<rdoRuntime::RDOCalcAnd>((&rdoRuntime::RDOValue::operator&&), pSecond);
+	return generateLogic<rdoRuntime::RDOCalcAnd>(pSecond);
 }
 
 LPRDOFUNLogic RDOFUNLogic::operator|| (CREF(LPRDOFUNLogic) pSecond)
 {
-	return generateLogic<rdoRuntime::RDOCalcOr>((&rdoRuntime::RDOValue::operator||), pSecond);
+	return generateLogic<rdoRuntime::RDOCalcOr>(pSecond);
 }
 
 LPRDOFUNLogic RDOFUNLogic::operator_not()

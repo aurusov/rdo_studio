@@ -88,10 +88,10 @@ private:
 	RDOFUNDoubleToIntByResult  m_intOrDouble;
 
 	template <class T>
-	static rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::LPRDOCalc) pFirst, typename T::value_operator pOperator, CREF(rdoRuntime::LPRDOCalc) pSecond);
+	static rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::LPRDOCalc) pFirst, CREF(rdoRuntime::LPRDOCalc) pSecond);
 
 	template <class T>
-	LPRDOFUNLogic generateLogic(typename T::value_operator pOperator, CREF(LPRDOFUNLogic) pSecond);
+	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNLogic) pSecond);
 };
 
 // ----------------------------------------------------------------------------

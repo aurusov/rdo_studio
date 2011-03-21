@@ -52,6 +52,12 @@ inline void RDOCalcBinary<ret_type, pOperator, CalcType>::setRight(CREF(LPRDOCal
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
+inline typename RDOCalcBinary<ret_type, pOperator, CalcType>::value_operator RDOCalcBinary<ret_type, pOperator, CalcType>::getOperation()
+{
+	return pOperator;
+}
+
+template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(PTR(RDORuntime) runtime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
