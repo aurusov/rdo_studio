@@ -40,19 +40,19 @@ inline LPRDOCalc RDOCalcBinary<ret_type, pOperator, CalcType>::getLeft() const
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
-LPRDOCalcConst RDOCalcBinary<ret_type, pOperator, CalcType>::getRightAsConst() const
+inline LPRDOCalcConst RDOCalcBinary<ret_type, pOperator, CalcType>::getRightAsConst() const
 {
 	return m_pRight.object_static_cast<RDOCalcConst>();
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
-void RDOCalcBinary<ret_type, pOperator, CalcType>::setRight(CREF(LPRDOCalc) pRight)
+inline void RDOCalcBinary<ret_type, pOperator, CalcType>::setRight(CREF(LPRDOCalc) pRight)
 {
 	m_pRight = pRight;
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
-REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(PTR(RDORuntime) runtime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
 	m_value = (m_pLeft->calcValue(runtime).*pOperator)(m_pRight->calcValue(runtime));
