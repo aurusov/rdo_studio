@@ -1910,6 +1910,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\unary.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\watch.cpp"
 				>
 			</File>

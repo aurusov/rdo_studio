@@ -20,18 +20,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- ”нарные операции
 // ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcUMinus::doCalc(PTR(RDORuntime) runtime)
-{
-	m_value = -m_pOperation->calcValue(runtime);
-	return m_value;
-}
-
-REF(RDOValue) RDOCalcDoubleToInt::doCalc(PTR(RDORuntime) runtime)
-{
-	m_value = m_pOperation->calcValue( runtime ).getInt();
-	return m_value;
-}
-
 REF(RDOValue) RDOCalcDoubleToIntByResult::doCalc(PTR(RDORuntime) runtime)
 {
 	m_value = m_round ? RDOValue(m_pOperation->calcValue(runtime).getInt()) : m_pOperation->calcValue(runtime);

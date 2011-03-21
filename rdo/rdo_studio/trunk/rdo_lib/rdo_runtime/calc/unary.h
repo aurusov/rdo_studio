@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/operation_type.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -20,43 +21,32 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcUnary
 // ----------------------------------------------------------------------------
-CALC(RDOCalcUnary)
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+class RDOCalcUnary: public RDOCalc
 {
+friend class rdo::Factory<RDOCalcUnary<ret_type, pOperator, CalcType> >;
+public:
+	enum { calc_type = CalcType };
+	typedef ret_type (RDOValue::*value_operator)() const;
+
+	static value_operator getOperation();
+
 protected:
-	RDOCalcUnary(CREF(LPRDOCalc) pOperation)
-		: m_pOperation(pOperation)
-	{
-		if (m_pOperation)
-			setSrcInfo(m_pOperation->src_info());
-	}
+	RDOCalcUnary(CREF(LPRDOCalc) pOperation);
 
 	LPRDOCalc m_pOperation;
+
+private:
+	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
 };
 
 // ----------------------------------------------------------------------------
 // ---------- ”нарные операции
 // ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcUMinus, RDOCalcUnary)
-{
-DECLARE_FACTORY(RDOCalcUMinus)
-private:
-	RDOCalcUMinus(CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper)
-	{}
-	DECALRE_ICalc;
-};
+typedef RDOCalcUnary<RDOValue, (&RDOValue::operator-), OperatorType::OT_ARITHM> RDOCalcUMinus;
+typedef RDOCalcUnary<rsint,    (&RDOValue::getInt   ), OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
-CALC_SUB(RDOCalcDoubleToInt, RDOCalcUnary)
-{
-DECLARE_FACTORY(RDOCalcDoubleToInt)
-private:
-	RDOCalcDoubleToInt(CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper)
-	{}
-	DECALRE_ICalc;
-};
-
-CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalcUnary)
+CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
 public:
@@ -67,27 +57,29 @@ public:
 
 private:
 	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper)
+		: m_pOperation(pOper)
 		, m_round     (false)
 	{}
 
-	rbool m_round;
+	rbool     m_round;
+	LPRDOCalc m_pOperation;
 
 	DECALRE_ICalc;
 };
 
-CALC_SUB(RDOCalcCheckDiap, RDOCalcUnary)
+CALC_SUB(RDOCalcCheckDiap, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcCheckDiap)
 private:
 	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper)
-		: RDOCalcUnary(pOper    )
+		: m_pOperation(pOper    )
 		, m_min_value (min_value)
 		, m_max_value (max_value)
 	{}
 
-	RDOValue m_min_value;
-	RDOValue m_max_value;
+	RDOValue  m_min_value;
+	RDOValue  m_max_value;
+	LPRDOCalc m_pOperation;
 
 	DECALRE_ICalc;
 };
@@ -95,17 +87,21 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcInt (приведение к целому)
 // ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcInt, RDOCalcUnary)
+CALC_SUB(RDOCalcInt, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcInt)
 private:
 	RDOCalcInt(CREF(LPRDOCalc) pOperation)
-		: RDOCalcUnary(pOperation)
+		: m_pOperation(pOperation)
 	{}
+
+	LPRDOCalc m_pOperation;
 
 	DECALRE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/calc/unary.inl"
 
 #endif //! _RDOCALC_UNARY_H_

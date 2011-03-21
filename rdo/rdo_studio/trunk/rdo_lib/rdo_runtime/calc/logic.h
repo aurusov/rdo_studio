@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/binary.h"
+#include "rdo_lib/rdo_runtime/calc/unary.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -55,19 +56,7 @@ private:
 	DECALRE_ICalc;
 };
 
-CALC(RDOCalcNot)
-{
-DECLARE_FACTORY(RDOCalcNot)
-private:
-	RDOCalcNot(CREF(LPRDOCalc) pCalc)
-		: m_pCalc(pCalc)
-	{}
-
-	LPRDOCalc m_pCalc;
-
-	DECALRE_ICalc;
-};
-
+typedef RDOCalcUnary <rbool, (&RDOValue::operator! ), OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
 typedef RDOCalcBinary<rbool, (&RDOValue::operator==), OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
 typedef RDOCalcBinary<rbool, (&RDOValue::operator!=), OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
 typedef RDOCalcBinary<rbool, (&RDOValue::operator< ), OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);

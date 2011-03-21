@@ -46,11 +46,4 @@ REF(RDOValue) RDOCalcOr::doCalc(PTR(RDORuntime) runtime)
 	return m_value_false;
 }
 
-REF(RDOValue) RDOCalcNot::doCalc(PTR(RDORuntime) runtime)
-{
-	++OperatorType::getCalcCounter<OperatorType::OT_LOGIC>();
-	m_value = !m_pCalc->calcValue(runtime);
-	return m_value;
-}
-
 CLOSE_RDO_RUNTIME_NAMESPACE
