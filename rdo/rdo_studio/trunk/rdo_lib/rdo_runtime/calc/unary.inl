@@ -22,6 +22,12 @@ inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(LPRDOCalc)
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+inline typename RDOCalcUnary<ret_type, pOperator, CalcType>::value_operator RDOCalcUnary<ret_type, pOperator, CalcType>::getOperation()
+{
+	return pOperator;
+}
+
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 inline REF(RDOValue) RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(PTR(RDORuntime) runtime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
