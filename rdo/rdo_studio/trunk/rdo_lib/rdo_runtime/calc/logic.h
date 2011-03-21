@@ -30,7 +30,6 @@ private:
 	{
 		m_value_true  = 1;
 		m_value_false = 0;
-		setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
 	}
 	RDOValue m_value_true;
 	RDOValue m_value_false;
@@ -47,7 +46,6 @@ private:
 	{
 		m_value_true  = 1;
 		m_value_false = 0;
-		setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
 	}
 
 	RDOValue m_value_true;
