@@ -19,12 +19,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- OperatorName
 // ----------------------------------------------------------------------------
-template <typename ret_type>
+template <typename ret_type, typename opr_type>
 class OperatorName
 {
 public:
-	typedef ret_type (RDOValue::*opr_type)(CREF(RDOValue) rdovalue) const;
-
 	static tstring name(CREF(opr_type) pOperator);
 
 private:

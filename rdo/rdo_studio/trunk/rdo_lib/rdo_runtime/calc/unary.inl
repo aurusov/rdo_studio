@@ -33,7 +33,7 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(LPRDOCalc) pUnaryCalc)
 	{
 		T::value_operator pOperation = T::getOperation();
 		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc->calcValue(NULL).*pOperation)());
-		pCalc->setSrcInfo(pConstCalc->src_info());
+		pCalc->setSrcInfo(T::getStaticSrcInfo(pConstCalc));
 	}
 	else
 	{
@@ -50,7 +50,15 @@ template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename O
 inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(LPRDOCalc) pOperation)
 	: RDOCalcUnaryBase(pOperation)
 {
-	setSrcInfo(m_pOperation->src_info());
+	setSrcInfo(getStaticSrcInfo(m_pOperation));
+}
+
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pUnaryCalc)
+{
+	RDOSrcInfo src_info(pUnaryCalc->src_info());
+	src_info.setSrcText(rdo::format(_T("%s(%s)"), OperatorName<ret_type, ret_type (RDOValue::*)() const>::name(pOperator).c_str(), pUnaryCalc->src_text().c_str()));
+	return src_info;
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>

@@ -44,7 +44,8 @@ public:
 	enum { calc_type = CalcType };
 	typedef ret_type (RDOValue::*value_operator)() const;
 
-	static value_operator getOperation();
+	static RDOSrcInfo     getStaticSrcInfo(CREF(LPRDOCalc) pUnaryCalc);
+	static value_operator getOperation    ();
 
 protected:
 	RDOCalcUnary(CREF(LPRDOCalc) pOperation);
