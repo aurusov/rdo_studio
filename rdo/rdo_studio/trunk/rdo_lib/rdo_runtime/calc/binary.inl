@@ -80,7 +80,7 @@ template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdov
 inline RDOSrcInfo RDOCalcBinary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 {
 	RDOSrcInfo src_info;
-	src_info.setSrcInfo(pLeft->src_info(), rdo::format(_T(" %s "), OperatorName<ret_type, ret_type (RDOValue::*)(CREF(RDOValue)) const>::name(pOperator).c_str()), pRight->src_info());
+	src_info.setSrcInfo(pLeft->src_info(), rdo::format(_T(" %s "), OperatorName<ret_type (RDOValue::*)(CREF(RDOValue)) const>::name(pOperator).c_str()), pRight->src_info());
 	return src_info;
 }
 

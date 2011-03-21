@@ -57,7 +57,7 @@ template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename O
 inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pUnaryCalc)
 {
 	RDOSrcInfo src_info(pUnaryCalc->src_info());
-	src_info.setSrcText(rdo::format(_T("%s(%s)"), OperatorName<ret_type, ret_type (RDOValue::*)() const>::name(pOperator).c_str(), pUnaryCalc->src_text().c_str()));
+	src_info.setSrcText(rdo::format(_T("%s(%s)"), OperatorName<ret_type (RDOValue::*)() const>::name(pOperator).c_str(), pUnaryCalc->src_text().c_str()));
 	return src_info;
 }
 
