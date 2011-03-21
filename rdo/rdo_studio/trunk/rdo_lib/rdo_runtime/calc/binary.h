@@ -45,13 +45,12 @@ public:
 	enum { calc_type = CalcType };
 	typedef ret_type (RDOValue::*value_operator)(CREF(RDOValue) rdovalue) const;
 
-	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
-
 	LPRDOCalc      getLeft        () const;
 	LPRDOCalcConst getRightAsConst() const;
 	void           setRight       (CREF(LPRDOCalc) pRight);
 
-	static value_operator getOperation();
+	static RDOSrcInfo     getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+	static value_operator getOperation    ();
 
 protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
