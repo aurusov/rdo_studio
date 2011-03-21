@@ -27,6 +27,7 @@ class RDOCalcBinary: public RDOCalc
 friend class rdo::Factory<RDOCalcBinary<ret_type, pOperator, CalcType> >;
 public:
 	enum { calc_type = CalcType };
+	typedef ret_type (RDOValue::*value_operator)(CREF(RDOValue) rdovalue) const;
 
 	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
