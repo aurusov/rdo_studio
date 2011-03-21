@@ -17,10 +17,8 @@ template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename O
 inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(LPRDOCalc) pOperation)
 	: m_pOperation(pOperation)
 {
-	if (m_pOperation)
-	{
-		setSrcInfo(m_pOperation->src_info());
-	}
+	ASSERT(m_pOperation);
+	setSrcInfo(m_pOperation->src_info());
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
