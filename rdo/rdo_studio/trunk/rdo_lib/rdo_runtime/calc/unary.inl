@@ -13,11 +13,43 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(LPRDOCalc) pOperation)
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcUnaryBase
+// ----------------------------------------------------------------------------
+inline RDOCalcUnaryBase::RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation)
 	: m_pOperation(pOperation)
 {
 	ASSERT(m_pOperation);
+}
+
+template <class T>
+LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(LPRDOCalc) pUnaryCalc)
+{
+	ASSERT(pUnaryCalc);
+
+	LPRDOCalcConst pConstCalc = pUnaryCalc.object_dynamic_cast<RDOCalcConst>();
+	LPRDOCalc pCalc;
+	if (pConstCalc)
+	{
+		T::value_operator pOperation = T::getOperation();
+		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc->calcValue(NULL).*pOperation)());
+		pCalc->setSrcInfo(pConstCalc->src_info());
+	}
+	else
+	{
+		pCalc = rdo::Factory<T>::create(pUnaryCalc);
+	}
+	ASSERT(pCalc);
+	return pCalc;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcUnary
+// ----------------------------------------------------------------------------
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(LPRDOCalc) pOperation)
+	: RDOCalcUnaryBase(pOperation)
+{
 	setSrcInfo(m_pOperation->src_info());
 }
 

@@ -19,10 +19,26 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcBinaryBase
+// ----------------------------------------------------------------------------
+class RDOCalcBinaryBase: public RDOCalc
+{
+public:
+	template <class T>
+	static LPRDOCalc generateCalc(CREF(LPRDOCalc) pFirst, CREF(LPRDOCalc) pSecond);
+
+protected:
+	RDOCalcBinaryBase(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+
+	LPRDOCalc  m_pLeft;
+	LPRDOCalc  m_pRight;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcBinary
 // ----------------------------------------------------------------------------
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
-class RDOCalcBinary: public RDOCalc
+class RDOCalcBinary: public RDOCalcBinaryBase
 {
 friend class rdo::Factory<RDOCalcBinary<ret_type, pOperator, CalcType> >;
 public:
@@ -39,9 +55,6 @@ public:
 
 protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
-
-	LPRDOCalc  m_pLeft;
-	LPRDOCalc  m_pRight;
 
 private:
 	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);

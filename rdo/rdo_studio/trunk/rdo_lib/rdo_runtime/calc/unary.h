@@ -19,10 +19,25 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcUnaryBase
+// ----------------------------------------------------------------------------
+class RDOCalcUnaryBase: public RDOCalc
+{
+public:
+	template <class T>
+	static LPRDOCalc generateCalc(CREF(LPRDOCalc) pUnaryCalc);
+
+protected:
+	RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation);
+
+	LPRDOCalc m_pOperation;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcUnary
 // ----------------------------------------------------------------------------
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-class RDOCalcUnary: public RDOCalc
+class RDOCalcUnary: public RDOCalcUnaryBase
 {
 friend class rdo::Factory<RDOCalcUnary<ret_type, pOperator, CalcType> >;
 public:
@@ -33,8 +48,6 @@ public:
 
 protected:
 	RDOCalcUnary(CREF(LPRDOCalc) pOperation);
-
-	LPRDOCalc m_pOperation;
 
 private:
 	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);

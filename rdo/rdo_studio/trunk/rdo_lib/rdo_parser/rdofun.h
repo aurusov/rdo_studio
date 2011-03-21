@@ -87,17 +87,13 @@ private:
 	rdoRuntime::LPRDOCalc      m_pCalc;
 	RDOFUNDoubleToIntByResult  m_intOrDouble;
 
-	template <class T>
-	static rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::LPRDOCalc) pFirst, CREF(rdoRuntime::LPRDOCalc) pSecond);
+	LPRDOFUNLogic createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc);
 
 	template <class T>
-	static rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::LPRDOCalc) pOperator);
+	LPRDOFUNLogic createLogic(CREF(LPRDOFUNLogic) pSecond);
 
 	template <class T>
-	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNLogic) pSecond);
-
-	template <class T>
-	LPRDOFUNLogic generateLogic();
+	LPRDOFUNLogic createLogic();
 };
 
 // ----------------------------------------------------------------------------

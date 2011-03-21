@@ -15,12 +15,45 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcBinaryBase
+// ----------------------------------------------------------------------------
+inline RDOCalcBinaryBase::RDOCalcBinaryBase(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+	: m_pLeft (pLeft )
+	, m_pRight(pRight)
+{
+	ASSERT(m_pLeft );
+	ASSERT(m_pRight);
+}
+
+template <class T>
+inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LPRDOCalc) pSecond)
+{
+	ASSERT(pFirst );
+	ASSERT(pSecond);
+
+	LPRDOCalcConst pConstCalc1 = pFirst.object_dynamic_cast<RDOCalcConst>();
+	LPRDOCalcConst pConstCalc2 = pSecond.object_dynamic_cast<RDOCalcConst>();
+	LPRDOCalc pCalc;
+	if (pConstCalc1 && pConstCalc2)
+	{
+		T::value_operator pOperation = T::getOperation();
+		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc1->calcValue(NULL).*pOperation)(pConstCalc2->calcValue(NULL)));
+		pCalc->setSrcInfo(T::getStaticSrcInfo(pConstCalc1, pConstCalc2));
+	}
+	else
+	{
+		pCalc = rdo::Factory<T>::create(pFirst, pSecond);
+	}
+	ASSERT(pCalc);
+	return pCalc;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcBinary
 // ----------------------------------------------------------------------------
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 inline RDOCalcBinary<ret_type, pOperator, CalcType>::RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-	: m_pLeft (pLeft )
-	, m_pRight(pRight)
+	: RDOCalcBinaryBase(pLeft, pRight)
 {
 	setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
 }
