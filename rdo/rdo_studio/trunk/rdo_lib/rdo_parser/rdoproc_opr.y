@@ -718,10 +718,9 @@ fun_logic
 	{
 		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
-		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
+		RDOParserSrcInfo src_info(@1, @2);
+		LPRDOFUNLogic pLogicNot = pLogic->operator_not(src_info.src_pos());
 		ASSERT(pLogicNot);
-		pLogicNot->setSrcPos (@1, @2);
-		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
 		$$ = PARSER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
@@ -802,7 +801,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
 	}
 	;
 

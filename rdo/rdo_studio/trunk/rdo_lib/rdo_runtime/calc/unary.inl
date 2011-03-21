@@ -23,7 +23,7 @@ inline RDOCalcUnaryBase::RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation)
 }
 
 template <class T>
-LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(LPRDOCalc) pUnaryCalc)
+LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
 {
 	ASSERT(pUnaryCalc);
 
@@ -33,11 +33,11 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(LPRDOCalc) pUnaryCalc)
 	{
 		T::value_operator pOperation = T::getOperation();
 		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc->calcValue(NULL).*pOperation)());
-		pCalc->setSrcInfo(T::getStaticSrcInfo(pConstCalc));
+		pCalc->setSrcInfo(T::getStaticSrcInfo(position, pConstCalc));
 	}
 	else
 	{
-		pCalc = rdo::Factory<T>::create(pUnaryCalc);
+		pCalc = rdo::Factory<T>::create(position, pUnaryCalc);
 	}
 	ASSERT(pCalc);
 	return pCalc;
@@ -47,16 +47,17 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(LPRDOCalc) pUnaryCalc)
 // ---------- RDOCalcUnary
 // ----------------------------------------------------------------------------
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(LPRDOCalc) pOperation)
+inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation)
 	: RDOCalcUnaryBase(pOperation)
 {
-	setSrcInfo(getStaticSrcInfo(m_pOperation));
+	setSrcInfo(getStaticSrcInfo(position, m_pOperation));
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pUnaryCalc)
+inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
 {
 	RDOSrcInfo src_info(pUnaryCalc->src_info());
+	src_info.setSrcPos (position);
 	src_info.setSrcText(rdo::format(_T("%s(%s)"), OperatorName<ret_type (RDOValue::*)() const>::name(pOperator).c_str(), pUnaryCalc->src_text().c_str()));
 	return src_info;
 }

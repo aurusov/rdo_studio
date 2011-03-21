@@ -25,7 +25,7 @@ class RDOCalcUnaryBase: public RDOCalc
 {
 public:
 	template <class T>
-	static LPRDOCalc generateCalc(CREF(LPRDOCalc) pUnaryCalc);
+	static LPRDOCalc generateCalc(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc);
 
 protected:
 	RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation);
@@ -44,11 +44,11 @@ public:
 	enum { calc_type = CalcType };
 	typedef ret_type (RDOValue::*value_operator)() const;
 
-	static RDOSrcInfo     getStaticSrcInfo(CREF(LPRDOCalc) pUnaryCalc);
+	static RDOSrcInfo     getStaticSrcInfo(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc);
 	static value_operator getOperation    ();
 
 protected:
-	RDOCalcUnary(CREF(LPRDOCalc) pOperation);
+	RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation);
 
 private:
 	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);

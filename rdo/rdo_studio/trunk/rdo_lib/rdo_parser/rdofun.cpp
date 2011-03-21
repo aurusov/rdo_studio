@@ -185,9 +185,9 @@ LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(LPRDOFUNLogic) pSecond)
 }
 
 template <class T>
-LPRDOFUNLogic RDOFUNLogic::createLogic()
+LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(RDOSrcInfo::Position) position)
 {
-	rdoRuntime::LPRDOCalc pCalc = rdoRuntime::RDOCalcUnaryBase::generateCalc<T>(m_pCalc);
+	rdoRuntime::LPRDOCalc pCalc = rdoRuntime::RDOCalcUnaryBase::generateCalc<T>(position, m_pCalc);
 	ASSERT(pCalc);
 	LPRDOFUNLogic pLogic = createLogic(pCalc);
 	pLogic->m_intOrDouble.insert(m_intOrDouble);
@@ -204,9 +204,9 @@ LPRDOFUNLogic RDOFUNLogic::operator|| (CREF(LPRDOFUNLogic) pSecond)
 	return createLogic<rdoRuntime::RDOCalcOr>(pSecond);
 }
 
-LPRDOFUNLogic RDOFUNLogic::operator_not()
+LPRDOFUNLogic RDOFUNLogic::operator_not(CREF(RDOSrcInfo::Position) position)
 {
-	return createLogic<rdoRuntime::RDOCalcNot>();
+	return createLogic<rdoRuntime::RDOCalcNot>(position);
 }
 
 void RDOFUNLogic::setSrcInfo(CREF(RDOParserSrcInfo) src_info)
@@ -785,7 +785,7 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) pForType)
 		else
 		{
 			m_intOrDouble.roundCalc();
-			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc);
+			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc->src_pos(), m_pCalc);
 			pNewCalc->setSrcInfo(src_info());
 			return pNewCalc;
 		}

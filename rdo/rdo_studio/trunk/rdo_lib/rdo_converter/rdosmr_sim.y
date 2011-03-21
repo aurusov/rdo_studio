@@ -696,7 +696,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
 	}
 	;
 

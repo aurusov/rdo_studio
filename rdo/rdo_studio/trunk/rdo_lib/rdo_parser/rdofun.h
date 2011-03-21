@@ -71,7 +71,7 @@ public:
 
 	LPRDOFUNLogic operator && (CREF(LPRDOFUNLogic) pSecond);
 	LPRDOFUNLogic operator || (CREF(LPRDOFUNLogic) pSecond);
-	LPRDOFUNLogic operator_not();
+	LPRDOFUNLogic operator_not(CREF(RDOSrcInfo::Position) position);
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo)     src_info);
 	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);
@@ -93,7 +93,7 @@ private:
 	LPRDOFUNLogic createLogic(CREF(LPRDOFUNLogic) pSecond);
 
 	template <class T>
-	LPRDOFUNLogic createLogic();
+	LPRDOFUNLogic createLogic(CREF(RDOSrcInfo::Position) position);
 };
 
 // ----------------------------------------------------------------------------
