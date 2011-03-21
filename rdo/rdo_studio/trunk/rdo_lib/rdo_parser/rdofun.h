@@ -91,7 +91,13 @@ private:
 	static rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::LPRDOCalc) pFirst, CREF(rdoRuntime::LPRDOCalc) pSecond);
 
 	template <class T>
+	static rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::LPRDOCalc) pOperator);
+
+	template <class T>
 	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNLogic) pSecond);
+
+	template <class T>
+	LPRDOFUNLogic generateLogic();
 };
 
 // ----------------------------------------------------------------------------

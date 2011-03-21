@@ -184,6 +184,27 @@ rdoRuntime::LPRDOCalc RDOFUNLogic::generateCalc(CREF(rdoRuntime::LPRDOCalc) pFir
 }
 
 template <class T>
+rdoRuntime::LPRDOCalc RDOFUNLogic::generateCalc(CREF(rdoRuntime::LPRDOCalc) pOperator)
+{
+	ASSERT(pOperator);
+
+	rdoRuntime::LPRDOCalcConst pConstCalc = pOperator.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+	rdoRuntime::LPRDOCalc pCalc;
+	if (pConstCalc)
+	{
+		T::value_operator pOperation = T::getOperation();
+		pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create((pConstCalc->calcValue(NULL).*pOperation)());
+		pCalc->setSrcInfo(pConstCalc->src_info());
+	}
+	else
+	{
+		pCalc = rdo::Factory<T>::create(pOperator);
+	}
+	ASSERT(pCalc);
+	return pCalc;
+}
+
+template <class T>
 LPRDOFUNLogic RDOFUNLogic::generateLogic(CREF(LPRDOFUNLogic) pSecond)
 {
 	ASSERT(pSecond);
@@ -193,6 +214,18 @@ LPRDOFUNLogic RDOFUNLogic::generateLogic(CREF(LPRDOFUNLogic) pSecond)
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, false);
 	pLogic->setSrcInfo(pCalc->src_info());
 	pLogic->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble);
+	ASSERT(pLogic);
+	return pLogic;
+}
+
+template <class T>
+LPRDOFUNLogic RDOFUNLogic::generateLogic()
+{
+	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(m_pCalc);
+	ASSERT(pCalc);
+	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, false);
+	pLogic->setSrcInfo(pCalc->src_info());
+	pLogic->m_intOrDouble.insert(m_intOrDouble);
 	ASSERT(pLogic);
 	return pLogic;
 }
@@ -209,11 +242,7 @@ LPRDOFUNLogic RDOFUNLogic::operator|| (CREF(LPRDOFUNLogic) pSecond)
 
 LPRDOFUNLogic RDOFUNLogic::operator_not()
 {
-	rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcNot>::create(m_pCalc);
-	LPRDOFUNLogic         pLogic   = rdo::Factory<RDOFUNLogic>::create(pNewCalc, false);
-	pLogic->setSrcInfo(pNewCalc->src_info());
-	pLogic->m_intOrDouble.insert(m_intOrDouble);
-	return pLogic;
+	return generateLogic<rdoRuntime::RDOCalcNot>();
 }
 
 void RDOFUNLogic::setSrcInfo(CREF(RDOParserSrcInfo) src_info)
