@@ -187,7 +187,7 @@ LPRDOFUNLogic RDOFUNLogic::generateLogic(typename T::value_operator pOperator, C
 {
 	ASSERT(pSecond);
 
-	rdoRuntime::LPRDOCalc pCalc = generateCalc<rdoRuntime::RDOCalcAnd>(m_pCalc, pOperator, pSecond->m_pCalc);
+	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(m_pCalc, pOperator, pSecond->m_pCalc);
 	ASSERT(pCalc);
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, false);
 	pLogic->setSrcInfo(pCalc->src_info());
