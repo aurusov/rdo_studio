@@ -161,6 +161,18 @@ private:
 	};
 	CastResult beforeCastValue(LPRDOFUNArithm       pSecond);
 	LPRDOType  getPreType     (CREF(LPRDOFUNArithm) pSecond);
+
+	template <class T>
+	rdoRuntime::LPRDOCalc generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+
+	template <class T>
+	LPRDOFUNArithm generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+
+	template <class T>
+	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+
+	template <class T>
+	void castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 };
 DECLARE_POINTER(LPRDOFUNArithm);
 
