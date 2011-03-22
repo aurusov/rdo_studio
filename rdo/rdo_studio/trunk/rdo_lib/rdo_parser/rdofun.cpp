@@ -128,7 +128,7 @@ LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc)
 }
 
 template <class T>
-LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(LPRDOFUNLogic) pSecond)
+LPRDOFUNLogic RDOFUNLogic::generateLogic(CREF(LPRDOFUNLogic) pSecond)
 {
 	ASSERT(pSecond);
 
@@ -140,7 +140,7 @@ LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(LPRDOFUNLogic) pSecond)
 }
 
 template <class T>
-LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(RDOSrcInfo::Position) position)
+LPRDOFUNLogic RDOFUNLogic::generateLogic(CREF(RDOSrcInfo::Position) position)
 {
 	rdoRuntime::LPRDOCalc pCalc = rdoRuntime::RDOCalcUnaryBase::generateCalc<T>(position, m_pCalc);
 	ASSERT(pCalc);
@@ -151,17 +151,17 @@ LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(RDOSrcInfo::Position) position)
 
 LPRDOFUNLogic RDOFUNLogic::operator&& (CREF(LPRDOFUNLogic) pSecond)
 {
-	return createLogic<rdoRuntime::RDOCalcAnd>(pSecond);
+	return generateLogic<rdoRuntime::RDOCalcAnd>(pSecond);
 }
 
 LPRDOFUNLogic RDOFUNLogic::operator|| (CREF(LPRDOFUNLogic) pSecond)
 {
-	return createLogic<rdoRuntime::RDOCalcOr>(pSecond);
+	return generateLogic<rdoRuntime::RDOCalcOr>(pSecond);
 }
 
 LPRDOFUNLogic RDOFUNLogic::operator_not(CREF(RDOSrcInfo::Position) position)
 {
-	return createLogic<rdoRuntime::RDOCalcNot>(position);
+	return generateLogic<rdoRuntime::RDOCalcNot>(position);
 }
 
 void RDOFUNLogic::setSrcInfo(CREF(RDOParserSrcInfo) src_info)

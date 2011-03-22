@@ -101,10 +101,10 @@ private:
 	LPRDOFUNLogic createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc);
 
 	template <class T>
-	LPRDOFUNLogic createLogic(CREF(LPRDOFUNLogic) pSecond);
+	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNLogic) pSecond);
 
 	template <class T>
-	LPRDOFUNLogic createLogic(CREF(RDOSrcInfo::Position) position);
+	LPRDOFUNLogic generateLogic(CREF(RDOSrcInfo::Position) position);
 };
 DECLARE_POINTER(LPRDOFUNLogic);
 
