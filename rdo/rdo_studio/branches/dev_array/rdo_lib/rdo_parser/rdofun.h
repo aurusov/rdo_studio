@@ -19,6 +19,9 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/logic.h"
+#include "rdo_lib/rdo_runtime/calc/unary.h"
+#include "rdo_lib/rdo_runtime/calc/sequence.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -55,11 +58,25 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFUNBase
+// ----------------------------------------------------------------------------
+OBJECT(RDOFUNBase) IS INSTANCE_OF(RDOParserSrcInfo)
+{
+protected:
+	RDOFUNBase(CREF(RDOParserSrcInfo) src_info);
+	RDOFUNBase(CREF(rdoRuntime::LPRDOCalc) pCalc);
+
+	rdoRuntime::LPRDOCalc      m_pCalc;
+	RDOFUNDoubleToIntByResult  m_intOrDouble;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOFUNArithm);
+PREDECLARE_POINTER(RDOFUNLogic);
 
-OBJECT(RDOFUNLogic) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOFUNLogic): INSTANCE_OF(RDOFUNBase)
 {
 DECLARE_FACTORY(RDOFUNLogic);
 friend class RDOFUNArithm;
@@ -68,7 +85,7 @@ public:
 
 	LPRDOFUNLogic operator && (CREF(LPRDOFUNLogic) pSecond);
 	LPRDOFUNLogic operator || (CREF(LPRDOFUNLogic) pSecond);
-	LPRDOFUNLogic operator_not();
+	LPRDOFUNLogic operator_not(CREF(RDOSrcInfo::Position) position);
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo)     src_info);
 	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);
@@ -81,14 +98,20 @@ private:
 	RDOFUNLogic(CREF(rdoRuntime::LPRDOCalc) pCalc, rbool hideWarning);
 	virtual ~RDOFUNLogic();
 
-	rdoRuntime::LPRDOCalc      m_pCalc;
-	RDOFUNDoubleToIntByResult  m_intOrDouble;
+	LPRDOFUNLogic createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc);
+
+	template <class T>
+	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNLogic) pSecond);
+
+	template <class T>
+	LPRDOFUNLogic generateLogic(CREF(RDOSrcInfo::Position) position);
 };
+DECLARE_POINTER(LPRDOFUNLogic);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
-OBJECT(RDOFUNArithm) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOFUNArithm): INSTANCE_OF(RDOFUNBase)
 {
 DECLARE_FACTORY(RDOFUNArithm);
 public:
@@ -126,9 +149,7 @@ private:
 	RDOFUNArithm(CREF(RDOValue) resName, CREF(RDOValue) parName);
 	virtual ~RDOFUNArithm();
 
-	RDOValue                   m_value;
-	rdoRuntime::LPRDOCalc      m_pCalc;
-	RDOFUNDoubleToIntByResult  m_intOrDouble;
+	RDOValue m_value;
 
 	void init(CREF(RDOValue) value);
 	void init(CREF(RDOValue) resName, CREF(RDOValue) parName);
@@ -140,7 +161,20 @@ private:
 	};
 	CastResult beforeCastValue(LPRDOFUNArithm       pSecond);
 	LPRDOType  getPreType     (CREF(LPRDOFUNArithm) pSecond);
+
+	template <class T>
+	rdoRuntime::LPRDOCalc generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+
+	template <class T>
+	LPRDOFUNArithm generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+
+	template <class T>
+	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+
+	template <class T>
+	void castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 };
+DECLARE_POINTER(LPRDOFUNArithm);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNConstant

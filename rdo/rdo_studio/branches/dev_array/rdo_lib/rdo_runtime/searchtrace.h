@@ -5,7 +5,7 @@
 #include "rdo_lib/rdo_runtime/searchtree.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
-#include "rdo_lib/rdo_runtime/searchtrace_interface.h"
+#include "rdo_lib/rdo_runtime/searchtrace_i.h"
 
 namespace rdoRuntime
 {

@@ -31,17 +31,7 @@ friend void ContextStack::push(LPContext pContext);
 
 public:
 	template <class T>
-	rdo::intrusive_ptr<T> cast()
-	{
-		LPContext pThis = this;
-		rdo::intrusive_ptr<T> pThisResult = pThis.object_dynamic_cast<T>();
-		if (pThisResult)
-		{
-			return pThisResult;
-		}
-		LPContext pPrev = m_pContextStack->prev(pThis);
-		return pPrev ? pPrev->cast<T>() : rdo::intrusive_ptr<T>();
-	}
+	rdo::intrusive_ptr<T> cast();
 
 protected:
 	Context();
@@ -54,5 +44,7 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#include "rdo_lib/rdo_parser/context/context.inl"
 
 #endif //! _RDOPARSER_CONTEXT_H_

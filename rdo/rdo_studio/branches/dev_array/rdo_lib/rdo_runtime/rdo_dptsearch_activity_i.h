@@ -1,20 +1,20 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_dptsearch_activity_interface.h
+ * filename : rdo_dptsearch_activity_i.h
  * author   : Урусов Андрей
  * date     : 08.08.2009
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDO_DPTSEARCH_ACTIVITY_INTERFACE_H_
-#define _RDO_DPTSEARCH_ACTIVITY_INTERFACE_H_
+#ifndef _RDO_DPTSEARCH_ACTIVITY_I_H_
+#define _RDO_DPTSEARCH_ACTIVITY_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
-#include "rdo_lib/rdo_runtime/rdo_rule_interface.h"
+#include "rdo_lib/rdo_runtime/rdo_rule_i.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 // ===============================================================================
 
@@ -42,4 +42,4 @@ public:
 	virtual double       cost     (PTR(rdoRuntime::RDOSimulator) sim); \
 	virtual ValueTime    valueTime() const;
 
-#endif //! _RDO_DPTSEARCH_ACTIVITY_INTERFACE_H_
+#endif //! _RDO_DPTSEARCH_ACTIVITY_I_H_

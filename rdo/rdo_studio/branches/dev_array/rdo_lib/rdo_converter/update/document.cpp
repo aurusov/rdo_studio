@@ -239,10 +239,14 @@ void Document::MemoryStream::init(REF(std::ifstream) stream)
 		return;
 	}
 
-	while (!stream.eof())
+	while (true)
 	{
 		char byte;
 		stream.get(byte);
+		if (stream.eof())
+		{
+			break;
+		}
 		m_buffer.push_back(byte);
 	}
 }

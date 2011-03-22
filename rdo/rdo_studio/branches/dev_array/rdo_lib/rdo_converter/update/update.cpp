@@ -146,9 +146,9 @@ void UpdateDelete::remove(IDocument::Type type, CREF(Position) from, CREF(Positi
 	if (m_file != type)
 		return;
 
-	ASSERT(to < m_posFrom || (from > m_posTo && to > m_posTo));
+	ASSERT(to <= m_posFrom || (from >= m_posTo && to >= m_posTo));
 
-	if (to < m_posFrom)
+	if (to <= m_posFrom)
 	{
 		m_posFrom -= to - from;
 		m_posTo   -= to - from;

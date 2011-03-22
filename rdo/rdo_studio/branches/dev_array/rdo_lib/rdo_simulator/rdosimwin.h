@@ -25,6 +25,7 @@
 #include "rdo_common/rdostream.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_kernel/rdothread.h"
+#include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 // ===============================================================================
@@ -102,27 +103,14 @@ class RDOResult;
 // --------------------------------------------------------------------
 // ---------- RDOThreadRunTime
 // --------------------------------------------------------------------
-class RDOThreadRunTime: public RDOThreadMT
+OBJECT(RDOThreadRunTime)
+	IS  INSTANCE_OF      (RDOThreadMT )
+	AND IMPLEMENTATION_OF(IThreadProxy)
 {
-friend class rdoSimulator::RDOThreadSimulator;
-
-private:
-	PTR(rdoSimulator::RDOThreadSimulator) m_pSimulator;
-	rbool                                 m_runtime_error;
-	SYSTEMTIME                            m_time_start;
-
-	RDOThreadRunTime();
-	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
-	{}; 
-
-	virtual void proc (REF(RDOMessageInfo) msg);
-	virtual void idle ();
-	virtual void start();
-	virtual void stop ();
-
-	void writeResultsInfo();
-
+DECLARE_FACTORY(RDOThreadRunTime);
 public:
+	rbool runtimeError() const;
+
 	struct GetFrame
 	{
 		PTR(rdoAnimation::RDOFrame) m_pFrame;
@@ -144,6 +132,25 @@ public:
 			, m_name  (name  )
 		{}
 	};
+
+private:
+	PTR(rdoSimulator::RDOThreadSimulator) m_pSimulator;
+	rbool                                 m_runtimeError;
+	SYSTEMTIME                            m_timeStart;
+
+	RDOThreadRunTime();
+	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
+	{};
+
+	virtual void proc   (REF(RDOMessageInfo) msg);
+	virtual void idle   ();
+	virtual void start  ();
+	virtual void stop   ();
+	virtual void destroy();
+
+	void writeResultsInfo();
+
+	void sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
@@ -163,6 +170,7 @@ class RDOThreadSimulator: public RDOThreadMT
 {
 friend class rdoRuntime::RDOThreadRunTime;
 friend class RDORuntimeTracer;
+friend class RDOSimResulter;
 
 public:
 	struct RTP
@@ -194,8 +202,8 @@ private:
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	rbool                        m_canTrace;
 
-	PTR(rdoRuntime::RDOThreadRunTime) m_pThreadRuntime;
-	rdoSimulator::RDOExitCode         m_exitCode;
+	rdoRuntime::LPRDOThreadRunTime m_pThreadRuntime;
+	rdoSimulator::RDOExitCode      m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 

@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : rdo_param_interface.h
+ * filename : rdo_param_i.h
  * author   : Лущан Дмитрий
  * date     : 09.12.2010
  * bref     : Интерфейс IParam
  * indent   : 4T
  */
 
-#ifndef _RDO_PARAM_INTERFACE_H_
-#define _RDO_PARAM_INTERFACE_H_
+#ifndef _RDO_PARAM_I_H_
+#define _RDO_PARAM_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -25,4 +25,4 @@ public:
 	virtual rbool setParam(CREF(rdoRuntime::LPRDOCalc) pParam); \
 	virtual rbool endParam();
 
-#endif //! _RDO_PARAM_INTERFACE_H_
+#endif //! _RDO_PARAM_I_H_

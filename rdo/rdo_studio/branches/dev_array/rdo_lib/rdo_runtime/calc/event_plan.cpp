@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : calc_event_plan.cpp
+ * filename : event_plan.cpp
  * author   : Ћущан ƒмитрий
  * date     : 26.05.2010
  * bref     : RDOCalc дл€ планировани€, запуска и остановки событий и нерегул€рных событий
@@ -11,7 +11,8 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/calc/event_plan.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

@@ -416,12 +416,15 @@ bool RDORuntime::isKeyDown()
 	return key_found || !activeAreasMouseClicked.empty();
 }
 
-void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo )
+void RDORuntime::rdoInit( RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy )
 {
-	m_tracer     = tracer;
-	results      = customResults;
-	results_info = customResultsInfo;
-	currFuncTop  = 0;
+	ASSERT(pThreadProxy);
+
+	m_tracer       = tracer;
+	results        = customResults;
+	results_info   = customResultsInfo;
+	currFuncTop    = 0;
+	m_pThreadProxy = pThreadProxy;
 	Parent::rdoInit();
 }
 
@@ -488,6 +491,9 @@ void RDORuntime::operator= (const RDORuntime& other)
 	}
 	allConstants      = other.allConstants;
 	patternParameters = other.patternParameters;
+	results           = other.results;
+	m_pThreadProxy    = other.m_pThreadProxy;
+	setCurrentTime(other.getCurrentTime());
 
 	Parent::operator= (*static_cast<const Parent*>(&other));
 }
@@ -586,7 +592,7 @@ void RDORuntime::postProcess()
 	{
 		try
 		{
-			(*it)->calcStat(this);
+			(*it)->calcStat(this, getResults().getOStream());
 		}
 		catch (REF(RDORuntimeException))
 		{}

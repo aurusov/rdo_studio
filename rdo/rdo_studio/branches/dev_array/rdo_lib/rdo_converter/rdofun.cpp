@@ -24,6 +24,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/arithm.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -175,7 +176,7 @@ LPRDOFUNLogic RDOFUNLogic::operator|| (CREF(LPRDOFUNLogic) pSecond)
 
 LPRDOFUNLogic RDOFUNLogic::operator_not()
 {
-	rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcNot>::create(m_pCalc);
+	rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcNot>::create(m_pCalc->src_pos(), m_pCalc);
 	LPRDOFUNLogic         pLogic   = rdo::Factory<RDOFUNLogic>::create(pNewCalc, false);
 	pLogic->setSrcInfo(pNewCalc->src_info());
 	pLogic->m_intOrDouble.insert(m_intOrDouble);
@@ -276,6 +277,21 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 		return;
 	}
 
+	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	{ErrorBlockMonicker errorBlockMonicker;
+		CREF(Converter::PreCastTypeList) typeList = Converter::s_converter()->getPreCastTypeList();
+		STL_FOR_ALL_CONST(typeList, it)
+		{
+			RDOValue try_cast_value = (*it)->value_cast(value);
+			if (try_cast_value.defined())
+			{
+				m_value = value;
+				return;
+			}
+		}
+	}
+
 	//! Ищем параметр релевантного ресурса
 	if (Converter::s_converter()->getFileToParse() == rdoModelObjectsConvertor::PAT_IN)
 	{
@@ -349,21 +365,6 @@ void RDOFUNArithm::init(CREF(RDOValue) value)
 			m_pCalc->setSrcInfo(src_info());
 		}
 		return;
-	}
-
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(Converter::PreCastTypeList) typeList = Converter::s_converter()->getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
-		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
-			{
-				m_value = value;
-				return;
-			}
-		}
 	}
 
 	Converter::s_converter()->error().error(value.src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value->getIdentificator().c_str()));
@@ -735,7 +736,7 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) pForType)
 		else
 		{
 			m_intOrDouble.roundCalc();
-			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc);
+			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc->src_pos(), m_pCalc);
 			pNewCalc->setSrcInfo(src_info());
 			return pNewCalc;
 		}

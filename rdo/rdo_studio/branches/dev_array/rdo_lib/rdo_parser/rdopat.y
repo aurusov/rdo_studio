@@ -143,6 +143,8 @@
 %token RDO_Stopping
 %token RDO_Start
 %token RDO_Stop
+%token RDO_WatchStart
+%token RDO_WatchStop
 
 %token RDO_Frame
 %token RDO_Show_if
@@ -214,8 +216,9 @@
 #include "rdo_lib/rdo_parser/variable_container.h"
 
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/calc/event_plan.h"
 #include "rdo_lib/rdo_runtime/rdocalc_locvar.h"
+#include "rdo_lib/rdo_runtime/calc/watch.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -1470,6 +1473,8 @@ statement
 	| equal_statement
 	| stopping_statement
 	| planning_statement
+	| watch_start
+	| watch_stop
 	| local_variable_declaration
 	| if_statement
 	| for_statement
@@ -1897,6 +1902,40 @@ planning_statement
 	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+watch_start
+	: RDO_IDENTIF '.' RDO_WatchStart '(' ')' ';'
+	{
+		tstring          name         = RDOVALUE($1)->getIdentificator();
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+		if (!pResultGroup)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
+		}
+
+		rdoRuntime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdoRuntime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	;
+
+watch_stop
+	: RDO_IDENTIF '.' RDO_WatchStop '(' ')' ';'
+	{
+		tstring          name         = RDOVALUE($1)->getIdentificator();
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+		if (!pResultGroup)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
+		}
+
+		rdoRuntime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdoRuntime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 
@@ -2546,10 +2585,9 @@ fun_logic
 	{
 		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
-		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
+		RDOParserSrcInfo src_info(@1, @2);
+		LPRDOFUNLogic pLogicNot = pLogic->operator_not(src_info.src_pos());
 		ASSERT(pLogicNot);
-		pLogicNot->setSrcPos (@1, @2);
-		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
 		$$ = PARSER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
@@ -2631,7 +2669,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
 	}
 	;
 

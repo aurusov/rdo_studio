@@ -585,6 +585,17 @@ inline RDOValue RDOValue::operator- () const
 	return rdovalue;
 }
 
+inline rbool RDOValue::operator! () const
+{
+	switch (typeID())
+	{
+		case RDOType::t_int : return !m_value.i_value; break;
+		case RDOType::t_real: return !m_value.d_value; break;
+		case RDOType::t_bool: return !m_value.b_value; break;
+		default             : throw RDOValueException();
+	}
+}
+
 inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
