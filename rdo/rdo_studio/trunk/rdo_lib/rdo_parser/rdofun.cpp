@@ -108,10 +108,23 @@ GENERATE_ARITHM_CALC(CALC, OPR, ERROR) \
 RETURN_LOGIC()
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFUNBase
+// ----------------------------------------------------------------------------
+RDOFUNBase::RDOFUNBase(CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+{}
+
+RDOFUNBase::RDOFUNBase(CREF(rdoRuntime::LPRDOCalc) pCalc)
+	: m_pCalc(pCalc)
+{
+	ASSERT(m_pCalc);
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
 RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
-	: RDOParserSrcInfo(pArithm->src_info())
+	: RDOFUNBase(pArithm->src_info())
 {
 	switch (pArithm->typeID())
 	{
@@ -124,8 +137,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 }
 
 RDOFUNLogic::RDOFUNLogic(CREF(rdoRuntime::LPRDOCalc) pCalc, rbool hideWarning)
-	: RDOParserSrcInfo(     )
-	, m_pCalc         (pCalc)
+	: RDOFUNBase(pCalc)
 {
 	if (m_pCalc)
 	{
@@ -250,18 +262,20 @@ void RDOFUNLogic::setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
 RDOFUNArithm::RDOFUNArithm(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc)
-	: m_value(value)
-	, m_pCalc(pCalc)
+	: RDOFUNBase(pCalc)
+	, m_value   (value)
 {
 	setSrcInfo(m_value.src_info());
 }
 
 RDOFUNArithm::RDOFUNArithm(CREF(RDOValue) value)
+	: RDOFUNBase(RDOParserSrcInfo())
 {
 	init(value);
 }
 
 RDOFUNArithm::RDOFUNArithm(CREF(RDOValue) resName, CREF(RDOValue) parName)
+	: RDOFUNBase(RDOParserSrcInfo())
 {
 	init(resName, parName);
 }

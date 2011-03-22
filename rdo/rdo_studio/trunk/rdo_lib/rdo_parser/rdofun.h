@@ -58,11 +58,24 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFUNBase
+// ----------------------------------------------------------------------------
+CLASS(RDOFUNBase): INSTANCE_OF(RDOParserSrcInfo)
+{
+protected:
+	RDOFUNBase(CREF(RDOParserSrcInfo) src_info);
+	RDOFUNBase(CREF(rdoRuntime::LPRDOCalc) pCalc);
+
+	rdoRuntime::LPRDOCalc      m_pCalc;
+	RDOFUNDoubleToIntByResult  m_intOrDouble;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOFUNArithm);
 
-OBJECT(RDOFUNLogic) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDOFUNLogic) IS INSTANCE_OF(RDOFUNBase)
 {
 DECLARE_FACTORY(RDOFUNLogic);
 friend class RDOFUNArithm;
@@ -84,9 +97,6 @@ private:
 	RDOFUNLogic(CREF(rdoRuntime::LPRDOCalc) pCalc, rbool hideWarning);
 	virtual ~RDOFUNLogic();
 
-	rdoRuntime::LPRDOCalc      m_pCalc;
-	RDOFUNDoubleToIntByResult  m_intOrDouble;
-
 	LPRDOFUNLogic createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc);
 
 	template <class T>
@@ -99,7 +109,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
-OBJECT(RDOFUNArithm) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDOFUNArithm) IS INSTANCE_OF(RDOFUNBase)
 {
 DECLARE_FACTORY(RDOFUNArithm);
 public:
@@ -137,9 +147,7 @@ private:
 	RDOFUNArithm(CREF(RDOValue) resName, CREF(RDOValue) parName);
 	virtual ~RDOFUNArithm();
 
-	RDOValue                   m_value;
-	rdoRuntime::LPRDOCalc      m_pCalc;
-	RDOFUNDoubleToIntByResult  m_intOrDouble;
+	RDOValue m_value;
 
 	void init(CREF(RDOValue) value);
 	void init(CREF(RDOValue) resName, CREF(RDOValue) parName);
