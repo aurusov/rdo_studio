@@ -60,7 +60,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNBase
 // ----------------------------------------------------------------------------
-CLASS(RDOFUNBase): INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDOFUNBase) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 protected:
 	RDOFUNBase(CREF(RDOParserSrcInfo) src_info);
@@ -74,8 +74,9 @@ protected:
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOFUNArithm);
+PREDECLARE_POINTER(RDOFUNLogic);
 
-OBJECT(RDOFUNLogic) IS INSTANCE_OF(RDOFUNBase)
+CLASS(RDOFUNLogic): INSTANCE_OF(RDOFUNBase)
 {
 DECLARE_FACTORY(RDOFUNLogic);
 friend class RDOFUNArithm;
@@ -105,11 +106,12 @@ private:
 	template <class T>
 	LPRDOFUNLogic createLogic(CREF(RDOSrcInfo::Position) position);
 };
+DECLARE_POINTER(LPRDOFUNLogic);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
-OBJECT(RDOFUNArithm) IS INSTANCE_OF(RDOFUNBase)
+CLASS(RDOFUNArithm): INSTANCE_OF(RDOFUNBase)
 {
 DECLARE_FACTORY(RDOFUNArithm);
 public:
@@ -160,6 +162,7 @@ private:
 	CastResult beforeCastValue(LPRDOFUNArithm       pSecond);
 	LPRDOType  getPreType     (CREF(LPRDOFUNArithm) pSecond);
 };
+DECLARE_POINTER(LPRDOFUNArithm);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNConstant
