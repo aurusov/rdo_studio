@@ -918,8 +918,9 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
 	}
 
-	rdoRuntime::LPRDOCalc pFuncCall = pFunction->getFunctionCalc();
-	/*pFunction->insertPostLinked(pFuncCall);
+	//rdoRuntime::LPRDOCalc pFuncCall = pFunction->getFunctionCalc();
+	rdoRuntime::LPRDOCalcFunctionCall pFuncCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pFunction->getFunctionCalc());
+	pFunction->insertPostLinked(pFuncCall);
 	pFuncCall->setSrcInfo(src_info());
 	for (int i = 0; i < nParams; i++)
 	{
@@ -928,7 +929,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		ASSERT(pArithm);
 		pArithm->checkParamType(pFuncParam);
 		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->type()));
-	}*/
+	}
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(pFunction->getReturn()->getType()->type(), src_pos()), pFuncCall);
 	ASSERT(pArithm);
@@ -1425,17 +1426,17 @@ RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
 RDOFUNFunction::~RDOFUNFunction()
 {}
 
-void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
+void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc)
 {
 	m_pFunctionCalc = pCalc;
-	/*if (m_pFunctionCalc->src_empty())
+	if (m_pFunctionCalc->src_empty())
 	{
 		m_pFunctionCalc->setSrcInfo(src_info());
 	}
 	STL_FOR_ALL(m_postLinkedList, it)
 	{
 		(*it)->setFunctionCalc(getFunctionCalc());
-	}*/
+	}
 }
 
 LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const 
@@ -1646,10 +1647,9 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	setFunctionCalc(pFuncTableCalc);
 }
 
-void RDOFUNFunction::createAlgorithmicCalc(CREF(rdoRuntime::LPRDOCalc)pCalc, CREF(RDOParserSrcInfo) body_src_info)
+void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
 {
-	if(!pCalc->isReturn()) RDOParser::s_parser()->error().error(body_src_info, rdo::format(_T("Не горантированно возвращение значания функции")));
-	setFunctionCalc(pCalc);
+	if(!getFunctionCalc()->isReturn()) RDOParser::s_parser()->error().error(body_src_info, rdo::format(_T("Не горантированно возвращение значания функции")));
 }
 
 // ----------------------------------------------------------------------------

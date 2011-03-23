@@ -374,12 +374,13 @@ fun_func_params
 fun_func_footer
 	:	RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body statement RDO_End
 	{
-		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($6);
+		rdoRuntime::LPRDOFunCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOFunCalc>($6);
 		ASSERT(pCalc);
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
-		pFunction->createAlgorithmicCalc(pCalc, @5);
+		pFunction->setFunctionCalc(pCalc);
+		pFunction->createAlgorithmicCalc(@5);
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
 	{

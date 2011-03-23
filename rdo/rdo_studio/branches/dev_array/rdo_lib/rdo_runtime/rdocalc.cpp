@@ -404,22 +404,6 @@ void RDOCalcFunList::addFunCalc(CREF(LPRDOCalc) pCalc)
 
 REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
 {
-	/*pRuntime->pushFuncTop();
-	int size = m_parameters.size();
-	for (int i = 0; i < size; i++)
-	{
-		RDOValue arg = m_parameters[i]->calcValue(pRuntime);
-		pRuntime->pushFuncArgument(arg);
-	}
-	pRuntime->resetFuncTop(m_parameters.size());
-	m_value = m_pFunction->calcValue(pRuntime);
-	size = m_parameters.size();
-	for (int i = 0; i < size; i++)
-	{
-		pRuntime->popFuncArgument();
-	}
-	pRuntime->popFuncTop();*/
-
 	m_value = RDOValue(m_calcFunList.size());
 	STL_FOR_ALL(m_calcFunList, calc_it)
 	{

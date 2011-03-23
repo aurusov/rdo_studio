@@ -433,9 +433,19 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFunCalc
+// ----------------------------------------------------------------------------
+CALC(RDOFunCalc)
+{
+protected:
+	RDOFunCalc()
+	{}
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcFunList
 // ----------------------------------------------------------------------------
-CALC(RDOCalcFunList)
+CALC_SUB(RDOCalcFunList, RDOFunCalc)
 {
 	DECLARE_FACTORY(RDOCalcFunList)
 public:
@@ -443,21 +453,10 @@ public:
 
 	void addFunCalc(CREF(LPRDOCalc) pCalc);
 
-	void addParameter(CREF(LPRDOCalc) pCalc)
-	{
-		m_parameters.push_back(pCalc);
-	}
-	void setFunctionCalc(CREF(LPRDOCalc) pFunction)
-	{
-		m_pFunction = pFunction;
-	}
-
 private:
 	RDOCalcFunList();
 
 	CalcFunList m_calcFunList;
-	std::vector<LPRDOCalc>  m_parameters;
-	LPRDOCalc               m_pFunction;
 
 	DECALRE_ICalc;
 };
@@ -515,16 +514,6 @@ DECLARE_FACTORY(RDOCalcNoChange)
 private:
 	RDOCalcNoChange();
 	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFunCalc
-// ----------------------------------------------------------------------------
-CALC(RDOFunCalc)
-{
-protected:
-	RDOFunCalc()
-	{}
 };
 
 // ----------------------------------------------------------------------------
