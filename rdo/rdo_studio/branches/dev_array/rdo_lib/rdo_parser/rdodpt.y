@@ -1346,9 +1346,13 @@ param_array_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
-		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
+		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
+		pArrayValue->setSrcInfo(srcInfo);
+		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
+		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
 	}
-	|'[' array_item error {
+	|'[' array_item error
+	{
 		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 	}
 	;
