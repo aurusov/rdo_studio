@@ -19,6 +19,9 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/logic.h"
+#include "rdo_lib/rdo_runtime/calc/unary.h"
+#include "rdo_lib/rdo_runtime/calc/sequence.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE

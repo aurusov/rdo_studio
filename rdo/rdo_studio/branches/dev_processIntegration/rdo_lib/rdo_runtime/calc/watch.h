@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdocalc_result.h
+ * filename : watch.h
  * author   : Урусов Андрей
  * date     : 04.03.2011
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDOCALC_RESULT_H_
-#define _RDOCALC_RESULT_H_
+#ifndef _RDOCALC_WATCH_H_
+#define _RDOCALC_WATCH_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -19,14 +19,14 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcResultGroupStart
+// ---------- RDOCalcWatchGroupStart
 // ----------------------------------------------------------------------------
-CALC(RDOCalcResultGroupStart)
+CALC(RDOCalcWatchGroupStart)
 {
-DECLARE_FACTORY(RDOCalcResultGroupStart)
+DECLARE_FACTORY(RDOCalcWatchGroupStart)
 protected:
-	RDOCalcResultGroupStart(CREF(LPIPokazGroup) pResultGroup);
-	virtual ~RDOCalcResultGroupStart();
+	RDOCalcWatchGroupStart(CREF(LPIPokazGroup) pResultGroup);
+	virtual ~RDOCalcWatchGroupStart();
 
 	LPIPokazGroup m_pResultGroup;
 
@@ -34,14 +34,14 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcResultGroupStop
+// ---------- RDOCalcWatchGroupStop
 // ----------------------------------------------------------------------------
-CALC(RDOCalcResultGroupStop)
+CALC(RDOCalcWatchGroupStop)
 {
-DECLARE_FACTORY(RDOCalcResultGroupStop)
+DECLARE_FACTORY(RDOCalcWatchGroupStop)
 protected:
-	RDOCalcResultGroupStop(CREF(LPIPokazGroup) pResultGroup);
-	virtual ~RDOCalcResultGroupStop();
+	RDOCalcWatchGroupStop(CREF(LPIPokazGroup) pResultGroup);
+	virtual ~RDOCalcWatchGroupStop();
 
 	LPIPokazGroup m_pResultGroup;
 
@@ -50,4 +50,4 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_RESULT_H_
+#endif //! _RDOCALC_WATCH_H_

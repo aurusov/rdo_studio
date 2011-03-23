@@ -215,9 +215,9 @@
 #include "rdo_lib/rdo_parser/variable_container.h"
 
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/calc/event_plan.h"
 #include "rdo_lib/rdo_runtime/rdocalc_locvar.h"
-#include "rdo_lib/rdo_runtime/rdocalc_result.h"
+#include "rdo_lib/rdo_runtime/calc/watch.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -1914,7 +1914,7 @@ watch_start
 			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
 		}
 
-		rdoRuntime::LPRDOCalcResultGroupStart pCalc = rdo::Factory<rdoRuntime::RDOCalcResultGroupStart>::create(pResultGroup->getRuntime());
+		rdoRuntime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdoRuntime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);
@@ -1931,7 +1931,7 @@ watch_stop
 			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
 		}
 
-		rdoRuntime::LPRDOCalcResultGroupStop pCalc = rdo::Factory<rdoRuntime::RDOCalcResultGroupStop>::create(pResultGroup->getRuntime());
+		rdoRuntime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdoRuntime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);
@@ -2584,10 +2584,9 @@ fun_logic
 	{
 		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
-		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
+		RDOParserSrcInfo src_info(@1, @2);
+		LPRDOFUNLogic pLogicNot = pLogic->operator_not(src_info.src_pos());
 		ASSERT(pLogicNot);
-		pLogicNot->setSrcPos (@1, @2);
-		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
 		$$ = PARSER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
@@ -2669,7 +2668,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
 	}
 	;
 
