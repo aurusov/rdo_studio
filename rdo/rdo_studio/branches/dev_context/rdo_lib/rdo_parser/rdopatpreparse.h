@@ -15,7 +15,7 @@
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/calc/event_plan.h"
 #include "rdo_lib/rdo_runtime/rdo_event.h"
 // ===============================================================================
 

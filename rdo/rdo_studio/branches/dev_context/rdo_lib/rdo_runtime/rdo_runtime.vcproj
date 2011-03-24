@@ -42,10 +42,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				BrowseInformation="1"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -1763,15 +1768,47 @@
 			Name=".rdo_calc"
 			>
 			<File
-				RelativePath=".\calc_event_plan.cpp"
+				RelativePath=".\calc\arithm.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\calc_event_plan.h"
+				RelativePath=".\calc\arithm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\binary.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\binary.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.h"
 				>
 			</File>
 			<File
 				RelativePath=".\equaltype.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\event_plan.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\event_plan.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\logic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\logic.h"
 				>
 			</File>
 			<File
@@ -1845,17 +1882,61 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdocalc_relres.h"
+				RelativePath=".\calc\relres.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdocalc_result.cpp"
+				RelativePath=".\calc\sequence.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdocalc_result.h"
+				RelativePath=".\calc\sequence.h"
 				>
 			</File>
+			<File
+				RelativePath=".\calc\std_fun.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\std_fun.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\unary.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\unary.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\unary.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\watch.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\watch.h"
+				>
+			</File>
+			<Filter
+				Name=".operation"
+				>
+				<File
+					RelativePath=".\calc\operation_name.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation_name.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation_type.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".rdo_fun"

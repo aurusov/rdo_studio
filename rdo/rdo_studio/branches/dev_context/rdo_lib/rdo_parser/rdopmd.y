@@ -233,9 +233,13 @@ pmd_main
 pmd_result_group_name
 	: /* empty */
 	{
-		LPRDOResultGroup pResultGroup = rdo::Factory<RDOResultGroup>::create();
-		ASSERT(pResultGroup);
-		pResultGroup->init(RDOParserSrcInfo());
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(_T(""));
+		if (!pResultGroup)
+		{
+			pResultGroup = rdo::Factory<RDOResultGroup>::create();
+			ASSERT(pResultGroup);
+			pResultGroup->init(RDOParserSrcInfo());
+		}
 		PARSER->contextStack()->push(pResultGroup);
 	}
 	| RDO_IDENTIF
@@ -250,14 +254,11 @@ pmd_result_group_name
 pmd_result_group
 	: RDO_Results pmd_result_group_name pmd_body RDO_End
 	{
-		LPRDOPMDPokaz pResult = PARSER->stack().pop<RDOPMDPokaz>($3);
-		ASSERT(pResult);
 		PARSER->contextStack()->pop();
 	}
 	| RDO_Results pmd_result_group_name pmd_body error
 	{
-		LPRDOPMDPokaz pResult = PARSER->stack().pop<RDOPMDPokaz>($3);
-		ASSERT(pResult);
+		PARSER->contextStack()->pop();
 		PARSER->error().error(@3, _T("Ожидается ключевое слово $End"));
 	}
 	| error
@@ -547,10 +548,9 @@ fun_logic
 	{
 		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
-		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
+		RDOParserSrcInfo src_info(@1, @2);
+		LPRDOFUNLogic pLogicNot = pLogic->operator_not(src_info.src_pos());
 		ASSERT(pLogicNot);
-		pLogicNot->setSrcPos (@1, @2);
-		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
 		$$ = PARSER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
@@ -632,7 +632,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
 	}
 	;
 

@@ -136,6 +136,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;_USRDLL;WINVER=0x0501;BOOST_TYPEOF_SILENT"

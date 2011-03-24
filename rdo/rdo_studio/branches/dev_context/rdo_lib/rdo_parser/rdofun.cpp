@@ -24,6 +24,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/arithm.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -50,71 +51,23 @@ void RDOFUNDoubleToIntByResult::roundCalc()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- Набор макросов для генерации логических и арифметических выражений
+// ---------- RDOFUNBase
 // ----------------------------------------------------------------------------
-#define CREATE_CALC(CALC, OPR) \
-rdoRuntime::LPRDOCalcConst pConstCalc1 = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>(); \
-rdoRuntime::LPRDOCalcConst pConstCalc2 = pSecond->m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>(); \
-rdoRuntime::LPRDOCalc pNewCalc; \
-if (pConstCalc1 && pConstCalc2) \
-{ \
-	pNewCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(pConstCalc1->calcValue(RDOParser::s_parser()->runtime()) OPR pConstCalc2->calcValue(RDOParser::s_parser()->runtime())); \
-	pNewCalc->setSrcInfo(rdoRuntime::RDOCalc##CALC::getStaticSrcInfo(pConstCalc1, pConstCalc2)); \
-} \
-else \
-{ \
-	pNewCalc = rdo::Factory<rdoRuntime::RDOCalc##CALC>::create(m_pCalc, pSecond->m_pCalc); \
+RDOFUNBase::RDOFUNBase(CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+{}
+
+RDOFUNBase::RDOFUNBase(CREF(rdoRuntime::LPRDOCalc) pCalc)
+	: m_pCalc(pCalc)
+{
+	ASSERT(m_pCalc);
 }
-
-#define RETURN_LOGIC() \
-LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pNewCalc, false); \
-pLogic->setSrcInfo(pNewCalc->src_info()); \
-pLogic->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble); \
-return pLogic;
-
-#define GENERATE_LOGIC(CALC, OPR) \
-CREATE_CALC(CALC, OPR); \
-RETURN_LOGIC();
-
-#define CAST_ARITHM_VALUE(OPR, ERROR) \
-try \
-{ \
-	if (beforeCastValue(pSecond) == CR_CONTINUE) \
-	{ \
-		value().value() OPR pSecond->value().value(); \
-	} \
-} \
-catch (REF(rdoRuntime::RDOValueException)) \
-{ \
-	RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(ERROR, type()->name().c_str(), pSecond->type()->name().c_str())); \
-}
-
-#define GET_ARITHM_PRE_TYPE() \
-LPRDOType pNewType = getPreType(pSecond);
-
-#define GENERATE_ARITHM_CALC(CALC, OPR, ERROR) \
-CAST_ARITHM_VALUE(OPR, ERROR) \
-GET_ARITHM_PRE_TYPE() \
-CREATE_CALC(CALC, OPR)
-
-#define RETURN_ARITHM() \
-LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(pNewType, pNewCalc->src_info()), pNewCalc); \
-pArithm->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble); \
-return pArithm;
-
-#define GENERATE_ARITHM(CALC, OPR, ERROR) \
-GENERATE_ARITHM_CALC(CALC, OPR, ERROR) \
-RETURN_ARITHM()
-
-#define GENERATE_LOGIC_FROM_ARITHM(CALC, OPR, ERROR) \
-GENERATE_ARITHM_CALC(CALC, OPR, ERROR) \
-RETURN_LOGIC()
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
 RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
-	: RDOParserSrcInfo(pArithm->src_info())
+	: RDOFUNBase(pArithm->src_info())
 {
 	switch (pArithm->typeID())
 	{
@@ -127,8 +80,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 }
 
 RDOFUNLogic::RDOFUNLogic(CREF(rdoRuntime::LPRDOCalc) pCalc, rbool hideWarning)
-	: RDOParserSrcInfo(     )
-	, m_pCalc         (pCalc)
+	: RDOFUNBase(pCalc)
 {
 	if (m_pCalc)
 	{
@@ -163,23 +115,53 @@ rdoRuntime::LPRDOCalc RDOFUNLogic::getCalc(rdoRuntime::RDOType::TypeID id)
 	return m_pCalc;
 }
 
+LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+
+	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, false);
+	ASSERT(pLogic);
+
+	pLogic->setSrcInfo(pCalc->src_info());
+
+	return pLogic;
+}
+
+template <class T>
+LPRDOFUNLogic RDOFUNLogic::generateLogic(CREF(LPRDOFUNLogic) pSecond)
+{
+	ASSERT(pSecond);
+
+	rdoRuntime::LPRDOCalc pCalc = rdoRuntime::RDOCalcBinaryBase::generateCalc<T>(m_pCalc, pSecond->m_pCalc);
+	ASSERT(pCalc);
+	LPRDOFUNLogic pLogic = createLogic(pCalc);
+	pLogic->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble);
+	return pLogic;
+}
+
+template <class T>
+LPRDOFUNLogic RDOFUNLogic::generateLogic(CREF(RDOSrcInfo::Position) position)
+{
+	rdoRuntime::LPRDOCalc pCalc = rdoRuntime::RDOCalcUnaryBase::generateCalc<T>(position, m_pCalc);
+	ASSERT(pCalc);
+	LPRDOFUNLogic pLogic = createLogic(pCalc);
+	pLogic->m_intOrDouble.insert(m_intOrDouble);
+	return pLogic;
+}
+
 LPRDOFUNLogic RDOFUNLogic::operator&& (CREF(LPRDOFUNLogic) pSecond)
 {
-	GENERATE_LOGIC(And, &&);
+	return generateLogic<rdoRuntime::RDOCalcAnd>(pSecond);
 }
 
 LPRDOFUNLogic RDOFUNLogic::operator|| (CREF(LPRDOFUNLogic) pSecond)
 {
-	GENERATE_LOGIC(Or, ||);
+	return generateLogic<rdoRuntime::RDOCalcOr>(pSecond);
 }
 
-LPRDOFUNLogic RDOFUNLogic::operator_not()
+LPRDOFUNLogic RDOFUNLogic::operator_not(CREF(RDOSrcInfo::Position) position)
 {
-	rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcNot>::create(m_pCalc);
-	LPRDOFUNLogic         pLogic   = rdo::Factory<RDOFUNLogic>::create(pNewCalc, false);
-	pLogic->setSrcInfo(pNewCalc->src_info());
-	pLogic->m_intOrDouble.insert(m_intOrDouble);
-	return pLogic;
+	return generateLogic<rdoRuntime::RDOCalcNot>(position);
 }
 
 void RDOFUNLogic::setSrcInfo(CREF(RDOParserSrcInfo) src_info)
@@ -242,6 +224,7 @@ RDOFUNArithm::RDOFUNArithm(CREF(LPExpression) pExpression)
 //}
 
 RDOFUNArithm::RDOFUNArithm(CREF(RDOValue) resName, CREF(RDOValue) parName)
+	: RDOFUNBase(RDOParserSrcInfo())
 {
 	init(resName, parName);
 }
@@ -435,6 +418,57 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 	RDOParser::s_parser()->error().error(resName.src_info(), rdo::format(_T("Неизвестный ресурс: %s"), resName->getIdentificator().c_str()));
 }
 
+template <class T>
+void RDOFUNArithm::castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+{
+	try
+	{
+		if (beforeCastValue(pSecond) == CR_CONTINUE)
+		{
+			T::value_operator pOperation = T::getOperation();
+			(value().value().*pOperation)(pSecond->value().value());
+		}
+	}
+	catch (REF(rdoRuntime::RDOValueException))
+	{
+		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(error.c_str(), type()->name().c_str(), pSecond->type()->name().c_str()));
+	}
+}
+
+template <class T>
+rdoRuntime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+{
+	castValue<T>(pSecond, error);
+	rdoRuntime::LPRDOCalc pCalc = rdoRuntime::RDOCalcBinaryBase::generateCalc<T>(m_pCalc, pSecond->m_pCalc);
+	ASSERT(pCalc);
+	return pCalc;
+}
+
+template <class T>
+LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+{
+	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(pSecond, error);
+	ASSERT(pCalc);
+	LPRDOType pType = getPreType(pSecond);
+	ASSERT(pType);
+
+	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(pType, pCalc->src_info()), pCalc);
+	pArithm->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble);
+	return pArithm;
+}
+
+template <class T>
+LPRDOFUNLogic RDOFUNArithm::generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+{
+	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(pSecond, error);
+	ASSERT(pCalc);
+
+	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, false);
+	pLogic->setSrcInfo(pCalc->src_info());
+	pLogic->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble);
+	return pLogic;
+}
+
 RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue(LPRDOFUNArithm pSecond)
 {
 	if (typeID() == rdoRuntime::RDOType::t_enum && pSecond->typeID() == rdoRuntime::RDOType::t_identificator)
@@ -504,34 +538,38 @@ LPRDOType RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
 
 LPRDOFUNArithm RDOFUNArithm::operator+ (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM(Plus, +, _T("Ну не могу я сложить %s и %s"));
+	return generateArithm<rdoRuntime::RDOCalcPlus>(pSecond, _T("Ну не могу я сложить %s и %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator- (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM(Minus, -, _T("Нельзя из %s вычесть %s"));
+	return generateArithm<rdoRuntime::RDOCalcMinus>(pSecond, _T("Нельзя из %s вычесть %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator* (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM(Mult, *, _T("Нельзя %s умножить на %s"));
+	return generateArithm<rdoRuntime::RDOCalcMult>(pSecond, _T("Нельзя %s умножить на %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM_CALC(Div, /, _T("Нельзя %s разделить на %s"));
+	rdoRuntime::LPRDOCalc pCalc = generateCalc<rdoRuntime::RDOCalcDiv>(pSecond, _T("Нельзя %s разделить на %s"));
+	ASSERT(pCalc);
+	LPRDOType pType = getPreType(pSecond);
+	ASSERT(pType);
+
 	//! TODO: перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
 	//! Ответ: с умножением надо делать тоже самое, только непонятно как
-	if (pNewType->type()->typeID() == rdoRuntime::RDOType::t_int)
+	if (pType->type()->typeID() == rdoRuntime::RDOType::t_int)
 	{
-		rdoRuntime::LPRDOCalc pNewCalc_div = pNewCalc;
-		pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToIntByResult>::create(pNewCalc_div);
-		pNewCalc->setSrcInfo(pNewCalc_div->src_info());
+		rdoRuntime::LPRDOCalc pNewCalc_div = pCalc;
+		pCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToIntByResult>::create(pNewCalc_div);
+		pCalc->setSrcInfo(pNewCalc_div->src_info());
 	}
-	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(pNewType, pNewCalc->src_info()), pNewCalc);
-	if (pNewType->type()->typeID() == rdoRuntime::RDOType::t_int)
+	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(pType, pCalc->src_info()), pCalc);
+	if (pType->type()->typeID() == rdoRuntime::RDOType::t_int)
 	{
-		rdoRuntime::LPRDOCalcDoubleToIntByResult pResult = pNewCalc.object_static_cast<rdoRuntime::RDOCalcDoubleToIntByResult>();
+		rdoRuntime::LPRDOCalcDoubleToIntByResult pResult = pCalc.object_static_cast<rdoRuntime::RDOCalcDoubleToIntByResult>();
 		pArithm->m_intOrDouble.push_back(pResult);
 	}
 	pArithm->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble);
@@ -540,32 +578,32 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 
 LPRDOFUNLogic RDOFUNArithm::operator< (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsLess, <, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdoRuntime::RDOCalcIsLess>(pSecond, _T("Нельзя сравнивать %s и %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator> (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsGreater, >, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdoRuntime::RDOCalcIsGreater>(pSecond, _T("Нельзя сравнивать %s и %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator<= (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsLEQ, <=, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdoRuntime::RDOCalcIsLEQ>(pSecond, _T("Нельзя сравнивать %s и %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator>= (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsGEQ, >, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdoRuntime::RDOCalcIsGEQ>(pSecond, _T("Нельзя сравнивать %s и %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator== (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsEqual, ==, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdoRuntime::RDOCalcIsEqual>(pSecond, _T("Нельзя сравнивать %s и %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator!= (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsNotEqual, !=, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdoRuntime::RDOCalcIsNotEqual>(pSecond, _T("Нельзя сравнивать %s и %s"));
 }
 
 void RDOFUNArithm::checkParamType(CREF(LPRDOTypeParam) pType)
@@ -598,7 +636,7 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) pForType)
 		else
 		{
 			m_intOrDouble.roundCalc();
-			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc);
+			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc->src_pos(), m_pCalc);
 			pNewCalc->setSrcInfo(src_info());
 			return pNewCalc;
 		}

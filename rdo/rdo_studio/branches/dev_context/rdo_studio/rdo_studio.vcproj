@@ -137,12 +137,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -160,6 +163,7 @@
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
 				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
 			/>

@@ -24,6 +24,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/arithm.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -175,7 +176,7 @@ LPRDOFUNLogic RDOFUNLogic::operator|| (CREF(LPRDOFUNLogic) pSecond)
 
 LPRDOFUNLogic RDOFUNLogic::operator_not()
 {
-	rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcNot>::create(m_pCalc);
+	rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcNot>::create(m_pCalc->src_pos(), m_pCalc);
 	LPRDOFUNLogic         pLogic   = rdo::Factory<RDOFUNLogic>::create(pNewCalc, false);
 	pLogic->setSrcInfo(pNewCalc->src_info());
 	pLogic->m_intOrDouble.insert(m_intOrDouble);
@@ -735,7 +736,7 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) pForType)
 		else
 		{
 			m_intOrDouble.roundCalc();
-			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc);
+			rdoRuntime::LPRDOCalc pNewCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pCalc->src_pos(), m_pCalc);
 			pNewCalc->setSrcInfo(src_info());
 			return pNewCalc;
 		}

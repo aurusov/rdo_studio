@@ -203,7 +203,7 @@
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
 #include "rdo_lib/rdo_converter/update/update.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/calc_event_plan.h"
+#include "rdo_lib/rdo_runtime/calc/event_plan.h"
 // ===============================================================================
 
 #define CONVERTER LEXER->converter()
@@ -696,7 +696,7 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(pArithm->createCalc())));
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
 	}
 	;
 
