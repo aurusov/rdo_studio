@@ -16,8 +16,10 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/param.h"
-#include "rdo_lib/rdo_parser/context/pattern.h"
+#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/memory.h"
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
+#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -292,7 +294,10 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDORelevantResource
 // ----------------------------------------------------------------------------
-OBJECT(RDORelevantResource) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDORelevantResource):
+	    INSTANCE_OF      (RDOParserSrcInfo        )
+	AND INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDORelevantResource)
 public:
@@ -386,7 +391,10 @@ protected:
 
 private:
 	ParamSetList m_paramSetList;
+
+	DECLARE_IContextCreateExpression;
 };
+DECLARE_POINTER(RDORelevantResource);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATChoiceFrom

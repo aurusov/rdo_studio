@@ -85,9 +85,78 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	pLocalVariableListStack->push(pLocalVariableList);
 }
 
-LPContext RDOPATPattern::find(CREF(tstring) name) const
+LPContext RDOPATPattern::onFindContext(CREF(RDOValue) value) const
 {
-	return NULL;
+	LPRDORelevantResource pRelevantResource = findRelevantResource(value->getIdentificator());
+	if (pRelevantResource)
+	{
+		if (!m_pCurrRelRes)
+		{
+			//! Внутри with_min-common-choice или $Time
+			if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_NonExist || pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Create)
+			{
+				RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s"), pRelevantResource->name().c_str()));
+			}
+		}
+		else
+		{
+			//! Внутри $Body
+			//! Проверяем использование неинициализированного рел.ресурса (pRelevantResource) в Choice from другом рел.ресурсе (m_pCurrRelRes)
+			if (m_pCurrRelRes->isChoiceFromState())
+			{
+				if (!pRelevantResource->m_alreadyHaveConverter && !pRelevantResource->isDirect())
+				{
+					RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from"), pRelevantResource->name().c_str()));
+				}
+				if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_NonExist)
+				{
+					RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс в начале операции не существует (NonExist): %s"), pRelevantResource->name().c_str()));
+				}
+				if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Create)
+				{
+					RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора"), pRelevantResource->name().c_str()));
+				}
+			}
+			//! Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
+			if (pRelevantResource->getType()->isTemporary())
+			{
+				//! В конверторе начала
+				if (m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin)
+				{
+					if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
+					{
+						RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать до его создания (Create): %s"), pRelevantResource->name().c_str()));
+					}
+					if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Erase && pRelevantResource->m_alreadyHaveConverter)
+					{
+						RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать после удаления (Erase): %s"), pRelevantResource->name().c_str()));
+					}
+					if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_NonExist)
+					{
+						RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс не существует в этом конверторе (NonExist): %s"), pRelevantResource->name().c_str()));
+					}
+				}
+				//! В конверторе конца
+				if (m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd)
+				{
+					if (pRelevantResource->m_statusEnd == rdoRuntime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
+					{
+						RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать до его создания (Create): %s"), pRelevantResource->name().c_str()));
+					}
+					if (pRelevantResource->m_statusEnd == rdoRuntime::RDOResource::CS_Erase && pRelevantResource->m_alreadyHaveConverter)
+					{
+						RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать после удаления (Erase): %s"), pRelevantResource->name().c_str()));
+					}
+					if (pRelevantResource->m_statusEnd == rdoRuntime::RDOResource::CS_NonExist)
+					{
+						RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Релевантный ресурс не существует в этом конверторе (NonExist): %s"), pRelevantResource->name().c_str()));
+					}
+				}
+			}
+		}
+	}
+
+	return pRelevantResource.object_parent_cast<Context>();
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)
@@ -782,6 +851,52 @@ RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbo
 // ----------------------------------------------------------------------------
 // ---------- RDORelevantResource
 // ----------------------------------------------------------------------------
+LPExpression RDORelevantResource::onCreateExpression(CREF(RDOValue) value)
+{
+	ruint parNumb = getType()->getRTPParamNumber(value->getIdentificator());
+	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+	{
+		RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), value->getIdentificator().c_str()));
+	}
+
+	//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
+	LPRDORTPParam pParam = getType()->findRTPParam(value->getIdentificator());
+	ASSERT(pParam);
+	//! В конверторе начала
+	if (m_currentState == RDORelevantResource::convertBegin && m_statusBegin == rdoRuntime::RDOResource::CS_Create)
+	{
+		if (!getParamSetList().find(value->getIdentificator()))
+		{
+			if (!pParam->getDefault().defined())
+			{
+				RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса"), value->getIdentificator().c_str()));
+			}
+		}
+	}
+	//! В конверторе конца
+	if (m_currentState == RDORelevantResource::convertEnd && m_statusEnd == rdoRuntime::RDOResource::CS_Create)
+	{
+		if (!getParamSetList().find(value->getIdentificator()))
+		{
+			if (!getParamSetList().find(value->getIdentificator()))
+			{
+				if (!pParam->getDefault().defined())
+				{
+					RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса"), value->getIdentificator().c_str()));
+				}
+			}
+		}
+	}
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		pParam->getType()->type(),
+		rdo::Factory<rdoRuntime::RDOCalcGetRelevantResParam>::create(m_relResID, parNumb),
+		value.src_info()
+	);
+	ASSERT(pExpression);
+	return pExpression;
+}
+
 rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {
 	if (m_pChoiceFrom && m_pChoiceFrom->m_type == rdoParse::RDOPATChoiceFrom::ch_from)

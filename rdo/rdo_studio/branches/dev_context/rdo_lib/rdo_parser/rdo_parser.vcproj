@@ -2483,6 +2483,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\context\context_create_expression_i.h"
+				>
+			</File>
+			<File
 				RelativePath=".\context\context_find_i.h"
 				>
 			</File>
@@ -2526,18 +2530,6 @@
 				RelativePath=".\context\type.h"
 				>
 			</File>
-			<Filter
-				Name=".pattern"
-				>
-				<File
-					RelativePath=".\context\pattern.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\context\pattern.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name=".dpt"
@@ -2734,6 +2726,10 @@
 				RelativePath=".\rdo_type.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdo_type_operation.h"
+				>
+			</File>
 			<Filter
 				Name=".enum"
 				>
@@ -2784,6 +2780,18 @@
 			</File>
 			<File
 				RelativePath=".\rdo_value.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".expression"
+			>
+			<File
+				RelativePath=".\expression.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\expression.h"
 				>
 			</File>
 		</Filter>

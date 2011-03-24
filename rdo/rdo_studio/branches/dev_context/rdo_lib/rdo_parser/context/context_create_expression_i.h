@@ -1,35 +1,34 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : context_find_i.h
+ * filename : context_create_expression_i.h
  * author   : Урусов Андрей
- * date     : 03.03.2011
+ * date     : 07.03.2011
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDOPARSER_CONTEXT_FIND_I_H_
-#define _RDOPARSER_CONTEXT_FIND_I_H_
+#ifndef _RDOPARSER_CONTEXT_CREATE_EXPRESSION_I_H_
+#define _RDOPARSER_CONTEXT_CREATE_EXPRESSION_I_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/expression.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- IContextFind
+// ---------- IContextCreateExpression
 // ----------------------------------------------------------------------------
-OBJECT_INTERFACE(IContextFind)
+OBJECT_INTERFACE(IContextCreateExpression)
 {
-DECLARE_FACTORY(IContextFind)
+DECLARE_FACTORY(IContextCreateExpression)
 public:
-	virtual LPContext onFindContext(CREF(RDOValue) value) const = 0;
+	virtual LPExpression onCreateExpression(CREF(RDOValue) value) = 0;
 };
-#define DECLARE_IContextFind \
-	LPContext onFindContext(CREF(RDOValue) value) const;
+#define DECLARE_IContextCreateExpression \
+	LPExpression onCreateExpression(CREF(RDOValue) value);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDOPARSER_CONTEXT_FIND_I_H_
+#endif //! _RDOPARSER_CONTEXT_CREATE_EXPRESSION_I_H_

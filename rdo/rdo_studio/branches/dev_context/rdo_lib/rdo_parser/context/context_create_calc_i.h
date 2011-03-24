@@ -27,10 +27,10 @@ OBJECT_INTERFACE(IContextCreateCalc)
 {
 DECLARE_FACTORY(IContextCreateCalc)
 public:
-	virtual rdoRuntime::LPRDOCalc create(CREF(tstring) name) = 0;
+	virtual rdoRuntime::LPRDOCalc create(CREF(RDOValue) name) = 0;
 };
 #define DECLARE_IContextCreateCalc \
-	rdoRuntime::LPRDOCalc create(CREF(tstring) name);
+	rdoRuntime::LPRDOCalc create(CREF(RDOValue) name);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

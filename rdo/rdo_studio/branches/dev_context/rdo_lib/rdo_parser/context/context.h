@@ -12,12 +12,9 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-
-#include "rdo_lib/rdo_parser/namespace.h"
+#include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/expression.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -34,8 +31,8 @@ public:
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
 
-	LPContext             find  (CREF(tstring) name) const;
-	rdoRuntime::LPRDOCalc create(CREF(tstring) name);
+	LPContext    find  (CREF(RDOValue) value) const;
+	LPExpression create(CREF(RDOValue) value);
 
 protected:
 	Context();
