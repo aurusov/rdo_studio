@@ -123,10 +123,10 @@ tstring RPMethodProc2RDO_MJ::getDirectory() const
 	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::PAT);
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 
-	tstring::size_type pos = data.m_full_name.find(data.m_extention);
+	tstring::size_type pos = data.m_fullName.find(data.m_extention);
 	ASSERT(pos != tstring::npos);
 
-	tstring result(data.m_full_name.substr(0, pos));
+	tstring result(data.m_fullName.substr(0, pos));
 	return result;
 }
 

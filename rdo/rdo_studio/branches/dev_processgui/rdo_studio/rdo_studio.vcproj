@@ -4558,6 +4558,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\trash.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\version.h"
 				>
 			</File>
@@ -5410,7 +5414,7 @@
 					RelativePath=".\win_registry\Registry.h"
 					>
 				</File>
-		</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="2. RDO-Model"
