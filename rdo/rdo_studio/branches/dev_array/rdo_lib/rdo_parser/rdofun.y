@@ -534,13 +534,13 @@ statement_list
 	;
 
 empty_statement
-	: /* empty */
+	: ';'
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
-	| error
+	| error ';'
 	{
 		PARSER->error().error(@1, _T("Ошибка в инструкции"));
 	}
@@ -844,10 +844,10 @@ init_declaration_list
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
 		ASSERT(pCalcLocalVariableList);
 
-		pCalcLocalVariableList->addCalc(pCalc);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
 
 		$$ = PARSER->stack().push(pCalcLocalVariableList);
 	}
@@ -873,10 +873,10 @@ init_declaration_list
 		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($1);
-		ASSERT(pCalc);
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVariableList>($1);
+		ASSERT(pCalcLocalVariableList);
 
-		pCalcLocalVariableList->addCalc(pCalc);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
 
 		$$ = PARSER->stack().push(pCalcLocalVariableList);
 	}
