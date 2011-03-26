@@ -1,7 +1,7 @@
 // rdoprocess_shape_create_dlg2_MJ.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 #include "rdoprocess_shape_create_dlg2_MJ.h"
 
 #ifdef _DEBUG

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create_MJ.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
@@ -17,12 +17,9 @@
 #include "rdo_studio/rdo_process/proc2rdo/res/block_resource.xpm"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include <afxole.h>		// для rdostudioapp
-#include <afxpriv.h>    // для rdostudioapp
 #include "rdo_studio/rdostudioapp.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_studio/stdafx.h"
 #include "rdo_studio/rdostudiomodel.h"
+#include "rdo_repository/rdorepository.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

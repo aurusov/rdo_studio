@@ -63,11 +63,10 @@ void RPShapeProcessDlg2_MJ::list_name_resource()
 {
 
 	std::list< RPObject* >::const_iterator it = list_resource_MJ.begin();
-	while( it != list_resource_MJ.end() ) {
-	
-		
-	    TRACE( "%s\n", (*it)->getName().c_str() );
-      	m_combo_res_control.AddString((*it)->getName().c_str());
+	while( it != list_resource_MJ.end() )
+	{
+		TRACE1( "%s\n", (*it)->getName().c_str() );
+		m_combo_res_control.AddString((*it)->getName().c_str());
 		it++;
 	}
 }

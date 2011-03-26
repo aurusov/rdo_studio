@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 #include "rdoprocess_shape_create_MJ.h"
 #include "rdoprocess_shape_create_dlg1_MJ.h"
 #include "rdoprocess_method_proc2rdo_MJ.h"
