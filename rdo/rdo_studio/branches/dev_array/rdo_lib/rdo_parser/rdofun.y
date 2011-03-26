@@ -902,15 +902,10 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
-		ASSERT(pCalcLocalVariableList);
-
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
 		ASSERT(pCalcCreateLocalVariable);
 
-		pCalcLocalVariableList->addCalc(pCalcCreateLocalVariable);
-
-		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
+		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
 
 		$$ = PARSER->stack().push(pVariableContainer);
 	}
@@ -933,7 +928,7 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
 		ASSERT(pCalcLocalVariableList);
 
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
@@ -942,8 +937,8 @@ init_declaration
 		rdoRuntime::LPRDOCalcSetLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable>::create(variableName->getIdentificator(), pArithm->calc());
 		ASSERT(pCalcSetLocalVariable);
 
-		pCalcLocalVariableList->addCalc(pCalcCreateLocalVariable);
-		pCalcLocalVariableList->addCalc(pCalcSetLocalVariable);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalcSetLocalVariable);
 
 		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
 

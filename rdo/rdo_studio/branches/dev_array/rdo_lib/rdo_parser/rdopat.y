@@ -3137,12 +3137,7 @@ init_declaration
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
 		ASSERT(pCalcCreateLocalVariable);
 
-		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
-		ASSERT(pCalcLocalVariableList);
-
-		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
-
-		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
+		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
 
 		$$ = PARSER->stack().push(pVariableContainer);
 	}
