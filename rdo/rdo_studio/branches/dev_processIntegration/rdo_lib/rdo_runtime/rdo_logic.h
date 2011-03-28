@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdo_logic.h
- * author   : Урусов Андрей
+ * author   : Урусов Андрей, Лущан Дмитрий
  * date     : 
  * bref     : 
  * indent   : 4T
