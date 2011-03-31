@@ -71,6 +71,7 @@ public:
 	rbool getTrace() const      { return trace;  }
 	void  setTrace(rbool value) { trace = value; }
 	rbool defined () const;
+	void  end     ();
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
