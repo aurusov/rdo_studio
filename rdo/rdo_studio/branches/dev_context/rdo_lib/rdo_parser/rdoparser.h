@@ -19,14 +19,14 @@
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
 #include "rdo_common/rdoidgenerator.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
@@ -81,8 +81,9 @@ DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 PREDECLARE_POINTER(RDOParser);
 
 CLASS(RDOParser):
-	    INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+	    INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOParser);
 
@@ -283,6 +284,7 @@ private:
 	static ParserList s_parserStack;
 
 	DECLARE_IContextFind;
+	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDOParser);
 

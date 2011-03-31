@@ -30,4 +30,29 @@ LPLocalVariableListStack ContextMemory::getLocalMemory()
 	return m_pLocalVariableListStack;
 }
 
+LPContext ContextMemory::onFindContext(CREF(RDOValue) value) const
+{
+	LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(value->getIdentificator());
+	if (pLocalVariable)
+	{
+		return const_cast<PTR(ContextMemory)>(this);
+	}
+
+	return NULL;
+}
+
+LPExpression ContextMemory::onCreateExpression(CREF(RDOValue) value)
+{
+	LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(value->getIdentificator());
+	ASSERT(pLocalVariable);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		pLocalVariable->getArithm()->type(),
+		rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->getIdentificator()),
+		value.src_info()
+	);
+	ASSERT(pExpression);
+	return pExpression;
+}
+
 CLOSE_RDO_PARSER_NAMESPACE
