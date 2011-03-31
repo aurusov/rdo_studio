@@ -25,6 +25,12 @@ OBJECT_INTERFACE(IContextCreateExpression)
 DECLARE_FACTORY(IContextCreateExpression)
 public:
 	virtual LPExpression onCreateExpression(CREF(RDOValue) value) = 0;
+
+protected:
+	IContextCreateExpression()
+	{}
+	virtual ~IContextCreateExpression()
+	{}
 };
 #define DECLARE_IContextCreateExpression \
 	LPExpression onCreateExpression(CREF(RDOValue) value);

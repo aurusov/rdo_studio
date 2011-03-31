@@ -26,6 +26,12 @@ OBJECT_INTERFACE(IContextFind)
 DECLARE_FACTORY(IContextFind)
 public:
 	virtual LPContext onFindContext(CREF(RDOValue) value) const = 0;
+
+protected:
+	IContextFind()
+	{}
+	virtual ~IContextFind()
+	{}
 };
 #define DECLARE_IContextFind \
 	LPContext onFindContext(CREF(RDOValue) value) const;

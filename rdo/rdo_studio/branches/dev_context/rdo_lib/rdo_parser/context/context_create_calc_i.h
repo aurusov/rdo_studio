@@ -28,6 +28,12 @@ OBJECT_INTERFACE(IContextCreateCalc)
 DECLARE_FACTORY(IContextCreateCalc)
 public:
 	virtual rdoRuntime::LPRDOCalc create(CREF(RDOValue) name) = 0;
+
+protected:
+	IContextCreateCalc()
+	{}
+	virtual ~IContextCreateCalc()
+	{}
 };
 #define DECLARE_IContextCreateCalc \
 	rdoRuntime::LPRDOCalc create(CREF(RDOValue) name);
