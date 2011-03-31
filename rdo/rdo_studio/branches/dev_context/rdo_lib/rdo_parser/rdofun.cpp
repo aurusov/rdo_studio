@@ -92,7 +92,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning)
 		rdoRuntime::LPRDOCalcConst pConstCalc = m_pExpression->calc().object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 		if (pConstCalc)
 		{
-			if (pConstCalc->calcValue(RDOParser::s_parser()->runtime()).getAsBool())
+			if (pConstCalc->getValue().getAsBool())
 			{
 				RDOParser::s_parser()->error().warning(pConstCalc->src_info(), rdo::format(_T("Логическое выражение всегда истинно: %s"), pConstCalc->src_text().c_str()));
 			}
@@ -496,7 +496,7 @@ void RDOFUNArithm::checkParamType(CREF(LPRDOTypeParam) pType)
 	rdoRuntime::LPRDOCalcConst pConstCalc = calc().object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 	if (pConstCalc)
 	{
-		rdoRuntime::RDOValue value = pConstCalc->calcValue(RDOParser::s_parser()->runtime());
+		rdoRuntime::RDOValue value = pConstCalc->getValue();
 		pType->value_cast(RDOValue(value, type(), src_info()));
 	}
 }
