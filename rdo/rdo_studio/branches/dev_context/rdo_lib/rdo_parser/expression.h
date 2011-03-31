@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_type.h"
+#include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
 
@@ -29,6 +30,8 @@ public:
 	CREF(rdoRuntime::LPRDOCalc)  calc      () const;
 	CREF(rdoRuntime::RDOSrcInfo) src_info  () const;
 	void                         setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info);
+
+	RDOValue                     constant  () const;
 
 private:
 	Expression(CREF(LPRDOType) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);
