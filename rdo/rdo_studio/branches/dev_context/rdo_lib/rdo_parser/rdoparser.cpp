@@ -15,7 +15,6 @@
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/context/global.h"
 #include "rdo_common/rdocommon.h"
 // ===============================================================================
 
