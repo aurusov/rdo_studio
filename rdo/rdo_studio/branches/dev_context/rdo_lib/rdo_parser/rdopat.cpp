@@ -289,7 +289,6 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 		addParamSetCalc(*cmdIt);
 
 	ASSERT(m_pCurrRelRes);
-	m_pCurrRelRes->getParamSetList().reset();
 }
 
 void RDOPATPattern::addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)

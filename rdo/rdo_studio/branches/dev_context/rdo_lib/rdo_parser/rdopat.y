@@ -1424,7 +1424,6 @@ pat_convert_cmd
 		LPConvertCmdList pCmdList = rdo::Factory<ConvertCmdList>::create();
 		LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
-		pRelRes->getParamSetList().reset();
 		$$ = PARSER->stack().push(pCmdList);
 	}
 	| pat_convert_cmd statement
