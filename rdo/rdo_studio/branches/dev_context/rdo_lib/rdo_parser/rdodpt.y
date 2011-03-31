@@ -1145,6 +1145,11 @@ dpt_free_activity_keys
 
 dpt_free_end
 	: dpt_free_prior dpt_free_activity RDO_End
+	{
+		LPRDODPTFree pDPTFree = PARSER->getLastDPTFree();
+		ASSERT(pDPTFree);
+		pDPTFree->end();
+	}
 	| dpt_free_header error
 	{
 		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));

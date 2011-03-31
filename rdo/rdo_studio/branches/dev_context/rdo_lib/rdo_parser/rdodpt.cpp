@@ -251,6 +251,12 @@ RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTFree(this);
+	RDOParser::s_parser()->contextStack()->push(this);
+}
+
+void RDODPTFree::end()
+{
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 LPContext RDODPTFree::onFindContext(CREF(RDOValue) value) const
@@ -284,6 +290,7 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTSome(this);
+	RDOParser::s_parser()->contextStack()->push(this);
 }
 
 LPContext RDODPTSome::onFindContext(CREF(RDOValue) value) const
@@ -298,6 +305,7 @@ void RDODPTSome::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -311,6 +319,7 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTPrior(this);
+	RDOParser::s_parser()->contextStack()->push(this);
 }
 
 LPContext RDODPTPrior::onFindContext(CREF(RDOValue) value) const
@@ -325,6 +334,7 @@ void RDODPTPrior::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------
