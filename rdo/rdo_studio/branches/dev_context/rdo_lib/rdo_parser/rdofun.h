@@ -129,6 +129,7 @@ public:
 	LPRDOFUNArithm operator -(CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNArithm operator *(CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNArithm operator /(CREF(LPRDOFUNArithm) pSecond);
+	LPRDOFUNArithm setEqual  (CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNArithm uminus    (CREF(rdoRuntime::RDOSrcInfo::Position) position);
 
 	LPRDOFUNLogic operator ==(CREF(LPRDOFUNArithm) pSecond);
@@ -181,7 +182,7 @@ private:
 	template <class T>
 	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 
-	template <class T>
+	void castType (CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 	void castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 };
 DECLARE_POINTER(LPRDOFUNArithm);

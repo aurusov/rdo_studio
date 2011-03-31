@@ -1782,6 +1782,17 @@ equal_statement
 				case rdoRuntime::ET_EQUAL:
 				{
 					pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+					ASSERT(pCalc);
+					pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
+					pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+
+					LPExpression pExpressionLeft = rdo::Factory<Expression>::create(pParam->getType()->type(), pCalc, pCalc->src_info());
+					ASSERT(pExpressionLeft);
+
+					LPRDOFUNArithm pArithmLeft = rdo::Factory<RDOFUNArithm>::create(pExpressionLeft);
+					ASSERT(pArithmLeft);
+					pArithmLeft->setEqual(pRightArithm);
+
 					pRelRes->getParamSetList().insert(pParam);
 					break;
 				}
