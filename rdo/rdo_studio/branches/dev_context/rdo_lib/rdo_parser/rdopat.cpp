@@ -69,14 +69,14 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 		rdoParse::g_error().push_only(pPatternExist->src_info(), _T("См. первое определение"));
 		rdoParse::g_error().push_done();
 	}
-	LPContext pContext = this;
 	RDOParser::s_parser()->insertPATPattern(this);
-	RDOParser::s_parser()->contextStack()->push(pContext);
+	RDOParser::s_parser()->contextStack()->push(this);
 
-	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-	ASSERT(pContextMemory);
+	m_pContextMemory = rdo::Factory<ContextMemory>::create();
+	ASSERT(m_pContextMemory);
+	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
 
-	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+	LPLocalVariableListStack pLocalVariableListStack = m_pContextMemory->getLocalMemory();
 	ASSERT(pLocalVariableListStack);
 
 	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
@@ -87,10 +87,9 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 
 LPContext RDOPATPattern::onFindContext(CREF(RDOValue) value) const
 {
-	LPContext pContext = ContextMemory::onFindContext(value);
-	if (pContext)
+	if (m_pContextMemory->onFindContext(value))
 	{
-		return pContext;
+		return m_pContextMemory;
 	}
 
 	//! Релевантные ресурсы
@@ -176,12 +175,6 @@ LPContext RDOPATPattern::onFindContext(CREF(RDOValue) value) const
 
 LPExpression RDOPATPattern::onCreateExpression(CREF(RDOValue) value)
 {
-	LPExpression pExpression = ContextMemory::onCreateExpression(value);
-	if (pExpression)
-	{
-		return pExpression;
-	}
-
 	//! Параметры
 	LPRDOParam pParam = findPATPatternParam(value->getIdentificator());
 	if (pParam)
@@ -523,6 +516,7 @@ void RDOPATPattern::end()
 			addChoiceFromCalc(pCalc);
 		}
 	}
+	RDOParser::s_parser()->contextStack()->pop();
 	RDOParser::s_parser()->contextStack()->pop();
 }
 

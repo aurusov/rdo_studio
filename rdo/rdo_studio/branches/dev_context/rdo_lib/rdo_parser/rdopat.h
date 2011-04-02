@@ -77,8 +77,10 @@ PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
 
 CLASS(RDOPATPattern):
-	    INSTANCE_OF(RDOParserSrcInfo)
-	AND INSTANCE_OF(ContextMemory   )
+	    INSTANCE_OF      (RDOParserSrcInfo        )
+	AND INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
@@ -157,6 +159,8 @@ private:
 	LPRDOFUNArithm   m_pCommonChoice;
 
 	ruint            m_currentRelResIndex;
+
+	LPContextMemory  m_pContextMemory;
 
 	tstring typeToString(PatType type)
 	{
