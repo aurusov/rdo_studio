@@ -209,8 +209,7 @@ DECLARE_FACTORY(RDODPTSearchActivity);
 public:
 	IDPTSearchActivity::ValueTime getValue() const { return m_value; }
 	void                          setValue(IDPTSearchActivity::ValueTime value,
-	                                       CREF(LPRDOFUNArithm)          pRuleCost,
-	                                       CREF(YYLTYPE)                 param_pos);
+	                                       CREF(LPRDOFUNArithm)          pRuleCost);
 
 	LPRDOFUNArithm getRuleCost() const { return m_pRuleCost; }
 

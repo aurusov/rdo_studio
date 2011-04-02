@@ -92,7 +92,12 @@ RDODPTActivity::~RDODPTActivity()
 
 LPContext RDODPTActivity::onFindContext(CREF(RDOValue) value) const
 {
-	return m_pPattern;
+	LPContext pContext = m_pPattern->onFindContext(value);
+	if (pContext)
+	{
+		return pContext;
+	}
+	return NULL;
 }
 
 void RDODPTActivity::addParam(CREF(RDOValue) param)
@@ -364,9 +369,8 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 	ASSERT(m_pActivity);
 }
 
-void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost, CREF(YYLTYPE) param_pos)
+void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost)
 {
-	endParam(param_pos);
 	m_value     = value;
 	m_pRuleCost = pRuleCost;
 }

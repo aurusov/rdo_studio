@@ -483,13 +483,13 @@ dpt_search_descr_value
 	{
 		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
 		ASSERT(pDPTSearch);
-		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2), @1);
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2));
 	}
 	| RDO_value_after fun_arithm
 	{
 		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
 		ASSERT(pDPTSearch);
-		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2), @1);
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2));
 	}
 	| RDO_value_before error
 	{
