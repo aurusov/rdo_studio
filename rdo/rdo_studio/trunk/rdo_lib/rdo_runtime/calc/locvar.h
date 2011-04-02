@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : rdocalc_locvar.h
+ * filename : locvar.h
  * author   : Чирков Михаил
  * date     : 03.12.10
  * bref     : 
