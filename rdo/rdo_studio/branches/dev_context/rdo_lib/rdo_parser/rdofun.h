@@ -526,7 +526,7 @@ private:
 // ----------------------------------------------------------------------------
 CLASS(RDOFUNFunction):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
-	IS  INSTANCE_OF      (Context                 )
+	AND INSTANCE_OF      (Context                 )
 	AND IMPLEMENTATION_OF(IContextFind            )
 	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
