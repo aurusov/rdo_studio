@@ -14,7 +14,7 @@ RPObjectFlowChart_MJ::RPObjectFlowChart_MJ( RPObject* parent ):
 	RPObjectFlowChart( parent ),
 	RPObject_MJ( get_this() )
 {
-//	after_constructor();
+	after_constructor();
 /*
 	RPShapeCreateMJ* shape_create = new RPShapeCreateMJ( this );
 	shape_create->setPosition( 100, 100 );
