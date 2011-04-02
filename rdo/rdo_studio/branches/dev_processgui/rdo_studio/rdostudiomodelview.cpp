@@ -110,7 +110,15 @@ int RDOStudioModelView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL RDOStudioModelView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
-	if ( tab->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	PTR(RDOEditorEdit) pEditor = tab->getCurrentWnd<RDOEditorEdit>();
+	if (pEditor)
+	{
+		if (pEditor->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+		{
+			return TRUE;
+		}
+	}
+
 	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
@@ -131,13 +139,18 @@ void RDOStudioModelView::OnSize(UINT nType, int cx, int cy)
 
 RDOEditorEdit* RDOStudioModelView::getEdit() const
 {
-	return tab->getCurrentEdit();
+	return tab->getCurrentWnd<RDOEditorEdit>();
 }
 
 void RDOStudioModelView::OnSearchFindInModel() 
 {
-	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	pDlg->Create( true, getEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, this );
+	PTR(RDOEditorEdit) pEditor = getEdit();
+	if (pEditor)
+	{
+		PTR(CFindReplaceDialog) pDlg = new CFindReplaceDialog();
+		pDlg->Create(true, pEditor->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, this);
+	}
+	//! TODO: processGUI может тоже иметь поиск
 }
 
 LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
@@ -153,17 +166,21 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
 		studioApp.mainFrame->output.appendStringToFind( rdo::format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
 		int count = 0;
-		for ( int i = 0; i < tab->getItemCount(); i++ ) {
-			RDOEditorEdit* edit = tab->getItemEdit( i );
-			int pos  = 0;
-			int line = 0;
-			while ( pos != -1 ) {
-				pos = edit->findPos( findStr, line, bMatchCase, bMatchWholeWord );
-				if ( pos != -1 ) {
-					line = edit->getLineFromPosition( pos );
-					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), tab->indexToType( i ), line, pos - edit->getPositionFromLine( line ) );
-					line++;
-					count++;
+		for ( int i = 0; i < tab->getItemCount(); i++ )
+		{
+			PTR(RDOEditorEdit) pEditor = tab->getItemWnd<RDOEditorEdit>(i);
+			if (pEditor)
+			{
+				int pos  = 0;
+				int line = 0;
+				while ( pos != -1 ) {
+					pos = pEditor->findPos( findStr, line, bMatchCase, bMatchWholeWord );
+					if ( pos != -1 ) {
+						line = pEditor->getLineFromPosition( pos );
+						studioApp.mainFrame->output.appendStringToFind( pEditor->getLine( line ), tab->indexToType( i ), line, pos - pEditor->getPositionFromLine( line ) );
+						line++;
+						count++;
+					}
 				}
 			}
 		}

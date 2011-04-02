@@ -40,9 +40,24 @@ public:
 	rdoModelObjects::RDOFileType getCurrentRDOItem() const              { return indexToType( getCurrentIndex() ); }
 	void setCurrentRDOItem( const rdoModelObjects::RDOFileType type );
 
-	RDOEditorEdit* getCurrentEdit() const               { return static_cast<RDOEditorEdit*>(getItemCurrent()); }
-	RDOEditorEdit* getItemEdit( const int index ) const { return static_cast<RDOEditorEdit*>(getItem( index )); }
-	RDOEditorEdit* getItemEdit( const rdoModelObjects::RDOFileType type ) const;
+	template <class T>
+	PTR(T) getCurrentWnd() const
+	{
+		return dynamic_cast<PTR(T)>(getItemCurrent());
+	}
+
+	template <class T>
+	PTR(T) getItemWnd(const int index) const
+	{
+		return dynamic_cast<PTR(T)>(getItem(index));
+	}
+
+	template <class T>
+	PTR(T) getItemWnd(const rdoModelObjects::RDOFileType type) const
+	{
+		int index = typeToIndex(type);
+		return index != -1 ? getItemWnd<T>(index) : NULL;
+	}
 };
 
 }; // namespace rdoEditor

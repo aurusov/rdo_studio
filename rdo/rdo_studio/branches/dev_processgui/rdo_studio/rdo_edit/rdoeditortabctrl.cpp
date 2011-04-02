@@ -177,9 +177,3 @@ void RDOEditorTabCtrl::setCurrentRDOItem( const rdoModelObjects::RDOFileType typ
 	int index = typeToIndex( type );
 	if ( index != -1 ) setCurrentItem( index );
 }
-
-RDOEditorEdit* RDOEditorTabCtrl::getItemEdit( const rdoModelObjects::RDOFileType type ) const
-{
-	int index = typeToIndex( type );
-	return index != -1 ? getItemEdit( index ) : NULL;
-}

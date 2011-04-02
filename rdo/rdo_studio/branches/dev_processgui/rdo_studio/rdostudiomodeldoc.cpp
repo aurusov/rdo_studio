@@ -63,12 +63,17 @@ void RDOStudioModelDoc::Dump(CDumpContext& dc) const
 void RDOStudioModelDoc::updateModify()
 {
 	RDOStudioModelView* view = getView();
-	if ( view ) {
-		for ( int i = 0; i < view->tab->getItemCount(); i++ ) {
-			if ( view->tab->getItemEdit( i )->isModify() ) {
+	if ( view )
+	{
+		for ( int i = 0; i < view->tab->getItemCount(); i++ )
+		{
+			PTR(rdoEditor::RDOEditorEdit) pEditor = view->tab->getItemWnd<rdoEditor::RDOEditorEdit>(i);
+			if (pEditor && pEditor->isModify())
+			{
 				SetModifiedFlag( true );
 				return;
 			}
+			//! TODO: добавить проверку на изменение ProcessGUI
 		}
 	}
 	SetModifiedFlag( false );

@@ -213,11 +213,12 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			PTR(RDOEditorTabCtrl) pTab = getTab();
 			if (pTab)
 			{
-				PTR(RDOEditorEdit) edit = pTab->getItemEdit(fdata->m_type);
-				if (edit)
+				PTR(RDOEditorEdit) pEditor = pTab->getItemWnd<RDOEditorEdit>(fdata->m_type);
+				if (pEditor)
 				{
-					edit->save(fdata->m_stream);
+					pEditor->save(fdata->m_stream);
 				}
+				//! TODO: processGUI тоже должен что-то отдать
 			}
 			msg.unlock();
 			break;
