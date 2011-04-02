@@ -30,6 +30,7 @@ public:
 	enum TypeID
 	{
 		t_unknow = 0,
+		t_void,
 		t_identificator,
 		t_int,
 		t_real,
@@ -65,6 +66,7 @@ public:                               \
 extern rdo::intrusive_ptr<RDOType__##Type> g_##Type;
 
 DEFINE_ATOM_TYPE(unknow        );
+DEFINE_ATOM_TYPE(void          );
 DEFINE_ATOM_TYPE(identificator );
 DEFINE_ATOM_TYPE(int           );
 DEFINE_ATOM_TYPE(real          );

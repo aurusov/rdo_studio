@@ -90,6 +90,7 @@ public:
 	Iterator begin()            { return m_list.begin();     }
 	Iterator end  ()            { return m_list.end();       }
 	Iterator find (ruint index) { return m_list.find(index); }
+	void     clear();
 
 	static void getMinMax(rdoModelObjects::RDOParseType type, REF(ruint) min, REF(ruint) max);
 

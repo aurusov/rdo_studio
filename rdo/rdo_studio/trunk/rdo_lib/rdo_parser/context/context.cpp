@@ -14,7 +14,7 @@
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/context/context.h"
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
-#include "rdo_lib/rdo_parser/context/context_create_calc_i.h"
+#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -32,36 +32,35 @@ void Context::setContextStack(CREF(LPContextStack) pContextStack)
 	m_pContextStack = pContextStack;
 }
 
-LPContext Context::find(CREF(tstring) name) const
+LPContext Context::find(CREF(RDOValue) value) const
 {
 	LPContext pThis(const_cast<PTR(Context)>(this));
 	LPIContextFind pThisContextFind = pThis.interface_dynamic_cast<IContextFind>();
 	if (pThisContextFind)
 	{
-		LPContext pThisResult = pThisContextFind->find(name);
+		LPContext pThisResult = pThisContextFind->onFindContext(value);
 		if (pThisResult)
 		{
 			return pThisResult;
 		}
 	}
 	LPContext pPrev = m_pContextStack->prev(pThis);
-	return pPrev ? pPrev->find(name) : LPContext();
+	return pPrev ? pPrev->find(value) : LPContext();
 }
 
-rdoRuntime::LPRDOCalc Context::create(CREF(tstring) name)
+LPExpression Context::create(CREF(RDOValue) value)
 {
 	LPContext pThis(this);
-	LPIContextCreateCalc pThisContextCreateCalc = pThis.interface_dynamic_cast<IContextCreateCalc>();
-	if (pThisContextCreateCalc)
+	LPIContextCreateExpression pThisContextCreateExpression = pThis.interface_dynamic_cast<IContextCreateExpression>();
+	if (pThisContextCreateExpression)
 	{
-		rdoRuntime::LPRDOCalc pCalc = pThisContextCreateCalc->create(name);
-		if (pCalc)
+		LPExpression pExpression = pThisContextCreateExpression->onCreateExpression(value);
+		if (pExpression)
 		{
-			return pCalc;
+			return pExpression;
 		}
 	}
-	LPContext pPrev = m_pContextStack->prev(pThis);
-	return pPrev ? pPrev->create(name) : rdoRuntime::LPRDOCalc();
+	return NULL;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

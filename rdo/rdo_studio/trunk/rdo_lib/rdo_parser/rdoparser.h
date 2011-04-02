@@ -106,8 +106,8 @@ DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
 DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 public:
-	void init  ();
-	void deinit();
+	virtual void init  ();
+	virtual void deinit();
 
 	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
 
@@ -222,7 +222,7 @@ protected:
 
 	LPRDOParserItem m_parser_item;
 
-	virtual REF(LPRDOParserContainer) getContainer() = 0;
+	virtual CREF(LPRDOParserContainer) getContainer() const = 0;
 
 	RDOParserContainer::Iterator begin()
 	{
@@ -295,21 +295,34 @@ class RDOParserTemplate: public RDOParser
 DECLARE_FACTORY(RDOParserTemplate<Container>);
 
 private:
+	typedef  RDOParser  parent_type;
+
 	RDOParserTemplate()
 		: RDOParser()
 	{}
+	virtual ~RDOParserTemplate()
+	{}
 
-	LPRDOParserContainer m_container;
-
-	virtual REF(LPRDOParserContainer) getContainer()
+	virtual void init()
 	{
-		if (!m_container)
-		{
-			m_container = rdo::Factory<Container>::create();
-			ASSERT(m_container);
-		}
-		return m_container;
+		m_pContainer = rdo::Factory<Container>::create();
+		ASSERT(m_pContainer);
+		parent_type::init();
 	}
+
+	virtual void deinit()
+	{
+		ASSERT(m_pContainer)
+		m_pContainer->clear();
+		parent_type::deinit();
+	}
+
+	virtual CREF(LPRDOParserContainer) getContainer() const
+	{
+		return m_pContainer;
+	}
+
+	LPRDOParserContainer m_pContainer;
 };
 
 // ----------------------------------------------------------------------------

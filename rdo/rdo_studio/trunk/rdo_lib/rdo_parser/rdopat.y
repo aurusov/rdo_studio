@@ -1586,10 +1586,11 @@ member_statement_parent
 		LPContext pCurrentContext = PARSER->context();
 		ASSERT(pCurrentContext);
 
-		LPContext pContext = pCurrentContext->find(RDOVALUE($1)->getIdentificator());
+		tstring   name     = RDOVALUE($1)->getIdentificator();
+		LPContext pContext = pCurrentContext->find(name);
 		if (!pContext)
 		{
-			PARSER->error().error(@1, _T("Неизвестный идентификатор"));
+			PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), name.c_str()));
 		}
 
 		$$ = PARSER->stack().push(pContext);
@@ -1602,10 +1603,13 @@ member_statement
 		LPContext pContext = PARSER->stack().pop<Context>($1);
 		ASSERT(pContext);
 
-		rdoRuntime::LPRDOCalc pCalc = pContext->create(RDOVALUE($3)->getIdentificator());
-		ASSERT(pCalc);
+		LPExpression pExpression = pContext->create(RDOVALUE($3));
+		if (!pExpression)
+		{
+			PARSER->error().error(@3, rdo::format(_T("Неизвестный идентификатор: %s"), RDOVALUE($3)->getIdentificator().c_str()));
+		}
 
-		$$ = PARSER->stack().push(pCalc);
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 
@@ -2640,7 +2644,9 @@ fun_arithm
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
 	| member_statement
 	{
-		int i = 1;
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
 	}
 //	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }

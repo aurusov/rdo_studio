@@ -135,9 +135,9 @@ LPContext RDOParser::context() const
 	return m_pContextStack->top();
 }
 
-LPContext RDOParser::find(CREF(tstring) name) const
+LPContext RDOParser::onFindContext(CREF(RDOValue) value) const
 {
-	LPRDORSSResource pResource = findRSSResource(name);
+	LPRDORSSResource pResource = findRSSResource(value->getIdentificator());
 	if (pResource)
 	{
 		//! Это ресурс с закладки RSS

@@ -16,6 +16,7 @@
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/param.h"
+#include "rdo_lib/rdo_parser/expression.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -128,9 +129,12 @@ public:
 	LPRDOFUNLogic operator >=(CREF(LPRDOFUNArithm) pSecond);
 
 	rdoRuntime::LPRDOCalc       createCalc(CREF(LPRDOTypeParam) pForType = NULL);
-	rdoRuntime::LPRDOCalc       calc      () const { return m_pCalc;                    }
-	CREF(RDOValue)              value     () const { return m_value;                    }
-	LPRDOType                   type      () const { return m_value.type();             }
+
+	CREF(LPRDOType)             type       () const { return m_pExpression->type();      }
+	rdoRuntime::LPRDOCalc       calc       () const { return m_pExpression->calc();      }
+	rdoRuntime::RDOValue        const_value() const;
+
+//	CREF(RDOValue)              value     () const { return m_value;                    }
 	LPRDOEnumType               enumType  () const { return type().object_static_cast<RDOEnumType>(); }
 	rdoRuntime::RDOType::TypeID typeID    () const { return type()->type()->typeID();   }
 
@@ -144,12 +148,16 @@ public:
 	void checkParamType(CREF(LPRDOTypeParam) pType);
 
 private:
-	RDOFUNArithm(CREF(RDOValue) value);
-	RDOFUNArithm(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc);
+	RDOFUNArithm(CREF(LPExpression) pExpression);
+
+	//RDOFUNArithm(CREF(RDOValue) value);
+	//RDOFUNArithm(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc);
 	RDOFUNArithm(CREF(RDOValue) resName, CREF(RDOValue) parName);
 	virtual ~RDOFUNArithm();
 
-	RDOValue m_value;
+	LPExpression               m_pExpression;
+	RDOValue                   m_identificator;
+	RDOFUNDoubleToIntByResult  m_intOrDouble;
 
 	void init(CREF(RDOValue) value);
 	void init(CREF(RDOValue) resName, CREF(RDOValue) parName);

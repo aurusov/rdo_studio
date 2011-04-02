@@ -364,10 +364,20 @@ frm_item
 
 frm_header
 	: frm_backpicture frm_item
+	{
+		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
+		ASSERT(pFrame);
+		$$ = PARSER->stack().push(pFrame);
+	}
 	;
 
 frm_end
 	: frm_header RDO_End
+	{
+		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
+		ASSERT(pFrame);
+		pFrame->end();
+	}
 	;
 
 // ----------------------------------------------------------------------------
