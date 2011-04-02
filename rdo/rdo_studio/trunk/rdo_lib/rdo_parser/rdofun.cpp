@@ -264,11 +264,6 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(CREF(RDOValue) value)
 
 LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(CREF(RDOValue) value1, CREF(RDOValue) value2)
 {
-	if (value1->getAsString() == "Бревно")
-	{
-		int i = 1;
-	}
-
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
 

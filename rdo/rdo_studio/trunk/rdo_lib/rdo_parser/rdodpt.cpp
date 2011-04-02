@@ -92,7 +92,12 @@ RDODPTActivity::~RDODPTActivity()
 
 LPContext RDODPTActivity::onFindContext(CREF(RDOValue) value) const
 {
-	return m_pPattern;
+	LPContext pContext = m_pPattern->onFindContext(value);
+	if (pContext)
+	{
+		return pContext;
+	}
+	return NULL;
 }
 
 void RDODPTActivity::addParam(CREF(RDOValue) param)
@@ -251,6 +256,12 @@ RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTFree(this);
+	RDOParser::s_parser()->contextStack()->push(this);
+}
+
+void RDODPTFree::end()
+{
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 LPContext RDODPTFree::onFindContext(CREF(RDOValue) value) const
@@ -284,6 +295,7 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTSome(this);
+	RDOParser::s_parser()->contextStack()->push(this);
 }
 
 LPContext RDODPTSome::onFindContext(CREF(RDOValue) value) const
@@ -298,6 +310,7 @@ void RDODPTSome::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -311,6 +324,7 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTPrior(this);
+	RDOParser::s_parser()->contextStack()->push(this);
 }
 
 LPContext RDODPTPrior::onFindContext(CREF(RDOValue) value) const
@@ -325,6 +339,7 @@ void RDODPTPrior::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -354,9 +369,8 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 	ASSERT(m_pActivity);
 }
 
-void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost, CREF(YYLTYPE) param_pos)
+void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost)
 {
-	endParam(param_pos);
 	m_value     = value;
 	m_pRuleCost = pRuleCost;
 }

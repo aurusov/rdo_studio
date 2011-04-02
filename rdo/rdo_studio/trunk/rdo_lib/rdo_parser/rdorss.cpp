@@ -42,10 +42,16 @@ RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo)
 	ASSERT(m_pResType);
 	pParser->insertRSSResource(LPRDORSSResource(this));
 	m_currParam = m_pResType->getParams().begin();
+	RDOParser::s_parser()->contextStack()->push(this);
 }
 
 RDORSSResource::~RDORSSResource()
 {}
+
+void RDORSSResource::end()
+{
+	RDOParser::s_parser()->contextStack()->pop();
+}
 
 LPExpression RDORSSResource::onCreateExpression(CREF(RDOValue) value)
 {

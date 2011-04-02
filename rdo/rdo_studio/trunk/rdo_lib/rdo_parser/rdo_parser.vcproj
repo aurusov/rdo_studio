@@ -2494,14 +2494,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\context\global.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\context\global.h"
-				>
-			</File>
-			<File
 				RelativePath=".\context\memory.cpp"
 				>
 			</File>
@@ -2515,14 +2507,6 @@
 			</File>
 			<File
 				RelativePath=".\context\stack.h"
-				>
-			</File>
-			<File
-				RelativePath=".\context\timenow.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\context\timenow.h"
 				>
 			</File>
 			<File
@@ -2599,6 +2583,14 @@
 			</File>
 			<File
 				RelativePath=".\rdoparser_rdo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\parser\std_fun.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\parser\std_fun.h"
 				>
 			</File>
 			<Filter

@@ -278,6 +278,7 @@ rss_res_descr
 			PARSER->error().error(@3, rdo::format(_T("Заданы не все параметры ресурса: %s"), pResource->name().c_str()));
 		}
 		pResource->setTrace($2 != 0);
+		pResource->end();
 	}
 	;
 

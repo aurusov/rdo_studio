@@ -125,6 +125,9 @@ CLASS(RDODPTFree): public RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeAct
 	AND IMPLEMENTATION_OF(IContextFind)
 {
 DECLARE_FACTORY(RDODPTFree);
+public:
+	void end();
+
 private:
 	RDODPTFree(CREF(RDOParserSrcInfo) src_info);
 	DECLARE_IContextFind;
@@ -163,8 +166,7 @@ public:
 	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
 	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
 	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-
-	void end();
+	void          end         ();
 
 private:
 	RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
@@ -187,8 +189,7 @@ public:
 	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
 	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
 	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-
-	void end();
+	void          end         ();
 
 private:
 	RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
@@ -208,8 +209,7 @@ DECLARE_FACTORY(RDODPTSearchActivity);
 public:
 	IDPTSearchActivity::ValueTime getValue() const { return m_value; }
 	void                          setValue(IDPTSearchActivity::ValueTime value,
-	                                       CREF(LPRDOFUNArithm)          pRuleCost,
-	                                       CREF(YYLTYPE)                 param_pos);
+	                                       CREF(LPRDOFUNArithm)          pRuleCost);
 
 	LPRDOFUNArithm getRuleCost() const { return m_pRuleCost; }
 
@@ -230,13 +230,12 @@ CLASS(RDODPTSearch): public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RD
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
-	void setCondition    (CREF(LPRDOFUNLogic)  pConditon     = NULL) { m_pConditon     = pConditon;     }
-	void setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
-	void setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
-	void setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
-
-	void  end   ();
-	rbool closed() const { return m_closed; }
+	void  setCondition    (CREF(LPRDOFUNLogic)  pConditon     = NULL) { m_pConditon     = pConditon;     }
+	void  setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
+	void  setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
+	void  setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
+	void  end             ();
+	rbool closed          () const                                    { return m_closed;                 }
 
 private:
 	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);

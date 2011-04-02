@@ -94,19 +94,6 @@ private:
 	virtual void parse(CREF(LPRDOParser) pParser);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSTDFUN
-// ----------------------------------------------------------------------------
-class RDOParserSTDFUN: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserSTDFUN);
-private:
-	RDOParserSTDFUN()
-		: RDOParserItem(rdoModelObjects::FUN, NULL, NULL, NULL)
-	{}
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif //! _RDOPARSER_RDO_H_

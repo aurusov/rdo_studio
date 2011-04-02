@@ -483,13 +483,13 @@ dpt_search_descr_value
 	{
 		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
 		ASSERT(pDPTSearch);
-		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2), @1);
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2));
 	}
 	| RDO_value_after fun_arithm
 	{
 		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
 		ASSERT(pDPTSearch);
-		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2), @1);
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2));
 	}
 	| RDO_value_before error
 	{
@@ -1145,6 +1145,11 @@ dpt_free_activity_keys
 
 dpt_free_end
 	: dpt_free_prior dpt_free_activity RDO_End
+	{
+		LPRDODPTFree pDPTFree = PARSER->getLastDPTFree();
+		ASSERT(pDPTFree);
+		pDPTFree->end();
+	}
 	| dpt_free_header error
 	{
 		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));

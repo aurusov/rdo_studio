@@ -526,7 +526,7 @@ private:
 // ----------------------------------------------------------------------------
 CLASS(RDOFUNFunction):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
-	IS  INSTANCE_OF      (Context                 )
+	AND INSTANCE_OF      (Context                 )
 	AND IMPLEMENTATION_OF(IContextFind            )
 	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
@@ -557,6 +557,8 @@ public:
 		m_postLinkedList.push_back(pCalc);
 	}
 
+	void end();
+
 private:
 	RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam) pReturn);
 	RDOFUNFunction(CREF(tstring) name,              CREF(LPRDOParam) pReturn);
@@ -572,8 +574,6 @@ private:
 	CalculateIfList          m_calculateIfList; //! for algorithmic
 	PostLinkedList           m_postLinkedList;  //! для рекурсивного вызова
 	rdoRuntime::LPRDOFunCalc m_pFunctionCalc;
-
-	void end();
 
 	DECLARE_IContextFind;
 	DECLARE_IContextCreateExpression;

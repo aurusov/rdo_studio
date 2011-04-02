@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
+#include "rdo_lib/rdo_parser/parser/std_fun.h"
 #include "rdo_lib/rdo_parser/rdoparser_corba.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdodpt.h"
