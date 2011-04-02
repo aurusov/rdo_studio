@@ -34,6 +34,8 @@
 #include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
+#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
@@ -76,7 +78,9 @@ DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
 DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
-class RDOParser
+CLASS(RDOParser):
+	    INSTANCE_OF      (Context     )
+	AND IMPLEMENTATION_OF(IContextFind)
 {
 public:
 DEFINE_OBJECT_CONTAINER(PATPattern     );
@@ -270,6 +274,8 @@ private:
 
 	typedef std::list<PTR(RDOParser)> ParserList;
 	static ParserList s_parserStack;
+
+	DECLARE_IContextFind;
 };
 
 // ----------------------------------------------------------------------------

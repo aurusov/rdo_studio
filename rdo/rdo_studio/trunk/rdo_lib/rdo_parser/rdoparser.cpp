@@ -100,7 +100,7 @@ RDOParser::RDOParser()
 	m_pContextStack = rdo::Factory<ContextStack>::create();
 	ASSERT(m_pContextStack);
 
-	m_pContextStack->push(rdo::Factory<ContextGlobal>::create());
+	m_pContextStack->push(this);
 
 	LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create();
 	ASSERT(pSMR);
@@ -127,6 +127,17 @@ LPContextStack RDOParser::contextStack()
 LPContext RDOParser::context() const
 {
 	return m_pContextStack->top();
+}
+
+LPContext RDOParser::find(CREF(tstring) name) const
+{
+	LPRDORSSResource pResource = findRSSResource(name);
+	if (pResource)
+	{
+		//! Это ресурс с закладки RSS
+		return pResource.object_static_cast<Context>();
+	}
+	return NULL;
 }
 
 rbool RDOParser::isCurrentDPTSearch()

@@ -17,6 +17,7 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/param.h"
 #include "rdo_lib/rdo_parser/context/pattern.h"
+#include "rdo_lib/rdo_parser/context/context_find_i.h"
 
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -73,7 +74,10 @@ PREDECLARE_POINTER(RDOPATChoiceFrom);
 PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
 
-OBJECT(RDOPATPattern) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOPATPattern):
+	    INSTANCE_OF      (RDOParserSrcInfo)
+	AND INSTANCE_OF      (ContextMemory   )
+	AND IMPLEMENTATION_OF(IContextFind    )
 {
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
@@ -103,7 +107,7 @@ public:
 	virtual void               rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource);
 
 	void beforeRelRensert(CREF(RDOParserSrcInfo) rel_info);
-	
+
 	LPRDORelevantResource m_pCurrRelRes;
 
 	void                  add                    (CREF(LPRDOParam) pParam);
@@ -152,7 +156,6 @@ private:
 	LPRDOFUNArithm   m_pCommonChoice;
 
 	ruint            m_currentRelResIndex;
-	LPContextPattern m_pContext;
 
 	tstring typeToString(PatType type)
 	{
@@ -167,7 +170,10 @@ private:
 	}
 
 	void addChoiceFromCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
+
+	DECLARE_IContextFind;
 };
+DECLARE_POINTER(RDOPATPattern);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent

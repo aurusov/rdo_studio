@@ -44,6 +44,14 @@ RDORSSResource::RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) sr
 	m_currParam = m_pResType->getParams().begin();
 }
 
+RDORSSResource::~RDORSSResource()
+{}
+
+LPContext RDORSSResource::find(CREF(tstring) name) const
+{
+	return NULL;
+}
+
 void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << (getID() + 1) << _T(" ") << name() << _T(" ") << getType()->getNumber() << std::endl;
@@ -106,6 +114,9 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 // ----------------------------------------------------------------------------
 RDOPROCResource::RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDORSSResource(pParser, src_info, pResType, id)
+{}
+
+RDOPROCResource::~RDOPROCResource()
 {}
 
 rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const

@@ -15,6 +15,8 @@
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
+#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
@@ -31,7 +33,10 @@ void rsserror(PTR(char)    message);
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-OBJECT(RDORSSResource) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDORSSResource):
+	    INSTANCE_OF      (RDOParserSrcInfo)
+	AND INSTANCE_OF      (Context         )
+	AND IMPLEMENTATION_OF(IContextFind    )
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
@@ -71,6 +76,7 @@ public:
 
 protected:
 	RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	virtual ~RDORSSResource();
 
 	LPRDORTPResType m_pResType;
 	const int       m_id;        //! in system
@@ -79,7 +85,10 @@ protected:
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
+
+	DECLARE_IContextFind;
 };
+DECLARE_POINTER(RDORSSResource);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
@@ -89,6 +98,8 @@ class RDOPROCResource: public RDORSSResource
 DECLARE_FACTORY(RDOPROCResource);
 private:
 	RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	virtual ~RDOPROCResource();
+
 	virtual rdoRuntime::LPRDOCalc createCalc() const;
 };
 DECLARE_POINTER(RDOPROCResource);

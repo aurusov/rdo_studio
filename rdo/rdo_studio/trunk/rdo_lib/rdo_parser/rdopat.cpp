@@ -69,11 +69,11 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 		rdoParse::g_error().push_only(pPatternExist->src_info(), _T("См. первое определение"));
 		rdoParse::g_error().push_done();
 	}
-	m_pContext = rdo::Factory<ContextPattern>::create();
+	LPContext pContext = this;
 	RDOParser::s_parser()->insertPATPattern(this);
-	RDOParser::s_parser()->contextStack()->push(m_pContext);
+	RDOParser::s_parser()->contextStack()->push(pContext);
 
-	LPContextMemory pContextMemory = m_pContext->cast<ContextMemory>();
+	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 	ASSERT(pContextMemory);
 
 	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
@@ -83,6 +83,11 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	ASSERT(pLocalVariableList);
 
 	pLocalVariableListStack->push(pLocalVariableList);
+}
+
+LPContext RDOPATPattern::find(CREF(tstring) name) const
+{
+	return NULL;
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)

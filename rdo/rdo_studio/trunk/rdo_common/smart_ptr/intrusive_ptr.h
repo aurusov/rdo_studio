@@ -65,6 +65,9 @@ public:
 	template <class P>
 	interface_ptr<P> interface_cast();
 
+	template <class P>
+	interface_ptr<P> interface_dynamic_cast();
+
 	//! TODO: переместить в protected
 	PTR(T)   get();
 	CPTR(T)  get() const;
