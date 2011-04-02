@@ -137,12 +137,137 @@ LPContext RDOParser::context() const
 
 LPContext RDOParser::onFindContext(CREF(RDOValue) value) const
 {
+	if (value->getIdentificator() == _T("Time_now")          || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("—истемное_врем€") || value->getIdentificator() == _T("системное_врем€") ||
+		value->getIdentificator() == _T("Seconds")           || value->getIdentificator() == _T("seconds") ||
+		value->getIdentificator() == _T("Terminate_counter") || value->getIdentificator() == _T("terminate_counter"))
+	{
+		return const_cast<PTR(RDOParser)>(this);
+	}
+
+	//! –есурсы
 	LPRDORSSResource pResource = findRSSResource(value->getIdentificator());
 	if (pResource)
 	{
 		//! Ёто ресурс с закладки RSS
 		return pResource.object_static_cast<Context>();
 	}
+
+	//!  онстанты
+	LPRDOFUNConstant pConstant = findFUNConstant(value->getIdentificator());
+	if (pConstant)
+	{
+		return const_cast<PTR(RDOParser)>(this);
+	}
+
+	//! ѕоследовательности
+	LPRDOFUNSequence pSequence = findFUNSequence(value->getIdentificator());
+	if (pSequence)
+	{
+		return const_cast<PTR(RDOParser)>(this);
+	}
+
+	//! ¬озможно, что это значение перечислимого типа, только одно и тоже значение может встречатьс€ в разных
+	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	{ErrorBlockMonicker errorBlockMonicker;
+		CREF(PreCastTypeList) typeList = getPreCastTypeList();
+		STL_FOR_ALL_CONST(typeList, it)
+		{
+			RDOValue try_cast_value = (*it)->value_cast(value);
+			if (try_cast_value.defined())
+			{
+				return const_cast<PTR(RDOParser)>(this);
+			}
+		}
+	}
+
+	const_cast<PTR(RDOParser)>(this)->error().error(value.src_info(), rdo::format(_T("Ќеизвестный идентификатор: %s"), value->getIdentificator().c_str()));
+	return NULL;
+}
+
+LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
+{
+	if (value->getIdentificator() == _T("Time_now") || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("—истемное_врем€") || value->getIdentificator() == _T("системное_врем€"))
+	{
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<RDOType__real>::create(),
+			rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create(),
+			value.src_info()
+		);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+	else if (value->getIdentificator() == _T("Seconds") || value->getIdentificator() == _T("seconds"))
+	{
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<RDOType__real>::create(),
+			rdo::Factory<rdoRuntime::RDOCalcGetSeconds>::create(),
+			value.src_info()
+		);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+	else if (value->getIdentificator() == _T("Terminate_counter") || value->getIdentificator() == _T("terminate_counter"))
+	{
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<RDOType__int>::create(),
+			rdo::Factory<rdoRuntime::RDOCalcGetTermNow>::create(),
+			value.src_info()
+		);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+
+	//!  онстанты
+	LPRDOFUNConstant pConstant = findFUNConstant(value->getIdentificator());
+	if (pConstant)
+	{
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			pConstant->getType()->type(),
+			rdo::Factory<rdoRuntime::RDOCalcGetConst>::create(pConstant->getNumber()),
+			value.src_info()
+		);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+
+	//! ѕоследовательности
+	LPRDOFUNSequence pSequence = findFUNSequence(value->getIdentificator());
+	if (pSequence)
+	{
+		LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create();
+		ASSERT(pParams);
+		LPRDOFUNArithm pArithm = pParams->createSeqCall(value->getIdentificator());
+		ASSERT(pArithm);
+		pArithm->setSrcInfo(value.src_info());
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			pArithm->type(),
+			pArithm->calc(),
+			value.src_info()
+		);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+
+	//! ¬озможно, что это значение перечислимого типа, только одно и тоже значение может встречатьс€ в разных
+	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	{ErrorBlockMonicker errorBlockMonicker;
+		CREF(PreCastTypeList) typeList = getPreCastTypeList();
+		STL_FOR_ALL_CONST(typeList, it)
+		{
+			RDOValue try_cast_value = (*it)->value_cast(value);
+			if (try_cast_value.defined())
+			{
+				LPExpression pExpression = rdo::Factory<Expression>::create(
+					rdo::Factory<RDOType__identificator>::create(),
+					rdo::Factory<rdoRuntime::RDOCalcConst>::create(value.value()),
+					value.src_info()
+				);
+				ASSERT(pExpression);
+				return pExpression;
+			}
+		}
+	}
+
 	return NULL;
 }
 

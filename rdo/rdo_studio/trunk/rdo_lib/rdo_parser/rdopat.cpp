@@ -87,6 +87,13 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 
 LPContext RDOPATPattern::onFindContext(CREF(RDOValue) value) const
 {
+	LPContext pContext = ContextMemory::onFindContext(value);
+	if (pContext)
+	{
+		return pContext;
+	}
+
+	//! Релевантные ресурсы
 	LPRDORelevantResource pRelevantResource = findRelevantResource(value->getIdentificator());
 	if (pRelevantResource)
 	{
@@ -154,9 +161,42 @@ LPContext RDOPATPattern::onFindContext(CREF(RDOValue) value) const
 				}
 			}
 		}
+		return pRelevantResource.object_parent_cast<Context>();
 	}
 
-	return pRelevantResource.object_parent_cast<Context>();
+	//! Параметры
+	LPRDOParam pParam = findPATPatternParam(value->getIdentificator());
+	if (pParam)
+	{
+		return const_cast<PTR(RDOPATPattern)>(this);
+	}
+
+	return NULL;
+}
+
+LPExpression RDOPATPattern::onCreateExpression(CREF(RDOValue) value)
+{
+	LPExpression pExpression = ContextMemory::onCreateExpression(value);
+	if (pExpression)
+	{
+		return pExpression;
+	}
+
+	//! Параметры
+	LPRDOParam pParam = findPATPatternParam(value->getIdentificator());
+	if (pParam)
+	{
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			pParam->getType()->type(),
+			rdo::Factory<rdoRuntime::RDOCalcPatParam>::create(findPATPatternParamNum(value->getIdentificator())),
+			value.src_info()
+		);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+
+	NEVER_REACH_HERE;
+	return NULL;
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)
@@ -249,7 +289,6 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 		addParamSetCalc(*cmdIt);
 
 	ASSERT(m_pCurrRelRes);
-	m_pCurrRelRes->getParamSetList().reset();
 }
 
 void RDOPATPattern::addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)

@@ -50,4 +50,18 @@ void Expression::setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info)
 	m_pCalc->setSrcInfo(src_info);
 }
 
+RDOValue Expression::constant() const
+{
+	ASSERT(m_pCalc);
+	ASSERT(m_pType);
+
+	rdoRuntime::LPRDOCalcConst pCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+	if (pCalc)
+	{
+		return RDOValue(pCalc->getValue(), m_pType, src_info());
+	}
+
+	return RDOValue();
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

@@ -77,9 +77,8 @@ PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
 
 CLASS(RDOPATPattern):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (ContextMemory   )
-	AND IMPLEMENTATION_OF(IContextFind    )
+	    INSTANCE_OF(RDOParserSrcInfo)
+	AND INSTANCE_OF(ContextMemory   )
 {
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
@@ -174,6 +173,7 @@ private:
 	void addChoiceFromCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
 
 	DECLARE_IContextFind;
+	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDOPATPattern);
 
