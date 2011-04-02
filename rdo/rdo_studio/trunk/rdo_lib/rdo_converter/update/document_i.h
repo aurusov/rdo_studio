@@ -24,7 +24,6 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // ----------------------------------------------------------------------------
 OBJECT_INTERFACE(IDocument)
 {
-DECLARE_FACTORY(IDocument)
 public:
 	enum Type
 	{
@@ -37,12 +36,6 @@ public:
 	virtual void    insert(Type type, ruint to, CREF(tstring) value) = 0;
 	virtual void    remove(Type type, ruint from, ruint to)          = 0;
 	virtual tstring get   (Type type, ruint from, ruint to)          = 0;
-
-protected:
-	IDocument()
-	{}
-	virtual ~IDocument()
-	{}
 };
 #define DECLARE_IDocument                                     \
 	void    insert(Type type, ruint to, CREF(tstring) value); \

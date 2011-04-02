@@ -12,8 +12,10 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/expression.h"
+#include "rdo_common/rdomacros.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
+
+#include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 // ===============================================================================
 
@@ -30,9 +32,6 @@ friend void ContextStack::push(LPContext pContext);
 public:
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
-
-	LPContext    find  (CREF(RDOValue) value) const;
-	LPExpression create(CREF(RDOValue) value);
 
 protected:
 	Context();

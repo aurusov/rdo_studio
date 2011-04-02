@@ -13,6 +13,7 @@
 #include <math.h>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/std_fun.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE

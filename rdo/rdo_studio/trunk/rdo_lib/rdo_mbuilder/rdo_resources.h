@@ -32,6 +32,7 @@
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
+class RDOParser;
 class RDORTPResType;
 class RDORSSResource;
 CLOSE_RDO_PARSER_NAMESPACE
@@ -51,16 +52,16 @@ public:
 	typedef typename List::const_iterator const_iterator;
 
 	RDOList()
-		: m_pParser(NULL)
+		: m_parser(NULL)
 	{}
 
-	RDOList(CREF(rdoParse::LPRDOParser) pParser)
-		: m_pParser(pParser)
+	RDOList(PTR(rdoParse::RDOParser) parser)
+		: m_parser(parser)
 	{}
 
 	void operator= (CREF(RDOList<T>) obj)
 	{
-		m_pParser = obj.m_pParser;
+		m_parser = obj.m_parser;
 		m_list.clear();
 		for (CIterator it = obj.begin(); it != obj.end(); ++it)
 			m_list.push_back(*it);
@@ -98,8 +99,8 @@ public:
 	}
 
 protected:
-	List                   m_list;
-	rdoParse::LPRDOParser  m_pParser;
+	List                      m_list;
+	PTR(rdoParse::RDOParser)  m_parser;
 };
 
 // --------------------------------------------------------------------
@@ -233,23 +234,23 @@ public:
 	REF(Params::mapped_type)   operator[] (CREF(tstring) param);
 	Params::const_iterator     operator[] (CREF(tstring) param) const;
 
-	rdoParse::LPRDORSSResource getParserResource(CREF(rdoParse::LPRDOParser) pParser) const;
+	rdoParse::LPRDORSSResource getParserResource(CREF(rdoParse::RDOParser) parser) const;
 
 	template <class T>
-	rbool checkParserResourceType(CREF(rdoParse::LPRDOParser) pParser) const
+	rbool checkParserResourceType(CREF(rdoParse::RDOParser) parser) const
 	{
-		rdoParse::LPRDORSSResource pResource = getParserResource(pParser);
+		rdoParse::LPRDORSSResource pResource = getParserResource(parser);
 		return pResource.object_dynamic_cast<T>();
 	}
 
 	template <class T>
-	rdoParse::LPRDORSSResource createParserResource(CREF(rdoParse::LPRDOParser) pParser, rsint id = rdoParse::RDORSSResource::UNDEFINED_ID) const
+	rdoParse::LPRDORSSResource createParserResource(REF(rdoParse::RDOParser) parser, rsint id = rdoParse::RDORSSResource::UNDEFINED_ID) const
 	{
-		rdoParse::LPRDORTPResType pRTP = pParser->findRTPResType(getType().name());
+		rdoParse::LPRDORTPResType pRTP = parser.findRTPResType(getType().name());
 		if (!pRTP)
 			return NULL;
 
-		return rdo::Factory<T>::create(pParser, RDOParserSrcInfo(name()), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
+		return rdo::Factory<T>::create(&parser, RDOParserSrcInfo(name()), pRTP, id == rdoParse::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
 
 	rbool fillParserResourceParams(REF(rdoParse::LPRDORSSResource) pToParserRSS) const;
@@ -266,7 +267,7 @@ private:
 class RDOResTypeList: public RDOList<RDOResType>
 {
 public:
-	RDOResTypeList(CREF(rdoParse::LPRDOParser) pParser);
+	RDOResTypeList(PTR(rdoParse::RDOParser) parser);
 	rbool append(REF(RDOResType) rtp);
 };
 
@@ -276,7 +277,7 @@ public:
 class RDOResourceList: public RDOList<RDOResource>
 {
 public:
-	RDOResourceList(CREF(rdoParse::LPRDOParser) pParser);
+	RDOResourceList(PTR(rdoParse::RDOParser) parser);
 
 	// --------------------------------------------------------------------
 	// ---- Добавление *нового* ресурса
@@ -286,7 +287,7 @@ public:
 		if (exist(mbuilderRSS.name()))
 			return false;
 
-		rdoParse::LPRDORSSResource parserRSS(mbuilderRSS.createParserResource<T>(m_pParser));
+		rdoParse::LPRDORSSResource parserRSS(mbuilderRSS.createParserResource<T>(*m_parser));
 		if (!parserRSS)
 			return false;
 		if (!mbuilderRSS.fillParserResourceParams(parserRSS))
@@ -308,10 +309,10 @@ public:
 		if (mbuilderRSSPrevIt == end())
 			return false;
 
-		rdoParse::LPRDORSSResource parserRSSPrev = mbuilderRSSPrevIt->getParserResource(m_pParser);
+		rdoParse::LPRDORSSResource parserRSSPrev = mbuilderRSSPrevIt->getParserResource(*m_parser);
 		ASSERT(parserRSSPrev);
 
-		rdoParse::LPRDORSSResource parserRSSNew(mbuilderRSSNew.createParserResource<T>(m_pParser, mbuilderRSSPrevIt->getID()));
+		rdoParse::LPRDORSSResource parserRSSNew(mbuilderRSSNew.createParserResource<T>(*m_parser, mbuilderRSSPrevIt->getID()));
 		if (!parserRSSNew)
 			return false;
 		if (!mbuilderRSSPrevIt->fillParserResourceParams(parserRSSNew))
@@ -321,7 +322,7 @@ public:
 		m_list.push_back(mbuilderRSSNew);
 
 		//! Удалим старый
-		m_pParser->removeRSSResource(parserRSSPrev);
+		m_parser->removeRSSResource(parserRSSPrev);
 		m_list.erase(mbuilderRSSPrevIt);
 
 		return true;

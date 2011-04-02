@@ -1,33 +1,34 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : memory.cpp
+ * filename : pattern.h
  * author   : Урусов Андрей
  * date     : 16.10.2010
  * bref     : 
  * indent   : 4T
  */
 
-// ====================================================================== PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#ifndef _CONEXT_PATTERN_H_
+#define _CONEXT_PATTERN_H_
+
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_parser/context/memory.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- ContextMemory
+// ---------- ContextPattern
 // ----------------------------------------------------------------------------
-ContextMemory::ContextMemory()
+CLASS(ContextPattern): INSTANCE_OF(ContextMemory)
 {
-	m_pLocalVariableListStack = rdo::Factory<LocalVariableListStack>::create();
-	ASSERT(m_pLocalVariableListStack);
-}
-
-LPLocalVariableListStack ContextMemory::getLocalMemory()
-{
-	return m_pLocalVariableListStack;
-}
+DECLARE_FACTORY(ContextPattern);
+private:
+	ContextPattern();
+};
+DECLARE_POINTER(ContextPattern);
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#endif //! _CONEXT_PATTERN_H_

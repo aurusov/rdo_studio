@@ -33,7 +33,7 @@ void rtperror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+RDORTPResType::RDORTPResType(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
@@ -83,7 +83,7 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
 // ----------------------------------------------------------------------------
-RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
+RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(RDOParser) pParser):
 	RDOParserObject(pParser)
 {
 /*	for (ruint i = 0; i < m_points.size(); i++)
@@ -101,7 +101,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 // ----------------------------------------------------------------------------
 // ---------- RDORTPFuzzyTerm - нечеткий термин
 // ----------------------------------------------------------------------------
-RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
 	RDOParserObject(pParser)
 {
 

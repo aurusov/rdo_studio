@@ -36,28 +36,6 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 {
 	m_pFrame = new rdoRuntime::RDOFRMFrame(RDOParser::s_parser()->runtime(), src_info, pLogic ? pLogic->getCalc() : NULL);
 	RDOParser::s_parser()->insertFRMFrame(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-}
-
-LPContext RDOFRMFrame::onFindContext(CREF(RDOValue) value) const
-{
-	//! Код из RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
-	//! Зачем он нужен - непонятно
-	//! Его задача - сгенерить исключение в рантайме, почему это не сделать в парсере ?
-
-	//if (RDOParser::s_parser()->getLastFRMFrame() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow()->isShowIf())
-	//{
-	//	m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetUnknowResParam>::create(resName->getIdentificator(), parName->getIdentificator());
-	//	m_pCalc->setSrcInfo(src_info());
-	//	return;
-	//}
-
-	return NULL;
-}
-
-void RDOFRMFrame::end()
-{
-	RDOParser::s_parser()->contextStack()->pop();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

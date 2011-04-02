@@ -18,8 +18,6 @@
 #include "rdo_lib/rdo_parser/rdo_logic.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
@@ -63,10 +61,7 @@ void proc_opr_error(PTR(char) mes);
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivity
 // ----------------------------------------------------------------------------
-CLASS(RDODPTActivity):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextFind    )
+OBJECT(RDODPTActivity) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDODPTActivity);
 public:
@@ -88,10 +83,7 @@ protected:
 private:
 	ruint           m_currParam;
 	LPRDOPATPattern m_pPattern;
-
-	DECLARE_IContextFind;
 };
-DECLARE_POINTER(RDODPTActivity);
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivityHotKey
@@ -120,19 +112,12 @@ DECLARE_POINTER(RDODPTFreeActivity);
 // ----------------------------------------------------------------------------
 // ---------- RDODPTFree
 // ----------------------------------------------------------------------------
-CLASS(RDODPTFree): public RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+OBJECT(RDODPTFree) IS public RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>
 {
 DECLARE_FACTORY(RDODPTFree);
-public:
-	void end();
-
 private:
 	RDODPTFree(CREF(RDOParserSrcInfo) src_info);
-	DECLARE_IContextFind;
 };
-DECLARE_POINTER(RDODPTFree);
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSomeActivity
@@ -157,48 +142,40 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-CLASS(RDODPTSome): public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+OBJECT(RDODPTSome) IS public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 {
 DECLARE_FACTORY(RDODPTSome);
 public:
 	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
 	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
 	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-	void          end         ();
+
+	void end();
 
 private:
 	RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
 
 	LPRDOFUNLogic m_pConditon;
-
-	DECLARE_IContextFind;
 };
-DECLARE_POINTER(RDODPTSome);
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-CLASS(RDODPTPrior): public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+OBJECT(RDODPTPrior) IS public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
 {
 DECLARE_FACTORY(RDODPTPrior);
 public:
 	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
 	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
 	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-	void          end         ();
+
+	void end();
 
 private:
 	RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
 
 	LPRDOFUNLogic m_pConditon;
-
-	DECLARE_IContextFind;
 };
-DECLARE_POINTER(RDODPTPrior);
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearchActivity
@@ -209,7 +186,8 @@ DECLARE_FACTORY(RDODPTSearchActivity);
 public:
 	IDPTSearchActivity::ValueTime getValue() const { return m_value; }
 	void                          setValue(IDPTSearchActivity::ValueTime value,
-	                                       CREF(LPRDOFUNArithm)          pRuleCost);
+	                                       CREF(LPRDOFUNArithm)          pRuleCost,
+	                                       CREF(YYLTYPE)                 param_pos);
 
 	LPRDOFUNArithm getRuleCost() const { return m_pRuleCost; }
 
@@ -224,18 +202,17 @@ DECLARE_POINTER(RDODPTSearchActivity);
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-CLASS(RDODPTSearch): public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+OBJECT(RDODPTSearch) IS public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
-	void  setCondition    (CREF(LPRDOFUNLogic)  pConditon     = NULL) { m_pConditon     = pConditon;     }
-	void  setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
-	void  setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
-	void  setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
-	void  end             ();
-	rbool closed          () const                                    { return m_closed;                 }
+	void setCondition    (CREF(LPRDOFUNLogic)  pConditon     = NULL) { m_pConditon     = pConditon;     }
+	void setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
+	void setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
+	void setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
+
+	void  end   ();
+	rbool closed() const { return m_closed; }
 
 private:
 	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
@@ -247,10 +224,7 @@ private:
 	rbool                                         m_compTops;
 	rbool                                         m_closed;
 	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
-
-	DECLARE_IContextFind;
 };
-DECLARE_POINTER(RDODPTSearch);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess

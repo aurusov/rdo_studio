@@ -1,8 +1,8 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : context.cpp
+ * filename : timenow.cpp
  * author   : Урусов Андрей
- * date     : 06.06.2010
+ * date     : 20.11.2010
  * bref     : 
  * indent   : 4T
  */
@@ -11,23 +11,23 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/timenow.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
 
-Context::Context()
-{}
+// ----------------------------------------------------------------------------
+// ---------- ContextTimeNow
+// ----------------------------------------------------------------------------
 
-Context::~Context()
-{}
-
-void Context::setContextStack(CREF(LPContextStack) pContextStack)
+rdoRuntime::LPRDOCalc ContextTimeNow::getTimeNowCalc()
 {
-	ASSERT(pContextStack   );
-	ASSERT(!m_pContextStack);
-	m_pContextStack = pContextStack;
+	if (!m_pCalc)
+	{
+		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create();
+		ASSERT(m_pCalc);
+	}
+	return m_pCalc;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

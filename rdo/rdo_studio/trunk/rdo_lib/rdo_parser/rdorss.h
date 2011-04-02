@@ -15,8 +15,6 @@
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
@@ -33,10 +31,7 @@ void rsserror(PTR(char)    message);
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-CLASS(RDORSSResource):
-	    INSTANCE_OF      (RDOParserSrcInfo        )
-	AND INSTANCE_OF      (Context                 )
-	AND IMPLEMENTATION_OF(IContextCreateExpression)
+OBJECT(RDORSSResource) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
@@ -71,13 +66,11 @@ public:
 	rbool getTrace() const      { return trace;  }
 	void  setTrace(rbool value) { trace = value; }
 	rbool defined () const;
-	void  end     ();
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 protected:
-	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
-	virtual ~RDORSSResource();
+	RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
 	const int       m_id;        //! in system
@@ -86,10 +79,7 @@ protected:
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
-
-	DECLARE_IContextCreateExpression;
 };
-DECLARE_POINTER(RDORSSResource);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
@@ -98,9 +88,7 @@ class RDOPROCResource: public RDORSSResource
 {
 DECLARE_FACTORY(RDOPROCResource);
 private:
-	RDOPROCResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
-	virtual ~RDOPROCResource();
-
+	RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 	virtual rdoRuntime::LPRDOCalc createCalc() const;
 };
 DECLARE_POINTER(RDOPROCResource);

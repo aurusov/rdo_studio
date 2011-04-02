@@ -1,29 +1,25 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdocalc.inl
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 11.07.2009
+ * copyright: (c) RDO-Team, 2010
+ * filename : pattern.cpp
+ * author   : Урусов Андрей
+ * date     : 16.10.2010
+ * bref     : 
  * indent   : 4T
  */
 
+// ====================================================================== PCH
+#include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_lib/rdo_parser/context/pattern.h"
 // ===============================================================================
 
-OPEN_RDO_RUNTIME_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcConst
+// ---------- ContextPattern
 // ----------------------------------------------------------------------------
-inline RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
-{
-	m_value = value;
-}
+ContextPattern::ContextPattern()
+{}
 
-inline REF(RDOValue) RDOCalcConst::doCalc(PTR(RDORuntime) runtime)
-{
-	return m_value;
-}
-
-CLOSE_RDO_RUNTIME_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

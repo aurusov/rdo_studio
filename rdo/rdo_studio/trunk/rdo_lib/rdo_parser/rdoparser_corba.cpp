@@ -207,7 +207,7 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, CPTR(char) Objec
 //! ----------------------------------------------------------------------------
 //! ---------- RDOParserCorbaRTP
 //! ----------------------------------------------------------------------------
-void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
+void RDOParserCorbaRTP::parse(PTR(RDOParser) pParser)
 {
 	//! Тут надо запросить все типы ресурсов у парного РДО,
 	//! вызвав с помощью корбы некий метод, который вернёт кучу структур
@@ -443,7 +443,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 //! ----------------------------------------------------------------------------
 //! ---------- RDOParserCorbaRSS
 //! ----------------------------------------------------------------------------
-void RDOParserCorbaRSS::parse(CREF(LPRDOParser) pParser)
+void RDOParserCorbaRSS::parse(PTR(RDOParser) pParser)
 {
 /*
 	//! Тут надо запросить все ресурсы у парного РДО

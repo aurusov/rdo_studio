@@ -1804,10 +1804,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc\locvar.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc\logic.cpp"
 				>
 			</File>
@@ -1879,6 +1875,10 @@
 			</File>
 			<File
 				RelativePath=".\rdocalc.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\rdocalc_locvar.h"
 				>
 			</File>
 			<File

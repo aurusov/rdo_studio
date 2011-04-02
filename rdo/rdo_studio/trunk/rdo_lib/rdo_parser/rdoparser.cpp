@@ -15,6 +15,7 @@
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_parser/context/global.h"
 #include "rdo_common/rdocommon.h"
 // ===============================================================================
 
@@ -81,7 +82,7 @@ ruint RDOParser::lexer_loc_pos()
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
-LPRDOParser RDOParser::s_parser()
+PTR(RDOParser) RDOParser::s_parser()
 {
 	return !s_parserStack.empty() ? s_parserStack.back() : NULL;
 }
@@ -91,12 +92,6 @@ RDOParser::RDOParser()
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
 	, m_pattern             (false)
-{}
-
-RDOParser::~RDOParser()
-{}
-
-void RDOParser::init()
 {
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));
@@ -105,7 +100,7 @@ void RDOParser::init()
 	m_pContextStack = rdo::Factory<ContextStack>::create();
 	ASSERT(m_pContextStack);
 
-	m_pContextStack->push(this);
+	m_pContextStack->push(rdo::Factory<ContextGlobal>::create());
 
 	LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create();
 	ASSERT(pSMR);
@@ -114,7 +109,7 @@ void RDOParser::init()
 	m_resultGeneratorID.get(); //! Для PMD нумерация с 1
 }
 
-void RDOParser::deinit()
+RDOParser::~RDOParser()
 {
 	m_pContextStack->pop();
 
@@ -132,142 +127,6 @@ LPContextStack RDOParser::contextStack()
 LPContext RDOParser::context() const
 {
 	return m_pContextStack->top();
-}
-
-LPContext RDOParser::onFindContext(CREF(RDOValue) value) const
-{
-	if (value->getIdentificator() == _T("Time_now")          || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("Системное_время") || value->getIdentificator() == _T("системное_время") ||
-		value->getIdentificator() == _T("Seconds")           || value->getIdentificator() == _T("seconds") ||
-		value->getIdentificator() == _T("Terminate_counter") || value->getIdentificator() == _T("terminate_counter"))
-	{
-		return const_cast<PTR(RDOParser)>(this);
-	}
-
-	//! Ресурсы
-	LPRDORSSResource pResource = findRSSResource(value->getIdentificator());
-	if (pResource)
-	{
-		//! Это ресурс с закладки RSS
-		return pResource.object_static_cast<Context>();
-	}
-
-	//! Константы
-	LPRDOFUNConstant pConstant = findFUNConstant(value->getIdentificator());
-	if (pConstant)
-	{
-		return const_cast<PTR(RDOParser)>(this);
-	}
-
-	//! Последовательности
-	LPRDOFUNSequence pSequence = findFUNSequence(value->getIdentificator());
-	if (pSequence)
-	{
-		return const_cast<PTR(RDOParser)>(this);
-	}
-
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(PreCastTypeList) typeList = getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
-		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
-			{
-				return const_cast<PTR(RDOParser)>(this);
-			}
-		}
-	}
-
-	const_cast<PTR(RDOParser)>(this)->error().error(value.src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value->getIdentificator().c_str()));
-	return NULL;
-}
-
-LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
-{
-	if (value->getIdentificator() == _T("Time_now") || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("Системное_время") || value->getIdentificator() == _T("системное_время"))
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<RDOType__real>::create(),
-			rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create(),
-			value.src_info()
-		);
-		ASSERT(pExpression);
-		return pExpression;
-	}
-	else if (value->getIdentificator() == _T("Seconds") || value->getIdentificator() == _T("seconds"))
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<RDOType__real>::create(),
-			rdo::Factory<rdoRuntime::RDOCalcGetSeconds>::create(),
-			value.src_info()
-		);
-		ASSERT(pExpression);
-		return pExpression;
-	}
-	else if (value->getIdentificator() == _T("Terminate_counter") || value->getIdentificator() == _T("terminate_counter"))
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<RDOType__int>::create(),
-			rdo::Factory<rdoRuntime::RDOCalcGetTermNow>::create(),
-			value.src_info()
-		);
-		ASSERT(pExpression);
-		return pExpression;
-	}
-
-	//! Константы
-	LPRDOFUNConstant pConstant = findFUNConstant(value->getIdentificator());
-	if (pConstant)
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pConstant->getType()->type(),
-			rdo::Factory<rdoRuntime::RDOCalcGetConst>::create(pConstant->getNumber()),
-			value.src_info()
-		);
-		ASSERT(pExpression);
-		return pExpression;
-	}
-
-	//! Последовательности
-	LPRDOFUNSequence pSequence = findFUNSequence(value->getIdentificator());
-	if (pSequence)
-	{
-		LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create();
-		ASSERT(pParams);
-		LPRDOFUNArithm pArithm = pParams->createSeqCall(value->getIdentificator());
-		ASSERT(pArithm);
-		pArithm->setSrcInfo(value.src_info());
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pArithm->type(),
-			pArithm->calc(),
-			value.src_info()
-		);
-		ASSERT(pExpression);
-		return pExpression;
-	}
-
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(PreCastTypeList) typeList = getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
-		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
-			{
-				LPExpression pExpression = rdo::Factory<Expression>::create(
-					rdo::Factory<RDOType__identificator>::create(),
-					rdo::Factory<rdoRuntime::RDOCalcConst>::create(value.value()),
-					value.src_info()
-				);
-				ASSERT(pExpression);
-				return pExpression;
-			}
-		}
-	}
-
-	return NULL;
 }
 
 rbool RDOParser::isCurrentDPTSearch()

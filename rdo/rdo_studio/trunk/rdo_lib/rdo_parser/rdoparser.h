@@ -19,14 +19,14 @@
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdosmart_ptr_wrapper.h"
 #include "rdo_common/rdoidgenerator.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
+#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
@@ -34,8 +34,6 @@
 #include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdosmr.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
@@ -78,15 +76,8 @@ DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
 DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
-PREDECLARE_POINTER(RDOParser);
-
-CLASS(RDOParser):
-	    INSTANCE_OF      (Context                 )
-	AND IMPLEMENTATION_OF(IContextFind            )
-	AND IMPLEMENTATION_OF(IContextCreateExpression)
+class RDOParser
 {
-DECLARE_FACTORY(RDOParser);
-
 public:
 DEFINE_OBJECT_CONTAINER(PATPattern     );
 DEFINE_OBJECT_CONTAINER(RTPResType     );
@@ -107,8 +98,8 @@ DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
 DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 public:
-	virtual void init  ();
-	virtual void deinit();
+	RDOParser();
+	virtual ~RDOParser();
 
 	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
 
@@ -215,15 +206,12 @@ public:
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
-	static LPRDOParser                  s_parser      ();
+	static PTR(RDOParser)               s_parser      ();
 
 protected:
-	RDOParser();
-	virtual ~RDOParser();
-
 	LPRDOParserItem m_parser_item;
 
-	virtual CREF(LPRDOParserContainer) getContainer() const = 0;
+	virtual REF(LPRDOParserContainer) getContainer() = 0;
 
 	RDOParserContainer::Iterator begin()
 	{
@@ -280,13 +268,9 @@ private:
 	typedef std::vector<Changes> ChangesList;
 	ChangesList m_changes;
 
-	typedef std::list<LPRDOParser> ParserList;
+	typedef std::list<PTR(RDOParser)> ParserList;
 	static ParserList s_parserStack;
-
-	DECLARE_IContextFind;
-	DECLARE_IContextCreateExpression;
 };
-DECLARE_POINTER(RDOParser);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserTemplate
@@ -294,37 +278,23 @@ DECLARE_POINTER(RDOParser);
 template <class Container>
 class RDOParserTemplate: public RDOParser
 {
-DECLARE_FACTORY(RDOParserTemplate<Container>);
-
-private:
-	typedef  RDOParser  parent_type;
-
+public:
 	RDOParserTemplate()
 		: RDOParser()
 	{}
-	virtual ~RDOParserTemplate()
-	{}
 
-	virtual void init()
+private:
+	LPRDOParserContainer m_container;
+
+	virtual REF(LPRDOParserContainer) getContainer()
 	{
-		m_pContainer = rdo::Factory<Container>::create();
-		ASSERT(m_pContainer);
-		parent_type::init();
+		if (!m_container)
+		{
+			m_container = rdo::Factory<Container>::create();
+			ASSERT(m_container);
+		}
+		return m_container;
 	}
-
-	virtual void deinit()
-	{
-		ASSERT(m_pContainer)
-		m_pContainer->clear();
-		parent_type::deinit();
-	}
-
-	virtual CREF(LPRDOParserContainer) getContainer() const
-	{
-		return m_pContainer;
-	}
-
-	LPRDOParserContainer m_pContainer;
 };
 
 // ----------------------------------------------------------------------------

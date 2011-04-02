@@ -26,7 +26,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 #define DECLARE_ATOM_TYPE(Type) rdo::intrusive_ptr<RDOType__##Type> g_##Type = rdo::Factory<RDOType__##Type>::create();
 
 DECLARE_ATOM_TYPE(unknow        );
-DECLARE_ATOM_TYPE(void          );
 DECLARE_ATOM_TYPE(identificator );
 DECLARE_ATOM_TYPE(int           );
 DECLARE_ATOM_TYPE(real          );

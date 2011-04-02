@@ -465,12 +465,7 @@ dpt_search_descr_param
 	}
 	| dpt_search_descr_param fun_arithm
 	{
-		RDOValue constant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-		if (!constant.defined())
-		{
-			PARSER->error().error(@2, _T("Параметр может быть только константой"));
-		}
-		PARSER->getLastDPTSearch()->getLastActivity()->addParam(constant);
+		PARSER->getLastDPTSearch()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_search_descr_param error
 	{
@@ -483,13 +478,13 @@ dpt_search_descr_value
 	{
 		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
 		ASSERT(pDPTSearch);
-		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2));
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2), @1);
 	}
 	| RDO_value_after fun_arithm
 	{
 		LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
 		ASSERT(pDPTSearch);
-		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2));
+		pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2), @1);
 	}
 	| RDO_value_before error
 	{
@@ -747,12 +742,7 @@ dpt_some_descr_param
 	}
 	| dpt_some_descr_param fun_arithm
 	{
-		RDOValue constant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-		if (!constant.defined())
-		{
-			PARSER->error().error(@2, _T("Параметр может быть только константой"));
-		}
-		PARSER->getLastDPTSome()->getLastActivity()->addParam(constant);
+		PARSER->getLastDPTSome()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_some_descr_param error
 	{
@@ -978,12 +968,7 @@ dpt_prior_descr_param
 	}
 	| dpt_prior_descr_param fun_arithm
 	{
-		RDOValue constant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-		if (!constant.defined())
-		{
-			PARSER->error().error(@2, _T("Параметр может быть только константой"));
-		}
-		PARSER->getLastDPTPrior()->getLastActivity()->addParam(constant);
+		PARSER->getLastDPTPrior()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_prior_descr_param error
 	{
@@ -1112,12 +1097,7 @@ dpt_free_activity_param
 	}
 	| dpt_free_activity_param fun_arithm
 	{
-		RDOValue constant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-		if (!constant.defined())
-		{
-			PARSER->error().error(@2, _T("Параметр может быть только константой"));
-		}
-		PARSER->getLastDPTFree()->getLastActivity()->addParam(constant);
+		PARSER->getLastDPTFree()->getLastActivity()->addParam(PARSER->stack().pop<RDOFUNArithm>($2)->value());
 	}
 	| dpt_free_activity_param error
 	{
@@ -1145,11 +1125,6 @@ dpt_free_activity_keys
 
 dpt_free_end
 	: dpt_free_prior dpt_free_activity RDO_End
-	{
-		LPRDODPTFree pDPTFree = PARSER->getLastDPTFree();
-		ASSERT(pDPTFree);
-		pDPTFree->end();
-	}
 	| dpt_free_header error
 	{
 		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));
@@ -1295,14 +1270,14 @@ fun_logic
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| param_array_value					 { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
@@ -1358,8 +1333,9 @@ fun_arithm
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 		RDOParserSrcInfo info;
-		info.setSrcPos(@1, @2);
-		$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
+		info.setSrcPos (@1, @2);
+		info.setSrcText(_T("-") + pArithm->src_text());
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
 	}
 	;
 
@@ -1529,8 +1505,10 @@ fun_group
 		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
 		ASSERT(pGroupFun);
 		pGroupFun->setSrcPos(@1, @3);
-		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(RDOParserSrcInfo(@2, _T("NoCheck")));
+		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
 		ASSERT(pTrueLogic);
+		pTrueLogic->setSrcPos (@2);
+		pTrueLogic->setSrcText(_T("NoCheck"));
 		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
@@ -1584,11 +1562,14 @@ fun_select_body
 	{
 		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
-		RDOParserSrcInfo info(@2, _T("NoCheck"));
-		pSelect->setSrcText(pSelect->src_text() + info.src_text() + _T(")"));
-		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(info);
-		ASSERT(pTrueLogic);
-		pSelect->initSelect(pTrueLogic);
+		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
+		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
+		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		ASSERT(pCalc);
+		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
+		ASSERT(pLogic);
+		pLogic->setSrcInfo(logicInfo);
+		pSelect->initSelect(pLogic);
 		$$ = PARSER->stack().push(pSelect);
 	}
 	| fun_select_header fun_logic error

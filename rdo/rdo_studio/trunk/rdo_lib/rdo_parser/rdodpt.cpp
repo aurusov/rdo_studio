@@ -84,21 +84,10 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 	{
 		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format(_T("Не найден образец: %s"), pattern_src_info.src_text().c_str()));
 	}
-	RDOParser::s_parser()->contextStack()->push(this);
 }
 
 RDODPTActivity::~RDODPTActivity()
 {}
-
-LPContext RDODPTActivity::onFindContext(CREF(RDOValue) value) const
-{
-	LPContext pContext = m_pPattern->onFindContext(value);
-	if (pContext)
-	{
-		return pContext;
-	}
-	return NULL;
-}
 
 void RDODPTActivity::addParam(CREF(RDOValue) param)
 {
@@ -162,7 +151,6 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	RDOParser::s_parser()->contextStack()->pop();
 }
 
 rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
@@ -256,18 +244,6 @@ RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTFree(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-}
-
-void RDODPTFree::end()
-{
-	RDOParser::s_parser()->contextStack()->pop();
-}
-
-LPContext RDODPTFree::onFindContext(CREF(RDOValue) value) const
-{
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
 }
 
 // ----------------------------------------------------------------------------
@@ -295,13 +271,6 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTSome(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-}
-
-LPContext RDODPTSome::onFindContext(CREF(RDOValue) value) const
-{
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
 }
 
 void RDODPTSome::end()
@@ -310,7 +279,6 @@ void RDODPTSome::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
-	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -324,13 +292,6 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTPrior(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-}
-
-LPContext RDODPTPrior::onFindContext(CREF(RDOValue) value) const
-{
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
 }
 
 void RDODPTPrior::end()
@@ -339,7 +300,6 @@ void RDODPTPrior::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
-	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -369,8 +329,9 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 	ASSERT(m_pActivity);
 }
 
-void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost)
+void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost, CREF(YYLTYPE) param_pos)
 {
+	endParam(param_pos);
 	m_value     = value;
 	m_pRuleCost = pRuleCost;
 }
@@ -386,13 +347,6 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 {
 	RDOParser::s_parser()->checkDPTName   (this->src_info());
 	RDOParser::s_parser()->insertDPTSearch(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-}
-
-LPContext RDODPTSearch::onFindContext(CREF(RDOValue) value) const
-{
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
 }
 
 void RDODPTSearch::end()
@@ -426,7 +380,6 @@ void RDODPTSearch::end()
 		pSearchLogic->addActivity(pActivity);
 	}
 	m_closed = true;
-	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // ----------------------------------------------------------------------------

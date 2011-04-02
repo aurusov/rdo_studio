@@ -22,14 +22,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- ATOM_TYPE_PARSER
 // ----------------------------------------------------------------------------
-#define DECLARE_ATOM_TYPE_PARSER(Type, TypeName) \
-tstring RDOType__##Type::name() const            \
-{                                                \
-	return TypeName;                             \
+#define DECLARE_ATOM_TYPE_PARSER(Type, TypeName)    \
+tstring RDOType__##Type::name() const               \
+{                                                   \
+	return TypeName;                                \
 }
 
 DECLARE_ATOM_TYPE_PARSER(unknow,        _T("unknow")       );
-DECLARE_ATOM_TYPE_PARSER(void,          _T("void")         );
 DECLARE_ATOM_TYPE_PARSER(identificator, _T("identificator"));
 DECLARE_ATOM_TYPE_PARSER(int,           _T("integer")      );
 DECLARE_ATOM_TYPE_PARSER(real,          _T("real")         );
@@ -68,46 +67,6 @@ RDOValue RDOType__unknow::get_default() const
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 {
 	rdoParse::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет"));
-	NEVER_REACH_HERE;
-}
-
-//! RDOType__void
-LPRDOType RDOType__void::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
-{
-	if (from->type()->typeID() == rdoRuntime::RDOType::t_void)
-	{
-		return rdo::Factory<RDOType__void>::create();
-	}
-	rdoParse::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к void"), from_src_info.src_text().c_str()));
-	return NULL;
-}
-
-RDOValue RDOType__void::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
-{
-	if (from->type()->typeID() == rdoRuntime::RDOType::t_void)
-	{
-		return from;
-	}
-
-	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к void-типу"), from.src_info().src_text().c_str()));
-	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-	rdoParse::g_error().push_done();
-	return RDOValue();
-}
-
-rdoRuntime::LPRDOCalc RDOType__void::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
-{
-	return parent_type::calc_cast(pCalc, pType);
-}
-
-RDOValue RDOType__void::get_default() const
-{
-	return RDOValue(rdoRuntime::RDOValue(), rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
-}
-
-void RDOType__void::writeModelStructure(REF(std::ostream) stream) const
-{
-	rdoParse::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать void-тип в отчет"));
 	NEVER_REACH_HERE;
 }
 
