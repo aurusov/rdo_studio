@@ -112,21 +112,21 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 
 void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	BOOL maximized = false;
-	studioApp.mainFrame->MDIGetActive( &maximized );
-	RPDoc* doc = static_cast<RPDoc*>(model->flowchartDocTemplate->OpenDocumentFile( NULL ));
-	RPChildFrame* mdi = static_cast<RPChildFrame*>(doc->getView()->GetParent());
-	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
-	if ( maximized ) {
-		mdi->ShowWindow( SW_HIDE );
-		mdi->MDIRestore();
-		mdi->ShowWindow( SW_HIDE );
-	}
-	doc->getView()->makeFlowChartWnd( flowobj );
-	flowobj->setCorrectName( flowobj->getClassInfo()->getLabel() );
-	if ( maximized ) {
-		mdi->MDIMaximize();
-	}
+//	BOOL maximized = false;
+//	studioApp.mainFrame->MDIGetActive( &maximized );
+//	RPDoc* doc = static_cast<RPDoc*>(model->flowchartDocTemplate->OpenDocumentFile( NULL ));
+	//RPChildFrame* mdi = static_cast<RPChildFrame*>(doc->getView()->GetParent());
+	//mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
+	//if ( maximized ) {
+	//	mdi->ShowWindow( SW_HIDE );
+	//	mdi->MDIRestore();
+	//	mdi->ShowWindow( SW_HIDE );
+	//}
+//	doc->getView()->makeFlowChartWnd( flowobj );
+//	flowobj->setCorrectName( flowobj->getClassInfo()->getLabel() );
+	//if ( maximized ) {
+	//	mdi->MDIMaximize();
+	//}
 /*
 CDocument::SetTitle — установить заголовок для документа
 

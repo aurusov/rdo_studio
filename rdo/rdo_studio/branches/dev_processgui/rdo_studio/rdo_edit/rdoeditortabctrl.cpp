@@ -4,7 +4,13 @@
 #include "rdo_studio/rdostudiomainfrm.h"
 #include "rdo_studio/rdostudioeditbaseview.h"
 #include "rdo_studio/resource.h"
-
+#include "rdo_studio/rdo_process/rdoprocess_docview.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_MJ.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_flowchart.h"
+#include "rdo_studio/rdo_process/rdoprocess_docview.h"
+#include "rdo_studio/rdostudiomodel.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -118,6 +124,12 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	insertItem( pPage8 , "FUN" );
 	insertItem( pPage9 , "SMR" );
 	insertItem( pPage10, "PMD" );
+
+	PTR(RPObjectFlowChart_MJ) flowobj = new RPObjectFlowChart_MJ( rpMethod::project );
+	RPDoc* doc = static_cast<RPDoc*>(model->flowchartDocTemplate->OpenDocumentFile( NULL ));
+    doc->getView()->makeFlowChartWnd( flowobj );
+	RPFlowChart * pPage11 = doc->getView()->flowchart;
+	insertItem( pPage11, "GUI" );
 
 	setCurrentRDOItem( rdoModelObjects::RTP );
 

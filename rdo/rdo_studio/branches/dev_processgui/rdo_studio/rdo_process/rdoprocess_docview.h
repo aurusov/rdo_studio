@@ -45,11 +45,9 @@ class RPView: public CView
 DECLARE_DYNCREATE(RPView)
 
 private:
-	RPFlowChart* flowchart;
+	
 
 protected:
-	RPView();
-	virtual ~RPView();
 
 	COleDropTarget target;
 	const RPObjectClassInfo* getSrcClassInfo( COleDataObject* pDataObject ) const;
@@ -69,6 +67,9 @@ protected:
 #endif
 
 public:
+	RPFlowChart* flowchart;
+	RPView();
+	virtual ~RPView();
 	RPFlowChart* getFlowchart() { return flowchart; }
 	RPDoc* GetDocument() const;
 	virtual void OnDraw( CDC* pDC );

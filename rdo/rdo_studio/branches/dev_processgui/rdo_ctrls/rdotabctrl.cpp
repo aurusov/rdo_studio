@@ -220,16 +220,19 @@ void RDOTabCtrl::OnDestroy()
 	if ( autoDelete ) {
 		int i = getItemCount();
 		for ( ; i >= 0; i-- ) {
-			CWnd* pWnd = getItem( i );
-			if ( pWnd ) {
-				bool mustbedelete = true;
-				CRuntimeClass* runtimeinfo = pWnd->GetRuntimeClass();
-				if ( runtimeinfo && (runtimeinfo->IsDerivedFrom(RUNTIME_CLASS(CFrameWnd)) || runtimeinfo->IsDerivedFrom(RUNTIME_CLASS(CView))) ) {
-					mustbedelete = false;
-				}
-				pWnd->DestroyWindow();
-				if ( mustbedelete ) {
-					delete pWnd;
+			if(i!=10)
+			{
+				CWnd* pWnd = getItem( i );
+				if ( pWnd ) {
+					bool mustbedelete = true;
+					CRuntimeClass* runtimeinfo = pWnd->GetRuntimeClass();
+					if ( runtimeinfo && (runtimeinfo->IsDerivedFrom(RUNTIME_CLASS(CFrameWnd)) || runtimeinfo->IsDerivedFrom(RUNTIME_CLASS(CView))) ) {
+						mustbedelete = false;
+					}
+					pWnd->DestroyWindow();
+					if ( mustbedelete ) {
+						delete pWnd;
+					}
 				}
 			}
 		}
