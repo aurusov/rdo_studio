@@ -725,16 +725,6 @@ void RDOStudioModel::newModelFromRepository()
 	{
 
 		m_GUI_HAS_MODEL = true;
-		rpMethod::project->log() << "начали делать flowchart" << std::endl;
-		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
-		while ( it != studioApp.getMethodManager().getList().end() ) {
-			rpMethod::RPMethod* method = *it;
-			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
-				method->makeFlowChart(rpMethod::project);
-			}
-			it++;
-		}
-		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))
@@ -827,16 +817,6 @@ void RDOStudioModel::openModelFromRepository()
 	{
 		m_GUI_HAS_MODEL = true;
 
-		rpMethod::project->log() << "начали делать flowchart" << std::endl;
-		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
-		while ( it != studioApp.getMethodManager().getList().end() ) {
-			rpMethod::RPMethod* method = *it;
-			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
-				method->makeFlowChart(rpMethod::project);
-			}
-			it++;
-		}
-		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))
 		{
