@@ -1021,7 +1021,9 @@ rbool RDOThreadSimulator::parseModel()
 	terminateModel();
 	closeModel();
 
-	m_pParser  = new rdoParse::RDOParserModel();
+	m_pParser = rdo::Factory<rdoParse::RDOParserModel>::create();
+	ASSERT(m_pParser);
+	m_pParser->init();
 	m_pRuntime = m_pParser->runtime();
 
 	try
@@ -1130,7 +1132,7 @@ void RDOThreadSimulator::closeModel()
 	{
 		if (m_pParser)
 		{
-			delete m_pParser;
+			m_pParser->deinit();
 			m_pParser = NULL;
 		}
 	}

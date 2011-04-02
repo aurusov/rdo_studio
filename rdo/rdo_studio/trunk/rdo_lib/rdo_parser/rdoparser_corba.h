@@ -29,7 +29,7 @@ private:
 	RDOParserCorbaRTP()
 		: RDOParserRDOItem(rdoModelObjects::RTP, NULL, NULL, NULL)
 	{}
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(CREF(LPRDOParser) pParser);
 };
 
 // ----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ private:
 	RDOParserCorbaRSS()
 		: RDOParserRDOItem(rdoModelObjects::RSS, NULL, NULL, NULL)
 	{}
-	virtual void parse(PTR(RDOParser) pParser);
+	virtual void parse(CREF(LPRDOParser) pParser);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

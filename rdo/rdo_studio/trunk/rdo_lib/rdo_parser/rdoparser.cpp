@@ -82,7 +82,7 @@ ruint RDOParser::lexer_loc_pos()
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
-PTR(RDOParser) RDOParser::s_parser()
+LPRDOParser RDOParser::s_parser()
 {
 	return !s_parserStack.empty() ? s_parserStack.back() : NULL;
 }
@@ -92,6 +92,12 @@ RDOParser::RDOParser()
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
 	, m_pattern             (false)
+{}
+
+RDOParser::~RDOParser()
+{}
+
+void RDOParser::init()
 {
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(RDOParser));
@@ -109,7 +115,7 @@ RDOParser::RDOParser()
 	m_resultGeneratorID.get(); //! Для PMD нумерация с 1
 }
 
-RDOParser::~RDOParser()
+void RDOParser::deinit()
 {
 	m_pContextStack->pop();
 

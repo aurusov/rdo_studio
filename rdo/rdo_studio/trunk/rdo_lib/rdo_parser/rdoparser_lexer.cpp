@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
+#include "rdo_lib/rdo_parser/rdoparser.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -19,6 +20,22 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOLexer
 // ----------------------------------------------------------------------------
+RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
+	: yyFlexLexer(yyin, yyout)
+	, m_pParser  (pParser    )
+	, m_yyin     (yyin       )
+	, m_yyout    (yyout      )
+	, m_lpval    (NULL       )
+	, m_lploc    (NULL       )
+	, m_enumEmpty(true       )
+	, m_array_param_cnt(0    )
+{}
+
+CREF(LPRDOParser) RDOLexer::parser() const
+{
+	return m_pParser;
+}
+
 #ifdef YY_INTERACTIVE
 int RDOLexer::LexerInput(PTR(char) buf, int /* max_size */)
 #else
