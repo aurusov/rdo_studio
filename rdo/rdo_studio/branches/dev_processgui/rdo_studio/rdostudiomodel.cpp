@@ -725,16 +725,16 @@ void RDOStudioModel::newModelFromRepository()
 	{
 
 		m_GUI_HAS_MODEL = true;
-		//rpMethod::project->log() << "начали делать flowchart" << std::endl;
-		//std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
-		//while ( it != studioApp.getMethodManager().getList().end() ) {
-		//	rpMethod::RPMethod* method = *it;
-		//	if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
-		//		method->makeFlowChart(rpMethod::project);
-		//	}
-		//	it++;
-		//}
-		//rpMethod::project->log() << "закончили делать flowchart" << std::endl;
+		rpMethod::project->log() << "начали делать flowchart" << std::endl;
+		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while ( it != studioApp.getMethodManager().getList().end() ) {
+			rpMethod::RPMethod* method = *it;
+			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
+				method->makeFlowChart(rpMethod::project);
+			}
+			it++;
+		}
+		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))
@@ -827,16 +827,16 @@ void RDOStudioModel::openModelFromRepository()
 	{
 		m_GUI_HAS_MODEL = true;
 
-		//rpMethod::project->log() << "начали делать flowchart" << std::endl;
-		//std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
-		//while ( it != studioApp.getMethodManager().getList().end() ) {
-		//	rpMethod::RPMethod* method = *it;
-		//	if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
-		//		method->makeFlowChart(rpMethod::project);
-		//	}
-		//	it++;
-		//}
-		//rpMethod::project->log() << "закончили делать flowchart" << std::endl;
+		rpMethod::project->log() << "начали делать flowchart" << std::endl;
+		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while ( it != studioApp.getMethodManager().getList().end() ) {
+			rpMethod::RPMethod* method = *it;
+			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
+				method->makeFlowChart(rpMethod::project);
+			}
+			it++;
+		}
+		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))
 		{
@@ -858,63 +858,61 @@ void RDOStudioModel::openModelFromRepository()
 			studioApp.mainFrame->stepProgress();
 			for (int i = 0; i < cnt; i++)
 			{
-				if(i!=10){
-					PTR(RDOEditorEdit) edit = pTab->getItemEdit(i);
-					edit->setReadOnly(false);
-					edit->clearAll();
-					rdo::binarystream stream;
-					rbool canLoad = true;
-					rdoModelObjects::RDOFileType type = pTab->indexToType(i);
-					if (pTab->typeSupported(type))
+				PTR(RDOEditorEdit) edit = pTab->getItemEdit(i);
+				edit->setReadOnly(false);
+				edit->clearAll();
+				rdo::binarystream stream;
+				rbool canLoad = true;
+				rdoModelObjects::RDOFileType type = pTab->indexToType(i);
+				if (pTab->typeSupported(type))
+				{
+					studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData(type, stream));
+				}
+				else
+				{
+					canLoad = false;
+				}
+				studioApp.mainFrame->stepProgress();
+				if (canLoad)
+				{
+					rdoRepository::RDOThreadRepository::FileInfo data(type);
+					studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
+					rbool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
+					if (!stream_error)
 					{
-						studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData(type, stream));
+						edit->load(stream);
+						edit->setReadOnly(data.m_readOnly);
+						if (data.m_readOnly)
+						{
+							output->appendStringToDebug(rdo::format(IDS_MODEL_FILE_READONLY, tstring(data.m_name + data.m_extention).c_str()));
+						}
 					}
 					else
 					{
-						canLoad = false;
-					}
-					studioApp.mainFrame->stepProgress();
-					if (canLoad)
-					{
-						rdoRepository::RDOThreadRepository::FileInfo data(type);
-						studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
-						rbool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
-						if (!stream_error)
+						int obj = 0;
+						switch (type)
 						{
-							edit->load(stream);
-							edit->setReadOnly(data.m_readOnly);
-							if (data.m_readOnly)
-							{
-								output->appendStringToDebug(rdo::format(IDS_MODEL_FILE_READONLY, tstring(data.m_name + data.m_extention).c_str()));
-							}
+						case rdoModelObjects::RTP: obj = IDS_MODEL_RESOURCETYPES; break;
+						case rdoModelObjects::RSS: obj = IDS_MODEL_RESOURCES;     break;
+						case rdoModelObjects::EVN: obj = IDS_MODEL_EVENTS;        break;
+						case rdoModelObjects::PAT: obj = IDS_MODEL_PATTERNS;      break;
+						case rdoModelObjects::DPT: obj = IDS_MODEL_DPTS;          break;
+						case rdoModelObjects::FRM: obj = IDS_MODEL_FRAMES;        break;
+						case rdoModelObjects::FUN: obj = IDS_MODEL_FUNCTIONS;     break;
+						case rdoModelObjects::PMD: obj = IDS_MODEL_PMDS;          break;
 						}
-						else
+						if (obj)
 						{
-							int obj = 0;
-							switch (type)
-							{
-							case rdoModelObjects::RTP: obj = IDS_MODEL_RESOURCETYPES; break;
-							case rdoModelObjects::RSS: obj = IDS_MODEL_RESOURCES;     break;
-							case rdoModelObjects::EVN: obj = IDS_MODEL_EVENTS;        break;
-							case rdoModelObjects::PAT: obj = IDS_MODEL_PATTERNS;      break;
-							case rdoModelObjects::DPT: obj = IDS_MODEL_DPTS;          break;
-							case rdoModelObjects::FRM: obj = IDS_MODEL_FRAMES;        break;
-							case rdoModelObjects::FUN: obj = IDS_MODEL_FUNCTIONS;     break;
-							case rdoModelObjects::PMD: obj = IDS_MODEL_PMDS;          break;
-							}
-							if (obj)
-							{
-								output->appendStringToDebug(rdo::format(IDS_MODEL_CANNOT_LOAD, rdo::format(obj).c_str(), data.m_fullName.c_str()));
-								const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(output->getDebug())->UpdateWindow();
-							}
-							m_openError = true;
+							output->appendStringToDebug(rdo::format(IDS_MODEL_CANNOT_LOAD, rdo::format(obj).c_str(), data.m_fullName.c_str()));
+							const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(output->getDebug())->UpdateWindow();
 						}
+						m_openError = true;
 					}
-					edit->setCurrentPos(0);
-					edit->setModifyFalse();
-					edit->clearUndoBuffer();
-					studioApp.mainFrame->stepProgress();
 				}
+				edit->setCurrentPos(0);
+				edit->setModifyFalse();
+				edit->clearUndoBuffer();
+				studioApp.mainFrame->stepProgress();
 			}
 			studioApp.mainFrame->endProgress();
 		}
