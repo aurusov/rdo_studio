@@ -47,7 +47,7 @@ public:
 	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
 
 	operator rbool     () const;
-	CPTR(T) operator-> () const;
+	 PTR(T) operator-> () const;
 	 PTR(T) operator-> ();
 
 	template <class P>
