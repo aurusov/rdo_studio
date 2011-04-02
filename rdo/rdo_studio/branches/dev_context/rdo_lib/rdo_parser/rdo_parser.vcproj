@@ -2585,6 +2585,14 @@
 				RelativePath=".\rdoparser_rdo.h"
 				>
 			</File>
+			<File
+				RelativePath=".\parser\std_fun.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\parser\std_fun.h"
+				>
+			</File>
 			<Filter
 				Name=".error"
 				>
