@@ -1,0 +1,66 @@
+[OPTIONS]
+Auto Index=Yes
+Compatibility=1.1 or later
+Compiled file=RAO-language.chm
+Contents file=rdo_lang.hhc
+Default Window=main
+Default topic=html\rdo_intro.htm
+Display compile progress=No
+Full text search stop list file=rdo_lang.stp
+Full-text search=Yes
+Index file=rdo_lang.hhk
+Language=0x809 Английский (Великобритания)
+Title=RAO Language Help
+
+[WINDOWS]
+main=,"rdo_lang.hhc","rdo_lang.hhk","html\rdo_intro.htm",,,,,,0x23520,,0x304e,,,,,,,,0
+
+
+[FILES]
+html\rdo_base_alpha.htm
+html\rdo_base_equations.htm
+html\rdo_base_intro.htm
+html\rdo_base_res_types.htm
+html\rdo_base_resources.htm
+html\rdo_base_std_var_func.htm
+html\rdo_base_types.htm
+html\rdo_intro.htm
+html\rdo_lex_div_names.htm
+html\rdo_lex_div_numeric_const.htm
+html\rdo_lex_div_res_words.htm
+html\rdo_lex_div_spesial_symbols.htm
+html\rdo_lex_div_string_const.htm
+html\rdo_obj_const_fun_sec.htm
+html\rdo_obj_dpt.htm
+html\rdo_obj_frm.htm
+html\rdo_obj_fun.htm
+html\rdo_obj_intro.htm
+html\rdo_obj_opr.htm
+html\rdo_obj_pat.htm
+html\rdo_obj_pmd.htm
+html\rdo_obj_sec.htm
+html\rdo_obj_smr.htm
+html\rdo_res_intro.htm
+html\rdo_res_pmv.htm
+html\rdo_res_trc.htm
+html\rdo_res_trc_decisionpt.htm
+html\rdo_res_trc_events.htm
+html\rdo_res_trc_resourses.htm
+html\rdo_res_trc_results.htm
+html\rdo_terms.htm
+html\rdo_lex_div_intro.htm
+..\shared\images\section_top_d.gif
+..\shared\images\next_section_d.gif
+..\shared\images\next_topic.gif
+..\shared\images\next_topic_d.gif
+..\shared\images\prev_section.gif
+..\shared\images\prev_section_d.gif
+..\shared\images\prev_topic.gif
+..\shared\images\prev_topic_d.gif
+..\shared\images\section_top.gif
+..\shared\images\next_section.gif
+..\shared\scripts\navbar.js
+..\shared\styles\styles.css
+
+[INFOTYPES]
+
