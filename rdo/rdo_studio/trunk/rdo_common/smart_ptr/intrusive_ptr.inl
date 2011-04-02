@@ -83,7 +83,7 @@ inline intrusive_ptr<T>::operator rbool () const
 }
 
 template<class T>
-inline CPTR(T) intrusive_ptr<T>::operator-> () const
+inline PTR(T) intrusive_ptr<T>::operator-> () const
 {
 	return m_object;
 }
@@ -127,6 +127,14 @@ template<class P>
 inline interface_ptr<P> intrusive_ptr<T>::interface_cast()
 {
 	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPICounterReference>(m_object));
+}
+
+template<class T>
+template<class P>
+inline interface_ptr<P> intrusive_ptr<T>::interface_dynamic_cast()
+{
+	PTR(P) pInterface = dynamic_cast<PTR(P)>(m_object);
+	return interface_ptr<P>(pInterface, dynamic_cast<LPICounterReference>(pInterface));
 }
 
 template<class T>

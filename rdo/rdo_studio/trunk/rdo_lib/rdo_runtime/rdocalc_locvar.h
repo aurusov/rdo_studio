@@ -32,6 +32,8 @@ private:
 		: m_name (name )
 		, m_pCalc(pCalc)
 	{}
+	virtual ~RDOCalcSetLocalVariableEqualType()
+	{}
 
 	tstring   m_name;
 	LPRDOCalc m_pCalc;

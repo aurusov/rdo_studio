@@ -21,7 +21,6 @@
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
 #include "rdo_lib/rdo_converter/rdorss.h"
-#include "rdo_lib/rdo_converter/context/global.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
 #include "rdo_lib/rdo_converter/update/update.h"
@@ -107,7 +106,6 @@ Converter::Converter()
 	s_parserStack.push_back(this);
 	m_runtime.memory_insert(sizeof(Converter));
 	m_runtime.init();
-	m_contextStack.push(rdo::Factory<ContextGlobal>::create());
 
 	m_pDocument = rdo::Factory<Document>::create();
 	ASSERT(m_pDocument);

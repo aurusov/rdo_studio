@@ -16,6 +16,11 @@
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/param.h"
+#include "rdo_lib/rdo_parser/expression.h"
+#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/context_find_i.h"
+#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
+
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -62,11 +67,14 @@ private:
 // ----------------------------------------------------------------------------
 OBJECT(RDOFUNBase) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+public:
+	CREF(LPExpression) expression() const;
+
 protected:
 	RDOFUNBase(CREF(RDOParserSrcInfo) src_info);
-	RDOFUNBase(CREF(rdoRuntime::LPRDOCalc) pCalc);
+	RDOFUNBase(CREF(LPExpression) pExpression);
 
-	rdoRuntime::LPRDOCalc      m_pCalc;
+	LPExpression               m_pExpression;
 	RDOFUNDoubleToIntByResult  m_intOrDouble;
 };
 
@@ -93,9 +101,11 @@ public:
 	        void setSrcPos (CREF(YYLTYPE) error_pos);
 	        void setSrcPos (CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
 
+	static LPRDOFUNLogic generateTrue(CREF(RDOParserSrcInfo) src_info);
+
 private:
 	RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm);
-	RDOFUNLogic(CREF(rdoRuntime::LPRDOCalc) pCalc, rbool hideWarning);
+	RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning);
 	virtual ~RDOFUNLogic();
 
 	LPRDOFUNLogic createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc);
@@ -119,6 +129,8 @@ public:
 	LPRDOFUNArithm operator -(CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNArithm operator *(CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNArithm operator /(CREF(LPRDOFUNArithm) pSecond);
+	LPRDOFUNArithm setEqual  (CREF(LPRDOFUNArithm) pSecond);
+	LPRDOFUNArithm uminus    (CREF(rdoRuntime::RDOSrcInfo::Position) position);
 
 	LPRDOFUNLogic operator ==(CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNLogic operator !=(CREF(LPRDOFUNArithm) pSecond);
@@ -128,9 +140,11 @@ public:
 	LPRDOFUNLogic operator >=(CREF(LPRDOFUNArithm) pSecond);
 
 	rdoRuntime::LPRDOCalc       createCalc(CREF(LPRDOTypeParam) pForType = NULL);
-	rdoRuntime::LPRDOCalc       calc      () const { return m_pCalc;                    }
-	CREF(RDOValue)              value     () const { return m_value;                    }
-	LPRDOType                   type      () const { return m_value.type();             }
+
+	CREF(LPRDOType)             type       () const { return m_pExpression->type();      }
+	rdoRuntime::LPRDOCalc       calc       () const { return m_pExpression->calc();      }
+	rdoRuntime::RDOValue        const_value() const;
+
 	LPRDOEnumType               enumType  () const { return type().object_static_cast<RDOEnumType>(); }
 	rdoRuntime::RDOType::TypeID typeID    () const { return type()->type()->typeID();   }
 
@@ -143,27 +157,24 @@ public:
 
 	void checkParamType(CREF(LPRDOTypeParam) pType);
 
+	static LPRDOFUNArithm generateByConst        (CREF(RDOValue) value);
+	static LPRDOFUNArithm generateByIdentificator(CREF(RDOValue) value);
+	static LPRDOFUNArithm generateByIdentificator(CREF(RDOValue) value1, CREF(RDOValue) value2);
+
 private:
-	RDOFUNArithm(CREF(RDOValue) value);
-	RDOFUNArithm(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc);
-	RDOFUNArithm(CREF(RDOValue) resName, CREF(RDOValue) parName);
+	RDOFUNArithm(CREF(LPExpression) pExpression);
 	virtual ~RDOFUNArithm();
 
-	RDOValue m_value;
+	LPRDOType getPreType(CREF(LPRDOFUNArithm) pSecond);
 
-	void init(CREF(RDOValue) value);
-	void init(CREF(RDOValue) resName, CREF(RDOValue) parName);
-
-	enum CastResult
-	{
-		CR_DONE,
-		CR_CONTINUE
-	};
-	CastResult beforeCastValue(LPRDOFUNArithm       pSecond);
-	LPRDOType  getPreType     (CREF(LPRDOFUNArithm) pSecond);
+	template <class T>
+	rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::RDOSrcInfo::Position) position, CREF(tstring) error);
 
 	template <class T>
 	rdoRuntime::LPRDOCalc generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+
+	template <class T>
+	LPRDOFUNArithm generateArithm(CREF(rdoRuntime::RDOSrcInfo::Position) position, CREF(tstring) error);
 
 	template <class T>
 	LPRDOFUNArithm generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
@@ -171,7 +182,7 @@ private:
 	template <class T>
 	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 
-	template <class T>
+	void castType (CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 	void castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
 };
 DECLARE_POINTER(LPRDOFUNArithm);
@@ -513,7 +524,11 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNFunction
 // ----------------------------------------------------------------------------
-OBJECT(RDOFUNFunction) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOFUNFunction):
+	    INSTANCE_OF      (RDOParserSrcInfo        )
+	AND INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOFUNFunction)
 friend class Converter;
@@ -542,6 +557,8 @@ public:
 		m_postLinkedList.push_back(pCalc);
 	}
 
+	void end();
+
 private:
 	RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam) pReturn);
 	RDOFUNFunction(CREF(tstring) name,              CREF(LPRDOParam) pReturn);
@@ -557,14 +574,22 @@ private:
 	CalculateIfList          m_calculateIfList; //! for algorithmic
 	PostLinkedList           m_postLinkedList;  //! для рекурсивного вызова
 	rdoRuntime::LPRDOFunCalc m_pFunctionCalc;
+
+	DECLARE_IContextFind;
+	DECLARE_IContextCreateExpression;
 };
+DECLARE_POINTER(RDOFUNFunction);
 
 // ----------------------------------------------------------------------------
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
-OBJECT(RDOFUNGroup) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOFUNGroup):
+	    INSTANCE_OF      (RDOParserSrcInfo        )
+	AND INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOFUNGroup);
 public:
@@ -574,11 +599,17 @@ protected:
 	RDOFUNGroup(CREF(RDOParserSrcInfo) res_info);
 	virtual ~RDOFUNGroup();
 
+	void end();
+
 private:
 	void init(CREF(RDOParserSrcInfo) res_info);
 
 	LPRDORTPResType m_pResType;
+
+	DECLARE_IContextFind;
+	DECLARE_IContextCreateExpression;
 };
+DECLARE_POINTER(RDOFUNGroup);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNGroupLogic

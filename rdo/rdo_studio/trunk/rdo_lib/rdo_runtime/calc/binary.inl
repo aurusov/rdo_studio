@@ -37,7 +37,7 @@ inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LP
 	if (pConstCalc1 && pConstCalc2)
 	{
 		T::value_operator pOperation = T::getOperation();
-		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc1->calcValue(NULL).*pOperation)(pConstCalc2->calcValue(NULL)));
+		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc1->getValue().*pOperation)(pConstCalc2->getValue()));
 		pCalc->setSrcInfo(T::getStaticSrcInfo(pConstCalc1, pConstCalc2));
 	}
 	else

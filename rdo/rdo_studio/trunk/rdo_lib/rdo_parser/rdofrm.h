@@ -15,6 +15,8 @@
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/context_find_i.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,18 +28,25 @@ void frmerror(PTR(char) mes);
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-OBJECT(RDOFRMFrame) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOFRMFrame):
+	    INSTANCE_OF      (RDOParserSrcInfo)
+	AND INSTANCE_OF      (Context         )
+	AND IMPLEMENTATION_OF(IContextFind    )
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
 	CREF(tstring)                name () const  { return src_info().src_text(); }
 	PTR(rdoRuntime::RDOFRMFrame) frame()        { return m_pFrame;              }
+	void                         end  ();
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
 
 	PTR(rdoRuntime::RDOFRMFrame) m_pFrame;
+
+	DECLARE_IContextFind;
 };
+DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

@@ -415,7 +415,7 @@ dpt_seize_param
 			rtp = rssList[res_name].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -458,7 +458,7 @@ dpt_seize_param
 			rtp = rssList[res_name].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -507,7 +507,7 @@ dpt_release_param
 			rtp = rssList[res_name].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -550,7 +550,7 @@ dpt_release_param
 			rtp = rssList[res_name].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(*PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}

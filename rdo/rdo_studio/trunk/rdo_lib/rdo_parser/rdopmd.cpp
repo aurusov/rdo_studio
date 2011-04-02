@@ -78,8 +78,7 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 // ---------- ResultGroup
 // ----------------------------------------------------------------------------
 RDOResultGroup::RDOResultGroup()
-{
-}
+{}
 
 RDOResultGroup::~RDOResultGroup()
 {}
