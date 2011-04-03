@@ -209,12 +209,11 @@
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_parser/context/type.h"
 #include "rdo_lib/rdo_parser/context/memory.h"
 #include "rdo_lib/rdo_parser/variable_container.h"
-#include "rdo_lib/rdo_runtime/rdocalc_locvar.h"
+#include "rdo_lib/rdo_runtime/calc/locvar.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()

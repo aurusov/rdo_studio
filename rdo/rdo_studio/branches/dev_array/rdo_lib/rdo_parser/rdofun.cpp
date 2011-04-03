@@ -1143,8 +1143,6 @@ RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam)
 	: RDOParserSrcInfo(src_info)
 	, m_pReturn       (pReturn )
 {
-
-	LPContextPattern pContext = rdo::Factory<ContextPattern>::create();
 	RDOParser::s_parser()->insertFUNFunction(this);
 	RDOParser::s_parser()->contextStack()->push(this);
 }
