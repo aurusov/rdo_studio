@@ -902,10 +902,7 @@ init_declaration
 		);
 		ASSERT(pExpression);
 
-		LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
-		ASSERT(pArithm);
-
-		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pExpression, pParam);
 		ASSERT(pLocalVariable);
 
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
@@ -931,7 +928,7 @@ init_declaration
 		LPRDOTypeParam pParam = pTypeContext->getType();
 		ASSERT(pParam);
 
-		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm, pParam);
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm->expression(), pParam);
 		ASSERT(pLocalVariable);
 
 		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
