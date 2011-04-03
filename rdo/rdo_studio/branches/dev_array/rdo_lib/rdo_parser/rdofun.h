@@ -18,6 +18,7 @@
 #include "rdo_lib/rdo_parser/param.h"
 #include "rdo_lib/rdo_parser/expression.h"
 #include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/memory.h"
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 
@@ -549,7 +550,7 @@ public:
 	const ParamList  getParams() const { return m_paramList;           }
 
 	void                     setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc);
-	rdoRuntime::LPRDOFunCalc    getFunctionCalc() const { return m_pFunctionCalc; }
+	rdoRuntime::LPRDOFunCalc getFunctionCalc() const { return m_pFunctionCalc; }
 
 	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCall) pCalc)
 	{
@@ -573,7 +574,10 @@ private:
 	ElementList              m_elementList;     //! for list and table
 	CalculateIfList          m_calculateIfList; //! for algorithmic
 	PostLinkedList           m_postLinkedList;  //! для рекурсивного вызова
-	rdoRuntime::LPRDOFunCalc    m_pFunctionCalc;
+	rdoRuntime::LPRDOFunCalc m_pFunctionCalc;
+	LPContextMemory          m_pContextMemory;
+
+	void init();
 
 	DECLARE_IContextFind;
 	DECLARE_IContextCreateExpression;

@@ -1143,25 +1143,47 @@ RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam)
 	: RDOParserSrcInfo(src_info)
 	, m_pReturn       (pReturn )
 {
-	RDOParser::s_parser()->insertFUNFunction(this);
-	RDOParser::s_parser()->contextStack()->push(this);
+	init();
 }
 
 RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
 	: RDOParserSrcInfo(name   )
 	, m_pReturn       (pReturn)
 {
+	init();
+}
+
+void RDOFUNFunction::init()
+{
 	RDOParser::s_parser()->insertFUNFunction(this);
 	RDOParser::s_parser()->contextStack()->push(this);
+
+	m_pContextMemory = rdo::Factory<ContextMemory>::create();
+	ASSERT(m_pContextMemory);
+	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
+
+	LPLocalVariableListStack pLocalVariableListStack = m_pContextMemory->getLocalMemory();
+	ASSERT(pLocalVariableListStack);
+
+	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+	ASSERT(pLocalVariableList);
+
+	pLocalVariableListStack->push(pLocalVariableList);
 }
 
 void RDOFUNFunction::end()
 {
 	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 LPContext RDOFUNFunction::onFindContext(CREF(RDOValue) value) const
 {
+	if (m_pContextMemory->onFindContext(value))
+	{
+		return m_pContextMemory;
+	}
+
 	//! Параметры
 	LPRDOParam pParam = findFUNFunctionParam(value->getIdentificator());
 	if (pParam)
