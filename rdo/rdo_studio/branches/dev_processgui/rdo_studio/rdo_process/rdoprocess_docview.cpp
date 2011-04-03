@@ -114,10 +114,7 @@ BOOL RPView::PreCreateWindow( CREATESTRUCT& cs )
 
 void RPView::OnDestroy()
 {
-	if ( flowchart ) {
-		flowchart->SendMessage( WM_CLOSE );
-		delete flowchart;
-	}
+
 }
 
 void RPView::OnSetFocus(CWnd* pOldWnd) 
@@ -151,8 +148,7 @@ void RPView::OnInitialUpdate()
 void RPView::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
 	flowchart = new RPFlowChart( flowobj, GetDocument() );
-	CRect rect;
-	GetClientRect( &rect );
+
 	flowchart->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), this, 0, 0 );
 	flowchart->init();
 }
