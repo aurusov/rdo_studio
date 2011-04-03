@@ -1468,9 +1468,9 @@ statement
 	: empty_statement
 	| nochange_statement
 	| equal_statement
-	| member_statement ';'
-//	| stopping_statement
-//	| planning_statement
+//	| member_statement ';'
+	| stopping_statement
+	| planning_statement
 	| watch_start
 	| watch_stop
 	| local_variable_declaration
