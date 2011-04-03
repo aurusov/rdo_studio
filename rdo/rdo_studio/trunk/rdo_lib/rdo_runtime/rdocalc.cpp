@@ -23,7 +23,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
 RDOCalc::RDOCalc()
-{}
+{
+	resetCnt();
+}
 
 RDOCalc::~RDOCalc()
 {}
@@ -240,6 +242,8 @@ RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStat
 	ASSERT(m_pCondition    );
 	ASSERT(m_pIfStatement  );
 	ASSERT(m_pElseStatement);
+
+	if((m_pIfStatement->isReturn() > 0)&&(m_pElseStatement->isReturn() > 0)) upCnt();
 }
 
 REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) runtime)
@@ -260,15 +264,29 @@ RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition,
 	ASSERT(m_pCondition  );
 	ASSERT(m_pExpression );
 	ASSERT(m_pStatement  );
+
+	if(m_pStatement->isReturn()) upCnt();
 }
 
-REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) pRuntime)
 {
-	m_value = m_pDeclaration->calcValue(runtime);
-	while(m_pCondition->calcValue(runtime).getAsBool())
+	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
 	{
-		m_value = m_pExpression->calcValue(runtime);
-		m_value = m_pStatement->calcValue(runtime);
+		m_value = m_pDeclaration->calcValue(pRuntime);
+		while (m_pCondition->calcValue(pRuntime).getAsBool())
+		{
+			m_value = m_pExpression->calcValue(pRuntime);
+			m_value = m_pStatement->calcValue(pRuntime);
+			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
+			{
+				pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
+				return m_value;
+			}
+			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
+			{
+				return m_value;
+			}
+		}
 	}
 	return m_value;
 }
@@ -314,16 +332,40 @@ REF(RDOValue) RDOCalcGetLocalVariable::doCalc(PTR(RDORuntime) runtime)
 	return m_value;
 }
 
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcLocalVariableList
+// ----------------------------------------------------------------------------
+RDOCalcLocalVariableList::RDOCalcLocalVariableList()
+{}
+
+void RDOCalcLocalVariableList::addCalcLocalVariable(CREF(LPRDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+	m_calcLocalVariableList.push_back(pCalc);
+}
+
+REF(RDOValue) RDOCalcLocalVariableList::doCalc(PTR(RDORuntime) runtime)
+{
+	STL_FOR_ALL(m_calcLocalVariableList, calc_it)
+	{
+		(*calc_it)->calcValue(runtime);
+	}
+
+	m_value = RDOValue(m_calcLocalVariableList.size());
+	return m_value;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcOpenBrace
 // ----------------------------------------------------------------------------
 RDOCalcOpenBrace::RDOCalcOpenBrace()
 {}
 
-REF(RDOValue) RDOCalcOpenBrace::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcOpenBrace::doCalc(PTR(RDORuntime) pRuntime)
 {
 	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
-	runtime->getMemoryStack()->push(pLocalMemory);
+	pRuntime->getMemoryStack()->push(pLocalMemory);
 	return m_value;
 }
 
@@ -333,10 +375,80 @@ REF(RDOValue) RDOCalcOpenBrace::doCalc(PTR(RDORuntime) runtime)
 RDOCalcCloseBrace::RDOCalcCloseBrace()
 {}
 
-REF(RDOValue) RDOCalcCloseBrace::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcCloseBrace::doCalc(PTR(RDORuntime) pRuntime)
 {
-	runtime->getMemoryStack()->pop();
+	pRuntime->getMemoryStack()->pop();
 	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunList
+// ----------------------------------------------------------------------------
+RDOCalcFunList::RDOCalcFunList()
+{}
+
+void RDOCalcFunList::addFunCalc(CREF(LPRDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+	m_calcFunList.push_back(pCalc);
+
+	if (pCalc->isReturn())
+	{
+		upCnt();
+	}
+}
+
+REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
+{
+	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
+	{
+		m_value = RDOValue(m_calcFunList.size());
+		STL_FOR_ALL(m_calcFunList, calc_it)
+		{
+			LPRDOCalc calc = (*calc_it);
+			(*calc_it)->calcValue(pRuntime);
+			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
+			{
+				m_calcFunList.back()->calcValue(pRuntime);
+				pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
+				return RDOValue(m_calcFunList.size());
+			}
+			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
+			{
+				m_value = (*calc_it)->calcValue(pRuntime);
+				m_calcFunList.back()->calcValue(pRuntime);
+				return m_value;
+			}
+		}
+	}
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunBreak
+// ----------------------------------------------------------------------------
+RDOCalcFunBreak::RDOCalcFunBreak()
+{}
+
+REF(RDOValue) RDOCalcFunBreak::doCalc(PTR(RDORuntime) pRuntime)
+{
+	pRuntime->setFunBreakFlag(RDORuntime::FBF_BREAK);
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunReturn
+// ----------------------------------------------------------------------------
+RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
+	: m_pReturn(pReturn)
+{
+	upCnt();
+}
+
+REF(RDOValue) RDOCalcFunReturn::doCalc(PTR(RDORuntime) pRuntime)
+{
+	pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
+	return m_pReturn->calcValue(pRuntime);
 }
 
 // ----------------------------------------------------------------------------
@@ -349,6 +461,8 @@ void RDOCalcList::addCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
+
+	if(pCalc->isReturn()) upCnt();
 }
 
 REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) runtime)

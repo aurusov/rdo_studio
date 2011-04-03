@@ -123,6 +123,8 @@
 %token RDO_RELEASE
 %token RDO_if
 %token RDO_for
+%token RDO_Return
+%token RDO_Break
 %token RDO_result
 %token RDO_CF
 %token RDO_Priority
@@ -1368,9 +1370,13 @@ param_array_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
-		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
+		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
+		pArrayValue->setSrcInfo(srcInfo);
+		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
+		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
 	}
-	|'[' array_item error {
+	|'[' array_item error
+	{
 		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 	}
 	;
