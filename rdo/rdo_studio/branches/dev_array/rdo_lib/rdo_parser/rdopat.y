@@ -1456,9 +1456,9 @@ statement
 	| if_statement
 	| for_statement
 	| nochange_statement
-	| member_statement ';'
-//	| stopping_statement
-//	| planning_statement
+//	| member_statement ';'
+	| stopping_statement
+	| planning_statement
 	| watch_start
 	| watch_stop
 	| open_brace statement_list close_brace
