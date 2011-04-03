@@ -16,17 +16,6 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOLexer
 // ----------------------------------------------------------------------------
-inline RDOLexer::RDOLexer(PTR(RDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
-	: yyFlexLexer(yyin, yyout)
-	, m_pParser  (pParser    )
-	, m_yyin     (yyin       )
-	, m_yyout    (yyout      )
-	, m_lpval    (NULL       )
-	, m_lploc    (NULL       )
-	, m_enumEmpty(true       )
-	, m_array_param_cnt(0    )
-{}
-
 inline void RDOLexer::loc_init()
 {
 	if (m_lploc)
@@ -80,11 +69,6 @@ inline void RDOLexer::loc_delta_pos(int value)
 inline void RDOLexer::setvalue(int value)
 {
 	*m_lpval = value;
-}
-
-inline PTR(RDOParser) RDOLexer::parser()
-{
-	return m_pParser;
 }
 
 inline void RDOLexer::enumBegin()

@@ -33,7 +33,7 @@ void rsserror(PTR(char) message)
 // ----------------------------------------------------------------------------
 // ---------- RDORSSResource
 // ----------------------------------------------------------------------------
-RDORSSResource::RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -42,6 +42,50 @@ RDORSSResource::RDORSSResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) sr
 	ASSERT(m_pResType);
 	pParser->insertRSSResource(LPRDORSSResource(this));
 	m_currParam = m_pResType->getParams().begin();
+	RDOParser::s_parser()->contextStack()->push(this);
+}
+
+RDORSSResource::~RDORSSResource()
+{}
+
+void RDORSSResource::end()
+{
+	RDOParser::s_parser()->contextStack()->pop();
+}
+
+LPExpression RDORSSResource::onCreateExpression(CREF(RDOValue) value)
+{
+	ruint parNumb = getType()->getRTPParamNumber(value->getIdentificator());
+	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+	{
+		RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), value->getIdentificator().c_str()));
+	}
+
+	rdoRuntime::LPRDOCalc pCalc;
+	if (getType()->isPermanent())
+	{
+		pCalc = rdo::Factory<rdoRuntime::RDOCalcGetResParam>::create(getID(), parNumb);
+	}
+	else if (getType()->isTemporary() && RDOParser::s_parser()->getFileToParse() == rdoModelObjects::FRM)
+	{
+		pCalc = rdo::Factory<rdoRuntime::RDOCalcGetTempResParamFRM>::create(getID(), parNumb);
+	}
+	else
+	{
+		RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Нельзя использовать временный ресурс: %s"), value->getIdentificator().c_str()));
+	}
+	ASSERT(pCalc);
+
+	LPRDORTPParam pParam = getType()->findRTPParam(value->getIdentificator());
+	ASSERT(pParam);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		pParam->getType()->type(),
+		pCalc,
+		value.src_info()
+	);
+	ASSERT(pExpression);
+	return pExpression;
 }
 
 void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
@@ -104,8 +148,11 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(PTR(RDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDOPROCResource::RDOPROCResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDORSSResource(pParser, src_info, pResType, id)
+{}
+
+RDOPROCResource::~RDOPROCResource()
 {}
 
 rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const

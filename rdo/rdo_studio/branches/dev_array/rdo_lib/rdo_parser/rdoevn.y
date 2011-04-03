@@ -1345,7 +1345,6 @@ pat_convert_cmd
 		LPConvertCmdList pCmdList = rdo::Factory<ConvertCmdList>::create();
 		LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
-		pRelRes->getParamSetList().reset();
 		$$ = PARSER->stack().push(pCmdList);
 	}
 	| pat_convert_cmd statement
@@ -1511,6 +1510,17 @@ equal_statement
 			case rdoRuntime::ET_EQUAL:
 			{
 				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				ASSERT(pCalc);
+				pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
+				pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+
+				LPExpression pExpressionLeft = rdo::Factory<Expression>::create(pParam->getType()->type(), pCalc, pCalc->src_info());
+				ASSERT(pExpressionLeft);
+
+				LPRDOFUNArithm pArithmLeft = rdo::Factory<RDOFUNArithm>::create(pExpressionLeft);
+				ASSERT(pArithmLeft);
+				pArithmLeft->setEqual(pRightArithm);
+
 				pRelRes->getParamSetList().insert(pParam);
 				break;
 			}
@@ -2320,14 +2330,14 @@ fun_logic
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| param_array_value					 { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
@@ -2383,9 +2393,8 @@ fun_arithm
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 		RDOParserSrcInfo info;
-		info.setSrcPos (@1, @2);
-		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
+		info.setSrcPos(@1, @2);
+		$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
 	}
 	;
 
@@ -2495,10 +2504,8 @@ fun_group
 		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
 		ASSERT(pGroupFun);
 		pGroupFun->setSrcPos(@1, @3);
-		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
+		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(RDOParserSrcInfo(@2, _T("NoCheck")));
 		ASSERT(pTrueLogic);
-		pTrueLogic->setSrcPos (@2);
-		pTrueLogic->setSrcText(_T("NoCheck"));
 		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
@@ -2521,7 +2528,7 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name  = P_RDOVALUE($3);
+		PTR(RDOValue)  type_name = P_RDOVALUE($3);
 		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
 		ASSERT(pSelect);
 		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
@@ -2552,14 +2559,11 @@ fun_select_body
 	{
 		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
-		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
-		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
-		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		ASSERT(pCalc);
-		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
-		ASSERT(pLogic);
-		pLogic->setSrcInfo(logicInfo);
-		pSelect->initSelect(pLogic);
+		RDOParserSrcInfo info(@2, _T("NoCheck"));
+		pSelect->setSrcText(pSelect->src_text() + info.src_text() + _T(")"));
+		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(info);
+		ASSERT(pTrueLogic);
+		pSelect->initSelect(pTrueLogic);
 		$$ = PARSER->stack().push(pSelect);
 	}
 	| fun_select_header fun_logic error

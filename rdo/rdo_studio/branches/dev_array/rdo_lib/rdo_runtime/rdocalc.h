@@ -65,6 +65,9 @@ class TYPE: public PARENT
 CALC(RDOCalcConst)
 {
 DECLARE_FACTORY(RDOCalcConst)
+public:
+	CREF(RDOValue) getValue() const;
+
 private:
 	RDOCalcConst(CREF(RDOValue) value);
 	DECALRE_ICalc;

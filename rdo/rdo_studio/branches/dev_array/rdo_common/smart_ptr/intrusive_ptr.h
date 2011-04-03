@@ -47,7 +47,7 @@ public:
 	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
 
 	operator rbool     () const;
-	CPTR(T) operator-> () const;
+	 PTR(T) operator-> () const;
 	 PTR(T) operator-> ();
 
 	template <class P>
@@ -64,6 +64,9 @@ public:
 
 	template <class P>
 	interface_ptr<P> interface_cast();
+
+	template <class P>
+	interface_ptr<P> interface_dynamic_cast();
 
 	//! TODO: переместить в protected
 	PTR(T)   get();

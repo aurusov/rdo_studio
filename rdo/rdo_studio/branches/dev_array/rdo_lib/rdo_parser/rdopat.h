@@ -16,7 +16,10 @@
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/param.h"
-#include "rdo_lib/rdo_parser/context/pattern.h"
+#include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_parser/context/memory.h"
+#include "rdo_lib/rdo_parser/context/context_find_i.h"
+#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
@@ -73,7 +76,11 @@ PREDECLARE_POINTER(RDOPATChoiceFrom);
 PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
 
-OBJECT(RDOPATPattern) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOPATPattern):
+	    INSTANCE_OF      (RDOParserSrcInfo        )
+	AND INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
@@ -103,7 +110,7 @@ public:
 	virtual void               rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource);
 
 	void beforeRelRensert(CREF(RDOParserSrcInfo) rel_info);
-	
+
 	LPRDORelevantResource m_pCurrRelRes;
 
 	void                  add                    (CREF(LPRDOParam) pParam);
@@ -152,7 +159,8 @@ private:
 	LPRDOFUNArithm   m_pCommonChoice;
 
 	ruint            m_currentRelResIndex;
-	LPContextPattern m_pContext;
+
+	LPContextMemory  m_pContextMemory;
 
 	tstring typeToString(PatType type)
 	{
@@ -167,7 +175,11 @@ private:
 	}
 
 	void addChoiceFromCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
+
+	DECLARE_IContextFind;
+	DECLARE_IContextCreateExpression;
 };
+DECLARE_POINTER(RDOPATPattern);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent
@@ -287,7 +299,10 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDORelevantResource
 // ----------------------------------------------------------------------------
-OBJECT(RDORelevantResource) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDORelevantResource):
+	    INSTANCE_OF      (RDOParserSrcInfo        )
+	AND INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDORelevantResource)
 public:
@@ -381,7 +396,10 @@ protected:
 
 private:
 	ParamSetList m_paramSetList;
+
+	DECLARE_IContextCreateExpression;
 };
+DECLARE_POINTER(RDORelevantResource);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPATChoiceFrom

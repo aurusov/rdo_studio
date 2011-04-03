@@ -2360,27 +2360,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\context\global.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\context\global.h"
-				>
-			</File>
-			<File
 				RelativePath=".\context\stack.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\context\stack.h"
-				>
-			</File>
-			<File
-				RelativePath=".\context\timenow.h"
-				>
-			</File>
-			<File
-				RelativePath=".\context\timenow.inl"
 				>
 			</File>
 		</Filter>
