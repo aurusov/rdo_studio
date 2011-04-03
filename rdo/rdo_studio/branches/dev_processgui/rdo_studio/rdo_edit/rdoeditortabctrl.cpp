@@ -128,7 +128,7 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	PTR(RPObjectFlowChart_MJ) flowobj = new RPObjectFlowChart_MJ( rpMethod::project );
 	RPDoc* doc = static_cast<RPDoc*>(model->flowchartDocTemplate->OpenDocumentFile( NULL ));
     doc->getView()->makeFlowChartWnd( flowobj );
-	RPFlowChart * pPage11 = doc->getView()->flowchart;
+	RPFlowChart * pPage11 = doc->getView()->getFlowchart();
 	insertItem( pPage11, "GUI" );
 
 	setCurrentRDOItem( rdoModelObjects::RTP );

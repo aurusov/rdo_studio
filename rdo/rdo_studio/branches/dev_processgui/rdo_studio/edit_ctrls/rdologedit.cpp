@@ -228,17 +228,16 @@ void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineIn
 				scrollToCarret();
 			}
 		}
-		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
-		if ( tab ) {
-			if ( tab->getCurrentRDOItem() != lineInfo->fileType ) {
-				rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
-				if ( !edit || (edit && edit->getLog() == this) ) {
-					tab->setCurrentRDOItem( lineInfo->fileType );
+		PTR(rdoEditor::RDOEditorTabCtrl) pTab = model->getTab();
+		if ( pTab ) {
+			PTR(rdoEditor::RDOEditorEdit) pEditor = pTab->getItemWnd<rdoEditor::RDOEditorEdit>(lineInfo->fileType);
+			if ( pTab->getCurrentRDOItem() != lineInfo->fileType ) {
+				if ( !pEditor || (pEditor && pEditor->getLog() == this) ) {
+					pTab->setCurrentRDOItem( lineInfo->fileType );
 				}
 			}
-			rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
-			if ( edit && edit->getLog() == this ) {
-				updateEdit( edit, lineInfo );
+			if ( pEditor && pEditor->getLog() == this ) {
+				updateEdit( pEditor, lineInfo );
 			}
 		}
 	}
