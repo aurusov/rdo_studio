@@ -74,16 +74,15 @@ RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	case rdoRuntime::RDOType::t_array:
 		{
 			LPRDOArrayType pThisArray(const_cast<PTR(RDOArrayType)>(this));
-			LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pThisArray);
-			ASSERT(pArrayValue);
-			LPRDOArrayValue pFromArrayValue = from.getArray();
-			ASSERT(pFromArrayValue);
-			CREF(RDOArrayValue::Container) container = pFromArrayValue->getContainer();
-			STL_FOR_ALL_CONST(container, it)
+			LPRDOArrayValue pThisArrayValue = rdo::Factory<RDOArrayValue>::create(pThisArray);
+			ASSERT(pThisArrayValue);
+			rdoRuntime::RDOArrayValue pFromArrayValue = from->getArray();
+			for(rdoRuntime::RDOArrayValue::Container::iterator it = pFromArrayValue.containerBegin(); it < pFromArrayValue.containerEnd(); ++it)
 			{
-				pArrayValue->insertItem(pThisArray->getItemType()->value_cast(*it, to_src_info, it->src_info()));
+				RDOValue  itemValue = RDOValue((*it), pThisArray->getItemType(), src_info);
+				pThisArrayValue->insertItem(pThisArray->getItemType()->value_cast(itemValue, to_src_info, src_info));
 			}
-			return RDOValue(pArrayValue);
+			return RDOValue(pThisArrayValue);
 			break;
 		}
 	default:
