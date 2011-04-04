@@ -147,10 +147,7 @@ void RPView::OnInitialUpdate()
 
 void RPView::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	flowchart = new RPFlowChart( flowobj, GetDocument() );
-
-	flowchart->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), this, 0, 0 );
-	flowchart->init();
+	flowchart = new RPFlowChart( flowobj, GetDocument());
 }
 
 void RPView::OnDraw(CDC* /*pDC*/)

@@ -112,14 +112,4 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 
 void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-/*
-CDocument::SetTitle Ч установить заголовок дл€ документа
-
-CChildFrame::OnUpdateFrameTitle Ч переопределить дл€ своих нужд Ч mdiчилды
-
-CFrameWnd::OnUpdateFrameTitle Ч переопределить дл€ своих нужд Ч главное окно
-
-AfxSetWindowText Ч нужно вызывать дл€ правильного(чилд или главное окно) окна, иначе ничего видно не будет.
-CViewXXX €вл€етюс€ чилдома у CMDIChildWnd
-*/
 }
