@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2010
- * filename : rdocalc_locvar.h
+ * filename : locvar.h
  * author   : Чирков Михаил
  * date     : 03.12.10
  * bref     : 
@@ -31,6 +31,8 @@ private:
 	RDOCalcSetLocalVariableEqualType(CREF(tstring) name, LPRDOCalc pCalc = NULL)
 		: m_name (name )
 		, m_pCalc(pCalc)
+	{}
+	virtual ~RDOCalcSetLocalVariableEqualType()
 	{}
 
 	tstring   m_name;

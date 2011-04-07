@@ -198,10 +198,10 @@ rbool RDOResType::Param::operator== (CREF(Param) param) const
 // --------------------------------------------------------------------
 // ---- Собирает все типы ресурсов, которые есть у парсера
 // --------------------------------------------------------------------
-RDOResTypeList::RDOResTypeList(PTR(rdoParse::RDOParser) parser)
-	: RDOList<RDOResType>(parser)
+RDOResTypeList::RDOResTypeList(CREF(rdoParse::LPRDOParser) pParser)
+	: RDOList<RDOResType>(pParser)
 {
-	STL_FOR_ALL_CONST(m_parser->getRTPResTypes(), rtp_it)
+	STL_FOR_ALL_CONST(m_pParser->getRTPResTypes(), rtp_it)
 	{
 		RDOResType rtp(*rtp_it);
 		m_list.push_back(rtp);
@@ -216,7 +216,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 	if (std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResType>(rtp.name())) != end())
 		return false;
 
-	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_parser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
+	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_pParser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
 	STL_FOR_ALL_CONST(rtp.m_params, param)
 	{
 		rdoParse::LPRDOTypeParam pParamType;
@@ -258,7 +258,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 			}
 			default:
 			{
-				m_parser->removeRTPResType(pResourceType);
+				m_pParser->removeRTPResType(pResourceType);
 				return false;
 			}
 		}
@@ -315,12 +315,12 @@ REF(RDOResource::Params::mapped_type) RDOResource::operator[] (CREF(tstring) par
 	}
 }
 
-rdoParse::LPRDORSSResource RDOResource::getParserResource(CREF(rdoParse::RDOParser) parser) const
+rdoParse::LPRDORSSResource RDOResource::getParserResource(CREF(rdoParse::LPRDOParser) pParser) const
 {
 	if (!exist())
 		return NULL;
 
-	return parser.findRSSResource(name());
+	return pParser->findRSSResource(name());
 }
 
 rbool RDOResource::fillParserResourceParams(REF(rdoParse::LPRDORSSResource) pToParserRSS) const
@@ -369,10 +369,10 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 // --------------------------------------------------------------------
 // ---- Собирает все ресурсы, которые есть у парсера
 // --------------------------------------------------------------------
-RDOResourceList::RDOResourceList(PTR(rdoParse::RDOParser) parser)
-	: RDOList<RDOResource>(parser)
+RDOResourceList::RDOResourceList(CREF(rdoParse::LPRDOParser) pParser)
+	: RDOList<RDOResource>(pParser)
 {
-	STL_FOR_ALL_CONST(m_parser->getRSSResources(), rss_it)
+	STL_FOR_ALL_CONST(m_pParser->getRSSResources(), rss_it)
 	{
 		RDOResource rss(*rss_it);
 		m_list.push_back(rss);

@@ -1804,11 +1804,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\isReturn.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\event_plan.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\calc\event_plan.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\locvar.h"
 				>
 			</File>
 			<File
@@ -1883,10 +1891,6 @@
 			</File>
 			<File
 				RelativePath=".\rdocalc.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\rdocalc_locvar.h"
 				>
 			</File>
 			<File

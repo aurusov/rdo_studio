@@ -241,6 +241,8 @@ calculate_if                   return(RDO_Calculate_if);
 if                             return(RDO_if);
 else                           return(RDO_else);
 for                            return(RDO_for);
+return                         return(RDO_Return);
+break                          return(RDO_Break);
 set                            return(RDO_set);
 planning                       return(RDO_Planning);
 Planning                       return(RDO_Planning);

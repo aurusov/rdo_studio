@@ -36,6 +36,8 @@ public:
 		if (m_pCalc)
 			setSrcInfo(m_pCalc->src_info());
 	}
+	virtual ~RDOSetRelParamCalc()
+	{}
 
 protected:
 	int        m_relNumb;

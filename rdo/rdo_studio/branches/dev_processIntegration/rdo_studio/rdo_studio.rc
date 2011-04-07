@@ -320,7 +320,7 @@ BEGIN
     CTEXT           "caption",IDC_ABOUT_CAPTION,40,8,220,8
     LTEXT           "Московский Государственный Университет им.Н.Э.Баумана,\nФакультет Робототехники и комплексной автоматизации,\nКафедра Компьютерные системы автоматизации производства",IDC_ABOUT_INFO,40,20,220,24
     RTEXT           "Телефон: +7 (499) 263 63 88\n+7 (499) 263 69 54",IDC_ABOUT_TEL,117,83,144,23
-    EDITTEXT        IDC_DEVELOPERS,4,131,260,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_DEVELOPERS,4,131,260,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
     LTEXT           "Разработчики",IDC_STATIC,4,120,50,8
     RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,204,112,56,8,SS_NOTIFY
     RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,180,120,80,8,SS_NOTIFY
@@ -3591,7 +3591,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_DEVELOPERS          "RAO-Studio v1.0 (РДО v2.0, 2003-2009 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (РДО v1.0, 1991-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
+    IDS_DEVELOPERS          "RAO-Studio v1.1 (2009-2011 годы)\r\n\tЛущан Д.Н.\r\n\tУрусов А.В.\r\n\r\nRAO-Studio v1.0 (2003-2009 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (1991-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
 END
 
 STRINGTABLE 
@@ -3754,7 +3754,7 @@ BEGIN
     CTEXT           "caption",IDC_ABOUT_CAPTION,48,8,144,8
     LTEXT           "Bauman Moscow State Technical University,\nRobotics and Complex Automation Faculty,\nComputer-Aided Systems for Manufacturing Automatization Departmen",IDC_ABOUT_INFO,52,20,144,24
     RTEXT           "Tel. +7 (499) 263 63 88\n+7 (499) 263 69 54",IDC_ABOUT_TEL,52,76,144,23
-    EDITTEXT        IDC_DEVELOPERS,4,131,216,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_DEVELOPERS,4,131,216,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
     LTEXT           "Developers",IDC_STATIC,4,120,50,8
     RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,140,112,56,8,SS_NOTIFY
     RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,116,120,80,8,SS_NOTIFY
@@ -4933,7 +4933,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_DEVELOPERS          "RAO-Studio v1.0 (RDO v2.0, 2003-2009)\r\n\tEmelyanov V.V.\r\n\tBars A.V.\r\n\tZakharov P.A.\r\n\tUrusov A.V.\r\n\r\nRAO-Simulator v3.0 (RDO v1.0, 1991-1999)\r\n\tEmelyanov V.V.\r\n\tYasinovsky S.I.\r\n\tOvsyannikov M.V."
+    IDS_DEVELOPERS          "RAO-Studio v1.1 (2009-2011)\r\n\tLuschan D.N.\r\n\tUrusov A.V.\r\n\r\nRAO-Studio v1.0 (2003-2009)\r\n\tEmelyanov V.V.\r\n\tBars A.V.\r\n\tZakharov P.A.\r\n\tUrusov A.V.\r\n\r\nRAO-Simulator v3.0 (1991-1999)\r\n\tEmelyanov V.V.\r\n\tYasinovsky S.I.\r\n\tOvsyannikov M.V."
 END
 
 STRINGTABLE 

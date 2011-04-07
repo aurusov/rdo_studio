@@ -1,9 +1,9 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdocalc.inl
- * author   : Александ Барс, Урусов Андрей
+ * copyright: (c) RDO-Team, 2011
+ * filename : isReturn.h
+ * author   : Чирков Михаил
  * date     : 
- * bref     : 11.07.2009
+ * bref     : 23.02.2011
  * indent   : 4T
  */
 
@@ -14,21 +14,30 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcConst
+// ---------- RDOCalcIsReturn
 // ----------------------------------------------------------------------------
-inline RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
+class RDOCalcIsReturn
 {
-	m_value = value;
+public:
+	void  resetCnt()      ;
+	void  upCnt(   )      ;
+	rsint isReturn() const;
+private:
+	rsint m_returnCnt;
+};
+
+inline void RDOCalcIsReturn::resetCnt()
+{
+	m_returnCnt = 0;
 }
 
-inline CREF(RDOValue) RDOCalcConst::getValue() const
+inline void RDOCalcIsReturn::upCnt()
 {
-	return m_value;
+	++m_returnCnt;
 }
 
-inline REF(RDOValue) RDOCalcConst::doCalc(PTR(RDORuntime) runtime)
+inline rsint RDOCalcIsReturn::isReturn() const
 {
-	return m_value;
+	return m_returnCnt;
 }
-
 CLOSE_RDO_RUNTIME_NAMESPACE

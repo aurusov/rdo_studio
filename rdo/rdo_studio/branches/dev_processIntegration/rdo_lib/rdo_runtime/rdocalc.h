@@ -20,6 +20,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
+#include "rdo_lib/rdo_runtime/isReturn.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -27,7 +28,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
+OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo) IS INSTANCE_OF(RDOCalcIsReturn)
 {
 DECLARE_FACTORY(RDOCalc)
 
@@ -64,6 +65,9 @@ class TYPE: public PARENT
 CALC(RDOCalcConst)
 {
 DECLARE_FACTORY(RDOCalcConst)
+public:
+	CREF(RDOValue) getValue() const;
+
 private:
 	RDOCalcConst(CREF(RDOValue) value);
 	DECALRE_ICalc;
@@ -389,6 +393,25 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcLocalVariableList
+// ----------------------------------------------------------------------------
+CALC(RDOCalcLocalVariableList)
+{
+	DECLARE_FACTORY(RDOCalcLocalVariableList)
+public:
+	typedef std::vector<LPRDOCalc> CalcLocalVariableList;
+
+	void addCalcLocalVariable(CREF(LPRDOCalc) pCalc);
+
+private:
+	RDOCalcLocalVariableList();
+
+	CalcLocalVariableList m_calcLocalVariableList;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcOpenBrace
 // ----------------------------------------------------------------------------
 CALC(RDOCalcOpenBrace)
@@ -409,6 +432,60 @@ DECLARE_FACTORY(RDOCalcCloseBrace)
 private:
 	RDOCalcCloseBrace();
 
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFunCalc
+// ----------------------------------------------------------------------------
+CALC(RDOFunCalc)
+{
+protected:
+	RDOFunCalc()
+	{}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunList
+// ----------------------------------------------------------------------------
+CALC_SUB(RDOCalcFunList, RDOFunCalc)
+{
+	DECLARE_FACTORY(RDOCalcFunList)
+public:
+	typedef std::vector<LPRDOCalc> CalcFunList;
+
+	void addFunCalc(CREF(LPRDOCalc) pCalc);
+
+private:
+	RDOCalcFunList();
+
+	CalcFunList m_calcFunList;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunBreak
+// ----------------------------------------------------------------------------
+CALC(RDOCalcFunBreak)
+{
+	DECLARE_FACTORY(RDOCalcFunBreak)
+private:
+	RDOCalcFunBreak();
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunReturn
+// ----------------------------------------------------------------------------
+CALC(RDOCalcFunReturn)
+{
+	DECLARE_FACTORY(RDOCalcFunReturn)
+private:
+	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
+
+	LPRDOCalc m_pReturn;
 	DECALRE_ICalc;
 };
 
@@ -440,16 +517,6 @@ DECLARE_FACTORY(RDOCalcNoChange)
 private:
 	RDOCalcNoChange();
 	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFunCalc
-// ----------------------------------------------------------------------------
-CALC(RDOFunCalc)
-{
-protected:
-	RDOFunCalc()
-	{}
 };
 
 // ----------------------------------------------------------------------------

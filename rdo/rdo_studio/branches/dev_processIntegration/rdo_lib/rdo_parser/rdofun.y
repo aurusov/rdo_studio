@@ -124,6 +124,8 @@
 %token RDO_RELEASE
 %token RDO_if
 %token RDO_for
+%token RDO_Return
+%token RDO_Break
 %token RDO_result
 %token RDO_CF
 %token RDO_Priority
@@ -208,7 +210,11 @@
 #include "rdo_lib/rdo_parser/rdo_type_range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_parser/local_variable.h"
+#include "rdo_lib/rdo_parser/context/type.h"
+#include "rdo_lib/rdo_parser/context/memory.h"
+#include "rdo_lib/rdo_parser/variable_container.h"
+#include "rdo_lib/rdo_runtime/calc/locvar.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -366,10 +372,14 @@ fun_func_params
 	;
 
 fun_func_footer
-	:	RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body fun_func_algorithmic_body RDO_End
+	: RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body statement RDO_End
 	{
+		rdoRuntime::LPRDOFunCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOFunCalc>($6);
+		ASSERT(pCalc);
+
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
+		pFunction->setFunctionCalc(pCalc);
 		pFunction->createAlgorithmicCalc(@5);
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
@@ -384,7 +394,7 @@ fun_func_footer
 		ASSERT(pFunction);
 		pFunction->createTableCalc(@6);
 	}
-	| RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body fun_func_algorithmic_body error
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body statement error
 	{
 		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
 	}
@@ -418,86 +428,678 @@ fun_func_footer
 	}
 	;
 
-fun_func_algorithmic_body
+statement
+	: empty_statement ';'
+	| empty_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| equal_statement ';'
+	| equal_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| local_variable_declaration ';'
+	| local_variable_declaration error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| if_statement
+	| for_statement
+	| return_statement ';'
+	| return_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| break_statement ';'
+	| break_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| open_brace statement_list close_brace
+	{
+		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($2);
+		ASSERT(pCalcFunList);
+
+		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcFunList->addFunCalc(pCalcCloseBrace);
+
+		rdoRuntime::LPRDOCalc pCalc = pCalcFunList;
+		ASSERT(pCalc);
+		$$ = PARSER->stack().push(pCalc);
+	}
+	;
+
+open_brace
+	: '{'
+	{
+		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+		ASSERT(pLocalVariableList);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->push(pLocalVariableList);
+	}
+	;
+
+close_brace
+	: '}'
+	{
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->pop();
+	}
+	;
+
+statement_list
 	: /* empty */
-	| fun_func_algorithmic_body fun_func_algorithmic_calc_if
 	{
-		LPRDOFUNCalculateIf pCalculateIf = PARSER->stack().pop<RDOFUNCalculateIf>($2);
-		ASSERT(pCalculateIf);
-		PARSER->getLastFUNFunction()->add(pCalculateIf);
+		rdoRuntime::LPRDOCalcFunList pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunList>::create();
+		ASSERT(pCalcFunList);
+
+		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		pCalcFunList->addFunCalc(pCalcOpenBrace);
+		$$ = PARSER->stack().push(pCalcFunList);
+	}
+	| statement_list statement
+	{
+		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($1);
+		ASSERT(pCalcFunList);
+
+		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
+		ASSERT(pCalc);
+
+		pCalcFunList->addFunCalc(pCalc);
+
+		$$ = PARSER->stack().push(pCalcFunList);
 	}
 	;
 
-fun_func_calc_if
-	: RDO_Calculate_if
-	| RDO_if
+empty_statement
+	: ';'
+	{
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
+		ASSERT(pCalc);
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| error ';'
+	{
+		PARSER->error().error(@1, _T("Ошибка в инструкции"));
+	}
 	;
 
-fun_func_calc_name
-	: RDO_result
-	| RDO_IDENTIF
+equal_statement
+	: RDO_IDENTIF increment_or_decrement_type
 	{
-		tstring name = P_RDOVALUE($1)->value().getIdentificator();
-		if ( name != PARSER->getLastFUNFunction()->name() )
+		tstring                paramName = RDOVALUE($1)->getIdentificator();
+		rdoRuntime::EqualType  equalType = static_cast<rdoRuntime::EqualType>($2);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+		rdoRuntime::LPRDOCalc pCalc;
+		if(pLocalVariable)
 		{
-			PARSER->error().error(@1, rdo::format(_T("Ожидается имя функции '%s'"), PARSER->getLastFUNFunction()->name().c_str()));
+			switch (equalType)
+			{
+				case rdoRuntime::ET_INCR:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariableEqualType<rdoRuntime::ET_INCR> >::create(paramName);
+					break;
+				}
+				case rdoRuntime::ET_DECR:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariableEqualType<rdoRuntime::ET_DECR> >::create(paramName);
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
+			}
 		}
-	}
-	;
+		else PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_INCR:
+			{
+				oprStr = _T("++");
+				break;
+			}
+			case rdoRuntime::ET_DECR:
+			{
+				oprStr = _T("--");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcText(rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
 
-fun_func_algorithmic_calc_if
-	: fun_func_calc_if fun_logic fun_func_calc_name '=' fun_arithm
-	{
-		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
-		ASSERT(pLogic);
-		pLogic->setSrcText(_T("Calculate_if ") + pLogic->src_text());
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
-		ASSERT(pArithm);
-		LPRDOFUNCalculateIf pCalculateIf = rdo::Factory<RDOFUNCalculateIf>::create(pLogic, pArithm);
-		ASSERT(pCalculateIf);
-		$$ = PARSER->stack().push(pCalculateIf);
+		$$ = PARSER->stack().push(pCalc);
 	}
-	| fun_func_calc_if fun_logic fun_func_calc_name '=' error
+	| RDO_IDENTIF param_equal_type fun_arithm
 	{
-		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+		tstring               paramName    = RDOVALUE($1)->getIdentificator();
+		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
+		LPRDOFUNArithm        pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+		rdoRuntime::LPRDOCalc pCalc;
+		rdoRuntime::LPRDOCalc pCalcRight;
+		if (pLocalVariable)
+		{
+			pCalcRight = pRightArithm->createCalc(pLocalVariable->getParam());
+			switch (equalType)
+			{
+				case rdoRuntime::ET_NOCHANGE:
+				{
+					break;
+				}
+				case rdoRuntime::ET_EQUAL:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariableEqualType<rdoRuntime::ET_EQUAL> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdoRuntime::ET_PLUS:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariableEqualType<rdoRuntime::ET_PLUS> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdoRuntime::ET_MINUS:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariableEqualType<rdoRuntime::ET_MINUS> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdoRuntime::ET_MULTIPLY:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariableEqualType<rdoRuntime::ET_MULTIPLY> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdoRuntime::ET_DIVIDE:
+				{
+					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariableEqualType<rdoRuntime::ET_DIVIDE> >::create(paramName, pCalcRight);
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
+			}
+		}
+		else PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdoRuntime::ET_EQUAL:
+			{
+				oprStr = _T("=");
+				break;
+			}
+			case rdoRuntime::ET_PLUS:
+			{
+				oprStr = _T("+=");
+				break;
+			}
+			case rdoRuntime::ET_MINUS:
+			{
+				oprStr = _T("-=");
+				break;
+			}
+			case rdoRuntime::ET_MULTIPLY:
+			{
+				oprStr = _T("*=");
+				break;
+			}
+			case rdoRuntime::ET_DIVIDE:
+			{
+				oprStr = _T("/=");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
+		$$ = PARSER->stack().push(pCalc);
 	}
-	| fun_func_calc_name '=' fun_arithm
-	{
-		rdoRuntime::LPRDOCalc pCondition = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		RDOParserSrcInfo logic_src_info(_T("Calculate_if 1 = 1"));
-		logic_src_info.setSrcPos( @1.m_first_line, @1.m_first_pos, @1.m_first_line, @1.m_first_pos );
-		pCondition->setSrcInfo( logic_src_info );
-		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCondition, true);
-		pLogic->setSrcInfo( logic_src_info );
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
-		ASSERT(pArithm);
-		LPRDOFUNCalculateIf pCalculateIf = rdo::Factory<RDOFUNCalculateIf>::create(pLogic, pArithm);
-		ASSERT(pCalculateIf);
-		$$ = PARSER->stack().push(pCalculateIf);
-	}
-	| fun_func_calc_name '=' error
+	| RDO_IDENTIF param_equal_type error
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
-	| fun_func_calc_if fun_logic fun_func_calc_name error
+	| RDO_IDENTIF error fun_arithm
 	{
-		PARSER->error().error(@4, _T("Ожидается '='"));
+		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
 	}
-	| fun_func_calc_name error
+	;
+
+local_variable_declaration
+	: type_declaration init_declaration_list
 	{
-		PARSER->error().error(@2, _T("Ожидается '='"));
+		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+
+		PARSER->contextStack()->pop();
 	}
-	| fun_func_calc_if fun_logic error
+	;
+
+type_declaration
+	: RDO_integer
 	{
-		PARSER->error().error(@2, @3, _T("После логического выражения ожидается <имя_функции> = <результат_функции>"));
+		LPRDOType pBaseType = rdo::Factory<RDOType__int>::create();
+		ASSERT(pBaseType);
+
+		LPRDOTypeParam pType;
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 	}
-	| fun_func_calc_if error
+	| RDO_real
 	{
-		PARSER->error().error(@2, _T("Ошибка в логическом выражении"));
+		LPRDOType pBaseType = rdo::Factory<RDOType__real>::create();
+		ASSERT(pBaseType);
+
+		LPRDOTypeParam pType;
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 	}
-	| error
+	| RDO_string
 	{
-		PARSER->error().error(@1, _T("Ожидается ключевое слово Calculate_if"));
+		LPRDOType pBaseType = rdo::Factory<RDOType__string>::create();
+		ASSERT(pBaseType);
+
+		LPRDOTypeParam pType;
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+	}
+	| param_type_array
+	{
+		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+		ASSERT(pArray);
+
+		LPRDOTypeParam pType;
+		pType = rdo::Factory<RDOTypeParam>::create(pArray, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+	}
+	| RDO_bool
+	{
+		LPRDOType pBaseType = rdo::Factory<RDOType__bool>::create();
+		ASSERT(pBaseType);
+
+		LPRDOTypeParam pType;
+		pType = rdo::Factory<RDOTypeParam>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+	}
+	| param_type_enum
+	{
+		LEXER->enumReset();
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+		ASSERT(pEnum);
+
+		LPRDOTypeParam pType;
+		pType = rdo::Factory<RDOTypeParam>::create(pEnum, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+	}
+	| param_type_such_as
+	{
+		LPRDOTypeParam pTypeSuchAs = PARSER->stack().pop<RDOTypeParam>($1);
+		ASSERT(pTypeSuchAs);
+
+		LPRDOTypeParam pType;
+		pType = rdo::Factory<RDOTypeParam>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+	}
+	;
+
+init_declaration_list
+	: init_declaration
+	{
+		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($1);
+		ASSERT(pVariableContainer);
+
+		LPLocalVariable pLocalVariable = pVariableContainer->getLocalVariable();
+		ASSERT(pLocalVariable);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->append(pLocalVariable);
+
+		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
+		ASSERT(pCalc);
+
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
+		ASSERT(pCalcLocalVariableList);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
+
+		$$ = PARSER->stack().push(pCalcLocalVariableList);
+	}
+	| init_declaration_list ',' init_declaration
+	{
+		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($3);
+		ASSERT(pVariableContainer);
+
+		LPLocalVariable pLocalVariable = pVariableContainer->getLocalVariable();
+		ASSERT(pLocalVariable);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->append(pLocalVariable);
+
+		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
+		ASSERT(pCalc);
+
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVariableList>($1);
+		ASSERT(pCalcLocalVariableList);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
+
+		$$ = PARSER->stack().push(pCalcLocalVariableList);
+	}
+	;
+
+init_declaration
+	: RDO_IDENTIF
+	{
+		RDOValue variableName = RDOVALUE($1);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPTypeContext pTypeContext = pContext.object_static_cast<TypeContext>();
+		ASSERT(pTypeContext);
+
+		LPRDOTypeParam pParam = pTypeContext->getType();
+		ASSERT(pParam);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			pParam->type(),
+			rdo::Factory<rdoRuntime::RDOCalcConst>::create(variableName.value()),
+			variableName.src_info()
+		);
+		ASSERT(pExpression);
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pExpression, pParam);
+		ASSERT(pLocalVariable);
+
+		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
+		ASSERT(pCalcCreateLocalVariable);
+
+		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
+
+		$$ = PARSER->stack().push(pVariableContainer);
+	}
+	| RDO_IDENTIF '=' fun_arithm
+	{
+		RDOValue variableName = RDOVALUE($1);
+
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPTypeContext pTypeContext = pContext.object_static_cast<TypeContext>();
+		ASSERT(pTypeContext);
+
+		LPRDOTypeParam pParam = pTypeContext->getType();
+		ASSERT(pParam);
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(variableName, pArithm->expression(), pParam);
+		ASSERT(pLocalVariable);
+
+		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
+		ASSERT(pCalcLocalVariableList);
+
+		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
+		ASSERT(pCalcCreateLocalVariable);
+
+		rdoRuntime::LPRDOCalcSetLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable>::create(variableName->getIdentificator(), pArithm->calc());
+		ASSERT(pCalcSetLocalVariable);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
+		pCalcLocalVariableList->addCalcLocalVariable(pCalcSetLocalVariable);
+
+		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
+
+		$$ = PARSER->stack().push(pVariableContainer);
+	}
+	;
+
+if_statement
+	: RDO_if '(' fun_logic ')' statement
+	{
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pCondition);
+
+		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($5);
+		ASSERT(pStatementCalc);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pStatementCalc);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_if '(' fun_logic ')' statement RDO_else statement
+	{
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pCondition);
+		
+		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		rdoRuntime::LPRDOCalc pIfStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($5);
+		ASSERT(pIfStatementCalc);
+
+		rdoRuntime::LPRDOCalc pElseStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
+		ASSERT(pElseStatementCalc);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfStatementCalc, pElseStatementCalc);
+		ASSERT(pCalc);
+		
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_if error fun_logic
+	{
+		PARSER->error().error(@2, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_if '(' fun_logic error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+for_statement
+	: RDO_for '(' local_variable_declaration ';' fun_logic ';' equal_statement ')' statement
+	{
+		rdoRuntime::LPRDOCalc pDeclarationCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($3);
+		ASSERT(pDeclarationCalc);
+
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
+		ASSERT(pCondition);
+		
+		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		rdoRuntime::LPRDOCalc pExpressionCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
+		ASSERT(pExpressionCalc);
+
+		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($9);
+		ASSERT(pStatementCalc);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(pDeclarationCalc, pConditionCalc, pExpressionCalc, pStatementCalc);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_for '(' equal_statement ';' fun_logic ';' equal_statement ')' statement
+	{
+		rdoRuntime::LPRDOCalc pDeclarationCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($3);
+		ASSERT(pDeclarationCalc);
+
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
+		ASSERT(pCondition);
+		
+		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		rdoRuntime::LPRDOCalc pExpressionCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
+		ASSERT(pExpressionCalc);
+
+		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($9);
+		ASSERT(pStatementCalc);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(pDeclarationCalc, pConditionCalc, pExpressionCalc, pStatementCalc);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	;
+
+increment_or_decrement_type
+	: RDO_IncrEqual
+	{
+		$$ = rdoRuntime::ET_INCR;
+	}
+	| RDO_DecrEqual
+	{
+		$$ = rdoRuntime::ET_DECR;
+	}
+	;
+
+param_equal_type
+	: RDO_set
+	{
+		$$ = rdoRuntime::ET_EQUAL;
+	}
+	| '='
+	{
+		$$ = rdoRuntime::ET_EQUAL;
+	}
+	| RDO_PlusEqual
+	{
+		$$ = rdoRuntime::ET_PLUS;
+	}
+	| RDO_MinusEqual
+	{
+		$$ = rdoRuntime::ET_MINUS;
+	}
+	| RDO_MultiplyEqual
+	{
+		$$ = rdoRuntime::ET_MULTIPLY;
+	}
+	| RDO_DivideEqual
+	{
+		$$ = rdoRuntime::ET_DIVIDE;
+	}
+	;
+
+return_statement
+	:RDO_Return fun_arithm
+	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(PARSER->getLastFUNFunction()->getReturn()->getType());
+
+		rdoRuntime::LPRDOCalc pCalcReturn = rdo::Factory<rdoRuntime::RDOCalcFunReturn>::create(pCalc);
+		ASSERT(pCalcReturn);
+		$$ = PARSER->stack().push(pCalcReturn);
+	}
+	;
+
+break_statement
+	:RDO_Break
+	{
+		rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
+		ASSERT(pCalcBreak);
+		$$ = PARSER->stack().push(pCalcBreak);
 	}
 	;
 
@@ -1733,14 +2335,14 @@ fun_logic
 // ---------- Арифметические выражения
 // ----------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| param_array_value					 { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
@@ -1796,9 +2398,8 @@ fun_arithm
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 		RDOParserSrcInfo info;
-		info.setSrcPos (@1, @2);
-		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
+		info.setSrcPos(@1, @2);
+		$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
 	}
 	;
 
@@ -1908,10 +2509,8 @@ fun_group
 		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
 		ASSERT(pGroupFun);
 		pGroupFun->setSrcPos(@1, @3);
-		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
+		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(RDOParserSrcInfo(@2, _T("NoCheck")));
 		ASSERT(pTrueLogic);
-		pTrueLogic->setSrcPos (@2);
-		pTrueLogic->setSrcText(_T("NoCheck"));
 		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
@@ -1965,14 +2564,11 @@ fun_select_body
 	{
 		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
-		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
-		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
-		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-		ASSERT(pCalc);
-		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
-		ASSERT(pLogic);
-		pLogic->setSrcInfo(logicInfo);
-		pSelect->initSelect(pLogic);
+		RDOParserSrcInfo info(@2, _T("NoCheck"));
+		pSelect->setSrcText(pSelect->src_text() + info.src_text() + _T(")"));
+		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(info);
+		ASSERT(pTrueLogic);
+		pSelect->initSelect(pTrueLogic);
 		$$ = PARSER->stack().push(pSelect);
 	}
 	| fun_select_header fun_logic error

@@ -13,7 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
+#include "rdo_lib/rdo_parser/expression.h"
 #include "rdo_lib/rdo_parser/rdo_type_param.h"
 // ===============================================================================
 
@@ -26,16 +26,16 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(RDOValue) getValue () const;
-	LPRDOFUNArithm getArithm() const;
-	LPRDOTypeParam getParam () const;
+	CREF(RDOValue) getValue     () const;
+	LPExpression   getExpression() const;
+	LPRDOTypeParam getParam     () const;
 
 private:
-	LocalVariable(CREF(RDOValue) value, CREF(LPRDOFUNArithm) pArithm, CREF(LPRDOTypeParam) pParam);
+	LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPRDOTypeParam) pParam);
 
-	RDOValue       m_value  ;
-	LPRDOFUNArithm m_pArithm;
-	LPRDOTypeParam m_pParam ;
+	RDOValue       m_value;
+	LPExpression   m_pExpression;
+	LPRDOTypeParam m_pParam;
 };
 
 // ----------------------------------------------------------------------------

@@ -158,7 +158,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class RDOTrace;
 
 OPEN_RDO_PARSER_NAMESPACE
-class RDOParser;
+PREDECLARE_POINTER(RDOParser);
 CLOSE_RDO_PARSER_NAMESPACE
 
 OPEN_RDO_SIMULATOR_NAMESPACE
@@ -198,7 +198,7 @@ public:
 	};
 
 private:
-	PTR(rdoParse::RDOParser)     m_pParser;
+	rdoParse::LPRDOParser        m_pParser;
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	rbool                        m_canTrace;
 
@@ -276,7 +276,7 @@ public:
 class RDOThreadCodeComp: public RDOThreadMT
 {
 protected:
-	PTR(rdoParse::RDOParser) m_pParser;
+	rdoParse::LPRDOParser m_pParser;
 
 	virtual ~RDOThreadCodeComp(); //! „тобы нельз€ было удалить через delete помещаем его в protected
 	virtual void proc(REF(RDOMessageInfo) msg);

@@ -124,6 +124,8 @@
 %token RDO_RELEASE
 %token RDO_if
 %token RDO_for
+%token RDO_Return
+%token RDO_Break
 %token RDO_result
 %token RDO_CF
 %token RDO_Priority
@@ -279,6 +281,7 @@ rss_res_descr
 			PARSER->error().error(@3, rdo::format(_T("Заданы не все параметры ресурса: %s"), pResource->name().c_str()));
 		}
 		pResource->setTrace($2 != 0);
+		pResource->end();
 	}
 	;
 
