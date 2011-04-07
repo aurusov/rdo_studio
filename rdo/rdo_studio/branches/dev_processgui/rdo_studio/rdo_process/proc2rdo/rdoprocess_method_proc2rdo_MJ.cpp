@@ -102,8 +102,6 @@ void RPMethodProc2RDO_MJ::buttonCommand( int button_id )
 {
 	if ( button_id == btn_generate ) {
 		generate();
-		model->closeModel();
-		model->openModel();
 	} else if ( button_id == btn_generate_setup ) {
 		RP_GENERATION_TYPE_MJ dlg( AfxGetMainWnd() );
 		dlg.DoModal();	
