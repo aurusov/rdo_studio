@@ -2733,6 +2733,10 @@
 				RelativePath=".\type\type_info.h"
 				>
 			</File>
+			<File
+				RelativePath=".\type\type_info.inl"
+				>
+			</File>
 			<Filter
 				Name=".enum"
 				>
