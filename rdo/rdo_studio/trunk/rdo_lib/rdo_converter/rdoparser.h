@@ -35,8 +35,6 @@
 #include "rdo_lib/rdo_converter/update/update_i.h"
 #include "rdo_lib/rdo_converter/update/document.h"
 
-#include "rdo_lib/rdo_parser/rdoparser.h"
-
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
@@ -54,6 +52,30 @@ class RDORTPFuzzyParam;
 // ----------------------------------------------------------------------------
 // ---------- Converter
 // ----------------------------------------------------------------------------
+#define DEFINE_OBJECT_CONTAINER_MINIMUM(TYPE, NAME) \
+public: \
+	typedef std::vector<TYPE> NAME##List; \
+	void                insert##NAME (TYPE value); \
+	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : NULL; } \
+	CREF(NAME##List)    get##NAME##s () const { return m_all##NAME; } \
+private: \
+	NAME##List m_all##NAME;
+
+#define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
+public: \
+	const TYPE find##NAME  (CREF(tstring) name) const; \
+	rbool      remove##NAME(const TYPE item);
+
+#define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
+
+#define DEFINE_OBJECT_CONTAINER_NONAME_LP(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
+
+#define DEFINE_OBJECT_CONTAINER(NAME) \
+DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
+DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
+
 class Converter
 {
 public:
