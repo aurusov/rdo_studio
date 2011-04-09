@@ -13,7 +13,7 @@
 // ====================================================================== INCLUDES
 #include <boost/optional.hpp>
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type.h"
+#include "rdo_lib/rdo_parser/type/type.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

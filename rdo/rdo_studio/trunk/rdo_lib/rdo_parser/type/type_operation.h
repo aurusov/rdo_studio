@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_type_operation.h
+ * filename : type_operation.h
  * author   : Урусов Андрей
  * date     : 10.03.2011
  * bref     : 

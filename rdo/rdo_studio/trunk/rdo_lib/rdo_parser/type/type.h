@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_type.h
+ * filename : type.h
  * author   : Урусов Андрей
  * date     : 
  * bref     : 

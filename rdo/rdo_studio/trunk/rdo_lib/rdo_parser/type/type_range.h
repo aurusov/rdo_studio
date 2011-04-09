@@ -1,14 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_type_range.h
+ * filename : type_range.h
  * author   : Урусов Андрей
  * date     : 10.02.2010
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDO_TYPE_RANGE_H_
-#define _RDO_TYPE_RANGE_H_
+#ifndef _RDOPARSER_TYPE_RANGE_H_
+#define _RDOPARSER_TYPE_RANGE_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -67,6 +67,6 @@ DECLARE_POINTER(RDOTypeRealRange);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "rdo_lib/rdo_parser/rdo_type_range.inl"
+#include "rdo_lib/rdo_parser/type/type_range.inl"
 
-#endif //! _RDO_TYPE_RANGE_H_
+#endif //! _RDOPARSER_TYPE_RANGE_H_

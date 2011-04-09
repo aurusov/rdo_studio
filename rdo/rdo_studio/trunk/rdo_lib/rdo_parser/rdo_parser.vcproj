@@ -2693,19 +2693,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_param.cpp"
+					RelativePath=".\type\type_param.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_param.h"
+					RelativePath=".\type\type_param.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_param_suchas.cpp"
+					RelativePath=".\type\type_param_suchas.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_param_suchas.h"
+					RelativePath=".\type\type_param_suchas.h"
 					>
 				</File>
 			</Filter>
@@ -2714,15 +2714,11 @@
 			Name=".type"
 			>
 			<File
-				RelativePath=".\rdo_type.cpp"
+				RelativePath=".\type\type.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdo_type.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdo_type_operation.h"
+				RelativePath=".\type\type.h"
 				>
 			</File>
 			<File
@@ -2737,15 +2733,19 @@
 				RelativePath=".\type\type_info.inl"
 				>
 			</File>
+			<File
+				RelativePath=".\type\type_operation.h"
+				>
+			</File>
 			<Filter
 				Name=".enum"
 				>
 				<File
-					RelativePath=".\rdo_enum.cpp"
+					RelativePath=".\type\enum.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_enum.h"
+					RelativePath=".\type\enum.h"
 					>
 				</File>
 			</Filter>
@@ -2753,11 +2753,11 @@
 				Name=".range"
 				>
 				<File
-					RelativePath=".\rdo_type_range.h"
+					RelativePath=".\type\type_range.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_range.inl"
+					RelativePath=".\type\type_range.inl"
 					>
 				</File>
 			</Filter>

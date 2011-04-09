@@ -15,7 +15,7 @@
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-#include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/type/type_range.h"
 #include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 // ===============================================================================
