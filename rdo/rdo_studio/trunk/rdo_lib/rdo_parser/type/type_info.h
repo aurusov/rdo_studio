@@ -39,4 +39,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
+#include "rdo_lib/rdo_parser/type/type_info.inl"
+
 #endif //! _RDOPARSER_TYPE_INFO_H_
