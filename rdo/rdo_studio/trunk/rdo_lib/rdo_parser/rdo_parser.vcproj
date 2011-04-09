@@ -2729,10 +2729,6 @@
 				RelativePath=".\type\type_info.inl"
 				>
 			</File>
-			<File
-				RelativePath=".\type\type_operation.h"
-				>
-			</File>
 			<Filter
 				Name=".enum"
 				>
