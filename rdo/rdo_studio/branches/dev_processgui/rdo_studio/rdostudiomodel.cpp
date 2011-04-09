@@ -942,9 +942,12 @@ void RDOStudioModel::saveModelToRepository()
 		int progress_cnt = 0;
 		for (int i = 0; i < cnt; i++)
 		{
-			if (smr_modified || pTab->getItemWnd<RDOEditorEdit>(i)->isModify())
+			if(pTab->getItemWnd<RDOEditorEdit>(i)>0)
 			{
-				progress_cnt++;
+				if (smr_modified || pTab->getItemWnd<RDOEditorEdit>(i)->isModify())
+				{
+					progress_cnt++;
+				}
 			}
 		}
 		if (progress_cnt)

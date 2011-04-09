@@ -187,7 +187,7 @@ tstring str = rdo::format(_T("%s.pat"), getDirectory().c_str()).c_str();
 	rpMethod::project->getAllChildByClass( all_child, "RPShape_MJ", true );
   	std::list< RPObject* >::iterator shape_it = all_child.begin();
 	while ( shape_it != all_child.end() ) {
-		dynamic_cast<RPObject_MJ*>(static_cast<RPShape_MJ*>(*shape_it))->generate();
+		dynamic_cast<RPObject_MJ*>( static_cast<RPShape_MJ*>(*shape_it) )->generate();
 		shape_it++;
 	}
 
