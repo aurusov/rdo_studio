@@ -2725,6 +2725,14 @@
 				RelativePath=".\rdo_type_operation.h"
 				>
 			</File>
+			<File
+				RelativePath=".\type\type_info.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\type\type_info.h"
+				>
+			</File>
 			<Filter
 				Name=".enum"
 				>
