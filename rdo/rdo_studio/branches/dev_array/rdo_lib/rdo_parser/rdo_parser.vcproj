@@ -2705,6 +2705,22 @@
 		<Filter
 			Name=".type"
 			>
+			<File
+				RelativePath=".\type\info.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\type\info.h"
+				>
+			</File>
+			<File
+				RelativePath=".\type\info.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\type\type.h"
+				>
+			</File>
 			<Filter
 				Name=".enum"
 				>
@@ -2762,26 +2778,6 @@
 				</File>
 				<File
 					RelativePath=".\type\such_as.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name=".common"
-				>
-				<File
-					RelativePath=".\type\info.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\type\info.h"
-					>
-				</File>
-				<File
-					RelativePath=".\type\info.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\type\type.h"
 					>
 				</File>
 			</Filter>
