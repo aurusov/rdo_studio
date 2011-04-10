@@ -24,52 +24,52 @@ OPEN_RDO_PARSER_NAMESPACE
 RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow.object_parent_cast<rdoRuntime::RDOType>()))
-	, m_type          (rdo::Factory<RDOType__unknow>::create())
+	, m_pType         (rdo::Factory<RDOType__unknow>::create())
 {}
 
 RDOValue::RDOValue(CREF(LPRDOArrayValue) pValue)
 	: RDOParserSrcInfo(pValue->src_info()    )
 	, m_pArray        (pValue                )
-	, m_type          (pValue->getArrayType())
+	, m_pType         (pValue->getArrayType())
 {
 	m_value = m_pArray->getRArray();
 }
 
-RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
-	, m_type          (type    )
+	, m_pType         (pType   )
 {}
 
-RDOValue::RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info    )
-	, m_value         (type->type())
-	, m_type          (type        )
+RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info     )
+	, m_value         (pType->type())
+	, m_pType         (pType        )
 {}
 
 // Для t_identificator известно только имя, но не тип
 RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info                                                              )
 	, m_value         (rdoRuntime::RDOValue(src_info.src_text(), rdoRuntime::g_identificator))
-	, m_type          (rdo::Factory<RDOType__identificator>::create()                        )
+	, m_pType         (rdo::Factory<RDOType__identificator>::create()                        )
 {}
 
 void RDOValue::operator= (CREF(RDOValue) value)
 {
 	m_value  = value.m_value;
-	m_type   = value.m_type;
+	m_pType  = value.m_pType;
 	m_pArray = value.m_pArray;
 	setSrcInfo(value.src_info());
 }
 
 CREF(LPRDOType) RDOValue::type() const
 {
-	return m_type;
+	return m_pType;
 }
 
 rdoRuntime::RDOType::TypeID RDOValue::typeID() const
 {
-	return m_type->type()->typeID();
+	return m_pType->type()->typeID();
 }
 
 CREF(rdoRuntime::RDOValue) RDOValue::value() const

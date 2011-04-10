@@ -36,7 +36,7 @@ public:
 
 	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(RDOValue) value);
-	         RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
+	         RDOValue(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
 	// Для t_identificator известно только имя, но не тип
 	explicit RDOValue(CREF(RDOParserSrcInfo) src_info);
 	// Неопределенный тип
@@ -58,7 +58,7 @@ public:
 private:
 	rdoRuntime::RDOValue m_value;
 	LPRDOArrayValue      m_pArray;
-	LPRDOType            m_type;
+	LPRDOType            m_pType;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
