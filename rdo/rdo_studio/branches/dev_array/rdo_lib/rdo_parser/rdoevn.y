@@ -1514,7 +1514,14 @@ equal_statement
 				pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
 				pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
 
-				LPExpression pExpressionLeft = rdo::Factory<Expression>::create(pParam->getType()->type(), pCalc, pCalc->src_info());
+				LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
+					rdo::Factory<TypeInfo>::create(
+						pParam->getType()->type(),
+						pParam->getType()->src_info()
+					),
+					pCalc,
+					pCalc->src_info()
+				);
 				ASSERT(pExpressionLeft);
 
 				LPRDOFUNArithm pArithmLeft = rdo::Factory<RDOFUNArithm>::create(pExpressionLeft);

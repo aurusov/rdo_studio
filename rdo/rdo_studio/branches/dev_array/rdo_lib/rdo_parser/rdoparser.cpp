@@ -188,7 +188,10 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 	if (value->getIdentificator() == _T("Time_now") || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("Системное_время") || value->getIdentificator() == _T("системное_время"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<RDOType__real>::create(),
+			rdo::Factory<TypeInfo>::create(
+				rdo::Factory<RDOType__real>::create(),
+				value.src_info()
+			),
 			rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create(),
 			value.src_info()
 		);
@@ -198,7 +201,10 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 	else if (value->getIdentificator() == _T("Seconds") || value->getIdentificator() == _T("seconds"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<RDOType__real>::create(),
+			rdo::Factory<TypeInfo>::create(
+				rdo::Factory<RDOType__real>::create(),
+				value.src_info()
+			),
 			rdo::Factory<rdoRuntime::RDOCalcGetSeconds>::create(),
 			value.src_info()
 		);
@@ -208,7 +214,10 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 	else if (value->getIdentificator() == _T("Terminate_counter") || value->getIdentificator() == _T("terminate_counter"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<RDOType__int>::create(),
+			rdo::Factory<TypeInfo>::create(
+				rdo::Factory<RDOType__int>::create(),
+				value.src_info()
+			),
 			rdo::Factory<rdoRuntime::RDOCalcGetTermNow>::create(),
 			value.src_info()
 		);
@@ -221,7 +230,10 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 	if (pConstant)
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pConstant->getType()->type(),
+			rdo::Factory<TypeInfo>::create(
+				pConstant->getType()->type(),
+				pConstant->getType()->src_info()
+			),
 			rdo::Factory<rdoRuntime::RDOCalcGetConst>::create(pConstant->getNumber()),
 			value.src_info()
 		);
@@ -239,7 +251,7 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 		ASSERT(pArithm);
 		pArithm->setSrcInfo(value.src_info());
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pArithm->type(),
+			pArithm->typeInfo(),
 			pArithm->calc(),
 			value.src_info()
 		);
@@ -257,7 +269,10 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 			if (try_cast_value.defined())
 			{
 				LPExpression pExpression = rdo::Factory<Expression>::create(
-					rdo::Factory<RDOType__identificator>::create(),
+					rdo::Factory<TypeInfo>::create(
+						rdo::Factory<RDOType__identificator>::create(),
+						value.src_info()
+					),
 					rdo::Factory<rdoRuntime::RDOCalcConst>::create(value.value()),
 					value.src_info()
 				);

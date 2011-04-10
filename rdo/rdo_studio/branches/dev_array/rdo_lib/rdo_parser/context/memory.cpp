@@ -47,7 +47,7 @@ LPExpression ContextMemory::onCreateExpression(CREF(RDOValue) value)
 	ASSERT(pLocalVariable);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		pLocalVariable->getExpression()->type(),
+		pLocalVariable->getExpression()->typeInfo(),
 		rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->getIdentificator()),
 		value.src_info()
 	);

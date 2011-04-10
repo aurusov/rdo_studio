@@ -142,12 +142,12 @@ public:
 
 	rdoRuntime::LPRDOCalc       createCalc(CREF(LPRDOTypeParam) pForType = NULL);
 
-	CREF(LPRDOType)             type       () const { return m_pExpression->type();      }
+	CREF(LPTypeInfo)            typeInfo   () const { return m_pExpression->typeInfo();  }
 	rdoRuntime::LPRDOCalc       calc       () const { return m_pExpression->calc();      }
 	rdoRuntime::RDOValue        const_value() const;
 
-	LPRDOEnumType               enumType  () const { return type().object_static_cast<RDOEnumType>(); }
-	rdoRuntime::RDOType::TypeID typeID    () const { return type()->type()->typeID();   }
+	LPRDOEnumType               enumType  () const { return typeInfo()->type().object_static_cast<RDOEnumType>(); }
+	rdoRuntime::RDOType::TypeID typeID    () const { return typeInfo()->type()->type()->typeID();                 }
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo) src_info);
 	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);

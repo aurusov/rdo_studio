@@ -896,7 +896,10 @@ init_declaration
 		ASSERT(pParam);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pParam->type(),
+			rdo::Factory<TypeInfo>::create(
+				pParam->type(),
+				pParam->src_info()
+			),
 			rdo::Factory<rdoRuntime::RDOCalcConst>::create(variableName.value()),
 			variableName.src_info()
 		);

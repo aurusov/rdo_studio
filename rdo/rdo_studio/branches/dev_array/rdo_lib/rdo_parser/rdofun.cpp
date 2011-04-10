@@ -110,7 +110,10 @@ RDOFUNLogic::~RDOFUNLogic()
 LPRDOFUNLogic RDOFUNLogic::generateTrue(CREF(RDOParserSrcInfo) src_info)
 {
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<RDOType__bool>::create(),
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__bool>::create(),
+			src_info
+		),
 		rdo::Factory<rdoRuntime::RDOCalcConst>::create(true),
 		src_info
 	);
@@ -135,7 +138,14 @@ LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(rdo::Factory<RDOType__bool>::create(), pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__bool>::create(),
+			pCalc->src_info()
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
@@ -233,7 +243,10 @@ LPRDOFUNArithm RDOFUNArithm::generateByConst(CREF(RDOValue) value)
 	ASSERT(value.constant());
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		value.type(),
+		rdo::Factory<TypeInfo>::create(
+			value.type(),
+			value.src_info()
+		),
 		rdo::Factory<rdoRuntime::RDOCalcConst>::create(value.value()),
 		value.src_info()
 	);
@@ -283,11 +296,11 @@ void RDOFUNArithm::castType(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
 {
 	try
 	{
-		expression()->type()->type_cast(pSecond->expression()->type(), pSecond->expression()->src_info(), expression()->src_info(), expression()->src_info());
+		expression()->typeInfo()->type()->type_cast(pSecond->expression()->typeInfo()->type(), pSecond->expression()->src_info(), expression()->src_info(), expression()->src_info());
 	}
 	catch (REF(RDOSyntaxException))
 	{
-		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(error.c_str(), type()->name().c_str(), pSecond->type()->name().c_str()));
+		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(error.c_str(), typeInfo()->type()->name().c_str(), pSecond->typeInfo()->type()->name().c_str()));
 	}
 }
 
@@ -295,14 +308,17 @@ void RDOFUNArithm::castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
 {
 	try
 	{
-		LPRDOType pType = expression()->type()->type_cast(pSecond->expression()->type(), pSecond->expression()->src_info(), expression()->src_info(), expression()->src_info());
+		LPRDOType pType = expression()->typeInfo()->type()->type_cast(pSecond->expression()->typeInfo()->type(), pSecond->expression()->src_info(), expression()->src_info(), expression()->src_info());
 		ASSERT(pType);
 		RDOValue constant = pSecond->expression()->constant();
 		if (constant.defined())
 		{
-			constant = expression()->type()->value_cast(constant, expression()->src_info(), pSecond->expression()->src_info());
+			constant = expression()->typeInfo()->type()->value_cast(constant, expression()->src_info(), pSecond->expression()->src_info());
 			pSecond->m_pExpression = rdo::Factory<Expression>::create(
-				pType,
+				rdo::Factory<TypeInfo>::create(
+					pType,
+					expression()->src_info()
+				),
 				rdo::Factory<rdoRuntime::RDOCalcConst>::create(constant.value()),
 				constant.src_info()
 			);
@@ -341,7 +357,14 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(rdoRuntime::RDOSrcInfo::Positio
 	LPRDOType pType = getPreType(this);
 	ASSERT(pType);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			pType,
+			pCalc->src_info() //! TODO: Походу надо брать из pType
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -360,7 +383,14 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(t
 	LPRDOType pType = getPreType(pSecond);
 	ASSERT(pType);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			pType,
+			pCalc->src_info() //! TODO: Походу надо брать из pType
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -376,7 +406,14 @@ LPRDOFUNLogic RDOFUNArithm::generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tst
 	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(pSecond, error);
 	ASSERT(pCalc);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(rdo::Factory<RDOType__bool>::create(), pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__bool>::create(),
+			pCalc->src_info()
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
@@ -416,7 +453,7 @@ LPRDOType RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
 	}
 
 	//! TODO: смущают два одинаковых src_info(), проверить и доказать правильность
-	return type()->type_cast(pSecond->type(), pSecond->src_info(), src_info(), src_info());
+	return typeInfo()->type()->type_cast(pSecond->typeInfo()->type(), pSecond->src_info(), src_info(), src_info());
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator+ (CREF(LPRDOFUNArithm) pSecond)
@@ -449,7 +486,14 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 		pCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToIntByResult>::create(pNewCalc_div);
 		pCalc->setSrcInfo(pNewCalc_div->src_info());
 	}
-	LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			pType,
+			pCalc->src_info() //! TODO: Походу надо брать из pType
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	if (pType->type()->typeID() == rdoRuntime::RDOType::t_int)
@@ -506,12 +550,12 @@ LPRDOFUNLogic RDOFUNArithm::operator!= (CREF(LPRDOFUNArithm) pSecond)
 
 void RDOFUNArithm::checkParamType(CREF(LPRDOTypeParam) pType)
 {
-	pType->type()->type_cast(type(), src_info(), pType->src_info(), src_info());
+	pType->type()->type_cast(typeInfo()->type(), src_info(), pType->src_info(), src_info());
 	rdoRuntime::LPRDOCalcConst pConstCalc = calc().object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 	if (pConstCalc)
 	{
 		rdoRuntime::RDOValue value = pConstCalc->getValue();
-		pType->value_cast(RDOValue(value, type(), src_info()));
+		pType->value_cast(RDOValue(value, typeInfo()->type(), src_info()));
 	}
 }
 
@@ -660,10 +704,17 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		LPRDOFUNArithm pArithm = m_paramList[i];
 		ASSERT(pArithm);
 		pArithm->checkParamType(pFuncParam);
-		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->type()));
+		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->typeInfo()->type()));
 	}
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(pFunction->getReturn()->getType()->type(), pFuncCall, src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			pFunction->getReturn()->getType()->type(),
+			pFunction->getReturn()->getType()->src_info()
+		),
+		pFuncCall,
+		src_info()
+	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
@@ -781,7 +832,14 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamL
 	pFuctionCall->addParameter(pArg1);
 	pFuctionCall->addParameter(pArg2);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(m_pHeader->getType()->type(), pFuctionCall, pParamList->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			m_pHeader->getType()->type(),
+			m_pHeader->getType()->src_info()
+		),
+		pFuctionCall,
+		pParamList->src_info()
+	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
@@ -829,7 +887,14 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pPa
 
 	pFuctionCall->addParameter(pArg1);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(m_pHeader->getType()->type(), pFuctionCall, pParamList->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			m_pHeader->getType()->type(),
+			m_pHeader->getType()->src_info()
+		),
+		pFuctionCall,
+		pParamList->src_info()
+	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
@@ -879,7 +944,14 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 	pFuctionCall->addParameter(pArg1);
 	pFuctionCall->addParameter(pArg2);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(m_pHeader->getType()->type(), pFuctionCall, pParamList->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			m_pHeader->getType()->type(),
+			m_pHeader->getType()->src_info()
+		),
+		pFuctionCall,
+		pParamList->src_info()
+	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
@@ -910,7 +982,14 @@ LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamLi
 	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(m_pHeader->getType()->type(), pFuctionCall, pParamList->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			m_pHeader->getType()->type(),
+			m_pHeader->getType()->src_info()
+		),
+		pFuctionCall,
+		pParamList->src_info()
+	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
@@ -1025,7 +1104,14 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(m_pHeader->getType()->type(), pFuctionCall, pParamList->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			m_pHeader->getType()->type(),
+			m_pHeader->getType()->src_info()
+		),
+		pFuctionCall,
+		pParamList->src_info()
+	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
@@ -1201,7 +1287,10 @@ LPExpression RDOFUNFunction::onCreateExpression(CREF(RDOValue) value)
 	if (pParam)
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pParam->getType()->type(),
+			rdo::Factory<TypeInfo>::create(
+				pParam->getType()->type(),
+				pParam->getType()->src_info()
+			),
 			rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(findFUNFunctionParamNum(value->getIdentificator()), pParam->src_info()),
 			value.src_info()
 		);
@@ -1492,12 +1581,19 @@ LPExpression RDOFUNGroup::onCreateExpression(CREF(RDOValue) value)
 		RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), value->getIdentificator().c_str()));
 	}
 
+	LPRDOTypeParam pTypeParam = getResType()->findRTPParam(value->getIdentificator())->getType();
+	ASSERT(pTypeParam);
+
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		getResType()->findRTPParam(value->getIdentificator())->getType()->type(),
+		rdo::Factory<TypeInfo>::create(
+			pTypeParam->type(),
+			pTypeParam->src_info()
+		),
 		rdo::Factory<rdoRuntime::RDOCalcGetGroupResParam>::create(parNumb),
 		value.src_info()
 	);
 	ASSERT(pExpression);
+
 	return pExpression;
 }
 
@@ -1523,7 +1619,14 @@ LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(REF(LPRDOFUNLogic) pCondition)
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 	end();
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(rdo::Factory<RDOType__bool>::create(), pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__bool>::create(),
+			pCalc->src_info()
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
@@ -1563,7 +1666,14 @@ LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType 
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 	end();
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(rdo::Factory<RDOType__bool>::create(), pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__bool>::create(),
+			pCalc->src_info()
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
@@ -1583,7 +1693,14 @@ LPRDOFUNLogic RDOFUNSelect::createFunSelectEmpty(CREF(RDOParserSrcInfo) empty_in
 	ASSERT(pCalc);
 	pCalc->setSrcInfo(src_info());
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(rdo::Factory<RDOType__bool>::create(), pCalc, pCalc->src_info());
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__bool>::create(),
+			pCalc->src_info()
+		),
+		pCalc,
+		pCalc->src_info()
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
@@ -1599,7 +1716,14 @@ LPRDOFUNArithm RDOFUNSelect::createFunSelectSize(CREF(RDOParserSrcInfo) size_inf
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 	end();
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(rdo::Factory<RDOType__int>::create(), rdo::Factory<rdoRuntime::RDOFunCalcSelectSize>::create(m_pCalcSelect), size_info);
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__int>::create(),
+			size_info
+		),
+		rdo::Factory<rdoRuntime::RDOFunCalcSelectSize>::create(m_pCalcSelect),
+		size_info
+	);
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);

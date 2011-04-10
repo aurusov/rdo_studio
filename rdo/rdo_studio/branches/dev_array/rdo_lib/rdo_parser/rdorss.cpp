@@ -80,7 +80,10 @@ LPExpression RDORSSResource::onCreateExpression(CREF(RDOValue) value)
 	ASSERT(pParam);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		pParam->getType()->type(),
+		rdo::Factory<TypeInfo>::create(
+			pParam->getType()->type(),
+			pParam->getType()->src_info()
+		),
 		pCalc,
 		value.src_info()
 	);
