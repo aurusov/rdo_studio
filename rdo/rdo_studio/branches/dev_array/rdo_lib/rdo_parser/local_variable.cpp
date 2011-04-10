@@ -31,12 +31,12 @@ CREF(RDOValue) LocalVariable::getValue() const
 	return m_value;
 }
 
-LPExpression LocalVariable::getExpression() const
+CREF(LPExpression) LocalVariable::getExpression() const
 {
 	return m_pExpression;
 }
 
-LPRDOTypeParam LocalVariable::getParam() const
+CREF(LPRDOTypeParam) LocalVariable::getParam() const
 {
 	return m_pParam;
 }

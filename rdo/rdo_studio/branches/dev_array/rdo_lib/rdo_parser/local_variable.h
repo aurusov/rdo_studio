@@ -26,9 +26,9 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(RDOValue) getValue     () const;
-	LPExpression   getExpression() const;
-	LPRDOTypeParam getParam     () const;
+	CREF(RDOValue)       getValue     () const;
+	CREF(LPExpression)   getExpression() const;
+	CREF(LPRDOTypeParam) getParam     () const;
 
 private:
 	LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPRDOTypeParam) pParam);
