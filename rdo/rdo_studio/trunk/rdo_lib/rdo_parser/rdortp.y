@@ -208,9 +208,9 @@
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/type/type_range.h"
+#include "rdo_lib/rdo_parser/type/range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
-#include "rdo_lib/rdo_parser/type/type_param_suchas.h"
+#include "rdo_lib/rdo_parser/type/such_as.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()

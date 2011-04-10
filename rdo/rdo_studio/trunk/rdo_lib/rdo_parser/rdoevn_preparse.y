@@ -207,7 +207,7 @@
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/type/type_range.h"
+#include "rdo_lib/rdo_parser/type/range.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 // ===============================================================================
 

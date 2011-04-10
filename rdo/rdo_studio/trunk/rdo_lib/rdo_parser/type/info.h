@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : type_info.h
+ * filename : info.h
  * author   : Урусов Андрей
  * date     : 09.04.2011
  * bref     : 
@@ -39,6 +39,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "rdo_lib/rdo_parser/type/type_info.inl"
+#include "rdo_lib/rdo_parser/type/info.inl"
 
 #endif //! _RDOPARSER_TYPE_INFO_H_

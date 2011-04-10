@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : type_info.cpp
+ * filename : info.cpp
  * author   : Урусов Андрей
  * date     : 09.04.2011
  * bref     : 
@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/type/type_info.h"
+#include "rdo_lib/rdo_parser/type/info.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

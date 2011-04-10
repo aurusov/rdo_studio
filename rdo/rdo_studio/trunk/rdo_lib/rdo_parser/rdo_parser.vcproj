@@ -2700,35 +2700,11 @@
 					RelativePath=".\type\type_param.h"
 					>
 				</File>
-				<File
-					RelativePath=".\type\type_param_suchas.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\type\type_param_suchas.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name=".type"
 			>
-			<File
-				RelativePath=".\type\type.h"
-				>
-			</File>
-			<File
-				RelativePath=".\type\type_info.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\type\type_info.h"
-				>
-			</File>
-			<File
-				RelativePath=".\type\type_info.inl"
-				>
-			</File>
 			<Filter
 				Name=".enum"
 				>
@@ -2745,11 +2721,11 @@
 				Name=".range"
 				>
 				<File
-					RelativePath=".\type\type_range.h"
+					RelativePath=".\type\range.h"
 					>
 				</File>
 				<File
-					RelativePath=".\type\type_range.inl"
+					RelativePath=".\type\range.inl"
 					>
 				</File>
 			</Filter>
@@ -2774,6 +2750,38 @@
 				</File>
 				<File
 					RelativePath=".\type\atom.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".such_as"
+				>
+				<File
+					RelativePath=".\type\such_as.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\type\such_as.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".common"
+				>
+				<File
+					RelativePath=".\type\info.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\type\info.h"
+					>
+				</File>
+				<File
+					RelativePath=".\type\info.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\type\type.h"
 					>
 				</File>
 			</Filter>

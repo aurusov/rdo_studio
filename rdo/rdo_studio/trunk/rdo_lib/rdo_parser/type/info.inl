@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : type_info.inl
+ * filename : info.inl
  * author   : Урусов Андрей
  * date     : 09.04.2011
  * bref     : 
