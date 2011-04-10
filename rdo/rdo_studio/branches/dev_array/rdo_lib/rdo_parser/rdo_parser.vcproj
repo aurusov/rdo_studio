@@ -2749,11 +2749,11 @@
 				Name=".array"
 				>
 				<File
-					RelativePath=".\rdo_array.cpp"
+					RelativePath=".\type\array.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_array.h"
+					RelativePath=".\type\array.h"
 					>
 				</File>
 			</Filter>
@@ -2797,6 +2797,18 @@
 				RelativePath=".\rdo_value.inl"
 				>
 			</File>
+			<Filter
+				Name=".array"
+				>
+				<File
+					RelativePath=".\rdo_array.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_array.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".expression"
