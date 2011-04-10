@@ -34,7 +34,7 @@ public:
 	explicit RDOValue(CREF(tstring)         value );
 	explicit RDOValue(CREF(LPRDOArrayValue) pValue);
 
-	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(RDOValue) value);
 	         RDOValue(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
 	// Для t_identificator известно только имя, но не тип
