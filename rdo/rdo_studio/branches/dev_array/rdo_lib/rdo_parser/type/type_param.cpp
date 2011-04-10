@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_type_param.cpp
+ * filename : type_param.cpp
  * author   : Урусов Андрей
  * date     : 12.02.2010
  * bref     : 
@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type_param.h"
+#include "rdo_lib/rdo_parser/type/type_param.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 // ===============================================================================
 

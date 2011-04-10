@@ -1,18 +1,18 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_type_param_suchas.h
+ * filename : such_as.h
  * author   : Урусов Андрей
  * date     : 09.01.2011
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _PARSER_RDO_TYPE_PARAM_SUCHAS_H_
-#define _PARSER_RDO_TYPE_PARAM_SUCHAS_H_
+#ifndef _RDOPARSER_TYPE_SUCH_AS_H_
+#define _RDOPARSER_TYPE_SUCH_AS_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type_param.h"
+#include "rdo_lib/rdo_parser/type/type_param.h"
 #include "rdo_lib/rdo_parser/param.h"
 // ===============================================================================
 
@@ -37,4 +37,4 @@ DECLARE_POINTER(RDOTypeParamSuchAs);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _PARSER_RDO_TYPE_PARAM_SUCHAS_H_
+#endif //! _RDOPARSER_TYPE_SUCH_AS_H_

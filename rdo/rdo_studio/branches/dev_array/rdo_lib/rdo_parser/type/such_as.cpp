@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_type_param_suchas.cpp
+ * filename : such_as.cpp
  * author   : Урусов Андрей
  * date     : 09.01.2011
  * bref     : 
@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
+#include "rdo_lib/rdo_parser/type/such_as.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

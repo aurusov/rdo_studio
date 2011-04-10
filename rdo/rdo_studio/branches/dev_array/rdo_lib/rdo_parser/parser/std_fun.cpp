@@ -12,7 +12,6 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/parser/std_fun.h"
-#include "rdo_lib/rdo_parser/rdo_type_param.h"
 #include "rdo_lib/rdo_parser/param.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_runtime/calc/std_fun.h"

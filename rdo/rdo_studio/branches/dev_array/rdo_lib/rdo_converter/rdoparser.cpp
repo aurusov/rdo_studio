@@ -347,7 +347,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			info.m_traceFile     = pSMRParser->getSMR()->getFile(_T("Trace_file")    );
 			info.m_error         = false;
 		}
-		catch (REF(rdoParse::RDOSyntaxException))
+		catch (REF(RDOSyntaxException))
 		{
 			return CNV_NONE;
 		}

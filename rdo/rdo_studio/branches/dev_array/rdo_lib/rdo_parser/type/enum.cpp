@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_enum.cpp
+ * filename : enum.cpp
  * author   : Урусов Андрей
  * date     : 
  * bref     : 
@@ -11,7 +11,7 @@
 #include "rdo_lib/rdo_parser/pch.h"
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_enum.h"
+#include "rdo_lib/rdo_parser/type/enum.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
 // ===============================================================================

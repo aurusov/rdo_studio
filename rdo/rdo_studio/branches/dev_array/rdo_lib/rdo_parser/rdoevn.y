@@ -207,9 +207,9 @@
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/type/range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
-#include "rdo_lib/rdo_parser/rdo_type_param_suchas.h"
+#include "rdo_lib/rdo_parser/type/such_as.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc/event_plan.h"
 // ===============================================================================

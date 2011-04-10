@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdo_type_range.inl
+ * filename : range.inl
  * author   : Урусов Андрей
  * date     : 10.02.2010
  * bref     : 

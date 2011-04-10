@@ -2693,19 +2693,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_param.cpp"
+					RelativePath=".\type\type_param.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_param.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_type_param_suchas.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_type_param_suchas.h"
+					RelativePath=".\type\type_param.h"
 					>
 				</File>
 			</Filter>
@@ -2713,27 +2705,15 @@
 		<Filter
 			Name=".type"
 			>
-			<File
-				RelativePath=".\rdo_type.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\rdo_type.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdo_type_operation.h"
-				>
-			</File>
 			<Filter
 				Name=".enum"
 				>
 				<File
-					RelativePath=".\rdo_enum.cpp"
+					RelativePath=".\type\enum.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_enum.h"
+					RelativePath=".\type\enum.h"
 					>
 				</File>
 			</Filter>
@@ -2741,11 +2721,11 @@
 				Name=".range"
 				>
 				<File
-					RelativePath=".\rdo_type_range.h"
+					RelativePath=".\type\range.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_type_range.inl"
+					RelativePath=".\type\range.inl"
 					>
 				</File>
 			</Filter>
@@ -2758,6 +2738,50 @@
 				</File>
 				<File
 					RelativePath=".\rdo_array.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".atom"
+				>
+				<File
+					RelativePath=".\type\atom.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\type\atom.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".such_as"
+				>
+				<File
+					RelativePath=".\type\such_as.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\type\such_as.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".common"
+				>
+				<File
+					RelativePath=".\type\info.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\type\info.h"
+					>
+				</File>
+				<File
+					RelativePath=".\type\info.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\type\type.h"
 					>
 				</File>
 			</Filter>

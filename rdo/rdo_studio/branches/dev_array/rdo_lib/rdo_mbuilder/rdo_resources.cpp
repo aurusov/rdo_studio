@@ -14,7 +14,7 @@
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 
 #include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/rdo_type_range.h"
+#include "rdo_lib/rdo_parser/type/range.h"
 // ===============================================================================
 
 OPEN_MBUILDER_NAMESPACE
