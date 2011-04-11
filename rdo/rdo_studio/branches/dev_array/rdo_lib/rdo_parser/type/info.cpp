@@ -23,8 +23,11 @@ OPEN_RDO_PARSER_NAMESPACE
 LPTypeInfo TypeInfo::type_cast(CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const
 {
 	//! TODO: TypeInfo убрать параметр из src_info()
-	type()->type_cast(pFrom->type(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
-	return const_cast<PTR(TypeInfo)>(this);
+	LPRDOType pType = type()->type_cast(pFrom->type(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
+	ASSERT(pType);
+	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType, this->src_info(src_info));
+	ASSERT(pTypeInfo);
+	return pTypeInfo;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
