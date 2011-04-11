@@ -230,10 +230,7 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 	if (pConstant)
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				pConstant->getType()->type(),
-				pConstant->getType()->src_info()
-			),
+			pConstant->getTypeInfo(),
 			rdo::Factory<rdoRuntime::RDOCalcGetConst>::create(pConstant->getNumber()),
 			value.src_info()
 		);

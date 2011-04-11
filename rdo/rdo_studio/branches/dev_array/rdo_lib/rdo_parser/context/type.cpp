@@ -19,13 +19,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- TypeContext
 // ----------------------------------------------------------------------------
-TypeContext::TypeContext(CREF(LPRDOTypeParam) pTypeParam)
-	: m_pTypeParam(pTypeParam)
+TypeContext::TypeContext(CREF(LPTypeInfo) pType)
+	: m_pType(pType)
 {}
 
-LPRDOTypeParam TypeContext::getType() const
+CREF(LPTypeInfo) TypeContext::getTypeInfo() const
 {
-	return m_pTypeParam;
+	return m_pType;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

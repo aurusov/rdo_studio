@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/expression.h"
-#include "rdo_lib/rdo_parser/type/type_param.h"
+#include "rdo_lib/rdo_parser/type/info.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,16 +26,16 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(RDOValue)       getValue     () const;
-	CREF(LPExpression)   getExpression() const;
-	CREF(LPRDOTypeParam) getParam     () const;
+	CREF(RDOValue)     getValue     () const;
+	CREF(LPExpression) getExpression() const;
+	CREF(LPTypeInfo)   getTypeInfo  () const;
 
 private:
-	LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPRDOTypeParam) pParam);
+	LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType);
 
-	RDOValue       m_value;
-	LPExpression   m_pExpression;
-	LPRDOTypeParam m_pParam;
+	RDOValue      m_value;
+	LPExpression  m_pExpression;
+	LPTypeInfo    m_pType;
 };
 
 // ----------------------------------------------------------------------------

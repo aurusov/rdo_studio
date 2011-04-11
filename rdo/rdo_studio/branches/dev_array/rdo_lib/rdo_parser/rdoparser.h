@@ -25,7 +25,6 @@
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
-#include "rdo_lib/rdo_parser/type/type_param.h"
 #include "rdo_lib/rdo_parser/rdopatpreparse.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
@@ -199,14 +198,14 @@ public:
 		return m_movementObjectList;
 	}
 
-	typedef std::vector<LPRDOTypeParam> PreCastTypeList;
+	typedef std::vector<LPTypeInfo> PreCastTypeList;
 	CREF(PreCastTypeList) getPreCastTypeList() const
 	{
 		return m_preCastTypeList;
 	}
-	void insertPreCastType(CREF(LPRDOTypeParam) type)
+	void insertPreCastType(CREF(LPTypeInfo) pType)
 	{
-		m_preCastTypeList.push_back(type);
+		m_preCastTypeList.push_back(pType);
 	}
 
 	LPContextStack contextStack();

@@ -2692,14 +2692,6 @@
 					RelativePath=".\param.h"
 					>
 				</File>
-				<File
-					RelativePath=".\type\type_param.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\type\type_param.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

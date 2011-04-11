@@ -180,10 +180,7 @@ LPExpression RDOPATPattern::onCreateExpression(CREF(RDOValue) value)
 	if (pParam)
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				pParam->getType()->type(),
-				pParam->getType()->src_info()
-			),
+			pParam->getTypeInfo(),
 			rdo::Factory<rdoRuntime::RDOCalcPatParam>::create(findPATPatternParamNum(value->getIdentificator())),
 			value.src_info()
 		);
@@ -925,10 +922,7 @@ LPExpression RDORelevantResource::onCreateExpression(CREF(RDOValue) value)
 	}
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(
-			pParam->getType()->type(),
-			pParam->getType()->src_info()
-		),
+		pParam->getTypeInfo(),
 		rdo::Factory<rdoRuntime::RDOCalcGetRelevantResParam>::create(m_relResID, parNumb),
 		value.src_info()
 	);

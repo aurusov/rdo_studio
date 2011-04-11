@@ -20,8 +20,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- RDOTypeParamSuchAs
 // ----------------------------------------------------------------------------
 RDOTypeParamSuchAs::RDOTypeParamSuchAs(CREF(LPRDOParam) pParam)
-	: RDOTypeParam(pParam->getType()->type(), pParam->getType()->src_info())
-	, m_pParam(pParam)
+	: TypeInfo(pParam->getTypeInfo())
+	, m_pParam(pParam               )
 {}
 
 RDOTypeParamSuchAs::~RDOTypeParamSuchAs()

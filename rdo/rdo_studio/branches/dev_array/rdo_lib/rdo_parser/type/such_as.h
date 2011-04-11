@@ -12,7 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/type/type_param.h"
+#include "rdo_lib/rdo_parser/type/info.h"
 #include "rdo_lib/rdo_parser/param.h"
 // ===============================================================================
 
@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOTypeParamSuchAs
 // ----------------------------------------------------------------------------
-CLASS(RDOTypeParamSuchAs): INSTANCE_OF(RDOTypeParam)
+CLASS(RDOTypeParamSuchAs): INSTANCE_OF(TypeInfo)
 {
 DECLARE_FACTORY(RDOTypeParamSuchAs);
 public:

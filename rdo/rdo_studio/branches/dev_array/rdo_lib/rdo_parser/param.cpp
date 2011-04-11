@@ -16,7 +16,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOParam::RDOParam(CREF(tstring) name, CREF(LPRDOTypeParam) pType, RDOValue default)
+RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, RDOValue default)
 	: RDOParserSrcInfo(name   )
 	, m_pType         (pType  )
 	, m_default       (default)
@@ -24,7 +24,7 @@ RDOParam::RDOParam(CREF(tstring) name, CREF(LPRDOTypeParam) pType, RDOValue defa
 	checkDefault();
 }
 
-RDOParam::RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, RDOValue default)
+RDOParam::RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, RDOValue default)
 	: RDOParserSrcInfo(src_info)
 	, m_pType         (pType   )
 	, m_default       (default )
