@@ -25,8 +25,9 @@ OBJECT(TypeInfo)
 {
 DECLARE_FACTORY(TypeInfo)
 public:
-	CREF(LPRDOType)        type    () const;
-	CREF(RDOParserSrcInfo) src_info(CREF(RDOParserSrcInfo) srcInfo) const;
+	CREF(LPRDOType)        type     () const;
+	CREF(RDOParserSrcInfo) src_info (CREF(RDOParserSrcInfo) srcInfo) const;
+	LPTypeInfo             type_cast(CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const;
 
 private:
 	TypeInfo(CREF(LPTypeInfo) pTypeInfo);

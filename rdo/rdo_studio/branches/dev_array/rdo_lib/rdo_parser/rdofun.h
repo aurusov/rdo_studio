@@ -166,7 +166,7 @@ private:
 	RDOFUNArithm(CREF(LPExpression) pExpression);
 	virtual ~RDOFUNArithm();
 
-	LPRDOType getPreType(CREF(LPRDOFUNArithm) pSecond);
+	LPTypeInfo getPreType(CREF(LPRDOFUNArithm) pSecond);
 
 	template <class T>
 	rdoRuntime::LPRDOCalc generateCalc(CREF(rdoRuntime::RDOSrcInfo::Position) position, CREF(tstring) error);

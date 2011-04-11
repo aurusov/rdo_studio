@@ -20,4 +20,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // ---------- TypeInfo
 // ----------------------------------------------------------------------------
 
+LPTypeInfo TypeInfo::type_cast(CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const
+{
+	//! TODO: TypeInfo убрать параметр из src_info()
+	type()->type_cast(pFrom->type(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
+	return const_cast<PTR(TypeInfo)>(this);
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

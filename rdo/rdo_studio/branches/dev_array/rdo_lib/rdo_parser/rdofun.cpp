@@ -351,14 +351,11 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(rdoRuntime::RDOSrcInfo::Positio
 	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(position, error);
 	ASSERT(pCalc);
 
-	LPRDOType pType = getPreType(this);
+	LPTypeInfo pType = getPreType(this);
 	ASSERT(pType);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(
-			pType,
-			pCalc->src_info() //! TODO: Походу надо брать из pType
-		),
+		pType,
 		pCalc,
 		pCalc->src_info()
 	);
@@ -377,14 +374,11 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(t
 	rdoRuntime::LPRDOCalc pCalc = generateCalc<T>(pSecond, error);
 	ASSERT(pCalc);
 
-	LPRDOType pType = getPreType(pSecond);
+	LPTypeInfo pType = getPreType(pSecond);
 	ASSERT(pType);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(
-			pType,
-			pCalc->src_info() //! TODO: Походу надо брать из pType
-		),
+		pType,
 		pCalc,
 		pCalc->src_info()
 	);
@@ -428,7 +422,7 @@ rdoRuntime::RDOValue RDOFUNArithm::const_value() const
 	return pCalc->getValue();
 }
 
-LPRDOType RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
+LPTypeInfo RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
 {
 	if (typeID() == rdoRuntime::RDOType::t_unknow)
 	{
@@ -449,8 +443,7 @@ LPRDOType RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
 		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pSecond->const_value().getIdentificator().c_str()));
 	}
 
-	//! TODO: смущают два одинаковых src_info(), проверить и доказать правильность
-	return typeInfo()->type()->type_cast(pSecond->typeInfo()->type(), pSecond->src_info(), src_info(), src_info());
+	return typeInfo()->type_cast(pSecond->typeInfo(), src_info());
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator+ (CREF(LPRDOFUNArithm) pSecond)
@@ -472,7 +465,7 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 {
 	rdoRuntime::LPRDOCalc pCalc = generateCalc<rdoRuntime::RDOCalcDiv>(pSecond, _T("Нельзя %s разделить на %s"));
 	ASSERT(pCalc);
-	LPRDOType pType = getPreType(pSecond);
+	LPTypeInfo pType = getPreType(pSecond);
 	ASSERT(pType);
 
 	//! TODO: перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
@@ -484,10 +477,7 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 		pCalc->setSrcInfo(pNewCalc_div->src_info());
 	}
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(
-			pType,
-			pCalc->src_info() //! TODO: Походу надо брать из pType
-		),
+		pType,
 		pCalc,
 		pCalc->src_info()
 	);
