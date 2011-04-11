@@ -2697,7 +2697,7 @@ param_type_array
 	{
 		LPRDOTypeParam pParamType = PARSER->stack().pop<RDOTypeParam>($3);
 		ASSERT(pParamType);
-		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->type(), RDOParserSrcInfo(@1, @4));
+		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType->typeInfo(), RDOParserSrcInfo(@1, @4));
 		$$ = PARSER->stack().push(pArray);
 	}
 	;
@@ -2707,7 +2707,7 @@ param_array_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
-		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), pArrayValue->getArrayType(), RDOParserSrcInfo(@2)));
+		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), RDOParserSrcInfo(@2), pArrayValue->getArrayType()->typeInfo()));
 	}
 	|'[' array_item error {
 		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
@@ -2717,7 +2717,7 @@ param_array_value
 array_item
 	: param_value
 	{
-		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOParserSrcInfo(@1));
+		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOParserSrcInfo(@1));
 		ASSERT(pArrayType);
 		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
 		pArrayValue->insertItem(RDOVALUE($1));

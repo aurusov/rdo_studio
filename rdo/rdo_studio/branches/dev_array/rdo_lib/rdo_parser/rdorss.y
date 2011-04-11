@@ -389,7 +389,7 @@ param_array_value
 array_enumeration
 	: param_value
 	{
-		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).type(), RDOVALUE($1).src_info());
+		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOVALUE($1).src_info());
 		ASSERT(pArrayType);
 		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
 		ASSERT(pArrayValue);

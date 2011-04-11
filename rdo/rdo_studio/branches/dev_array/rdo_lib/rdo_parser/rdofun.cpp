@@ -243,10 +243,7 @@ LPRDOFUNArithm RDOFUNArithm::generateByConst(CREF(RDOValue) value)
 	ASSERT(value.constant());
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(
-			value.type(),
-			value.src_info()
-		),
+		value.typeInfo(),
 		rdo::Factory<rdoRuntime::RDOCalcConst>::create(value.value()),
 		value.src_info()
 	);
@@ -555,7 +552,7 @@ void RDOFUNArithm::checkParamType(CREF(LPRDOTypeParam) pType)
 	if (pConstCalc)
 	{
 		rdoRuntime::RDOValue value = pConstCalc->getValue();
-		pType->value_cast(RDOValue(value, typeInfo()->type(), src_info()));
+		pType->value_cast(RDOValue(value, src_info(), typeInfo()));
 	}
 }
 
@@ -1175,7 +1172,10 @@ RDOFUNFunctionListElementReal::RDOFUNFunctionListElementReal(CREF(YYLTYPE) posit
 
 rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementReal::createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const
 {
-	rdoRuntime::LPRDOCalcConst pCalcConst = rdo::Factory<rdoRuntime::RDOCalcConst>::create(pRetType->value_cast(RDOValue(m_value, rdo::Factory<RDOType__real>::create(), src_pos)).value());
+	LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), src_info());
+	ASSERT(pType);
+	rdoRuntime::LPRDOCalcConst pCalcConst = rdo::Factory<rdoRuntime::RDOCalcConst>::create(pRetType->value_cast(RDOValue(m_value, src_pos, pType)).value());
+	ASSERT(pCalcConst);
 	pCalcConst->setSrcInfo(src_pos);
 	return pCalcConst;
 }
@@ -1190,7 +1190,10 @@ RDOFUNFunctionListElementInt::RDOFUNFunctionListElementInt(CREF(YYLTYPE) positio
 
 rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementInt::createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const
 {
-	rdoRuntime::LPRDOCalcConst pCalcConst = rdo::Factory<rdoRuntime::RDOCalcConst>::create(pRetType->value_cast(RDOValue(m_value, rdo::Factory<RDOType__int>::create(), src_pos)).value());
+	LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(), src_info());
+	ASSERT(pType);
+	rdoRuntime::LPRDOCalcConst pCalcConst = rdo::Factory<rdoRuntime::RDOCalcConst>::create(pRetType->value_cast(RDOValue(m_value, src_pos, pType)).value());
+	ASSERT(pCalcConst);
 	pCalcConst->setSrcInfo(src_pos);
 	return pCalcConst;
 }

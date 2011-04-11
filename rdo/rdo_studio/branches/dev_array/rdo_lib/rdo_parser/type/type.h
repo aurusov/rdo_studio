@@ -48,14 +48,14 @@ public:
 		CREF(rdoRuntime::LPRDOCalc) pCalc,
 		CREF(LPRDOType)             pType
 	) const = 0;
-	virtual RDOValue get_default() const = 0;
+	virtual rdoRuntime::RDOValue get_default() const = 0;
 };
 #define DECLARE_IType                                                                                                                                                                   \
 	virtual tstring                name       () const;                                                                                                                                 \
 	virtual LPRDOType              type_cast  (CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
 	virtual RDOValue               value_cast (CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info,   CREF(RDOParserSrcInfo) src_info)                                     const;  \
 	virtual rdoRuntime::LPRDOCalc  calc_cast  (CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;                                                                         \
-	virtual RDOValue               get_default() const;
+	virtual rdoRuntime::RDOValue   get_default() const;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOType

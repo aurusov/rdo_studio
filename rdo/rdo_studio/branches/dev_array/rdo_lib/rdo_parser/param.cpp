@@ -39,7 +39,7 @@ void RDOParam::checkDefault()
 {
 	if (m_default.defined())
 	{
-		m_pType->type()->type_cast(m_default.type(), m_default.src_info(), this->src_info(), m_default.src_info());
+		m_pType->type()->type_cast(m_default.typeInfo()->type(), m_default.src_info(), this->src_info(), m_default.src_info());
 		m_default = m_pType->type()->value_cast(m_default, this->src_info(), m_default.src_info());
 	}
 }

@@ -121,19 +121,33 @@ RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_
 		switch (from.typeID())
 		{
 		case rdoRuntime::RDOType::t_identificator:
-			toValue = (getEnums()->findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
-				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), pEnum, from.src_info()) :
-				RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
+			if (getEnums()->findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END)
+			{
+				LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, to_src_info);
+				ASSERT(pType);
+				toValue = RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), from.src_info(), pType);
+			}
+			else
+			{
+				toValue = RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
+			}
 			break;
 
 		case rdoRuntime::RDOType::t_string:
-			toValue = (getEnums()->findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END) ?
-				RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), pEnum, from.src_info()) :
-				RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
+			if (getEnums()->findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END)
+			{
+				LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, to_src_info);
+				ASSERT(pType);
+				toValue = RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), from.src_info(), pType);
+			}
+			else
+			{
+				toValue = RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
+			}
 			break;
 
 		case rdoRuntime::RDOType::t_enum:
-			if (m_pType == from.type()->type())
+			if (m_pType == from.typeInfo()->type()->type())
 				toValue = from;
 			break;
 		}
@@ -155,10 +169,9 @@ rdoRuntime::LPRDOCalc RDOEnumType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, 
 	return RDOType::calc_cast(pCalc, pType);
 }
 
-RDOValue RDOEnumType::get_default() const
+rdoRuntime::RDOValue RDOEnumType::get_default() const
 {
-	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
-	return RDOValue(rdoRuntime::RDOValue(getEnums(), 0), pEnum, RDOParserSrcInfo());
+	return rdoRuntime::RDOValue(getEnums(), 0);
 }
 
 void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const

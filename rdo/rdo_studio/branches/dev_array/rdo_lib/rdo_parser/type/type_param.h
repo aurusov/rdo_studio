@@ -30,8 +30,9 @@ OBJECT(RDOTypeParam)
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
-	LPRDOType type      ()                     const;
-	RDOValue  value_cast(CREF(RDOValue) value) const;
+	LPRDOType  type      ()                     const;
+	RDOValue   value_cast(CREF(RDOValue) value) const;
+	LPTypeInfo typeInfo  ()                     const;
 
 	DECLARE_IModelStructure;
 

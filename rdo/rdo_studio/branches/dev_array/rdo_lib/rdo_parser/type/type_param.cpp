@@ -42,6 +42,16 @@ LPRDOType RDOTypeParam::type() const
 	return m_type;
 }
 
+LPTypeInfo RDOTypeParam::typeInfo() const
+{
+	LPTypeInfo pType = rdo::Factory<TypeInfo>::create(
+		m_type,
+		src_info()
+	);
+	ASSERT(pType);
+	return pType;
+}
+
 void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
 {
 	m_type->writeModelStructure(stream);

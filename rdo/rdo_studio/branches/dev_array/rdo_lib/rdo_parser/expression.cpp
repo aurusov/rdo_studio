@@ -63,7 +63,7 @@ RDOValue Expression::constant() const
 	rdoRuntime::LPRDOCalcConst pCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 	if (pCalc)
 	{
-		return RDOValue(pCalc->getValue(), m_pType->type(), src_info());
+		return RDOValue(pCalc->getValue(), src_info(), m_pType);
 	}
 
 	return RDOValue();

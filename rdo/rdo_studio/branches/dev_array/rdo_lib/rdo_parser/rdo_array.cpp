@@ -31,8 +31,8 @@ RDOArrayValue::~RDOArrayValue()
 
 void RDOArrayValue::insertItem(CREF(RDOValue) value)
 {
-	m_pArrayType->getItemType()->type_cast(value.type(), value.src_info(), m_pArrayType->src_info(), value.src_info());
-	RDOValue ItemValue = m_pArrayType->getItemType()->value_cast(value, m_pArrayType->src_info(), value.src_info());
+	m_pArrayType->getItemType()->type()->type_cast(value.typeInfo()->type(), value.src_info(), m_pArrayType->src_info(), value.src_info());
+	RDOValue ItemValue = m_pArrayType->getItemType()->type()->value_cast(value, m_pArrayType->src_info(), value.src_info());
 	m_container.push_back(ItemValue);
 }
 

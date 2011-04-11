@@ -12,7 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/type/type.h"
+#include "rdo_lib/rdo_parser/type/info.h"
 #include "rdo_lib/rdo_runtime/rdo_array.h"
 // ===============================================================================
 
@@ -25,14 +25,15 @@ class RDOArrayType: public RDOType, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	CREF(LPRDOType)            getItemType        () const;
+	CREF(LPTypeInfo)           getItemType        () const;
 	rdoRuntime::LPRDOArrayType getRuntimeArrayType() const;
+	LPTypeInfo                 typeInfo           () const;
 
 private:
-	RDOArrayType         (CREF(LPRDOType) pItemType, CREF(RDOParserSrcInfo) src_info);
+	RDOArrayType         (CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOArrayType();
 
-	LPRDOType m_pItemType;
+	LPTypeInfo m_pItemType;
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
