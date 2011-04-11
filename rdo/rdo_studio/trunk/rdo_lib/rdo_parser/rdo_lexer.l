@@ -315,7 +315,13 @@ $term                          return(RDO_Fuzzy_Term);
 	tstring n1(YYText());
 	int len = n1.length();
 	tstring name(n1, 1, len-2);
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(name, rdo::Factory<rdoParse::RDOType__string>::create(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, name) : rdoParse::RDOParserSrcInfo(name))));
+	rdoParse::LPTypeInfo pType = rdo::Factory<rdoParse::TypeInfo>::create(
+		rdo::Factory<rdoParse::RDOType__string>::create(),
+		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, name) : rdoParse::RDOParserSrcInfo(name)
+	);
+	ASSERT(pType);
+	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(name, pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_STRING_CONST;
 }
 
@@ -349,27 +355,57 @@ $term                          return(RDO_Fuzzy_Term);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(value.c_str()), rdo::Factory<rdoParse::RDOType__int>::create(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, value) : rdoParse::RDOParserSrcInfo(value))));
+	rdoParse::LPTypeInfo pType = rdo::Factory<rdoParse::TypeInfo>::create(
+		rdo::Factory<rdoParse::RDOType__int>::create(),
+		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, value) : rdoParse::RDOParserSrcInfo(value)
+	);
+	ASSERT(pType);
+	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(value.c_str()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atof(YYText()), rdo::Factory<rdoParse::RDOType__real>::create(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))));
+	rdoParse::LPTypeInfo pType = rdo::Factory<rdoParse::TypeInfo>::create(
+		rdo::Factory<rdoParse::RDOType__real>::create(),
+		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
+	);
+	ASSERT(pType);
+	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atof(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_REAL_CONST;
 }
 
 [+-]?[0-9]+ {
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), rdo::Factory<rdoParse::RDOType__int>::create(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))));
+	rdoParse::LPTypeInfo pType = rdo::Factory<rdoParse::TypeInfo>::create(
+		rdo::Factory<rdoParse::RDOType__int>::create(),
+		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
+	);
+	ASSERT(pType);
+	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
 
 true {
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), rdo::Factory<rdoParse::RDOType__bool>::create(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))));
+	rdoParse::LPTypeInfo pType = rdo::Factory<rdoParse::TypeInfo>::create(
+		rdo::Factory<rdoParse::RDOType__bool>::create(),
+		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
+	);
+	ASSERT(pType);
+	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 
 false {
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), rdo::Factory<rdoParse::RDOType__bool>::create(), LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText()))));
+	rdoParse::LPTypeInfo pType = rdo::Factory<rdoParse::TypeInfo>::create(
+		rdo::Factory<rdoParse::RDOType__bool>::create(),
+		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
+	);
+	ASSERT(pType);
+	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 

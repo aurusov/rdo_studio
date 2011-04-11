@@ -19,8 +19,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
-RDORTPParam::RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(RDOValue) default, CREF(RDOParserSrcInfo) src_info)
-	: RDOParam(src_info, pParamType, default)
+RDORTPParam::RDORTPParam(CREF(LPTypeInfo) pType, CREF(RDOValue) default, CREF(RDOParserSrcInfo) src_info)
+	: RDOParam(src_info, pType, default)
 {}
 
 RDORTPParam::~RDORTPParam()
@@ -34,7 +34,7 @@ CREF(tstring) RDORTPParam::name() const
 void RDORTPParam::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << name() << _T(" ");
-	getType()->writeModelStructure(stream);
+	getTypeInfo()->type()->writeModelStructure(stream);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
