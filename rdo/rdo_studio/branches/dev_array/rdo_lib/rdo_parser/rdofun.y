@@ -312,6 +312,11 @@ fun_func_seq
 // ----------------------------------------------------------------------------
 fun_func_descr
 	: fun_func_header fun_func_footer
+	{
+		LPRDOFUNFunction pFunction = PARSER->stack().pop<RDOFUNFunction>($1);
+		ASSERT(pFunction);
+		pFunction->end();
+	}
 	| fun_func_header error
 	{
 		LPRDOFUNFunction pFunction = PARSER->stack().pop<RDOFUNFunction>($1);
