@@ -3,7 +3,7 @@
  * filename : rdo_rule.cpp
  * author   : Урусов Андрей, Лущан Дмитрий
  * date     : 18.08.2010
- * bref     : 
+ * bref     : Продукционные правила
  * indent   : 4T
  */
 
