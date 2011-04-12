@@ -100,6 +100,7 @@
 %token RDO_Animation
 %token RDO_NoChange
 
+%token RDO_ProcessStart
 %token RDO_Decision_point
 %token RDO_search
 %token RDO_trace_stat
@@ -299,12 +300,12 @@ dpt_process_prior
 	{
 		if (!PARSER->getLastPROCProcess()->setPrior(PARSER->stack().pop<RDOFUNArithm>($2)))
 		{
-			PARSER->error().error(@2, _T("Процесс пока не может иметь приоритет"));
+			PARSER->error().error(@2, _T("Процесс не может иметь приоритет"));
 		}
 	}
 	| RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
+		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета процесса"))
 	}
 	| error
 	{
@@ -344,7 +345,7 @@ dpt_process_line
 			{
 				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 			}
-			rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 		}
 		else
 		{
@@ -359,13 +360,13 @@ dpt_process_line
 			{
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является перечислимым типом"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
-			rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 		}
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), pArithm->createCalc());
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
-	| RDO_GENERATE fun_arithm error
+	| RDO_GENERATE error
 	{
 		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 	}
@@ -385,7 +386,7 @@ dpt_process_line
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
-	| RDO_ADVANCE fun_arithm error
+	| RDO_ADVANCE error
 	{
 		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 	}

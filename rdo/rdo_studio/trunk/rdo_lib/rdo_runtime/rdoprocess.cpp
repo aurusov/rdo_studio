@@ -42,6 +42,7 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 			// Находим перемещаемый транзакт в списке его транзактов
 			RDOPROCBlock::TransactIt it_res = block->transactFind(transact);
 			// Если транзакт найден
+			// XXX: только что созданный транзакт не привязывается к блоку GENERATE!!!
 			if (it_res != block->transactEnd()) 
 			{
 				// Удаляем его из списка транзактов этого блока
@@ -86,11 +87,11 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-int RDOPROCTransact::typeID = -1;
+int RDOPROCTransact::s_typeID = -1;
 
 RDOPROCTransact::RDOPROCTransact(PTR(RDOSimulator) sim, CREF(LPIPROCBlock) block)
-	: RDOResource(static_cast<PTR(RDORuntime)>(sim), -1, typeID, true)
-	, m_block    (block                                              )
+	: RDOResource(static_cast<PTR(RDORuntime)>(sim), -1, s_typeID, true)
+	, m_block    (block                                                )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource(this);
 	setTrace( true );

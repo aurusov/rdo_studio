@@ -1792,6 +1792,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc_process_control.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc_process_control.h"
+				>
+			</File>
+			<File
 				RelativePath=".\equaltype.h"
 				>
 			</File>

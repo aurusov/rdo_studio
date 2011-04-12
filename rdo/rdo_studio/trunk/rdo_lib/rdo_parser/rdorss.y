@@ -100,6 +100,7 @@
 %token RDO_Animation
 %token RDO_NoChange
 
+%token RDO_ProcessStart
 %token RDO_Decision_point
 %token RDO_search
 %token RDO_trace_stat
