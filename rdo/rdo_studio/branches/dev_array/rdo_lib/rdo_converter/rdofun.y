@@ -440,6 +440,43 @@ fun_func_calc_name
 fun_func_algorithmic_calc_if
 	: fun_func_calc_if fun_logic fun_func_calc_name '=' fun_arithm
 	{
+		rdoConverter::LPDocUpdate pIFReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+			@1.m_first_seek,
+			@1.m_last_seek,
+			_T("if")
+		);
+		ASSERT(pIFReplace);
+		CONVERTER->insertDocUpdate(pIFReplace);
+
+		rdoConverter::LPDocUpdate pIFInsertOpenBrace = rdo::Factory<rdoConverter::UpdateInsert>::create(
+			@2.m_first_seek,
+			_T("(")
+		);
+		ASSERT(pIFInsertOpenBrace);
+		CONVERTER->insertDocUpdate(pIFInsertOpenBrace);
+
+		rdoConverter::LPDocUpdate pIFInsertCloseBrace = rdo::Factory<rdoConverter::UpdateInsert>::create(
+			@2.m_last_seek,
+			_T(")")
+		);
+		ASSERT(pIFInsertCloseBrace);
+		CONVERTER->insertDocUpdate(pIFInsertCloseBrace);
+
+		rdoConverter::LPDocUpdate pReturnReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+			@3.m_first_seek,
+			@4.m_last_seek,
+			_T("return")
+		);
+		ASSERT(pReturnReplace);
+		CONVERTER->insertDocUpdate(pReturnReplace);
+
+		rdoConverter::LPDocUpdate pSemicolonInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+			@5.m_last_seek,
+			_T(";")
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
+
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcText(_T("Calculate_if ") + pLogic->src_text());
