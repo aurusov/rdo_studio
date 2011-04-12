@@ -376,9 +376,17 @@ fun_func_params
 	;
 
 fun_func_footer
-	: RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body statement RDO_End
+	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement alg_fun_End
 	{
-		rdoRuntime::LPRDOFunCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOFunCalc>($6);
+		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($6);
+		ASSERT(pCalcFunList);
+
+		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcFunList->addFunCalc(pCalcCloseBrace);
+
+		rdoRuntime::LPRDOFunCalc pCalc = pCalcFunList;
 		ASSERT(pCalc);
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
@@ -429,6 +437,67 @@ fun_func_footer
 	| RDO_Type error
 	{
 		PARSER->error().error(@2, _T("После ключевого слова $Type ожидается тип функции"));
+	}
+	;
+
+alg_fun_statement
+	: /* empty */
+	{
+		rdoRuntime::LPRDOCalcFunList pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunList>::create();
+		ASSERT(pCalcFunList);
+
+		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		pCalcFunList->addFunCalc(pCalcOpenBrace);
+		$$ = PARSER->stack().push(pCalcFunList);
+	}
+	| alg_fun_statement statement
+	{
+		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($1);
+		ASSERT(pCalcFunList);
+
+		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
+		ASSERT(pCalc);
+
+		pCalcFunList->addFunCalc(pCalc);
+
+		$$ = PARSER->stack().push(pCalcFunList);
+	}
+	;
+
+alg_fun_Body
+	: RDO_Body
+	{
+		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+		ASSERT(pLocalVariableList);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->push(pLocalVariableList);
+	}
+	;
+
+alg_fun_End
+	: RDO_End
+	{
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->pop();
 	}
 	;
 
