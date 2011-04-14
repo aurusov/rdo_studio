@@ -406,7 +406,7 @@ fun_func_footer
 		ASSERT(pFunction);
 		pFunction->createTableCalc(@6);
 	}
-	| RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body statement error
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement error
 	{
 		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
 	}
@@ -463,6 +463,10 @@ alg_fun_statement
 		pCalcFunList->addFunCalc(pCalc);
 
 		$$ = PARSER->stack().push(pCalcFunList);
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Неверный синтаксис алгоритмической функции"));
 	}
 	;
 

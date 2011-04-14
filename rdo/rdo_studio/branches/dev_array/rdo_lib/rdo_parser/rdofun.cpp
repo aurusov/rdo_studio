@@ -1502,8 +1502,27 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 
 void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
 {
-	if(!getFunctionCalc()->isReturn()) RDOParser::s_parser()->error().error(body_src_info, rdo::format(_T("Не горантированно возвращение значания функции")));
-	end();
+	if(!getFunctionCalc()->isReturn()) 
+	{
+		RDOParser::s_parser()->error().warning(body_src_info, rdo::format(_T("Не горантированно возвращение значания функции")));
+		if (m_pReturn->getDefault().defined())
+		{
+			RDOValue defaultValue = m_pReturn->getTypeInfo()->value_cast(m_pReturn->getDefault());
+			rdoRuntime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdoRuntime::RDOCalcConst>::create(defaultValue.value());
+			ASSERT(pCalcDefault);
+			pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
+			m_pFunctionCalc->addRetCalc(pCalcDefault);
+		}
+		else
+		{
+			//! Присвоить автоматическое значение по-умолчанию, если оно не задано в явном виде
+			rdoRuntime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pReturn->getDefault().value());
+			ASSERT(pCalcDefault);
+			pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
+			m_pFunctionCalc->addRetCalc(pCalcDefault);
+			RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по-умолчанию"), name().c_str()));
+		}
+	}
 }
 
 // ----------------------------------------------------------------------------

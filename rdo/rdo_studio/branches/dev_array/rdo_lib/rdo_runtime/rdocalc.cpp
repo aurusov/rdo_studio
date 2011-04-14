@@ -398,6 +398,13 @@ void RDOCalcFunList::addFunCalc(CREF(LPRDOCalc) pCalc)
 	}
 }
 
+void RDOCalcFunList::addRetCalc(CREF(LPRDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+	LPRDOCalc pCalcReturn = rdo::Factory<rdoRuntime::RDOCalcFunReturn>::create(pCalc);
+	m_calcFunList.insert(--m_calcFunList.end(),pCalcReturn);
+}
+
 REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
 {
 	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)

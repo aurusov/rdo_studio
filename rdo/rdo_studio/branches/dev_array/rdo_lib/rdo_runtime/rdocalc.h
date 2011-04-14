@@ -440,6 +440,8 @@ private:
 // ----------------------------------------------------------------------------
 CALC(RDOFunCalc)
 {
+public:
+	virtual void addRetCalc(CREF(LPRDOCalc) pCalc){};
 protected:
 	RDOFunCalc()
 	{}
@@ -455,6 +457,7 @@ public:
 	typedef std::vector<LPRDOCalc> CalcFunList;
 
 	void addFunCalc(CREF(LPRDOCalc) pCalc);
+	void addRetCalc(CREF(LPRDOCalc) pCalc);
 
 private:
 	RDOCalcFunList();
