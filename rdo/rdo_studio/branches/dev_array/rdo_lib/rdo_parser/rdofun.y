@@ -315,7 +315,7 @@ fun_func_descr
 	{
 		LPRDOFUNFunction pFunction = PARSER->stack().pop<RDOFUNFunction>($1);
 		ASSERT(pFunction);
-		pFunction->end();
+		//pFunction->end();
 	}
 	| fun_func_header error
 	{
