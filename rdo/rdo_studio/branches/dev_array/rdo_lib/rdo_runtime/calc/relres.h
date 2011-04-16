@@ -27,10 +27,7 @@ CALC(RDOGetRelResParamCalc)
 {
 DECLARE_FACTORY(RDOGetRelResParamCalc)
 private:
-	RDOGetRelResParamCalc(int relNumb, int parNumb)
-		: m_relNumb(relNumb)
-		, m_parNumb(parNumb)
-	{}
+	RDOGetRelResParamCalc(int relNumb, int parNumb);
 
 	int m_relNumb;
 	int m_parNumb;
@@ -63,17 +60,7 @@ CALC(RDOSetRelResParamDiapCalc)
 {
 DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
 private:
-	RDOSetRelResParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc)
-		: m_relNumb  (relNumb  )
-		, m_parNumb  (parNumb  )
-		, m_pCalc    (pCalc    )
-		, m_min_value(min_value)
-		, m_max_value(max_value)
-	{
-		m_value = true;
-		if (m_pCalc)
-			setSrcInfo(m_pCalc->src_info());
-	}
+	RDOSetRelResParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc);
 
 	int          m_relNumb;
 	int          m_parNumb;
@@ -91,15 +78,10 @@ CALC(RDOEraseResRelCalc)
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)
 public:
-	tstring getName() const { return m_rel_res_name; }
+	CREF(tstring) getName() const;
 
 private:
-	RDOEraseResRelCalc(int rel_res_id, CREF(tstring) rel_res_name)
-		: m_rel_res_id  (rel_res_id  )
-		, m_rel_res_name(rel_res_name)
-	{
-		m_value = 1;
-	}
+	RDOEraseResRelCalc(int rel_res_id, CREF(tstring) rel_res_name);
 
 	int      m_rel_res_id;
 	tstring  m_rel_res_name;
