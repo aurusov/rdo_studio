@@ -114,4 +114,17 @@ REF(RDOValue) RDOCalcFunBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunEnd
+// ----------------------------------------------------------------------------
+RDOCalcFunEnd::RDOCalcFunEnd()
+{}
+
+REF(RDOValue) RDOCalcFunEnd::doCalc(PTR(RDORuntime) pRuntime)
+{
+	pRuntime->getMemoryStack()->pop();
+	pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
+	return m_value;
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

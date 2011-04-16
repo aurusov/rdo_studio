@@ -383,10 +383,10 @@ fun_func_footer
 		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($6);
 		ASSERT(pCalcFunList);
 
-		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
+		rdoRuntime::LPRDOCalc pCalcFunEnd = rdo::Factory<rdoRuntime::RDOCalcFunEnd>::create();
+		ASSERT(pCalcFunEnd);
 
-		pCalcFunList->addFunCalc(pCalcCloseBrace);
+		pCalcFunList->addFunCalc(pCalcFunEnd);
 
 		rdoRuntime::LPRDOFunCalc pCalc = pCalcFunList;
 		ASSERT(pCalc);

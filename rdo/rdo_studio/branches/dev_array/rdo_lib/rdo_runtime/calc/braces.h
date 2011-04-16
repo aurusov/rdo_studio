@@ -81,6 +81,18 @@ private:
 	DECALRE_ICalc;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcFunEnd
+// ----------------------------------------------------------------------------
+CALC(RDOCalcFunEnd)
+{
+	DECLARE_FACTORY(RDOCalcFunEnd)
+private:
+	RDOCalcFunEnd();
+
+	DECALRE_ICalc;
+};
+
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

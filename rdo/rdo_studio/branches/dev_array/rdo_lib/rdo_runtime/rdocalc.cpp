@@ -510,7 +510,6 @@ REF(RDOValue) RDOCalcFunctionCall::doCalc(PTR(RDORuntime) pRuntime)
 		pRuntime->popFuncArgument();
 	}
 	pRuntime->popFuncTop();
-	pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
 	return m_value;
 }
 
