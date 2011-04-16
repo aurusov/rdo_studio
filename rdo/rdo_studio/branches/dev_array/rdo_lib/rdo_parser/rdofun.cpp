@@ -1502,7 +1502,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 
 void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
 {
-	if(!getFunctionCalc()->isReturn()) 
+	if (!getFunctionCalc()->isReturn())
 	{
 		RDOParser::s_parser()->error().warning(body_src_info, rdo::format(_T("Не горантированно возвращение значания функции")));
 		if (m_pReturn->getDefault().defined())
