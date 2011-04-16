@@ -60,7 +60,7 @@ private:
 
 	LPRDOTypeRangeRange m_range;
 
-	DECLARE_IType;
+	DECLARE_ITypeConverter;
 };
 typedef RDOTypeRange<RDOType__int>  RDOTypeIntRange;
 typedef RDOTypeRange<RDOType__real> RDOTypeRealRange;
