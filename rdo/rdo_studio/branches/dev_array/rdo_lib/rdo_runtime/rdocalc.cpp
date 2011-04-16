@@ -211,7 +211,10 @@ RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStat
 	ASSERT(m_pIfStatement  );
 	ASSERT(m_pElseStatement);
 
-	if((m_pIfStatement->isReturn() > 0)&&(m_pElseStatement->isReturn() > 0)) upCnt();
+	if ((m_pIfStatement->isReturn() > 0) && (m_pElseStatement->isReturn() > 0))
+	{
+		upCnt();
+	}
 }
 
 REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) pRuntime)
@@ -223,17 +226,20 @@ REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) pRuntime)
 // ---------- RDOCalcFor
 // ----------------------------------------------------------------------------
 RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement)
-	:m_pDeclaration(pDeclaration)
-	,m_pCondition  (pCondition  )
-	,m_pExpression (pExpression )
-	,m_pStatement  (pStatement  )
+	: m_pDeclaration(pDeclaration)
+	, m_pCondition  (pCondition  )
+	, m_pExpression (pExpression )
+	, m_pStatement  (pStatement  )
 {
 	ASSERT(m_pDeclaration);
 	ASSERT(m_pCondition  );
 	ASSERT(m_pExpression );
 	ASSERT(m_pStatement  );
 
-	if(m_pStatement->isReturn()) upCnt();
+	if (m_pStatement->isReturn())
+	{
+		upCnt();
+	}
 }
 
 REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) pRuntime)
@@ -373,7 +379,10 @@ void RDOCalcList::addCalc(CREF(LPRDOCalc) pCalc)
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
 
-	if(pCalc->isReturn()) upCnt();
+	if (pCalc->isReturn())
+	{
+		upCnt();
+	}
 }
 
 REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) pRuntime)
