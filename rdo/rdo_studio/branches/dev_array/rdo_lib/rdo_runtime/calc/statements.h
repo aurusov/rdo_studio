@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : braces.h
- * author   : Чирков Михаил
+ * filename : statements.h
+ * author   : Чирков Михаил, Дмитрий Лущан
  * date     : 16.04.11
  * bref     : 
  * indent   : 4T
