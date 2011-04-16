@@ -21,6 +21,24 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcGetRelevantResParam
+// ----------------------------------------------------------------------------
+CALC(RDOCalcGetRelevantResParam)
+{
+DECLARE_FACTORY(RDOCalcGetRelevantResParam)
+private:
+	RDOCalcGetRelevantResParam(int relNumb, int parNumb)
+		: m_relNumb(relNumb)
+		, m_parNumb(parNumb)
+	{}
+
+	int m_relNumb;
+	int m_parNumb;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOSetRelResParamCalc
 // ----------------------------------------------------------------------------
 template <EqualType equalType>
@@ -34,6 +52,57 @@ protected:
 	int        m_relNumb;
 	int        m_parNumb;
 	LPRDOCalc  m_pCalc;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOSetRelParamDiapCalc
+// ----------------------------------------------------------------------------
+CALC(RDOSetRelParamDiapCalc)
+{
+DECLARE_FACTORY(RDOSetRelParamDiapCalc)
+private:
+	RDOSetRelParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc)
+		: m_relNumb  (relNumb  )
+		, m_parNumb  (parNumb  )
+		, m_pCalc    (pCalc    )
+		, m_min_value(min_value)
+		, m_max_value(max_value)
+	{
+		m_value = true;
+		if (m_pCalc)
+			setSrcInfo(m_pCalc->src_info());
+	}
+
+	int          m_relNumb;
+	int          m_parNumb;
+	LPRDOCalc    m_pCalc;
+	RDOValue     m_min_value;
+	RDOValue     m_max_value;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcEraseRes
+// ----------------------------------------------------------------------------
+CALC(RDOCalcEraseRes)
+{
+DECLARE_FACTORY(RDOCalcEraseRes)
+public:
+	tstring getName() const { return m_rel_res_name; }
+
+private:
+	RDOCalcEraseRes(int rel_res_id, CREF(tstring) rel_res_name)
+		: m_rel_res_id  (rel_res_id  )
+		, m_rel_res_name(rel_res_name)
+	{
+		m_value = 1;
+	}
+
+	int      m_rel_res_id;
+	tstring  m_rel_res_name;
 
 	DECALRE_ICalc;
 };

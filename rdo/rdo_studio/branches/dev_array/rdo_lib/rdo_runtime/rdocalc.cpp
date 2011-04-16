@@ -129,43 +129,11 @@ REF(RDOValue) RDOCalcGetGroupResParam::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcGetRelevantResParam
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetRelevantResParam::doCalc(PTR(RDORuntime) runtime)
-{
-	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
-	return m_value;
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamDiapCalc
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
-{
-	m_pCalc->calcValue(runtime);
-	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
-	if (m_value < m_min_value || m_value > m_max_value)
-	{
-		runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
-	}
-	return m_value;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOSetResourceParamCalc
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOSetResourceParamCalc::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->setResParamVal(m_resNumb, m_parNumb, m_pCalc->calcValue(runtime));
-	return m_value;
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEraseRes
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcEraseRes::doCalc(PTR(RDORuntime) runtime)
-{
-	runtime->onEraseRes(runtime->getCurrentActivity()->getResByRelRes(m_rel_res_id), this);
 	return m_value;
 }
 
