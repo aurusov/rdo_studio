@@ -33,7 +33,7 @@ OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo) IS INSTANCE_OF(RDOCalcIsReturn)
 DECLARE_FACTORY(RDOCalc)
 
 public:
-	REF(RDOValue) calcValue(PTR(RDORuntime) runtime);
+	REF(RDOValue) calcValue(PTR(RDORuntime) pRuntime);
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
@@ -46,12 +46,12 @@ protected:
 
 	RDOValue m_value;
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime) = 0;
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime) = 0;
 };
 
 #define DECALRE_ICalc \
 private:              \
-	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
 
 #define CALC_SUB(TYPE, PARENT) \
 PREDECLARE_POINTER(TYPE);      \
@@ -100,7 +100,7 @@ CALC_SUB(RDOCalcGetTempResParamFRM, RDOCalcGetResParam)
 DECLARE_FACTORY(RDOCalcGetTempResParamFRM)
 private:
 	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
 
 	virtual void notify(ruint message, PTR(void) param)
 	{
@@ -577,7 +577,7 @@ private: \
 	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
 		: RDOFunCalcGroup(nResType, pCondition) \
 	{} \
- 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
+ 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime); \
 };
 
 DEFINE_CALC_GROUP( Exist     );
@@ -732,7 +732,7 @@ CALC(RDOCalcCreateNumberedResource)
 {
 DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
 
 	ruint getNumber() const { return number; }
 
@@ -756,7 +756,7 @@ CALC_SUB(RDOCalcCreateProcessResource, RDOCalcCreateNumberedResource)
 DECLARE_FACTORY(RDOCalcCreateProcessResource)
 private:
 	RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
 };
 
 // ----------------------------------------------------------------------------

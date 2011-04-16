@@ -13,8 +13,6 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/equaltype.h"
 // ===============================================================================
 
@@ -27,10 +25,10 @@ CALC(RDOGetRelResParamCalc)
 {
 DECLARE_FACTORY(RDOGetRelResParamCalc)
 private:
-	RDOGetRelResParamCalc(int relNumb, int parNumb);
+	RDOGetRelResParamCalc(ruint relResID, ruint paramID);
 
-	int m_relNumb;
-	int m_parNumb;
+	ruint m_relResID;
+	ruint m_paramID;
 
 	DECALRE_ICalc;
 };
@@ -42,13 +40,13 @@ template <EqualType equalType>
 class RDOSetRelResParamCalc: public RDOCalc
 {
 public:
-	RDOSetRelResParamCalc(int relNumb, int parNumb, CREF(LPRDOCalc) pCalc = NULL);
+	RDOSetRelResParamCalc(ruint relResID, ruint paramID, CREF(LPRDOCalc) pCalc = NULL);
 	virtual ~RDOSetRelResParamCalc();
 
 protected:
-	int        m_relNumb;
-	int        m_parNumb;
-	LPRDOCalc  m_pCalc;
+	ruint     m_relResID;
+	ruint     m_paramID;
+	LPRDOCalc m_pCalc;
 
 	DECALRE_ICalc;
 };
@@ -60,13 +58,13 @@ CALC(RDOSetRelResParamDiapCalc)
 {
 DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
 private:
-	RDOSetRelResParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc);
+	RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc);
 
-	int          m_relNumb;
-	int          m_parNumb;
-	LPRDOCalc    m_pCalc;
-	RDOValue     m_min_value;
-	RDOValue     m_max_value;
+	ruint     m_relResID;
+	ruint     m_paramID;
+	LPRDOCalc m_pCalc;
+	RDOValue  m_minValue;
+	RDOValue  m_maxValue;
 
 	DECALRE_ICalc;
 };
@@ -81,10 +79,10 @@ public:
 	CREF(tstring) getName() const;
 
 private:
-	RDOEraseResRelCalc(int rel_res_id, CREF(tstring) rel_res_name);
+	RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName);
 
-	int      m_rel_res_id;
-	tstring  m_rel_res_name;
+	ruint   m_relResID;
+	tstring m_relResName;
 
 	DECALRE_ICalc;
 };

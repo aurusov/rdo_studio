@@ -19,26 +19,26 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOGetRelResParamCalc
 // ----------------------------------------------------------------------------
-RDOGetRelResParamCalc::RDOGetRelResParamCalc(int relNumb, int parNumb)
-	: m_relNumb(relNumb)
-	, m_parNumb(parNumb)
+RDOGetRelResParamCalc::RDOGetRelResParamCalc(ruint relResID, ruint paramID)
+	: m_relResID(relResID)
+	, m_paramID (paramID )
 {}
 
-REF(RDOValue) RDOGetRelResParamCalc::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOGetRelResParamCalc::doCalc(PTR(RDORuntime) pRuntime)
 {
-	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
+	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
 	return m_value;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOSetRelResParamDiapCalc
 // ----------------------------------------------------------------------------
-RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc)
-	: m_relNumb  (relNumb  )
-	, m_parNumb  (parNumb  )
-	, m_pCalc    (pCalc    )
-	, m_min_value(min_value)
-	, m_max_value(max_value)
+RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc)
+	: m_relResID(relResID)
+	, m_paramID (paramID )
+	, m_pCalc   (pCalc   )
+	, m_minValue(minValue)
+	, m_maxValue(maxValue)
 {
 	m_value = true;
 	if (m_pCalc)
@@ -47,13 +47,13 @@ RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(int relNumb, int parNumb, C
 	}
 }
 
-REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(PTR(RDORuntime) pRuntime)
 {
-	m_pCalc->calcValue(runtime);
-	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
-	if (m_value < m_min_value || m_value > m_max_value)
+	m_pCalc->calcValue(pRuntime);
+	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
+	if (m_value < m_minValue || m_value > m_maxValue)
 	{
-		runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
+		pRuntime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), m_value.getAsString().c_str()), this);
 	}
 	return m_value;
 }
@@ -61,22 +61,22 @@ REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOEraseResRelCalc
 // ----------------------------------------------------------------------------
-RDOEraseResRelCalc::RDOEraseResRelCalc(int rel_res_id, CREF(tstring) rel_res_name)
-	: m_rel_res_id  (rel_res_id  )
-	, m_rel_res_name(rel_res_name)
+RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
+	: m_relResID  (relResID  )
+	, m_relResName(relResName)
 {
 	m_value = 1;
 }
 
-REF(RDOValue) RDOEraseResRelCalc::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOEraseResRelCalc::doCalc(PTR(RDORuntime) pRuntime)
 {
-	runtime->onEraseRes(runtime->getCurrentActivity()->getResByRelRes(m_rel_res_id), this);
+	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
 	return m_value;
 }
 
 CREF(tstring) RDOEraseResRelCalc::getName() const
 {
-	return m_rel_res_name;
+	return m_relResName;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
