@@ -42,18 +42,18 @@ REF(RDOValue) RDOCalcCloseBrace::doCalc(PTR(RDORuntime) pRuntime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcList
+// ---------- RDOCalcBodyBrace
 // ----------------------------------------------------------------------------
-RDOCalcList::RDOCalcList()
+RDOCalcBodyBrace::RDOCalcBodyBrace()
 {}
 
-void RDOCalcList::addCalc(CREF(LPRDOCalc) pCalc)
+void RDOCalcBodyBrace::addCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
 }
 
-REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
 {
 	STL_FOR_ALL(m_calcList, calc_it)
 	{
@@ -65,12 +65,12 @@ REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) pRuntime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcFunList
+// ---------- RDOCalcFunBodyBrace
 // ----------------------------------------------------------------------------
-RDOCalcFunList::RDOCalcFunList()
+RDOCalcFunBodyBrace::RDOCalcFunBodyBrace()
 {}
 
-void RDOCalcFunList::addFunCalc(CREF(LPRDOCalc) pCalc)
+void RDOCalcFunBodyBrace::addFunCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcFunList.push_back(pCalc);
@@ -81,14 +81,14 @@ void RDOCalcFunList::addFunCalc(CREF(LPRDOCalc) pCalc)
 	}
 }
 
-void RDOCalcFunList::addRetCalc(CREF(LPRDOCalc) pCalc)
+void RDOCalcFunBodyBrace::addRetCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	LPRDOCalc pCalcReturn = rdo::Factory<rdoRuntime::RDOCalcFunReturn>::create(pCalc);
 	m_calcFunList.insert(--m_calcFunList.end(), pCalcReturn);
 }
 
-REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFunBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
 {
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
 	{

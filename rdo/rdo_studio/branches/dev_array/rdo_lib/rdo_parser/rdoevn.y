@@ -1366,7 +1366,7 @@ statement
 	| if_statement
 	| '{' statement_list '}'
 	{
-		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($2);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($2);
 		ASSERT(pCalcList);
 		rdoRuntime::LPRDOCalc pCalc = pCalcList;
 		ASSERT(pCalc);
@@ -1377,13 +1377,13 @@ statement
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
+		rdoRuntime::LPRDOCalcBodyBrace pCalcList = rdo::Factory<rdoRuntime::RDOCalcBodyBrace>::create();
 		ASSERT(pCalcList);
 		$$ = PARSER->stack().push(pCalcList);
 	}
 	| statement_list statement
 	{
-		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($1);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
 		ASSERT(pCalcList);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);

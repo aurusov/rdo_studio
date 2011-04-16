@@ -379,7 +379,7 @@ fun_func_params
 fun_func_footer
 	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement alg_fun_End
 	{
-		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($6);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($6);
 		ASSERT(pCalcFunList);
 
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
@@ -444,7 +444,7 @@ fun_func_footer
 alg_fun_statement
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcFunList pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunList>::create();
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
 		ASSERT(pCalcFunList);
 
 		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
@@ -455,7 +455,7 @@ alg_fun_statement
 	}
 	| alg_fun_statement statement
 	{
-		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($1);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
 		ASSERT(pCalcFunList);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
@@ -536,7 +536,7 @@ statement
 	}
 	| open_brace statement_list close_brace
 	{
-		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($2);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($2);
 		ASSERT(pCalcFunList);
 
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
@@ -588,7 +588,7 @@ close_brace
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcFunList pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunList>::create();
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
 		ASSERT(pCalcFunList);
 
 		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
@@ -599,7 +599,7 @@ statement_list
 	}
 	| statement_list statement
 	{
-		rdoRuntime::LPRDOCalcFunList pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunList>($1);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
 		ASSERT(pCalcFunList);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);

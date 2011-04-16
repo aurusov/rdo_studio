@@ -1464,7 +1464,7 @@ statement
 	| watch_stop
 	| open_brace statement_list close_brace
 	{
-		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($2);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($2);
 		ASSERT(pCalcList);
 
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
@@ -1516,7 +1516,7 @@ close_brace
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcList pCalcList = rdo::Factory<rdoRuntime::RDOCalcList>::create();
+		rdoRuntime::LPRDOCalcBodyBrace pCalcList = rdo::Factory<rdoRuntime::RDOCalcBodyBrace>::create();
 		ASSERT(pCalcList);
 
 		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
@@ -1527,7 +1527,7 @@ statement_list
 	}
 	| statement_list statement
 	{
-		rdoRuntime::LPRDOCalcList pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcList>($1);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
 		ASSERT(pCalcList);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
