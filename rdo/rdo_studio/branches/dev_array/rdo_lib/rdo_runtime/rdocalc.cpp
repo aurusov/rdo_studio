@@ -378,10 +378,11 @@ REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
 	{
 		m_value = RDOValue(m_calcFunList.size());
-		STL_FOR_ALL(m_calcFunList, calc_it)
+		STL_FOR_ALL(m_calcFunList, calcIt)
 		{
-			LPRDOCalc calc = (*calc_it);
-			(*calc_it)->calcValue(pRuntime);
+			LPRDOCalc pCalc = *calcIt;
+			ASSERT(pCalc);
+			pCalc->calcValue(pRuntime);
 			if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
 			{
 				m_calcFunList.back()->calcValue(pRuntime);
@@ -390,7 +391,7 @@ REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
 			}
 			if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 			{
-				m_value = (*calc_it)->calcValue(pRuntime);
+				m_value = pCalc->calcValue(pRuntime);
 				m_calcFunList.back()->calcValue(pRuntime);
 				return m_value;
 			}
