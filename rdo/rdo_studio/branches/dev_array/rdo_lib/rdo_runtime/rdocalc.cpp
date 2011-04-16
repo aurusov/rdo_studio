@@ -191,6 +191,8 @@ RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
 {
 	ASSERT(m_pCondition);
 	ASSERT(m_pStatement);
+
+	//! TODO: isReturn: Если m_pCondition логическая константа == true, то проверить на isReturn() вполне валидно
 }
 
 REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) pRuntime)
