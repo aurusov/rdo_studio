@@ -687,30 +687,21 @@ rbool RDOStudioModel::buildModel() const
 
 rbool RDOStudioModel::runModel()
 {
-	PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
-	if(method && method->compile())
-	{
-		method->generate();
-		return true;
-	}
-	else
-	{
-		if (!plugins->canAction(rdoPlugin::maRun))
-			return false;
+	if (!plugins->canAction(rdoPlugin::maRun))
+		return false;
 
-		if (hasModel() && !isRunning() && saveModel())
-		{
-			m_GUI_CAN_RUN = false;
-			PTR(RDOStudioOutput) output = &studioApp.mainFrame->output;
-			output->clearBuild();
-			output->clearDebug();
-			output->clearResults();
-			output->showBuild();
-			output->appendStringToBuild(rdo::format(IDS_MODEL_BUILDING_BEGIN));
-			const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->UpdateWindow();
-			studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
-			return true;
-		}
+	if (hasModel() && !isRunning() && saveModel())
+	{
+		m_GUI_CAN_RUN = false;
+		PTR(RDOStudioOutput) output = &studioApp.mainFrame->output;
+		output->clearBuild();
+		output->clearDebug();
+		output->clearResults();
+		output->showBuild();
+		output->appendStringToBuild(rdo::format(IDS_MODEL_BUILDING_BEGIN));
+		const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->UpdateWindow();
+		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
+		return true;
 	}
 	return false;
 }
