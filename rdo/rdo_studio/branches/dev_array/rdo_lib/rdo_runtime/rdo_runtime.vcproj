@@ -1796,15 +1796,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\isReturn.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc\event_plan.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\calc\event_plan.h"
+				>
+			</File>
+			<File
+				RelativePath=".\isReturn.h"
 				>
 			</File>
 			<File
@@ -1887,6 +1887,10 @@
 			</File>
 			<File
 				RelativePath=".\calc\relres.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\relres.inl"
 				>
 			</File>
 			<File
