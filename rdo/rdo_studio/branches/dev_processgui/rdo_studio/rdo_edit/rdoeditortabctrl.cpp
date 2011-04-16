@@ -4,12 +4,7 @@
 #include "rdo_studio/rdostudiomainfrm.h"
 #include "rdo_studio/rdostudioeditbaseview.h"
 #include "rdo_studio/resource.h"
-#include "rdo_studio/rdo_process/rdoprocess_docview.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_project.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_MJ.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_flowchart.h"
-#include "rdo_studio/rdostudiomodel.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -124,13 +119,6 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	insertItem( pPage9 , "SMR" );
 	insertItem( pPage10, "PMD" );
 
-	PTR(RPObjectFlowChart_MJ) flowobj = new RPObjectFlowChart_MJ( rpMethod::project );
-	PTR(RPDoc) doc = static_cast<RPDoc*>(model->flowchartDocTemplate->OpenDocumentFile( NULL ));
-	doc->getView()->makeFlowChartWnd( flowobj );
-	doc->getView()->getFlowchart()->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	doc->getView()->getFlowchart()->init();
-	insertItem( doc->getView()->getFlowchart(), "GUI" );
-
 	setCurrentRDOItem( rdoModelObjects::RTP );
 
 	return 0;
@@ -176,4 +164,10 @@ void RDOEditorTabCtrl::setCurrentRDOItem( const rdoModelObjects::RDOFileType typ
 {
 	int index = typeToIndex( type );
 	if ( index != -1 ) setCurrentItem( index );
+}
+
+RDOEditorEdit* RDOEditorTabCtrl::getItemEdit( const rdoModelObjects::RDOFileType type ) const
+{
+	int index = typeToIndex( type );
+	return index != -1 ? getItemEdit( index ) : NULL;
 }

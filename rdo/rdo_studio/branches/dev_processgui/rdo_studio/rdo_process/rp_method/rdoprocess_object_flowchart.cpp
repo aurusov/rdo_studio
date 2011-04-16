@@ -121,6 +121,10 @@ void RPObjectFlowChart::init()
 	update();
 }
 
+void RPObjectFlowChart::after_constructor()
+{
+	rpMethod::project->makeFlowChartWnd( this );
+}
 
 void RPObjectFlowChart::load( rp::RPXMLNode* node )
 {

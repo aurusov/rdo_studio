@@ -28,7 +28,6 @@ protected:
 	int   getCurrentIndex() const           { return GetCurSel();                  };
 
 	void  insertItem( CWnd* pWnd, LPCTSTR lpName );
-	void  deleteItem( unsigned int index );
 
 	void  setCurrentItem( const int index ) {
 		if ( index < 0 && index > getItemCount() ) return;

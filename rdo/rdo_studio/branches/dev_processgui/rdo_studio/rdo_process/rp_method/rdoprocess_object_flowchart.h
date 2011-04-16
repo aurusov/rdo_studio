@@ -66,6 +66,7 @@ protected:
 	ConnectorTypeWanted ct_wanted;
 
 	RPFlowChart* flowchart;
+	void after_constructor();
 
 	virtual void notify( RPObject* from, UINT message, void* param = NULL );
 	virtual void modify();

@@ -42,7 +42,6 @@ class RPObjectClassInfo;
 
 class RPView: public CView
 {
-public:
 DECLARE_DYNCREATE(RPView)
 
 private:
@@ -51,6 +50,7 @@ private:
 protected:
 	RPView();
 	virtual ~RPView();
+
 	COleDropTarget target;
 	const RPObjectClassInfo* getSrcClassInfo( COleDataObject* pDataObject ) const;
 

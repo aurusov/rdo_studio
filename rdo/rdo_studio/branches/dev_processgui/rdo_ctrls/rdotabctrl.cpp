@@ -163,14 +163,6 @@ void RDOTab::insertItem( CWnd* pWnd, LPCTSTR lpName )
 	}
 }
 
-void RDOTab::deleteItem( unsigned int index )
-{
-	TC_ITEM TabItem;
-	TabItem.mask   = TCIF_PARAM;
-	TabItem.lParam = NULL;
-	SetItem( index, &TabItem );
-}
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTabCtrl
 // ----------------------------------------------------------------------------
@@ -229,7 +221,6 @@ void RDOTabCtrl::OnDestroy()
 		int i = getItemCount();
 		for ( ; i >= 0; i-- ) {
 			CWnd* pWnd = getItem( i );
-			tab->deleteItem(i);
 			if ( pWnd ) {
 				bool mustbedelete = true;
 				CRuntimeClass* runtimeinfo = pWnd->GetRuntimeClass();

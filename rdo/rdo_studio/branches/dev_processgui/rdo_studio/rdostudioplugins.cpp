@@ -655,17 +655,14 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 				case rdoPlugin::TRC: edit_type = rdoModelObjects::TRC; break;
 			}
 			if ( tab->typeSupported( edit_type ) ) {
-				PTR(rdoEditor::RDOEditorEdit) pEditor = tab->getItemWnd<rdoEditor::RDOEditorEdit>(edit_type);
-				if(pEditor)
-				{
-					rdo::binarystream stream;
-					pEditor->save( stream );
-					std::string::size_type size = stream.str().size();
-					*data = new char[size + 1];
-					(*data)[size] = '\0';
-					stream.str( *data );//.copy( *data, size );
-					return true;
-				}
+				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );
+				rdo::binarystream stream;
+				edit->save( stream );
+				std::string::size_type size = stream.str().size();
+				*data = new char[size + 1];
+				(*data)[size] = '\0';
+				stream.str( *data );//.copy( *data, size );
+				return true;
 			}
 		}
 	}
@@ -693,23 +690,20 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 				case rdoPlugin::TRC: edit_type = rdoModelObjects::TRC; break;
 			}
 			if ( tab->typeSupported( edit_type ) ) {
-				PTR(rdoEditor::RDOEditorEdit) pEditor = tab->getItemWnd<rdoEditor::RDOEditorEdit>(edit_type);
-				if(pEditor)
-				{
-					rdo::binarystream stream;
-					stream.str( data );
-	//				size_t size = strlen(data);
-	//				stream.resize( size );
-	//				memcpy( stream.data(), data, strlen(data) );
-					bool readonly = pEditor->isReadOnly();
-					if ( readonly ) pEditor->setReadOnly( false );
-					pEditor->clearAll();
-					pEditor->load( stream );
-					pEditor->setCurrentPos( 0 );
-					if ( readonly ) pEditor->setReadOnly( true );
-					pEditor->updateEditGUI();
-					return true;
-				}
+				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );
+				rdo::binarystream stream;
+				stream.str( data );
+//				size_t size = strlen(data);
+//				stream.resize( size );
+//				memcpy( stream.data(), data, strlen(data) );
+				bool readonly = edit->isReadOnly();
+				if ( readonly ) edit->setReadOnly( false );
+				edit->clearAll();
+				edit->load( stream );
+				edit->setCurrentPos( 0 );
+				if ( readonly ) edit->setReadOnly( true );
+				edit->updateEditGUI();
+				return true;
 			}
 		}
 	}

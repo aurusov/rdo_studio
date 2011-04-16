@@ -232,8 +232,7 @@ void RDOStudioOutput::updateLogConnection() const
 		rdoEditor::RDOEditorTabCtrl* editor_tab = model->getTab();
 		if ( editor_tab ) {
 			for ( int i = 0; i < editor_tab->getItemCount(); i++ ) {
-				if(editor_tab->getItemWnd<rdoEditor::RDOEditorEdit>( i ) > 0)
-					editor_tab->getItemWnd<rdoEditor::RDOEditorEdit>( i )->setLog( *log );
+				editor_tab->getItemEdit( i )->setLog( *log );
 			}
 		}
 	}
