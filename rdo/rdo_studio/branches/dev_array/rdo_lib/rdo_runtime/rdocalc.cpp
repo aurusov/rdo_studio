@@ -418,7 +418,7 @@ REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
 			{
 				m_calcFunList.back()->calcValue(pRuntime);
 				pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
-				return RDOValue(m_calcFunList.size());
+				return m_value;
 			}
 			if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 			{
