@@ -378,11 +378,6 @@ void RDOCalcList::addCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
-
-	if (pCalc->isReturn())
-	{
-		upCnt();
-	}
 }
 
 REF(RDOValue) RDOCalcList::doCalc(PTR(RDORuntime) pRuntime)
