@@ -1068,13 +1068,13 @@ rbool RDOThreadSimulator::parseModel()
 
 void RDOThreadSimulator::runModel()
 {
-	if (parseModel())
-	{
-		m_pParser->error().clear();
-		m_exitCode = rdoSimulator::EC_OK;
-		m_pRuntime->setStudioThread(kernel->studio());
-		m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
-	}
+	ASSERT(m_pParser );
+	ASSERT(m_pRuntime);
+
+	m_pParser->error().clear();
+	m_exitCode = rdoSimulator::EC_OK;
+	m_pRuntime->setStudioThread(kernel->studio());
+	m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
 }
 
 void RDOThreadSimulator::stopModel()

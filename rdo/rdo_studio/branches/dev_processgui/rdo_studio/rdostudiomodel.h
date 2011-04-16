@@ -46,6 +46,13 @@ friend class RDOThreadStudioGUI;
 friend class RDOStudioPlugins;
 
 private:
+	enum BuildState
+	{
+		BS_UNDEFINED,
+		BS_COMPLETE,
+		BS_ERROR
+	};
+
 	PTR(CMultiDocTemplate)    m_pModelDocTemplate;
 	PTR(CMultiDocTemplate)    m_pFlowchartDocTemplate;
 	RDOStudioFrameManager     m_frameManager;
@@ -65,6 +72,7 @@ private:
 	rbool                     m_GUI_ACTION_RUN;
 
 	SYSTEMTIME                m_timeStart;
+	BuildState                m_buildState;
 
 	mutable rbool             m_openError;
 	mutable rbool             m_smrEmptyError;
@@ -148,7 +156,7 @@ public:
 	rbool saveModel     () const;
 	void  saveAsModel   () const;
 	rbool closeModel    () const;
-	rbool buildModel    () const;
+	rbool buildModel    ();
 	rbool runModel      ();
 	rbool stopModel     () const;
 	void  update        ();
