@@ -1812,6 +1812,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\locvar.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\logic.cpp"
 				>
 			</File>
