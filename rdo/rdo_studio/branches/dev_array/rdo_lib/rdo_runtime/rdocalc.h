@@ -233,54 +233,6 @@ DECALRE_ICalc;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcIf
-// ----------------------------------------------------------------------------
-CALC(RDOCalcIf)
-{
-DECLARE_FACTORY(RDOCalcIf)
-private:
-	RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement);
-
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pStatement;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcIfElse
-// ----------------------------------------------------------------------------
-CALC(RDOCalcIfElse)
-{
-DECLARE_FACTORY(RDOCalcIfElse)
-private:
-	RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement);
-
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pIfStatement;
-	LPRDOCalc m_pElseStatement;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFor
-// ----------------------------------------------------------------------------
-CALC(RDOCalcFor)
-{
-DECLARE_FACTORY(RDOCalcFor)
-private:
-	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
-
-	LPRDOCalc m_pDeclaration;
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pExpression;
-	LPRDOCalc m_pStatement;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 CALC(RDOFunCalc)
@@ -292,42 +244,6 @@ public:
 protected:
 	RDOFunCalc()
 	{}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunBreak
-// ----------------------------------------------------------------------------
-CALC(RDOCalcFunBreak)
-{
-	DECLARE_FACTORY(RDOCalcFunBreak)
-private:
-	RDOCalcFunBreak();
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunReturn
-// ----------------------------------------------------------------------------
-CALC(RDOCalcFunReturn)
-{
-	DECLARE_FACTORY(RDOCalcFunReturn)
-private:
-	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
-
-	LPRDOCalc m_pReturn;
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcNoChange
-// ----------------------------------------------------------------------------
-CALC(RDOCalcNoChange)
-{
-DECLARE_FACTORY(RDOCalcNoChange)
-private:
-	RDOCalcNoChange();
-	DECALRE_ICalc;
 };
 
 // ----------------------------------------------------------------------------

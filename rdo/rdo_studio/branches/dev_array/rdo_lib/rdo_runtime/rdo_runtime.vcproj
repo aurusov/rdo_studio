@@ -1922,6 +1922,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\statements.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\statements.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\std_fun.cpp"
 				>
 			</File>
