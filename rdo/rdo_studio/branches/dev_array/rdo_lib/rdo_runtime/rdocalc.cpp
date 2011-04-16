@@ -357,8 +357,9 @@ RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
 
 REF(RDOValue) RDOCalcFunReturn::doCalc(PTR(RDORuntime) pRuntime)
 {
+	m_value = m_pReturn->calcValue(pRuntime);
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
-	return m_pReturn->calcValue(pRuntime);
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
@@ -726,6 +727,7 @@ REF(RDOValue) RDOCalcFunctionCall::doCalc(PTR(RDORuntime) pRuntime)
 		pRuntime->popFuncArgument();
 	}
 	pRuntime->popFuncTop();
+	pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
 	return m_value;
 }
 
