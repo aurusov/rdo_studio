@@ -21,14 +21,14 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamCalc
+// ---------- RDOSetRelResParamCalc
 // ----------------------------------------------------------------------------
 template <EqualType equalType>
-class RDOSetRelParamCalc: public RDOCalc
+class RDOSetRelResParamCalc: public RDOCalc
 {
 public:
-	RDOSetRelParamCalc(int relNumb, int parNumb, CREF(LPRDOCalc) pCalc = NULL);
-	virtual ~RDOSetRelParamCalc();
+	RDOSetRelResParamCalc(int relNumb, int parNumb, CREF(LPRDOCalc) pCalc = NULL);
+	virtual ~RDOSetRelResParamCalc();
 
 protected:
 	int        m_relNumb;

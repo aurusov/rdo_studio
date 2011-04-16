@@ -1527,7 +1527,7 @@ pat_convert_cmd
 		{
 			case rdoRuntime::ET_EQUAL:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				ASSERT(pCalc);
 				pRelRes->getParamSetList().insert(param);
 				break;

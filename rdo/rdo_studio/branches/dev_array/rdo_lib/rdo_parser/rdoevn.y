@@ -1437,12 +1437,12 @@ equal_statement
 		{
 			case rdoRuntime::ET_INCR:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
 				break;
 			}
 			case rdoRuntime::ET_DECR:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
 				break;
 			}
 			default:
@@ -1509,7 +1509,7 @@ equal_statement
 			}
 			case rdoRuntime::ET_EQUAL:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				ASSERT(pCalc);
 				pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
 				pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
@@ -1530,22 +1530,22 @@ equal_statement
 			}
 			case rdoRuntime::ET_PLUS:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_PLUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_PLUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				break;
 			}
 			case rdoRuntime::ET_MINUS:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MINUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_MINUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				break;
 			}
 			case rdoRuntime::ET_MULTIPLY:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				break;
 			}
 			case rdoRuntime::ET_DIVIDE:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				break;
 			}
 			default:
