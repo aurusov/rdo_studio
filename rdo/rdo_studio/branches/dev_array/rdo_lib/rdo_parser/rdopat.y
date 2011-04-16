@@ -1465,15 +1465,15 @@ statement
 	| watch_stop
 	| open_brace statement_list close_brace
 	{
-		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($2);
-		ASSERT(pCalcList);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($2);
+		ASSERT(pCalcBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		pCalcList->addCalc(pCalcCloseBrace);
+		pCalcBodyBrace->addCalc(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalc pCalc = pCalcList;
+		rdoRuntime::LPRDOCalc pCalc = pCalcBodyBrace;
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1517,26 +1517,26 @@ close_brace
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcBodyBrace pCalcList = rdo::Factory<rdoRuntime::RDOCalcBodyBrace>::create();
-		ASSERT(pCalcList);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = rdo::Factory<rdoRuntime::RDOCalcBodyBrace>::create();
+		ASSERT(pCalcBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
-		pCalcList->addCalc(pCalcOpenBrace);
-		$$ = PARSER->stack().push(pCalcList);
+		pCalcBodyBrace->addCalc(pCalcOpenBrace);
+		$$ = PARSER->stack().push(pCalcBodyBrace);
 	}
 	| statement_list statement
 	{
-		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
-		ASSERT(pCalcList);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
+		ASSERT(pCalcBodyBrace);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
-		pCalcList->addCalc(pCalc);
+		pCalcBodyBrace->addCalc(pCalc);
 
-		$$ = PARSER->stack().push(pCalcList);
+		$$ = PARSER->stack().push(pCalcBodyBrace);
 	}
 	;
 

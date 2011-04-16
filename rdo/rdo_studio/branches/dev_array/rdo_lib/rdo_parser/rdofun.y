@@ -380,15 +380,15 @@ fun_func_params
 fun_func_footer
 	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement alg_fun_End
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($6);
-		ASSERT(pCalcFunList);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($6);
+		ASSERT(pCalcFunBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcFunEnd = rdo::Factory<rdoRuntime::RDOCalcFunEnd>::create();
 		ASSERT(pCalcFunEnd);
 
-		pCalcFunList->addFunCalc(pCalcFunEnd);
+		pCalcFunBodyBrace->addFunCalc(pCalcFunEnd);
 
-		rdoRuntime::LPRDOFunCalc pCalc = pCalcFunList;
+		rdoRuntime::LPRDOFunCalc pCalc = pCalcFunBodyBrace;
 		ASSERT(pCalc);
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
@@ -445,26 +445,26 @@ fun_func_footer
 alg_fun_statement
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
-		ASSERT(pCalcFunList);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
+		ASSERT(pCalcFunBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
-		pCalcFunList->addFunCalc(pCalcOpenBrace);
-		$$ = PARSER->stack().push(pCalcFunList);
+		pCalcFunBodyBrace->addFunCalc(pCalcOpenBrace);
+		$$ = PARSER->stack().push(pCalcFunBodyBrace);
 	}
 	| alg_fun_statement statement
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
-		ASSERT(pCalcFunList);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
+		ASSERT(pCalcFunBodyBrace);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
-		pCalcFunList->addFunCalc(pCalc);
+		pCalcFunBodyBrace->addFunCalc(pCalc);
 
-		$$ = PARSER->stack().push(pCalcFunList);
+		$$ = PARSER->stack().push(pCalcFunBodyBrace);
 	}
 	| error
 	{
@@ -537,15 +537,15 @@ statement
 	}
 	| open_brace statement_list close_brace
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($2);
-		ASSERT(pCalcFunList);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($2);
+		ASSERT(pCalcFunBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		pCalcFunList->addFunCalc(pCalcCloseBrace);
+		pCalcFunBodyBrace->addFunCalc(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalc pCalc = pCalcFunList;
+		rdoRuntime::LPRDOCalc pCalc = pCalcFunBodyBrace;
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -589,26 +589,26 @@ close_brace
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
-		ASSERT(pCalcFunList);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
+		ASSERT(pCalcFunBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
-		pCalcFunList->addFunCalc(pCalcOpenBrace);
-		$$ = PARSER->stack().push(pCalcFunList);
+		pCalcFunBodyBrace->addFunCalc(pCalcOpenBrace);
+		$$ = PARSER->stack().push(pCalcFunBodyBrace);
 	}
 	| statement_list statement
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunList = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
-		ASSERT(pCalcFunList);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
+		ASSERT(pCalcFunBodyBrace);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
-		pCalcFunList->addFunCalc(pCalc);
+		pCalcFunBodyBrace->addFunCalc(pCalc);
 
-		$$ = PARSER->stack().push(pCalcFunList);
+		$$ = PARSER->stack().push(pCalcFunBodyBrace);
 	}
 	;
 
