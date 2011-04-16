@@ -441,7 +441,9 @@ private:
 CALC(RDOFunCalc)
 {
 public:
-	virtual void addRetCalc(CREF(LPRDOCalc) pCalc){};
+	virtual void addRetCalc(CREF(LPRDOCalc) pCalc)
+	{}
+
 protected:
 	RDOFunCalc()
 	{}

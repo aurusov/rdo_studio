@@ -402,25 +402,25 @@ void RDOCalcFunList::addRetCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	LPRDOCalc pCalcReturn = rdo::Factory<rdoRuntime::RDOCalcFunReturn>::create(pCalc);
-	m_calcFunList.insert(--m_calcFunList.end(),pCalcReturn);
+	m_calcFunList.insert(--m_calcFunList.end(), pCalcReturn);
 }
 
 REF(RDOValue) RDOCalcFunList::doCalc(PTR(RDORuntime) pRuntime)
 {
-	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
+	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
 	{
 		m_value = RDOValue(m_calcFunList.size());
 		STL_FOR_ALL(m_calcFunList, calc_it)
 		{
 			LPRDOCalc calc = (*calc_it);
 			(*calc_it)->calcValue(pRuntime);
-			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
+			if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
 			{
 				m_calcFunList.back()->calcValue(pRuntime);
 				pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
 				return RDOValue(m_calcFunList.size());
 			}
-			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
+			if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 			{
 				m_value = (*calc_it)->calcValue(pRuntime);
 				m_calcFunList.back()->calcValue(pRuntime);
