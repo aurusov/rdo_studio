@@ -21,13 +21,13 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcGetRelevantResParam
+// ---------- RDOGetRelResParamCalc
 // ----------------------------------------------------------------------------
-CALC(RDOCalcGetRelevantResParam)
+CALC(RDOGetRelResParamCalc)
 {
-DECLARE_FACTORY(RDOCalcGetRelevantResParam)
+DECLARE_FACTORY(RDOGetRelResParamCalc)
 private:
-	RDOCalcGetRelevantResParam(int relNumb, int parNumb)
+	RDOGetRelResParamCalc(int relNumb, int parNumb)
 		: m_relNumb(relNumb)
 		, m_parNumb(parNumb)
 	{}
@@ -57,13 +57,13 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamDiapCalc
+// ---------- RDOSetRelResParamDiapCalc
 // ----------------------------------------------------------------------------
-CALC(RDOSetRelParamDiapCalc)
+CALC(RDOSetRelResParamDiapCalc)
 {
-DECLARE_FACTORY(RDOSetRelParamDiapCalc)
+DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
 private:
-	RDOSetRelParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc)
+	RDOSetRelResParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc)
 		: m_relNumb  (relNumb  )
 		, m_parNumb  (parNumb  )
 		, m_pCalc    (pCalc    )
@@ -85,16 +85,16 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcEraseRes
+// ---------- RDOEraseResRelCalc
 // ----------------------------------------------------------------------------
-CALC(RDOCalcEraseRes)
+CALC(RDOEraseResRelCalc)
 {
-DECLARE_FACTORY(RDOCalcEraseRes)
+DECLARE_FACTORY(RDOEraseResRelCalc)
 public:
 	tstring getName() const { return m_rel_res_name; }
 
 private:
-	RDOCalcEraseRes(int rel_res_id, CREF(tstring) rel_res_name)
+	RDOEraseResRelCalc(int rel_res_id, CREF(tstring) rel_res_name)
 		: m_rel_res_id  (rel_res_id  )
 		, m_rel_res_name(rel_res_name)
 	{

@@ -17,18 +17,18 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcGetRelevantResParam
+// ---------- RDOGetRelResParamCalc
 // ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetRelevantResParam::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOGetRelResParamCalc::doCalc(PTR(RDORuntime) runtime)
 {
 	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
 	return m_value;
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamDiapCalc
+// ---------- RDOSetRelResParamDiapCalc
 // ----------------------------------------------------------------------------
-REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
 {
 	m_pCalc->calcValue(runtime);
 	m_value = runtime->getResParamVal(runtime->getCurrentActivity()->getResByRelRes(m_relNumb), m_parNumb);
@@ -40,9 +40,9 @@ REF(RDOValue) RDOSetRelParamDiapCalc::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcEraseRes
+// ---------- RDOEraseResRelCalc
 // ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcEraseRes::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOEraseResRelCalc::doCalc(PTR(RDORuntime) runtime)
 {
 	runtime->onEraseRes(runtime->getCurrentActivity()->getResByRelRes(m_rel_res_id), this);
 	return m_value;

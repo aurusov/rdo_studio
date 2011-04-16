@@ -220,7 +220,7 @@ void RDORuntime::showResources( int node ) const
 }
 #endif
 
-void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc)
+void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {

@@ -523,7 +523,7 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 				{
 					Converter::s_converter()->error().error(parName.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), parName->getIdentificator().c_str()));
 				}
-				m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetRelevantResParam>::create(pPattern->findRelevantResourceNum(resName->getIdentificator()), parNumb);
+				m_pCalc = rdo::Factory<rdoRuntime::RDOGetRelResParamCalc>::create(pPattern->findRelevantResourceNum(resName->getIdentificator()), parNumb);
 				m_pCalc->setSrcInfo(src_info());
 				m_value = pRelevantResource->getType()->findRTPParam(parName->getIdentificator())->getType()->type();
 				return;
@@ -543,7 +543,7 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 					{
 						Converter::s_converter()->error().error(parName.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), parName->getIdentificator().c_str()));
 					}
-					m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetRelevantResParam>::create(relResNumb, parNumb);
+					m_pCalc = rdo::Factory<rdoRuntime::RDOGetRelResParamCalc>::create(relResNumb, parNumb);
 					m_pCalc->setSrcInfo(src_info());
 					m_value = pRelevantResource->getType()->findRTPParam(parName->getIdentificator())->getType()->type();
 					return;
@@ -561,7 +561,7 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 					{
 						Converter::s_converter()->error().error(parName.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), parName->getIdentificator().c_str()));
 					}
-					m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetRelevantResParam>::create(relResNumb, parNumb);
+					m_pCalc = rdo::Factory<rdoRuntime::RDOGetRelResParamCalc>::create(relResNumb, parNumb);
 					m_pCalc->setSrcInfo(src_info());
 					m_value = pRelevantResource->getType()->findRTPParam(parName->getIdentificator())->getType()->type();
 					return;

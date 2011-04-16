@@ -1648,12 +1648,12 @@ equal_statement
 			if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getTypeInfo().get()))
 			{
 				LPRDOTypeIntRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
 			else if (dynamic_cast<PTR(RDOTypeRealRange)>(pParam->getTypeInfo().get()))
 			{
 				LPRDOTypeRealRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeRealRange>();
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
 		}
 		tstring oprStr;
@@ -1802,12 +1802,12 @@ equal_statement
 			if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getTypeInfo().get()))
 			{
 				LPRDOTypeIntRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
 			else if (dynamic_cast<PTR(RDOTypeRealRange)>(pParam->getTypeInfo().get()))
 			{
 				LPRDOTypeRealRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeRealRange>();
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 			}
 		}
 		tstring oprStr;
