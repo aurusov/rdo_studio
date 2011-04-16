@@ -90,17 +90,20 @@ private:
 
 	PTR(RPMethodProc2RDO_MJ) getProc2rdo() const
 	{
-		std::vector< PTR(rpMethod::RPMethod) >::const_iterator it = studioApp.getMethodManager().getList().begin();
-		while ( it != studioApp.getMethodManager().getList().end() )
+		RPMethodManager::MethodList::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while (it != studioApp.getMethodManager().getList().end())
 		{
-			PTR(rpMethod::RPMethod) method = *it;
-			if(method->getClassName()==_T("RPMethodProc2RDO_MJ"))
+			PTR(rpMethod::RPMethod) pMethod = *it;
+			ASSERT(pMethod);
+			if (pMethod->getClassName() == _T("RPMethodProc2RDO_MJ"))
 			{
-				PTR(RPMethodProc2RDO_MJ) proc2rdo = dynamic_cast<PTR(RPMethodProc2RDO_MJ)>(method);
+				PTR(RPMethodProc2RDO_MJ) pProc2RDO = dynamic_cast<PTR(RPMethodProc2RDO_MJ)>(pMethod);
+				ASSERT(pProc2RDO);
+				return pProc2RDO;
 			}
 			it++;
 		}
-			return proc2rdo;
+		return NULL;
 	}
 
 	PTR(RDOStudioModelDoc) getModelDoc() const
