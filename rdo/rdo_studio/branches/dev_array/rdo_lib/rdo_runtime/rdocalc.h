@@ -281,30 +281,6 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcOpenBrace
-// ----------------------------------------------------------------------------
-CALC(RDOCalcOpenBrace)
-{
-DECLARE_FACTORY(RDOCalcOpenBrace)
-private:
-	RDOCalcOpenBrace();
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCloseBrace
-// ----------------------------------------------------------------------------
-CALC(RDOCalcCloseBrace)
-{
-DECLARE_FACTORY(RDOCalcCloseBrace)
-private:
-	RDOCalcCloseBrace();
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 CALC(RDOFunCalc)
@@ -316,26 +292,6 @@ public:
 protected:
 	RDOFunCalc()
 	{}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunList
-// ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcFunList, RDOFunCalc)
-{
-	DECLARE_FACTORY(RDOCalcFunList)
-public:
-	typedef std::vector<LPRDOCalc> CalcFunList;
-
-	void addFunCalc(CREF(LPRDOCalc) pCalc);
-	void addRetCalc(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcFunList();
-
-	CalcFunList m_calcFunList;
-
-	DECALRE_ICalc;
 };
 
 // ----------------------------------------------------------------------------
@@ -360,25 +316,6 @@ private:
 	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
 
 	LPRDOCalc m_pReturn;
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcList
-// ----------------------------------------------------------------------------
-CALC(RDOCalcList)
-{
-DECLARE_FACTORY(RDOCalcList)
-public:
-	typedef std::vector<LPRDOCalc> CalcList;
-
-	void addCalc(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcList();
-
-	CalcList m_calcList;
-
 	DECALRE_ICalc;
 };
 

@@ -1784,6 +1784,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\braces.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\braces.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\choice_from.cpp"
 				>
 			</File>

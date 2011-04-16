@@ -214,6 +214,7 @@
 #include "rdo_lib/rdo_parser/context/memory.h"
 #include "rdo_lib/rdo_parser/variable_container.h"
 #include "rdo_lib/rdo_runtime/calc/locvar.h"
+#include "rdo_lib/rdo_runtime/calc/braces.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
