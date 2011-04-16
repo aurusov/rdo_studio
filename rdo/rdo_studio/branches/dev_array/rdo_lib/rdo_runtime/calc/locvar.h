@@ -33,13 +33,13 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcSetLocalVariable
+// ---------- RDOCalcInitLocalVariable
 // ----------------------------------------------------------------------------
-CALC(RDOCalcSetLocalVariable)
+CALC(RDOCalcInitLocalVariable)
 {
-DECLARE_FACTORY(RDOCalcSetLocalVariable)
+DECLARE_FACTORY(RDOCalcInitLocalVariable)
 private:
-	RDOCalcSetLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
+	RDOCalcInitLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
 
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
@@ -62,15 +62,15 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcSetLocalVariableEqualType
+// ---------- RDOCalcSetLocalVariable
 // ----------------------------------------------------------------------------
 template <EqualType equalType>
-class RDOCalcSetLocalVariableEqualType: public RDOCalc
+class RDOCalcSetLocalVariable: public RDOCalc
 {
-DECLARE_FACTORY(RDOCalcSetLocalVariableEqualType)
+DECLARE_FACTORY(RDOCalcSetLocalVariable)
 private:
-	RDOCalcSetLocalVariableEqualType(CREF(tstring) name, LPRDOCalc pCalc = NULL);
-	virtual ~RDOCalcSetLocalVariableEqualType();
+	RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc pCalc = NULL);
+	virtual ~RDOCalcSetLocalVariable();
 
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
