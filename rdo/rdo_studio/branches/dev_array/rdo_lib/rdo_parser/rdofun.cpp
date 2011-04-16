@@ -1414,7 +1414,6 @@ void RDOFUNFunction::createListCalc()
 		++elem_it;
 	}
 	setFunctionCalc(pFunListCalc);
-	end();
 }
 
 void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
@@ -1497,7 +1496,6 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		pFuncTableCalc->addResultCalc(pResultCalc);
 	}
 	setFunctionCalc(pFuncTableCalc);
-	end();
 }
 
 void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
