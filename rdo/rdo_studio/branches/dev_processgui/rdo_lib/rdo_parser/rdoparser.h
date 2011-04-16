@@ -109,8 +109,6 @@ public:
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
-	void  blockCreate          (                               );
-	void  blockTerminate       (                               );
 
 	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
 
