@@ -89,9 +89,9 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- ATOM_TYPE_PARSER
+// ---------- ATOM_TYPE_CONVERTER
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Type)    \
+#define DEFINE_ATOM_TYPE_CONVERTER(Type) \
 class RDOType__##Type: public RDOType    \
 {                                        \
 private:                                 \
@@ -107,12 +107,12 @@ public:                                  \
 };                                       \
 DECLARE_POINTER(RDOType__##Type);
 
-DEFINE_ATOM_TYPE_PARSER(unknow       );
-DEFINE_ATOM_TYPE_PARSER(identificator);
-DEFINE_ATOM_TYPE_PARSER(int          );
-DEFINE_ATOM_TYPE_PARSER(real         );
-DEFINE_ATOM_TYPE_PARSER(bool         );
-DEFINE_ATOM_TYPE_PARSER(string       );
+DEFINE_ATOM_TYPE_CONVERTER(unknow       );
+DEFINE_ATOM_TYPE_CONVERTER(identificator);
+DEFINE_ATOM_TYPE_CONVERTER(int          );
+DEFINE_ATOM_TYPE_CONVERTER(real         );
+DEFINE_ATOM_TYPE_CONVERTER(bool         );
+DEFINE_ATOM_TYPE_CONVERTER(string       );
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
