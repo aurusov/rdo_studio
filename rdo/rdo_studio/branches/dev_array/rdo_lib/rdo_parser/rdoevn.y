@@ -1367,9 +1367,9 @@ statement
 	| if_statement
 	| '{' statement_list '}'
 	{
-		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($2);
-		ASSERT(pCalcList);
-		rdoRuntime::LPRDOCalc pCalc = pCalcList;
+		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($2);
+		ASSERT(pCalcBodyBrace);
+		rdoRuntime::LPRDOCalc pCalc = pCalcBodyBrace;
 		ASSERT(pCalc);
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1378,21 +1378,21 @@ statement
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcBodyBrace pCalcList = rdo::Factory<rdoRuntime::RDOCalcBodyBrace>::create();
-		ASSERT(pCalcList);
-		$$ = PARSER->stack().push(pCalcList);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = rdo::Factory<rdoRuntime::RDOCalcBodyBrace>::create();
+		ASSERT(pCalcBodyBrace);
+		$$ = PARSER->stack().push(pCalcBodyBrace);
 	}
 	| statement_list statement
 	{
-		rdoRuntime::LPRDOCalcBodyBrace pCalcList = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
-		ASSERT(pCalcList);
+		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
+		ASSERT(pCalcBodyBrace);
 
 		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
-		pCalcList->addCalc(pCalc);
+		pCalcBodyBrace->addCalc(pCalc);
 
-		$$ = PARSER->stack().push(pCalcList);
+		$$ = PARSER->stack().push(pCalcBodyBrace);
 	}
 	;
 
