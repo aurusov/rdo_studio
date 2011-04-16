@@ -21,8 +21,8 @@ private:
 public:
 	RPObject_MJ( RPObject* _obj ): obj( _obj ), id_next( "" ), type( "block" ) {}
 
-	rp::string id_next; // MJ 30.03.06 id следующего блока, заведено здесь для функции, которая пробегает полисту
-	rp::string id_next2;
+	rp::string id_next; // MJ 30.03.06 id следующего блока, заведено здесь для функции, которая пробегает по листу
+	rp::string id_next2; // на случай блока десайд, там 2 выхода.
 	rp::string type; // MJ 1.04.06 для определения типа блоков
 
 	virtual void generate() {};

@@ -229,9 +229,11 @@ protected:
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	rbool parseModel();
-	void  runModel  ();
-	void  stopModel ();
+	rbool parseModel    ();
+	void  runModel      ();
+	void  stopModel     ();
+	void  blockCreate   ();
+	void  blockTerminate();
 
 	typedef std::vector<RDOSyntaxError> SyntaxErrorList;
 	SyntaxErrorList getErrors();

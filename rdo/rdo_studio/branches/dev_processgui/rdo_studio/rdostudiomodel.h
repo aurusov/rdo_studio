@@ -24,6 +24,9 @@
 #include "rdo_studio/rdostudioplugins.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_kernel/rdothread.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdostudioapp.h"
 // ===============================================================================
 
 // ----------------------------------------------------------------------------
@@ -44,6 +47,7 @@ friend class RDOStudioPlugins;
 
 private:
 	PTR(CMultiDocTemplate)    m_pModelDocTemplate;
+	PTR(CMultiDocTemplate)    m_pFlowchartDocTemplate;
 	RDOStudioFrameManager     m_frameManager;
 
 	int                       m_useTemplate;
@@ -84,6 +88,21 @@ private:
 	rbool canCloseModel           ();
 	void  afterModelStart         ();
 
+	PTR(RPMethodProc2RDO_MJ) getProc2rdo() const
+	{
+		std::vector< PTR(rpMethod::RPMethod) >::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while ( it != studioApp.getMethodManager().getList().end() )
+		{
+			PTR(rpMethod::RPMethod) method = *it;
+			if(method->getClassName()==_T("RPMethodProc2RDO_MJ"))
+			{
+				PTR(RPMethodProc2RDO_MJ) proc2rdo = dynamic_cast<PTR(RPMethodProc2RDO_MJ)>(method);
+			}
+			it++;
+		}
+			return proc2rdo;
+	}
+
 	PTR(RDOStudioModelDoc) getModelDoc() const
 	{
 		POSITION pos = m_pModelDocTemplate->GetFirstDocPosition();
@@ -118,7 +137,6 @@ protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
 
 public:
-	CMultiDocTemplate* flowchartDocTemplate;
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
@@ -133,6 +151,12 @@ public:
 	void  update        ();
 	void  setGUIPause   ();
 	void  setGUIContinue();
+
+	PTR(RPDoc) getFlowchartDoc() const
+	{
+		POSITION pos = m_pFlowchartDocTemplate->GetFirstDocPosition();
+		return pos ? static_cast<PTR(RPDoc)>(m_pFlowchartDocTemplate->GetNextDoc(pos)) : NULL;
+	}
 
 	tstring getName() const
 	{

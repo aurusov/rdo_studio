@@ -17,6 +17,8 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/context/global.h"
 #include "rdo_common/rdocommon.h"
+#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -391,6 +393,41 @@ void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 		error().push_only((*some_it)->src_info(), _T("См. первое определение"));
 		error().push_done();
 	}
+}
+
+void RDOParser::blockCreate()
+{
+	tstring rtp_name       = _T("Транзакты");
+	tstring rtp_param_name = _T("Время_создания");
+// Получили список всех типов ресурсов
+	rdoMBuilder::RDOResTypeList rtpList(this);
+	// Найти тип ресурса, если его нет, то создать
+	if (!rtpList[rtp_name].exist())
+	{
+		// Создадим тип ресурса
+		rdoMBuilder::RDOResType rtp(rtp_name);
+		// Добавим параметр Время_создания
+		rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
+		// Добавим тип ресурса
+		rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+	}
+	else
+	{
+		// Тип найден, проверим его на наличие вещественного параметра
+		CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
+		// Параметр есть, надо проверить на тип
+		rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+	}
+	LPRDOPROCProcess pProcess = this->getLastPROCProcess();
+	pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(_T("Process")));
+
+	LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(this->getLastPROCProcess(), _T("GENERATE"), rdo::Factory<rdoRuntime::RDOCalcConst>::create(1));
+}
+
+void RDOParser::blockTerminate()
+{
+	LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(this->getLastPROCProcess(), _T("TERMINATE"), 1);
+	this->getLastPROCProcess()->end();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

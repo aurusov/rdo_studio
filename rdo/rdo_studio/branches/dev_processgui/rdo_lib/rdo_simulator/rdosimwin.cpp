@@ -855,6 +855,8 @@ RDOThreadSimulator::RDOThreadSimulator()
 	notifies.push_back(RT_CODECOMP_GET_DATA               );
 	notifies.push_back(RT_CORBA_PARSER_GET_RTP            );
 	notifies.push_back(RT_CORBA_PARSER_GET_RSS            );
+	notifies.push_back(RT_PROCGUI_BLOCK_CREATE            );
+	notifies.push_back(RT_PROCGUI_BLOCK_TERMINATE         );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
 	after_constructor();
@@ -918,6 +920,16 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		case RT_CODECOMP_GET_DATA:
 		{
 			codeCompletion();
+			break;
+		}
+		case RT_PROCGUI_BLOCK_CREATE:
+		{
+			blockCreate();
+			break;
+		}
+		case RT_PROCGUI_BLOCK_TERMINATE:
+		{
+			blockTerminate();
 			break;
 		}
 		
@@ -1208,6 +1220,23 @@ double RDOThreadSimulator::getInitialShowRate() const
 
 void RDOThreadSimulator::codeCompletion()
 {}
+
+void RDOThreadSimulator::blockCreate()
+{
+	m_pParser  = new rdoParse::RDOParserModel();
+	m_pRuntime = m_pParser->runtime();
+	m_pParser->blockCreate();
+
+}
+
+void RDOThreadSimulator::blockTerminate()
+{
+	m_pParser->blockTerminate();
+	m_pParser->error().clear();
+	m_exitCode = rdoSimulator::EC_OK;
+	m_pRuntime->setStudioThread(kernel->studio());
+	m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
+}
 
 #ifdef CORBA_ENABLE
 
