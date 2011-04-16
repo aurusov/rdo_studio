@@ -1523,7 +1523,6 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
 			RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по-умолчанию"), name().c_str()));
 		}
 	}
-	end();
 }
 
 // ----------------------------------------------------------------------------
