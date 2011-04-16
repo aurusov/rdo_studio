@@ -1223,19 +1223,10 @@ void RDOThreadSimulator::codeCompletion()
 
 void RDOThreadSimulator::blockCreate()
 {
-	m_pParser  = new rdoParse::RDOParserModel();
-	m_pRuntime = m_pParser->runtime();
-	m_pParser->blockCreate();
-
 }
 
 void RDOThreadSimulator::blockTerminate()
 {
-	m_pParser->blockTerminate();
-	m_pParser->error().clear();
-	m_exitCode = rdoSimulator::EC_OK;
-	m_pRuntime->setStudioThread(kernel->studio());
-	m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
 }
 
 #ifdef CORBA_ENABLE
