@@ -1808,6 +1808,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\locvar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\locvar.h"
 				>
 			</File>
