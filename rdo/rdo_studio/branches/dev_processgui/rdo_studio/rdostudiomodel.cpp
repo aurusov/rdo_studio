@@ -472,6 +472,11 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 				plugins->pluginProc(rdoPlugin::PM_MODEL_BUILD_OK);
 			}
 			m_buildState = BS_COMPLETE;
+			PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
+			if(method && method->CheckModelStructure())
+			{
+				method->generate();
+			}
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR:
