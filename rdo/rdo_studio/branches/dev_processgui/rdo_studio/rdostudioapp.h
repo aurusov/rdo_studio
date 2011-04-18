@@ -8,6 +8,7 @@
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
 #endif
+#define PROCGUI_ENABLE
 #include <fstream>
 #include "rdo_ctrls/rdolink.h"
 #include "rdo_kernel/rdothread.h"

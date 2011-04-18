@@ -79,9 +79,13 @@ RDOStudioModel::RDOStudioModel()
 	, m_buildState       (BS_UNDEFINED                  )
 {
 	m_pModelDocTemplate = new CMultiDocTemplate(IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView));
+#ifdef PROCGUI_ENABLE
 	m_pFlowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView)                      );
+#endif
 	AfxGetApp()->AddDocTemplate(m_pModelDocTemplate    );
+#ifdef PROCGUI_ENABLE
 	AfxGetApp()->AddDocTemplate(m_pFlowchartDocTemplate);
+#endif
 	model = this;
 
 	ModelTemplate modelTemplate;

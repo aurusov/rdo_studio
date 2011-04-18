@@ -44,17 +44,19 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	frames = new RDOStudioFrameTreeCtrl;
 	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
-
+#ifdef PROCGUI_ENABLE
 	pagectrl = new RPPageCtrl;
 	pagectrl->Create( "", "", 0 , CRect(0, 0, 0, 0), &tab, 0);
-	
+#endif
 	tab.insertItem( trace, rdo::format( IDS_TAB_TRACER ).c_str() );
 	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );
+#ifdef PROCGUI_ENABLE
 	tab.insertItem( pagectrl, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
-
+#endif
 	studioApp.mainFrame->registerCmdWnd( trace );
 	studioApp.mainFrame->registerCmdWnd( frames );
+#ifdef PROCGUI_ENABLE
 	studioApp.mainFrame->registerCmdWnd( pagectrl );
-
+#endif
 	return 0;
 }
