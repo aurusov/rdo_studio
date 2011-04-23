@@ -14,6 +14,8 @@
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 // ===============================================================================
 
+OPEN_RDO_SIMULATOR_NAMESPACE
+
 // --------------------------------------------------------------------
 // ---------- ProcGUIBlock
 // --------------------------------------------------------------------
@@ -65,3 +67,5 @@ void ProcGUIBlock::Create()
 	pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, 1);
 	ASSERT(pBlock);
 }
+
+CLOSE_RDO_SIMULATOR_NAMESPACE

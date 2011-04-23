@@ -16,6 +16,8 @@
 #include "rdo_lib/rdo_parser/rdoparser.h"
 // ===============================================================================
 
+OPEN_RDO_SIMULATOR_NAMESPACE
+
 // --------------------------------------------------------------------
 // ---------- ProcGUIBlock
 // --------------------------------------------------------------------
@@ -32,5 +34,7 @@ private:
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	LPILogic                     m_pProcess;
 };
+
+CLOSE_RDO_SIMULATOR_NAMESPACE
 
 #endif //! _PROCGUI_H_
