@@ -50,6 +50,10 @@ void ProcGUIBlock::Create()
 		//! Добавим параметр Время_создания
 		rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<rdoParse::RDOType__real>::create()));
 		//! Добавим тип ресурса
+		if (!rtpList.append(rtp))
+		{
+			m_pParser->error().error(rdoParse::RDOParserSrcInfo(), rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+		}
 		rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 	}
 	else
@@ -59,7 +63,8 @@ void ProcGUIBlock::Create()
 	}
 
 	//! GENERATE
-	rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(4);
+	rdoRuntime::LPRDOCalcConst pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(4);
+	ASSERT(pCalc);
 	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, pCalc);
 	ASSERT(pBlock);
 
