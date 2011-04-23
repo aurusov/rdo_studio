@@ -8,13 +8,15 @@
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
 #endif
-#define PROCGUI_ENABLE
+
 #include <fstream>
 #include "rdo_ctrls/rdolink.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_process/rdoprocess_method_manager.h"
 #include "rdo_studio/rdostudiomainfrm.h"
+
+#define PROCGUI_ENABLE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
