@@ -417,6 +417,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\ProcGUI.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ProcGUI.h"
+			>
+		</File>
+		<File
 			RelativePath="rdosimwin.cpp"
 			>
 			<FileConfiguration

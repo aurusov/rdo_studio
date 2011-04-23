@@ -28,6 +28,7 @@
 #include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
+#include "rdo_lib/rdo_simulator/ProcGUI.h"
 // ===============================================================================
 
 //#define DISABLE_CORBA
@@ -198,12 +199,12 @@ public:
 	};
 
 private:
-	PTR(rdoParse::RDOParser)     m_pParser;
-	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
-	rbool                        m_canTrace;
-
-	rdoRuntime::LPRDOThreadRunTime m_pThreadRuntime;
-	rdoSimulator::RDOExitCode      m_exitCode;
+	PTR(rdoParse::RDOParser)        m_pParser;
+	PTR(rdoRuntime::RDORuntime)     m_pRuntime;
+	PTR(ProcGUIBlock)               m_pGUIBlock;
+	rbool                           m_canTrace;
+	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
+	rdoSimulator::RDOExitCode       m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 
@@ -232,7 +233,6 @@ protected:
 	rbool parseModel    ();
 	void  runModel      ();
 	void  stopModel     ();
-	void  blockCreate   ();
 	void  blockTerminate();
 
 	typedef std::vector<RDOSyntaxError> SyntaxErrorList;

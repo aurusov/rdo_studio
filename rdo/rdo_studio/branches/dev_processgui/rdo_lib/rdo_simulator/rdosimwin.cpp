@@ -924,7 +924,8 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_PROCGUI_BLOCK_CREATE:
 		{
-			blockCreate();
+			m_pGUIBlock = new ProcGUIBlock(m_pParser, m_pRuntime);
+			m_pGUIBlock->Create();
 			break;
 		}
 		case RT_PROCGUI_BLOCK_TERMINATE:
@@ -1220,10 +1221,6 @@ double RDOThreadSimulator::getInitialShowRate() const
 
 void RDOThreadSimulator::codeCompletion()
 {}
-
-void RDOThreadSimulator::blockCreate()
-{
-}
 
 void RDOThreadSimulator::blockTerminate()
 {
