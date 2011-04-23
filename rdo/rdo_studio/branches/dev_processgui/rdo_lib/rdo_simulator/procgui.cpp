@@ -1,19 +1,28 @@
-// ====================================================================== INCLUDES
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : procgui.cpp
+ * author   : Шувалов Андрей
+ * date     : 22.04.2011
+ * bref     : 
+ * indent   : 4T
+ */
 
+// ====================================================================== PCH
+// ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_simulator/ProcGUI.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
-
 // ===============================================================================
+
 // --------------------------------------------------------------------
-// ---------- 
+// ---------- ProcGUIBlock
 // --------------------------------------------------------------------
-ProcGUIBlock::ProcGUIBlock(PTR(rdoParse::RDOParser) m_pParser, PTR(rdoRuntime::RDORuntime) m_pRuntime)	
-	: m_Parser  ( m_pParser  )
-	, m_Runtime ( m_pRuntime )
+ProcGUIBlock::ProcGUIBlock(PTR(rdoParse::RDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime)	
+	: m_pParser (pParser )
+	, m_pRuntime(pRuntime)
 {
 	//создает процесс
-	l_runtime = F(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_Runtime);
+	l_runtime = F(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_pRuntime);
 	ASSERT(l_runtime);
 	l_runtime.query_cast<ILogic>()->init(m_pRuntime);
 }
@@ -27,7 +36,7 @@ void ProcGUIBlock::Create()
 	tstring rtp_param_name = _T("Время_создания");
 
 	// Получили список всех типов ресурсов
-	rdoMBuilder::RDOResTypeList rtpList(m_Parser);
+	rdoMBuilder::RDOResTypeList rtpList(m_pParser);
 	// Найти тип ресурса, если его нет, то создать
 	if (!rtpList[rtp_name].exist())
 	{

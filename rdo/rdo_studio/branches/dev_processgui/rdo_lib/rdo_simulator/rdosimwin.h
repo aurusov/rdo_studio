@@ -28,7 +28,7 @@
 #include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
-#include "rdo_lib/rdo_simulator/ProcGUI.h"
+#include "rdo_lib/rdo_simulator/procgui.h"
 // ===============================================================================
 
 //#define DISABLE_CORBA

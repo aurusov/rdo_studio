@@ -417,11 +417,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\ProcGUI.cpp"
+			RelativePath=".\procgui.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\ProcGUI.h"
+			RelativePath=".\procgui.h"
 			>
 		</File>
 		<File
