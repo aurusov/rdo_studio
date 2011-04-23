@@ -21,6 +21,9 @@ ProcGUIBlock::ProcGUIBlock(PTR(rdoParse::RDOParser) pParser, PTR(rdoRuntime::RDO
 	: m_pParser (pParser )
 	, m_pRuntime(pRuntime)
 {
+	ASSERT(m_pParser );
+	ASSERT(m_pRuntime);
+
 	//! Создает процесс
 	m_pProcess = F(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_pRuntime);
 	ASSERT(m_pProcess);
