@@ -30,8 +30,7 @@ public:
 private:
 	PTR(rdoParse::RDOParser)     m_pParser;
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
-	LPILogic                     l_runtime;
-	LPIPROCBlock                 b_runtime;
+	LPILogic                     m_pProcess;
 };
 
 #endif //! _PROCGUI_H_

@@ -21,10 +21,10 @@ ProcGUIBlock::ProcGUIBlock(PTR(rdoParse::RDOParser) pParser, PTR(rdoRuntime::RDO
 	: m_pParser (pParser )
 	, m_pRuntime(pRuntime)
 {
-	//создает процесс
-	l_runtime = F(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_pRuntime);
-	ASSERT(l_runtime);
-	l_runtime.query_cast<ILogic>()->init(m_pRuntime);
+	//! Создает процесс
+	m_pProcess = F(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_pRuntime);
+	ASSERT(m_pProcess);
+	m_pProcess.query_cast<ILogic>()->init(m_pRuntime);
 }
 
 ProcGUIBlock::~ProcGUIBlock()
@@ -35,16 +35,16 @@ void ProcGUIBlock::Create()
 	tstring rtp_name       = _T("Транзакты");
 	tstring rtp_param_name = _T("Время_создания");
 
-	// Получили список всех типов ресурсов
+	//! Получили список всех типов ресурсов
 	rdoMBuilder::RDOResTypeList rtpList(m_pParser);
-	// Найти тип ресурса, если его нет, то создать
+	//! Найти тип ресурса, если его нет, то создать
 	if (!rtpList[rtp_name].exist())
 	{
-		// Создадим тип ресурса
+		//! Создадим тип ресурса
 		rdoMBuilder::RDOResType rtp(rtp_name);
-		// Добавим параметр Время_создания
+		//! Добавим параметр Время_создания
 		rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<rdoParse::RDOType__real>::create()));
-		// Добавим тип ресурса
+		//! Добавим тип ресурса
 		rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 	}
 	else
@@ -52,13 +52,13 @@ void ProcGUIBlock::Create()
 		CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
 		rdoRuntime::RDOPROCTransact::typeID = rtp.id();
 	}
-	//generate
+
+	//! GENERATE
 	rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(4);
+	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, pCalc);
+	ASSERT(pBlock);
 
-	b_runtime = F(rdoRuntime::RDOPROCGenerate)::create(l_runtime,pCalc);
-	ASSERT(b_runtime);
-
-	//terminate
-	b_runtime = F(rdoRuntime::RDOPROCTerminate)::create(l_runtime, 1);
-	ASSERT(b_runtime);
+	//! TERMINATE
+	pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, 1);
+	ASSERT(pBlock);
 }
