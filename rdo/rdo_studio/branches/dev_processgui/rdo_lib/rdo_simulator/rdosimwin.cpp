@@ -924,7 +924,8 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_PROCGUI_BLOCK_CREATE:
 		{
-			m_pGUIBlock = new ProcGUIBlock(m_pParser, m_pRuntime);
+			m_pGUIBlock = rdo::Factory<ProcGUIBlock>::create(m_pParser, m_pRuntime);
+			ASSERT(m_pGUIBlock);
 			m_pGUIBlock->Create();
 			break;
 		}

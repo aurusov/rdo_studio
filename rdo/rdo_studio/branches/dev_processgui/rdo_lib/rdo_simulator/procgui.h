@@ -19,7 +19,7 @@
 // --------------------------------------------------------------------
 // ---------- ProcGUIBlock
 // --------------------------------------------------------------------
-class ProcGUIBlock
+OBJECT(ProcGUIBlock)
 {
 public:
 	ProcGUIBlock(PTR(rdoParse::RDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime);
