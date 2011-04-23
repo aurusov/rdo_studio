@@ -122,6 +122,7 @@ void RDOResultGroup::append(CREF(LPRDOPMDPokaz) pResult)
 	}
 	m_resultList.push_back(pResult);
 	m_pPokazGroup->onAppend(pResult->getRuntime());
+	RDOParser::s_parser()->runtime()->addRuntimePokaz(pResult->getRuntime());
 }
 
 LPRDOPMDPokaz RDOResultGroup::find(CREF(tstring) resultName) const
