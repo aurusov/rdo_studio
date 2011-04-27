@@ -154,10 +154,10 @@ void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
 	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
 
-	LPTypeInfo  intType     = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(),  RDOParserSrcInfo());
-	LPTypeInfo  realType    = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
-	LPRDOParam  pIntReturn  = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), intType );
-	LPRDOParam  pRealReturn = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), realType);
+	LPRDOTypeParam intType     = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(),  RDOParserSrcInfo());
+	LPRDOTypeParam realType    = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
+	LPRDOParam     pIntReturn  = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), intType );
+	LPRDOParam     pRealReturn = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), realType);
 
 	generate(_T("Abs"),      rdo::Factory<Function_D_D> ::create(fabs),          pRealReturn, ParamList(realType));
 	generate(_T("ArcCos"),   rdo::Factory<Function_D_D> ::create(acos),          pRealReturn, ParamList(realType));

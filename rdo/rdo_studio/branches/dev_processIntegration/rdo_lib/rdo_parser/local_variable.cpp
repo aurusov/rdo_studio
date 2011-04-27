@@ -20,10 +20,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- LocalVariable
 // ----------------------------------------------------------------------------
-LocalVariable::LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType)
+LocalVariable::LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPRDOTypeParam) pParam)
 	: m_value      (value      )
 	, m_pExpression(pExpression)
-	, m_pType      (pType      )
+	, m_pParam     (pParam     )
 {}
 
 CREF(RDOValue) LocalVariable::getValue() const
@@ -31,14 +31,14 @@ CREF(RDOValue) LocalVariable::getValue() const
 	return m_value;
 }
 
-CREF(LPExpression) LocalVariable::getExpression() const
+LPExpression LocalVariable::getExpression() const
 {
 	return m_pExpression;
 }
 
-CREF(LPTypeInfo) LocalVariable::getTypeInfo() const
+LPRDOTypeParam LocalVariable::getParam() const
 {
-	return m_pType;
+	return m_pParam;
 }
 
 // ----------------------------------------------------------------------------

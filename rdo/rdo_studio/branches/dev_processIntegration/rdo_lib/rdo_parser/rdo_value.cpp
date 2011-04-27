@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/type/type.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
 
@@ -23,63 +24,52 @@ OPEN_RDO_PARSER_NAMESPACE
 RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow.object_parent_cast<rdoRuntime::RDOType>()))
-{
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__unknow>::create(),
-		RDOParserSrcInfo() //! TODO: TypeInfo реально неопределён, добавить соответствующий конструктор
-	);
-}
-
-RDOValue::RDOValue(CREF(LPRDOArrayValue) pValue)
-	: RDOParserSrcInfo(pValue->src_info())
-	, m_pArray        (pValue            )
-{
-	m_value = m_pArray->getRArray();
-	m_pType = rdo::Factory<TypeInfo>::create(
-		pValue->getArrayType(),
-		pValue->src_info() //! TODO: Взять TypeInfo из pValue->getArrayType()
-	);
-}
-
-RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType)
-	: RDOParserSrcInfo(src_info)
-	, m_value         (value   )
-	, m_pType         (pType   )
+	, m_type          (rdo::Factory<RDOType__unknow>::create())
 {}
 
-RDOValue::RDOValue(CREF(LPTypeInfo) pType)
-	: RDOParserSrcInfo(pType->src_info(RDOParserSrcInfo()))
-	, m_value         (pType->type()->type()              )
-	, m_pType         (pType                              )
+RDOValue::RDOValue(CREF(LPRDOArrayValue) pValue)
+	: RDOParserSrcInfo(pValue->src_info()    )
+	, m_pArray        (pValue                )
+	, m_type          (pValue->getArrayType())
+{
+	m_value = m_pArray->getRArray();
+}
+
+RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value         (value   )
+	, m_type          (type    )
+{}
+
+RDOValue::RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info    )
+	, m_value         (type->type())
+	, m_type          (type        )
 {}
 
 // Для t_identificator известно только имя, но не тип
 RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info                                                              )
 	, m_value         (rdoRuntime::RDOValue(src_info.src_text(), rdoRuntime::g_identificator))
-{
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__identificator>::create(),
-		src_info
-	);
-}
+	, m_type          (rdo::Factory<RDOType__identificator>::create()                        )
+{}
 
 void RDOValue::operator= (CREF(RDOValue) value)
 {
 	m_value  = value.m_value;
-	m_pType  = value.m_pType;
+	m_type   = value.m_type;
 	m_pArray = value.m_pArray;
 	setSrcInfo(value.src_info());
 }
 
-CREF(LPTypeInfo) RDOValue::typeInfo() const
+CREF(LPRDOType) RDOValue::type() const
 {
-	return m_pType;
+	return m_type;
 }
 
 rdoRuntime::RDOType::TypeID RDOValue::typeID() const
 {
-	return m_pType->type()->typeID();
+	return m_type->type()->typeID();
 }
 
 CREF(rdoRuntime::RDOValue) RDOValue::value() const

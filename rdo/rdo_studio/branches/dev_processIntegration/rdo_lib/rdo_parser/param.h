@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/type/info.h"
+#include "rdo_lib/rdo_parser/type/type_param.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,18 +26,18 @@ OBJECT(RDOParam) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOParam)
 public:
-	CREF(tstring)  name       () const { return src_info().src_text(); }
-	LPTypeInfo     getTypeInfo() const { return m_pType;               }
-	CREF(RDOValue) getDefault () const { return m_default;             }
+	CREF(tstring)  name      () const { return src_info().src_text(); }
+	LPRDOTypeParam getType   () const { return m_pType;               }
+	CREF(RDOValue) getDefault() const { return m_default;             }
 
 protected:
-	RDOParam(CREF(tstring)          name,     CREF(LPTypeInfo) pType, RDOValue default = RDOValue());
-	RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, RDOValue default = RDOValue());
+	RDOParam(CREF(tstring)          name,     CREF(LPRDOTypeParam) pType, RDOValue default = RDOValue());
+	RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, RDOValue default = RDOValue());
 	virtual ~RDOParam();
 
 private:
-	LPTypeInfo m_pType;
-	RDOValue   m_default;
+	LPRDOTypeParam m_pType;
+	RDOValue       m_default;
 
 	void checkDefault();
 };

@@ -16,7 +16,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info)
+Expression::Expression(CREF(LPRDOType) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info)
 	: m_pType(pType)
 	, m_pCalc(pCalc)
 {
@@ -25,15 +25,10 @@ Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc
 	setSrcInfo(src_info);
 }
 
-Expression::Expression(CREF(LPExpression) pExpression)
-	: m_pType(pExpression->m_pType)
-	, m_pCalc(pExpression->m_pCalc)
-{}
-
 Expression::~Expression()
 {}
 
-CREF(LPTypeInfo) Expression::typeInfo() const
+CREF(LPRDOType) Expression::type() const
 {
 	return m_pType;
 }
@@ -63,7 +58,7 @@ RDOValue Expression::constant() const
 	rdoRuntime::LPRDOCalcConst pCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 	if (pCalc)
 	{
-		return RDOValue(pCalc->getValue(), src_info(), m_pType);
+		return RDOValue(pCalc->getValue(), m_pType, src_info());
 	}
 
 	return RDOValue();

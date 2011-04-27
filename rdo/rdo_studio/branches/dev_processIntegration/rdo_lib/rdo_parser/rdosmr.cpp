@@ -141,8 +141,8 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 		RDOParser::s_parser()->error().error(const_info, rdo::format(_T("Константа '%s' не найдена"), const_info.src_text().c_str()));
 	}
 	ASSERT(pArithm);
-	pArithm->checkParamType(pConstant->getTypeInfo());
-	rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getTypeInfo());
+	pArithm->checkParamType(pConstant->getType());
+	rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getType());
 	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
 	RDOParser::s_parser()->insertChanges(pConstant->src_text(), pArithm->src_text());
 }
@@ -163,9 +163,9 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 		RDOParser::s_parser()->error().push_done();
 	}
 	ASSERT(pArithm);
-	pArithm->checkParamType(pParam->getTypeInfo());
+	pArithm->checkParamType(pParam->getType());
 	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
-	rdoRuntime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getTypeInfo());
+	rdoRuntime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getType());
 	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	RDOParser::s_parser()->insertChanges(res_info.src_text() + _T(".") + par_info.src_text(), pArithm->src_text());
 }

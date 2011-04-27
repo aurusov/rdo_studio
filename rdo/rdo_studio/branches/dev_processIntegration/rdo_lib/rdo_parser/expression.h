@@ -12,7 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/type/info.h"
+#include "rdo_lib/rdo_parser/type/type.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
@@ -26,7 +26,7 @@ OBJECT(Expression)
 {
 DECLARE_FACTORY(Expression);
 public:
-	CREF(LPTypeInfo)             typeInfo  () const;
+	CREF(LPRDOType)              type      () const;
 	CREF(rdoRuntime::LPRDOCalc)  calc      () const;
 	CREF(rdoRuntime::RDOSrcInfo) src_info  () const;
 	void                         setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info);
@@ -34,11 +34,10 @@ public:
 	RDOValue                     constant  () const;
 
 private:
-	Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);
-	Expression(CREF(LPExpression) pExpression);
+	Expression(CREF(LPRDOType) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);
 	virtual ~Expression();
 
-	LPTypeInfo             m_pType;
+	LPRDOType              m_pType;
 	rdoRuntime::LPRDOCalc  m_pCalc;
 };
 

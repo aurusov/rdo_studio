@@ -12,10 +12,9 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/type/atom.h"
-#include "rdo_lib/rdo_parser/type/info.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
-#include "rdo_lib/rdo_runtime/calc/unary.h"
+#include "../../rdo_runtime/calc/unary.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -59,9 +58,9 @@ rdoRuntime::LPRDOCalc RDOType__unknow::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCa
 	return parent_type::calc_cast(pCalc, pType);
 }
 
-rdoRuntime::RDOValue RDOType__unknow::get_default() const
+RDOValue RDOType__unknow::get_default() const
 {
-	return rdoRuntime::RDOValue();
+	return RDOValue(rdoRuntime::RDOValue(), rdo::Factory<RDOType__unknow>::create(), RDOParserSrcInfo());
 }
 
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
@@ -101,9 +100,9 @@ rdoRuntime::LPRDOCalc RDOType__void::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc
 	return parent_type::calc_cast(pCalc, pType);
 }
 
-rdoRuntime::RDOValue RDOType__void::get_default() const
+RDOValue RDOType__void::get_default() const
 {
-	return rdoRuntime::RDOValue();
+	return RDOValue(rdoRuntime::RDOValue(), rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
 }
 
 void RDOType__void::writeModelStructure(REF(std::ostream) stream) const
@@ -137,9 +136,7 @@ RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 	RDOValue toValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__int)>(this), from.src_info());
-		ASSERT(pType);
-		toValue = RDOValue(from->getInt(), from.src_info(), pType);
+		toValue = RDOValue(from->getInt(), rdo::Factory<RDOType__int>::create(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -162,9 +159,9 @@ rdoRuntime::LPRDOCalc RDOType__int::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc,
 	return pCalc;
 }
 
-rdoRuntime::RDOValue RDOType__int::get_default() const
+RDOValue RDOType__int::get_default() const
 {
-	return rdoRuntime::RDOValue(0);
+	return RDOValue(rdoRuntime::RDOValue(0), rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo());
 }
 
 void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
@@ -195,9 +192,7 @@ RDOValue RDOType__real::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	RDOValue toValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__real)>(this), from.src_info());
-		ASSERT(pType);
-		toValue = RDOValue(from->getDouble(), from.src_info(), pType);
+		toValue = RDOValue(from->getDouble(), rdo::Factory<RDOType__real>::create(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -216,9 +211,9 @@ rdoRuntime::LPRDOCalc RDOType__real::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc
 	return parent_type::calc_cast(pCalc, pType);
 }
 
-rdoRuntime::RDOValue RDOType__real::get_default() const
+RDOValue RDOType__real::get_default() const
 {
-	return rdoRuntime::RDOValue(0.0);
+	return RDOValue(rdoRuntime::RDOValue(0.0), rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
 }
 
 void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
@@ -248,9 +243,7 @@ RDOValue RDOType__string::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo)
 	RDOValue toValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__string)>(this), from.src_info());
-		ASSERT(pType);
-		toValue = RDOValue(from->getString(), from.src_info(), pType);
+		toValue = RDOValue(from->getString(), rdo::Factory<RDOType__string>::create(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -269,9 +262,9 @@ rdoRuntime::LPRDOCalc RDOType__string::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCa
 	return parent_type::calc_cast(pCalc, pType);
 }
 
-rdoRuntime::RDOValue RDOType__string::get_default() const
+RDOValue RDOType__string::get_default() const
 {
-	return rdoRuntime::RDOValue(_T(""));
+	return RDOValue(rdoRuntime::RDOValue(_T("")), rdo::Factory<RDOType__string>::create(), RDOParserSrcInfo());
 }
 
 void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
@@ -313,9 +306,9 @@ rdoRuntime::LPRDOCalc RDOType__identificator::calc_cast(CREF(rdoRuntime::LPRDOCa
 	return parent_type::calc_cast(pCalc, pType);
 }
 
-rdoRuntime::RDOValue RDOType__identificator::get_default() const
+RDOValue RDOType__identificator::get_default() const
 {
-	return rdoRuntime::RDOValue(_T(""), rdoRuntime::g_identificator);
+	return RDOValue(rdoRuntime::RDOValue(_T(""), rdoRuntime::g_identificator), rdo::Factory<RDOType__identificator>::create(), RDOParserSrcInfo());
 }
 
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
@@ -346,9 +339,7 @@ RDOValue RDOType__bool::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 	RDOValue toValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__bool)>(this), from.src_info());
-		ASSERT(pType);
-		toValue = RDOValue(from->getBool(), from.src_info(), pType);
+		toValue = RDOValue(from->getBool(), rdo::Factory<RDOType__bool>::create(), from.src_info());
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
@@ -367,9 +358,9 @@ rdoRuntime::LPRDOCalc RDOType__bool::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc
 	return parent_type::calc_cast(pCalc, pType);
 }
 
-rdoRuntime::RDOValue RDOType__bool::get_default() const
+RDOValue RDOType__bool::get_default() const
 {
-	return rdoRuntime::RDOValue(false);
+	return RDOValue(rdoRuntime::RDOValue(false), rdo::Factory<RDOType__bool>::create(), RDOParserSrcInfo());
 }
 
 void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const

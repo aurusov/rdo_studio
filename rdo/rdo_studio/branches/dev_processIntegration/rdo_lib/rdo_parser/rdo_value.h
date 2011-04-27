@@ -14,7 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/type/info.h"
+#include "rdo_lib/rdo_parser/type/type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 // ===============================================================================
 
@@ -28,21 +28,21 @@ PREDECLARE_POINTER(RDOArrayValue);
 class RDOValue: public RDOParserSrcInfo
 {
 public:
-	explicit RDOValue(CREF(rsint)           value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(ruint)           value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(double)          value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(tstring)         value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(rsint)           value );
+	explicit RDOValue(CREF(ruint)           value );
+	explicit RDOValue(CREF(double)          value );
+	explicit RDOValue(CREF(tstring)         value );
 	explicit RDOValue(CREF(LPRDOArrayValue) pValue);
 
-	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
+	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(RDOValue) value);
-	         RDOValue(CREF(LPTypeInfo) pType);
+	         RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
 	// Для t_identificator известно только имя, но не тип
 	explicit RDOValue(CREF(RDOParserSrcInfo) src_info);
 	// Неопределенный тип
 	         RDOValue();
 
-	CREF(LPTypeInfo)              typeInfo() const;
+	CREF(LPRDOType)                   type() const;
 	rdoRuntime::RDOType::TypeID     typeID() const;
 	CREF(rdoRuntime::RDOValue)       value() const;
 	CPTR(rdoRuntime::RDOValue) operator-> () const;
@@ -58,7 +58,7 @@ public:
 private:
 	rdoRuntime::RDOValue m_value;
 	LPRDOArrayValue      m_pArray;
-	LPTypeInfo           m_pType;
+	LPRDOType            m_type;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

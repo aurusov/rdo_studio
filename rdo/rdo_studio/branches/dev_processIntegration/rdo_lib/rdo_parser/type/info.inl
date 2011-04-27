@@ -16,17 +16,22 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- TypeInfo
 // ----------------------------------------------------------------------------
+inline TypeInfo::TypeInfo(CREF(LPTypeInfo) pTypeInfo)
+	: m_pType  (pTypeInfo->m_pType  )
+	, m_srcInfo(pTypeInfo->m_srcInfo)
+{}
+
+inline TypeInfo::TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo)
+	: m_pType  (pType  )
+	, m_srcInfo(srcInfo)
+{}
+
 inline TypeInfo::~TypeInfo()
 {}
 
 inline CREF(LPRDOType) TypeInfo::type() const
 {
 	return m_pType;
-}
-
-inline RDOParserSrcInfo TypeInfo::src_info() const
-{
-	return m_srcInfo ? m_srcInfo.get() : RDOParserSrcInfo();
 }
 
 inline CREF(RDOParserSrcInfo) TypeInfo::src_info(CREF(RDOParserSrcInfo) srcInfo) const

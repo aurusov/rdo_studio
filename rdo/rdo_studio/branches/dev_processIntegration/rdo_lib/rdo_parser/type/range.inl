@@ -33,7 +33,7 @@ inline void RDOTypeRangeRange::checkRange() const throw(...)
 {
 	if (m_min_value->typeID() != m_max_value->typeID())
 	{
-		rdoParse::g_error().error(m_max_value.src_info(), rdo::format(_T("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]"), m_min_value.typeInfo()->type()->name().c_str(), m_max_value.typeInfo()->type()->name().c_str()));
+		rdoParse::g_error().error(m_max_value.src_info(), rdo::format(_T("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]"), m_min_value.type()->name().c_str(), m_max_value.type()->name().c_str()));
 	}
 	if (m_min_value.value() > m_max_value.value())
 	{
@@ -115,10 +115,16 @@ inline CREF(LPRDOTypeRangeRange) RDOTypeRange<T>::range() const
 	return m_range;
 }
 
-template<class T>
-inline rdoRuntime::RDOValue RDOTypeRange<T>::get_default() const
+template<>
+inline RDOValue RDOTypeRange<RDOType__int>::get_default() const
 {
-	return m_range->getMin().value();
+	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo());
+}
+
+template<>
+inline RDOValue RDOTypeRange<RDOType__real>::get_default() const
+{
+	return RDOValue(m_range->getMin().value(), rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

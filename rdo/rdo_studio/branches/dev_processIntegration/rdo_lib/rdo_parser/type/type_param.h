@@ -1,18 +1,20 @@
 /*
  * copyright: (c) RDO-Team, 2009
- * filename : rdortp_param.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
+ * filename : type_param.h
+ * author   : Урусов Андрей
+ * date     : 12.02.2010
  * bref     : 
  * indent   : 4T
  */
 
-#ifndef _RDORTP_PARAM_H_
-#define _RDORTP_PARAM_H_
+#ifndef _RDOPARSER_TYPE_PARAM_H_
+#define _RDOPARSER_TYPE_PARAM_H_
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/param.h"
+#include "rdo_lib/rdo_parser/type/type.h"
+#include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_model_i.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
@@ -20,26 +22,27 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDORTPParam
+// ---------- RDOTypeParam
 // ----------------------------------------------------------------------------
-PREDECLARE_POINTER(RDORTPResType);
-
-CLASS(RDORTPParam):
-	    INSTANCE_OF      (RDOParam       )
+OBJECT(RDOTypeParam)
+	IS INSTANCE_OF       (RDOParserSrcInfo)
 	AND IMPLEMENTATION_OF(IModelStructure )
-	AND IMPLEMENTATION_OF(IName           )
 {
-DECLARE_FACTORY(RDORTPParam);
+DECLARE_FACTORY(RDOTypeParam);
 public:
+	LPRDOType type      ()                     const;
+	RDOValue  value_cast(CREF(RDOValue) value) const;
+
 	DECLARE_IModelStructure;
-	DECLARE_IName;
+
+protected:
+	RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOTypeParam();
 
 private:
-	RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(RDOValue) default, CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDORTPParam();
+	LPRDOType m_type;
 };
-DECLARE_POINTER(RDORTPParam);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDORTP_PARAM_H_
+#endif //! _RDOPARSER_TYPE_PARAM_H_

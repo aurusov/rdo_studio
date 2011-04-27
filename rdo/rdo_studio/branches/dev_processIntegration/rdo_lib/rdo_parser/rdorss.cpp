@@ -80,7 +80,7 @@ LPExpression RDORSSResource::onCreateExpression(CREF(RDOValue) value)
 	ASSERT(pParam);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
-		pParam->getTypeInfo(),
+		pParam->getType()->type(),
 		pCalc,
 		value.src_info()
 	);
@@ -108,8 +108,7 @@ void RDORSSResource::addParam(CREF(RDOValue) param)
 			if (!(*m_currParam)->getDefault().defined())
 			{
 				RDOParser::s_parser()->error().push_only(param.src_info(), _T("Ќевозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
-				//! TODO: src_info() без параметра RDOParserSrcInfo()
-				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("—м. описание параметра"));
+				RDOParser::s_parser()->error().push_only((*m_currParam)->getType()->src_info(), _T("—м. описание параметра"));
 				RDOParser::s_parser()->error().push_done();
 			}
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
@@ -117,7 +116,7 @@ void RDORSSResource::addParam(CREF(RDOValue) param)
 		}
 		else
 		{
-			m_paramList.push_back(Param((*m_currParam)->getTypeInfo()->value_cast(param)));
+			m_paramList.push_back(Param((*m_currParam)->getType()->value_cast(param)));
 			m_currParam++;
 		}
 	}

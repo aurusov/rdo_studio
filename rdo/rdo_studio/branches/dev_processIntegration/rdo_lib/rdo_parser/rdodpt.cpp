@@ -122,14 +122,14 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 		if (!pPatternParam->getDefault().defined())
 		{
 			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_text().c_str()));
 			RDOParser::s_parser()->error().push_done();
 		}
 		val = pPatternParam->getDefault().value();
 	}
 	else
 	{
-		val = pPatternParam->getTypeInfo()->value_cast(param).value();
+		val = pPatternParam->getType()->value_cast(param).value();
 	}
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val);
 	ASSERT(pCalc);
@@ -147,7 +147,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ожидаемый параметр '%s' имеет тип '%s'"), pPatternParam->name().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ожидаемый параметр '%s' имеет тип '%s'"), pPatternParam->name().c_str(), pPatternParam->getType()->src_text().c_str()));
 		}
 		RDOParser::s_parser()->error().push_done();
 	}

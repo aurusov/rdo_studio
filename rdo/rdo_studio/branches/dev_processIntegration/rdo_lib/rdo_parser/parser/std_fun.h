@@ -14,6 +14,7 @@
 #include <iostream>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
+#include "rdo_lib/rdo_parser/type/type_param.h"
 #include "rdo_lib/rdo_parser/param.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ===============================================================================
@@ -33,7 +34,7 @@ private:
 
 	virtual void parse(CREF(LPRDOParser) pParser);
 
-	typedef rdo::vector<LPTypeInfo> ParamList;
+	typedef rdo::vector<LPRDOTypeParam> ParamList;
 	void generate    (CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
 	void generateReal(CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
 };

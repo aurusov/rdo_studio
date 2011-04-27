@@ -12,7 +12,7 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/type/info.h"
+#include "rdo_lib/rdo_parser/type/type_param.h"
 #include "rdo_lib/rdo_parser/context/context.h"
 // ===============================================================================
 
@@ -23,11 +23,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 S_INTERFACE(ITypeContext)
 {
-	virtual CREF(LPTypeInfo) getTypeInfo() const = 0;
+	virtual LPRDOTypeParam getType() const = 0;
 };
 #define DECLARE_ITypeContext        \
 public:                             \
-	CREF(LPTypeInfo) getTypeInfo() const;
+	LPRDOTypeParam getType() const;
 
 // ----------------------------------------------------------------------------
 // ---------- TypeContext
@@ -38,9 +38,9 @@ CLASS(TypeContext):
 {
 DECLARE_FACTORY(TypeContext);
 private:
-	TypeContext(CREF(LPTypeInfo) pType);
+	TypeContext(CREF(LPRDOTypeParam) pTypeParam);
 
-	LPTypeInfo m_pType;
+	LPRDOTypeParam m_pTypeParam;
 
 	DECLARE_ITypeContext;
 };
