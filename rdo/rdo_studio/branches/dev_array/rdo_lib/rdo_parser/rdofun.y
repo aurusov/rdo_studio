@@ -380,19 +380,24 @@ fun_func_params
 fun_func_footer
 	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement alg_fun_End
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($6);
+		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($6);
+		ASSERT(pExpressionFunBodyBrace);
+
+		rdoRuntime::LPRDOCalc pCalcEnd = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcEnd);
+
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcFunBodyBrace);
+		pCalcFunBodyBrace->addFunCalc(pCalcEnd);
 
-		rdoRuntime::LPRDOCalc pCalcFunEnd = rdo::Factory<rdoRuntime::RDOCalcFunEnd>::create();
-		ASSERT(pCalcFunEnd);
+		LPExpressionStatement pExpressionReturn = pExpressionFunBodyBrace.object_dynamic_cast<ExpressionStatement>();
 
-		pCalcFunBodyBrace->addFunCalc(pCalcFunEnd);
-
-		rdoRuntime::LPRDOFunCalc pCalc = pCalcFunBodyBrace;
+		rdoRuntime::LPRDOFunCalc pCalc = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOFunCalc>();
 		ASSERT(pCalc);
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
+		pExpressionReturn ? pFunction->setReturnFlag(true) : pFunction->setReturnFlag(false);
 		pFunction->setFunctionCalc(pCalc);
 		pFunction->createAlgorithmicCalc(@5);
 	}
@@ -452,19 +457,37 @@ alg_fun_statement
 		ASSERT(pCalcOpenBrace);
 
 		pCalcFunBodyBrace->addFunCalc(pCalcOpenBrace);
-		$$ = PARSER->stack().push(pCalcFunBodyBrace);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcFunBodyBrace, RDOParserSrcInfo());
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| alg_fun_statement statement
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
+		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionFunBodyBrace);
+
+		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpression);
+
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcFunBodyBrace);
+		pCalcFunBodyBrace->addFunCalc(pExpression->calc());
 
-		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
-		ASSERT(pCalc);
+		pExpressionFunBodyBrace = rdo::Factory<Expression>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
+		ASSERT(pExpressionFunBodyBrace);
 
-		pCalcFunBodyBrace->addFunCalc(pCalc);
+		LPExpressionStatement pExpressionReturn = pExpression.object_dynamic_cast<ExpressionStatement>();
+		if(pExpressionReturn)
+		{
+			pExpressionFunBodyBrace = rdo::Factory<ExpressionStatement>::create(pExpressionFunBodyBrace);
+		}
 
-		$$ = PARSER->stack().push(pCalcFunBodyBrace);
+		$$ = PARSER->stack().push(pExpressionFunBodyBrace);
 	}
 	| error
 	{
@@ -537,17 +560,29 @@ statement
 	}
 	| open_brace statement_list close_brace
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($2);
-		ASSERT(pCalcFunBodyBrace);
+		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionFunBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
+		ASSERT(pCalcFunBodyBrace);
 		pCalcFunBodyBrace->addFunCalc(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalc pCalc = pCalcFunBodyBrace;
-		ASSERT(pCalc);
-		$$ = PARSER->stack().push(pCalc);
+		LPExpressionStatement pExpressionReturn = pExpressionFunBodyBrace.object_dynamic_cast<ExpressionStatement>();
+		if(pExpressionReturn)
+		{
+			pExpressionFunBodyBrace = rdo::Factory<ExpressionStatement>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
+			ASSERT(pExpressionFunBodyBrace);
+		}
+		else
+		{
+			pExpressionFunBodyBrace = rdo::Factory<Expression>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
+			ASSERT(pExpressionFunBodyBrace);
+		}
+
+		$$ = PARSER->stack().push(pExpressionFunBodyBrace);
 	}
 	;
 
@@ -596,19 +631,37 @@ statement_list
 		ASSERT(pCalcOpenBrace);
 
 		pCalcFunBodyBrace->addFunCalc(pCalcOpenBrace);
-		$$ = PARSER->stack().push(pCalcFunBodyBrace);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcFunBodyBrace, RDOParserSrcInfo());
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| statement_list statement
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcFunBodyBrace>($1);
+		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionFunBodyBrace);
+
+		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpression);
+
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcFunBodyBrace);
+		pCalcFunBodyBrace->addFunCalc(pExpression->calc());
 
-		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
-		ASSERT(pCalc);
+		pExpressionFunBodyBrace = rdo::Factory<Expression>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
+		ASSERT(pExpressionFunBodyBrace);
 
-		pCalcFunBodyBrace->addFunCalc(pCalc);
+		LPExpressionStatement pExpressionReturn = pExpression.object_dynamic_cast<ExpressionStatement>();
+		if(pExpressionReturn)
+		{
+			pExpressionFunBodyBrace = rdo::Factory<ExpressionStatement>::create(pExpressionFunBodyBrace);
+		}
 
-		$$ = PARSER->stack().push(pCalcFunBodyBrace);
+		$$ = PARSER->stack().push(pExpressionFunBodyBrace);
 	}
 	;
 
@@ -617,7 +670,14 @@ empty_statement
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
-		$$ = PARSER->stack().push(pCalc);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| error ';'
 	{
@@ -681,7 +741,10 @@ equal_statement
 		pCalc->setSrcText(rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
 		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_IDENTIF param_equal_type fun_arithm
 	{
@@ -774,7 +837,11 @@ equal_statement
 		}
 		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
 		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
-		$$ = PARSER->stack().push(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_IDENTIF param_equal_type error
 	{
@@ -789,10 +856,16 @@ equal_statement
 local_variable_declaration
 	: type_declaration init_declaration_list
 	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
 		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 
 		PARSER->contextStack()->pop();
 	}
@@ -811,6 +884,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_real
 	{
@@ -824,6 +898,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string
 	{
@@ -837,6 +912,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_array
 	{
@@ -850,6 +926,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_bool
 	{
@@ -863,6 +940,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_enum
 	{
@@ -877,6 +955,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_such_as
 	{
@@ -890,6 +969,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	;
 
@@ -1033,14 +1113,26 @@ if_statement
 
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
+		rdoRuntime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 
-		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($5);
-		ASSERT(pStatementCalc);
+		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
+		ASSERT(pIfExpression);
+		LPExpressionStatement pExpressionReturn = pIfExpression.object_dynamic_cast<ExpressionStatement>();
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pStatementCalc);
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pIfExpression->calc());
 		ASSERT(pCalc);
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+		if (pConstCalc && pExpressionReturn && pConstCalc->getValue().getAsBool())
+		{
+			pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
+		}
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_if '(' fun_logic ')' statement RDO_else statement
 	{
@@ -1049,17 +1141,50 @@ if_statement
 		
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
+		rdoRuntime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 
-		rdoRuntime::LPRDOCalc pIfStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($5);
-		ASSERT(pIfStatementCalc);
+		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
+		ASSERT(pIfExpression);
+		LPExpressionStatement pIfExpressionReturn = pIfExpression.object_dynamic_cast<ExpressionStatement>();
 
-		rdoRuntime::LPRDOCalc pElseStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
-		ASSERT(pElseStatementCalc);
+		LPExpression pElseExpression = PARSER->stack().pop<Expression>($7);
+		ASSERT(pElseExpression);
+		LPExpressionStatement pElseExpressionReturn = pElseExpression.object_dynamic_cast<ExpressionStatement>();
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfStatementCalc, pElseStatementCalc);
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfExpression->calc(), pElseExpression->calc());
 		ASSERT(pCalc);
-		
-		$$ = PARSER->stack().push(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+		if(pIfExpressionReturn&&pElseExpressionReturn)
+		{
+			pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
+		}
+		else if(pConstCalc)
+		{
+			if(pConstCalc->getValue().getAsBool())
+			{
+				if(pIfExpressionReturn)
+				{
+					pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
+					ASSERT(pExpression);
+				}
+			}
+			else
+			{
+				if(pElseExpressionReturn)
+				{
+					pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
+					ASSERT(pExpression);
+				}
+			}
+		}
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_if error fun_logic
 	{
@@ -1074,8 +1199,8 @@ if_statement
 for_statement
 	: RDO_for '(' local_variable_declaration ';' fun_logic ';' equal_statement ')' statement
 	{
-		rdoRuntime::LPRDOCalc pDeclarationCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($3);
-		ASSERT(pDeclarationCalc);
+		LPExpression pDeclarationExpression = PARSER->stack().pop<Expression>($3);
+		ASSERT(pDeclarationExpression);
 
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 		ASSERT(pCondition);
@@ -1083,21 +1208,36 @@ for_statement
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
-		rdoRuntime::LPRDOCalc pExpressionCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
-		ASSERT(pExpressionCalc);
+		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
+		ASSERT(pEqualExpression);
 
-		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($9);
-		ASSERT(pStatementCalc);
+		LPExpression pStatementExpression = PARSER->stack().pop<Expression>($9);
+		ASSERT(pStatementExpression);
+		LPExpressionStatement pStatementExpressionReturn = pStatementExpression.object_dynamic_cast<ExpressionStatement>();
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(pDeclarationCalc, pConditionCalc, pExpressionCalc, pStatementCalc);
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(
+			pDeclarationExpression->calc(),
+			pConditionCalc                ,
+			pEqualExpression->calc()      ,
+			pStatementExpression->calc()  );
 		ASSERT(pCalc);
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		if(pStatementExpressionReturn)
+		{
+			pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
+		}
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_for '(' equal_statement ';' fun_logic ';' equal_statement ')' statement
 	{
-		rdoRuntime::LPRDOCalc pDeclarationCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($3);
-		ASSERT(pDeclarationCalc);
+		LPExpression pInitExpression = PARSER->stack().pop<Expression>($3);
+		ASSERT(pInitExpression);
 
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 		ASSERT(pCondition);
@@ -1105,16 +1245,31 @@ for_statement
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
-		rdoRuntime::LPRDOCalc pExpressionCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
-		ASSERT(pExpressionCalc);
+		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
+		ASSERT(pEqualExpression);
 
-		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($9);
-		ASSERT(pStatementCalc);
+		LPExpression pStatementExpression = PARSER->stack().pop<Expression>($9);
+		ASSERT(pStatementExpression);
+		LPExpressionStatement pStatementExpressionReturn = pStatementExpression.object_dynamic_cast<ExpressionStatement>();
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(pDeclarationCalc, pConditionCalc, pExpressionCalc, pStatementCalc);
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(
+			pInitExpression->calc()     ,
+			pConditionCalc              ,
+			pEqualExpression->calc()    ,
+			pStatementExpression->calc());
 		ASSERT(pCalc);
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		if(pStatementExpressionReturn)
+		{
+			pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
+		}
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 
@@ -1161,11 +1316,20 @@ return_statement
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
-		rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(PARSER->getLastFUNFunction()->getReturn()->getTypeInfo());
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(PARSER->getLastFUNFunction()->getReturn()->getTypeInfo());
+		ASSERT(pType);
+
+		rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pType);
+		ASSERT(pCalc);
 
 		rdoRuntime::LPRDOCalc pCalcReturn = rdo::Factory<rdoRuntime::RDOCalcFunReturn>::create(pCalc);
 		ASSERT(pCalcReturn);
-		$$ = PARSER->stack().push(pCalcReturn);
+
+		LPExpressionStatement pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 
@@ -1174,7 +1338,17 @@ break_statement
 	{
 		rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
 		ASSERT(pCalcBreak);
-		$$ = PARSER->stack().push(pCalcBreak);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 

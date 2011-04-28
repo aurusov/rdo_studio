@@ -16,6 +16,9 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// ---------- Expression
+// ----------------------------------------------------------------------------
 Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info)
 	: m_pType(pType)
 	, m_pCalc(pCalc)
@@ -67,6 +70,26 @@ RDOValue Expression::constant() const
 	}
 
 	return RDOValue();
+}
+// ----------------------------------------------------------------------------
+// ---------- ExpressionStatement
+// ----------------------------------------------------------------------------
+ExpressionStatement::ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info)
+	:Expression  (pType, pCalc, src_info),
+	 m_returnFlag(true                  )
+{}
+
+ExpressionStatement::ExpressionStatement(CREF(LPExpression) pExpression)
+	:Expression  (pExpression),
+	 m_returnFlag(true       )
+{}
+
+ExpressionStatement::~ExpressionStatement()
+{}
+
+rbool ExpressionStatement::getReturn()
+{
+	return m_returnFlag;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
