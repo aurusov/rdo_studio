@@ -1660,12 +1660,11 @@ stopping_statement
 	;
 
 process_input_statement
-	: RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
+	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
 	{
-//		tstring        processName  = RDOVALUE($1)->getIdentificator();
-//		tstring        resourceName = RDOVALUE($5)->getIdentificator();
+		tstring        processName  = RDOVALUE($1)->getIdentificator();
+		tstring        resourceName = RDOVALUE($5)->getIdentificator();
 
-//Проверить, правильность resourceName
 //Чтобы можно было проверить правильность processName PRC должен парситься раньше EVN (хотя бы простой препарс с поиском имен процессов),
 //но проверить processName можно уже во время выполнения RDOCalcProcessControl - этот должно быть проще, хотя вряд ли правильно.
 		
@@ -1673,6 +1672,10 @@ process_input_statement
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
+	{
+		PARSER->error().error(@5, _T("В качестве транзакта процессу можно передавать только релеватный ресурс"));
 	}
 	;
 
