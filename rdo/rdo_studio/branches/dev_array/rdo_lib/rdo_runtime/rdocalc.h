@@ -20,7 +20,6 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
-#include "rdo_lib/rdo_runtime/isReturn.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -28,7 +27,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo) IS INSTANCE_OF(RDOCalcIsReturn)
+OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 {
 DECLARE_FACTORY(RDOCalc)
 

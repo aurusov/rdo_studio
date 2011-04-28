@@ -37,8 +37,6 @@ RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
 {
 	ASSERT(m_pCondition);
 	ASSERT(m_pStatement);
-
-	//! TODO: isReturn: Если m_pCondition логическая константа == true, то проверить на isReturn() вполне валидно
 }
 
 REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) pRuntime)
@@ -58,11 +56,6 @@ RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStat
 	ASSERT(m_pCondition    );
 	ASSERT(m_pIfStatement  );
 	ASSERT(m_pElseStatement);
-
-	if ((m_pIfStatement->isReturn() > 0) && (m_pElseStatement->isReturn() > 0))
-	{
-		upCnt();
-	}
 }
 
 REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) pRuntime)
@@ -83,11 +76,6 @@ RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition,
 	ASSERT(m_pCondition  );
 	ASSERT(m_pExpression );
 	ASSERT(m_pStatement  );
-
-	if (m_pStatement->isReturn())
-	{
-		upCnt();
-	}
 }
 
 REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) pRuntime)
@@ -118,9 +106,7 @@ REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) pRuntime)
 // ----------------------------------------------------------------------------
 RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
 : m_pReturn(pReturn)
-{
-	upCnt();
-}
+{}
 
 REF(RDOValue) RDOCalcFunReturn::doCalc(PTR(RDORuntime) pRuntime)
 {

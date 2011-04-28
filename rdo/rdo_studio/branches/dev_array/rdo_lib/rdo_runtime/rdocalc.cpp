@@ -23,9 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
 RDOCalc::RDOCalc()
-{
-	resetCnt();
-}
+{}
 
 RDOCalc::~RDOCalc()
 {}

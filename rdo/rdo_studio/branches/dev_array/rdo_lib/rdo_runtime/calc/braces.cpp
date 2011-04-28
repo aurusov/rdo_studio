@@ -74,11 +74,6 @@ void RDOCalcFunBodyBrace::addFunCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcFunList.push_back(pCalc);
-
-	if (pCalc->isReturn())
-	{
-		upCnt();
-	}
 }
 
 void RDOCalcFunBodyBrace::addRetCalc(CREF(LPRDOCalc) pCalc)
