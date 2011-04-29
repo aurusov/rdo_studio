@@ -473,7 +473,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			m_buildState = BS_COMPLETE;
 			PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
-			if(method && method->CheckModelStructure())
+			if(method && method->checkModelStructure())
 			{
 				method->generate();
 			}

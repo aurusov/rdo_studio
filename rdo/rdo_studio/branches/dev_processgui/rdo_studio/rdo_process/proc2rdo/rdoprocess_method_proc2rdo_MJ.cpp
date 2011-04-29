@@ -127,7 +127,7 @@ void RPMethodProc2RDO_MJ::generate()
 	}
 }
 
-bool RPMethodProc2RDO_MJ::CheckModelStructure()
+bool RPMethodProc2RDO_MJ::checkModelStructure()
 {
 // Заполнили ID
 	std::list< RPObject* > all_child;

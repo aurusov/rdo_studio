@@ -27,7 +27,7 @@ protected:
 public:
 	RPMethodProc2RDO_MJ( RPObject* _parent );
 	static rpMethod::RPMethod* registerMethod();
-	bool CheckModelStructure();
+	bool checkModelStructure();
 	virtual rp::string getVersionDesc() const { return "альфа"; }
 	virtual rp::string getDescription() const { return "Переводит квадратики в паттерны"; }
 	virtual rp::string getClassName() const { return "RPMethodProc2RDO_MJ"; }
