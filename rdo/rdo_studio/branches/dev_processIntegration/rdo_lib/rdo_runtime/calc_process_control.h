@@ -13,6 +13,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
+#include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
@@ -30,8 +31,10 @@ CALC(RDOCalcProcessControl)
 DECLARE_FACTORY(RDOCalcProcessControl)
 public:
 protected:
-	RDOCalcProcessControl();
+	RDOCalcProcessControl(LPIPROCBlock pBlock);
 	DECALRE_ICalc;
+private:
+	LPIPROCBlock m_Block;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

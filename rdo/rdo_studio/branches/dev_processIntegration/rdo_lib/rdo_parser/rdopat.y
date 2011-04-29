@@ -220,6 +220,7 @@
 #include "rdo_lib/rdo_runtime/calc/event_plan.h"
 #include "rdo_lib/rdo_runtime/calc/locvar.h"
 #include "rdo_lib/rdo_runtime/calc/watch.h"
+#include "rdo_lib/rdo_runtime/calc_process_control.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -1458,6 +1459,7 @@ statement
 	| for_statement
 	| nochange_statement
 //	| member_statement ';'
+	| process_input_statement
 	| stopping_statement
 	| planning_statement
 	| watch_start
@@ -2299,6 +2301,31 @@ planning_statement
 	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+process_input_statement
+	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
+	{
+		tstring          resourceName = RDOVALUE($5)->getIdentificator();
+		tstring          processName  = RDOVALUE($1)->getIdentificator();
+		LPRDOPROCProcess pProcess     = PARSER->findPROCProcess(processName);
+		if (!pProcess)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка запустить неизвестный процесс: %s"), processName.c_str()));
+		}
+
+		LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
+		ASSERT(pBlock);
+
+		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create(pBlock);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
+	{
+		PARSER->error().error(@5, _T("В качестве транзакта процессу можно передавать только релеватный ресурс"));
 	}
 	;
 

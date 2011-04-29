@@ -1674,7 +1674,10 @@ process_input_statement
 			PARSER->error().error(@1, rdo::format(_T("Попытка запустить неизвестный процесс: %s"), processName.c_str()));
 		}
 
-		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create();
+		LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
+		ASSERT(pBlock);
+
+		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create(pBlock);
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);

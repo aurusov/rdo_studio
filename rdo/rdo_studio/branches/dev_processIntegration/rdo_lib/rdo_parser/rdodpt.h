@@ -261,6 +261,9 @@ OBJECT(RDOPROCProcess) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOPROCProcess);
 public:
+	typedef  std::list<LPRDOPROCProcess >  ProcessList;
+	typedef  std::list<LPRDOPROCOperator>  BlockList;
+
 	static tstring s_name_prefix;
 	static tstring s_name_sufix;
 
@@ -269,8 +272,9 @@ public:
 	void  end   ();
 	rbool closed() const { return m_closed; }
 
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
+	void            setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
+	LPRDOFUNLogic   getConditon () const                               { return m_pConditon;      }
+	CREF(BlockList) getBlockList() const                               { return m_blockList;      }
 
 	rbool    setPrior   (REF(LPRDOFUNArithm)     pPrior  );
 	void     insertBlock(CREF(LPRDOPROCOperator) pBlock  );
@@ -279,9 +283,6 @@ public:
 	LPILogic getRunTime () const { return m_pRuntime; }
 
 protected:
-	typedef  std::list<LPRDOPROCProcess >  ProcessList;
-	typedef  std::list<LPRDOPROCOperator>  BlockList;
-
 	rbool             m_closed;
 	LPRDOPROCProcess  m_pParentProcess;
 	ProcessList       m_childProcessList;
@@ -301,6 +302,8 @@ private:
 OBJECT(RDOPROCOperator)
 {
 DECLARE_FACTORY(RDOPROCOperator);
+public:
+	virtual LPIPROCBlock getRuntimeBlock() const = 0;
 protected:
 	tstring          m_name;
 	LPRDOPROCProcess m_pProcess;
@@ -315,6 +318,8 @@ protected:
 class RDOPROCGenerate: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCGenerate);
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 
@@ -341,6 +346,7 @@ class RDOPROCQueue: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCQueue);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void setResource  (CREF(tstring) name);
 
@@ -360,6 +366,7 @@ class RDOPROCDepart: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCDepart);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void setResource  (CREF(tstring) name);
 
@@ -391,6 +398,7 @@ class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 DECLARE_FACTORY(RDOPROCSeize);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void addResource  (CREF(tstring) name);
 
@@ -414,6 +422,7 @@ class RDOPROCRelease: public RDOPROCBlockForSeize
 {
 DECLARE_FACTORY(RDOPROCRelease);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void addResource  (CREF(tstring) name);
 
@@ -436,6 +445,8 @@ DECLARE_POINTER(RDOPROCRelease);
 class RDOPROCAdvance: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCAdvance);
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 
@@ -450,6 +461,8 @@ class RDOPROCTerminate: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCTerminate);
 
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 
@@ -463,6 +476,8 @@ private:
 class RDOPROCAssign: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCAssign);
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 
