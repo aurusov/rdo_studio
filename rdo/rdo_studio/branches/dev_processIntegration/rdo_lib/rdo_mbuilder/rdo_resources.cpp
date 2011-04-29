@@ -50,7 +50,7 @@ void RDOResType::Param::operator= (CREF(RDOResType::Param) obj)
 {
 	m_name    = obj.m_name;
 	m_exist   = obj.m_exist;
-	m_type    = obj.m_type;
+	m_pType   = obj.m_pType;
 	m_id      = obj.m_id;
 	m_min     = obj.m_min;
 	m_max     = obj.m_max;
@@ -92,7 +92,7 @@ RDOResType::RDOResType(CREF(rdoParse::LPRDORTPResType) rtp)
 RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
 	: rdoParse::RDOParserSrcInfo(param->src_info())
 	, m_name   (param->name()                     )
-	, m_type   (param->getType()                  )
+	, m_pType  (param->getTypeInfo()              )
 	, m_exist  (true                              )
 	, m_id     (-1                                )
 	, m_default(param->getDefault()               )
@@ -101,7 +101,7 @@ RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
 	{
 		case rdoRuntime::RDOType::t_int:
 		{
-			rdoParse::LPRDOTypeIntRange pRange = param->getType()->type().object_dynamic_cast<rdoParse::RDOTypeIntRange>();
+			rdoParse::LPRDOTypeIntRange pRange = param->getTypeInfo()->type().object_dynamic_cast<rdoParse::RDOTypeIntRange>();
 			if (pRange)
 			{
 				m_min = pRange->range()->getMin();
@@ -111,7 +111,7 @@ RDOResType::Param::Param(CREF(rdoParse::LPRDORTPParam) param)
 		}
 		case rdoRuntime::RDOType::t_real:
 		{
-			rdoParse::LPRDOTypeRealRange pRange = param->getType()->type().object_dynamic_cast<rdoParse::RDOTypeRealRange>();
+			rdoParse::LPRDOTypeRealRange pRange = param->getTypeInfo()->type().object_dynamic_cast<rdoParse::RDOTypeRealRange>();
 			if (pRange)
 			{
 				m_min = pRange->range()->getMin();
@@ -141,30 +141,30 @@ rbool RDOResType::ParamList::append(REF(Param) param)
 	return true;
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPRDOTypeParam) type, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPTypeInfo) pType, CREF(rdoParse::RDOValue) default)
 	: m_name   (name   )
-	, m_type   (type   )
+	, m_pType  (pType  )
 	, m_exist  (true   )
 	, m_id     (-1     )
 	, m_default(default)
 {}
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>) type, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>) pType, CREF(rdoParse::RDOValue) default)
 	: m_name   (name   )
 	, m_exist  (true   )
 	, m_id     (-1     )
 	, m_default(default)
 {
-	initType(type);
+	initType(pType);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) type, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) pType, CREF(rdoParse::RDOValue) default)
 	: m_name   (name   )
 	, m_exist  (true   )
 	, m_id     (-1     )
 	, m_default(default)
 {
-	initType(type);
+	initType(pType);
 }
 
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums) enums, CREF(rdoParse::RDOValue) default)
@@ -219,8 +219,8 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_pParser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
 	STL_FOR_ALL_CONST(rtp.m_params, param)
 	{
-		rdoParse::LPRDOTypeParam pParamType;
-		rdoParse::RDOValue       default = param->hasDefault() ? param->getDefault() : rdoParse::RDOValue();
+		rdoParse::LPTypeInfo pParamType;
+		rdoParse::RDOValue   default = param->hasDefault() ? param->getDefault() : rdoParse::RDOValue();
 		switch (param->typeID())
 		{
 			case rdoRuntime::RDOType::t_int:
@@ -229,7 +229,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 				{
 					rdoParse::LPRDOTypeRangeRange pRange    = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
 					rdoParse::LPRDOTypeIntRange   pIntRange = rdo::Factory<rdoParse::RDOTypeIntRange>::create(pRange);
-					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pIntRange, rdoParse::RDOParserSrcInfo());
+					pParamType = rdo::Factory<rdoParse::TypeInfo>::create(pIntRange, rdoParse::RDOParserSrcInfo());
 				}
 				else
 				{
@@ -243,7 +243,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 				{
 					rdoParse::LPRDOTypeRangeRange pRange     = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
 					rdoParse::LPRDOTypeRealRange  pRealRange = rdo::Factory<rdoParse::RDOTypeRealRange>::create(pRange);
-					pParamType = rdo::Factory<rdoParse::RDOTypeParam>::create(pRealRange, rdoParse::RDOParserSrcInfo());
+					pParamType = rdo::Factory<rdoParse::TypeInfo>::create(pRealRange, rdoParse::RDOParserSrcInfo());
 				}
 				else
 				{
@@ -351,7 +351,7 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 {
 	STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
 	{
-		rdoParse::RDOValue value(param_it->type()->type());
+		rdoParse::RDOValue value(param_it->type()->type(), param_it->src_info());
 		if (param_it->hasDefault())
 		{
 			value = param_it->getDefault();

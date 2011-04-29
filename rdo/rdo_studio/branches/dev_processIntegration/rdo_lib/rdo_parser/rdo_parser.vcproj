@@ -2692,19 +2692,27 @@
 					RelativePath=".\param.h"
 					>
 				</File>
-				<File
-					RelativePath=".\type\type_param.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\type\type_param.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name=".type"
 			>
+			<File
+				RelativePath=".\type\info.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\type\info.h"
+				>
+			</File>
+			<File
+				RelativePath=".\type\info.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\type\type.h"
+				>
+			</File>
 			<Filter
 				Name=".enum"
 				>
@@ -2733,11 +2741,11 @@
 				Name=".array"
 				>
 				<File
-					RelativePath=".\rdo_array.cpp"
+					RelativePath=".\type\array.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_array.h"
+					RelativePath=".\type\array.h"
 					>
 				</File>
 			</Filter>
@@ -2765,26 +2773,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name=".common"
-				>
-				<File
-					RelativePath=".\type\info.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\type\info.h"
-					>
-				</File>
-				<File
-					RelativePath=".\type\info.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\type\type.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name=".value"
@@ -2801,6 +2789,18 @@
 				RelativePath=".\rdo_value.inl"
 				>
 			</File>
+			<Filter
+				Name=".array"
+				>
+				<File
+					RelativePath=".\rdo_array.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_array.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".expression"
