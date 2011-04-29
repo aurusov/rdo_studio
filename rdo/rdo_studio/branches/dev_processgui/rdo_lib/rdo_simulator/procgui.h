@@ -27,12 +27,20 @@ public:
 	ProcGUIBlock(PTR(rdoParse::RDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime);
 	virtual ~ProcGUIBlock();
 
-	void Create();
+	void Create   (std::vector <double>  pParams);
+	void Terminate(std::vector <double>  pParams);
+	void Process  (std::vector <double>  pParams);
+	void Advance  (std::vector <double>  pParams);
 
 private:
 	PTR(rdoParse::RDOParser)     m_pParser;
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	LPILogic                     m_pProcess;
+
+	rdoRuntime::LPRDOCalcConst        ProcGUIBlock::getConstCalc  (double arg                        );
+	rdoRuntime::LPRDOCalcFunctionCall ProcGUIBlock::getNormalCalc (int p_base,double arg1,double arg2);
+	rdoRuntime::LPRDOCalcFunctionCall ProcGUIBlock::getUniformCalc(int p_base,double arg1,double arg2);
+	rdoRuntime::LPRDOCalcFunctionCall ProcGUIBlock::getExpCalc    (int p_base,double arg1);
 };
 
 CLOSE_RDO_SIMULATOR_NAMESPACE

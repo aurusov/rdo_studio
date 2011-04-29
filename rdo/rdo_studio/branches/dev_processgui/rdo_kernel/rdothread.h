@@ -141,6 +141,7 @@ public:
 		RT_CORBA_PARSER_GET_RTP_COUNT,
 		RT_CORBA_PARSER_GET_RTP_PAR_COUNT,
 		RT_PROCGUI_BLOCK_CREATE,
+		RT_PROCGUI_BLOCK_PROCESS,
 		RT_PROCGUI_BLOCK_TERMINATE
 	};
 	std::string messageToString(RDOTreadMessage message) {
@@ -214,6 +215,7 @@ public:
 			case RT_CORBA_PARSER_GET_RTP_COUNT        : return _T("RT_CORBA_PARSER_GET_RTP_COUNT");
 			case RT_CORBA_PARSER_GET_RTP_PAR_COUNT    : return _T("RT_CORBA_PARSER_GET_RTP_PAR_COUNT");
 			case RT_PROCGUI_BLOCK_CREATE              : return _T("RT_PROCGUI_BLOCK_CREATE");
+			case RT_PROCGUI_BLOCK_PROCESS             : return _T("RT_PROCGUI_BLOCK_PROCESS");
 			case RT_PROCGUI_BLOCK_TERMINATE           : return _T("RT_PROCGUI_BLOCK_TERMINATE");
 			default                                   : return _T("RT_UNKNOWN");
 		}

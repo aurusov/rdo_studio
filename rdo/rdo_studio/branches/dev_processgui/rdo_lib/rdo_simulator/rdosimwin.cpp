@@ -857,6 +857,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	notifies.push_back(RT_CORBA_PARSER_GET_RSS            );
 	notifies.push_back(RT_PROCGUI_BLOCK_CREATE            );
 	notifies.push_back(RT_PROCGUI_BLOCK_TERMINATE         );
+	notifies.push_back(RT_PROCGUI_BLOCK_PROCESS           );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
 	after_constructor();
@@ -926,12 +927,25 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		{
 			m_pGUIBlock = rdo::Factory<ProcGUIBlock>::create(m_pParser, m_pRuntime);
 			ASSERT(m_pGUIBlock);
-			m_pGUIBlock->Create();
+			msg.lock();
+			m_pGUIBlock->Create(*static_cast<PTR(std::vector<double>)>(msg.param));
+			msg.unlock();
+			break;
+		}
+		case RT_PROCGUI_BLOCK_PROCESS:
+		{
+			ASSERT(m_pGUIBlock);
+			msg.lock();
+			m_pGUIBlock->Process(*static_cast<PTR(std::vector<double>)>(msg.param));
+			msg.unlock();
 			break;
 		}
 		case RT_PROCGUI_BLOCK_TERMINATE:
 		{
-			blockTerminate();
+			ASSERT(m_pGUIBlock);
+			msg.lock();
+			m_pGUIBlock->Terminate(*static_cast<PTR(std::vector<double>)>(msg.param));
+			msg.unlock();
 			break;
 		}
 		
@@ -1222,10 +1236,6 @@ double RDOThreadSimulator::getInitialShowRate() const
 
 void RDOThreadSimulator::codeCompletion()
 {}
-
-void RDOThreadSimulator::blockTerminate()
-{
-}
 
 #ifdef CORBA_ENABLE
 

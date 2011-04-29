@@ -233,7 +233,6 @@ protected:
 	rbool parseModel    ();
 	void  runModel      ();
 	void  stopModel     ();
-	void  blockTerminate();
 
 	typedef std::vector<RDOSyntaxError> SyntaxErrorList;
 	SyntaxErrorList getErrors();
