@@ -435,7 +435,7 @@ void RDODPTSearch::end()
 tstring RDOPROCProcess::s_name_prefix = _T("");
 tstring RDOPROCProcess::s_name_sufix  = _T("s");
 
-RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, tstring name)
+RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name)
 	: RDOParserSrcInfo(info )
 	, m_closed        (false)
 	, m_name          (name )

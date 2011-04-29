@@ -290,7 +290,7 @@ protected:
 	LPILogic          m_pRuntime;
 
 private:
-	RDOPROCProcess(CREF(RDOParserSrcInfo) info, tstring name);
+	RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name);
 
 	LPRDOFUNLogic m_pConditon;
 	tstring       m_name;
