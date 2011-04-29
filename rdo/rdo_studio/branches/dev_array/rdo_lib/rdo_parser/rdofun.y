@@ -383,7 +383,7 @@ fun_func_footer
 		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($6);
 		ASSERT(pExpressionFunBodyBrace);
 
-		rdoRuntime::LPRDOCalc pCalcEnd = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		rdoRuntime::LPRDOCalc pCalcEnd = rdo::Factory<rdoRuntime::RDOCalcFunEnd>::create();
 		ASSERT(pCalcEnd);
 
 		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
