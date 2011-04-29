@@ -238,7 +238,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 prc_rtp_main
 	: /* empty */
-	| prc_rtp_main RDO_Process RDO_IDENTIF RDO_IDENTIF error RDO_End {@1;} /* заглушка для $Process */
+	| prc_rtp_main RDO_Process RDO_IDENTIF RDO_IDENTIF error RDO_End
 	{
 		tstring rtp_name       = P_RDOVALUE($4)->value().getIdentificator();
 		tstring rtp_param_name = _T("Время_создания");

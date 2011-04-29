@@ -1662,12 +1662,14 @@ stopping_statement
 process_input_statement
 	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
 	{
-		tstring        processName  = RDOVALUE($1)->getIdentificator();
-		tstring        resourceName = RDOVALUE($5)->getIdentificator();
+		tstring          resourceName = RDOVALUE($5)->getIdentificator();
+		tstring          processName  = RDOVALUE($1)->getIdentificator();
+		LPRDOPROCProcess pProcess     = PARSER->findPROCProcess(processName);
+		if (!pProcess)
+		{
+			PARSER->error().error(@1, rdo::format(_T("ѕопытка запустить неизвестный процесс: %s"), processName.c_str()));
+		}
 
-//„тобы можно было проверить правильность processName PRC должен парситьс€ раньше EVN (хот€ бы простой препарс с поиском имен процессов),
-//но проверить processName можно уже во врем€ выполнени€ RDOCalcProcessControl - этот должно быть проще, хот€ вр€д ли правильно.
-		
 		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create();
 		ASSERT(pCalc);
 

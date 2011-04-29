@@ -264,6 +264,8 @@ public:
 	static tstring s_name_prefix;
 	static tstring s_name_sufix;
 
+	tstring name() const { return m_name; }
+
 	void  end   ();
 	rbool closed() const { return m_closed; }
 
@@ -287,9 +289,10 @@ protected:
 	LPILogic          m_pRuntime;
 
 private:
-	RDOPROCProcess(CREF(RDOParserSrcInfo) info);
+	RDOPROCProcess(CREF(RDOParserSrcInfo) info, tstring name);
 
 	LPRDOFUNLogic m_pConditon;
+	tstring       m_name;
 };
 
 // ----------------------------------------------------------------------------

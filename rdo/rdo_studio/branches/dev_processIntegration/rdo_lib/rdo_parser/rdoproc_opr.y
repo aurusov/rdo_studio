@@ -262,7 +262,7 @@ dpt_process_begin
 		}
 
 		tstring proc_name = P_RDOVALUE($2)->value().getIdentificator();
-		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, proc_name));
+		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, proc_name), proc_name);
 		ASSERT(pProcess);
 	}
 	| RDO_Process error

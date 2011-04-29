@@ -435,9 +435,10 @@ void RDODPTSearch::end()
 tstring RDOPROCProcess::s_name_prefix = _T("");
 tstring RDOPROCProcess::s_name_sufix  = _T("s");
 
-RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
+RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, tstring name)
 	: RDOParserSrcInfo(info )
 	, m_closed        (false)
+	, m_name          (name )
 {
 	RDOParser::s_parser()->insertPROCProcess(this);
 	m_pRuntime = F(rdoRuntime::RDOPROCProcess)::create(info.src_text(), RDOParser::s_parser()->runtime());
