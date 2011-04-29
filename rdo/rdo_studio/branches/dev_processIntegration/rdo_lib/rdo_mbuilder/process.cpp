@@ -121,6 +121,8 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
 	// "Свободен"
 	tstring rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+	rdoParse::RDOValue default(rtp_state_free, info);
+	default.setSrcText(rtp_state_free);
 	// "Занят"
 	tstring rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
@@ -132,7 +134,7 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	rtp.m_params.append(RDOResType::Param(
 		rtp_param_name,
 		rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy),
-		rdoParse::RDOValue(rtp_state_free, info)
+		default
 	));
 	// Добавим тип ресурса
 	if (!rtpList.append(rtp))
