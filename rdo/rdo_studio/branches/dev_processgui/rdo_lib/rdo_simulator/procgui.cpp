@@ -156,7 +156,7 @@ void ProcGUIBlock::Advance(std::vector <double>  pParams)
 void ProcGUIBlock::Terminate(std::vector <double>  pParams)
 {
 	//! TERMINATE
-	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, 1));
+	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, static_cast<int>(pParams[2]));
 	ASSERT(pBlock);
 }
 

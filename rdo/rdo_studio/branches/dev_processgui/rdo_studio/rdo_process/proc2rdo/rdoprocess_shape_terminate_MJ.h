@@ -19,6 +19,9 @@ private:
 	static RPObject* newObject( RPObject* parent );
 
 public:
+	double m_time;
+	int    m_term_counter;
+	int    m_term_state;//! 0 не осталось транзактов в системе, 1 по времени m_time
 	RPShapeTerminateMJ( RPObject* parent );
 	virtual ~RPShapeTerminateMJ();
 

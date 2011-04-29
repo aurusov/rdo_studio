@@ -22,7 +22,11 @@ public:
 // Dialog Data
 	//{{AFX_DATA(RPShapeTerminateDlg1_MJ)
 	enum { IDD = IDD_DIALOG_TERMINATE_1_MJ };
-	CString	m_name;
+	CString	  m_name;
+	CComboBox m_combo;
+	CEdit	  m_time;
+	double	  m_time_value;
+	int       m_term_counter;
 	//}}AFX_DATA
 
 
@@ -30,6 +34,7 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(RPShapeTerminateDlg1_MJ)
 	protected:
+	
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -39,6 +44,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(RPShapeTerminateDlg1_MJ)
 	virtual void OnOK();
+	afx_msg void OnCloseupCombo1();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
