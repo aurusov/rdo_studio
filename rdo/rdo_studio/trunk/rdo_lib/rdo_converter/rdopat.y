@@ -1527,7 +1527,7 @@ pat_convert_cmd
 		{
 			case rdoRuntime::ET_EQUAL:
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				ASSERT(pCalc);
 				pRelRes->getParamSetList().insert(param);
 				break;
@@ -1544,13 +1544,13 @@ pat_convert_cmd
 			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getType().get()))
 			{
 				LPRDOTypeIntRange pRange = param->getType()->type().object_static_cast<RDOTypeIntRange>();
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 				ASSERT(pCalc);
 			}
 			else if (dynamic_cast<PTR(RDOTypeRealRange)>(param->getType().get()))
 			{
 				LPRDOTypeRealRange pRange = param->getType()->type().object_static_cast<RDOTypeRealRange>();
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pRange->range()->getMin().value(), pRange->range()->getMax().value(), pCalc);
 				ASSERT(pCalc);
 			}
 			tstring oprStr;

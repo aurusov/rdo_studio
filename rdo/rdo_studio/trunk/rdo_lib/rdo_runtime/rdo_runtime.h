@@ -64,9 +64,9 @@ class RDOOperation;
 class RDOPROCProcess;
 class RDOPMDPokaz;
 class RDOPattern;
-class RDOCalcEraseRes;
 class RDOFRMFrame;
 class RDOCalcCreateNumberedResource;
+PREDECLARE_POINTER(RDOEraseResRelCalc);
 
 class RDORuntime: public RDOSimulatorTrace
 {
@@ -168,7 +168,7 @@ public:
 	void showResources( int node ) const;
 #endif
 
-	void onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc);
+	void onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc);
 	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
 	RDOResource* createNewResource( unsigned int type, rbool trace );
 	void insertNewResource( RDOResource* res );

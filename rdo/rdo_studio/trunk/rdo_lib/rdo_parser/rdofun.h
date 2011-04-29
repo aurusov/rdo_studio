@@ -552,6 +552,9 @@ public:
 	void                     setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc);
 	rdoRuntime::LPRDOFunCalc getFunctionCalc() const { return m_pFunctionCalc; }
 
+	void  setReturnFlag(rbool flag) {m_returnFlag = flag;}
+	rbool getReturnFlag(          ) {return m_returnFlag;}
+
 	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCall) pCalc)
 	{
 		ASSERT(pCalc);
@@ -576,6 +579,7 @@ private:
 	PostLinkedList           m_postLinkedList;  //! для рекурсивного вызова
 	rdoRuntime::LPRDOFunCalc m_pFunctionCalc;
 	LPContextMemory          m_pContextMemory;
+	rbool                    m_returnFlag;
 
 	void init();
 

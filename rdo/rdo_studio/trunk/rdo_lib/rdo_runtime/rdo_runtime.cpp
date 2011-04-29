@@ -9,6 +9,7 @@
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
 #include "rdo_lib/rdo_runtime/rdodptrtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/relres.h"
 #include "rdo_common/rdodebug.h"
 
 #pragma warning(disable : 4786)  
@@ -219,7 +220,7 @@ void RDORuntime::showResources( int node ) const
 }
 #endif
 
-void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc)
+void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {

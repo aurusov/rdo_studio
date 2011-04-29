@@ -22,9 +22,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- Expression
 // ----------------------------------------------------------------------------
+class ExpressionStatement;
 OBJECT(Expression)
 {
 DECLARE_FACTORY(Expression);
+friend class ExpressionStatement;
 public:
 	CREF(LPTypeInfo)             typeInfo  () const;
 	CREF(rdoRuntime::LPRDOCalc)  calc      () const;
@@ -41,6 +43,23 @@ private:
 	LPTypeInfo             m_pType;
 	rdoRuntime::LPRDOCalc  m_pCalc;
 };
+// ----------------------------------------------------------------------------
+// ---------- ExpressionStatement
+// ----------------------------------------------------------------------------
+CLASS(ExpressionStatement): INSTANCE_OF(Expression)
+{
+DECLARE_FACTORY(ExpressionStatement);
+public:
+	rbool getReturn();
+
+private:
+	ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);
+	ExpressionStatement(CREF(LPExpression) pExpression);
+	virtual ~ExpressionStatement();
+
+	rbool m_returnFlag;
+};
+DECLARE_POINTER(ExpressionStatement);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

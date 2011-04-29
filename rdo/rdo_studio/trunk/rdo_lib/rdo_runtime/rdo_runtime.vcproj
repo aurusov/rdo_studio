@@ -1784,6 +1784,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\braces.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\braces.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\choice_from.cpp"
 				>
 			</File>
@@ -1804,10 +1812,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\isReturn.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc\event_plan.cpp"
 				>
 			</File>
@@ -1816,7 +1820,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\locvar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\locvar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\locvar.inl"
 				>
 			</File>
 			<File
@@ -1894,7 +1906,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\relres.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\relres.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\relres.inl"
 				>
 			</File>
 			<File
@@ -1903,6 +1923,14 @@
 			</File>
 			<File
 				RelativePath=".\calc\sequence.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\statements.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\statements.h"
 				>
 			</File>
 			<File

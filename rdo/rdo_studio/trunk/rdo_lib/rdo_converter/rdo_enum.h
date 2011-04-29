@@ -45,7 +45,7 @@ public:
 		return !operator==(pEnumType);
 	}
 
-	DECLARE_IType;
+	DECLARE_ITypeConverter;
 	DECLARE_IModelStructure;
 
 private:
