@@ -39,8 +39,6 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	//атрибуты законов
 	gexp=0;
 	gdisp=0;
-	gmax=0;
-	gmin=0;
 
 	//второе окно
 	inf=1000000; // бесконечноть
@@ -82,7 +80,15 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeCreateMJ::generate()
 {
-	studioApp.broadcastMessage(RDOThread::RT_PROCGUI_BLOCK_CREATE);
+	std::vector <double>  params;
+	params.push_back(static_cast<double>(gtype));
+	params.push_back(static_cast<double>(base_gen));
+	params.push_back(gfirst);
+	params.push_back(gamount);
+	params.push_back(gexp);
+	params.push_back(gdisp);
+
+	studioApp.broadcastMessage(RDOThread::RT_PROCGUI_BLOCK_CREATE,&params);
 
 	/*
 	RDOfiles->function <<"имя следующего блока - "<<id_next
