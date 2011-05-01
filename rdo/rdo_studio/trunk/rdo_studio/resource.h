@@ -95,7 +95,7 @@
 #define IDD_DIALOG_CREATE_1_MJ          254
 #define IDD_DIALOG_CREATE_2_MJ          255
 #define IDD_DIALOG_GEN_TYPE             256
-#define IDD_DIALOG_DECIDE_1				257
+#define IDD_DIALOG_DECIDE_1             257
 #define IDD_DIALOG_PROCESS_1_MJ         258
 #define IDD_DIALOG_PROCESS_2_MJ         259
 #define IDD_DIALOG_RESOURCE_DLG1        260
@@ -248,8 +248,8 @@
 #define IDC_FLOW_ROTATE_TL              1157
 #define IDC_FLOW_ROTATE_CENTER          1158
 #define IDC_FLOW_MOVE                   1159
-#define IDC_FLOW_DOCK_NOT				1160
-#define IDC_FLOW_TRASH					1161
+#define IDC_FLOW_DOCK_NOT               1160
+#define IDC_FLOW_TRASH                  1161
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_DOCK_PROJECT_BAR             32772
 #define ID_VIEW_WORKSPACE               32774

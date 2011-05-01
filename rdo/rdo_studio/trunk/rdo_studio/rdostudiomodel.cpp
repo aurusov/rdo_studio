@@ -466,10 +466,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 				plugins->pluginProc(rdoPlugin::PM_MODEL_BUILD_OK);
 			}
 			m_buildState = BS_COMPLETE;
-			PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
-			if(method && method->checkModelStructure())
+			PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+			if (pMethod && pMethod->checkModelStructure())
 			{
-				method->generate();
+				pMethod->generate();
 			}
 			break;
 		}
@@ -727,16 +727,14 @@ void RDOStudioModel::newModelFromRepository()
 {
 	if (m_pModelDocTemplate)
 	{
+		m_GUI_HAS_MODEL = true;
 
-			
-		PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
-		if(method)
+		PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+		if (pMethod)
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
-			method->makeFlowChart(rpMethod::project);
+			pMethod->makeFlowChart(rpMethod::project);
 		}
-
-		m_GUI_HAS_MODEL = true;
 
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))
@@ -829,13 +827,12 @@ void RDOStudioModel::openModelFromRepository()
 	{
 		m_GUI_HAS_MODEL = true;
 
-		PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
-		if(method)
+		PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+		if (pMethod)
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
-			method->makeFlowChart(rpMethod::project);
+			pMethod->makeFlowChart(rpMethod::project);
 		}
-
 
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))

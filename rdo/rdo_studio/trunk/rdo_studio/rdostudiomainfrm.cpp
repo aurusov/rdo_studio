@@ -8,14 +8,8 @@
 #include "rdo_studio/htmlhelp.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_process/rdoprocess_project.h"
-//#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
-//#include "rdo_studio/rdo_process/rdoprocess_docview.h"
-//#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
-//#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
-//#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
-//#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
-//#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -147,19 +141,14 @@ static UINT indicators[] = {
 
 bool RDOStudioMainFrame::close_mode = false;
 
-RDOStudioMainFrame::RDOStudioMainFrame():
-	CMDIFrameWnd(),
-	last_docked( NULL ),//рдо-процесс
-	update_timer( 0 )//,
-	//flowchartDocTemplate( NULL )
-{
-	//flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
-}
+RDOStudioMainFrame::RDOStudioMainFrame()
+	: CMDIFrameWnd (    )
+	, m_pLastDocked(NULL)
+	, m_updateTimer(0   )
+{}
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
-{
-	//if ( flowchartDocTemplate ) delete flowchartDocTemplate;
-}
+{}
 
 int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -262,15 +251,18 @@ void RDOStudioMainFrame::OnDestroy()
 	::OleUninitialize();
 	CMDIFrameWnd::OnDestroy();
 }
-//для рдо-процесс
-void RDOStudioMainFrame::insertToolBar( CToolBar* toolbar )
+
+void RDOStudioMainFrame::insertToolBar(PTR(CToolBar) pToolbar)
 {
-	if ( !last_docked ) {
-		DockControlBar( toolbar );
-	} else {
-		dockControlBarBesideOf( *toolbar, *last_docked );
+	if (!m_pLastDocked)
+	{
+		DockControlBar(pToolbar);
 	}
-	last_docked = toolbar;
+	else
+	{
+		dockControlBarBesideOf(*pToolbar, *m_pLastDocked);
+	}
+	m_pLastDocked = pToolbar;
 }
 
 BOOL RDOStudioMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -314,7 +306,7 @@ void RDOStudioMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& 
 	rect.OffsetRect( dx, dy );
 
 	DockControlBar( &bar, n, rect );
-	last_docked = &bar;//рдо-процесс
+	m_pLastDocked = &bar;//рдо-процесс
 }
 
 void RDOStudioMainFrame::OnViewFileToolbar() 
@@ -650,23 +642,25 @@ LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lPar
 
 void RDOStudioMainFrame::update_start()
 {
-	update_timer = SetTimer( update_timer_ID, 1000 / 30, NULL );
+	m_updateTimer = SetTimer(update_timer_ID, 1000 / 30, NULL);
 }
 
 void RDOStudioMainFrame::update_stop()
 {
-	if ( update_timer ) {
-		KillTimer( update_timer );
-		update_timer = 0;
+	if (m_updateTimer)
+	{
+		KillTimer(m_updateTimer);
+		m_updateTimer = 0;
 	}
 }
 
 void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 {
-	if ( nIDEvent == update_timer ) {
+	if (nIDEvent == m_updateTimer)
+	{
 		model->update();
 	}
-	CMDIFrameWnd::OnTimer( nIDEvent );
+	CMDIFrameWnd::OnTimer(nIDEvent);
 }
 
 void RDOStudioMainFrame::OnClose()

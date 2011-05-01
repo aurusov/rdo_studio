@@ -106,7 +106,6 @@ void RDORuntime::fireMessage(ruint message, PTR(void) param)
 void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
 {
 	m_pStudioThread = pStudioThread;
-	m_pStudioThread->sendMessage(m_pStudioThread, RDOThread::RT_CORBA_PARSER_GET_RTP_PAR_COUNT, NULL);
 }
 
 bool RDORuntime::endCondition()

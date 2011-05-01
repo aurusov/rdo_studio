@@ -192,16 +192,14 @@ public:
 	};
 
 	struct GetRTP: public std::vector<RTP>
-	{
-	};
+	{};
 	struct GetRSS: public std::vector<RSS>
-	{
-	};
+	{};
 
 private:
-	rdoParse::LPRDOParser        m_pParser;
-	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
-	rbool                        m_canTrace;
+	rdoParse::LPRDOParser           m_pParser;
+	PTR(rdoRuntime::RDORuntime)     m_pRuntime;
+	rbool                           m_canTrace;
 	LPProcGUIBlock                  m_pGUIBlock;
 	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
 	rdoSimulator::RDOExitCode       m_exitCode;
@@ -230,9 +228,9 @@ protected:
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	rbool parseModel    ();
-	void  runModel      ();
-	void  stopModel     ();
+	rbool parseModel();
+	void  runModel  ();
+	void  stopModel ();
 
 	typedef std::vector<RDOSyntaxError> SyntaxErrorList;
 	SyntaxErrorList getErrors();
@@ -297,8 +295,7 @@ public:
 			, m_pos_x (pos_x )
 			, m_pos_y (pos_y )
 			, m_result(result)
-		{
-		}
+		{}
 	};
 };
 

@@ -19,7 +19,6 @@
 #include "rdo_studio/rdostudiostatusbar.h"
 #include "rdo_studio/rdostudioframestyle.h"
 #include "rdo_kernel/rdokernel.h"
-//#include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOToolBar
@@ -66,15 +65,15 @@ private:
 	RDOToolBar          fileToolBar;
 	RDOToolBar          editToolBar;
 	RDOToolBar          zoomToolBar;
-	RDOToolBarModel		modelToolBar;
-	RDOStudioStatusBar	statusBar;
+	RDOToolBarModel     modelToolBar;
+	RDOStudioStatusBar  statusBar;
 
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 	
 	std::map< HWND, CWnd* > cmd_wnd;
 
-	UINT update_timer;
+	UINT m_updateTimer;
 
 	// Используется при закрытии модели. Задается вопрос.
 	static bool close_mode;
@@ -83,10 +82,9 @@ public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
 
-	RDOStudioWorkspace	workspace;
-	RDOStudioOutput		output;
-	CControlBar*		last_docked;
-	//CMultiDocTemplate*	flowchartDocTemplate;
+	RDOStudioWorkspace workspace;
+	RDOStudioOutput    output;
+	PTR(CControlBar)   m_pLastDocked;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
@@ -98,7 +96,7 @@ public:
 	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
 
-	void insertToolBar( CToolBar* toolbar );//рдо_проджект
+	void insertToolBar(PTR(CToolBar) pToolbar);
 
 	void showWorkspace();
 	void showOutput();
