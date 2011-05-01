@@ -25,9 +25,7 @@ public:
 	virtual rp::string getClassName() const { return "RPShapeProcessMJ"; }
 
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
-	virtual void list_name();
 	virtual void generate();
-	void define_rule();
 
 		//переменные для генерации
 	CString gname; // имя

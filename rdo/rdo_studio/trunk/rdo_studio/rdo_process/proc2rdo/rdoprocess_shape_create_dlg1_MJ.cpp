@@ -1,9 +1,7 @@
 // rdoprocess_shape_create_dlg1_MJ.cpp : implementation file
 //
 
-#include "stdafx.h"
-
-
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 //#include "rdo_process.h"
 #include "rdoprocess_shape_create_dlg1_MJ.h"
 #include "rdoprocess_shape_create_dlg2_MJ.h"
@@ -27,8 +25,6 @@ RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeCreate
 	m_dlgamount = 0;
 	m_dlgexp = 0.0;
 	m_dlgdisp = 0.0;
-	m_dlgmin = 0.0;
-	m_dlgmax = 0.0;
 	m_dlgbase_gen = 0;
 	//}}AFX_DATA_INIT
     pParentMJ = ppParent;
@@ -39,8 +35,6 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RPShapeCreateDlg1_MJ)
-	DDX_Control(pDX, IDC_EDIT7, m_create_dlg1_max_control_MJ);
-	DDX_Control(pDX, IDC_EDIT6, m_create_dlg1_min_control_MJ);
 	DDX_Control(pDX, IDC_EDIT5, m_create_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT4, m_create_dlg1_exp_control_MJ);
 	DDX_Control(pDX, IDC_COMBO1, m_create_dlg1_combo1_MJ);
@@ -49,8 +43,6 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT3, m_dlgamount);
 	DDX_Text(pDX, IDC_EDIT4, m_dlgexp);
 	DDX_Text(pDX, IDC_EDIT5, m_dlgdisp);
-	DDX_Text(pDX, IDC_EDIT6, m_dlgmin);
-	DDX_Text(pDX, IDC_EDIT7, m_dlgmax);
 	DDX_Text(pDX, IDC_EDIT8, m_dlgbase_gen);
 	DDV_MinMaxInt(pDX, m_dlgbase_gen, -2147483647, 2147483647);
 	//}}AFX_DATA_MAP
@@ -80,8 +72,6 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 	//атрибуты законов
 	m_dlgexp=pParentMJ->gexp;
 	m_dlgdisp=pParentMJ->gdisp;
-	m_dlgmax=pParentMJ->gmax;
-	m_dlgmin=pParentMJ->gmin;
 
 	//второе окно
 	pParentMJ->inf; // бесконечноть
@@ -118,30 +108,20 @@ UpdateData(TRUE);
 case 0: // константа
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_min_control_MJ.EnableWindow(FALSE);
-					break;	
+	break;	
 case 1: // нормальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_min_control_MJ.EnableWindow(FALSE);
-					break;
+	break;
 case 2: // равномерный закон
-	m_create_dlg1_exp_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_max_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_min_control_MJ.EnableWindow(TRUE);
-					break;
+	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	break;
 case 3: // экспоненциальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_min_control_MJ.EnableWindow(FALSE);
-					break;
-
+	break;
 	}
-
 	UpdateData(FALSE);	
 }
 
@@ -168,7 +148,5 @@ UpdateData(TRUE);
 	//атрибуты законов
 	pParentMJ->gexp=m_dlgexp;
 	pParentMJ->gdisp=m_dlgdisp;
-	pParentMJ->gmax=m_dlgmax;
-	pParentMJ->gmin=m_dlgmin;
 
 }

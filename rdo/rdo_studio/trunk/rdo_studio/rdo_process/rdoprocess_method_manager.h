@@ -40,15 +40,22 @@ public:
 // ----------------------------------------------------------------------------
 class RPMethodManager
 {
+public:
+#ifdef RDO_METHOD_DLL
+	typedef std::vector<PTR(RPMethodPlugin)>     MethodList;
+#else
+	typedef std::vector<PTR(rpMethod::RPMethod)> MethodList;
+#endif
+
 protected:
 #ifdef RDO_METHOD_DLL
-	std::vector< RPMethodPlugin* > methods;
 	void enumPlugins( const std::string& mask );
 #else
-	std::vector< rpMethod::RPMethod* > methods;
 	void insertMethod( rpMethod::RPMethod* method );
 #endif
-	std::list< CImageList* > im_lists;
+
+	MethodList                 methods;
+	std::list<PTR(CImageList)> im_lists;
 
 public:
 	RPMethodManager();
@@ -63,9 +70,9 @@ public:
 		}
 		return NULL;
 	}
-	const std::vector< RPMethodPlugin* >& getList() const { return methods; }
+	CREF(MethodList) getList() const { return methods; }
 #else
-	const std::vector< rpMethod::RPMethod* >& getList() const { return methods; }
+	CREF(MethodList) getList() const { return methods; }
 #endif
 
 	void init();

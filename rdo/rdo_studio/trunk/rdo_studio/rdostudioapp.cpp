@@ -170,12 +170,11 @@ RDOStudioApp::RDOStudioApp():
 	setlocale( LC_NUMERIC, "eng" );
 
 	log.open( "log.txt" );
-
+#ifdef PROCGUI_ENABLE
 	new RPProjectMFC();
-	log << "new factory.." << std::endl;
 	new RPObjectFactory();
 	rpMethod::factory->registerDefaultObject();
-	log << "new factory..ok" << std::endl;
+#endif
 }
 
 BOOL RDOStudioApp::InitInstance()
@@ -229,7 +228,7 @@ BOOL RDOStudioApp::InitInstance()
 
 	tracer = new rdoTracer::RDOTracer();
 	AddDocTemplate( tracer->createDocTemplate() );
-	
+#ifdef PROCGUI_ENABLE
 	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
 	rpMethod::project->cursors[ RPProject::cursor_flow_move ]          = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);
 	rpMethod::project->cursors[ RPProject::cursor_flow_connector ]     = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
@@ -249,7 +248,7 @@ BOOL RDOStudioApp::InitInstance()
 	rpMethod::project->cursors[ RPProject::cursor_flow_dock_fly ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
 	rpMethod::project->cursors[ RPProject::cursor_flow_dock_not ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_NOT);
 	rpMethod::project->cursors[ RPProject::cursor_flow_trash ]         = AfxGetApp()->LoadCursor(IDC_FLOW_TRASH);
-
+#endif
 	// Внутри создается объект модели
 	mainFrame = new RDOStudioMainFrame;
 	m_pMainWnd = mainFrame;
@@ -270,11 +269,10 @@ BOOL RDOStudioApp::InitInstance()
 
 	mainFrame->ShowWindow( m_nCmdShow );
 	mainFrame->UpdateWindow();
-	
+#ifdef PROCGUI_ENABLE
 	methods.init();
 	mainFrame->workspace.pagectrl->selectFirst();
-	log << "RDOStudioApp::InitInstance().. ok" << std::endl;
-
+#endif
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );
 
@@ -366,24 +364,19 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
-	log << "methods.close().." << std::endl;
+#ifdef PROCGUI_ENABLE
 	methods.close();
-	log << "methods.close().. ok" << std::endl;
 
-	log << "delete factory.. " << std::endl;
 	if ( rpMethod::factory ) {
 		delete rpMethod::factory;
 		rpMethod::factory = NULL;
 	}
-	log << "delete factory.. ok" << std::endl;
 
-	log << "delete project.." << std::endl;
 	if ( rpMethod::project ) {
 		delete rpMethod::project;
 		rpMethod::project = NULL;
 	}
-	log << "delete project.. ok" << std::endl;
-
+#endif
 	if ( exitCode != rdoSimulator::EC_ModelNotFound ) {
 		exitCode = model->getExitCode();
 	}

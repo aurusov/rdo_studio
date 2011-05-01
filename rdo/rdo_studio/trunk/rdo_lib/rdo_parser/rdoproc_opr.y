@@ -327,7 +327,6 @@ dpt_process_line
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
-		int time = pArithm->createCalc()->calcValue(RUNTIME).getInt();
 		tstring rtp_name       = _T("Транзакты");
 		tstring rtp_param_name = _T("Время_создания");
 

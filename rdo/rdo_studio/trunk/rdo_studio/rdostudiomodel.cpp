@@ -13,7 +13,6 @@
 #include <limits>
 // ====================================================================== SYNOPSIS
 #include "rdo_studio/rdostudiomodel.h"
-#include "rdo_studio/rdostudioapp.h"
 #include "rdo_studio/rdostudiothread.h"
 #include "rdo_studio/rdostudiomainfrm.h"
 #include "rdo_studio/rdostudiochildfrm.h"
@@ -33,8 +32,6 @@
 #include "rdo_common/rdoanimation.h"
 #include "rdo_plugin/rdoplugin.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
-#include "rdo_studio/rdo_process/rdoprocess_project.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
 // ===============================================================================
 
 using namespace rdoEditor;
@@ -54,9 +51,10 @@ PTR(RDOStudioModel) model = NULL;
 RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.studioGUI))
 	, m_pModelDocTemplate(NULL                          )
+	, m_pFlowchartDocTemplate( NULL                     )
 	, m_useTemplate      (-1                            )
 	, m_autoDeleteDoc    (true                          )
-	, m_showCanNotCloseModelMessage(true               )
+	, m_showCanNotCloseModelMessage(true                )
 	, m_GUI_HAS_MODEL    (false                         )
 	, m_GUI_CAN_RUN      (true                          )
 	, m_GUI_IS_RUNING    (false                         )
@@ -78,11 +76,16 @@ RDOStudioModel::RDOStudioModel()
 	, m_runtimeModePrev  (rdoRuntime::RTM_MaxSpeed      )
 	, m_exitCode         (rdoSimulator::EC_ModelNotFound)
 	, m_prevModify       (false                         )
+	, m_buildState       (BS_UNDEFINED                  )
 {
 	m_pModelDocTemplate = new CMultiDocTemplate(IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView));
 	AfxGetApp()->AddDocTemplate(m_pModelDocTemplate);
-	flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
-	AfxGetApp()->AddDocTemplate( flowchartDocTemplate );
+
+#ifdef PROCGUI_ENABLE
+	m_pFlowchartDocTemplate = new CMultiDocTemplate(IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView));
+	AfxGetApp()->AddDocTemplate(m_pFlowchartDocTemplate);
+#endif
+
 	model = this;
 
 	ModelTemplate modelTemplate;
@@ -462,6 +465,12 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			{
 				plugins->pluginProc(rdoPlugin::PM_MODEL_BUILD_OK);
 			}
+			m_buildState = BS_COMPLETE;
+			PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
+			if(method && method->checkModelStructure())
+			{
+				method->generate();
+			}
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR:
@@ -497,12 +506,14 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 
 			m_GUI_CAN_RUN = true;
+			m_buildState  = BS_ERROR;
 			studioApp.autoCloseByModel();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY:
 		{
 			m_smrEmptyError = true;
+			m_buildState    = BS_ERROR;
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
@@ -661,7 +672,7 @@ rbool RDOStudioModel::closeModel() const
 	}
 }
 
-rbool RDOStudioModel::buildModel() const
+rbool RDOStudioModel::buildModel()
 {
 	if (!plugins->canAction(rdoPlugin::maBuild))
 		return false;
@@ -675,26 +686,26 @@ rbool RDOStudioModel::buildModel() const
 		output->showBuild();
 		output->appendStringToBuild(rdo::format(IDS_MODEL_BUILDING_BEGIN));
 		const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->UpdateWindow();
+		m_buildState = BS_UNDEFINED;
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
-		return true;
+		return m_buildState == BS_COMPLETE;
 	}
 	return false;
 }
 
 rbool RDOStudioModel::runModel()
 {
-	if (!plugins->canAction(rdoPlugin::maRun))
-		return false;
-
-	if (hasModel() && !isRunning() && saveModel())
+	if (buildModel())
 	{
+		if (!plugins->canAction(rdoPlugin::maRun))
+			return false;
+
 		m_GUI_CAN_RUN = false;
 		PTR(RDOStudioOutput) output = &studioApp.mainFrame->output;
 		output->clearBuild();
 		output->clearDebug();
 		output->clearResults();
 		output->showBuild();
-		output->appendStringToBuild(rdo::format(IDS_MODEL_BUILDING_BEGIN));
 		const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->UpdateWindow();
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 		return true;
@@ -717,16 +728,13 @@ void RDOStudioModel::newModelFromRepository()
 	if (m_pModelDocTemplate)
 	{
 
-		rpMethod::project->log() << "начали делать flowchart" << std::endl;
-		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
-		while ( it != studioApp.getMethodManager().getList().end() ) {
-			rpMethod::RPMethod* method = *it;
-			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
-				method->makeFlowChart(rpMethod::project);
-			}
-			it++;
+			
+		PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
+		if(method)
+		{
+			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
+			method->makeFlowChart(rpMethod::project);
 		}
-		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 
 		m_GUI_HAS_MODEL = true;
 
@@ -821,16 +829,13 @@ void RDOStudioModel::openModelFromRepository()
 	{
 		m_GUI_HAS_MODEL = true;
 
-		rpMethod::project->log() << "начали делать flowchart" << std::endl;
-		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
-		while ( it != studioApp.getMethodManager().getList().end() ) {
-			rpMethod::RPMethod* method = *it;
-			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
-				method->makeFlowChart(rpMethod::project);
-			}
-			it++;
+		PTR(RPMethodProc2RDO_MJ) method = getProc2rdo();
+		if(method)
+		{
+			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
+			method->makeFlowChart(rpMethod::project);
 		}
-		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
+
 
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))

@@ -6,6 +6,7 @@
 #include "rdoprocess_shape_terminate_MJ.h"
 #include "rdoprocess_shape_terminate_dlg1_MJ.h"
 #include "rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdostudioapp.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -20,6 +21,9 @@ static char THIS_FILE[]=__FILE__;
 RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
 	RPShape_MJ( _parent, _T("Terminate") )
 {
+	m_time=100;
+	m_term_counter=1;
+
 	// инициализация типа блока 
 	type ="block";
 		
@@ -50,62 +54,9 @@ void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeTerminateMJ::generate()
 {
-
-	//заполняем лист названиями паттернов для *.opr
-		CString name_value1("Блок_удаления_");
-		CString name_value2(getName().c_str());
-		CString name_value(name_value1 + name_value2);
-		proc2rdo->list_pattern_names.push_back(name_value);
-
-
-
-	/*
-	RDOfiles->pattern <<std::endl<<std::endl<<"имя следующего блока - "<<id_next
-	<<std::endl<<"имя - "<<getName().c_str();
-*/
-
-// ГЕНЕРАЦИЯ ресурсов РДО ФАЙЛ *.res
-
-	RPCreationRDOFilesMJ* RDOfiles = proc2rdo->RDOfiles;
-	RDOfiles->resourse<<std::endl<<std::endl<<"{-------блок process ------" <<getName().c_str()<<"-------------------}" <<std::endl
-
-	<<"Block_Del_"<<getName().c_str()<<" : Block_Del 0";
-
-
-
-
-
-
-// ГЕНЕРАЦИЯ паттерное РДО ФАЙЛ *.pat
-
-
-RDOfiles->pattern <<std::endl
-<<std::endl<<"{-------блок удаления------------"<<getName().c_str()<<"---------------------------------}"
-<<std::endl
-<<std::endl
-<<std::endl<<"$Pattern Блок_удаления_"<<getName().c_str()<<" : rule  {срабатывание закона}trace"
-<<std::endl<<"	$Relevant_resources"
-<<std::endl
-<<std::endl<<"		_transact_X : Group_of_transacts_X Erase"
-<<std::endl<<"		_block : Block_Del_"<<getName().c_str()<<" Keep"
-<<std::endl<<"			{перечислить все группы транзактов которые создаются - ВРУЧЕУЮ ПОЛЬЗОВАТЕЛЕМ}"
-<<std::endl
-<<std::endl
-<<std::endl
-<<std::endl<<"$Body"
-<<std::endl 
-<<std::endl<<"  _transact_X"
-<<std::endl<<"		 Choice from _transact_X.Состояние_транспортировки = ожидает and"
-<<std::endl<<"		_transact_X.Место_нахождения = "<<getName().c_str()
-<<std::endl<<"			first"
-<<std::endl	 
-<<std::endl
-<<std::endl<<"	_block"
-<<std::endl<<"		  Choice from 1=1"
-<<std::endl<<"			first"
-<<std::endl<<"		Convert_rule	"
-<<std::endl<<"		 Колличество_удаленных set _block.Колличество_удаленных + 1"
-<<std::endl	 
-<<std::endl<<"$End";
-
+	std::vector <double>  params;
+	params.push_back(static_cast<double>(m_term_state));
+	params.push_back(m_time);
+	params.push_back(m_term_counter);
+	studioApp.broadcastMessage(RDOThread::RT_PROCGUI_BLOCK_TERMINATE,&params);
 }

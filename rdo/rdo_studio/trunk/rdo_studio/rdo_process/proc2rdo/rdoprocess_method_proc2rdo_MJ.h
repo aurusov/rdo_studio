@@ -14,15 +14,11 @@ class RPMethodProc2RDO_MJ: public rpMethod::RPMethod, public RPObject_MJ
 {
 private:
 	virtual ~RPMethodProc2RDO_MJ();
-	tstring getDirectory() const;
-	tstring getName() const;
 
 protected:
 	void registerObject();
 
 	CToolBar toolbar;
-	void blank_rdo_MJ();
-	
 	int btn_generate;
 	int btn_generate_setup;
 	virtual void buttonCommand( int button_id );
@@ -31,17 +27,17 @@ protected:
 public:
 	RPMethodProc2RDO_MJ( RPObject* _parent );
 	static rpMethod::RPMethod* registerMethod();
+	bool checkModelStructure();
 	virtual rp::string getVersionDesc() const { return "альфа"; }
 	virtual rp::string getDescription() const { return "Переводит квадратики в паттерны"; }
 	virtual rp::string getClassName() const { return "RPMethodProc2RDO_MJ"; }
-
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
-
+	virtual void generate();
 	double generate_time_MJ;
 	RPCreationRDOFilesMJ* RDOfiles;
 	std::list< CString > list_pattern_names; // MJ 7.04.06 хранятся имена всех паттернов для записи в файл *.opr generate() заполняет его
 
-	virtual void generate();
+	
 };
 
 extern RPMethodProc2RDO_MJ* proc2rdo;

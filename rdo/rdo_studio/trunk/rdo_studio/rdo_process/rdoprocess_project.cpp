@@ -114,8 +114,8 @@ void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
 	BOOL maximized = false;
 	studioApp.mainFrame->MDIGetActive( &maximized );
-	RPDoc* doc = static_cast<RPDoc*>(model->flowchartDocTemplate->OpenDocumentFile( NULL ));
-	RPChildFrame* mdi = static_cast<RPChildFrame*>(doc->getView()->GetParent());
+	PTR(RPDoc) doc = model->getFlowchartDoc();
+	PTR(RPChildFrame) mdi = static_cast<PTR(RPChildFrame)>(doc->getView()->GetParent());
 	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
 	if ( maximized ) {
 		mdi->ShowWindow( SW_HIDE );

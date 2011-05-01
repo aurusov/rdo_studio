@@ -43,6 +43,7 @@ public:
 	virtual void buttonCommand( int button_id ) {};
 	virtual void buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update ) {};
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent ) = 0;
+	virtual void generate() = 0;
 
 	RPPixmap* getPixmap( PMSize size = pm_small ) const {
 		switch ( size ) {

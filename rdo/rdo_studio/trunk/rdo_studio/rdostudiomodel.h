@@ -24,6 +24,9 @@
 #include "rdo_studio/rdostudioplugins.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_kernel/rdothread.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdostudioapp.h"
 // ===============================================================================
 
 // ----------------------------------------------------------------------------
@@ -43,7 +46,15 @@ friend class RDOThreadStudioGUI;
 friend class RDOStudioPlugins;
 
 private:
+	enum BuildState
+	{
+		BS_UNDEFINED,
+		BS_COMPLETE,
+		BS_ERROR
+	};
+
 	PTR(CMultiDocTemplate)    m_pModelDocTemplate;
+	PTR(CMultiDocTemplate)    m_pFlowchartDocTemplate;
 	RDOStudioFrameManager     m_frameManager;
 
 	int                       m_useTemplate;
@@ -61,6 +72,7 @@ private:
 	rbool                     m_GUI_ACTION_RUN;
 
 	SYSTEMTIME                m_timeStart;
+	BuildState                m_buildState;
 
 	mutable rbool             m_openError;
 	mutable rbool             m_smrEmptyError;
@@ -83,6 +95,24 @@ private:
 	void  closeModelFromRepository();
 	rbool canCloseModel           ();
 	void  afterModelStart         ();
+
+	PTR(RPMethodProc2RDO_MJ) getProc2rdo() const
+	{
+		RPMethodManager::MethodList::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while (it != studioApp.getMethodManager().getList().end())
+		{
+			PTR(rpMethod::RPMethod) pMethod = *it;
+			ASSERT(pMethod);
+			if (pMethod->getClassName() == _T("RPMethodProc2RDO_MJ"))
+			{
+				PTR(RPMethodProc2RDO_MJ) pProc2RDO = dynamic_cast<PTR(RPMethodProc2RDO_MJ)>(pMethod);
+				ASSERT(pProc2RDO);
+				return pProc2RDO;
+			}
+			it++;
+		}
+		return NULL;
+	}
 
 	PTR(RDOStudioModelDoc) getModelDoc() const
 	{
@@ -118,7 +148,6 @@ protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
 
 public:
-	CMultiDocTemplate* flowchartDocTemplate;
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
@@ -127,12 +156,18 @@ public:
 	rbool saveModel     () const;
 	void  saveAsModel   () const;
 	rbool closeModel    () const;
-	rbool buildModel    () const;
+	rbool buildModel    ();
 	rbool runModel      ();
 	rbool stopModel     () const;
 	void  update        ();
 	void  setGUIPause   ();
 	void  setGUIContinue();
+
+	PTR(RPDoc) getFlowchartDoc() const
+	{
+		POSITION pos = m_pFlowchartDocTemplate->GetFirstDocPosition();
+		return pos ? static_cast<PTR(RPDoc)>(m_pFlowchartDocTemplate->GetNextDoc(pos)) : NULL;
+	}
 
 	tstring getName() const
 	{
