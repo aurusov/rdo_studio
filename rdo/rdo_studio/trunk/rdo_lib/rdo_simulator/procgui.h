@@ -24,7 +24,7 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 OBJECT(ProcGUIBlock)
 {
 public:
-	ProcGUIBlock(PTR(rdoParse::RDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime);
+	ProcGUIBlock(CREF(rdoParse::LPRDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime);
 	virtual ~ProcGUIBlock();
 
 	void Create   (std::vector <double>  pParams);
@@ -33,7 +33,7 @@ public:
 	void Advance  (std::vector <double>  pParams);
 
 private:
-	PTR(rdoParse::RDOParser)     m_pParser;
+	rdoParse::LPRDOParser        m_pParser;
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	LPILogic                     m_pProcess;
 

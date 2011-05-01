@@ -19,7 +19,7 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 // --------------------------------------------------------------------
 // ---------- ProcGUIBlock
 // --------------------------------------------------------------------
-ProcGUIBlock::ProcGUIBlock(PTR(rdoParse::RDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime)	
+ProcGUIBlock::ProcGUIBlock(CREF(rdoParse::LPRDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime)
 	: m_pParser (pParser )
 	, m_pRuntime(pRuntime)
 {
