@@ -54,12 +54,12 @@ void ProcGUIBlock::Create(std::vector <double>  pParams)
 		{
 			m_pParser->error().error(rdoParse::RDOParserSrcInfo(), rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 		}
-		rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+		rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 	}
 	else
 	{
 		CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
-		rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+		rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 	}
 
 	//! GENERATE
