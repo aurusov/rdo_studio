@@ -11,7 +11,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioWorkspace
 // ----------------------------------------------------------------------------
@@ -46,11 +45,16 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	frames = new RDOStudioFrameTreeCtrl;
 	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
+	pagectrl = new RPPageCtrl;
+	pagectrl->Create( "", "", 0 , CRect(0, 0, 0, 0), &tab, 0);
+	
 	tab.insertItem( trace, rdo::format( IDS_TAB_TRACER ).c_str() );
 	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );
+	tab.insertItem( pagectrl, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
 
 	studioApp.mainFrame->registerCmdWnd( trace );
 	studioApp.mainFrame->registerCmdWnd( frames );
+	studioApp.mainFrame->registerCmdWnd( pagectrl );
 
 	return 0;
 }

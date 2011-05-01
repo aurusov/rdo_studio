@@ -19,6 +19,8 @@
 #include "rdo_studio/rdostudioframemanager.h"
 #include "rdo_studio/rdostudiomodeldoc.h"
 #include "rdo_studio/rdostudiomodelview.h"
+#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
+#include "rdo_studio/rdo_process/rdoprocess_docview.h"
 #include "rdo_studio/rdostudioplugins.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_kernel/rdothread.h"
@@ -116,6 +118,7 @@ protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
 
 public:
+	CMultiDocTemplate* flowchartDocTemplate;
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 

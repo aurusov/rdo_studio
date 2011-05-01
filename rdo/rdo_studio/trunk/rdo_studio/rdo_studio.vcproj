@@ -4434,6 +4434,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\flowchart_default.bmp"
+				>
+			</File>
+			<File
 				RelativePath="res\frameoptionsctrl.bmp"
 				>
 			</File>
@@ -4451,6 +4455,18 @@
 			</File>
 			<File
 				RelativePath="res\modeToolbar.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pagectrl_close.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pagectrl_close_over.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pagectrl_page.bmp"
 				>
 			</File>
 			<File
@@ -4547,6 +4563,10 @@
 			</File>
 			<File
 				RelativePath=".\res\version.h"
+				>
+			</File>
+			<File
+				RelativePath=".\res\trash.bmp"
 				>
 			</File>
 			<File
@@ -6677,6 +6697,66 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="8. RDO-Process"
+			>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_childfrm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_childfrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_dockwnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_dockwnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_docview.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_docview.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_method_manager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_method_manager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_pagectrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_pagectrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_project.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_project.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_toolbar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_process\rdoprocess_toolbar.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\Changes.txt"

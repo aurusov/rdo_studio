@@ -42,15 +42,15 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOTabCtrl::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	RDOEditorEdit* page1  = new RDOEditorEdit( view );
-	RDOEditorEdit* page2  = new RDOEditorEdit( view );
-	RDOEditorEdit* page3  = new RDOEditorEdit( view );
-	RDOEditorEdit* page4  = new RDOEditorEdit( view );
-	RDOEditorEdit* page5  = new RDOEditorEdit( view );
-	RDOEditorEdit* page6  = new RDOEditorEdit( view );
-	RDOEditorEdit* page7  = new RDOEditorEdit( view );
-	RDOEditorEdit* page8  = new RDOEditorEdit( view );
-	RDOEditorEdit* page9  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage1  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage2  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage3  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage4  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage5  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage6  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage7  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage8  = new RDOEditorEdit( view );
+	PTR(RDOEditorEdit) pPage9  = new RDOEditorEdit( view );
 	RDOEditorEdit* page10 = new RDOEditorEdit( view );
 
 	page1->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
@@ -138,7 +138,7 @@ rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) co
 		case  7: return rdoModelObjects::FUN;
 		case  8: return rdoModelObjects::SMR;
 		case  9: return rdoModelObjects::PMD;
-		default: return rdoModelObjects::PAT;
+		default: NEVER_REACH_HERE;
 	}
 }
 
@@ -157,6 +157,7 @@ int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) con
 		case rdoModelObjects::SMR: return 8;
 		case rdoModelObjects::PMD: return 9;
 	}
+	NEVER_REACH_HERE;
 	return -1;
 }
 

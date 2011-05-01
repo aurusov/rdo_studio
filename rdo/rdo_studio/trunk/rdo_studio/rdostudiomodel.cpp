@@ -33,6 +33,8 @@
 #include "rdo_common/rdoanimation.h"
 #include "rdo_plugin/rdoplugin.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
 // ===============================================================================
 
 using namespace rdoEditor;
@@ -79,7 +81,8 @@ RDOStudioModel::RDOStudioModel()
 {
 	m_pModelDocTemplate = new CMultiDocTemplate(IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView));
 	AfxGetApp()->AddDocTemplate(m_pModelDocTemplate);
-
+	flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
+	AfxGetApp()->AddDocTemplate( flowchartDocTemplate );
 	model = this;
 
 	ModelTemplate modelTemplate;
@@ -714,6 +717,17 @@ void RDOStudioModel::newModelFromRepository()
 	if (m_pModelDocTemplate)
 	{
 
+		rpMethod::project->log() << "начали делать flowchart" << std::endl;
+		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while ( it != studioApp.getMethodManager().getList().end() ) {
+			rpMethod::RPMethod* method = *it;
+			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
+				method->makeFlowChart(rpMethod::project);
+			}
+			it++;
+		}
+		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
+
 		m_GUI_HAS_MODEL = true;
 
 		BOOL maximize = false;
@@ -806,6 +820,17 @@ void RDOStudioModel::openModelFromRepository()
 	if (m_pModelDocTemplate)
 	{
 		m_GUI_HAS_MODEL = true;
+
+		rpMethod::project->log() << "начали делать flowchart" << std::endl;
+		std::vector< rpMethod::RPMethod* >::const_iterator it = studioApp.getMethodManager().getList().begin();
+		while ( it != studioApp.getMethodManager().getList().end() ) {
+			rpMethod::RPMethod* method = *it;
+			if(method->getClassName()==_T("RPMethodProc2RDO_MJ")){
+				method->makeFlowChart(rpMethod::project);
+			}
+			it++;
+		}
+		rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 
 		BOOL maximize = false;
 		if (!studioApp.mainFrame->MDIGetActive(&maximize))
