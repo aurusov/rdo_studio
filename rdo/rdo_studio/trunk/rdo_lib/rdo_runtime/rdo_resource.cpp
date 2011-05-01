@@ -58,7 +58,7 @@ RDOResource::RDOResource( const RDOResource& copy ):
 
 RDOResource::~RDOResource()
 {
-	getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());//зачем сообщает о своем удалении?
+	getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
 	getRuntime()->onResourceErase(this);
 }
 

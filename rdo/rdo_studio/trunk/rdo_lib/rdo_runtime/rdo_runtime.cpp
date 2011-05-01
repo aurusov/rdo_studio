@@ -91,7 +91,7 @@ void RDORuntime::disconnect(PTR(INotify) to, ruint message)
 	}
 }
 
-void RDORuntime::fireMessage(ruint message, PTR(void) param)//как работает?
+void RDORuntime::fireMessage(ruint message, PTR(void) param)
 {
 	Connected::iterator it = m_connected.find(message);
 	while (it != m_connected.end())

@@ -545,12 +545,8 @@
 					/>
 				</FileConfiguration>
 			</File>
-		</File>
-		<File
-			RelativePath="rdothread.cpp"
-			>
-			<FileConfiguration
-				Name="Release|Win32"
+			<File
+				RelativePath="rdokernel.h"
 				>
 			</File>
 		</Filter>
