@@ -9,7 +9,9 @@
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
 #include "rdo_lib/rdo_runtime/rdodptrtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/relres.h"
 #include "rdo_common/rdodebug.h"
+#include "rdo_kernel/rdothread.h"
 
 #pragma warning(disable : 4786)  
 
@@ -29,6 +31,7 @@ RDORuntime::RDORuntime()
 	, key_found           (false              )
 	, m_currentTerm       (0                  )
 	, m_funBreakFlag      (FBF_CONTINUE       )
+	, m_pStudioThread     (NULL               )
 {
 	m_parent         = NULL;
 	detach();
@@ -98,6 +101,11 @@ void RDORuntime::fireMessage(ruint message, PTR(void) param)
 		it->second->notify(message, param);
 		it++;
 	}
+}
+
+void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
+{
+	m_pStudioThread = pStudioThread;
 }
 
 bool RDORuntime::endCondition()
@@ -219,7 +227,7 @@ void RDORuntime::showResources( int node ) const
 }
 #endif
 
-void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc)
+void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {

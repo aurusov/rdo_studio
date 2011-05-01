@@ -28,6 +28,7 @@
 #include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
+#include "rdo_lib/rdo_simulator/procgui.h"
 // ===============================================================================
 
 //#define DISABLE_CORBA
@@ -191,19 +192,17 @@ public:
 	};
 
 	struct GetRTP: public std::vector<RTP>
-	{
-	};
+	{};
 	struct GetRSS: public std::vector<RSS>
-	{
-	};
+	{};
 
 private:
-	rdoParse::LPRDOParser        m_pParser;
-	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
-	rbool                        m_canTrace;
-
-	rdoRuntime::LPRDOThreadRunTime m_pThreadRuntime;
-	rdoSimulator::RDOExitCode      m_exitCode;
+	rdoParse::LPRDOParser           m_pParser;
+	PTR(rdoRuntime::RDORuntime)     m_pRuntime;
+	rbool                           m_canTrace;
+	LPProcGUIBlock                  m_pGUIBlock;
+	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
+	rdoSimulator::RDOExitCode       m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 
@@ -296,8 +295,7 @@ public:
 			, m_pos_x (pos_x )
 			, m_pos_y (pos_y )
 			, m_result(result)
-		{
-		}
+		{}
 	};
 };
 

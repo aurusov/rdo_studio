@@ -855,6 +855,9 @@ RDOThreadSimulator::RDOThreadSimulator()
 	notifies.push_back(RT_CODECOMP_GET_DATA               );
 	notifies.push_back(RT_CORBA_PARSER_GET_RTP            );
 	notifies.push_back(RT_CORBA_PARSER_GET_RSS            );
+	notifies.push_back(RT_PROCGUI_BLOCK_CREATE            );
+	notifies.push_back(RT_PROCGUI_BLOCK_TERMINATE         );
+	notifies.push_back(RT_PROCGUI_BLOCK_PROCESS           );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
 	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
 	after_constructor();
@@ -918,6 +921,31 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		case RT_CODECOMP_GET_DATA:
 		{
 			codeCompletion();
+			break;
+		}
+		case RT_PROCGUI_BLOCK_CREATE:
+		{
+			m_pGUIBlock = rdo::Factory<ProcGUIBlock>::create(m_pParser, m_pRuntime);
+			ASSERT(m_pGUIBlock);
+			msg.lock();
+			m_pGUIBlock->Create(*static_cast<PTR(std::vector<double>)>(msg.param));
+			msg.unlock();
+			break;
+		}
+		case RT_PROCGUI_BLOCK_PROCESS:
+		{
+			ASSERT(m_pGUIBlock);
+			msg.lock();
+			m_pGUIBlock->Process(*static_cast<PTR(std::vector<double>)>(msg.param));
+			msg.unlock();
+			break;
+		}
+		case RT_PROCGUI_BLOCK_TERMINATE:
+		{
+			ASSERT(m_pGUIBlock);
+			msg.lock();
+			m_pGUIBlock->Terminate(*static_cast<PTR(std::vector<double>)>(msg.param));
+			msg.unlock();
 			break;
 		}
 		
@@ -1058,12 +1086,13 @@ rbool RDOThreadSimulator::parseModel()
 
 void RDOThreadSimulator::runModel()
 {
-	if (parseModel())
-	{
-		m_pParser->error().clear();
-		m_exitCode = rdoSimulator::EC_OK;
-		m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
-	}
+	ASSERT(m_pParser );
+	ASSERT(m_pRuntime);
+
+	m_pParser->error().clear();
+	m_exitCode = rdoSimulator::EC_OK;
+	m_pRuntime->setStudioThread(kernel->studio());
+	m_pThreadRuntime = rdo::Factory<rdoRuntime::RDOThreadRunTime>::create();
 }
 
 void RDOThreadSimulator::stopModel()

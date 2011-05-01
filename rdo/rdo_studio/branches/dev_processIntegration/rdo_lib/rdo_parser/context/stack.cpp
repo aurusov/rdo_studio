@@ -34,6 +34,7 @@ void ContextStack::push(LPContext pContext)
 
 void ContextStack::pop()
 {
+	ASSERT(!m_container.empty());
 	m_container.pop_back();
 }
 

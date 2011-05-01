@@ -570,7 +570,7 @@ void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserS
 	}
 	if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Erase)
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcEraseRes>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
 		static_cast<PTR(rdoRuntime::RDOPatternEvent)>(getPatRuntime())->addEraseCalc(pCalc);
@@ -677,7 +677,7 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	}
 	if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Erase)
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcEraseRes>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
 		static_cast<PTR(rdoRuntime::RDOPatternRule)>(getPatRuntime())->addEraseCalc(pCalc);
@@ -807,14 +807,14 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	}
 	if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Erase)
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcEraseRes>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
 		static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addEraseBeginCalc(pCalc);
 	}
 	if (pRelevantResource->m_statusEnd == rdoRuntime::RDOResource::CS_Erase)
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcEraseRes>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
 		static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addEraseEndCalc(pCalc);
@@ -923,7 +923,7 @@ LPExpression RDORelevantResource::onCreateExpression(CREF(RDOValue) value)
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pParam->getTypeInfo(),
-		rdo::Factory<rdoRuntime::RDOCalcGetRelevantResParam>::create(m_relResID, parNumb),
+		rdo::Factory<rdoRuntime::RDOGetRelResParamCalc>::create(m_relResID, parNumb),
 		value.src_info()
 	);
 	ASSERT(pExpression);

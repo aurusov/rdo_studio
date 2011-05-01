@@ -9,9 +9,14 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
+#include <fstream>
 #include "rdo_ctrls/rdolink.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_studio/resource.h"
+#include "rdo_studio/rdo_process/rdoprocess_method_manager.h"
+#include "rdo_studio/rdostudiomainfrm.h"
+
+//#define PROCGUI_ENABLE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
@@ -32,7 +37,6 @@ public:
 	// см. описание RDOKernelGUI.
 	// Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы.
 	RDOThread* studioGUI;
-
 private:
 #ifdef RDO_MT
 	// Используется для рассылки широковещательных уведомлений из приложения.
@@ -68,8 +72,11 @@ private:
 
 public:
 	RDOStudioApp();
-
 	RDOStudioMainFrame* mainFrame;
+	RPMethodManager methods;
+	std::ofstream   log;
+
+	const RPMethodManager& getMethodManager() const { return methods;               }
 
 	void broadcastMessage( RDOThread::RDOTreadMessage message, void* param = NULL );
 

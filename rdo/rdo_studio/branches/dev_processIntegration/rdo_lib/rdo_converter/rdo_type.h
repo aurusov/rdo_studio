@@ -50,7 +50,7 @@ public:
 	) const = 0;
 	virtual RDOValue get_default() const = 0;
 };
-#define DECLARE_IType                                                                                                                                                                   \
+#define DECLARE_ITypeConverter                                                                                                                                                          \
 	virtual tstring                name       () const;                                                                                                                                 \
 	virtual LPRDOType              type_cast  (CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
 	virtual RDOValue               value_cast (CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info,   CREF(RDOParserSrcInfo) src_info)                                     const;  \
@@ -89,9 +89,9 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- ATOM_TYPE_PARSER
+// ---------- ATOM_TYPE_CONVERTER
 // ----------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Type)    \
+#define DEFINE_ATOM_TYPE_CONVERTER(Type) \
 class RDOType__##Type: public RDOType    \
 {                                        \
 private:                                 \
@@ -102,17 +102,17 @@ public:                                  \
 	{}                                   \
 	~RDOType__##Type()                   \
 	{}                                   \
-	DECLARE_IType;                       \
+	DECLARE_ITypeConverter;              \
 	DECLARE_IModelStructure;             \
 };                                       \
 DECLARE_POINTER(RDOType__##Type);
 
-DEFINE_ATOM_TYPE_PARSER(unknow       );
-DEFINE_ATOM_TYPE_PARSER(identificator);
-DEFINE_ATOM_TYPE_PARSER(int          );
-DEFINE_ATOM_TYPE_PARSER(real         );
-DEFINE_ATOM_TYPE_PARSER(bool         );
-DEFINE_ATOM_TYPE_PARSER(string       );
+DEFINE_ATOM_TYPE_CONVERTER(unknow       );
+DEFINE_ATOM_TYPE_CONVERTER(identificator);
+DEFINE_ATOM_TYPE_CONVERTER(int          );
+DEFINE_ATOM_TYPE_CONVERTER(real         );
+DEFINE_ATOM_TYPE_CONVERTER(bool         );
+DEFINE_ATOM_TYPE_CONVERTER(string       );
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 

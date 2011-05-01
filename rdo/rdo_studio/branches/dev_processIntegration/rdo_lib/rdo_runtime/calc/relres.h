@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : relres.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 28.12.09
@@ -13,96 +13,82 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/equaltype.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamCalc
+// ---------- RDOGetRelResParamCalc
 // ----------------------------------------------------------------------------
-template <EqualType equalType>
-class RDOSetRelParamCalc: public RDOCalc
+CALC(RDOGetRelResParamCalc)
 {
-public:
-	RDOSetRelParamCalc(int relNumb, int parNumb, CREF(LPRDOCalc) pCalc = NULL)
-		: m_relNumb(relNumb)
-		, m_parNumb(parNumb)
-		, m_pCalc  (pCalc  )
-	{
-		m_value = 1;
-		if (m_pCalc)
-			setSrcInfo(m_pCalc->src_info());
-	}
-	virtual ~RDOSetRelParamCalc()
-	{}
+DECLARE_FACTORY(RDOGetRelResParamCalc)
+private:
+	RDOGetRelResParamCalc(ruint relResID, ruint paramID);
 
-protected:
-	int        m_relNumb;
-	int        m_parNumb;
-	LPRDOCalc  m_pCalc;
+	ruint m_relResID;
+	ruint m_paramID;
 
 	DECALRE_ICalc;
 };
 
-template <>
-inline REF(RDOValue) RDOSetRelParamCalc<ET_EQUAL>::doCalc(PTR(RDORuntime) runtime)
+// ----------------------------------------------------------------------------
+// ---------- RDOSetRelResParamCalc
+// ----------------------------------------------------------------------------
+template <EqualType equalType>
+class RDOSetRelResParamCalc: public RDOCalc
 {
-	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->setResParamVal(resID, m_parNumb, m_pCalc->calcValue(runtime));
-	return m_value;
-}
+public:
+	RDOSetRelResParamCalc(ruint relResID, ruint paramID, CREF(LPRDOCalc) pCalc = NULL);
+	virtual ~RDOSetRelResParamCalc();
 
-template <>
-inline REF(RDOValue) RDOSetRelParamCalc<ET_PLUS>::doCalc(PTR(RDORuntime) runtime)
-{
-	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamValRaw(resID, m_parNumb) += m_pCalc->calcValue(runtime);
-	return m_value;
-}
+protected:
+	ruint     m_relResID;
+	ruint     m_paramID;
+	LPRDOCalc m_pCalc;
 
-template <>
-inline REF(RDOValue) RDOSetRelParamCalc<ET_MINUS>::doCalc(PTR(RDORuntime) runtime)
-{
-	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamValRaw(resID, m_parNumb) -= m_pCalc->calcValue(runtime);
-	return m_value;
-}
+	DECALRE_ICalc;
+};
 
-template <>
-inline REF(RDOValue) RDOSetRelParamCalc<ET_MULTIPLY>::doCalc(PTR(RDORuntime) runtime)
+// ----------------------------------------------------------------------------
+// ---------- RDOSetRelResParamDiapCalc
+// ----------------------------------------------------------------------------
+CALC(RDOSetRelResParamDiapCalc)
 {
-	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamValRaw(resID, m_parNumb) *= m_pCalc->calcValue(runtime);
-	return m_value;
-}
+DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
+private:
+	RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc);
 
-template <>
-inline REF(RDOValue) RDOSetRelParamCalc<ET_DIVIDE>::doCalc(PTR(RDORuntime) runtime)
-{
-	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamValRaw(resID, m_parNumb) /= m_pCalc->calcValue(runtime);
-	return m_value;
-}
+	ruint     m_relResID;
+	ruint     m_paramID;
+	LPRDOCalc m_pCalc;
+	RDOValue  m_minValue;
+	RDOValue  m_maxValue;
 
-template <>
-inline REF(RDOValue) RDOSetRelParamCalc<ET_INCR>::doCalc(PTR(RDORuntime) runtime)
-{
-	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamValRaw(resID, m_parNumb) += RDOValue(1);
-	return m_value;
-}
+	DECALRE_ICalc;
+};
 
-template <>
-inline REF(RDOValue) RDOSetRelParamCalc<ET_DECR>::doCalc(PTR(RDORuntime) runtime)
+// ----------------------------------------------------------------------------
+// ---------- RDOEraseResRelCalc
+// ----------------------------------------------------------------------------
+CALC(RDOEraseResRelCalc)
 {
-	ruint resID = runtime->getCurrentActivity()->getResByRelRes(m_relNumb);
-	runtime->getResParamValRaw(resID, m_parNumb) -= RDOValue(1);
-	return m_value;
-}
+DECLARE_FACTORY(RDOEraseResRelCalc)
+public:
+	CREF(tstring) getName() const;
+
+private:
+	RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName);
+
+	ruint   m_relResID;
+	tstring m_relResName;
+
+	DECALRE_ICalc;
+};
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/calc/relres.inl"
 
 #endif //! _RDOCALC_RELRES_H_

@@ -20,7 +20,6 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
-#include "rdo_lib/rdo_runtime/isReturn.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -28,12 +27,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo) IS INSTANCE_OF(RDOCalcIsReturn)
+OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 {
 DECLARE_FACTORY(RDOCalc)
 
 public:
-	REF(RDOValue) calcValue(PTR(RDORuntime) runtime);
+	REF(RDOValue) calcValue(PTR(RDORuntime) pRuntime);
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
@@ -46,12 +45,12 @@ protected:
 
 	RDOValue m_value;
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime) = 0;
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime) = 0;
 };
 
 #define DECALRE_ICalc \
 private:              \
-	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
 
 #define CALC_SUB(TYPE, PARENT) \
 PREDECLARE_POINTER(TYPE);      \
@@ -100,7 +99,7 @@ CALC_SUB(RDOCalcGetTempResParamFRM, RDOCalcGetResParam)
 DECLARE_FACTORY(RDOCalcGetTempResParamFRM)
 private:
 	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
 
 	virtual void notify(ruint message, PTR(void) param)
 	{
@@ -146,52 +145,6 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcGetRelevantResParam
-// ----------------------------------------------------------------------------
-CALC(RDOCalcGetRelevantResParam)
-{
-DECLARE_FACTORY(RDOCalcGetRelevantResParam)
-private:
-	RDOCalcGetRelevantResParam(int relNumb, int parNumb)
-		: m_relNumb(relNumb)
-		, m_parNumb(parNumb)
-	{}
-
-	int m_relNumb;
-	int m_parNumb;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamDiapCalc
-// ----------------------------------------------------------------------------
-CALC(RDOSetRelParamDiapCalc)
-{
-DECLARE_FACTORY(RDOSetRelParamDiapCalc)
-private:
-	RDOSetRelParamDiapCalc(int relNumb, int parNumb, CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pCalc)
-		: m_relNumb  (relNumb  )
-		, m_parNumb  (parNumb  )
-		, m_pCalc    (pCalc    )
-		, m_min_value(min_value)
-		, m_max_value(max_value)
-	{
-		m_value = true;
-		if (m_pCalc)
-			setSrcInfo(m_pCalc->src_info());
-	}
-
-	int          m_relNumb;
-	int          m_parNumb;
-	LPRDOCalc    m_pCalc;
-	RDOValue     m_min_value;
-	RDOValue     m_max_value;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOSetResourceParamCalc
 // ----------------------------------------------------------------------------
 CALC(RDOSetResourceParamCalc)
@@ -211,29 +164,6 @@ private:
 	int        m_resNumb;
 	int        m_parNumb;
 	LPRDOCalc  m_pCalc;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEraseRes
-// ----------------------------------------------------------------------------
-CALC(RDOCalcEraseRes)
-{
-DECLARE_FACTORY(RDOCalcEraseRes)
-public:
-	tstring getName() const { return m_rel_res_name; }
-
-private:
-	RDOCalcEraseRes(int rel_res_id, CREF(tstring) rel_res_name)
-		: m_rel_res_id  (rel_res_id  )
-		, m_rel_res_name(rel_res_name)
-	{
-		m_value = 1;
-	}
-
-	int      m_rel_res_id;
-	tstring  m_rel_res_name;
 
 	DECALRE_ICalc;
 };
@@ -302,225 +232,21 @@ DECALRE_ICalc;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcIf
-// ----------------------------------------------------------------------------
-CALC(RDOCalcIf)
-{
-DECLARE_FACTORY(RDOCalcIf)
-private:
-	RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement);
-
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pStatement;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcIfElse
-// ----------------------------------------------------------------------------
-CALC(RDOCalcIfElse)
-{
-DECLARE_FACTORY(RDOCalcIfElse)
-private:
-	RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement);
-
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pIfStatement;
-	LPRDOCalc m_pElseStatement;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFor
-// ----------------------------------------------------------------------------
-CALC(RDOCalcFor)
-{
-DECLARE_FACTORY(RDOCalcFor)
-private:
-	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
-
-	LPRDOCalc m_pDeclaration;
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pExpression;
-	LPRDOCalc m_pStatement;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateLocalVariable
-// ----------------------------------------------------------------------------
-CALC(RDOCalcCreateLocalVariable)
-{
-DECLARE_FACTORY(RDOCalcCreateLocalVariable)
-private:
-	RDOCalcCreateLocalVariable(CREF(tstring) name);
-
-	tstring m_name;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcSetLocalVariable
-// ----------------------------------------------------------------------------
-CALC(RDOCalcSetLocalVariable)
-{
-DECLARE_FACTORY(RDOCalcSetLocalVariable)
-private:
-	RDOCalcSetLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
-
-	tstring   m_name;
-	LPRDOCalc m_pCalc;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetLocalVariable
-// ----------------------------------------------------------------------------
-CALC(RDOCalcGetLocalVariable)
-{
-DECLARE_FACTORY(RDOCalcGetLocalVariable)
-private:
-	RDOCalcGetLocalVariable(CREF(tstring) name);
-
-	tstring m_name;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcLocalVariableList
-// ----------------------------------------------------------------------------
-CALC(RDOCalcLocalVariableList)
-{
-	DECLARE_FACTORY(RDOCalcLocalVariableList)
-public:
-	typedef std::vector<LPRDOCalc> CalcLocalVariableList;
-
-	void addCalcLocalVariable(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcLocalVariableList();
-
-	CalcLocalVariableList m_calcLocalVariableList;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcOpenBrace
-// ----------------------------------------------------------------------------
-CALC(RDOCalcOpenBrace)
-{
-DECLARE_FACTORY(RDOCalcOpenBrace)
-private:
-	RDOCalcOpenBrace();
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCloseBrace
-// ----------------------------------------------------------------------------
-CALC(RDOCalcCloseBrace)
-{
-DECLARE_FACTORY(RDOCalcCloseBrace)
-private:
-	RDOCalcCloseBrace();
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOFunCalc
 // ----------------------------------------------------------------------------
 CALC(RDOFunCalc)
 {
+public:
+	virtual void addRetCalc(CREF(LPRDOCalc) pCalc)
+	{}
+
 protected:
 	RDOFunCalc()
 	{}
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcFunList
-// ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcFunList, RDOFunCalc)
-{
-	DECLARE_FACTORY(RDOCalcFunList)
-public:
-	typedef std::vector<LPRDOCalc> CalcFunList;
-
-	void addFunCalc(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcFunList();
-
-	CalcFunList m_calcFunList;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunBreak
-// ----------------------------------------------------------------------------
-CALC(RDOCalcFunBreak)
-{
-	DECLARE_FACTORY(RDOCalcFunBreak)
-private:
-	RDOCalcFunBreak();
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunReturn
-// ----------------------------------------------------------------------------
-CALC(RDOCalcFunReturn)
-{
-	DECLARE_FACTORY(RDOCalcFunReturn)
-private:
-	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
-
-	LPRDOCalc m_pReturn;
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcList
-// ----------------------------------------------------------------------------
-CALC(RDOCalcList)
-{
-DECLARE_FACTORY(RDOCalcList)
-public:
-	typedef std::vector<LPRDOCalc> CalcList;
-
-	void addCalc(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcList();
-
-	CalcList m_calcList;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcNoChange
-// ----------------------------------------------------------------------------
-CALC(RDOCalcNoChange)
-{
-DECLARE_FACTORY(RDOCalcNoChange)
-private:
-	RDOCalcNoChange();
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFunListCalc
+// ---------- RDOFuncTableCalc
 // ----------------------------------------------------------------------------
 // Функция типа список
 // ----------------------------------------------------------------------------
@@ -641,7 +367,7 @@ private: \
 	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
 		: RDOFunCalcGroup(nResType, pCondition) \
 	{} \
- 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) runtime); \
+ 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime); \
 };
 
 DEFINE_CALC_GROUP( Exist     );
@@ -796,7 +522,7 @@ CALC(RDOCalcCreateNumberedResource)
 {
 DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
 
 	ruint getNumber() const { return number; }
 
@@ -820,7 +546,7 @@ CALC_SUB(RDOCalcCreateProcessResource, RDOCalcCreateNumberedResource)
 DECLARE_FACTORY(RDOCalcCreateProcessResource)
 private:
 	RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) runtime) const;
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
 };
 
 // ----------------------------------------------------------------------------

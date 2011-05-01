@@ -21,7 +21,7 @@
 OPEN_RDO_CONVERTER_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- ATOM_TYPE_PARSER
+// ---------- ATOM_TYPE_CONVERTER
 // ----------------------------------------------------------------------------
 #define DECLARE_ATOM_TYPE_PARSER(Type, TypeName)    \
 tstring RDOType__##Type::name() const               \

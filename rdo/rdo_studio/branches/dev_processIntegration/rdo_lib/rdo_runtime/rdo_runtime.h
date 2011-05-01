@@ -26,6 +26,8 @@
 #include "rdo_lib/rdo_runtime/thread_proxy_i.h"
 // ===============================================================================
 
+class RDOThread;
+
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
@@ -64,9 +66,9 @@ class RDOOperation;
 class RDOPROCProcess;
 class RDOPMDPokaz;
 class RDOPattern;
-class RDOCalcEraseRes;
 class RDOFRMFrame;
 class RDOCalcCreateNumberedResource;
+PREDECLARE_POINTER(RDOEraseResRelCalc);
 
 class RDORuntime: public RDOSimulatorTrace
 {
@@ -168,7 +170,7 @@ public:
 	void showResources( int node ) const;
 #endif
 
-	void onEraseRes(const int res_id, CREF(LPRDOCalcEraseRes) pCalc);
+	void onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc);
 	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
 	RDOResource* createNewResource( unsigned int type, rbool trace );
 	void insertNewResource( RDOResource* res );
@@ -245,6 +247,8 @@ public:
 
 	CREF(LPIThreadProxy) getThreadProxy() const { return m_pThreadProxy; }
 
+	void setStudioThread(PTR(RDOThread) pStudioThread);
+
 private:
 	typedef RDOSimulatorTrace           Parent;
 	typedef std::list<LPRDOCalc>        CalcList;
@@ -255,7 +259,8 @@ private:
 	LPRDOMemoryStack            m_pMemoryStack;
 	FunBreakFlag                m_funBreakFlag;
 	LPIThreadProxy              m_pThreadProxy;
-
+	PTR(RDOThread)              m_pStudioThread;
+	
 	class BreakPoint: public RDORuntimeObject
 	{
 	public:

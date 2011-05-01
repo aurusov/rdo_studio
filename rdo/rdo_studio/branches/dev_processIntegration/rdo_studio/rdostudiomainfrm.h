@@ -62,16 +62,18 @@ friend class RDOToolBar;
 friend class RDOStudioModelDoc;
 
 private:
-	RDOToolBar         fileToolBar;
-	RDOToolBar         editToolBar;
-	RDOToolBar         zoomToolBar;
-	RDOToolBarModel    modelToolBar;
-	RDOStudioStatusBar statusBar;
+	RDOToolBar          fileToolBar;
+	RDOToolBar          editToolBar;
+	RDOToolBar          zoomToolBar;
+	RDOToolBarModel     modelToolBar;
+	RDOStudioStatusBar  statusBar;
+
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
+	
 	std::map< HWND, CWnd* > cmd_wnd;
 
-	UINT update_timer;
+	UINT m_updateTimer;
 
 	// Используется при закрытии модели. Задается вопрос.
 	static bool close_mode;
@@ -82,6 +84,7 @@ public:
 
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
+	PTR(CControlBar)   m_pLastDocked;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
@@ -92,6 +95,8 @@ public:
 	RDOStudioFrameStyle              style_frame;
 	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
+
+	void insertToolBar(PTR(CToolBar) pToolbar);
 
 	void showWorkspace();
 	void showOutput();
@@ -188,6 +193,8 @@ protected:
 	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnWorkspaceShow();
 	afx_msg void OnOutputShow();
+	afx_msg void OnMethodCommandRange( UINT id );
+	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 	DECLARE_MESSAGE_MAP()
 };
 

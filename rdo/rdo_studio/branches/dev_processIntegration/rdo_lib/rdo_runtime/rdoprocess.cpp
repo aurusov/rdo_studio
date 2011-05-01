@@ -3,6 +3,7 @@
 #include "rdo_common/rdomacros.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "rdo_lib/rdo_runtime/calc/relres.h"
 
 namespace rdoRuntime {
 

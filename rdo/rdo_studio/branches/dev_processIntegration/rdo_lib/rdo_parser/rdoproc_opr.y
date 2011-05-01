@@ -333,7 +333,6 @@ dpt_process_line
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
-		int time = pArithm->createCalc()->calcValue(RUNTIME).getInt();
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), pArithm->createCalc());
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);

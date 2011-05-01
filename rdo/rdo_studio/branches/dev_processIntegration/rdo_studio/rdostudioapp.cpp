@@ -8,7 +8,6 @@
 #include "rdo_studio/rdostudioplugins.h"
 #include "rdo_studio/rdostudiothread.h"
 #include "rdo_studio/rdostudiomodelnew.h"
-#include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
 #include "rdo_studio/win_registry/registry.h"
@@ -17,6 +16,9 @@
 #include "rdo_plugin/rdoplugin.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_common/rdofile.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -161,10 +163,18 @@ RDOStudioApp::RDOStudioApp():
 	autoExitByModel( false ),
 	dontCloseIfError( false ),
 	exitCode( rdoSimulator::EC_OK ),
-	openModelName( "" )
+	openModelName( "" ),
+	mainFrame( NULL )
 {
 	setlocale( LC_ALL, "rus" );
 	setlocale( LC_NUMERIC, "eng" );
+
+	log.open( "log.txt" );
+#ifdef PROCGUI_ENABLE
+	new RPProjectMFC();
+	new RPObjectFactory();
+	rpMethod::factory->registerDefaultObject();
+#endif
 }
 
 BOOL RDOStudioApp::InitInstance()
@@ -218,7 +228,27 @@ BOOL RDOStudioApp::InitInstance()
 
 	tracer = new rdoTracer::RDOTracer();
 	AddDocTemplate( tracer->createDocTemplate() );
-
+#ifdef PROCGUI_ENABLE
+	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
+	rpMethod::project->cursors[ RPProject::cursor_flow_move ]          = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);
+	rpMethod::project->cursors[ RPProject::cursor_flow_connector ]     = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate ]        = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_center ] = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_CENTER);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_tl ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_tr ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_bl ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_br ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_lr ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_LR);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_tb ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TB);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_tlbr ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TLBR);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_trbl ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TRBL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_in ]       = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_out ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_inout ]    = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_fly ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_not ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_NOT);
+	rpMethod::project->cursors[ RPProject::cursor_flow_trash ]         = AfxGetApp()->LoadCursor(IDC_FLOW_TRASH);
+#endif
 	// Внутри создается объект модели
 	mainFrame = new RDOStudioMainFrame;
 	m_pMainWnd = mainFrame;
@@ -239,7 +269,10 @@ BOOL RDOStudioApp::InitInstance()
 
 	mainFrame->ShowWindow( m_nCmdShow );
 	mainFrame->UpdateWindow();
-
+#ifdef PROCGUI_ENABLE
+	methods.init();
+	mainFrame->workspace.pagectrl->selectFirst();
+#endif
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );
 
@@ -331,6 +364,19 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
+#ifdef PROCGUI_ENABLE
+	methods.close();
+
+	if ( rpMethod::factory ) {
+		delete rpMethod::factory;
+		rpMethod::factory = NULL;
+	}
+
+	if ( rpMethod::project ) {
+		delete rpMethod::project;
+		rpMethod::project = NULL;
+	}
+#endif
 	if ( exitCode != rdoSimulator::EC_ModelNotFound ) {
 		exitCode = model->getExitCode();
 	}

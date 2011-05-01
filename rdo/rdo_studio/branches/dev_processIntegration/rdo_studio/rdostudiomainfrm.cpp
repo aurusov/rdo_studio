@@ -7,6 +7,8 @@
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 #include "rdo_studio/htmlhelp.h"
 #include "rdo_studio/resource.h"
+#include "rdo_studio/rdo_process/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -139,15 +141,14 @@ static UINT indicators[] = {
 
 bool RDOStudioMainFrame::close_mode = false;
 
-RDOStudioMainFrame::RDOStudioMainFrame():
-	CMDIFrameWnd(),
-	update_timer( 0 )
-{
-}
+RDOStudioMainFrame::RDOStudioMainFrame()
+	: CMDIFrameWnd (    )
+	, m_pLastDocked(NULL)
+	, m_updateTimer(0   )
+{}
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
-{
-}
+{}
 
 int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -203,7 +204,6 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-
 	output.Create( rdo::format( ID_DOCK_OUTPUT ).c_str(), this, 0 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
@@ -252,6 +252,19 @@ void RDOStudioMainFrame::OnDestroy()
 	CMDIFrameWnd::OnDestroy();
 }
 
+void RDOStudioMainFrame::insertToolBar(PTR(CToolBar) pToolbar)
+{
+	if (!m_pLastDocked)
+	{
+		DockControlBar(pToolbar);
+	}
+	else
+	{
+		dockControlBarBesideOf(*pToolbar, *m_pLastDocked);
+	}
+	m_pLastDocked = pToolbar;
+}
+
 BOOL RDOStudioMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CMDIFrameWnd::PreCreateWindow(cs) ) return FALSE;
@@ -293,6 +306,7 @@ void RDOStudioMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& 
 	rect.OffsetRect( dx, dy );
 
 	DockControlBar( &bar, n, rect );
+	m_pLastDocked = &bar;//рдо-процесс
 }
 
 void RDOStudioMainFrame::OnViewFileToolbar() 
@@ -628,23 +642,25 @@ LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lPar
 
 void RDOStudioMainFrame::update_start()
 {
-	update_timer = SetTimer( update_timer_ID, 1000 / 30, NULL );
+	m_updateTimer = SetTimer(update_timer_ID, 1000 / 30, NULL);
 }
 
 void RDOStudioMainFrame::update_stop()
 {
-	if ( update_timer ) {
-		KillTimer( update_timer );
-		update_timer = 0;
+	if (m_updateTimer)
+	{
+		KillTimer(m_updateTimer);
+		m_updateTimer = 0;
 	}
 }
 
 void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 {
-	if ( nIDEvent == update_timer ) {
+	if (nIDEvent == m_updateTimer)
+	{
 		model->update();
 	}
-	CMDIFrameWnd::OnTimer( nIDEvent );
+	CMDIFrameWnd::OnTimer(nIDEvent);
 }
 
 void RDOStudioMainFrame::OnClose()

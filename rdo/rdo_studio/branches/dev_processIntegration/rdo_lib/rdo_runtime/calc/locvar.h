@@ -13,27 +13,33 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/equaltype.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcSetLocalVariableEqualType
+// ---------- RDOCalcCreateLocalVariable
 // ----------------------------------------------------------------------------
-template <EqualType equalType>
-class RDOCalcSetLocalVariableEqualType: public RDOCalc
+CALC(RDOCalcCreateLocalVariable)
 {
-DECLARE_FACTORY(RDOCalcSetLocalVariableEqualType)
+DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcSetLocalVariableEqualType(CREF(tstring) name, LPRDOCalc pCalc = NULL)
-		: m_name (name )
-		, m_pCalc(pCalc)
-	{}
-	virtual ~RDOCalcSetLocalVariableEqualType()
-	{}
+	RDOCalcCreateLocalVariable(CREF(tstring) name);
+
+	tstring m_name;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcInitLocalVariable
+// ----------------------------------------------------------------------------
+CALC(RDOCalcInitLocalVariable)
+{
+DECLARE_FACTORY(RDOCalcInitLocalVariable)
+private:
+	RDOCalcInitLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
 
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
@@ -41,61 +47,58 @@ private:
 	DECALRE_ICalc;
 };
 
-template <>
-inline REF(RDOValue) RDOCalcSetLocalVariableEqualType<ET_EQUAL>::doCalc(PTR(RDORuntime) pRuntime)
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetLocalVariable
+// ----------------------------------------------------------------------------
+CALC(RDOCalcGetLocalVariable)
 {
-	pRuntime->getMemoryStack()->set(m_name, m_pCalc->calcValue(pRuntime));
-	return m_value;
-}
+DECLARE_FACTORY(RDOCalcGetLocalVariable)
+private:
+	RDOCalcGetLocalVariable(CREF(tstring) name);
 
-template <>
-inline REF(RDOValue) RDOCalcSetLocalVariableEqualType<ET_PLUS>::doCalc(PTR(RDORuntime) pRuntime)
-{
-	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) + m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
-}
+	tstring m_name;
 
-template <>
-inline REF(RDOValue) RDOCalcSetLocalVariableEqualType<ET_MINUS>::doCalc(PTR(RDORuntime) pRuntime)
-{
-	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) - m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
-}
+	DECALRE_ICalc;
+};
 
-template <>
-inline REF(RDOValue) RDOCalcSetLocalVariableEqualType<ET_MULTIPLY>::doCalc(PTR(RDORuntime) pRuntime)
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcSetLocalVariable
+// ----------------------------------------------------------------------------
+template <EqualType equalType>
+class RDOCalcSetLocalVariable: public RDOCalc
 {
-	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) * m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
-}
+DECLARE_FACTORY(RDOCalcSetLocalVariable)
+private:
+	RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc pCalc = NULL);
+	virtual ~RDOCalcSetLocalVariable();
 
-template <>
-inline REF(RDOValue) RDOCalcSetLocalVariableEqualType<ET_DIVIDE>::doCalc(PTR(RDORuntime) pRuntime)
-{
-	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) / m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
-}
+	tstring   m_name;
+	LPRDOCalc m_pCalc;
 
-template <>
-inline REF(RDOValue) RDOCalcSetLocalVariableEqualType<ET_INCR>::doCalc(PTR(RDORuntime) pRuntime)
-{
-	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) + RDOValue(1);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
-}
+	DECALRE_ICalc;
+};
 
-template <>
-inline REF(RDOValue) RDOCalcSetLocalVariableEqualType<ET_DECR>::doCalc(PTR(RDORuntime) pRuntime)
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcLocalVariableList
+// ----------------------------------------------------------------------------
+CALC(RDOCalcLocalVariableList)
 {
-	rdoRuntime::RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) - RDOValue(1);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
-}
+	DECLARE_FACTORY(RDOCalcLocalVariableList)
+public:
+	typedef std::vector<LPRDOCalc> CalcLocalVariableList;
+
+	void addCalcLocalVariable(CREF(LPRDOCalc) pCalc);
+
+private:
+	RDOCalcLocalVariableList();
+
+	CalcLocalVariableList m_calcLocalVariableList;
+
+	DECALRE_ICalc;
+};
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/calc/locvar.inl"
 
 #endif //! _RDOCALC_LOCVAR_H_
