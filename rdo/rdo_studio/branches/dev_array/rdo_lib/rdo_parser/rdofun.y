@@ -217,6 +217,7 @@
 #include "rdo_lib/rdo_runtime/calc/locvar.h"
 #include "rdo_lib/rdo_runtime/calc/braces.h"
 #include "rdo_lib/rdo_runtime/calc/statements.h"
+#include "rdo_lib/rdo_runtime/calc/array.h"
 // ===============================================================================
 
 #define PARSER  LEXER->parser()
@@ -1094,7 +1095,7 @@ init_declaration
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
 		ASSERT(pCalcCreateLocalVariable);
 
-		rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(variableName->getIdentificator(), pArithm->calc());
+		rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(variableName->getIdentificator(), pArithm->createCalc(pParam));
 		ASSERT(pCalcSetLocalVariable);
 
 		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
@@ -2650,6 +2651,31 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos(@1, @2);
 		$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
+	}
+	| RDO_IDENTIF '.' RDO_Size
+	{
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		rdoRuntime::LPRDOCalc pCalc;
+		if(pArithm->typeID() == rdoRuntime::RDOType::t_array)
+		{
+			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
+			ASSERT(pCalc);
+		}
+		else
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+		}
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPRDOFUNArithm pArithmArraySize = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithmArraySize);
+
+		$$ = PARSER->stack().push(pArithmArraySize);
 	}
 	;
 

@@ -84,6 +84,11 @@ CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
 	return m_container[ind.getInt()];
 }
 
+rsint RDOArrayValue::arraySize()
+{
+	return m_container.size();
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayIterator
 // ----------------------------------------------------------------------------

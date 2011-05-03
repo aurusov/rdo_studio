@@ -1776,6 +1776,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\array.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\array.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\binary.h"
 				>
 			</File>
@@ -1792,19 +1800,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc\choice_from.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\choice_from.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc_process_control.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\calc_process_control.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.h"
 				>
 			</File>
 			<File
