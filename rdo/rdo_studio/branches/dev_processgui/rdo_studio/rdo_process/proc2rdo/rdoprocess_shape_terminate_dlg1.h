@@ -7,7 +7,7 @@
 // rdoprocess_shape_terminate_dlg1_MJ.h : header file
 //
 #include "../../resource.h"
-#include "rdoprocess_shape_terminate_MJ.h"
+#include "rdoprocess_shape_terminate.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeTerminateDlg1_MJ dialog
 

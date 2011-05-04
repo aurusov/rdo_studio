@@ -2,10 +2,10 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
-#include "rdoprocess_shape_terminate_MJ.h"
-#include "rdoprocess_shape_terminate_dlg1_MJ.h"
-#include "rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
+#include "rdoprocess_shape_terminate.h"
+#include "rdoprocess_shape_terminate_dlg1.h"
+#include "rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdostudioapp.h"
 
 #ifdef _DEBUG

@@ -23,7 +23,7 @@
 #include "rdo_studio/rdo_process/rdoprocess_docview.h"
 #include "rdo_studio/rdostudioplugins.h"
 #include "rdo_studio/rdo_process/rdoprocess_project.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdostudioapp.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"

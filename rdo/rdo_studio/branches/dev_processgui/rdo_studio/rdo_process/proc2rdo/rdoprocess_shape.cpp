@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdoprocess_shape_MJ.h"
-#include "rdoprocess_method_proc2rdo_MJ.h"
-#include "rdoprocess_shape_process_MJ.h" 
-#include "rdoprocess_shape_create_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
+#include "rdoprocess_shape.h"
+#include "rdoprocess_method_proc2rdo.h"
+#include "rdoprocess_shape_process.h" 
+#include "rdoprocess_shape_create.h"
 #include "rdoprocess_shape_decide.h"
-#include "rdoprocess_shape_terminate_MJ.h"
+#include "rdoprocess_shape_terminate.h"
 #include "rdoprocess_shape_resource.h"
 
 // ----------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // rdoprocess_shape_process_dlg2_MJ.h : header file
 //
-#include "rdoprocess_shape_process_dlg1_MJ.h"
+#include "rdoprocess_shape_process_dlg1.h"
 #include <list>
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg2_MJ dialog
