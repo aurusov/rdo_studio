@@ -90,15 +90,15 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 // ----------------------------------------------------------------------------
 int RDOPROCTransact::s_typeID = -1;
 
-RDOPROCTransact::RDOPROCTransact(PTR(RDOSimulator) sim, CREF(LPIPROCBlock) block)
-	: RDOResource(static_cast<PTR(RDORuntime)>(sim), -1, s_typeID, true)
-	, m_block    (block                                                )
+RDOPROCTransact::RDOPROCTransact(RDORuntime* _runtime, int _number, unsigned int type, bool _trace, CREF(LPIPROCBlock) block)
+	: RDOResource(_runtime, _number, type, _trace)
+	, m_block    (block                          )
 {
-	static_cast<RDORuntime*>(sim)->insertNewResource(this);
+	_runtime->insertNewResource(this);
 	setTrace( true );
 	m_temporary = true;
 	m_state     = RDOResource::CS_Create;
-	m_params.push_back( sim->getCurrentTime() );
+	m_params.push_back( _runtime->getCurrentTime() );
 }
 
 void RDOPROCTransact::next()
@@ -111,8 +111,8 @@ void RDOPROCTransact::next()
 // ----------------------------------------------------------------------------
 RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace ):
 	RDOResource( _runtime, _number, type, _trace )
-{
-}
+{}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
@@ -167,11 +167,11 @@ bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
 	return sim->getCurrentTime() >= timeNext ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCGenerate::onDoOperation( PTR(RDOSimulator) sim )
 {
 //	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval( sim );
-	RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
+	RDOPROCTransact* transact = new RDOPROCTransact(static_cast<PTR(RDORuntime)>(sim), -1, RDOPROCTransact::s_typeID, true, this);
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) 
 	{

@@ -170,4 +170,28 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 	return calc;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCTransact
+// ----------------------------------------------------------------------------
+RDOPROCTransact::RDOPROCTransact(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+: RDORSSResource(pParser, src_info, pResType, id)
+{}
+
+RDOPROCTransact::~RDOPROCTransact()
+{}
+
+rdoRuntime::LPRDOCalc RDOPROCTransact::createCalc() const
+{
+	std::vector<rdoRuntime::RDOValue> paramList;
+	STL_FOR_ALL_CONST(params(), it)
+	{
+		paramList.push_back(it->param().value());
+	}
+
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateProcessTransact>::create(getType()->getNumber(), getTrace(), paramList, getID(), getType()->isPermanent());
+	calc->setSrcInfo(src_info());
+	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
+	return calc;
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

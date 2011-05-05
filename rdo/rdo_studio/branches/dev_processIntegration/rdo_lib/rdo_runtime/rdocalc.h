@@ -539,6 +539,17 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateProcessTransact (создание нового ресурса-транзакта)
+// ----------------------------------------------------------------------------
+CALC_SUB(RDOCalcCreateProcessTransact, RDOCalcCreateNumberedResource)
+{
+DECLARE_FACTORY(RDOCalcCreateProcessTransact)
+private:
+	RDOCalcCreateProcessTransact(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateProcessResource (SEIZE: создание нового ресурса процесса)
 // ----------------------------------------------------------------------------
 CALC_SUB(RDOCalcCreateProcessResource, RDOCalcCreateNumberedResource)

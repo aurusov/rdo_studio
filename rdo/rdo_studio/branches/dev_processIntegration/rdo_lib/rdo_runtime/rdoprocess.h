@@ -84,7 +84,7 @@ public:
 	{
 		m_block = block;
 	}
-	RDOPROCTransact(PTR(RDOSimulator) sim, CREF(LPIPROCBlock) block);
+	RDOPROCTransact(RDORuntime* _runtime, int _number = -1, unsigned int type = s_typeID, bool _trace = true, CREF(LPIPROCBlock) block = 0);
 	void next();
 
 private:

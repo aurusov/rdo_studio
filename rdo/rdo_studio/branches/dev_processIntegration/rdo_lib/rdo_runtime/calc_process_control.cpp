@@ -17,20 +17,18 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcEvent
+// ---------- RDOCalcProcessControl
 // ----------------------------------------------------------------------------
-RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock):
-	m_Block(pBlock)
+RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, PTR(RDOPROCTransact) pTransact)
+	: m_Block   (pBlock   )
+	, m_Transact(pTransact)
 {}
 
 REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
 {
-	PTR(RDOPROCTransact) pTransact = new RDOPROCTransact(pRuntime, m_Block);
-	ASSERT(pTransact);
-
-	pTransact->setBlock(m_Block);
+	m_Transact->setBlock(m_Block);
 	// Записываем в конец списка этого блока перемещаемый транзакт
-	m_Block.query_cast<IPROCBlock>()->transactGoIn(pTransact);
+	m_Block.query_cast<IPROCBlock>()->transactGoIn(m_Transact);
 
 	return m_value;
 }

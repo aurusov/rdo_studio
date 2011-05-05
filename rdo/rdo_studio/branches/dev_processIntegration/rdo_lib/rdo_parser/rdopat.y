@@ -2310,6 +2310,12 @@ process_input_statement
 	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
 	{
 		tstring          resourceName = RDOVALUE($5)->getIdentificator();
+
+		rdoParse::LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+		ASSERT(pPattern);
+		rdoParse::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
+		LPRDORelevantResource pTransact = pPattern->findRelevantResource(resourceName);
+
 		tstring          processName  = RDOVALUE($1)->getIdentificator();
 		LPRDOPROCProcess pProcess     = PARSER->findPROCProcess(processName);
 		if (!pProcess)

@@ -70,6 +70,18 @@ PTR(RDOResource) RDOCalcCreateProcessResource::createResource(PTR(RDORuntime) ru
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateProcessTransact
+// ----------------------------------------------------------------------------
+RDOCalcCreateProcessTransact::RDOCalcCreateProcessTransact(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+: RDOCalcCreateNumberedResource(_type, _traceFlag, _paramsCalcs, _number, _isPermanent)
+{}
+
+PTR(RDOResource) RDOCalcCreateProcessTransact::createResource(PTR(RDORuntime) runtime) const
+{
+	return new RDOPROCTransact(runtime, number, type, traceFlag);
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateEmptyResource
 // ----------------------------------------------------------------------------
 RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id)
