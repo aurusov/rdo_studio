@@ -19,16 +19,23 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcProcessControl
 // ----------------------------------------------------------------------------
-RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, PTR(RDOPROCTransact) pTransact)
-	: m_Block   (pBlock   )
-	, m_Transact(pTransact)
+RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum)
+	: m_Block    (pBlock   )
+	, m_relResNum(relResNum)
 {}
 
 REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
 {
-	m_Transact->setBlock(m_Block);
-	// Записываем в конец списка этого блока перемещаемый транзакт
-	m_Block.query_cast<IPROCBlock>()->transactGoIn(m_Transact);
+//по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
+	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
+	PTR(RDOResource) pResource = pRuntime->getResourceByID(resID);
+	PTR(RDOPROCTransact) pTransact = dynamic_cast<PTR(RDOPROCTransact)>(pResource);
+	if (pTransact)
+	{
+		pTransact->setBlock(m_Block);
+		// Записываем в конец списка этого блока перемещаемый транзакт
+		m_Block.query_cast<IPROCBlock>()->transactGoIn(pTransact);
+	}
 
 	return m_value;
 }

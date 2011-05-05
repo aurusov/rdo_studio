@@ -43,13 +43,15 @@ public:
 class IPROCProcess
 {
 public:
-	virtual void insertChild(LPIPROCProcess                   process ) = 0;
-	virtual void setParent  (LPIPROCProcess                   process ) = 0;
-	virtual void next       (PTR(rdoRuntime::RDOPROCTransact) transact) = 0;
+	virtual void  insertChild(LPIPROCProcess                   process ) = 0;
+	virtual void  setParent  (LPIPROCProcess                   process ) = 0;
+	virtual void  next       (PTR(rdoRuntime::RDOPROCTransact) transact) = 0;
+	virtual rsint getTranType() const = 0;
 };
 #define DECLARE_IPROCProcess \
-	virtual void insertChild(LPIPROCProcess                   process ); \
-	virtual void setParent  (LPIPROCProcess                   process ); \
-	virtual void next       (PTR(rdoRuntime::RDOPROCTransact) transact);
+	virtual void  insertChild(LPIPROCProcess                   process ); \
+	virtual void  setParent  (LPIPROCProcess                   process ); \
+	virtual void  next       (PTR(rdoRuntime::RDOPROCTransact) transact); \
+	virtual rsint getTranType() const;
 
 #endif //! _RDOPROCESS_I_H_

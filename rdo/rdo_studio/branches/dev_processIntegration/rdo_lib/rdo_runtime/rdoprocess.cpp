@@ -29,6 +29,11 @@ void RDOPROCProcess::setParent(LPIPROCProcess process)
 	m_parent = process;
 }
 
+rsint RDOPROCProcess::getTranType() const
+{
+	return m_transactTypeID;
+}
+
 void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 {
 	if ( transact->getBlock() )
@@ -88,17 +93,15 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-int RDOPROCTransact::s_typeID = -1;
-
-RDOPROCTransact::RDOPROCTransact(RDORuntime* _runtime, int _number, unsigned int type, bool _trace, CREF(LPIPROCBlock) block)
-	: RDOResource(_runtime, _number, type, _trace)
-	, m_block    (block                          )
+RDOPROCTransact::RDOPROCTransact(RDORuntime* rt, int number, unsigned int type, bool trace, CREF(LPIPROCBlock) block)
+	: RDOResource(rt, number, type, trace)
+	, m_block    (block                  )
 {
-	_runtime->insertNewResource(this);
+	rt->insertNewResource(this);
 	setTrace( true );
 	m_temporary = true;
 	m_state     = RDOResource::CS_Create;
-	m_params.push_back( _runtime->getCurrentTime() );
+	m_params.push_back( rt->getCurrentTime() );
 }
 
 void RDOPROCTransact::next()
@@ -171,7 +174,8 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation( PTR(RDOSimulator) sim )
 {
 //	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval( sim );
-	RDOPROCTransact* transact = new RDOPROCTransact(static_cast<PTR(RDORuntime)>(sim), -1, RDOPROCTransact::s_typeID, true, this);
+	int transactType = this->m_process->getTranType();
+	RDOPROCTransact* transact = new RDOPROCTransact(static_cast<PTR(RDORuntime)>(sim), -1, transactType, true, this);
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) 
 	{

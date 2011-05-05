@@ -261,8 +261,11 @@ dpt_process_begin
 			PARSER->error().error(pProcess->src_info(), _T("Незакрыт предыдущий блок $Process"));
 		}
 
-		tstring proc_name = P_RDOVALUE($2)->value().getIdentificator();
-		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, proc_name), proc_name);
+		tstring transactName = P_RDOVALUE($3)->value().getIdentificator();
+		LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
+
+		tstring procName = P_RDOVALUE($2)->value().getIdentificator();
+		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, procName), procName, transactType);
 		ASSERT(pProcess);
 	}
 	| RDO_Process error

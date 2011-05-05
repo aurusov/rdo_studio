@@ -48,6 +48,9 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 friend class RDOPROCBlock;
 
+public:
+	DECLARE_IPROCProcess;
+
 protected:
 	tstring                    m_name;
 	LPIPROCProcess             m_parent;
@@ -55,8 +58,7 @@ protected:
 
 private:
 	RDOPROCProcess(CREF(tstring) _name, PTR(RDOSimulator) sim);
-
-	DECLARE_IPROCProcess;
+	rsint                      m_transactTypeID;
 };
 
 // ----------------------------------------------------------------------------
@@ -66,8 +68,6 @@ class RDOPROCResource;
 class RDOPROCTransact: public RDOResource
 {
 public:
-	static int s_typeID;
-
 	PTR(RDOPROCResource) getRes()
 	{
 		return m_res;
@@ -84,7 +84,7 @@ public:
 	{
 		m_block = block;
 	}
-	RDOPROCTransact(RDORuntime* _runtime, int _number = -1, unsigned int type = s_typeID, bool _trace = true, CREF(LPIPROCBlock) block = 0);
+	RDOPROCTransact(RDORuntime* rt, int number, unsigned int type, bool trace = true, CREF(LPIPROCBlock) block = 0);
 	void next();
 
 private:

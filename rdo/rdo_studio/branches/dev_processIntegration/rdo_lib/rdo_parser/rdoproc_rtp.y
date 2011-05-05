@@ -257,7 +257,6 @@ prc_rtp_main
 			{
 				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 			}
-			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 		}
 		else
 		{
@@ -272,7 +271,6 @@ prc_rtp_main
 			{
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является перечислимым типом"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
-			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 		}
 	}
 	;

@@ -276,6 +276,8 @@ public:
 	LPRDOFUNLogic   getConditon () const                               { return m_pConditon;      }
 	CREF(BlockList) getBlockList() const                               { return m_blockList;      }
 
+	rbool checkTransactType(CREF(tstring) name) const;
+
 	rbool    setPrior   (REF(LPRDOFUNArithm)     pPrior  );
 	void     insertBlock(CREF(LPRDOPROCOperator) pBlock  );
 	void     insertChild(REF(LPRDOPROCProcess)   pProcess);
@@ -290,10 +292,11 @@ protected:
 	LPILogic          m_pRuntime;
 
 private:
-	RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name);
+	RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name, LPRDORTPResType transactType);
 
-	LPRDOFUNLogic m_pConditon;
-	tstring       m_name;
+	LPRDOFUNLogic   m_pConditon;
+	tstring         m_name;
+	LPRDORTPResType m_transactType;
 };
 
 // ----------------------------------------------------------------------------

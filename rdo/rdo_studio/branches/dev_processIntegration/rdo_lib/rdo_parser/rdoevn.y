@@ -1668,7 +1668,6 @@ stopping_statement
 process_input_statement
 	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
 	{
-		tstring          resourceName = RDOVALUE($5)->getIdentificator();
 		tstring          processName  = RDOVALUE($1)->getIdentificator();
 		LPRDOPROCProcess pProcess     = PARSER->findPROCProcess(processName);
 		if (!pProcess)
@@ -1679,7 +1678,20 @@ process_input_statement
 		LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
 		ASSERT(pBlock);
 
-		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create(pBlock);
+		tstring relResName = RDOVALUE($5)->getIdentificator();
+
+		LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+		ASSERT(pPattern);
+		/*из-за использования RDO_IDENTIF_RELRES findRelevantResource() всегда находит ресурс*/
+		LPRDORelevantResource pRelRes = pPattern->findRelevantResource(relResName);
+		tstring relResTypeName = pRelRes->getType()->name();
+
+		if (!pProcess->checkTransactType(relResTypeName))
+		{
+			PARSER->error().error(@1, rdo::format(_T("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s"), processName.c_str(), _T("true_resTypeName"), relResTypeName.c_str()));
+		}
+
+		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
 		ASSERT(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);
