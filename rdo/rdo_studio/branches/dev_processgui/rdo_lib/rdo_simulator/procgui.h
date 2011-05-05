@@ -28,8 +28,8 @@ public:
 	ProcGUIBlock(CREF(rdoParse::LPRDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime);
 	virtual ~ProcGUIBlock();
 
-	void Create   (REF(RPShapeDataBlockCreate) pParams);
-	void Terminate(std::vector <double>  pParams);
+	void Create   (REF(RPShapeDataBlockCreate   ) pParams);
+	void Terminate(REF(RPShapeDataBlockTerminate) pParams);
 	void Process  (std::vector <double>  pParams);
 	void Advance  (std::vector <double>  pParams);
 

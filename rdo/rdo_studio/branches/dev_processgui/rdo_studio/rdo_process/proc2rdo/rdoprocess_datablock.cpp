@@ -37,6 +37,7 @@ void RPShapeDataBlock::setBase(int base)
 {
 	m_base=base;
 }
+
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlockCreate
 // ----------------------------------------------------------------------------
@@ -50,4 +51,19 @@ RPShapeDataBlockCreate::~RPShapeDataBlockCreate()
 void RPShapeDataBlockCreate::setAmount(int amount)
 {
 	m_amount=amount;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RPShapeDataBlockTerminate
+// ----------------------------------------------------------------------------
+RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(tstring name)
+	:m_name(name)
+{}
+
+RPShapeDataBlockTerminate::~RPShapeDataBlockTerminate()
+{}
+
+void RPShapeDataBlockTerminate::setTermInc(int term_inc)
+{
+	m_term_inc = term_inc;
 }

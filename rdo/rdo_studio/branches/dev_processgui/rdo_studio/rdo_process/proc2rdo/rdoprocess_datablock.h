@@ -65,11 +65,28 @@ public:
 
 	int getAmount() const {return m_amount;}
 
-//	RPShapeDataBlock::ZakonRaspr getZakon() const {return m_zakon;}
-
 private:
 
 	int m_amount;
 
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RPShapeDataBlockTerminate
+// ----------------------------------------------------------------------------
+class RPShapeDataBlockTerminate
+{
+public:
+	RPShapeDataBlockTerminate(tstring name);
+	~RPShapeDataBlockTerminate();
+
+	void setTermInc(int term_inc);
+
+	int     getTermInc(            ) {return m_term_inc;}
+	tstring getName   (            ) {return m_name;    }
+
+private:
+	int     m_term_inc;
+	tstring m_name;
 };
 #endif // RDO_PROCESS_DATABLOCK_H

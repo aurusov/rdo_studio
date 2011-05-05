@@ -152,10 +152,10 @@ void ProcGUIBlock::Advance(std::vector <double>  pParams)
 	}
 }
 
-void ProcGUIBlock::Terminate(std::vector <double>  pParams)
+void ProcGUIBlock::Terminate(REF(RPShapeDataBlockTerminate) pParams)
 {
 	//! TERMINATE
-	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, static_cast<int>(pParams[2]));
+	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, static_cast<int>(pParams.getTermInc()));
 	ASSERT(pBlock);
 }
 

@@ -23,10 +23,7 @@ public:
 	//{{AFX_DATA(RPShapeTerminateDlg1_MJ)
 	enum { IDD = IDD_DIALOG_TERMINATE_1_MJ };
 	CString	  m_name;
-	CComboBox m_combo;
-	CEdit	  m_time;
-	double	  m_time_value;
-	int       m_term_counter;
+	int       m_term_inc;
 	//}}AFX_DATA
 
 
@@ -44,7 +41,6 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(RPShapeTerminateDlg1_MJ)
 	virtual void OnOK();
-	afx_msg void OnCloseupCombo1();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

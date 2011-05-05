@@ -21,8 +21,8 @@ static char THIS_FILE[]=__FILE__;
 RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
 	RPShape_MJ( _parent, _T("Terminate") )
 {
-	m_time=100;
-	m_term_counter=1;
+	m_term_inc=1;
+	m_name=_T("Terminate");
 
 	// инициализация типа блока 
 	type ="block";
@@ -54,9 +54,10 @@ void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeTerminateMJ::generate()
 {
-	std::vector <double>  params;
-	params.push_back(static_cast<double>(m_term_state));
-	params.push_back(m_time);
-	params.push_back(m_term_counter);
-	studioApp.broadcastMessage(RDOThread::RT_PROCGUI_BLOCK_TERMINATE,&params);
+	/*std::vector <double>  params;
+	params.push_back(m_term_inc);*/
+
+	params = new RPShapeDataBlockTerminate(m_name);
+	params->setTermInc(m_term_inc);
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, params);
 }
