@@ -14,6 +14,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 // ===============================================================================
 
 OPEN_RDO_SIMULATOR_NAMESPACE
@@ -27,7 +28,7 @@ public:
 	ProcGUIBlock(CREF(rdoParse::LPRDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime);
 	virtual ~ProcGUIBlock();
 
-	void Create   (std::vector <double>  pParams);
+	void Create   (REF(RPShapeDataBlockCreate) pParams);
 	void Terminate(std::vector <double>  pParams);
 	void Process  (std::vector <double>  pParams);
 	void Advance  (std::vector <double>  pParams);

@@ -35,7 +35,7 @@ ProcGUIBlock::ProcGUIBlock(CREF(rdoParse::LPRDOParser) pParser, PTR(rdoRuntime::
 ProcGUIBlock::~ProcGUIBlock()
 {}
 
-void ProcGUIBlock::Create(std::vector <double>  pParams)
+void ProcGUIBlock::Create(REF(RPShapeDataBlockCreate) pParams)
 {
 	tstring rtp_name       = _T("“ранзакты");
 	tstring rtp_param_name = _T("¬рем€_создани€");
@@ -63,32 +63,31 @@ void ProcGUIBlock::Create(std::vector <double>  pParams)
 	}
 
 	//! GENERATE
-	int m_pGtype=static_cast<int>(pParams[0]);
-	int m_pGbase=static_cast<int>(pParams[1]);
-	switch(m_pGtype) // определ€ем активные окна исход€ из закона
+	//RPShapeDataBlock::ZakonRaspr zakon = pParams.getZakon();
+	switch(pParams.getZakon()) // определ€ем активные окна исход€ из закона
 	{
-		case 0: // константа 
+	case RPShapeDataBlock::Const: // константа 
 		{
 				
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getConstCalc(pParams[4]));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getConstCalc(pParams.getExp()));
 				ASSERT(pBlock);
 				break;
 		}	
-		case 1: // нормальный
+	case RPShapeDataBlock::Normal: // нормальный
 		{
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getNormalCalc(m_pGbase,pParams[4],pParams[5]));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getNormalCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
 				ASSERT(pBlock);
 				break;
 		}
-		case 2: // равномерный закон
+	case RPShapeDataBlock::Uniform: // равномерный закон
 		{
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getUniformCalc(m_pGbase,pParams[4],pParams[5]));
+				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getUniformCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
 				ASSERT(pBlock);
 				break;
 		}
-		case 3: // экспоненциальный
+	case RPShapeDataBlock::Exp: // экспоненциальный
 		{
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getExpCalc(m_pGbase,pParams[4]));
+				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getExpCalc(pParams.getBase(), pParams.getExp()));
 				ASSERT(pBlock);
 				break;
 		}		

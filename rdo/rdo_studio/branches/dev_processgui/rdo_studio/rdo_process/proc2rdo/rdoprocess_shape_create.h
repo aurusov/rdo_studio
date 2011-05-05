@@ -9,7 +9,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 
 class RPShapeCreateMJ : public RPShape_MJ  
 {
@@ -25,15 +26,16 @@ public:
 	virtual rp::string getClassName() const { return "RPShapeCreateMJ"; }
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 
-	void define_rule();
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	//virtual void list_name();
 	virtual void generate();
 
+	//параметры для симулятора
+	PTR(RPShapeDataBlockCreate) params;
 	//переменные для генерации
-	CString gname; // имя
+	tstring gname; // имя
 	double gfirst; // время первого
-	double gamount; // кол-во создаваемых
+	int gamount; // кол-во создаваемых
 	int gtype; // закон прибытия
 	int base_gen;
 	

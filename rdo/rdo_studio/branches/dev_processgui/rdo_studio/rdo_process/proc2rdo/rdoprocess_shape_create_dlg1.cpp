@@ -141,6 +141,7 @@ void RPShapeCreateDlg1_MJ::OnOK()
 	// запись параметров в объект
 	// инициализация из вызвавшего объекта
 UpdateData(TRUE);
+	pParentMJ->gname=m_name;
 	pParentMJ->gfirst=m_dlgfirst; // время первого
 	pParentMJ->gamount=m_dlgamount; // кол-во создаваемых
 	pParentMJ->gtype=m_create_dlg1_combo1_MJ.GetCurSel(); // закон прибытия

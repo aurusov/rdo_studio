@@ -36,6 +36,7 @@
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_common/rdodebug.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 // ===============================================================================
 
 //#ifndef DISABLE_CORBA
@@ -928,7 +929,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			m_pGUIBlock = rdo::Factory<ProcGUIBlock>::create(m_pParser, m_pRuntime);
 			ASSERT(m_pGUIBlock);
 			msg.lock();
-			m_pGUIBlock->Create(*static_cast<PTR(std::vector<double>)>(msg.param));
+			m_pGUIBlock->Create(*static_cast<PTR(RPShapeDataBlockCreate)>(msg.param));
 			msg.unlock();
 			break;
 		}
