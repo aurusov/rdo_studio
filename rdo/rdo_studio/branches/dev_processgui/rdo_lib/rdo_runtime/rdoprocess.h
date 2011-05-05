@@ -124,9 +124,9 @@ public:
 
 private:
 	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, int maxTransCount=0)
-		: RDOPROCBlock (process    )
-		, timeNext     (NULL       )
-		, pTimeCalc    (pTime      )
+		: RDOPROCBlock  (process        )
+		, timeNext      (NULL           )
+		, pTimeCalc     (pTime          )
 		, m_maxTransCount(maxTransCount)
 	{
 		m_TransCount = 0;

@@ -88,50 +88,12 @@ void RPShapeCreateMJ::generate()
 			zakon = RPShapeDataBlock::Exp;
 			break;
 	}
-	/*std::vector <double>  params;
-	params.push_back(static_cast<double>(gtype));
-	params.push_back(static_cast<double>(base_gen));
-	params.push_back(gfirst);
-	params.push_back(gamount);
-	params.push_back(gexp);
-	params.push_back(gdisp);*/
 
 	params = new RPShapeDataBlockCreate(zakon, gname);
 	params->setBase(base_gen);
 	params->setAmount(gamount);
 	params->setDisp(gdisp);
 	params->setExp(gexp);
-
-	//studioApp.broadcastMessage(RDOThread::RT_PROCGUI_BLOCK_CREATE, &params);
+	
 	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, params);
-	//studioGUI.sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, &params);
-
-	/*
-	RDOfiles->function <<"имя следующего блока - "<<id_next
-	<<std::endl<<"имя - "<<getName().c_str()
-	<<std::endl<<"время первого - "<<gfirst
-	<<std::endl<< "кол-во создаваемых - "<<gamount
-	<<std::endl<<"закон прибытия - "<<gtype
-	<<std::endl<<"база генератора - "<<base_gen
-	<<std::endl<<"атрибуты закона - "<<"exp - "<<gexp<<" disp"<<gdisp<<" max - " <<gmax<<" min - "<<gmin
-	<<std::endl<<"второе окно! бесконечноть - "<<inf
-	<<std::endl<<"ID группы - "<<gID
-	<<std::endl<<"параметры - "<<"1-  "<<gpar1<< " 2 - "<<gpar2<<" 3 - "<<gpar3;
-	*/
-
-	/*
-	int cur = gtype;
-	switch(cur) // определяем активные окна исходя из закона
-	{
-		case 0: // константа 
-			break;	
-		case 1: // нормальный
-			break;
-		case 2: // равномерный закон
-			break;
-		case 3: // экспоненциальный
-			break;
-	}*/
-
-
 }
