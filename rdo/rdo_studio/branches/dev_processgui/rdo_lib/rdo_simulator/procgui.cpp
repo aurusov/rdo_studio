@@ -69,25 +69,25 @@ void ProcGUIBlock::Create(REF(RPShapeDataBlockCreate) pParams)
 	case RPShapeDataBlock::Const: // константа 
 		{
 				
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getConstCalc(pParams.getExp()));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getConstCalc(pParams.getExp()), pParams.getAmount());
 				ASSERT(pBlock);
 				break;
 		}	
 	case RPShapeDataBlock::Normal: // нормальный
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getNormalCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getNormalCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()), pParams.getAmount());
 				ASSERT(pBlock);
 				break;
 		}
 	case RPShapeDataBlock::Uniform: // равномерный закон
 		{
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getUniformCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
+				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getUniformCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()), pParams.getAmount());
 				ASSERT(pBlock);
 				break;
 		}
 	case RPShapeDataBlock::Exp: // экспоненциальный
 		{
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getExpCalc(pParams.getBase(), pParams.getExp()));
+				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getExpCalc(pParams.getBase(), pParams.getExp()), pParams.getAmount());
 				ASSERT(pBlock);
 				break;
 		}		
