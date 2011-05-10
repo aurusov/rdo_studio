@@ -8,8 +8,6 @@
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_generation_type.h"
 #include "rdo_studio/rdo_process/proc2rdo/res/method_big.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/method_small.xpm"
-#include "rdo_studio/rdo_process/proc2rdo/res/generate.xpm"
-#include "rdo_studio/rdo_process/proc2rdo/res/generate_setup.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/block_create.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/block_decide.xpm"
 #include "rdo_studio/rdo_process/proc2rdo/res/block_terminate.xpm"
@@ -78,10 +76,6 @@ void RPMethodProc2RDO_MJ::registerObject()
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeProcessMJ", "RPShape_MJ", RPShapeProcessMJ::newObject, this, _T("Процесс"), block_process_xpm, 2 ) );
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeResource_MJ", "RPShape_MJ", RPShapeResource_MJ::newObject, this, _T("Ресурс"), block_resource_xpm, 3 ) );
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeDecide", "RPShape_MJ", RPShapeDecide::newObject, this, _T("Десайд"), block_decide_xpm, 4 ) );
-
-	RPCtrlToolbar* toolbar = rpMethod::project->createToolBar( _T("РДО-Процесс") );
-	btn_generate       = toolbar->insertButton( this, generate_xpm, _T("Создать модель") );
-	btn_generate_setup = toolbar->insertButton( this, generate_setup_xpm, _T("Настройки") );
 }
 
 rpMethod::RPMethod* RPMethodProc2RDO_MJ::registerMethod()
