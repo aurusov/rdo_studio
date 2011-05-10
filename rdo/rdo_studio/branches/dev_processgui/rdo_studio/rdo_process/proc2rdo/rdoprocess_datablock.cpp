@@ -17,7 +17,7 @@
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlock
 // ----------------------------------------------------------------------------
-RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::ZakonRaspr zakon, tstring name)
+RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, tstring name)
 {
 	m_zakon = zakon;
 	m_name  = name;
@@ -41,7 +41,7 @@ void RPShapeDataBlock::setBase(int base)
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlockCreate
 // ----------------------------------------------------------------------------
-RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::ZakonRaspr zakon, tstring name)
+RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, tstring name)
 	: RPShapeDataBlock(zakon,name)
 {}
 
@@ -66,4 +66,34 @@ RPShapeDataBlockTerminate::~RPShapeDataBlockTerminate()
 void RPShapeDataBlockTerminate::setTermInc(int term_inc)
 {
 	m_term_inc = term_inc;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RPShapeDataBlockProcess
+// ----------------------------------------------------------------------------
+RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, tstring name)
+	: RPShapeDataBlock(zakon,name)
+{}
+
+RPShapeDataBlockProcess::~RPShapeDataBlockProcess()
+{}
+
+void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::resAction action)
+{
+	m_actions.push_back(action);
+}
+
+void RPShapeDataBlockProcess::addRes(tstring res)
+{
+	m_res.push_back(res);
+}
+
+std::list <RPShapeDataBlockProcess::resAction> RPShapeDataBlockProcess::getAction()
+{
+	return m_actions;
+}
+
+std::list <tstring> RPShapeDataBlockProcess::getRes()
+{
+	return m_res;
 }

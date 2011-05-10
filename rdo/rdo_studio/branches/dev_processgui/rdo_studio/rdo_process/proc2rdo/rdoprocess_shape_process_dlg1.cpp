@@ -210,6 +210,7 @@ void RPShapeProcessDlg1_MJ::OnOK()
 	pParentMJ->gdisp=m_gdisp;
 	pParentMJ->gmax=m_gmax;
 	pParentMJ->gmin=m_gmin;
+	pParentMJ->gname=m_name;
 
 
 pParentMJ->action=m_action.GetCurSel();

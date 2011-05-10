@@ -63,7 +63,6 @@ void ProcGUIBlock::Create(REF(RPShapeDataBlockCreate) pParams)
 	}
 
 	//! GENERATE
-	//RPShapeDataBlock::ZakonRaspr zakon = pParams.getZakon();
 	switch(pParams.getZakon()) // определяем активные окна исходя из закона
 	{
 	case RPShapeDataBlock::Const: // константа 
@@ -94,58 +93,54 @@ void ProcGUIBlock::Create(REF(RPShapeDataBlockCreate) pParams)
 	}
 }
 
-void ProcGUIBlock::Process(std::vector <double>  pParams)
+void ProcGUIBlock::Process(REF(RPShapeDataBlockProcess) pParams)
 {
-	int m_pActType=static_cast<int>(pParams[4]);
-	switch(m_pActType)
+	std::list <RPShapeDataBlockProcess::resAction> action = pParams.getAction();
+	std::list <RPShapeDataBlockProcess::resAction>::iterator it = action.begin();
+	while(it != action.end())
 	{
-		case 0:
+		if(*it == RPShapeDataBlockProcess::Seize)
 		{
+			//захватить
+		}
+		else if(*it == RPShapeDataBlockProcess::Advance)
+		{
+			//задержать
 			Advance(pParams);
-			break;
 		}
-		case 1:
+		else if(*it == RPShapeDataBlockProcess::Release)
 		{
-			break;
+			//освободить
 		}
-		case 2:
-		{
-			break;
-		}
-		case 3:
-		{
-			break;
-		}
+		it++;
 	}
 }
 
-void ProcGUIBlock::Advance(std::vector <double>  pParams)
+void ProcGUIBlock::Advance(REF(RPShapeDataBlockProcess) pParams)
 {
-	int m_pGtype=static_cast<int>(pParams[0]);
-	int m_pGbase=static_cast<int>(pParams[1]);
-	switch(m_pGtype)
+	switch(pParams.getZakon())
 	{
-		case 0:
+		case RPShapeDataBlock::Const:
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getConstCalc(pParams[2]));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getConstCalc(pParams.getExp()));
 			ASSERT(pBlock);
 			break;
 		}
-		case 1:
+		case RPShapeDataBlock::Normal: 
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getNormalCalc(m_pGbase,pParams[2],pParams[3]));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getNormalCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
 			ASSERT(pBlock);
 			break;
 		}
-		case 2:
+		case RPShapeDataBlock::Uniform:
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getUniformCalc(m_pGbase,pParams[2],pParams[3]));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getUniformCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
 			ASSERT(pBlock);
 			break;
 		}
-		case 3:
+		case RPShapeDataBlock::Exp:
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess,  getExpCalc(m_pGbase,pParams[2]));
+			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess,  getExpCalc(pParams.getBase(), pParams.getExp()));
 			ASSERT(pBlock);
 			break;
 		}
@@ -154,7 +149,6 @@ void ProcGUIBlock::Advance(std::vector <double>  pParams)
 
 void ProcGUIBlock::Terminate(REF(RPShapeDataBlockTerminate) pParams)
 {
-	//! TERMINATE
 	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, static_cast<int>(pParams.getTermInc()));
 	ASSERT(pBlock);
 }

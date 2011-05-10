@@ -21,7 +21,7 @@ class RPShapeDataBlock
 {
 public:
 
-	enum ZakonRaspr
+	enum zakonRaspr
 	{
 		Const,
 		Normal,
@@ -29,14 +29,14 @@ public:
 		Exp
 	};
 
-	RPShapeDataBlock(ZakonRaspr zakon, tstring name);
+	RPShapeDataBlock(zakonRaspr zakon, tstring name);
 
 	void setBase  (int base   );
 	void setAmount(int amount );
 	void setDisp  (double disp);
 	void setExp   (double exp );
 
-	ZakonRaspr getZakon() {return m_zakon;}
+	zakonRaspr getZakon() {return m_zakon;}
 	tstring    getName () {return m_name; }
 	int        getBase () {return m_base; }
 	double     getDisp () {return m_disp; }
@@ -44,7 +44,7 @@ public:
 
 protected:
 
-	ZakonRaspr m_zakon;
+	zakonRaspr m_zakon;
 	tstring    m_name;
 	int        m_base;
 	double     m_exp;
@@ -58,7 +58,7 @@ class RPShapeDataBlockCreate: public RPShapeDataBlock
 {
 public:
 
-	RPShapeDataBlockCreate(RPShapeDataBlock::ZakonRaspr zakon, tstring name);
+	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, tstring name);
 	~RPShapeDataBlockCreate();
 
 	void setAmount(int amount);
@@ -89,4 +89,33 @@ private:
 	int     m_term_inc;
 	tstring m_name;
 };
+
+// ----------------------------------------------------------------------------
+// ---------- RPShapeDataBlockProcess
+// ----------------------------------------------------------------------------
+class RPShapeDataBlockProcess: public RPShapeDataBlock
+{
+public:
+
+	enum resAction
+	{
+		Advance,
+		Seize,
+		Release
+	};
+
+	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, tstring name);
+	~RPShapeDataBlockProcess();
+
+	void addAction(resAction action);
+	void addRes   (tstring res     );
+	
+	std::list <resAction> getAction();
+	std::list <tstring  > getRes   ();
+
+private:
+	std::list <resAction>  m_actions;
+	std::list <tstring  >  m_res;
+};
+
 #endif // RDO_PROCESS_DATABLOCK_H

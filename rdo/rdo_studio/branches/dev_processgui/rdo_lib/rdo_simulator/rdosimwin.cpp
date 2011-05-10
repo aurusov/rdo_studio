@@ -937,7 +937,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		{
 			ASSERT(m_pGUIBlock);
 			msg.lock();
-			m_pGUIBlock->Process(*static_cast<PTR(std::vector<double>)>(msg.param));
+			m_pGUIBlock->Process(*static_cast<PTR(RPShapeDataBlockProcess)>(msg.param));
 			msg.unlock();
 			break;
 		}

@@ -72,7 +72,7 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeCreateMJ::generate()
 {
-	RPShapeDataBlock::ZakonRaspr zakon;
+	RPShapeDataBlock::zakonRaspr zakon;
 	switch(gtype)
 	{
 		case 0: // константа

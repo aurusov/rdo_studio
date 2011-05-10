@@ -30,8 +30,8 @@ public:
 
 	void Create   (REF(RPShapeDataBlockCreate   ) pParams);
 	void Terminate(REF(RPShapeDataBlockTerminate) pParams);
-	void Process  (std::vector <double>  pParams);
-	void Advance  (std::vector <double>  pParams);
+	void Process  (REF(RPShapeDataBlockProcess)   pParams);
+	void Advance  (REF(RPShapeDataBlockProcess)   pParams);
 
 private:
 	rdoParse::LPRDOParser        m_pParser;
