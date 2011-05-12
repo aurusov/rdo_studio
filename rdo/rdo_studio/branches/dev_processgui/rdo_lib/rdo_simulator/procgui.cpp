@@ -17,25 +17,116 @@
 OPEN_RDO_SIMULATOR_NAMESPACE
 
 // --------------------------------------------------------------------
-// ---------- ProcGUIBlock
+// ---------- ProcGUICalc
 // --------------------------------------------------------------------
-ProcGUIBlock::ProcGUIBlock(CREF(rdoParse::LPRDOParser) pParser, PTR(rdoRuntime::RDORuntime) pRuntime)
-	: m_pParser (pParser )
-	, m_pRuntime(pRuntime)
+ProcGUICalc::ProcGUICalc(PTR(rdoRuntime::RDORuntime) pRuntime)
+	: m_pRuntime(pRuntime)
 {
-	ASSERT(m_pParser );
 	ASSERT(m_pRuntime);
+}
 
-	//! Создаёт процесс
+ProcGUICalc::~ProcGUICalc()
+{}
+
+rdoRuntime::LPRDOCalcConst ProcGUICalc::getConstCalc(double m_pArg1)
+{
+	rdoRuntime::LPRDOCalcConst pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
+	ASSERT(pCalc);
+	return pCalc;
+}
+
+rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getNormalCalc(int m_pBase,double m_pArg1,double m_pArg2)
+{
+	PTR(rdoRuntime::RandGeneratorNormal) pGenerator = new rdoRuntime::RandGeneratorNormal();
+	rdoRuntime::LPRDOCalcSeqInit m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_pBase, pGenerator);
+	ASSERT(m_pInitCalc);
+	m_pRuntime->addInitCalc(m_pInitCalc);
+	rdoRuntime::LPRDOCalcSeqNext m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextNormal>::create(pGenerator);
+	ASSERT(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	ASSERT(pFuctionCall);
+	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
+	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg2);
+	pFuctionCall->addParameter(pArg1);
+	pFuctionCall->addParameter(pArg2);
+	return pFuctionCall;
+}
+
+rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getUniformCalc(int m_pBase,double m_pArg1,double m_pArg2)
+{
+	PTR(rdoRuntime::RandGeneratorUniform) pGenerator = new rdoRuntime::RandGeneratorUniform();
+	rdoRuntime::LPRDOCalcSeqInit m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_pBase, pGenerator);
+	ASSERT(m_pInitCalc);
+	m_pRuntime->addInitCalc(m_pInitCalc);
+	rdoRuntime::LPRDOCalcSeqNext m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextUniform>::create(pGenerator);
+	ASSERT(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	ASSERT(pFuctionCall);
+	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
+	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg2);
+	pFuctionCall->addParameter(pArg1);
+	pFuctionCall->addParameter(pArg2);
+	return pFuctionCall;
+}
+
+rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc(int m_pBase,double m_pArg1)
+{
+	PTR(rdoRuntime::RandGeneratorExponential) pGenerator = new rdoRuntime::RandGeneratorExponential();
+	rdoRuntime::LPRDOCalcSeqInit m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_pBase, pGenerator);
+	ASSERT(m_pInitCalc);
+	m_pRuntime->addInitCalc(m_pInitCalc);
+	rdoRuntime::LPRDOCalcSeqNext m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextExponential>::create(pGenerator);
+	ASSERT(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	ASSERT(pFuctionCall);
+	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
+	pFuctionCall->addParameter(pArg1);
+	return pFuctionCall;
+}
+
+// --------------------------------------------------------------------
+// ---------- ProcGUIProcess
+// --------------------------------------------------------------------
+ProcGUIProcess::ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime)
+	: m_pRuntime(pRuntime)
+{
+	ASSERT(m_pRuntime);
 	m_pProcess = F(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_pRuntime);
 	ASSERT(m_pProcess);
 	m_pProcess.query_cast<ILogic>()->init(m_pRuntime);
 }
 
+ProcGUIProcess::~ProcGUIProcess()
+{}
+
+void ProcGUIProcess::insertBlock(CREF(LPProcGUIBlock) pBlock)
+{
+	ASSERT(pBlock);
+	m_blockList.push_back(pBlock);
+}
+
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIBlock
+// ----------------------------------------------------------------------------
+ProcGUIBlock::ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(tstring) pName)
+	: m_name    (pName    )
+	, m_pProcess(pProcess)
+{
+	ASSERT(m_pProcess);
+	m_pProcess->insertBlock(this);
+}
+
 ProcGUIBlock::~ProcGUIBlock()
 {}
 
-void ProcGUIBlock::Create(REF(RPShapeDataBlockCreate) pParams)
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIBlockGenerate
+// ----------------------------------------------------------------------------
+ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(RPShapeDataBlockCreate) pParams/* CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc*/)
+	: ProcGUIBlock(pProcess, pParams.getName())
+	, ProcGUICalc    (pRuntime      )
+	, m_pParser      (pParser       )
+	, m_pParams      (pParams       )
 {
 	tstring rtp_name       = _T("Транзакты");
 	tstring rtp_param_name = _T("Время_создания");
@@ -63,150 +154,113 @@ void ProcGUIBlock::Create(REF(RPShapeDataBlockCreate) pParams)
 	}
 
 	//! GENERATE
-	switch(pParams.getZakon()) // определяем активные окна исходя из закона
+	switch(m_pParams.getZakon()) // определяем активные окна исходя из закона
 	{
 	case RPShapeDataBlock::Const: // константа 
 		{
-				
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getConstCalc(pParams.getExp()), pParams.getAmount());
-				ASSERT(pBlock);
-				break;
+			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getConstCalc(m_pParams.getExp()), m_pParams.getAmount());
+			ASSERT(m_pBlock);
+			break;
 		}	
 	case RPShapeDataBlock::Normal: // нормальный
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getNormalCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()), pParams.getAmount());
-				ASSERT(pBlock);
-				break;
+			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getNormalCalc(m_pParams.getBase(), m_pParams.getExp(), m_pParams.getDisp()), m_pParams.getAmount());
+			ASSERT(m_pBlock);
+			break;
 		}
 	case RPShapeDataBlock::Uniform: // равномерный закон
 		{
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getUniformCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()), pParams.getAmount());
-				ASSERT(pBlock);
-				break;
+			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getUniformCalc(m_pParams.getBase(), m_pParams.getExp(), m_pParams.getDisp()), m_pParams.getAmount());
+			ASSERT(m_pBlock);
+			break;
 		}
 	case RPShapeDataBlock::Exp: // экспоненциальный
 		{
-				LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess, getExpCalc(pParams.getBase(), pParams.getExp()), pParams.getAmount());
-				ASSERT(pBlock);
-				break;
+			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getExpCalc(m_pParams.getBase(), m_pParams.getExp()), m_pParams.getAmount());
+			ASSERT(m_pBlock);
+			break;
 		}		
 	}
 }
 
-void ProcGUIBlock::Process(REF(RPShapeDataBlockProcess) pParams)
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIBlockTerminate
+// ----------------------------------------------------------------------------
+ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(RPShapeDataBlockTerminate) pParams)
+	: ProcGUIBlock(pProcess, pParams.getName())
+	, m_pParams      (pParams                    )
 {
-	std::list <RPShapeDataBlockProcess::resAction> action = pParams.getAction();
+	m_pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess->getProcess(), static_cast<ruint>(m_pParams.getTermInc()));
+	ASSERT(m_pBlock);
+}
+
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIBlockProcess
+// ----------------------------------------------------------------------------
+ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(RPShapeDataBlockProcess) pParams)
+	: ProcGUIBlock(pProcess, pParams.getName())
+	, m_pParams      (pParams                    )
+{
+	std::list <RPShapeDataBlockProcess::resAction> action = m_pParams.getAction();
 	std::list <RPShapeDataBlockProcess::resAction>::iterator it = action.begin();
 	while(it != action.end())
 	{
-		if(*it == RPShapeDataBlockProcess::Seize)
+		switch(*it)
 		{
-			//захватить
-		}
-		else if(*it == RPShapeDataBlockProcess::Advance)
-		{
-			//задержать
-			Advance(pParams);
-		}
-		else if(*it == RPShapeDataBlockProcess::Release)
-		{
-			//освободить
+			case RPShapeDataBlockProcess::Seize:
+			{
+				break;
+			}
+			case RPShapeDataBlockProcess::Advance:
+			{
+				LPProcGUIBlock m_pBlock;
+				m_pBlock = rdo::Factory<ProcGUIAdvance>::create(pProcess, pRuntime, m_pParams);
+				break;
+			}
+			case RPShapeDataBlockProcess::Release:
+			{
+				break;
+			}
 		}
 		it++;
 	}
 }
 
-void ProcGUIBlock::Advance(REF(RPShapeDataBlockProcess) pParams)
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIAdvance
+// ----------------------------------------------------------------------------
+ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(RPShapeDataBlockProcess) pParams)
+	: ProcGUIBlock(pProcess, pParams.getName()+" "+"Advance")
+	, ProcGUICalc    (pRuntime      )
+	, m_pParams      (pParams       )
 {
-	switch(pParams.getZakon())
+	switch(m_pParams.getZakon()) // определяем активные окна исходя из закона
 	{
-		case RPShapeDataBlock::Const:
+	case RPShapeDataBlock::Const: // константа 
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getConstCalc(pParams.getExp()));
-			ASSERT(pBlock);
+			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getConstCalc(m_pParams.getExp()));
+			ASSERT(m_pBlock);
+			break;
+		}	
+	case RPShapeDataBlock::Normal: // нормальный
+		{
+			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getNormalCalc(m_pParams.getBase(), m_pParams.getExp(), m_pParams.getDisp()));
+			ASSERT(m_pBlock);
 			break;
 		}
-		case RPShapeDataBlock::Normal: 
+	case RPShapeDataBlock::Uniform: // равномерный закон
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getNormalCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
-			ASSERT(pBlock);
+			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getUniformCalc(m_pParams.getBase(), m_pParams.getExp(), m_pParams.getDisp()));
+			ASSERT(m_pBlock);
 			break;
 		}
-		case RPShapeDataBlock::Uniform:
+	case RPShapeDataBlock::Exp: // экспоненциальный
 		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess, getUniformCalc(pParams.getBase(), pParams.getExp(), pParams.getDisp()));
-			ASSERT(pBlock);
+			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getExpCalc(m_pParams.getBase(), m_pParams.getExp()));
+			ASSERT(m_pBlock);
 			break;
-		}
-		case RPShapeDataBlock::Exp:
-		{
-			LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess,  getExpCalc(pParams.getBase(), pParams.getExp()));
-			ASSERT(pBlock);
-			break;
-		}
+		}		
 	}
-}
-
-void ProcGUIBlock::Terminate(REF(RPShapeDataBlockTerminate) pParams)
-{
-	LPIPROCBlock pBlock = F(rdoRuntime::RDOPROCTerminate)::create(m_pProcess, static_cast<int>(pParams.getTermInc()));
-	ASSERT(pBlock);
-}
-
-rdoRuntime::LPRDOCalcConst ProcGUIBlock::getConstCalc(double m_pArg1)
-{
-	rdoRuntime::LPRDOCalcConst pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
-	ASSERT(pCalc);
-	return pCalc;
-}
-
-rdoRuntime::LPRDOCalcFunctionCall ProcGUIBlock::getNormalCalc(int m_pBase,double m_pArg1,double m_pArg2)
-{
-	PTR(rdoRuntime::RandGeneratorNormal) pGenerator = new rdoRuntime::RandGeneratorNormal();
-	rdoRuntime::LPRDOCalcSeqInit m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_pBase, pGenerator);
-	ASSERT(m_pInitCalc);
-	m_pRuntime->addInitCalc(m_pInitCalc);
-	rdoRuntime::LPRDOCalcSeqNext m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextNormal>::create(pGenerator);
-	ASSERT(m_pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
-	ASSERT(pFuctionCall);
-	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
-	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg2);
-	pFuctionCall->addParameter(pArg1);
-	pFuctionCall->addParameter(pArg2);
-	return pFuctionCall;
-}
-
-rdoRuntime::LPRDOCalcFunctionCall ProcGUIBlock::getUniformCalc(int m_pBase,double m_pArg1,double m_pArg2)
-{
-	PTR(rdoRuntime::RandGeneratorUniform) pGenerator = new rdoRuntime::RandGeneratorUniform();
-	rdoRuntime::LPRDOCalcSeqInit m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_pBase, pGenerator);
-	ASSERT(m_pInitCalc);
-	m_pRuntime->addInitCalc(m_pInitCalc);
-	rdoRuntime::LPRDOCalcSeqNext m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextUniform>::create(pGenerator);
-	ASSERT(m_pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
-	ASSERT(pFuctionCall);
-	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
-	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg2);
-	pFuctionCall->addParameter(pArg1);
-	pFuctionCall->addParameter(pArg2);
-	return pFuctionCall;
-}
-
-rdoRuntime::LPRDOCalcFunctionCall ProcGUIBlock::getExpCalc(int m_pBase,double m_pArg1)
-{
-	PTR(rdoRuntime::RandGeneratorExponential) pGenerator = new rdoRuntime::RandGeneratorExponential();
-	rdoRuntime::LPRDOCalcSeqInit m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_pBase, pGenerator);
-	ASSERT(m_pInitCalc);
-	m_pRuntime->addInitCalc(m_pInitCalc);
-	rdoRuntime::LPRDOCalcSeqNext m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextExponential>::create(pGenerator);
-	ASSERT(m_pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
-	ASSERT(pFuctionCall);
-	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
-	pFuctionCall->addParameter(pArg1);
-	return pFuctionCall;
 }
 
 CLOSE_RDO_SIMULATOR_NAMESPACE

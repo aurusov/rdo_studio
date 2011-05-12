@@ -36,11 +36,11 @@ public:
 	void setDisp  (double disp);
 	void setExp   (double exp );
 
-	zakonRaspr getZakon() {return m_zakon;}
-	tstring    getName () {return m_name; }
-	int        getBase () {return m_base; }
-	double     getDisp () {return m_disp; }
-	double     getExp  () {return m_exp;  }
+	zakonRaspr getZakon() const {return m_zakon;}
+	tstring    getName () const {return m_name; }
+	int        getBase () const {return m_base; }
+	double     getDisp () const {return m_disp; }
+	double     getExp  () const {return m_exp;  }
 
 protected:
 
@@ -82,8 +82,8 @@ public:
 
 	void setTermInc(int term_inc);
 
-	int     getTermInc(            ) {return m_term_inc;}
-	tstring getName   (            ) {return m_name;    }
+	int     getTermInc(            ) const {return m_term_inc;}
+	tstring getName   (            ) const {return m_name;    }
 
 private:
 	int     m_term_inc;
