@@ -34,7 +34,7 @@ public:
 	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc    (int p_base,double arg1            );
 
 private:
-	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
+	PTR(rdoRuntime::RDORuntime) m_pRuntime;
 };
 
 // --------------------------------------------------------------------
@@ -45,6 +45,9 @@ PREDECLARE_POINTER(ProcGUIBlock);
 OBJECT(ProcGUIProcess)
 {
 public:
+	static tstring s_name_prefix;
+	static tstring s_name_sufix;
+
 	ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime);
 
 	void     insertBlock(CREF(LPProcGUIBlock) pBlock);
@@ -55,7 +58,7 @@ public:
 private:
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	LPILogic                     m_pProcess;
-	std::list<LPProcGUIBlock> m_blockList;
+	std::list<LPProcGUIBlock>    m_blockList;
 };
 
 // ----------------------------------------------------------------------------
@@ -109,8 +112,9 @@ class ProcGUIBlockProcess: public ProcGUIBlock
 DECLARE_FACTORY(ProcGUIBlockProcess);
 protected:
 	RPShapeDataBlockProcess m_pParams;
+	LPProcGUIBlock          m_pBlock;
 
-	ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(RPShapeDataBlockProcess) pParams);
+	ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(RPShapeDataBlockProcess) pParams);
 };
 
 // ----------------------------------------------------------------------------
@@ -122,9 +126,33 @@ DECLARE_FACTORY(ProcGUIAdvance);
 protected:
 	RPShapeDataBlockProcess m_pParams;
 	LPIPROCBlock            m_pBlock;
+
 private:
 	ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(RPShapeDataBlockProcess) pParams);
 };
+DECLARE_POINTER(ProcGUIAdvance);
+
+// ----------------------------------------------------------------------------
+// ---------- ProcGUISeize
+// ----------------------------------------------------------------------------
+class ProcGUISeize: public ProcGUIBlock
+{
+DECLARE_FACTORY(ProcGUISeize);
+public:
+	void createRuntime();
+	void addResource  (CREF(tstring) name);
+protected:
+
+	rdoParse::LPRDOParser   m_pParser;
+	LPIPROCBlock            m_pBlock;
+	RPShapeDataBlockProcess m_pParams;
+	std::list  <tstring>    m_resList;
+	std::vector<rdoRuntime::parser_for_Seize>  m_parserForRuntime;
+
+private:
+	ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(RPShapeDataBlockProcess) pParams);
+};
+DECLARE_POINTER(ProcGUISeize);
 
 CLOSE_RDO_SIMULATOR_NAMESPACE
 

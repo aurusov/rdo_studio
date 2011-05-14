@@ -201,7 +201,7 @@ private:
 	PTR(rdoRuntime::RDORuntime)     m_pRuntime;
 	rbool                           m_canTrace;
 	LPProcGUIProcess                m_pGUIProcess;
-	LPProcGUIBlock               m_pBlock;
+	LPProcGUIBlock                  m_pBlock;
 	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
 	rdoSimulator::RDOExitCode       m_exitCode;
 
