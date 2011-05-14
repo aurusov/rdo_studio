@@ -49,7 +49,7 @@ public:
 	Container::iterator containerEnd();
 	void insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst);
 	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
-	CREF(RDOValue) operator[] (CREF(RDOValue) ind);
+	CREF(RDOValue) operator[] (CREF(RDOValue) ind) const;
 
 	rsint arraySize();
 

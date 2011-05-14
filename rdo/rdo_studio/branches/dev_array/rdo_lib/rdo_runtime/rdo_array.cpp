@@ -79,7 +79,7 @@ tstring RDOArrayValue::getAsString() const
 	return rdo::format(_T("%s]"), arrayValue.c_str());
 }
 
-CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
+CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind) const
 {
 	return m_container[ind.getInt()];
 }
