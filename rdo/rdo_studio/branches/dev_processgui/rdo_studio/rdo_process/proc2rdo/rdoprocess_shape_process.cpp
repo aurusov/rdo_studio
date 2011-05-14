@@ -86,7 +86,8 @@ void RPShapeProcessMJ::generate()
 			break;
 	}
 
-	params = new RPShapeDataBlockProcess(zakon, gname);
+	params = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
+	ASSERT(params);
 	params->setBase(base_gen);
 	params->setDisp(gdisp);
 	params->setExp(gexp);
@@ -118,5 +119,5 @@ void RPShapeProcessMJ::generate()
 		it++;
 	}
 
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, params);
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, params.get());
 }

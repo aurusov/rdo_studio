@@ -12,12 +12,13 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlock
 // ----------------------------------------------------------------------------
-class RPShapeDataBlock
+OBJECT(RPShapeDataBlock)
 {
 public:
 	enum zakonRaspr
@@ -27,8 +28,6 @@ public:
 		Uniform,
 		Exp
 	};
-
-	RPShapeDataBlock(zakonRaspr zakon, CREF(tstring) name);
 
 	void setBase  (int base   );
 	void setAmount(int amount );
@@ -42,6 +41,9 @@ public:
 	double        getExp  () const { return m_exp;   }
 
 protected:
+	RPShapeDataBlock(zakonRaspr zakon, CREF(tstring) name);
+	virtual ~RPShapeDataBlock() {}
+
 	zakonRaspr m_zakon;
 	tstring    m_name;
 	int        m_base;
@@ -54,31 +56,34 @@ protected:
 // ----------------------------------------------------------------------------
 class RPShapeDataBlockCreate: public RPShapeDataBlock
 {
+DECLARE_FACTORY(RPShapeDataBlockCreate)
 public:
-	 RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
-	~RPShapeDataBlockCreate();
-
 	int  getAmount() const      { return m_amount; }
 	void setAmount(int amount);
 
 private:
+	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
+	virtual ~RPShapeDataBlockCreate();
+
 	int m_amount;
 };
+DECLARE_POINTER(RPShapeDataBlockCreate);
 
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlockTerminate
 // ----------------------------------------------------------------------------
-class RPShapeDataBlockTerminate
+OBJECT(RPShapeDataBlockTerminate)
 {
+DECLARE_FACTORY(RPShapeDataBlockTerminate)
 public:
-	 RPShapeDataBlockTerminate(CREF(tstring) name);
-	~RPShapeDataBlockTerminate();
-
 	void    setTermInc(int term_inc);
 	int     getTermInc() const        { return m_term_inc; }
 	tstring getName   () const        { return m_name;     }
 
 private:
+	RPShapeDataBlockTerminate(CREF(tstring) name);
+	virtual ~RPShapeDataBlockTerminate();
+
 	int     m_term_inc;
 	tstring m_name;
 };
@@ -88,6 +93,7 @@ private:
 // ----------------------------------------------------------------------------
 class RPShapeDataBlockProcess: public RPShapeDataBlock
 {
+DECLARE_FACTORY(RPShapeDataBlockProcess)
 public:
 	enum resAction
 	{
@@ -99,9 +105,6 @@ public:
 	typedef std::list<resAction> ActionList;
 	typedef std::list<tstring  > ResList;
 
-	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
-	~RPShapeDataBlockProcess();
-
 	void addAction(resAction action);
 	void addRes   (CREF(tstring) res);
 	
@@ -109,8 +112,12 @@ public:
 	CREF(ResList)    getRes   () const;
 
 private:
+	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
+	virtual ~RPShapeDataBlockProcess();
+
 	ActionList  m_actions;
 	ResList     m_res;
 };
+DECLARE_POINTER(RPShapeDataBlockProcess);
 
 #endif //! RDO_PROCESS_DATABLOCK_H

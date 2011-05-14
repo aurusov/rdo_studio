@@ -29,7 +29,7 @@ public:
 	virtual void generate();
 
 	//параметры для симулятора
-	PTR(RPShapeDataBlockProcess) params;
+	LPRPShapeDataBlockProcess params;
 	//переменные для генерации
 	tstring gname; // имя
 	

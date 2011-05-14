@@ -20,7 +20,6 @@ static char THIS_FILE[]=__FILE__;
 
 RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	: RPShape_MJ(_parent, _T("Create"))
-	, params    (NULL                 )
 {
 	pa_src.push_back( rp::point(-50, -25) );
 	pa_src.push_back( rp::point(25, -25) );
@@ -90,11 +89,13 @@ void RPShapeCreateMJ::generate()
 			break;
 	}
 
-	params = new RPShapeDataBlockCreate(zakon, gname);
-	params->setBase(base_gen);
-	params->setAmount(gamount);
-	params->setDisp(gdisp);
-	params->setExp(gexp);
-	
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, params);
+	m_pParams = rdo::Factory<RPShapeDataBlockCreate>::create(zakon, gname);
+	m_pParams->setBase(base_gen);
+	m_pParams->setAmount(gamount);
+	m_pParams->setDisp(gdisp);
+	m_pParams->setExp(gexp);
+
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
+
+	m_pParams = NULL;
 }

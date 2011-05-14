@@ -34,7 +34,7 @@ public:
 	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc    (int p_base,double arg1            );
 
 private:
-	PTR(rdoRuntime::RDORuntime) m_pRuntime;
+	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 };
 
 // --------------------------------------------------------------------
@@ -58,7 +58,7 @@ public:
 private:
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	LPILogic                     m_pProcess;
-	std::list<LPProcGUIBlock>    m_blockList;
+	std::list<LPProcGUIBlock> m_blockList;
 };
 
 // ----------------------------------------------------------------------------
@@ -82,12 +82,12 @@ class ProcGUIBlockGenerate: public ProcGUIBlock, public ProcGUICalc
 {
 DECLARE_FACTORY(ProcGUIBlockGenerate);
 protected:
-	LPIPROCBlock           m_pBlock;
-	rdoParse::LPRDOParser  m_pParser;
-	RPShapeDataBlockCreate m_pParams;
+	LPIPROCBlock             m_pBlock;
+	rdoParse::LPRDOParser    m_pParser;
+	LPRPShapeDataBlockCreate m_pParams;
 
 private:
-	ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(RPShapeDataBlockCreate) pParams /*CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc*/);
+	ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams /*CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc*/);
 };
 
 // ----------------------------------------------------------------------------
@@ -97,11 +97,11 @@ class ProcGUIBlockTerminate: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIBlockTerminate);
 protected:
-	LPIPROCBlock              m_pBlock;
-	RPShapeDataBlockTerminate m_pParams;
+	LPIPROCBlock                m_pBlock;
+	LPRPShapeDataBlockTerminate m_pParams;
 
 private:
-	ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(RPShapeDataBlockTerminate) pParams);
+	ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(LPRPShapeDataBlockTerminate) pParams);
 };
 
 // ----------------------------------------------------------------------------
@@ -110,11 +110,11 @@ private:
 class ProcGUIBlockProcess: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIBlockProcess);
-protected:
-	RPShapeDataBlockProcess m_pParams;
-	LPProcGUIBlock          m_pBlock;
+private:
+	LPRPShapeDataBlockProcess m_pParams;
+	LPProcGUIBlock            m_pBlock;
 
-	ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(RPShapeDataBlockProcess) pParams);
+	ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
 };
 
 // ----------------------------------------------------------------------------
@@ -123,12 +123,11 @@ protected:
 class ProcGUIAdvance: public ProcGUIBlock, public ProcGUICalc
 {
 DECLARE_FACTORY(ProcGUIAdvance);
-protected:
-	RPShapeDataBlockProcess m_pParams;
-	LPIPROCBlock            m_pBlock;
-
 private:
-	ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(RPShapeDataBlockProcess) pParams);
+	ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams);
+
+	LPRPShapeDataBlockProcess m_pParams;
+	LPIPROCBlock              m_pBlock;
 };
 DECLARE_POINTER(ProcGUIAdvance);
 
@@ -141,16 +140,15 @@ DECLARE_FACTORY(ProcGUISeize);
 public:
 	void createRuntime();
 	void addResource  (CREF(tstring) name);
-protected:
-
-	rdoParse::LPRDOParser   m_pParser;
-	LPIPROCBlock            m_pBlock;
-	RPShapeDataBlockProcess m_pParams;
-	std::list  <tstring>    m_resList;
-	std::vector<rdoRuntime::parser_for_Seize>  m_parserForRuntime;
 
 private:
-	ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(RPShapeDataBlockProcess) pParams);
+	ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+
+	rdoParse::LPRDOParser     m_pParser;
+	LPIPROCBlock              m_pBlock;
+	LPRPShapeDataBlockProcess m_pParams;
+	std::list  <tstring>      m_resList;
+	std::vector<rdoRuntime::parser_for_Seize>  m_parserForRuntime;
 };
 DECLARE_POINTER(ProcGUISeize);
 

@@ -928,16 +928,21 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		{
 			m_pGUIProcess = rdo::Factory<ProcGUIProcess>::create(m_pRuntime);
 			msg.lock();
-			m_pBlock = rdo::Factory<ProcGUIBlockGenerate>::create(m_pGUIProcess, m_pRuntime, m_pParser, *static_cast<PTR(RPShapeDataBlockCreate)>(msg.param));
-			msg.unlock();
+			PTR(RPShapeDataBlockCreate) pRawParams = static_cast<PTR(RPShapeDataBlockCreate)>(msg.param);
+			LPRPShapeDataBlockCreate pParams(pRawParams);
+			m_pBlock = rdo::Factory<ProcGUIBlockGenerate>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
 			ASSERT(m_pBlock);
+			msg.unlock();
+			m_pBlock = NULL;
 			break;
 		}
 		case RT_PROCGUI_BLOCK_PROCESS:
 		{
 			ASSERT(m_pGUIProcess);
 			msg.lock();
-			m_pBlock = rdo::Factory<ProcGUIBlockProcess>::create(m_pGUIProcess, m_pRuntime, m_pParser, *static_cast<PTR(RPShapeDataBlockProcess)>(msg.param));
+			PTR(RPShapeDataBlockProcess) pRawParams = static_cast<PTR(RPShapeDataBlockProcess)>(msg.param);
+			LPRPShapeDataBlockProcess pParams(pRawParams);
+			m_pBlock = rdo::Factory<ProcGUIBlockProcess>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
 			msg.unlock();
 			ASSERT(m_pBlock);
 			break;
@@ -946,7 +951,9 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		{
 			ASSERT(m_pGUIProcess);
 			msg.lock();
-			m_pBlock = rdo::Factory<ProcGUIBlockTerminate>::create(m_pGUIProcess, *static_cast<PTR(RPShapeDataBlockTerminate)>(msg.param));
+			PTR(RPShapeDataBlockTerminate) pRawParams = static_cast<PTR(RPShapeDataBlockTerminate)>(msg.param);
+			LPRPShapeDataBlockTerminate pParams(pRawParams);
+			m_pBlock = rdo::Factory<ProcGUIBlockTerminate>::create(m_pGUIProcess, pParams);
 			msg.unlock();
 			ASSERT(m_pBlock);
 			break;

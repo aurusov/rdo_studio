@@ -31,7 +31,7 @@ public:
 	virtual void generate();
 
 	//параметры для симулятора
-	PTR(RPShapeDataBlockCreate) params;
+	LPRPShapeDataBlockCreate m_pParams;
 	//переменные для генерации
 	tstring gname; // имя
 	double gfirst; // время первого
