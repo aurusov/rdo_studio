@@ -25,7 +25,7 @@ RDOCalcArraySize::RDOCalcArraySize(CREF(LPRDOCalc) pArray)
 
 REF(RDOValue) RDOCalcArraySize::doCalc(PTR(RDORuntime) pRuntime)
 {
-	RDOValue m_value = m_pArray->calcValue(pRuntime);
+	m_value = m_pArray->calcValue(pRuntime);
 	RDOArrayValue arrayValue = m_value.getArray();
 	rsint aSize = arrayValue.arraySize();
 	m_value = RDOValue(aSize);
@@ -36,16 +36,14 @@ REF(RDOValue) RDOCalcArraySize::doCalc(PTR(RDORuntime) pRuntime)
 // ---------- RDOCalcArrayItem
 // ----------------------------------------------------------------------------
 RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd)
-	: m_pArray   (pArray   ),
-	  m_pArrayInd(pArrayInd)
+	: m_pArray   (pArray   )
+	, m_pArrayInd(pArrayInd)
 {}
 
 REF(RDOValue) RDOCalcArrayItem::doCalc(PTR(RDORuntime) pRuntime)
 {
-	RDOValue m_value = m_pArray->calcValue(pRuntime);
-	RDOArrayValue arrayValue = m_value.getArray();
-	RDOValue arrayInd = m_pArrayInd->calcValue(pRuntime);
-	m_value = arrayValue[arrayInd];
+	CREF(RDOArrayValue) arrayValue = m_pArray->calcValue(pRuntime).getArray();
+	m_value = arrayValue[m_pArrayInd->calcValue(pRuntime)];
 	return m_value;
 }
 
