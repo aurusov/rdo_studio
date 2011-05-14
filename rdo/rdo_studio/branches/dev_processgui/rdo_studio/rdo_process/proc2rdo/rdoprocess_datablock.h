@@ -20,7 +20,6 @@
 class RPShapeDataBlock
 {
 public:
-
 	enum zakonRaspr
 	{
 		Const,
@@ -29,21 +28,20 @@ public:
 		Exp
 	};
 
-	RPShapeDataBlock(zakonRaspr zakon, tstring name);
+	RPShapeDataBlock(zakonRaspr zakon, CREF(tstring) name);
 
 	void setBase  (int base   );
 	void setAmount(int amount );
 	void setDisp  (double disp);
 	void setExp   (double exp );
 
-	zakonRaspr getZakon() const {return m_zakon;}
-	tstring    getName () const {return m_name; }
-	int        getBase () const {return m_base; }
-	double     getDisp () const {return m_disp; }
-	double     getExp  () const {return m_exp;  }
+	zakonRaspr    getZakon() const { return m_zakon; }
+	CREF(tstring) getName () const { return m_name;  }
+	int           getBase () const { return m_base;  }
+	double        getDisp () const { return m_disp;  }
+	double        getExp  () const { return m_exp;   }
 
 protected:
-
 	zakonRaspr m_zakon;
 	tstring    m_name;
 	int        m_base;
@@ -57,18 +55,14 @@ protected:
 class RPShapeDataBlockCreate: public RPShapeDataBlock
 {
 public:
-
-	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, tstring name);
+	 RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
 	~RPShapeDataBlockCreate();
 
+	int  getAmount() const      { return m_amount; }
 	void setAmount(int amount);
 
-	int getAmount() const {return m_amount;}
-
 private:
-
 	int m_amount;
-
 };
 
 // ----------------------------------------------------------------------------
@@ -77,13 +71,12 @@ private:
 class RPShapeDataBlockTerminate
 {
 public:
-	RPShapeDataBlockTerminate(tstring name);
+	 RPShapeDataBlockTerminate(CREF(tstring) name);
 	~RPShapeDataBlockTerminate();
 
-	void setTermInc(int term_inc);
-
-	int     getTermInc(            ) const {return m_term_inc;}
-	tstring getName   (            ) const {return m_name;    }
+	void    setTermInc(int term_inc);
+	int     getTermInc() const        { return m_term_inc; }
+	tstring getName   () const        { return m_name;     }
 
 private:
 	int     m_term_inc;
@@ -96,7 +89,6 @@ private:
 class RPShapeDataBlockProcess: public RPShapeDataBlock
 {
 public:
-
 	enum resAction
 	{
 		Advance,
@@ -104,18 +96,21 @@ public:
 		Release
 	};
 
-	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, tstring name);
+	typedef std::list<resAction> ActionList;
+	typedef std::list<tstring  > ResList;
+
+	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
 	~RPShapeDataBlockProcess();
 
 	void addAction(resAction action);
-	void addRes   (tstring res     );
+	void addRes   (CREF(tstring) res);
 	
-	std::list <resAction> getAction();
-	std::list <tstring  > getRes   ();
+	CREF(ActionList) getAction() const;
+	CREF(ResList)    getRes   () const;
 
 private:
-	std::list <resAction>  m_actions;
-	std::list <tstring  >  m_res;
+	ActionList  m_actions;
+	ResList     m_res;
 };
 
-#endif // RDO_PROCESS_DATABLOCK_H
+#endif //! RDO_PROCESS_DATABLOCK_H

@@ -17,11 +17,10 @@
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlock
 // ----------------------------------------------------------------------------
-RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, tstring name)
-{
-	m_zakon = zakon;
-	m_name  = name;
-}
+RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+	: m_zakon(zakon)
+	, m_name (name )
+{}
 
 void RPShapeDataBlock::setDisp(double disp)
 {
@@ -41,8 +40,8 @@ void RPShapeDataBlock::setBase(int base)
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlockCreate
 // ----------------------------------------------------------------------------
-RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, tstring name)
-	: RPShapeDataBlock(zakon,name)
+RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+	: RPShapeDataBlock(zakon, name)
 {}
 
 RPShapeDataBlockCreate::~RPShapeDataBlockCreate()
@@ -56,7 +55,7 @@ void RPShapeDataBlockCreate::setAmount(int amount)
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlockTerminate
 // ----------------------------------------------------------------------------
-RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(tstring name)
+RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(CREF(tstring) name)
 	:m_name(name)
 {}
 
@@ -71,7 +70,7 @@ void RPShapeDataBlockTerminate::setTermInc(int term_inc)
 // ----------------------------------------------------------------------------
 // ---------- RPShapeDataBlockProcess
 // ----------------------------------------------------------------------------
-RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, tstring name)
+RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
 	: RPShapeDataBlock(zakon,name)
 {}
 
@@ -83,17 +82,17 @@ void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::resAction actio
 	m_actions.push_back(action);
 }
 
-void RPShapeDataBlockProcess::addRes(tstring res)
+void RPShapeDataBlockProcess::addRes(CREF(tstring) res)
 {
 	m_res.push_back(res);
 }
 
-std::list <RPShapeDataBlockProcess::resAction> RPShapeDataBlockProcess::getAction()
+CREF(RPShapeDataBlockProcess::ActionList) RPShapeDataBlockProcess::getAction() const
 {
 	return m_actions;
 }
 
-std::list <tstring> RPShapeDataBlockProcess::getRes()
+CREF(RPShapeDataBlockProcess::ResList) RPShapeDataBlockProcess::getRes() const
 {
 	return m_res;
 }

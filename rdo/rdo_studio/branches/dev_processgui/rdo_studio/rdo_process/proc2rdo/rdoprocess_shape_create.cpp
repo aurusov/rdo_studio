@@ -18,8 +18,9 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
-	RPShape_MJ( _parent, _T("Create") )
+RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
+	: RPShape_MJ(_parent, _T("Create"))
+	, params    (NULL                 )
 {
 	pa_src.push_back( rp::point(-50, -25) );
 	pa_src.push_back( rp::point(25, -25) );
