@@ -2695,7 +2695,7 @@ fun_arithm
 		ASSERT(pArrayType);
 
 		LPTypeInfo pItemType = pArrayType->getItemType();
-		ASSERT(pType);
+		ASSERT(pItemType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pItemType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);

@@ -2970,6 +2970,34 @@ fun_arithm
 
 		$$ = PARSER->stack().push(pArithmArraySize);
 	}
+	| RDO_IDENTIF '[' fun_arithm ']'
+	{
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
+		if (pArithm->typeID() != rdoRuntime::RDOType::t_array)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+		}
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		ASSERT(pCalc);
+
+		LPRDOType pType = pArithm->typeInfo()->type();
+		ASSERT(pType);
+		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
+		ASSERT(pArrayType);
+
+		LPTypeInfo pItemType = pArrayType->getItemType();
+		ASSERT(pItemType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pItemType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPRDOFUNArithm pArithmArrayItem = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithmArrayItem);
+
+		$$ = PARSER->stack().push(pArithmArrayItem);
+	}
 	;
 
 // ----------------------------------------------------------------------------
