@@ -25,10 +25,8 @@ RDOCalcArraySize::RDOCalcArraySize(CREF(LPRDOCalc) pArray)
 
 REF(RDOValue) RDOCalcArraySize::doCalc(PTR(RDORuntime) pRuntime)
 {
-	m_value = m_pArray->calcValue(pRuntime);
-	RDOArrayValue arrayValue = m_value.getArray();
-	rsint aSize = arrayValue.arraySize();
-	m_value = RDOValue(aSize);
+	CREF(RDOArrayValue) arrayValue = m_pArray->calcValue(pRuntime).getArray();
+	m_value = RDOValue(arrayValue.arraySize());
 	return m_value;
 }
 
