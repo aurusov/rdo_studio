@@ -86,7 +86,7 @@ REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) pRuntime)
 		while (m_pCondition->calcValue(pRuntime).getAsBool())
 		{
 			m_value = m_pStatement->calcValue(pRuntime);
-			m_value = m_pExpression->calcValue(pRuntime);
+			m_pExpression->calcValue(pRuntime);
 			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
 			{
 				pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
