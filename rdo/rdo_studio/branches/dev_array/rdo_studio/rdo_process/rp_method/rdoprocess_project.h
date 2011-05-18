@@ -61,7 +61,6 @@ public:
 	virtual ~RPProject();
 
 	virtual std::ofstream& log() const = 0;
-	virtual RPCtrlToolbar* createToolBar( const rp::string& caption ) = 0;
 	virtual RPPixmap*      createBitmap( char* xpm[] ) = 0;
 	virtual void makeFlowChartWnd( RPObjectFlowChart* flowobj ) = 0;
 

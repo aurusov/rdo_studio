@@ -21,7 +21,6 @@ public:
 	virtual ~RPProjectMFC();
 	virtual rp::string getClassName() const { return "RPProjectMFC"; }
 	virtual std::ofstream& log() const;
-	virtual RPCtrlToolbar* createToolBar( const rp::string& caption );
 	virtual RPPixmap*      createBitmap( char* xpm[] );
 	virtual void makeFlowChartWnd( RPObjectFlowChart* flowobj );
 

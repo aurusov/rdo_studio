@@ -9,7 +9,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_shape_MJ.h"
+#include "rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 #include <list>
 
 class RPShapeProcessMJ : public RPShape_MJ
@@ -27,8 +28,10 @@ public:
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
 
-		//переменные для генерации
-	CString gname; // имя
+	//параметры для симулятора
+	LPRPShapeDataBlockProcess params;
+	//переменные для генерации
+	tstring gname; // имя
 	
 	int gtype; // закон прибытия
 	int base_gen;

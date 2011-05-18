@@ -1,9 +1,9 @@
 // rdoprocess_generation_type_MJ.cpp : implementation file
 //
 
-#include "stdafx.h"
-#include "rdoprocess_generation_type_MJ.h"
-#include "rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
+#include "rdoprocess_generation_type.h"
+#include "rdoprocess_method_proc2rdo.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

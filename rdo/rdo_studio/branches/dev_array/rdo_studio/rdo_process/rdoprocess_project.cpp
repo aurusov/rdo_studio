@@ -40,15 +40,6 @@ std::ofstream& RPProjectMFC::log() const
 	return studioApp.log;
 }
 
-RPCtrlToolbar* RPProjectMFC::createToolBar( const rp::string& caption )
-{
-	RPCtrlToolbarMFC* toolbar = new RPCtrlToolbarMFC( studioApp.mainFrame );
-	toolbars.push_back( toolbar );
-	studioApp.mainFrame->insertToolBar( &toolbar->toolbar );
-	toolbar->setCaption( caption );
-	return toolbar;
-}
-
 RPPixmap* RPProjectMFC::createBitmap( char* xpm[] )
 {
 	return new RPPixmap( xpm );

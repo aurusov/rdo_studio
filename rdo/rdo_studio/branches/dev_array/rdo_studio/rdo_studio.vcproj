@@ -546,7 +546,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="7. controls"
+			Name="8. controls"
 			>
 			<Filter
 				Name="CSizingControlBar"
@@ -4562,11 +4562,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\version.h"
+				RelativePath=".\res\trash.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\trash.bmp"
+				RelativePath=".\res\version.h"
 				>
 			</File>
 			<File
@@ -6699,7 +6699,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="8. RDO-Process"
+			Name="7. RDO-Process"
 			>
 			<File
 				RelativePath=".\rdo_process\rdoprocess_childfrm.cpp"

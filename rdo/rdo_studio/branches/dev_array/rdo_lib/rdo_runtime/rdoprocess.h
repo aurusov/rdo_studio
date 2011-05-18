@@ -123,14 +123,19 @@ public:
 	void calcNextTimeInterval( RDOSimulator* sim );
 
 private:
-	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime)
-		: RDOPROCBlock(process)
-		, timeNext    (NULL   )
-		, pTimeCalc   (pTime  )
-	{}
+	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, int maxTransCount=0)
+		: RDOPROCBlock  (process        )
+		, timeNext      (NULL           )
+		, pTimeCalc     (pTime          )
+		, m_maxTransCount(maxTransCount)
+	{
+		m_TransCount = 0;
+	}
 
 	double     timeNext;
 	LPRDOCalc  pTimeCalc;
+	int        m_maxTransCount;
+	int        m_TransCount;
 
 	DECLARE_IBaseOperation;
 };
