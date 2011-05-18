@@ -50,10 +50,10 @@ Bootstrapping is done. To build, run:
 
 3.2. »з корн€ запускаем bjam.exe с параметрами
 дл€ компил€ции дебаговских библиотек
-bjam debug link=static threading=multi
+bjam --toolset=msvc-8.0 debug link=static threading=multi
 
 дл€ компил€ции релизных
-bjam release link=static threading=multi runtime-link=static
+bjam --toolset=msvc-8.0 release link=static threading=multi runtime-link=static
 
 дело это еще более долгое, чем пункт 2, так что тоже не нервничеам;-)
 —обранные либы лежат в 'C:\boost_1_43_0\stage\lib'
