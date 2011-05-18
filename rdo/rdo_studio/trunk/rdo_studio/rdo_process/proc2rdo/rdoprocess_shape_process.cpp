@@ -2,11 +2,11 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 #include <list>
-#include "rdoprocess_shape_process_MJ.h"
-#include "rdoprocess_shape_process_dlg1_MJ.h"
-#include "rdoprocess_method_proc2rdo_MJ.h"
+#include "rdoprocess_shape_process.h"
+#include "rdoprocess_shape_process_dlg1.h"
+#include "rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdostudioapp.h"
 
 #ifdef _DEBUG
@@ -22,7 +22,7 @@ RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent ):
 	RPShape_MJ( _parent, _T("Process") )
 {
 	
-	gname; // имя
+	gname=_T("Process"); // имя
 	
 	gtype = 0;
 	base_gen = 1234567;
@@ -69,11 +69,55 @@ void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeProcessMJ::generate()
 {
-	std::vector <double>  params;
-	params.push_back(static_cast<double>(gtype));
-	params.push_back(static_cast<double>(base_gen));
-	params.push_back(gexp);
-	params.push_back(gdisp);
-	params.push_back(static_cast<double>(action));
-	studioApp.broadcastMessage(RDOThread::RT_PROCGUI_BLOCK_PROCESS,&params);
+	RPShapeDataBlock::zakonRaspr zakon;
+	switch(gtype)
+	{
+		case 0: // константа
+			zakon = RPShapeDataBlock::Const;
+			break;	
+		case 1: // нормальный
+			zakon = RPShapeDataBlock::Normal;
+			break;
+		case 2: // равномерный закон
+			zakon = RPShapeDataBlock::Uniform;
+			break;
+		case 3: // экспоненциальный
+			zakon = RPShapeDataBlock::Exp;
+			break;
+	}
+
+	params = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
+	ASSERT(params);
+	params->setBase(base_gen);
+	params->setDisp(gdisp);
+	params->setExp(gexp);
+
+	switch(action)
+	{
+		case 0://advance
+			params->addAction(RPShapeDataBlockProcess::Advance);
+			break;
+		case 1://sieze,advance,release
+			params->addAction(RPShapeDataBlockProcess::Seize  );
+			params->addAction(RPShapeDataBlockProcess::Advance);
+			params->addAction(RPShapeDataBlockProcess::Release);
+			break;
+		case 2://seize,advance
+			params->addAction(RPShapeDataBlockProcess::Seize  );
+			params->addAction(RPShapeDataBlockProcess::Advance);
+			break;
+		case 3://seize,advance
+			params->addAction(RPShapeDataBlockProcess::Advance);
+			params->addAction(RPShapeDataBlockProcess::Release);
+			break;
+	}
+
+	std::list<CString>::iterator it = list_resource_procMJ.begin();
+	while( it != list_resource_procMJ.end() ) 
+	{
+		params->addRes(static_cast<tstring>(*it));
+		it++;
+	}
+
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, params.get());
 }

@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // rdoprocess_shape_create_dlg1_MJ.h : header file
 //
-#include "rdoprocess_shape_create_MJ.h"
+#include "rdoprocess_shape_create.h"
 
 
 #include "../../resource.h"

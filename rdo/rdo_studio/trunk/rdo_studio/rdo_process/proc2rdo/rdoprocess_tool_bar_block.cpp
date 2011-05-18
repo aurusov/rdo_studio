@@ -1,9 +1,9 @@
 // rdoprocess_tool_bar_blockMJ.cpp : implementation file
 //
 
-#include "stdafx.h"
-#include "rdoprocess_tool_bar_blockMJ.h"
-#include "rdoprocess_shape_create_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
+#include "rdoprocess_tool_bar_block.h"
+#include "rdoprocess_shape_create.h"
 #include "../../resource.h"
 
 #ifdef _DEBUG

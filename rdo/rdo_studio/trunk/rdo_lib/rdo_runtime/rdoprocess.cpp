@@ -171,14 +171,32 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation( RDOSimulator* sim )
 {
 //	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval( sim );
-	RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
-	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-	if ( !tracer->isNull() ) 
+	if(m_maxTransCount > 0 )
+		if(m_TransCount < m_maxTransCount)
+		{
+			PTR(RDOPROCTransact) transact = new RDOPROCTransact( sim, this );
+			m_TransCount++;
+			PTR(RDOTrace) tracer = static_cast<RDORuntime*>(sim)->getTracer();
+			if ( !tracer->isNull() ) 
+			{
+				tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+			}
+			transact->next();
+			return IBaseOperation::BOR_done;
+		}
+		else
+			return IBaseOperation::BOR_done;
+	else
 	{
-		tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+		PTR(RDOPROCTransact) transact = new RDOPROCTransact( sim, this );
+		PTR(RDOTrace) tracer = static_cast<RDORuntime*>(sim)->getTracer();
+		if ( !tracer->isNull() ) 
+		{
+			tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+		}
+		transact->next();
+		return IBaseOperation::BOR_done;
 	}
-	transact->next();
-	return IBaseOperation::BOR_done;
 }
 
 void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )

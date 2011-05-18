@@ -36,6 +36,7 @@
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_common/rdodebug.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 // ===============================================================================
 
 //#ifndef DISABLE_CORBA
@@ -925,27 +926,36 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_PROCGUI_BLOCK_CREATE:
 		{
-			m_pGUIBlock = rdo::Factory<ProcGUIBlock>::create(m_pParser, m_pRuntime);
-			ASSERT(m_pGUIBlock);
+			m_pGUIProcess = rdo::Factory<ProcGUIProcess>::create(m_pRuntime);
 			msg.lock();
-			m_pGUIBlock->Create(*static_cast<PTR(std::vector<double>)>(msg.param));
+			PTR(RPShapeDataBlockCreate) pRawParams = static_cast<PTR(RPShapeDataBlockCreate)>(msg.param);
+			LPRPShapeDataBlockCreate pParams(pRawParams);
+			m_pBlock = rdo::Factory<ProcGUIBlockGenerate>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
+			ASSERT(m_pBlock);
 			msg.unlock();
+			m_pBlock = NULL;
 			break;
 		}
 		case RT_PROCGUI_BLOCK_PROCESS:
 		{
-			ASSERT(m_pGUIBlock);
+			ASSERT(m_pGUIProcess);
 			msg.lock();
-			m_pGUIBlock->Process(*static_cast<PTR(std::vector<double>)>(msg.param));
+			PTR(RPShapeDataBlockProcess) pRawParams = static_cast<PTR(RPShapeDataBlockProcess)>(msg.param);
+			LPRPShapeDataBlockProcess pParams(pRawParams);
+			m_pBlock = rdo::Factory<ProcGUIBlockProcess>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
 			msg.unlock();
+			ASSERT(m_pBlock);
 			break;
 		}
 		case RT_PROCGUI_BLOCK_TERMINATE:
 		{
-			ASSERT(m_pGUIBlock);
+			ASSERT(m_pGUIProcess);
 			msg.lock();
-			m_pGUIBlock->Terminate(*static_cast<PTR(std::vector<double>)>(msg.param));
+			PTR(RPShapeDataBlockTerminate) pRawParams = static_cast<PTR(RPShapeDataBlockTerminate)>(msg.param);
+			LPRPShapeDataBlockTerminate pParams(pRawParams);
+			m_pBlock = rdo::Factory<ProcGUIBlockTerminate>::create(m_pGUIProcess, pParams);
 			msg.unlock();
+			ASSERT(m_pBlock);
 			break;
 		}
 		

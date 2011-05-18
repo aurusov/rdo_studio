@@ -7,7 +7,7 @@
 // rdoprocess_shape_process_dlg1_MJ.h : header file
 //
 #include "../../resource.h"
-#include "rdoprocess_shape_process_MJ.h"
+#include "rdoprocess_shape_process.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg1_MJ dialog
 

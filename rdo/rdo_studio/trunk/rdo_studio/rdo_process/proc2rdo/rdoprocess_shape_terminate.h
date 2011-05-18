@@ -9,7 +9,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_shape_MJ.h"
+#include "rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 
 class RPShapeTerminateMJ : public RPShape_MJ
 {
@@ -19,9 +20,11 @@ private:
 	static RPObject* newObject( RPObject* parent );
 
 public:
-	double m_time;
-	int    m_term_counter;
-	int    m_term_state;//! 0 не осталось транзактов в системе, 1 по времени m_time
+	tstring m_name;
+	int     m_term_inc;
+
+	LPRPShapeDataBlockTerminate params;
+
 	RPShapeTerminateMJ( RPObject* parent );
 	virtual ~RPShapeTerminateMJ();
 

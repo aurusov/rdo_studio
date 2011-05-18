@@ -1,9 +1,9 @@
 // rdoprocess_shape_process_dlg2_MJ.cpp : implementation file
 //
 
-#include "stdafx.h"
-#include "rdoprocess_shape_process_dlg2_MJ.h"
-#include "rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
+#include "rdoprocess_shape_process_dlg2.h"
+#include "rdoprocess_method_proc2rdo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -2,9 +2,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdoprocess_shape_create_MJ.h"
-#include "rdoprocess_shape_create_dlg1_MJ.h"
-#include "rdoprocess_method_proc2rdo_MJ.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create_dlg1.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
 #include "rdo_studio/rdostudioapp.h"
 
@@ -18,8 +18,8 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
-	RPShape_MJ( _parent, _T("Create") )
+RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
+	: RPShape_MJ(_parent, _T("Create"))
 {
 	pa_src.push_back( rp::point(-50, -25) );
 	pa_src.push_back( rp::point(25, -25) );
@@ -31,13 +31,13 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ), 0, "transact" ) );
 
 	// инициализация параметров для генерирования
-	gname; // имя
+	gname=_T("Create"); // имя
 	gfirst=0; // время первого
 	gamount=100; // кол-во создаваемых
 	gtype=0; // закон прибытия
 	base_gen=1234567890;
 	//атрибуты законов
-	gexp=0;
+	gexp=10;
 	gdisp=0;
 
 	//второе окно
@@ -70,52 +70,32 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 	dlg.DoModal();
 }
 
-/*void RPShapeCreateMJ::list_name()
-{
-	RPShape_MJ::list_name();
-	TRACE( "*** Create ***\n" );
-}
-*/
-
-
 void RPShapeCreateMJ::generate()
 {
-	std::vector <double>  params;
-	params.push_back(static_cast<double>(gtype));
-	params.push_back(static_cast<double>(base_gen));
-	params.push_back(gfirst);
-	params.push_back(gamount);
-	params.push_back(gexp);
-	params.push_back(gdisp);
-
-	studioApp.broadcastMessage(RDOThread::RT_PROCGUI_BLOCK_CREATE,&params);
-
-	/*
-	RDOfiles->function <<"имя следующего блока - "<<id_next
-	<<std::endl<<"имя - "<<getName().c_str()
-	<<std::endl<<"время первого - "<<gfirst
-	<<std::endl<< "кол-во создаваемых - "<<gamount
-	<<std::endl<<"закон прибытия - "<<gtype
-	<<std::endl<<"база генератора - "<<base_gen
-	<<std::endl<<"атрибуты закона - "<<"exp - "<<gexp<<" disp"<<gdisp<<" max - " <<gmax<<" min - "<<gmin
-	<<std::endl<<"второе окно! бесконечноть - "<<inf
-	<<std::endl<<"ID группы - "<<gID
-	<<std::endl<<"параметры - "<<"1-  "<<gpar1<< " 2 - "<<gpar2<<" 3 - "<<gpar3;
-	*/
-
-	/*
-	int cur = gtype;
-	switch(cur) // определяем активные окна исходя из закона
+	RPShapeDataBlock::zakonRaspr zakon;
+	switch(gtype)
 	{
-		case 0: // константа 
+		case 0: // константа
+			zakon = RPShapeDataBlock::Const;
 			break;	
 		case 1: // нормальный
+			zakon = RPShapeDataBlock::Normal;
 			break;
 		case 2: // равномерный закон
+			zakon = RPShapeDataBlock::Uniform;
 			break;
 		case 3: // экспоненциальный
+			zakon = RPShapeDataBlock::Exp;
 			break;
-	}*/
+	}
 
+	m_pParams = rdo::Factory<RPShapeDataBlockCreate>::create(zakon, gname);
+	m_pParams->setBase(base_gen);
+	m_pParams->setAmount(gamount);
+	m_pParams->setDisp(gdisp);
+	m_pParams->setExp(gexp);
 
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
+
+	m_pParams = NULL;
 }
