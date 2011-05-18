@@ -231,7 +231,6 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="rdo_studio/rdo_process/proc2rdo/stdafx.h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -240,7 +239,6 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="rdo_studio/rdo_process/proc2rdo/stdafx.h"
 					/>
 				</FileConfiguration>
 			</File>
