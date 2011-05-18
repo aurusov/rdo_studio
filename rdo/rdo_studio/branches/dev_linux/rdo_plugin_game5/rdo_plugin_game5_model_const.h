@@ -1,0 +1,11 @@
+#ifndef RDO_PLUGIN_GAME5_MODEL_CONST
+#define RDO_PLUGIN_GAME5_MODEL_CONST
+
+#define RCDATA_ID       1
+#define PAT_MODEL       0 + RCDATA_ID
+#define RTP_MODEL       1 + RCDATA_ID
+#define FUN_MODEL       2 + RCDATA_ID
+#define SMR_MODEL       3 + RCDATA_ID
+
+#endif // RDO_PLUGIN_GAME5_MODEL_CONST
+
