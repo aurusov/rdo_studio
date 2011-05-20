@@ -152,6 +152,27 @@ private:
 };
 DECLARE_POINTER(ProcGUISeize);
 
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIRelease
+// ----------------------------------------------------------------------------
+class ProcGUIRelease: public ProcGUIBlock
+{
+DECLARE_FACTORY(ProcGUIRelease);
+public:
+	void createRuntime();
+	void addResource  (CREF(tstring) name);
+
+private:
+	ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+
+	rdoParse::LPRDOParser     m_pParser;
+	LPIPROCBlock              m_pBlock;
+	LPRPShapeDataBlockProcess m_pParams;
+	std::list  <tstring>      m_resList;
+	std::vector<rdoRuntime::parser_for_Seize>  m_parserForRuntime;
+};
+DECLARE_POINTER(ProcGUIRelease);
+
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
 #endif //! _PROCGUI_H_
