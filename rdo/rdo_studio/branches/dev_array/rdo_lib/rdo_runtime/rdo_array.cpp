@@ -84,7 +84,7 @@ CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind) const
 	return m_container[ind.getInt()];
 }
 
-rsint RDOArrayValue::arraySize() const
+ruint RDOArrayValue::arraySize() const
 {
 	return m_container.size();
 }

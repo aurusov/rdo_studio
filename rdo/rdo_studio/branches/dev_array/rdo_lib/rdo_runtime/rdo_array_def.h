@@ -51,7 +51,7 @@ public:
 	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
 	CREF(RDOValue) operator[] (CREF(RDOValue) ind) const;
 
-	rsint arraySize() const;
+	ruint arraySize() const;
 
 	tstring getAsString() const;
 	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
