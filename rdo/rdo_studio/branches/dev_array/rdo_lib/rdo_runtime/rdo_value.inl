@@ -886,8 +886,8 @@ inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDO
 {
 	switch (typeID())
 	{
-	case RDOType::t_array : __arrayV ().insertItems(itr.__arrayItr( ).getIterator(), itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); break;
-	case RDOType::t_matrix: __matrixV().insertItems(itr.__matrixItr().getIterator(), itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); break;
+	case RDOType::t_array : __arrayV ().insertItems(itr.__arrayItr( ).getIterator(), itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); return;
+	case RDOType::t_matrix: __matrixV().insertItems(itr.__matrixItr().getIterator(), itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); return;
 	}
 	throw RDOValueException();	
 }
@@ -896,8 +896,8 @@ inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
 {
 	switch (typeID())
 	{
-	case RDOType::t_array : __arrayV ().eraseItems(itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); break;
-	case RDOType::t_matrix: __matrixV().eraseItems(itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); break;
+	case RDOType::t_array : __arrayV ().eraseItems(itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); return;
+	case RDOType::t_matrix: __matrixV().eraseItems(itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); return;
 	}
 	throw RDOValueException();
 }
@@ -909,7 +909,7 @@ inline void RDOValue::setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item)
 		case RDOType::t_array :
 			{
 				__arrayV().setArrayItem(ind, item);
-				break;
+				return;
 			}
 	}
 	throw RDOValueException();
