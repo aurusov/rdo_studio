@@ -54,6 +54,7 @@ public:
 	rsint arraySize() const;
 
 	tstring getAsString() const;
+	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
 	Container       m_container;

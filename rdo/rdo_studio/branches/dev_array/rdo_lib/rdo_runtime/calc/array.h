@@ -47,6 +47,22 @@ private:
 	DECALRE_ICalc;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcSetArrayItem
+// ----------------------------------------------------------------------------
+CALC(RDOCalcSetArrayItem)
+{
+	DECLARE_FACTORY(RDOCalcSetArrayItem)
+private:
+	RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pSetItem);
+
+	LPRDOCalc m_pArray;
+	LPRDOCalc m_pArrayInd;
+	LPRDOCalc m_pSetItem;
+
+	DECALRE_ICalc;
+};
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif //! _RDOCALC_ARRAY_H_

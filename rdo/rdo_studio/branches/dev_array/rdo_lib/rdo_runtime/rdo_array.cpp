@@ -89,6 +89,11 @@ rsint RDOArrayValue::arraySize() const
 	return m_container.size();
 }
 
+void RDOArrayValue::setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item)
+{
+	m_container[ind.getInt()] = item;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOArrayIterator
 // ----------------------------------------------------------------------------

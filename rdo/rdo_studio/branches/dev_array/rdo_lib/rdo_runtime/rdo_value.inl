@@ -902,6 +902,19 @@ inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
 	throw RDOValueException();
 }
 
+inline void RDOValue::setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item)
+{
+	switch (typeID())
+	{
+		case RDOType::t_array :
+			{
+				__arrayV().setArrayItem(ind, item);
+				break;
+			}
+	}
+	throw RDOValueException();
+}
+
 inline CREF(LPRDOType) RDOValue::type() const
 {
 	return m_pType;

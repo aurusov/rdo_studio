@@ -1452,6 +1452,11 @@ statement
 	{
 		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
+	| set_array_item_statement ';'
+	| set_array_item_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
 	| local_variable_declaration ';'
 	| local_variable_declaration error
 	{
@@ -1859,6 +1864,35 @@ equal_statement
 	| RDO_IDENTIF error fun_arithm
 	{
 		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
+	}
+	;
+
+set_array_item_statement
+	: RDO_IDENTIF '[' fun_arithm ']' '=' fun_arithm
+	{
+		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		LPRDOFUNArithm pArithmInd   = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($6);
+		if (pArrayArithm->typeID() != rdoRuntime::RDOType::t_array)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+		}
+
+		LPRDOType pType = pArrayArithm->typeInfo()->type();
+		ASSERT(pType);
+		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
+		ASSERT(pArrayType);
+
+		LPTypeInfo pItemType = pArrayType->getItemType()->type_cast(pRightArithm->typeInfo(),RDOParserSrcInfo(@1));
+		ASSERT(pItemType);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pCalc);
 	}
 	;
 

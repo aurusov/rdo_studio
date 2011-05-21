@@ -45,4 +45,20 @@ REF(RDOValue) RDOCalcArrayItem::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcSetArrayItem
+// ----------------------------------------------------------------------------
+RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pSetItem)
+	: m_pArray   (pArray   )
+	, m_pArrayInd(pArrayInd)
+	, m_pSetItem (pSetItem )
+{}
+
+REF(RDOValue) RDOCalcSetArrayItem::doCalc(PTR(RDORuntime) pRuntime)
+{
+	m_value = m_pArray->calcValue(pRuntime);
+	m_value.setArrayItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime));
+	return m_value;
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE
