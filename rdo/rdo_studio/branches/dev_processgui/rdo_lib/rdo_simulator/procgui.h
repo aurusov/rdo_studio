@@ -173,6 +173,46 @@ private:
 };
 DECLARE_POINTER(ProcGUIRelease);
 
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIQueue
+// ----------------------------------------------------------------------------
+class ProcGUIQueue: public ProcGUIBlock
+{
+DECLARE_FACTORY(ProcGUIQueue);
+public:
+	void createRuntime();
+	void setResource  (CREF(tstring) name);
+
+private:
+	ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(tstring) name);
+
+	tstring                   m_resourceName;
+	rdoParse::LPRDOParser     m_pParser;
+	LPIPROCBlock              m_pBlock;
+	rdoRuntime::parser_for_Queue m_parserForRuntime;
+};
+DECLARE_POINTER(ProcGUIQueue);
+
+// ----------------------------------------------------------------------------
+// ---------- ProcGUIDepart
+// ----------------------------------------------------------------------------
+class ProcGUIDepart: public ProcGUIBlock
+{
+DECLARE_FACTORY(ProcGUIDepart);
+public:
+	void createRuntime();
+	void setResource  (CREF(tstring) name);
+
+private:
+	ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(tstring) name);
+
+	tstring                   m_resourceName;
+	rdoParse::LPRDOParser     m_pParser;
+	LPIPROCBlock              m_pBlock;
+	rdoRuntime::parser_for_Queue m_parserForRuntime;
+};
+DECLARE_POINTER(ProcGUIDepart);
+
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
 #endif //! _PROCGUI_H_
