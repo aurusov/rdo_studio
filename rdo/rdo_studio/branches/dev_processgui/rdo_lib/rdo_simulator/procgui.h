@@ -25,16 +25,19 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 class ProcGUICalc
 {
 public:
-	ProcGUICalc(PTR(rdoRuntime::RDORuntime) pRuntime);
+	ProcGUICalc(PTR(rdoRuntime::RDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams);
 	virtual ~ProcGUICalc();
 
 	rdoRuntime::LPRDOCalcConst        ProcGUICalc::getConstCalc  (double arg                        );
 	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getNormalCalc (int p_base,double arg1,double arg2);
 	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getUniformCalc(int p_base,double arg1,double arg2);
 	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc    (int p_base,double arg1            );
+	rdoRuntime::LPRDOCalc             ProcGUICalc::getCalc();
 
 private:
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
+	LPRPShapeDataBlock           m_pParams;
+	rdoRuntime::LPRDOCalc        m_pCalc;
 };
 
 // --------------------------------------------------------------------

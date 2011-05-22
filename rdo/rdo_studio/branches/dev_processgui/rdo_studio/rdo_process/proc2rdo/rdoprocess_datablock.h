@@ -20,6 +20,7 @@
 // ----------------------------------------------------------------------------
 OBJECT(RPShapeDataBlock)
 {
+DECLARE_FACTORY(RPShapeDataBlock);
 public:
 	enum zakonRaspr
 	{

@@ -20,10 +20,35 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 // --------------------------------------------------------------------
 // ---------- ProcGUICalc
 // --------------------------------------------------------------------
-ProcGUICalc::ProcGUICalc(PTR(rdoRuntime::RDORuntime) pRuntime)
+ProcGUICalc::ProcGUICalc(PTR(rdoRuntime::RDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams)
 	: m_pRuntime(pRuntime)
+	, m_pParams(pParams)
 {
 	ASSERT(m_pRuntime);
+	ASSERT(m_pParams);
+	switch(pParams->getZakon())
+	{
+		case RPShapeDataBlock::Const: // константа 
+		{
+			m_pCalc = static_cast<rdoRuntime::LPRDOCalc>(getConstCalc(pParams->getExp()));
+			break;
+		}	
+		case RPShapeDataBlock::Normal: // нормальный
+		{
+			m_pCalc = static_cast<rdoRuntime::LPRDOCalc>(getNormalCalc(pParams->getBase(),pParams->getExp(),pParams->getDisp()));
+			break;
+		}
+		case RPShapeDataBlock::Uniform: // равномерный закон
+		{
+			m_pCalc = static_cast<rdoRuntime::LPRDOCalc>(getUniformCalc(pParams->getBase(),pParams->getExp(),pParams->getDisp()));
+			break;
+		}
+		case RPShapeDataBlock::Exp: // экспоненциальный
+		{
+			m_pCalc = static_cast<rdoRuntime::LPRDOCalc>(getExpCalc(pParams->getBase(),pParams->getExp()));
+			break;
+		}
+	}
 }
 
 ProcGUICalc::~ProcGUICalc()
@@ -34,6 +59,11 @@ rdoRuntime::LPRDOCalcConst ProcGUICalc::getConstCalc(double m_pArg1)
 	rdoRuntime::LPRDOCalcConst pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
 	ASSERT(pCalc);
 	return pCalc;
+}
+
+rdoRuntime::LPRDOCalc ProcGUICalc::getCalc()
+{
+	return m_pCalc;
 }
 
 rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getNormalCalc(int m_pBase,double m_pArg1,double m_pArg2)
@@ -128,7 +158,7 @@ ProcGUIBlock::~ProcGUIBlock()
 // ----------------------------------------------------------------------------
 ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams/* CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc*/)
 	: ProcGUIBlock(pProcess, pParams->getName())
-	, ProcGUICalc (pRuntime)
+	, ProcGUICalc (pRuntime, pParams)
 	, m_pParser   (pParser )
 	, m_pParams   (pParams )
 {
@@ -158,33 +188,8 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(
 	}
 
 	//! GENERATE
-	switch(m_pParams->getZakon()) // определяем активные окна исходя из закона
-	{
-	case RPShapeDataBlock::Const: // константа 
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getConstCalc(m_pParams->getExp()), m_pParams->getAmount());
-			ASSERT(m_pBlock);
-			break;
-		}	
-	case RPShapeDataBlock::Normal: // нормальный
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getNormalCalc(m_pParams->getBase(), m_pParams->getExp(), m_pParams->getDisp()), m_pParams->getAmount());
-			ASSERT(m_pBlock);
-			break;
-		}
-	case RPShapeDataBlock::Uniform: // равномерный закон
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getUniformCalc(m_pParams->getBase(), m_pParams->getExp(), m_pParams->getDisp()), m_pParams->getAmount());
-			ASSERT(m_pBlock);
-			break;
-		}
-	case RPShapeDataBlock::Exp: // экспоненциальный
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getExpCalc(m_pParams->getBase(), m_pParams->getExp()), m_pParams->getAmount());
-			ASSERT(m_pBlock);
-			break;
-		}		
-	}
+	m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(m_pProcess->getProcess(), getCalc(), m_pParams->getAmount());
+	ASSERT(m_pBlock);
 }
 
 // ----------------------------------------------------------------------------
@@ -218,7 +223,6 @@ ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rd
 		{
 			case RPShapeDataBlockProcess::Seize:
 			{
-			
 				LPProcGUISeize pSeize = rdo::Factory<ProcGUISeize>::create(m_pProcess, pParser, m_pParams);
 				ASSERT(pSeize);
 				pSeize->createRuntime();
@@ -257,36 +261,11 @@ ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rd
 // ----------------------------------------------------------------------------
 ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams)
 	: ProcGUIBlock(pProcess, rdo::format(_T("%s Advance"), pParams->getName().c_str()))
-	, ProcGUICalc (pRuntime)
+	, ProcGUICalc (pRuntime, pParams)
 	, m_pParams   (pParams )
 {
-	switch(m_pParams->getZakon()) // определяем активные окна исходя из закона
-	{
-	case RPShapeDataBlock::Const: // константа 
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getConstCalc(m_pParams->getExp()));
-			ASSERT(m_pBlock);
-			break;
-		}	
-	case RPShapeDataBlock::Normal: // нормальный
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getNormalCalc(m_pParams->getBase(), m_pParams->getExp(), m_pParams->getDisp()));
-			ASSERT(m_pBlock);
-			break;
-		}
-	case RPShapeDataBlock::Uniform: // равномерный закон
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getUniformCalc(m_pParams->getBase(), m_pParams->getExp(), m_pParams->getDisp()));
-			ASSERT(m_pBlock);
-			break;
-		}
-	case RPShapeDataBlock::Exp: // экспоненциальный
-		{
-			m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getExpCalc(m_pParams->getBase(), m_pParams->getExp()));
-			ASSERT(m_pBlock);
-			break;
-		}		
-	}
+	m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(m_pProcess->getProcess(), getCalc());
+	ASSERT(m_pBlock);
 }
 
 // ----------------------------------------------------------------------------
