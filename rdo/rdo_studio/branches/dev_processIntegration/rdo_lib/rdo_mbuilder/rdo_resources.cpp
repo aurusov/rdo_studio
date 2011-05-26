@@ -216,7 +216,7 @@ rbool RDOResTypeList::append(REF(RDOResType) rtp)
 	if (std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResType>(rtp.name())) != end())
 		return false;
 
-	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_pParser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
+	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_pParser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent(), true, false);
 	STL_FOR_ALL_CONST(rtp.m_params, param)
 	{
 		rdoParse::LPTypeInfo pParamType;

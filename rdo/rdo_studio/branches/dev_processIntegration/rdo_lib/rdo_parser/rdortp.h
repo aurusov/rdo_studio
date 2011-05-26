@@ -31,6 +31,7 @@ void rtperror(PTR(char) mes);
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParser);
+PREDECLARE_POINTER(RDORSSResource);
 
 OBJECT(RDORTPResType) IS INSTANCE_OF(RDOParserSrcInfo)
 {
@@ -44,6 +45,10 @@ public:
 	rsint         getNumber  () const   { return m_number;     };
 	rbool         isPermanent() const   { return m_permanent;  };
 	rbool         isTemporary() const   { return !m_permanent; };
+	rbool         isTransact () const   { return !m_transact;  };
+	rbool         isProcRes  () const   { return !m_procres;   };
+
+	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
 	void addParam(CREF(LPRDORTPParam) param);
 	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
@@ -55,11 +60,13 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 private:
-	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, rbool transact, rbool procres);
 	virtual ~RDORTPResType();
 
 	const rsint  m_number;
 	const rbool  m_permanent;
+	const rbool  m_transact;
+	const rbool  m_procres;
 	ParamList    m_params;
 };
 DECLARE_POINTER(RDORTPResType);

@@ -282,7 +282,7 @@ rtp_header
 			PARSER->error().push_only(_rtp->src_info(), _T("См. первое определение"));
 			PARSER->error().push_done();
 		}
-		LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $3 != 0);
+		LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $3 != 0, false, false);
 		ASSERT(pResourceType);
 		$$ = PARSER->stack().push(pResourceType);
 	}
@@ -304,7 +304,7 @@ rtp_header
 
 		if (_rtp_prnt)
 		{
-			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $4 != 0);
+			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $4 != 0, false, false);
 			ASSERT(pResourceType);
 			ruint t_ind   = 0;
 			ruint col_par = _rtp_prnt->getParams().size();

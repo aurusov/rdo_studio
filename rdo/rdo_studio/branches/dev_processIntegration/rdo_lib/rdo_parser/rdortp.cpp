@@ -32,16 +32,27 @@ void rtperror(PTR(char) mes)
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, rbool transact, rbool procres)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
+	, m_transact      (transact            )
+	, m_procres       (procres             )
 {
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
 
 RDORTPResType::~RDORTPResType()
 {}
+
+LPRDORSSResource RDORTPResType::createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info)
+{
+	if (isTransact())
+		return rdo::Factory<RDOPROCTransact>::create(pParser, src_info, this);
+	if (isProcRes())
+		return rdo::Factory<RDOPROCResource>::create(pParser, src_info, this);
+	return rdo::Factory<RDORSSResource>::create(pParser, src_info, this);
+}
 
 void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
