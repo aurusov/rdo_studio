@@ -133,6 +133,12 @@ ProcGUIProcess::ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime)
 ProcGUIProcess::~ProcGUIProcess()
 {}
 
+void ProcGUIProcess::clear()
+{
+	m_pProcess = NULL;
+	m_blockList.clear();
+}
+
 void ProcGUIProcess::insertBlock(CREF(LPProcGUIBlock) pBlock)
 {
 	ASSERT(pBlock);

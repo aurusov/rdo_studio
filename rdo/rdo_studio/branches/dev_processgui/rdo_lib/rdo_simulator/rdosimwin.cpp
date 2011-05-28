@@ -961,6 +961,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			m_pBlock = rdo::Factory<ProcGUIBlockTerminate>::create(m_pGUIProcess, pParams);
 			msg.unlock();
 			ASSERT(m_pBlock);
+			m_pGUIProcess->clear();
 			m_pGUIProcess = NULL;
 			pRawParams    = NULL;
 			m_pBlock      = NULL;

@@ -52,16 +52,17 @@ public:
 	static tstring s_name_prefix;
 	static tstring s_name_sufix;
 
+	void     clear      ();
 	void     insertBlock(CREF(LPProcGUIBlock) pBlock);
-	LPILogic getProcess () {return m_pProcess;}
+	LPILogic getProcess () { return m_pProcess; }
 
 private:
 	ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime);
 	virtual ~ProcGUIProcess();
 
-	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
-	LPILogic                     m_pProcess;
-	std::list<LPProcGUIBlock> m_blockList;
+	PTR(rdoRuntime::RDORuntime) m_pRuntime;
+	LPILogic                    m_pProcess;
+	std::list<LPProcGUIBlock>   m_blockList;
 };
 
 // ----------------------------------------------------------------------------
