@@ -168,7 +168,7 @@ bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
 	{
 		if(m_TransCount < m_maxTransCount)
 			return sim->getCurrentTime() >= timeNext ? true : false;
-		else 
+		else
 			return false;
 	}
 	else
