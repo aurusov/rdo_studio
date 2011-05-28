@@ -47,18 +47,18 @@ PREDECLARE_POINTER(ProcGUIBlock);
 
 OBJECT(ProcGUIProcess)
 {
+DECLARE_FACTORY(ProcGUIProcess);
 public:
 	static tstring s_name_prefix;
 	static tstring s_name_sufix;
 
-	ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime);
-
 	void     insertBlock(CREF(LPProcGUIBlock) pBlock);
-	LPILogic getProcess (                              ) {return m_pProcess;}
-
-	virtual ~ProcGUIProcess();
+	LPILogic getProcess () {return m_pProcess;}
 
 private:
+	ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime);
+	virtual ~ProcGUIProcess();
+
 	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
 	LPILogic                     m_pProcess;
 	std::list<LPProcGUIBlock> m_blockList;
@@ -91,6 +91,7 @@ protected:
 
 private:
 	ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams /*CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc*/);
+	virtual ~ProcGUIBlockGenerate();
 };
 
 // ----------------------------------------------------------------------------

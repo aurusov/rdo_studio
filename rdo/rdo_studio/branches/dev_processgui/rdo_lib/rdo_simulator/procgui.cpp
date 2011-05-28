@@ -192,6 +192,9 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(
 	ASSERT(m_pBlock);
 }
 
+ProcGUIBlockGenerate::~ProcGUIBlockGenerate()
+{}
+
 // ----------------------------------------------------------------------------
 // ---------- ProcGUIBlockTerminate
 // ----------------------------------------------------------------------------
