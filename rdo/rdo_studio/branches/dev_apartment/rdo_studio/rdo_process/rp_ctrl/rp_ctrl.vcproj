@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="rp_ctrl"
 	ProjectGUID="{6EA136E5-E2E9-45C3-AF41-93EB339894BE}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="rp_method"
 	ProjectGUID="{E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62}"
 	RootNamespace="rp_method"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
