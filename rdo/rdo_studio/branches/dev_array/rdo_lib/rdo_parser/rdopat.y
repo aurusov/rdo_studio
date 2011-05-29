@@ -1886,8 +1886,36 @@ set_array_item_statement
 		LPTypeInfo pItemType = pArrayType->getItemType()->type_cast(pRightArithm->typeInfo(),RDOParserSrcInfo(@1));
 		ASSERT(pItemType);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
-		ASSERT(pCalc);
+		rdoRuntime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
+		ASSERT(pArrayItemCalc);
+		
+		tstring               paramName    = RDOVALUE($1)->getIdentificator();
+		LPRDORelevantResource pRelRes      = PARSER->getLastPATPattern()->m_pCurrRelRes;
+		ASSERT(pRelRes);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+		rdoRuntime::LPRDOCalc pCalc;
+		if (pLocalVariable)
+		{
+
+			pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_EQUAL> >::create(paramName, pArrayItemCalc);
+
+		}
+		else
+		{
+			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
+			ASSERT(pParam);
+
+			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
+			ASSERT(pCalc);
+			pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
+			pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+		}
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
