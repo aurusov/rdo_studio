@@ -65,6 +65,17 @@ bjam --toolset=msvc-8.0 release link=static threading=multi runtime-link=static
 bjam release link=static threading=multi runtime-link=static
 
 дело это еще более долгое, чем пункт 2, так что тоже не нервничеам;-)
+чтобы ускорить процесс можно добавить флаг
+-j N
+где N - количество потоков компиляции,
+для i7 пишем
+bjam debug link=static threading=multi -j 8
+bjam release link=static threading=multi runtime-link=static -j 8
+
+для i5 пишем
+bjam debug link=static threading=multi -j 4
+bjam release link=static threading=multi runtime-link=static -j 4
+
 Собранные либы лежат в 'C:\boost_1_43_0\stage\lib'
 
 4. Запускаем Visual Studio, заходим в настройки
@@ -82,6 +93,14 @@ Show Directories for = Library Files
 C:\boost_1_43_0\stage\lib
 
 Теперь можно компилировать rao_studio.
+
+5. Если потребуется пересобрать буст, то
+
+5.1 bjam --clean-all
+5.2 удаляем папку lib из C:\boost_1_43_0\bin.v2
+5.3 удаляем папку lib из C:\boost_1_43_0\stage
+
+и повторяем шаг 3
 
 PS: Уже не в первый раз понадобилось описание имён бибилиотек, вот оно
 http://www.boost.org/doc/libs/1_45_0/more/getting_started/unix-variants.html#library-naming
