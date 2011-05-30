@@ -49,11 +49,20 @@ Bootstrapping is done. To build, run:
 ѕовтор€ем 3.1.
 
 3.2. »з корн€ запускаем bjam.exe с параметрами
-дл€ компил€ции дебаговских библиотек
+
+3.2.1
+дл€ компил€ции дебаговских библиотек дл€ Visual Stusio 2005 SP1
 bjam --toolset=msvc-8.0 debug link=static threading=multi
 
-дл€ компил€ции релизных
+дл€ остальный версий Visual Stusio
+bjam debug link=static threading=multi
+
+3.2.2
+дл€ компил€ции релизных дл€ Visual Stusio 2005 SP1
 bjam --toolset=msvc-8.0 release link=static threading=multi runtime-link=static
+
+дл€ остальный версий Visual Stusio
+bjam release link=static threading=multi runtime-link=static
 
 дело это еще более долгое, чем пункт 2, так что тоже не нервничеам;-)
 —обранные либы лежат в 'C:\boost_1_43_0\stage\lib'
