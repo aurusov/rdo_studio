@@ -67,7 +67,7 @@ class RDOPROCProcess;
 class RDOPMDPokaz;
 class RDOPattern;
 class RDOFRMFrame;
-class RDOCalcCreateNumberedResource;
+class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
 class RDORuntime: public RDOSimulatorTrace

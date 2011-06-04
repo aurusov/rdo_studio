@@ -20,6 +20,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -518,46 +519,19 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateNumberedResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
 // ----------------------------------------------------------------------------
-CALC(RDOCalcCreateNumberedResource)
+CALC(RDOCalcCreateResource)
 {
-DECLARE_FACTORY(RDOCalcCreateNumberedResource)
-public:
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
-
-	ruint getNumber() const { return number; }
-
+DECLARE_FACTORY(RDOCalcCreateResource)
 protected:
-	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+	RDOCalcCreateResource(PTR(RDOResourceType) _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
 
-	int                    type;
+	PTR(RDOResourceType)   pType;
 	rbool                  traceFlag;
 	std::vector<RDOValue>  paramsCalcs;
 	ruint                  number;
 	rbool                  isPermanent;
 
 	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateProcessTransact (создание нового ресурса-транзакта)
-// ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcCreateProcessTransact, RDOCalcCreateNumberedResource)
-{
-DECLARE_FACTORY(RDOCalcCreateProcessTransact)
-private:
-	RDOCalcCreateProcessTransact(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateProcessResource (SEIZE: создание нового ресурса процесса)
-// ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcCreateProcessResource, RDOCalcCreateNumberedResource)
-{
-DECLARE_FACTORY(RDOCalcCreateProcessResource)
-private:
-	RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
 };
 
 // ----------------------------------------------------------------------------

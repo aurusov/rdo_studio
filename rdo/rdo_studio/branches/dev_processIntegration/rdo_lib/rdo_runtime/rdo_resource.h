@@ -1,3 +1,11 @@
+/**
+ @file    rdo_resource.h
+ @authors Урусов Андрей, Лущан Дмитрий
+ @date    03.06.2011
+ @brief   Ресурсы и типы ресурсов в runtime
+ @indent  4T
+ */
+
 #ifndef RDO_RESOURCE_H
 #define RDO_RESOURCE_H
 
@@ -9,6 +17,7 @@ namespace rdoRuntime
 {
 
 class RDORuntime;
+class RDOResource;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
@@ -17,6 +26,7 @@ class RDOResourceType: public RDORuntimeObject, public RDOTraceableObject
 {
 public:
 	RDOResourceType( RDORuntimeParent* parent );
+	PTR(RDOResource) RDOResourceType::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -24,6 +34,7 @@ public:
 // ----------------------------------------------------------------------------
 class RDOResource: public RDORuntimeObject, public RDOTraceableObject, public RDORuntimeContainer
 {
+friend class RDOResourceType;
 public:
 	enum ConvertStatus {
 		CS_None = 0,

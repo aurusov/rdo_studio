@@ -30,10 +30,10 @@ REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource
+// ---------- RDOCalcCreateResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: type       (_type       )
+RDOCalcCreateResource::RDOCalcCreateResource(PTR(RDOResourceType) _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: pType      (_type       )
 	, traceFlag  (_traceFlag  )
 	, number     (_number     )
 	, isPermanent(_isPermanent)
@@ -41,44 +41,15 @@ RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, rbool _t
 	paramsCalcs.insert(paramsCalcs.begin(), _paramsCalcs.begin(), _paramsCalcs.end());
 }
 
-REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcCreateResource::doCalc(PTR(RDORuntime) runtime)
 {
-	PTR(RDOResource) res = runtime->createNewResource(type, this);
+	PTR(RDOResource) res = pType->createRes(runtime, 0/**@TODO вместо 0 вызвать функцию, дающую ID*/, true);
 	if (!isPermanent)
 	{
 		res->makeTemporary(true);
 	}
 	res->appendParams(paramsCalcs.begin(), paramsCalcs.end());
 	return m_value; // just to return something
-}
-
-PTR(RDOResource) RDOCalcCreateNumberedResource::createResource(PTR(RDORuntime) runtime) const
-{
-	return new RDOResource(runtime, number, type, traceFlag);
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateProcessResource
-// ----------------------------------------------------------------------------
-RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: RDOCalcCreateNumberedResource(_type, _traceFlag, _paramsCalcs, _number, _isPermanent)
-{}
-
-PTR(RDOResource) RDOCalcCreateProcessResource::createResource(PTR(RDORuntime) runtime) const
-{
-	return new RDOPROCResource(runtime, number, type, traceFlag);
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateProcessTransact
-// ----------------------------------------------------------------------------
-RDOCalcCreateProcessTransact::RDOCalcCreateProcessTransact(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-: RDOCalcCreateNumberedResource(_type, _traceFlag, _paramsCalcs, _number, _isPermanent)
-{}
-
-PTR(RDOResource) RDOCalcCreateProcessTransact::createResource(PTR(RDORuntime) runtime) const
-{
-	return new RDOPROCTransact(runtime, number, type, traceFlag);
 }
 
 // ----------------------------------------------------------------------------
@@ -94,9 +65,10 @@ RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, rbool _traceFl
 
 REF(RDOValue) RDOCalcCreateEmptyResource::doCalc(PTR(RDORuntime) runtime)
 {
-	PTR(RDOResource) res = runtime->createNewResource(type, traceFlag);
-	runtime->getCurrentActivity()->setRelRes(rel_res_id, res->getTraceID());
-	res->appendParams(params_default.begin(), params_default.end());
+	NEVER_REACH_HERE;
+//	PTR(RDOResource) res = runtime->createNewResource(type, traceFlag);
+	//runtime->getCurrentActivity()->setRelRes(rel_res_id, res->getTraceID());
+	//res->appendParams(params_default.begin(), params_default.end());
 	return m_value; // just to return something
 }
 

@@ -45,8 +45,6 @@ public:
 	rsint         getNumber  () const   { return m_number;     };
 	rbool         isPermanent() const   { return m_permanent;  };
 	rbool         isTemporary() const   { return !m_permanent; };
-	rbool         isTransact () const   { return !m_transact;  };
-	rbool         isProcRes  () const   { return !m_procres;   };
 
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
@@ -60,13 +58,11 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 private:
-	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, rbool transact, rbool procres);
+	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
 	const rsint  m_number;
 	const rbool  m_permanent;
-	const rbool  m_transact;
-	const rbool  m_procres;
 	ParamList    m_params;
 };
 DECLARE_POINTER(RDORTPResType);

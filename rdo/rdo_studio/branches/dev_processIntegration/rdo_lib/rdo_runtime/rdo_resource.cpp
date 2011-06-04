@@ -14,6 +14,11 @@ RDOResourceType::RDOResourceType( RDORuntimeParent* parent ):
 {
 }
 
+PTR(RDOResource) RDOResourceType::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const
+{
+	return new RDOResource(rt, id, this->getTraceID(), trace);
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
