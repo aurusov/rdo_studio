@@ -8,11 +8,11 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
 // ----------------------------------------------------------------------------
-RDOResourceType::RDOResourceType( RDORuntimeParent* parent ):
-	RDORuntimeObject( parent ),
-	RDOTraceableObject( false )
-{
-}
+RDOResourceType::RDOResourceType(rsint number, RDORuntimeParent* parent)
+	: RDORuntimeObject  (parent)
+	, RDOTraceableObject(false )
+	, m_id              (number)
+{}
 
 PTR(RDOResource) RDOResourceType::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const
 {

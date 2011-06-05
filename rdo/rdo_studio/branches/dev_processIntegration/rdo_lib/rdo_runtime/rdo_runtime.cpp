@@ -252,7 +252,7 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 
 // Вызывается только для ресурсов из RSS, во время прогона вызыват нельзя из-за allResourcesByTime
 // (его надо раскомментировать, но тогда он не будет работать для RSS)
-RDOResource* RDORuntime::createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc )
+RDOResource* RDORuntime::createNewResource( unsigned int type, RDOCalcCreateResource* calc )
 {
 	if ( allResourcesByID.size() <= calc->getNumber() + 1 ) {
 		allResourcesByID.resize( calc->getNumber() + 1, NULL );

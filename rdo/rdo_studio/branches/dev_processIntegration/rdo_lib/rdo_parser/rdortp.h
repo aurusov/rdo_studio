@@ -54,6 +54,7 @@ public:
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
 	CREF(ParamList) getParams        ()                        const { return m_params; }
+	void            end              ()                        const;
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -61,6 +62,7 @@ private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
+	rdoRuntime::LPRDOResourceType m_pRuntimeResType;
 	const rsint  m_number;
 	const rbool  m_permanent;
 	ParamList    m_params;

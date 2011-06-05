@@ -171,7 +171,7 @@ public:
 #endif
 
 	void onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc);
-	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
+	RDOResource* createNewResource( unsigned int type, RDOCalcCreateResource* calc );
 	RDOResource* createNewResource( unsigned int type, rbool trace );
 	void insertNewResource( RDOResource* res );
 

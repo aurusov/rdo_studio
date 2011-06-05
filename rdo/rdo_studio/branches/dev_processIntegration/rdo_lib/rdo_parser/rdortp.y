@@ -257,6 +257,7 @@ rtp_res_type
 		{
 			PARSER->error().warning(@2, rdo::format(_T("Тип ресурса '%s' не содежит параметров"), pResourceType->name().c_str()));
 		}
+		pResourceType->end();
 		$$ = PARSER->stack().push(pResourceType);
 	}
 	| rtp_header RDO_Parameters rtp_body
@@ -282,7 +283,7 @@ rtp_header
 			PARSER->error().push_only(_rtp->src_info(), _T("См. первое определение"));
 			PARSER->error().push_done();
 		}
-		LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $3 != 0, false, false);
+		LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $3 != 0);
 		ASSERT(pResourceType);
 		$$ = PARSER->stack().push(pResourceType);
 	}

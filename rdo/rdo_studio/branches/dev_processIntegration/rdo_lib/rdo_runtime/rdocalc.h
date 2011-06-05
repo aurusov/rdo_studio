@@ -519,9 +519,36 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateNumberedResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
 // ----------------------------------------------------------------------------
+CALC(RDOCalcCreateNumberedResource)
+{
+DECLARE_FACTORY(RDOCalcCreateNumberedResource)
+public:
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
+
+	ruint getNumber() const { return number; }
+
+protected:
+	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+
+	int                    type;
+	rbool                  traceFlag;
+	std::vector<RDOValue>  paramsCalcs;
+	ruint                  number;
+	rbool                  isPermanent;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
+// ----------------------------------------------------------------------------
 CALC(RDOCalcCreateResource)
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
+public:
+	ruint getNumber() const { return number; }
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {return 0;}
+
 protected:
 	RDOCalcCreateResource(PTR(RDOResourceType) _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
 

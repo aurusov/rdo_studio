@@ -22,11 +22,15 @@ class RDOResource;
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
 // ----------------------------------------------------------------------------
-class RDOResourceType: public RDORuntimeObject, public RDOTraceableObject
+OBJECT(RDOResourceType) IS INSTANCE_OF(RDORuntimeObject) IS INSTANCE_OF(RDOTraceableObject)
 {
+DECLARE_FACTORY(RDOResourceType);
 public:
-	RDOResourceType( RDORuntimeParent* parent );
+	RDOResourceType(rsint number, RDORuntimeParent* parent = 0);
 	PTR(RDOResource) RDOResourceType::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const;
+
+private:
+	rsint m_id;
 };
 
 // ----------------------------------------------------------------------------

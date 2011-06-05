@@ -73,6 +73,11 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
 }
 
+void RDORTPResType::end() const
+{
+	m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceType>::create(m_number);
+}
+
 void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
