@@ -12,6 +12,8 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "rdo_lib/rdo_runtime/rdo_resource_i.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
 
 namespace rdoRuntime
 {
@@ -22,12 +24,40 @@ class RDOResource;
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
 // ----------------------------------------------------------------------------
-OBJECT(RDOResourceType) IS INSTANCE_OF(RDORuntimeObject) IS INSTANCE_OF(RDOTraceableObject)
+OBJECT(RDOResourceType) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceType);
 public:
 	RDOResourceType(rsint number, RDORuntimeParent* parent = 0);
-	PTR(RDOResource) createRes(PTR(RDORuntime) rt, ruint id, bool trace) const;
+	DECLARE_IResourceType;
+
+private:
+	rsint m_id;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOResourceTypeTransact
+// ----------------------------------------------------------------------------
+OBJECT(RDOResourceTypeTransact) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
+{
+DECLARE_FACTORY(RDOResourceTypeTransact);
+public:
+	RDOResourceTypeTransact(rsint number, RDORuntimeParent* parent = 0);
+	DECLARE_IResourceType;
+
+private:
+	rsint m_id;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOResourceTypeProccess
+// ----------------------------------------------------------------------------
+OBJECT(RDOResourceTypeProccess) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
+{
+DECLARE_FACTORY(RDOResourceTypeProccess);
+public:
+	RDOResourceTypeProccess(rsint number, RDORuntimeParent* parent = 0);
+	DECLARE_IResourceType;
 
 private:
 	rsint m_id;

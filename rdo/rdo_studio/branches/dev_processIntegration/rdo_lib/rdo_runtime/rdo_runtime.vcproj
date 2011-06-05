@@ -850,6 +850,10 @@
 					RelativePath="rdo_resource.h"
 					>
 				</File>
+				<File
+					RelativePath=".\rdo_resource_i.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".rdo_kb"

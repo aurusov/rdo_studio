@@ -20,6 +20,34 @@ PTR(RDOResource) RDOResourceType::createRes(PTR(RDORuntime) rt, ruint id, bool t
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOResourceTypeTransact
+// ----------------------------------------------------------------------------
+RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number, RDORuntimeParent* parent)
+	: RDORuntimeObject  (parent)
+	, RDOTraceableObject(false )
+	, m_id              (number)
+{}
+
+PTR(RDOResource) RDOResourceTypeTransact::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const
+{
+	return new RDOPROCTransact(rt, id, this->getTraceID(), trace);
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOResourceTypeProccess
+// ----------------------------------------------------------------------------
+RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number, RDORuntimeParent* parent)
+	: RDORuntimeObject  (parent)
+	, RDOTraceableObject(false )
+	, m_id              (number)
+{}
+
+PTR(RDOResource) RDOResourceTypeProccess::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const
+{
+	return new RDOPROCResource(rt, id, this->getTraceID(), trace);
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
 RDOResource::RDOResource( RDORuntime* rt, int id, unsigned int type, bool trace ):
