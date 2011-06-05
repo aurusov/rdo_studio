@@ -54,7 +54,8 @@ public:
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
 	CREF(ParamList) getParams        ()                        const { return m_params; }
-	void            end              ()                        const;
+	CREF(rdoRuntime::LPRDOResourceType) getRuntimeResType(   ) const {return m_pRuntimeResType;}
+	void            end              ();
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 

@@ -30,10 +30,42 @@ REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(PTR(RDORuntime) runtime)
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateNumberedResource
+// ----------------------------------------------------------------------------
+RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: m_pType    (_type       )
+	, traceFlag  (_traceFlag  )
+	, number     (_number     )
+	, isPermanent(_isPermanent)
+{}
+
+REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(PTR(RDORuntime) runtime)
+{
+	NEVER_REACH_HERE;
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateProcessResource
+// ----------------------------------------------------------------------------
+RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: m_pType    (_type       )
+	, traceFlag  (_traceFlag  )
+	, number     (_number     )
+	, isPermanent(_isPermanent)
+{}
+
+REF(RDOValue) RDOCalcCreateProcessResource::doCalc(PTR(RDORuntime) runtime)
+{
+	NEVER_REACH_HERE;
+	return m_value;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateResource::RDOCalcCreateResource(PTR(RDOResourceType) _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: pType      (_type       )
+RDOCalcCreateResource::RDOCalcCreateResource(LPRDOResourceType _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
+	: m_pType    (_type       )
 	, traceFlag  (_traceFlag  )
 	, number     (_number     )
 	, isPermanent(_isPermanent)
@@ -43,7 +75,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(PTR(RDOResourceType) _type, rbool _
 
 REF(RDOValue) RDOCalcCreateResource::doCalc(PTR(RDORuntime) runtime)
 {
-	PTR(RDOResource) res = pType->createRes(runtime, 0/**@TODO вместо 0 вызвать функцию, дающую ID*/, true);
+	PTR(RDOResource) res = m_pType->createRes(runtime, 0 /**@TODO вместо 0 вызвать функцию, дающую ID*/, true);
 	if (!isPermanent)
 	{
 		res->makeTemporary(true);

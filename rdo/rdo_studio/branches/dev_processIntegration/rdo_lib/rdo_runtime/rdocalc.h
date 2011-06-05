@@ -517,20 +517,41 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
+// ---------- RDOCalcCreateNumberedResource (рудимент для rdo_converter)
 // ----------------------------------------------------------------------------
 CALC(RDOCalcCreateNumberedResource)
 {
 DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
-
-	ruint getNumber() const { return number; }
+	ruint getNumber() const {NEVER_REACH_HERE;}
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
 
 protected:
 	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
 
-	int                    type;
+	int                    m_pType;
+	rbool                  traceFlag;
+	std::vector<RDOValue>  paramsCalcs;
+	ruint                  number;
+	rbool                  isPermanent;
+
+	DECALRE_ICalc;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateProcessResource (рудимент для rdo_converter)
+// ----------------------------------------------------------------------------
+CALC(RDOCalcCreateProcessResource)
+{
+DECLARE_FACTORY(RDOCalcCreateProcessResource)
+public:
+	ruint getNumber() const {NEVER_REACH_HERE;}
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+
+protected:
+	RDOCalcCreateProcessResource(rsint _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+
+	rsint                  m_pType;
 	rbool                  traceFlag;
 	std::vector<RDOValue>  paramsCalcs;
 	ruint                  number;
@@ -550,9 +571,9 @@ public:
 	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {return 0;}
 
 protected:
-	RDOCalcCreateResource(PTR(RDOResourceType) _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+	RDOCalcCreateResource(LPRDOResourceType _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
 
-	PTR(RDOResourceType)   pType;
+	LPRDOResourceType      m_pType;
 	rbool                  traceFlag;
 	std::vector<RDOValue>  paramsCalcs;
 	ruint                  number;

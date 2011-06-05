@@ -305,7 +305,7 @@ rtp_header
 
 		if (_rtp_prnt)
 		{
-			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $4 != 0, false, false);
+			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, type_name->src_info(), $4 != 0);
 			ASSERT(pResourceType);
 			ruint t_ind   = 0;
 			ruint col_par = _rtp_prnt->getParams().size();

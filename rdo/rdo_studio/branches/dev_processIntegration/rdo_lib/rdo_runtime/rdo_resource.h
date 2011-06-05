@@ -27,7 +27,7 @@ OBJECT(RDOResourceType) IS INSTANCE_OF(RDORuntimeObject) IS INSTANCE_OF(RDOTrace
 DECLARE_FACTORY(RDOResourceType);
 public:
 	RDOResourceType(rsint number, RDORuntimeParent* parent = 0);
-	PTR(RDOResource) RDOResourceType::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const;
+	PTR(RDOResource) createRes(PTR(RDORuntime) rt, ruint id, bool trace) const;
 
 private:
 	rsint m_id;

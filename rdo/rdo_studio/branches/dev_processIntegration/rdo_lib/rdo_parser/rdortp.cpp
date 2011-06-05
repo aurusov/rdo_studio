@@ -73,7 +73,7 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
 }
 
-void RDORTPResType::end() const
+void RDORTPResType::end()
 {
 	m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceType>::create(m_number);
 }
