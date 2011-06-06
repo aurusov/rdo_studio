@@ -54,7 +54,8 @@ void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeTerminateMJ::generate()
 {
-	params = rdo::Factory<RPShapeDataBlockTerminate>::create(m_name);
-	params->setTermInc(m_term_inc);
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, params.get());
+	m_pParams = rdo::Factory<RPShapeDataBlockTerminate>::create(m_name);
+	m_pParams->setTermInc(m_term_inc);
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
+	m_pParams = NULL;
 }
