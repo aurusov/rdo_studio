@@ -52,9 +52,13 @@ public:
 	static tstring s_name_prefix;
 	static tstring s_name_sufix;
 
-	void     clear      ();
-	void     insertBlock(CREF(LPProcGUIBlock) pBlock);
-	LPILogic getProcess () { return m_pProcess; }
+	std::list <tstring> m_resList;
+
+	void clear             ();
+	void insertBlock       (CREF(LPProcGUIBlock) pBlock);
+	void InitResources     (CREF(rdoParse::LPRDOParser) pParser);
+	void addResNameToBlock (CREF(tstring) name);
+	LPILogic getProcess    () { return m_pProcess; }
 
 private:
 	ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime);
@@ -72,8 +76,8 @@ OBJECT(ProcGUIBlock)
 {
 DECLARE_FACTORY(ProcGUIBlock);
 protected:
-	tstring          m_name;
-	LPProcGUIProcess m_pProcess;
+	tstring             m_name;
+	LPProcGUIProcess    m_pProcess;
 
 	ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(tstring) pName);
 	virtual ~ProcGUIBlock();
@@ -144,7 +148,7 @@ class ProcGUISeize: public ProcGUIBlock
 DECLARE_FACTORY(ProcGUISeize);
 public:
 	void createRuntime();
-	void addResource  (CREF(tstring) name);
+	void addResourceName  (CREF(tstring) name);
 
 private:
 	ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
@@ -165,7 +169,7 @@ class ProcGUIRelease: public ProcGUIBlock
 DECLARE_FACTORY(ProcGUIRelease);
 public:
 	void createRuntime();
-	void addResource  (CREF(tstring) name);
+	void addResourceName  (CREF(tstring) name);
 
 private:
 	ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
