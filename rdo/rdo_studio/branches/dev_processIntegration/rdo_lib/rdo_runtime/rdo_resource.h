@@ -2,7 +2,7 @@
  @file    rdo_resource.h
  @authors Урусов Андрей, Лущан Дмитрий
  @date    03.06.2011
- @brief   Ресурсы и типы ресурсов в runtime
+ @brief   Ресурсы в runtime
  @indent  4T
  */
 
@@ -12,8 +12,6 @@
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_resource_i.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
 
 namespace rdoRuntime
 {
@@ -22,51 +20,9 @@ class RDORuntime;
 class RDOResource;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOResourceType
-// ----------------------------------------------------------------------------
-OBJECT(RDOResourceType) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
-{
-DECLARE_FACTORY(RDOResourceType);
-public:
-	RDOResourceType(rsint number, RDORuntimeParent* parent = 0);
-	DECLARE_IResourceType;
-
-private:
-	rsint m_id;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceTypeTransact
-// ----------------------------------------------------------------------------
-OBJECT(RDOResourceTypeTransact) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
-{
-DECLARE_FACTORY(RDOResourceTypeTransact);
-public:
-	RDOResourceTypeTransact(rsint number, RDORuntimeParent* parent = 0);
-	DECLARE_IResourceType;
-
-private:
-	rsint m_id;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceTypeProccess
-// ----------------------------------------------------------------------------
-OBJECT(RDOResourceTypeProccess) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
-{
-DECLARE_FACTORY(RDOResourceTypeProccess);
-public:
-	RDOResourceTypeProccess(rsint number, RDORuntimeParent* parent = 0);
-	DECLARE_IResourceType;
-
-private:
-	rsint m_id;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-class RDOResource: public RDORuntimeObject, public RDOTraceableObject, public RDORuntimeContainer
+OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject) AND INSTANCE_OF(RDORuntimeContainer)
 {
 friend class RDOResourceType;
 public:

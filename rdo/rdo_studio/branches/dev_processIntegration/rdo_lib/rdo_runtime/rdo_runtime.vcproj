@@ -789,6 +789,14 @@
 				Name=".rdo_db"
 				>
 				<File
+					RelativePath=".\rdo_res_type.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_res_type.h"
+					>
+				</File>
+				<File
 					RelativePath="rdo_resource.cpp"
 					>
 					<FileConfiguration
@@ -1796,19 +1804,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc\choice_from.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\choice_from.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc_process_control.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\calc_process_control.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.h"
 				>
 			</File>
 			<File

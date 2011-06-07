@@ -84,7 +84,7 @@ public:
 	{
 		m_block = block;
 	}
-	RDOPROCTransact(RDORuntime* rt, int number, unsigned int type, bool trace = true, CREF(LPIPROCBlock) block = 0);
+	RDOPROCTransact(PTR(RDORuntime) rt, ruint number, ruint type, bool trace = true, CREF(LPIPROCBlock) block = 0);
 	void next();
 
 private:

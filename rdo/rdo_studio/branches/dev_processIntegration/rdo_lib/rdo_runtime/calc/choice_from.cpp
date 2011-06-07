@@ -75,7 +75,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(LPRDOResourceType _type, rbool _tra
 
 REF(RDOValue) RDOCalcCreateResource::doCalc(PTR(RDORuntime) runtime)
 {
-	PTR(RDOResource) res = m_pType->createRes(runtime, 0 /**@TODO вместо 0 вызвать функцию, дающую ID*/, true);
+	LPRDOResource res = m_pType->createRes(runtime, 0 /**@TODO вместо 0 вызвать функцию, дающую ID*/, true);
 	if (!isPermanent)
 	{
 		res->makeTemporary(true);

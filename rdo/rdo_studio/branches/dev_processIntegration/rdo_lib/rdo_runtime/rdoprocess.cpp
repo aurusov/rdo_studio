@@ -93,7 +93,7 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(RDORuntime* rt, int number, unsigned int type, bool trace, CREF(LPIPROCBlock) block)
+RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) rt, ruint number, ruint type, bool trace, CREF(LPIPROCBlock) block)
 	: RDOResource(rt, number, type, trace)
 	, m_block    (block                  )
 {

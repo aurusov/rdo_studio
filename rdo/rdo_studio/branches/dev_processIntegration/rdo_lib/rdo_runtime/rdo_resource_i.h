@@ -12,20 +12,20 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-//#include "rdo_lib/rdo_runtime/rdo_resource.h"
-//#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-//#include "rdo_common/rdointerface.h"
+#include "rdo_common/rdointerface.h"
 // ===============================================================================
 
+OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDORuntime);
 PREDECLARE_POINTER(RDOResource);
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 class IResourceType
 {
 public:
-	virtual PTR(RDOResource) createRes(PTR(RDORuntime) rt, ruint id, bool trace) const = 0;
+	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, ruint id, bool trace) const = 0;
 };
 #define DECLARE_IResourceType \
-	virtual PTR(RDOResource) createRes(PTR(RDORuntime) rt, ruint id, bool trace) const;
+	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, ruint id, bool trace) const;
 
 #endif // RDO_RESOURCE_I_H

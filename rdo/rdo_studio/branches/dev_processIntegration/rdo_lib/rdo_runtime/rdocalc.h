@@ -20,7 +20,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdo_res_type.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
