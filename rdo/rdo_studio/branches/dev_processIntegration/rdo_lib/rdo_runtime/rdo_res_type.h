@@ -10,11 +10,9 @@
 #define RDO_RES_TYPE_H
 
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdo_resource_i.h"
-//#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "rdo_lib/rdo_runtime/rdo_res_type_i.h"
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
 class RDOResource;
@@ -62,6 +60,6 @@ private:
 	rsint m_id;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDO_RES_TYPE_H

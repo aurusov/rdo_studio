@@ -1,5 +1,5 @@
 /**
- @file    rdo_resource_i.h
+ @file    rdo_res_type_i.h
  @authors Ћущан ƒмитрий
  @date    05.06.2011
  @brief   »нтерфейс дл€ типов ресурсов
@@ -7,8 +7,8 @@
  @details “ипы ресурсов представл€ют из себ€ фабрики, которые реализуют метод createRes дл€ создани€ ресурсов
  */
 
-#ifndef RDO_RESOURCE_I_H
-#define RDO_RESOURCE_I_H
+#ifndef RDO_RES_TYPE_I_H
+#define RDO_RES_TYPE_I_H
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
@@ -28,4 +28,4 @@ public:
 #define DECLARE_IResourceType \
 	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, ruint id, bool trace) const;
 
-#endif // RDO_RESOURCE_I_H
+#endif // RDO_RES_TYPE_I_H

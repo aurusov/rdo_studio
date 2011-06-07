@@ -13,8 +13,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
 class RDOResource;
@@ -106,6 +105,6 @@ private:
 	}
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDO_RESOURCE_H

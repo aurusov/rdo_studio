@@ -2,8 +2,7 @@
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
@@ -124,4 +123,4 @@ std::string RDOResource::traceResourceState( char prefix, RDOSimulatorTrace* sim
 	return res.str();
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

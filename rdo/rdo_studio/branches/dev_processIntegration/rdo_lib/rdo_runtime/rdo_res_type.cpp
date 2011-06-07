@@ -3,8 +3,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
@@ -48,4 +47,4 @@ LPRDOResource RDOResourceTypeProccess::createRes(PTR(RDORuntime) rt, ruint id, b
 	return new RDOPROCResource(rt, id, this->getTraceID(), trace);
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
