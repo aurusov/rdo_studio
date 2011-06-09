@@ -16,7 +16,7 @@ RDOResourceType::RDOResourceType(rsint number, RDORuntimeParent* parent)
 
 LPRDOResource RDOResourceType::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const
 {
-	return new RDOResource(rt, id, this->getTraceID(), trace);
+	return rdo::Factory<RDOResource>::create(rt, id, this->getTraceID(), trace);
 }
 
 // ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number, RDORuntimeParent*
 
 LPRDOResource RDOResourceTypeTransact::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const
 {
-	return new RDOPROCTransact(rt, id, this->getTraceID(), trace);
+	return rdo::Factory<RDOPROCTransact>::create(rt, id, this->getTraceID(), trace);
 }
 
 // ----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number, RDORuntimeParent*
 
 LPRDOResource RDOResourceTypeProccess::createRes(PTR(RDORuntime) rt, ruint id, bool trace) const
 {
-	return new RDOPROCResource(rt, id, this->getTraceID(), trace);
+	return rdo::Factory<RDOPROCResource>::create(rt, id, this->getTraceID(), trace);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
