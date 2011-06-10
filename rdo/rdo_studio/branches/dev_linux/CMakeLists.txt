@@ -1,44 +1,52 @@
 cmake_minimum_required(VERSION 2.4.6)
 
-project(rdo_studio_linux)
+PROJECT(rdo_nix_studio)
 
-message(STATUS "System: " ${CMAKE_SYSTEM_NAME} " " ${CMAKE_SYSTEM_VERSION})
-message(STATUS "Processor: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
-#message(STATUS "DIR: " ${PROJECT_SOURCE_DIR} " - " ${CMAKE_SOURCE_DIR})
-message(STATUS "Boost_LIBRARY_DIRS: " ${Boost_LIBRARY_DIRS})
-message(STATUS "Boost_INCLUDE_DIRS: " ${Boost_INCLUDE_DIRS})
+MESSAGE(STATUS "Cmake version : " ${CMAKE_VERSION})
+MESSAGE(STATUS "CMake generates " ${CMAKE_GENERATOR})
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-if(MSVC)
-message(STATUS "Compiler: MSVC, version: " ${MSVC_VERSION})
-endif(MSVC)
+MESSAGE(STATUS "System: " ${CMAKE_SYSTEM})
+MESSAGE(STATUS "Processor: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 
-if(BORLAND) 
+IF(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+IF(MSVC)
+MESSAGE(STATUS "Compiler: MSVC")
+ENDIF(MSVC)
+IF(BORLAND) 
     message(STATUS "Compiler: BCC")
-endif(BORLAND) 
-
-else(${CMAKE_SYSTEM_NAME} STREQUAL Linux) 
+ENDIF(BORLAND) 
+ELSE(${CMAKE_SYSTEM_NAME} STREQUAL Linux) 
     message(STATUS "Only GCC is supported on Linux")
-endif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
-message(STATUS "CMake generates " ${CMAKE_GENERATOR})
+MESSAGE(STATUS "Project Source Dir: " ${PROJECT_SOURCE_DIR})
+
+# set the default path for built executables to the "bin" directory
+IF(NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
+    set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+ENDIF(NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
+# set the default path for built libraries to the "lib" directory
+IF(NOT DEFINED(LIBRARY_OUTPUT_PATH))
+    set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+ENDIF(NOT DEFINED(LIBRARY_OUTPUT_PATH))
+
+SET(CMAKE_BUILD_TYPE Debug)
+message(STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
 
 # Find Boost
-set(Boost_USE_STATIC_LIBS   ON)
-set(Boost_USE_MULTITHREADED ON)
-find_package(Boost COMPONENTS system filesystem thread REQUIRED)
+SET(Boost_USE_STATIC_LIBS   ON)
+SET(Boost_USE_MULTITHREADED ON)
+FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
 
 # Find Boost
-link_directories(${Boost_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIRS})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 # add the include folder to the include path
-include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/rdo_common)
-include_directories(${PROJECT_SOURCE_DIR}/rdo_common/smart_ptr)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
-# Compile the Serial Library
-add_library(rdo_common/rdo_linux_common
+# Compile the rdo_common
+ADD_LIBRARY(rdo_nix_common
 	rdo_common/rdocommon.cpp
 	rdo_common/rdocommon.h
 	rdo_common/model_objects.h
@@ -70,6 +78,50 @@ add_library(rdo_common/rdo_linux_common
 	rdo_common/smart_ptr/interface_ptr.inl
 	rdo_common/smart_ptr/intrusive_ptr.h
 	rdo_common/smart_ptr/intrusive_ptr.inl)
-target_link_libraries(rdo_common/rdo_linux_common ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_nix_common ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 
 
+# Compile the rdo_kernel
+ADD_LIBRARY(rdo_nix_kernel
+	rdo_kernel/rdokernel.h
+	rdo_kernel/rdokernel.cpp
+	rdo_kernel/rdothread.h
+	rdo_kernel/rdothread.cpp)
+TARGET_LINK_LIBRARIES(rdo_nix_kernel ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+
+# Compile the rdo_repository
+ADD_LIBRARY(rdo_nix_repository
+	rdo_repository/rdorepository.h
+	rdo_repository/rdorepository.cpp)
+TARGET_LINK_LIBRARIES(rdo_nix_repository ${Boost_SYSTEM_LIBRARY})
+
+# Compile the rdo_converter
+
+# Compile the rdo_corba
+#ADD_LIBRARY(rdo_nix_corba
+#	rdo_lib/rdo_corba/RDOCorba.hh
+#	rdo_lib/rdo_corba/RDOCorbaSK.cc
+#TARGET_LINK_LIBRARIES(rdo_nix_corba ${Boost_SYSTEM_LIBRARY})
+
+# Compile the rdo_mbuilder
+#ADD_LIBRARY(rdo_nix_mbuilder
+#	rdo_lib/rdo_mbuilder/namespace.h
+#	rdo_lib/rdo_mbuilder/pch.h
+#	rdo_lib/rdo_mbuilder/pch.cpp
+#	rdo_lib/rdo_mbuilder/process.h
+#	rdo_lib/rdo_mbuilder/process.cpp
+#	rdo_lib/rdo_mbuilder/rdo_resources.h
+#	rdo_lib/rdo_mbuilder/rdo_resources.cpp
+#TARGET_LINK_LIBRARIES(rdo_nix_mbuilder)
+
+# Compile the rdo_parser
+
+# Compile the rdo_runtime
+
+# Compile the rdo_simulator
+#ADD_LIBRARY(rdo_nix_simulator
+#	rdo_lib/rdo_simulator/procgui.h
+#	rdo_lib/rdo_simulator/procgui.cpp
+#	rdo_lib/rdo_simulator/rdosimwin.h
+#	rdo_lib/rdo_simulator/rdosimwin.cpp)
+#TARGET_LINK_LIBRARIES(rdo_nix_simulator ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
