@@ -266,7 +266,23 @@ class RDOResTypeList: public RDOList<RDOResType>
 {
 public:
 	RDOResTypeList(CREF(rdoParse::LPRDOParser) pParser);
-	rbool append(REF(RDOResType) rtp);
+
+	template<class T>
+	rbool append(REF(RDOResType) rtp)
+	{
+		rdoParse::LPRDORTPResType pResourceType = appendBefore(rtp);
+		if (!pResourceType)
+		{
+			return false;
+		}
+		pResourceType->end<T>();
+
+		return appendAfter(rtp, pResourceType);
+	}
+
+private:
+	rdoParse::LPRDORTPResType appendBefore(REF(RDOResType) rtp);
+	rbool                     appendAfter (REF(RDOResType) rtp, CREF(rdoParse::LPRDORTPResType) pResourceType);
 };
 
 // --------------------------------------------------------------------

@@ -12,20 +12,27 @@
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
-#include "rdo_common/rdointerface.h"
+#include "rdo_common/smart_ptr/interface_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
 PREDECLARE_POINTER(RDORuntime);
 PREDECLARE_POINTER(RDOResource);
-CLOSE_RDO_RUNTIME_NAMESPACE
 
-class IResourceType
+OBJECT_INTERFACE(IResourceType)
 {
+DECLARE_FACTORY(IResourceType);
 public:
 	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace) const = 0;
+
+protected:
+	IResourceType()          {}
+	virtual ~IResourceType() {}
 };
 #define DECLARE_IResourceType \
 	rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace) const;
+
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDO_RES_TYPE_I_H

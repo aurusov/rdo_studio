@@ -14,6 +14,9 @@ RDOResourceType::RDOResourceType(rsint number, RDORuntimeParent* parent)
 	, m_id              (number)
 {}
 
+RDOResourceType::~RDOResourceType()
+{}
+
 LPRDOResource RDOResourceType::createRes(PTR(RDORuntime) runtime, bool trace) const
 {
 	return rdo::Factory<RDOResource>::create(runtime, runtime->getResourceId(), this->getTraceID(), trace);
@@ -28,6 +31,9 @@ RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number, RDORuntimeParent*
 	, m_id              (number)
 {}
 
+RDOResourceTypeTransact::~RDOResourceTypeTransact()
+{}
+
 LPRDOResource RDOResourceTypeTransact::createRes(PTR(RDORuntime) runtime, bool trace) const
 {
 	return rdo::Factory<RDOPROCTransact>::create(runtime, runtime->getResourceId(), this->getTraceID(), trace);
@@ -40,6 +46,9 @@ RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number, RDORuntimeParent*
 	: RDORuntimeObject  (parent)
 	, RDOTraceableObject(false )
 	, m_id              (number)
+{}
+
+RDOResourceTypeProccess::~RDOResourceTypeProccess()
 {}
 
 LPRDOResource RDOResourceTypeProccess::createRes(PTR(RDORuntime) runtime, bool trace) const

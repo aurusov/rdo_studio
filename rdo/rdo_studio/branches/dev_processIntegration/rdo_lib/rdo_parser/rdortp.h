@@ -53,9 +53,16 @@ public:
 	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
-	CREF(ParamList) getParams        ()                        const { return m_params; }
-	CREF(rdoRuntime::LPRDOResourceType) getRuntimeResType(   ) const {return m_pRuntimeResType;}
-	void            end              ();
+	CREF(ParamList) getParams        ()                        const { return m_params;          }
+
+	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const      { return m_pRuntimeResType; }
+
+	template<class T>
+	void end()
+	{
+		m_pRuntimeResType = rdo::Factory<T>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
+		ASSERT(m_pRuntimeResType);
+	}
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -63,10 +70,10 @@ private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
-	rdoRuntime::LPRDOResourceType m_pRuntimeResType;
-	const rsint  m_number;
-	const rbool  m_permanent;
-	ParamList    m_params;
+	rdoRuntime::LPIResourceType m_pRuntimeResType;
+	const rsint                 m_number;
+	const rbool                 m_permanent;
+	ParamList                   m_params;
 };
 DECLARE_POINTER(RDORTPResType);
 

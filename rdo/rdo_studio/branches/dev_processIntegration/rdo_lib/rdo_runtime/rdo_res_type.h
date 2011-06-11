@@ -22,50 +22,56 @@ class RDOPROCTransact;
 // ---------- RDOResourceType
 // ----------------------------------------------------------------------------
 OBJECT(RDOResourceType)
-	IS  INSTANCE_OF(IResourceType     )
-	AND INSTANCE_OF(RDORuntimeObject  )
-	AND INSTANCE_OF(RDOTraceableObject)
+	IS  IMPLEMENTATION_OF(IResourceType     )
+	AND INSTANCE_OF      (RDORuntimeObject  )
+	AND INSTANCE_OF      (RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceType);
 friend class RDOCalcCreateResource;
 friend class RDOPROCGenerate;
 private:
 	RDOResourceType(rsint number, PTR(RDORuntimeParent) pParent = NULL);
-	DECLARE_IResourceType;
+	virtual ~RDOResourceType();
 
 	rsint m_id;
+
+	DECLARE_IResourceType;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeTransact
 // ----------------------------------------------------------------------------
 OBJECT(RDOResourceTypeTransact)
-	IS  INSTANCE_OF(IResourceType     )
-	AND INSTANCE_OF(RDORuntimeObject  )
-	AND INSTANCE_OF(RDOTraceableObject)
+	IS  IMPLEMENTATION_OF(IResourceType     )
+	AND INSTANCE_OF      (RDORuntimeObject  )
+	AND INSTANCE_OF      (RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceTypeTransact);
 private:
 	RDOResourceTypeTransact(rsint number, PTR(RDORuntimeParent) pParent = NULL);
-	DECLARE_IResourceType;
+	virtual ~RDOResourceTypeTransact();
 
 	rsint m_id;
+
+	DECLARE_IResourceType;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeProccess
 // ----------------------------------------------------------------------------
 OBJECT(RDOResourceTypeProccess)
-	IS  INSTANCE_OF(IResourceType     )
-	AND INSTANCE_OF(RDORuntimeObject  )
-	AND INSTANCE_OF(RDOTraceableObject)
+	IS  IMPLEMENTATION_OF(IResourceType     )
+	AND INSTANCE_OF      (RDORuntimeObject  )
+	AND INSTANCE_OF      (RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceTypeProccess);
 private:
 	RDOResourceTypeProccess(rsint number, PTR(RDORuntimeParent) pParent = NULL);
-	DECLARE_IResourceType;
+	virtual ~RDOResourceTypeProccess();
 
 	rsint m_id;
+
+	DECLARE_IResourceType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

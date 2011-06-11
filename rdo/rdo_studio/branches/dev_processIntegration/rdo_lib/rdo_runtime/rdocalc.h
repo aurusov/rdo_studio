@@ -568,9 +568,9 @@ CALC(RDOCalcCreateResource)
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:
 	//! relResID == 0 для ресурсов, создаваемых при инициализации модели
-	RDOCalcCreateResource(LPRDOResourceType pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = 0);
+	RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = 0);
 
-	LPRDOResourceType      m_pResType;
+	LPIResourceType        m_pResType;
 	std::vector<RDOValue>  m_paramsCalcs;
 	rbool                  m_traceFlag;
 	rbool                  m_permanentFlag;

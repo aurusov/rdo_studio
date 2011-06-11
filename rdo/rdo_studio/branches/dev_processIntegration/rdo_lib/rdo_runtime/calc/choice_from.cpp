@@ -64,7 +64,7 @@ REF(RDOValue) RDOCalcCreateProcessResource::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateResource::RDOCalcCreateResource(LPRDOResourceType pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
+RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
 	: m_pResType     (pType        )
 	, m_traceFlag    (traceFlag    )
 	, m_permanentFlag(permanentFlag)

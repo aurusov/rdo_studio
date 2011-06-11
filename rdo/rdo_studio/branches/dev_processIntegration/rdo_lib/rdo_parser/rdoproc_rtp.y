@@ -209,6 +209,7 @@
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
+#include "rdo_lib/rdo_runtime/rdo_res_type.h"
 
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 // ===============================================================================
@@ -253,7 +254,7 @@ prc_rtp_main
 			// Добавим параметр Время_создания
 			rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
 			// Добавим тип ресурса
-			if (!rtpList.append(rtp))
+			if (!rtpList.append<rdoRuntime::RDOResourceTypeTransact>(rtp))
 			{
 				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 			}
