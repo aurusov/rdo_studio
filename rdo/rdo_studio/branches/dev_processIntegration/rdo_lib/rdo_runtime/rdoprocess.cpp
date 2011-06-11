@@ -49,7 +49,7 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 {
 	if ( pTransact->getBlock() )
 	{
-		Iterator it = std::find(begin(), end(), transact->getBlock());
+		Iterator it = std::find(begin(), end(), pTransact->getBlock());
 		// Если у транзакта есть блок
 		if (it != end())
 		{
@@ -57,7 +57,7 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 			LPIPROCBlock block = *it;
 			ASSERT(block);
 			// Находим перемещаемый транзакт в списке его транзактов
-			RDOPROCBlock::TransactIt it_res = block->transactFind(transact);
+			RDOPROCBlock::TransactIt it_res = block->transactFind(pTransact);
 			// Если транзакт найден
 			// XXX: только что созданный транзакт не привязывается к блоку GENERATE!!!
 			if (it_res != block->transactEnd()) 
@@ -78,9 +78,9 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 				// Берем этот блок
 				block = *it;
 				ASSERT(block);
-				transact->setBlock(block);
+				pTransact->setBlock(block);
 				// Записываем в конец списка этого блока перемещаемый транзакт
-				block->transactGoIn(transact);
+				block->transactGoIn(pTransact);
 			}
 			// Блок в из которого нужно было переместить транзакт был последним
 			else 
@@ -191,9 +191,9 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(PTR(RDOSimulator) sim)
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) 
 	{
-		tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+		tracer->getOStream() << pTransact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 	}
-	transact->next();
+	pTransact->next();
 	return IBaseOperation::BOR_done;
 }
 

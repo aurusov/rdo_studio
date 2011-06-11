@@ -491,7 +491,7 @@ void RDORuntime::onInit()
 
 void RDORuntime::onDestroy()
 {                    
-	rdo::deleteAllObjects(allResourcesByID);
+	allResourcesByID.clear();
 
 	if (results)
 	{

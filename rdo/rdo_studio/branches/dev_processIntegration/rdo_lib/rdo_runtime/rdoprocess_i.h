@@ -47,12 +47,12 @@ public:
 	virtual void  insertChild(LPIPROCProcess                      pProcess ) = 0;
 	virtual void  setParent  (LPIPROCProcess                      pProcess ) = 0;
 	virtual void  next       (CREF(rdoRuntime::LPRDOPROCTransact) pTransact) = 0;
-	virtual rdoRuntime::LPRDOResourceType getTranType() const                = 0;
+	virtual CREF(rdoRuntime::LPRDOResourceType) getTranType() const                = 0;
 };
 #define DECLARE_IPROCProcess                                                  \
 	virtual void  insertChild(LPIPROCProcess                      pProcess ); \
 	virtual void  setParent  (LPIPROCProcess                      pProcess ); \
 	virtual void  next       (CREF(rdoRuntime::LPRDOPROCTransact) pTransact); \
-	virtual rdoRuntime::LPRDOResourceType getTranType() const;
+	virtual CREF(rdoRuntime::LPRDOResourceType) getTranType() const;
 
 #endif //! _RDOPROCESS_I_H_

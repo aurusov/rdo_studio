@@ -159,11 +159,11 @@ public:
 		ASSERT(pResource);
 		return pResource->getParamRaw(paramID);
 	}
-	void setResParamVal(ruint res_id, ruint param_id, const RDOValue& value)
+	void setResParamVal(ruint resID, ruint paramID, CREF(RDOValue) value)
 	{
 		LPRDOResource pResource = getResourceByID(resID);
 		ASSERT(pResource);
-		pResource->setParam(param_id, value);
+		pResource->setParam(paramID, value);
 	}
 
 #ifdef _DEBUG

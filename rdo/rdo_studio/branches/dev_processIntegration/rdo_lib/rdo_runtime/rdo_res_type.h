@@ -27,6 +27,8 @@ OBJECT(RDOResourceType)
 	AND INSTANCE_OF(RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceType);
+friend class RDOCalcCreateResource;
+friend class RDOPROCGenerate;
 private:
 	RDOResourceType(rsint number, PTR(RDORuntimeParent) pParent = NULL);
 	DECLARE_IResourceType;
