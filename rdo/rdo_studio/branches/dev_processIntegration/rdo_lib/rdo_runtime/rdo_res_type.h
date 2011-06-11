@@ -21,42 +21,48 @@ class RDOPROCTransact;
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
 // ----------------------------------------------------------------------------
-OBJECT(RDOResourceType) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
+OBJECT(RDOResourceType)
+	IS  INSTANCE_OF(IResourceType     )
+	AND INSTANCE_OF(RDORuntimeObject  )
+	AND INSTANCE_OF(RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceType);
-public:
-	RDOResourceType(rsint number, RDORuntimeParent* parent = 0);
+private:
+	RDOResourceType(rsint number, PTR(RDORuntimeParent) pParent = NULL);
 	DECLARE_IResourceType;
 
-private:
 	rsint m_id;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeTransact
 // ----------------------------------------------------------------------------
-OBJECT(RDOResourceTypeTransact) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
+OBJECT(RDOResourceTypeTransact)
+	IS  INSTANCE_OF(IResourceType     )
+	AND INSTANCE_OF(RDORuntimeObject  )
+	AND INSTANCE_OF(RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceTypeTransact);
-public:
-	RDOResourceTypeTransact(rsint number, RDORuntimeParent* parent = 0);
+private:
+	RDOResourceTypeTransact(rsint number, PTR(RDORuntimeParent) pParent = NULL);
 	DECLARE_IResourceType;
 
-private:
 	rsint m_id;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeProccess
 // ----------------------------------------------------------------------------
-OBJECT(RDOResourceTypeProccess) IS INSTANCE_OF(IResourceType) AND INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
+OBJECT(RDOResourceTypeProccess)
+	IS  INSTANCE_OF(IResourceType     )
+	AND INSTANCE_OF(RDORuntimeObject  )
+	AND INSTANCE_OF(RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceTypeProccess);
-public:
-	RDOResourceTypeProccess(rsint number, RDORuntimeParent* parent = 0);
+private:
+	RDOResourceTypeProccess(rsint number, PTR(RDORuntimeParent) pParent = NULL);
 	DECLARE_IResourceType;
 
-private:
 	rsint m_id;
 };
 
