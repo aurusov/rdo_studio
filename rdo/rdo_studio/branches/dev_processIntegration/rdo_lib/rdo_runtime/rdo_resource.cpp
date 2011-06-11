@@ -7,42 +7,28 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource( RDORuntime* rt, int id, unsigned int type, bool trace ):
-	RDORuntimeObject( NULL ),
-	RDOTraceableObject( trace ),
-	RDORuntimeContainer( rt ),
-	m_state( RDOResource::CS_None ),
-	m_temporary( false ),
-	m_type( type ),
-	m_referenceCount( 0 )
-{
-	unsigned int newID;
-	if ( id == -1 )
-	{
-		// Для временного ресурса ищем дырку в нумерации
-		newID = getRuntime()->getFreeResourceId();
-	}
-	else
-	{
-		// Вызываем для увеличения счетчика maxResourcesId постоянных ресурсов
-		getRuntime()->getFreeResourceId( id );
-		newID = id;
-	}
-	setTraceID( newID, newID + 1 );
-}
+RDOResource::RDOResource(RDORuntime* rt, ruint res_id, ruint type, bool trace)
+	: RDORuntimeObject   (NULL                                )
+	, RDOTraceableObject (trace, res_id, rdo::toString(res_id))
+	, RDORuntimeContainer(rt                                  )
+	, m_state            (RDOResource::CS_None                )
+	, m_temporary        (false                               )
+	, m_type             (type                                )
+	, m_referenceCount   (0                                   )
+{}
 
-RDOResource::RDOResource( const RDOResource& copy ):
-	RDORuntimeObject( NULL ),
-	RDOTraceableObject( copy.traceable() ),
-	RDORuntimeContainer( copy.getRuntime() ),
-	m_type( copy.m_type ),
-	m_state( copy.m_state ),
-	m_typeId( copy.m_typeId ),
-	m_temporary( copy.m_temporary ),
-	m_params( copy.m_params )
+RDOResource::RDOResource(const RDOResource& copy)
+	: RDORuntimeObject   (NULL             )
+	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
+	, RDORuntimeContainer(copy.getRuntime())
+	, m_type             (copy.m_type      )
+	, m_state            (copy.m_state     )
+	, m_typeId           (copy.m_typeId    )
+	, m_temporary        (copy.m_temporary )
+	, m_params           (copy.m_params    )
+	, m_referenceCount   (0                )
 {
-	setTraceID( copy.getTraceID() );
-	m_referenceCount = 0;
+//! @TODO посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
 

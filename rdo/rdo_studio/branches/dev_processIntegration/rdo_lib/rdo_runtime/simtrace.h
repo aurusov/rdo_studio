@@ -51,12 +51,12 @@ public:
 		return memory_max;
 	}
 
-	int getFreeResourceId( int id = -1 );
+	ruint getResourceId();
 	void incrementResourceIdReference(int id);
 
 	void freeOperationId(int id);
 	int getFreeOperationId(); 
-	void onResourceErase( RDOResource* res );
+	void onResourceErase(CREF(LPRDOResource) pResource);
 
 	int getFreeEventId()
 	{
@@ -100,20 +100,20 @@ protected:
 	virtual void postProcess();
 	void checkRSSDefinedResources();
 
-	virtual std::list< RDOResource* > getResourcesBeforeSim() const = 0;
+	virtual std::list<LPRDOResource> getResourcesBeforeSim() const = 0;
 
 private:
 	double traceStartTime;
 	double traceEndTime;
 
-	int maxResourcesId;
+	ruint maxResourcesId;
 
-	std::list< int > freeResourcesIds;
+	std::list<ruint> freeResourcesIds;
 	typedef std::map<int, int> MAPII;
 	MAPII resourcesIdsRefs;
 	std::list< int > freeOperationsIds;
 
-	void eraseFreeResourceId( int id );
+	void eraseFreeResourceId(ruint id);
 
 	int m_ieCounter;
 	int m_eventCounter;

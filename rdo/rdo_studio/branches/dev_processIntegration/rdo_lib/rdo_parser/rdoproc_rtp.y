@@ -249,7 +249,7 @@ prc_rtp_main
 		if (!rtpList[rtp_name].exist())
 		{
 			// Создадим тип ресурса
-			rdoMBuilder::RDOResType rtp(rtp_name, rdoMBuilder::RDOResType::Type::rt_temporary);
+			rdoMBuilder::RDOResType rtp(rtp_name, rdoMBuilder::RDOResType::rt_temporary);
 			// Добавим параметр Время_создания
 			rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
 			// Добавим тип ресурса

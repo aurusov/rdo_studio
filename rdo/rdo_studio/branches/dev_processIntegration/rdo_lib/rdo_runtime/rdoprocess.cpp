@@ -1,11 +1,22 @@
+/**
+ @file      rdoprocess.cpp
+ @authors   Урусов Андрей, Лущан Дмитрий, etc.
+ @date      unknown
+ @brief     RDOProcess implementation
+ @indent    4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/relres.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
@@ -15,28 +26,28 @@ RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, PTR(RDOSimulator) sim)
 	, m_name  (name)
 {}
 
-void RDOPROCProcess::insertChild(LPIPROCProcess process)
+void RDOPROCProcess::insertChild(LPIPROCProcess pProcess)
 {
-	if (process)
+	if (pProcess)
 	{
-		m_child.push_back(process);
-		process->setParent(this);
+		m_child.push_back(pProcess);
+		pProcess->setParent(this);
 	}
 }
 
-void RDOPROCProcess::setParent(LPIPROCProcess process)
+void RDOPROCProcess::setParent(LPIPROCProcess pProcess)
 {
-	m_parent = process;
+	m_parent = pProcess;
 }
 
-rsint RDOPROCProcess::getTranType() const
+CREF(LPRDOResourceType) RDOPROCProcess::getTranType() const
 {
-	return m_transactTypeID;
+	return m_transactType;
 }
 
-void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
+void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 {
-	if ( transact->getBlock() )
+	if ( pTransact->getBlock() )
 	{
 		Iterator it = std::find(begin(), end(), transact->getBlock());
 		// Если у транзакта есть блок
@@ -93,8 +104,8 @@ void RDOPROCProcess::next(PTR(RDOPROCTransact) transact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) rt, ruint number, ruint type, bool trace, CREF(LPIPROCBlock) block)
-	: RDOResource(rt, number, type, trace)
+RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) rt, ruint res_id, ruint type, rbool trace, CREF(LPIPROCBlock) block)
+	: RDOResource(rt, res_id, type, trace)
 	, m_block    (block                  )
 {
 	rt->insertNewResource(this);
@@ -112,15 +123,15 @@ void RDOPROCTransact::next()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace ):
-	RDOResource( _runtime, _number, type, _trace )
+RDOPROCResource::RDOPROCResource(RDORuntime* _runtime, ruint res_id, ruint type, rbool _trace)
+	: RDOResource(_runtime, res_id, type, _trace)
 {}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
-RDOPROCBlock::RDOPROCBlock(LPIPROCProcess process)
-	: m_process(process)
+RDOPROCBlock::RDOPROCBlock(LPIPROCProcess pProcess)
+	: m_process(pProcess)
 {}
 
 rbool RDOPROCBlock::init()
@@ -132,9 +143,9 @@ rbool RDOPROCBlock::init()
 	return true;
 }
 
-RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(PTR(Transact) transact)
+RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(CREF(LPTransact) pTransact)
 {
-	return std::find(m_transacts.begin(), m_transacts.end(), transact);
+	return std::find(m_transacts.begin(), m_transacts.end(), pTransact);
 }
 
 RDOPROCBlock::TransactIt RDOPROCBlock::transactEnd()
@@ -142,14 +153,14 @@ RDOPROCBlock::TransactIt RDOPROCBlock::transactEnd()
 	return m_transacts.end();
 }
 
-void RDOPROCBlock::transactGoIn(PTR(Transact) transact)
+void RDOPROCBlock::transactGoIn(CREF(LPTransact) pTransact)
 {
-	m_transacts.push_back(transact);
+	m_transacts.push_back(pTransact);
 }
 
-void RDOPROCBlock::transactGoOut(PTR(Transact) transact)
+void RDOPROCBlock::transactGoOut(CREF(LPTransact) pTransact)
 {
-	m_transacts.remove(transact);
+	m_transacts.remove(pTransact);
 }
 
 LPIPROCProcess RDOPROCBlock::getProcess() const
@@ -162,7 +173,7 @@ LPIPROCProcess RDOPROCBlock::getProcess() const
 // ----------------------------------------------------------------------------
 void RDOPROCGenerate::onStart( RDOSimulator* sim )
 {
-	calcNextTimeInterval( sim );
+	calcNextTimeInterval(sim);
 }
 
 bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
@@ -170,12 +181,13 @@ bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
 	return sim->getCurrentTime() >= timeNext ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onDoOperation( PTR(RDOSimulator) sim )
+IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(PTR(RDOSimulator) sim)
 {
 //	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
-	calcNextTimeInterval( sim );
-	int transactType = this->m_process->getTranType();
-	RDOPROCTransact* transact = new RDOPROCTransact(static_cast<PTR(RDORuntime)>(sim), -1, transactType, true, this);
+	calcNextTimeInterval(sim);
+	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), true).object_static_cast<RDOPROCTransact>();
+	ASSERT(pTransact);
+	static_cast<PTR(RDORuntime)>(sim)->insertNewResource(pTransact);
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) 
 	{
@@ -202,13 +214,13 @@ RDOPROCBlockForQueue::RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Qu
 	, fromParser  (From_Par)
 {}
 
-void RDOPROCBlockForQueue::_onStart( RDOSimulator* sim )
+void RDOPROCBlockForQueue::_onStart(RDOSimulator* sim)
 {
 	int Id_res = fromParser.Id_res;
 	int Id_param = fromParser.Id_param;
-	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
+	LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID(Id_res);
 	forRes.Id_param = Id_param;
-	forRes.rss = static_cast<RDOPROCResource*>(res);
+	forRes.rss = res.object_static_cast<RDOPROCResource>();
 	forRes.defaultValue = RDOValue( RDOPROCQueue::getDefaultValue() );
 }
 
@@ -298,17 +310,16 @@ void RDOPROCBlockForSeize::_onStart( RDOSimulator* sim )
 	{
 		int Id_res = (*it1).Id_res;
 		int Id_param = (*it1).Id_param;
-		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
+		LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
 		runtime_for_Seize bbb;
 		bbb.Id_param = Id_param;
-		bbb.rss = static_cast<RDOPROCResource*>(res);
+		bbb.rss = res.object_static_cast<RDOPROCResource>();
 		bbb.enum_free = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
 		bbb.enum_buzy = RDOValue( bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
 		forRes.push_back(bbb);
 		it1++;
 	}
 }
-
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeizes
@@ -412,7 +423,8 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 					//Удаляем транзакт
 					RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 					TRACE3(_T("%7.1f RELEASES_Bad-%d, resId = %d\n"), sim->getCurrentTime(), index, forRes[i].rss->getTraceID());
-					RDOPROCTransact* transact = m_transacts.front();
+					LPRDOPROCTransact transact = m_transacts.front();
+					ASSERT(transact);
 					transact->setState( RDOResource::CS_Erase );
 					if ( !tracer->isNull() )
 					{
@@ -513,7 +525,8 @@ bool RDOPROCTerminate::onCheckCondition( RDOSimulator* sim )
 IBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
 {
 //	TRACE1(_T("%7.1f TERMINATE\n"), sim->getCurrentTime());
-	RDOPROCTransact* transact = m_transacts.front();
+	LPRDOPROCTransact transact = m_transacts.front();
+	ASSERT(transact);
 	transact->setState( RDOResource::CS_Erase );
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) {
@@ -542,7 +555,7 @@ bool RDOPROCAssign::onCheckCondition( RDOSimulator* sim )
 
 IBaseOperation::BOResult RDOPROCAssign::onDoOperation( RDOSimulator* sim )
 {
-	RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( t_resId );
+	LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID( t_resId );
 	res->setParam( t_parId, pParamValue->calcValue( static_cast<RDORuntime*>(sim) ) );	
 	TRACE1(_T("%7.1f ASSIGN\n"), sim->getCurrentTime());
 	m_transacts.front()->next();
@@ -554,4 +567,4 @@ void                     RDOPROCAssign::onStop      (PTR(rdoRuntime::RDOSimulato
 void                     RDOPROCAssign::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
 IBaseOperation::BOResult RDOPROCAssign::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
 
-} // rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

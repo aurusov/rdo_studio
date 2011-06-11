@@ -23,9 +23,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IResourceType
 {
 public:
-	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, ruint id, bool trace) const = 0;
+	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace) const = 0;
 };
 #define DECLARE_IResourceType \
-	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, ruint id, bool trace) const;
+	rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace) const;
 
 #endif // RDO_RES_TYPE_I_H

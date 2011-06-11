@@ -1,10 +1,10 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : choice_from.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
+/**
+ @file      choice_from.cpp
+ @authors   Барс Александ, Урусов Андрей, Лущан Дмитрий
+ @date      unknown
+ @brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
+ @indent    4T
+ @copyright (c) RDO-Team, 2011
  */
 
 // ====================================================================== PCH
@@ -64,43 +64,30 @@ REF(RDOValue) RDOCalcCreateProcessResource::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateResource::RDOCalcCreateResource(LPRDOResourceType _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: m_pType    (_type       )
-	, traceFlag  (_traceFlag  )
-	, number     (_number     )
-	, isPermanent(_isPermanent)
+RDOCalcCreateResource::RDOCalcCreateResource(LPRDOResourceType pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
+	: m_pResType     (pType        )
+	, m_traceFlag    (traceFlag    )
+	, m_permanentFlag(permanentFlag)
+	, m_relResID     (relResID     )
 {
-	paramsCalcs.insert(paramsCalcs.begin(), _paramsCalcs.begin(), _paramsCalcs.end());
+	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
+	//! @TODO: переделать на ASSERT
+	if (m_permanentFlag && m_relResID > 0) NEVER_REACH_HERE; //попытка создавать постоянные ресурсы динамически
 }
 
 REF(RDOValue) RDOCalcCreateResource::doCalc(PTR(RDORuntime) runtime)
 {
-	LPRDOResource res = m_pType->createRes(runtime, 0 /**@TODO вместо 0 вызвать функцию, дающую ID*/, true);
-	if (!isPermanent)
+	LPRDOResource res = m_pResType->createRes(runtime, m_traceFlag);
+	if (!m_permanentFlag)/**@TODO убрать в конструктор ресурса*/
 	{
 		res->makeTemporary(true);
 	}
-	res->appendParams(paramsCalcs.begin(), paramsCalcs.end());
-	return m_value; // just to return something
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateEmptyResource
-// ----------------------------------------------------------------------------
-RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id)
-	: type      (_type      )
-	, traceFlag (_traceFlag )
-	, rel_res_id(_rel_res_id)
-{
-	params_default.insert(params_default.begin(), _params_default.begin(), _params_default.end());
-}
-
-REF(RDOValue) RDOCalcCreateEmptyResource::doCalc(PTR(RDORuntime) runtime)
-{
-	NEVER_REACH_HERE;
-//	PTR(RDOResource) res = runtime->createNewResource(type, traceFlag);
-	//runtime->getCurrentActivity()->setRelRes(rel_res_id, res->getTraceID());
-	//res->appendParams(params_default.begin(), params_default.end());
+	res->appendParams(m_paramsCalcs.begin(), m_paramsCalcs.end());
+	runtime->insertNewResource(res);
+	if (m_relResID)
+		runtime->getCurrentActivity()->setRelRes(m_relResID, res->getTraceID());
+	else
+		runtime->insertNewResourceBeforeSim(res);
 	return m_value; // just to return something
 }
 

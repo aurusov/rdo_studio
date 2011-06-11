@@ -1,10 +1,10 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_runtime.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
+/**
+ @file      rdo_runtime.h
+ @authors   Барс Александ, Урусов Андрей, Лущан Дмитрий
+ @date      unknown
+ @brief     RDORuntime implementation
+ @indent    4T
+ @copyright (c) RDO-Team, 2009
  */
 
 #ifndef _RDO_RUNTIME_H_
@@ -149,19 +149,21 @@ public:
 	// Параметры ресурса
 	RDOValue getResParamVal(ruint resID, ruint paramID) const
 	{
-		CPTR(RDOResource) res = getResourceByID(resID);
-		ASSERT(res);
-		return res->getParam(paramID);
+		LPRDOResource pResource = getResourceByID(resID);
+		ASSERT(pResource);
+		return pResource->getParam(paramID);
 	}
 	REF(RDOValue) getResParamValRaw(ruint resID, ruint paramID)
 	{
-		PTR(RDOResource) res = getResourceByID(resID);
-		ASSERT(res);
-		return res->getParamRaw(paramID);
+		LPRDOResource pResource = getResourceByID(resID);
+		ASSERT(pResource);
+		return pResource->getParamRaw(paramID);
 	}
-	void setResParamVal( unsigned int res_id, unsigned int param_id, const RDOValue& value ) {
-		RDOResource* res = getResourceByID( res_id );
-		res->setParam( param_id, value );
+	void setResParamVal(ruint res_id, ruint param_id, const RDOValue& value)
+	{
+		LPRDOResource pResource = getResourceByID(resID);
+		ASSERT(pResource);
+		pResource->setParam(param_id, value);
 	}
 
 #ifdef _DEBUG
@@ -171,19 +173,20 @@ public:
 #endif
 
 	void onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc);
-	RDOResource* createNewResource( unsigned int type, RDOCalcCreateResource* calc );
-	RDOResource* createNewResource( unsigned int type, rbool trace );
-	void insertNewResource( RDOResource* res );
+	LPRDOResource createNewResource( unsigned int type, RDOCalcCreateResource* calc );
+	LPRDOResource createNewResource( unsigned int type, rbool trace );
+	void insertNewResource         (CREF(LPRDOResource) pResource);
+	void insertNewResourceBeforeSim(CREF(LPRDOResource) pResource);
 
-	RDOValue getFuncArgument(int numberOfParam); 
-	RDOResource* getGroupFuncRes()         { return groupFuncStack.back();                         }
-	void pushFuncArgument( RDOValue arg )  { funcStack.push_back( arg );                           }
-	void pushGroupFunc( RDOResource* res ) { groupFuncStack.push_back( res );                      }
-	void popFuncArgument()                 { funcStack.pop_back();                                 }
-	void popGroupFunc()                    { groupFuncStack.pop_back();                            }
-	void pushFuncTop()                     { funcStack.push_back( RDOValue(currFuncTop) );         }
-	void resetFuncTop( int numArg )        { currFuncTop = funcStack.size() - numArg;              }
-	void popFuncTop()                      { currFuncTop = funcStack.back().getInt(); funcStack.pop_back(); }
+	RDOValue      getFuncArgument (int numberOfParam); 
+	LPRDOResource getGroupFuncRes ()                              { return groupFuncStack.back();                                  }
+	void          pushFuncArgument( RDOValue arg )                { funcStack.push_back(arg);                                      }
+	void          pushGroupFunc   (CREF(LPRDOResource) pResource) { groupFuncStack.push_back(pResource);                           }
+	void          popFuncArgument ()                              { funcStack.pop_back();                                          }
+	void          popGroupFunc    ()                              { groupFuncStack.pop_back();                                     }
+	void          pushFuncTop     ()                              { funcStack.push_back(RDOValue(currFuncTop));                    }
+	void          resetFuncTop    (int numArg)                    { currFuncTop = funcStack.size() - numArg;                       }
+	void          popFuncTop      ()                              { currFuncTop = funcStack.back().getInt(); funcStack.pop_back(); }
 
 	virtual rbool endCondition();
 	void setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc);
@@ -193,7 +196,7 @@ public:
 	LPRDOCalc findBreakPoint( const std::string& name );
 	std::string getLastBreakPointName() const;
 
-	RDOResource* getResourceByID( const int num ) const { return num >= 0 ? allResourcesByID.at( num ) : NULL; }
+	LPRDOResource getResourceByID(const int num) const {return num >= 0 ? allResourcesByID.at( num ) : NULL;}
 
 	void setPatternParameter( unsigned int parNumb, RDOValue val )
 	{ 
@@ -233,8 +236,8 @@ public:
 
 	LPRDOMemoryStack getMemoryStack();
 
-	typedef std::list< RDOResource* > ResList;
-	typedef ResList::const_iterator ResCIterator;
+	typedef std::list<LPRDOResource> ResList;
+	typedef ResList::const_iterator  ResCIterator;
 
 	ResCIterator res_begin() const
 	{
@@ -252,9 +255,9 @@ public:
 private:
 	typedef RDOSimulatorTrace           Parent;
 	typedef std::list<LPRDOCalc>        CalcList;
-	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
-	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
+	std::vector<LPRDOResource> allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
+	std::list  <LPRDOResource> allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
+	std::list  <LPRDOResource> allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
 	CalcList                    initCalcs;
 	LPRDOMemoryStack            m_pMemoryStack;
 	FunBreakFlag                m_funBreakFlag;
@@ -277,7 +280,7 @@ private:
 	BreakPoint*              lastActiveBreakPoint;
 
 	std::vector< RDOValue >     funcStack;
-	std::vector< RDOResource* > groupFuncStack;
+	std::vector<LPRDOResource>  groupFuncStack;
 	int currFuncTop;
 	int savedFuncTop;
 
@@ -288,9 +291,10 @@ private:
 	{
 		ResList list;
 		ResCIterator it = allResourcesBeforeSim.begin();
-		while ( it != allResourcesBeforeSim.end() ) {
-			list.push_back( *it );
-			it++;
+		while (it != allResourcesBeforeSim.end())
+		{
+			list.push_back(*it);
+			++it;
 		}
 		return list;
 	}

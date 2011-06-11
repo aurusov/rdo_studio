@@ -33,45 +33,27 @@ void RDOSimulatorTrace::rdoInit()
 	RDOSimulator::rdoInit();
 }
 
-int RDOSimulatorTrace::getFreeResourceId( int _id )
+ruint RDOSimulatorTrace::getResourceId()
 {
-	if ( freeResourcesIds.empty() ) {
-		if ( _id == -1 ) {
-			// Для новых ресурсов в процессе работы
-			maxResourcesId++;
-			return maxResourcesId - 1;
-		} else {
-			// id может быть больше maxResourcesId только при,
-			// инициализации RSS, в котором ресурсы могут инититься
-			// не по порядку в RSS, а по RTP
-			if ( _id >= maxResourcesId ) {
-				maxResourcesId = _id + 1;
-			}
-			return _id;
-		}
-	} else {
+	if (freeResourcesIds.empty())
+	{
+		return maxResourcesId++;
+	}
+	else
+	{
 #ifdef _DEBUG
-		std::list< int >::const_iterator it = freeResourcesIds.begin();
-		while ( it != freeResourcesIds.end() ) {
+		STL_FOR_ALL(freeResourcesIds, it)
+		{
 			TRACE1("getFreeResourceId: %d\n", *it);
-			it++;
 		}
 #endif
-//		freeResourcesIds.sort();
-//#ifdef _DEBUG
-//		it = freeResourcesIds.begin();
-//		while ( it != freeResourcesIds.end() ) {
-//			TRACE( "%d\n", *it );
-//			it++;
-//		}
-//#endif
-		int id = freeResourcesIds.back();
+		ruint id = freeResourcesIds.back();
 		freeResourcesIds.pop_back();
 		return id;
 	}
 }
 
-void RDOSimulatorTrace::eraseFreeResourceId( int id ) 
+void RDOSimulatorTrace::eraseFreeResourceId(ruint id)
 {
 	MAPII::iterator it = resourcesIdsRefs.find( id );
 	if ( it != resourcesIdsRefs.end() ) {
@@ -107,9 +89,9 @@ void RDOSimulatorTrace::freeOperationId(int id)
 	freeOperationsIds.push_front(id); 
 }
 
-void RDOSimulatorTrace::onResourceErase( RDOResource* res )
+void RDOSimulatorTrace::onResourceErase(CREF(LPRDOResource) pResource)
 {
-	eraseFreeResourceId( res->getTraceID() );
+	eraseFreeResourceId(pResource->getTraceID());
 }
 
 void RDOSimulatorTrace::preProcess()
@@ -117,7 +99,7 @@ void RDOSimulatorTrace::preProcess()
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
 	getTracer()->writeTraceBegin(this);
-	getTracer()->writePermanentResources( this, getResourcesBeforeSim() );
+	getTracer()->writePermanentResources(this, getResourcesBeforeSim());
 	getTracer()->writeModelBegin(this);
 	getTracer()->startWriting();
 	onCheckPokaz();

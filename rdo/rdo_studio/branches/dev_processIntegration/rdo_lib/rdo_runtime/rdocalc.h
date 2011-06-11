@@ -385,7 +385,7 @@ CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
 {
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
-	mutable std::list<PTR(RDOResource)> res_list;
+	mutable std::list<LPRDOResource> res_list;
 	void prepare(PTR(RDORuntime) sim);
 
 private:
@@ -561,40 +561,20 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
+// ---------- RDOCalcCreateResource (создание нового ресурса)
 // ----------------------------------------------------------------------------
 CALC(RDOCalcCreateResource)
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
-public:
-	ruint getNumber() const { return number; }
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {return 0;}
-
-protected:
-	RDOCalcCreateResource(LPRDOResourceType _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
-
-	LPRDOResourceType      m_pType;
-	rbool                  traceFlag;
-	std::vector<RDOValue>  paramsCalcs;
-	ruint                  number;
-	rbool                  isPermanent;
-
-	DECALRE_ICalc;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateEmptyResource (создание нового временного ресурса с пустым списком параметров)
-// ----------------------------------------------------------------------------
-CALC(RDOCalcCreateEmptyResource)
-{
-DECLARE_FACTORY(RDOCalcCreateEmptyResource)
 private:
-	RDOCalcCreateEmptyResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id);
+	//! relResID == 0 для ресурсов, создаваемых при инициализации модели
+	RDOCalcCreateResource(LPRDOResourceType pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = 0);
 
-	int                    type;
-	rbool                  traceFlag;
-	std::vector<RDOValue>  params_default;
-	int                    rel_res_id;
+	LPRDOResourceType      m_pResType;
+	std::vector<RDOValue>  m_paramsCalcs;
+	rbool                  m_traceFlag;
+	rbool                  m_permanentFlag;
+	ruint                  m_relResID;
 
 	DECALRE_ICalc;
 };

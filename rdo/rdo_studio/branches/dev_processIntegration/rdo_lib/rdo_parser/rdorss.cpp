@@ -140,7 +140,7 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), getTrace(), paramList, getID(), getType()->isPermanent());
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
 	calc->setSrcInfo(src_info());
 	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
 	return calc;
@@ -164,7 +164,7 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), getTrace(), paramList, getID(), getType()->isPermanent());
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
 	calc->setSrcInfo(src_info());
 	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
 	return calc;
@@ -188,7 +188,7 @@ rdoRuntime::LPRDOCalc RDOPROCTransact::createCalc() const
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), getTrace(), paramList, getID(), getType()->isPermanent());
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
 	calc->setSrcInfo(src_info());
 	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
 	return calc;

@@ -12,6 +12,8 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc_process_control.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -28,8 +30,9 @@ REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
 {
 //по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
-	PTR(RDOResource) pResource = pRuntime->getResourceByID(resID);
-	PTR(RDOPROCTransact) pTransact = dynamic_cast<PTR(RDOPROCTransact)>(pResource);
+	LPRDOResource     pResource = pRuntime->getResourceByID(resID);
+	//! @TODO проверить, можно ли перенести проверку в парсер, чтобы сделать object_static_cast вместо object_dynamic_cast
+	LPRDOPROCTransact pTransact = pResource.object_dynamic_cast<RDOPROCTransact>();
 	if (pTransact)
 	{
 		pTransact->setBlock(m_Block);

@@ -232,7 +232,7 @@ void RDORuntime::showResources(int node) const
 {
 	TRACE1(_T("------------- %d:\n"), node);
 	int index = 0;
-	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();
+	std::vector<LPRDOResource>::const_iterator it = allResourcesByID.begin();
 	while (it != allResourcesByID.end())
 	{
 		if (*it)
@@ -256,7 +256,7 @@ void RDORuntime::showResources(int node) const
 
 void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 {
-	RDOResource* res = allResourcesByID.at(res_id);
+	LPRDOResource res = allResourcesByID.at(res_id);
 	if (!res)
 	{
 		error(rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc);
@@ -277,55 +277,35 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 		allResourcesByID.at(res_id) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		allResourcesByTime.remove(res);
-		delete res;
 	}
 }
 
-// Вызывается только для ресурсов из RSS, во время прогона вызыват нельзя из-за allResourcesByTime
-// (его надо раскомментировать, но тогда он не будет работать для RSS)
-RDOResource* RDORuntime::createNewResource(ruint type, RDOCalcCreateResource* calc)
+void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 {
-	if (allResourcesByID.size() <= calc->getNumber() + 1)
+	ASSERT(pResource);
+	if (pResource->getTraceID() >= allResourcesByID.size())
 	{
-		allResourcesByID.resize(calc->getNumber() + 1, NULL);
-	}
-	if (allResourcesByID.at(calc->getNumber()) != NULL)
-	{
-		throw RDOInternalException("internal error N 0010");
-	}
-	RDOResource* res = calc->createResource(this);
-	allResourcesByID.at(calc->getNumber()) = res;
-	allResourcesBeforeSim.push_back(res);
-	return res;
-}
-
-// Для новых ресурсов, создаваемых в процессе моделирования
-RDOResource* RDORuntime::createNewResource(ruint type, bool trace)
-{
-	RDOResource* res = new RDOResource(this, -1, type, trace);
-	insertNewResource(res);
-	return res;
-}
-
-void RDORuntime::insertNewResource(RDOResource* res)
-{
-	if (res->getTraceID() >= allResourcesByID.size())
-	{
-		allResourcesByID.resize(res->getTraceID() + 1, NULL);
-		allResourcesByID.at(res->getTraceID()) = res;
+		allResourcesByID.resize(pResource->getTraceID() + 1, NULL);
+		allResourcesByID.at(pResource->getTraceID()) = pResource;
 	}
 	else
 	{
-		if (allResourcesByID.at(res->getTraceID()) == NULL)
+		if (allResourcesByID.at(pResource->getTraceID()) == NULL)
 		{
-			allResourcesByID.at(res->getTraceID()) = res;
+			allResourcesByID.at(pResource->getTraceID()) = pResource;
 		}
 		else
 		{
 			error("Внутренняя ошибка: insertNewResource");
 		}
 	}
-	allResourcesByTime.push_back(res);
+	allResourcesByTime.push_back(pResource);
+}
+
+void RDORuntime::insertNewResourceBeforeSim(CREF(LPRDOResource) pResource)
+{
+	ASSERT(pResource);
+	allResourcesBeforeSim.push_back(pResource);
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer logic, CREF(LPIEvent) ev)
@@ -500,7 +480,7 @@ void RDORuntime::onInit()
 	STL_FOR_ALL(initCalcs, calcIt)
 		(*calcIt)->calcValue(this);
 
-	std::vector<PTR(RDOResource)>::const_iterator it = allResourcesByID.begin();
+	std::vector<LPRDOResource>::const_iterator it = allResourcesByID.begin();
 	while (it != allResourcesByID.end())
 	{
 		allResourcesByTime.push_back(*it);
@@ -540,10 +520,10 @@ RDOSimulator* RDORuntime::clone()
 	return other;
 }
 
-void RDORuntime::operator= (const RDORuntime& other)
+void RDORuntime::operator= (CREF(RDORuntime) other)
 {
-	int size = other.allResourcesByID.size();
-	for (int i = 0; i < size; i++)
+	ruint size = other.allResourcesByID.size();
+	for (ruint i = 0; i < size; i++)
 	{
 		if (other.allResourcesByID.at(i) == NULL)
 		{
@@ -551,9 +531,10 @@ void RDORuntime::operator= (const RDORuntime& other)
 		}
 		else
 		{
-			RDOResource* res = new RDOResource(*other.allResourcesByID.at(i));
+			//! @TODO ошибка, создавать ресурсы надо через их фабрику
+			LPRDOResource res = rdo::Factory<RDOResource>::create(*other.allResourcesByID.at(i).get());
 			res->setRuntime(this);
-			res->setTraceID(res->getTraceID(), res->getTraceID() + 1);
+			res->setTraceID(res->getTraceID(), res->getTraceID());
 			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
 			allResourcesByID.push_back(res);
 			allResourcesByTime.push_back(res);
@@ -574,13 +555,13 @@ bool RDORuntime::operator== (CREF(RDOSimulator) other)
 
 	if (otherRuntime->allResourcesByID.size() != allResourcesByID.size()) return false;
 
-	int size = allResourcesByID.size();
-	for (int i = 0; i < size; i++)
+	ruint size = allResourcesByID.size();
+	for (ruint i = 0; i < size; i++)
 	{
 		if (allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) != NULL) return false;
 		if (allResourcesByID.at(i) != NULL && otherRuntime->allResourcesByID.at(i) == NULL) return false;
 		if (allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) == NULL) continue;
-		if (*otherRuntime->allResourcesByID.at(i) != *allResourcesByID.at(i)) return false;
+		if (otherRuntime->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
 	}
 	return true;
 }

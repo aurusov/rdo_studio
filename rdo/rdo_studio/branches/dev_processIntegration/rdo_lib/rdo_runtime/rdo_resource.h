@@ -16,7 +16,6 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
-class RDOResource;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
@@ -34,8 +33,8 @@ public:
 		CS_NoChange
 	};
 
-	RDOResource( RDORuntime* rt, int id, unsigned int type, bool trace );
-	RDOResource( const RDOResource& copy );
+	RDOResource(RDORuntime* rt, ruint res_id, ruint type, bool trace);
+	RDOResource(const RDOResource& copy);
 	virtual ~RDOResource();
 
 	void setRuntime(RDORuntime* runtime) { RDORuntimeContainer::setRuntime(runtime); }

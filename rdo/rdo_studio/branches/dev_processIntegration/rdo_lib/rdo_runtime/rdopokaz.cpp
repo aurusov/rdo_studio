@@ -360,7 +360,7 @@ void RDOPMDWatchValue::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) 
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
-void RDOPMDWatchValue::checkResourceErased(PTR(RDOResource) pResource)
+void RDOPMDWatchValue::checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource)
 {
 	if (!pResource->checkType(m_rtpID))
 	{
