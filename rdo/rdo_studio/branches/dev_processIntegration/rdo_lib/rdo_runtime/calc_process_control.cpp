@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc_process_control.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdo_activity_i.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 // ===============================================================================
 
