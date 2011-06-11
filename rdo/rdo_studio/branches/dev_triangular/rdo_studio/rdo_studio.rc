@@ -844,7 +844,7 @@ BEGIN
         MENUITEM "Найти &предыдущий\tShift+F3", ID_SEARCH_FIND_PREVIOUS
         MENUITEM "&Заменить...\tCtrl+H",        ID_SEARCH_REPLACE
         MENUITEM SEPARATOR
-        MENUITEM "Найти в &моделе...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
+        MENUITEM "Найти в &модели...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
         MENUITEM SEPARATOR
         MENUITEM "Пос&тавить/снять закладку\tCtrl+F2", ID_SEARCH_BOOKMARK_TOGGLE
         MENUITEM "Перейти к с&лед. закладке\tF2", ID_SEARCH_BOOKMARK_NEXT
@@ -855,8 +855,8 @@ BEGIN
     END
     POPUP "П&росмотр"
     BEGIN
-        MENUITEM "Свернуть/равернуть все &группы\tCtrl+Shift+0", ID_VIEW_TOGGLE_ALLFOLDS
-        MENUITEM "Свернуть/равернуть текущую гр&уппу", ID_VIEW_TOGGLE_CURRENTFOLD
+        MENUITEM "Свернуть/развернуть все &группы\tCtrl+Shift+0", ID_VIEW_TOGGLE_ALLFOLDS
+        MENUITEM "Свернуть/развернуть текущую гр&уппу", ID_VIEW_TOGGLE_CURRENTFOLD
         MENUITEM SEPARATOR
         MENUITEM "Показать &пробелы\tCtrl+Shift+8", ID_VIEW_WHITESPACE
         MENUITEM "Показать символ &конца строки\tCtrl+Shift+9", ID_VIEW_ENDOFLINE
