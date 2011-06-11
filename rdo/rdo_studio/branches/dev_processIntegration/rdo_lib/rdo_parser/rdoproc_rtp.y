@@ -3,7 +3,7 @@
  * filename : rdoproc_rtp.y
  * author   : Александ Барс, Урусов Андрей
  * date     : 24.03.2008
- * bref     : Сбор типов ресурсов из процессов
+ * bref     : Сбор типов транзактов процесса
  * indent   : 4T
  */
 
@@ -249,7 +249,7 @@ prc_rtp_main
 		// Найти тип ресурса, если его нет, то создать
 		if (!rtpList[rtp_name].exist())
 		{
-			// Создадим тип ресурса
+			// Создадим тип ресурса-транзакта
 			rdoMBuilder::RDOResType rtp(rtp_name, rdoMBuilder::RDOResType::rt_temporary);
 			// Добавим параметр Время_создания
 			rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
