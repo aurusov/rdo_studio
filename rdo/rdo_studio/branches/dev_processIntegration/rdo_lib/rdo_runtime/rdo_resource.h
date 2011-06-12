@@ -16,6 +16,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
+PREDECLARE_OBJECT_INTERFACE(IResourceType);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
@@ -37,7 +38,7 @@ public:
 	RDOResource(const RDOResource& copy);
 	virtual ~RDOResource();
 
-	CREF(LPRDOResource) clone();
+	LPRDOResource clone() const;
 
 	void setRuntime(RDORuntime* runtime) { RDORuntimeContainer::setRuntime(runtime); }
 

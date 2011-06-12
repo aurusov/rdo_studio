@@ -43,6 +43,5 @@ INTERFACE_REGISTRATOR(IDPTSearchLogic,           25);
 INTERFACE_REGISTRATOR(IPROCProcess,              26);
 INTERFACE_REGISTRATOR(IPokazGroup,               27);
 INTERFACE_REGISTRATOR(IPokazGetValue,            28);
-INTERFACE_REGISTRATOR(IResourceType,             29);
 
 #endif //! _RDO_RUNTIME_INTERFACE_REGISTRATOR_H_

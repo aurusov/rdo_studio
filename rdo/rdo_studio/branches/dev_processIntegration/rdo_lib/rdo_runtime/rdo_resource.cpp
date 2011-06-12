@@ -52,9 +52,10 @@ bool RDOResource::operator!= (RDOResource &other)
 	return false;
 }
 
-CREF(LPRDOResource) clone() const
+LPRDOResource RDOResource::clone() const
 {
-	return getResType()->createRes();
+	return NULL;
+//	return getResType()->createRes();
 }
 
 std::string RDOResource::getTypeId()
