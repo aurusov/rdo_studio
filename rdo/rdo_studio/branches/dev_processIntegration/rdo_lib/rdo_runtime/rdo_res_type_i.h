@@ -24,14 +24,14 @@ OBJECT_INTERFACE(IResourceType)
 {
 DECLARE_FACTORY(IResourceType);
 public:
-	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace) const = 0;
+	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace) = 0;
 
 protected:
 	IResourceType()          {}
 	virtual ~IResourceType() {}
 };
 #define DECLARE_IResourceType \
-	rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace) const;
+	rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) rt, bool trace);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

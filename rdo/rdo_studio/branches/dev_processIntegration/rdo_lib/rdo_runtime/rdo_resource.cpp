@@ -7,14 +7,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource(RDORuntime* rt, ruint res_id, ruint type, bool trace)
-	: RDORuntimeObject   (NULL                                )
-	, RDOTraceableObject (trace, res_id, rdo::toString(res_id))
-	, RDORuntimeContainer(rt                                  )
-	, m_state            (RDOResource::CS_None                )
-	, m_temporary        (false                               )
-	, m_type             (type                                )
-	, m_referenceCount   (0                                   )
+RDOResource::RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace)
+	: RDORuntimeObject   (NULL                                  )
+	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
+	, RDORuntimeContainer(runtime                               )
+	, m_state            (RDOResource::CS_None                  )
+	, m_temporary        (false                                 )
+	, m_type             (typeID                                )
+	, m_referenceCount   (0                                     )
+	, m_resType          (pResType                              )
 {}
 
 RDOResource::RDOResource(const RDOResource& copy)
@@ -27,6 +28,7 @@ RDOResource::RDOResource(const RDOResource& copy)
 	, m_temporary        (copy.m_temporary )
 	, m_params           (copy.m_params    )
 	, m_referenceCount   (0                )
+	, m_resType          (copy.m_resType   )
 {
 //! @TODO посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
@@ -48,6 +50,11 @@ bool RDOResource::operator!= (RDOResource &other)
 		if ( m_params.at(i) != other.m_params.at(i) ) return true;
 	}
 	return false;
+}
+
+CREF(LPRDOResource) clone() const
+{
+	return getResType()->createRes();
 }
 
 std::string RDOResource::getTypeId()

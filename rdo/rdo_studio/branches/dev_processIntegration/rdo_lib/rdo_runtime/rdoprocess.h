@@ -95,7 +95,7 @@ public:
 	{
 		m_block = block;
 	}
-	RDOPROCTransact(PTR(RDORuntime) rt, ruint res_id, ruint type, rbool trace = true, CREF(LPIPROCBlock) block = 0);
+	RDOPROCTransact(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, CREF(LPIPROCBlock) block = 0);
 	void next();
 
 private:
@@ -113,10 +113,10 @@ friend class RDOPROCSeize;
 friend class RDOPROCRelease;
 
 public:
-	RDOPROCResource(PTR(RDORuntime) _runtime, ruint res_id, ruint type, rbool _trace);
+	RDOPROCResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace);
 	std::string whoAreYou() {return "procRes";	}
 
-protected: 
+protected:
 	std::list<LPRDOPROCTransact> transacts;
 };
 

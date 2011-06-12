@@ -33,9 +33,11 @@ public:
 		CS_NoChange
 	};
 
-	RDOResource(RDORuntime* rt, ruint res_id, ruint type, bool trace);
+	RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace);
 	RDOResource(const RDOResource& copy);
 	virtual ~RDOResource();
+
+	CREF(LPRDOResource) clone();
 
 	void setRuntime(RDORuntime* runtime) { RDORuntimeContainer::setRuntime(runtime); }
 
@@ -50,6 +52,7 @@ public:
 		return m_type == type;
 	}
 
+	CREF(LPIResourceType) getResType() const {return m_resType;}
 	CREF(RDOValue) getParam(ruint index) const
 	{
 		ASSERT(index < m_params.size());
@@ -93,10 +96,11 @@ protected:
 	ConvertStatus           m_state;
 
 private:
-	unsigned int            m_type;
-	unsigned int            m_referenceCount;
+	ruint            m_type;
+	ruint            m_referenceCount;
+	LPIResourceType  m_resType;
 
-	std::string             m_typeId;
+	std::string      m_typeId;
 
 	std::string traceTypeId()
 	{

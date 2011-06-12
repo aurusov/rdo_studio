@@ -104,15 +104,15 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) rt, ruint res_id, ruint type, rbool trace, CREF(LPIPROCBlock) block)
-	: RDOResource(rt, res_id, type, trace)
-	, m_block    (block                  )
+RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, CREF(LPIPROCBlock) block)
+	: RDOResource(runtime, pResType, resID, typeID, trace)
+	, m_block    (block                                  )
 {
-	rt->insertNewResource(this);
-	setTrace( true );
+	runtime->insertNewResource(this);
+	setTrace(true);
 	m_temporary = true;
 	m_state     = RDOResource::CS_Create;
-	m_params.push_back( rt->getCurrentTime() );
+	m_params.push_back(runtime->getCurrentTime());
 }
 
 void RDOPROCTransact::next()
@@ -123,8 +123,8 @@ void RDOPROCTransact::next()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(RDORuntime* _runtime, ruint res_id, ruint type, rbool _trace)
-	: RDOResource(_runtime, res_id, type, _trace)
+RDOPROCResource::RDOPROCResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace)
+	: RDOResource(runtime, pResType, resID, typeID, trace)
 {}
 
 // ----------------------------------------------------------------------------
