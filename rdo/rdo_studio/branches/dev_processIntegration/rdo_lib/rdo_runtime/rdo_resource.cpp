@@ -7,16 +7,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace)
+RDOResource::RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
 	: RDORuntimeObject   (NULL                                  )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
 	, RDORuntimeContainer(runtime                               )
 	, m_state            (RDOResource::CS_None                  )
-	, m_temporary        (false                                 )
 	, m_type             (typeID                                )
 	, m_referenceCount   (0                                     )
 	, m_resType          (pResType                              )
-{}
+	, m_temporary        (temporary                             )
+{
+	runtime->insertNewResource(this);
+}
 
 RDOResource::RDOResource(const RDOResource& copy)
 	: RDORuntimeObject   (NULL             )
@@ -25,10 +27,10 @@ RDOResource::RDOResource(const RDOResource& copy)
 	, m_type             (copy.m_type      )
 	, m_state            (copy.m_state     )
 	, m_typeId           (copy.m_typeId    )
-	, m_temporary        (copy.m_temporary )
 	, m_params           (copy.m_params    )
 	, m_referenceCount   (0                )
 	, m_resType          (copy.m_resType   )
+	, m_temporary        (copy.m_temporary )
 {
 //! @TODO посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );

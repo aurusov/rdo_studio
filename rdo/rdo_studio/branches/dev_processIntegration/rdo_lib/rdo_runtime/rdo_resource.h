@@ -34,7 +34,7 @@ public:
 		CS_NoChange
 	};
 
-	RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace);
+	RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
 	RDOResource(const RDOResource& copy);
 	virtual ~RDOResource();
 

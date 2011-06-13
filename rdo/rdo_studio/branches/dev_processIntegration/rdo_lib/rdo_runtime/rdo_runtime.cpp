@@ -531,13 +531,9 @@ void RDORuntime::operator= (CREF(RDORuntime) other)
 		}
 		else
 		{
-			//! @TODO ошибка, создавать ресурсы надо через их фабрику
-			LPRDOResource res = rdo::Factory<RDOResource>::create(*other.allResourcesByID.at(i).get());
-			res->setRuntime(this);
-			res->setTraceID(res->getTraceID(), res->getTraceID());
+			LPRDOResource curRes = other.allResourcesByID.at(i);
+			LPRDOResource newRes = curRes->clone();
 			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
-			allResourcesByID.push_back(res);
-			allResourcesByTime.push_back(res);
 		}
 	}
 	allConstants      = other.allConstants;

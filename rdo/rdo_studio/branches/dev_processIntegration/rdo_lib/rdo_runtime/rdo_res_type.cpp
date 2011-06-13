@@ -18,13 +18,13 @@ RDOResourceType::RDOResourceType(rsint number, RDORuntimeParent* parent)
 RDOResourceType::~RDOResourceType()
 {}
 
-LPRDOResource RDOResourceType::createRes(PTR(RDORuntime) runtime, bool trace)
+LPRDOResource RDOResourceType::createRes(PTR(RDORuntime) runtime, rbool trace, rbool permanentFlag)
 {
 	LPRDOResourceType pResType(this);
 	ASSERT(pResType);
 	LPIResourceType pIResType = pResType.interface_cast<IResourceType>();
 	ASSERT(pIResType);
-	return rdo::Factory<RDOResource>::create(runtime, pIResType, runtime->getResourceId(), this->getTraceID(), trace);
+	return rdo::Factory<RDOResource>::create(runtime, pIResType, runtime->getResourceId(), this->getTraceID(), trace, permanentFlag);
 }
 
 // ----------------------------------------------------------------------------
@@ -39,13 +39,13 @@ RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number, RDORuntimeParent*
 RDOResourceTypeTransact::~RDOResourceTypeTransact()
 {}
 
-LPRDOResource RDOResourceTypeTransact::createRes(PTR(RDORuntime) runtime, bool trace)
+LPRDOResource RDOResourceTypeTransact::createRes(PTR(RDORuntime) runtime, rbool trace, rbool permanentFlag)
 {
 	LPRDOResourceTypeTransact pResType(this);
 	ASSERT(pResType);
 	LPIResourceType pIResType = pResType.interface_cast<IResourceType>();
 	ASSERT(pIResType);
-	return rdo::Factory<RDOPROCTransact>::create(runtime, pIResType, runtime->getResourceId(), this->getTraceID(), trace);
+	return rdo::Factory<RDOPROCTransact>::create(runtime, pIResType, runtime->getResourceId(), this->getTraceID(), trace, permanentFlag);
 }
 
 // ----------------------------------------------------------------------------
@@ -60,13 +60,13 @@ RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number, RDORuntimeParent*
 RDOResourceTypeProccess::~RDOResourceTypeProccess()
 {}
 
-LPRDOResource RDOResourceTypeProccess::createRes(PTR(RDORuntime) runtime, bool trace)
+LPRDOResource RDOResourceTypeProccess::createRes(PTR(RDORuntime) runtime, rbool trace, rbool permanentFlag)
 {
 	LPRDOResourceTypeProccess pResType(this);
 	ASSERT(pResType);
 	LPIResourceType pIResType = pResType.interface_cast<IResourceType>();
 	ASSERT(pIResType);
-	return rdo::Factory<RDOPROCResource>::create(runtime, pIResType, runtime->getResourceId(), this->getTraceID(), trace);
+	return rdo::Factory<RDOPROCResource>::create(runtime, pIResType, runtime->getResourceId(), this->getTraceID(), trace, permanentFlag);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

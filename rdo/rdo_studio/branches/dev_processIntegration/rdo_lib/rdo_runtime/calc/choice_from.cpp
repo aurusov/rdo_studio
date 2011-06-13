@@ -77,13 +77,8 @@ RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(s
 
 REF(RDOValue) RDOCalcCreateResource::doCalc(PTR(RDORuntime) runtime)
 {
-	LPRDOResource res = m_pResType->createRes(runtime, m_traceFlag);
-	if (!m_permanentFlag)/**@TODO убрать в конструктор ресурса*/
-	{
-		res->makeTemporary(true);
-	}
+	LPRDOResource res = m_pResType->createRes(runtime, m_traceFlag, m_permanentFlag);
 	res->appendParams(m_paramsCalcs.begin(), m_paramsCalcs.end());
-	runtime->insertNewResource(res);
 	if (m_relResID)
 		runtime->getCurrentActivity()->setRelRes(m_relResID, res->getTraceID());
 	else

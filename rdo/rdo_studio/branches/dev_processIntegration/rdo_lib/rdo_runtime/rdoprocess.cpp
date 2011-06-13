@@ -104,13 +104,9 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, CREF(LPIPROCBlock) block)
-	: RDOResource(runtime, pResType, resID, typeID, trace)
-	, m_block    (block                                  )
+RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDOResource(runtime, pResType, resID, typeID, trace, temporary)
 {
-	runtime->insertNewResource(this);
-	setTrace(true);
-	m_temporary = true;
 	m_state     = RDOResource::CS_Create;
 	m_params.push_back(runtime->getCurrentTime());
 }
@@ -123,8 +119,8 @@ void RDOPROCTransact::next()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, bool trace)
-	: RDOResource(runtime, pResType, resID, typeID, trace)
+RDOPROCResource::RDOPROCResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDOResource(runtime, pResType, resID, typeID, trace, temporary)
 {}
 
 // ----------------------------------------------------------------------------
@@ -185,9 +181,10 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(PTR(RDOSimulator) sim)
 {
 //	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval(sim);
-	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), true).object_static_cast<RDOPROCTransact>();
+	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), true, true).object_static_cast<RDOPROCTransact>();
 	ASSERT(pTransact);
-	static_cast<PTR(RDORuntime)>(sim)->insertNewResource(pTransact);
+	LPIPROCBlock pBlock(this);
+	pTransact->setBlock(pBlock);
 	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 	if ( !tracer->isNull() ) 
 	{
