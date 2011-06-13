@@ -1,19 +1,19 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 2.4.6)
+cmake_minimum_required (VERSION 2.4.6)
 
-PROJECT (rdo_nix_common)
-
-# Find Boost
-SET (Boost_USE_STATIC_LIBS   ON)
-SET (Boost_USE_MULTITHREADED ON)
-FIND_PACKAGE (Boost COMPONENTS system filesystem thread REQUIRED)
+project (rdo_nix_common)
 
 # Find Boost
-LINK_DIRECTORIES (${Boost_LIBRARY_DIRS})
-INCLUDE_DIRECTORIES (${Boost_INCLUDE_DIRS})
+set (Boost_USE_STATIC_LIBS   ON)
+set (Boost_USE_MULTITHREADED ON)
+find_package (Boost COMPONENTS system filesystem thread REQUIRED)
 
-INCLUDE_DIRECTORIES (../)
+# Find Boost
+link_directories (${Boost_LIBRARY_DIRS})
+include_directories (${Boost_INCLUDE_DIRS})
 
-SET (HEADER_FILES	
+include_directories (../)
+
+set (HEADER_FILES	
 	rdocommon.h
 	model_objects.h
 	namespace.h
@@ -44,9 +44,9 @@ SET (HEADER_FILES
 	smart_ptr/intrusive_ptr.h
 	smart_ptr/intrusive_ptr.inl)
 
-SET (SOURCE_FILES
+set (SOURCE_FILES
 	rdocommon.cpp
 	rdofile.cpp)
 
-ADD_LIBRARY (rdo_nix_common ${HEADER_FILES} ${SOURCE_FILES})
-TARGET_LINK_LIBRARIES (rdo_nix_common ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+add_library (rdo_nix_common ${HEADER_FILES} ${SOURCE_FILES})
+target_link_libraries (rdo_nix_common ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})

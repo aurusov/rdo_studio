@@ -1,58 +1,58 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 2.4.6)
+cmake_minimum_required (VERSION 2.4.6)
 
-PROJECT (rdo_nix_studio)
+project (rdo_nix_studio)
 
-MESSAGE (STATUS "Cmake version : " ${CMAKE_VERSION})
-MESSAGE (STATUS "CMake generates " ${CMAKE_GENERATOR})
+message (status "Cmake version : " ${CMAKE_VERSION})
+message (status "CMake generates " ${CMAKE_GENERATOR})
 
-MESSAGE (STATUS "System: " ${CMAKE_SYSTEM})
-MESSAGE (STATUS "Processor: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
+message (status "System: " ${CMAKE_SYSTEM})
+message (status "Processor: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 
-IF (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-IF (MSVC)
-MESSAGE (STATUS "Compiler: MSVC")
-ENDIF (MSVC)
-IF (BORLAND) 
-    MESSAGE (STATUS "Compiler: BCC")
-ENDIF (BORLAND) 
-ELSE (${CMAKE_SYSTEM_NAME} STREQUAL Linux) 
+if (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+if (MSVC)
+message (status "Compiler: MSVC")
+endif (MSVC)
+if (BORLAND) 
+    MESSAGE (status "Compiler: BCC")
+endif (BORLAND) 
+else (${CMAKE_SYSTEM_NAME} STREQUAL Linux) 
     MESSAGE (STATUS "Only GCC is supported on Linux")
-ENDIF (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+endif (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
-MESSAGE (STATUS "Project Source Dir: " ${PROJECT_SOURCE_DIR})
+message (status "Project Source Dir: " ${PROJECT_SOURCE_DIR})
 
 # set the default path for built executables to the "bin" directory
-IF (NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
+if (NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
     set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-ENDIF (NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
+endif (NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
 # set the default path for built libraries to the "lib" directory
-IF (NOT DEFINED(LIBRARY_OUTPUT_PATH))
+if (NOT DEFINED(LIBRARY_OUTPUT_PATH))
     set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-ENDIF (NOT DEFINED(LIBRARY_OUTPUT_PATH))
+endif (NOT DEFINED(LIBRARY_OUTPUT_PATH))
 
-SET (CMAKE_BUILD_TYPE Debug)
-MESSAGE (STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
-
-# Find Boost
-SET (Boost_USE_STATIC_LIBS   ON)
-SET (Boost_USE_MULTITHREADED ON)
-FIND_PACKAGE (Boost COMPONENTS system filesystem thread REQUIRED)
+set (CMAKE_BUILD_TYPE Debug)
+message (STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
 
 # Find Boost
-LINK_DIRECTORIES (${Boost_LIBRARY_DIRS})
-INCLUDE_DIRECTORIES (${Boost_INCLUDE_DIRS})
+set (Boost_USE_STATIC_LIBS   ON)
+set (Boost_USE_MULTITHREADED ON)
+find_package (Boost COMPONENTS system filesystem thread REQUIRED)
+
+# Find Boost
+link_directories (${Boost_LIBRARY_DIRS})
+include_directories (${Boost_INCLUDE_DIRS})
 
 # add the include folder to the include path
-INCLUDE_DIRECTORIES (${PROJECT_SOURCE_DIR})
+include_directories (${PROJECT_SOURCE_DIR})
 
 # Compile the rdo_common
-ADD_SUBDIRECTORY (rdo_common)
+add_subdirectory (rdo_common)
 
 # Compile the rdo_kernel
-ADD_SUBDIRECTORY (rdo_kernel)
+add_subdirectory (rdo_kernel)
 
 # Compile the rdo_repository
-ADD_SUBDIRECTORY (rdo_repository)
+add_subdirectory (rdo_repository)
 
 
 
