@@ -2,24 +2,24 @@ cmake_minimum_required (VERSION 2.4.6)
 
 project (rdo_nix_studio)
 
-message (status "Cmake version : " ${CMAKE_VERSION})
-message (status "CMake generates " ${CMAKE_GENERATOR})
+message (STATUS "Cmake version : " ${CMAKE_VERSION})
+message (STATUS "CMake generates " ${CMAKE_GENERATOR})
 
-message (status "System: " ${CMAKE_SYSTEM})
-message (status "Processor: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
+message (STATUS "System: " ${CMAKE_SYSTEM})
+message (STATUS "Processor: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 if (MSVC)
-message (status "Compiler: MSVC")
+message (STATUS "Compiler: MSVC")
 endif (MSVC)
 if (BORLAND) 
-    MESSAGE (status "Compiler: BCC")
+    MESSAGE (STATUS "Compiler: BCC")
 endif (BORLAND) 
 else (${CMAKE_SYSTEM_NAME} STREQUAL Linux) 
     MESSAGE (STATUS "Only GCC is supported on Linux")
 endif (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
-message (status "Project Source Dir: " ${PROJECT_SOURCE_DIR})
+message (STATUS "Project Source Dir: " ${PROJECT_SOURCE_DIR})
 
 # set the default path for built executables to the "bin" directory
 if (NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
