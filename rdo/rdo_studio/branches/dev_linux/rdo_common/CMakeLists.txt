@@ -18,11 +18,8 @@ set (HEADER_FILES
 	model_objects.h
 	namespace.h
 	rdoanimation.h
-	rdoanimation.inl
-	rdocommon.inl
 	rdodebug.h
 	rdofile.h
-	rdofile.inl
 	rdoidgenerator.h
 	rdoindexedstack.h
 	rdointerface.h
@@ -31,22 +28,28 @@ set (HEADER_FILES
 	rdosmart_ptr_wrapper.h
 	rdostream.h
 	rdotime.h
-	rdotime.inl
 	rdotypes.h
 	stack.h
-	stack.inl
 	static_assert.h
 	supersubclass.h
 	smart_ptr/counter_reference.h
-	smart_ptr/counter_reference.inl
 	smart_ptr/interface_ptr.h
-	smart_ptr/interface_ptr.inl
 	smart_ptr/intrusive_ptr.h
+)
+
+set (INLITE_FILES
+	stack.inl
+	rdotime.inl
+	rdofile.inl
+	rdocommon.inl
+	rdoanimation.inl
+	smart_ptr/counter_reference.inl
+	smart_ptr/interface_ptr.inl
 	smart_ptr/intrusive_ptr.inl)
 
 set (SOURCE_FILES
 	rdocommon.cpp
 	rdofile.cpp)
 
-add_library (rdo_nix_common ${HEADER_FILES} ${SOURCE_FILES})
+add_library (rdo_nix_common ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES})
 target_link_libraries (rdo_nix_common ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
