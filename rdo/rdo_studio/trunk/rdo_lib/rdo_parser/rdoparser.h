@@ -262,6 +262,10 @@ private:
 	}
 
 	template <>
+	void howIsIt<LPRDOFUNGroup>()
+	{}
+
+	template <>
 	void howIsIt<LPRDOPATPattern>()
 	{
 		m_pattern = true;
