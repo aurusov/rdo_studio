@@ -79,9 +79,19 @@ tstring RDOArrayValue::getAsString() const
 	return rdo::format(_T("%s]"), arrayValue.c_str());
 }
 
-CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind)
+CREF(RDOValue) RDOArrayValue::operator[] (CREF(RDOValue) ind) const
 {
 	return m_container[ind.getInt()];
+}
+
+ruint RDOArrayValue::arraySize() const
+{
+	return m_container.size();
+}
+
+void RDOArrayValue::setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item)
+{
+	m_container[ind.getInt()] = item;
 }
 
 // ----------------------------------------------------------------------------

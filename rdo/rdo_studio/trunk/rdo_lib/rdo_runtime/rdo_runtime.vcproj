@@ -1777,6 +1777,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\array.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\array.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\binary.h"
 				>
 			</File>
