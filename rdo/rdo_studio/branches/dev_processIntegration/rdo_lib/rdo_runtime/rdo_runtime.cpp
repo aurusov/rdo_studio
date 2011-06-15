@@ -490,7 +490,11 @@ void RDORuntime::onInit()
 }
 
 void RDORuntime::onDestroy()
-{                    
+{
+	//! TODO: Дима, посмотри содержимое контейнеров, почему в allResourcesByTime дублируются ресурсы ?
+	//! TODO: Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
+	allResourcesBeforeSim.clear();
+	allResourcesByTime.clear();
 	allResourcesByID.clear();
 
 	if (results)
