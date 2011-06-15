@@ -24,14 +24,14 @@ OBJECT_INTERFACE(IResourceType)
 {
 DECLARE_FACTORY(IResourceType);
 public:
-	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) runtime, rbool trace, rbool permanentFlag) = 0;
+	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, rbool trace, rbool permanentFlag) = 0;
 
 protected:
 	IResourceType()          {}
 	virtual ~IResourceType() {}
 };
 #define DECLARE_IResourceType \
-	rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) runtime, bool trace, rbool permanentFlag);
+	rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, rbool trace, rbool permanentFlag);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

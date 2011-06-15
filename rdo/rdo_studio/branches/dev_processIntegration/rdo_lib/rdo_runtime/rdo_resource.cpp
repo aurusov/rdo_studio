@@ -1,13 +1,24 @@
+/**
+ @file    rdo_resource.cpp
+ @authors Урусов Андрей, Лущан Дмитрий
+ @date    unknown
+ @brief   RDOResource implementation
+ @indent  4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
 	: RDORuntimeObject   (NULL                                  )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
 	, RDORuntimeContainer(runtime                               )
@@ -17,13 +28,14 @@ RDOResource::RDOResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruin
 	, m_resType          (pResType                              )
 	, m_temporary        (temporary                             )
 {
+	appendParams(paramsCalcs.begin(), paramsCalcs.end());
 	runtime->insertNewResource(this);
 }
 
-RDOResource::RDOResource(const RDOResource& copy)
+RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(RDOResource) copy)
 	: RDORuntimeObject   (NULL             )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
-	, RDORuntimeContainer(copy.getRuntime())
+	, RDORuntimeContainer(runtime          )
 	, m_type             (copy.m_type      )
 	, m_state            (copy.m_state     )
 	, m_typeId           (copy.m_typeId    )
@@ -32,6 +44,8 @@ RDOResource::RDOResource(const RDOResource& copy)
 	, m_resType          (copy.m_resType   )
 	, m_temporary        (copy.m_temporary )
 {
+	appendParams(copy.m_params.begin(), copy.m_params.end());
+	runtime->insertNewResource(this);
 //! @TODO посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
@@ -54,10 +68,9 @@ bool RDOResource::operator!= (RDOResource &other)
 	return false;
 }
 
-LPRDOResource RDOResource::clone() const
+LPRDOResource RDOResource::clone(PTR(RDORuntime) runtime) const
 {
-	return NULL;
-//	return getResType()->createRes();
+	return rdo::Factory<RDOResource>::create(runtime, m_params, m_resType, getTraceID(), m_type, traceable(), m_temporary);
 }
 
 std::string RDOResource::getTypeId()

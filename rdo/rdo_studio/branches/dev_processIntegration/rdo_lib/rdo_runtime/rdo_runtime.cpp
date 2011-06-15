@@ -531,8 +531,8 @@ void RDORuntime::operator= (CREF(RDORuntime) other)
 		}
 		else
 		{
-			LPRDOResource curRes = other.allResourcesByID.at(i);
-			LPRDOResource newRes = curRes->clone();
+			// вставка ресурса в контейнер allResourcesByID нового RDORuntime произойдет в его конструкторе
+			other.allResourcesByID.at(i)->clone(this);
 			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
 		}
 	}

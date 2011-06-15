@@ -104,11 +104,16 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
-	: RDOResource(runtime, pResType, resID, typeID, trace, temporary)
+RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDOResource(runtime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {
 	m_state     = RDOResource::CS_Create;
 	m_params.push_back(runtime->getCurrentTime());
+}
+
+LPRDOResource RDOPROCTransact::clone(PTR(RDORuntime) runtime) const
+{
+	return rdo::Factory<RDOResource>::create(runtime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
 void RDOPROCTransact::next()
@@ -119,9 +124,14 @@ void RDOPROCTransact::next()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(PTR(RDORuntime) runtime, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
-	: RDOResource(runtime, pResType, resID, typeID, trace, temporary)
+RDOPROCResource::RDOPROCResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDOResource(runtime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {}
+
+LPRDOResource RDOPROCResource::clone(PTR(RDORuntime) runtime) const
+{
+	return rdo::Factory<RDOResource>::create(runtime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
+}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
@@ -181,7 +191,9 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(PTR(RDOSimulator) sim)
 {
 //	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
 	calcNextTimeInterval(sim);
-	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), true, true).object_static_cast<RDOPROCTransact>();
+	std::vector<RDOValue> transactParams(1);
+	transactParams.push_back(sim->getCurrentTime());
+	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), transactParams, true, true).object_static_cast<RDOPROCTransact>();
 	ASSERT(pTransact);
 	LPIPROCBlock pBlock(this);
 	pTransact->setBlock(pBlock);
