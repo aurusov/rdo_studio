@@ -21,26 +21,11 @@ endif (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 
 message (STATUS "Project Source Dir: " ${PROJECT_SOURCE_DIR})
 
-# set the default path for built executables to the "bin" directory
-if (NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
-    set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-endif (NOT DEFINED(EXECUTABLE_OUTPUT_PATH))
-# set the default path for built libraries to the "lib" directory
-if (NOT DEFINED(LIBRARY_OUTPUT_PATH))
-    set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-endif (NOT DEFINED(LIBRARY_OUTPUT_PATH))
-
 set (CMAKE_BUILD_TYPE Debug)
 message (STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
 
-# Find Boost
-set (Boost_USE_STATIC_LIBS   ON)
-set (Boost_USE_MULTITHREADED ON)
-find_package (Boost COMPONENTS system filesystem thread REQUIRED)
-
-# Find Boost
-link_directories (${Boost_LIBRARY_DIRS})
-include_directories (${Boost_INCLUDE_DIRS})
+# set warning level to maximum Compiler
+string (REGEX REPLACE /W[0-4] /W4 CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
 # add the include folder to the include path
 include_directories (${PROJECT_SOURCE_DIR})
@@ -53,6 +38,9 @@ add_subdirectory (rdo_kernel)
 
 # Compile the rdo_repository
 add_subdirectory (rdo_repository)
+
+# Compile rdo_lib
+add_subdirectory (rdo_lib)
 
 
 
