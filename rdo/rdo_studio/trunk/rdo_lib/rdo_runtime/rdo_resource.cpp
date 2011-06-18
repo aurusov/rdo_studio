@@ -53,8 +53,8 @@ RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(RDOResource) copy)
 RDOResource::~RDOResource()
 {
 	//! TODO: Дима, поставь тут breakpoint и посмотри на this
-	getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
-	getRuntime()->onResourceErase(this);
+	//getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
+	//getRuntime()->onResourceErase(this);
 }
 
 bool RDOResource::operator!= (RDOResource &other)
