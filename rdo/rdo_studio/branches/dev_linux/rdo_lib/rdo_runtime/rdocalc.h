@@ -20,6 +20,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
+#include "rdo_lib/rdo_runtime/rdo_res_type.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -384,7 +385,7 @@ CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
 {
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
-	mutable std::list<PTR(RDOResource)> res_list;
+	mutable std::list<LPRDOResource> res_list;
 	void prepare(PTR(RDORuntime) sim);
 
 private:
@@ -516,20 +517,19 @@ private:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
+// ---------- RDOCalcCreateNumberedResource (рудимент для rdo_converter)
 // ----------------------------------------------------------------------------
 CALC(RDOCalcCreateNumberedResource)
 {
 DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
-
-	ruint getNumber() const { return number; }
+	ruint getNumber() const {NEVER_REACH_HERE;}
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
 
 protected:
 	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
 
-	int                    type;
+	int                    m_pType;
 	rbool                  traceFlag;
 	std::vector<RDOValue>  paramsCalcs;
 	ruint                  number;
@@ -539,29 +539,42 @@ protected:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateProcessResource (SEIZE: создание нового ресурса процесса)
+// ---------- RDOCalcCreateProcessResource (рудимент для rdo_converter)
 // ----------------------------------------------------------------------------
-CALC_SUB(RDOCalcCreateProcessResource, RDOCalcCreateNumberedResource)
+CALC(RDOCalcCreateProcessResource)
 {
 DECLARE_FACTORY(RDOCalcCreateProcessResource)
-private:
-	RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const;
+public:
+	ruint getNumber() const {NEVER_REACH_HERE;}
+	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+
+protected:
+	RDOCalcCreateProcessResource(rsint _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+
+	rsint                  m_pType;
+	rbool                  traceFlag;
+	std::vector<RDOValue>  paramsCalcs;
+	ruint                  number;
+	rbool                  isPermanent;
+
+	DECALRE_ICalc;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateEmptyResource (создание нового временного ресурса с пустым списком параметров)
+// ---------- RDOCalcCreateResource (создание нового ресурса)
 // ----------------------------------------------------------------------------
-CALC(RDOCalcCreateEmptyResource)
+CALC(RDOCalcCreateResource)
 {
-DECLARE_FACTORY(RDOCalcCreateEmptyResource)
+DECLARE_FACTORY(RDOCalcCreateResource)
 private:
-	RDOCalcCreateEmptyResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id);
+	//! relResID == 0 для ресурсов, создаваемых при инициализации модели
+	RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = 0);
 
-	int                    type;
-	rbool                  traceFlag;
-	std::vector<RDOValue>  params_default;
-	int                    rel_res_id;
+	LPIResourceType        m_pResType;
+	std::vector<RDOValue>  m_paramsCalcs;
+	rbool                  m_traceFlag;
+	rbool                  m_permanentFlag;
+	ruint                  m_relResID;
 
 	DECALRE_ICalc;
 };

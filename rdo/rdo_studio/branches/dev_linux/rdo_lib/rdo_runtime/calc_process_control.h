@@ -30,8 +30,11 @@ CALC(RDOCalcProcessControl)
 DECLARE_FACTORY(RDOCalcProcessControl)
 public:
 protected:
-	RDOCalcProcessControl();
+	RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum);
 	DECALRE_ICalc;
+private:
+	LPIPROCBlock  m_Block;
+	rsint         m_relResNum;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

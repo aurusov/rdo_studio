@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="rdo_runtime"
 	ProjectGUID="{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}"
 	RootNamespace="rdo_runtime"
 	Keyword="MFCProj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -789,6 +790,18 @@
 				Name=".rdo_db"
 				>
 				<File
+					RelativePath=".\rdo_res_type.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_res_type.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_res_type_i.h"
+					>
+				</File>
+				<File
 					RelativePath="rdo_resource.cpp"
 					>
 					<FileConfiguration
@@ -848,6 +861,10 @@
 				</File>
 				<File
 					RelativePath="rdo_resource.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdo_resource.inl"
 					>
 				</File>
 			</Filter>
@@ -1776,6 +1793,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\array.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\array.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\binary.h"
 				>
 			</File>
@@ -1792,19 +1817,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc\choice_from.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\choice_from.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc_process_control.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\calc_process_control.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.h"
 				>
 			</File>
 			<File

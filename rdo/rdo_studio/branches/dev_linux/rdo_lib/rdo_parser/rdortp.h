@@ -31,6 +31,7 @@ void rtperror(PTR(char) mes);
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParser);
+PREDECLARE_POINTER(RDORSSResource);
 
 OBJECT(RDORTPResType) IS INSTANCE_OF(RDOParserSrcInfo)
 {
@@ -45,12 +46,23 @@ public:
 	rbool         isPermanent() const   { return m_permanent;  };
 	rbool         isTemporary() const   { return !m_permanent; };
 
+	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
+
 	void addParam(CREF(LPRDORTPParam) param);
 	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
 	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
-	CREF(ParamList) getParams        ()                        const { return m_params; }
+	CREF(ParamList) getParams        ()                        const { return m_params;          }
+
+	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const      { return m_pRuntimeResType; }
+
+	template<class T>
+	void end()
+	{
+		m_pRuntimeResType = rdo::Factory<T>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
+		ASSERT(m_pRuntimeResType);
+	}
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -58,9 +70,10 @@ private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
-	const rsint  m_number;
-	const rbool  m_permanent;
-	ParamList    m_params;
+	rdoRuntime::LPIResourceType m_pRuntimeResType;
+	const rsint                 m_number;
+	const rbool                 m_permanent;
+	ParamList                   m_params;
 };
 DECLARE_POINTER(RDORTPResType);
 

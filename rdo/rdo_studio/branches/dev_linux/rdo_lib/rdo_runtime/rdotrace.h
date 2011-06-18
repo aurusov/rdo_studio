@@ -3,12 +3,13 @@
 
 #include <fstream>
 #include <list>
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace_i.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOSimulator;
 class RDOSimulatorTrace;
@@ -21,6 +22,7 @@ class TreeRootTrace;
 class RDOPokazTrace;
 class TreeNode;
 class TreeRoot;
+PREDECLARE_POINTER(RDOResource);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEndL - Рассылает броадкастом строку трассировки
@@ -75,9 +77,9 @@ public:
 	virtual void writeTraceEnd(RDOSimulatorTrace *sim);
 	virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
 
-	virtual void writePermanentResources( RDOSimulatorTrace* sim, const std::list< RDOResource* >& res_perm );
+	virtual void writePermanentResources(PTR(RDOSimulatorTrace) sim, CREF(std::list<LPRDOResource>) res_perm);
 
-	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResource* >& rel_res_list );
+	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< LPRDOResource >& rel_res_list );
 
 	virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
 
@@ -130,17 +132,17 @@ public:
 	}
 
 protected:
-	RDOTraceableObject( bool trace ):
-		m_trace( trace ),
-		m_id( NONE ),
-		m_str_id(_T(""))
+	RDOTraceableObject(bool trace, ruint id = NONE, tstring str = _T(""))
+		: m_trace (trace)
+		, m_id    (id   )
+		, m_str_id(str  )
 	{}
 	virtual ~RDOTraceableObject()
 	{}
 
 private:
 	bool                m_trace;
-	unsigned int        m_id;
+	ruint               m_id;
 	mutable std::string m_str_id;
 };
 
@@ -163,6 +165,6 @@ protected:
 	DECLARE_IPokazTrace;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDOTRACE_H

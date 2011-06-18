@@ -100,10 +100,10 @@ DEFINE_OBJECT_CONTAINER(DPTPrior       );
 DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
 DEFINE_OBJECT_CONTAINER(Event          );
 DEFINE_OBJECT_CONTAINER(ResultGroup    );
+DEFINE_OBJECT_CONTAINER(PROCProcess    );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
-DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 public:
 	virtual void init  ();
@@ -260,6 +260,10 @@ private:
 	{
 		m_pattern = false;
 	}
+
+	template <>
+	void howIsIt<LPRDOFUNGroup>()
+	{}
 
 	template <>
 	void howIsIt<LPRDOPATPattern>()

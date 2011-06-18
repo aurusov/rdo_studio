@@ -1,65 +1,60 @@
+/**
+ @file    rdo_resource.cpp
+ @authors Урусов Андрей, Лущан Дмитрий
+ @date    unknown
+ @brief   RDOResource implementation
+ @indent  4T
+ */
+
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoRuntime
-{
-
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceType
-// ----------------------------------------------------------------------------
-RDOResourceType::RDOResourceType( RDORuntimeParent* parent ):
-	RDORuntimeObject( parent ),
-	RDOTraceableObject( false )
-{
-}
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource( RDORuntime* rt, int id, unsigned int type, bool trace ):
-	RDORuntimeObject( NULL ),
-	RDOTraceableObject( trace ),
-	RDORuntimeContainer( rt ),
-	m_state( RDOResource::CS_None ),
-	m_temporary( false ),
-	m_type( type ),
-	m_referenceCount( 0 )
+RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDORuntimeObject   (NULL                                  )
+	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
+	, RDORuntimeContainer(runtime                               )
+	, m_state            (RDOResource::CS_None                  )
+	, m_type             (typeID                                )
+	, m_referenceCount   (0                                     )
+	, m_resType          (pResType                              )
+	, m_temporary        (temporary                             )
 {
-	unsigned int newID;
-	if ( id == -1 )
-	{
-		// Для временного ресурса ищем дырку в нумерации
-		newID = getRuntime()->getFreeResourceId();
-	}
-	else
-	{
-		// Вызываем для увеличения счетчика maxResourcesId постоянных ресурсов
-		getRuntime()->getFreeResourceId( id );
-		newID = id;
-	}
-	setTraceID( newID, newID + 1 );
+	appendParams(paramsCalcs.begin(), paramsCalcs.end());
+	runtime->insertNewResource(this);
 }
 
-RDOResource::RDOResource( const RDOResource& copy ):
-	RDORuntimeObject( NULL ),
-	RDOTraceableObject( copy.traceable() ),
-	RDORuntimeContainer( copy.getRuntime() ),
-	m_type( copy.m_type ),
-	m_state( copy.m_state ),
-	m_typeId( copy.m_typeId ),
-	m_temporary( copy.m_temporary ),
-	m_params( copy.m_params )
+RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(RDOResource) copy)
+	: RDORuntimeObject   (NULL             )
+	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
+	, RDORuntimeContainer(runtime          )
+	, m_type             (copy.m_type      )
+	, m_state            (copy.m_state     )
+	, m_typeId           (copy.m_typeId    )
+	, m_params           (copy.m_params    )
+	, m_referenceCount   (0                )
+	, m_resType          (copy.m_resType   )
+	, m_temporary        (copy.m_temporary )
 {
-	setTraceID( copy.getTraceID() );
-	m_referenceCount = 0;
+	appendParams(copy.m_params.begin(), copy.m_params.end());
+	runtime->insertNewResource(this);
+//! @TODO посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
 
 RDOResource::~RDOResource()
 {
-	getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
-	getRuntime()->onResourceErase(this);
+	//! TODO: Дима, поставь тут breakpoint и посмотри на this
+	//getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
+	//getRuntime()->onResourceErase(this);
 }
 
 bool RDOResource::operator!= (RDOResource &other)
@@ -72,6 +67,11 @@ bool RDOResource::operator!= (RDOResource &other)
 		if ( m_params.at(i) != other.m_params.at(i) ) return true;
 	}
 	return false;
+}
+
+LPRDOResource RDOResource::clone(PTR(RDORuntime) runtime) const
+{
+	return rdo::Factory<RDOResource>::create(runtime, m_params, m_resType, getTraceID(), m_type, traceable(), m_temporary);
 }
 
 std::string RDOResource::getTypeId()
@@ -133,4 +133,4 @@ std::string RDOResource::traceResourceState( char prefix, RDOSimulatorTrace* sim
 	return res.str();
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

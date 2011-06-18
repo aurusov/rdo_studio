@@ -101,6 +101,8 @@ public:
 	void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
 	void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
 
+	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
+
 private:
 	LPRDOType m_pType;
 

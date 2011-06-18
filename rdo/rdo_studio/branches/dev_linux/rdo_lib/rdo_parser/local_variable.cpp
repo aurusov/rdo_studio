@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
