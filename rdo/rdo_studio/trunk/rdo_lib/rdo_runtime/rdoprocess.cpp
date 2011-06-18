@@ -190,49 +190,34 @@ void RDOPROCGenerate::onStart( RDOSimulator* sim )
 
 bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
 {
-	return sim->getCurrentTime() >= timeNext ? true : false;
+	if(m_maxTransCount > 0)
+	{
+		if(m_TransCount < m_maxTransCount)
+			return sim->getCurrentTime() >= timeNext ? true : false;
+		else
+			return false;
+	}
+	else
+		return sim->getCurrentTime() >= timeNext ? true : false;
 }
 
 IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(PTR(RDOSimulator) sim)
 {
 //	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
-	calcNextTimeInterval(sim);
-	if(m_maxTransCount > 0)
-		if(m_TransCount < m_maxTransCount)
-		{
-			std::vector<RDOValue> transactParams(1);
-			transactParams.push_back(sim->getCurrentTime());
-			LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), transactParams, true, true).object_static_cast<RDOPROCTransact>();
-			ASSERT(pTransact);
-			LPIPROCBlock pBlock(this);
-			pTransact->setBlock(pBlock);
-			m_TransCount++;
-			PTR(RDOTrace) tracer = static_cast<RDORuntime*>(sim)->getTracer();
-			if ( !tracer->isNull() ) 
-			{
-				tracer->getOStream() << pTransact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-			}
-			pTransact->next();
-			return IBaseOperation::BOR_done;
-		}
-		else
-			return IBaseOperation::BOR_done;
-	else
+	std::vector<RDOValue> transactParams(1);
+	transactParams.push_back(sim->getCurrentTime());
+	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), transactParams, true, true).object_static_cast<RDOPROCTransact>();
+	ASSERT(pTransact);
+	LPIPROCBlock pBlock(this);
+	pTransact->setBlock(pBlock);
+	m_TransCount++;
+	PTR(RDOTrace) tracer = static_cast<RDORuntime*>(sim)->getTracer();
+	if ( !tracer->isNull() ) 
 	{
-		std::vector<RDOValue> transactParams(1);
-		transactParams.push_back(sim->getCurrentTime());
-		LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), transactParams, true, true).object_static_cast<RDOPROCTransact>();
-		ASSERT(pTransact);
-		LPIPROCBlock pBlock(this);
-		pTransact->setBlock(pBlock);
-		PTR(RDOTrace) tracer = static_cast<RDORuntime*>(sim)->getTracer();
-		if ( !tracer->isNull() ) 
-		{
-			tracer->getOStream() << pTransact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-		}
-		pTransact->next();
-		return IBaseOperation::BOR_done;
+		tracer->getOStream() << pTransact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 	}
+	pTransact->next();
+	return IBaseOperation::BOR_done;
 }
 
 void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )

@@ -142,26 +142,18 @@ switch(cur) // определяем активные окна исходя из закона
 case 0: // константа
 	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_min_control_MJ.EnableWindow(FALSE);
 					break;	
 case 1: // нормальный
 	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_min_control_MJ.EnableWindow(FALSE);
 					break;
 case 2: // равномерный закон
-	m_proc_dlg1_exp_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_min_control_MJ.EnableWindow(TRUE);
+	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
+	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
 					break;
 case 3: // экспоненциальный
 	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_min_control_MJ.EnableWindow(FALSE);
 					break;
 
 
@@ -271,9 +263,9 @@ void RPShapeProcessDlg1_MJ::OnCloseupCombo2()
 				 else
 					   m_parameter.EnableWindow(TRUE);
 
-			m_AddRes.EnableWindow(FALSE); 
-			m_DelRes.EnableWindow(FALSE); 
-			m_ResList.EnableWindow(FALSE); 
+			m_AddRes.EnableWindow(TRUE); 
+			m_DelRes.EnableWindow(TRUE); 
+			m_ResList.EnableWindow(TRUE); 
 						break;
 	}	
 }

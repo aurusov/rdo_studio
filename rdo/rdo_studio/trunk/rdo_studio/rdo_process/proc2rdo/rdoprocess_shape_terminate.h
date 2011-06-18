@@ -23,7 +23,7 @@ public:
 	tstring m_name;
 	int     m_term_inc;
 
-	LPRPShapeDataBlockTerminate params;
+	LPRPShapeDataBlockTerminate m_pParams;
 
 	RPShapeTerminateMJ( RPObject* parent );
 	virtual ~RPShapeTerminateMJ();
