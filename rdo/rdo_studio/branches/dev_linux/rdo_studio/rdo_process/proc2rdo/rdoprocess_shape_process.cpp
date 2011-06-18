@@ -86,38 +86,39 @@ void RPShapeProcessMJ::generate()
 			break;
 	}
 
-	params = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
-	ASSERT(params);
-	params->setBase(base_gen);
-	params->setDisp(gdisp);
-	params->setExp(gexp);
+	m_pParams = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
+	ASSERT(m_pParams);
+	m_pParams->setBase(base_gen);
+	m_pParams->setDisp(gdisp);
+	m_pParams->setExp(gexp);
 
 	switch(action)
 	{
 		case 0://advance
-			params->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
 			break;
 		case 1://sieze,advance,release
-			params->addAction(RPShapeDataBlockProcess::Seize  );
-			params->addAction(RPShapeDataBlockProcess::Advance);
-			params->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::Seize  );
+			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::Release);
 			break;
 		case 2://seize,advance
-			params->addAction(RPShapeDataBlockProcess::Seize  );
-			params->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::Seize  );
+			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
 			break;
 		case 3://seize,advance
-			params->addAction(RPShapeDataBlockProcess::Advance);
-			params->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::Release);
 			break;
 	}
 
 	std::list<CString>::iterator it = list_resource_procMJ.begin();
 	while( it != list_resource_procMJ.end() ) 
 	{
-		params->addRes(static_cast<tstring>(*it));
+		m_pParams->addRes(static_cast<tstring>(*it));
 		it++;
 	}
 
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, params.get());
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
+	m_pParams = NULL;
 }
