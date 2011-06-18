@@ -1,4 +1,8 @@
-cmake_minimum_required (VERSION 2.4.6)
+cmake_minimum_required (VERSION 2.6.0)
+
+if (NOT TARGET rdo_nix_repository)
+
+message (STATUS "CREATE RDO_REPOSITORY LIBRARY PROJECT")
 
 project (rdo_nix_repository)
 
@@ -19,5 +23,11 @@ set (HEADER_FILES
 set (SOURCE_FILES
 	rdorepository.cpp)
 
+source_group ("repository" FILES 
+	rdorepository.h
+	rdorepository.cpp)
+
 add_library (rdo_nix_repository ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries (rdo_nix_repository ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+
+endif (NOT TARGET rdo_nix_repository)

@@ -1,4 +1,8 @@
-cmake_minimum_required (VERSION 2.4.6)
+cmake_minimum_required (VERSION 2.6.0)
+
+if (NOT TARGET rdo_nix_kernel)
+
+message (STATUS "CREATE RDO_KERNEL LIBRARY PROJECT")
 
 project (rdo_nix_kernel)
 
@@ -21,5 +25,15 @@ set (SOURCE_FILES
 	rdothread.cpp
 	rdokernel.cpp)
 
+source_group ("thread" FILES 
+	rdothread.h
+	rdothread.cpp)
+
+source_group ("kernel" FILES 
+	rdokernel.h
+	rdokernel.cpp)
+
 add_library (rdo_nix_kernel ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries (rdo_nix_kernel ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+
+endif (NOT TARGET rdo_nix_kernel)
