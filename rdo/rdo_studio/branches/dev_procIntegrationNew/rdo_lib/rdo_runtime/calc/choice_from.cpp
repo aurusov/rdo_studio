@@ -1,10 +1,10 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : choice_from.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
+/**
+ @file      choice_from.cpp
+ @authors   Барс Александ, Урусов Андрей, Лущан Дмитрий
+ @date      unknown
+ @brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
+ @indent    4T
+ @copyright (c) RDO-Team, 2011
  */
 
 // ====================================================================== PCH
@@ -33,58 +33,55 @@ REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(PTR(RDORuntime) runtime)
 // ---------- RDOCalcCreateNumberedResource
 // ----------------------------------------------------------------------------
 RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: type       (_type       )
+	: m_pType    (_type       )
 	, traceFlag  (_traceFlag  )
 	, number     (_number     )
 	, isPermanent(_isPermanent)
-{
-	paramsCalcs.insert(paramsCalcs.begin(), _paramsCalcs.begin(), _paramsCalcs.end());
-}
+{}
 
 REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(PTR(RDORuntime) runtime)
 {
-	PTR(RDOResource) res = runtime->createNewResource(type, this);
-	if (!isPermanent)
-	{
-		res->makeTemporary(true);
-	}
-	res->appendParams(paramsCalcs.begin(), paramsCalcs.end());
-	return m_value; // just to return something
-}
-
-PTR(RDOResource) RDOCalcCreateNumberedResource::createResource(PTR(RDORuntime) runtime) const
-{
-	return new RDOResource(runtime, number, type, traceFlag);
+	NEVER_REACH_HERE;
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateProcessResource
 // ----------------------------------------------------------------------------
 RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
-	: RDOCalcCreateNumberedResource(_type, _traceFlag, _paramsCalcs, _number, _isPermanent)
+	: m_pType    (_type       )
+	, traceFlag  (_traceFlag  )
+	, number     (_number     )
+	, isPermanent(_isPermanent)
 {}
 
-PTR(RDOResource) RDOCalcCreateProcessResource::createResource(PTR(RDORuntime) runtime) const
+REF(RDOValue) RDOCalcCreateProcessResource::doCalc(PTR(RDORuntime) runtime)
 {
-	return new RDOPROCResource(runtime, number, type, traceFlag);
+	NEVER_REACH_HERE;
+	return m_value;
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateEmptyResource
+// ---------- RDOCalcCreateResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _params_default, int _rel_res_id)
-	: type      (_type      )
-	, traceFlag (_traceFlag )
-	, rel_res_id(_rel_res_id)
+RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
+	: m_pResType     (pType        )
+	, m_traceFlag    (traceFlag    )
+	, m_permanentFlag(permanentFlag)
+	, m_relResID     (relResID     )
 {
-	params_default.insert(params_default.begin(), _params_default.begin(), _params_default.end());
+	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
+	//! @TODO: переделать на ASSERT
+	if (m_permanentFlag && m_relResID > 0) NEVER_REACH_HERE; //попытка создавать постоянные ресурсы динамически
 }
 
-REF(RDOValue) RDOCalcCreateEmptyResource::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcCreateResource::doCalc(PTR(RDORuntime) runtime)
 {
-	PTR(RDOResource) res = runtime->createNewResource(type, traceFlag);
-	runtime->getCurrentActivity()->setRelRes(rel_res_id, res->getTraceID());
-	res->appendParams(params_default.begin(), params_default.end());
+	LPRDOResource res = m_pResType->createRes(runtime, m_paramsCalcs, m_traceFlag, m_permanentFlag);
+	if (m_relResID)
+		runtime->getCurrentActivity()->setRelRes(m_relResID, res->getTraceID());
+	else
+		runtime->insertNewResourceBeforeSim(res);
 	return m_value; // just to return something
 }
 

@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/context/stack.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE

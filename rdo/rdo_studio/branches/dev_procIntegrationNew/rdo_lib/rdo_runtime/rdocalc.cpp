@@ -115,14 +115,14 @@ REF(RDOValue) RDOCalcGetUnknowResParam::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcGetGroupResParam
 // ----------------------------------------------------------------------------
 REF(RDOValue) RDOCalcGetGroupResParam::doCalc(PTR(RDORuntime) pRuntime)
 {
-	PTR(RDOResource) currRes = static_cast<PTR(RDOResource)>(pRuntime->getGroupFuncRes());
-	m_value = currRes->getParam(m_parNumb);
+	LPRDOResource pCurrRes = pRuntime->getGroupFuncRes();
+	ASSERT(pCurrRes);
+	m_value = pCurrRes->getParam(m_parNumb);
 	return m_value;
 }
 
@@ -258,7 +258,7 @@ REF(RDOValue) RDOFunCalcExist::doCalc(PTR(RDORuntime) pRuntime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && !res; it++)
+	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && !res; ++it)
 	{
 		if (*it == NULL)
 			continue;
@@ -377,8 +377,8 @@ REF(RDOValue) RDOFunCalcSelectExist::doCalc(PTR(RDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
-	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
+	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
+	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && !res)
 	{
 		pRuntime->pushGroupFunc(*it);
@@ -395,8 +395,8 @@ REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(PTR(RDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = true;
-	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
+	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
+	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && res)
 	{
 		pRuntime->pushGroupFunc(*it);
@@ -418,8 +418,8 @@ REF(RDOValue) RDOFunCalcSelectForAll::doCalc(PTR(RDORuntime) pRuntime)
 		return m_value;
 	}
 	rbool res = true;
-	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
+	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
+	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && res)
 	{
 		pRuntime->pushGroupFunc(*it);
@@ -436,8 +436,8 @@ REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(PTR(RDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
-	std::list<PTR(RDOResource)>::iterator it  = m_pSelect->res_list.begin();
-	std::list<PTR(RDOResource)>::iterator end = m_pSelect->res_list.end();
+	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
+	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && !res)
 	{
 		pRuntime->pushGroupFunc(*it);

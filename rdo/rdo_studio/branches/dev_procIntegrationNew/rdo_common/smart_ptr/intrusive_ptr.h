@@ -29,9 +29,9 @@ public:
 	typedef T                object_type;
 	typedef intrusive_ptr<T> this_type;
 
-	intrusive_ptr ();
-	intrusive_ptr (PTR (T)         object);
-	intrusive_ptr (CREF(this_type) sptr  );
+	 intrusive_ptr();
+	 intrusive_ptr(PTR (T)         object);
+	 intrusive_ptr(CREF(this_type) sptr  );
 	~intrusive_ptr();
 
 	REF(this_type) operator= (CREF(this_type) sptr);

@@ -12,47 +12,35 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc_process_control.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "rdo_lib/rdo_runtime/rdo_activity_i.h"
+#include "rdo_lib/rdo_runtime/rdoprocess.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcEvent
+// ---------- RDOCalcProcessControl
 // ----------------------------------------------------------------------------
-RDOCalcProcessControl::RDOCalcProcessControl()
-{
-//создать от параметра-ресурса транзакт и проинициализировать его первым блоком процесса
-}
+RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum)
+	: m_Block    (pBlock   )
+	, m_relResNum(relResNum)
+{}
 
 REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
 {
-	LPIBaseOperation pLogic = *(++(pRuntime->m_pMetaLogic->begin()));
-	if (pLogic)
+//по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
+	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
+	LPRDOResource     pResource = pRuntime->getResourceByID(resID);
+	//! @TODO проверить, можно ли перенести проверку в парсер, чтобы сделать object_static_cast вместо object_dynamic_cast
+	LPRDOPROCTransact pTransact = pResource.object_dynamic_cast<RDOPROCTransact>();
+	if (pTransact)
 	{
-		LPIPROCProcess pProcess = pLogic.query_cast<IPROCProcess>();
-		if (pProcess)
-		{
-			LPIBaseOperationContainer pBlockContainer = pProcess.query_cast<IBaseOperationContainer>();
-			ASSERT(pBlockContainer);
-			if (!pBlockContainer->empty())
-			{
-				LPIBaseOperation pBlock = *pBlockContainer->begin();
-				ASSERT(pBlock);
-				PTR(RDOPROCTransact) pTransact = new RDOPROCTransact(pRuntime, pBlock);
-				ASSERT(pTransact);
-
-				pTransact->setBlock(pBlock);
-				// Записываем в конец списка этого блока перемещаемый транзакт
-				pBlock.query_cast<IPROCBlock>()->transactGoIn(pTransact);
-			}
-		}
+		pTransact->setBlock(m_Block);
+		// Записываем в конец списка этого блока перемещаемый транзакт
+		m_Block.query_cast<IPROCBlock>()->transactGoIn(pTransact);
 	}
 
-//	LPIPROCBlock   block     = dynamic_cast<LPIPROCBlock>(process-begin());
-//	RDOLogicSimple process = std::find(metaLogic->begin(), metaLogic->end(), 'Process');
-//	process->begin();//первый блок
-//в простейшей модели (без БЗ), только с одним процессом должен сработать халявный вызов:
-//	new RDOPROCTransact( pRuntime, block );
 	return m_value;
 }
 

@@ -211,12 +211,20 @@ RDOResTypeList::RDOResTypeList(CREF(rdoParse::LPRDOParser) pParser)
 // --------------------------------------------------------------------
 // ---- Добавление *нового* типа ресурса
 // --------------------------------------------------------------------
-rbool RDOResTypeList::append(REF(RDOResType) rtp)
+rdoParse::LPRDORTPResType RDOResTypeList::appendBefore(REF(RDOResType) rtp)
 {
 	if (std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResType>(rtp.name())) != end())
-		return false;
+		return NULL;
 
 	rdoParse::LPRDORTPResType pResourceType = rdo::Factory<rdoParse::RDORTPResType>::create(m_pParser, rdoParse::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
+	ASSERT(pResourceType);
+	return pResourceType;
+}
+
+rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParse::LPRDORTPResType) pResourceType)
+{
+	ASSERT(pResourceType);
+
 	STL_FOR_ALL_CONST(rtp.m_params, param)
 	{
 		rdoParse::LPTypeInfo pParamType;

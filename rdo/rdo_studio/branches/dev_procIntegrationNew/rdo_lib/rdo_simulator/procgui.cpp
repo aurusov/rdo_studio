@@ -146,16 +146,14 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(
 		//! Добавим параметр Время_создания
 		rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<rdoParse::RDOType__real>::create()));
 		//! Добавим тип ресурса
-		if (!rtpList.append(rtp))
+		if (!rtpList.append<rdoRuntime::RDOResourceTypeTransact>(rtp))
 		{
 			m_pParser->error().error(rdoParse::RDOParserSrcInfo(), rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 		}
-		rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 	}
 	else
 	{
 		CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
-		rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
 	}
 
 	//! GENERATE

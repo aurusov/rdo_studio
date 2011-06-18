@@ -12,6 +12,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/variable_container.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

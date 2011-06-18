@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/context/stack.h"
 #include "rdo_lib/rdo_parser/context/context.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
