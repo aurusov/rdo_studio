@@ -1,12 +1,23 @@
+/**
+ @file      rdoprocess.h
+ @authors   Урусов Андрей, Лущан Дмитрий, etc.
+ @date      unknown
+ @brief     Процесснные операторы РДО
+ @indent    4T
+ */
+
 #ifndef RDOPROCESS_H
 #define RDOPROCESS_H
 
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoprocess_i.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
+// ===============================================================================
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
@@ -36,8 +47,6 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-class RDOPROCTransact;
-
 class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatternPrior
 {
 DEFINE_IFACTORY(RDOPROCProcess)
@@ -48,6 +57,9 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 friend class RDOPROCBlock;
 
+public:
+	DECLARE_IPROCProcess;
+
 protected:
 	tstring                    m_name;
 	LPIPROCProcess             m_parent;
@@ -55,26 +67,25 @@ protected:
 
 private:
 	RDOPROCProcess(CREF(tstring) _name, PTR(RDOSimulator) sim);
-
-	DECLARE_IPROCProcess;
+	LPRDOResourceType            m_transactType;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-class RDOPROCResource;
-class RDOPROCTransact: public RDOResource
-{
-public:
-	static int s_typeID;
+PREDECLARE_POINTER(RDOPROCResource);
 
-	PTR(RDOPROCResource) getRes()
+CLASS_PARENT_OF(RDOPROCTransact, RDOResource)
+{
+DECLARE_FACTORY(RDOPROCTransact);
+public:
+	LPRDOPROCResource getRes()
 	{
 		return m_res;
 	}
-	void setRes(PTR(RDOPROCResource) res)
+	void setRes(CREF(LPRDOPROCResource) pResource)
 	{
-		m_res = res;
+		m_res = pResource;
 	}
 	REF(LPIPROCBlock) getBlock()
 	{
@@ -84,28 +95,38 @@ public:
 	{
 		m_block = block;
 	}
-	RDOPROCTransact(PTR(RDOSimulator) sim, CREF(LPIPROCBlock) block);
+
 	void next();
+	virtual LPRDOResource clone(PTR(RDORuntime) runtime) const;
+
 
 private:
-	LPIPROCBlock         m_block;
-	PTR(RDOPROCResource) m_res;
+	RDOPROCTransact(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	virtual ~RDOPROCTransact();
+
+	LPIPROCBlock       m_block;
+	LPRDOPROCResource  m_res;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-class RDOPROCResource: public RDOResource
+CLASS_PARENT_OF(RDOPROCResource, RDOResource)
 {
+DECLARE_FACTORY(RDOPROCResource);
 friend class RDOPROCSeize;
 friend class RDOPROCRelease;
 
 public:
-	RDOPROCResource( RDORuntime* _runtime, int _number, ruint type, bool _trace );
 	std::string whoAreYou() {return "procRes";	}
+	virtual LPRDOResource clone(PTR(RDORuntime) runtime) const;
 
-protected: 
-	std::list<RDOPROCTransact*> transacts;
+protected:
+	std::list<LPRDOPROCTransact> transacts;
+
+private:
+	RDOPROCResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	virtual ~RDOPROCResource();
 };
 
 // ----------------------------------------------------------------------------
@@ -139,12 +160,13 @@ private:
 
 	DECLARE_IBaseOperation;
 };
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForQueue
 // ----------------------------------------------------------------------------
 struct runtime_for_Queue
 {
-	RDOResource* rss; 
+	LPRDOResource rss; 
 	int Id_param;
 	RDOValue defaultValue;
 };
@@ -215,11 +237,11 @@ private:
 // ----------------------------------------------------------------------------
 struct runtime_for_Seize
 {
-	RDOPROCResource* rss; 
-	int Id_param;
-	RDOValue     enum_free;
-	RDOValue     enum_buzy;
-	RDOValue	 enum_break;
+	LPRDOPROCResource  rss;
+	int                Id_param;
+	RDOValue           enum_free;
+	RDOValue           enum_buzy;
+	RDOValue           enum_break;
 };
 
 struct parser_for_Seize
@@ -309,13 +331,12 @@ protected:
 	LPRDOCalc pDelayCalc;
 
 	struct LeaveTr {
-		RDOPROCTransact* transact;
+		LPRDOPROCTransact transact;
 		double           timeLeave;
-		LeaveTr( RDOPROCTransact* _transact, double _timeLeave ):
-			transact ( _transact ),
-			timeLeave( _timeLeave )
-		{
-		}
+		LeaveTr(CREF(LPRDOPROCTransact) _transact, double _timeLeave):
+			transact (_transact ),
+			timeLeave(_timeLeave)
+		{}
 	};
 	std::list< LeaveTr > leave_list;
 
@@ -350,7 +371,6 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
@@ -368,9 +388,7 @@ private:
 		, pParamValue (pValue  )
 		, t_resId     (Id_res  )
 		, t_parId     (Id_param)
-	{
-		int i = 0;
-	}
+	{}
 
 	LPRDOCalc pParamValue;
 	int       t_resId;
@@ -379,6 +397,6 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDOPROCESS_H

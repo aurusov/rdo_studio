@@ -435,9 +435,11 @@ void RDODPTSearch::end()
 tstring RDOPROCProcess::s_name_prefix = _T("");
 tstring RDOPROCProcess::s_name_sufix  = _T("s");
 
-RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
-	: RDOParserSrcInfo(info )
-	, m_closed        (false)
+RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name, LPRDORTPResType transactType)
+	: RDOParserSrcInfo(info        )
+	, m_closed        (false       )
+	, m_name          (name        )
+	, m_transactType  (transactType)
 {
 	RDOParser::s_parser()->insertPROCProcess(this);
 	m_pRuntime = F(rdoRuntime::RDOPROCProcess)::create(info.src_text(), RDOParser::s_parser()->runtime());
@@ -476,6 +478,11 @@ void RDOPROCProcess::insertChild(REF(LPRDOPROCProcess) pProcess)
 	ASSERT(pProcess);
 	m_childProcessList.push_back(pProcess);
 	pProcess->m_pParentProcess = this;
+}
+
+rbool RDOPROCProcess::checkTransactType(CREF(tstring) name) const
+{
+	return (name == m_transactType->name());
 }
 
 // ----------------------------------------------------------------------------

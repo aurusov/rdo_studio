@@ -222,6 +222,7 @@
 #include "rdo_lib/rdo_runtime/calc/watch.h"
 #include "rdo_lib/rdo_runtime/calc/braces.h"
 #include "rdo_lib/rdo_runtime/calc/statements.h"
+#include "rdo_lib/rdo_runtime/calc_process_control.h"
 #include "rdo_lib/rdo_runtime/calc/array.h"
 // ===============================================================================
 
@@ -1466,6 +1467,7 @@ statement
 	| for_statement
 	| nochange_statement
 //	| member_statement ';'
+	| process_input_statement
 	| stopping_statement
 	| planning_statement
 	| watch_start
@@ -2364,6 +2366,43 @@ planning_statement
 	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+process_input_statement
+	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
+	{
+		tstring          processName  = RDOVALUE($1)->getIdentificator();
+		LPRDOPROCProcess pProcess     = PARSER->findPROCProcess(processName);
+		if (!pProcess)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка запустить неизвестный процесс: %s"), processName.c_str()));
+		}
+
+		LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
+		ASSERT(pBlock);
+
+		tstring relResName = RDOVALUE($5)->getIdentificator();
+
+		LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+		ASSERT(pPattern);
+		/*из-за использования RDO_IDENTIF_RELRES findRelevantResource() всегда находит ресурс*/
+		LPRDORelevantResource pRelRes = pPattern->findRelevantResource(relResName);
+		tstring relResTypeName = pRelRes->getType()->name();
+
+		if (!pProcess->checkTransactType(relResTypeName))
+		{
+			PARSER->error().error(@1, rdo::format(_T("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s"), processName.c_str(), _T("true_resTypeName"), relResTypeName.c_str()));
+		}
+
+		rdoRuntime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdoRuntime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
+		ASSERT(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
+	{
+		PARSER->error().error(@5, _T("В качестве транзакта процессу можно передавать только релеватный ресурс"));
 	}
 	;
 

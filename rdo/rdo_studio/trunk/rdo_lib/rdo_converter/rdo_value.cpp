@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/rdo_value.h"
 #include "rdo_lib/rdo_converter/rdo_type.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE

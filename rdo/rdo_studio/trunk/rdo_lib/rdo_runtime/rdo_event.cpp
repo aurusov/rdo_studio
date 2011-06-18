@@ -10,6 +10,7 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_event.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 // ===============================================================================

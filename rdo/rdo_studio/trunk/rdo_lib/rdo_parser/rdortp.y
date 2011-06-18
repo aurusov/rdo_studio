@@ -257,6 +257,7 @@ rtp_res_type
 		{
 			PARSER->error().warning(@2, rdo::format(_T("Тип ресурса '%s' не содежит параметров"), pResourceType->name().c_str()));
 		}
+		pResourceType->end<rdoRuntime::RDOResourceType>();
 		$$ = PARSER->stack().push(pResourceType);
 	}
 	| rtp_header RDO_Parameters rtp_body

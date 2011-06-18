@@ -161,7 +161,7 @@ void RDOTrace::writeSearchResult(char letter, PTR(RDOSimulatorTrace) simTr, PTR(
 	}
 }
 
-void RDOTrace::writePermanentResources(rdoRuntime::PTR(RDOSimulatorTrace) sim, const std::list< RDOResource* >& res_perm)
+void RDOTrace::writePermanentResources(rdoRuntime::PTR(RDOSimulatorTrace) sim, const std::list< LPRDOResource >& res_perm)
 {
 	if (!canTrace())
 		return;
@@ -169,10 +169,10 @@ void RDOTrace::writePermanentResources(rdoRuntime::PTR(RDOSimulatorTrace) sim, c
 	getOStream() << traceResourcesList('\0', sim, res_perm) << getEOL();
 }
 
-tstring RDOTrace::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim, const std::list< RDOResource* >& rel_res_list)
+tstring RDOTrace::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim, const std::list< LPRDOResource >& rel_res_list)
 {
 	tstring res;
-	for (std::list< RDOResource* >::const_iterator i = rel_res_list.begin(); i != rel_res_list.end(); i++) {
+	for (std::list< LPRDOResource >::const_iterator i = rel_res_list.begin(); i != rel_res_list.end(); i++) {
 		if (*i) {
 			res += (*i)->traceResourceState(prefix, sim);
 		}

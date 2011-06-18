@@ -56,7 +56,8 @@ OPEN_RDO_NAMESPACE
 		return str.str();
 	}
 
-	template<class T> void deleteAllObjects(REF(T) container)
+	template<class T>
+	void deleteAllObjects(REF(T) container)
 	{
 		T::reverse_iterator it = container.rbegin();
 		while (it != container.rend())

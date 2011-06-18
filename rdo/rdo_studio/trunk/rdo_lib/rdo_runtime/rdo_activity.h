@@ -40,18 +40,18 @@ protected:
 	virtual ~RDOActivity() {}
 
 	std::string               m_oprName;
-	std::list< RDOResource* > m_relevantResources; // Список релевантных ресурсов
+	std::list<LPRDOResource> m_relevantResources; // Список релевантных ресурсов
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector<LPRDOCalc>    m_paramsCalcs;
 
 	void setPatternParameters( RDOSimulator* sim );
-	void getRelevantResources( RDOSimulator* sim, std::list< RDOResource* >& rel_res_list );
+	void getRelevantResources( RDOSimulator* sim, std::list<LPRDOResource>& rel_res_list );
 	void incrementRelevantResourceReference( RDOSimulator* sim );
 	void decrementRelevantResourceReference( RDOSimulator* sim );
 
-	void updateRelRes( RDOSimulator* sim )
+	void updateRelRes(RDOSimulator* sim)
 	{
-		getRelevantResources( sim, m_relevantResources );
+		getRelevantResources(sim, m_relevantResources);
 	}
 	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResource::ConvertStatus >& status_list );
 
