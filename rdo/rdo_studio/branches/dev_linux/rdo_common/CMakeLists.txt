@@ -4,8 +4,6 @@ if (NOT TARGET rdo_nix_common)
 
 message (STATUS "CREATE RDO_COMMON LIBRARY PROJECT")
 
-project (rdo_nix_common)
-
 # Find Boost
 set (Boost_USE_STATIC_LIBS   ON)
 set (Boost_USE_MULTITHREADED ON)
@@ -54,11 +52,11 @@ set (SOURCE_FILES
 	rdocommon.cpp
 	rdofile.cpp)
 
-source_group ("animation" FILES 
+source_group (".animation" FILES 
 	rdoanimation.h
 	rdoanimation.inl)
 
-source_group ("common" FILES
+source_group (".common" FILES
 	rdotypes.h
 	namespace.h
 	rdomacros.h 
@@ -67,19 +65,19 @@ source_group ("common" FILES
 	rdocommon.cpp
 	model_objects.h)
 
-source_group ("debug" FILES 
+source_group (".debug" FILES 
 	rdodebug.h
 	static_assert.h)
 
-source_group ("file" FILES 
+source_group (".file" FILES 
 	rdofile.h
 	rdofile.inl
 	rdofile.cpp)
 
-source_group ("interface" FILES 
+source_group (".interface" FILES 
 	rdointerface.h)
 
-source_group ("smart_prt" FILES
+source_group (".smart_prt" FILES
 	rdosmart_ptr_wrapper.h
 	smart_ptr/counter_reference.h
 	smart_ptr/interface_ptr.h
@@ -88,10 +86,10 @@ source_group ("smart_prt" FILES
 	smart_ptr/interface_ptr.inl
 	smart_ptr/intrusive_ptr.inl)
 
-source_group ("stream" FILES 
+source_group (".stream" FILES 
 	rdostream.h)
 
-source_group ("stuff" FILES 
+source_group (".stuff" FILES 
 	stack.h
 	stack.inl
 	supersubclass.h
@@ -99,7 +97,7 @@ source_group ("stuff" FILES
 	rdoidgenerator.h
 	rdoindexedstack.h)
 
-source_group ("time" FILES
+source_group (".time" FILES
 	rdotime.h
 	rdotime.inl)
 

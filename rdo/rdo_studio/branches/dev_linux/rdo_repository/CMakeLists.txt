@@ -4,8 +4,6 @@ if (NOT TARGET rdo_nix_repository)
 
 message (STATUS "CREATE RDO_REPOSITORY LIBRARY PROJECT")
 
-project (rdo_nix_repository)
-
 # Find Boost
 set (Boost_USE_STATIC_LIBS   ON)
 set (Boost_USE_MULTITHREADED ON)
@@ -23,7 +21,7 @@ set (HEADER_FILES
 set (SOURCE_FILES
 	rdorepository.cpp)
 
-source_group ("repository" FILES 
+source_group (".repository" FILES 
 	rdorepository.h
 	rdorepository.cpp)
 

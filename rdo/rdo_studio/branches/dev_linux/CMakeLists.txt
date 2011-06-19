@@ -32,6 +32,10 @@ endif (MSVC)
 # add the include folder to the include path
 include_directories (${PROJECT_SOURCE_DIR})
 
+add_subdirectory (cmake_config)
+
+message (STATUS ${BUILD_DIRECTORY})
+
 # Compile the rdo_common
 add_subdirectory (rdo_common rdo_common)
 

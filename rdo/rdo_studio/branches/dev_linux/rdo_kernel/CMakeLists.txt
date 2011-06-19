@@ -4,8 +4,6 @@ if (NOT TARGET rdo_nix_kernel)
 
 message (STATUS "CREATE RDO_KERNEL LIBRARY PROJECT")
 
-project (rdo_nix_kernel)
-
 # Find Boost
 set (Boost_USE_STATIC_LIBS   ON)
 set (Boost_USE_MULTITHREADED ON)
@@ -25,11 +23,11 @@ set (SOURCE_FILES
 	rdothread.cpp
 	rdokernel.cpp)
 
-source_group ("thread" FILES 
+source_group (".thread" FILES 
 	rdothread.h
 	rdothread.cpp)
 
-source_group ("kernel" FILES 
+source_group (".kernel" FILES 
 	rdokernel.h
 	rdokernel.cpp)
 
