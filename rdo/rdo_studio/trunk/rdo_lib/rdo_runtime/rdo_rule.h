@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDORule
 // ----------------------------------------------------------------------------
-class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior, public RDORuntimeContainer
+class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
 DEFINE_IFACTORY(RDORule);

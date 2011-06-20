@@ -23,17 +23,21 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-class RDOFRMShow;
-class RDOFRMItem;
+PREDECLARE_POINTER(RDOFRMShow);
+PREDECLARE_POINTER(RDOFRMItem);
 
-class RDOFRMFrame: public RDORuntimeParent, public RDOSrcInfo
+OBJECT(RDOFRMFrame)
+	IS  INSTANCE_OF(RDORuntimeObject)
+	AND INSTANCE_OF(RDOSrcInfo      )
 {
+DECLARE_FACTORY(RDOFRMFrame)
 public:
 	// ----------------------------------------------------------------------------
 	// ---------- RDOFRMPosition
 	// ----------------------------------------------------------------------------
-	class RDOFRMPosition: public RDORuntimeObject
+	OBJECT(RDOFRMPosition) IS INSTANCE_OF(RDORuntimeObject)
 	{
+	DECLARE_FACTORY(RDOFRMPosition)
 	public:
 		enum PositionType {
 			absolute,
@@ -46,20 +50,6 @@ public:
 		PositionType type;
 		int          rulet_id;
 
-		RDOFRMPosition( RDOFRMFrame* _parent ):
-			RDORuntimeObject( _parent ),
-			pCalc( NULL ),
-			type( absolute ),
-			rulet_id( 0 )
-		{
-		}
-		RDOFRMPosition( RDOFRMFrame* _parent, CREF(LPRDOCalc) _pCalc, PositionType _type = absolute, int _rulet_id = 0 ):
-			RDORuntimeObject( _parent ),
-			pCalc( _pCalc ),
-			type( _type ),
-			rulet_id( _rulet_id )
-		{
-		}
 		int getX( RDORuntime* sim, RDOFRMFrame* frame ) {
 			RDOValue res = pCalc->calcValue( sim );
 			switch ( type ) {
@@ -98,14 +88,32 @@ public:
 			}
 			return res.getInt();
 		}
+	private:
+		RDOFRMPosition():
+			RDORuntimeObject(),
+			pCalc( NULL ),
+			type( absolute ),
+			rulet_id( 0 )
+		{}
+
+		RDOFRMPosition(CREF(LPRDOCalc) _pCalc, PositionType _type = absolute, int _rulet_id = 0 ):
+			RDORuntimeObject(),
+			pCalc( _pCalc ),
+			type( _type ),
+			rulet_id( _rulet_id )
+		{}
+
+		virtual ~RDOFRMPosition()
+		{}
 	};
 	friend class RDOFRMPosition;
 
 	// ----------------------------------------------------------------------------
 	// ---------- RDOFRMColor - объект-цвет
 	// ----------------------------------------------------------------------------
-	class RDOFRMColor: public RDORuntimeObject
+	OBJECT(RDOFRMColor) IS INSTANCE_OF(RDORuntimeObject)
 	{
+	DECLARE_FACTORY(RDOFRMColor)
 	public:
 		enum ColorType {
 			color_none,
@@ -117,18 +125,6 @@ public:
 			color_last_fg_text
 		};
 
-	private:
-		ColorType color_type;
-		LPRDOCalc m_pRedCalc;
-		LPRDOCalc m_pGreenCalc;
-		LPRDOCalc m_pBlueCalc;
-
-	public:
-		RDOFRMColor(RDOFRMFrame* _parent, ColorType _type = color_none);
-		RDOFRMColor(RDOFRMFrame* _parent, int _red, int _green, int _blue);
-		RDOFRMColor(RDOFRMFrame* _parent, CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
-		~RDOFRMColor();
-
 		rdoAnimation::RDOColor getColor( RDORuntime* sim, RDOFRMFrame* frame ) const;
 
 		ColorType getColorType() const {
@@ -137,40 +133,51 @@ public:
 		void setColorType( ColorType _type ) {
 			if ( color_type == color_none ) color_type = _type;
 		};
+
+	private:
+		RDOFRMColor(ColorType _type = color_none);
+		RDOFRMColor(int _red, int _green, int _blue);
+		RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
+		virtual ~RDOFRMColor();
+
+		ColorType color_type;
+		LPRDOCalc m_pRedCalc;
+		LPRDOCalc m_pGreenCalc;
+		LPRDOCalc m_pBlueCalc;
 	};
 	friend class RDOFRMColor;
 
 	// ----------------------------------------------------------------------------
 	// ---------- RDOFRMRulet
 	// ----------------------------------------------------------------------------
-	class RDOFRMRulet: public RDOSrcInfo
+	OBJECT(RDOFRMRulet)
+		 IS  INSTANCE_OF(RDORuntimeObject)
+		 AND INSTANCE_OF(RDOSrcInfo      )
 	{
+	DECLARE_FACTORY(RDOFRMRulet)
 	public:
 		int index;
-		RDOFRMPosition* x;
-		RDOFRMPosition* y;
-		RDOFRMRulet( const RDOSrcInfo& _src_info, int _index, RDOFRMPosition* _x, RDOFRMPosition* _y ):
+		LPRDOFRMPosition x;
+		LPRDOFRMPosition y;
+
+	private:
+		RDOFRMRulet(CREF(RDOSrcInfo) _src_info, int _index, CREF(LPRDOFRMPosition) _x, CREF(LPRDOFRMPosition) _y ):
 			RDOSrcInfo( _src_info ),
 			index( _index ),
 			x(_x),
 			y(_y)
-		{
-		}
-		~RDOFRMRulet() {
-			delete x;
-			delete y;
-		}
+		{}
+		virtual ~RDOFRMRulet()
+		{}
 	};
 
 public:
-	RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, CREF(LPRDOCalc) _pConditionCalc = NULL );
-	virtual ~RDOFRMFrame();
-	void setBackgroundColor( RDOFRMColor* _background_color );
+	void setBackgroundColor(CREF(LPRDOFRMColor) _background_color );
 	void setBackPicture( const std::string& _picFileName );
 	void setBackPicture( int _width, int _height );
 	void startShow(CREF(LPRDOCalc) pCalc = NULL);
-	const RDOFRMShow* getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
-	void addItem( RDOFRMItem* item );
+	LPRDOFRMShow getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
+	void addItem(CREF(LPRDOFRMItem) pItem);
 	void addRulet( RDOFRMRulet* rulet );
 	bool checkCondition( RDORuntime* sim );
 	rdoAnimation::RDOFrame* createFrame( RDORuntime* sim ) {
@@ -193,7 +200,7 @@ public:
 	}
 
 	int getRuletX( RDORuntime* sim, int rulet_id ) {
-		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
+		RuletList::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
 			if ( (*it)->index == rulet_id ) return (*it)->x->pCalc->calcValue( sim ).getInt();
 			it++;
@@ -201,15 +208,15 @@ public:
 		return 0;
 	}
 	int getRuletY( RDORuntime* sim, int rulet_id ) {
-		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
+		RuletList::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
 			if ( (*it)->index == rulet_id ) return (*it)->y->pCalc->calcValue( sim ).getInt();
 			it++;
 		}
 		return 0;
 	}
-	const RDOFRMRulet* findRulet( int rulet_id ) {
-		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
+	LPRDOFRMRulet findRulet( int rulet_id ) {
+		RuletList::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
 			if ( (*it)->index == rulet_id ) return (*it);
 			it++;
@@ -218,15 +225,18 @@ public:
 	}
 
 private:
-	typedef std::list  <PTR(RDOFRMShow) > ShowList;
-	typedef std::vector<PTR(RDOFRMRulet)> RuletList;
+	RDOFRMFrame(CREF(LPRDORuntime) pRuntime, CREF(RDOSrcInfo) _src_info, CREF(LPRDOCalc) _pConditionCalc = NULL );
+	virtual ~RDOFRMFrame();
 
-	LPRDOCalc    pConditionCalc;
-	RDOFRMColor* background_color;
-	tstring      picFileName;
-	ruint        width;
-	ruint        height;
-	ShowList     shows;
+	typedef std::list  <LPRDOFRMShow > ShowList;
+	typedef std::vector<LPRDOFRMRulet> RuletList;
+
+	LPRDOCalc     pConditionCalc;
+	LPRDOFRMColor background_color;
+	tstring       picFileName;
+	ruint         width;
+	ruint         height;
+	ShowList      shows;
 	rdoAnimation::RDOColor color_last_bg;
 	rdoAnimation::RDOColor color_last_fg;
 	rdoAnimation::RDOColor color_last_bg_text;
@@ -247,17 +257,17 @@ class RDOFRMBoundingItem
 {
 public:
 	struct RDOFRMBoundingData {
-		RDOFRMFrame::RDOFRMPosition* x;
-		RDOFRMFrame::RDOFRMPosition* y;
-		RDOFRMFrame::RDOFRMPosition* width;
-		RDOFRMFrame::RDOFRMPosition* height;
+		RDOFRMFrame::LPRDOFRMPosition x;
+		RDOFRMFrame::LPRDOFRMPosition y;
+		RDOFRMFrame::LPRDOFRMPosition width;
+		RDOFRMFrame::LPRDOFRMPosition height;
 	};
 
 private:
 	RDOFRMBoundingData data;
 
 protected:
-	RDOFRMBoundingItem( RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height )
+	RDOFRMBoundingItem( CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height )
 	{
 		data.x = _x;
 		data.y = _y;
@@ -299,24 +309,19 @@ protected:
 class RDOFRMColoredItem
 {
 protected:
-	RDOFRMFrame::RDOFRMColor* bgColor;
-	RDOFRMFrame::RDOFRMColor* fgColor;
+	RDOFRMFrame::LPRDOFRMColor bgColor;
+	RDOFRMFrame::LPRDOFRMColor fgColor;
 
-	RDOFRMColoredItem( RDOFRMFrame::RDOFRMColor* _bgColor, RDOFRMFrame::RDOFRMColor* _fgColor ):
+	RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) _bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) _fgColor ):
 		bgColor( _bgColor ),
 		fgColor( _fgColor )
 	{
 	}
 	virtual ~RDOFRMColoredItem() {}
 
-	void color_reparent( RDORuntimeParent* _parent ) {
-		bgColor->reparent( _parent );
-		fgColor->reparent( _parent );
-	}
-
 public:
-	const RDOFRMFrame::RDOFRMColor* getBgColor() const { return bgColor; }
-	const RDOFRMFrame::RDOFRMColor* getFgColor() const { return fgColor; }
+	CREF(RDOFRMFrame::LPRDOFRMColor) getBgColor() const { return bgColor; }
+	CREF(RDOFRMFrame::LPRDOFRMColor) getFgColor() const { return fgColor; }
 	rdoAnimation::RDOColor getBg( RDORuntime* sim, RDOFRMFrame* frame ) { return bgColor->getColor( sim, frame ); }
 	rdoAnimation::RDOColor getFg( RDORuntime* sim, RDOFRMFrame* frame ) { return fgColor->getColor( sim, frame ); }
 };
@@ -324,28 +329,26 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMItem - базовый для всех элементов
 // ----------------------------------------------------------------------------
-class RDOFRMItem: public RDORuntimeParent
+OBJECT(RDOFRMItem) IS INSTANCE_OF(RDORuntimeObject)
 {
-friend class RDOFRMShow;
-friend class RDOFRMFrame;
-
-private:
-	RDOFRMFrame* frame;
+DECLARE_FACTORY(RDOFRMItem)
+public:
+	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim ) = 0;
+	virtual void getBitmaps( std::list< std::string >& list )
+	{}
 
 protected:
 	RDOFRMItem( RDOFRMFrame* _parent ):
-		RDORuntimeParent( _parent ),
 		frame( _parent )
 	{
 	}
 	virtual ~RDOFRMItem()
 	{
 	}
-	virtual void getBitmaps( std::list< std::string >& list )
-	{
-	}
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim ) = 0;
 	RDOFRMFrame* getFrame() const { return frame; }
+
+private:
+	RDOFRMFrame* frame;
 };
 
 // ----------------------------------------------------------------------------
@@ -363,7 +366,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
+	RDOFRMText( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 	void setText( rdoAnimation::RDOTextElement::TextAlign _align, CREF(LPRDOCalc) _pValue );
 	void setText( rdoAnimation::RDOTextElement::TextAlign _align, const std::string& _txt );
 };
@@ -399,14 +402,14 @@ public:
 class RDOFRMBitmap: public RDOFRMBitmapBase
 {
 private:
-	RDOFRMFrame::RDOFRMPosition* x;
-	RDOFRMFrame::RDOFRMPosition* y;
+	RDOFRMFrame::LPRDOFRMPosition x;
+	RDOFRMFrame::LPRDOFRMPosition y;
 
 protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMBitmap( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, const std::string& _pict_filename, const std::string& _mask_filename = "" );
+	RDOFRMBitmap( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, const std::string& _pict_filename, const std::string& _mask_filename = "" );
 };
 
 // ----------------------------------------------------------------------------
@@ -418,7 +421,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMBitmapStretch( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, const std::string& _pict_filename, const std::string& _mask_filename = "" );
+	RDOFRMBitmapStretch( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _pict_filename, const std::string& _mask_filename = "" );
 };
 
 // ----------------------------------------------------------------------------
@@ -430,7 +433,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMRect( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
+	RDOFRMRect( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -442,7 +445,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMRectRound( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
+	RDOFRMRectRound( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -454,7 +457,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMEllipse( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
+	RDOFRMEllipse( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -463,13 +466,13 @@ public:
 class RDOFRMLine: public RDOFRMItem, public RDOFRMBoundingItem
 {
 private:
-	RDOFRMFrame::RDOFRMColor* color;
+	RDOFRMFrame::LPRDOFRMColor color;
 
 protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMLine( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x1, RDOFRMFrame::RDOFRMPosition* _y1, RDOFRMFrame::RDOFRMPosition* _x2, RDOFRMFrame::RDOFRMPosition* _y2, RDOFRMFrame::RDOFRMColor* _color );
+	RDOFRMLine( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color );
 };
 
 // ----------------------------------------------------------------------------
@@ -478,18 +481,18 @@ public:
 class RDOFRMTriang: public RDOFRMItem, public RDOFRMColoredItem
 {
 private:
-	RDOFRMFrame::RDOFRMPosition* x1;
-	RDOFRMFrame::RDOFRMPosition* y1;
-	RDOFRMFrame::RDOFRMPosition* x2;
-	RDOFRMFrame::RDOFRMPosition* y2;
-	RDOFRMFrame::RDOFRMPosition* x3;
-	RDOFRMFrame::RDOFRMPosition* y3;
+	RDOFRMFrame::LPRDOFRMPosition x1;
+	RDOFRMFrame::LPRDOFRMPosition y1;
+	RDOFRMFrame::LPRDOFRMPosition x2;
+	RDOFRMFrame::LPRDOFRMPosition y2;
+	RDOFRMFrame::LPRDOFRMPosition x3;
+	RDOFRMFrame::LPRDOFRMPosition y3;
 
 protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMTriang( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _x2, RDOFRMFrame::RDOFRMPosition* _y2, RDOFRMFrame::RDOFRMPosition* _x3, RDOFRMFrame::RDOFRMPosition* _y3, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
+	RDOFRMTriang( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -504,7 +507,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMActive( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, const std::string& _operName );
+	RDOFRMActive( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _operName );
 };
 
 // ----------------------------------------------------------------------------
@@ -516,31 +519,32 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
 
 public:
-	RDOFRMSpace( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height );
+	RDOFRMSpace( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height );
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMShow
 // ----------------------------------------------------------------------------
-// В списке потомков RDOFRMShow должны находится только RDOFRMItem.
-// Такова текущая логика добавления объектов к RDOFRMShow.
-// Приведение RDORuntimeObject к RDOFRMItem происходит без проверок.
-// ----------------------------------------------------------------------------
-class RDOFRMShow: public RDORuntimeParent
+OBJECT(RDOFRMShow) IS INSTANCE_OF(RDORuntimeObject)
 {
-friend class RDOFRMFrame;
-
-private:
-	LPRDOCalc pConditionCalc;
-
+DECLARE_FACTORY(RDOFRMShow)
 public:
-	RDOFRMShow( RDOFRMFrame* _parent, CREF(LPRDOCalc) _pConditionCalc );
-	virtual ~RDOFRMShow();
+	typedef std::list<LPRDOFRMItem> ItemList;
+
+	void insertItem(CREF(LPRDOFRMItem) pItem);
+	REF(ItemList) getItemList();
 
 	bool isShowIf() const { return pConditionCalc != NULL; }
 
 	bool checkCondition( RDORuntime* sim );
 	virtual void getBitmaps(REF(std::list<tstring>) list);
+
+private:
+	RDOFRMShow(CREF(LPRDOCalc) _pConditionCalc);
+	virtual ~RDOFRMShow();
+
+	ItemList  m_itemList;
+	LPRDOCalc pConditionCalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

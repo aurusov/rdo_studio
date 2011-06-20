@@ -30,7 +30,7 @@ DECLARE_FACTORY(RDOResourceType);
 friend class RDOCalcCreateResource;
 friend class RDOPROCGenerate;
 private:
-	RDOResourceType(rsint number, PTR(RDORuntimeParent) pParent = NULL);
+	RDOResourceType(rsint number);
 	virtual ~RDOResourceType();
 
 	rsint m_id;
@@ -48,7 +48,7 @@ OBJECT(RDOResourceTypeTransact)
 {
 DECLARE_FACTORY(RDOResourceTypeTransact);
 private:
-	RDOResourceTypeTransact(rsint number, PTR(RDORuntimeParent) pParent = NULL);
+	RDOResourceTypeTransact(rsint number);
 	virtual ~RDOResourceTypeTransact();
 
 	rsint m_id;
@@ -66,7 +66,7 @@ OBJECT(RDOResourceTypeProccess)
 {
 DECLARE_FACTORY(RDOResourceTypeProccess);
 private:
-	RDOResourceTypeProccess(rsint number, PTR(RDORuntimeParent) pParent = NULL);
+	RDOResourceTypeProccess(rsint number);
 	virtual ~RDOResourceTypeProccess();
 
 	rsint m_id;

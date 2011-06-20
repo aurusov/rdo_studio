@@ -102,7 +102,7 @@ public:
 	Converter();
 	virtual ~Converter();
 
-	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
+	rdoRuntime::LPRDORuntime runtime() { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -221,8 +221,8 @@ protected:
 
 	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	ValueList              m_allValues;
-	rdoRuntime::RDORuntime m_runtime;
+	ValueList                m_allValues;
+	rdoRuntime::LPRDORuntime m_pRuntime;
 
 private:
 	LPRDOSMR        m_pSMR;

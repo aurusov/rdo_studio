@@ -17,6 +17,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdocommon.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
@@ -70,12 +71,10 @@ class RDOFRMFrame;
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
-class RDORuntime: public RDOSimulatorTrace
+OBJECT(RDORuntime) IS INSTANCE_OF(RDOSimulatorTrace)
 {
+DECLARE_FACTORY(RDORuntime);
 public:
-	RDORuntime();
-	virtual ~RDORuntime();
-
 	void init  ();
 	void deinit();
 
@@ -253,8 +252,12 @@ public:
 	void setStudioThread(PTR(RDOThread) pStudioThread);
 
 private:
+	RDORuntime();
+	virtual ~RDORuntime();
+
 	typedef RDOSimulatorTrace           Parent;
 	typedef std::list<LPRDOCalc>        CalcList;
+
 	std::vector<LPRDOResource> allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  <LPRDOResource> allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
 	std::list  <LPRDOResource> allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
@@ -263,14 +266,13 @@ private:
 	FunBreakFlag                m_funBreakFlag;
 	LPIThreadProxy              m_pThreadProxy;
 	PTR(RDOThread)              m_pStudioThread;
-	
+
 	class BreakPoint: public RDORuntimeObject
 	{
 	public:
-		std::string name;
-		LPRDOCalc   pCalc;
-		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, CREF(LPRDOCalc) _pCalc ):
-			RDORuntimeObject( _parent ),
+		tstring   name;
+		LPRDOCalc pCalc;
+		BreakPoint(CREF(tstring) _name, CREF(LPRDOCalc) _pCalc ):
 			name ( _name  ),
 			pCalc( _pCalc )
 		{}

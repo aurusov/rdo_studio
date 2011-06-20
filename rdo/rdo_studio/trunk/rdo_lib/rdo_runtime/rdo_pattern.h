@@ -27,7 +27,7 @@ class RDOKeyboard;
 // ----------------------------------------------------------------------------
 // ---------- RDOPattern
 // ----------------------------------------------------------------------------
-class RDOPattern: public RDORuntimeParent, public RDOTraceableObject
+class RDOPattern: public RDORuntimeObject, public RDOTraceableObject
 {
 public:
 	void addPreSelectRelRes(CREF(LPRDOCalc) pCalc)

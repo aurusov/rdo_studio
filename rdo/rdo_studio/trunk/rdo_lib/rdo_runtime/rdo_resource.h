@@ -24,7 +24,7 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject) AND INSTANCE_OF(RDORuntimeContainer)
+OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
 friend class RDOResourceType;
 public:
@@ -37,11 +37,11 @@ public:
 		CS_NoChange
 	};
 
-	RDOResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
-	RDOResource(PTR(RDORuntime) runtime, CREF(RDOResource) copy);
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
-	void setRuntime(RDORuntime* runtime);
+	void setRuntime(CREF(LPRDORuntime) pRuntime);
 
 	ConvertStatus         getState   (           ) const;
 	CREF(RDOValue)        getParam   (ruint index) const;

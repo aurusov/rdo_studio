@@ -104,8 +104,10 @@ Converter::Converter()
 	, m_pattern             (false)
 {
 	s_parserStack.push_back(this);
-	m_runtime.memory_insert(sizeof(Converter));
-	m_runtime.init();
+	m_pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
+	ASSERT(m_pRuntime);
+	m_pRuntime->memory_insert(sizeof(Converter));
+	m_pRuntime->init();
 
 	m_pDocument = rdo::Factory<Document>::create();
 	ASSERT(m_pDocument);
@@ -113,7 +115,8 @@ Converter::Converter()
 
 Converter::~Converter()
 {
-	m_runtime.deinit();
+	m_pRuntime->deinit();
+	m_pRuntime = NULL;
 	rdo::deleteAllObjects(m_allValues);
 	m_movementObjectList.clear();
 	s_parserStack.remove(this);
@@ -208,7 +211,7 @@ tstring Converter::getModelStructure()
 	// OPR/DPT
 	ruint counter = 1;
 	modelStructure << std::endl << _T("$Activities") << std::endl;
-	modelStructure << m_runtime.writeActivitiesStructure(counter);
+	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
 	for (ruint i = 0; i < m_allDPTSearch.size(); i++)
@@ -224,7 +227,7 @@ tstring Converter::getModelStructure()
 	// PMD
 	modelStructure << std::endl << _T("$Watching") << std::endl;
 	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_runtime.getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -237,7 +240,7 @@ tstring Converter::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_runtime.getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;

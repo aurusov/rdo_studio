@@ -23,6 +23,7 @@ class RDOPokazTrace;
 class TreeNode;
 class TreeRoot;
 PREDECLARE_POINTER(RDOResource);
+PREDECLARE_POINTER(RDORuntime);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEndL - Рассылает броадкастом строку трассировки
@@ -81,7 +82,7 @@ public:
 
 	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< LPRDOResource >& rel_res_list );
 
-	virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
+	virtual void writePokaz(CREF(LPRDORuntime) pRuntime, RDOPokazTrace *pok);
 
 public:
 	virtual std::ostream& getOStream() { return m_emptyOut; }
@@ -149,7 +150,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOPokazTrace
 // ----------------------------------------------------------------------------
-class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue, public RDORuntimeContainer
+class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue
 {
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOTraceableObject)
@@ -157,10 +158,11 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	RDOPokazTrace( RDORuntime* runtime, bool trace );
+	RDOPokazTrace(CREF(LPRDORuntime) pRuntime, rbool trace);
 
 protected:
-	rbool m_wasChanged;
+	LPRDORuntime m_pRuntime;
+	rbool        m_wasChanged;
 
 	DECLARE_IPokazTrace;
 };

@@ -176,7 +176,7 @@ private:
 	class RDOFuzzySetDefinitionEmpty: public RDOFuzzySetDefinition
 	{
 	public:
-		RDOFuzzySetDefinitionEmpty(PTR(RDORuntimeParent) parent);
+		RDOFuzzySetDefinitionEmpty();
 		virtual ~RDOFuzzySetDefinitionEmpty();
 
 		virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const;

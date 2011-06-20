@@ -33,7 +33,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivity( RDORuntimeParent* parent, bool trace, CREF(tstring) name ):
+	RDOActivity(bool trace, CREF(tstring) name ):
 		RDOTraceableObject( trace ),
 		m_oprName( name )
 	{}
@@ -73,8 +73,8 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivityPattern( RDORuntimeParent* parent, T* pattern, bool trace, CREF(tstring) name ):
-		RDOActivity( parent, trace, name ),
+	RDOActivityPattern(T* pattern, bool trace, CREF(tstring) name ):
+		RDOActivity(trace, name ),
 		m_pattern( pattern )
 	{
 	}
