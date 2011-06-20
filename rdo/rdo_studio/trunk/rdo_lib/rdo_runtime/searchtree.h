@@ -19,13 +19,13 @@ class TreeRoot
 public:
 	virtual ~TreeRoot() {}
 
-	virtual void createRootTreeNode( RDOSimulator* sim ) = 0;
+	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime) = 0;
 
 	std::vector< TreeNode* > m_OPEN;
 	RDODPTSearch*            m_dp;
 	TreeNode*                m_rootNode;
 	TreeNode*                m_targetNode;
-	RDOSimulator*            m_theRealSimulator;
+	LPRDORuntime             m_theRealSimulator;
 	int                      m_nodesInGraphCount;
 	int                      m_expandedNodesCount;
 	int                      m_fullNodesCount;
@@ -38,7 +38,7 @@ public:
 	}
 
 protected:
-	TreeRoot( RDOSimulator* sim, RDODPTSearch* _dp);
+	TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP);
 
 private:
 	int m_nodesCount;
@@ -52,7 +52,7 @@ class TreeNode
 public:
 	virtual ~TreeNode();
 
-	RDOSimulator*            m_sim;
+	LPRDORuntime             m_pRuntime;
 	std::vector< TreeNode* > m_children;
 	TreeNode*                m_parent;
 	TreeRoot*                m_root;
@@ -70,24 +70,24 @@ public:
 		nfi_found_loser  = 2
 	};
 
-	NodeFoundInfo CheckIfExistBetter( RDOSimulator* childSim, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
+	NodeFoundInfo CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
 	void ReCostSubTree( double cost );
 
 protected:
-	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, LPIDPTSearchActivity _activity, double cost, int cnt );
+	TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
 
 	LPIDPTSearchActivity  m_currAct; // вершина пытается применять различные активности
-	RDOSimulator*         m_childSim;
+	LPRDORuntime          m_pChildRuntime;
 
 	double m_newCostPath;
 	double m_newCostRest;
 	double m_newCostRule;
 
-	virtual void onSearchOpenNode( RDOSimulator* sim )         {}
-	virtual void onSearchNodeInfoDeleted( RDOSimulator* sim )  {}
-	virtual void onSearchNodeInfoReplaced( RDOSimulator* sim ) {}
-	virtual void onSearchNodeInfoNew( RDOSimulator* sim )      {}
-	virtual TreeNode* createChildTreeNode();
+	virtual void          onSearchOpenNode        (CREF(LPRDORuntime) pRuntime) {}
+	virtual void          onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime) {}
+	virtual void          onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime) {}
+	virtual void          onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime) {}
+	virtual PTR(TreeNode) createChildTreeNode     ();
 };
 
 // ----------------------------------------------------------------------------

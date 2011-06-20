@@ -19,19 +19,19 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDORule
 // ----------------------------------------------------------------------------
-RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name )
-	: RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name )
+RDORule::RDORule(CREF(LPRDORuntime) pRuntime, RDOPatternRule* pattern, bool trace, const std::string& name)
+	: RDOActivityPattern<RDOPatternRule>(pattern, trace, name )
 	, RDOPatternPrior()
-	, RDORuntimeContainer  (runtime)
+	, m_pRuntime(pRuntime)
 	, m_additionalCondition(NULL   )
 {
 	init();
 }
 
-RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name )
-	: RDOActivityPattern<RDOPatternRule>( runtime, pattern, trace, name )
+RDORule::RDORule(CREF(LPRDORuntime) pRuntime, RDOPatternRule* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name)
+	: RDOActivityPattern<RDOPatternRule>(pattern, trace, name )
 	, RDOPatternPrior()
-	, RDORuntimeContainer  (runtime   )
+	, m_pRuntime(pRuntime)
 	, m_additionalCondition(pCondition)
 {
 	init();
@@ -39,7 +39,7 @@ RDORule::RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, CREF
 
 void RDORule::init()
 {
-	setTraceID( getRuntime()->getFreeActivityId() );
+	setTraceID( m_pRuntime->getFreeActivityId() );
 	m_traceOFF = false;
 }
 
@@ -82,7 +82,7 @@ void RDORule::trace()
 {
 	if ( !m_traceOFF )
 	{
-		getRuntime()->getTracer()->writeRule( this, getRuntime() );
+		m_pRuntime->getTracer()->writeRule( this, m_pRuntime );
 	}
 }
 

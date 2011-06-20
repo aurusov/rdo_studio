@@ -32,12 +32,12 @@ public:
 class IActivityTrace
 {
 public:
-	virtual tstring traceResourcesList       (char prefix, PTR(rdoRuntime::RDOSimulatorTrace) sim)             = 0;
-	virtual tstring traceResourcesListNumbers(PTR(rdoRuntime::RDOSimulatorTrace) sim, rbool show_create_index) = 0;
+	virtual tstring traceResourcesList       (char prefix, CREF(rdoRuntime::LPRDORuntime) pRuntime)             = 0;
+	virtual tstring traceResourcesListNumbers(CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool show_create_index) = 0;
 };
-#define DECLARE_IActivityTrace \
-	virtual tstring traceResourcesList       (char prefix, PTR(rdoRuntime::RDOSimulatorTrace) sim); \
-	virtual tstring traceResourcesListNumbers(PTR(rdoRuntime::RDOSimulatorTrace) sim, rbool show_create_index);
+#define DECLARE_IActivityTrace                                                                                   \
+	virtual tstring traceResourcesList       (char prefix, CREF(rdoRuntime::LPRDORuntime) pRuntime);             \
+	virtual tstring traceResourcesListNumbers(CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool show_create_index);
 
 class IActivityPatternTrace
 {

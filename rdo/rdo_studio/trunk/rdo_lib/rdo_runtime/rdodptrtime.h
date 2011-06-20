@@ -33,10 +33,10 @@ private:
 	LPRDOCalc pEvaluateBy;
 	bool      compTops;
 
-	virtual bool   onCheckCondition( RDOSimulator* sim ) { return pCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool();     }
-	virtual bool   TermCondition( RDOSimulator* sim )    { return pTermCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool(); }
-	virtual double EvaluateBy( RDOSimulator* sim )       { return pEvaluateBy->calcValue( static_cast<RDORuntime*>(sim) ).getDouble();    }
-	virtual bool   NeedCompareTops()                     { return compTops; }
+	virtual bool   onCheckCondition(CREF(RDORuntime) pRuntime) { return pCondition    ->calcValue(pRuntime).getAsBool(); }
+	virtual bool   TermCondition   (CREF(RDORuntime) pRuntime) { return pTermCondition->calcValue(pRuntime).getAsBool(); }
+	virtual double EvaluateBy      (CREF(RDORuntime) pRuntime) { return pEvaluateBy   ->calcValue(pRuntime).getDouble(); }
+	virtual bool   NeedCompareTops ()                          { return compTops; }
 };
 
 } // namespace rdoRuntime

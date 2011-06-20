@@ -83,7 +83,7 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyType
 // ----------------------------------------------------------------------------
-class  RDOFuzzySetDefinition;
+PREDECLARE_POINTER(RDOFuzzySetDefinition);
 
 class RDOFuzzyType: public RDOType
 {
@@ -99,27 +99,29 @@ public:
 	RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 
 protected:
-	RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition);
+	RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition);
 	virtual ~RDOFuzzyType();
 
 private:
 	typedef std::map< tstring, RDOFuzzyValue > Terms;
 
-	Terms                       m_terms;
-	PTR(RDOFuzzySetDefinition)  m_fuzzySetDefinition;
+	Terms                    m_terms;
+	LPRDOFuzzySetDefinition  m_fuzzySetDefinition;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinition
 // ----------------------------------------------------------------------------
-class RDOFuzzySetDefinition
+OBJECT(RDOFuzzySetDefinition)
 {
+DECLARE_FACTORY(RDOFuzzySetDefinition)
 public:
-	RDOFuzzySetDefinition();
-	virtual ~RDOFuzzySetDefinition();
-
 	virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const = 0;
 	virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const = 0;
+
+protected:
+	RDOFuzzySetDefinition();
+	virtual ~RDOFuzzySetDefinition();
 };
 
 // ----------------------------------------------------------------------------
@@ -128,9 +130,6 @@ public:
 class RDOFuzzySetDefinitionFixed: public RDOFuzzySetDefinition
 {
 public:
-	RDOFuzzySetDefinitionFixed();
-	virtual ~RDOFuzzySetDefinitionFixed();
-
 	REF(RDOFuzzySetDefinitionFixed) append     (CREF(RDOValue) value);
 	REF(RDOFuzzySetDefinitionFixed) operator() (CREF(RDOValue) value);
 
@@ -138,6 +137,9 @@ public:
 	virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 
 private:
+	RDOFuzzySetDefinitionFixed();
+	virtual ~RDOFuzzySetDefinitionFixed();
+
 	RDOFuzzyValue::FuzzySet  m_items;
 };
 

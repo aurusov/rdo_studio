@@ -9,8 +9,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
 // ----------------------------------------------------------------------------
-RDOResourceType::RDOResourceType(rsint number, RDORuntimeParent* parent)
-	: RDORuntimeObject  (parent)
+RDOResourceType::RDOResourceType(rsint number)
+	: RDORuntimeObject  (      )
 	, RDOTraceableObject(false )
 	, m_id              (number)
 {}
@@ -30,8 +30,8 @@ LPRDOResource RDOResourceType::createRes(PTR(RDORuntime) runtime, CREF(std::vect
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeTransact
 // ----------------------------------------------------------------------------
-RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number, RDORuntimeParent* parent)
-	: RDORuntimeObject  (parent)
+RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number)
+	: RDORuntimeObject  (      )
 	, RDOTraceableObject(false )
 	, m_id              (number)
 {}
@@ -51,8 +51,8 @@ LPRDOResource RDOResourceTypeTransact::createRes(PTR(RDORuntime) runtime, CREF(s
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeProccess
 // ----------------------------------------------------------------------------
-RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number, RDORuntimeParent* parent)
-	: RDORuntimeObject  (parent)
+RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number)
+	: RDORuntimeObject  (      )
 	, RDOTraceableObject(false )
 	, m_id              (number)
 {}

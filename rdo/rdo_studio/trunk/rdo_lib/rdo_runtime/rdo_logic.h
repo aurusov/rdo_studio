@@ -40,7 +40,7 @@ public:
 	typedef  BaseOperationList::const_iterator  CIterator;
 
 protected:
-	RDOLogic(PTR(RDOSimulator) sim = NULL, LPIBaseOperationContainer parent = NULL);
+	RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDOLogic();
 
 	DECLARE_IBaseOperationContainer;
@@ -52,9 +52,9 @@ protected:
 	LPIBaseOperationContainer  m_parent;
 
 private:
-	rbool checkSelfCondition(PTR(RDOSimulator) sim);
-	void  start             (PTR(RDOSimulator) sim);
-	void  stop              (PTR(RDOSimulator) sim);
+	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);
+	void  start             (CREF(LPRDORuntime) pRuntime);
+	void  stop              (CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_ILogic;
@@ -66,7 +66,7 @@ private:
 class RDOOrderSimple
 {
 public:
-	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
@@ -75,7 +75,7 @@ public:
 class RDOOrderMeta
 {
 public:
-	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
 };
 
 // ----------------------------------------------------------------------------
@@ -86,8 +86,8 @@ class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 protected:
 	DEFINE_IFACTORY(RDOLogicSimple);
 
-	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent = NULL)
-		: RDOLogic<RDOOrderSimple>(sim, parent)
+	RDOLogicSimple(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+		: RDOLogic<RDOOrderSimple>(pRuntime, pParent)
 	{}
 	virtual ~RDOLogicSimple()
 	{}
@@ -102,7 +102,7 @@ protected:
 	DEFINE_IFACTORY(RDOLogicMeta);
 
 	RDOLogicMeta()
-		: RDOLogic<RDOOrderMeta>()
+		: RDOLogic<RDOOrderMeta>(NULL)
 	{}
 	virtual ~RDOLogicMeta()
 	{}

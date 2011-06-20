@@ -45,7 +45,7 @@ public:
 	}
 
 protected:
-	RDOPattern( PTR(RDORuntime) runtime, bool trace );
+	RDOPattern(rbool trace);
 	virtual ~RDOPattern() {}
 
 	typedef  std::vector<LPRDOCalc>                   CalcList;
@@ -84,7 +84,7 @@ class RDOPatternEvent: public RDOPattern
 friend class RDOEvent;
 
 public:
-	RDOPatternEvent( PTR(RDORuntime) rTime, bool trace );
+	RDOPatternEvent(rbool trace);
 
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
 	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
@@ -119,7 +119,7 @@ class RDOPatternRule: public RDOPattern
 friend class RDORule;
 
 public:
-	RDOPatternRule( PTR(RDORuntime) rTime, bool trace );
+	RDOPatternRule(rbool trace);
 
 	void addChoiceFromCalc ( CREF(LPRDOCalc) pCalc             ) { m_choiceFrom.push_back( pCalc );       }
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
@@ -158,7 +158,7 @@ class RDOPatternOperation: public RDOPattern
 friend class RDOOperation;
 
 public:
-	RDOPatternOperation( PTR(RDORuntime) rTime, bool trace );
+	RDOPatternOperation(rbool trace);
 
 	void addChoiceFromCalc      ( CREF(LPRDOCalc) pCalc             ) { m_choiceFrom.push_back( pCalc );            }
 
@@ -218,7 +218,7 @@ private:
 class RDOPatternKeyboard: public RDOPatternOperation
 {
 public:
-	RDOPatternKeyboard( PTR(RDORuntime) rTime, bool trace );
+	RDOPatternKeyboard(rbool trace);
 
 	LPIKeyboard createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
 	LPIKeyboard createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);

@@ -14,7 +14,7 @@
 #include "rdo_lib/rdo_runtime/rdo.h"
 // ===============================================================================
 
-#pragma warning(disable : 4786)  
+#pragma warning(disable : 4786)
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

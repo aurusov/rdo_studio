@@ -48,12 +48,11 @@ void RDOTrace::writeSearchDecisionHeader()
 	getOStream() << "SD" << std::endl << getEOL();
 }
 
-void RDOTrace::writeSearchDecision(PTR(RDOSimulator) sim, PTR(TreeNode) node)
+void RDOTrace::writeSearchDecision(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) node)
 {
 	if (!canTrace())
 		return;
 
-	PTR(RDOSimulatorTrace)  simTrace             = static_cast<PTR(RDOSimulatorTrace)>(sim);
 	LPIActivityTrace        activityTrace        = node->m_activity->rule();
 	LPIActivityPatternTrace activityPatternTrace = node->m_activity->rule();
 	LPITrace                trace                = node->m_activity;
@@ -64,7 +63,7 @@ void RDOTrace::writeSearchDecision(PTR(RDOSimulator) sim, PTR(TreeNode) node)
 	getOStream() << node->m_number
 	             << " " << trace->traceId()
 	             << " " << activityPatternTrace->tracePatternId()
-	             << " " << activityTrace->traceResourcesListNumbers(simTrace, true)
+	             << " " << activityTrace->traceResourcesListNumbers(pRuntime, true)
 	             << std::endl << getEOL();
 }
 
@@ -180,7 +179,7 @@ tstring RDOTrace::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim, co
 	return res;
 }
 
-void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
+void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -200,19 +199,19 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 
-		getOStream() << "EE " << sim->getCurrentTime()
+		getOStream() << "EE " << pRuntime->getCurrentTime()
 		             << " "   << trace->traceId() 
 		             << " "   << activityPatternTrace->tracePatternId() 
-		             << " "   << activityTrace->traceResourcesListNumbers(sim, true)
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
 	}
 
 #ifndef RDOSIM_COMPATIBLE
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
+	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 #endif
 }
 
-void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
+void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -226,19 +225,19 @@ void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
 	{
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
-		int operId = sim->getFreeOperationId();
-		getOStream() << "ER " << sim->getCurrentTime()
+		int operId = pRuntime->getFreeOperationId();
+		getOStream() << "ER " << pRuntime->getCurrentTime()
 		             << " "   << operId
 		             << " "   << trace->traceId() 
 		             << " "   << activityPatternTrace->tracePatternId()
-		             << " "   << activityTrace->traceResourcesListNumbers(sim, false)
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
-		sim->freeOperationId(operId);
+		pRuntime->freeOperationId(operId);
 	}
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
+	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
 
-void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
+void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -254,17 +253,17 @@ void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimul
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
-		getOStream() << "EB " << sim->getCurrentTime()
+		getOStream() << "EB " << pRuntime->getCurrentTime()
 		             << " "   << operationTrace->traceOperId()
 		             << " "   << trace->traceId()
 		             << " "   << activityPatternTrace->tracePatternId()
-		             << " "   << activityTrace->traceResourcesListNumbers(sim, false)
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL(); 
 	}
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
+	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
 
-void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim)
+void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -280,14 +279,14 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, PTR(RDOSimulat
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
-		getOStream() << "EF " << sim->getCurrentTime() 
+		getOStream() << "EF " << pRuntime->getCurrentTime() 
 		             << " "   << operationTrace->traceOperId() 
 		             << " "   << trace->traceId() 
 		             << " "   << activityPatternTrace->tracePatternId() 
-		             << " "   << activityTrace->traceResourcesListNumbers(sim, false)
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
 	}
-	getOStream() << activityTrace->traceResourcesList('\0', sim) << getEOL();
+	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
 
 void RDOTrace::writeTraceBegin(RDOSimulatorTrace *sim)

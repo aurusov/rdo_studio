@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOEvent
 // ----------------------------------------------------------------------------
 RDOEvent::RDOEvent( RDORuntime* runtime, RDOPatternEvent* pattern, bool trace, const std::string& name ):
-	RDOActivityPattern<RDOPatternEvent>( runtime, pattern, trace, name )
+	RDOActivityPattern<RDOPatternEvent>(pattern, trace, name )
 {
 	setTrace( trace );
 	setTraceID( runtime->getFreeEventId() );

@@ -33,7 +33,7 @@ OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 DECLARE_FACTORY(RDOCalc)
 
 public:
-	REF(RDOValue) calcValue(PTR(RDORuntime) pRuntime);
+	REF(RDOValue) calcValue(CREF(LPRDORuntime) pRuntime);
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
@@ -46,12 +46,12 @@ protected:
 
 	RDOValue m_value;
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime) = 0;
+	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
 };
 
 #define DECALRE_ICalc \
 private:              \
-	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
 #define CALC_SUB(TYPE, PARENT) \
 PREDECLARE_POINTER(TYPE);      \

@@ -22,7 +22,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOSimulator;
 class TreeNode;
 class TreeRoot;
 
@@ -41,26 +40,26 @@ friend class RDOSimulator;
 friend class TreeNode;
 
 protected:
-	RDODPTSearch( RDOSimulator* sim, LPIBaseOperationContainer parent = NULL );
+	RDODPTSearch(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDODPTSearch();
 
 	typedef std::list<LPIDPTSearchActivity> ActivityList;
 	ActivityList   m_activityList;
 
-	virtual bool   TermCondition( RDOSimulator* sim )                              = 0;
-	virtual double EvaluateBy( RDOSimulator* sim )                                 = 0;
-	virtual void   onSearchBegin( RDOSimulator* sim )                              = 0;
-	virtual void   onSearchDecisionHeader( RDOSimulator* sim )                     = 0;
-	virtual void   onSearchDecision( RDOSimulator* sim, TreeNode* node )           = 0;
-	virtual void   onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )  = 0;
-	virtual void   onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot ) = 0;
-	virtual bool   NeedCompareTops()                                               = 0;
-	virtual TreeRoot* createTreeRoot( RDOSimulator* sim )                          = 0;
-	virtual BOResult  onContinue( RDOSimulator* sim );
+	virtual rbool         TermCondition         (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual double        EvaluateBy            (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual void          onSearchBegin         (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual void          onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual void          onSearchDecision      (CREF(LPRDORuntime) pRuntime, PTR(TreeNode) node )     = 0;
+	virtual void          onSearchResultSuccess (CREF(LPRDORuntime) pRuntime, PTR(TreeRoot) treeRoot ) = 0;
+	virtual void          onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, PTR(TreeRoot) treeRoot ) = 0;
+	virtual rbool         NeedCompareTops       ()                                                     = 0;
+	virtual PTR(TreeRoot) createTreeRoot        (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual BOResult      onContinue            (CREF(LPRDORuntime) pRuntime);
 
 private:
-	TreeRoot* treeRoot;
-	virtual BOResult onDoOperation( RDOSimulator* sim );
+	PTR(TreeRoot) treeRoot;
+	virtual BOResult onDoOperation(CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IDPTSearchLogic;
 };

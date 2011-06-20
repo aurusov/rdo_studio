@@ -26,7 +26,7 @@ inline CREF(RDOValue) RDOCalcConst::getValue() const
 	return m_value;
 }
 
-inline REF(RDOValue) RDOCalcConst::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	return m_value;
 }

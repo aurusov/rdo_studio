@@ -23,18 +23,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOPattern
 // ----------------------------------------------------------------------------
-RDOPattern::RDOPattern( PTR(RDORuntime) runtime, bool trace ):
-	RDORuntimeParent( runtime ),
-	RDOTraceableObject( trace )
-{
-}
+RDOPattern::RDOPattern(rbool trace)
+	: RDORuntimeObject  ()
+	, RDOTraceableObject(trace)
+{}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent
 // ----------------------------------------------------------------------------
-RDOPatternEvent::RDOPatternEvent( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace ),
-	m_timeCalc( NULL )
+RDOPatternEvent::RDOPatternEvent(bool trace)
+	: RDOPattern(trace)
+	, m_timeCalc(NULL )
 {}
 
 double RDOPatternEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
@@ -55,8 +54,8 @@ LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer parent, PTR(R
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternRule
 // ----------------------------------------------------------------------------
-RDOPatternRule::RDOPatternRule( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace )
+RDOPatternRule::RDOPatternRule(rbool trace)
+	: RDOPattern(trace)
 {}
 
 LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
@@ -76,9 +75,9 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDOR
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternOperation
 // ----------------------------------------------------------------------------
-RDOPatternOperation::RDOPatternOperation( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace ),
-	m_timeCalc( NULL )
+RDOPatternOperation::RDOPatternOperation(rbool trace)
+	: RDOPattern(trace)
+	, m_timeCalc(NULL )
 {}
 
 double RDOPatternOperation::getNextTimeInterval( PTR(RDORuntime) runtime )
@@ -106,8 +105,8 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer paren
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternKeyboard
 // ----------------------------------------------------------------------------
-RDOPatternKeyboard::RDOPatternKeyboard( PTR(RDORuntime) rTime, bool _trace ):
-	RDOPatternOperation( rTime, _trace )
+RDOPatternKeyboard::RDOPatternKeyboard(rbool _trace)
+	: RDOPatternOperation(_trace)
 {}
 
 LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName)

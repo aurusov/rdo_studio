@@ -18,10 +18,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
-	: RDORuntimeObject   (NULL                                  )
+RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
-	, RDORuntimeContainer(runtime                               )
 	, m_state            (RDOResource::CS_None                  )
 	, m_type             (typeID                                )
 	, m_referenceCount   (0                                     )
@@ -29,13 +28,12 @@ RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) pa
 	, m_temporary        (temporary                             )
 {
 	appendParams(paramsCalcs.begin(), paramsCalcs.end());
-	runtime->insertNewResource(this);
+	pRuntime->insertNewResource(this);
 }
 
-RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(RDOResource) copy)
-	: RDORuntimeObject   (NULL             )
+RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
+	: RDORuntimeObject   (                 )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
-	, RDORuntimeContainer(runtime          )
 	, m_type             (copy.m_type      )
 	, m_state            (copy.m_state     )
 	, m_typeId           (copy.m_typeId    )
@@ -45,7 +43,7 @@ RDOResource::RDOResource(PTR(RDORuntime) runtime, CREF(RDOResource) copy)
 	, m_temporary        (copy.m_temporary )
 {
 	appendParams(copy.m_params.begin(), copy.m_params.end());
-	runtime->insertNewResource(this);
+	pRuntime->insertNewResource(this);
 //! @TODO посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }

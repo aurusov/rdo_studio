@@ -62,9 +62,9 @@ inline RDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);     
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzyType
 // ----------------------------------------------------------------------------
-inline RDOFuzzyType::RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition)
-	: RDOType             (t_fuzzy           )
-	, m_fuzzySetDefinition(fuzzySetDefinition)
+inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition)
+	: RDOType             (t_fuzzy            )
+	, m_fuzzySetDefinition(pFuzzySetDefinition)
 {
 	//! Áûכמ
 	//! m_fuzzySetDefinition->reparent(this);
@@ -156,7 +156,7 @@ inline RDOFuzzySetDefinitionRangeDiscret::~RDOFuzzySetDefinitionRangeDiscret()
 // ---------- RDOFuzzyEmptyType
 // ----------------------------------------------------------------------------
 inline RDOFuzzyEmptyType::RDOFuzzyEmptyType()
-	: RDOFuzzyType(new RDOFuzzySetDefinitionEmpty(NULL))
+	: RDOFuzzyType(rdo::Factory<RDOFuzzySetDefinitionEmpty>::create())
 {}
 
 inline RDOFuzzyEmptyType::~RDOFuzzyEmptyType()
@@ -181,7 +181,7 @@ inline LPRDOFuzzyType RDOFuzzyEmptyType::getInstance()
 // ----------------------------------------------------------------------------
 // ---------- RDOFuzzySetDefinitionEmpty
 // ----------------------------------------------------------------------------
-inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::RDOFuzzySetDefinitionEmpty(PTR(RDORuntimeParent) parent)
+inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::RDOFuzzySetDefinitionEmpty()
 	: RDOFuzzySetDefinition()
 {}
 

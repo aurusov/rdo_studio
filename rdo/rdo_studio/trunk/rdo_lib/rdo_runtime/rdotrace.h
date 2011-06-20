@@ -11,8 +11,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOSimulator;
-class RDOSimulatorTrace;
 class TreeNodeTrace;
 class RDOEvent;
 class RDORule;
@@ -62,25 +60,25 @@ public:
 	// Search in tree
 	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
 	virtual void writeSearchDecisionHeader();
-	virtual void writeSearchDecision(RDOSimulator *sim, TreeNode *node);
+	virtual void writeSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode *node);
 	virtual void writeString(std::string);
 	virtual void writeSearchOpenNode(int nodeCount, int parentCount, double pathCost, double restCost);
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
-	virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
+	virtual void writeSearchResult(char letter, CREF(LPRDORuntime) pRuntime, TreeRoot *treeRoot);
 
-	virtual void writeEvent              (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
-	virtual void writeRule               (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
-	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
-	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeEvent              (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
+	virtual void writeRule               (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
+	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
+	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
 
-	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
-	virtual void writeModelBegin(RDOSimulatorTrace *sim);
-	virtual void writeTraceEnd(RDOSimulatorTrace *sim);
-	virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
+	virtual void writeTraceBegin(CREF(LPRDORuntime) pRuntime);
+	virtual void writeModelBegin(CREF(LPRDORuntime) pRuntime);
+	virtual void writeTraceEnd  (CREF(LPRDORuntime) pRuntime);
+	virtual void writeStatus    (CREF(LPRDORuntime) pRuntime, char *status);
 
-	virtual void writePermanentResources(PTR(RDOSimulatorTrace) sim, CREF(std::list<LPRDOResource>) res_perm);
+	virtual void writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm);
 
-	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< LPRDOResource >& rel_res_list );
+	std::string traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, const std::list< LPRDOResource >& rel_res_list );
 
 	virtual void writePokaz(CREF(LPRDORuntime) pRuntime, RDOPokazTrace *pok);
 

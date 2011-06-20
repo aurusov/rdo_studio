@@ -24,9 +24,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
-	: RDOLogicSimple(sim, parent)
-	, treeRoot    (NULL)
+RDODPTSearch::RDODPTSearch(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+	: RDOLogicSimple(pRuntime, pParent)
+	, treeRoot      (NULL)
 {}
 
 RDODPTSearch::~RDODPTSearch()
