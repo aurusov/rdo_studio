@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcOpenBrace::RDOCalcOpenBrace()
 {}
 
-REF(RDOValue) RDOCalcOpenBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcOpenBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
 	pRuntime->getMemoryStack()->push(pLocalMemory);
@@ -35,7 +35,7 @@ REF(RDOValue) RDOCalcOpenBrace::doCalc(PTR(RDORuntime) pRuntime)
 RDOCalcCloseBrace::RDOCalcCloseBrace()
 {}
 
-REF(RDOValue) RDOCalcCloseBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcCloseBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getMemoryStack()->pop();
 	return m_value;
@@ -53,7 +53,7 @@ void RDOCalcBodyBrace::addCalc(CREF(LPRDOCalc) pCalc)
 	m_calcList.push_back(pCalc);
 }
 
-REF(RDOValue) RDOCalcBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	STL_FOR_ALL(m_calcList, calc_it)
 	{
@@ -83,7 +83,7 @@ void RDOCalcFunBodyBrace::addRetCalc(CREF(LPRDOCalc) pCalc)
 	m_calcFunList.insert(--m_calcFunList.end(), pCalcReturn);
 }
 
-REF(RDOValue) RDOCalcFunBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFunBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
 	{
@@ -115,7 +115,7 @@ REF(RDOValue) RDOCalcFunBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
 RDOCalcFunEnd::RDOCalcFunEnd()
 {}
 
-REF(RDOValue) RDOCalcFunEnd::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFunEnd::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getMemoryStack()->pop();
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);

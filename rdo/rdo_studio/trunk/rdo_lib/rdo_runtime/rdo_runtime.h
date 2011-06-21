@@ -10,7 +10,7 @@
 #ifndef _RDO_RUNTIME_H_
 #define _RDO_RUNTIME_H_
 
-#pragma warning(disable : 4786)  
+#pragma warning(disable : 4786)
 
 // ====================================================================== INCLUDES
 #include <time.h>

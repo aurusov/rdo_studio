@@ -44,16 +44,16 @@ protected:
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector<LPRDOCalc>    m_paramsCalcs;
 
-	void setPatternParameters( RDOSimulator* sim );
-	void getRelevantResources( RDOSimulator* sim, std::list<LPRDOResource>& rel_res_list );
-	void incrementRelevantResourceReference( RDOSimulator* sim );
-	void decrementRelevantResourceReference( RDOSimulator* sim );
+	void setPatternParameters( CREF(LPRDORuntime) pRuntime );
+	void getRelevantResources( CREF(LPRDORuntime) pRuntime, std::list<LPRDOResource>& rel_res_list );
+	void incrementRelevantResourceReference( CREF(LPRDORuntime) pRuntime );
+	void decrementRelevantResourceReference( CREF(LPRDORuntime) pRuntime );
 
-	void updateRelRes(RDOSimulator* sim)
+	void updateRelRes(CREF(LPRDORuntime) pRuntime)
 	{
-		getRelevantResources(sim, m_relevantResources);
+		getRelevantResources(pRuntime, m_relevantResources);
 	}
-	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResource::ConvertStatus >& status_list );
+	void updateConvertStatus( CREF(LPRDORuntime) pRuntime, const std::vector< RDOResource::ConvertStatus >& status_list );
 
 private:
 	DECLARE_IActivity;

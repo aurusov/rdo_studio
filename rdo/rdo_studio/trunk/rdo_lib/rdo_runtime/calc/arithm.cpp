@@ -20,30 +20,30 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- Арифметические функции
 // ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<calc_type>();
-	REF(RDOValue) rVal = m_pRight->calcValue(runtime);
+	REF(RDOValue) rVal = m_pRight->calcValue(pRuntime);
 	if (rVal == 0)
 	{
-		runtime->error(_T("Деление на ноль") , this);
-//		runtime->error(_T("Division by zero"), this);
+		pRuntime->error(_T("Деление на ноль") , this);
+//		pRuntime->error(_T("Division by zero"), this);
 	}
-	m_value = m_pLeft->calcValue(runtime) / rVal;
+	m_value = m_pLeft->calcValue(pRuntime) / rVal;
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<calc_type>();
-	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() + m_pRight->calcValue(runtime).getEnumAsInt();
+	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() + m_pRight->calcValue(pRuntime).getEnumAsInt();
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcMultEnumSafe::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<calc_type>();
-	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() * m_pRight->calcValue(runtime).getEnumAsInt();
+	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() * m_pRight->calcValue(pRuntime).getEnumAsInt();
 	return m_value;
 }
 

@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcNoChange::RDOCalcNoChange()
 {}
 
-REF(RDOValue) RDOCalcNoChange::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = RDOValue(0);
 	return m_value;
@@ -39,7 +39,7 @@ RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
 	ASSERT(m_pStatement);
 }
 
-REF(RDOValue) RDOCalcIf::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = RDOValue(false);
 	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pStatement->calcValue(pRuntime) : (m_value);
@@ -58,7 +58,7 @@ RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStat
 	ASSERT(m_pElseStatement);
 }
 
-REF(RDOValue) RDOCalcIfElse::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcIfElse::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pIfStatement->calcValue(pRuntime) : m_pElseStatement->calcValue(pRuntime);
 }
@@ -78,7 +78,7 @@ RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition,
 	ASSERT(m_pStatement  );
 }
 
-REF(RDOValue) RDOCalcFor::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
 	{
@@ -108,7 +108,7 @@ RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
 : m_pReturn(pReturn)
 {}
 
-REF(RDOValue) RDOCalcFunReturn::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = m_pReturn->calcValue(pRuntime);
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
@@ -121,7 +121,7 @@ REF(RDOValue) RDOCalcFunReturn::doCalc(PTR(RDORuntime) pRuntime)
 RDOCalcFunBreak::RDOCalcFunBreak()
 {}
 
-REF(RDOValue) RDOCalcFunBreak::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFunBreak::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_BREAK);
 	return m_value;

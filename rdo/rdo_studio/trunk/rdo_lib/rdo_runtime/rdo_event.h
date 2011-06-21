@@ -37,12 +37,12 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOEvent( RDORuntime* runtime, RDOPatternEvent* pattern, bool trace, const std::string& name );
+	RDOEvent( CREF(LPRDORuntime) pRuntime, RDOPatternEvent* pattern, bool trace, const std::string& name );
 
-	void convertEvent( RDOSimulator* sim );
+	void convertEvent( CREF(LPRDORuntime) pRuntime );
 
-	virtual void onBeforeEvent( RDOSimulator* sim );
-	virtual void onAfterEvent( RDOSimulator* sim );
+	virtual void onBeforeEvent( CREF(LPRDORuntime) pRuntime );
+	virtual void onAfterEvent( CREF(LPRDORuntime) pRuntime );
 
 	DECLARE_IBaseOperation;
 	DECLARE_IEvent;

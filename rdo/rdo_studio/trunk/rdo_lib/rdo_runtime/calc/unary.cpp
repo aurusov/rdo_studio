@@ -20,18 +20,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- Унарные операции
 // ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcDoubleToIntByResult::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcDoubleToIntByResult::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_round ? RDOValue(m_pOperation->calcValue(runtime).getInt()) : m_pOperation->calcValue(runtime);
+	m_value = m_round ? RDOValue(m_pOperation->calcValue(pRuntime).getInt()) : m_pOperation->calcValue(pRuntime);
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcCheckDiap::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcCheckDiap::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_pOperation->calcValue(runtime);
+	m_value = m_pOperation->calcValue(pRuntime);
 	if (m_value < m_min_value || m_value > m_max_value)
 	{
-		runtime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
+		pRuntime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
 	}
 	return m_value; 
 }
@@ -39,9 +39,9 @@ REF(RDOValue) RDOCalcCheckDiap::doCalc(PTR(RDORuntime) runtime)
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcInt (приведение к целому)
 // ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcInt::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcInt::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue res = m_pOperation->calcValue(runtime);
+	RDOValue res = m_pOperation->calcValue(pRuntime);
 	m_value = res > 0 ? RDOValue((int)(res.getDouble() + 0.5)) : RDOValue((int)(res.getDouble() - 0.5));
 	return m_value;
 }

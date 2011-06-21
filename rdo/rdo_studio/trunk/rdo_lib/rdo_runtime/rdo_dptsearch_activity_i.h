@@ -33,13 +33,13 @@ public:
 		vt_after
 	};
 
-	virtual REF(LPIRule) rule     ()                                  = 0;
-	virtual double       cost     (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual ValueTime    valueTime() const                            = 0;
+	virtual REF(LPIRule) rule     ()                                        = 0;
+	virtual double       cost     (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual ValueTime    valueTime() const                                  = 0;
 };
-#define DECLARE_IDPTSearchActivity                                     \
-	virtual REF(LPIRule) rule     ();                                  \
-	virtual double       cost     (PTR(rdoRuntime::RDOSimulator) sim); \
+#define DECLARE_IDPTSearchActivity                                           \
+	virtual REF(LPIRule) rule     ();                                        \
+	virtual double       cost     (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual ValueTime    valueTime() const;
 
 #endif //! _RDO_DPTSEARCH_ACTIVITY_I_H_

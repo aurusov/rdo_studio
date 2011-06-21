@@ -18,8 +18,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDODPTFree
 // ----------------------------------------------------------------------------
-inline RDODPTFree::RDODPTFree(PTR(RDOSimulator) sim)
-	: RDOLogicSimple(sim)
+inline RDODPTFree::RDODPTFree(CREF(LPRDORuntime) pRuntime)
+	: RDOLogicSimple(pRuntime, NULL)
 {}
 
 inline RDODPTFree::~RDODPTFree()

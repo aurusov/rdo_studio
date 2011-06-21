@@ -31,19 +31,19 @@ RDOPMDPokazGroup::RDOPMDPokazGroup(CREF(tstring) name)
 RDOPMDPokazGroup::~RDOPMDPokazGroup()
 {}
 
-void RDOPMDPokazGroup::resetPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDPokazGroup::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_state == RGS_STOP)
 		return;
 
-	m_timeStart = pSimulator->getCurrentTime();
+	ASSERT(pRuntime);
+
+	m_timeStart = pRuntime->getCurrentTime();
 
 	if (!m_name.empty())
 	{
 		if (!m_streamFull.is_open())
 		{
-			PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-			ASSERT(pRuntime);
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdoRepository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - full"), m_name.c_str()), _T("txt"), m_streamFull);
@@ -51,8 +51,6 @@ void RDOPMDPokazGroup::resetPokaz(PTR(RDOSimulator) pSimulator)
 		}
 		if (!m_streamTable.is_open())
 		{
-			PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-			ASSERT(pRuntime);
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdoRepository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - table"), m_name.c_str()), _T("txt"), m_streamTable);
@@ -76,27 +74,26 @@ void RDOPMDPokazGroup::resetPokaz(PTR(RDOSimulator) pSimulator)
 
 	STL_FOR_ALL(m_resultList, it)
 	{
-		(*it)->resetPokaz(pSimulator);
+		(*it)->resetPokaz(pRuntime);
 	}
 }
 
-void RDOPMDPokazGroup::checkPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDPokazGroup::checkPokaz(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_state == RGS_STOP)
 		return;
 
 	STL_FOR_ALL(m_resultList, it)
 	{
-		(*it)->checkPokaz(pSimulator);
+		(*it)->checkPokaz(pRuntime);
 	}
 }
 
-void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
+void RDOPMDPokazGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
 	if (m_state == RGS_STOP)
 		return;
 
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 	if (!m_name.empty())
 	{
 		double timeStop = pRuntime->getCurrentTime();
@@ -114,7 +111,7 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) 
 	{
 		rdo::textstream textStream;
 
-		(*it)->calcStat(pSimulator, textStream);
+		(*it)->calcStat(pRuntime, textStream);
 
 		stream << textStream.str();
 		if (m_streamFull.is_open())
@@ -156,16 +153,15 @@ void RDOPMDPokazGroup::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) 
 	pRuntime->getResults().flush();
 }
 
-void RDOPMDPokazGroup::onStart(PTR(rdoRuntime::RDOSimulator) pSimulator)
+void RDOPMDPokazGroup::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	m_state = RGS_START;
-	resetPokaz(pSimulator);
+	resetPokaz(pRuntime);
 }
 
-void RDOPMDPokazGroup::onStop(PTR(rdoRuntime::RDOSimulator) pSimulator)
+void RDOPMDPokazGroup::onStop(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-	calcStat(pSimulator, pRuntime->getResults().getOStream());
+	calcStat(pRuntime, pRuntime->getResults().getOStream());
 	m_state = RGS_STOP;
 }
 

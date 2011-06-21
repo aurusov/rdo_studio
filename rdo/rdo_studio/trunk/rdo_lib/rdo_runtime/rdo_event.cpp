@@ -20,61 +20,61 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
 // ----------------------------------------------------------------------------
-RDOEvent::RDOEvent( RDORuntime* runtime, RDOPatternEvent* pattern, bool trace, const std::string& name ):
+RDOEvent::RDOEvent( CREF(LPRDORuntime) pRuntime, RDOPatternEvent* pattern, bool trace, const std::string& name ):
 	RDOActivityPattern<RDOPatternEvent>(pattern, trace, name )
 {
 	setTrace( trace );
-	setTraceID( runtime->getFreeEventId() );
+	setTraceID( pRuntime->getFreeEventId() );
 }
 
-void RDOEvent::onStart( RDOSimulator* sim )
+void RDOEvent::onStart( CREF(LPRDORuntime) pRuntime )
 {
-	onBeforeEvent( sim );
+	onBeforeEvent( pRuntime );
 }
 
-void RDOEvent::onStop( RDOSimulator* sim )
+void RDOEvent::onStop( CREF(LPRDORuntime) pRuntime )
 {
-	sim->removeTimePoint( this );
+	pRuntime->removeTimePoint( this );
 }
 
-bool RDOEvent::onCheckCondition(RDOSimulator *sim)
+bool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	return false;
 }
 
-IBaseOperation::BOResult RDOEvent::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOEvent::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOEvent::onMakePlaned( RDOSimulator* sim, void* param )
+void RDOEvent::onMakePlaned( CREF(LPRDORuntime) pRuntime, void* param )
 {
-	sim->inc_cnt_events();
-	onBeforeEvent( sim );
-	convertEvent( sim );
-	onAfterEvent( sim );
+	pRuntime->inc_cnt_events();
+	onBeforeEvent( pRuntime );
+	convertEvent( pRuntime );
+	onAfterEvent( pRuntime );
 }
 
-void RDOEvent::convertEvent( RDOSimulator* sim ) 
+void RDOEvent::convertEvent( CREF(LPRDORuntime) pRuntime ) 
 { 
-	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
-	m_pattern->convertEvent( static_cast<RDORuntime*>(sim) ); 
+	pRuntime->setCurrentActivity(this);
+	m_pattern->convertEvent(pRuntime); 
 }
 
-void RDOEvent::onBeforeEvent( RDOSimulator* sim )
+void RDOEvent::onBeforeEvent( CREF(LPRDORuntime) pRuntime )
 {
-	setPatternParameters( sim );
+	setPatternParameters( pRuntime );
 }
 
-void RDOEvent::onAfterEvent( RDOSimulator* sim )
+void RDOEvent::onAfterEvent( CREF(LPRDORuntime) pRuntime )
 {
-	updateConvertStatus( sim, m_pattern->m_convertorStatus );
-	static_cast<RDOSimulatorTrace*>(sim)->getTracer()->writeEvent( this, static_cast<RDOSimulatorTrace*>(sim) );
-	m_pattern->convertErase( static_cast<RDORuntime*>(sim) );
-	updateRelRes( sim );
+	updateConvertStatus( pRuntime, m_pattern->m_convertorStatus );
+	pRuntime->getTracer()->writeEvent( this, pRuntime );
+	m_pattern->convertErase( pRuntime );
+	updateRelRes( pRuntime );
 }
 
-IBaseOperation::BOResult RDOEvent::onContinue(PTR(rdoRuntime::RDOSimulator) sim)
+IBaseOperation::BOResult RDOEvent::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	return IBaseOperation::BOR_cant_run;
 }

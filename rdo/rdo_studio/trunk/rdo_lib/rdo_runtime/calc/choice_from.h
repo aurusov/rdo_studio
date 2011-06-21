@@ -94,8 +94,8 @@ OBJECT_INTERFACE(IRDOSelectResourceCommon)
 {
 DECLARE_FACTORY(IRDOSelectResourceCommon)
 public:
-	virtual std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const = 0;
-	virtual rbool            callChoice        (PTR(RDORuntime) sim) const = 0;
+	virtual std::vector<int> getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const = 0;
+	virtual rbool            callChoice        (CREF(LPRDORuntime) pRuntime) const = 0;
 
 protected:
 	IRDOSelectResourceCommon();
@@ -120,8 +120,8 @@ private:
 	SelectResourceCommonList  resSelectors;
 	rbool                     useCommonWithMax;
 
-	void  getBest ( REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, PTR(RDORuntime) sim, REF(rbool) hasBest) const;
-	rbool getFirst( REF(std::vector< std::vector<int> >) allNumbs, ruint level, PTR(RDORuntime) sim) const;
+	void  getBest ( REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const;
+	rbool getFirst( REF(std::vector< std::vector<int> >) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const;
 
 	DECALRE_ICalc;
 };
@@ -131,8 +131,8 @@ CALC_SUB(RDOSelectResourceDirectCommonCalc, RDOSelectResourceDirectCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCommonCalc)
 public:
-	std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const;
-	virtual rbool    callChoice        (PTR(RDORuntime) sim) const;
+	std::vector<int> getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const;
+	virtual rbool    callChoice        (CREF(LPRDORuntime) pRuntime) const;
 
 private:
 	RDOSelectResourceDirectCommonCalc(int _relNumb, int _resNumb, CREF(LPRDOCalc) _choice_calc = NULL, CREF(LPRDOCalc) _order_calc = NULL, Type _order_type = order_empty)
@@ -146,8 +146,8 @@ CALC_SUB(RDOSelectResourceByTypeCommonCalc, RDOSelectResourceByTypeCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCommonCalc)
 public:
-	std::vector<int> getPossibleNumbers(PTR(RDORuntime) sim) const;
-	virtual rbool    callChoice        (PTR(RDORuntime) sim) const;
+	std::vector<int> getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const;
+	virtual rbool    callChoice        (CREF(LPRDORuntime) pRuntime) const;
 
 private:
 	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type _order_type = order_empty)

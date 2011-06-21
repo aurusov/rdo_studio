@@ -28,12 +28,12 @@ public:
 	   DPT_trace_all
 	};
 
-	void onSearchBegin( RDOSimulator* sim );
-	void onSearchDecisionHeader( RDOSimulator* sim );
-	void onSearchDecision( RDOSimulator* sim, TreeNode* node );
-	void onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot );
-	void onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot );
-	TreeRoot* createTreeRoot( RDOSimulator* sim );
+	void onSearchBegin( CREF(LPRDORuntime) pRuntime );
+	void onSearchDecisionHeader( CREF(LPRDORuntime) pRuntime );
+	void onSearchDecision( CREF(LPRDORuntime) pRuntime, TreeNode* node );
+	void onSearchResultSuccess( CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot );
+	void onSearchResultNotFound( CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot );
+	TreeRoot* createTreeRoot( CREF(LPRDORuntime) pRuntime );
 
 	ruint calc_cnt; // Количество запусков
 	ruint calc_res_found_cnt;
@@ -48,8 +48,8 @@ public:
 	DPT_TraceFlag traceFlag;
 
 protected:
-	RDODPTSearchTrace( RDOSimulatorTrace* sim, LPIBaseOperationContainer parent ):
-		RDODPTSearch( sim, parent ),
+	RDODPTSearchTrace( RDOSimulatorTrace* pRuntime, LPIBaseOperationContainer parent ):
+		RDODPTSearch( pRuntime, parent ),
 		RDOTraceableObject( false ),
 		calc_cnt( 0 ),
 		calc_res_found_cnt( 0 )
@@ -64,7 +64,7 @@ private:
 class TreeRootTrace: public TreeRoot
 {
 private:
-	virtual void createRootTreeNode( RDOSimulator* sim );
+	virtual void createRootTreeNode( CREF(LPRDORuntime) pRuntime );
 
 public:
 	TreeRootTrace(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)

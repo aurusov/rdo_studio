@@ -31,7 +31,7 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTSome (RDOSimulator* sim, LPIBaseOperationContainer parent = NULL);
+	RDODPTSome (CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent = NULL);
 	virtual ~RDODPTSome();
 };
 

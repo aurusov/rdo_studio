@@ -26,10 +26,10 @@ public:
 		addhk_dont
 	};
 	virtual rbool           hasHotKey() const = 0;
-	virtual AddHotKeyResult addHotKey(PTR(rdoRuntime::RDORuntime) runtime, CREF(tstring) hotKey) = 0;
+	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey) = 0;
 };
 #define DECLARE_IKeyboard \
 	virtual rbool           hasHotKey() const; \
-	virtual AddHotKeyResult addHotKey(PTR(rdoRuntime::RDORuntime) runtime, CREF(tstring) hotKey);
+	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey);
 
 #endif //! _RDO_KEYBOARD_I_H_

@@ -32,17 +32,17 @@ RDODPTSearch::RDODPTSearch(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContaine
 RDODPTSearch::~RDODPTSearch()
 {}
 
-IBaseOperation::BOResult RDODPTSearch::onDoOperation(PTR(RDOSimulator) sim)
+IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
 	// Начало поиска: вывели трасировку, обновили статистику
-	onSearchBegin(sim);
-	treeRoot = createTreeRoot(sim);
-	treeRoot->createRootTreeNode(sim->createCopy());
+	onSearchBegin(pRuntime);
+	treeRoot = createTreeRoot(pRuntime);
+	treeRoot->createRootTreeNode(pRuntime->createCopy());
 
-	return onContinue(sim);
+	return onContinue(pRuntime);
 }
 
-IBaseOperation::BOResult RDODPTSearch::onContinue(PTR(RDOSimulator) sim)
+IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	DWORD time_begin = ::GetTickCount();
 	while ( true ) {
@@ -64,7 +64,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(PTR(RDOSimulator) sim)
 //		TRACE( "решение... \n" );
 		for ( TreeNode* i = treeRoot->m_targetNode; i->m_parent; i = i->m_parent ) {
 #ifdef _DEBUG
-			static_cast<RDORuntime*>(i->m_sim)->showResources(i->m_number);
+			i->m_sim->showResources(i->m_number);
 #endif
 			bestPath.push_front(i);
 		}
@@ -75,9 +75,9 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(PTR(RDOSimulator) sim)
 		for ( std::list< TreeNode* >::iterator ii = bestPath.begin(); ii != bestPath.end(); ii++ ) {
 			TreeNode* node = (*ii);
 			node->m_activity->rule()->onBeforeChoiceFrom( treeRoot->m_theRealSimulator );
-			node->m_activity->rule()->choiceFrom( static_cast<RDORuntime*>(treeRoot->m_theRealSimulator) );
+			node->m_activity->rule()->choiceFrom( treeRoot->m_theRealSimulator );
 			node->m_activity->rule()->onBeforeRule( treeRoot->m_theRealSimulator );
-			node->m_activity->rule()->convertRule( static_cast<RDORuntime*>(treeRoot->m_theRealSimulator) );
+			node->m_activity->rule()->convertRule( treeRoot->m_theRealSimulator );
 			node->m_activity->rule()->onAfterRule( treeRoot->m_theRealSimulator, true );
 			// Отработали каждую вершину: вывели трассировку
 			onSearchDecision( treeRoot->m_theRealSimulator, node );

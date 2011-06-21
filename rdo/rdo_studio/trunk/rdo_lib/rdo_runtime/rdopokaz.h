@@ -35,7 +35,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOPMDPokaz(PTR(RDORuntime) pRuntime, CREF(tstring) name, rbool trace);
+	RDOPMDPokaz(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace);
 	virtual ~RDOPMDPokaz();
 
 	DECLARE_IName;
@@ -59,7 +59,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDWatchPar(PTR(RDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber);
+	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber);
 	virtual ~RDOPMDWatchPar();
 
 	int       m_resNumber;
@@ -97,7 +97,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDWatchState(PTR(RDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic);
+	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic);
 	virtual ~RDOPMDWatchState();
 
 	LPRDOCalc m_pLogicCalc;
@@ -132,7 +132,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDWatchQuant(PTR(RDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
+	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
 	LPRDOCalc m_pLogicCalc;
@@ -169,7 +169,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDWatchValue(PTR(RDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
+	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchValue();
 
 	LPRDOCalc m_pLogicCalc;
@@ -204,7 +204,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDGetValue(PTR(RDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm);
+	RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm);
 	virtual ~RDOPMDGetValue();
 
 	LPRDOCalc m_pArithmCalc;

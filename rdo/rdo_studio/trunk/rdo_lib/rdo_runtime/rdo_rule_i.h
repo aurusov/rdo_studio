@@ -14,29 +14,29 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOSimulator;
-class RDORuntime;
+PREDECLARE_POINTER(RDORuntime);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 class IRule
 {
 public:
-	virtual void  onBeforeChoiceFrom(PTR(rdoRuntime::RDOSimulator) sim    )             = 0;
-	virtual rbool choiceFrom        (PTR(rdoRuntime::RDORuntime)   runtime)             = 0;
-	virtual void  onBeforeRule      (PTR(rdoRuntime::RDOSimulator) sim    )             = 0;
-	virtual void  convertRule       (PTR(rdoRuntime::RDORuntime)   runtime)             = 0;
-	virtual void  onAfterRule       (PTR(rdoRuntime::RDOSimulator) sim, rbool inSearch) = 0;
+	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  onBeforeRule      (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch) = 0;
 };
 #define DECLARE_IRule \
-	virtual void  onBeforeChoiceFrom(PTR(rdoRuntime::RDOSimulator) sim    ); \
-	virtual rbool choiceFrom        (PTR(rdoRuntime::RDORuntime)   runtime); \
-	virtual void  onBeforeRule      (PTR(rdoRuntime::RDOSimulator) sim    ); \
-	virtual void  convertRule       (PTR(rdoRuntime::RDORuntime)   runtime); \
-	virtual void  onAfterRule       (PTR(rdoRuntime::RDOSimulator) sim, rbool inSearch);
+	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void  onBeforeRule      (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch);
 
 #endif //! _RDO_RULE_I_H_

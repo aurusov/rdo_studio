@@ -50,12 +50,12 @@ public:
 	CREF(LPIResourceType) getResType (           ) const;
 	ruint                 getType    (           ) const;
 	virtual ruint         paramsCount(           ) const;
-	LPRDOResource         clone      (PTR(RDORuntime) runtime) const;
+	LPRDOResource         clone      (CREF(LPRDORuntime) pRuntime) const;
 	CREF(std::vector<RDOValue>) getParams(       ) const;
 
 	void            makeTemporary       (rbool value                            );
 	void            setState            (ConvertStatus value                    );
-	tstring         traceResourceState  (char prefix, PTR(RDOSimulatorTrace) sim);
+	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
 	REF(RDOValue)   getParamRaw         (ruint index                            );
 	void            setParam            (ruint index, CREF(RDOValue) value      );
 	virtual void    appendParams        (const std::vector<RDOValue>::const_iterator& from_begin, const std::vector<RDOValue>::const_iterator& from_end);

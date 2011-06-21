@@ -18,12 +18,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOOrderDPTPrior
 // ----------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
 {
 	BaseOperationList priorContainer;
 	STL_FOR_ALL_CONST(container, it)
 	{
-		if (it->query_cast<IBaseOperation>()->onCheckCondition(sim))
+		if (it->query_cast<IBaseOperation>()->onCheckCondition(pRuntime))
 		{
 			priorContainer.push_back(*it);
 		}
@@ -32,7 +32,6 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOp
 	if (priorContainer.empty())
 		return NULL;
 
-	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
 	STL_FOR_ALL_CONST(priorContainer, it)
 	{
 		LPIPriority pattern = *it;
@@ -41,23 +40,23 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(PTR(RDOSimulator) sim, REF(BaseOp
 			LPRDOCalc prior = pattern->getPrior();
 			if (prior)
 			{
-				RDOValue value = prior->calcValue(runtime);
+				RDOValue value = prior->calcValue(pRuntime);
 				if (value < 0 || value > 1)
-					runtime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
+					pRuntime->error(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
 			}
 		}
 	}
-	std::sort(priorContainer.begin(), priorContainer.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
+	std::sort(priorContainer.begin(), priorContainer.end(), RDODPTActivityCompare(pRuntime));
 	return priorContainer.front();
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTPrior
 // ----------------------------------------------------------------------------
-inline RDODPTPrior::RDODPTPrior( RDOSimulator* sim, LPIBaseOperationContainer parent ):
-	RDOLogicDPTPrior(sim, parent)
+inline RDODPTPrior::RDODPTPrior( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent ):
+	RDOLogicDPTPrior(pRuntime, parent)
 {
-	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
+	pRuntime->getFreeDPTId();
 }
 
 inline RDODPTPrior::~RDODPTPrior()

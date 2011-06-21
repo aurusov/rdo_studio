@@ -67,9 +67,9 @@ bool RDOResource::operator!= (RDOResource &other)
 	return false;
 }
 
-LPRDOResource RDOResource::clone(PTR(RDORuntime) runtime) const
+LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(runtime, m_params, m_resType, getTraceID(), m_type, traceable(), m_temporary);
+	return rdo::Factory<RDOResource>::create(pRuntime, m_params, m_resType, getTraceID(), m_type, traceable(), m_temporary);
 }
 
 std::string RDOResource::getTypeId()
@@ -109,7 +109,7 @@ std::string RDOResource::traceParametersValue()
 	return str.str();
 }
 
-std::string RDOResource::traceResourceState( char prefix, RDOSimulatorTrace* sim )
+std::string RDOResource::traceResourceState( char prefix, RDOSimulatorTrace* pRuntime )
 {
 	std::ostringstream res;
 	if ( traceable() || (prefix != '\0') ) {
@@ -119,14 +119,14 @@ std::string RDOResource::traceResourceState( char prefix, RDOSimulatorTrace* sim
 			case RDOResource::CS_Create: res << "RC "; break;
 			case RDOResource::CS_Erase : res << "RE "
 #ifdef RDOSIM_COMPATIBLE
-				<< sim->getCurrentTime() << " " << traceTypeId() << " " << traceId() << std::endl; return res.str();
+				<< pRuntime->getCurrentTime() << " " << traceTypeId() << " " << traceId() << std::endl; return res.str();
 #else
 				;
 #endif
 				break;
 			default                         : res << "RK "; break;
 		}
-		res << sim->getCurrentTime() << " " << traceTypeId() << " " << traceId() << " " << traceParametersValue() << std::endl;
+		res << pRuntime->getCurrentTime() << " " << traceTypeId() << " " << traceId() << " " << traceParametersValue() << std::endl;
 	}
 	return res.str();
 }

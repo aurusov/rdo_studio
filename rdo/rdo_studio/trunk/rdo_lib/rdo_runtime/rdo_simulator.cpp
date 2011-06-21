@@ -42,11 +42,13 @@ void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationCo
 
 rbool RDOSimulator::doOperation()
 {
+	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+
 	rbool res;
 	if (getMustContinueOpr())
 	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
-		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue(this);
+		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue(pRuntime);
 		if (result != IBaseOperation::BOR_must_continue)
 		{
 			setMustContinueOpr(NULL);
@@ -86,7 +88,7 @@ rbool RDOSimulator::doOperation()
 					{
 						m_checkOperation = false;
 					}
-					pOperation->onMakePlaned(this, pParam);
+					pOperation->onMakePlaned(pRuntime, pParam);
 					foundPlaned = true;
 				}
 			}
@@ -97,10 +99,10 @@ rbool RDOSimulator::doOperation()
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
 			LPIBaseOperation pMetaLogic = m_pMetaLogic.query_cast<IBaseOperation>();
-			res = pMetaLogic->onCheckCondition(this);
+			res = pMetaLogic->onCheckCondition(pRuntime);
 			if (res)
 			{
-				res = pMetaLogic->onDoOperation(this) != IBaseOperation::BOR_cant_run;
+				res = pMetaLogic->onDoOperation(pRuntime) != IBaseOperation::BOR_cant_run;
 			}
 			if (!res)
 			{
@@ -115,7 +117,8 @@ rbool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(this);
+	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(pRuntime);
 	onResetPokaz();
 }
 

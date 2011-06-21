@@ -75,7 +75,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 //	s_memory_size += sz;
 //	PTR(RDORuntimeObject) obj = static_cast<PTR(RDORuntimeObject)>(::operator new(sz));
 //	obj->m_object_size = sz;
-////	obj->runtime->memory_insert(sz);
+////	obj->pRuntime->memory_insert(sz);
 //	return obj;
 //}
 //

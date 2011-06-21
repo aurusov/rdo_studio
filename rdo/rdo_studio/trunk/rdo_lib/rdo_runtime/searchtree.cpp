@@ -68,7 +68,7 @@ void TreeNode::ExpandChildren()
 	if ( m_root->m_dp->TermCondition(m_pRuntime) ) {
 		m_root->m_targetNode = this;
 #ifdef _DEBUG
-		static_cast<RDORuntime*>(m_pRuntime)->showResources(m_number);
+		m_pRuntime->showResources(m_number);
 #endif
 		return;
 	}
@@ -84,13 +84,13 @@ void TreeNode::ExpandChildren()
 		m_currAct  = *i;
 		m_childSim = m_pRuntime->createCopy();
 #ifdef _DEBUG
-		if ( static_cast<RDORuntime*>(m_childSim)->checkState() ) {
+		if ( m_childSim->checkState() ) {
 			TRACE1("состояние, node = %d\n", m_number);
 		}
 #endif
 		m_root->m_sizeof_dpt += m_childSim->getSizeofSim();
 		m_currAct->rule()->onBeforeChoiceFrom( m_childSim );
-		if ( !m_currAct->rule()->choiceFrom( static_cast<RDORuntime*>(m_childSim) ) ) {
+		if ( !m_currAct->rule()->choiceFrom( m_childSim ) ) {
 			// Не прошел Choice from, удаляем симулятор и переходим к другой активности.
 			// TODO: а зачем удалять симулятор, ведь БД не поменялась ?
 			// Такое будет возможно, если при подготовке параметров паттерна будет
@@ -110,7 +110,7 @@ void TreeNode::ExpandChildren()
 			}
 			// Выполнить само правило (раскрыть вершину)
 			m_currAct->rule()->onBeforeRule( m_childSim );
-			m_currAct->rule()->convertRule( static_cast<RDORuntime*>(m_childSim) );
+			m_currAct->rule()->convertRule( m_childSim );
 			m_currAct->rule()->onAfterRule( m_childSim, true );
 
 			// Расчитать стоимость применения правила (value after)
@@ -145,7 +145,7 @@ void TreeNode::ExpandChildren()
 						TRACE1("loser->m_number = %d\n", loser->m_number);
 						TRACE1("loser->m_parent->m_number = %d\n", loser->m_parent->m_number);
 						TRACE1("loser->m_parent->m_children.size() = %d\n", loser->m_parent->m_children.size());
-						static_cast<RDORuntime*>(loser->m_pRuntime)->showResources(loser->m_number);
+						loser->m_pRuntime->showResources(loser->m_number);
 					}
 #endif
 					// Смена родителя
@@ -186,7 +186,7 @@ void TreeNode::ExpandChildren()
 					delete m_childSim;
 #ifdef _DEBUG
 					if ( m_number == 294 ) {
-						static_cast<RDORuntime*>(loser->m_pRuntime)->showResources( loser->m_number );
+						loser->m_pRuntime->showResources( loser->m_number );
 					}
 #endif
 					// Переходим к следующей активности

@@ -43,29 +43,28 @@ void RDOActivity::setRelRes(ruint rel_res_id, ruint res_id)
 	m_relResID[rel_res_id] = res_id; 
 }
 
-void RDOActivity::setPatternParameters(RDOSimulator *sim) 
+void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime)
 {
-	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
 	int size = m_paramsCalcs.size();
 	for ( int i = 0; i < size; i++ )
 	{
-		m_paramsCalcs.at(i)->calcValue( runtime );
+		m_paramsCalcs.at(i)->calcValue( pRuntime );
 	}
 }
 
-void RDOActivity::getRelevantResources(RDOSimulator* sim, std::list<LPRDOResource>& rel_res_list)
+void RDOActivity::getRelevantResources(CREF(LPRDORuntime) pRuntime, std::list<LPRDOResource>& rel_res_list)
 {
 	rel_res_list.clear();
 	int size = m_relResID.size();
 	for ( int i = 0; i < size; i++ )
 	{
-		rel_res_list.push_back( static_cast<RDORuntime*>(sim)->getResourceByID( m_relResID[i] ) );
+		rel_res_list.push_back( pRuntime->getResourceByID( m_relResID[i] ) );
 	}
 }
 
-void RDOActivity::updateConvertStatus(RDOSimulator* sim, const std::vector<RDOResource::ConvertStatus>& status_list)
+void RDOActivity::updateConvertStatus(CREF(LPRDORuntime) pRuntime, const std::vector<RDOResource::ConvertStatus>& status_list)
 {
-	updateRelRes( sim );
+	updateRelRes( pRuntime );
 	int i = 0;
 	std::list<LPRDOResource>::iterator it = m_relevantResources.begin();
 	while (it != m_relevantResources.end())
@@ -88,20 +87,20 @@ void RDOActivity::updateConvertStatus(RDOSimulator* sim, const std::vector<RDORe
 	}
 }
 
-tstring RDOActivity::traceResourcesList(char prefix, PTR(RDOSimulatorTrace) sim)
+tstring RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime)
 {
 	tstring res;
 	for ( std::list<LPRDOResource>::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); i++ )
 	{
 		if ( *i )
 		{
-			res += (*i)->traceResourceState( prefix, sim );
+			res += (*i)->traceResourceState( prefix, pRuntime );
 		}
 	}
 	return res;
 }
 
-tstring RDOActivity::traceResourcesListNumbers(PTR(RDOSimulatorTrace) sim, rbool show_create_index)
+tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rbool show_create_index)
 {
 	std::ostringstream res;
 	res << m_relevantResources.size() << " ";
@@ -124,20 +123,20 @@ tstring RDOActivity::traceResourcesListNumbers(PTR(RDOSimulatorTrace) sim, rbool
 	return res.str();
 }
 
-void RDOActivity::incrementRelevantResourceReference( RDOSimulator* sim )
+void RDOActivity::incrementRelevantResourceReference( CREF(LPRDORuntime) pRuntime )
 {
 	for ( unsigned int i = 0; i < m_relResID.size(); i++ )
 	{
-		LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID( m_relResID.at(i) );
+		LPRDOResource res = pRuntime->getResourceByID( m_relResID.at(i) );
 		if ( res && (res->getState() == RDOResource::CS_Keep || res->getState() == RDOResource::CS_Create || res->getState() == RDOResource::CS_Erase ) ) res->incRef();
 	}
 }
 
-void RDOActivity::decrementRelevantResourceReference( RDOSimulator* sim )
+void RDOActivity::decrementRelevantResourceReference( CREF(LPRDORuntime) pRuntime )
 {
 	for ( unsigned int i = 0; i < m_relResID.size(); i++ )
 	{
-		LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID( m_relResID.at(i) );
+		LPRDOResource res = pRuntime->getResourceByID( m_relResID.at(i) );
 		if ( res && (res->getState() == RDOResource::CS_Keep || res->getState() == RDOResource::CS_Create || res->getState() == RDOResource::CS_Erase ) ) res->decRef();
 	}
 }

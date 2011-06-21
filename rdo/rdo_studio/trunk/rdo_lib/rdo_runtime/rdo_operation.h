@@ -43,13 +43,13 @@ friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
 protected:
-	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name );
-	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
+	RDOOperation( CREF(LPRDORuntime) pRuntime, RDOPatternOperation* pattern, bool trace, const std::string& name );
+	RDOOperation( CREF(LPRDORuntime) pRuntime, RDOPatternOperation* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
 	virtual ~RDOOperation();
 	DECLARE_IOperation;
 
 private:
-	RDOOperation(PTR(RDORuntime) runtime, CREF(RDOOperation) originForClone);
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone);
 
 	typedef std::vector<LPIOperation> CloneList;
 	CloneList m_cloneList;

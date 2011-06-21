@@ -23,13 +23,13 @@
 class IPokazGroup
 {
 public:
-	virtual void onStart (PTR(rdoRuntime::RDOSimulator) pSimulator) = 0;
-	virtual void onStop  (PTR(rdoRuntime::RDOSimulator) pSimulator) = 0;
-	virtual void onAppend(CREF(LPIPokaz)                pResult   ) = 0;
+	virtual void onStart (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void onStop  (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void onAppend(CREF(LPIPokaz)                 pResult ) = 0;
 };
-#define DECLARE_IPokazGroup                                  \
-	void onStart (PTR(rdoRuntime::RDOSimulator) pSimulator); \
-	void onStop  (PTR(rdoRuntime::RDOSimulator) pSimulator); \
-	void onAppend(CREF(LPIPokaz)                pResult   );
+#define DECLARE_IPokazGroup                                 \
+	void onStart (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	void onStop  (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	void onAppend(CREF(LPIPokaz)                 pResult );
 
 #endif //! _RDOPOKAZ_GROUP_I_H_

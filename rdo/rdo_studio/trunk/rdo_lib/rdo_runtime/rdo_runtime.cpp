@@ -514,17 +514,18 @@ RDOValue RDORuntime::getFuncArgument(int numberOfParam)
 	return funcStack.at(currFuncTop + numberOfParam);
 }
 
-RDOSimulator* RDORuntime::clone()
+LPRDORuntime RDORuntime::clone()
 {
-	RDORuntime* other = new RDORuntime();
-	other->m_sizeofSim = sizeof(RDORuntime);
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	ASSERT(pRuntime);
+	pRuntime->m_sizeofSim = sizeof(RDORuntime);
 
-	*other = *this;
+	*pRuntime.get() = *this;
 
-	return other;
+	return pRuntime;
 }
 
-void RDORuntime::operator= (CREF(RDORuntime) other)
+void RDORuntime::operator= (CREF(LPRDORuntime) other)
 {
 	ruint size = other.allResourcesByID.size();
 	for (ruint i = 0; i < size; i++)

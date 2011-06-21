@@ -18,13 +18,13 @@ RDOResourceType::RDOResourceType(rsint number)
 RDOResourceType::~RDOResourceType()
 {}
 
-LPRDOResource RDOResourceType::createRes(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+LPRDOResource RDOResourceType::createRes(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
 {
 	LPRDOResourceType pResType(this);
 	ASSERT(pResType);
 	LPIResourceType pIResType = pResType.interface_cast<IResourceType>();
 	ASSERT(pIResType);
-	return rdo::Factory<RDOResource>::create(runtime, paramsCalcs, pIResType, runtime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
+	return rdo::Factory<RDOResource>::create(pRuntime, paramsCalcs, pIResType, pRuntime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
 }
 
 // ----------------------------------------------------------------------------
@@ -39,13 +39,13 @@ RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number)
 RDOResourceTypeTransact::~RDOResourceTypeTransact()
 {}
 
-LPRDOResource RDOResourceTypeTransact::createRes(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+LPRDOResource RDOResourceTypeTransact::createRes(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
 {
 	LPRDOResourceTypeTransact pResType(this);
 	ASSERT(pResType);
 	LPIResourceType pIResType = pResType.interface_cast<IResourceType>();
 	ASSERT(pIResType);
-	return rdo::Factory<RDOPROCTransact>::create(runtime, paramsCalcs, pIResType, runtime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
+	return rdo::Factory<RDOPROCTransact>::create(pRuntime, paramsCalcs, pIResType, pRuntime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
 }
 
 // ----------------------------------------------------------------------------
@@ -60,13 +60,13 @@ RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number)
 RDOResourceTypeProccess::~RDOResourceTypeProccess()
 {}
 
-LPRDOResource RDOResourceTypeProccess::createRes(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+LPRDOResource RDOResourceTypeProccess::createRes(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
 {
 	LPRDOResourceTypeProccess pResType(this);
 	ASSERT(pResType);
 	LPIResourceType pIResType = pResType.interface_cast<IResourceType>();
 	ASSERT(pIResType);
-	return rdo::Factory<RDOPROCResource>::create(runtime, paramsCalcs, pIResType, runtime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
+	return rdo::Factory<RDOPROCResource>::create(pRuntime, paramsCalcs, pIResType, pRuntime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
