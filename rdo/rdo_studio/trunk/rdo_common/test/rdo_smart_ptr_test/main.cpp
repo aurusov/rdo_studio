@@ -45,7 +45,9 @@ OBJECT_INTERFACE(IMyClass21)
 public:                    \
 	void ifun21();
 
-class MyClass2: public MyClass, public IMyClass21, public rdo::CounterReferenceReal<MyClass2>
+CLASS(MyClass2):
+	    IMPLEMENTATION_OF(IMyClass21)
+	AND INSTANCE_OF      (MyClass   )
 {
 DECLARE_FACTORY(MyClass2)
 public:
@@ -98,7 +100,7 @@ public:
 	}
 };
 
-class MyClass4: public MyClass2
+CLASS(MyClass4): INSTANCE_OF(MyClass2)
 {
 DECLARE_FACTORY(MyClass4)
 public:
@@ -157,7 +159,7 @@ void main()
 		LPMyClass2 pMyClass2 = rdo::Factory<MyClass2>::create();
 		pMyClass2->m_i = 10;
 		pMyClass2->m_k = 22;
-		LPMyClass  pMyClass = pMyClass2.object_cast<MyClass>();
+		LPMyClass  pMyClass = pMyClass2.object_static_cast<MyClass>();
 		pMyClass->m_i = 11;
 	}
 
@@ -180,7 +182,7 @@ void main()
 	{ //! Сравнение указателей
 
 		LPMyClass2 pMyClass1 = rdo::Factory<MyClass2>::create();
-		LPMyClass  pMyClass2 = pMyClass1.object_cast<MyClass>();
+		LPMyClass  pMyClass2 = pMyClass1.object_static_cast<MyClass>();
 		ASSERT(pMyClass1 == pMyClass2);
 		ASSERT(!(pMyClass1 != pMyClass2));
 
