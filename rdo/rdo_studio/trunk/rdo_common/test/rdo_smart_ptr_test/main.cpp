@@ -40,6 +40,11 @@ protected:
 OBJECT_INTERFACE(IMyClass21)
 {
 	virtual void ifun21() = 0;
+
+	IMyClass21()
+	{}
+	virtual ~IMyClass21()
+	{}
 };
 #define DECLARE_IMyClass21 \
 public:                    \
