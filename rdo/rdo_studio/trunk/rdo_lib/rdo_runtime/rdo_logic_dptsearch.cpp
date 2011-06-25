@@ -64,7 +64,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 //		TRACE( "решение... \n" );
 		for ( TreeNode* i = treeRoot->m_targetNode; i->m_parent; i = i->m_parent ) {
 #ifdef _DEBUG
-			i->m_sim->showResources(i->m_number);
+			i->m_pRuntime->showResources(i->m_number);
 #endif
 			bestPath.push_front(i);
 		}

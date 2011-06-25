@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, CREF(LPRDORuntime) pRuntime)
-	: RDOLogicSimple(pRuntime)
+	: RDOLogicSimple(pRuntime, NULL)
 	, m_name  (name)
 {}
 

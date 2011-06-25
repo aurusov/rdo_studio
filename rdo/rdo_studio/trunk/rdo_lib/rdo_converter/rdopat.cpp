@@ -397,7 +397,7 @@ void RDOPATPattern::end()
 RDOPatternIrregEvent::RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
 { 
-	m_pPatRuntime = new rdoRuntime::RDOPatternIrregEvent(Converter::s_converter()->runtime(), trace); 
+	m_pPatRuntime = new rdoRuntime::RDOPatternIrregEvent(trace); 
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
@@ -504,7 +504,7 @@ RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace
 	: RDOPATPattern(name_src_info)
 { 
 //	Converter::s_converter()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(Converter::s_converter()->runtime(), _trace))); 
-	m_pPatRuntime = new rdoRuntime::RDOPatternRule(Converter::s_converter()->runtime(), trace);
+	m_pPatRuntime = new rdoRuntime::RDOPatternRule(trace);
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
@@ -573,7 +573,7 @@ RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, r
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
 { 
-	m_pPatRuntime = new rdoRuntime::RDOPatternOperation(Converter::s_converter()->runtime(), trace);
+	m_pPatRuntime = new rdoRuntime::RDOPatternOperation(trace);
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
@@ -749,7 +749,7 @@ tstring RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(tstring) name
 RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPatternOperation(trace, name_src_info)
 {
-	m_pPatRuntime = new rdoRuntime::RDOPatternKeyboard(Converter::s_converter()->runtime(), trace); 
+	m_pPatRuntime = new rdoRuntime::RDOPatternKeyboard(trace); 
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 

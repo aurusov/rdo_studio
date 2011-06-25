@@ -109,7 +109,7 @@ std::string RDOResource::traceParametersValue()
 	return str.str();
 }
 
-std::string RDOResource::traceResourceState( char prefix, RDOSimulatorTrace* pRuntime )
+std::string RDOResource::traceResourceState( char prefix, CREF(LPRDORuntime) pRuntime )
 {
 	std::ostringstream res;
 	if ( traceable() || (prefix != '\0') ) {

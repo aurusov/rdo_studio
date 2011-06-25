@@ -214,6 +214,12 @@
 #define RDOVALUE(A)   (*P_RDOVALUE(A))
 
 OPEN_RDO_CONVERTER_NAMESPACE
+
+typedef rdoRuntime::RDOFRMFrame::RDOFRMColor      RDOFRMColor;
+typedef rdoRuntime::RDOFRMFrame::LPRDOFRMColor    LPRDOFRMColor;
+typedef rdoRuntime::RDOFRMFrame::RDOFRMPosition   RDOFRMPosition;
+typedef rdoRuntime::RDOFRMFrame::LPRDOFRMPosition LPRDOFRMPosition;
+
 %}
 
 %left RDO_or
@@ -266,7 +272,8 @@ frm_background
 	{
 		LPRDOFRMFrame pFrame = CONVERTER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($4);
+		LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($4);
+		ASSERT(pBgColor);
 		if (pBgColor->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent && pBgColor->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_rgb)
 		{
 			CONVERTER->error().error(@4, _T("÷вет фона не может быть указан ссылкой на последнее значение"));
@@ -371,47 +378,69 @@ frm_end
 frm_color
 	: RDO_color_transparent
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(RUNTIME->lastFrame(), rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_last
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create();
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_white
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 255, 255, 255);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(255, 255, 255);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_black
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 0, 0, 0);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(0, 0, 0);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_red
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 255, 0, 0);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(255, 0, 0);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_green
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 0, 255, 0);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(0, 255, 0);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_blue
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 0, 0, 255);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(0, 0, 255);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_cyan
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 0, 255, 255);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(0, 255, 255);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_magenta
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 255, 0, 255);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(255, 0, 255);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_yellow
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 255, 255, 0);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(255, 255, 0);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_gray
 	{
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), 127, 127, 127);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(127, 127, 127);
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST '>'
 	{
@@ -424,7 +453,10 @@ frm_color
 		pRed->checkParamType  (pType);
 		pGreen->checkParamType(pType);
 		pBlue->checkParamType (pType);
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), pRed->createCalc(), pGreen->createCalc(), pBlue->createCalc());
+
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(pRed->createCalc(), pGreen->createCalc(), pBlue->createCalc());
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST error
 	{
@@ -449,7 +481,10 @@ frm_color
 		pRed->checkParamType  (pType);
 		pGreen->checkParamType(pType);
 		pBlue->checkParamType (pType);
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame(), pRed->createCalc(), pGreen->createCalc(), pBlue->createCalc());
+
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(pRed->createCalc(), pGreen->createCalc(), pBlue->createCalc());
+		ASSERT(pColor);
+		$$ = CONVERTER->stack().push(pColor);
 	}
 	| '<' fun_arithm ',' fun_arithm ',' fun_arithm error
 	{
@@ -531,11 +566,15 @@ frm_position_xy
 		rdoRuntime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
 		if ($2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet)
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition(RUNTIME->lastFrame(), pCalc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet);
+			LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet);
+			ASSERT(pPosition);
+			$$ = CONVERTER->stack().push(pPosition);
 		}
 		else
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition(RUNTIME->lastFrame(), pCalc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2);
+			LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2);
+			ASSERT(pPosition);
+			$$ = CONVERTER->stack().push(pPosition);
 		}
 	}
 	;
@@ -546,11 +585,15 @@ frm_position_wh
 		rdoRuntime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
 		if ($2 >= rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet)
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition(RUNTIME->lastFrame(), pCalc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet);
+			LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet, $2 - rdoRuntime::RDOFRMFrame::RDOFRMPosition::rulet);
+			ASSERT(pPosition);
+			$$ = CONVERTER->stack().push(pPosition);
 		}
 		else
 		{
-			$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMPosition(RUNTIME->lastFrame(), pCalc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2);
+			LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (rdoRuntime::RDOFRMFrame::RDOFRMPosition::PositionType)$2);
+			ASSERT(pPosition);
+			$$ = CONVERTER->stack().push(pPosition);
 		}
 	}
 	;
@@ -565,17 +608,19 @@ frm_ruler
 			CONVERTER->error().push_only(pRulet->src_info(), _T("—м. первое определение"));
 			CONVERTER->error().push_done();
 		}
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		if (x->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
+		LPRDOFRMPosition pX = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		ASSERT(pX);
+		ASSERT(pY);
+		if (pX->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
 		{
 			CONVERTER->error().error(@5, _T(" оодинаты рулетки должны быть абсолютными"));
 		}
-		if (y->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
+		if (pY->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
 		{
 			CONVERTER->error().error(@7, _T(" оодинаты рулетки должны быть абсолютными"));
 		}
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMRulet(RDOParserSrcInfo(@1), P_RDOVALUE($3)->value().getInt(), x, y);
+		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMRulet(RDOParserSrcInfo(@1), P_RDOVALUE($3)->value().getInt(), pX, pY);
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
 	{
@@ -610,11 +655,15 @@ frm_ruler
 frm_space
 	: RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		$$ = (int)new rdoRuntime::RDOFRMSpace(RUNTIME->lastFrame(), x, y, width, height);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		$$ = (int)new rdoRuntime::RDOFRMSpace(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight);
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
@@ -664,40 +713,58 @@ frm_text_align
 frm_text_common
 	: RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ','
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($11);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($13);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($11);
+		LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg_text);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg_text);
-		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 /*
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ','
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($11);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = rdp::Factory<RDOFRMColor>::create();
+		LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($11);
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg_text);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg_text);
-		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ','
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = rdp::Factory<RDOFRMColor>::create();
+		LPRDOFRMColor pFgColor = rdp::Factory<RDOFRMColor>::create();
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg_text);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg_text);
-		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 */
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
@@ -780,15 +847,19 @@ frm_text
 frm_bitmap
 	: RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		$$ = (int)new rdoRuntime::RDOFRMBitmap(RUNTIME->lastFrame(), x, y, P_RDOVALUE($7)->value().getIdentificator());
+		LPRDOFRMPosition pX = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		ASSERT(pX);
+		ASSERT(pY);
+		$$ = (int)new rdoRuntime::RDOFRMBitmap(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator());
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		$$ = (int)new rdoRuntime::RDOFRMBitmap(RUNTIME->lastFrame(), x, y, P_RDOVALUE($7)->value().getIdentificator(), P_RDOVALUE($9)->value().getIdentificator());
+		LPRDOFRMPosition pX = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		ASSERT(pX);
+		ASSERT(pY);
+		$$ = (int)new rdoRuntime::RDOFRMBitmap(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator(), P_RDOVALUE($9)->value().getIdentificator());
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
@@ -831,19 +902,27 @@ frm_bitmap
 frm_s_bmp
 	: RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		$$ = (int)new rdoRuntime::RDOFRMBitmapStretch(RUNTIME->lastFrame(), x, y, width, height, P_RDOVALUE($11)->value().getIdentificator());
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		$$ = (int)new rdoRuntime::RDOFRMBitmapStretch(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator());
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		$$ = (int)new rdoRuntime::RDOFRMBitmapStretch(RUNTIME->lastFrame(), x, y, width, height, P_RDOVALUE($11)->value().getIdentificator(), P_RDOVALUE($13)->value().getIdentificator());
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		$$ = (int)new rdoRuntime::RDOFRMBitmapStretch(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator(), P_RDOVALUE($13)->value().getIdentificator());
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
@@ -902,63 +981,93 @@ frm_s_bmp
 frm_rect
 	: RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($11);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($13);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($11);
+		LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($11);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor  = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($11);
+		LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor  = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor  = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = rdo::Factory<RDOFRMColor>::create();
+		LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = new rdoRuntime::RDOFRMFrame::RDOFRMPosition(RUNTIME->lastFrame(), rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor  = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor  = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = rdo::Factory<RDOFRMColor>::create();
+		LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = new rdoRuntime::RDOFRMFrame::RDOFRMPosition(RUNTIME->lastFrame(), rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = new rdoRuntime::RDOFRMFrame::RDOFRMPosition(RUNTIME->lastFrame(), rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor  = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor  = new rdoRuntime::RDOFRMFrame::RDOFRMColor(RUNTIME->lastFrame());
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta);
+		LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), rdoRuntime::RDOFRMFrame::RDOFRMPosition::delta);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = rdo::Factory<RDOFRMColor>::create();
+		LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMRect(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
@@ -1017,15 +1126,21 @@ frm_rect
 frm_r_rect
 	: RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($11);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($13);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($11);
+		LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMRectRound(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMRectRound(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
@@ -1084,15 +1199,21 @@ frm_r_rect
 frm_ellipse
 	: RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($11);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($13);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($11);
+		LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMEllipse(RUNTIME->lastFrame(), x, y, width, height, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMEllipse(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
@@ -1151,13 +1272,18 @@ frm_ellipse
 frm_line
 	: RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) color = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($11);
-		color->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMLine(RUNTIME->lastFrame(), x, y, width, height, color);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		LPRDOFRMColor pColor = CONVERTER->stack().pop<RDOFRMColor>($11);
+		ASSERT(pColor);
+		pColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
+		$$ = (int)new rdoRuntime::RDOFRMLine(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pColor);
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
@@ -1208,17 +1334,25 @@ frm_line
 frm_triang
 	: RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color ']'
 	{
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x1 = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($3);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y1 = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($5);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x2 = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($7);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y2 = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($9);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x3 = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($11);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y3 = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($13);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pBgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($15);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor) pFgColor = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMColor)>($17);
+		LPRDOFRMPosition pX1 = CONVERTER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY1 = CONVERTER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pX2 = CONVERTER->stack().pop<RDOFRMPosition>($7);
+		LPRDOFRMPosition pY2 = CONVERTER->stack().pop<RDOFRMPosition>($9);
+		LPRDOFRMPosition pX3 = CONVERTER->stack().pop<RDOFRMPosition>($11);
+		LPRDOFRMPosition pY3 = CONVERTER->stack().pop<RDOFRMPosition>($13);
+		ASSERT(pX1);
+		ASSERT(pY1);
+		ASSERT(pX2);
+		ASSERT(pY2);
+		ASSERT(pX3);
+		ASSERT(pY3);
+		LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($15);
+		LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($17);
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMTriang(RUNTIME->lastFrame(), x1, y1, x2, y2, x3, y3, pBgColor, pFgColor);
+		$$ = (int)new rdoRuntime::RDOFRMTriang(RUNTIME->lastFrame(), pX1, pY1, pX2, pY2, pX3, pY3, pBgColor, pFgColor);
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
 	{
@@ -1323,11 +1457,15 @@ frm_active
 				CONVERTER->error().push_done();
 			}
 		}
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) x      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($4);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) y      = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($6);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) width  = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($8);
-		PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition) height = reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMPosition)>($10);
-		$$ = (int)new rdoRuntime::RDOFRMActive(RUNTIME->lastFrame(), x, y, width, height, opr_name);
+		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($4);
+		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($6);
+		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($8);
+		LPRDOFRMPosition pHeight = CONVERTER->stack().pop<RDOFRMPosition>($10);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pWidth );
+		ASSERT(pHeight);
+		$$ = (int)new rdoRuntime::RDOFRMActive(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, opr_name);
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{

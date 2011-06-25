@@ -28,24 +28,24 @@ class RDOPatternIrregEvent: public RDOPattern
 friend class RDOIrregEvent;
 
 public:
-	RDOPatternIrregEvent(PTR(RDORuntime) rTime, rbool trace);
+	RDOPatternIrregEvent(rbool trace);
 
 	void addConvertorCalc  (CREF(LPRDOCalc) pCalc            ) { m_convertor.push_back(pCalc);        }
 	void addConvertorStatus(RDOResource::ConvertStatus status) { m_convertorStatus.push_back(status); }
 	void addEraseCalc      (CREF(LPRDOCalc) pCalc            ) { m_erase.push_back(pCalc);            }
 	void setTime           (CREF(LPRDOCalc) timeCalc         ) { m_timeCalc = timeCalc;	              }
 
-	void convertEvent(PTR(RDORuntime) pRuntime)
+	void convertEvent(CREF(LPRDORuntime) pRuntime)
 	{
 		preSelectRelRes(pRuntime);
 		runCalcs(m_convertor, pRuntime);
 	}
-	void convertErase(PTR(RDORuntime) pRuntime)
+	void convertErase(CREF(LPRDORuntime) pRuntime)
 	{
 		runCalcs(m_erase, pRuntime);
 	}
 
-	double getNextTimeInterval(PTR(RDORuntime) pRuntime);
+	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
 private:
 	LPRDOCalc         m_timeCalc;
@@ -69,15 +69,15 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOIrregEvent(PTR(RDORuntime) pRuntime, PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name);
+	RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name);
 
 	double  m_time;
 
-	void   convertEvent       (PTR(RDOSimulator) pSimulator);
-	double getNextTimeInterval(PTR(RDOSimulator) pSimulator);
+	void   convertEvent       (CREF(LPRDORuntime) pRuntime);
+	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
-	virtual void onBeforeIrregularEvent(PTR(RDOSimulator) pSimulator);
-	virtual void onAfterIrregularEvent (PTR(RDOSimulator) pSimulator);
+	virtual void onBeforeIrregularEvent(CREF(LPRDORuntime) pRuntime);
+	virtual void onAfterIrregularEvent (CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IBaseOperation;
 };

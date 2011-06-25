@@ -9,7 +9,6 @@ namespace rdoRuntime
 {
 
 RDOSimulatorBase::RDOSimulatorBase():
-	RDORuntimeParent( NULL ),
 	m_startTime( 0 ),
 	m_currentTime( 0 ),
 	m_nextTime( 0 ),
