@@ -45,8 +45,6 @@ RDORuntime::RDORuntime()
 	, m_funBreakFlag      (FBF_CONTINUE       )
 	, m_pStudioThread     (NULL               )
 {
-	m_parent         = NULL;
-	detach();
 	pTerminateIfCalc = NULL;
 	m_pMemoryStack   = rdo::Factory<RDOMemoryStack>::create();
 }
@@ -62,7 +60,6 @@ void RDORuntime::init()
 void RDORuntime::deinit()
 {
 	m_connected.clear();
-	deleteObjects();
 	onDestroy();
 }
 
@@ -140,41 +137,37 @@ void RDORuntime::setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc)
 
 bool RDORuntime::breakPoints()
 {
-	std::list<BreakPoint*>::const_iterator it = breakPointsCalcs.begin();
-	while (it != breakPointsCalcs.end())
+	STL_FOR_ALL_CONST(breakPointsCalcs, it)
 	{
-		if ((*it)->pCalc->calcValue(this).getAsBool())
+		if ((*it)->getCalc()->calcValue(this).getAsBool())
 		{
 			lastActiveBreakPoint = *it;
 			return true;
 		}
-		it++;
 	}
 	return false;
 }
 
 void RDORuntime::insertBreakPoint(const std::string& name, CREF(LPRDOCalc) pCalc)
 {
-	breakPointsCalcs.push_back(new BreakPoint(this, name, pCalc));
+	breakPointsCalcs.push_back(rdo::Factory<BreakPoint>::create(name, pCalc));
 }
 
 LPRDOCalc RDORuntime::findBreakPoint(const std::string& name)
 {
-	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
-	while (it != breakPointsCalcs.end())
+	STL_FOR_ALL_CONST(breakPointsCalcs, it)
 	{
-		if ((*it)->name == name)
+		if ((*it)->getName() == name)
 		{
-			return (*it)->pCalc;
+			return (*it)->getCalc();
 		}
-		it++;
 	}
 	return NULL;
 }
 
 std::string RDORuntime::getLastBreakPointName() const
 {
-	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->pCalc->src_text() : "";
+	return lastActiveBreakPoint ? lastActiveBreakPoint->getName() + _T(": ") + lastActiveBreakPoint->getCalc()->src_text() : _T("");
 }
 
 void RDORuntime::setConstValue(ruint numberOfConst, RDOValue value)
@@ -514,55 +507,56 @@ RDOValue RDORuntime::getFuncArgument(int numberOfParam)
 	return funcStack.at(currFuncTop + numberOfParam);
 }
 
-LPRDORuntime RDORuntime::clone()
+LPRDORuntime RDORuntime::clone() const
 {
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
 	ASSERT(pRuntime);
 	pRuntime->m_sizeofSim = sizeof(RDORuntime);
 
-	*pRuntime.get() = *this;
+	LPRDORuntime pThis(const_cast<PTR(RDORuntime)>(this));
+	pRuntime->copyFrom(pThis);
 
 	return pRuntime;
 }
 
-void RDORuntime::operator= (CREF(LPRDORuntime) other)
+void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 {
-	ruint size = other.allResourcesByID.size();
+	ASSERT(pOther);
+
+	ruint size = pOther->allResourcesByID.size();
 	for (ruint i = 0; i < size; i++)
 	{
-		if (other.allResourcesByID.at(i) == NULL)
+		if (pOther->allResourcesByID.at(i) == NULL)
 		{
 			allResourcesByID.push_back(NULL);
 		}
 		else
 		{
 			// вставка ресурса в контейнер allResourcesByID нового RDORuntime произойдет в его конструкторе
-			other.allResourcesByID.at(i)->clone(this);
+			pOther->allResourcesByID.at(i)->clone(this);
 			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
 		}
 	}
-	allConstants      = other.allConstants;
-	patternParameters = other.patternParameters;
-	results           = other.results;
-	m_pThreadProxy    = other.m_pThreadProxy;
-	setCurrentTime(other.getCurrentTime());
+	allConstants      = pOther->allConstants;
+	patternParameters = pOther->patternParameters;
+	results           = pOther->results;
+	m_pThreadProxy    = pOther->m_pThreadProxy;
+	setCurrentTime(pOther->getCurrentTime());
 
-	Parent::operator= (*static_cast<const Parent*>(&other));
+	Parent::copyFrom(pOther.object_parent_cast<Parent>());
 }
 
-bool RDORuntime::operator== (CREF(RDOSimulator) other)
+rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 {
-	CPTR(RDORuntime) otherRuntime = dynamic_cast<CPTR(RDORuntime)>(&other);
-
-	if (otherRuntime->allResourcesByID.size() != allResourcesByID.size()) return false;
+	if (pOther->allResourcesByID.size() != allResourcesByID.size()) return false;
 
 	ruint size = allResourcesByID.size();
 	for (ruint i = 0; i < size; i++)
 	{
-		if (allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) != NULL) return false;
-		if (allResourcesByID.at(i) != NULL && otherRuntime->allResourcesByID.at(i) == NULL) return false;
-		if (allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) == NULL) continue;
-		if (otherRuntime->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
+		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) != NULL) return false;
+		if (allResourcesByID.at(i) != NULL && pOther->allResourcesByID.at(i) == NULL) return false;
+		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) == NULL) continue;
+		if (pOther->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
 	}
 	return true;
 }

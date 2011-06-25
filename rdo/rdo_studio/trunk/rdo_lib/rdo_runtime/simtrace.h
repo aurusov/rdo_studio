@@ -16,8 +16,11 @@ class RDOEvent;
 class RDORule;
 class RDOOperation;
 
-class RDOSimulatorTrace: public RDOSimulator
+PREDECLARE_POINTER(RDOSimulatorTrace);
+
+CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
 {
+DECLARE_FACTORY(RDOSimulatorTrace)
 public:
 	enum { UNDEFINE_TIME = -1 };
 
@@ -90,7 +93,7 @@ protected:
 	}
 	virtual ~RDOSimulatorTrace();
 
-	virtual void operator= (const RDOSimulatorTrace& other);
+	void copyFrom(CREF(LPRDOSimulatorTrace) pOther);
 
 	RDOTrace* m_tracer;
 

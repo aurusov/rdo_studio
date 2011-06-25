@@ -81,62 +81,61 @@ void TreeNode::ExpandChildren()
 	// Бегаем по всем активностям самой точки
 	for (RDODPTSearch::ActivityList::iterator i = m_root->m_dp->m_activityList.begin(); i != m_root->m_dp->m_activityList.end(); i++)
 	{
-		m_currAct  = *i;
-		m_childSim = m_pRuntime->createCopy();
+		m_currAct       = *i;
+		m_pChildRuntime = m_pRuntime->clone();
 #ifdef _DEBUG
-		if ( m_childSim->checkState() ) {
+		if ( m_pChildRuntime->checkState() ) {
 			TRACE1("состояние, node = %d\n", m_number);
 		}
 #endif
-		m_root->m_sizeof_dpt += m_childSim->getSizeofSim();
-		m_currAct->rule()->onBeforeChoiceFrom( m_childSim );
-		if ( !m_currAct->rule()->choiceFrom( m_childSim ) ) {
+		m_root->m_sizeof_dpt += m_pChildRuntime->getSizeofSim();
+		m_currAct->rule()->onBeforeChoiceFrom( m_pChildRuntime );
+		if ( !m_currAct->rule()->choiceFrom( m_pChildRuntime ) ) {
 			// Не прошел Choice from, удаляем симулятор и переходим к другой активности.
 			// TODO: а зачем удалять симулятор, ведь БД не поменялась ?
 			// Такое будет возможно, если при подготовке параметров паттерна будет
 			// вызываться calc, на котором весит уведомление по вызову для другого
 			// объекта, который будут меняться параметры ресурсов
 			// Пока таких сложных взаимодействий в системе нет.
-			m_root->m_sizeof_dpt -= m_childSim->getSizeofSim();
-			delete m_childSim;
-			m_childSim = NULL;
+			m_root->m_sizeof_dpt -= m_pChildRuntime->getSizeofSim();
+			m_pChildRuntime = NULL;
 		} else {
 			// Только для статистики
 			m_root->m_fullNodesCount++;
 			// Расчитать стоимость применения правила (value before)
 			if ( m_currAct->valueTime() == IDPTSearchActivity::vt_before )
 			{
-				m_newCostRule = m_currAct->cost( m_childSim );
+				m_newCostRule = m_currAct->cost( m_pChildRuntime );
 			}
 			// Выполнить само правило (раскрыть вершину)
-			m_currAct->rule()->onBeforeRule( m_childSim );
-			m_currAct->rule()->convertRule( m_childSim );
-			m_currAct->rule()->onAfterRule( m_childSim, true );
+			m_currAct->rule()->onBeforeRule( m_pChildRuntime );
+			m_currAct->rule()->convertRule( m_pChildRuntime );
+			m_currAct->rule()->onAfterRule( m_pChildRuntime, true );
 
 			// Расчитать стоимость применения правила (value after)
 			if ( m_currAct->valueTime() == IDPTSearchActivity::vt_after )
 			{
-				m_newCostRule = m_currAct->cost( m_childSim );
+				m_newCostRule = m_currAct->cost( m_pChildRuntime );
 			}
 			// Расчитали стоимость пути до текущей вершины
 			m_newCostPath = m_costPath + m_newCostRule;
 			// Расчитали стоимость пути до цели с учетом оценки
 			// Именно по этому значению и должен упорядочиваться список OPEN
-			m_newCostRest = m_newCostPath + m_root->m_dp->EvaluateBy( m_childSim );
+			m_newCostRest = m_newCostPath + m_root->m_dp->EvaluateBy( m_pChildRuntime );
 
 			// Надо ли сравнивать вершины (запоминать уже пройденные)
 			// Алгоритм смены родителя
 			if ( m_root->m_dp->NeedCompareTops() ) {
 				TreeNode* loser = NULL;
-				NodeFoundInfo res = m_root->m_rootNode->CheckIfExistBetter( m_childSim, m_newCostPath, &loser );
+				NodeFoundInfo res = m_root->m_rootNode->CheckIfExistBetter( m_pChildRuntime, m_newCostPath, &loser );
 				if ( res == nfi_found_better ) {
 					// В графе есть более лучшая вершина, т.е. текущая активность
 					// отработала хуже (дороже) до одного и того же состояния.
 					// Граф перестраивать не надо.
 					// Вывели трассировку раскрытой вершины.
 					onSearchNodeInfoDeleted( m_root->m_theRealSimulator );
-					m_root->m_sizeof_dpt -= m_childSim->getSizeofSim();
-					delete m_childSim;
+					m_root->m_sizeof_dpt -= m_pChildRuntime->getSizeofSim();
+					m_pChildRuntime = NULL;
 					// Переходим к следующей активности
 					continue;
 				} else if ( res == nfi_found_loser ) {
@@ -182,8 +181,8 @@ void TreeNode::ExpandChildren()
 					loser->onSearchNodeInfoReplaced( m_root->m_theRealSimulator );
 					// Добавляем в список потомков текущей
 					m_children.push_back( loser );
-					m_root->m_sizeof_dpt -= m_childSim->getSizeofSim();
-					delete m_childSim;
+					m_root->m_sizeof_dpt -= m_pChildRuntime->getSizeofSim();
+					m_pChildRuntime = NULL;
 #ifdef _DEBUG
 					if ( m_number == 294 ) {
 						loser->m_pRuntime->showResources( loser->m_number );
@@ -207,7 +206,7 @@ void TreeNode::ExpandChildren()
 			// Добавим к списку потомков текущей
 			m_children.push_back(tn);
 /*
-			if(!root->m_dp->TermCondition(childSim))
+			if(!root->m_dp->TermCondition(pChildRuntime))
 				root->OPEN.push_back(tn);
 			else
 			{
@@ -225,9 +224,12 @@ void TreeNode::ExpandChildren()
 	std::sort( m_root->m_OPEN.begin(), m_root->m_OPEN.end(), compareNodes );
 }
 
-TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter( RDOSimulator* childSim, double useCost, TreeNode** loser )
+TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** loser)
 {
-	if ( *childSim == *m_pRuntime ) {
+	ASSERT(pChildRuntime);
+
+	if (pChildRuntime->equal(m_pRuntime))
+	{
 		if ( m_costPath <= useCost ) {
 			return nfi_found_better;
 		} else {
@@ -237,7 +239,7 @@ TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter( RDOSimulator* childSim, do
 	}
 
 	for ( std::vector< TreeNode* >::iterator i = m_children.begin(); i != m_children.end(); i++ ) {
-		NodeFoundInfo res = (*i)->CheckIfExistBetter( childSim, useCost, loser );
+		NodeFoundInfo res = (*i)->CheckIfExistBetter( pChildRuntime, useCost, loser );
 		if ( res != nfi_notfound ) return res;
 	}
 
@@ -256,7 +258,7 @@ void TreeNode::ReCostSubTree( double cost )
 TreeNode* TreeNode::createChildTreeNode()
 {
 	m_root->m_sizeof_dpt += sizeof( TreeNode );
-	return new TreeNode(m_childSim, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber());
+	return new TreeNode(m_pChildRuntime, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber());
 }
 
 } // namespace rdoRuntime;

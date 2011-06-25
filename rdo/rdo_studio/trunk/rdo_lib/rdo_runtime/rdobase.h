@@ -5,6 +5,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_common/rdocommon.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 
 #ifdef RDO_MT
 #include <afxwin.h>
@@ -15,8 +16,9 @@
 namespace rdoRuntime
 {
 
-class RDOSimulatorBase
+OBJECT(RDOSimulatorBase)
 {
+DECLARE_FACTORY(RDOSimulatorBase)
 public:
 	// Публичные методы управления симулятором
 	virtual void  rdoInit();

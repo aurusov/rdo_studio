@@ -48,7 +48,7 @@ public:
 	DPT_TraceFlag traceFlag;
 
 protected:
-	RDODPTSearchTrace( RDOSimulatorTrace* pRuntime, LPIBaseOperationContainer parent ):
+	RDODPTSearchTrace( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent ):
 		RDODPTSearch( pRuntime, parent ),
 		RDOTraceableObject( false ),
 		calc_cnt( 0 ),

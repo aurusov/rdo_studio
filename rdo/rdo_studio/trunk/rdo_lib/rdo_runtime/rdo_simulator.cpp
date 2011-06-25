@@ -122,13 +122,6 @@ void RDOSimulator::preProcess()
 	onResetPokaz();
 }
 
-PTR(RDOSimulator) RDOSimulator::createCopy()
-{
-	PTR(RDOSimulator) pSimClone = clone();
-	pSimClone->setCurrentTime(getCurrentTime());
-	return pSimClone;
-}
-
 tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
 {
 	rdo::textstream stream;

@@ -85,7 +85,7 @@ void TreeNodeTrace::onSearchNodeInfoNew( CREF(LPRDORuntime) pRuntime )
 TreeNode* TreeNodeTrace::createChildTreeNode()
 {
 	m_root->m_sizeof_dpt += sizeof( TreeNode );
-	return new TreeNodeTrace( m_childSim, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber() );
+	return new TreeNodeTrace( m_pChildRuntime, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber() );
 }
 
 void TreeRootTrace::createRootTreeNode( CREF(LPRDORuntime) pRuntime )

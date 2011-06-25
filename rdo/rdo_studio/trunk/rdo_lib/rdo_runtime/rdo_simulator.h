@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOSimulator - один из базовых классов для RDORuntime
 // ----------------------------------------------------------------------------
-class RDOSimulator: public RDOSimulatorBase
+CLASS(RDOSimulator): INSTANCE_OF (RDOSimulatorBase)
 {
 public:
 	RDOSimulator();
@@ -35,13 +35,11 @@ public:
 
 	tstring          writeActivitiesStructure(REF(ruint) counter);
 
-	PTR(RDOSimulator) createCopy();
-
 	// Для DPT необходимо перекрыть две нижеследующие функции:
 	// 1. Создает клон RDOSimulator с копиями всех ресурсов, но не более
-	virtual PTR(RDOSimulator) clone()                   = 0;
+	// virtual PTR(RDOSimulator) clone()                   = 0;
 	// 2. Сравнение двух симуляторов по ресурсам
-	virtual rbool operator== (CREF(RDOSimulator) other) = 0;
+	// virtual rbool operator== (CREF(RDOSimulator) other) = 0;
 
 	ruint getSizeofSim() const
 	{

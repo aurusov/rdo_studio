@@ -71,7 +71,7 @@ class RDOFRMFrame;
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
-OBJECT(RDORuntime) IS INSTANCE_OF(RDOSimulatorTrace)
+CLASS(RDORuntime): INSTANCE_OF(RDOSimulatorTrace)
 {
 DECLARE_FACTORY(RDORuntime);
 public:
@@ -94,6 +94,10 @@ public:
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error(CREF(tstring) message, CREF(LPRDOCalc) pCalc = NULL);
+
+	LPRDORuntime clone   () const;
+	void         copyFrom(CREF(LPRDORuntime) pOther);
+	rbool        equal   (CREF(LPRDORuntime) pOther) const;
 
 	class RDOHotKeyToolkit
 	{
@@ -267,19 +271,32 @@ private:
 	LPIThreadProxy              m_pThreadProxy;
 	PTR(RDOThread)              m_pStudioThread;
 
-	class BreakPoint: public RDORuntimeObject
+	OBJECT(BreakPoint) IS INSTANCE_OF(RDORuntimeObject)
 	{
+	DECLARE_FACTORY(BreakPoint)
 	public:
-		tstring   name;
-		LPRDOCalc pCalc;
-		BreakPoint(CREF(tstring) _name, CREF(LPRDOCalc) _pCalc ):
-			name ( _name  ),
-			pCalc( _pCalc )
+		CREF(tstring) getName() const
+		{
+			return m_name;
+		}
+		CREF(LPRDOCalc) getCalc() const
+		{
+			return m_pCalc;
+		}
+
+	private:
+		BreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
+			: m_name (name )
+			, m_pCalc(pCalc)
 		{}
+
+		tstring   m_name;
+		LPRDOCalc m_pCalc;
 	};
 
-	std::list< BreakPoint* > breakPointsCalcs;
-	BreakPoint*              lastActiveBreakPoint;
+	typedef std::list<LPBreakPoint> BreakPointList;
+	BreakPointList  breakPointsCalcs;
+	LPBreakPoint    lastActiveBreakPoint;
 
 	std::vector< RDOValue >     funcStack;
 	std::vector<LPRDOResource>  groupFuncStack;
@@ -321,10 +338,6 @@ private:
 
 	LPRDOCalc pTerminateIfCalc;
 	std::vector< RDOValue > allConstants;
-
-	virtual RDOSimulator* clone();
-	virtual void operator=  (const RDORuntime& other);
-	virtual rbool operator== (CREF(RDOSimulator) other);
 
 	void writeExitCode();
 

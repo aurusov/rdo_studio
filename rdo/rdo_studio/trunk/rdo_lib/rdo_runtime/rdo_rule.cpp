@@ -101,7 +101,7 @@ bool RDORule::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 			//! Реакция на плохой onDoOperation - это вообще-то спортный вопрос
 			return false;
 		}
-		if ( *clone.get() == *pRuntime )
+		if (pClone->equal(pRuntime))
 		{
 			result = false;
 		}

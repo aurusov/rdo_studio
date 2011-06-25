@@ -37,7 +37,7 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 	// Начало поиска: вывели трасировку, обновили статистику
 	onSearchBegin(pRuntime);
 	treeRoot = createTreeRoot(pRuntime);
-	treeRoot->createRootTreeNode(pRuntime->createCopy());
+	treeRoot->createRootTreeNode(pRuntime->clone());
 
 	return onContinue(pRuntime);
 }

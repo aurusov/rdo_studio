@@ -94,7 +94,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 	PTR(RDODPTSearchTrace) dpTrace = static_cast<PTR(RDODPTSearchTrace)>(node->m_root->m_dp);
 	if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 	{
-		CREF(LPRDORuntime)      simTrace             = node->m_sim;
+		CREF(LPRDORuntime)      pRuntime             = node->m_pRuntime;
 		LPIActivityTrace        activityTrace        = node->m_currAct->rule();
 		LPIActivityPatternTrace activityPatternTrace = node->m_currAct->rule();
 		LPITrace                trace                = node->m_currAct;
@@ -111,13 +111,13 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 		             << " " << trace->traceId()
 		             << " " << activityPatternTrace->tracePatternId()
 		             << " " << ((sign != 'D') ? doubleToString(node->m_costRule) : doubleToString(node->m_newCostRule))
-		             << " " << activityTrace->traceResourcesListNumbers(simTrace, true)
+		             << " " << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
 
 		PTR(RDODPTSearchTrace) dpTrace = static_cast<PTR(RDODPTSearchTrace)>(node->m_root->m_dp);
 		if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 		{
-			getOStream() << activityTrace->traceResourcesList('S', simTrace) << getEOL();
+			getOStream() << activityTrace->traceResourcesList('S', pRuntime) << getEOL();
 		}
 	}
 }
@@ -289,7 +289,7 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
 
-void RDOTrace::writeTraceBegin(RDOSimulatorTrace *pRuntime)
+void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
@@ -297,7 +297,7 @@ void RDOTrace::writeTraceBegin(RDOSimulatorTrace *pRuntime)
       << " 1" << std::endl << getEOL();
 }
 
-void RDOTrace::writeModelBegin(RDOSimulatorTrace *pRuntime)
+void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
@@ -305,7 +305,7 @@ void RDOTrace::writeModelBegin(RDOSimulatorTrace *pRuntime)
       << " 3" << std::endl << getEOL();
 }
 
-void RDOTrace::writeTraceEnd(RDOSimulatorTrace *pRuntime)
+void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 

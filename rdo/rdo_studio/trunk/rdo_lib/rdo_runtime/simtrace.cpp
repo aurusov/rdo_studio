@@ -19,10 +19,12 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 	}
 }
 
-void RDOSimulatorTrace::operator= (const RDOSimulatorTrace& other)
+void RDOSimulatorTrace::copyFrom(CREF(LPRDOSimulatorTrace) pOther)
 {
-	freeResourcesIds = other.freeResourcesIds;
-	maxResourcesId   = other.maxResourcesId;
+	ASSERT(pOther);
+
+	freeResourcesIds = pOther->freeResourcesIds;
+	maxResourcesId   = pOther->maxResourcesId;
 }
 
 void RDOSimulatorTrace::rdoInit()
