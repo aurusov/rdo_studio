@@ -67,7 +67,7 @@ class RDOOperation;
 class RDOPROCProcess;
 class RDOPMDPokaz;
 class RDOPattern;
-class RDOFRMFrame;
+PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
@@ -140,10 +140,10 @@ public:
 	void addRuntimeEvent    (LPIBaseOperationContainer logic, CREF(LPIEvent)      ev      );
 	void addRuntimeRule     (LPIBaseOperationContainer logic, CREF(LPIRule)       rule    );
 	void addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation)  opration);
-	void addRuntimePokaz    (CREF(LPIPokaz)      pokaz   );
-	void addRuntimeFrame    (PTR(RDOFRMFrame)    frame   );
+	void addRuntimePokaz    (CREF(LPIPokaz)      pPokaz);
+	void addRuntimeFrame    (CREF(LPRDOFRMFrame) pFrame);
 	
-	RDOFRMFrame* lastFrame() const;
+	LPRDOFRMFrame lastFrame() const;
 
 	CREF(LPIPokazList) getPokaz() const { return m_pokazAllList; }
 
@@ -216,7 +216,7 @@ public:
 
 	std::vector< std::string >  activeAreasMouseClicked;
 	std::list< unsigned int >   keysDown;
-	std::vector< RDOFRMFrame* > allFrames;
+	std::vector<LPRDOFRMFrame> allFrames;
 
 	virtual void onPutToTreeNode();
 

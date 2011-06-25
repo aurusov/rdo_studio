@@ -50,41 +50,45 @@ public:
 		PositionType type;
 		int          rulet_id;
 
-		int getX(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
+		int getX(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+		{
 			RDOValue res = pCalc->calcValue( pRuntime );
 			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_x;                     break;
-				case RDOFRMPosition::gabarit: res += frame->last_x + frame->last_width; break;
-				case RDOFRMPosition::mult   : res *= frame->last_x;                     break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletX( pRuntime, rulet_id ); break;
+				case RDOFRMPosition::delta  : res += pFrame->last_x;                          break;
+				case RDOFRMPosition::gabarit: res += pFrame->last_x + pFrame->last_width;     break;
+				case RDOFRMPosition::mult   : res *= pFrame->last_x;                          break;
+				case RDOFRMPosition::rulet  : res += pFrame->getRuletX( pRuntime, rulet_id ); break;
 			}
 			return res.getInt();
 		}
-		int getY(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
+		int getY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+		{
 			RDOValue res = pCalc->calcValue( pRuntime );
 			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_y;                      break;
-				case RDOFRMPosition::gabarit: res += frame->last_y + frame->last_height; break;
-				case RDOFRMPosition::mult   : res *= frame->last_y;                      break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletY( pRuntime, rulet_id );  break;
+				case RDOFRMPosition::delta  : res += pFrame->last_y;                          break;
+				case RDOFRMPosition::gabarit: res += pFrame->last_y + pFrame->last_height;    break;
+				case RDOFRMPosition::mult   : res *= pFrame->last_y;                          break;
+				case RDOFRMPosition::rulet  : res += pFrame->getRuletY( pRuntime, rulet_id ); break;
 			}
 			return res.getInt();
 		}
-		int getWidth(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
+		int getWidth(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+		{
 			RDOValue res = pCalc->calcValue( pRuntime );
 			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_width; break;
-				case RDOFRMPosition::mult   : res *= frame->last_width; break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletX( pRuntime, rulet_id ); break;
+				case RDOFRMPosition::delta  : res += pFrame->last_width; break;
+				case RDOFRMPosition::mult   : res *= pFrame->last_width; break;
+				case RDOFRMPosition::rulet  : res += pFrame->getRuletX( pRuntime, rulet_id ); break;
 			}
 			return res.getInt();
 		}
-		int getHeight(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
+		int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+		{
 			RDOValue res = pCalc->calcValue( pRuntime );
 			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_height; break;
-				case RDOFRMPosition::mult   : res *= frame->last_height; break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletY( pRuntime, rulet_id ); break;
+				case RDOFRMPosition::delta  : res += pFrame->last_height; break;
+				case RDOFRMPosition::mult   : res *= pFrame->last_height; break;
+				case RDOFRMPosition::rulet  : res += pFrame->getRuletY( pRuntime, rulet_id ); break;
 			}
 			return res.getInt();
 		}
@@ -125,7 +129,7 @@ public:
 			color_last_fg_text
 		};
 
-		rdoAnimation::RDOColor getColor(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) const;
+		rdoAnimation::RDOColor getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
 		ColorType getColorType() const {
 			return color_type;
@@ -177,8 +181,8 @@ public:
 	void setBackPicture( int _width, int _height );
 	void startShow(CREF(LPRDOCalc) pCalc = NULL);
 	LPRDOFRMShow getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
-	void addItem(CREF(LPRDOFRMItem) pItem);
-	void addRulet( RDOFRMRulet* rulet );
+	void addItem (CREF(LPRDOFRMItem)  pItem );
+	void addRulet(CREF(LPRDOFRMRulet) pRulet);
 	bool checkCondition(CREF(LPRDORuntime) pRuntime);
 	rdoAnimation::RDOFrame* createFrame(CREF(LPRDORuntime) pRuntime) {
 		rdoAnimation::RDOFrame* frame = new rdoAnimation::RDOFrame();
@@ -281,23 +285,29 @@ protected:
 		data.width  = _data->width;
 		data.height = _data->height;
 	}
-	int getX(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
-		return data.x->getX( pRuntime, frame );
+	int getX(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+	{
+		return data.x->getX( pRuntime, pFrame );
 	}
-	int getY(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
-		return data.y->getY( pRuntime, frame );
+	int getY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+	{
+		return data.y->getY( pRuntime, pFrame );
 	}
-	int getWidth(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
-		return data.width->getWidth( pRuntime, frame );
+	int getWidth(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+	{
+		return data.width->getWidth( pRuntime, pFrame );
 	}
-	int getHeight(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
-		return data.height->getHeight( pRuntime, frame );
+	int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+	{
+		return data.height->getHeight( pRuntime, pFrame );
 	}
-	int getWidthAsX(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
-		return data.width->getX( pRuntime, frame );
+	int getWidthAsX(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+	{
+		return data.width->getX( pRuntime, pFrame );
 	}
-	int getHeightAsY(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) {
-		return data.height->getY( pRuntime, frame );
+	int getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
+	{
+		return data.height->getY( pRuntime, pFrame );
 	}
 };
 
@@ -322,8 +332,8 @@ protected:
 public:
 	CREF(RDOFRMFrame::LPRDOFRMColor) getBgColor() const { return bgColor; }
 	CREF(RDOFRMFrame::LPRDOFRMColor) getFgColor() const { return fgColor; }
-	rdoAnimation::RDOColor getBg(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) { return bgColor->getColor( pRuntime, frame ); }
-	rdoAnimation::RDOColor getFg(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) { return fgColor->getColor( pRuntime, frame ); }
+	rdoAnimation::RDOColor getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) { return bgColor->getColor( pRuntime, pFrame ); }
+	rdoAnimation::RDOColor getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) { return fgColor->getColor( pRuntime, pFrame ); }
 };
 
 // ----------------------------------------------------------------------------
@@ -338,25 +348,29 @@ public:
 	{}
 
 protected:
-	RDOFRMItem( RDOFRMFrame* _parent ):
-		frame( _parent )
-	{
-	}
+	RDOFRMItem(CREF(LPRDOFRMFrame) pFrame)
+		: m_pFrame(pFrame)
+	{}
 	virtual ~RDOFRMItem()
-	{
-	}
-	RDOFRMFrame* getFrame() const { return frame; }
+	{}
+
+	CREF(LPRDOFRMFrame) getFrame() const { return m_pFrame; }
 
 private:
-	RDOFRMFrame* frame;
+	LPRDOFRMFrame m_pFrame;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMText
 // ----------------------------------------------------------------------------
-class RDOFRMText: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
+CLASS(RDOFRMText):
+	    INSTANCE_OF(RDOFRMItem        )
+	AND INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
 {
 private:
+	RDOFRMText( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+
 	rdoAnimation::RDOTextElement::TextAlign align;
 	LPRDOCalc            pValue;
 	std::string          txt;
@@ -366,7 +380,6 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMText( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 	void setText( rdoAnimation::RDOTextElement::TextAlign _align, CREF(LPRDOCalc) _pValue );
 	void setText( rdoAnimation::RDOTextElement::TextAlign _align, const std::string& _txt );
 };
@@ -388,8 +401,8 @@ protected:
 	}
 
 public:
-	RDOFRMBitmapBase( RDOFRMFrame* _parent, const std::string& _pict_filename, const std::string& _mask_filename = "" ):
-		RDOFRMItem( _parent ),
+	RDOFRMBitmapBase( CREF(LPRDOFRMFrame) pFrame, const std::string& _pict_filename, const std::string& _mask_filename = "" ):
+		RDOFRMItem(pFrame),
 		pict_filename( _pict_filename ),
 		mask_filename( _mask_filename )
 	{
@@ -409,7 +422,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMBitmap( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, const std::string& _pict_filename, const std::string& _mask_filename = "" );
+	RDOFRMBitmap( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, const std::string& _pict_filename, const std::string& _mask_filename = "" );
 };
 
 // ----------------------------------------------------------------------------
@@ -421,7 +434,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMBitmapStretch( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _pict_filename, const std::string& _mask_filename = "" );
+	RDOFRMBitmapStretch( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _pict_filename, const std::string& _mask_filename = "" );
 };
 
 // ----------------------------------------------------------------------------
@@ -433,7 +446,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMRect( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+	RDOFRMRect( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -445,7 +458,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMRectRound( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+	RDOFRMRectRound( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -457,7 +470,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMEllipse( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+	RDOFRMEllipse( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -472,7 +485,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMLine( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color );
+	RDOFRMLine( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color );
 };
 
 // ----------------------------------------------------------------------------
@@ -492,7 +505,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMTriang( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+	RDOFRMTriang( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
 };
 
 // ----------------------------------------------------------------------------
@@ -507,7 +520,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMActive( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _operName );
+	RDOFRMActive( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _operName );
 };
 
 // ----------------------------------------------------------------------------
@@ -519,7 +532,7 @@ protected:
 	virtual rdoAnimation::FrameItem* createElement(CREF(LPRDORuntime) pRuntime);
 
 public:
-	RDOFRMSpace( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height );
+	RDOFRMSpace( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height );
 };
 
 // ----------------------------------------------------------------------------

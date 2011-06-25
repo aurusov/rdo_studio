@@ -33,7 +33,7 @@ RDOFRMFrame::RDOFRMColor::RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) 
 RDOFRMFrame::RDOFRMColor::~RDOFRMColor()
 {}
 
-rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRuntime, PTR(RDOFRMFrame) frame) const
+rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
 {
 	switch (color_type)
 	{
@@ -43,10 +43,10 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pGreenCalc->calcValue(pRuntime).getInt(),
 									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pBlueCalc->calcValue(pRuntime).getInt());
 		case color_transparent : return rdoAnimation::RDOColor();
-		case color_last_bg     : return frame->color_last_bg;
-		case color_last_fg     : return frame->color_last_fg;
-		case color_last_bg_text: return frame->color_last_bg_text;
-		case color_last_fg_text: return frame->color_last_fg_text;
+		case color_last_bg     : return pFrame->color_last_bg;
+		case color_last_fg     : return pFrame->color_last_fg;
+		case color_last_bg_text: return pFrame->color_last_bg_text;
+		case color_last_fg_text: return pFrame->color_last_fg_text;
 		default                : NEVER_REACH_HERE;
 	}
 	return rdoAnimation::RDOColor();
@@ -142,9 +142,10 @@ void RDOFRMFrame::addItem(CREF(LPRDOFRMItem) pItem)
 	shows.back()->insertItem(pItem);
 }
 
-void RDOFRMFrame::addRulet( RDOFRMRulet* rulet )
+void RDOFRMFrame::addRulet(CREF(LPRDOFRMRulet) pRulet)
 {
-	rulets.push_back( rulet );
+	ASSERT(pRulet);
+	rulets.push_back(pRulet);
 }
 
 bool RDOFRMFrame::checkCondition(CREF(LPRDORuntime) pRuntime)
@@ -215,8 +216,8 @@ void RDOFRMFrame::getBitmaps( std::list< std::string >& list ) const
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMText
 // ----------------------------------------------------------------------------
-RDOFRMText::RDOFRMText( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem( _parent ),
+RDOFRMText::RDOFRMText( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
+	RDOFRMItem(pFrame),
 	RDOFRMBoundingItem( _x, _y, _width, _height ),
 	RDOFRMColoredItem( bgColor, fgColor ),
 	align(rdoAnimation::RDOTextElement::TETA_LEFT),
@@ -273,8 +274,8 @@ rdoAnimation::FrameItem* RDOFRMText::createElement(CREF(LPRDORuntime) pRuntime)
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMBitmap
 // ----------------------------------------------------------------------------
-RDOFRMBitmap::RDOFRMBitmap( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, const std::string& _pict_filename, const std::string& _mask_filename ):
-	RDOFRMBitmapBase( _parent, _pict_filename, _mask_filename ),
+RDOFRMBitmap::RDOFRMBitmap( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, const std::string& _pict_filename, const std::string& _mask_filename ):
+	RDOFRMBitmapBase( pFrame, _pict_filename, _mask_filename ),
 	x( _x ),
 	y( _y )
 {
@@ -297,8 +298,8 @@ rdoAnimation::FrameItem* RDOFRMBitmap::createElement(CREF(LPRDORuntime) pRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMBitmapStretch
 // ----------------------------------------------------------------------------
-RDOFRMBitmapStretch::RDOFRMBitmapStretch( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _pict_filename, const std::string& _mask_filename ):
-	RDOFRMBitmapBase( _parent, _pict_filename, _mask_filename ),
+RDOFRMBitmapStretch::RDOFRMBitmapStretch( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _pict_filename, const std::string& _mask_filename ):
+	RDOFRMBitmapBase( pFrame, _pict_filename, _mask_filename ),
 	RDOFRMBoundingItem( _x, _y, _width, _height )
 {
 }
@@ -322,8 +323,8 @@ rdoAnimation::FrameItem* RDOFRMBitmapStretch::createElement(CREF(LPRDORuntime) p
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMRect
 // ----------------------------------------------------------------------------
-RDOFRMRect::RDOFRMRect( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem( _parent ),
+RDOFRMRect::RDOFRMRect( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
+	RDOFRMItem(pFrame),
 	RDOFRMBoundingItem( _x, _y, _width, _height ),
 	RDOFRMColoredItem( bgColor, fgColor )
 {}
@@ -351,8 +352,8 @@ rdoAnimation::FrameItem* RDOFRMRect::createElement(CREF(LPRDORuntime) pRuntime)
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMRectRound
 // ----------------------------------------------------------------------------
-RDOFRMRectRound::RDOFRMRectRound( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem( _parent ),
+RDOFRMRectRound::RDOFRMRectRound( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
+	RDOFRMItem(pFrame),
 	RDOFRMBoundingItem( _x, _y, _width, _height ),
 	RDOFRMColoredItem( bgColor, fgColor )
 {}
@@ -380,8 +381,8 @@ rdoAnimation::FrameItem* RDOFRMRectRound::createElement(CREF(LPRDORuntime) pRunt
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMEllipse
 // ----------------------------------------------------------------------------
-RDOFRMEllipse::RDOFRMEllipse( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem( _parent ),
+RDOFRMEllipse::RDOFRMEllipse( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
+	RDOFRMItem(pFrame),
 	RDOFRMBoundingItem( _x, _y, _width, _height ),
 	RDOFRMColoredItem( bgColor, fgColor )
 {}
@@ -409,8 +410,8 @@ rdoAnimation::FrameItem* RDOFRMEllipse::createElement(CREF(LPRDORuntime) pRuntim
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMLine
 // ----------------------------------------------------------------------------
-RDOFRMLine::RDOFRMLine( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color ):
-	RDOFRMItem( _parent ),
+RDOFRMLine::RDOFRMLine( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color ):
+	RDOFRMItem(pFrame),
 	RDOFRMBoundingItem( _x1, _y1, _x2, _y2 ),
 	color( _color )
 {}
@@ -437,8 +438,8 @@ rdoAnimation::FrameItem* RDOFRMLine::createElement(CREF(LPRDORuntime) pRuntime)
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMTriang
 // ----------------------------------------------------------------------------
-RDOFRMTriang::RDOFRMTriang( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem( _parent ),
+RDOFRMTriang::RDOFRMTriang( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
+	RDOFRMItem(pFrame),
 	RDOFRMColoredItem( bgColor, fgColor ),
 	x1( _x1 ),
 	y1( _y1 ),
@@ -489,8 +490,8 @@ rdoAnimation::FrameItem* RDOFRMTriang::createElement(CREF(LPRDORuntime) pRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMActive
 // ----------------------------------------------------------------------------
-RDOFRMActive::RDOFRMActive( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _operName ):
-	RDOFRMItem( _parent ),
+RDOFRMActive::RDOFRMActive( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, const std::string& _operName ):
+	RDOFRMItem(pFrame),
 	RDOFRMBoundingItem( _x, _y, _width, _height ),
 	operName( _operName )
 {
@@ -515,8 +516,8 @@ rdoAnimation::FrameItem* RDOFRMActive::createElement(CREF(LPRDORuntime) pRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMSpace
 // ----------------------------------------------------------------------------
-RDOFRMSpace::RDOFRMSpace( RDOFRMFrame* _parent, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height ):
-	RDOFRMItem( _parent ),
+RDOFRMSpace::RDOFRMSpace( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height ):
+	RDOFRMItem(pFrame),
 	RDOFRMBoundingItem( _x, _y, _width, _height )
 {
 }

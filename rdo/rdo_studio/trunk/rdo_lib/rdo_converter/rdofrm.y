@@ -219,6 +219,8 @@ typedef rdoRuntime::RDOFRMFrame::RDOFRMColor      RDOFRMColor;
 typedef rdoRuntime::RDOFRMFrame::LPRDOFRMColor    LPRDOFRMColor;
 typedef rdoRuntime::RDOFRMFrame::RDOFRMPosition   RDOFRMPosition;
 typedef rdoRuntime::RDOFRMFrame::LPRDOFRMPosition LPRDOFRMPosition;
+typedef rdoRuntime::RDOFRMFrame::RDOFRMRulet      RDOFRMRulet;
+typedef rdoRuntime::RDOFRMFrame::LPRDOFRMRulet    LPRDOFRMRulet;
 
 %}
 
@@ -360,7 +362,7 @@ frm_item
 	| frm_item frm_triang  {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMTriang            )>($2));}
 	| frm_item frm_s_bmp   {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMBitmapStretch     )>($2));}
 	| frm_item frm_active  {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMActive            )>($2));}
-	| frm_item frm_ruler   {CONVERTER->getLastFRMFrame()->frame()->addRulet(reinterpret_cast<PTR(rdoRuntime::RDOFRMFrame::RDOFRMRulet)>($2));}
+	| frm_item frm_ruler   {CONVERTER->getLastFRMFrame()->frame()->addRulet(CONVERTER->stack().pop<RDOFRMRulet>($2));}
 	| frm_item frm_space   {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMSpace             )>($2));}
 	;
 
@@ -378,7 +380,7 @@ frm_end
 frm_color
 	: RDO_color_transparent
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(RUNTIME->lastFrame(), rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent);
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent);
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
@@ -601,7 +603,7 @@ frm_position_wh
 frm_ruler
 	: RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']'
 	{
-		CPTR(rdoRuntime::RDOFRMFrame::RDOFRMRulet) pRulet = RUNTIME->lastFrame()->findRulet(P_RDOVALUE($3)->value().getInt());
+		LPRDOFRMRulet pRulet = RUNTIME->lastFrame()->findRulet(P_RDOVALUE($3)->value().getInt());
 		if (pRulet)
 		{
 			CONVERTER->error().push_only(@3, rdo::format(_T("–улетка с номером '%d' уже существует"), P_RDOVALUE($3)->value().getInt()));
@@ -620,7 +622,9 @@ frm_ruler
 		{
 			CONVERTER->error().error(@7, _T(" оодинаты рулетки должны быть абсолютными"));
 		}
-		$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMRulet(RDOParserSrcInfo(@1), P_RDOVALUE($3)->value().getInt(), pX, pY);
+		pRulet = rdo::Factory<RDOFRMRulet>::create(RDOParserSrcInfo(@1), P_RDOVALUE($3)->value().getInt(), pX, pY);
+		ASSERT(pRulet);
+		$$ = CONVERTER->stack().push(pRulet);
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
 	{

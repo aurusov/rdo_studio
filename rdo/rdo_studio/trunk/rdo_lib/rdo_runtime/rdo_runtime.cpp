@@ -19,6 +19,7 @@
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
+#include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_runtime/rdodptrtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/relres.h"
@@ -316,27 +317,27 @@ void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOp
 	appendBaseOperation(logic, opration);
 }
 
-void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pokaz)
+void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pPokaz)
 {
-	m_pokazAllList.push_back(pokaz);
-	LPIPokazTrace pokazTrace = pokaz;
-	LPITrace      trace      = pokaz;
+	m_pokazAllList.push_back(pPokaz);
+	LPIPokazTrace pokazTrace = pPokaz;
+	LPITrace      trace      = pPokaz;
 	if (pokazTrace && trace && trace->traceable())
 	{
 		m_pokazTraceList.push_back(pokazTrace);
 	}
-	if (pokaz.query_cast<IPokazWatchValue>())
+	if (pPokaz.query_cast<IPokazWatchValue>())
 	{
-		m_pokazWatchValueList.push_back(pokaz);
+		m_pokazWatchValueList.push_back(pPokaz);
 	}
 }
 
-void RDORuntime::addRuntimeFrame(PTR(RDOFRMFrame) frame)
+void RDORuntime::addRuntimeFrame(CREF(LPRDOFRMFrame) pFrame)
 { 
-	allFrames.push_back(frame);
+	allFrames.push_back(pFrame);
 }
 
-RDOFRMFrame* RDORuntime::lastFrame() const
+LPRDOFRMFrame RDORuntime::lastFrame() const
 {
 	return !allFrames.empty() ? allFrames.front() : NULL;
 }
