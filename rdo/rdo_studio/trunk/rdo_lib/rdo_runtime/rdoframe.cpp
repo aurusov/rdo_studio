@@ -248,28 +248,28 @@ void RDOFRMText::setText(Align align, CREF(tstring) text)
 
 PTR(rdoAnimation::FrameItem) RDOFRMText::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->memory_insert( sizeof(rdoAnimation::RDOTextElement) );
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDOTextElement));
 
-	rdoAnimation::RDOColor bg = getBg( pRuntime, getFrame() );
-	rdoAnimation::RDOColor fg = getFg( pRuntime, getFrame() );
-	getFrame()->setColorLastBGText( getBgColor()->getColorType(), bg );
-	getFrame()->setColorLastFGText( getFgColor()->getColorType(), fg );
+	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
+	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
+	getFrame()->setColorLastBGText(getBgColor()->getColorType(), bg);
+	getFrame()->setColorLastFGText(getFgColor()->getColorType(), fg);
 
 	tstring t;
-	if ( m_isTextString )
+	if (m_isTextString)
 	{
 		t = m_text;
 	}
 	else
 	{
-		RDOValue val = m_pValue->calcValue( pRuntime );
+		RDOValue val = m_pValue->calcValue(pRuntime);
 		t = val.getAsString();
 	}
 
-	int x      = getX     ( pRuntime, getFrame() );
-	int y      = getY     ( pRuntime, getFrame() );
-	int width  = getWidth ( pRuntime, getFrame() );
-	int height = getHeight( pRuntime, getFrame() );
+	int x      = getX     (pRuntime, getFrame());
+	int y      = getY     (pRuntime, getFrame());
+	int width  = getWidth (pRuntime, getFrame());
+	int height = getHeight(pRuntime, getFrame());
 	getFrame()->setLastXYWH(x, y, width, height);
 
 	return new rdoAnimation::RDOTextElement(
@@ -349,28 +349,39 @@ PTR(rdoAnimation::FrameItem) RDOFRMBitmapStretch::createElement(CREF(LPRDORuntim
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMRect
 // ----------------------------------------------------------------------------
-RDOFRMRect::RDOFRMRect( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem( _x, _y, _width, _height ),
-	RDOFRMColoredItem( bgColor, fgColor )
+RDOFRMRect::RDOFRMRect(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	)
+	: RDOFRMItem        (pFrame)
+	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
+	, RDOFRMColoredItem (pBgColor, pFgColor     )
+{}
+
+RDOFRMRect::~RDOFRMRect()
 {}
 
 PTR(rdoAnimation::FrameItem) RDOFRMRect::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->memory_insert( sizeof(rdoAnimation::RDORectElement) );
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDORectElement));
 
-	rdoAnimation::RDOColor bg = getBg( pRuntime, getFrame() );
-	rdoAnimation::RDOColor fg = getFg( pRuntime, getFrame() );
-	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
-	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
-	int _x      = getX( pRuntime, getFrame() );
-	int _y      = getY( pRuntime, getFrame() );
-	int _width  = getWidth( pRuntime, getFrame() );
-	int _height = getHeight( pRuntime, getFrame() );
-	getFrame()->setLastXYWH( _x, _y, _width, _height );
+	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
+	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
+	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	int x      = getX     (pRuntime, getFrame());
+	int y      = getY     (pRuntime, getFrame());
+	int width  = getWidth (pRuntime, getFrame());
+	int height = getHeight(pRuntime, getFrame());
+	getFrame()->setLastXYWH(x, y, width, height);
 
 	return new rdoAnimation::RDORectElement(
-		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(x, y), rdoAnimation::RDOSize(width, height)),
 		rdoAnimation::RDOColoredElement(bg, fg)
 	);
 }
@@ -378,28 +389,39 @@ PTR(rdoAnimation::FrameItem) RDOFRMRect::createElement(CREF(LPRDORuntime) pRunti
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMRectRound
 // ----------------------------------------------------------------------------
-RDOFRMRectRound::RDOFRMRectRound( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem( _x, _y, _width, _height ),
-	RDOFRMColoredItem( bgColor, fgColor )
+RDOFRMRectRound::RDOFRMRectRound(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	)
+	: RDOFRMItem        (pFrame)
+	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
+	, RDOFRMColoredItem (pBgColor, pFgColor     )
+{}
+
+RDOFRMRectRound::~RDOFRMRectRound()
 {}
 
 PTR(rdoAnimation::FrameItem) RDOFRMRectRound::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->memory_insert( sizeof(rdoAnimation::RDORRectElement) );
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDORRectElement));
 
-	rdoAnimation::RDOColor bg = getBg( pRuntime, getFrame() );
-	rdoAnimation::RDOColor fg = getFg( pRuntime, getFrame() );
-	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
-	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
-	int _x      = getX( pRuntime, getFrame() );
-	int _y      = getY( pRuntime, getFrame() );
-	int _width  = getWidth( pRuntime, getFrame() );
-	int _height = getHeight( pRuntime, getFrame() );
-	getFrame()->setLastXYWH( _x, _y, _width, _height );
+	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
+	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
+	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	int x      = getX     (pRuntime, getFrame());
+	int y      = getY     (pRuntime, getFrame());
+	int width  = getWidth (pRuntime, getFrame());
+	int height = getHeight(pRuntime, getFrame());
+	getFrame()->setLastXYWH(x, y, width, height);
 
 	return new rdoAnimation::RDORRectElement(
-		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(x, y), rdoAnimation::RDOSize(width, height)),
 		rdoAnimation::RDOColoredElement(bg, fg)
 	);
 }
@@ -407,28 +429,39 @@ PTR(rdoAnimation::FrameItem) RDOFRMRectRound::createElement(CREF(LPRDORuntime) p
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMEllipse
 // ----------------------------------------------------------------------------
-RDOFRMEllipse::RDOFRMEllipse( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
-	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem( _x, _y, _width, _height ),
-	RDOFRMColoredItem( bgColor, fgColor )
+RDOFRMEllipse::RDOFRMEllipse(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	)
+	: RDOFRMItem        (pFrame)
+	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
+	, RDOFRMColoredItem (pBgColor, pFgColor     )
+{}
+
+RDOFRMEllipse::~RDOFRMEllipse()
 {}
 
 PTR(rdoAnimation::FrameItem) RDOFRMEllipse::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->memory_insert( sizeof(rdoAnimation::RDOEllipseElement) );
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDOEllipseElement));
 
-	rdoAnimation::RDOColor bg = getBg( pRuntime, getFrame() );
-	rdoAnimation::RDOColor fg = getFg( pRuntime, getFrame() );
-	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
-	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
-	int _x      = getX( pRuntime, getFrame() );
-	int _y      = getY( pRuntime, getFrame() );
-	int _width  = getWidth( pRuntime, getFrame() );
-	int _height = getHeight( pRuntime, getFrame() );
-	getFrame()->setLastXYWH( _x, _y, _width, _height );
+	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
+	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
+	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	int x      = getX     (pRuntime, getFrame());
+	int y      = getY     (pRuntime, getFrame());
+	int width  = getWidth (pRuntime, getFrame());
+	int height = getHeight(pRuntime, getFrame());
+	getFrame()->setLastXYWH(x, y, width, height);
 
 	return new rdoAnimation::RDOEllipseElement(
-		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(x, y), rdoAnimation::RDOSize(width, height)),
 		rdoAnimation::RDOColoredElement(bg, fg)
 	);
 }
@@ -436,23 +469,23 @@ PTR(rdoAnimation::FrameItem) RDOFRMEllipse::createElement(CREF(LPRDORuntime) pRu
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMLine
 // ----------------------------------------------------------------------------
-RDOFRMLine::RDOFRMLine( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color ):
+RDOFRMLine::RDOFRMLine(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color):
 	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem( _x1, _y1, _x2, _y2 ),
-	color( _color )
+	RDOFRMBoundingItem(_x1, _y1, _x2, _y2),
+	color(_color)
 {}
 
 PTR(rdoAnimation::FrameItem) RDOFRMLine::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->memory_insert( sizeof(rdoAnimation::RDOLineElement) );
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDOLineElement));
 
-	rdoAnimation::RDOColor fg = color->getColor( pRuntime, getFrame() );
-	getFrame()->setColorLastFG( color->getColorType(), fg );
-	int _x1 = getX( pRuntime, getFrame() );
-	int _y1 = getY( pRuntime, getFrame() );
-	int _x2 = getWidthAsX( pRuntime, getFrame() );
-	int _y2 = getHeightAsY( pRuntime, getFrame() );
-	getFrame()->setLastXYWH( _x1, _y1, _x2 - _x1, _y2 - _y1 );
+	rdoAnimation::RDOColor fg = color->getColor(pRuntime, getFrame());
+	getFrame()->setColorLastFG(color->getColorType(), fg);
+	int _x1 = getX(pRuntime, getFrame());
+	int _y1 = getY(pRuntime, getFrame());
+	int _x2 = getWidthAsX(pRuntime, getFrame());
+	int _y2 = getHeightAsY(pRuntime, getFrame());
+	getFrame()->setLastXYWH(_x1, _y1, _x2 - _x1, _y2 - _y1);
 
 	return new rdoAnimation::RDOLineElement(
 		rdoAnimation::RDOPoint(_x1, _y1),
@@ -464,46 +497,46 @@ PTR(rdoAnimation::FrameItem) RDOFRMLine::createElement(CREF(LPRDORuntime) pRunti
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMTriang
 // ----------------------------------------------------------------------------
-RDOFRMTriang::RDOFRMTriang( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor ):
+RDOFRMTriang::RDOFRMTriang(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor):
 	RDOFRMItem(pFrame),
-	RDOFRMColoredItem( bgColor, fgColor ),
-	x1( _x1 ),
-	y1( _y1 ),
-	x2( _x2 ),
-	y2( _y2 ),
-	x3( _x3 ),
-	y3( _y3 )
+	RDOFRMColoredItem(bgColor, fgColor),
+	x1(_x1),
+	y1(_y1),
+	x2(_x2),
+	y2(_y2),
+	x3(_x3),
+	y3(_y3)
 {}
 
 PTR(rdoAnimation::FrameItem) RDOFRMTriang::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->memory_insert( sizeof(rdoAnimation::RDOTriangElement) );
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDOTriangElement));
 
-	rdoAnimation::RDOColor bg = getBg( pRuntime, getFrame() );
-	rdoAnimation::RDOColor fg = getFg( pRuntime, getFrame() );
-	getFrame()->setColorLastBG( getBgColor()->getColorType(), bg );
-	getFrame()->setColorLastFG( getFgColor()->getColorType(), fg );
-	int _x1 = x1->getX( pRuntime, getFrame() );
-	int _y1 = y1->getY( pRuntime, getFrame() );
+	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
+	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
+	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	int _x1 = x1->getX(pRuntime, getFrame());
+	int _y1 = y1->getY(pRuntime, getFrame());
 	int min_x = _x1;
 	int max_x = _x1;
 	int min_y = _y1;
 	int max_y = _y1;
-	getFrame()->setLastXYWH( _x1, _y1, _x1, _y1 );
-	int _x2 = x2->getX( pRuntime, getFrame() );
-	int _y2 = y2->getY( pRuntime, getFrame() );
-	if ( min_x > _x2 ) min_x = _x2;
-	if ( max_x < _x2 ) max_x = _x2;
-	if ( min_y > _y2 ) min_y = _y2;
-	if ( max_y < _x2 ) max_y = _y2;
-	getFrame()->setLastXYWH( _x2, _y2, _x2 - _x1, _y2 - _y1 );
-	int _x3 = x3->getX( pRuntime, getFrame() );
-	int _y3 = y3->getY( pRuntime, getFrame() );
-	if ( min_x > _x3 ) min_x = _x3;
-	if ( max_x < _x3 ) max_x = _x3;
-	if ( min_y > _y3 ) min_y = _y3;
-	if ( max_y < _x3 ) max_y = _y3;
-	getFrame()->setLastXYWH( min_x, min_y, max_x - min_x, max_y - min_y );
+	getFrame()->setLastXYWH(_x1, _y1, _x1, _y1);
+	int _x2 = x2->getX(pRuntime, getFrame());
+	int _y2 = y2->getY(pRuntime, getFrame());
+	if (min_x > _x2) min_x = _x2;
+	if (max_x < _x2) max_x = _x2;
+	if (min_y > _y2) min_y = _y2;
+	if (max_y < _x2) max_y = _y2;
+	getFrame()->setLastXYWH(_x2, _y2, _x2 - _x1, _y2 - _y1);
+	int _x3 = x3->getX(pRuntime, getFrame());
+	int _y3 = y3->getY(pRuntime, getFrame());
+	if (min_x > _x3) min_x = _x3;
+	if (max_x < _x3) max_x = _x3;
+	if (min_y > _y3) min_y = _y3;
+	if (max_y < _x3) max_y = _y3;
+	getFrame()->setLastXYWH(min_x, min_y, max_x - min_x, max_y - min_y);
 
 	return new rdoAnimation::RDOTriangElement(
 		rdoAnimation::RDOPoint(_x1, _y1),
@@ -516,22 +549,22 @@ PTR(rdoAnimation::FrameItem) RDOFRMTriang::createElement(CREF(LPRDORuntime) pRun
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMActive
 // ----------------------------------------------------------------------------
-RDOFRMActive::RDOFRMActive( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(tstring) _operName ):
+RDOFRMActive::RDOFRMActive(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(tstring) _operName):
 	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem( _x, _y, _width, _height ),
-	operName( _operName )
+	RDOFRMBoundingItem(_x, _y, _width, _height),
+	operName(_operName)
 {
 }
 
 PTR(rdoAnimation::FrameItem) RDOFRMActive::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->memory_insert( sizeof(rdoAnimation::RDOActiveElement) );
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDOActiveElement));
 
-	int _x      = getX( pRuntime, getFrame() );
-	int _y      = getY( pRuntime, getFrame() );
-	int _width  = getWidth( pRuntime, getFrame() );
-	int _height = getHeight( pRuntime, getFrame() );
-	getFrame()->setLastXYWH( _x, _y, _width, _height );
+	int _x      = getX(pRuntime, getFrame());
+	int _y      = getY(pRuntime, getFrame());
+	int _width  = getWidth(pRuntime, getFrame());
+	int _height = getHeight(pRuntime, getFrame());
+	getFrame()->setLastXYWH(_x, _y, _width, _height);
 
 	return new rdoAnimation::RDOActiveElement(
 		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
@@ -542,27 +575,27 @@ PTR(rdoAnimation::FrameItem) RDOFRMActive::createElement(CREF(LPRDORuntime) pRun
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMSpace
 // ----------------------------------------------------------------------------
-RDOFRMSpace::RDOFRMSpace( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height ):
+RDOFRMSpace::RDOFRMSpace(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height):
 	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem( _x, _y, _width, _height )
+	RDOFRMBoundingItem(_x, _y, _width, _height)
 {
 }
 
 PTR(rdoAnimation::FrameItem) RDOFRMSpace::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	int _x      = getX( pRuntime, getFrame() );
-	int _y      = getY( pRuntime, getFrame() );
-	int _width  = getWidth( pRuntime, getFrame() );
-	int _height = getHeight( pRuntime, getFrame() );
-	getFrame()->setLastXYWH( _x, _y, _width, _height );
+	int _x      = getX(pRuntime, getFrame());
+	int _y      = getY(pRuntime, getFrame());
+	int _width  = getWidth(pRuntime, getFrame());
+	int _height = getHeight(pRuntime, getFrame());
+	getFrame()->setLastXYWH(_x, _y, _width, _height);
 	return NULL;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMShow
 // ----------------------------------------------------------------------------
-RDOFRMShow::RDOFRMShow(CREF(LPRDOCalc) _pConditionCalc )
-	: pConditionCalc( _pConditionCalc )
+RDOFRMShow::RDOFRMShow(CREF(LPRDOCalc) _pConditionCalc)
+	: pConditionCalc(_pConditionCalc)
 {}
 
 RDOFRMShow::~RDOFRMShow()
@@ -590,8 +623,8 @@ void RDOFRMShow::getBitmaps(REF(std::list<tstring>) list)
 
 bool RDOFRMShow::checkCondition(CREF(LPRDORuntime) pRuntime)
 {
-	if ( !pConditionCalc ) return true;
-	return pConditionCalc->calcValue( pRuntime ).getAsBool();
+	if (!pConditionCalc) return true;
+	return pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
 } // namespace rdoRuntime

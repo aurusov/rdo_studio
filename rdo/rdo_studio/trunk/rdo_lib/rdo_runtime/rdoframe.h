@@ -477,37 +477,70 @@ DECLARE_POINTER(RDOFRMBitmapStretch);
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMRect
 // ----------------------------------------------------------------------------
-class RDOFRMRect: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
+RDOFRM_ITEM(RDOFRMRect)
+	IS  INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
 {
-protected:
-	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
+DECLARE_FACTORY(RDOFRMRect)
+private:
+	RDOFRMRect(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMRect();
 
-public:
-	RDOFRMRect( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+	DECLARE_RDOFRMIItem;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMRectRound
 // ----------------------------------------------------------------------------
-class RDOFRMRectRound: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
+RDOFRM_ITEM(RDOFRMRectRound)
+	IS  INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
 {
-protected:
-	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
+DECLARE_FACTORY(RDOFRMRectRound)
+private:
+	RDOFRMRectRound(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMRectRound();
 
-public:
-	RDOFRMRectRound( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+	DECLARE_RDOFRMIItem;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMEllipse
 // ----------------------------------------------------------------------------
-class RDOFRMEllipse: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
+RDOFRM_ITEM(RDOFRMEllipse)
+	IS  INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
 {
-protected:
-	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
+DECLARE_FACTORY(RDOFRMEllipse)
+private:
+	RDOFRMEllipse(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMEllipse();
 
-public:
-	RDOFRMEllipse( CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor );
+	DECLARE_RDOFRMIItem;
 };
 
 // ----------------------------------------------------------------------------
