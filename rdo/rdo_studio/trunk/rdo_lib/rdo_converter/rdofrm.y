@@ -221,6 +221,12 @@ typedef rdoRuntime::RDOFRMFrame::RDOFRMPosition   RDOFRMPosition;
 typedef rdoRuntime::RDOFRMFrame::LPRDOFRMPosition LPRDOFRMPosition;
 typedef rdoRuntime::RDOFRMFrame::RDOFRMRulet      RDOFRMRulet;
 typedef rdoRuntime::RDOFRMFrame::LPRDOFRMRulet    LPRDOFRMRulet;
+typedef rdoRuntime::RDOFRMText                    RDOFRMText;
+typedef rdoRuntime::LPRDOFRMText                  LPRDOFRMText;
+typedef rdoRuntime::RDOFRMBitmap                  RDOFRMBitmap;
+typedef rdoRuntime::LPRDOFRMBitmap                LPRDOFRMBitmap;
+typedef rdoRuntime::RDOFRMBitmapStretch           RDOFRMBitmapStretch;
+typedef rdoRuntime::LPRDOFRMBitmapStretch         LPRDOFRMBitmapStretch;
 
 %}
 
@@ -353,14 +359,14 @@ frm_show
 frm_item
 	: /* empty */
 	| frm_item frm_show
-	| frm_item frm_text    {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMText              )>($2));}
-	| frm_item frm_bitmap  {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMBitmap            )>($2));}
+	| frm_item frm_text    {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMText  >($2));}
+	| frm_item frm_bitmap  {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMBitmap>($2));}
 	| frm_item frm_rect    {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMRect              )>($2));}
 	| frm_item frm_line    {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMLine              )>($2));}
 	| frm_item frm_ellipse {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMEllipse           )>($2));}
 	| frm_item frm_r_rect  {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMRectRound         )>($2));}
 	| frm_item frm_triang  {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMTriang            )>($2));}
-	| frm_item frm_s_bmp   {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMBitmapStretch     )>($2));}
+	| frm_item frm_s_bmp   {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMBitmapStretch>($2));}
 	| frm_item frm_active  {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMActive            )>($2));}
 	| frm_item frm_ruler   {CONVERTER->getLastFRMFrame()->frame()->addRulet(CONVERTER->stack().pop<RDOFRMRulet>($2));}
 	| frm_item frm_space   {CONVERTER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMSpace             )>($2));}
@@ -731,7 +737,9 @@ frm_text_common
 		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg_text);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg_text);
-		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		ASSERT(pText);
+		$$ = CONVERTER->stack().push(pText);
 	}
 /*
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ','
@@ -750,7 +758,9 @@ frm_text_common
 		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg_text);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg_text);
-		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		ASSERT(pText);
+		$$ = CONVERTER->stack().push(pText);
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ','
 	{
@@ -768,7 +778,9 @@ frm_text_common
 		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg_text);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg_text);
-		$$ = (int)new rdoRuntime::RDOFRMText(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		ASSERT(pText);
+		$$ = CONVERTER->stack().push(pText);
 	}
 */
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
@@ -828,11 +840,17 @@ frm_text_common
 frm_text
 	: frm_text_common frm_text_align fun_arithm ']'
 	{
-		reinterpret_cast<PTR(rdoRuntime::RDOFRMText)>($1)->setText((rdoAnimation::RDOTextElement::TextAlign)$2, CONVERTER->stack().pop<RDOFUNArithm>($3)->createCalc());
+		LPRDOFRMText pText = CONVERTER->stack().pop<RDOFRMText>($1);
+		ASSERT(pText);
+		pText->setText((rdoAnimation::RDOTextElement::TextAlign)$2, CONVERTER->stack().pop<RDOFUNArithm>($3)->createCalc());
+		$$ = CONVERTER->stack().push(pText);
 	}
 	| frm_text_common frm_text_align RDO_STRING_CONST ']'
 	{
-		reinterpret_cast<PTR(rdoRuntime::RDOFRMText)>($1)->setText((rdoAnimation::RDOTextElement::TextAlign)$2, P_RDOVALUE($3)->value().getString());
+		LPRDOFRMText pText = CONVERTER->stack().pop<RDOFRMText>($1);
+		ASSERT(pText);
+		pText->setText((rdoAnimation::RDOTextElement::TextAlign)$2, P_RDOVALUE($3)->value().getString());
+		$$ = CONVERTER->stack().push(pText);
 	}
 	| frm_text_common frm_text_align fun_arithm error
 	{
@@ -855,7 +873,9 @@ frm_bitmap
 		LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		ASSERT(pX);
 		ASSERT(pY);
-		$$ = (int)new rdoRuntime::RDOFRMBitmap(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator());
+		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator());
+		ASSERT(pBitmap);
+		$$ = CONVERTER->stack().push(pBitmap);
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
 	{
@@ -863,7 +883,9 @@ frm_bitmap
 		LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		ASSERT(pX);
 		ASSERT(pY);
-		$$ = (int)new rdoRuntime::RDOFRMBitmap(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator(), P_RDOVALUE($9)->value().getIdentificator());
+		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator(), P_RDOVALUE($9)->value().getIdentificator());
+		ASSERT(pBitmap);
+		$$ = CONVERTER->stack().push(pBitmap);
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
@@ -914,7 +936,9 @@ frm_s_bmp
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		$$ = (int)new rdoRuntime::RDOFRMBitmapStretch(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator());
+		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator());
+		ASSERT(pBitmap);
+		$$ = CONVERTER->stack().push(pBitmap);
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
 	{
@@ -926,7 +950,9 @@ frm_s_bmp
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		$$ = (int)new rdoRuntime::RDOFRMBitmapStretch(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator(), P_RDOVALUE($13)->value().getIdentificator());
+		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator(), P_RDOVALUE($13)->value().getIdentificator());
+		ASSERT(pBitmap);
+		$$ = CONVERTER->stack().push(pBitmap);
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
