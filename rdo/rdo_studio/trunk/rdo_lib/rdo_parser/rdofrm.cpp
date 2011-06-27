@@ -34,7 +34,9 @@ void frmerror(PTR(char) mes)
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	: RDOParserSrcInfo(src_info)
 {
-	m_pFrame = new rdoRuntime::RDOFRMFrame(RDOParser::s_parser()->runtime(), src_info, pLogic ? pLogic->getCalc() : NULL);
+	m_pFrame = rdo::Factory<rdoRuntime::RDOFRMFrame>::create(src_info, pLogic ? pLogic->getCalc() : NULL);
+	ASSERT(m_pFrame)
+	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
 	RDOParser::s_parser()->insertFRMFrame(this);
 	RDOParser::s_parser()->contextStack()->push(this);
 }

@@ -36,6 +36,9 @@ RDOPatternEvent::RDOPatternEvent(bool trace)
 	, m_timeCalc(NULL )
 {}
 
+RDOPatternEvent::~RDOPatternEvent()
+{}
+
 double RDOPatternEvent::getNextTimeInterval( CREF(LPRDORuntime) pRuntime )
 {
 	double time_next = m_timeCalc->calcValue( pRuntime ).getDouble();
@@ -58,6 +61,9 @@ RDOPatternRule::RDOPatternRule(rbool trace)
 	: RDOPattern(trace)
 {}
 
+RDOPatternRule::~RDOPatternRule()
+{}
+
 LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)
 {
 	LPIRule rule = F(RDORule)::create(pRuntime, this, traceable(), _oprName);
@@ -78,6 +84,9 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, CREF(LPR
 RDOPatternOperation::RDOPatternOperation(rbool trace)
 	: RDOPattern(trace)
 	, m_timeCalc(NULL )
+{}
+
+RDOPatternOperation::~RDOPatternOperation()
 {}
 
 double RDOPatternOperation::getNextTimeInterval( CREF(LPRDORuntime) pRuntime )
@@ -105,8 +114,11 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer paren
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternKeyboard
 // ----------------------------------------------------------------------------
-RDOPatternKeyboard::RDOPatternKeyboard(rbool _trace)
-	: RDOPatternOperation(_trace)
+RDOPatternKeyboard::RDOPatternKeyboard(rbool trace)
+	: RDOPatternOperation(trace)
+{}
+
+RDOPatternKeyboard::~RDOPatternKeyboard()
 {}
 
 LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)

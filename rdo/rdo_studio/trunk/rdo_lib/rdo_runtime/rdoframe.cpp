@@ -55,7 +55,7 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(LPRDORuntime) pRuntime, CREF(RDOSrcInfo) _src_info, CREF(LPRDOCalc) _pConditionCalc)
+RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) _src_info, CREF(LPRDOCalc) _pConditionCalc)
 	: RDOSrcInfo( _src_info )
 	, pConditionCalc( _pConditionCalc )
 	, background_color( NULL )
@@ -67,8 +67,6 @@ RDOFRMFrame::RDOFRMFrame(CREF(LPRDORuntime) pRuntime, CREF(RDOSrcInfo) _src_info
 	, last_width( 0 )
 	, last_height( 0 )
 {
-	ASSERT(pRuntime);
-	pRuntime->addRuntimeFrame( this );
 	color_last_bg      = rdoAnimation::RDOColor(50, 200, 50);
 	color_last_fg      = color_last_bg;
 	color_last_bg_text = color_last_bg;

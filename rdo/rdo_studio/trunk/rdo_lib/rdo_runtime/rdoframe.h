@@ -231,7 +231,7 @@ public:
 	}
 
 private:
-	RDOFRMFrame(CREF(LPRDORuntime) pRuntime, CREF(RDOSrcInfo) _src_info, CREF(LPRDOCalc) _pConditionCalc = NULL );
+	RDOFRMFrame(CREF(RDOSrcInfo) _src_info, CREF(LPRDOCalc) _pConditionCalc = NULL );
 	virtual ~RDOFRMFrame();
 
 	typedef std::list  <LPRDOFRMShow > ShowList;

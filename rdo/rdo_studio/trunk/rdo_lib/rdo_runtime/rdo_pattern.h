@@ -27,8 +27,12 @@ class RDOKeyboard;
 // ----------------------------------------------------------------------------
 // ---------- RDOPattern
 // ----------------------------------------------------------------------------
-class RDOPattern: public RDORuntimeObject, public RDOTraceableObject
+OBJECT(RDOPattern)
+	IS  INSTANCE_OF(RDORuntimeObject  )
+	AND INSTANCE_OF(RDOTraceableObject)
 {
+DECLARE_FACTORY(RDOPattern);
+
 public:
 	void addPreSelectRelRes(CREF(LPRDOCalc) pCalc)
 	{
@@ -79,13 +83,12 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent
 // ----------------------------------------------------------------------------
-class RDOPatternEvent: public RDOPattern
+CLASS(RDOPatternEvent): INSTANCE_OF(RDOPattern)
 {
+DECLARE_FACTORY(RDOPatternEvent);
 friend class RDOEvent;
 
 public:
-	RDOPatternEvent(rbool trace);
-
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
 	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( CREF(LPRDOCalc) pCalc             ) { m_erase.push_back( pCalc );            }
@@ -105,22 +108,25 @@ public:
 	LPIEvent createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) oprName);
 
 private:
+	RDOPatternEvent(rbool trace);
+	virtual ~RDOPatternEvent();
+
 	LPRDOCalc         m_timeCalc;
 	CalcList          m_convertor;
 	ConvertStatusList m_convertorStatus;
 	CalcList          m_erase;
 };
+DECLARE_POINTER(RDOPatternEvent);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternRule
 // ----------------------------------------------------------------------------
-class RDOPatternRule: public RDOPattern
+CLASS(RDOPatternRule): INSTANCE_OF(RDOPattern)
 {
+DECLARE_FACTORY(RDOPatternRule);
 friend class RDORule;
 
 public:
-	RDOPatternRule(rbool trace);
-
 	void addChoiceFromCalc ( CREF(LPRDOCalc) pCalc             ) { m_choiceFrom.push_back( pCalc );       }
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
 	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
@@ -144,22 +150,25 @@ public:
 	LPIRule createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 
 private:
+	RDOPatternRule(rbool trace);
+	virtual ~RDOPatternRule();
+
 	CalcList          m_choiceFrom;
 	CalcList          m_convertor;
 	ConvertStatusList m_convertorStatus;
 	CalcList          m_erase;
 };
+DECLARE_POINTER(RDOPatternRule);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternOperation
 // ----------------------------------------------------------------------------
-class RDOPatternOperation: public RDOPattern
+CLASS(RDOPatternOperation): INSTANCE_OF(RDOPattern)
 {
+DECLARE_FACTORY(RDOPatternOperation);
 friend class RDOOperation;
 
 public:
-	RDOPatternOperation(rbool trace);
-
 	void addChoiceFromCalc      ( CREF(LPRDOCalc) pCalc             ) { m_choiceFrom.push_back( pCalc );            }
 
 	void addConvertorBeginCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertorBegin.push_back( pCalc );        }
@@ -199,6 +208,10 @@ public:
 	LPIOperation createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
 	LPIOperation createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 
+protected:
+	RDOPatternOperation(rbool trace);
+	virtual ~RDOPatternOperation();
+
 private:
 	LPRDOCalc         m_timeCalc;
 	CalcList          m_choiceFrom;
@@ -211,18 +224,23 @@ private:
 	ConvertStatusList m_convertorEndStatus;
 	CalcList          m_eraseEnd;
 };
+DECLARE_POINTER(RDOPatternOperation);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternKeyboard
 // ----------------------------------------------------------------------------
-class RDOPatternKeyboard: public RDOPatternOperation
+CLASS(RDOPatternKeyboard): INSTANCE_OF(RDOPatternOperation)
 {
+DECLARE_FACTORY(RDOPatternKeyboard);
 public:
-	RDOPatternKeyboard(rbool trace);
-
 	LPIKeyboard createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
 	LPIKeyboard createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+
+private:
+	RDOPatternKeyboard(rbool trace);
+	virtual ~RDOPatternKeyboard();
 };
+DECLARE_POINTER(RDOPatternKeyboard);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
