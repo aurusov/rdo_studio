@@ -39,10 +39,6 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDORuntime;
-CLOSE_RDO_RUNTIME_NAMESPACE
-
 OPEN_RDO_CONVERTER_NAMESPACE
 
 class RDOTypeParam;

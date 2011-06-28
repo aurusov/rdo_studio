@@ -104,6 +104,7 @@ Converter::Converter()
 	, m_pattern             (false)
 {
 	s_parserStack.push_back(this);
+
 	m_pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
 	ASSERT(m_pRuntime);
 	m_pRuntime->memory_insert(sizeof(Converter));
@@ -117,6 +118,7 @@ Converter::~Converter()
 {
 	m_pRuntime->deinit();
 	m_pRuntime = NULL;
+
 	rdo::deleteAllObjects(m_allValues);
 	m_movementObjectList.clear();
 	s_parserStack.remove(this);
