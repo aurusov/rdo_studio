@@ -55,7 +55,7 @@ RDOResource::~RDOResource()
 	//getRuntime()->onResourceErase(this);
 }
 
-bool RDOResource::operator!= (RDOResource &other)
+rbool RDOResource::operator!= (RDOResource &other)
 {
 	if ( m_type != other.m_type ) return true;
 	if ( m_params.size() != other.m_params.size() ) return true;
@@ -72,14 +72,14 @@ LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 	return rdo::Factory<RDOResource>::create(pRuntime, m_params, m_resType, getTraceID(), m_type, traceable(), m_temporary);
 }
 
-std::string RDOResource::getTypeId()
+tstring RDOResource::getTypeId()
 {
 	std::ostringstream str;
 	str << m_type;
 	return str.str();
 }
 
-std::string RDOResource::traceParametersValue()
+tstring RDOResource::traceParametersValue()
 {
 	std::ostringstream str;
 	if(m_params.size() > 0)
@@ -90,9 +90,9 @@ std::string RDOResource::traceParametersValue()
 #ifdef RDOSIM_COMPATIBLE
 			std::ostringstream _str;
 			_str << *it;
-			std::string::size_type pos = _str.str().find( "e" );
-			if ( pos != std::string::npos ) {
-				std::string __str = _str.str();
+			tstring::size_type pos = _str.str().find( "e" );
+			if ( pos != tstring::npos ) {
+				tstring __str = _str.str();
 				__str.erase( pos + 2, 1 );
 				str << __str.c_str();
 			} else {
@@ -109,7 +109,7 @@ std::string RDOResource::traceParametersValue()
 	return str.str();
 }
 
-std::string RDOResource::traceResourceState( char prefix, CREF(LPRDORuntime) pRuntime )
+tstring RDOResource::traceResourceState( char prefix, CREF(LPRDORuntime) pRuntime )
 {
 	std::ostringstream res;
 	if ( traceable() || (prefix != '\0') ) {

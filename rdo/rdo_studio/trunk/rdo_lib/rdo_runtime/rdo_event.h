@@ -37,7 +37,7 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOEvent( CREF(LPRDORuntime) pRuntime, RDOPatternEvent* pattern, bool trace, const std::string& name );
+	RDOEvent( CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name );
 
 	void convertEvent( CREF(LPRDORuntime) pRuntime );
 

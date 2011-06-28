@@ -66,7 +66,6 @@ class RDORule;
 class RDOOperation;
 class RDOPROCProcess;
 class RDOPMDPokaz;
-class RDOPattern;
 PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
@@ -103,12 +102,12 @@ public:
 	{
 	public:
 		typedef unsigned int                     KeyCode;
-		typedef std::map< std::string, KeyCode > KeySet;
+		typedef std::map< tstring, KeyCode > KeySet;
 		typedef KeySet::const_iterator           CIterator;
 		enum    { UNDEFINED_KEY = ~0 };
 
 		RDOHotKeyToolkit();
-		KeyCode codeFromString( const std::string& key ) const;
+		KeyCode codeFromString( CREF(tstring) key ) const;
 
 	private:
 		KeySet m_keys;
@@ -119,7 +118,7 @@ public:
 	rbool keyDown( unsigned int scan_code );
 	void keyUp( unsigned int scan_code );
 	rbool checkKeyPressed( unsigned int scan_code, rbool shift, rbool control );
-	rbool checkAreaActivated( const std::string& oprName );
+	rbool checkAreaActivated( CREF(tstring) oprName );
 
 	void setConstValue( unsigned int numberOfConst, RDOValue value );
 	RDOValue getConstValue( int numberOfConst );
@@ -195,9 +194,9 @@ public:
 	void setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc);
 
 	virtual rbool breakPoints();
-	void insertBreakPoint( const std::string& name, CREF(LPRDOCalc) pCalc );
-	LPRDOCalc findBreakPoint( const std::string& name );
-	std::string getLastBreakPointName() const;
+	void insertBreakPoint( CREF(tstring) name, CREF(LPRDOCalc) pCalc );
+	LPRDOCalc findBreakPoint( CREF(tstring) name );
+	tstring getLastBreakPointName() const;
 
 	LPRDOResource getResourceByID(const int num) const {return num >= 0 ? allResourcesByID.at( num ) : NULL;}
 
@@ -214,9 +213,9 @@ public:
 		return patternParameters.at(parNumb);
 	}
 
-	std::vector< std::string >  activeAreasMouseClicked;
+	std::vector< tstring >      activeAreasMouseClicked;
 	std::list< unsigned int >   keysDown;
-	std::vector<LPRDOFRMFrame> allFrames;
+	std::vector<LPRDOFRMFrame>  allFrames;
 
 	virtual void onPutToTreeNode();
 

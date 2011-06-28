@@ -20,11 +20,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOEvent
 // ----------------------------------------------------------------------------
-RDOEvent::RDOEvent( CREF(LPRDORuntime) pRuntime, RDOPatternEvent* pattern, bool trace, const std::string& name ):
-	RDOActivityPattern<RDOPatternEvent>(pattern, trace, name )
+RDOEvent::RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name)
+	: RDOActivityPattern<RDOPatternEvent>(pPattern, trace, name)
 {
-	setTrace( trace );
-	setTraceID( pRuntime->getFreeEventId() );
+	setTrace  (trace);
+	setTraceID(pRuntime->getFreeEventId());
 }
 
 void RDOEvent::onStart( CREF(LPRDORuntime) pRuntime )
@@ -37,7 +37,7 @@ void RDOEvent::onStop( CREF(LPRDORuntime) pRuntime )
 	pRuntime->removeTimePoint( this );
 }
 
-bool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+rbool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	return false;
 }
@@ -58,7 +58,7 @@ void RDOEvent::onMakePlaned( CREF(LPRDORuntime) pRuntime, void* param )
 void RDOEvent::convertEvent( CREF(LPRDORuntime) pRuntime ) 
 { 
 	pRuntime->setCurrentActivity(this);
-	m_pattern->convertEvent(pRuntime); 
+	m_pPattern->convertEvent(pRuntime); 
 }
 
 void RDOEvent::onBeforeEvent( CREF(LPRDORuntime) pRuntime )
@@ -68,9 +68,9 @@ void RDOEvent::onBeforeEvent( CREF(LPRDORuntime) pRuntime )
 
 void RDOEvent::onAfterEvent( CREF(LPRDORuntime) pRuntime )
 {
-	updateConvertStatus( pRuntime, m_pattern->m_convertorStatus );
+	updateConvertStatus( pRuntime, m_pPattern->m_convertorStatus );
 	pRuntime->getTracer()->writeEvent( this, pRuntime );
-	m_pattern->convertErase( pRuntime );
+	m_pPattern->convertErase( pRuntime );
 	updateRelRes( pRuntime );
 }
 

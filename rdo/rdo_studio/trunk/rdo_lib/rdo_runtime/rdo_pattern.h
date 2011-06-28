@@ -70,7 +70,7 @@ protected:
 			(*calcIt)->calcValue(pRuntime);
 		pRuntime->getMemoryStack()->pop();
 	}
-	bool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
+	rbool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
 	{
 		STL_FOR_ALL(calcList, calcIt)
 		{
@@ -132,7 +132,7 @@ public:
 	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( CREF(LPRDOCalc) pCalc             ) { m_erase.push_back( pCalc );            }
 
-	bool choiceFrom( CREF(LPRDORuntime) pRuntime )
+	rbool choiceFrom( CREF(LPRDORuntime) pRuntime )
 	{
 		preSelectRelRes( pRuntime );
 		return runCalcsBool( m_choiceFrom, pRuntime );
@@ -181,7 +181,7 @@ public:
 
 	void setTime                ( CREF(LPRDOCalc) pCalc             ) { m_timeCalc = pCalc;                         }
 
-	bool choiceFrom( CREF(LPRDORuntime) pRuntime )
+	rbool choiceFrom( CREF(LPRDORuntime) pRuntime )
 	{
 		preSelectRelRes( pRuntime );
 		return runCalcsBool( m_choiceFrom, pRuntime );

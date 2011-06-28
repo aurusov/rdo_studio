@@ -41,8 +41,8 @@ friend class RDODPTSearch;
 friend class TreeNode;
 
 private:
-	RDORule(CREF(LPRDORuntime) pRuntime, RDOPatternRule* pattern, bool trace, const std::string& name);
-	RDORule(CREF(LPRDORuntime) pRuntime, RDOPatternRule* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name);
+	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(tstring) name);
+	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
 
 	virtual ~RDORule()
 	{}
@@ -51,8 +51,8 @@ private:
 
 	LPRDORuntime m_pRuntime;
 	LPRDOCalc    m_additionalCondition;
+	rbool        m_traceOFF;
 
-	bool m_traceOFF;
 	void trace();
 
 	DECLARE_IBaseOperation;

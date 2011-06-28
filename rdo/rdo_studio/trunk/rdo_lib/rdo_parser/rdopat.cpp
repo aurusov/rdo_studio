@@ -17,7 +17,6 @@
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/type/range.h"
 #include "rdo_lib/rdo_parser/local_variable.h"
-#include "rdo_lib/rdo_runtime/rdo_pattern.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE

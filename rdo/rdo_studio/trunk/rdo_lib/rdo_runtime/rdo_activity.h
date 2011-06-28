@@ -33,14 +33,14 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivity(bool trace, CREF(tstring) name ):
+	RDOActivity(rbool trace, CREF(tstring) name ):
 		RDOTraceableObject( trace ),
 		m_oprName( name )
 	{}
 	virtual ~RDOActivity() {}
 
-	std::string               m_oprName;
-	std::list<LPRDOResource> m_relevantResources; // Список релевантных ресурсов
+	tstring                   m_oprName;
+	std::list<LPRDOResource>  m_relevantResources; // Список релевантных ресурсов
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector<LPRDOCalc>    m_paramsCalcs;
 
@@ -73,14 +73,14 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivityPattern(T* pattern, bool trace, CREF(tstring) name ):
-		RDOActivity(trace, name ),
-		m_pattern( pattern )
-	{
-	}
-	virtual ~RDOActivityPattern() {}
+	RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, rbool trace, CREF(tstring) name )
+		: RDOActivity(trace, name )
+		, m_pPattern ( pPattern   )
+	{}
+	virtual ~RDOActivityPattern()
+	{}
 
-	T* m_pattern;
+	rdo::intrusive_ptr<T> m_pPattern;
 
 private:
 	void writeModelStructure(REF(std::ostream) stream) const
@@ -89,7 +89,7 @@ private:
 	}
 	CREF(tstring) tracePatternId() const
 	{
-		return m_pattern->traceId();
+		return m_pPattern->traceId();
 	}
 };
 

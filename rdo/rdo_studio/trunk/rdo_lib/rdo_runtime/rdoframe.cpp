@@ -146,7 +146,7 @@ void RDOFRMFrame::addRulet(CREF(LPRDOFRMRulet) pRulet)
 	rulets.push_back(pRulet);
 }
 
-bool RDOFRMFrame::checkCondition(CREF(LPRDORuntime) pRuntime)
+rbool RDOFRMFrame::checkCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if ( !pConditionCalc ) return true;
 	return pConditionCalc->calcValue( pRuntime ).getAsBool();
@@ -619,7 +619,7 @@ void RDOFRMShow::getBitmaps(REF(std::list<tstring>) list)
 	}
 }
 
-bool RDOFRMShow::checkCondition(CREF(LPRDORuntime) pRuntime)
+rbool RDOFRMShow::checkCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (!pConditionCalc) return true;
 	return pConditionCalc->calcValue(pRuntime).getAsBool();

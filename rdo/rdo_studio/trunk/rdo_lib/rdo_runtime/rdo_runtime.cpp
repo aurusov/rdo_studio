@@ -122,7 +122,7 @@ void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
 	m_pStudioThread = pStudioThread;
 }
 
-bool RDORuntime::endCondition()
+rbool RDORuntime::endCondition()
 {
 	if ( !pTerminateIfCalc )
 	{
@@ -136,7 +136,7 @@ void RDORuntime::setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc)
 	pTerminateIfCalc = _pTerminateIfCalc;
 }
 
-bool RDORuntime::breakPoints()
+rbool RDORuntime::breakPoints()
 {
 	STL_FOR_ALL_CONST(breakPointsCalcs, it)
 	{
@@ -149,12 +149,12 @@ bool RDORuntime::breakPoints()
 	return false;
 }
 
-void RDORuntime::insertBreakPoint(const std::string& name, CREF(LPRDOCalc) pCalc)
+void RDORuntime::insertBreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
 {
 	breakPointsCalcs.push_back(rdo::Factory<BreakPoint>::create(name, pCalc));
 }
 
-LPRDOCalc RDORuntime::findBreakPoint(const std::string& name)
+LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 {
 	STL_FOR_ALL_CONST(breakPointsCalcs, it)
 	{
@@ -166,7 +166,7 @@ LPRDOCalc RDORuntime::findBreakPoint(const std::string& name)
 	return NULL;
 }
 
-std::string RDORuntime::getLastBreakPointName() const
+tstring RDORuntime::getLastBreakPointName() const
 {
 	return lastActiveBreakPoint ? lastActiveBreakPoint->getName() + _T(": ") + lastActiveBreakPoint->getCalc()->src_text() : _T("");
 }
@@ -186,7 +186,7 @@ RDOValue RDORuntime::getConstValue(int numberOfConst)
 }
 
 #ifdef _DEBUG
-bool RDORuntime::checkState()
+rbool RDORuntime::checkState()
 {
 	if (state.empty())
 	{
@@ -342,7 +342,7 @@ LPRDOFRMFrame RDORuntime::lastFrame() const
 	return !allFrames.empty() ? allFrames.front() : NULL;
 }
 
-bool RDORuntime::keyDown(ruint scan_code)
+rbool RDORuntime::keyDown(ruint scan_code)
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
 	if (scan_code == VK_SHIFT || scan_code == VK_CONTROL)
@@ -400,11 +400,11 @@ void RDORuntime::keyUp(ruint scan_code)
 	//}
 }
 
-bool RDORuntime::checkKeyPressed(ruint scan_code, bool shift, bool control)
+rbool RDORuntime::checkKeyPressed(ruint scan_code, rbool shift, rbool control)
 {
 	if (scan_code == 0) return false;
-	bool shift_found   = false;
-	bool control_found = false;
+	rbool shift_found   = false;
+	rbool control_found = false;
 	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
 	std::list<ruint>::iterator it = keysDown.begin();
 	while (it != keysDown.end())
@@ -441,9 +441,9 @@ bool RDORuntime::checkKeyPressed(ruint scan_code, bool shift, bool control)
 	return false;
 }
 
-bool RDORuntime::checkAreaActivated(const std::string& oprName)
+rbool RDORuntime::checkAreaActivated(CREF(tstring) oprName)
 {
-	std::vector<std::string>::iterator it = std::find(activeAreasMouseClicked.begin(), activeAreasMouseClicked.end(), oprName);
+	std::vector<tstring>::iterator it = std::find(activeAreasMouseClicked.begin(), activeAreasMouseClicked.end(), oprName);
 	if (it == activeAreasMouseClicked.end())
 	{
 		return false;
@@ -452,7 +452,7 @@ bool RDORuntime::checkAreaActivated(const std::string& oprName)
 	return true;
 }
 
-bool RDORuntime::isKeyDown()
+rbool RDORuntime::isKeyDown()
 {
 	return key_found || !activeAreasMouseClicked.empty();
 }
@@ -728,15 +728,15 @@ RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
 
 	for (char i = '0'; i <= '9'; i++)
 	{
-		m_keys.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
+		m_keys.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
 	}
 	for (char i = 'A'; i <= 'Z'; i++)
 	{
-		m_keys.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
+		m_keys.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
 	}
 }
 
-RDORuntime::RDOHotKeyToolkit::KeyCode RDORuntime::RDOHotKeyToolkit::codeFromString(const std::string& key) const
+RDORuntime::RDOHotKeyToolkit::KeyCode RDORuntime::RDOHotKeyToolkit::codeFromString(CREF(tstring) key) const
 {
 	CIterator it = m_keys.find(key);
 	if (it == m_keys.end())

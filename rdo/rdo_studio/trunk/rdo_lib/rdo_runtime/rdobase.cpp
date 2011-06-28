@@ -58,7 +58,7 @@ void RDOSimulatorBase::rdoInit()
 	onNewTimeNow();
 }
 
-bool RDOSimulatorBase::rdoNext()
+rbool RDOSimulatorBase::rdoNext()
 {
 	if ( m_mode == rdoRuntime::RTM_Pause || m_mode == rdoRuntime::RTM_BreakPoint )
 	{
@@ -66,7 +66,7 @@ bool RDOSimulatorBase::rdoNext()
 		return true;
 	}
 	// Если нажата клавиша или активная область, то задержки надо проскачить
-	bool keyboard = isKeyDown();
+	rbool keyboard = isKeyDown();
 	if ( !keyboard )
 	{
 		// Задержка общей скорости моделирования

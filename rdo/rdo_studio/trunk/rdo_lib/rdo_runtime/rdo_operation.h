@@ -43,8 +43,8 @@ friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
 protected:
-	RDOOperation( CREF(LPRDORuntime) pRuntime, RDOPatternOperation* pattern, bool trace, const std::string& name );
-	RDOOperation( CREF(LPRDORuntime) pRuntime, RDOPatternOperation* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
+	RDOOperation( CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name );
+	RDOOperation( CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name );
 	virtual ~RDOOperation();
 	DECLARE_IOperation;
 
@@ -54,7 +54,7 @@ private:
 	typedef std::vector<LPIOperation> CloneList;
 	CloneList m_cloneList;
 
-	bool      haveAdditionalCondition;
+	rbool     haveAdditionalCondition;
 	LPRDOCalc additionalCondition;
 
 	int m_operId;

@@ -19,7 +19,7 @@ class IOperation
 {
 public:
 	virtual void   onBeforeChoiceFrom    (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
-	virtual bool   choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual rbool  choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 	virtual void   onBeforeOperationBegin(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 	virtual void   convertBegin          (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 	virtual void   onAfterOperationBegin (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
@@ -30,7 +30,7 @@ public:
 };
 #define DECLARE_IOperation \
 	virtual void   onBeforeChoiceFrom    (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
-	virtual bool   choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual rbool  choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual void   onBeforeOperationBegin(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual void   convertBegin          (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual void   onAfterOperationBegin (CREF(rdoRuntime::LPRDORuntime) pRuntime); \

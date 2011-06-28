@@ -39,10 +39,6 @@
 #include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
 
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDORuntime;
-CLOSE_RDO_RUNTIME_NAMESPACE
-
 OPEN_RDO_PARSER_NAMESPACE
 
 class RDOTypeParam;
@@ -109,7 +105,7 @@ public:
 	virtual void init  ();
 	virtual void deinit();
 
-	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
+	CREF(rdoRuntime::LPRDORuntime) runtime() const { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -239,8 +235,8 @@ protected:
 
 	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	ValueList              m_allValues;
-	rdoRuntime::RDORuntime m_runtime;
+	ValueList                m_allValues;
+	rdoRuntime::LPRDORuntime m_pRuntime;
 
 	void parse(rdoModelObjects::RDOParseType file);
 

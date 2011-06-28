@@ -17,7 +17,7 @@ class RDODPTSearchRuntime: public RDODPTSearchTrace
 DEFINE_IFACTORY(RDODPTSearchRuntime);
 
 private:
-	RDODPTSearchRuntime( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
+	RDODPTSearchRuntime( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, rbool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
 		RDODPTSearchTrace( pRuntime, parent ),
 		pCondition( _pCondition ),
 		pTermCondition( _pTermCondition ),
@@ -31,12 +31,12 @@ private:
 	LPRDOCalc pCondition;
 	LPRDOCalc pTermCondition;
 	LPRDOCalc pEvaluateBy;
-	bool      compTops;
+	rbool     compTops;
 
-	virtual bool   onCheckCondition(CREF(LPRDORuntime) pRuntime) { return pCondition    ->calcValue(pRuntime).getAsBool(); }
-	virtual bool   TermCondition   (CREF(LPRDORuntime) pRuntime) { return pTermCondition->calcValue(pRuntime).getAsBool(); }
+	virtual rbool  onCheckCondition(CREF(LPRDORuntime) pRuntime) { return pCondition    ->calcValue(pRuntime).getAsBool(); }
+	virtual rbool  TermCondition   (CREF(LPRDORuntime) pRuntime) { return pTermCondition->calcValue(pRuntime).getAsBool(); }
 	virtual double EvaluateBy      (CREF(LPRDORuntime) pRuntime) { return pEvaluateBy   ->calcValue(pRuntime).getDouble(); }
-	virtual bool   NeedCompareTops ()                            { return compTops; }
+	virtual rbool  NeedCompareTops ()                            { return compTops; }
 };
 
 } // namespace rdoRuntime

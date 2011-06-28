@@ -21,6 +21,7 @@
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 
+#include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/relres.h"

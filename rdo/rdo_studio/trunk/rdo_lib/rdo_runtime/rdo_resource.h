@@ -64,11 +64,11 @@ public:
 	virtual tstring whoAreYou           ();
 	void            incRef              ();
 	void            decRef              ();
-	bool operator!= (REF(RDOResource) other);
+	rbool operator!= (REF(RDOResource) other);
 
 protected:
 	std::vector<RDOValue> m_params;
-	bool                  m_temporary;
+	rbool                 m_temporary;
 	ConvertStatus         m_state;
 
 private:

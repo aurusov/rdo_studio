@@ -31,7 +31,7 @@ RDOPattern::RDOPattern(rbool trace)
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent
 // ----------------------------------------------------------------------------
-RDOPatternEvent::RDOPatternEvent(bool trace)
+RDOPatternEvent::RDOPatternEvent(rbool trace)
 	: RDOPattern(trace)
 	, m_timeCalc(NULL )
 {}

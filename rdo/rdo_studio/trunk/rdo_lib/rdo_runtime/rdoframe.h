@@ -185,7 +185,7 @@ public:
 	LPRDOFRMShow getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
 	void addItem (CREF(LPRDOFRMItem)  pItem );
 	void addRulet(CREF(LPRDOFRMRulet) pRulet);
-	bool checkCondition(CREF(LPRDORuntime) pRuntime);
+	rbool checkCondition(CREF(LPRDORuntime) pRuntime);
 	rdoAnimation::RDOFrame* createFrame(CREF(LPRDORuntime) pRuntime) {
 		rdoAnimation::RDOFrame* frame = new rdoAnimation::RDOFrame();
 		return prepareFrame( frame, pRuntime );
@@ -617,9 +617,9 @@ public:
 	void insertItem(CREF(LPRDOFRMItem) pItem);
 	REF(ItemList) getItemList();
 
-	bool isShowIf() const { return pConditionCalc != NULL; }
+	rbool isShowIf() const { return pConditionCalc != NULL; }
 
-	bool checkCondition(CREF(LPRDORuntime) pRuntime);
+	rbool checkCondition(CREF(LPRDORuntime) pRuntime);
 	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list);
 
 private:

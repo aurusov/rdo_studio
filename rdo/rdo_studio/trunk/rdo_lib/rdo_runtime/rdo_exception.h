@@ -18,41 +18,41 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOException
 {
 public:
-	RDOException(const std::string& message): m_message(message) {}
-	virtual std::string getType() const = 0;
+	RDOException(CREF(tstring) message): m_message(message) {}
+	virtual tstring getType() const = 0;
 	
-	const std::string& message() const { return m_message; }
+	CREF(tstring) message() const { return m_message; }
 
 private:
-	std::string m_message;
+	tstring m_message;
 };
 
 class RDORuntimeException: public RDOException
 {
 public:
-	RDORuntimeException( const std::string& message ): RDOException( message ) {}
-	virtual std::string getType() const { return "RDO Runtime Error"; }
+	RDORuntimeException( CREF(tstring) message ): RDOException( message ) {}
+	virtual tstring getType() const { return "RDO Runtime Error"; }
 };
 
 class RDOTypeException: public RDORuntimeException
 {
 public:
-	RDOTypeException( const std::string& message = "" ): RDORuntimeException( message ) {}
-	virtual std::string getType() const { return "RDOType Error"; }
+	RDOTypeException( CREF(tstring) message = "" ): RDORuntimeException( message ) {}
+	virtual tstring getType() const { return "RDOType Error"; }
 };
 
 class RDOValueException: public RDORuntimeException
 {
 public:
-	RDOValueException( const std::string& message = "" ): RDORuntimeException( message ) {}
-	virtual std::string getType() const { return "RDOValue Error"; }
+	RDOValueException( CREF(tstring) message = "" ): RDORuntimeException( message ) {}
+	virtual tstring getType() const { return "RDOValue Error"; }
 };
 
 class RDOInternalException: public RDORuntimeException
 {
 public:
-	RDOInternalException( const std::string& message ): RDORuntimeException( message ) {}
-	virtual std::string getType() const { return "RDO Internal Error"; }
+	RDOInternalException( CREF(tstring) message ): RDORuntimeException( message ) {}
+	virtual tstring getType() const { return "RDO Internal Error"; }
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

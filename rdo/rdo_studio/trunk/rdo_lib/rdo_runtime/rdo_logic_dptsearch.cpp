@@ -57,7 +57,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 		}
 	}
 
-	bool success = treeRoot->m_targetNode ? true : false;
+	rbool success = treeRoot->m_targetNode ? true : false;
 	if ( success ) {
 		// Нашли решение, собрали путь
 		std::list< TreeNode* > bestPath;

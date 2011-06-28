@@ -50,18 +50,18 @@ public:
 	RDOTrace(): m_isNullTracer( true ), m_canWriteToStream( false ) {}
 	virtual ~RDOTrace() {}
 
-	bool canTrace() const { return !isNull() && canWrite();   }
+	rbool canTrace() const { return !isNull() && canWrite();   }
 
-	void startWriting()   { m_canWriteToStream = true;        }
-	void stopWriting()    { m_canWriteToStream = false;       }
-	bool canWrite() const { return m_canWriteToStream;        }
-	bool isNull() const   { return m_isNullTracer;            }
+	void  startWriting()   { m_canWriteToStream = true;        }
+	void  stopWriting()    { m_canWriteToStream = false;       }
+	rbool canWrite() const { return m_canWriteToStream;        }
+	rbool isNull() const   { return m_isNullTracer;            }
 
 	// Search in tree
-	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
+	virtual void writeSearchBegin(double currentTime, tstring decisionPointId);
 	virtual void writeSearchDecisionHeader();
 	virtual void writeSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode *node);
-	virtual void writeString(std::string);
+	virtual void writeString(tstring);
 	virtual void writeSearchOpenNode(int nodeCount, int parentCount, double pathCost, double restCost);
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
 	virtual void writeSearchResult(char letter, CREF(LPRDORuntime) pRuntime, TreeRoot *treeRoot);
@@ -78,7 +78,7 @@ public:
 
 	virtual void writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm);
 
-	std::string traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, const std::list< LPRDOResource >& rel_res_list );
+	tstring traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, const std::list< LPRDOResource >& rel_res_list );
 
 	virtual void writePokaz(CREF(LPRDORuntime) pRuntime, RDOPokazTrace *pok);
 
@@ -87,10 +87,10 @@ public:
 	virtual RDOEndL&      getEOL()     { return m_emptyEndL;}
 
 protected:
-	bool          m_isNullTracer;
+	rbool         m_isNullTracer;
 
 private:
-	bool          m_canWriteToStream;
+	rbool         m_canWriteToStream;
 	std::ofstream m_emptyOut;
 	RDOEndL       m_emptyEndL;
 };
@@ -121,7 +121,7 @@ public:
 		m_str_id = rdo::toString(str_id);
 	}
 
-	REF(std::string) traceId() const
+	REF(tstring) traceId() const
 	{
 		if (m_str_id.empty())
 		{
@@ -131,7 +131,7 @@ public:
 	}
 
 protected:
-	RDOTraceableObject(bool trace, ruint id = NONE, tstring str = _T(""))
+	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = _T(""))
 		: m_trace (trace)
 		, m_id    (id   )
 		, m_str_id(str  )
@@ -140,9 +140,9 @@ protected:
 	{}
 
 private:
-	bool                m_trace;
+	rbool               m_trace;
 	ruint               m_id;
-	mutable std::string m_str_id;
+	mutable tstring m_str_id;
 };
 
 // ----------------------------------------------------------------------------

@@ -95,7 +95,7 @@ protected:
 // ----------------------------------------------------------------------------
 // функция сравнения вершин графа для сортировки списка OPEN
 // ----------------------------------------------------------------------------
-inline bool compareNodes( const TreeNode* tn1, const TreeNode* tn2 )
+inline rbool compareNodes( const TreeNode* tn1, const TreeNode* tn2 )
 {
 	if ( fabs(tn1->m_costRest - tn2->m_costRest) > 0.0000001 ) {
 		return ( tn1->m_costRest < tn2->m_costRest );

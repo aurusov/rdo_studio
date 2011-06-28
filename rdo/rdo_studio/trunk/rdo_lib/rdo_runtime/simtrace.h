@@ -27,7 +27,7 @@ public:
 	virtual void rdoInit();
 
 	RDOTrace* getTracer() const            { return m_tracer;                }
-	bool      canTrace() const             { return getTracer()->canTrace(); }
+	rbool     canTrace() const             { return getTracer()->canTrace(); }
 
 	double getTraceStartTime() const       { return traceStartTime;          }
 	void setTraceStartTime( double value ) { traceStartTime = value;         }
@@ -131,7 +131,7 @@ private:
 	ruint memory_current;
 	ruint memory_max;
 
-	bool timeForTrace() const
+	rbool timeForTrace() const
 	{
 		if ( getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime() ) return false;
 		if ( getTraceEndTime()   != UNDEFINE_TIME && getTraceEndTime()   < getCurrentTime() ) return false;

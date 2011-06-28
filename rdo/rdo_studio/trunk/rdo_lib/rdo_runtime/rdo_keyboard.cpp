@@ -19,14 +19,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOKeyboard
 // ----------------------------------------------------------------------------
-RDOKeyboard::RDOKeyboard( CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, bool trace, const std::string& name ):
+RDOKeyboard::RDOKeyboard( CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(tstring) name ):
 	RDOOperation( pRuntime, pattern, trace, name ),
 	m_shift( false ),
 	m_control( false ),
 	m_scan_code( RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY )
 {}
 
-RDOKeyboard::RDOKeyboard( CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name ):
+RDOKeyboard::RDOKeyboard( CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name ):
 	RDOOperation( pRuntime, pattern, trace, pCondition, name ),
 	m_shift( false ),
 	m_control( false ),
@@ -54,7 +54,7 @@ IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, C
 	return IKeyboard::addhk_ok;
 }
 
-bool RDOKeyboard::choiceFrom( CREF(LPRDORuntime) pRuntime )
+rbool RDOKeyboard::choiceFrom( CREF(LPRDORuntime) pRuntime )
 {
 	pRuntime->setCurrentActivity( this );
 

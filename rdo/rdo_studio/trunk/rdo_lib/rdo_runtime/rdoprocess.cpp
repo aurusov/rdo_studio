@@ -261,7 +261,7 @@ void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-bool RDOPROCQueue::onCheckCondition( CREF(LPRDORuntime) pRuntime )
+rbool RDOPROCQueue::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -295,7 +295,7 @@ void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-bool RDOPROCDepart::onCheckCondition( CREF(LPRDORuntime) pRuntime )
+rbool RDOPROCDepart::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -358,7 +358,7 @@ void RDOPROCSeize::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-bool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_transacts.empty())
 		return false;
@@ -425,7 +425,7 @@ void RDOPROCRelease::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-bool RDOPROCRelease::onCheckCondition( CREF(LPRDORuntime) pRuntime )
+rbool RDOPROCRelease::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -483,7 +483,7 @@ IBaseOperation::BOResult RDOPROCRelease::onContinue  (CREF(LPRDORuntime) pRuntim
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-bool RDOPROCAdvance::onCheckCondition( CREF(LPRDORuntime) pRuntime )
+rbool RDOPROCAdvance::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -546,7 +546,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onContinue  (CREF(LPRDORuntime) pRuntim
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
-bool RDOPROCTerminate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
+rbool RDOPROCTerminate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	return !m_transacts.empty() ? true : false;
 }
@@ -577,7 +577,7 @@ IBaseOperation::BOResult RDOPROCTerminate::onContinue  (CREF(LPRDORuntime) pRunt
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-bool RDOPROCAssign::onCheckCondition( CREF(LPRDORuntime) pRuntime )
+rbool RDOPROCAssign::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	return !m_transacts.empty();
 }

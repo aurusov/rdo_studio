@@ -118,7 +118,7 @@ friend class RDOPROCSeize;
 friend class RDOPROCRelease;
 
 public:
-	std::string whoAreYou() {return "procRes";}
+	tstring whoAreYou() {return "procRes";}
 	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
 
 protected:
@@ -200,7 +200,7 @@ QUERY_INTERFACE_END
 
 public:
 	static int getDefaultValue()  { return 0; }
-	static std::string getQueueParamName(){ return "длина_очереди"; }
+	static tstring getQueueParamName(){ return "длина_очереди"; }
 
 private:
 	RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par)
@@ -223,7 +223,7 @@ QUERY_INTERFACE_END
 
 public:
 	static int getDefaultValue()  { return 0; }
-	static std::string getDepartParamName(){ return "длина_очереди"; }
+	static tstring getDepartParamName(){ return "длина_очереди"; }
 
 private:
 	RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par)
@@ -253,9 +253,9 @@ struct parser_for_Seize
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 public:
-	static std::string getStateParamName() {return "Состояние";}
-	static std::string getStateEnumFree()  {return "Свободен"; }
-	static std::string getStateEnumBuzy()  {return "Занят";    }
+	static tstring getStateParamName() {return "Состояние";}
+	static tstring getStateEnumFree()  {return "Свободен"; }
+	static tstring getStateEnumBuzy()  {return "Занят";    }
 
 protected:
 	RDOPROCBlockForSeize(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par);
