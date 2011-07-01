@@ -36,15 +36,18 @@ public:
 	{
 		double result;
 		double u01 = generate01();
+		double h = 2/(m_max-m_min);
+		double a1 = h/(m_mean-m_min);
+		double b1 = h;
+		double a2 = -h/(m_max-m_mean);
+		double b2 = h;
 		if ( u01 >= (m_mean-m_min)/(m_max-m_min))
 		{
-			for (result = -1; result < 0; result = asin(generate01()) - 0.570796326794897);
-			result *= m_max - m_mean;
+			result = -(m_max-m_mean)*(sqrt(generate01()) - 1);
 		}
 		else
 		{
-			for (result = 1; result > 0; result = acos(generate01()) - 1);
-			result *= m_mean - m_min;
+			result = (m_mean-m_min)*(sqrt(generate01()) - 1);
 		}
 		return result + m_mean;
 	}
@@ -58,7 +61,7 @@ private:
 
 void main()
 {
-	Triang				triang			(3, 1, 10, 978557);
+	Triang				triang			(4, 0, 5, 2345236);
 
 	double step = 0.1;
 	typedef std::map<int, ruint> Histogram;
