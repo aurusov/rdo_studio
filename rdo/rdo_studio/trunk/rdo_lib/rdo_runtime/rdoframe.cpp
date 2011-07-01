@@ -1,52 +1,72 @@
+/*
+ * copyright: (c) RDO-Team, 2011
+ * filename : rdoframe.cpp
+ * author   : Урусов Андрей
+ * date     : 07.12.2008
+ * bref     : 
+ * indent   : 4T
+ */
+
+// ====================================================================== PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// ====================================================================== INCLUDES
+// ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
+// ===============================================================================
 
-namespace rdoRuntime 
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMColor - объект-цвет
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMColor::RDOFRMColor(ColorType _type )
-	: color_type( _type )
+RDOFRMFrame::RDOFRMColor::RDOFRMColor(ColorType type)
+	: m_type(type)
 {}
 
-RDOFRMFrame::RDOFRMColor::RDOFRMColor(int _red, int _green, int _blue )
-	: color_type( color_rgb )
+RDOFRMFrame::RDOFRMColor::RDOFRMColor(int red, int green, int blue)
+	: m_type(color_rgb)
 {
-	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(_red  );
-	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(_green);
-	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create(_blue );
-	m_pRedCalc->setSrcText( rdo::format("%d, _red") );
-	m_pGreenCalc->setSrcText( rdo::format("%d, _green") );
-	m_pBlueCalc->setSrcText( rdo::format("%d, _blue") );
+	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(red  );
+	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(green);
+	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create(blue );
+	ASSERT(m_pRedCalc  );
+	ASSERT(m_pGreenCalc);
+	ASSERT(m_pBlueCalc );
+	m_pRedCalc  ->setSrcText(rdo::format(_T("%d, _red")  ));
+	m_pGreenCalc->setSrcText(rdo::format(_T("%d, _green")));
+	m_pBlueCalc ->setSrcText(rdo::format(_T("%d, _blue") ));
 }
 
 RDOFRMFrame::RDOFRMColor::RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc)
-	: color_type  (color_rgb )
+	: m_type      (color_rgb )
 	, m_pRedCalc  (pRedCalc  )
 	, m_pGreenCalc(pGreenCalc)
 	, m_pBlueCalc (pBlueCalc )
-{}
+{
+	ASSERT(m_pRedCalc  );
+	ASSERT(m_pGreenCalc);
+	ASSERT(m_pBlueCalc );
+}
 
 RDOFRMFrame::RDOFRMColor::~RDOFRMColor()
 {}
 
 rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
 {
-	switch (color_type)
+	switch (m_type)
 	{
 		case color_none        : return rdoAnimation::RDOColor(50, 200, 50);
 		case color_rgb         : return rdoAnimation::RDOColor(
-									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pRedCalc->calcValue(pRuntime).getInt(),
-									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pGreenCalc->calcValue(pRuntime).getInt(),
-									 const_cast<PTR(RDOFRMFrame::RDOFRMColor)>(this)->m_pBlueCalc->calcValue(pRuntime).getInt());
+		                             m_pRedCalc  ->calcValue(pRuntime).getInt(),
+		                             m_pGreenCalc->calcValue(pRuntime).getInt(),
+		                             m_pBlueCalc ->calcValue(pRuntime).getInt()
+		                         );
 		case color_transparent : return rdoAnimation::RDOColor();
-		case color_last_bg     : return pFrame->color_last_bg;
-		case color_last_fg     : return pFrame->color_last_fg;
-		case color_last_bg_text: return pFrame->color_last_bg_text;
-		case color_last_fg_text: return pFrame->color_last_fg_text;
+		case color_last_bg     : return pFrame->m_colorLastBg;
+		case color_last_fg     : return pFrame->m_colorLastFg;
+		case color_last_bg_text: return pFrame->m_colorLastBgText;
+		case color_last_fg_text: return pFrame->m_colorLastFgText;
 		default                : NEVER_REACH_HERE;
 	}
 	return rdoAnimation::RDOColor();
@@ -55,157 +75,164 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMFrame
 // ----------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) _src_info, CREF(LPRDOCalc) _pConditionCalc)
-	: RDOSrcInfo( _src_info )
-	, pConditionCalc( _pConditionCalc )
-	, background_color( NULL )
-	, picFileName(_T(""))
-	, width( 800 )
-	, height( 600 )
-	, last_x( 0 )
-	, last_y( 0 )
-	, last_width( 0 )
-	, last_height( 0 )
+RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
+	: RDOSrcInfo      (src_info      )
+	, m_pConditionCalc(pConditionCalc)
+	, m_picFileName   (_T("")        )
+	, m_width         (800           )
+	, m_height        (600           )
+	, m_lastX         (0             )
+	, m_lastY         (0             )
+	, m_lastWidth     (0             )
+	, m_lastHeight    (0             )
 {
-	color_last_bg      = rdoAnimation::RDOColor(50, 200, 50);
-	color_last_fg      = color_last_bg;
-	color_last_bg_text = color_last_bg;
-	color_last_fg_text = color_last_bg;
+	m_colorLastBg     = rdoAnimation::RDOColor(50, 200, 50);
+	m_colorLastFg     = m_colorLastBg;
+	m_colorLastBgText = m_colorLastBg;
+	m_colorLastFgText = m_colorLastBg;
 }
 
 RDOFRMFrame::~RDOFRMFrame()
-{
-	rulets.clear();
-}
+{}
 
-void RDOFRMFrame::setColorLastBG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg )
+void RDOFRMFrame::setColorLastBG(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBg)
 {
-	if ( type == RDOFRMColor::color_rgb ) {
-		color_last_bg = _last_bg;
+	if (type == RDOFRMColor::color_rgb)
+	{
+		m_colorLastBg = lastBg;
 	}
 }
 
-void RDOFRMFrame::setColorLastFG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg )
+void RDOFRMFrame::setColorLastFG(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFg)
 {
-	if ( type == RDOFRMColor::color_rgb ) {
-		color_last_fg = _last_fg;
+	if (type == RDOFRMColor::color_rgb)
+	{
+		m_colorLastFg = lastFg;
 	}
 }
 
-void RDOFRMFrame::setColorLastBGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg_text )
+void RDOFRMFrame::setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBgText)
 {
-	if ( type == RDOFRMColor::color_rgb ) {
-		color_last_bg_text = _last_bg_text;
+	if (type == RDOFRMColor::color_rgb)
+	{
+		m_colorLastBgText = lastBgText;
 	}
 }
 
-void RDOFRMFrame::setColorLastFGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg_text )
+void RDOFRMFrame::setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFgText)
 {
-	if ( type == RDOFRMColor::color_rgb ) {
-		color_last_fg_text = _last_fg_text;
+	if (type == RDOFRMColor::color_rgb)
+	{
+		m_colorLastFgText = lastFgText;
 	}
 }
 
-void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) _background_color )
+void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
 {
-	background_color = _background_color;
+	m_pBgColor = pBgColor;
 }
 
-void RDOFRMFrame::setBackPicture( CREF(tstring) _picFileName )
+void RDOFRMFrame::setBackPicture(CREF(tstring) picFileName)
 {
-	picFileName = _picFileName;
+	m_picFileName = picFileName;
 }
 
-void RDOFRMFrame::setBackPicture( int _width, int _height )
+void RDOFRMFrame::setBackPicture(int width, int height)
 {
-	picFileName = _T("");
-	width = _width;
-	height = _height;
+	m_picFileName = _T("");
+	m_width       = width;
+	m_height      = height;
 }
 
 void RDOFRMFrame::startShow(CREF(LPRDOCalc) pCalc)
 {
-	shows.push_back(rdo::Factory<RDOFRMShow>::create(pCalc));
+	m_showList.push_back(rdo::Factory<RDOFRMShow>::create(pCalc));
 }
 
 void RDOFRMFrame::addItem(CREF(LPRDOFRMItem) pItem)
 {
 	ASSERT(pItem);
 
-	if (shows.empty())
+	if (m_showList.empty())
 	{
 		startShow();
 	}
 
-	shows.back()->insertItem(pItem);
+	m_showList.back()->insertItem(pItem);
 }
 
 void RDOFRMFrame::addRulet(CREF(LPRDOFRMRulet) pRulet)
 {
 	ASSERT(pRulet);
-	rulets.push_back(pRulet);
+	std::pair<RuletList::const_iterator, rbool> result =
+		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
+	ASSERT(result.second);
 }
 
 rbool RDOFRMFrame::checkCondition(CREF(LPRDORuntime) pRuntime)
 {
-	if ( !pConditionCalc ) return true;
-	return pConditionCalc->calcValue( pRuntime ).getAsBool();
+	if (!m_pConditionCalc)
+		return true;
+
+	return m_pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
-rdoAnimation::RDOFrame* RDOFRMFrame::prepareFrame( rdoAnimation::RDOFrame* frame, CREF(LPRDORuntime) pRuntime )
+PTR(rdoAnimation::RDOFrame) RDOFRMFrame::prepareFrame(PTR(rdoAnimation::RDOFrame) pFrame, CREF(LPRDORuntime) pRuntime)
 {
-	if (background_color)
+	ASSERT(pFrame);
+
+	if (m_pBgColor)
 	{
-		if (background_color->getColorType() == RDOFRMColor::color_rgb)
+		if (m_pBgColor->getColorType() == RDOFRMColor::color_rgb)
 		{
-			rdoAnimation::RDOColor bg_color = background_color->getColor(pRuntime, this);
-			frame->m_bgColor = bg_color;
+			rdoAnimation::RDOColor bgColor = m_pBgColor->getColor(pRuntime, this);
+			pFrame->m_bgColor = bgColor;
 		}
 		else
 		{
-			frame->m_bgColor = rdoAnimation::RDOColor();
+			pFrame->m_bgColor = rdoAnimation::RDOColor();
 		}
 	}
 	else
 	{
-		frame->m_bgColor = rdoAnimation::RDOColor();
+		pFrame->m_bgColor = rdoAnimation::RDOColor();
 	}
-	frame->m_bgImageName   = picFileName;
-	frame->m_size.m_width  = width;
-	frame->m_size.m_height = height;
+	pFrame->m_bgImageName   = m_picFileName;
+	pFrame->m_size.m_width  = m_width;
+	pFrame->m_size.m_height = m_height;
 
-	last_x      = 0;
-	last_y      = 0;
-	last_width  = 0;
-	last_height = 0;
+	m_lastX      = 0;
+	m_lastY      = 0;
+	m_lastWidth  = 0;
+	m_lastHeight = 0;
 
-	if ( checkCondition( pRuntime ) )
+	if (checkCondition(pRuntime))
 	{
-		STL_FOR_ALL(shows, it_show)
+		STL_FOR_ALL(m_showList, showIt)
 		{
-			if ((*it_show)->checkCondition(pRuntime))
+			if ((*showIt)->checkCondition(pRuntime))
 			{
-				STL_FOR_ALL((*it_show)->getItemList(), it_obj)
+				STL_FOR_ALL((*showIt)->getItemList(), itemIt)
 				{
-					PTR(rdoAnimation::FrameItem) element = (*it_obj)->createElement(pRuntime);
-					if ( element )
+					PTR(rdoAnimation::FrameItem) pElement = (*itemIt)->createElement(pRuntime);
+					if (pElement)
 					{
-						frame->m_elements.push_back( element );
+						pFrame->m_elements.push_back(pElement);
 					}
 				}
 			}
 		}
 	}
 
-	return frame;
+	return pFrame;
 }
 
-void RDOFRMFrame::getBitmaps( std::list< tstring >& list ) const
+void RDOFRMFrame::getBitmaps(REF(ImageNameList) list) const
 {
-	if (!picFileName.empty())
-		list.push_back(picFileName);
+	if (!m_picFileName.empty())
+		list.push_back(m_picFileName);
 
-	STL_FOR_ALL_CONST(shows, it)
+	STL_FOR_ALL_CONST(m_showList, it)
 	{
 		(*it)->getBitmaps(list);
 	}
@@ -228,6 +255,9 @@ RDOFRMText::RDOFRMText(
 	, RDOFRMColoredItem (pBgColor, pFgColor                     )
 	, m_align           (rdoAnimation::RDOTextElement::TETA_LEFT)
 	, m_isTextString    (true                                   )
+{}
+
+RDOFRMText::~RDOFRMText()
 {}
 
 void RDOFRMText::setText(Align align, CREF(LPRDOCalc) pValue)
@@ -467,27 +497,37 @@ PTR(rdoAnimation::FrameItem) RDOFRMEllipse::createElement(CREF(LPRDORuntime) pRu
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMLine
 // ----------------------------------------------------------------------------
-RDOFRMLine::RDOFRMLine(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMColor) _color):
-	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem(_x1, _y1, _x2, _y2),
-	color(_color)
+RDOFRMLine::RDOFRMLine(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX2,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY2,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pColor
+	)
+	: RDOFRMItem        (pFrame            )
+	, RDOFRMBoundingItem(pX1, pY1, pX2, pY2)
+	, m_pColor          (pColor            )
+{}
+
+RDOFRMLine::~RDOFRMLine()
 {}
 
 PTR(rdoAnimation::FrameItem) RDOFRMLine::createElement(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->memory_insert(sizeof(rdoAnimation::RDOLineElement));
 
-	rdoAnimation::RDOColor fg = color->getColor(pRuntime, getFrame());
-	getFrame()->setColorLastFG(color->getColorType(), fg);
-	int _x1 = getX(pRuntime, getFrame());
-	int _y1 = getY(pRuntime, getFrame());
-	int _x2 = getWidthAsX(pRuntime, getFrame());
-	int _y2 = getHeightAsY(pRuntime, getFrame());
-	getFrame()->setLastXYWH(_x1, _y1, _x2 - _x1, _y2 - _y1);
+	rdoAnimation::RDOColor fg = m_pColor->getColor(pRuntime, getFrame());
+	getFrame()->setColorLastFG(m_pColor->getColorType(), fg);
+	int x1 = getX        (pRuntime, getFrame());
+	int y1 = getY        (pRuntime, getFrame());
+	int x2 = getWidthAsX (pRuntime, getFrame());
+	int y2 = getHeightAsY(pRuntime, getFrame());
+	getFrame()->setLastXYWH(x1, y1, x2 - x1, y2 - y1);
 
 	return new rdoAnimation::RDOLineElement(
-		rdoAnimation::RDOPoint(_x1, _y1),
-		rdoAnimation::RDOPoint(_x2, _y2),
+		rdoAnimation::RDOPoint(x1, y1),
+		rdoAnimation::RDOPoint(x2, y2),
 		fg
 	);
 }
@@ -495,15 +535,28 @@ PTR(rdoAnimation::FrameItem) RDOFRMLine::createElement(CREF(LPRDORuntime) pRunti
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMTriang
 // ----------------------------------------------------------------------------
-RDOFRMTriang::RDOFRMTriang(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x1, CREF(RDOFRMFrame::LPRDOFRMPosition) _y1, CREF(RDOFRMFrame::LPRDOFRMPosition) _x2, CREF(RDOFRMFrame::LPRDOFRMPosition) _y2, CREF(RDOFRMFrame::LPRDOFRMPosition) _x3, CREF(RDOFRMFrame::LPRDOFRMPosition) _y3, CREF(RDOFRMFrame::LPRDOFRMColor) bgColor, CREF(RDOFRMFrame::LPRDOFRMColor) fgColor):
-	RDOFRMItem(pFrame),
-	RDOFRMColoredItem(bgColor, fgColor),
-	x1(_x1),
-	y1(_y1),
-	x2(_x2),
-	y2(_y2),
-	x3(_x3),
-	y3(_y3)
+RDOFRMTriang::RDOFRMTriang(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX2,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY2,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX3,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY3,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	)
+	: RDOFRMItem       (pFrame            )
+	, RDOFRMColoredItem(pBgColor, pFgColor)
+	, m_pX1            (pX1               )
+	, m_pY1            (pY1               )
+	, m_pX2            (pX2               )
+	, m_pY2            (pY2               )
+	, m_pX3            (pX3               )
+	, m_pY3            (pY3               )
+{}
+
+RDOFRMTriang::~RDOFRMTriang()
 {}
 
 PTR(rdoAnimation::FrameItem) RDOFRMTriang::createElement(CREF(LPRDORuntime) pRuntime)
@@ -514,32 +567,32 @@ PTR(rdoAnimation::FrameItem) RDOFRMTriang::createElement(CREF(LPRDORuntime) pRun
 	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
 	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
 	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
-	int _x1 = x1->getX(pRuntime, getFrame());
-	int _y1 = y1->getY(pRuntime, getFrame());
-	int min_x = _x1;
-	int max_x = _x1;
-	int min_y = _y1;
-	int max_y = _y1;
-	getFrame()->setLastXYWH(_x1, _y1, _x1, _y1);
-	int _x2 = x2->getX(pRuntime, getFrame());
-	int _y2 = y2->getY(pRuntime, getFrame());
-	if (min_x > _x2) min_x = _x2;
-	if (max_x < _x2) max_x = _x2;
-	if (min_y > _y2) min_y = _y2;
-	if (max_y < _x2) max_y = _y2;
-	getFrame()->setLastXYWH(_x2, _y2, _x2 - _x1, _y2 - _y1);
-	int _x3 = x3->getX(pRuntime, getFrame());
-	int _y3 = y3->getY(pRuntime, getFrame());
-	if (min_x > _x3) min_x = _x3;
-	if (max_x < _x3) max_x = _x3;
-	if (min_y > _y3) min_y = _y3;
-	if (max_y < _x3) max_y = _y3;
-	getFrame()->setLastXYWH(min_x, min_y, max_x - min_x, max_y - min_y);
+	int x1 = m_pX1->getX(pRuntime, getFrame());
+	int y1 = m_pY1->getY(pRuntime, getFrame());
+	int minX = x1;
+	int maxX = x1;
+	int minY = y1;
+	int maxY = y1;
+	getFrame()->setLastXYWH(x1, y1, x1, y1);
+	int x2 = m_pX2->getX(pRuntime, getFrame());
+	int y2 = m_pY2->getY(pRuntime, getFrame());
+	if (minX > x2) minX = x2;
+	if (maxX < x2) maxX = x2;
+	if (minY > y2) minY = y2;
+	if (maxY < x2) maxY = y2;
+	getFrame()->setLastXYWH(x2, y2, x2 - x1, y2 - y1);
+	int x3 = m_pX3->getX(pRuntime, getFrame());
+	int y3 = m_pY3->getY(pRuntime, getFrame());
+	if (minX > x3) minX = x3;
+	if (maxX < x3) maxX = x3;
+	if (minY > y3) minY = y3;
+	if (maxY < x3) maxY = y3;
+	getFrame()->setLastXYWH(minX, minY, maxX - minX, maxY - minY);
 
 	return new rdoAnimation::RDOTriangElement(
-		rdoAnimation::RDOPoint(_x1, _y1),
-		rdoAnimation::RDOPoint(_x2, _y2),
-		rdoAnimation::RDOPoint(_x3, _y3),
+		rdoAnimation::RDOPoint(x1, y1),
+		rdoAnimation::RDOPoint(x2, y2),
+		rdoAnimation::RDOPoint(x3, y3),
 		rdoAnimation::RDOColoredElement(bg, fg)
 	);
 }
@@ -547,58 +600,74 @@ PTR(rdoAnimation::FrameItem) RDOFRMTriang::createElement(CREF(LPRDORuntime) pRun
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMActive
 // ----------------------------------------------------------------------------
-RDOFRMActive::RDOFRMActive(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height, CREF(tstring) _operName):
-	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem(_x, _y, _width, _height),
-	operName(_operName)
-{
-}
+RDOFRMActive::RDOFRMActive(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(tstring)                       operName
+	)
+	: RDOFRMItem        (pFrame                 )
+	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
+	, m_operName        (operName               )
+{}
+
+RDOFRMActive::~RDOFRMActive()
+{}
 
 PTR(rdoAnimation::FrameItem) RDOFRMActive::createElement(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->memory_insert(sizeof(rdoAnimation::RDOActiveElement));
 
-	int _x      = getX(pRuntime, getFrame());
-	int _y      = getY(pRuntime, getFrame());
-	int _width  = getWidth(pRuntime, getFrame());
-	int _height = getHeight(pRuntime, getFrame());
-	getFrame()->setLastXYWH(_x, _y, _width, _height);
+	int x      = getX     (pRuntime, getFrame());
+	int y      = getY     (pRuntime, getFrame());
+	int width  = getWidth (pRuntime, getFrame());
+	int height = getHeight(pRuntime, getFrame());
+	getFrame()->setLastXYWH(x, y, width, height);
 
 	return new rdoAnimation::RDOActiveElement(
-		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(_x, _y), rdoAnimation::RDOSize(_width, _height)),
-		operName
+		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(x, y), rdoAnimation::RDOSize(width, height)),
+		m_operName
 	);
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMSpace
 // ----------------------------------------------------------------------------
-RDOFRMSpace::RDOFRMSpace(CREF(LPRDOFRMFrame) pFrame, CREF(RDOFRMFrame::LPRDOFRMPosition) _x, CREF(RDOFRMFrame::LPRDOFRMPosition) _y, CREF(RDOFRMFrame::LPRDOFRMPosition) _width, CREF(RDOFRMFrame::LPRDOFRMPosition) _height):
-	RDOFRMItem(pFrame),
-	RDOFRMBoundingItem(_x, _y, _width, _height)
-{
-}
+RDOFRMSpace::RDOFRMSpace(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight
+	)
+	: RDOFRMItem        (pFrame                 )
+	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
+{}
+
+RDOFRMSpace::~RDOFRMSpace()
+{}
 
 PTR(rdoAnimation::FrameItem) RDOFRMSpace::createElement(CREF(LPRDORuntime) pRuntime)
 {
-	int _x      = getX(pRuntime, getFrame());
-	int _y      = getY(pRuntime, getFrame());
-	int _width  = getWidth(pRuntime, getFrame());
-	int _height = getHeight(pRuntime, getFrame());
-	getFrame()->setLastXYWH(_x, _y, _width, _height);
+	int x      = getX     (pRuntime, getFrame());
+	int y      = getY     (pRuntime, getFrame());
+	int width  = getWidth (pRuntime, getFrame());
+	int height = getHeight(pRuntime, getFrame());
+	getFrame()->setLastXYWH(x, y, width, height);
 	return NULL;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMShow
 // ----------------------------------------------------------------------------
-RDOFRMShow::RDOFRMShow(CREF(LPRDOCalc) _pConditionCalc)
-	: pConditionCalc(_pConditionCalc)
+RDOFRMShow::RDOFRMShow(CREF(LPRDOCalc) pConditionCalc)
+	: m_pConditionCalc(pConditionCalc)
 {}
 
 RDOFRMShow::~RDOFRMShow()
-{
-}
+{}
 
 void RDOFRMShow::insertItem(CREF(LPRDOFRMItem) pItem)
 {
@@ -611,7 +680,7 @@ REF(RDOFRMShow::ItemList) RDOFRMShow::getItemList()
 	return m_itemList;
 }
 
-void RDOFRMShow::getBitmaps(REF(std::list<tstring>) list)
+void RDOFRMShow::getBitmaps(REF(RDOFRMFrame::ImageNameList) list)
 {
 	STL_FOR_ALL(m_itemList, it)
 	{
@@ -621,8 +690,10 @@ void RDOFRMShow::getBitmaps(REF(std::list<tstring>) list)
 
 rbool RDOFRMShow::checkCondition(CREF(LPRDORuntime) pRuntime)
 {
-	if (!pConditionCalc) return true;
-	return pConditionCalc->calcValue(pRuntime).getAsBool();
+	if (!m_pConditionCalc)
+		return true;
+
+	return m_pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
