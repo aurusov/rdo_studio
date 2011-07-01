@@ -666,11 +666,11 @@ frm_ruler
 		LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($7);
 		ASSERT(pX);
 		ASSERT(pY);
-		if (pX->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
+		if (pX->getType() != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
 		{
 			PARSER->error().error(@5, _T(" оодинаты рулетки должны быть абсолютными"));
 		}
-		if (pY->type != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
+		if (pY->getType() != rdoRuntime::RDOFRMFrame::RDOFRMPosition::absolute)
 		{
 			PARSER->error().error(@7, _T(" оодинаты рулетки должны быть абсолютными"));
 		}

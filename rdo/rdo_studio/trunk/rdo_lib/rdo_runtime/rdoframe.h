@@ -50,6 +50,11 @@ public:
 			rulet
 		};
 
+		PositionType getType() const
+		{
+			return m_type;
+		}
+
 		CREF(LPRDOCalc) getCalc() const
 		{
 			return m_pCalc;
