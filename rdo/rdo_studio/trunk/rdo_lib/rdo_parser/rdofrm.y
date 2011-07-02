@@ -241,6 +241,14 @@ typedef rdoRuntime::RDOFRMRectRound               RDOFRMRectRound;
 typedef rdoRuntime::LPRDOFRMRectRound             LPRDOFRMRectRound;
 typedef rdoRuntime::RDOFRMEllipse                 RDOFRMEllipse;
 typedef rdoRuntime::LPRDOFRMEllipse               LPRDOFRMEllipse;
+typedef rdoRuntime::RDOFRMLine                    RDOFRMLine;
+typedef rdoRuntime::LPRDOFRMLine                  LPRDOFRMLine;
+typedef rdoRuntime::RDOFRMTriang                  RDOFRMTriang;
+typedef rdoRuntime::LPRDOFRMTriang                LPRDOFRMTriang;
+typedef rdoRuntime::RDOFRMActive                  RDOFRMActive;
+typedef rdoRuntime::LPRDOFRMActive                LPRDOFRMActive;
+typedef rdoRuntime::RDOFRMSpace                   RDOFRMSpace;
+typedef rdoRuntime::LPRDOFRMSpace                 LPRDOFRMSpace;
 
 %}
 
@@ -373,17 +381,17 @@ frm_show
 frm_item
 	: /* empty */
 	| frm_item frm_show
-	| frm_item frm_text    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMText  >($2));}
-	| frm_item frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap>($2));}
-	| frm_item frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect  >($2));}
-	| frm_item frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMLine              )>($2));}
-	| frm_item frm_ellipse {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMEllipse  >($2));}
-	| frm_item frm_r_rect  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRectRound>($2));}
-	| frm_item frm_triang  {PARSER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMTriang            )>($2));}
+	| frm_item frm_text    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMText         >($2));}
+	| frm_item frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap       >($2));}
+	| frm_item frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect         >($2));}
+	| frm_item frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMLine         >($2));}
+	| frm_item frm_ellipse {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMEllipse      >($2));}
+	| frm_item frm_r_rect  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRectRound    >($2));}
+	| frm_item frm_triang  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMTriang       >($2));}
 	| frm_item frm_s_bmp   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmapStretch>($2));}
-	| frm_item frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMActive            )>($2));}
-	| frm_item frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet>($2));}
-	| frm_item frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (reinterpret_cast<PTR(rdoRuntime::RDOFRMSpace             )>($2));}
+	| frm_item frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($2));}
+	| frm_item frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($2));}
+	| frm_item frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($2));}
 	;
 
 frm_header
@@ -719,7 +727,9 @@ frm_space
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		$$ = (int)new rdoRuntime::RDOFRMSpace(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight);
+		LPRDOFRMSpace pSpace = rdo::Factory<RDOFRMSpace>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight);
+		ASSERT(pSpace);
+		$$ = PARSER->stack().push(pSpace);
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
@@ -1373,7 +1383,9 @@ frm_line
 		LPRDOFRMColor pColor = PARSER->stack().pop<RDOFRMColor>($11);
 		ASSERT(pColor);
 		pColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMLine(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pColor);
+		LPRDOFRMLine pLine = rdo::Factory<RDOFRMLine>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pColor);
+		ASSERT(pLine);
+		$$ = PARSER->stack().push(pLine);
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
@@ -1442,7 +1454,9 @@ frm_triang
 		ASSERT(pFgColor);
 		pBgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_bg);
 		pFgColor->setColorType(rdoRuntime::RDOFRMFrame::RDOFRMColor::color_last_fg);
-		$$ = (int)new rdoRuntime::RDOFRMTriang(RUNTIME->lastFrame(), pX1, pY1, pX2, pY2, pX3, pY3, pBgColor, pFgColor);
+		LPRDOFRMTriang pTriang = rdo::Factory<RDOFRMTriang>::create(RUNTIME->lastFrame(), pX1, pY1, pX2, pY2, pX3, pY3, pBgColor, pFgColor);
+		ASSERT(pTriang);
+		$$ = PARSER->stack().push(pTriang);
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
 	{
@@ -1517,11 +1531,11 @@ frm_triang
 frm_active
 	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
-		tstring opr_name = P_RDOVALUE($2)->value().getIdentificator();
-		LPRDODPTFreeActivity pActivity = PARSER->findDPTFreeActivity(opr_name);
+		tstring oprName = P_RDOVALUE($2)->value().getIdentificator();
+		LPRDODPTFreeActivity pActivity = PARSER->findDPTFreeActivity(oprName);
 		if (!pActivity)
 		{
-			PARSER->error().error(@2, rdo::format(_T("Активность '%s' не найдена"), opr_name.c_str()));
+			PARSER->error().error(@2, rdo::format(_T("Активность '%s' не найдена"), oprName.c_str()));
 		}
 		else
 		{
@@ -1541,7 +1555,9 @@ frm_active
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		$$ = (int)new rdoRuntime::RDOFRMActive(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, opr_name);
+		LPRDOFRMActive pActive = rdo::Factory<RDOFRMActive>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, oprName);
+		ASSERT(pActive);
+		$$ = PARSER->stack().push(pActive);
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{

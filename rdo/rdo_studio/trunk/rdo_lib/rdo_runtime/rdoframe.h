@@ -578,15 +578,10 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMLine
 // ----------------------------------------------------------------------------
-class RDOFRMLine: public RDOFRMItem, public RDOFRMBoundingItem
+RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
+DECLARE_FACTORY(RDOFRMLine)
 private:
-	RDOFRMFrame::LPRDOFRMColor m_pColor;
-
-protected:
-	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
-
-public:
 	RDOFRMLine(
 		CREF(LPRDOFRMFrame)                 pFrame,
 		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
@@ -596,17 +591,19 @@ public:
 		CREF(RDOFRMFrame::LPRDOFRMColor)    pColor
 	);
 	virtual ~RDOFRMLine();
+
+	RDOFRMFrame::LPRDOFRMColor m_pColor;
+
+	DECLARE_RDOFRMIItem;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMTriang
 // ----------------------------------------------------------------------------
-class RDOFRMTriang: public RDOFRMItem, public RDOFRMColoredItem
+RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
 {
-protected:
-	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
-
-public:
+DECLARE_FACTORY(RDOFRMTriang)
+private:
 	RDOFRMTriang(
 		CREF(LPRDOFRMFrame)                 pFrame,
 		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
@@ -620,24 +617,23 @@ public:
 	);
 	virtual ~RDOFRMTriang();
 
-private:
 	RDOFRMFrame::LPRDOFRMPosition m_pX1;
 	RDOFRMFrame::LPRDOFRMPosition m_pY1;
 	RDOFRMFrame::LPRDOFRMPosition m_pX2;
 	RDOFRMFrame::LPRDOFRMPosition m_pY2;
 	RDOFRMFrame::LPRDOFRMPosition m_pX3;
 	RDOFRMFrame::LPRDOFRMPosition m_pY3;
+
+	DECLARE_RDOFRMIItem;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMActive
 // ----------------------------------------------------------------------------
-class RDOFRMActive: public RDOFRMItem, public RDOFRMBoundingItem
+RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
-protected:
-	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
-
-public:
+DECLARE_FACTORY(RDOFRMActive)
+private:
 	RDOFRMActive(
 		CREF(LPRDOFRMFrame)                 pFrame,
 		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
@@ -648,19 +644,18 @@ public:
 	);
 	virtual ~RDOFRMActive();
 
-private:
 	tstring m_operName;
+
+	DECLARE_RDOFRMIItem;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFRMSpace
 // ----------------------------------------------------------------------------
-class RDOFRMSpace: public RDOFRMItem, public RDOFRMBoundingItem
+RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
-protected:
-	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
-
-public:
+DECLARE_FACTORY(RDOFRMSpace)
+private:
 	RDOFRMSpace(
 		CREF(LPRDOFRMFrame)                 pFrame,
 		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
@@ -669,6 +664,8 @@ public:
 		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight
 	);
 	virtual ~RDOFRMSpace();
+
+	DECLARE_RDOFRMIItem;
 };
 
 // ----------------------------------------------------------------------------
