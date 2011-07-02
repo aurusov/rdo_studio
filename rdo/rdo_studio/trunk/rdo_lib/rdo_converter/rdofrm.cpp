@@ -34,7 +34,7 @@ void cnv_frmerror(PTR(char) mes)
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	: RDOParserSrcInfo(src_info)
 {
-	m_pFrame = rdo::Factory<rdoRuntime::RDOFRMFrame>::create(Converter::s_converter()->runtime(), src_info, pLogic ? pLogic->getCalc() : NULL);
+	m_pFrame = rdo::Factory<rdoRuntime::RDOFRMFrame>::create(src_info, pLogic ? pLogic->getCalc() : NULL);
 	Converter::s_converter()->insertFRMFrame(this);
 }
 

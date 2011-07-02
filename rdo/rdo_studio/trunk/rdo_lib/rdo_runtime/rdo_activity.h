@@ -75,7 +75,7 @@ QUERY_INTERFACE_END
 protected:
 	RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, rbool trace, CREF(tstring) name )
 		: RDOActivity(trace, name )
-		, m_pPattern ( pPattern   )
+		, m_pPattern (pPattern    )
 	{}
 	virtual ~RDOActivityPattern()
 	{}

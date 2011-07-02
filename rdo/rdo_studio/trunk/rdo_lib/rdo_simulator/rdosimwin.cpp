@@ -838,8 +838,6 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 // --------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     (_T("RDOThreadSimulator"))
-	, m_pRuntime      (NULL                    )
-	, m_pParser       (NULL                    )
 	, m_pThreadRuntime(NULL                    )
 	, m_exitCode      (rdoSimulator::EC_OK     )
 {
@@ -1073,6 +1071,7 @@ rbool RDOThreadSimulator::parseModel()
 	ASSERT(m_pParser);
 	m_pParser->init();
 	m_pRuntime = m_pParser->runtime();
+	ASSERT(m_pRuntime);
 
 	try
 	{
@@ -1166,7 +1165,6 @@ void RDOThreadSimulator::closeModel()
 	{
 		if (m_pRuntime)
 		{
-			delete m_pRuntime;
 			m_pRuntime = NULL;
 		}
 	}

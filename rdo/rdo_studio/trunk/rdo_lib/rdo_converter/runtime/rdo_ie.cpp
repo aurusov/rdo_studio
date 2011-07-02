@@ -94,7 +94,7 @@ void RDOIrregEvent::onAfterIrregularEvent(CREF(LPRDORuntime) pRuntime)
 double RDOIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime) 
 { 
 	pRuntime->setCurrentActivity(this);
-	return m_pattern->getNextTimeInterval(pRuntime); 
+	return m_pPattern->getNextTimeInterval(pRuntime); 
 }
 
 IBaseOperation::BOResult RDOIrregEvent::onContinue(CREF(LPRDORuntime) pRuntime)

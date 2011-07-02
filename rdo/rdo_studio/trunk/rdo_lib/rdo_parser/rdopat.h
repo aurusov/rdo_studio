@@ -30,10 +30,6 @@
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
-OPEN_RDO_RUNTIME_NAMESPACE
-PREDECLARE_POINTER(RDOPattern);
-CLOSE_RDO_RUNTIME_NAMESPACE
-
 OPEN_RDO_PARSER_NAMESPACE
 
 int  patparse(PTR(void) lexer);
