@@ -25,7 +25,7 @@ RDOFRMFrame::RDOFRMColor::RDOFRMColor(ColorType type)
 {}
 
 RDOFRMFrame::RDOFRMColor::RDOFRMColor(int red, int green, int blue)
-	: m_type(color_rgb)
+	: m_type(CT_RGB)
 {
 	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(red  );
 	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(green);
@@ -39,7 +39,7 @@ RDOFRMFrame::RDOFRMColor::RDOFRMColor(int red, int green, int blue)
 }
 
 RDOFRMFrame::RDOFRMColor::RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc)
-	: m_type      (color_rgb )
+	: m_type      (CT_RGB    )
 	, m_pRedCalc  (pRedCalc  )
 	, m_pGreenCalc(pGreenCalc)
 	, m_pBlueCalc (pBlueCalc )
@@ -56,17 +56,17 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 {
 	switch (m_type)
 	{
-		case color_none        : return rdoAnimation::RDOColor(50, 200, 50);
-		case color_rgb         : return rdoAnimation::RDOColor(
-		                             m_pRedCalc  ->calcValue(pRuntime).getInt(),
-		                             m_pGreenCalc->calcValue(pRuntime).getInt(),
-		                             m_pBlueCalc ->calcValue(pRuntime).getInt()
-		                         );
-		case color_transparent : return rdoAnimation::RDOColor();
-		case color_last_bg     : return pFrame->m_colorLastBg;
-		case color_last_fg     : return pFrame->m_colorLastFg;
-		case color_last_bg_text: return pFrame->m_colorLastBgText;
-		case color_last_fg_text: return pFrame->m_colorLastFgText;
+		case CT_NONE        : return rdoAnimation::RDOColor(50, 200, 50);
+		case CT_RGB         : return rdoAnimation::RDOColor(
+		                          m_pRedCalc  ->calcValue(pRuntime).getInt(),
+		                          m_pGreenCalc->calcValue(pRuntime).getInt(),
+		                          m_pBlueCalc ->calcValue(pRuntime).getInt()
+		                      );
+		case CT_TRANSPARENT : return rdoAnimation::RDOColor();
+		case CT_LAST_BG     : return pFrame->m_colorLastBg;
+		case CT_LAST_FG     : return pFrame->m_colorLastFg;
+		case CT_LAST_BG_TEXT: return pFrame->m_colorLastBgText;
+		case CT_LAST_FG_TEXT: return pFrame->m_colorLastFgText;
 		default                : NEVER_REACH_HERE;
 	}
 	return rdoAnimation::RDOColor();
@@ -97,7 +97,7 @@ RDOFRMFrame::~RDOFRMFrame()
 
 void RDOFRMFrame::setColorLastBG(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBg)
 {
-	if (type == RDOFRMColor::color_rgb)
+	if (type == RDOFRMColor::CT_RGB)
 	{
 		m_colorLastBg = lastBg;
 	}
@@ -105,7 +105,7 @@ void RDOFRMFrame::setColorLastBG(RDOFRMColor::ColorType type, CREF(rdoAnimation:
 
 void RDOFRMFrame::setColorLastFG(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFg)
 {
-	if (type == RDOFRMColor::color_rgb)
+	if (type == RDOFRMColor::CT_RGB)
 	{
 		m_colorLastFg = lastFg;
 	}
@@ -113,7 +113,7 @@ void RDOFRMFrame::setColorLastFG(RDOFRMColor::ColorType type, CREF(rdoAnimation:
 
 void RDOFRMFrame::setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBgText)
 {
-	if (type == RDOFRMColor::color_rgb)
+	if (type == RDOFRMColor::CT_RGB)
 	{
 		m_colorLastBgText = lastBgText;
 	}
@@ -121,7 +121,7 @@ void RDOFRMFrame::setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdoAnimat
 
 void RDOFRMFrame::setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFgText)
 {
-	if (type == RDOFRMColor::color_rgb)
+	if (type == RDOFRMColor::CT_RGB)
 	{
 		m_colorLastFgText = lastFgText;
 	}
@@ -183,7 +183,7 @@ PTR(rdoAnimation::RDOFrame) RDOFRMFrame::prepareFrame(PTR(rdoAnimation::RDOFrame
 
 	if (m_pBgColor)
 	{
-		if (m_pBgColor->getColorType() == RDOFRMColor::color_rgb)
+		if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
 		{
 			rdoAnimation::RDOColor bgColor = m_pBgColor->getColor(pRuntime, this);
 			pFrame->m_bgColor = bgColor;
@@ -280,8 +280,8 @@ PTR(rdoAnimation::FrameItem) RDOFRMText::createElement(CREF(LPRDORuntime) pRunti
 
 	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
 	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
-	getFrame()->setColorLastBGText(getBgColor()->getColorType(), bg);
-	getFrame()->setColorLastFGText(getFgColor()->getColorType(), fg);
+	getFrame()->setColorLastBGText(getBgColor()->getType(), bg);
+	getFrame()->setColorLastFGText(getFgColor()->getType(), fg);
 
 	tstring t;
 	if (m_isTextString)
@@ -400,8 +400,8 @@ PTR(rdoAnimation::FrameItem) RDOFRMRect::createElement(CREF(LPRDORuntime) pRunti
 
 	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
 	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
-	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
-	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	getFrame()->setColorLastBG(getBgColor()->getType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getType(), fg);
 	int x      = getX     (pRuntime, getFrame());
 	int y      = getY     (pRuntime, getFrame());
 	int width  = getWidth (pRuntime, getFrame());
@@ -440,8 +440,8 @@ PTR(rdoAnimation::FrameItem) RDOFRMRectRound::createElement(CREF(LPRDORuntime) p
 
 	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
 	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
-	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
-	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	getFrame()->setColorLastBG(getBgColor()->getType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getType(), fg);
 	int x      = getX     (pRuntime, getFrame());
 	int y      = getY     (pRuntime, getFrame());
 	int width  = getWidth (pRuntime, getFrame());
@@ -480,8 +480,8 @@ PTR(rdoAnimation::FrameItem) RDOFRMEllipse::createElement(CREF(LPRDORuntime) pRu
 
 	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
 	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
-	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
-	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	getFrame()->setColorLastBG(getBgColor()->getType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getType(), fg);
 	int x      = getX     (pRuntime, getFrame());
 	int y      = getY     (pRuntime, getFrame());
 	int width  = getWidth (pRuntime, getFrame());
@@ -518,7 +518,7 @@ PTR(rdoAnimation::FrameItem) RDOFRMLine::createElement(CREF(LPRDORuntime) pRunti
 	pRuntime->memory_insert(sizeof(rdoAnimation::RDOLineElement));
 
 	rdoAnimation::RDOColor fg = m_pColor->getColor(pRuntime, getFrame());
-	getFrame()->setColorLastFG(m_pColor->getColorType(), fg);
+	getFrame()->setColorLastFG(m_pColor->getType(), fg);
 	int x1 = getX        (pRuntime, getFrame());
 	int y1 = getY        (pRuntime, getFrame());
 	int x2 = getWidthAsX (pRuntime, getFrame());
@@ -565,8 +565,8 @@ PTR(rdoAnimation::FrameItem) RDOFRMTriang::createElement(CREF(LPRDORuntime) pRun
 
 	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
 	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
-	getFrame()->setColorLastBG(getBgColor()->getColorType(), bg);
-	getFrame()->setColorLastFG(getFgColor()->getColorType(), fg);
+	getFrame()->setColorLastBG(getBgColor()->getType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getType(), fg);
 	int x1 = m_pX1->getX(pRuntime, getFrame());
 	int y1 = m_pY1->getY(pRuntime, getFrame());
 	int minX = x1;

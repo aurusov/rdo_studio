@@ -43,11 +43,11 @@ public:
 	public:
 		enum PositionType
 		{
-			absolute,
-			delta,
-			gabarit,
-			mult,
-			rulet
+			PT_ABSOLUTE,
+			PT_DELTA,
+			PT_GABARIT,
+			PT_MULT,
+			PT_RULET
 		};
 
 		PositionType getType() const
@@ -65,10 +65,10 @@ public:
 			RDOValue res = m_pCalc->calcValue(pRuntime);
 			switch (m_type)
 			{
-				case RDOFRMPosition::delta  : res += pFrame->m_lastX;                        break;
-				case RDOFRMPosition::gabarit: res += pFrame->m_lastX + pFrame->m_lastWidth;  break;
-				case RDOFRMPosition::mult   : res *= pFrame->m_lastX;                        break;
-				case RDOFRMPosition::rulet  : res += pFrame->getRuletX(pRuntime, m_ruletID); break;
+				case RDOFRMPosition::PT_DELTA  : res += pFrame->m_lastX;                        break;
+				case RDOFRMPosition::PT_GABARIT: res += pFrame->m_lastX + pFrame->m_lastWidth;  break;
+				case RDOFRMPosition::PT_MULT   : res *= pFrame->m_lastX;                        break;
+				case RDOFRMPosition::PT_RULET  : res += pFrame->getRuletX(pRuntime, m_ruletID); break;
 			}
 			return res.getInt();
 		}
@@ -77,10 +77,10 @@ public:
 			RDOValue res = m_pCalc->calcValue(pRuntime);
 			switch (m_type)
 			{
-				case RDOFRMPosition::delta  : res += pFrame->m_lastY;                        break;
-				case RDOFRMPosition::gabarit: res += pFrame->m_lastY + pFrame->m_lastHeight; break;
-				case RDOFRMPosition::mult   : res *= pFrame->m_lastY;                        break;
-				case RDOFRMPosition::rulet  : res += pFrame->getRuletY(pRuntime, m_ruletID); break;
+				case RDOFRMPosition::PT_DELTA  : res += pFrame->m_lastY;                        break;
+				case RDOFRMPosition::PT_GABARIT: res += pFrame->m_lastY + pFrame->m_lastHeight; break;
+				case RDOFRMPosition::PT_MULT   : res *= pFrame->m_lastY;                        break;
+				case RDOFRMPosition::PT_RULET  : res += pFrame->getRuletY(pRuntime, m_ruletID); break;
 			}
 			return res.getInt();
 		}
@@ -89,9 +89,9 @@ public:
 			RDOValue res = m_pCalc->calcValue(pRuntime);
 			switch (m_type)
 			{
-				case RDOFRMPosition::delta: res += pFrame->m_lastWidth; break;
-				case RDOFRMPosition::mult : res *= pFrame->m_lastWidth; break;
-				case RDOFRMPosition::rulet: res += pFrame->getRuletX(pRuntime, m_ruletID); break;
+				case RDOFRMPosition::PT_DELTA: res += pFrame->m_lastWidth; break;
+				case RDOFRMPosition::PT_MULT : res *= pFrame->m_lastWidth; break;
+				case RDOFRMPosition::PT_RULET: res += pFrame->getRuletX(pRuntime, m_ruletID); break;
 			}
 			return res.getInt();
 		}
@@ -100,20 +100,20 @@ public:
 			RDOValue res = m_pCalc->calcValue(pRuntime);
 			switch (m_type)
 			{
-				case RDOFRMPosition::delta: res += pFrame->m_lastHeight; break;
-				case RDOFRMPosition::mult : res *= pFrame->m_lastHeight; break;
-				case RDOFRMPosition::rulet: res += pFrame->getRuletY(pRuntime, m_ruletID); break;
+				case RDOFRMPosition::PT_DELTA: res += pFrame->m_lastHeight; break;
+				case RDOFRMPosition::PT_MULT : res *= pFrame->m_lastHeight; break;
+				case RDOFRMPosition::PT_RULET: res += pFrame->getRuletY(pRuntime, m_ruletID); break;
 			}
 			return res.getInt();
 		}
 	private:
 		RDOFRMPosition()
 			: RDORuntimeObject()
-			, m_type   (absolute)
-			, m_ruletID(0       )
+			, m_type   (PT_ABSOLUTE)
+			, m_ruletID(0          )
 		{}
 
-		RDOFRMPosition(CREF(LPRDOCalc) pCalc, PositionType type = absolute, int ruletID = 0)
+		RDOFRMPosition(CREF(LPRDOCalc) pCalc, PositionType type = PT_ABSOLUTE, int ruletID = 0)
 			: RDORuntimeObject()
 			, m_pCalc  (pCalc  )
 			, m_type   (type   )
@@ -138,31 +138,31 @@ public:
 	public:
 		enum ColorType
 		{
-			color_none,
-			color_rgb,
-			color_transparent,
-			color_last_bg,
-			color_last_fg,
-			color_last_bg_text,
-			color_last_fg_text
+			CT_NONE,
+			CT_RGB,
+			CT_TRANSPARENT,
+			CT_LAST_BG,
+			CT_LAST_FG,
+			CT_LAST_BG_TEXT,
+			CT_LAST_FG_TEXT
 		};
 
 		rdoAnimation::RDOColor getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
-		ColorType getColorType() const
+		ColorType getType() const
 		{
 			return m_type;
 		}
-		void setColorType(ColorType type)
+		void setType(ColorType type)
 		{
-			if (m_type == color_none)
+			if (m_type == CT_NONE)
 			{
 				m_type = type;
 			}
 		}
 
 	private:
-		RDOFRMColor(ColorType type = color_none);
+		RDOFRMColor(ColorType type = CT_NONE);
 		RDOFRMColor(int red, int green, int blue);
 		RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
 		virtual ~RDOFRMColor();
