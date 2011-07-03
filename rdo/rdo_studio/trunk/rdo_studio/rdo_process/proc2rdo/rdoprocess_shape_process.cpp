@@ -95,20 +95,20 @@ void RPShapeProcessMJ::generate()
 	switch(action)
 	{
 		case 0://advance
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 1://sieze,advance,release
-			m_pParams->addAction(RPShapeDataBlockProcess::Seize  );
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
-			m_pParams->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
 			break;
 		case 2://seize,advance
-			m_pParams->addAction(RPShapeDataBlockProcess::Seize  );
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 3://seize,advance
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
-			m_pParams->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
 			break;
 	}
 

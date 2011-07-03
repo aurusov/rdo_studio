@@ -77,22 +77,24 @@ RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr za
 RPShapeDataBlockProcess::~RPShapeDataBlockProcess()
 {}
 
-void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::resAction action)
+void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::Action action)
 {
-	m_actions.push_back(action);
+	m_actionList.push_back(action);
 }
 
-void RPShapeDataBlockProcess::addRes(CREF(tstring) res)
+void RPShapeDataBlockProcess::addRes(CREF(tstring) resName)
 {
-	m_res.push_back(res);
+	ASSERT(std::find(m_resNameList.begin(), m_resNameList.end(), resName) == m_resNameList.end());
+
+	m_resNameList.push_back(resName);
 }
 
-CREF(RPShapeDataBlockProcess::ActionList) RPShapeDataBlockProcess::getAction() const
+CREF(RPShapeDataBlockProcess::ActionList) RPShapeDataBlockProcess::getActionList() const
 {
-	return m_actions;
+	return m_actionList;
 }
 
-CREF(RPShapeDataBlockProcess::ResList) RPShapeDataBlockProcess::getRes() const
+CREF(RPShapeDataBlockProcess::ResNameList) RPShapeDataBlockProcess::getResNameList() const
 {
-	return m_res;
+	return m_resNameList;
 }
