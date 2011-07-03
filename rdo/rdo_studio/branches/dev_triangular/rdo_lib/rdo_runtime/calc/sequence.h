@@ -123,6 +123,7 @@ private: \
 DEFINE_RANDON_DISTRIBUTION( Uniform    , RandGeneratorUniform     );
 DEFINE_RANDON_DISTRIBUTION( Normal     , RandGeneratorNormal      );
 DEFINE_RANDON_DISTRIBUTION( Exponential, RandGeneratorExponential );
+DEFINE_RANDON_DISTRIBUTION( Triangular , RandGeneratorTriangular  );
 DEFINE_RANDON_DISTRIBUTION( ByHist     , RandGeneratorCommonNext  );
 
 CLOSE_RDO_RUNTIME_NAMESPACE

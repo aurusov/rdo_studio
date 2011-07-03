@@ -46,6 +46,11 @@ RDOValue RDOCalcSeqNextExponential::getNextValue(PTR(RDORuntime) runtime)
 	return m_gen->next(runtime->getFuncArgument(0).getDouble());
 }
 
+RDOValue RDOCalcSeqNextTriangular::getNextValue(PTR(RDORuntime) runtime)
+{
+	return m_gen->next(runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble(), runtime->getFuncArgument(2).getDouble());
+}
+
 RDOValue RDOCalcSeqNextByHist::getNextValue(PTR(RDORuntime) runtime)
 {
 	return m_gen->next();

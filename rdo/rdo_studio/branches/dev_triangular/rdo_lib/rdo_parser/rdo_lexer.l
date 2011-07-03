@@ -87,6 +87,7 @@ $sequence                      return(RDO_Sequence);
 uniform                        return(RDO_uniform);
 exponential                    return(RDO_exponential);
 normal                         return(RDO_normal);
+triangular					   return(RDO_triangular);
 by_hist                        return(RDO_by_hist);
 enumerative                    return(RDO_enumerative);
 

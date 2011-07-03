@@ -98,6 +98,24 @@ public:
 	}
 };
 
+class RandGeneratorTriangular: public RandGenerator
+{
+public:
+	RandGeneratorTriangular( long int seed = 123456789 ):
+		RandGenerator( seed )
+	{
+	}
+	double next( double from, double mean, double to )
+	{
+		double result;
+		if (u01() > (mean-from)/(to-from))
+			result = -(to-mean)*(sqrt(u01()) - 1);
+		else
+			result = (mean-from)*(sqrt(u01()) - 1);
+		return result + mean;
+	}
+};
+
 // ----------------------------------------------------------------------------
 // ---------- Общий класс для by_hist и enumerative
 // ----------------------------------------------------------------------------
