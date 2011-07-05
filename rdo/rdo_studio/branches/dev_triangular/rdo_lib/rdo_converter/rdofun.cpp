@@ -1091,56 +1091,6 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceTriangular
-// ----------------------------------------------------------------------------
-RDOFUNSequenceTriangular::RDOFUNSequenceTriangular(CREF(LPRDOFUNSequenceHeader) pHeader, int seed)
-	: RDOFUNSequence(pHeader, seed)
-{
-	if (m_pHeader->getType()->type()->typeID() == rdoRuntime::RDOType::t_enum)
-	{
-		Converter::s_converter()->error().error(src_info(), _T("ѕоследовательность типа '%s' не может возвращ€ть значени€ перечислимого типа"));
-	}
-}
-
-void RDOFUNSequenceTriangular::createCalcs()
-{
-	PTR(rdoRuntime::RandGeneratorTriangular) pGenerator = new rdoRuntime::RandGeneratorTriangular();
-	m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_seed, pGenerator);
-	Converter::s_converter()->runtime()->addInitCalc(m_pInitCalc);
-	m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextTriangular>::create(pGenerator);
-	initResult();
-}
-
-LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
-{
-	if (pParamList->getParamList().size() != 3)
-	{
-		Converter::s_converter()->error().error(seq_src_info, rdo::format(_T("ƒл€ треугольного закона распределени€ '%s' нужно указать два параметра: левую границу, математическое ожидание, правую границу"), name().c_str()));
-	}
-
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
-	ASSERT(pFuctionCall);
-
-	LPRDOTypeParam        pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
-	rdoRuntime::LPRDOCalc pArg1 = pParamList->getCalc(0, pType);
-	rdoRuntime::LPRDOCalc pArg2 = pParamList->getCalc(1, pType);
-	rdoRuntime::LPRDOCalc pArg3 = pParamList->getCalc(2, pType);
-
-	pFuctionCall->addParameter(pArg1);
-	pFuctionCall->addParameter(pArg2);
-	pFuctionCall->addParameter(pArg3);
-
-	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(RDOValue(m_pHeader->getType()->type(), pParamList->src_pos()), pFuctionCall);
-	ASSERT(pArithm);
-	pArithm->setSrcInfo(seq_src_info);
-	if (pArithm->typeID() == rdoRuntime::RDOType::t_enum)
-	{
-		Converter::s_converter()->error().error(src_info(), _T("¬нутренн€€ ошибка парсера"));
-	}
-	return pArithm;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- √истограмма
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceByHist

@@ -52,7 +52,6 @@
 %token RDO_uniform						293
 %token RDO_exponential					294
 %token RDO_normal						295
-%token RDO_triangular					448
 %token RDO_by_hist						296
 %token RDO_enumerative					297
 
