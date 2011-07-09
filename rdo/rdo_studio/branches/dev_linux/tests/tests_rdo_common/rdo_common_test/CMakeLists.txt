@@ -16,3 +16,4 @@ ADD_EXECUTABLE(test_rdo_common ${SOURCE_FILES})
 ADD_DEPENDENCIES(test_rdo_common rdo_nix_common)
 
 TARGET_LINK_LIBRARIES(test_rdo_common rdo_nix_common)
+TARGET_LINK_LIBRARIES(test_rdo_common ${Boost_LIBRARIES})

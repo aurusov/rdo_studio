@@ -15,3 +15,4 @@ ADD_EXECUTABLE(test_rdo_smart_prt ${SOURCE_FILES})
 ADD_DEPENDENCIES(test_rdo_smart_prt rdo_nix_common)
 
 TARGET_LINK_LIBRARIES(test_rdo_smart_prt rdo_nix_common)
+TARGET_LINK_LIBRARIES(test_rdo_smart_prt ${Boost_LIBRARIES})
