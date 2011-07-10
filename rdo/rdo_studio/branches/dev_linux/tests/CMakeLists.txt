@@ -1,5 +1,0 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
-
-PROJECT(rdo_tests)
-
-ADD_SUBDIRECTORY(tests_rdo_common)
