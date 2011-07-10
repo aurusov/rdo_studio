@@ -122,6 +122,7 @@ public:
 	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
 	ruint getPMD_id     () const { return m_allPMDPokaz.size()    + 1; }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	ruint getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
 
 	tstring getModelStructure();
 	tstring getChanges       () const;

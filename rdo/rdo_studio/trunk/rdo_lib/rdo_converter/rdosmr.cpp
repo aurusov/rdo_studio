@@ -67,7 +67,7 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 	{
 		Converter::s_converter()->error().error(pos, _T("Номер кадра должен быть больше нуля"));
 	}
-	if (Converter::s_converter()->runtime()->allFrames.size() + 1 <= (ruint)value)
+	if (Converter::s_converter()->getNumberFrame() < (ruint)value)
 	{
 		Converter::s_converter()->error().error(pos, rdo::format(_T("Несуществующий кадр: %d"), value));
 	}
