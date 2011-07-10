@@ -142,8 +142,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -273,19 +271,6 @@ smr_cond
 		ASSERT(pEventPlan);
 		pEventPlan->setEvent(pBaseOperation);
 		pEvent->setInitCalc(pEventPlan);
-	}
-	| smr_cond RDO_IDENTIF '.' RDO_Start '(' ')'
-	{
-		tstring           eventName   = RDOVALUE($2)->getIdentificator();
-		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
-		if (!pEvent)
-		{
-			PARSER->error().error(@2, rdo::format(_T("Попытка запустить неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
-		ASSERT(pBaseOperation);
-		RUNTIME->addTimePoint(0, pBaseOperation);
 	}
 	| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	| smr_cond RDO_Show_mode                  '=' smr_show_mode

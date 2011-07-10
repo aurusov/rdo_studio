@@ -142,8 +142,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -1640,26 +1638,7 @@ stopping_statement
 
 		$$ = PARSER->stack().push(pCalc);
 	}
-	| RDO_IDENTIF '.' RDO_Stop '(' ')' ';'
-	{
-		tstring           eventName   = RDOVALUE($1)->getIdentificator();
-		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
-		if (!pEvent)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		$$ = PARSER->stack().push(pCalc);
-	}
 	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
-	{
-		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	| RDO_IDENTIF '.' RDO_Stop '(' ')' error
 	{
 		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -1717,24 +1696,6 @@ planning_statement
 		ASSERT(pCalcTime);
 
 		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		$$ = PARSER->stack().push(pCalc);
-	}
-	| RDO_IDENTIF '.' RDO_Start '(' event_descr_param ')' ';'
-	{
-		tstring           eventName   = RDOVALUE($1)->getIdentificator();
-		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
-		if (!pEvent)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка запустить неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		rdoRuntime::LPRDOCalcGetTimeNow pCalcTimeNow = rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create();
-		ASSERT(pCalcTimeNow);
-
-		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTimeNow);
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
