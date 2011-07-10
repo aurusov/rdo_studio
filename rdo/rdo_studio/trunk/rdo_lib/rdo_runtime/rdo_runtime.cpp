@@ -473,19 +473,10 @@ void RDORuntime::onInit()
 {
 	STL_FOR_ALL(initCalcs, calcIt)
 		(*calcIt)->calcValue(this);
-
-	std::vector<LPRDOResource>::const_iterator it = allResourcesByID.begin();
-	while (it != allResourcesByID.end())
-	{
-		allResourcesByTime.push_back(*it);
-		it++;
-	}
-	//std::copy(allResourcesByID.begin(), allResourcesByID.end(), allResourcesByTime.begin());
 }
 
 void RDORuntime::onDestroy()
 {
-	//! TODO: Дима, посмотри содержимое контейнеров, почему в allResourcesByTime дублируются ресурсы ?
 	//! TODO: Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
 	allResourcesBeforeSim.clear();
 	allResourcesByTime.clear();
