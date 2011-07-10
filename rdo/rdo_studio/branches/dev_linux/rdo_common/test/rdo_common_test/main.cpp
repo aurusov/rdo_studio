@@ -1,9 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
- * author   : Урусов Андрей
- * date     : 10.05.2009
- * bref     : Тест common-библиотеки
+ * author   : Evgeny Proydakov
+ * email	: lord.tiran@gmail.com
+ * date     : 16.06.2011
+ * bref     : Test rdo_common
  * indent   : 4T
  */
 
@@ -15,8 +16,13 @@
 #include "rdo_common/rdotime.h"
 #include "rdo_common/test/rdo_common_test/resource.h"
 // ===============================================================================
+ 
+#define BOOST_TEST_MODULE test_rdo_common
+#include <boost/test/included/unit_test.hpp>
 
-void main()
+BOOST_AUTO_TEST_SUITE(test_rdo_common)
+
+BOOST_AUTO_TEST_CASE(test_rdo_common_1)
 {
 	tstring str1 = rdo::format(IDS_STRING101);
 	tstring str2 = rdo::format(IDS_STRING102, 22);
@@ -31,3 +37,15 @@ void main()
 
 	int i = 1;
 }
+
+BOOST_AUTO_TEST_CASE(test_rdo_common_2)
+{
+	BOOST_REQUIRE(false);
+}
+
+BOOST_AUTO_TEST_CASE(test_rdo_common_3)
+{
+	BOOST_ERROR(false);
+}
+
+BOOST_AUTO_TEST_SUITE_END()

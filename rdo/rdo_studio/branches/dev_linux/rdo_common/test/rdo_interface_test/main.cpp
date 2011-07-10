@@ -1,20 +1,22 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
- * author   : Урусов Андрей
- * date     : 07.07.2009
- * bref     : Тест интерфейсов
+ * author   : Evgeny Proydakov
+ * email	: lord.tiran@gmail.com
+ * date     : 16.06.2011
+ * bref     : Test for rdo_common interface
  * indent   : 4T
  */
-
+ 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
 #include <vector>
 #include <iostream>
 // ====================================================================== SYNOPSIS
-#include "rdo_common/rdointerface.h"
+//#include "rdo_common/rdointerface.h"
 // ===============================================================================
 
+/*
 class IMy1
 {
 public:
@@ -46,11 +48,11 @@ INTERFACE_REGISTRATOR(IMy4, 4);
 
 class MyClass: public rdo::IGetUnknown, public IMy1, public IMy2, public IInit
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IMy1)
-	QUERY_INTERFACE(IMy2)
-	QUERY_INTERFACE(IInit)
-QUERY_INTERFACE_END
+	QUERY_INTERFACE_BEGIN
+		QUERY_INTERFACE(IMy1)
+		QUERY_INTERFACE(IMy2)
+		QUERY_INTERFACE(IInit)
+		QUERY_INTERFACE_END
 
 protected:
 	MyClass(int i)
@@ -88,11 +90,11 @@ void fun(CREF(LPIMy1) my1)
 
 class MyClass2: public MyClass, public IMy3
 {
-DEFINE_IFACTORY(MyClass2);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(MyClass)
-	QUERY_INTERFACE(IMy3)
-QUERY_INTERFACE_END
+	DEFINE_IFACTORY(MyClass2);
+	QUERY_INTERFACE_BEGIN
+		QUERY_INTERFACE_PARENT(MyClass)
+		QUERY_INTERFACE(IMy3)
+		QUERY_INTERFACE_END
 
 private:
 	MyClass2(int i): MyClass(i)
@@ -109,16 +111,16 @@ private:
 
 		LPIMy1 int1 = this;
 		ASSERT(int1)
-		std::cout << "void fun3(): " << m_i << std::endl;
+			std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };
 
 class MyClass3: public IMy3, public rdo::IGetUnknown
 {
-DEFINE_IFACTORY(MyClass3);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IMy3)
-QUERY_INTERFACE_END
+	DEFINE_IFACTORY(MyClass3);
+	QUERY_INTERFACE_BEGIN
+		QUERY_INTERFACE(IMy3)
+		QUERY_INTERFACE_END
 
 protected:
 	MyClass3(int i)
@@ -140,7 +142,8 @@ private:
 		std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };
-
+*/
+/*
 void main()
 {
 	typedef rdo::Interface<IMy3>     MyInterface;
@@ -191,4 +194,16 @@ void main()
 		it++;
 	}
 	int i = 1;
+}*/
+
+#define BOOST_TEST_MODULE test_rdo_interface
+#include <boost/test/included/unit_test.hpp>
+
+BOOST_AUTO_TEST_SUITE(test_rdo_interface)
+
+BOOST_AUTO_TEST_CASE(test_rdo_interface_1)
+{
+	BOOST_CHECK(true);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
