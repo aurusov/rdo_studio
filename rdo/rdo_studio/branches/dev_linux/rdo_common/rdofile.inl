@@ -9,12 +9,26 @@
 
 // ====================================================================== INCLUDES
 #include <io.h>
+#include <fstream>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
+
+inline rbool File::create(CREF(tstring) name)
+{
+	return create(name, "");
+}
+
+inline rbool File::create(CREF(tstring) name, CREF(tstring) content)
+{
+	std::ofstream file(name.c_str(), std::ios::out | std::ios::binary);
+	file << content.c_str() << std::endl;
+	file.close();
+	return true;
+}
 
 inline rbool File::exist(CREF(tstring) name)
 {

@@ -22,6 +22,8 @@ OPEN_RDO_NAMESPACE
 class File
 {
 public:
+	static rbool   create		  (CREF(tstring) name);
+	static rbool   create		  (CREF(tstring) name, CREF(tstring) content);
 	static rbool   exist          (CREF(tstring) name);
 	static rbool   read_only      (CREF(tstring) name);
 	static rbool   unlink         (CREF(tstring) name);

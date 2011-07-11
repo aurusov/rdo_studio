@@ -15,8 +15,10 @@
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdotime.h"
 #include "rdo_common/test/rdo_common_test/resource.h"
+
+#include <config-tiles.h>
 // ===============================================================================
- 
+
 #define BOOST_TEST_MODULE test_rdo_common
 #include <boost/test/included/unit_test.hpp>
 
@@ -27,25 +29,32 @@ BOOST_AUTO_TEST_CASE(test_rdo_common_1)
 	tstring str1 = rdo::format(IDS_STRING101);
 	tstring str2 = rdo::format(IDS_STRING102, 22);
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
+}
 
-	rbool exist     = rdo::File::exist    (_T("Копия main.cpp"));
-	rbool read_only = rdo::File::read_only(_T("Копия main.cpp"));
-	rbool unlink    = rdo::File::unlink   (_T("Копия main.cpp"));
+BOOST_AUTO_TEST_CASE(test_create_file)
+{
+	BOOST_CHECK(rdo::File::create(_T(tstring(resource_directory) + tstring(test_file_name))));
+}
 
-	rdo::Time time     = rdo::Time::local();
-	tstring   time_str = time.asString();
+BOOST_AUTO_TEST_CASE(test_exist_file)
+{
+	BOOST_CHECK(rdo::File::exist(_T(tstring(resource_directory) + tstring(test_file_name))));
+}
 
-	int i = 1;
+BOOST_AUTO_TEST_CASE(test_read_only_file)
+{
+	BOOST_CHECK(!rdo::File::read_only(_T(tstring(resource_directory) + tstring(test_file_name))));
+}
+
+BOOST_AUTO_TEST_CASE(test_remove_file)
+{
+	BOOST_CHECK(rdo::File::unlink(_T(tstring(resource_directory) + tstring(test_file_name))));
 }
 
 BOOST_AUTO_TEST_CASE(test_rdo_common_2)
 {
-	BOOST_REQUIRE(false);
-}
-
-BOOST_AUTO_TEST_CASE(test_rdo_common_3)
-{
-	BOOST_ERROR(false);
+	rdo::Time time1     = rdo::Time::local();
+	tstring   time_str = time1.asString();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

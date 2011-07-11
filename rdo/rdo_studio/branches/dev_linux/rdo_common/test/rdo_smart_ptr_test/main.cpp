@@ -110,12 +110,12 @@ DECLARE_POINTER(MyClass4)
 
 BOOST_AUTO_TEST_SUITE(test_rdo_smart_prt)
 
-BOOST_AUTO_TEST_CASE(creating_a_factory)
+BOOST_AUTO_TEST_CASE(test_creating_a_factory)
 {
 	BOOST_CHECK(rdo::Factory<MyClass>::create());
 }
 
-BOOST_AUTO_TEST_CASE(default_constructor)
+BOOST_AUTO_TEST_CASE(test_default_constructor)
 {
 	LPMyClass pMyClass = rdo::Factory<MyClass>::create();
 	BOOST_CHECK(pMyClass->m_i == MyClass::DAFAUL_VALUE);
@@ -143,13 +143,13 @@ BOOST_AUTO_TEST_CASE(test_copy_constructor)
 	BOOST_CHECK(pMyClass_1->m_i != pMyClass_3->m_i);
 }
 
-BOOST_AUTO_TEST_CASE(cast_pointer_to_rbool)
+BOOST_AUTO_TEST_CASE(test_cast_pointer_to_rbool)
 {
 	LPMyClass pMyClass2 = rdo::Factory<MyClass>::create();
 	BOOST_CHECK((rbool)pMyClass2);
 }
 
-BOOST_AUTO_TEST_CASE(reset_the_pointer)
+BOOST_AUTO_TEST_CASE(test_reset_the_pointer)
 {
 	LPMyClass pMyClass_1;
 	LPMyClass pMyClass_2 = rdo::Factory<MyClass>::create();
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(reset_the_pointer)
 	BOOST_CHECK(pMyClass_1 == pMyClass_3 && pMyClass_1 != NULL);
 }
 
-BOOST_AUTO_TEST_CASE(creating_a_pointer_type_not_just_from_the_factory)
+BOOST_AUTO_TEST_CASE(test_creating_a_pointer_type_not_just_from_the_factory)
 {
 	PTR(MyClass3) pMyClass3_1 = new MyClass3();
 	BOOST_CHECK(pMyClass3_1);
@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(creating_a_pointer_type_not_just_from_the_factory)
 	BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
 }
 
-BOOST_AUTO_TEST_CASE(create_a_pointer_to_this)
+BOOST_AUTO_TEST_CASE(test_create_a_pointer_to_this)
 {
 	PTR(MyClass3) pMyClass3_1 = new MyClass3();
 	LPMyClass3 pMyClass3_2 = pMyClass3_1->returnThis();
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(create_a_pointer_to_this)
 	BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
 }
 
-BOOST_AUTO_TEST_CASE(casting_to_an_ancestor)
+BOOST_AUTO_TEST_CASE(test_casting_to_an_ancestor)
 {
 	// TODO
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(casting_to_an_ancestor)
 	pMyClass_1->m_i = 11;
 }
 
-BOOST_AUTO_TEST_CASE(casting_to_the_interface)
+BOOST_AUTO_TEST_CASE(test_casting_to_the_interface)
 {
 	// TODO
 	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(casting_to_the_interface)
 	pMyClass_21 = LPIMyClass21();
 }
 
-BOOST_AUTO_TEST_CASE(Casting_to_the_interface_through_the_child)
+BOOST_AUTO_TEST_CASE(test_casting_to_the_interface_through_the_child)
 {
 	// TODO
 	LPMyClass4 pMyClass_4 = rdo::Factory<MyClass4>::create();
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(Casting_to_the_interface_through_the_child)
 	pMyClass_21 = LPIMyClass21();
 }
 
-BOOST_AUTO_TEST_CASE(comparing_pointers)
+BOOST_AUTO_TEST_CASE(test_comparing_pointers)
 {
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
 	LPMyClass  pMyClass_2 = pMyClass_1.object_static_cast<MyClass>();
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(comparing_pointers)
 	BOOST_CHECK(!(pMyClass_1 == pMyClass_3));
 }
 
-BOOST_AUTO_TEST_CASE(comparison_of_the_values)
+BOOST_AUTO_TEST_CASE(test_comparison_of_the_values)
 {
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
 	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
