@@ -71,7 +71,7 @@ private:
 	virtual ~RDORTPResType();
 
 	rdoRuntime::LPIResourceType m_pRuntimeResType;
-	const rsint                 m_number;
+	const ruint                 m_number;
 	const rbool                 m_permanent;
 	ParamList                   m_params;
 };

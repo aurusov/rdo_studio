@@ -9,10 +9,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceType
 // ----------------------------------------------------------------------------
-RDOResourceType::RDOResourceType(rsint number)
-	: RDORuntimeObject  (      )
-	, RDOTraceableObject(false )
-	, m_id              (number)
+RDOResourceType::RDOResourceType(ruint number)
+	: RDORuntimeObject  (                                        )
+	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {}
 
 RDOResourceType::~RDOResourceType()
@@ -30,10 +29,9 @@ LPRDOResource RDOResourceType::createRes(CREF(LPRDORuntime) pRuntime, CREF(std::
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeTransact
 // ----------------------------------------------------------------------------
-RDOResourceTypeTransact::RDOResourceTypeTransact(rsint number)
-	: RDORuntimeObject  (      )
-	, RDOTraceableObject(false )
-	, m_id              (number)
+RDOResourceTypeTransact::RDOResourceTypeTransact(ruint number)
+	: RDORuntimeObject  (                                        )
+	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {}
 
 RDOResourceTypeTransact::~RDOResourceTypeTransact()
@@ -51,10 +49,9 @@ LPRDOResource RDOResourceTypeTransact::createRes(CREF(LPRDORuntime) pRuntime, CR
 // ----------------------------------------------------------------------------
 // ---------- RDOResourceTypeProccess
 // ----------------------------------------------------------------------------
-RDOResourceTypeProccess::RDOResourceTypeProccess(rsint number)
-	: RDORuntimeObject  (      )
-	, RDOTraceableObject(false )
-	, m_id              (number)
+RDOResourceTypeProccess::RDOResourceTypeProccess(ruint number)
+	: RDORuntimeObject  (                                        )
+	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {}
 
 RDOResourceTypeProccess::~RDOResourceTypeProccess()
