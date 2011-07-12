@@ -105,14 +105,14 @@ public:
 		RandGenerator( seed )
 	{
 	}
-	double next( double from, double mean, double to )
+	double next( double from, double top, double to )
 	{
 		double result;
-		if (u01() > (mean-from)/(to-from))
-			result = -(to-mean)*(sqrt(u01()) - 1);
+		if (u01() > (top-from)/(to-from))
+			result = -(to-top)*(sqrt(u01()) - 1);
 		else
-			result = (mean-from)*(sqrt(u01()) - 1);
-		return result + mean;
+			result = (top-from)*(sqrt(u01()) - 1);
+		return result + top;
 	}
 };
 
