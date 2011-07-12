@@ -405,16 +405,13 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 
 	error().clear();
 
-	BOOST_AUTO(fileIt, fileList.begin());
-	boost::filesystem::path fullPath(fileIt->second);
-	fullPath.remove_filename();
+	boost::filesystem::path fullPath = boost::filesystem::path(fileList.begin()->second).parent_path();
 
 	try
 	{
 		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
 		std::stringstream backupDirName;
-		backupDirName << fullPath.directory_string()
-		              << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
 		                 % time.date().year ()
 		                 % time.date().month()
 		                 % time.date().day  ()
@@ -422,7 +419,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 		                 % time.time_of_day().minutes()
 		                 % time.time_of_day().seconds();
 
-		boost::filesystem::path backupPath(backupDirName.str());
+		boost::filesystem::path backupPath = fullPath / backupDirName.str();
 
 		try
 		{
@@ -431,12 +428,12 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 				YYLTYPE pos;
 				pos.m_last_line = 0;
 				pos.m_last_pos  = 0;
-				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.directory_string().c_str()));
+				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.c_str()));
 			}
 		}
-		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
+		catch (CREF(boost::system::error_code) ex)
 		{
-			tstring message = ex.what();
+			tstring message = ex.message();
 			if (message.find(_T("boost")) == 0)
 			{
 				BOOST_AUTO(pos, message.find(_T(' ')));
@@ -448,15 +445,15 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			YYLTYPE pos;
 			pos.m_last_line = 0;
 			pos.m_last_pos  = 0;
-			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.directory_string().c_str(), message.c_str()));
+			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.c_str(), message.c_str()));
 		}
 
 		STL_FOR_ALL(fileList, it)
 		{
 			boost::filesystem::path from(it->second);
-			boost::filesystem::path to  (backupPath.directory_string() + boost::filesystem::slash<boost::filesystem::path>::value + from.filename());
+			boost::filesystem::path to  (backupPath / from.filename());
 			boost::filesystem::rename(from, to);
-			it->second = to.file_string();
+			it->second = to.string();
 		}
 	}
 	catch (REF(rdoConverter::RDOSyntaxException))
@@ -472,7 +469,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 		return CNV_ERROR;
 	}
 
-	m_pDocument->create(fullPath.directory_string(), modelName);
+	m_pDocument->create(fullPath.string(), modelName);
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
@@ -494,7 +491,9 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 	m_pDocument->convert();
 	m_pDocument->close();
 
-	if (!createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str())))
+	boost::filesystem::path rdoxFile(fullPath / modelName);
+	rdoxFile.replace_extension(_T(".rdox"));
+	if (!createRDOX(rdoxFile.string()))
 	{
 		return CNV_ERROR;
 	}
