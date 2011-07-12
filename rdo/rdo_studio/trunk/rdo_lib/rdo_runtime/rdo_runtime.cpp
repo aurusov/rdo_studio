@@ -271,6 +271,7 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 		allResourcesByID.at(res_id) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		allResourcesByTime.remove(res);
+		onResourceErase(res);
 	}
 }
 
