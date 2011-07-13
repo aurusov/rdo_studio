@@ -184,15 +184,15 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 	switch (pattern()->getType())
 	{
 	case RDOPATPattern::PT_Rule:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Operation:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternOperation)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Keyboard:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	default:
@@ -365,7 +365,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	m_pActivity = F(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime()), true, name());
+	m_pActivity = F(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>(), true, name());
 	ASSERT(m_pActivity);
 }
 

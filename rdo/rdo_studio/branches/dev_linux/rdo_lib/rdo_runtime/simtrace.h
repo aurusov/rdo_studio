@@ -16,15 +16,18 @@ class RDOEvent;
 class RDORule;
 class RDOOperation;
 
-class RDOSimulatorTrace: public RDOSimulator
+PREDECLARE_POINTER(RDOSimulatorTrace);
+
+CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
 {
+DECLARE_FACTORY(RDOSimulatorTrace)
 public:
 	enum { UNDEFINE_TIME = -1 };
 
 	virtual void rdoInit();
 
 	RDOTrace* getTracer() const            { return m_tracer;                }
-	bool      canTrace() const             { return getTracer()->canTrace(); }
+	rbool     canTrace() const             { return getTracer()->canTrace(); }
 
 	double getTraceStartTime() const       { return traceStartTime;          }
 	void setTraceStartTime( double value ) { traceStartTime = value;         }
@@ -90,7 +93,7 @@ protected:
 	}
 	virtual ~RDOSimulatorTrace();
 
-	virtual void operator= (const RDOSimulatorTrace& other);
+	void copyFrom(CREF(LPRDOSimulatorTrace) pOther);
 
 	RDOTrace* m_tracer;
 
@@ -128,7 +131,7 @@ private:
 	ruint memory_current;
 	ruint memory_max;
 
-	bool timeForTrace() const
+	rbool timeForTrace() const
 	{
 		if ( getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime() ) return false;
 		if ( getTraceEndTime()   != UNDEFINE_TIME && getTraceEndTime()   < getCurrentTime() ) return false;

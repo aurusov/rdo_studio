@@ -33,27 +33,27 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivity( RDORuntimeParent* parent, bool trace, CREF(tstring) name ):
+	RDOActivity(rbool trace, CREF(tstring) name ):
 		RDOTraceableObject( trace ),
 		m_oprName( name )
 	{}
 	virtual ~RDOActivity() {}
 
-	std::string               m_oprName;
-	std::list<LPRDOResource> m_relevantResources; // Список релевантных ресурсов
+	tstring                   m_oprName;
+	std::list<LPRDOResource>  m_relevantResources; // Список релевантных ресурсов
 	std::vector< int >        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector<LPRDOCalc>    m_paramsCalcs;
 
-	void setPatternParameters( RDOSimulator* sim );
-	void getRelevantResources( RDOSimulator* sim, std::list<LPRDOResource>& rel_res_list );
-	void incrementRelevantResourceReference( RDOSimulator* sim );
-	void decrementRelevantResourceReference( RDOSimulator* sim );
+	void setPatternParameters( CREF(LPRDORuntime) pRuntime );
+	void getRelevantResources( CREF(LPRDORuntime) pRuntime, std::list<LPRDOResource>& rel_res_list );
+	void incrementRelevantResourceReference( CREF(LPRDORuntime) pRuntime );
+	void decrementRelevantResourceReference( CREF(LPRDORuntime) pRuntime );
 
-	void updateRelRes(RDOSimulator* sim)
+	void updateRelRes(CREF(LPRDORuntime) pRuntime)
 	{
-		getRelevantResources(sim, m_relevantResources);
+		getRelevantResources(pRuntime, m_relevantResources);
 	}
-	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResource::ConvertStatus >& status_list );
+	void updateConvertStatus( CREF(LPRDORuntime) pRuntime, const std::vector< RDOResource::ConvertStatus >& status_list );
 
 private:
 	DECLARE_IActivity;
@@ -73,14 +73,14 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivityPattern( RDORuntimeParent* parent, T* pattern, bool trace, CREF(tstring) name ):
-		RDOActivity( parent, trace, name ),
-		m_pattern( pattern )
-	{
-	}
-	virtual ~RDOActivityPattern() {}
+	RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, rbool trace, CREF(tstring) name )
+		: RDOActivity(trace, name )
+		, m_pPattern (pPattern    )
+	{}
+	virtual ~RDOActivityPattern()
+	{}
 
-	T* m_pattern;
+	rdo::intrusive_ptr<T> m_pPattern;
 
 private:
 	void writeModelStructure(REF(std::ostream) stream) const
@@ -89,7 +89,7 @@ private:
 	}
 	CREF(tstring) tracePatternId() const
 	{
-		return m_pattern->traceId();
+		return m_pPattern->traceId();
 	}
 };
 

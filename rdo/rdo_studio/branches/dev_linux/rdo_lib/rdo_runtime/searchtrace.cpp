@@ -7,93 +7,90 @@
 namespace rdoRuntime
 {
 
-void RDODPTSearchTrace::onSearchBegin( RDOSimulator* sim )
+void RDODPTSearchTrace::onSearchBegin( CREF(LPRDORuntime) pRuntime )
 {
-	RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;
-	if ( traceFlag != DPT_no_trace ) {
-		simTr->getTracer()->writeSearchBegin(simTr->getCurrentTime(), traceId());
+	if ( traceFlag != DPT_no_trace )
+	{
+		pRuntime->getTracer()->writeSearchBegin(pRuntime->getCurrentTime(), traceId());
 	}
-	if ( traceFlag == DPT_trace_tops || traceFlag == DPT_trace_all ) {
-		simTr->getTracer()->writeString( "STN 1 0 0 0 -1 -1 0 0" );
+	if ( traceFlag == DPT_trace_tops || traceFlag == DPT_trace_all )
+	{
+		pRuntime->getTracer()->writeString( "STN 1 0 0 0 -1 -1 0 0" );
 	}
 	calc_cnt++;
 }
 
-void RDODPTSearchTrace::onSearchDecisionHeader( RDOSimulator* sim )
+void RDODPTSearchTrace::onSearchDecisionHeader( CREF(LPRDORuntime) pRuntime )
 {
-	if ( traceFlag != DPT_no_trace ) {
-		RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;
-		simTr->getTracer()->writeSearchDecisionHeader();
+	if ( traceFlag != DPT_no_trace )
+	{
+		pRuntime->getTracer()->writeSearchDecisionHeader();
 	}
 }
 
-void RDODPTSearchTrace::onSearchDecision( RDOSimulator* sim, TreeNode* node )
+void RDODPTSearchTrace::onSearchDecision( CREF(LPRDORuntime) pRuntime, TreeNode* node )
 {
-	if ( traceFlag != DPT_no_trace ) {
-		RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;
-		simTr->getTracer()->writeSearchDecision( sim, node );
+	if ( traceFlag != DPT_no_trace )
+	{
+		pRuntime->getTracer()->writeSearchDecision( pRuntime, node );
 	}
 }
 
-void RDODPTSearchTrace::onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )
+void RDODPTSearchTrace::onSearchResultSuccess( CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot )
 {
-	RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;
-	if ( traceFlag != DPT_no_trace ) {
-		simTr->getTracer()->writeSearchResult( 'S', simTr, treeRoot );
+	if ( traceFlag != DPT_no_trace )
+	{
+		pRuntime->getTracer()->writeSearchResult( 'S', pRuntime, treeRoot );
 	}
 	calc_res_found_cnt++;
 	calc_mems.push_back( treeRoot->m_sizeof_dpt );
-	simTr->memory_insert( treeRoot->m_sizeof_dpt );
+	pRuntime->memory_insert( treeRoot->m_sizeof_dpt );
 }
 
-void RDODPTSearchTrace::onSearchResultNotFound(RDOSimulator *sim, TreeRoot *treeRoot)
+void RDODPTSearchTrace::onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, TreeRoot *treeRoot)
 {
-	if ( traceFlag != DPT_no_trace ) {
-		RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-		simTr->getTracer()->writeSearchResult( 'N', simTr, treeRoot );
+	if ( traceFlag != DPT_no_trace )
+	{
+		pRuntime->getTracer()->writeSearchResult( 'N', pRuntime, treeRoot );
 	}
 }
 
-void TreeNodeTrace::onSearchOpenNode( RDOSimulator* sim )
+void TreeNodeTrace::onSearchOpenNode( CREF(LPRDORuntime) pRuntime )
 {
 	RDODPTSearchTrace* dpTrace = (RDODPTSearchTrace *)m_root->m_dp;
-	if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all ) {
-		RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
-		simTr->getTracer()->writeSearchOpenNode( m_number,
+	if ( dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all )
+	{
+		pRuntime->getTracer()->writeSearchOpenNode( m_number,
 			(m_parent ? m_parent->m_number : 0 ),
 			m_costPath,
 			m_costRest );
 	}
 }
 
-void TreeNodeTrace::onSearchNodeInfoDeleted( RDOSimulator* sim )
+void TreeNodeTrace::onSearchNodeInfoDeleted( CREF(LPRDORuntime) pRuntime )
 {
-	RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
-	simTr->getTracer()->writeSearchNodeInfo( 'D', this );
+	pRuntime->getTracer()->writeSearchNodeInfo( 'D', this );
 }
 
-void TreeNodeTrace::onSearchNodeInfoReplaced( RDOSimulator* sim )
+void TreeNodeTrace::onSearchNodeInfoReplaced( CREF(LPRDORuntime) pRuntime )
 {
-   RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
-   simTr->getTracer()->writeSearchNodeInfo( 'R', this ); // must be 'R'
+   pRuntime->getTracer()->writeSearchNodeInfo( 'R', this ); // must be 'R'
 }
 
-void TreeNodeTrace::onSearchNodeInfoNew( RDOSimulator* sim )
+void TreeNodeTrace::onSearchNodeInfoNew( CREF(LPRDORuntime) pRuntime )
 {
-   RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
-   simTr->getTracer()->writeSearchNodeInfo( 'N', this );
+   pRuntime->getTracer()->writeSearchNodeInfo( 'N', this );
 }
-
 
 TreeNode* TreeNodeTrace::createChildTreeNode()
 {
 	m_root->m_sizeof_dpt += sizeof( TreeNode );
-	return new TreeNodeTrace( m_childSim, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber() );
+	return new TreeNodeTrace( m_pChildRuntime, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber() );
 }
 
-void TreeRootTrace::createRootTreeNode( RDOSimulator* sim )
+void TreeRootTrace::createRootTreeNode( CREF(LPRDORuntime) pRuntime )
 {
-	m_rootNode = new TreeNodeTrace( sim, NULL, this, NULL, 0, getNewNodeNumber() );
+	m_rootNode = new TreeNodeTrace( pRuntime, NULL, this, NULL, 0, getNewNodeNumber() );
 	m_rootNode->m_costRule = 0;
 	m_rootNode->m_costPath = 0;
 	m_rootNode->m_costRest = 0;
@@ -101,10 +98,10 @@ void TreeRootTrace::createRootTreeNode( RDOSimulator* sim )
 	m_sizeof_dpt += sizeof( TreeNodeTrace ) + sizeof( void* );
 }
 
-TreeRoot* RDODPTSearchTrace::createTreeRoot( RDOSimulator* sim )
+TreeRoot* RDODPTSearchTrace::createTreeRoot( CREF(LPRDORuntime) pRuntime )
 {
-	TreeRootTrace* root = new TreeRootTrace( sim, this );
-	root->m_sizeof_dpt = sizeof(TreeRootTrace) + sim->getSizeofSim();
+	TreeRootTrace* root = new TreeRootTrace( pRuntime, this );
+	root->m_sizeof_dpt = sizeof(TreeRootTrace) + pRuntime->getSizeofSim();
 	return root;
 }
 

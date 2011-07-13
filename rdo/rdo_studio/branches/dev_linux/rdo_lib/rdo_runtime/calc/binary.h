@@ -56,7 +56,7 @@ protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 private:
-	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -25,11 +25,11 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class ILogic
 {
 public:
-	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim       ) = 0;
+	virtual void init           (CREF(rdoRuntime::LPRDORuntime) pRuntime  ) = 0;
 	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition) = 0;
 };
-#define DECLARE_ILogic \
-	virtual void init           (PTR (rdoRuntime::RDOSimulator) sim       ); \
+#define DECLARE_ILogic                                                       \
+	virtual void init           (CREF(rdoRuntime::LPRDORuntime) pRuntime  ); \
 	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition);
 
 class IBaseOperationContainer

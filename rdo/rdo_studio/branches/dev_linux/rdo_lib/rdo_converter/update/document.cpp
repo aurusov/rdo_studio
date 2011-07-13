@@ -10,6 +10,7 @@
 // ====================================================================== PCH
 #include "rdo_lib/rdo_converter/pch.h"
 // ====================================================================== INCLUDES
+#include <boost/filesystem.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_converter/update/document.h"
 // ===============================================================================
@@ -163,7 +164,9 @@ tstring Document::getName(TypeOut typeOut) const
 	default: NEVER_REACH_HERE;
 	}
 
-	return rdo::format(_T("%s%s.%s"), m_filePath.c_str(), m_modelName.c_str(), extention.c_str());
+	boost::filesystem::path fileName(boost::filesystem::path(m_filePath) / m_modelName);
+	fileName.replace_extension(rdo::format(_T(".%s"), extention.c_str()));
+	return fileName.string();
 }
 
 Document::LPMemoryStream Document::getMemoryStream(Type type)

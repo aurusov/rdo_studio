@@ -248,8 +248,6 @@ planning                       return(RDO_Planning);
 Planning                       return(RDO_Planning);
 stopping                       return(RDO_Stopping);
 Stopping                       return(RDO_Stopping);
-stop                           return(RDO_Stop);
-Stop                           return(RDO_Stop);
 Exist                          return(RDO_Exist);
 exist                          return(RDO_Exist);
 Not_Exist                      return(RDO_Not_Exist);

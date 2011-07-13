@@ -142,8 +142,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 %token RDO_WatchStart

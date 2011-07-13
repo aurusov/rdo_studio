@@ -11,8 +11,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOSimulator;
-class RDOSimulatorTrace;
 class TreeNodeTrace;
 class RDOEvent;
 class RDORule;
@@ -23,6 +21,7 @@ class RDOPokazTrace;
 class TreeNode;
 class TreeRoot;
 PREDECLARE_POINTER(RDOResource);
+PREDECLARE_POINTER(RDORuntime);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEndL - Рассылает броадкастом строку трассировки
@@ -51,47 +50,47 @@ public:
 	RDOTrace(): m_isNullTracer( true ), m_canWriteToStream( false ) {}
 	virtual ~RDOTrace() {}
 
-	bool canTrace() const { return !isNull() && canWrite();   }
+	rbool canTrace() const { return !isNull() && canWrite();   }
 
-	void startWriting()   { m_canWriteToStream = true;        }
-	void stopWriting()    { m_canWriteToStream = false;       }
-	bool canWrite() const { return m_canWriteToStream;        }
-	bool isNull() const   { return m_isNullTracer;            }
+	void  startWriting()   { m_canWriteToStream = true;        }
+	void  stopWriting()    { m_canWriteToStream = false;       }
+	rbool canWrite() const { return m_canWriteToStream;        }
+	rbool isNull() const   { return m_isNullTracer;            }
 
 	// Search in tree
-	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
+	virtual void writeSearchBegin(double currentTime, tstring decisionPointId);
 	virtual void writeSearchDecisionHeader();
-	virtual void writeSearchDecision(RDOSimulator *sim, TreeNode *node);
-	virtual void writeString(std::string);
+	virtual void writeSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode *node);
+	virtual void writeString(tstring);
 	virtual void writeSearchOpenNode(int nodeCount, int parentCount, double pathCost, double restCost);
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
-	virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
+	virtual void writeSearchResult(char letter, CREF(LPRDORuntime) pRuntime, TreeRoot *treeRoot);
 
-	virtual void writeEvent              (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
-	virtual void writeRule               (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
-	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
-	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, PTR(RDOSimulatorTrace) sim);
+	virtual void writeEvent              (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
+	virtual void writeRule               (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
+	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
+	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
 
-	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
-	virtual void writeModelBegin(RDOSimulatorTrace *sim);
-	virtual void writeTraceEnd(RDOSimulatorTrace *sim);
-	virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
+	virtual void writeTraceBegin(CREF(LPRDORuntime) pRuntime);
+	virtual void writeModelBegin(CREF(LPRDORuntime) pRuntime);
+	virtual void writeTraceEnd  (CREF(LPRDORuntime) pRuntime);
+	virtual void writeStatus    (CREF(LPRDORuntime) pRuntime, char *status);
 
-	virtual void writePermanentResources(PTR(RDOSimulatorTrace) sim, CREF(std::list<LPRDOResource>) res_perm);
+	virtual void writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm);
 
-	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< LPRDOResource >& rel_res_list );
+	tstring traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, const std::list< LPRDOResource >& rel_res_list );
 
-	virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
+	virtual void writePokaz(CREF(LPRDORuntime) pRuntime, RDOPokazTrace *pok);
 
 public:
 	virtual std::ostream& getOStream() { return m_emptyOut; }
 	virtual RDOEndL&      getEOL()     { return m_emptyEndL;}
 
 protected:
-	bool          m_isNullTracer;
+	rbool         m_isNullTracer;
 
 private:
-	bool          m_canWriteToStream;
+	rbool         m_canWriteToStream;
 	std::ofstream m_emptyOut;
 	RDOEndL       m_emptyEndL;
 };
@@ -122,7 +121,7 @@ public:
 		m_str_id = rdo::toString(str_id);
 	}
 
-	REF(std::string) traceId() const
+	REF(tstring) traceId() const
 	{
 		if (m_str_id.empty())
 		{
@@ -132,7 +131,7 @@ public:
 	}
 
 protected:
-	RDOTraceableObject(bool trace, ruint id = NONE, tstring str = _T(""))
+	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = _T(""))
 		: m_trace (trace)
 		, m_id    (id   )
 		, m_str_id(str  )
@@ -141,15 +140,15 @@ protected:
 	{}
 
 private:
-	bool                m_trace;
+	rbool               m_trace;
 	ruint               m_id;
-	mutable std::string m_str_id;
+	mutable tstring m_str_id;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPokazTrace
 // ----------------------------------------------------------------------------
-class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue, public RDORuntimeContainer
+class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue
 {
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOTraceableObject)
@@ -157,10 +156,11 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	RDOPokazTrace( RDORuntime* runtime, bool trace );
+	RDOPokazTrace(CREF(LPRDORuntime) pRuntime, rbool trace);
 
 protected:
-	rbool m_wasChanged;
+	LPRDORuntime m_pRuntime;
+	rbool        m_wasChanged;
 
 	DECLARE_IPokazTrace;
 };

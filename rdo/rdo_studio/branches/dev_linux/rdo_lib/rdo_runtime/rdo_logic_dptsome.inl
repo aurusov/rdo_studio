@@ -17,10 +17,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSome
 // ----------------------------------------------------------------------------
-inline RDODPTSome::RDODPTSome(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
-	: RDOLogicSimple(sim, parent)
+inline RDODPTSome::RDODPTSome(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent)
+	: RDOLogicSimple(pRuntime, parent)
 {
-	static_cast<RDOSimulatorTrace*>(sim)->getFreeDPTId();
+	pRuntime->getFreeDPTId();
 }
 
 inline RDODPTSome::~RDODPTSome()

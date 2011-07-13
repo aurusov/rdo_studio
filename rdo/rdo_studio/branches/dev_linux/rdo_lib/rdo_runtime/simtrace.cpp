@@ -19,10 +19,12 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 	}
 }
 
-void RDOSimulatorTrace::operator= (const RDOSimulatorTrace& other)
+void RDOSimulatorTrace::copyFrom(CREF(LPRDOSimulatorTrace) pOther)
 {
-	freeResourcesIds = other.freeResourcesIds;
-	maxResourcesId   = other.maxResourcesId;
+	ASSERT(pOther);
+
+	freeResourcesIds = pOther->freeResourcesIds;
+	maxResourcesId   = pOther->maxResourcesId;
 }
 
 void RDOSimulatorTrace::rdoInit()
@@ -98,9 +100,10 @@ void RDOSimulatorTrace::preProcess()
 {
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
-	getTracer()->writeTraceBegin(this);
-	getTracer()->writePermanentResources(this, getResourcesBeforeSim());
-	getTracer()->writeModelBegin(this);
+	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	getTracer()->writeTraceBegin(pRuntime);
+	getTracer()->writePermanentResources(pRuntime, getResourcesBeforeSim());
+	getTracer()->writeModelBegin(pRuntime);
 	getTracer()->startWriting();
 	onCheckPokaz();
 	onAfterCheckPokaz();
@@ -108,7 +111,8 @@ void RDOSimulatorTrace::preProcess()
 
 void RDOSimulatorTrace::postProcess()
 {
-	getTracer()->writeTraceEnd( this );
+	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	getTracer()->writeTraceEnd(pRuntime);
 //	getTracer()->stopWriting();
 }
 

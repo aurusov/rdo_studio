@@ -23,14 +23,14 @@
 class IPokaz
 {
 public:
-	virtual void resetPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator) = 0;
-	virtual void checkPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator) = 0;
-	virtual void calcStat  (PTR(rdoRuntime::RDOSimulator) pSimulator, REF(std::ostream) stream) = 0;
+	virtual void resetPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
+	virtual void checkPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
+	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
 };
-#define DECLARE_IPokaz                                                 \
-	virtual void resetPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator); \
-	virtual void checkPokaz(PTR(rdoRuntime::RDOSimulator) pSimulator); \
-	virtual void calcStat  (PTR(rdoRuntime::RDOSimulator) pSimulator, REF(std::ostream) stream);
+#define DECLARE_IPokaz                                               \
+	virtual void resetPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
+	virtual void checkPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
+	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream);
 
 // ----------------------------------------------------------------------------
 // ---------- IPokazWatchQuant

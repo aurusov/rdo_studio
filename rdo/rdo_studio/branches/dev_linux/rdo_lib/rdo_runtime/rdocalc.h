@@ -33,7 +33,7 @@ OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 DECLARE_FACTORY(RDOCalc)
 
 public:
-	REF(RDOValue) calcValue(PTR(RDORuntime) pRuntime);
+	REF(RDOValue) calcValue(CREF(LPRDORuntime) pRuntime);
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
 	{
@@ -46,12 +46,12 @@ protected:
 
 	RDOValue m_value;
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime) = 0;
+	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
 };
 
 #define DECALRE_ICalc \
 private:              \
-	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
 #define CALC_SUB(TYPE, PARENT) \
 PREDECLARE_POINTER(TYPE);      \
@@ -100,7 +100,7 @@ CALC_SUB(RDOCalcGetTempResParamFRM, RDOCalcGetResParam)
 DECLARE_FACTORY(RDOCalcGetTempResParamFRM)
 private:
 	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
+	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
 	virtual void notify(ruint message, PTR(void) param)
 	{
@@ -368,7 +368,7 @@ private: \
 	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
 		: RDOFunCalcGroup(nResType, pCondition) \
 	{} \
- 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime); \
+ 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime); \
 };
 
 DEFINE_CALC_GROUP( Exist     );
@@ -386,7 +386,7 @@ CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
 	mutable std::list<LPRDOResource> res_list;
-	void prepare(PTR(RDORuntime) sim);
+	void prepare(CREF(LPRDORuntime) pRuntime);
 
 private:
 	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition)
@@ -524,7 +524,7 @@ CALC(RDOCalcCreateNumberedResource)
 DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
 	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
 
 protected:
 	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
@@ -546,7 +546,7 @@ CALC(RDOCalcCreateProcessResource)
 DECLARE_FACTORY(RDOCalcCreateProcessResource)
 public:
 	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
 
 protected:
 	RDOCalcCreateProcessResource(rsint _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);

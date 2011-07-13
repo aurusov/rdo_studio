@@ -58,38 +58,38 @@ public:
 private:
 	function_type m_pFunction;
 
-	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime)
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		calc<F::arity>(pRuntime);
 		return m_value;
 	}
 
 	template <int paramCount>
-	FORCEINLINE void calc(PTR(RDORuntime) pRuntime);
+	FORCEINLINE void calc(CREF(LPRDORuntime) pRuntime);
 
 	template <>
-	FORCEINLINE void calc<1>(PTR(RDORuntime) pRuntime)
+	FORCEINLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
 	{
 		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
 	}
 
 	template <>
-	FORCEINLINE void calc<2>(PTR(RDORuntime) pRuntime)
+	FORCEINLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
 	{
 		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
 	}
 
 	template <class T>
-	FORCEINLINE T getParam(PTR(RDORuntime) pRuntime, ruint paramNumber);
+	FORCEINLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
 
 	template <>
-	FORCEINLINE double getParam<double>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	FORCEINLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getDouble();
 	}
 
 	template <>
-	FORCEINLINE int getParam<int>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	FORCEINLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getInt();
 	}

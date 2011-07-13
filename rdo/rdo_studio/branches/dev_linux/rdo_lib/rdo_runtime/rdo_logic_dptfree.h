@@ -30,7 +30,7 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTFree (RDOSimulator* sim);
+	RDODPTFree (CREF(LPRDORuntime) pRuntime);
 	virtual ~RDODPTFree();
 };
 

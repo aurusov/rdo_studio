@@ -5,6 +5,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_common/rdocommon.h"
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 
 #ifdef RDO_MT
 #include <afxwin.h>
@@ -15,21 +16,20 @@
 namespace rdoRuntime
 {
 
-class RDOSimulatorBase: public RDORuntimeParent
+OBJECT(RDOSimulatorBase)
 {
+DECLARE_FACTORY(RDOSimulatorBase)
 public:
 	// Публичные методы управления симулятором
-	virtual void rdoInit();
+	virtual void  rdoInit();
 	virtual rbool rdoNext();
-	virtual void rdoPostProcess();
+	virtual void  rdoPostProcess();
 
-	void setStartTime( double value )          { m_startTime = value;  }
-	double getCurrentTime() const              { return m_currentTime; }
-
-	
+	void   setStartTime  (double value) { m_startTime = value;  }
+	double getCurrentTime() const       { return m_currentTime; }
 
 	RunTimeMode getMode() const                { return m_mode;        }
-	void setMode( RunTimeMode _mode );
+	void        setMode(RunTimeMode _mode);
 
 	double getSpeed() const                    { return m_speed;       }
 	void setSpeed( double persent );

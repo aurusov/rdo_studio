@@ -56,8 +56,8 @@ private:
 class RDODPTActivityCompare
 {
 public:
-	RDODPTActivityCompare(PTR(RDORuntime) runtime)
-		: m_runtime(runtime)
+	RDODPTActivityCompare(CREF(LPRDORuntime) pRuntime)
+		: m_pRuntime(pRuntime)
 	{}
 	rbool operator() (CREF(LPIBaseOperation) opr1, CREF(LPIBaseOperation) opr2)
 	{
@@ -67,15 +67,15 @@ public:
 		{
 			LPRDOCalc prior1 = pattern1->getPrior();
 			LPRDOCalc prior2 = pattern2->getPrior();
-			RDOValue value1 = prior1 ? prior1->calcValue(m_runtime) : RDOValue(0.0);
-			RDOValue value2 = prior2 ? prior2->calcValue(m_runtime) : RDOValue(0.0);
+			RDOValue value1 = prior1 ? prior1->calcValue(m_pRuntime) : RDOValue(0.0);
+			RDOValue value2 = prior2 ? prior2->calcValue(m_pRuntime) : RDOValue(0.0);
 			return value1 > value2;
 		}
 		return false;
 	}
 
 private:
-	PTR(RDORuntime) m_runtime;
+	LPRDORuntime m_pRuntime;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -21,6 +21,7 @@
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 
+#include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/relres.h"
@@ -28,10 +29,6 @@
 
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
-
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDOPattern;
-CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -98,8 +95,16 @@ public:
 
 	typedef std::vector<LPRDORelevantResource> RelResList;
 
-	rbool                       isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
-	PTR(rdoRuntime::RDOPattern) getPatRuntime   () const { return m_pPatRuntime; }
+	rbool                          isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
+
+	CREF(rdoRuntime::LPRDOPattern) getPatRuntime   () const { return m_pPatRuntime; }
+	template<class T>
+	rdo::intrusive_ptr<T>          getPatRuntime   () const
+	{
+		rdo::intrusive_ptr<T> pPatRuntime = m_pPatRuntime.object_static_cast<T>();
+		ASSERT(pPatRuntime);
+		return pPatRuntime;
+	}
 
 	static tstring StatusToStr(rdoRuntime::RDOResource::ConvertStatus value);
 	rdoRuntime::RDOResource::ConvertStatus StrToStatus(CREF(tstring) value, CREF(YYLTYPE) convertor_pos);
@@ -140,7 +145,7 @@ protected:
 	virtual ~RDOPATPattern()
 	{}
 
-	PTR(rdoRuntime::RDOPattern) m_pPatRuntime;
+	rdoRuntime::LPRDOPattern m_pPatRuntime;
 
 	rdoRuntime::LPRDOCalc createRelRes   (rbool trace) const;
 	virtual void          addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);

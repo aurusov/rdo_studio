@@ -66,7 +66,7 @@ protected:
 	std::list<LPIPROCProcess>  m_child;
 
 private:
-	RDOPROCProcess(CREF(tstring) _name, PTR(RDOSimulator) sim);
+	RDOPROCProcess(CREF(tstring) _name, CREF(LPRDORuntime) pRuntime);
 	LPRDOResourceType            m_transactType;
 };
 
@@ -97,11 +97,11 @@ public:
 	}
 
 	void next();
-	virtual LPRDOResource clone(PTR(RDORuntime) runtime) const;
+	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
 
 
 private:
-	RDOPROCTransact(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
 	virtual ~RDOPROCTransact();
 
 	LPIPROCBlock       m_block;
@@ -118,14 +118,14 @@ friend class RDOPROCSeize;
 friend class RDOPROCRelease;
 
 public:
-	std::string whoAreYou() {return "procRes";	}
-	virtual LPRDOResource clone(PTR(RDORuntime) runtime) const;
+	tstring whoAreYou() {return "procRes";}
+	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
 
 protected:
 	std::list<LPRDOPROCTransact> transacts;
 
 private:
-	RDOPROCResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
 	virtual ~RDOPROCResource();
 };
 
@@ -141,7 +141,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	void calcNextTimeInterval( RDOSimulator* sim );
+	void calcNextTimeInterval( CREF(LPRDORuntime) pRuntime );
 
 private:
 	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, int maxTransCount=0)
@@ -184,7 +184,7 @@ protected:
 
 	parser_for_Queue  fromParser;
 	runtime_for_Queue forRes;
-	void _onStart( RDOSimulator* sim );
+	void _onStart( CREF(LPRDORuntime) pRuntime );
 };
 
 // ----------------------------------------------------------------------------
@@ -200,7 +200,7 @@ QUERY_INTERFACE_END
 
 public:
 	static int getDefaultValue()  { return 0; }
-	static std::string getQueueParamName(){ return "длина_очереди"; }
+	static tstring getQueueParamName(){ return "длина_очереди"; }
 
 private:
 	RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par)
@@ -223,7 +223,7 @@ QUERY_INTERFACE_END
 
 public:
 	static int getDefaultValue()  { return 0; }
-	static std::string getDepartParamName(){ return "длина_очереди"; }
+	static tstring getDepartParamName(){ return "длина_очереди"; }
 
 private:
 	RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par)
@@ -253,16 +253,16 @@ struct parser_for_Seize
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 public:
-	static std::string getStateParamName() {return "Состояние";}
-	static std::string getStateEnumFree()  {return "Свободен"; }
-	static std::string getStateEnumBuzy()  {return "Занят";    }
+	static tstring getStateParamName() {return "Состояние";}
+	static tstring getStateEnumFree()  {return "Свободен"; }
+	static tstring getStateEnumBuzy()  {return "Занят";    }
 
 protected:
 	RDOPROCBlockForSeize(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par);
 
 	std::vector < runtime_for_Seize > forRes;
 	std::vector < parser_for_Seize > fromParser;
-	void _onStart( RDOSimulator* sim );
+	void _onStart( CREF(LPRDORuntime) pRuntime );
 };
 
 // ----------------------------------------------------------------------------

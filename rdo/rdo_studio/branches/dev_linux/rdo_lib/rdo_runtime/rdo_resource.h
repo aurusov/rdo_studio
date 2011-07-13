@@ -24,7 +24,7 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject) AND INSTANCE_OF(RDORuntimeContainer)
+OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
 friend class RDOResourceType;
 public:
@@ -37,11 +37,11 @@ public:
 		CS_NoChange
 	};
 
-	RDOResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
-	RDOResource(PTR(RDORuntime) runtime, CREF(RDOResource) copy);
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
-	void setRuntime(RDORuntime* runtime);
+	void setRuntime(CREF(LPRDORuntime) pRuntime);
 
 	ConvertStatus         getState   (           ) const;
 	CREF(RDOValue)        getParam   (ruint index) const;
@@ -50,12 +50,12 @@ public:
 	CREF(LPIResourceType) getResType (           ) const;
 	ruint                 getType    (           ) const;
 	virtual ruint         paramsCount(           ) const;
-	LPRDOResource         clone      (PTR(RDORuntime) runtime) const;
+	LPRDOResource         clone      (CREF(LPRDORuntime) pRuntime) const;
 	CREF(std::vector<RDOValue>) getParams(       ) const;
 
 	void            makeTemporary       (rbool value                            );
 	void            setState            (ConvertStatus value                    );
-	tstring         traceResourceState  (char prefix, PTR(RDOSimulatorTrace) sim);
+	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
 	REF(RDOValue)   getParamRaw         (ruint index                            );
 	void            setParam            (ruint index, CREF(RDOValue) value      );
 	virtual void    appendParams        (const std::vector<RDOValue>::const_iterator& from_begin, const std::vector<RDOValue>::const_iterator& from_end);
@@ -64,11 +64,11 @@ public:
 	virtual tstring whoAreYou           ();
 	void            incRef              ();
 	void            decRef              ();
-	bool operator!= (REF(RDOResource) other);
+	rbool operator!= (REF(RDOResource) other);
 
 protected:
 	std::vector<RDOValue> m_params;
-	bool                  m_temporary;
+	rbool                 m_temporary;
 	ConvertStatus         m_state;
 
 private:

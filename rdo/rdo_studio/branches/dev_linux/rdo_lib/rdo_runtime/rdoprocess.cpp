@@ -21,8 +21,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, PTR(RDOSimulator) sim)
-	: RDOLogicSimple(sim)
+RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, CREF(LPRDORuntime) pRuntime)
+	: RDOLogicSimple(pRuntime, NULL)
 	, m_name  (name)
 {}
 
@@ -104,19 +104,19 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
-	: RDOResource(runtime, paramsCalcs, pResType, resID, typeID, trace, temporary)
+RDOPROCTransact::RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {
 	m_state     = RDOResource::CS_Create;
-	m_params.push_back(runtime->getCurrentTime());
+	m_params.push_back(pRuntime->getCurrentTime());
 }
 
 RDOPROCTransact::~RDOPROCTransact()
 {}
 
-LPRDOResource RDOPROCTransact::clone(PTR(RDORuntime) runtime) const
+LPRDOResource RDOPROCTransact::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(runtime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
+	return rdo::Factory<RDOResource>::create(pRuntime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
 void RDOPROCTransact::next()
@@ -127,16 +127,16 @@ void RDOPROCTransact::next()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(PTR(RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
-	: RDOResource(runtime, paramsCalcs, pResType, resID, typeID, trace, temporary)
+RDOPROCResource::RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {}
 
 RDOPROCResource::~RDOPROCResource()
 {}
 
-LPRDOResource RDOPROCResource::clone(PTR(RDORuntime) runtime) const
+LPRDOResource RDOPROCResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(runtime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
+	return rdo::Factory<RDOResource>::create(pRuntime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
 // ----------------------------------------------------------------------------
@@ -183,51 +183,57 @@ LPIPROCProcess RDOPROCBlock::getProcess() const
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-void RDOPROCGenerate::onStart( RDOSimulator* sim )
+void RDOPROCGenerate::onStart( CREF(LPRDORuntime) pRuntime )
 {
-	calcNextTimeInterval(sim);
+	calcNextTimeInterval(pRuntime);
 }
 
-bool RDOPROCGenerate::onCheckCondition( RDOSimulator* sim )
+rbool RDOPROCGenerate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
-	if(m_maxTransCount > 0)
+	if (m_maxTransCount > 0)
 	{
-		if(m_TransCount < m_maxTransCount)
-			return sim->getCurrentTime() >= timeNext ? true : false;
+		if (m_TransCount < m_maxTransCount)
+		{
+			return pRuntime->getCurrentTime() >= timeNext ? true : false;
+		}
 		else
+		{
 			return false;
+		}
 	}
 	else
-		return sim->getCurrentTime() >= timeNext ? true : false;
+	{
+		return pRuntime->getCurrentTime() >= timeNext ? true : false;
+	}
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(PTR(RDOSimulator) sim)
+IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-//	TRACE1( "%7.1f GENERATE\n", sim->getCurrentTime() );
+//	TRACE1( "%7.1f GENERATE\n", pRuntime->getCurrentTime() );
 	std::vector<RDOValue> transactParams(1);
-	transactParams.push_back(sim->getCurrentTime());
-	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(static_cast<PTR(RDORuntime)>(sim), transactParams, true, true).object_static_cast<RDOPROCTransact>();
+	transactParams.push_back(pRuntime->getCurrentTime());
+	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(pRuntime, transactParams, true, true).object_static_cast<RDOPROCTransact>();
 	ASSERT(pTransact);
 	LPIPROCBlock pBlock(this);
 	pTransact->setBlock(pBlock);
 	m_TransCount++;
-	PTR(RDOTrace) tracer = static_cast<RDORuntime*>(sim)->getTracer();
+	PTR(RDOTrace) tracer = pRuntime->getTracer();
 	if ( !tracer->isNull() ) 
 	{
-		tracer->getOStream() << pTransact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+		tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
 	}
 	pTransact->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
+void RDOPROCGenerate::calcNextTimeInterval( CREF(LPRDORuntime) pRuntime )
 {
-	sim->addTimePoint( timeNext = pTimeCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime(), m_process, this );
+	pRuntime->addTimePoint( timeNext = pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime(), m_process, this );
 }
 
-void                     RDOPROCGenerate::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCGenerate::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCGenerate::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCGenerate::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCGenerate::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForQueue
@@ -237,11 +243,11 @@ RDOPROCBlockForQueue::RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Qu
 	, fromParser  (From_Par)
 {}
 
-void RDOPROCBlockForQueue::_onStart(RDOSimulator* sim)
+void RDOPROCBlockForQueue::_onStart(CREF(LPRDORuntime) pRuntime)
 {
 	int Id_res = fromParser.Id_res;
 	int Id_param = fromParser.Id_param;
-	LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID(Id_res);
+	LPRDOResource res = pRuntime->getResourceByID(Id_res);
 	forRes.Id_param = Id_param;
 	forRes.rss = res.object_static_cast<RDOPROCResource>();
 	forRes.defaultValue = RDOValue( RDOPROCQueue::getDefaultValue() );
@@ -250,12 +256,12 @@ void RDOPROCBlockForQueue::_onStart(RDOSimulator* sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCQueue
 // ----------------------------------------------------------------------------
-void RDOPROCQueue::onStart(PTR(rdoRuntime::RDOSimulator) sim)
+void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
 {
-	_onStart(sim);
+	_onStart(pRuntime);
 }
 
-bool RDOPROCQueue::onCheckCondition( RDOSimulator* sim )
+rbool RDOPROCQueue::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -270,26 +276,26 @@ bool RDOPROCQueue::onCheckCondition( RDOSimulator* sim )
 	}
 }
 
-IBaseOperation::BOResult RDOPROCQueue::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCQueue::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
-	TRACE1(_T("%7.1f QUEUE\n"), sim->getCurrentTime());
+	TRACE1(_T("%7.1f QUEUE\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDOPROCQueue::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCQueue::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCQueue::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCQueue::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCQueue::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCQueue::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCDepart
 // ----------------------------------------------------------------------------
-void RDOPROCDepart::onStart(PTR(rdoRuntime::RDOSimulator) sim)
+void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
 {
-	_onStart(sim);
+	_onStart(pRuntime);
 }
 
-bool RDOPROCDepart::onCheckCondition( RDOSimulator* sim )
+rbool RDOPROCDepart::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -304,16 +310,16 @@ bool RDOPROCDepart::onCheckCondition( RDOSimulator* sim )
 	}
 }
 
-IBaseOperation::BOResult RDOPROCDepart::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCDepart::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
-	TRACE1(_T("%7.1f DEPART\n"), sim->getCurrentTime());
+	TRACE1(_T("%7.1f DEPART\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDOPROCDepart::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCDepart::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCDepart::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCDepart::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCDepart::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCDepart::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlockForSeizes
@@ -323,7 +329,7 @@ RDOPROCBlockForSeize::RDOPROCBlockForSeize(LPIPROCProcess process, std::vector <
 	, fromParser  (From_Par)
 {}
 
-void RDOPROCBlockForSeize::_onStart( RDOSimulator* sim )
+void RDOPROCBlockForSeize::_onStart( CREF(LPRDORuntime) pRuntime )
 {
 	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
@@ -333,7 +339,7 @@ void RDOPROCBlockForSeize::_onStart( RDOSimulator* sim )
 	{
 		int Id_res = (*it1).Id_res;
 		int Id_param = (*it1).Id_param;
-		LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID( Id_res );
+		LPRDOResource res = pRuntime->getResourceByID( Id_res );
 		runtime_for_Seize bbb;
 		bbb.Id_param = Id_param;
 		bbb.rss = res.object_static_cast<RDOPROCResource>();
@@ -347,12 +353,12 @@ void RDOPROCBlockForSeize::_onStart( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeizes
 // ----------------------------------------------------------------------------
-void RDOPROCSeize::onStart(PTR(rdoRuntime::RDOSimulator) sim)
+void RDOPROCSeize::onStart(CREF(LPRDORuntime) pRuntime)
 {
-	_onStart(sim);
+	_onStart(pRuntime);
 }
 
-bool RDOPROCSeize::onCheckCondition(PTR(RDOSimulator) sim)
+rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_transacts.empty())
 		return false;
@@ -368,11 +374,11 @@ bool RDOPROCSeize::onCheckCondition(PTR(RDOSimulator) sim)
 			if (idBlocksTransact != idResourcesTransact)
 				return false;
 
-			PTR(RDOTrace) tracer = static_cast<PTR(RDORuntime)>(sim)->getTracer();
+			PTR(RDOTrace) tracer = pRuntime->getTracer();
 			forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_buzy);
-			TRACE3(_T("%7.1f SEIZES-%d, resId = %d\n"), sim->getCurrentTime(), index, forRes[i].rss->getTraceID());
+			TRACE3(_T("%7.1f SEIZES-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 			if (!tracer->isNull())
-				tracer->getOStream() << forRes[i].rss->traceResourceState(_T('\0'), static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+				tracer->getOStream() << forRes[i].rss->traceResourceState(_T('\0'), pRuntime) << tracer->getEOL();
 
 			m_transacts.front()->setRes(forRes[i].rss);
 			return true;
@@ -381,7 +387,7 @@ bool RDOPROCSeize::onCheckCondition(PTR(RDOSimulator) sim)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCSeize::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCSeize::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
@@ -407,19 +413,19 @@ void RDOPROCSeize::transactGoOut( RDOPROCTransact* _transact )
 	RDOPROCBlockForSeize::transactGoOut( _transact );
 }
 
-void                     RDOPROCSeize::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCSeize::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCSeize::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCSeize::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCSeize::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCSeize::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCReleases
 // ----------------------------------------------------------------------------
-void RDOPROCRelease::onStart(PTR(rdoRuntime::RDOSimulator) sim)
+void RDOPROCRelease::onStart(CREF(LPRDORuntime) pRuntime)
 {
-	_onStart(sim);
+	_onStart(pRuntime);
 }
 
-bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
+rbool RDOPROCRelease::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -431,12 +437,12 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 				// Занят
 				if ( forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_buzy ) 
 				{
-					RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-					TRACE3(_T("%7.1f RELEASES-%d, resId = %d\n"), sim->getCurrentTime(), index, forRes[i].rss->getTraceID());
+					RDOTrace* tracer = pRuntime->getTracer();
+					TRACE3(_T("%7.1f RELEASES-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 					forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_free);
 						if ( !tracer->isNull() ) 
 						{
-							tracer->getOStream() << forRes[i].rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+							tracer->getOStream() << forRes[i].rss->traceResourceState('\0', pRuntime) << tracer->getEOL();
 						}				
 					return true;
 				}		
@@ -444,18 +450,18 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 				if ( forRes[i].rss->getParam(forRes[i].Id_param) != forRes[i].enum_free )
 				{
 					//Удаляем транзакт
-					RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-					TRACE3(_T("%7.1f RELEASES_Bad-%d, resId = %d\n"), sim->getCurrentTime(), index, forRes[i].rss->getTraceID());
+					RDOTrace* tracer = pRuntime->getTracer();
+					TRACE3(_T("%7.1f RELEASES_Bad-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 					LPRDOPROCTransact transact = m_transacts.front();
 					ASSERT(transact);
 					transact->setState( RDOResource::CS_Erase );
 					if ( !tracer->isNull() )
 					{
-						tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+						tracer->getOStream() << transact->traceResourceState('\0', pRuntime) << tracer->getEOL();
 					}
 					m_transacts.remove( transact );
 					forRes[i].rss->transacts.remove( transact );
-					static_cast<RDORuntime*>(sim)->onEraseRes( transact->getTraceID(), NULL );
+					pRuntime->onEraseRes( transact->getTraceID(), NULL );
 					return false;
 				}
 			}
@@ -464,20 +470,20 @@ bool RDOPROCRelease::onCheckCondition( RDOSimulator* sim )
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCRelease::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCRelease::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDOPROCRelease::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCRelease::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCRelease::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCRelease::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCRelease::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCRelease::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-bool RDOPROCAdvance::onCheckCondition( RDOSimulator* sim )
+rbool RDOPROCAdvance::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() ) 
 	{
@@ -487,7 +493,7 @@ bool RDOPROCAdvance::onCheckCondition( RDOSimulator* sim )
 	{
 		if ( !leave_list.empty() ) 
 		{
-		double tnow = sim->getCurrentTime();
+		double tnow = pRuntime->getCurrentTime();
 		std::list< LeaveTr >::iterator it = leave_list.begin();
 			while ( it != leave_list.end() ) 
 			{
@@ -502,20 +508,20 @@ bool RDOPROCAdvance::onCheckCondition( RDOSimulator* sim )
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCAdvance::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCAdvance::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
 	if ( !m_transacts.empty() )
 	{
-//		TRACE1(_T("%7.1f ADVANCE BEGIN\n"), sim->getCurrentTime());
-		double timeLeave = pDelayCalc->calcValue( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime();
+//		TRACE1(_T("%7.1f ADVANCE BEGIN\n"), pRuntime->getCurrentTime());
+		double timeLeave = pDelayCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
 		leave_list.push_back( LeaveTr(m_transacts.front(), timeLeave) );
 		m_transacts.erase( m_transacts.begin() );
-		sim->addTimePoint( timeLeave, m_process, this );
+		pRuntime->addTimePoint( timeLeave, m_process, this );
 		return IBaseOperation::BOR_done;
 	} 
 	else if ( !leave_list.empty() )
 	{
-		double tnow = sim->getCurrentTime();
+		double tnow = pRuntime->getCurrentTime();
 		std::list< LeaveTr >::iterator it = leave_list.begin();
 		while ( it != leave_list.end() )
 		{
@@ -532,62 +538,62 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation( RDOSimulator* sim )
 	return IBaseOperation::BOR_cant_run;
 }
 
-void                     RDOPROCAdvance::onStart     (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCAdvance::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCAdvance::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCAdvance::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCAdvance::onStart     (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCAdvance::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCAdvance::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
-bool RDOPROCTerminate::onCheckCondition( RDOSimulator* sim )
+rbool RDOPROCTerminate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	return !m_transacts.empty() ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCTerminate::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCTerminate::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
-//	TRACE1(_T("%7.1f TERMINATE\n"), sim->getCurrentTime());
+//	TRACE1(_T("%7.1f TERMINATE\n"), pRuntime->getCurrentTime());
 	LPRDOPROCTransact transact = m_transacts.front();
 	ASSERT(transact);
 	transact->setState( RDOResource::CS_Erase );
-	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+	RDOTrace* tracer = pRuntime->getTracer();
 	if ( !tracer->isNull() ) {
-		tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+		tracer->getOStream() << transact->traceResourceState('\0', pRuntime) << tracer->getEOL();
 	}
-	static_cast<RDORuntime*>(sim)->onEraseRes( transact->getTraceID(), NULL );
+	pRuntime->onEraseRes( transact->getTraceID(), NULL );
 	m_transacts.erase( m_transacts.begin() );
-	int termNow = static_cast<RDORuntime*>(sim)->getCurrentTerm();
+	int termNow = pRuntime->getCurrentTerm();
 	termNow += getTerm();
-	static_cast<RDORuntime*>(sim)->setCurrentTerm(termNow);
+	pRuntime->setCurrentTerm(termNow);
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDOPROCTerminate::onStart     (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCTerminate::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCTerminate::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCTerminate::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCTerminate::onStart     (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCTerminate::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCTerminate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCTerminate::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAssign
 // ----------------------------------------------------------------------------
-bool RDOPROCAssign::onCheckCondition( RDOSimulator* sim )
+rbool RDOPROCAssign::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	return !m_transacts.empty();
 }
 
-IBaseOperation::BOResult RDOPROCAssign::onDoOperation( RDOSimulator* sim )
+IBaseOperation::BOResult RDOPROCAssign::onDoOperation( CREF(LPRDORuntime) pRuntime )
 {
-	LPRDOResource res = static_cast<RDORuntime*>(sim)->getResourceByID( t_resId );
-	res->setParam( t_parId, pParamValue->calcValue( static_cast<RDORuntime*>(sim) ) );	
-	TRACE1(_T("%7.1f ASSIGN\n"), sim->getCurrentTime());
+	LPRDOResource res = pRuntime->getResourceByID( t_resId );
+	res->setParam( t_parId, pParamValue->calcValue(pRuntime) );
+	TRACE1(_T("%7.1f ASSIGN\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDOPROCAssign::onStart     (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCAssign::onStop      (PTR(rdoRuntime::RDOSimulator) sim)                  {}
-void                     RDOPROCAssign::onMakePlaned(PTR(rdoRuntime::RDOSimulator) sim, PTR(void) param) {}
-IBaseOperation::BOResult RDOPROCAssign::onContinue  (PTR(rdoRuntime::RDOSimulator) sim)                  { return IBaseOperation::BOR_cant_run; }
+void                     RDOPROCAssign::onStart     (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCAssign::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
+void                     RDOPROCAssign::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
+IBaseOperation::BOResult RDOPROCAssign::onContinue  (CREF(LPRDORuntime) pRuntime)                  { return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

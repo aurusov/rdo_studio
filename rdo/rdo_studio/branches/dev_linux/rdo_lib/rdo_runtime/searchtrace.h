@@ -28,12 +28,12 @@ public:
 	   DPT_trace_all
 	};
 
-	void onSearchBegin( RDOSimulator* sim );
-	void onSearchDecisionHeader( RDOSimulator* sim );
-	void onSearchDecision( RDOSimulator* sim, TreeNode* node );
-	void onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot );
-	void onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot );
-	TreeRoot* createTreeRoot( RDOSimulator* sim );
+	void onSearchBegin( CREF(LPRDORuntime) pRuntime );
+	void onSearchDecisionHeader( CREF(LPRDORuntime) pRuntime );
+	void onSearchDecision( CREF(LPRDORuntime) pRuntime, TreeNode* node );
+	void onSearchResultSuccess( CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot );
+	void onSearchResultNotFound( CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot );
+	TreeRoot* createTreeRoot( CREF(LPRDORuntime) pRuntime );
 
 	ruint calc_cnt; // Количество запусков
 	ruint calc_res_found_cnt;
@@ -48,8 +48,8 @@ public:
 	DPT_TraceFlag traceFlag;
 
 protected:
-	RDODPTSearchTrace( RDOSimulatorTrace* sim, LPIBaseOperationContainer parent ):
-		RDODPTSearch( sim, parent ),
+	RDODPTSearchTrace( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent ):
+		RDODPTSearch( pRuntime, parent ),
 		RDOTraceableObject( false ),
 		calc_cnt( 0 ),
 		calc_res_found_cnt( 0 )
@@ -64,10 +64,12 @@ private:
 class TreeRootTrace: public TreeRoot
 {
 private:
-	virtual void createRootTreeNode( RDOSimulator* sim );
+	virtual void createRootTreeNode( CREF(LPRDORuntime) pRuntime );
 
 public:
-	TreeRootTrace( RDOSimulator* sim, RDODPTSearch* _dp ): TreeRoot( sim, _dp ) {}
+	TreeRootTrace(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
+		: TreeRoot(pRuntime, pDP)
+	{}
 };
 
 class TreeNodeTrace: public TreeNode
@@ -75,17 +77,16 @@ class TreeNodeTrace: public TreeNode
 friend class RDOTrace;
 
 private:
-	void onSearchOpenNode( RDOSimulator* sim );
-	void onSearchNodeInfoDeleted( RDOSimulator* sim );
-	void onSearchNodeInfoReplaced( RDOSimulator* sim );
-	void onSearchNodeInfoNew( RDOSimulator* sim );
-	TreeNode* createChildTreeNode();
+	void          onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
+	void          onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
+	void          onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
+	void          onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
+	PTR(TreeNode) createChildTreeNode     ();
 
 public:
-	TreeNodeTrace( RDOSimulator* i_sim, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt ):
-		TreeNode( i_sim, i_parent, i_root, i_activity, cost, cnt )
-	{
-	}
+	TreeNodeTrace(CREF(LPRDORuntime) pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt)
+		: TreeNode(pRuntime, i_parent, i_root, i_activity, cost, cnt)
+	{}
 };
 
 } // namespace rdoRuntime

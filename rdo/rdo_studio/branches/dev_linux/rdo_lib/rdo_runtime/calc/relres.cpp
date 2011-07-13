@@ -24,7 +24,7 @@ RDOGetRelResParamCalc::RDOGetRelResParamCalc(ruint relResID, ruint paramID)
 	, m_paramID (paramID )
 {}
 
-REF(RDOValue) RDOGetRelResParamCalc::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOGetRelResParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
 	return m_value;
@@ -47,7 +47,7 @@ RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(ruint relResID, ruint param
 	}
 }
 
-REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pCalc->calcValue(pRuntime);
 	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
@@ -68,7 +68,7 @@ RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
 	m_value = 1;
 }
 
-REF(RDOValue) RDOEraseResRelCalc::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
 	return m_value;

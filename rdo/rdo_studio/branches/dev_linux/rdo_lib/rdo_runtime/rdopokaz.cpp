@@ -22,9 +22,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz
 // ----------------------------------------------------------------------------
-RDOPMDPokaz::RDOPMDPokaz(PTR(RDORuntime) pSimulator, CREF(tstring) name, rbool trace)
-	: RDOPokazTrace(pSimulator, trace)
-	, m_name       (name             )
+RDOPMDPokaz::RDOPMDPokaz(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace)
+	: RDOPokazTrace(pRuntime, trace)
+	, m_name       (name           )
 {
 	setTrace(trace);
 }
@@ -40,12 +40,12 @@ CREF(tstring) RDOPMDPokaz::name() const
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(PTR(RDORuntime) pSimulator, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber)
-	: RDOPMDPokaz(pSimulator, name, trace)
-	, m_resNumber(resNumber              )
-	, m_parNumber(parNumber              )
+RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber)
+	: RDOPMDPokaz(pRuntime, name, trace)
+	, m_resNumber(resNumber            )
+	, m_parNumber(parNumber            )
 {
-	static_cast<PTR(RDORuntime)>(pSimulator)->connect(this, RDORuntime::RO_BEFOREDELETE);
+	pRuntime->connect(this, RDORuntime::RO_BEFOREDELETE);
 }
 
 RDOPMDWatchPar::~RDOPMDWatchPar()
@@ -56,7 +56,7 @@ void RDOPMDWatchPar::notify(ruint message, PTR(void) param)
 	if ((int)param == m_resNumber)
 	{
 		m_resNumber = -1;
-		m_timeErase = getRuntime()->getCurrentTime();
+		m_timeErase = m_pRuntime->getCurrentTime();
 	}
 };
 
@@ -65,10 +65,8 @@ tstring RDOPMDWatchPar::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchPar::resetPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchPar::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
 	m_watchNumber = 0;
 	m_currValue   = pRuntime->getResParamVal(m_resNumber, m_parNumber);
 	m_sum         = 0;
@@ -78,13 +76,12 @@ void RDOPMDWatchPar::resetPokaz(PTR(RDOSimulator) pSimulator)
 	m_timePrev    = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();
 }
 
-void RDOPMDWatchPar::checkPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchPar::checkPokaz(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_resNumber == -1)
 	{
 		return;
 	}
-	PTR(RDORuntime) pRuntime = static_cast<PTR(RDORuntime)>(pSimulator);
 	RDOValue newValue = pRuntime->getResParamVal(m_resNumber, m_parNumber);
 	if (newValue != m_currValue)
 	{
@@ -108,9 +105,9 @@ void RDOPMDWatchPar::checkPokaz(PTR(RDOSimulator) pSimulator)
 	}
 }
 
-void RDOPMDWatchPar::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
+void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
-	double currTime = m_resNumber == -1 ? m_timeErase : pSimulator->getCurrentTime();
+	double currTime = m_resNumber == -1 ? m_timeErase : pRuntime->getCurrentTime();
 	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
 	m_sum	       += val;
 	m_sumSqr       += val * val;
@@ -129,9 +126,9 @@ void RDOPMDWatchPar::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) st
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState(PTR(RDORuntime) pSimulator, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic)
-	: RDOPMDPokaz (pSimulator, name, trace)
-	, m_pLogicCalc(pLogic                 )
+RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic)
+	: RDOPMDPokaz (pRuntime, name, trace)
+	, m_pLogicCalc(pLogic               )
 {}
 
 RDOPMDWatchState::~RDOPMDWatchState()
@@ -142,10 +139,8 @@ tstring RDOPMDWatchState::traceValue() const
 	return m_currValue ? _T("TRUE") : _T("FALSE");
 }
 
-void RDOPMDWatchState::resetPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchState::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
 	m_watchNumber = 0;
 	m_currValue   = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	m_sum         = 0;
@@ -155,9 +150,8 @@ void RDOPMDWatchState::resetPokaz(PTR(RDOSimulator) pSimulator)
 	m_timePrev    = m_timeBegin = pRuntime->getCurrentTime();
 }
 
-void RDOPMDWatchState::checkPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchState::checkPokaz(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
 	rbool newValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	if (newValue && !m_currValue) //! from FALSE to TRUE
 	{
@@ -185,9 +179,9 @@ void RDOPMDWatchState::checkPokaz(PTR(RDOSimulator) pSimulator)
 	m_currValue = newValue;
 }
 
-void RDOPMDWatchState::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
+void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
-	double currTime = pSimulator->getCurrentTime();
+	double currTime = pRuntime->getCurrentTime();
 	double val      = m_currValue * (currTime - m_timePrev);
 	m_sum          += val;
 	m_sumSqr       += val * val;
@@ -207,10 +201,10 @@ void RDOPMDWatchState::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(PTR(RDORuntime) pSimulator, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
-	: RDOPMDPokaz (pSimulator, name, trace)
-	, m_pLogicCalc(NULL                   )
-	, m_rtpID     (rtpID                  )
+RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
+	: RDOPMDPokaz (pRuntime, name, trace)
+	, m_pLogicCalc(NULL                 )
+	, m_rtpID     (rtpID                )
 {}
 
 RDOPMDWatchQuant::~RDOPMDWatchQuant()
@@ -221,10 +215,8 @@ tstring RDOPMDWatchQuant::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchQuant::resetPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchQuant::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
 	m_watchNumber = 0;
 	m_currValue   = -1;
 	m_sum         = 0;
@@ -234,10 +226,8 @@ void RDOPMDWatchQuant::resetPokaz(PTR(RDOSimulator) pSimulator)
 	m_timePrev    = m_timeBegin = pRuntime->getCurrentTime();
 }
 
-void RDOPMDWatchQuant::checkPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchQuant::checkPokaz(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
 	int newValue = 0;
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
 	{
@@ -279,9 +269,9 @@ void RDOPMDWatchQuant::checkPokaz(PTR(RDOSimulator) pSimulator)
 	}
 }
 
-void RDOPMDWatchQuant::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
+void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
-	double currTime = pSimulator->getCurrentTime();
+	double currTime = pRuntime->getCurrentTime();
 	double val      = m_currValue * (currTime - m_timePrev);
 	m_sum          += val;
 	m_sumSqr       += val * val;
@@ -305,11 +295,11 @@ void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(PTR(RDORuntime) pSimulator, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
-	: RDOPMDPokaz  (pSimulator, name, trace)
-	, m_pLogicCalc (NULL                   )
-	, m_pArithmCalc(NULL                   )
-	, m_rtpID      (rtpID                  )
+RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
+	: RDOPMDPokaz  (pRuntime, name, trace)
+	, m_pLogicCalc (NULL                 )
+	, m_pArithmCalc(NULL                 )
+	, m_rtpID      (rtpID                )
 {
 	m_wasChanged = false;
 }
@@ -322,7 +312,7 @@ tstring RDOPMDWatchValue::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchValue::resetPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
 	m_watchNumber = 0;
 	m_currValue   = 0;
@@ -332,10 +322,10 @@ void RDOPMDWatchValue::resetPokaz(PTR(RDOSimulator) pSimulator)
 	m_maxValue    = DBL_MIN;
 }
 
-void RDOPMDWatchValue::checkPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDWatchValue::checkPokaz(CREF(LPRDORuntime) pRuntime)
 {}
 
-void RDOPMDWatchValue::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
+void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
 	double average, averageSqr, deviation;
 	if (m_watchNumber < 2)
@@ -366,10 +356,10 @@ void RDOPMDWatchValue::checkResourceErased(CREF(rdoRuntime::LPRDOResource) pReso
 	{
 		return;
 	}
-	getRuntime()->pushGroupFunc(pResource);
-	if (m_pLogicCalc->calcValue(getRuntime()).getAsBool())
+	m_pRuntime->pushGroupFunc(pResource);
+	if (m_pLogicCalc->calcValue(m_pRuntime).getAsBool())
 	{
-		m_currValue = m_pArithmCalc->calcValue(getRuntime());
+		m_currValue = m_pArithmCalc->calcValue(m_pRuntime);
 		tracePokaz(); // TODO: убрать отсюда ? (и перенести DECLARE_IPokazTrace в приват)
 //		pRuntime->getTracer()->writePokaz(pRuntime, this);
 		double curr = m_currValue.getDouble();
@@ -386,7 +376,7 @@ void RDOPMDWatchValue::checkResourceErased(CREF(rdoRuntime::LPRDOResource) pReso
 		}
 		return;
 	}
-	getRuntime()->popGroupFunc();
+	m_pRuntime->popGroupFunc();
 	return;
 }
 
@@ -403,9 +393,9 @@ void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue(PTR(RDORuntime) pSimulator, CREF(tstring) name, CREF(LPRDOCalc) pArithm)
-	: RDOPMDPokaz  (pSimulator, name, false)
-	, m_pArithmCalc(pArithm                )
+RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm)
+	: RDOPMDPokaz  (pRuntime, name, false)
+	, m_pArithmCalc(pArithm              )
 {}
 
 RDOPMDGetValue::~RDOPMDGetValue()
@@ -416,16 +406,14 @@ tstring RDOPMDGetValue::traceValue() const
 	return _T("ERROR");
 }
 
-void RDOPMDGetValue::resetPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDGetValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {}
 
-void RDOPMDGetValue::checkPokaz(PTR(RDOSimulator) pSimulator)
+void RDOPMDGetValue::checkPokaz(CREF(LPRDORuntime) pRuntime)
 {}
 
-void RDOPMDGetValue::calcStat(PTR(RDOSimulator) pSimulator, REF(std::ostream) stream)
+void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
-	PTR(RDORuntime) pRuntime = dynamic_cast<PTR(RDORuntime)>(pSimulator);
-
 	m_value = m_pArithmCalc->calcValue(pRuntime);
 
 	stream.width(30);

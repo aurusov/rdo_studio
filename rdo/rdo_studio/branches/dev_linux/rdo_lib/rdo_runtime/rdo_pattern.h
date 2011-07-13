@@ -27,8 +27,12 @@ class RDOKeyboard;
 // ----------------------------------------------------------------------------
 // ---------- RDOPattern
 // ----------------------------------------------------------------------------
-class RDOPattern: public RDORuntimeParent, public RDOTraceableObject
+OBJECT(RDOPattern)
+	IS  INSTANCE_OF(RDORuntimeObject  )
+	AND INSTANCE_OF(RDOTraceableObject)
 {
+DECLARE_FACTORY(RDOPattern);
+
 public:
 	void addPreSelectRelRes(CREF(LPRDOCalc) pCalc)
 	{
@@ -45,7 +49,7 @@ public:
 	}
 
 protected:
-	RDOPattern( PTR(RDORuntime) runtime, bool trace );
+	RDOPattern(rbool trace);
 	virtual ~RDOPattern() {}
 
 	typedef  std::vector<LPRDOCalc>                   CalcList;
@@ -53,24 +57,24 @@ protected:
 
 	CalcList m_preSelectRelRes;
 
-	void preSelectRelRes(PTR(RDORuntime) runtime)
+	void preSelectRelRes(CREF(LPRDORuntime) pRuntime)
 	{
-		runCalcs(m_preSelectRelRes, runtime);
+		runCalcs(m_preSelectRelRes, pRuntime);
 	}
 
-	void runCalcs(REF(CalcList) calcList, PTR(RDORuntime) runtime)
+	void runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
 	{
 		LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
-		runtime->getMemoryStack()->push(pLocalMemory);
+		pRuntime->getMemoryStack()->push(pLocalMemory);
 		STL_FOR_ALL(calcList, calcIt)
-			(*calcIt)->calcValue(runtime);
-		runtime->getMemoryStack()->pop();
+			(*calcIt)->calcValue(pRuntime);
+		pRuntime->getMemoryStack()->pop();
 	}
-	bool runCalcsBool(REF(CalcList) calcList, PTR(RDORuntime) runtime)
+	rbool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
 	{
 		STL_FOR_ALL(calcList, calcIt)
 		{
-			if ( !(*calcIt)->calcValue( runtime ).getAsBool() ) return false;
+			if ( !(*calcIt)->calcValue( pRuntime ).getAsBool() ) return false;
 		}
 		return true;
 	}
@@ -79,87 +83,92 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternEvent
 // ----------------------------------------------------------------------------
-class RDOPatternEvent: public RDOPattern
+CLASS(RDOPatternEvent): INSTANCE_OF(RDOPattern)
 {
+DECLARE_FACTORY(RDOPatternEvent);
 friend class RDOEvent;
 
 public:
-	RDOPatternEvent( PTR(RDORuntime) rTime, bool trace );
-
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
 	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( CREF(LPRDOCalc) pCalc             ) { m_erase.push_back( pCalc );            }
 
-	void convertEvent( PTR(RDORuntime) runtime )
+	void convertEvent( CREF(LPRDORuntime) pRuntime )
 	{
-		preSelectRelRes( runtime );
-		runCalcs( m_convertor, runtime );
+		preSelectRelRes( pRuntime );
+		runCalcs( m_convertor, pRuntime );
 	}
-	void convertErase( PTR(RDORuntime) runtime )
+	void convertErase( CREF(LPRDORuntime) pRuntime )
 	{
-		runCalcs( m_erase, runtime );
+		runCalcs( m_erase, pRuntime );
 	}
 
-	double getNextTimeInterval( PTR(RDORuntime) runtime );
+	double getNextTimeInterval( CREF(LPRDORuntime) pRuntime );
 
-	LPIEvent createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName);
+	LPIEvent createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) oprName);
 
 private:
+	RDOPatternEvent(rbool trace);
+	virtual ~RDOPatternEvent();
+
 	LPRDOCalc         m_timeCalc;
 	CalcList          m_convertor;
 	ConvertStatusList m_convertorStatus;
 	CalcList          m_erase;
 };
+DECLARE_POINTER(RDOPatternEvent);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternRule
 // ----------------------------------------------------------------------------
-class RDOPatternRule: public RDOPattern
+CLASS(RDOPatternRule): INSTANCE_OF(RDOPattern)
 {
+DECLARE_FACTORY(RDOPatternRule);
 friend class RDORule;
 
 public:
-	RDOPatternRule( PTR(RDORuntime) rTime, bool trace );
-
 	void addChoiceFromCalc ( CREF(LPRDOCalc) pCalc             ) { m_choiceFrom.push_back( pCalc );       }
 	void addConvertorCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertor.push_back( pCalc );        }
 	void addConvertorStatus( RDOResource::ConvertStatus status ) { m_convertorStatus.push_back( status ); }
 	void addEraseCalc      ( CREF(LPRDOCalc) pCalc             ) { m_erase.push_back( pCalc );            }
 
-	bool choiceFrom( PTR(RDORuntime) runtime )
+	rbool choiceFrom( CREF(LPRDORuntime) pRuntime )
 	{
-		preSelectRelRes( runtime );
-		return runCalcsBool( m_choiceFrom, runtime );
+		preSelectRelRes( pRuntime );
+		return runCalcsBool( m_choiceFrom, pRuntime );
 	}
-	void convertRule(PTR(RDORuntime) runtime)
+	void convertRule(CREF(LPRDORuntime) pRuntime)
 	{
-		runCalcs(m_convertor, runtime);
+		runCalcs(m_convertor, pRuntime);
 	}
-	void convertErase(PTR(RDORuntime) runtime)
+	void convertErase(CREF(LPRDORuntime) pRuntime)
 	{
-		runCalcs(m_erase, runtime);
+		runCalcs(m_erase, pRuntime);
 	}
 
-	LPIRule createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
-	LPIRule createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 
 private:
+	RDOPatternRule(rbool trace);
+	virtual ~RDOPatternRule();
+
 	CalcList          m_choiceFrom;
 	CalcList          m_convertor;
 	ConvertStatusList m_convertorStatus;
 	CalcList          m_erase;
 };
+DECLARE_POINTER(RDOPatternRule);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternOperation
 // ----------------------------------------------------------------------------
-class RDOPatternOperation: public RDOPattern
+CLASS(RDOPatternOperation): INSTANCE_OF(RDOPattern)
 {
+DECLARE_FACTORY(RDOPatternOperation);
 friend class RDOOperation;
 
 public:
-	RDOPatternOperation( PTR(RDORuntime) rTime, bool trace );
-
 	void addChoiceFromCalc      ( CREF(LPRDOCalc) pCalc             ) { m_choiceFrom.push_back( pCalc );            }
 
 	void addConvertorBeginCalc  ( CREF(LPRDOCalc) pCalc             ) { m_convertorBegin.push_back( pCalc );        }
@@ -172,32 +181,36 @@ public:
 
 	void setTime                ( CREF(LPRDOCalc) pCalc             ) { m_timeCalc = pCalc;                         }
 
-	bool choiceFrom( PTR(RDORuntime) runtime )
+	rbool choiceFrom( CREF(LPRDORuntime) pRuntime )
 	{
-		preSelectRelRes( runtime );
-		return runCalcsBool( m_choiceFrom, runtime );
+		preSelectRelRes( pRuntime );
+		return runCalcsBool( m_choiceFrom, pRuntime );
 	}
-	void convertBegin( PTR(RDORuntime) runtime )
+	void convertBegin( CREF(LPRDORuntime) pRuntime )
 	{
-		runCalcs( m_convertorBegin, runtime );
+		runCalcs( m_convertorBegin, pRuntime );
 	}
-	void convertBeginErase( PTR(RDORuntime) runtime )
+	void convertBeginErase( CREF(LPRDORuntime) pRuntime )
 	{
-		runCalcs( m_eraseBegin, runtime );
+		runCalcs( m_eraseBegin, pRuntime );
 	}
-	void convertEnd( PTR(RDORuntime) runtime )
+	void convertEnd( CREF(LPRDORuntime) pRuntime )
 	{
-		runCalcs( m_convertorEnd, runtime );
+		runCalcs( m_convertorEnd, pRuntime );
 	}
-	void convertEndErase( PTR(RDORuntime) runtime )
+	void convertEndErase( CREF(LPRDORuntime) pRuntime )
 	{
-		runCalcs( m_eraseEnd, runtime );
+		runCalcs( m_eraseEnd, pRuntime );
 	}
 
-	double getNextTimeInterval( PTR(RDORuntime) runtime );
+	double getNextTimeInterval( CREF(LPRDORuntime) pRuntime );
 
-	LPIOperation createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
-	LPIOperation createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+
+protected:
+	RDOPatternOperation(rbool trace);
+	virtual ~RDOPatternOperation();
 
 private:
 	LPRDOCalc         m_timeCalc;
@@ -211,18 +224,23 @@ private:
 	ConvertStatusList m_convertorEndStatus;
 	CalcList          m_eraseEnd;
 };
+DECLARE_POINTER(RDOPatternOperation);
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternKeyboard
 // ----------------------------------------------------------------------------
-class RDOPatternKeyboard: public RDOPatternOperation
+CLASS(RDOPatternKeyboard): INSTANCE_OF(RDOPatternOperation)
 {
+DECLARE_FACTORY(RDOPatternKeyboard);
 public:
-	RDOPatternKeyboard( PTR(RDORuntime) rTime, bool trace );
+	LPIKeyboard createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
+	LPIKeyboard createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 
-	LPIKeyboard createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName);
-	LPIKeyboard createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+private:
+	RDOPatternKeyboard(rbool trace);
+	virtual ~RDOPatternKeyboard();
 };
+DECLARE_POINTER(RDOPatternKeyboard);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

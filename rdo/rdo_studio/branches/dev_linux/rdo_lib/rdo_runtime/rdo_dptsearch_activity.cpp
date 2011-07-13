@@ -34,9 +34,9 @@ REF(LPIRule) RDODPTSearchActivity::rule()
 	return m_rule;
 }
 
-double RDODPTSearchActivity::cost(PTR(RDOSimulator) runtime)
+double RDODPTSearchActivity::cost(CREF(LPRDORuntime) pRuntime)
 {
-	return m_pCost->calcValue(static_cast<PTR(RDORuntime)>(runtime)).getDouble();
+	return m_pCost->calcValue(pRuntime).getDouble();
 }
 
 IDPTSearchActivity::ValueTime RDODPTSearchActivity::valueTime() const

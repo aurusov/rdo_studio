@@ -27,7 +27,7 @@ RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNu
 	, m_relResNum(relResNum)
 {}
 
-REF(RDOValue) RDOCalcProcessControl::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 //по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);

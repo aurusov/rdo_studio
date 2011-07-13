@@ -15,9 +15,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-inline void RDOResource::setRuntime(PTR(RDORuntime) runtime)
+inline void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
 {
-	RDORuntimeContainer::setRuntime(runtime);
+	//! TODO: походу надо удалить метод
+	NEVER_REACH_HERE;
 }
 
 inline tstring RDOResource::whoAreYou()

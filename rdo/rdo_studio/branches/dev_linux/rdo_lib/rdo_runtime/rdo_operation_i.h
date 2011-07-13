@@ -18,26 +18,26 @@
 class IOperation
 {
 public:
-	virtual void   onBeforeChoiceFrom    (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual bool   choiceFrom            (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual void   onBeforeOperationBegin(PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual void   convertBegin          (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual void   onAfterOperationBegin (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual void   onBeforeOperationEnd  (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual void   convertEnd            (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual void   onAfterOperationEnd   (PTR(rdoRuntime::RDOSimulator) sim) = 0;
-	virtual double getNextTimeInterval   (PTR(rdoRuntime::RDOSimulator) sim) = 0;
+	virtual void   onBeforeChoiceFrom    (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual rbool  choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void   onBeforeOperationBegin(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void   convertBegin          (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void   onAfterOperationBegin (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void   onBeforeOperationEnd  (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void   convertEnd            (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual void   onAfterOperationEnd   (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
+	virtual double getNextTimeInterval   (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 #define DECLARE_IOperation \
-	virtual void   onBeforeChoiceFrom    (PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual bool   choiceFrom            (PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual void   onBeforeOperationBegin(PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual void   convertBegin          (PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual void   onAfterOperationBegin (PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual void   onBeforeOperationEnd  (PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual void   convertEnd            (PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual void   onAfterOperationEnd   (PTR(rdoRuntime::RDOSimulator) sim); \
-	virtual double getNextTimeInterval   (PTR(rdoRuntime::RDOSimulator) sim)
+	virtual void   onBeforeChoiceFrom    (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual rbool  choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void   onBeforeOperationBegin(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void   convertBegin          (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void   onAfterOperationBegin (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void   onBeforeOperationEnd  (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void   convertEnd            (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void   onAfterOperationEnd   (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual double getNextTimeInterval   (CREF(rdoRuntime::LPRDORuntime) pRuntime)
 
 class IOperationTrace
 {

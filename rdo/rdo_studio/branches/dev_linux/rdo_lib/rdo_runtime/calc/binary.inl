@@ -91,10 +91,10 @@ inline typename RDOCalcBinary<ret_type, pOperator, CalcType>::value_operator RDO
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
-inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
-	m_value = (m_pLeft->calcValue(runtime).*pOperator)(m_pRight->calcValue(runtime));
+	m_value = (m_pLeft->calcValue(pRuntime).*pOperator)(m_pRight->calcValue(pRuntime));
 	return m_value;
 }
 
