@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(test_rdo_common)
 
 BOOST_AUTO_TEST_CASE(test_rdo_common_1)
 {
-	// TODO HELP ME !!!!
+	// TODO Необходимо подключить файл ресурсов. Восстанавливай удаленный rdo_common_test.vcproj, см. его там. 
 	tstring str1 = rdo::format(IDS_STRING101);
 	tstring str2 = rdo::format(IDS_STRING102, 22);
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
