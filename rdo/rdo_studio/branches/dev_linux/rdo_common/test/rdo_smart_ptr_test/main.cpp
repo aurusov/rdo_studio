@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(test_create_a_pointer_to_this)
 
 BOOST_AUTO_TEST_CASE(test_casting_to_an_ancestor)
 {
-	// TODO
+	// TODO HELP ME !!!!
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
 	pMyClass_1->m_i = 10;
 	pMyClass_1->m_k = 22;
@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(test_casting_to_an_ancestor)
 
 BOOST_AUTO_TEST_CASE(test_casting_to_the_interface)
 {
-	// TODO
+	// TODO HELP ME !!!!
 	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
 	LPIMyClass21 pMyClass_21 = pMyClass_2.interface_cast<IMyClass21>();
 	pMyClass_2 = NULL;
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(test_casting_to_the_interface)
 
 BOOST_AUTO_TEST_CASE(test_casting_to_the_interface_through_the_child)
 {
-	// TODO
+	// TODO HELP ME !!!!
 	LPMyClass4 pMyClass_4 = rdo::Factory<MyClass4>::create();
 	LPIMyClass21 pMyClass_21 = pMyClass_4.interface_cast<IMyClass21>();
 	pMyClass_4 = NULL;

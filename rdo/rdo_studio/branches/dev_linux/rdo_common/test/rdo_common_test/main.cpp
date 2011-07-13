@@ -10,6 +10,7 @@
 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
+#include <boost/regex.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdofile.h"
@@ -26,6 +27,7 @@ BOOST_AUTO_TEST_SUITE(test_rdo_common)
 
 BOOST_AUTO_TEST_CASE(test_rdo_common_1)
 {
+	// TODO HELP ME !!!!
 	tstring str1 = rdo::format(IDS_STRING101);
 	tstring str2 = rdo::format(IDS_STRING102, 22);
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
@@ -51,10 +53,15 @@ BOOST_AUTO_TEST_CASE(test_remove_file)
 	BOOST_CHECK(rdo::File::unlink(_T(tstring(resource_directory) + tstring(test_file_name))));
 }
 
-BOOST_AUTO_TEST_CASE(test_rdo_common_2)
+BOOST_AUTO_TEST_CASE(test_rdo_check_data)
 {
+	// TODO EDIT REGEX
 	rdo::Time time1     = rdo::Time::local();
 	tstring   time_str = time1.asString();
+
+	boost::regex expression("(.*)");
+	boost::cmatch what; 
+	BOOST_CHECK(boost::regex_match(time_str.c_str(), what, expression));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
