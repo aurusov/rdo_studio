@@ -54,12 +54,13 @@ BOOST_AUTO_TEST_CASE(test_remove_file)
 BOOST_AUTO_TEST_CASE(test_rdo_check_data)
 {
 	// TODO EDIT REGEX
-	rdo::Time time1     = rdo::Time::local();
-	tstring   time_str = time1.asString();
+	rdo::Time timeValue = rdo::Time::local();
+	tstring   timeStr   = timeValue.asString();
 
+	//! Какой смысл проверять через regex ?
 	boost::regex expression("(.*)");
 	boost::cmatch what; 
-	BOOST_CHECK(boost::regex_match(time_str.c_str(), what, expression));
+	BOOST_CHECK(boost::regex_match(timeStr.c_str(), what, expression));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
