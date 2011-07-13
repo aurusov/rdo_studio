@@ -1,8 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
- * author   : Evgeny Proydakov
- * email	: lord.tiran@gmail.com
+ * author   : Урусов Андрей, Evgeny Proydakov
  * date     : 16.06.2011
  * bref     : Test rdo_common
  * indent   : 4T
@@ -57,7 +56,7 @@ BOOST_AUTO_TEST_CASE(test_rdo_check_data)
 	rdo::Time timeValue = rdo::Time::local();
 	tstring   timeStr   = timeValue.asString();
 
-	//! Какой смысл проверять через regex ?
+	//! Какой смысл проверять через regex ? - как бы вы предложили проверить ???
 	boost::regex expression("(.*)");
 	boost::cmatch what; 
 	BOOST_CHECK(boost::regex_match(timeStr.c_str(), what, expression));

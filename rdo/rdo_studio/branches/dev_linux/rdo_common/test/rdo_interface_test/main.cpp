@@ -1,8 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
- * author   : Evgeny Proydakov
- * email	: lord.tiran@gmail.com
+ * author   : Урусов Андрей, Evgeny Proydakov
  * date     : 16.06.2011
  * bref     : Test for rdo_common interface
  * indent   : 4T
@@ -12,6 +11,8 @@
 // ====================================================================== INCLUDES
 #include <vector>
 #include <iostream>
+#define BOOST_TEST_MODULE test_rdo_interface
+#include <boost/test/included/unit_test.hpp>
 // ====================================================================== SYNOPSIS
 //#include "rdo_common/rdointerface.h"
 // ===============================================================================
@@ -195,9 +196,6 @@ void main()
 	}
 	int i = 1;
 }*/
-
-#define BOOST_TEST_MODULE test_rdo_interface
-#include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(test_rdo_interface)
 

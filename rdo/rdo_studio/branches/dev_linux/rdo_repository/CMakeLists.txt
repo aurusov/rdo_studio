@@ -25,3 +25,5 @@ SOURCE_GROUP(".repository" FILES
 
 ADD_LIBRARY(rdo_nix_repository ${HEADER_FILES} ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(rdo_nix_repository ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+
+ADD_DEPENDENCIES(rdo_nix_repository rdo_nix_kernel)

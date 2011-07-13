@@ -1,8 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
- * author   : Proydakov Evgeny
- * email	: lord.tiran@gmail.com
+ * author   : Урусов Андрей, Proydakov Evgeny
  * date     : 16.06.2011
  * bref     : Test rdo_common smart pointer
  * indent   : 4T
@@ -13,6 +12,8 @@
 #include <vector>
 #include <list>
 #include <iostream>
+#define BOOST_TEST_MODULE test_rdo_smart_prt
+#include <boost/test/included/unit_test.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/smart_ptr/interface_ptr.h"
@@ -104,9 +105,6 @@ private:
 	virtual ~MyClass4() { }
 };
 DECLARE_POINTER(MyClass4)
-
-#define BOOST_TEST_MODULE test_rdo_smart_prt
-#include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(test_rdo_smart_prt)
 

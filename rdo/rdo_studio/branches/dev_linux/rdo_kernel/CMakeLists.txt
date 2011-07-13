@@ -31,3 +31,5 @@ SOURCE_GROUP(".kernel" FILES
 
 ADD_LIBRARY(rdo_nix_kernel ${HEADER_FILES} ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(rdo_nix_kernel ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+
+ADD_DEPENDENCIES(rdo_nix_kernel rdo_nix_common)
