@@ -14,7 +14,7 @@
 #define BOOST_TEST_MODULE test_rdo_interface
 #include <boost/test/included/unit_test.hpp>
 // ====================================================================== SYNOPSIS
-//#include "rdo_common/rdointerface.h"
+#include "rdo_common/rdointerface.h"
 // ===============================================================================
 
 /*
