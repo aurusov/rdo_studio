@@ -15,10 +15,21 @@ SET(HEADER_FILES
 SET(SOURCE_FILES
 	main.cpp)
 
+SET(RESOURCE_FILES
+	resource_test.aps
+	resource_test.rc)
+
+SOURCE_GROUP(".resource" FILES 
+	${RESOURCE_FILES})
+
+SOURCE_GROUP(".test" FILES 
+	${HEADER_FILES}
+	${SOURCE_FILES})
+
 FIND_PACKAGE(Boost COMPONENTS unit_test_framework REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-ADD_EXECUTABLE(test_rdo_common ${SOURCE_FILES} ${HEADER_FILES})
+ADD_EXECUTABLE(test_rdo_common ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
 ADD_DEPENDENCIES(test_rdo_common rdo_nix_common)
 
 TARGET_LINK_LIBRARIES(test_rdo_common rdo_nix_common)

@@ -17,7 +17,6 @@
 #include "rdo_common/rdointerface.h"
 // ===============================================================================
 
-/*
 class IMy1
 {
 public:
@@ -143,42 +142,57 @@ private:
 		std::cout << "void fun3(): " << m_i << std::endl;
 	}
 };
-*/
-/*
-void main()
+
+typedef rdo::Interface<IMy3>     MyInterface;
+typedef std::vector<MyInterface> MyInterfaceList;
+
+BOOST_AUTO_TEST_SUITE(test_rdo_interface)
+
+BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
 {
-	typedef rdo::Interface<IMy3>     MyInterface;
-	typedef std::vector<MyInterface> MyInterfaceList;
-	MyInterfaceList list;
-	rdo::UnknownPointer smptr = F(MyClass2)::create(1);
-	ASSERT(smptr);
+	ruint initValue = 2;
+	rdo::UnknownPointer smptr = F(MyClass2)::create(initValue);
+	BOOST_REQUIRE(smptr);
+
+	///  TODO что делает этот кусок кода ? для чего он  ///
 	smptr.query_cast<IMy1>()->fun1();
 	smptr.query_cast<IMy3>()->fun3();
+
 	MyInterface imy3 = smptr;
 	rdo::UnknownPointer smptr2;
 	smptr2 = F(MyClass2)::create(2);
-	//! Проверка на operation==
-	{
-		rdo::UnknownPointer smptr2_2 = smptr2;
-		if (smptr2_2 == smptr)
-			std::cout << "smptr2_2 == smptr" << std::endl;
-		if (smptr2_2 == smptr2)
-			std::cout << "smptr2_2 == smptr2" << std::endl;
-		rdo::Interface<IMy1> int1_1 = smptr;
-		rdo::Interface<IMy1> int2_1 = smptr2;
-		rdo::Interface<IMy1> int1_2 = smptr;
-		if (int1_1 == int2_1)
-			std::cout << "int1_1 == int2_1" << std::endl;
-		if (int1_1 == int1_2)
-			std::cout << "int1_1 == int1_2" << std::endl;
-	}
+	///////////////////////////////////////////////////////
+	
+	rdo::UnknownPointer smptr2_2 = smptr2;
+	BOOST_CHECK(smptr2_2 == smptr);
+	BOOST_CHECK(smptr2_2 == smptr2);
+
+	rdo::Interface<IMy1> int1_1 = smptr;
+	rdo::Interface<IMy1> int2_1 = smptr2;
+	rdo::Interface<IMy1> int1_2 = smptr;
+	BOOST_CHECK(int1_1 == int2_1);
+	BOOST_CHECK(int1_1 == int1_2);
+}
+
+// как должен называтся этот тест ???
+// ваше предложение по названию: ***
+BOOST_AUTO_TEST_CASE(test_rdo_interface_2)
+{
+	MyInterfaceList list;
+
+	ruint initValue = 2;
+
+	rdo::UnknownPointer smptr = F(MyClass2)::create(initValue);
+	rdo::UnknownPointer smptr2 = F(MyClass2)::create(initValue * 2);
 
 	list.push_back(F(MyClass3)::create(3));
-	list.push_back(smptr );
+	list.push_back(smptr);
 	list.push_back(smptr2);
-	MyInterfaceList::iterator it = list.begin();
-	while (it != list.end())
+	
+	MyInterfaceList::const_iterator endIt = list.end();
+	for(MyInterfaceList::iterator it = list.begin(); it != endIt; ++it)
 	{
+		///  TODO что делает этот кусок кода ? для чего он  ///
 		rdo::Interface<IMy1> ptr1;
 		ptr1 = *it;
 		if (ptr1)
@@ -191,17 +205,8 @@ void main()
 		rdo::Interface<IMy3> ptr3 = *it;
 		if (ptr3)
 			ptr3->fun3();
-
-		it++;
+		///////////////////////////////////////////////////////
 	}
-	int i = 1;
-}*/
-
-BOOST_AUTO_TEST_SUITE(test_rdo_interface)
-
-BOOST_AUTO_TEST_CASE(test_rdo_interface_1)
-{
-	BOOST_CHECK(true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
