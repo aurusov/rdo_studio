@@ -1,16 +1,21 @@
 /**
- @file    rdo_res_type.h
- @authors Урусов Андрей, Лущан Дмитрий
- @date    07.06.2011
- @brief   Типы ресурсов в runtime
- @indent  4T
+ * @copyright (c) RDO-Team, 2011
+ * @file      rdo_res_type.h
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      07.06.2011
+ * @brief     Типы ресурсов в rdoRuntime
+ * @indent    4T
  */
 
-#ifndef RDO_RES_TYPE_H
-#define RDO_RES_TYPE_H
+#ifndef LIB_RUNTIME_RDO_RES_TYPE_H
+#define LIB_RUNTIME_RDO_RES_TYPE_H
 
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_res_type_i.h"
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -18,9 +23,12 @@ class RDORuntime;
 class RDOResource;
 class RDOPROCTransact;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceType
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOResourceType
+ * @brief   Тип ресурсов для "обычных" ресурсов РДО
+ * @details Создает ресурсы, которые могут быть релевантны активностям и 
+ * @details событиям, но не могут использоваться в процессах
+ *********************************************************************************/
 OBJECT(RDOResourceType)
 	IS  IMPLEMENTATION_OF(IResourceType     )
 	AND INSTANCE_OF      (RDORuntimeObject  )
@@ -30,15 +38,22 @@ DECLARE_FACTORY(RDOResourceType);
 friend class RDOCalcCreateResource;
 friend class RDOPROCGenerate;
 private:
+	/**
+	 * @brief Конструктор
+	 * @param Целочисленный идентификатор
+	 */
 	RDOResourceType(ruint number);
 	virtual ~RDOResourceType();
 
 	DECLARE_IResourceType;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceTypeTransact
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOResourceTypeTransact
+ * @brief   Тип ресурсов для "процессных" ресурсов РДО
+ * @details Создает ресурсы, которые могут быть релевантны активностям и 
+ * @details событиям, а также обслуживать транзакты в процессах
+ *********************************************************************************/
 OBJECT(RDOResourceTypeTransact)
 	IS  IMPLEMENTATION_OF(IResourceType     )
 	AND INSTANCE_OF      (RDORuntimeObject  )
@@ -46,15 +61,22 @@ OBJECT(RDOResourceTypeTransact)
 {
 DECLARE_FACTORY(RDOResourceTypeTransact);
 private:
+	/**
+	 * @brief Конструктор
+	 * @param Целочисленный идентификатор
+	 */
 	RDOResourceTypeTransact(ruint number);
 	virtual ~RDOResourceTypeTransact();
 
 	DECLARE_IResourceType;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceTypeProccess
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOResourceTypeProccess
+ * @brief   Тип ресурсов для "транзактных" ресурсов РДО
+ * @details Создает ресурсы, которые могут быть релевантны активностям и 
+ * @details событиям, а также становиться транзактами в процессах
+ *********************************************************************************/
 OBJECT(RDOResourceTypeProccess)
 	IS  IMPLEMENTATION_OF(IResourceType     )
 	AND INSTANCE_OF      (RDORuntimeObject  )
@@ -62,6 +84,10 @@ OBJECT(RDOResourceTypeProccess)
 {
 DECLARE_FACTORY(RDOResourceTypeProccess);
 private:
+	/**
+	 * @brief Конструктор
+	 * @param Целочисленный идентификатор
+	 */
 	RDOResourceTypeProccess(ruint number);
 	virtual ~RDOResourceTypeProccess();
 
@@ -70,4 +96,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_RES_TYPE_H
+#endif // LIB_RUNTIME_RDO_RES_TYPE_H
