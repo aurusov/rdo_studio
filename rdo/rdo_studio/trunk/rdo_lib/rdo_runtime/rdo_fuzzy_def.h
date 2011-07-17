@@ -2,12 +2,12 @@
 #define RDO_FUZZY_DEF_H
 
 #ifndef _RDO_VALUE_H_
-#error include "rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
+#error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
 #endif
 
 //
 // Напрямую этот файл инклюдить не надо, юзайте
-// #include "rdo_fuzzy.h"
+// #include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
 //
 
 #include <map>

@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_method.h"
-#include "rdoprocess_factory.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 
 #ifdef _DEBUG

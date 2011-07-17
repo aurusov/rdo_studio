@@ -45,7 +45,7 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="rdo_studio\rdo_process\rp_misc\stdafx.h"
 				ObjectFile="$(IntDir)\"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -106,7 +106,7 @@
 				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="rdo_studio\rdo_process\rp_misc\stdafx.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

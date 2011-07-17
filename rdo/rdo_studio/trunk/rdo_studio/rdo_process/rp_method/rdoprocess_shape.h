@@ -5,9 +5,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_object_matrix.h"
-
 #include <vector>
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_matrix.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPShape

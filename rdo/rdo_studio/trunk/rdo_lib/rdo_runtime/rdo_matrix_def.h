@@ -10,12 +10,12 @@
 #define _RDO_MATRIX_DEF_H_
 
 #ifndef _RDO_VALUE_H_
-#error include "rdo_value.h" first (вместо "rdo_matrix_def.h" надо инклюдить "rdo_matrix.h")
+#error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_matrix_def.h" надо инклюдить "rdo_matrix.h")
 #endif
 
 //
 // Напрямую этот файл инклюдить не надо, юзайте
-// #include "rdo_matrix.h"
+// #include "rdo_lib/rdo_runtime/rdo_matrix.h"
 //
 
 // ====================================================================== INCLUDES

@@ -10,12 +10,12 @@
 #define _RDO_ARRAY_DEF_H_
 
 #ifndef _RDO_VALUE_H_
-#error include "rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_array.h")
+#error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_array.h")
 #endif
 
 //
 // Напрямую этот файл инклюдить не надо, юзайте
-// #include "rdo_array.h"
+// #include "rdo_lib/rdo_runtime/rdo_array.h"
 //
 
 // ====================================================================== INCLUDES

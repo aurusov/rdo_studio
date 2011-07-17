@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdoprocess_object_flowchart.h"
-#include "rdoprocess_flowchart.h"
-#include "rdoprocess_messages.h"
-#include "rdoprocess_method.h"
-#include "rdoprocess_factory.h"
-#include "rdoprocess_object_pixmap.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_flowchart.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_messages.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_pixmap.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
@@ -415,7 +415,6 @@ rp::rect RPObjectFlowChart::getMaxRect()
 }
 
 RPPixmap* bmp = NULL;
-//#include "red.xpm"
 
 void RPObjectFlowChart::draw( CDC& dc )
 {

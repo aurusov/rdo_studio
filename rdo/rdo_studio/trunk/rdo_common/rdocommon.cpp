@@ -18,7 +18,7 @@
 #include <windows.h>
 #include <io.h>
 // ====================================================================== SYNOPSIS
-#include "rdocommon.h"
+#include "rdo_common/rdocommon.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE

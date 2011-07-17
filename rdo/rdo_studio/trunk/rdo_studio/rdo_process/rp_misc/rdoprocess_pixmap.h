@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdoprocess_string.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPPixmap

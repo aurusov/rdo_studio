@@ -5,7 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_string.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
 #import <msxml3.dll> raw_interfaces_only
 
 namespace rp {

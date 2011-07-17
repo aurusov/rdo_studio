@@ -6,7 +6,7 @@
 *  6-Feb-01 | [2.0.0.1223] REQ #278: close key
 *****************************************************************************/
 #include "rdo_studio/stdafx.h"
-#include "shlwapi.h"
+#include <shlwapi.h>
 #include "rdo_studio/win_registry/registry.h"
 #include "rdo_studio/win_registry/resource.h"
 
