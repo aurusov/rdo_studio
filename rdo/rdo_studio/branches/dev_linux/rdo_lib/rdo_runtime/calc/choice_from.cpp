@@ -79,13 +79,7 @@ REF(RDOValue) RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pResource = m_pResType->createRes(pRuntime, m_paramsCalcs, m_traceFlag, m_permanentFlag);
 	if (m_relResID)
-	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, pResource->getTraceID());
-	}
-	else
-	{
-		pRuntime->insertNewResourceBeforeSim(pResource);
-	}
 	return m_value; // just to return something
 }
 

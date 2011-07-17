@@ -178,7 +178,6 @@ public:
 	LPRDOResource createNewResource( unsigned int type, RDOCalcCreateResource* calc );
 	LPRDOResource createNewResource( unsigned int type, rbool trace );
 	void insertNewResource         (CREF(LPRDOResource) pResource);
-	void insertNewResourceBeforeSim(CREF(LPRDOResource) pResource);
 
 	RDOValue      getFuncArgument (int numberOfParam); 
 	LPRDOResource getGroupFuncRes ()                              { return groupFuncStack.back();                                  }
@@ -263,7 +262,6 @@ private:
 
 	std::vector<LPRDOResource> allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  <LPRDOResource> allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
-	std::list  <LPRDOResource> allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
 	CalcList                    initCalcs;
 	LPRDOMemoryStack            m_pMemoryStack;
 	FunBreakFlag                m_funBreakFlag;
@@ -308,8 +306,8 @@ private:
 	virtual ResList getResourcesBeforeSim() const
 	{
 		ResList list;
-		ResCIterator it = allResourcesBeforeSim.begin();
-		while (it != allResourcesBeforeSim.end())
+		ResCIterator it = allResourcesByTime.begin();
+		while (it != allResourcesByTime.end())
 		{
 			list.push_back(*it);
 			++it;

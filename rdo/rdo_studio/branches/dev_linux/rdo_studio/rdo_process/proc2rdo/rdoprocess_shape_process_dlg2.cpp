@@ -2,8 +2,8 @@
 //
 
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdoprocess_shape_process_dlg2.h"
-#include "rdoprocess_method_proc2rdo.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process_dlg2.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

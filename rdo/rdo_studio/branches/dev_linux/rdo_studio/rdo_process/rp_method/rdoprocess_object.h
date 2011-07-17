@@ -5,8 +5,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_factory.h"
 #include <list>
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPObject

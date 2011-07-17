@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_object.h"
-#include "rdoprocess_project.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_project.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG

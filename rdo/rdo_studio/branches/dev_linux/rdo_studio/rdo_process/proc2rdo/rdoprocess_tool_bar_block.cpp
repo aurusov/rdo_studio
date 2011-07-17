@@ -2,9 +2,9 @@
 //
 
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdoprocess_tool_bar_block.h"
-#include "rdoprocess_shape_create.h"
-#include "../../resource.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_tool_bar_block.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create.h"
+#include "rdo_studio/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

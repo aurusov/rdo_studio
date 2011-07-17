@@ -10,13 +10,13 @@
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
 #include <boost/format.hpp>
-#include "thirdparty/pugixml/src/pugixml.hpp"
 // ====================================================================== SYNOPSIS
 #include "rdo_repository/rdorepository.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdotime.h"
+#include "thirdparty/pugixml/src/pugixml.hpp"
 // ===============================================================================
 
 OPEN_RDO_REPOSITORY_NAMESPACE

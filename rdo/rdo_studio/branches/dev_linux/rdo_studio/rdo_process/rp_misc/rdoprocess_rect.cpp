@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_rect.h"
-#include "rdoprocess_math.h"
+#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_rect.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_math.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

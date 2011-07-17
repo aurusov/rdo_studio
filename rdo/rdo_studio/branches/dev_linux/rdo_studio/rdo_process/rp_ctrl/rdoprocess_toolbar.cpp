@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "rdo_studio/rdo_process/rp_ctrl/stdafx.h"
 #include "rdo_studio/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 
 #ifdef _DEBUG

@@ -297,12 +297,6 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	allResourcesByTime.push_back(pResource);
 }
 
-void RDORuntime::insertNewResourceBeforeSim(CREF(LPRDOResource) pResource)
-{
-	ASSERT(pResource);
-	allResourcesBeforeSim.push_back(pResource);
-}
-
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer logic, CREF(LPIEvent) ev)
 {
 	appendBaseOperation(logic, ev);
@@ -479,7 +473,6 @@ void RDORuntime::onInit()
 void RDORuntime::onDestroy()
 {
 	//! TODO: Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
-	allResourcesBeforeSim.clear();
 	allResourcesByTime.clear();
 	allResourcesByID.clear();
 

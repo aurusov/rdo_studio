@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdoprocess_string.h"
+#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
 #include <vector>
 #include <stdarg.h>
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

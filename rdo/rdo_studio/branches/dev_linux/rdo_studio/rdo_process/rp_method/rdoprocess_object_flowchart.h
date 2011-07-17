@@ -5,8 +5,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_object_matrix.h"
-#include "rdoprocess_connector.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_matrix.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_connector.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPObjectFlowChart

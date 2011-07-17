@@ -1,14 +1,27 @@
+/**
+ * @copyright (c) RDO-Team, 2011
+ * @file      rdo_res_type.cpp
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      07.06.2011
+ * @brief     Реализация типов ресурсов в rdoRuntime
+ * @indent    4T
+ */
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceType
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOResourceType
+// ********************************************************************************
 RDOResourceType::RDOResourceType(ruint number)
 	: RDORuntimeObject  (                                        )
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
@@ -26,9 +39,9 @@ LPRDOResource RDOResourceType::createRes(CREF(LPRDORuntime) pRuntime, CREF(std::
 	return rdo::Factory<RDOResource>::create(pRuntime, paramsCalcs, pIResType, pRuntime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceTypeTransact
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOResourceTypeTransact
+// ********************************************************************************
 RDOResourceTypeTransact::RDOResourceTypeTransact(ruint number)
 	: RDORuntimeObject  (                                        )
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
@@ -46,9 +59,9 @@ LPRDOResource RDOResourceTypeTransact::createRes(CREF(LPRDORuntime) pRuntime, CR
 	return rdo::Factory<RDOPROCTransact>::create(pRuntime, paramsCalcs, pIResType, pRuntime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceTypeProccess
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOResourceTypeProccess
+// ********************************************************************************
 RDOResourceTypeProccess::RDOResourceTypeProccess(ruint number)
 	: RDORuntimeObject  (                                        )
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
