@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2011
+ * copyright: (c) RDO-Team, 2009
  * filename : main.cpp
  * author   : Урусов Андрей, Evgeny Proydakov
  * date     : 07.07.2009
