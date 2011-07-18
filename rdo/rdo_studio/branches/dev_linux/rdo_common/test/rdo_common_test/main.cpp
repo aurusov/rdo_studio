@@ -2,8 +2,8 @@
  * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
  * author   : Урусов Андрей, Evgeny Proydakov
- * date     : 16.06.2011
- * bref     : Test rdo_common
+ * date     : 10.05.2009
+ * bref     : Тест common-библиотеки
  * indent   : 4T
  */
 

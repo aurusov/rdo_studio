@@ -2,8 +2,8 @@
  * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
  * author   : Урусов Андрей, Proydakov Evgeny
- * date     : 16.06.2011
- * bref     : Test rdo_common smart pointer
+ * date     : 14.07.2009
+ * bref     : Тест умных указателей
  * indent   : 4T
  */
 
