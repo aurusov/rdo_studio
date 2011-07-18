@@ -8,8 +8,8 @@
  * @indent    4T
  */
 
-#ifndef LIB_RUNTIME_RDO_RES_TYPE_I_H
-#define LIB_RUNTIME_RDO_RES_TYPE_I_H
+#ifndef _LIB_RUNTIME_RDO_RES_TYPE_I_H_
+#define _LIB_RUNTIME_RDO_RES_TYPE_I_H_
 
 // ********************************************************************** INCLUDES
 // ********************************************************************** SYNOPSIS
@@ -45,4 +45,4 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // LIB_RUNTIME_RDO_RES_TYPE_I_H
+#endif // _LIB_RUNTIME_RDO_RES_TYPE_I_H_

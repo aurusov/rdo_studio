@@ -7,8 +7,8 @@
  * @indent    4T
  */
 
-#ifndef LIB_RUNTIME_RDO_RES_TYPE_H
-#define LIB_RUNTIME_RDO_RES_TYPE_H
+#ifndef _LIB_RUNTIME_RDO_RES_TYPE_H_
+#define _LIB_RUNTIME_RDO_RES_TYPE_H_
 
 // **************************************************************************** PCH
 // *********************************************************************** INCLUDES
@@ -96,4 +96,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // LIB_RUNTIME_RDO_RES_TYPE_H
+#endif // _LIB_RUNTIME_RDO_RES_TYPE_H_
