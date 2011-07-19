@@ -68,7 +68,7 @@ inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinit
 {
 	//! Было
 	//! m_fuzzySetDefinition->reparent(this);
-	//! TODO: для порядку перевести на умные указатели
+	/// @todo для порядку перевести на умные указатели
 }
 
 inline RDOFuzzyType::~RDOFuzzyType()

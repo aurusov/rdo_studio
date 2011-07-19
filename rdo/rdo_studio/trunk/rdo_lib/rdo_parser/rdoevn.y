@@ -1455,7 +1455,7 @@ equal_statement
 		}
 		ASSERT(pCalc);
 		//! Проверка на диапазон
-		//! TODO: проверить работоспособность
+		/// @todo проверить работоспособность
 		if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getTypeInfo().get()))
 		{
 			LPRDOTypeIntRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
@@ -1558,7 +1558,7 @@ equal_statement
 		}
 		ASSERT(pCalc);
 		//! Проверка на диапазон
-		//! TODO: проверить работоспособность
+		/// @todo проверить работоспособность
 		if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getTypeInfo().get()))
 		{
 			LPRDOTypeIntRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();

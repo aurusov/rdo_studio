@@ -64,7 +64,7 @@ void TreeNode::ExpandChildren()
 	onSearchOpenNode( m_root->m_theRealSimulator );
 
 	// ѕроверили на конечную вершину
-	// TODO: возможно, надо проверить все вершины в списке OPEN
+	/// @todo возможно, надо проверить все вершины в списке OPEN
 	if ( m_root->m_dp->TermCondition(m_pRuntime) ) {
 		m_root->m_targetNode = this;
 #ifdef _DEBUG
@@ -92,7 +92,7 @@ void TreeNode::ExpandChildren()
 		m_currAct->rule()->onBeforeChoiceFrom( m_pChildRuntime );
 		if ( !m_currAct->rule()->choiceFrom( m_pChildRuntime ) ) {
 			// Ќе прошел Choice from, удал€ем симул€тор и переходим к другой активности.
-			// TODO: а зачем удал€ть симул€тор, ведь Ѕƒ не помен€лась ?
+			/// @todo а зачем удал€ть симул€тор, ведь Ѕƒ не помен€лась ?
 			// “акое будет возможно, если при подготовке параметров паттерна будет
 			// вызыватьс€ calc, на котором весит уведомление по вызову дл€ другого
 			// объекта, который будут мен€тьс€ параметры ресурсов
@@ -159,7 +159,7 @@ void TreeNode::ExpandChildren()
 					}
 #endif
 					// “еперь пересчитываем стоимость этой вершины и всех еЄ потомков
-					// todo: а нет ли тут ошибки, т.к. costPath у старой вершины,
+					/// @todo: а нет ли тут ошибки, т.к. costPath у старой вершины,
 					// подсчитанна€ как costPath + newCostRule, может не совпасть
 					// из-за newCostRule из-за разных стоимостей применени€ правил,
 					// т.е. сначла надо обновить loser->costRule (см. ниже), а потом

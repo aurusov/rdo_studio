@@ -465,7 +465,7 @@ void RDOPATPattern::end()
 		LPRDORelevantResource pCurrRelRes = m_relResList.at(i);
 		if (!pCurrRelRes->m_alreadyHaveConverter)
 		{
-			//! TODO: ј почему нельз€ сделать warning ? ¬озможно, есть жесткое требование недопустить пустого рел. ресурса.
+			/// @todo ј почему нельз€ сделать warning ? ¬озможно, есть жесткое требование недопустить пустого рел. ресурса.
 			rdoParse::g_error().error(pCurrRelRes->src_info(), rdo::format(_T("–елевантный ресурс '%s' не используетс€ в образце '%s'"), pCurrRelRes->name().c_str(), name().c_str()));
 		}
 		m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());
@@ -609,7 +609,7 @@ rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 			params_default.push_back((*it)->getDefault().value());
 		}
 	}
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(m_pCurrRelRes->getType()->getRuntimeResType(), params_default, trace, false/**@TODO проверить, что ресурс временный*/, m_pCurrRelRes->m_relResID);
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(m_pCurrRelRes->getType()->getRuntimeResType(), params_default, trace, false/** @todo проверить, что ресурс временный */, m_pCurrRelRes->m_relResID);
 	pCalc->setSrcInfo(m_pCurrRelRes->src_info());
 	pCalc->setSrcText(rdo::format(_T("—оздание временного ресурса %s"), m_pCurrRelRes->name().c_str()));
 	return pCalc;

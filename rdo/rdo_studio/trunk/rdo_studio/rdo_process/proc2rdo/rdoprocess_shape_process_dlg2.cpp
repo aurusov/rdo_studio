@@ -74,7 +74,7 @@ void RPShapeProcessDlg2_MJ::list_name_resource()
 
 void RPShapeProcessDlg2_MJ::OnOK() 
 {
-	// TODO: Add extra validation here
+	/// @todo Add extra validation here
 	CString data_combo;
 	if(	m_combo_res_control.GetCurSel() != -1)
 	{

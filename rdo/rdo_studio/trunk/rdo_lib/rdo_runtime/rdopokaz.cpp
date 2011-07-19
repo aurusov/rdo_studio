@@ -360,7 +360,7 @@ void RDOPMDWatchValue::checkResourceErased(CREF(rdoRuntime::LPRDOResource) pReso
 	if (m_pLogicCalc->calcValue(m_pRuntime).getAsBool())
 	{
 		m_currValue = m_pArithmCalc->calcValue(m_pRuntime);
-		tracePokaz(); // TODO: убрать отсюда ? (и перенести DECLARE_IPokazTrace в приват)
+		tracePokaz(); /// @todo убрать отсюда ? (и перенести DECLARE_IPokazTrace в приват)
 //		pRuntime->getTracer()->writePokaz(pRuntime, this);
 		double curr = m_currValue.getDouble();
 		m_sum    += curr;

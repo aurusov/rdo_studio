@@ -38,9 +38,9 @@ BOOL RPDoc::OnNewDocument()
 void RPDoc::Serialize( CArchive& ar )
 {
 	if ( ar.IsStoring() ) {
-		// TODO: add storing code here
+		/// @todo add storing code here
 	} else {
-		// TODO: add loading code here
+		/// @todo add loading code here
 	}
 }
 

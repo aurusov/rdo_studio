@@ -331,7 +331,7 @@ RDOPROCBlockForSeize::RDOPROCBlockForSeize(LPIPROCProcess process, std::vector <
 
 void RDOPROCBlockForSeize::_onStart( CREF(LPRDORuntime) pRuntime )
 {
-	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
+	/// @todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
 	int size = fromParser.size();
 	std::vector < parser_for_Seize >::iterator it1 = fromParser.begin();

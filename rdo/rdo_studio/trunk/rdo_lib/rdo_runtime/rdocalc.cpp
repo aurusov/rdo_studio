@@ -86,7 +86,7 @@ REF(RDOValue) RDOCalcGetResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcGetTempResParamFRM::RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb)
 	: RDOCalcGetResParam(_resNumb, _parNumb)
 {
-//TODO	pRuntime->connect(this, RDORuntime::RO_BEFOREDELETE);
+/// @todo pRuntime->connect(this, RDORuntime::RO_BEFOREDELETE);
 }
 
 REF(RDOValue) RDOCalcGetTempResParamFRM::doCalc(CREF(LPRDORuntime) pRuntime)

@@ -319,7 +319,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, name) : rdoParse::RDOParserSrcInfo(name)
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(name, pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_STRING_CONST;
 }
@@ -359,7 +359,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, value) : rdoParse::RDOParserSrcInfo(value)
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(value.c_str()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
@@ -370,7 +370,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atof(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_REAL_CONST;
 }
@@ -381,7 +381,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
@@ -392,7 +392,7 @@ true {
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
@@ -403,7 +403,7 @@ false {
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }

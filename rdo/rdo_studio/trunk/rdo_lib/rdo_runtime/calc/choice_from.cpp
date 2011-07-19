@@ -71,7 +71,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(s
 	, m_relResID     (relResID     )
 {
 	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
-	//! @TODO: переделать на ASSERT
+	/// @todo переделать на ASSERT
 	if (m_permanentFlag && m_relResID > 0) NEVER_REACH_HERE; //попытка создавать постоянные ресурсы динамически
 }
 

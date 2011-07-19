@@ -46,7 +46,7 @@ void TypeInfo::init()
 
 LPTypeInfo TypeInfo::type_cast(CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const
 {
-	//! TODO: TypeInfo убрать параметр из src_info()
+	/// @todo TypeInfo убрать параметр из src_info()
 	LPRDOType pType = type()->type_cast(pFrom->type(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
 	ASSERT(pType);
 	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType, this->src_info(src_info));

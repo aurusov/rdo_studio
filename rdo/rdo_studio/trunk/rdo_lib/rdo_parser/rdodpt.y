@@ -611,7 +611,7 @@ dpt_some_parent
 dpt_some_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
 	{
-		// TODO: а где признак трассировки для some ?
+		/// @todo а где признак трассировки для some ?
 		PTR(RDOValue) name        = P_RDOVALUE($2);
 		PTR(RDOValue) parent_name = P_RDOVALUE($4);
 		LPRDODPTSome  pDPTSome;
@@ -842,7 +842,7 @@ dpt_prior_parent
 dpt_prior_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
 	{
-		// TODO: а где признак трассировки для prior ?
+		/// @todo а где признак трассировки для prior ?
 		PTR(RDOValue) name        = P_RDOVALUE($2);
 		PTR(RDOValue) parent_name = P_RDOVALUE($4);
 		LPRDODPTPrior pDPTPrior;

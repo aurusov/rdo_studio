@@ -472,7 +472,7 @@ void RDORuntime::onInit()
 
 void RDORuntime::onDestroy()
 {
-	//! TODO: Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
+	/// @todo Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
 	allResourcesByTime.clear();
 	allResourcesByID.clear();
 

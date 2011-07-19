@@ -338,7 +338,7 @@ void RDOPATPattern::end()
 		LPRDORelevantResource pCurrRelRes = m_relResList.at(i);
 		if (!pCurrRelRes->m_alreadyHaveConverter)
 		{
-			//! TODO: ј почему нельз€ сделать warning ? ¬озможно, есть жесткое требование недопустить пустого рел. ресурса.
+			/// @todo ј почему нельз€ сделать warning ? ¬озможно, есть жесткое требование недопустить пустого рел. ресурса.
 			rdoConverter::g_error().error(pCurrRelRes->src_info(), rdo::format(_T("–елевантный ресурс '%s' не используетс€ в образце '%s'"), pCurrRelRes->name().c_str(), name().c_str()));
 		}
 		m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());

@@ -44,13 +44,13 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 {
 	appendParams(copy.m_params.begin(), copy.m_params.end());
 	pRuntime->insertNewResource(this);
-//! @TODO посмотреть history и принять решение и комментарии
+/// @todo посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
 
 RDOResource::~RDOResource()
 {
-	//! TODO: Дима, поставь тут breakpoint и посмотри на this
+	/// @todo Дима, поставь тут breakpoint и посмотри на this
 	//getRuntime()->fireMessage(RDORuntime::RO_BEFOREDELETE, (void*)getTraceID());
 	//getRuntime()->onResourceErase(this);
 }

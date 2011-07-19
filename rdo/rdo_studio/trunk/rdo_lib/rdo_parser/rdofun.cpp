@@ -468,7 +468,7 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 	LPTypeInfo pType = getPreType(pSecond);
 	ASSERT(pType);
 
-	//! TODO: перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
+	/// @todo перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
 	//! Ответ: с умножением надо делать тоже самое, только непонятно как
 	if (pType->type()->typeID() == rdoRuntime::RDOType::t_int)
 	{

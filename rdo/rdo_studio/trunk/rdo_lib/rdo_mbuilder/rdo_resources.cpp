@@ -341,7 +341,7 @@ rbool RDOResource::fillParserResourceParams(REF(rdoParse::LPRDORSSResource) pToP
 
 		rdoParse::RDOValue value(value_it->second);
 		value = param_it->type()->value_cast(value);
-		//! TODO: а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
+		/// @todo а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
 		value.setSrcInfo(pToParserRSS->src_info());
 		pToParserRSS->addParam(value);
 	}

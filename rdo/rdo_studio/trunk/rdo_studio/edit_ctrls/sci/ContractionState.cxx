@@ -131,7 +131,7 @@ void ContractionState::Grow(int sizeNew) {
 		valid = false;
 	} else {
 		Platform::DebugPrintf("No memory available\n");
-		// TODO: Blow up
+		/// @todo Blow up
 	}
 }
 
@@ -200,7 +200,7 @@ bool ContractionState::SetVisible(int lineDocStart, int lineDocEnd, bool visible
 	if (size == 0) {
 		Grow(linesInDoc + growSize);
 	}
-	// TODO: modify docLine members to mirror displayLine
+	/// @todo modify docLine members to mirror displayLine
 	int delta = 0;
 	// Change lineDocs
 	if ((lineDocStart <= lineDocEnd) && (lineDocStart >= 0) && (lineDocEnd < linesInDoc)) {
