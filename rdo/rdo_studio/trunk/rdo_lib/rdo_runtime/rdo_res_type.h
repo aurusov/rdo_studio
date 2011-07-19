@@ -1,14 +1,14 @@
-/**
+/******************************************************************************//**
  * @copyright (c) RDO-Team, 2011
  * @file      rdo_res_type.h
  * @authors   Урусов Андрей, Лущан Дмитрий
  * @date      07.06.2011
  * @brief     Типы ресурсов в rdoRuntime
  * @indent    4T
- */
+ *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_RDO_RES_TYPE_H_
-#define _LIB_RUNTIME_RDO_RES_TYPE_H_
+#ifndef _LIB_RUNTIME_RES_TYPE_
+#define _LIB_RUNTIME_RES_TYPE_
 
 // **************************************************************************** PCH
 // *********************************************************************** INCLUDES
@@ -23,11 +23,13 @@ class RDORuntime;
 class RDOResource;
 class RDOPROCTransact;
 
+/// @todo сделать классы \a RDOResourceType, \a RDOResourceTypeTransact и \a RDOResourceTypeProccess шаблонным
+
 /******************************************************************************//**
  * @class   RDOResourceType
  * @brief   Тип ресурсов для "обычных" ресурсов РДО
- * @details Создает ресурсы, которые могут быть релевантны активностям и 
- * @details событиям, но не могут использоваться в процессах
+ * @details Создает ресурсы, которые могут быть релевантны активностям и
+ * событиям, но не могут использоваться в процессах
  *********************************************************************************/
 OBJECT(RDOResourceType)
 	IS  IMPLEMENTATION_OF(IResourceType     )
@@ -96,4 +98,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_RDO_RES_TYPE_H_
+#endif // _LIB_RUNTIME_RES_TYPE_
