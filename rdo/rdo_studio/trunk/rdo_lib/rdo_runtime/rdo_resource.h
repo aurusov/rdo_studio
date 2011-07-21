@@ -1,34 +1,44 @@
-/**
- @file    rdo_resource.h
- @authors Урусов Андрей, Лущан Дмитрий
- @date    03.06.2011
- @brief   Ресурсы в runtime
- @indent  4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      rdo_resource.h
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      16.04.2008
+ * @brief     Ресурсы в runtime
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef RDO_RESOURCE_H
-#define RDO_RESOURCE_H
+#ifndef _LIB_RUNTIME_RESOURCE_
+#define _LIB_RUNTIME_RESOURCE_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
 PREDECLARE_OBJECT_INTERFACE(IResourceType);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResource
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOResource
+ * @brief   "обычные" ресурсы моделей
+ * @details Ресурсы, которые могут быть релевантны активностям и
+ * событиям, но не могут использоваться в процессах
+ *********************************************************************************/
 OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
 friend class RDOResourceType;
 public:
-	enum ConvertStatus {
+	/**
+	 * @enum  ConvertStatus
+	 * @brief статусы конверторов релевантных ресурсов
+	 */
+	enum ConvertStatus
+	{
 		CS_None = 0,
 		CS_Keep,
 		CS_Create,
@@ -41,30 +51,32 @@ public:
 	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
-	void setRuntime(CREF(LPRDORuntime) pRuntime);
+	rbool operator!= (REF(RDOResource) other);
 
-	ConvertStatus         getState   (           ) const;
-	CREF(RDOValue)        getParam   (ruint index) const;
-	rbool                 checkType  (ruint type ) const;
-	rbool                 canFree    (           ) const;
-	CREF(LPIResourceType) getResType (           ) const;
-	ruint                 getType    (           ) const;
-	virtual ruint         paramsCount(           ) const;
-	LPRDOResource         clone      (CREF(LPRDORuntime) pRuntime) const;
-	CREF(std::vector<RDOValue>) getParams(       ) const;
+	ConvertStatus               getState   (                           ) const;
+	CREF(RDOValue)              getParam   (ruint index                ) const;
+	rbool                       checkType  (ruint type                 ) const;
+	rbool                       canFree    (                           ) const;
+	CREF(LPIResourceType)       getResType (                           ) const;
+	ruint                       getType    (                           ) const;
+	virtual ruint               paramsCount(                           ) const;
+	LPRDOResource               clone      (CREF(LPRDORuntime) pRuntime) const;
+	CREF(std::vector<RDOValue>) getParams  (                           ) const;
 
-	void            makeTemporary       (rbool value                            );
-	void            setState            (ConvertStatus value                    );
+	typedef std::vector<RDOValue>::const_iterator VCI;
+
+	virtual void    appendParams        (CREF(VCI) from_begin, CREF(VCI) from_end);
+	void            setRuntime          (CREF(LPRDORuntime) pRuntime             );
+	void            makeTemporary       (rbool value                             );
+	void            setState            (ConvertStatus value                     );
 	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
-	REF(RDOValue)   getParamRaw         (ruint index                            );
-	void            setParam            (ruint index, CREF(RDOValue) value      );
-	virtual void    appendParams        (const std::vector<RDOValue>::const_iterator& from_begin, const std::vector<RDOValue>::const_iterator& from_end);
+	REF(RDOValue)   getParamRaw         (ruint index                             );
+	void            setParam            (ruint index, CREF(RDOValue) value       );
 	tstring         getTypeId           ();
 	tstring         traceParametersValue();
 	virtual tstring whoAreYou           ();
 	void            incRef              ();
 	void            decRef              ();
-	rbool operator!= (REF(RDOResource) other);
 
 protected:
 	std::vector<RDOValue> m_params;
@@ -84,4 +96,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_resource.inl"
 
-#endif // RDO_RESOURCE_H
+#endif // _LIB_RUNTIME_RESOURCE_

@@ -1,23 +1,25 @@
-/**
- @file    rdo_resource.cpp
- @authors Урусов Андрей, Лущан Дмитрий
- @date    unknown
- @brief   RDOResource implementation
- @indent  4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      rdo_resource.cpp
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      16.04.2008
+ * @brief     RDOResource implementation
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResource
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOResource
+// ********************************************************************************
 RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
 	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
@@ -31,6 +33,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>
 	pRuntime->insertNewResource(this);
 }
 
+/// @todo копирующий конструктор не используется - нужен ли он?
 RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 	: RDORuntimeObject   (                 )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())

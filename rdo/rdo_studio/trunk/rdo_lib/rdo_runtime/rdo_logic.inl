@@ -1,20 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic.inl
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 03.10.09
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_logic.inl
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      03.10.09
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -22,9 +22,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 #define LOGIC_FOR_ALL() STL_FOR_ALL(m_childList, it)
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOrderSimple
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOOrderSimple
+// ********************************************************************************
 inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
 {
 	STL_FOR_ALL(container, it)
@@ -37,9 +37,9 @@ inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, REF(Ba
 	return NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOrderMeta
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOOrderMeta
+// ********************************************************************************
 inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
 {
 	if (container.empty())
@@ -72,9 +72,9 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(Base
 	return NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogic
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOLogic
+// ********************************************************************************
 template <class Order>
 inline RDOLogic<Order>::RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
 	: m_pCondition   (NULL )
