@@ -1,41 +1,50 @@
-#ifndef SEARCHTREE_H
-#define SEARCHTREE_H
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_logic_dptsearch.h
+ * @authors   Урусов Андрей
+ * @date      unknown
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
+#ifndef _LIB_RUNTIME_SEARCH_TREE_
+#define _LIB_RUNTIME_SEARCH_TREE_
+
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
+// ********************************************************************************
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class TreeNode;
 
-// ----------------------------------------------------------------------------
-// ---------- TreeRoot - корень дерева DPT
-// ----------------------------------------------------------------------------
-// С помощью createRootTreeNode создает реальный узер-корень
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   TreeRoot
+ * @brief   Корень дерева DPT
+ * @details С помощью createRootTreeNode создает реальный узер-корень
+ *********************************************************************************/
 class TreeRoot
 {
 public:
-	virtual ~TreeRoot() {}
+	virtual ~TreeRoot();
 
 	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime) = 0;
 
-	std::vector< TreeNode* > m_OPEN;
-	RDODPTSearch*            m_dp;
-	TreeNode*                m_rootNode;
-	TreeNode*                m_targetNode;
-	LPRDORuntime             m_theRealSimulator;
-	int                      m_nodesInGraphCount;
-	int                      m_expandedNodesCount;
-	int                      m_fullNodesCount;
-	SYSTEMTIME               m_systime_begin;
-	unsigned int             m_sizeof_dpt;
+	std::vector<TreeNode*> m_OPEN;
+	RDODPTSearch*          m_dp;
+	TreeNode*              m_rootNode;
+	TreeNode*              m_targetNode;
+	LPRDORuntime           m_theRealSimulator;
+	int                    m_nodesInGraphCount;
+	int                    m_expandedNodesCount;
+	int                    m_fullNodesCount;
+	SYSTEMTIME             m_systime_begin;
+	unsigned int           m_sizeof_dpt;
 
-	int getNodesCound() const { return m_nodesCount; }
-	int getNewNodeNumber() {
-		return ++m_nodesCount;
-	}
+	int getNodesCound() const;
+	int getNewNodeNumber();
 
 protected:
 	TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP);
@@ -44,9 +53,10 @@ private:
 	int m_nodesCount;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- TreeNode - узел графа DPT
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   TreeNode
+ * @brief   Узел графа DPT
+ *********************************************************************************/
 class TreeNode
 {
 public:
@@ -64,14 +74,15 @@ public:
 
 	void ExpandChildren();
 
-	enum NodeFoundInfo {
+	enum NodeFoundInfo
+	{
 		nfi_notfound     = 0,
 		nfi_found_better = 1,
 		nfi_found_loser  = 2
 	};
 
 	NodeFoundInfo CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
-	void ReCostSubTree( double cost );
+	void ReCostSubTree(double cost);
 
 protected:
 	TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
@@ -83,27 +94,15 @@ protected:
 	double m_newCostRest;
 	double m_newCostRule;
 
-	virtual void          onSearchOpenNode        (CREF(LPRDORuntime) pRuntime) {}
-	virtual void          onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime) {}
-	virtual void          onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime) {}
-	virtual void          onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime) {}
+	virtual void          onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
+	virtual void          onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
+	virtual void          onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
+	virtual void          onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
 	virtual PTR(TreeNode) createChildTreeNode     ();
 };
 
-// ----------------------------------------------------------------------------
-// ---------- compareNodes
-// ----------------------------------------------------------------------------
-// функция сравнения вершин графа для сортировки списка OPEN
-// ----------------------------------------------------------------------------
-inline rbool compareNodes( const TreeNode* tn1, const TreeNode* tn2 )
-{
-	if ( fabs(tn1->m_costRest - tn2->m_costRest) > 0.0000001 ) {
-		return ( tn1->m_costRest < tn2->m_costRest );
-	} else {
-		return ( tn1->m_number < tn2->m_number );
-	}
-}
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-} // namespace rdoRuntime
+#include "searchtree.inl"
 
-#endif // SEARCHTREE_H
+#endif // _LIB_RUNTIME_SEARCH_TREE_

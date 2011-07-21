@@ -1,44 +1,49 @@
-#ifndef RDODTPRTIME_H
-#define RDODTPRTIME_H
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdodptrtime.h
+ * @authors   Урусов Андрей
+ * @date      unknown
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
+#ifndef _LIB_RUNTIME_DPTRTIME_
+#define _LIB_RUNTIME_DPTRTIME_
+
+// *********************************************************************** INCLUDES
 #include <sstream>
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/searchtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+// ********************************************************************************
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearchRuntime - DPT (потомок RDODPTSearch)
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDODPTSearchRuntime
+ * @brief   потомок RDODPTSearch
+ *********************************************************************************/
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
 DEFINE_IFACTORY(RDODPTSearchRuntime);
 
 private:
-	RDODPTSearchRuntime( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, rbool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
-		RDODPTSearchTrace( pRuntime, parent ),
-		pCondition( _pCondition ),
-		pTermCondition( _pTermCondition ),
-		pEvaluateBy( _pEvaluateBy ),
-		compTops( _compTops )
-	{
-		setTraceID( pRuntime->getFreeDPTId() );
-		traceFlag = _traceFlag;
-	}
+	RDODPTSearchRuntime(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, rbool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag);
 
 	LPRDOCalc pCondition;
 	LPRDOCalc pTermCondition;
 	LPRDOCalc pEvaluateBy;
 	rbool     compTops;
 
-	virtual rbool  onCheckCondition(CREF(LPRDORuntime) pRuntime) { return pCondition    ->calcValue(pRuntime).getAsBool(); }
-	virtual rbool  TermCondition   (CREF(LPRDORuntime) pRuntime) { return pTermCondition->calcValue(pRuntime).getAsBool(); }
-	virtual double EvaluateBy      (CREF(LPRDORuntime) pRuntime) { return pEvaluateBy   ->calcValue(pRuntime).getDouble(); }
-	virtual rbool  NeedCompareTops ()                            { return compTops; }
+	virtual rbool  onCheckCondition(CREF(LPRDORuntime) pRuntime);
+	virtual rbool  TermCondition   (CREF(LPRDORuntime) pRuntime);
+	virtual double EvaluateBy      (CREF(LPRDORuntime) pRuntime);
+	virtual rbool  NeedCompareTops ();
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDODTPRTIME_H
+#include "rdodptrtime.inl"
+
+#endif // _LIB_RUNTIME_DPTRTIME_

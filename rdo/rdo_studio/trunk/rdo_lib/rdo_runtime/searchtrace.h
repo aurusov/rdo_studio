@@ -1,15 +1,30 @@
-#ifndef SEARCHTRACE_H
-#define SEARCHTRACE_H
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, unknown
+ * @file      searchtrace.h
+ * @authors   unknown
+ * @date      unknown
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
+#ifndef _LIB_RUNTIME_SEARCH_TRACE_
+#define _LIB_RUNTIME_SEARCH_TRACE_
+
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/searchtree.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
 #include "rdo_lib/rdo_runtime/searchtrace_i.h"
+// ********************************************************************************
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
+/******************************************************************************//**
+ * @class   RDODPTSearchTrace
+ * @brief   unknown
+ *********************************************************************************/
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
 DEFINE_IFACTORY(RDODPTSearchTrace);
@@ -20,6 +35,10 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
+	/**
+	 * @enum  DPT_TraceFlag
+	 * @brief статусы трассировки для точек DPTSearch
+	 */
 	enum DPT_TraceFlag
 	{
 	   DPT_no_trace,
@@ -28,12 +47,12 @@ public:
 	   DPT_trace_all
 	};
 
-	void onSearchBegin( CREF(LPRDORuntime) pRuntime );
-	void onSearchDecisionHeader( CREF(LPRDORuntime) pRuntime );
-	void onSearchDecision( CREF(LPRDORuntime) pRuntime, TreeNode* node );
-	void onSearchResultSuccess( CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot );
-	void onSearchResultNotFound( CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot );
-	TreeRoot* createTreeRoot( CREF(LPRDORuntime) pRuntime );
+	void onSearchBegin         (CREF(LPRDORuntime) pRuntime);
+	void onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime);
+	void onSearchDecision      (CREF(LPRDORuntime) pRuntime, TreeNode* node);
+	void onSearchResultSuccess (CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot);
+	void onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot);
+	TreeRoot* createTreeRoot   (CREF(LPRDORuntime) pRuntime);
 
 	ruint calc_cnt; // Количество запусков
 	ruint calc_res_found_cnt;
@@ -48,30 +67,29 @@ public:
 	DPT_TraceFlag traceFlag;
 
 protected:
-	RDODPTSearchTrace( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent ):
-		RDODPTSearch( pRuntime, parent ),
-		RDOTraceableObject( false ),
-		calc_cnt( 0 ),
-		calc_res_found_cnt( 0 )
-	{
-		traceFlag = DPT_no_trace;
-	}
+	RDODPTSearchTrace(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent);
 
 private:
 	DECLARE_IDPTSearchTraceStatistics;
 };
 
+/******************************************************************************//**
+ * @class   TreeRootTrace
+ * @brief   unknown
+ *********************************************************************************/
 class TreeRootTrace: public TreeRoot
 {
 private:
-	virtual void createRootTreeNode( CREF(LPRDORuntime) pRuntime );
+	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime);
 
 public:
-	TreeRootTrace(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
-		: TreeRoot(pRuntime, pDP)
-	{}
+	TreeRootTrace(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP);
 };
 
+/******************************************************************************//**
+ * @class   TreeNodeTrace
+ * @brief   unknown
+ *********************************************************************************/
 class TreeNodeTrace: public TreeNode
 {
 friend class RDOTrace;
@@ -84,11 +102,11 @@ private:
 	PTR(TreeNode) createChildTreeNode     ();
 
 public:
-	TreeNodeTrace(CREF(LPRDORuntime) pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt)
-		: TreeNode(pRuntime, i_parent, i_root, i_activity, cost, cnt)
-	{}
+	TreeNodeTrace(CREF(LPRDORuntime) pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt);
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // SEARCHTRACE_H
+#include "rdo_lib/rdo_runtime/searchtrace.inl"
+
+#endif // _LIB_RUNTIME_SEARCH_TRACE_

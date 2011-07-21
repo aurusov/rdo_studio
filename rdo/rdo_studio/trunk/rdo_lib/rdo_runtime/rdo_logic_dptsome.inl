@@ -2,7 +2,7 @@
  * @copyright (c) RDO-Team, 2009
  * @file      rdo_logic_dptsome.inl
  * @authors   Ћущан ƒмитрий
- * @date      04.11.09
+ * @date      04.11.2009
  * @brief     unknown
  * @indent    4T
  *********************************************************************************/

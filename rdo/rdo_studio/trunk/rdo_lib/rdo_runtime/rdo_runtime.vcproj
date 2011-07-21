@@ -1162,6 +1162,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdodptrtime.inl"
+							>
+						</File>
+						<File
 							RelativePath="searchtrace.cpp"
 							>
 							<FileConfiguration
@@ -1221,6 +1225,10 @@
 						</File>
 						<File
 							RelativePath="searchtrace.h"
+							>
+						</File>
+						<File
+							RelativePath=".\searchtrace.inl"
 							>
 						</File>
 						<File
@@ -1287,6 +1295,10 @@
 						</File>
 						<File
 							RelativePath="searchtree.h"
+							>
+						</File>
+						<File
+							RelativePath=".\searchtree.inl"
 							>
 						</File>
 					</Filter>

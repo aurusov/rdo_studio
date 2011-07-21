@@ -1,33 +1,34 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_dptsearch.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_logic_dptsearch.h
+ * @authors   Урусов Андрей
+ * @date      unknown
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_LOGIC_DPTSEARCH_H_
-#define _RDO_LOGIC_DPTSEARCH_H_
+#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_
+#define _LIB_RUNTIME_LOGIC_DPTSEARCH_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch_i.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class TreeNode;
 class TreeRoot;
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDODPTSearch
+ * @brief   unknown
+ *********************************************************************************/
 class RDODPTSearch: public RDOLogicSimple, public IDPTSearchLogic, public RDOPatternPrior
 {
 QUERY_INTERFACE_BEGIN
@@ -66,4 +67,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDO_LOGIC_DPTSEARCH_H_
+#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_
