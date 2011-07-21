@@ -177,30 +177,39 @@ BOOST_AUTO_TEST_CASE(test_create_a_pointer_to_this)
 
 BOOST_AUTO_TEST_CASE(test_casting_to_an_ancestor)
 {
-	// TODO HELP ME !!!!
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
-	pMyClass_1->m_i = 10;
-	pMyClass_1->m_k = 22;
+	int i = 10, k = 22;
+	pMyClass_1->m_i = i;
+	pMyClass_1->m_k = k;
 	LPMyClass  pMyClass_2 = pMyClass_1.object_static_cast<MyClass>();
-	pMyClass_1->m_i = 11;
+	BOOST_CHECK(pMyClass_2->m_i == 10);
+	i = 11;
+	pMyClass_1->m_i = i;
+	BOOST_CHECK(pMyClass_2->m_i == 11);
 }
 
 BOOST_AUTO_TEST_CASE(test_casting_to_the_interface)
 {
-	// TODO HELP ME !!!!
 	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
 	LPIMyClass21 pMyClass_21 = pMyClass_2.interface_cast<IMyClass21>();
+	BOOST_CHECK(pMyClass_2 == pMyClass_21);
 	pMyClass_2 = NULL;
+	BOOST_CHECK(!pMyClass_2);
+	BOOST_CHECK(pMyClass_21);
 	pMyClass_21 = LPIMyClass21();
+	BOOST_CHECK(!pMyClass_21);
 }
 
 BOOST_AUTO_TEST_CASE(test_casting_to_the_interface_through_the_child)
 {
-	// TODO HELP ME !!!!
 	LPMyClass4 pMyClass_4 = rdo::Factory<MyClass4>::create();
 	LPIMyClass21 pMyClass_21 = pMyClass_4.interface_cast<IMyClass21>();
+	BOOST_CHECK(pMyClass_4 == pMyClass_21);
 	pMyClass_4 = NULL;
+	BOOST_CHECK(!pMyClass_4);
+	BOOST_CHECK(pMyClass_21);
 	pMyClass_21 = LPIMyClass21();
+	BOOST_CHECK(!pMyClass_21);
 }
 
 BOOST_AUTO_TEST_CASE(test_comparing_pointers)

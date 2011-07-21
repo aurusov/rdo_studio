@@ -21,13 +21,21 @@
 
 #define test_file_name "test_file"
 
+#define create_test_local_time 129557633912040000
+#define first_resource_string "test_101"
+#define second_resource_string "test_102 22"
+#define third_resource_string "test_103 test_101 33 test_102 22"
+
 BOOST_AUTO_TEST_SUITE(test_rdo_common)
 
 BOOST_AUTO_TEST_CASE(test_rdo_common_1)
 {
 	tstring str1 = rdo::format(IDS_STRING101);
+	BOOST_CHECK(str1 == first_resource_string);
 	tstring str2 = rdo::format(IDS_STRING102, 22);
+	BOOST_CHECK(str2 == second_resource_string);
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
+	BOOST_CHECK(str3 == third_resource_string);
 }
 
 BOOST_AUTO_TEST_CASE(test_create_file)
@@ -54,6 +62,7 @@ BOOST_AUTO_TEST_CASE(test_rdo_check_data)
 {
 	// TODO EDIT REGEX
 	rdo::Time timeValue = rdo::Time::local();
+	BOOST_CHECK(timeValue > create_test_local_time);
 	tstring   timeStr   = timeValue.asString();
 
 	//! Какой смысл проверять через regex ? - как бы вы предложили проверить ???
