@@ -375,6 +375,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdoprocess.inl"
+#include "rdo_lib/rdo_runtime/rdoprocess.inl"
 
 #endif // _LIB_RUNTIME_PROCESS_

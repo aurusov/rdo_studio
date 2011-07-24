@@ -103,6 +103,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "searchtree.inl"
+#include "rdo_lib/rdo_runtime/searchtree.inl"
 
 #endif // _LIB_RUNTIME_SEARCH_TREE_

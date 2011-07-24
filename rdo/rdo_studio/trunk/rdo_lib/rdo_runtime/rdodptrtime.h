@@ -44,6 +44,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdodptrtime.inl"
+#include "rdo_lib/rdo_runtime/rdodptrtime.inl"
 
 #endif // _LIB_RUNTIME_DPTRTIME_

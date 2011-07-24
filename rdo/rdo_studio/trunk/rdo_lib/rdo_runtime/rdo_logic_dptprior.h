@@ -64,6 +64,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_logic_dptprior.inl"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptprior.inl"
 
 #endif // _LIB_RUNTIME_LOGIC_DPTPRIOR_

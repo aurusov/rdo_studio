@@ -38,6 +38,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_logic_dptfree.inl"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptfree.inl"
 
 #endif // _RDO_LOGIC_DPTFREE_H_
