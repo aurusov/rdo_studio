@@ -940,6 +940,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdoprocess.inl"
+							>
+						</File>
+						<File
 							RelativePath=".\rdoprocess_i.h"
 							>
 						</File>
