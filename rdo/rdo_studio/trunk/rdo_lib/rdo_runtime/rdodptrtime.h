@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_DPTRTIME_
-#define _LIB_RUNTIME_DPTRTIME_
+#ifndef _LIB_RUNTIME_DPTRTIME_H_
+#define _LIB_RUNTIME_DPTRTIME_H_
 
 // *********************************************************************** INCLUDES
 #include <sstream>
@@ -46,4 +46,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdodptrtime.inl"
 
-#endif // _LIB_RUNTIME_DPTRTIME_
+#endif // _LIB_RUNTIME_DPTRTIME_H_

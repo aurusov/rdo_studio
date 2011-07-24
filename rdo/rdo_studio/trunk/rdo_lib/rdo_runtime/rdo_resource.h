@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_RESOURCE_
-#define _LIB_RUNTIME_RESOURCE_
+#ifndef _LIB_RUNTIME_RESOURCE_H_
+#define _LIB_RUNTIME_RESOURCE_H_
 
 // **************************************************************************** PCH
 // *********************************************************************** INCLUDES
@@ -96,4 +96,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_resource.inl"
 
-#endif // _LIB_RUNTIME_RESOURCE_
+#endif // _LIB_RUNTIME_RESOURCE_H_

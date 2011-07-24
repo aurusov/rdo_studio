@@ -39,7 +39,7 @@ inline rbool RDODPTSearchRuntime::TermCondition(CREF(LPRDORuntime) pRuntime)
 
 inline double RDODPTSearchRuntime::EvaluateBy(CREF(LPRDORuntime) pRuntime)
 {
-	return pEvaluateBy   ->calcValue(pRuntime).getDouble();
+	return pEvaluateBy->calcValue(pRuntime).getDouble();
 }
 
 inline rbool RDODPTSearchRuntime::NeedCompareTops()

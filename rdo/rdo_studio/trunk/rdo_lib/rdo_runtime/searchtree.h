@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_SEARCH_TREE_
-#define _LIB_RUNTIME_SEARCH_TREE_
+#ifndef _LIB_RUNTIME_SEARCH_TREE_H_
+#define _LIB_RUNTIME_SEARCH_TREE_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -62,15 +62,15 @@ class TreeNode
 public:
 	virtual ~TreeNode();
 
-	LPRDORuntime             m_pRuntime;
-	std::vector< TreeNode* > m_children;
-	TreeNode*                m_parent;
-	TreeRoot*                m_root;
-	LPIDPTSearchActivity     m_activity; // активность (currAct), которую применил предок при создании this
-	double                   m_costRule;
-	double                   m_costPath;
-	double                   m_costRest;
-	int                      m_number; // Номер узла
+	LPRDORuntime           m_pRuntime;
+	std::vector<TreeNode*> m_children;
+	TreeNode*              m_parent;
+	TreeRoot*              m_root;
+	LPIDPTSearchActivity   m_activity; // активность (currAct), которую применил предок при создании this
+	double                 m_costRule;
+	double                 m_costPath;
+	double                 m_costRest;
+	int                    m_number; // Номер узла
 
 	void ExpandChildren();
 
@@ -105,4 +105,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/searchtree.inl"
 
-#endif // _LIB_RUNTIME_SEARCH_TREE_
+#endif // _LIB_RUNTIME_SEARCH_TREE_H_

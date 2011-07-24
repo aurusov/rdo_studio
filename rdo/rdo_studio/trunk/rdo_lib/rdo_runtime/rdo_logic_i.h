@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_LOGIC_I_
-#define _LIB_RUNTIME_LOGIC_I_
+#ifndef _LIB_RUNTIME_LOGIC_I_H_
+#define _LIB_RUNTIME_LOGIC_I_H_
 
 // **************************************************************************** PCH
 // *********************************************************************** INCLUDES
@@ -79,4 +79,4 @@ public:
 	virtual REF(LPIBaseOperation) back  ();                \
 	virtual void                  clear ();
 
-#endif // _LIB_RUNTIME_LOGIC_I_
+#endif // _LIB_RUNTIME_LOGIC_I_H_

@@ -32,7 +32,7 @@ void RDODPTSearchTrace::onSearchBegin(CREF(LPRDORuntime) pRuntime)
 	{
 		pRuntime->getTracer()->writeString("STN 1 0 0 0 -1 -1 0 0");
 	}
-	calc_cnt++;
+	++calc_cnt;
 }
 
 void RDODPTSearchTrace::onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime)
@@ -45,9 +45,9 @@ void RDODPTSearchTrace::onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime)
 
 void RDODPTSearchTrace::onSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode* node)
 {
-	if ( traceFlag != DPT_no_trace )
+	if (traceFlag != DPT_no_trace)
 	{
-		pRuntime->getTracer()->writeSearchDecision( pRuntime, node );
+		pRuntime->getTracer()->writeSearchDecision(pRuntime, node);
 	}
 }
 
@@ -154,12 +154,12 @@ void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med
 			min = *it;
 			max = *it;
 		}
-		cnt++;
+		++cnt;
 		if (min > *it)
 			min = *it;
 		if (max < *it)
 			max = *it;
-		it++;
+		++it;
 	}
 	if (cnt)
 	{

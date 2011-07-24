@@ -20,6 +20,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 #pragma warning(disable : 4786)
 
+/// @todo не стоит ли здесь перейти на функторы?
+
 #define LOGIC_FOR_ALL() STL_FOR_ALL(m_childList, it)
 
 // ********************************************************************************

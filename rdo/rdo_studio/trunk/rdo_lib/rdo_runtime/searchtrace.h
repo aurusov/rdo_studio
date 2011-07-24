@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_SEARCH_TRACE_
-#define _LIB_RUNTIME_SEARCH_TRACE_
+#ifndef _LIB_RUNTIME_SEARCH_TRACE_H_
+#define _LIB_RUNTIME_SEARCH_TRACE_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -109,4 +109,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/searchtrace.inl"
 
-#endif // _LIB_RUNTIME_SEARCH_TRACE_
+#endif // _LIB_RUNTIME_SEARCH_TRACE_H_

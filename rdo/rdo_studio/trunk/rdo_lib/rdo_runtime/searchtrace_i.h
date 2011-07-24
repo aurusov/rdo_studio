@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_SEARCH_TRACE_I_
-#define _LIB_RUNTIME_SEARCH_TRACE_I_
+#ifndef _LIB_RUNTIME_SEARCH_TRACE_I_H_
+#define _LIB_RUNTIME_SEARCH_TRACE_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -48,4 +48,4 @@ public:
 	virtual void  getStatsDOUBLE    (Type type, REF(double) min, REF(double) max, REF(double) med) const; \
 	virtual void  getStatsRUINT     (Type type, REF(ruint)  min, REF(ruint)  max, REF(double) med) const;
 
-#endif // _LIB_RUNTIME_SEARCH_TRACE_I_
+#endif // _LIB_RUNTIME_SEARCH_TRACE_I_H_

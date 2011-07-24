@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_LOGIC_DPTPRIOR_
-#define _LIB_RUNTIME_LOGIC_DPTPRIOR_
+#ifndef _LIB_RUNTIME_LOGIC_DPTPRIOR_H_
+#define _LIB_RUNTIME_LOGIC_DPTPRIOR_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -66,4 +66,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_logic_dptprior.inl"
 
-#endif // _LIB_RUNTIME_LOGIC_DPTPRIOR_
+#endif // _LIB_RUNTIME_LOGIC_DPTPRIOR_H_

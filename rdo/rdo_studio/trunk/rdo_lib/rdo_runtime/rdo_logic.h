@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_LOGIC_
-#define _LIB_RUNTIME_LOGIC_
+#ifndef _LIB_RUNTIME_LOGIC_H_
+#define _LIB_RUNTIME_LOGIC_H_
 
 #pragma warning(disable : 4786)
 
@@ -118,4 +118,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_logic.inl"
 
-#endif // _LIB_RUNTIME_LOGIC_
+#endif // _LIB_RUNTIME_LOGIC_H_

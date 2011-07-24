@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_
-#define _LIB_RUNTIME_LOGIC_DPTSEARCH_
+#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
+#define _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -67,4 +67,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_
+#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_H_

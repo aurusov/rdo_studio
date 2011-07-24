@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_I_
-#define _LIB_RUNTIME_LOGIC_DPTSEARCH_I_
+#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
+#define _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -33,4 +33,4 @@ public:
 #define DECLARE_IDPTSearchLogic \
 	virtual void addActivity(LPIDPTSearchActivity activity);
 
-#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_I_
+#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_

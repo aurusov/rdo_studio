@@ -3,7 +3,7 @@
  * @file      rdo_logic_dptsome.cpp
  * @author    Ћущан ƒмитрий
  * @date      04.11.2009
- * @bref      unknown
+ * @brief     unknown
  * @indent    4T
  *********************************************************************************/
 
