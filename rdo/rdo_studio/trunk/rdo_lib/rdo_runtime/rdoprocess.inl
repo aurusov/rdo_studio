@@ -87,7 +87,7 @@ inline RDOPROCDepart::RDOPROCDepart(LPIPROCProcess process, parser_for_Queue Fro
 	: RDOPROCBlockForQueue(process, From_Par)
 {}
 
-inline int RDOPROCDepart::getDefaultValue()
+inline ruint RDOPROCDepart::getDefaultValue()
 {
 	return 0;
 }
@@ -96,7 +96,6 @@ inline tstring RDOPROCDepart::getDepartParamName()
 {
 	return "длина_очереди";
 }
-
 
 // ********************************************************************************
 // ******************** RDOPROCBlockForSeize

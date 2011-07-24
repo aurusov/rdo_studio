@@ -203,7 +203,7 @@ private:
 };
 
 /******************************************************************************//**
- * @class   RDOPROCGenerate
+ * @class   RDOPROCDepart
  *********************************************************************************/
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {

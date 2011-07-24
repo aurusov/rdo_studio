@@ -1,21 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo.h
- * author   : Урусов Андрей
- * date     : 11.06.2006
- * bref     : Определение интерфейса IBaseOperation, через него осуществляются базовые операции имитации всех сущностей РДО
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo.h
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
+ * @brief     Определение интерфейса IBaseOperation
+ * @details   Через него осуществляются базовые операции имитации всех сущностей РДО
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_H_
-#define _RDO_H_
+#ifndef _LIB_RUNTIME_RDO_H_
+#define _LIB_RUNTIME_RDO_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -23,14 +25,19 @@ PREDECLARE_POINTER(RDORuntime)
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- IRDOBaseOperation - интерфейс для паттернов, процессов и блоков процесса
-// ----------------------------------------------------------------------------
-// Надо бы сделать его базовым для всех возможных логик
-// ----------------------------------------------------------------------------
+/// @todo Надо бы сделать IBaseOperation базовым для всех возможных логик
+
+/******************************************************************************//**
+ * @interface IBaseOperation
+ * @brief     Интерфейс для паттернов, процессов и блоков процесса
+ *********************************************************************************/
 class IBaseOperation
 {
 public:
+	/**
+	 * @enum  BOResult
+	 * @brief Статуc состояния операции
+	 */
 	enum BOResult
 	{
 		BOR_cant_run       = 0,
@@ -61,6 +68,10 @@ public:
 	virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 
+/******************************************************************************//**
+ * @def     DECLARE_IBaseOperation
+ * @brief   unknown
+ *********************************************************************************/
 #define DECLARE_IBaseOperation                                                                   \
 	virtual void     onStart         (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
 	virtual void     onStop          (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
@@ -72,4 +83,4 @@ public:
 INTERFACE_PREDECLARATION(IBaseOperation);
 typedef std::vector<LPIBaseOperation> BaseOperationList;
 
-#endif //! _RDO_H_
+#endif // _LIB_RUNTIME_RDO_H_
