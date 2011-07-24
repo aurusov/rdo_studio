@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_PROCESS_
-#define _LIB_RUNTIME_PROCESS_
+#ifndef _LIB_RUNTIME_PROCESS_H_
+#define _LIB_RUNTIME_PROCESS_H_
 
 // **************************************************************************** PCH
 // *********************************************************************** INCLUDES
@@ -154,8 +154,8 @@ private:
 struct runtime_for_Queue
 {
 	LPRDOResource rss; 
-	int Id_param;
-	RDOValue defaultValue;
+	int           Id_param;
+	RDOValue      defaultValue;
 };
 
 /******************************************************************************//**
@@ -173,11 +173,11 @@ struct parser_for_Queue
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
 protected:
-	RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par );
+	RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par);
 
 	parser_for_Queue  fromParser;
 	runtime_for_Queue forRes;
-	void _onStart( CREF(LPRDORuntime) pRuntime );
+	void _onStart(CREF(LPRDORuntime) pRuntime);
 };
 
 /******************************************************************************//**
@@ -214,7 +214,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	static int getDefaultValue();
+	static ruint   getDefaultValue();
 	static tstring getDepartParamName();
 
 private:
@@ -274,7 +274,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCSeize(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par);
+	RDOPROCSeize(LPIPROCProcess process, std::vector <parser_for_Seize> From_Par);
 
 	ruint index;
 
@@ -296,7 +296,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCRelease(LPIPROCProcess process, std::vector < parser_for_Seize > From_Par);
+	RDOPROCRelease(LPIPROCProcess process, std::vector <parser_for_Seize> From_Par);
 
 	ruint index;
 
@@ -317,12 +317,13 @@ QUERY_INTERFACE_END
 protected:
 	LPRDOCalc pDelayCalc;
 
-	struct LeaveTr {
+	struct LeaveTr
+	{
 		LPRDOPROCTransact transact;
 		double           timeLeave;
 		LeaveTr(CREF(LPRDOPROCTransact) _transact, double _timeLeave);
 	};
-	std::list< LeaveTr > leave_list;
+	std::list<LeaveTr> leave_list;
 
 private:
 	RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc);
@@ -377,4 +378,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdoprocess.inl"
 
-#endif // _LIB_RUNTIME_PROCESS_
+#endif // _LIB_RUNTIME_PROCESS_H_

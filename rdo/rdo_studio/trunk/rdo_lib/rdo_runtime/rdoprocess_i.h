@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _LIB_RUNTIME_PROCESS_I_
-#define _LIB_RUNTIME_PROCESS_I_
+#ifndef _LIB_RUNTIME_PROCESS_I_H_
+#define _LIB_RUNTIME_PROCESS_I_H_
 
 // **************************************************************************** PCH
 // *********************************************************************** INCLUDES
@@ -74,4 +74,4 @@ public:
 	virtual void  next       (CREF(rdoRuntime::LPRDOPROCTransact) pTransact); \
 	virtual CREF(rdoRuntime::LPRDOResourceType) getTranType() const;
 
-#endif // _LIB_RUNTIME_PROCESS_I_
+#endif // _LIB_RUNTIME_PROCESS_I_H_
