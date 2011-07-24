@@ -16,15 +16,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ********************************************************************************
 // ******************** TreeRoot
 // ********************************************************************************
-TreeRoot::~TreeRoot()
+inline TreeRoot::~TreeRoot()
 {}
 
-int TreeRoot::getNodesCound() const
+inline int TreeRoot::getNodesCound() const
 {
 	return m_nodesCount;
 }
 
-int TreeRoot::getNewNodeNumber()
+inline int TreeRoot::getNewNodeNumber()
 {
 	return ++m_nodesCount;
 }
@@ -32,16 +32,16 @@ int TreeRoot::getNewNodeNumber()
 // ********************************************************************************
 // ******************** TreeRoot
 // ********************************************************************************
-void TreeNode::onSearchOpenNode(CREF(LPRDORuntime) pRuntime)
+inline void TreeNode::onSearchOpenNode(CREF(LPRDORuntime) pRuntime)
 {}
 
-void TreeNode::onSearchNodeInfoDeleted(CREF(LPRDORuntime) pRuntime)
+inline void TreeNode::onSearchNodeInfoDeleted(CREF(LPRDORuntime) pRuntime)
 {}
 
-void TreeNode::onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime)
+inline void TreeNode::onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime)
 {}
 
-void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
+inline void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
 {}
 
 /******************************************************************************//**
