@@ -1,27 +1,33 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : operation_type.h
- * author   : Урусов Андрей
- * date     : 13.03.2011
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      operation_type.h
+ * @authors   Урусов Андрей
+ * @date      13.03.2011
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDOCALC_OPERATION_TYPE_H_
-#define _RDOCALC_OPERATION_TYPE_H_
+#ifndef _LIB_RUNTIME_CALC_OPERATION_TYPE_H_
+#define _LIB_RUNTIME_CALC_OPERATION_TYPE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- OperatorType
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   OperatorType
+ * @brief   unknown
+ *********************************************************************************/
 class OperatorType
 {
 public:
+	/**
+	 * @enum  Type
+	 * @brief Тип операции в РДО
+	 */
 	enum Type
 	{
 		OT_ARITHM,
@@ -29,13 +35,11 @@ public:
 	};
 
 	template <Type>
-	static REF(ruint) getCalcCounter()
-	{
-		static ruint s_сounter = 0;
-		return s_сounter;
-	}
+	static REF(ruint) getCalcCounter();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_OPERATION_TYPE_H_
+#include "rdo_lib/rdo_runtime/calc/operation_type.inl"
+
+#endif // _LIB_RUNTIME_CALC_OPERATION_TYPE_H_

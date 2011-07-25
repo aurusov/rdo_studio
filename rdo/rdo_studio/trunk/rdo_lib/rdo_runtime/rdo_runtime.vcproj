@@ -1813,6 +1813,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\arithm.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\array.cpp"
 				>
 			</File>
@@ -2019,6 +2023,10 @@
 				</File>
 				<File
 					RelativePath=".\calc\operation_type.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation_type.inl"
 					>
 				</File>
 			</Filter>

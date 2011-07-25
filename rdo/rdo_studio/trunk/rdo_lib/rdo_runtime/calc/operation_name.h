@@ -1,24 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : operation_name.h
- * author   : Урусов Андрей
- * date     : 13.03.2011
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      operation_name.h
+ * @authors   Урусов Андрей
+ * @date      13.03.2011
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDOCALC_OPERATION_NAME_H_
-#define _RDOCALC_OPERATION_NAME_H_
+#ifndef _LIB_RUNTIME_CALC_OPERATION_NAME_H_
+#define _LIB_RUNTIME_CALC_OPERATION_NAME_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- OperatorName
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   OperatorName
+ * @tparam  Тип операции
+ * @brief   unknown
+ *********************************************************************************/
 template <typename opr_type>
 class OperatorName
 {
@@ -26,6 +29,9 @@ public:
 	static tstring name(CREF(opr_type) pOperator);
 
 private:
+	/**
+	 * @struct OprItem
+	 */
 	struct OprItem
 	{
 		opr_type m_pOperator;
@@ -44,4 +50,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/operation_name.inl"
 
-#endif //! _RDOCALC_OPERATION_NAME_H_
+#endif // _LIB_RUNTIME_CALC_OPERATION_NAME_H_
