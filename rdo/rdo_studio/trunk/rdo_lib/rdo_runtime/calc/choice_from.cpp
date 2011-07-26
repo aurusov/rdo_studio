@@ -1,37 +1,37 @@
-/**
- @file      choice_from.cpp
- @authors   Барс Александ, Урусов Андрей, Лущан Дмитрий
- @date      unknown
- @brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
- @indent    4T
- @copyright (c) RDO-Team, 2011
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      choice_from.cpp
+ * @authors   Барс Александ, Урусов Андрей, Лущан Дмитрий
+ * @date      unknown
+ * @brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
+// *********************************************************************** INCLUDES
 #include <limits>
-// ====================================================================== SYNOPSIS
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/choice_from.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- Выбор ресурсов
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOSelectResourceNonExistCalc
+// ********************************************************************************
 REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(rel_res_id, -1);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcCreateNumberedResource
+// ********************************************************************************
 RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
 	: m_pType    (_type       )
 	, traceFlag  (_traceFlag  )
@@ -45,9 +45,9 @@ REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateProcessResource
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcCreateProcessResource
+// ********************************************************************************
 RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
 	: m_pType    (_type       )
 	, traceFlag  (_traceFlag  )
@@ -61,9 +61,9 @@ REF(RDOValue) RDOCalcCreateProcessResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateResource
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcCreateResource
+// ********************************************************************************
 RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
 	: m_pResType     (pType        )
 	, m_traceFlag    (traceFlag    )
@@ -83,9 +83,9 @@ REF(RDOValue) RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value; // just to return something
 }
 
-// ----------------------------------------------------------------------------
-// ---------- Выбор ресурсов
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOSelectResourceCalc
+// ********************************************************************************
 RDOSelectResourceCalc::RDOSelectResourceCalc(int _rel_res_id, CREF(LPRDOCalc) _choice_calc, CREF(LPRDOCalc) _order_calc, Type _order_type)
 	: rel_res_id (_rel_res_id )
 	, choice_calc(_choice_calc)

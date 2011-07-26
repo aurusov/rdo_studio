@@ -1849,6 +1849,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\choice_from.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\equaltype.h"
 				>
 			</File>
