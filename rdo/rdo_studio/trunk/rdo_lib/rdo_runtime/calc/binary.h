@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : binary.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      binary.h
+ * @authors   Александ Барс, Урусов Андрей
+ * @date      unknown
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDOCALC_BINARY_H_
-#define _RDOCALC_BINARY_H_
+#ifndef _LIB_RUNTIME_CALC_BINARY_H_
+#define _LIB_RUNTIME_CALC_BINARY_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/operation_type.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinaryBase
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOCalcBinaryBase
+ * @brief   unknown
+ *********************************************************************************/
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:
@@ -34,9 +35,11 @@ protected:
 	LPRDOCalc  m_pRight;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinary
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOCalcBinary
+ * @tparam  unknown
+ * @brief   unknown
+ *********************************************************************************/
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {
@@ -63,4 +66,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/binary.inl"
 
-#endif //! _RDOCALC_BINARY_H_
+#endif // _LIB_RUNTIME_CALC_BINARY_H_
