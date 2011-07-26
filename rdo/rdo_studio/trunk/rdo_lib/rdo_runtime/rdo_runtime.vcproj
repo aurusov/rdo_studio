@@ -1841,14 +1841,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc_process_control.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc_process_control.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc\choice_from.cpp"
 				>
 			</File>
@@ -1886,6 +1878,14 @@
 			</File>
 			<File
 				RelativePath=".\calc\logic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\process_control.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\process_control.h"
 				>
 			</File>
 			<File
