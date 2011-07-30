@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOCALC_LOGIC_H_
-#define _RDOCALC_LOGIC_H_
+#ifndef _LIB_RUNTIME_CALC_LOGIC_H_
+#define _LIB_RUNTIME_CALC_LOGIC_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -64,4 +64,4 @@ typedef RDOCalcBinary<rbool, (&RDOValue::operator>=), OperatorType::OT_LOGIC> RD
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDOCALC_LOGIC_H_
+#endif // _LIB_RUNTIME_CALC_LOGIC_H_

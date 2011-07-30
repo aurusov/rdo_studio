@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOCALC_UNARY_H_
-#define _RDOCALC_UNARY_H_
+#ifndef _LIB_RUNTIME_CALC_UNARY_H_
+#define _LIB_RUNTIME_CALC_UNARY_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -118,4 +118,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/unary.inl"
 
-#endif // _RDOCALC_UNARY_H_
+#endif // _LIB_RUNTIME_CALC_UNARY_H_

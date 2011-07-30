@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOCALC_RELRES_H_
-#define _RDOCALC_RELRES_H_
+#ifndef _LIB_RUNTIME_CALC_REL_RES_H_
+#define _LIB_RUNTIME_CALC_REL_RES_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -91,4 +91,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/relres.inl"
 
-#endif // _RDOCALC_RELRES_H_
+#endif // _LIB_RUNTIME_CALC_REL_RES_H_

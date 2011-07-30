@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _CALC_PROCESS_CONTROL_H_
-#define _CALC_PROCESS_CONTROL_H_
+#ifndef _LIB_RUNTIME_CALC_PROCESS_CONTROL_H_
+#define _LIB_RUNTIME_CALC_PROCESS_CONTROL_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -39,4 +39,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _CALC_PROCESS_CONTROL_H_
+#endif // _LIB_RUNTIME_CALC_PROCESS_CONTROL_H_

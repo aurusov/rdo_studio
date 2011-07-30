@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOCALC_STATEMENTS_H_
-#define _RDOCALC_STATEMENTS_H_
+#ifndef _LIB_RUNTIME_CALC_STATEMENTS_H_
+#define _LIB_RUNTIME_CALC_STATEMENTS_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -104,4 +104,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDOCALC_STATEMENTS_H_
+#endif // _LIB_RUNTIME_CALC_STATEMENTS_H_

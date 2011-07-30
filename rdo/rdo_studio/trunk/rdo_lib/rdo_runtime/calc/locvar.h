@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOCALC_LOCVAR_H_
-#define _RDOCALC_LOCVAR_H_
+#ifndef _LIB_RUNTIME_CALC_LOC_VAR_H_
+#define _LIB_RUNTIME_CALC_LOC_VAR_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -101,4 +101,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/locvar.inl"
 
-#endif // _RDOCALC_LOCVAR_H_
+#endif // _LIB_RUNTIME_CALC_LOC_VAR_H_

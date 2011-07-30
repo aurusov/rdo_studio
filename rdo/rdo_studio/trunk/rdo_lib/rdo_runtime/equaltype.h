@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _EQUALTYPE_H_
-#define _EQUALTYPE_H_
+#ifndef _LIB_RUNTIME_EQUAL_TYPE_H_
+#define _LIB_RUNTIME_EQUAL_TYPE_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -34,4 +34,4 @@ enum EqualType
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _EQUALTYPE_H_
+#endif // _LIB_RUNTIME_EQUAL_TYPE_H_

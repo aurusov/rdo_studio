@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOCALC_WATCH_H_
-#define _RDOCALC_WATCH_H_
+#ifndef _LIB_RUNTIME_CALC_WATCH_H_
+#define _LIB_RUNTIME_CALC_WATCH_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -50,4 +50,4 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDOCALC_WATCH_H_
+#endif // _LIB_RUNTIME_CALC_WATCH_H_

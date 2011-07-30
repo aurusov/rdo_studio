@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOCALC_H_
-#define _RDOCALC_H_
+#ifndef _LIB_RUNTIME_CALC_H_
+#define _LIB_RUNTIME_CALC_H_
 
 // *********************************************************************** INCLUDES
 #include <list>
@@ -583,4 +583,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdocalc.inl"
 
-#endif // _RDOCALC_H_
+#endif // _LIB_RUNTIME_CALC_H_
