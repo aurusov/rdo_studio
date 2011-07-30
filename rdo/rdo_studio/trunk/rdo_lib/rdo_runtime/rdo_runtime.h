@@ -1,10 +1,10 @@
-/**
- @file      rdo_runtime.h
- @authors   Барс Александ, Урусов Андрей, Лущан Дмитрий
- @date      unknown
- @brief     RDORuntime implementation
- @indent    4T
- @copyright (c) RDO-Team, 2009
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_runtime.h
+ * @authors   Барс Александ, Урусов Андрей, Лущан Дмитрий
+ * @date      unknown
+ * @brief     RDORuntime implementation
+ * @indent    4T
  *********************************************************************************/
 
 #ifndef _RDO_RUNTIME_H_
