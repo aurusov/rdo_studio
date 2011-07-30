@@ -14,7 +14,7 @@
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ********************************************************************************
 // ******************** RDOFuzzyValue
@@ -191,6 +191,6 @@ private:
 	virtual tstring asString() const;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDO_FUZZY_DEF_H

@@ -1,8 +1,7 @@
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ********************************************************************************
 // ******************** RDOFuzzyValue
@@ -339,4 +338,4 @@ RDOFuzzyValue RDOFuzzySetDefinitionRangeDiscret::getSupplement(CREF(RDOFuzzyValu
 // ********************************************************************************
 PTR(RDOFuzzyEmptyType) RDOFuzzyEmptyType::s_emptyType = NULL;
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

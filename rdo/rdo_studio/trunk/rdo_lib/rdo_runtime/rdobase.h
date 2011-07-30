@@ -13,8 +13,7 @@
 #include <windows.h>
 #endif
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 OBJECT(RDOSimulatorBase)
 {
@@ -140,6 +139,6 @@ private:
 	ruint        m_cnt_choice_from;
 };
 
-} // namespace rdoRuntime;
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDOBASE_H

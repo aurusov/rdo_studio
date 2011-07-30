@@ -8,8 +8,7 @@
 
 #pragma warning(disable : 4786)  
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 RDOSimulatorTrace::~RDOSimulatorTrace()
 {
@@ -116,4 +115,4 @@ void RDOSimulatorTrace::postProcess()
 //	getTracer()->stopWriting();
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

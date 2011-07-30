@@ -1,5 +1,4 @@
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 // ********************************************************************************
 // ******************** RDOFuzzyValue
@@ -198,4 +197,4 @@ inline RDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSupplemen
 	return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

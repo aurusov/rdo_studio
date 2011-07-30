@@ -8,7 +8,7 @@ namespace rdoParse {
 class RDODPTSome;
 }
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDODPTSearchTrace;
 class RDODPTSearchTrace;
@@ -139,6 +139,6 @@ private:
 	}
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDO_SIMTRACE_H

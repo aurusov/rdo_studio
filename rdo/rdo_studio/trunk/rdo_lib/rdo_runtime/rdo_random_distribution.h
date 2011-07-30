@@ -4,8 +4,7 @@
 #include <math.h>
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 #define RDO_NATIVE_U01
 
@@ -225,6 +224,6 @@ private:
 	}
 };
 
-} // namespace rdoParse 
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // RDO_RANDOM_DISTRIBUTION_H

@@ -5,8 +5,7 @@
 
 #pragma warning(disable : 4786)  
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 RDOSimulatorBase::RDOSimulatorBase():
 	m_startTime( 0 ),
@@ -273,4 +272,4 @@ void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 	}
 }
 
-} // namespace rdoRuntime;
+CLOSE_RDO_RUNTIME_NAMESPACE

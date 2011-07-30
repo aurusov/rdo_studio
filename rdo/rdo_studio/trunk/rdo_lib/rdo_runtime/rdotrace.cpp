@@ -6,7 +6,7 @@
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
 #ifdef RDOSIM_COMPATIBLE
 tstring doubleToString(double value)
@@ -415,4 +415,4 @@ void RDOPokazTrace::tracePokaz()
 	return;
 }
 
-} // namespace rdoRuntime;
+CLOSE_RDO_RUNTIME_NAMESPACE
