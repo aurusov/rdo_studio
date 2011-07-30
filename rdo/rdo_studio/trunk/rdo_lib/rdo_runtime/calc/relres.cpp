@@ -1,7 +1,7 @@
 /*
  * @copyright (c) RDO-Team, 2011
  * @file      relres.cpp
- * @authors   Александ Барс, Урусов Андрей
+ * @authors   Барс Александр, Урусов Андрей
  * @date      16.04.11
  * @brief     
  * @indent    4T

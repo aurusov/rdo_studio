@@ -1,7 +1,7 @@
 /*
  * @copyright (c) RDO-Team, 2009
  * @file      rdo_object.h
- * @authors   Александ Барс, Урусов Андрей
+ * @authors   Барс Александр, Урусов Андрей
  * @date      30.01.2007
  * @brief     Определение базового класса для всех объектов RDORuntime
  * @indent    4T

@@ -1,7 +1,7 @@
 /*
  * @copyright (c) RDO-Team, 2009
  * @file      rdocalc.inl
- * @authors   Александ Барс, Урусов Андрей
+ * @authors   Барс Александр, Урусов Андрей
  * @date      
  * @brief     11.07.2009
  * @indent    4T

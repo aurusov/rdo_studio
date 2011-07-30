@@ -1,7 +1,7 @@
 /*
  * @copyright (c) RDO-Team, 2009
  * @file      rdopokaz.cpp
- * @authors   Александ Барс, Урусов Андрей
+ * @authors   Барс Александр, Урусов Андрей
  * @date      
  * @brief     
  * @indent    4T

@@ -1,7 +1,7 @@
 /*
  * @copyright (c) RDO-Team, 2011
  * @file      statements.h
- * @authors   Чирков Михаил, Дмитрий Лущан
+ * @authors   Чирков Михаил, Лущан Дмитрий
  * @date      16.04.11
  * @brief     
  * @indent    4T

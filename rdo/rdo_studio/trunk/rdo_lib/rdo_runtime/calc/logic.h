@@ -1,7 +1,7 @@
 /*
  * @copyright (c) RDO-Team, 2011
  * @file      logic.h
- * @authors   Александ Барс, Урусов Андрей, Дмитрий Лущан
+ * @authors   Барс Александр, Урусов Андрей, Лущан Дмитрий
  * @date      
  * @brief     
  * @indent    4T
