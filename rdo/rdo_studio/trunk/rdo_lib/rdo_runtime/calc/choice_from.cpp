@@ -93,6 +93,9 @@ RDOSelectResourceCalc::RDOSelectResourceCalc(int _rel_res_id, CREF(LPRDOCalc) _c
 	, order_type (_order_type )
 {}
 
+// ********************************************************************************
+// ******************** RDOSelectResourceDirectCalc
+// ********************************************************************************
 REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(rel_res_id, res_id);
@@ -106,6 +109,9 @@ REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
+// ********************************************************************************
+// ******************** RDOSelectResourceByTypeCalc
+// ********************************************************************************
 REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue maxVal   = -DBL_MAX;
@@ -178,6 +184,9 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
+// ********************************************************************************
+// ******************** RDOSelectResourceCommonCalc
+// ********************************************************************************
 void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const
 {
 	if (level >= allNumbs.size())
@@ -293,6 +302,9 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
+// ********************************************************************************
+// ******************** RDOSelectResourceDirectCommonCalc
+// ********************************************************************************
 std::vector<int> RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const
 {
 	std::vector<int> res;	
@@ -300,6 +312,17 @@ std::vector<int> RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRD
 	return res;
 }
 
+rbool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
+{
+	return (choice_calc && !const_cast<PTR(RDOSelectResourceDirectCommonCalc)>(this)->choice_calc->calcValue(pRuntime).getAsBool()) ? false : true;
+}
+
+RDOSelectResourceDirectCommonCalc::~RDOSelectResourceDirectCommonCalc()
+{}
+
+// ********************************************************************************
+// ******************** RDOSelectResourceByTypeCommonCalc
+// ********************************************************************************
 std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const
 {
 	std::vector<int> res;
@@ -317,26 +340,21 @@ std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRD
 	return res;
 }
 
-rbool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
-{
-	return (choice_calc && !const_cast<PTR(RDOSelectResourceDirectCommonCalc)>(this)->choice_calc->calcValue(pRuntime).getAsBool()) ? false : true;
-}
-
 rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
 	return (choice_calc && !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->choice_calc->calcValue(pRuntime).getAsBool()) ? false : true;
 }
 
+RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()
+{}
+
+// ********************************************************************************
+// ******************** IRDOSelectResourceCommon
+// ********************************************************************************
 IRDOSelectResourceCommon::IRDOSelectResourceCommon()
 {}
 
 IRDOSelectResourceCommon::~IRDOSelectResourceCommon()
-{}
-
-RDOSelectResourceDirectCommonCalc::~RDOSelectResourceDirectCommonCalc()
-{}
-
-RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()
 {}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
