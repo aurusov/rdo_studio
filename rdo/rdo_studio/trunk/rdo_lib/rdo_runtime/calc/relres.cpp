@@ -1,24 +1,24 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * filename : relres.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 16.04.11
- * bref     : 
- * indent   : 4T
+ * @copyright (c) RDO-Team, 2011
+ * @file      relres.cpp
+ * @authors   Александ Барс, Урусов Андрей
+ * @date      16.04.11
+ * @brief     
+ * @indent    4T
  */
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/relres.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOGetRelResParamCalc
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOGetRelResParamCalc
+// ********************************************************************************
 RDOGetRelResParamCalc::RDOGetRelResParamCalc(ruint relResID, ruint paramID)
 	: m_relResID(relResID)
 	, m_paramID (paramID )
@@ -30,9 +30,9 @@ REF(RDOValue) RDOGetRelResParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelResParamDiapCalc
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOSetRelResParamDiapCalc
+// ********************************************************************************
 RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc)
 	: m_relResID(relResID)
 	, m_paramID (paramID )
@@ -58,9 +58,9 @@ REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEraseResRelCalc
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOEraseResRelCalc
+// ********************************************************************************
 RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
 	: m_relResID  (relResID  )
 	, m_relResName(relResName)

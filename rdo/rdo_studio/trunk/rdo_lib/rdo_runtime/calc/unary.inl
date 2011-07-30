@@ -1,22 +1,22 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * filename : unary.inl
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
+ * @copyright (c) RDO-Team, 2011
+ * @file      unary.inl
+ * @authors   Александ Барс, Урусов Андрей
+ * @date      
+ * @brief     
+ * @indent    4T
  */
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/operation_name.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcUnaryBase
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcUnaryBase
+// ********************************************************************************
 inline RDOCalcUnaryBase::RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation)
 	: m_pOperation(pOperation)
 {
@@ -44,9 +44,9 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CR
 	return pCalc;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcUnary
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcUnary
+// ********************************************************************************
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation)
 	: RDOCalcUnaryBase(pOperation)

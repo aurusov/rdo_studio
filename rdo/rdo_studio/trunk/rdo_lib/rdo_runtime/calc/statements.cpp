@@ -1,24 +1,24 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * filename : statements.cpp
- * author   : Чирков Михаил, Дмитрий Лущан
- * date     : 16.04.11
- * bref     : 
- * indent   : 4T
+ * @copyright (c) RDO-Team, 2011
+ * @file      statements.cpp
+ * @authors   Чирков Михаил, Дмитрий Лущан
+ * @date      16.04.11
+ * @brief     
+ * @indent    4T
  */
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/statements.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcNoChange
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcNoChange
+// ********************************************************************************
 RDOCalcNoChange::RDOCalcNoChange()
 {}
 
@@ -28,9 +28,9 @@ REF(RDOValue) RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcIf
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcIf
+// ********************************************************************************
 RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
 : m_pCondition(pCondition)
 , m_pStatement(pStatement)
@@ -45,9 +45,9 @@ REF(RDOValue) RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pStatement->calcValue(pRuntime) : (m_value);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcIfElse
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcIfElse
+// ********************************************************************************
 RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement)
 : m_pCondition    (pCondition    )
 , m_pIfStatement  (pIfStatement  )
@@ -63,9 +63,9 @@ REF(RDOValue) RDOCalcIfElse::doCalc(CREF(LPRDORuntime) pRuntime)
 	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pIfStatement->calcValue(pRuntime) : m_pElseStatement->calcValue(pRuntime);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFor
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcFor
+// ********************************************************************************
 RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement)
 : m_pDeclaration(pDeclaration)
 , m_pCondition  (pCondition  )
@@ -101,9 +101,9 @@ REF(RDOValue) RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunReturn
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcFunReturn
+// ********************************************************************************
 RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
 : m_pReturn(pReturn)
 {}
@@ -115,9 +115,9 @@ REF(RDOValue) RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunBreak
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcFunBreak
+// ********************************************************************************
 RDOCalcFunBreak::RDOCalcFunBreak()
 {}
 

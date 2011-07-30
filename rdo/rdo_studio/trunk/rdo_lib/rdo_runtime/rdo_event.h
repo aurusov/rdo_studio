@@ -1,29 +1,29 @@
 /*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_event.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.08.2010
- * bref     : 
- * indent   : 4T
- */
+ * @copyright (c) RDO-Team, 2010
+ * @file      rdo_event.h
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      18.08.2010
+ * @brief     
+ * @indent    4T
+ *********************************************************************************/
 
 #ifndef _RDO_EVENT_H_
 #define _RDO_EVENT_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_event_i.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEvent
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOEvent
+// ********************************************************************************
 class RDOEvent: public IBaseOperation, public IEvent, public RDOActivityPattern<RDOPatternEvent>
 {
 typedef RDOActivityPattern<RDOPatternEvent> pattern_type;
@@ -50,4 +50,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_EVENT_H_
+#endif // _RDO_EVENT_H_

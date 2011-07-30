@@ -4,9 +4,9 @@
 namespace rdoRuntime
 {
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyValue
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzyValue
+// ********************************************************************************
 RDOFuzzyValue RDOFuzzyValue::operator&& (CREF(RDOFuzzyValue) fuzzy_value) const
 {
 	if (type() != fuzzy_value.type())
@@ -299,9 +299,9 @@ tstring RDOFuzzyValue::getAsString() const
 	return res;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionFixed
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzySetDefinitionFixed
+// ********************************************************************************
 RDOFuzzyValue RDOFuzzySetDefinitionFixed::getSupplement(CREF(RDOFuzzyValue) value) const
 {
 	RDOFuzzyValue fuzzy_result(value.type());
@@ -315,9 +315,9 @@ RDOFuzzyValue RDOFuzzySetDefinitionFixed::getSupplement(CREF(RDOFuzzyValue) valu
 	return fuzzy_result;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionRangeDiscret
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzySetDefinitionRangeDiscret
+// ********************************************************************************
 rbool RDOFuzzySetDefinitionRangeDiscret::inRange(CREF(RDOValue) value) const
 {
 	return value >= m_from && value <= m_till;
@@ -334,9 +334,9 @@ RDOFuzzyValue RDOFuzzySetDefinitionRangeDiscret::getSupplement(CREF(RDOFuzzyValu
 	return fuzzy_result;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyEmptyType
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzyEmptyType
+// ********************************************************************************
 PTR(RDOFuzzyEmptyType) RDOFuzzyEmptyType::s_emptyType = NULL;
 
 } // namespace rdoRuntime

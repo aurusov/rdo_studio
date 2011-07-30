@@ -1,25 +1,25 @@
 /*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_event.cpp
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.08.2010
- * bref     : 
- * indent   : 4T
+ * @copyright (c) RDO-Team, 2010
+ * @file      rdo_event.cpp
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      18.08.2010
+ * @brief     
+ * @indent    4T
  */
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdo_event.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEvent
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOEvent
+// ********************************************************************************
 RDOEvent::RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name)
 	: RDOActivityPattern<RDOPatternEvent>(pPattern, trace, name)
 {

@@ -1,30 +1,30 @@
 /*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_rule.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.08.2010
- * bref     : 
- * indent   : 4T
- */
+ * @copyright (c) RDO-Team, 2010
+ * @file      rdo_rule.h
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      18.08.2010
+ * @brief     
+ * @indent    4T
+ *********************************************************************************/
 
 #ifndef _RDO_RULE_H_
 #define _RDO_RULE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdo_rule_i.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDORule
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDORule
+// ********************************************************************************
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
@@ -61,4 +61,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_RULE_H_
+#endif // _RDO_RULE_H_

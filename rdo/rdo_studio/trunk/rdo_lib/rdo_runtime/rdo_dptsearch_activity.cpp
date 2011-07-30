@@ -1,20 +1,20 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_dptsearch_activity.cpp
- * author   : Урусов Андрей
- * date     : 08.08.2009
- * bref     : 
- * indent   : 4T
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_dptsearch_activity.cpp
+ * @authors   Урусов Андрей
+ * @date      08.08.2009
+ * @brief     
+ * @indent    4T
  */
 
 // =========================================================================== PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

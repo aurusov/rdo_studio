@@ -1,19 +1,19 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_keyboard_i.h
- * author   : Урусов Андрей
- * date     : 01.08.2009
- * bref     : 
- * indent   : 4T
- */
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_keyboard_i.h
+ * @authors   Урусов Андрей
+ * @date      01.08.2009
+ * @brief     
+ * @indent    4T
+ *********************************************************************************/
 
 #ifndef _RDO_KEYBOARD_I_H_
 #define _RDO_KEYBOARD_I_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/rdointerface.h"
-// ===============================================================================
+// ********************************************************************************
 
 class IKeyboard
 {
@@ -32,4 +32,4 @@ public:
 	virtual rbool           hasHotKey() const; \
 	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey);
 
-#endif //! _RDO_KEYBOARD_I_H_
+#endif // _RDO_KEYBOARD_I_H_

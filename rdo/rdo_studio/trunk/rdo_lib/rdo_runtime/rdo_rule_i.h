@@ -1,21 +1,21 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_rule_i.h
- * author   : Урусов Андрей
- * date     : 01.08.2009
- * bref     : 
- * indent   : 4T
- */
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_rule_i.h
+ * @authors   Урусов Андрей
+ * @date      01.08.2009
+ * @brief     
+ * @indent    4T
+ *********************************************************************************/
 
 #ifndef _RDO_RULE_I_H_
 #define _RDO_RULE_I_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -39,4 +39,4 @@ public:
 	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch);
 
-#endif //! _RDO_RULE_I_H_
+#endif // _RDO_RULE_I_H_

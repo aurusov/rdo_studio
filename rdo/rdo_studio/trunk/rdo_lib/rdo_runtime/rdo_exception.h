@@ -1,20 +1,20 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_exception.h
- * author   : Урусов Андрей
- * date     : 22.06.2008
- * bref     : Определение исключений
- * indent   : 4T
- */
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_exception.h
+ * @authors   Урусов Андрей
+ * @date      22.06.2008
+ * @brief     Определение исключений
+ * @indent    4T
+ *********************************************************************************/
 
 #ifndef _RDO_EXCEPTION_H_
 #define _RDO_EXCEPTION_H_
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOException
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOException
+// ********************************************************************************
 class RDOException
 {
 public:
@@ -57,4 +57,4 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_EXCEPTION_H_
+#endif // _RDO_EXCEPTION_H_

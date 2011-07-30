@@ -1,19 +1,19 @@
 /*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_operation_i.h
- * author   : Урусов Андрей
- * date     : 30.07.2009
- * bref     : 
- * indent   : 4T
- */
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_operation_i.h
+ * @authors   Урусов Андрей
+ * @date      30.07.2009
+ * @brief     
+ * @indent    4T
+ *********************************************************************************/
 
 #ifndef _RDO_OPERATION_I_H_
 #define _RDO_OPERATION_I_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/rdointerface.h"
-// ===============================================================================
+// ********************************************************************************
 
 class IOperation
 {
@@ -47,4 +47,4 @@ public:
 #define DECLARE_IOperationTrace \
 	virtual tstring traceOperId() const;
 
-#endif //! _RDO_OPERATION_I_H_
+#endif // _RDO_OPERATION_I_H_
