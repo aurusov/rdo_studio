@@ -1885,6 +1885,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\logic.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\process_control.cpp"
 				>
 			</File>

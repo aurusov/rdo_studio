@@ -25,12 +25,8 @@ class RDOCalcAnd: public RDOCalcBinary<RDOValue, (&RDOValue::operator&&), Operat
 {
 DECLARE_FACTORY(RDOCalcAnd)
 private:
-	RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-		: RDOCalcBinary(pLeft, pRight)
-	{
-		m_value_true  = 1;
-		m_value_false = 0;
-	}
+	RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+
 	RDOValue m_value_true;
 	RDOValue m_value_false;
 
@@ -41,12 +37,7 @@ class RDOCalcOr: public RDOCalcBinary<RDOValue, (&RDOValue::operator||), Operato
 {
 DECLARE_FACTORY(RDOCalcOr)
 private:
-	RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-		: RDOCalcBinary(pLeft, pRight)
-	{
-		m_value_true  = 1;
-		m_value_false = 0;
-	}
+	RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 	RDOValue m_value_true;
 	RDOValue m_value_false;
@@ -63,5 +54,7 @@ typedef RDOCalcBinary<rbool, (&RDOValue::operator<=), OperatorType::OT_LOGIC> RD
 typedef RDOCalcBinary<rbool, (&RDOValue::operator>=), OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/calc/logic.inl"
 
 #endif // _LIB_RUNTIME_CALC_LOGIC_H_

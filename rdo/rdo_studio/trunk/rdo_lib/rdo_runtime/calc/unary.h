@@ -64,16 +64,10 @@ CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
 public:
-	void needRound()
-	{
-		m_round = true;
-	}
+	void needRound();
 
 private:
-	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
-		: m_pOperation(pOper)
-		, m_round     (false)
-	{}
+	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper);
 
 	rbool     m_round;
 	LPRDOCalc m_pOperation;
@@ -85,11 +79,7 @@ CALC_SUB(RDOCalcCheckDiap, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcCheckDiap)
 private:
-	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper)
-		: m_pOperation(pOper    )
-		, m_min_value (min_value)
-		, m_max_value (max_value)
-	{}
+	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper);
 
 	RDOValue  m_min_value;
 	RDOValue  m_max_value;
@@ -105,9 +95,7 @@ CALC_SUB(RDOCalcInt, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcInt)
 private:
-	RDOCalcInt(CREF(LPRDOCalc) pOperation)
-		: m_pOperation(pOperation)
-	{}
+	RDOCalcInt(CREF(LPRDOCalc) pOperation);
 
 	LPRDOCalc m_pOperation;
 
