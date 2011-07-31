@@ -1999,6 +1999,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\std_fun.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\unary.cpp"
 				>
 			</File>

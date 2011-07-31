@@ -51,18 +51,12 @@ class RDOFunCalcStd: public RDOFunCalc
 public:
 	typedef typename F::function_type function_type;
 
-	RDOFunCalcStd(CREF(function_type) pFunction)
-		: m_pFunction(pFunction)
-	{}
+	RDOFunCalcStd(CREF(function_type) pFunction);
 
 private:
 	function_type m_pFunction;
 
-	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime)
-	{
-		calc<F::arity>(pRuntime);
-		return m_value;
-	}
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
 	template <int paramCount>
 	FORCEINLINE void calc(CREF(LPRDORuntime) pRuntime);
@@ -96,5 +90,7 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/calc/std_fun.inl"
 
 #endif // _LIB_RUNTIME_CALC_STD_FUN_H_
