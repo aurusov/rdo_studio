@@ -2,10 +2,10 @@
  * @copyright (c) RDO-Team, 2009
  * @file      rdo_logic_dptfree.cpp
  * @authors   Ћущан ƒмитрий
- * @date      07.11.09
- * @brief     
+ * @date      07.11.2009
+ * @brief     unknown
  * @indent    4T
- */
+ *********************************************************************************/
 
 // **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
