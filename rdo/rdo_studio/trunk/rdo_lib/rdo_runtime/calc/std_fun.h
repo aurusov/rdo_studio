@@ -61,6 +61,7 @@ private:
 	template <int paramCount>
 	FORCEINLINE void calc(CREF(LPRDORuntime) pRuntime);
 
+	/// @todo перенести определение функций-членов в std_fun.inl
 	template <>
 	FORCEINLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
 	{

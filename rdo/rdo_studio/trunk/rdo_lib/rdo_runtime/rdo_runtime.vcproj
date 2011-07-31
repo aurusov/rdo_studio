@@ -1983,6 +1983,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\sequence.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\statements.cpp"
 				>
 			</File>
