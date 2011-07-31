@@ -3,12 +3,12 @@
  * @file      rdoframe.h
  * @authors   Урусов Андрей
  * @date      07.12.2008
- * @brief     
+ * @brief     Кадры РДО модели
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOFRAME_H_
-#define _RDOFRAME_H_
+#ifndef _LIB_RUNTIME_FRAME_H_
+#define _LIB_RUNTIME_FRAME_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -694,4 +694,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDOFRAME_H_
+#endif // _LIB_RUNTIME_FRAME_H_
