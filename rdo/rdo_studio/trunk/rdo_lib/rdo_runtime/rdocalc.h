@@ -35,10 +35,7 @@ DECLARE_FACTORY(RDOCalc)
 public:
 	REF(RDOValue) calcValue(CREF(LPRDORuntime) pRuntime);
 
-	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
-	{
-		return false;
-	}
+	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
 
 protected:
 	RDOCalc();
@@ -80,10 +77,7 @@ CALC(RDOCalcGetResParam)
 {
 DECLARE_FACTORY(RDOCalcGetResParam)
 protected:
-	RDOCalcGetResParam(int _resNumb, int _parNumb)
-		: m_resID  (_resNumb)
-		, m_paramID(_parNumb)
-	{}
+	RDOCalcGetResParam(int _resNumb, int _parNumb);
 
 	int m_resID;
 	int m_paramID;
@@ -102,13 +96,7 @@ private:
 	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-	virtual void notify(ruint message, PTR(void) param)
-	{
-		if (m_resID == *reinterpret_cast<PTR(int)>(param))
-		{
-			m_resID = -1;
-		}
-	};
+	virtual void notify(ruint message, PTR(void) param);
 };
 
 // ********************************************************************************
@@ -118,10 +106,7 @@ CALC(RDOCalcGetUnknowResParam)
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
 private:
-	RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName)
-		: m_resName(resName)
-		, m_parName(parName)
-	{}
+	RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName);
 
 	tstring m_resName;
 	tstring m_parName;
@@ -136,9 +121,7 @@ CALC(RDOCalcGetGroupResParam)
 {
 DECLARE_FACTORY(RDOCalcGetGroupResParam)
 private:
-	RDOCalcGetGroupResParam(int parNumb)
-		: m_parNumb(parNumb)
-	{}
+	RDOCalcGetGroupResParam(int parNumb);
 
 	int m_parNumb;
 
@@ -152,15 +135,7 @@ CALC(RDOSetResourceParamCalc)
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)
 private:
-	RDOSetResourceParamCalc(int resNumb, int parNumb, CREF(LPRDOCalc) pCalc)
-		: m_resNumb(resNumb)
-		, m_parNumb(parNumb)
-		, m_pCalc  (pCalc   )
-	{
-		m_value = true;
-		if (m_pCalc)
-			setSrcInfo(m_pCalc->src_info());
-	}
+	RDOSetResourceParamCalc(int resNumb, int parNumb, CREF(LPRDOCalc) pCalc);
 
 	int        m_resNumb;
 	int        m_parNumb;
@@ -176,12 +151,7 @@ CALC(RDOSetPatternParamCalc)
 {
 DECLARE_FACTORY(RDOSetPatternParamCalc)
 private:
-	RDOSetPatternParamCalc(int parNumb, RDOValue val)
-		: m_parNumb(parNumb)
-		, m_val    (val    )
-	{
-		m_value = 0;
-	}
+	RDOSetPatternParamCalc(int parNumb, RDOValue val);
 
 	int      m_parNumb;
 	RDOValue m_val;
@@ -196,9 +166,7 @@ CALC(RDOCalcPatParam)
 {
 DECLARE_FACTORY(RDOCalcPatParam)
 private:
-	RDOCalcPatParam(int numberOfParam)
-		: m_numberOfParam(numberOfParam)
-	{}
+	RDOCalcPatParam(int numberOfParam);
 
 	int m_numberOfParam;
 
@@ -238,12 +206,10 @@ DECALRE_ICalc;
 CALC(RDOFunCalc)
 {
 public:
-	virtual void addRetCalc(CREF(LPRDOCalc) pCalc)
-	{}
+	virtual void addRetCalc(CREF(LPRDOCalc) pCalc);
 
 protected:
-	RDOFunCalc()
-	{}
+	RDOFunCalc();
 };
 
 // ********************************************************************************
@@ -255,15 +221,10 @@ CALC_SUB(RDOFuncTableCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFuncTableCalc)
 public:
-	void addResultCalc(CREF(LPRDOCalcConst) res)
-	{
-		m_results.push_back( res );
-	}
+	void addResultCalc(CREF(LPRDOCalcConst) res);
 
 private:
-	RDOFuncTableCalc(CREF(LPRDOCalc) pArgCalc)
-		: m_pArgCalc(pArgCalc)
-	{}
+	RDOFuncTableCalc(CREF(LPRDOCalc) pArgCalc);
 
 	std::vector<LPRDOCalcConst> m_results;
 	LPRDOCalc                   m_pArgCalc;
@@ -280,16 +241,10 @@ CALC_SUB(RDOFunListCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFunListCalc)
 public:
-	void addCase(CREF(LPRDOCalc) pCaseCalc, CREF(LPRDOCalcConst) pResultCalc)
-	{
-		m_cases  .push_back(pCaseCalc  ); 
-		m_results.push_back(pResultCalc);
-	}
+	void addCase(CREF(LPRDOCalc) pCaseCalc, CREF(LPRDOCalcConst) pResultCalc);
 
 private:
-	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue)
-		: m_pDefaultValue(pDefaultValue)
-	{}
+	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue);
 
 	std::vector<LPRDOCalc>       m_cases;
 	std::vector<LPRDOCalcConst>  m_results;
@@ -307,17 +262,10 @@ CALC_SUB(RDOFunAlgorithmicCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFunAlgorithmicCalc)
 public:
-	void addCalcIf(CREF(LPRDOCalc) pCond, CREF(LPRDOCalc) pAct)
-	{
-		m_conditions.push_back(pCond);
-		m_actions   .push_back(pAct );
-	}
+	void addCalcIf(CREF(LPRDOCalc) pCond, CREF(LPRDOCalc) pAct);
 
 protected:
-	RDOFunAlgorithmicCalc()
-	{
-		m_value = 0;
-	}
+	RDOFunAlgorithmicCalc();
 
 	std::vector<LPRDOCalc> m_conditions;
 	std::vector<LPRDOCalc> m_actions;
@@ -334,10 +282,7 @@ CALC_SUB(RDOFunAlgorithmicDiapCalc, RDOFunAlgorithmicCalc)
 {
 DECLARE_FACTORY(RDOFunAlgorithmicDiapCalc)
 private:
-	RDOFunAlgorithmicDiapCalc(CREF(RDOValue) min_value, CREF(RDOValue) max_value)
-		: m_min_value          (min_value)
-		, m_max_value          (max_value)
-	{}
+	RDOFunAlgorithmicDiapCalc(CREF(RDOValue) min_value, CREF(RDOValue) max_value);
 
 	RDOValue m_min_value;
 	RDOValue m_max_value;
@@ -354,10 +299,7 @@ protected:
 	int        m_nResType;
 	LPRDOCalc  m_pCondition;
 
-	RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
-		: m_nResType  (nResType  )
-		, m_pCondition(pCondition)
-	{}
+	RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition);
 };
 
 #define DEFINE_CALC_GROUP(CalcName) \
@@ -389,21 +331,15 @@ public:
 	void prepare(CREF(LPRDORuntime) pRuntime);
 
 private:
-	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition)
-		: RDOFunCalcGroup(nResType, pCondition)
-	{
-		m_value = 1;
-	}
+	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition);
+
 	DECALRE_ICalc;
 };
 
 CALC_SUB(RDOFunCalcSelectBase, RDOFunCalc)
 {
 protected:
-	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition)
-		: m_pSelect   (pSelect   )
-		, m_pCondition(pCondition)
-	{}
+	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition);
 
 	LPRDOFunCalcSelect m_pSelect;
 	LPRDOCalc          m_pCondition;
@@ -445,11 +381,7 @@ CALC(RDOCalcFuncParam)
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
 private:
-	RDOCalcFuncParam(int param_number, CREF(RDOSrcInfo) _src_info)
-		: m_param_number(param_number)
-	{
-		setSrcInfo( _src_info );
-	}
+	RDOCalcFuncParam(int param_number, CREF(RDOSrcInfo) _src_info);
 
 	int m_param_number;
 
@@ -463,9 +395,7 @@ CALC(RDOCalcGetConst)
 {
 DECLARE_FACTORY(RDOCalcGetConst)
 private:
-	RDOCalcGetConst(int number)
-		: m_number(number)
-	{}
+	RDOCalcGetConst(int number);
 
 	int m_number;
 	DECALRE_ICalc;
@@ -475,13 +405,7 @@ CALC(RDOCalcSetConst)
 {
 DECLARE_FACTORY(RDOCalcSetConst)
 private:
-	RDOCalcSetConst(int number, CREF(LPRDOCalc) pCalc)
-		: m_number(number)
-		, m_pCalc (pCalc )
-	{
-		m_value = 0;
-		if (m_pCalc) setSrcInfo(m_pCalc->src_info());
-	}
+	RDOCalcSetConst(int number, CREF(LPRDOCalc) pCalc);
 
 	int        m_number;
 	LPRDOCalc  m_pCalc;
@@ -496,19 +420,11 @@ CALC(RDOCalcFunctionCall)
 {
 DECLARE_FACTORY(RDOCalcFunctionCall)
 public:
-	void addParameter(CREF(LPRDOCalc) pCalc)
-	{
-		m_parameters.push_back(pCalc);
-	}
-	void setFunctionCalc(CREF(LPRDOFunCalc) pFunction)
-	{
-		m_pFunction = pFunction;
-	}
+	void addParameter(CREF(LPRDOCalc) pCalc);
+	void setFunctionCalc(CREF(LPRDOFunCalc) pFunction);
 
 private:
-	RDOCalcFunctionCall(CREF(LPRDOFunCalc) pFunction)
-		: m_pFunction(pFunction)
-	{}
+	RDOCalcFunctionCall(CREF(LPRDOFunCalc) pFunction);
 
 	std::vector<LPRDOCalc>  m_parameters;
 	LPRDOFunCalc            m_pFunction;
