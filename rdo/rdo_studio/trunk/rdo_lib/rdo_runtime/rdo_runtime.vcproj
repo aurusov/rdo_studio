@@ -2354,6 +2354,10 @@
 				RelativePath="rdoframe.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdoframe.inl"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -56,18 +56,19 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 {
 	switch (m_type)
 	{
-		case CT_NONE        : return rdoAnimation::RDOColor(50, 200, 50);
-		case CT_RGB         : return rdoAnimation::RDOColor(
-		                          m_pRedCalc  ->calcValue(pRuntime).getInt(),
-		                          m_pGreenCalc->calcValue(pRuntime).getInt(),
-		                          m_pBlueCalc ->calcValue(pRuntime).getInt()
-		                      );
-		case CT_TRANSPARENT : return rdoAnimation::RDOColor();
-		case CT_LAST_BG     : return pFrame->m_colorLastBg;
-		case CT_LAST_FG     : return pFrame->m_colorLastFg;
-		case CT_LAST_BG_TEXT: return pFrame->m_colorLastBgText;
-		case CT_LAST_FG_TEXT: return pFrame->m_colorLastFgText;
-		default                : NEVER_REACH_HERE;
+	case CT_NONE        : return rdoAnimation::RDOColor(50, 200, 50);
+	case CT_RGB         : return rdoAnimation::RDOColor
+						  (
+							m_pRedCalc  ->calcValue(pRuntime).getInt(),
+							m_pGreenCalc->calcValue(pRuntime).getInt(),
+							m_pBlueCalc ->calcValue(pRuntime).getInt()
+						  );
+	case CT_TRANSPARENT : return rdoAnimation::RDOColor();
+	case CT_LAST_BG     : return pFrame->m_colorLastBg;
+	case CT_LAST_FG     : return pFrame->m_colorLastFg;
+	case CT_LAST_BG_TEXT: return pFrame->m_colorLastBgText;
+	case CT_LAST_FG_TEXT: return pFrame->m_colorLastFgText;
+	default                : NEVER_REACH_HERE;
 	}
 	return rdoAnimation::RDOColor();
 }

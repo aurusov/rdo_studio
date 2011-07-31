@@ -20,12 +20,13 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOFRMFrame
-// ********************************************************************************
 PREDECLARE_POINTER(RDOFRMShow);
 PREDECLARE_POINTER(RDOFRMItem);
 
+/******************************************************************************//**
+ * @class     RDOFRMFrame
+ * @brief     Кадр
+ *********************************************************************************/
 OBJECT(RDOFRMFrame)
 	IS  INSTANCE_OF(RDORuntimeObject)
 	AND INSTANCE_OF(RDOSrcInfo      )
@@ -34,13 +35,18 @@ DECLARE_FACTORY(RDOFRMFrame)
 public:
 	typedef std::list<tstring> ImageNameList;
 
-	// ********************************************************************************
-	// ******************** RDOFRMPosition
-	// ********************************************************************************
+	/**
+	 * @class     RDOFRMPosition
+	 * @brief     Позиция кадра
+	 */
 	OBJECT(RDOFRMPosition) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(RDOFRMPosition)
 	public:
+		/**
+		 * @enum      RDOFRMFrame
+		 * @brief     Тип позици кадра
+		 */
 		enum PositionType
 		{
 			PT_ABSOLUTE,
@@ -50,78 +56,18 @@ public:
 			PT_RULET
 		};
 
-		PositionType getType() const
-		{
-			return m_type;
-		}
+		PositionType    getType() const;
+		CREF(LPRDOCalc) getCalc() const;
 
-		CREF(LPRDOCalc) getCalc() const
-		{
-			return m_pCalc;
-		}
+		int getX     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+		int getY     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+		int getWidth (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+		int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
 
-		int getX(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
-		{
-			RDOValue res = m_pCalc->calcValue(pRuntime);
-			switch (m_type)
-			{
-				case RDOFRMPosition::PT_DELTA  : res += pFrame->m_lastX;                        break;
-				case RDOFRMPosition::PT_GABARIT: res += pFrame->m_lastX + pFrame->m_lastWidth;  break;
-				case RDOFRMPosition::PT_MULT   : res *= pFrame->m_lastX;                        break;
-				case RDOFRMPosition::PT_RULET  : res += pFrame->getRuletX(pRuntime, m_ruletID); break;
-			}
-			return res.getInt();
-		}
-		int getY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
-		{
-			RDOValue res = m_pCalc->calcValue(pRuntime);
-			switch (m_type)
-			{
-				case RDOFRMPosition::PT_DELTA  : res += pFrame->m_lastY;                        break;
-				case RDOFRMPosition::PT_GABARIT: res += pFrame->m_lastY + pFrame->m_lastHeight; break;
-				case RDOFRMPosition::PT_MULT   : res *= pFrame->m_lastY;                        break;
-				case RDOFRMPosition::PT_RULET  : res += pFrame->getRuletY(pRuntime, m_ruletID); break;
-			}
-			return res.getInt();
-		}
-		int getWidth(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
-		{
-			RDOValue res = m_pCalc->calcValue(pRuntime);
-			switch (m_type)
-			{
-				case RDOFRMPosition::PT_DELTA: res += pFrame->m_lastWidth; break;
-				case RDOFRMPosition::PT_MULT : res *= pFrame->m_lastWidth; break;
-				case RDOFRMPosition::PT_RULET: res += pFrame->getRuletX(pRuntime, m_ruletID); break;
-			}
-			return res.getInt();
-		}
-		int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
-		{
-			RDOValue res = m_pCalc->calcValue(pRuntime);
-			switch (m_type)
-			{
-				case RDOFRMPosition::PT_DELTA: res += pFrame->m_lastHeight; break;
-				case RDOFRMPosition::PT_MULT : res *= pFrame->m_lastHeight; break;
-				case RDOFRMPosition::PT_RULET: res += pFrame->getRuletY(pRuntime, m_ruletID); break;
-			}
-			return res.getInt();
-		}
 	private:
-		RDOFRMPosition()
-			: RDORuntimeObject()
-			, m_type   (PT_ABSOLUTE)
-			, m_ruletID(0          )
-		{}
-
-		RDOFRMPosition(CREF(LPRDOCalc) pCalc, PositionType type = PT_ABSOLUTE, int ruletID = 0)
-			: RDORuntimeObject()
-			, m_pCalc  (pCalc  )
-			, m_type   (type   )
-			, m_ruletID(ruletID)
-		{}
-
-		virtual ~RDOFRMPosition()
-		{}
+		RDOFRMPosition(CREF(LPRDOCalc) pCalc, PositionType type = PT_ABSOLUTE, int ruletID = 0);
+		RDOFRMPosition();
+		virtual ~RDOFRMPosition();
 
 		LPRDOCalc    m_pCalc;
 		PositionType m_type;
@@ -129,9 +75,10 @@ public:
 	};
 	friend class RDOFRMPosition;
 
-	// ********************************************************************************
-	// ******************** RDOFRMColor - объект-цвет
-	// ********************************************************************************
+	/**
+	 * @class     RDOFRMColor
+	 * @brief     Объект-цвет
+	 */
 	OBJECT(RDOFRMColor) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(RDOFRMColor)
@@ -149,17 +96,8 @@ public:
 
 		rdoAnimation::RDOColor getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
-		ColorType getType() const
-		{
-			return m_type;
-		}
-		void setType(ColorType type)
-		{
-			if (m_type == CT_NONE)
-			{
-				m_type = type;
-			}
-		}
+		ColorType getType() const;
+		void setType(ColorType type);
 
 	private:
 		RDOFRMColor(ColorType type = CT_NONE);
@@ -174,37 +112,23 @@ public:
 	};
 	friend class RDOFRMColor;
 
-	// ********************************************************************************
-	// ******************** RDOFRMRulet
-	// ********************************************************************************
+	/**
+	 * @class     RDOFRMRulet
+	 * @brief     Объект-цвет
+	 */
 	OBJECT(RDOFRMRulet)
 		 IS  INSTANCE_OF(RDORuntimeObject)
 		 AND INSTANCE_OF(RDOSrcInfo      )
 	{
 	DECLARE_FACTORY(RDOFRMRulet)
 	public:
-		ruint getIndex() const
-		{
-			return m_index;
-		}
-		CREF(LPRDOFRMPosition) getX() const
-		{
-			return m_pX;
-		}
-		CREF(LPRDOFRMPosition) getY() const
-		{
-			return m_pY;
-		}
+		ruint getIndex() const;
+		CREF(LPRDOFRMPosition) getX() const;
+		CREF(LPRDOFRMPosition) getY() const;
 
 	private:
-		RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY)
-			: RDOSrcInfo(src_info)
-			, m_index   (index   )
-			, m_pX      (pX      )
-			, m_pY      (pY      )
-		{}
-		virtual ~RDOFRMRulet()
-		{}
+		RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY);
+		virtual ~RDOFRMRulet();
 
 		ruint             m_index;
 		LPRDOFRMPosition  m_pX;
@@ -216,47 +140,25 @@ public:
 	void          setBackPicture    (CREF(tstring)       picFileName);
 	void          setBackPicture    (int width, int height);
 	void          startShow         (CREF(LPRDOCalc) pCalc = NULL);
-	LPRDOFRMShow  getLastShow       () const                       { return !m_showList.empty() ? m_showList.back() : NULL; }
+	LPRDOFRMShow  getLastShow       () const;
 	void          addItem           (CREF(LPRDOFRMItem)  pItem   );
 	void          addRulet          (CREF(LPRDOFRMRulet) pRulet  );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime);
-	CREF(tstring) name              () const                       { return src_text(); }
+	CREF(tstring) name              () const;
 	void          getBitmaps        (REF(ImageNameList) list) const;
 
-	PTR(rdoAnimation::RDOFrame) createFrame(CREF(LPRDORuntime) pRuntime)
-	{
-		PTR(rdoAnimation::RDOFrame) pFrame = new rdoAnimation::RDOFrame();
-		return prepareFrame(pFrame, pRuntime);
-	}
+	PTR(rdoAnimation::RDOFrame) createFrame(CREF(LPRDORuntime) pRuntime);
 	PTR(rdoAnimation::RDOFrame) prepareFrame(PTR(rdoAnimation::RDOFrame) pFrame, CREF(LPRDORuntime) pRuntime);
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFg);
 	void setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBgText);
 	void setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFgText);
-	void setLastXYWH       (double x, double y, double width, double height)
-	{
-		m_lastX      = x;
-		m_lastY      = y;
-		m_lastWidth  = width;
-		m_lastHeight = height;
-	}
+	void setLastXYWH       (double x, double y, double width, double height);
 
-	int getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const
-	{
-		LPRDOFRMRulet pRulet = findRulet(ruletID);
-		return pRulet ? pRulet->getX()->getCalc()->calcValue(pRuntime).getInt() : 0;
-	}
-	int getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const
-	{
-		LPRDOFRMRulet pRulet = findRulet(ruletID);
-		return pRulet ? pRulet->getY()->getCalc()->calcValue(pRuntime).getInt() : 0;
-	}
-	LPRDOFRMRulet findRulet(ruint ruletID) const
-	{
-		RuletList::const_iterator it = m_ruletList.find(ruletID);
-		return it != m_ruletList.end() ? it->second : NULL;
-	}
+	int getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
+	int getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
+	LPRDOFRMRulet findRulet(ruint ruletID) const;
 
 private:
 	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
@@ -282,47 +184,23 @@ private:
 	RuletList               m_ruletList;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMBoundingItem - объект-четырехугольник
-// ********************************************************************************
-// В парсере не создается
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMBoundingItem
+ * @brief     Объект-четырехугольник
+ * @details   В парсере не создается
+ *********************************************************************************/
 class RDOFRMBoundingItem
 {
 protected:
-	RDOFRMBoundingItem(CREF(RDOFRMFrame::LPRDOFRMPosition) pX, CREF(RDOFRMFrame::LPRDOFRMPosition) pY, CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth, CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight)
-		: m_pX     (pX     )
-		, m_pY     (pY     )
-		, m_pWidth (pWidth )
-		, m_pHeight(pHeight)
-	{}
-	virtual ~RDOFRMBoundingItem()
-	{}
+	RDOFRMBoundingItem(CREF(RDOFRMFrame::LPRDOFRMPosition) pX, CREF(RDOFRMFrame::LPRDOFRMPosition) pY, CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth, CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight);
+	virtual ~RDOFRMBoundingItem();
 
-	int getX(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pX->getX(pRuntime, pFrame);
-	}
-	int getY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pY->getY(pRuntime, pFrame);
-	}
-	int getWidth(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pWidth->getWidth(pRuntime, pFrame);
-	}
-	int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pHeight->getHeight(pRuntime, pFrame);
-	}
-	int getWidthAsX(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pWidth->getX(pRuntime, pFrame);
-	}
-	int getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pHeight->getY(pRuntime, pFrame);
-	}
+	int getX        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getY        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getWidth    (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getHeight   (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getWidthAsX (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
 private:
 	RDOFRMFrame::LPRDOFRMPosition m_pX;
@@ -331,59 +209,46 @@ private:
 	RDOFRMFrame::LPRDOFRMPosition m_pHeight;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMColoredItem - цветной объект
-// ********************************************************************************
-// В парсере не создается
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMColoredItem
+ * @brief     Цветной объект
+ * @details   В парсере не создается
+ *********************************************************************************/
 class RDOFRMColoredItem
 {
 public:
-	CREF(RDOFRMFrame::LPRDOFRMColor) getBgColor() const { return m_pBgColor; }
-	CREF(RDOFRMFrame::LPRDOFRMColor) getFgColor() const { return m_pFgColor; }
+	CREF(RDOFRMFrame::LPRDOFRMColor) getBgColor() const;
+	CREF(RDOFRMFrame::LPRDOFRMColor) getFgColor() const;
 
-	rdoAnimation::RDOColor getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pBgColor->getColor(pRuntime, pFrame);
-	}
-	rdoAnimation::RDOColor getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
-	{
-		return m_pFgColor->getColor(pRuntime, pFrame);
-	}
+	rdoAnimation::RDOColor getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	rdoAnimation::RDOColor getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
 protected:
-	RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) pBgColor, CREF(RDOFRMFrame::LPRDOFRMColor) pFgColor)
-		: m_pBgColor(pBgColor)
-		, m_pFgColor(pFgColor)
-	{}
-	virtual ~RDOFRMColoredItem()
-	{}
+	RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) pBgColor, CREF(RDOFRMFrame::LPRDOFRMColor) pFgColor);
+	virtual ~RDOFRMColoredItem();
 
 private:
 	RDOFRMFrame::LPRDOFRMColor m_pBgColor;
 	RDOFRMFrame::LPRDOFRMColor m_pFgColor;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMItem - базовый для всех элементов
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMItem
+ * @brief     Базовый для всех элементов
+ *********************************************************************************/
 OBJECT(RDOFRMItem) IS INSTANCE_OF(RDORuntimeObject)
 {
 DECLARE_FACTORY(RDOFRMItem)
 public:
 	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime) = 0;
 
-	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list)
-	{}
+	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list);
 
 protected:
-	RDOFRMItem(CREF(LPRDOFRMFrame) pFrame)
-		: m_pFrame(pFrame)
-	{}
-	virtual ~RDOFRMItem()
-	{}
+	RDOFRMItem(CREF(LPRDOFRMFrame) pFrame);
+	virtual ~RDOFRMItem();
 
-	CREF(LPRDOFRMFrame) getFrame() const { return m_pFrame; }
+	CREF(LPRDOFRMFrame) getFrame() const;
 
 private:
 	LPRDOFRMFrame m_pFrame;
@@ -397,9 +262,10 @@ private:                    \
 PREDECLARE_POINTER(A); \
 CLASS(A): INSTANCE_OF(RDOFRMItem)
 
-// ********************************************************************************
-// ******************** RDOFRMText
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMText
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMText)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -431,37 +297,27 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMBitmapBase
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMBitmapBase
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMBitmapBase)
 {
 protected:
-	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list)
-	{
-		list.push_back(m_pictFilename);
-		if (!m_maskFilename.empty())
-		{
-			list.push_back(m_maskFilename);
-		}
-	}
+	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list);
 
 	tstring m_pictFilename;
 	tstring m_maskFilename;
 
 protected:
-	RDOFRMBitmapBase(CREF(LPRDOFRMFrame) pFrame, CREF(tstring) pictFilename, CREF(tstring) maskFilename = _T(""))
-		: RDOFRMItem    (pFrame      )
-		, m_pictFilename(pictFilename)
-		, m_maskFilename(maskFilename)
-	{}
-	virtual ~RDOFRMBitmapBase()
-	{}
+	RDOFRMBitmapBase(CREF(LPRDOFRMFrame) pFrame, CREF(tstring) pictFilename, CREF(tstring) maskFilename = _T(""));
+	virtual ~RDOFRMBitmapBase();
 };
 
-// ********************************************************************************
-// ******************** RDOFRMBitmap
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMBitmap
+ * @brief     unknown
+ *********************************************************************************/
 CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
 {
 DECLARE_FACTORY(RDOFRMBitmap)
@@ -480,13 +336,15 @@ private:
 
 	DECLARE_RDOFRMIItem;
 };
+
 DECLARE_POINTER(RDOFRMBitmap)
 
-// ********************************************************************************
-// ******************** RDOFRMBitmapStretch
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMBitmapStretch
+ * @brief     unknown
+ *********************************************************************************/
 CLASS(RDOFRMBitmapStretch):
-	    INSTANCE_OF(RDOFRMBitmapBase  )
+		INSTANCE_OF(RDOFRMBitmapBase  )
 	AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMBitmapStretch)
@@ -504,11 +362,13 @@ private:
 
 	DECLARE_RDOFRMIItem;
 };
+
 DECLARE_POINTER(RDOFRMBitmapStretch);
 
-// ********************************************************************************
-// ******************** RDOFRMRect
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMRect
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMRect)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -529,9 +389,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMRectRound
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMRectRound
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMRectRound)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -552,9 +413,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMEllipse
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMEllipse
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMEllipse)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -575,9 +437,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMLine
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMLine
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMLine)
@@ -597,9 +460,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMTriang
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMTriang
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
 {
 DECLARE_FACTORY(RDOFRMTriang)
@@ -627,9 +491,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMActive
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMActive
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMActive)
@@ -649,9 +514,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMSpace
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMSpace
+ * @brief     unknown
+ *********************************************************************************/
 RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMSpace)
@@ -668,9 +534,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-// ********************************************************************************
-// ******************** RDOFRMShow
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFRMShow
+ * @brief     unknown
+ *********************************************************************************/
 OBJECT(RDOFRMShow) IS INSTANCE_OF(RDORuntimeObject)
 {
 DECLARE_FACTORY(RDOFRMShow)
@@ -680,7 +547,7 @@ public:
 	void          insertItem (CREF(LPRDOFRMItem) pItem);
 	REF(ItemList) getItemList();
 
-	rbool        isShowIf      () const                        { return m_pConditionCalc != NULL; }
+	rbool        isShowIf      () const;
 	rbool        checkCondition(CREF(LPRDORuntime) pRuntime);
 	virtual void getBitmaps    (REF(RDOFRMFrame::ImageNameList) list);
 
@@ -693,5 +560,7 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/rdoframe.inl"
 
 #endif // _LIB_RUNTIME_FRAME_H_
