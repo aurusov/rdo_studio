@@ -2,7 +2,7 @@
  * @copyright (c) RDO-Team, 2011
  * @file      choice_from.cpp
  * @authors   Барс Александр, Урусов Андрей, Лущан Дмитрий
- * @date      unknown
+ * @date      13.03.2011
  * @brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
  * @indent    4T
  *********************************************************************************/
@@ -126,8 +126,8 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 
 			switch (order_type)
 			{
-				case order_empty:
-				case order_first:
+			case order_empty:
+			case order_first:
 				{
 					pRuntime->getCurrentActivity()->setRelRes(rel_res_id, res_id);
 					if (choice_calc && !choice_calc->calcValue(pRuntime).getAsBool())
@@ -138,7 +138,7 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 					m_value = 1;
 					return m_value;
 				}
-				case order_with_min:
+			case order_with_min:
 				{
 					pRuntime->getCurrentActivity()->setRelRes(rel_res_id, res_id);
 					if (choice_calc && !choice_calc->calcValue(pRuntime).getAsBool())
@@ -154,7 +154,7 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 					}
 					break;
 				}
-				case order_with_max:
+			case order_with_max:
 				{
 					pRuntime->getCurrentActivity()->setRelRes(rel_res_id, res_id);
 					if (choice_calc && !choice_calc->calcValue(pRuntime).getAsBool())
@@ -342,7 +342,8 @@ std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRD
 
 rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
-	return (choice_calc && !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->choice_calc->calcValue(pRuntime).getAsBool()) ? false : true;
+	const rbool tmp = !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->choice_calc->calcValue(pRuntime).getAsBool();
+	return (choice_calc && tmp) ? false : true;
 }
 
 RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()

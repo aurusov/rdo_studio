@@ -2,7 +2,7 @@
  * @copyright (c) RDO-Team, 2011
  * @file      binary.inl
  * @authors   Барс Александр, Урусов Андрей
- * @date      unknown
+ * @date      13.03.2011
  * @brief     unknown
  * @indent    4T
  *********************************************************************************/

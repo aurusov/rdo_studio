@@ -1,9 +1,9 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2011
- * @file      choice_from.h
+ * @file      choice_from.inl
  * @authors   Барс Александр, Урусов Андрей
- * @date      unknown
- * @brief     unknown
+ * @date      27.07.2011
+ * @brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
  * @indent    4T
  *********************************************************************************/
 
@@ -56,7 +56,8 @@ inline RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResou
 	, useCommonWithMax(_useCommonWithMax)
 	, choice_calc     (_choice_calc     )
 {
-	if (choice_calc) setSrcInfo(choice_calc->src_info());
+	if (choice_calc)
+		setSrcInfo(choice_calc->src_info());
 }
 
 // ********************************************************************************

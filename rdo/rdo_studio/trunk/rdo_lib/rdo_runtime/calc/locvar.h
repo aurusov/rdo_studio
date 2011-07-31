@@ -2,8 +2,8 @@
  * @copyright (c) RDO-Team, 2010
  * @file      locvar.h
  * @authors   Чирков Михаил
- * @date      03.12.10
- * @brief     
+ * @date      03.12.2010
+ * @brief     unknown
  * @indent    4T
  *********************************************************************************/
 

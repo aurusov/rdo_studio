@@ -2,7 +2,7 @@
  * @copyright (c) RDO-Team, 2011
  * @file      choice_from.h
  * @authors   Барс Александр, Урусов Андрей
- * @date      unknown
+ * @date      13.03.2011
  * @brief     unknown
  * @indent    4T
  *********************************************************************************/

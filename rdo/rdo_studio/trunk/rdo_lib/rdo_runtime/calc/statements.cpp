@@ -2,10 +2,10 @@
  * @copyright (c) RDO-Team, 2011
  * @file      statements.cpp
  * @authors   Чирков Михаил, Лущан Дмитрий
- * @date      16.04.11
- * @brief     
+ * @date      16.04.2011
+ * @brief     unknown
  * @indent    4T
- */
+ *********************************************************************************/
 
 // **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
@@ -32,8 +32,8 @@ REF(RDOValue) RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
 // ******************** RDOCalcIf
 // ********************************************************************************
 RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
-: m_pCondition(pCondition)
-, m_pStatement(pStatement)
+	: m_pCondition(pCondition)
+	, m_pStatement(pStatement)
 {
 	ASSERT(m_pCondition);
 	ASSERT(m_pStatement);
@@ -49,9 +49,9 @@ REF(RDOValue) RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 // ******************** RDOCalcIfElse
 // ********************************************************************************
 RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement)
-: m_pCondition    (pCondition    )
-, m_pIfStatement  (pIfStatement  )
-, m_pElseStatement(pElseStatement)
+	: m_pCondition    (pCondition    )
+	, m_pIfStatement  (pIfStatement  )
+	, m_pElseStatement(pElseStatement)
 {
 	ASSERT(m_pCondition    );
 	ASSERT(m_pIfStatement  );
@@ -67,10 +67,10 @@ REF(RDOValue) RDOCalcIfElse::doCalc(CREF(LPRDORuntime) pRuntime)
 // ******************** RDOCalcFor
 // ********************************************************************************
 RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement)
-: m_pDeclaration(pDeclaration)
-, m_pCondition  (pCondition  )
-, m_pExpression (pExpression )
-, m_pStatement  (pStatement  )
+	: m_pDeclaration(pDeclaration)
+	, m_pCondition  (pCondition  )
+	, m_pExpression (pExpression )
+	, m_pStatement  (pStatement  )
 {
 	ASSERT(m_pDeclaration);
 	ASSERT(m_pCondition  );
@@ -105,7 +105,7 @@ REF(RDOValue) RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
 // ******************** RDOCalcFunReturn
 // ********************************************************************************
 RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
-: m_pReturn(pReturn)
+	: m_pReturn(pReturn)
 {}
 
 REF(RDOValue) RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
