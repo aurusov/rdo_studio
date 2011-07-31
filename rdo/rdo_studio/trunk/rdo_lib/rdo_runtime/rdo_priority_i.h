@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_PRIORITY_I_H_
-#define _RDO_PRIORITY_I_H_
+#ifndef _LIB_RUNTIME_PRIORITY_I_H_
+#define _LIB_RUNTIME_PRIORITY_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -25,4 +25,4 @@ public:
 	virtual rdoRuntime::LPRDOCalc getPrior(); \
 	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior);
 
-#endif // _RDO_PRIORITY_I_H_
+#endif // _LIB_RUNTIME_PRIORITY_I_H_

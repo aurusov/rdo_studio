@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_EXCEPTION_H_
-#define _RDO_EXCEPTION_H_
+#ifndef _LIB_RUNTIME_EXCEPTION_H_
+#define _LIB_RUNTIME_EXCEPTION_H_
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -57,4 +57,4 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDO_EXCEPTION_H_
+#endif // _LIB_RUNTIME_EXCEPTION_H_

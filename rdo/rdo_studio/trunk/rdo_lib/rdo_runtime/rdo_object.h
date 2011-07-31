@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDORUNTIME_OBJECT_H_
-#define _RDORUNTIME_OBJECT_H_
+#ifndef _LIB_RUNTIME_OBJECT_H_
+#define _LIB_RUNTIME_OBJECT_H_
 
 // *********************************************************************** INCLUDES
 #include <vector>
@@ -227,4 +227,4 @@ public:
 #define DECLARE_INotify \
 	virtual void notify(ruint message, PTR(void) param);
 
-#endif // _RDORUNTIME_OBJECT_H_
+#endif // _LIB_RUNTIME_OBJECT_H_

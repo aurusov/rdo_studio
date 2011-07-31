@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_KEYBOARD_I_H_
-#define _RDO_KEYBOARD_I_H_
+#ifndef _LIB_RUNTIME_KEYBOARD_I_H_
+#define _LIB_RUNTIME_KEYBOARD_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -32,4 +32,4 @@ public:
 	virtual rbool           hasHotKey() const; \
 	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey);
 
-#endif // _RDO_KEYBOARD_I_H_
+#endif // _LIB_RUNTIME_KEYBOARD_I_H_

@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_RULE_I_H_
-#define _RDO_RULE_I_H_
+#ifndef _LIB_RUNTIME_RULE_I_H_
+#define _LIB_RUNTIME_RULE_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -39,4 +39,4 @@ public:
 	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch);
 
-#endif // _RDO_RULE_I_H_
+#endif // _LIB_RUNTIME_RULE_I_H_

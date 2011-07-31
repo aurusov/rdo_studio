@@ -1,5 +1,5 @@
-#ifndef RDO_FUZZY_DEF_H
-#define RDO_FUZZY_DEF_H
+#ifndef _LIB_RUNTIME_FUZZY_DEF_H_
+#define _LIB_RUNTIME_FUZZY_DEF_H_
 
 #ifndef _RDO_VALUE_H_
 #error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
@@ -193,4 +193,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_FUZZY_DEF_H
+#endif // _LIB_RUNTIME_FUZZY_DEF_H_

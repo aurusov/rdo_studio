@@ -1,5 +1,5 @@
-#ifndef RDOBASE_H
-#define RDOBASE_H
+#ifndef _LIB_RUNTIME_BASE_H_
+#define _LIB_RUNTIME_BASE_H_
 
 #include <map>
 #include "rdo_lib/rdo_runtime/rdo_object.h"
@@ -141,4 +141,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDOBASE_H
+#endif // _LIB_RUNTIME_BASE_H_

@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_PARAM_I_H_
-#define _RDO_PARAM_I_H_
+#ifndef _LIB_RUNTIME_PARAM_I_H_
+#define _LIB_RUNTIME_PARAM_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -25,4 +25,4 @@ public:
 	virtual rbool setParam(CREF(rdoRuntime::LPRDOCalc) pParam); \
 	virtual rbool endParam();
 
-#endif // _RDO_PARAM_I_H_
+#endif // _LIB_RUNTIME_PARAM_I_H_

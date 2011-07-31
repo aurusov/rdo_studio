@@ -1,5 +1,5 @@
-#ifndef RDO_SIMTRACE_H
-#define RDO_SIMTRACE_H
+#ifndef _LIB_RUNTIME_SIM_TRACE_H_
+#define _LIB_RUNTIME_SIM_TRACE_H_
 
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
@@ -141,4 +141,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_SIMTRACE_H
+#endif // _LIB_RUNTIME_SIM_TRACE_H_

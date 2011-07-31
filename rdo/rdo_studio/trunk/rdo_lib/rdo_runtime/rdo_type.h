@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_TYPE_H_
-#define _RDO_TYPE_H_
+#ifndef _LIB_RUNTIME_TYPE_H_
+#define _LIB_RUNTIME_TYPE_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -79,4 +79,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_type.inl"
 
-#endif // _RDO_TYPE_H_
+#endif // _LIB_RUNTIME_TYPE_H_

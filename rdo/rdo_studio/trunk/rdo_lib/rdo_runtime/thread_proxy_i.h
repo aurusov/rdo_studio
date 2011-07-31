@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _THREAD_PROXY_I_H_
-#define _THREAD_PROXY_I_H_
+#ifndef _LIB_RUNTIME_THREAD_PROXY_I_H_
+#define _LIB_RUNTIME_THREAD_PROXY_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -36,4 +36,4 @@ protected:
 	{}
 };
 
-#endif // _THREAD_PROXY_I_H_
+#endif // _LIB_RUNTIME_THREAD_PROXY_I_H_

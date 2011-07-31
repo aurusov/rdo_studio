@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_ENUM_H_
-#define _RDO_ENUM_H_
+#ifndef _LIB_RUNTIME_ENUM_H_
+#define _LIB_RUNTIME_ENUM_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -53,4 +53,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_enum.inl"
 
-#endif // _RDO_ENUM_H_
+#endif // _LIB_RUNTIME_ENUM_H_

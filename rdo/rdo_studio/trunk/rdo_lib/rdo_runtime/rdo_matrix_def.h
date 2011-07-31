@@ -6,8 +6,8 @@
  * @brief     
  * @indent    4T
  *********************************************************************************/
-#ifndef _RDO_MATRIX_DEF_H_
-#define _RDO_MATRIX_DEF_H_
+#ifndef _LIB_RUNTIME_MATRIX_DEF_H_
+#define _LIB_RUNTIME_MATRIX_DEF_H_
 
 #ifndef _RDO_VALUE_H_
 #error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_matrix_def.h" надо инклюдить "rdo_matrix.h")
@@ -99,4 +99,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDO_MATRIX_DEF_H_
+#endif // _LIB_RUNTIME_MATRIX_DEF_H_

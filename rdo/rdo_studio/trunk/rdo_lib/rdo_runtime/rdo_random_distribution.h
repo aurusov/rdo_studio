@@ -1,5 +1,5 @@
-#ifndef RDO_RANDOM_DISTRIBUTION_H
-#define RDO_RANDOM_DISTRIBUTION_H
+#ifndef _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_
+#define _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_
 
 #include <math.h>
 #include "rdo_lib/rdo_runtime/rdo_value.h"
@@ -226,4 +226,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_RANDOM_DISTRIBUTION_H
+#endif // _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_

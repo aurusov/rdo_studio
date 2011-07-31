@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_EVENT_I_H_
-#define _RDO_EVENT_I_H_
+#ifndef _LIB_RUNTIME_EVENT_I_H_
+#define _LIB_RUNTIME_EVENT_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -21,4 +21,4 @@ public:
 };
 #define DECLARE_IEvent
 
-#endif // _RDO_EVENT_I_H_
+#endif // _LIB_RUNTIME_EVENT_I_H_

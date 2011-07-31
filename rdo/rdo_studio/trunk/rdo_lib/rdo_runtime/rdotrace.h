@@ -1,5 +1,5 @@
-#ifndef RDOTRACE_H
-#define RDOTRACE_H
+#ifndef _LIB_RUNTIME_TRACE_H_
+#define _LIB_RUNTIME_TRACE_H_
 
 #include <fstream>
 #include <list>
@@ -167,4 +167,4 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDOTRACE_H
+#endif // _LIB_RUNTIME_TRACE_H_

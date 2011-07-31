@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_MATRIX_H_
-#define _RDO_MATRIX_H_
+#ifndef _LIB_RUNTIME_MATRIX_H_
+#define _LIB_RUNTIME_MATRIX_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -16,4 +16,4 @@
 #include "rdo_lib/rdo_runtime/rdo_matrix_def.h"
 // ********************************************************************************
 
-#endif // _RDO_MATRIX_H_
+#endif // _LIB_RUNTIME_MATRIX_H_

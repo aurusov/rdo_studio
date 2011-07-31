@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_PATTERN_H_
-#define _RDO_PATTERN_H_
+#ifndef _LIB_RUNTIME_PATTERN_H_
+#define _LIB_RUNTIME_PATTERN_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -244,4 +244,4 @@ DECLARE_POINTER(RDOPatternKeyboard);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDO_PATTERN_H_
+#endif // _LIB_RUNTIME_PATTERN_H_

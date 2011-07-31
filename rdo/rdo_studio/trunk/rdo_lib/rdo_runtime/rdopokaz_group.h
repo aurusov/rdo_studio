@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOPOKAZ_GROUP_H_
-#define _RDOPOKAZ_GROUP_H_
+#ifndef _LIB_RUNTIME_POKAZ_GROUP_H_
+#define _LIB_RUNTIME_POKAZ_GROUP_H_
 
 // **************************************************************************** PCH
 // *********************************************************************** INCLUDES
@@ -53,4 +53,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDOPOKAZ_GROUP_H_
+#endif // _LIB_RUNTIME_POKAZ_GROUP_H_

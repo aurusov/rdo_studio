@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDOTRACE_I_H_
-#define _RDOTRACE_I_H_
+#ifndef _LIB_RUNTIME_TRACE_I_H_
+#define _LIB_RUNTIME_TRACE_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -53,4 +53,4 @@ public:
 #define DECLARE_IPokazTrace \
 	virtual void tracePokaz();
 
-#endif // _RDOTRACE_I_H_
+#endif // _LIB_RUNTIME_TRACE_I_H_

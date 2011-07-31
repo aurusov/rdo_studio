@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_ACTIVITY_I_H_
-#define _RDO_ACTIVITY_I_H_
+#ifndef _LIB_RUNTIME_ACTIVITY_I_H_
+#define _LIB_RUNTIME_ACTIVITY_I_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -47,4 +47,4 @@ public:
 #define DECLARE_IActivityPatternTrace \
 	virtual CREF(tstring) tracePatternId() const;
 
-#endif // _RDO_ACTIVITY_I_H_
+#endif // _LIB_RUNTIME_ACTIVITY_I_H_

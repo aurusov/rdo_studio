@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_PRIORITY_H_
-#define _RDO_PRIORITY_H_
+#ifndef _LIB_RUNTIME_PRIORITY_H_
+#define _LIB_RUNTIME_PRIORITY_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -82,4 +82,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_priority.inl"
 
-#endif // _RDO_PRIORITY_H_
+#endif // _LIB_RUNTIME_PRIORITY_H_

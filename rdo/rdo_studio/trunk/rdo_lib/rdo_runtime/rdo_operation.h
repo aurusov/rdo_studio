@@ -7,8 +7,8 @@
  * @indent    4T
  *********************************************************************************/
 
-#ifndef _RDO_OPERATION_H_
-#define _RDO_OPERATION_H_
+#ifndef _LIB_RUNTIME_OPERATION_H_
+#define _LIB_RUNTIME_OPERATION_H_
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -65,4 +65,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDO_OPERATION_H_
+#endif // _LIB_RUNTIME_OPERATION_H_
