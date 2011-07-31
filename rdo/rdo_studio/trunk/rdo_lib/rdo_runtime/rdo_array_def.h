@@ -10,7 +10,7 @@
 #ifndef _LIB_RUNTIME_ARRAY_DEF_H_
 #define _LIB_RUNTIME_ARRAY_DEF_H_
 
-#ifndef _RDO_VALUE_H_
+#ifndef _LIB_RUNTIME_VALUE_H_
 #error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_array.h")
 #endif
 
