@@ -3,7 +3,7 @@
  * @file      sequence.h
  * @authors   Барс Александр, Урусов Андрей
  * @date      13.03.2011
- * @brief     unknown
+ * @brief     Последовательности
  * @indent    4T
  *********************************************************************************/
 
@@ -17,9 +17,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** Последовательности
-// ********************************************************************************
+/******************************************************************************//**
+ * @class   RDOCalcSeqInit
+ * @brief   unknown
+ *********************************************************************************/
 CALC(RDOCalcSeqInit)
 {
 DECLARE_FACTORY(RDOCalcSeqInit)
@@ -36,6 +37,10 @@ private:
 	DECALRE_ICalc;
 };
 
+/******************************************************************************//**
+ * @class   RDOCalcSeqNext
+ * @brief   unknown
+ *********************************************************************************/
 CALC_SUB(RDOCalcSeqNext, RDOFunCalc)
 {
 public:
@@ -50,6 +55,10 @@ protected:
 	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime) = 0;
 };
 
+/******************************************************************************//**
+ * @class   RDOCalcRandomDistribution
+ * @brief   unknown
+ *********************************************************************************/
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
@@ -62,6 +71,10 @@ private:
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 };
 
+/******************************************************************************//**
+ * @def     DEFINE_RANDON_DISTRIBUTION
+ * @brief   unknown
+ *********************************************************************************/
 #define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution) \
 CALC_SUB(RDOCalcSeqNext##CalcName, RDOCalcRandomDistribution<Distribution>) \
 { \
@@ -74,10 +87,10 @@ private: \
 	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime); \
 };
 
-DEFINE_RANDON_DISTRIBUTION( Uniform    , RandGeneratorUniform     );
-DEFINE_RANDON_DISTRIBUTION( Normal     , RandGeneratorNormal      );
-DEFINE_RANDON_DISTRIBUTION( Exponential, RandGeneratorExponential );
-DEFINE_RANDON_DISTRIBUTION( ByHist     , RandGeneratorCommonNext  );
+DEFINE_RANDON_DISTRIBUTION(Uniform    , RandGeneratorUniform    );
+DEFINE_RANDON_DISTRIBUTION(Normal     , RandGeneratorNormal     );
+DEFINE_RANDON_DISTRIBUTION(Exponential, RandGeneratorExponential);
+DEFINE_RANDON_DISTRIBUTION(ByHist     , RandGeneratorCommonNext );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

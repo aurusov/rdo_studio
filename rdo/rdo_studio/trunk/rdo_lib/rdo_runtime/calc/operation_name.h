@@ -31,6 +31,7 @@ public:
 private:
 	/**
 	 * @struct OprItem
+	 * @brief  unknown
 	 */
 	struct OprItem
 	{

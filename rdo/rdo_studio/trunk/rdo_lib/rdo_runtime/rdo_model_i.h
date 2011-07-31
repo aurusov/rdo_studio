@@ -23,6 +23,11 @@
 class IModelStructure
 {
 public:
+	/**
+	 * @fn     virtual void writeModelStructure(REF(std::ostream) stream) const
+	 * @brief  Запись структуры модели
+	 * @param  stream выходной поток
+	 */
 	virtual void writeModelStructure(REF(std::ostream) stream) const = 0;
 };
 
@@ -41,6 +46,11 @@ public:
 class IName
 {
 public:
+	/**
+	 * @fn     virtual CREF(tstring) name() const
+	 * @brief  Запрос имени
+	 * @return строка имени
+	 */
 	virtual CREF(tstring) name() const = 0;
 };
 
