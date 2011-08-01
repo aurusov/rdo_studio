@@ -2,12 +2,12 @@
  * @copyright (c) RDO-Team, 2009
  * @file      rdopokaz.cpp
  * @authors   Барс Александр, Урусов Андрей
- * @date      
- * @brief     
+ * @date      29.01.2007
+ * @brief     Собираемые при моделированиии показатели
  * @indent    4T
- */
+ *********************************************************************************/
 
-// =========================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
 // *********************************************************************** INCLUDES
 #include <limits>
@@ -82,6 +82,7 @@ void RDOPMDWatchPar::checkPokaz(CREF(LPRDORuntime) pRuntime)
 	{
 		return;
 	}
+
 	RDOValue newValue = pRuntime->getResParamVal(m_resNumber, m_parNumber);
 	if (newValue != m_currValue)
 	{
@@ -98,6 +99,7 @@ void RDOPMDWatchPar::checkPokaz(CREF(LPRDORuntime) pRuntime)
 		{
 			m_minValue = m_currValue;
 		}
+
 		if (m_maxValue < m_currValue)
 		{
 			m_maxValue = m_currValue;
@@ -337,7 +339,8 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 		average    = m_sum / m_watchNumber;
 		averageSqr = m_sumSqr - 2 * average * m_sum + m_watchNumber * average * average;
 		averageSqr = sqrt(averageSqr / (m_watchNumber - 1));
-		deviation  = averageSqr / sqrt((double)m_watchNumber); // qq а почему корень берем от m_watchNumber ?
+		/// @todo а почему корень берем от m_watchNumber?
+		deviation  = averageSqr / sqrt((double)m_watchNumber);
 	}
 
 	stream.width(30);

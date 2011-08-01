@@ -2,8 +2,8 @@
  * @copyright (c) RDO-Team, 2009
  * @file      rdopokaz.h
  * @authors   Барс Александр, Урусов Андрей
- * @date      
- * @brief     
+ * @date      29.01.2007
+ * @brief     Собираемые при моделированиии показатели
  * @indent    4T
  *********************************************************************************/
 
@@ -24,9 +24,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOPMDPokaz
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPMDPokaz
+ * @brief     unknown
+ *********************************************************************************/
 class RDOPMDPokaz: public RDOPokazTrace, public IName
 {
 QUERY_INTERFACE_BEGIN
@@ -44,9 +45,10 @@ private:
 	tstring m_name;
 };
 
-// ********************************************************************************
-// ******************** RDOPMDWatchPar
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPMDWatchPar
+ * @brief     unknown
+ *********************************************************************************/
 class RDOPMDWatchPar: public RDOPMDPokaz, public IPokaz, public IModelStructure, public INotify
 {
 DEFINE_IFACTORY(RDOPMDWatchPar);
@@ -83,9 +85,10 @@ private:
 	DECLARE_IModelStructure;
 };
 
-// ********************************************************************************
-// ******************** RDOPMDWatchState
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPMDWatchState
+ * @brief     unknown
+ *********************************************************************************/
 class RDOPMDWatchState: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDWatchState);
@@ -117,9 +120,10 @@ private:
 	DECLARE_IModelStructure;
 };
 
-// ********************************************************************************
-// ******************** RDOPMDWatchQuant
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPMDWatchQuant
+ * @brief     unknown
+ *********************************************************************************/
 class RDOPMDWatchQuant: public RDOPMDPokaz, public IPokaz, public IPokazWatchQuant, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDWatchQuant);
@@ -154,9 +158,10 @@ private:
 	DECLARE_IModelStructure;
 };
 
-// ********************************************************************************
-// ******************** RDOPMDWatchValue
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPMDWatchValue
+ * @brief     unknown
+ *********************************************************************************/
 class RDOPMDWatchValue: public RDOPMDPokaz, public IPokaz, public IPokazWatchValue, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDWatchValue);
@@ -189,9 +194,10 @@ private:
 	DECLARE_IModelStructure;
 };
 
-// ********************************************************************************
-// ******************** RDOPMDGetValue
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPMDGetValue
+ * @brief     unknown
+ *********************************************************************************/
 class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IPokazGetValue, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDGetValue);

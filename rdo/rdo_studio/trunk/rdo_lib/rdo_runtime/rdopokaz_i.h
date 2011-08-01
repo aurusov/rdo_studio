@@ -3,7 +3,7 @@
  * @file      rdopokaz_i.h
  * @authors   Урусов Андрей
  * @date      28.07.2009
- * @brief     
+ * @brief     Интерфейсы собираемых показателей
  * @indent    4T
  *********************************************************************************/
 
@@ -17,9 +17,10 @@
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 // ********************************************************************************
 
-// ********************************************************************************
-// ******************** IPokaz
-// ********************************************************************************
+/******************************************************************************//**
+ * @interface IPokaz
+ * @brief     Базовый интерфейс собираемого показателя
+ *********************************************************************************/
 class IPokaz
 {
 public:
@@ -27,25 +28,37 @@ public:
 	virtual void checkPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
 	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
 };
+
+/******************************************************************************//**
+ * @def     DECLARE_IPokaz
+ * @brief   Макрос для декларации методов собираемых показателей
+ *********************************************************************************/
 #define DECLARE_IPokaz                                               \
 	virtual void resetPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
 	virtual void checkPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
 	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream);
 
-// ********************************************************************************
-// ******************** IPokazWatchQuant
-// ********************************************************************************
+/******************************************************************************//**
+ * @interface IPokazWatchQuant
+ * @brief     Интерфейс собираемого показателя WatchQuant
+ *********************************************************************************/
 class IPokazWatchQuant
 {
 public:
 	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc) = 0;
 };
+
+/******************************************************************************//**
+ * @def     DECLARE_IPokazWatchQuant
+ * @brief   unknown
+ *********************************************************************************/
 #define DECLARE_IPokazWatchQuant \
 	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc);
 
-// ********************************************************************************
-// ******************** IPokazWatchValue
-// ********************************************************************************
+/******************************************************************************//**
+ * @interface IPokazWatchValue
+ * @brief     Интерфейс собираемого показателя WatchValue
+ *********************************************************************************/
 class IPokazWatchValue
 {
 public:
@@ -53,19 +66,30 @@ public:
 	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)     pLogicCalc ) = 0;
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc) = 0;
 };
+
+/******************************************************************************//**
+ * @def     DECLARE_IPokazWatchValue
+ * @brief   unknown
+ *********************************************************************************/
 #define DECLARE_IPokazWatchValue                                                   \
 	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ); \
 	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)     pLogicCalc ); \
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc);
 
-// ********************************************************************************
-// ******************** IPokazGetValue
-// ********************************************************************************
+/******************************************************************************//**
+ * @interface IPokazGetValue
+ * @brief     Интерфейс собираемого показателя GetValue
+ *********************************************************************************/
 class IPokazGetValue
 {
 public:
 	virtual CREF(rdoRuntime::RDOValue) getValue() const = 0;
 };
+
+/******************************************************************************//**
+ * @def     DECLARE_IPokazGetValue
+ * @brief   unknown
+ *********************************************************************************/
 #define DECLARE_IPokazGetValue \
 	CREF(rdoRuntime::RDOValue) getValue() const;
 

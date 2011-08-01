@@ -3,9 +3,9 @@
  * @file      rdopokaz_group.cpp
  * @authors   Урусов Андрей
  * @date      04.03.2011
- * @brief     
+ * @brief     Группы собираемых показателей
  * @indent    4T
- */
+ *********************************************************************************/
 
 // **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
@@ -135,6 +135,7 @@ void RDOPMDPokazGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 			tableWrite = true;
 		}
 	}
+
 	if (tableWrite)
 	{
 		m_streamTable << std::endl;
