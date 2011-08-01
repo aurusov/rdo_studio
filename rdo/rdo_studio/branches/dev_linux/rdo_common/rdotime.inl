@@ -1,19 +1,14 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : rdotime.inl
- * author   : Урусов Андрей
+ * author   : Урусов Андрей, Evgeny Proydakov
  * date     : 10.05.2009
  * bref     : 
  * indent   : 4T
  */
 
 // ====================================================================== INCLUDES
-#ifdef RDO_MT
-#include <afxwin.h>
-#else
-#include <windows.h>
-#endif
-#include <time.h>
+#include <boost/date_time/posix_time/posix_time.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdodebug.h"
 // ===============================================================================
@@ -46,24 +41,7 @@ inline tstring Time::asString() const
 	}
 	else
 	{
-	    SYSTEMTIME st;
-		ASSERT(::FileTimeToSystemTime(reinterpret_cast<CPTR(FILETIME)>(&m_value), &st));
-		ruint size;
-		//! Вытащим время
-		const tstring timeFormat(_T("HH:mm:ss"));
-		size = ::GetTimeFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, timeFormat.c_str(), NULL, 0);
-		ASSERT(size != 0);
-		tstring time;
-		time.resize(size);
-		::GetTimeFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, timeFormat.c_str(), &time[0], size);
-		//! Вытащим дату
-		const tstring dateTimeFormat = rdo::format(_T("ddd MMM dd %s yyyy"), time.c_str());
-		size = ::GetDateFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, dateTimeFormat.c_str(), NULL, 0);
-		ASSERT(size != 0);
-		tstring dateTime;
-		dateTime.resize(size);
-		::GetDateFormat(LOCALE_SYSTEM_DEFAULT, LOCALE_USE_CP_ACP, &st, dateTimeFormat.c_str(), &dateTime[0], size);
-		return dateTime;
+		return boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time());
 	}
 }
 
@@ -74,20 +52,16 @@ inline CREF(Time::Value) Time::value() const
 
 inline Time Time::utc()
 {
-    SYSTEMTIME st;
-	::GetSystemTime(&st);
-	Time::Value value; 
-	::SystemTimeToFileTime(&st, reinterpret_cast<PTR(FILETIME)>(&value));
-	return Time(value);
+	boost::posix_time::ptime startTime = boost::posix_time::time_from_string("1970-01-01 00:00:00.000");
+	Time::Value delta = ( boost::posix_time::microsec_clock::universal_time() - startTime ).total_nanoseconds( );
+	return delta;
 }
 
 inline Time Time::local()
 {
-    SYSTEMTIME st;
-	::GetLocalTime(&st);
-	Time::Value value; 
-	::SystemTimeToFileTime(&st, reinterpret_cast<PTR(FILETIME)>(&value));
-	return Time(value);
+	boost::posix_time::ptime startTime = boost::posix_time::time_from_string("1970-01-01 00:00:00.000");
+	Time::Value delta = ( boost::posix_time::microsec_clock::local_time() - startTime ).total_nanoseconds( );
+	return delta;
 }
 
 inline Time Time::invalid()

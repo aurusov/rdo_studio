@@ -60,15 +60,11 @@ BOOST_AUTO_TEST_CASE(test_remove_file)
 
 BOOST_AUTO_TEST_CASE(test_rdo_check_data)
 {
-	// TODO EDIT REGEX
 	rdo::Time timeValue = rdo::Time::local();
 	BOOST_CHECK(timeValue > create_test_local_time);
 	tstring   timeStr   = timeValue.asString();
 
-	//! Какой смысл проверять через regex ? - как бы вы предложили проверить ???
-	boost::regex expression("(.*)");
-	boost::cmatch what; 
-	BOOST_CHECK(boost::regex_match(timeStr.c_str(), what, expression));
+	std::cout << "Today:  " << timeStr << "  is not it??";
 }
 
 BOOST_AUTO_TEST_SUITE_END()
