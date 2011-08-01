@@ -68,7 +68,7 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 	case CT_LAST_FG     : return pFrame->m_colorLastFg;
 	case CT_LAST_BG_TEXT: return pFrame->m_colorLastBgText;
 	case CT_LAST_FG_TEXT: return pFrame->m_colorLastFgText;
-	default                : NEVER_REACH_HERE;
+	default             : NEVER_REACH_HERE;
 	}
 	return rdoAnimation::RDOColor();
 }

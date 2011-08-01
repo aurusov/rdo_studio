@@ -83,6 +83,10 @@ public:
 	{
 	DECLARE_FACTORY(RDOFRMColor)
 	public:
+		/**
+		 * @enum      ColorType
+		 * @brief     Цвет фигуры
+		 */
 		enum ColorType
 		{
 			CT_NONE,
@@ -136,16 +140,17 @@ public:
 	};
 
 public:
+	void          getBitmaps        (REF(ImageNameList) list) const;
+	LPRDOFRMShow  getLastShow       () const;
+	CREF(tstring) name              () const;
+
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	void          setBackPicture    (CREF(tstring)       picFileName);
-	void          setBackPicture    (int width, int height);
-	void          startShow         (CREF(LPRDOCalc) pCalc = NULL);
-	LPRDOFRMShow  getLastShow       () const;
-	void          addItem           (CREF(LPRDOFRMItem)  pItem   );
-	void          addRulet          (CREF(LPRDOFRMRulet) pRulet  );
-	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime);
-	CREF(tstring) name              () const;
-	void          getBitmaps        (REF(ImageNameList) list) const;
+	void          setBackPicture    (int width, int height          );
+	void          startShow         (CREF(LPRDOCalc) pCalc = NULL   );
+	void          addItem           (CREF(LPRDOFRMItem)  pItem      );
+	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
+	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
 	PTR(rdoAnimation::RDOFrame) createFrame(CREF(LPRDORuntime) pRuntime);
 	PTR(rdoAnimation::RDOFrame) prepareFrame(PTR(rdoAnimation::RDOFrame) pFrame, CREF(LPRDORuntime) pRuntime);
@@ -254,10 +259,18 @@ private:
 	LPRDOFRMFrame m_pFrame;
 };
 
+/******************************************************************************//**
+ * @def       DECLARE_RDOFRMIItem
+ * @brief     Декларация метода \a createElement
+ *********************************************************************************/
 #define DECLARE_RDOFRMIItem \
 private:                    \
 	PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
 
+/******************************************************************************//**
+ * @def       RDOFRM_ITEM(A)
+ * @brief     Декларация наследника \a RDOFRMItem
+ *********************************************************************************/
 #define RDOFRM_ITEM(A) \
 PREDECLARE_POINTER(A); \
 CLASS(A): INSTANCE_OF(RDOFRMItem)
@@ -544,12 +557,12 @@ DECLARE_FACTORY(RDOFRMShow)
 public:
 	typedef std::list<LPRDOFRMItem> ItemList;
 
-	void          insertItem (CREF(LPRDOFRMItem) pItem);
-	REF(ItemList) getItemList();
+	rbool         isShowIf      () const;
 
-	rbool        isShowIf      () const;
-	rbool        checkCondition(CREF(LPRDORuntime) pRuntime);
-	virtual void getBitmaps    (REF(RDOFRMFrame::ImageNameList) list);
+	REF(ItemList) getItemList   ();
+	void          insertItem    (CREF(LPRDOFRMItem) pItem            );
+	rbool         checkCondition(CREF(LPRDORuntime) pRuntime         );
+	virtual void  getBitmaps    (REF(RDOFRMFrame::ImageNameList) list);
 
 private:
 	RDOFRMShow(CREF(LPRDOCalc) pConditionCalc);

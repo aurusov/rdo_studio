@@ -228,8 +228,8 @@ inline int RDOFRMBoundingItem::getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LP
 // ******************** RDOFRMColoredItem
 // ********************************************************************************
 inline RDOFRMColoredItem::RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) pBgColor, CREF(RDOFRMFrame::LPRDOFRMColor) pFgColor)
-: m_pBgColor(pBgColor)
-, m_pFgColor(pFgColor)
+	: m_pBgColor(pBgColor)
+	, m_pFgColor(pFgColor)
 {}
 
 inline RDOFRMColoredItem::~RDOFRMColoredItem()
