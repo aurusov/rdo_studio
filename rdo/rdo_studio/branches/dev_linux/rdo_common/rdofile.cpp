@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2010
  * filename : rdofile.cpp
- * author   : Урусов Андрей
+ * author   : Урусов Андрей, Evgeny Proydakov
  * date     : 07.11.2020
  * bref     : 
  * indent   : 4T
@@ -9,8 +9,11 @@
 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
+#ifdef WIN32
 #include <Windows.h>
+#endif
 #include <boost/filesystem.hpp>
+#include <boost/random.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdocommon.h"
@@ -36,6 +39,7 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 
 tstring File::getTempFileName()
 {
+#ifdef WIN32
 	const ruint BUFSIZE = 4096;
 	char lpPathBuffer[BUFSIZE];
 
@@ -43,14 +47,21 @@ tstring File::getTempFileName()
 	{
 		return tstring();
 	}
-
 	char szTempName[MAX_PATH];
 	if (::GetTempFileName(lpPathBuffer, NULL, 0, szTempName) == 0)
 	{
 		return tstring();
 	}
-
 	return szTempName;
+#else
+	boost::random::mt19937 rng;
+	boost::random::uniform_int_distribution<> six(1,32768);
+	int x = six(rng);
+	std::string tempFileName("/tmp/rdo_temp_file_num_");
+	tempFileName.push_back(x);
+	create(tempFileName);
+	return tempFileName;
+#endif
 }
 
 rbool File::trimLeft(CREF(tstring) name)
@@ -64,7 +75,6 @@ rbool File::trimLeft(CREF(tstring) name)
 	{
 		return false;
 	}
-
 	rbool empty = true;
 	while (!fileStream.eof())
 	{
@@ -84,7 +94,6 @@ rbool File::trimLeft(CREF(tstring) name)
 			tempStream.write(&byte, 1);
 		}
 	}
-
 	tempStream.close();
 	fileStream.close();
 
@@ -103,7 +112,6 @@ rbool File::trimLeft(CREF(tstring) name)
 	{
 		return false;
 	}
-
 	return true;
 }
 
