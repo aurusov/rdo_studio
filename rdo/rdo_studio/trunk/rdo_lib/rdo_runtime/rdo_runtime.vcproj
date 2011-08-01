@@ -2054,6 +2054,10 @@
 				RelativePath="rdo_random_distribution.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdo_random_distribution.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".rdo_trace"
