@@ -16,6 +16,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ********************************************************************************
 // ******************** RandGenerator
 // ********************************************************************************
+inline RandGenerator::RandGenerator(long int seed)
+	: m_seed(seed)
+{}
+
 inline RandGenerator::~RandGenerator()
 {}
 
