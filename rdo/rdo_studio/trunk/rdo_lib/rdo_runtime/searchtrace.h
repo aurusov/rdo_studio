@@ -1,8 +1,8 @@
 /******************************************************************************//**
- * @copyright (c) RDO-Team, unknown
+ * @copyright (c) RDO-Team, 2006
  * @file      searchtrace.h
- * @authors   unknown
- * @date      unknown
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
  * @brief     unknown
  * @indent    4T
  *********************************************************************************/

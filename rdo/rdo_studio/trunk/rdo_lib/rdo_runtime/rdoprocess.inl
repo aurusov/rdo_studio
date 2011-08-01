@@ -70,7 +70,7 @@ inline RDOPROCQueue::RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_
 	: RDOPROCBlockForQueue(process, From_Par)
 {}
 
-inline int RDOPROCQueue::getDefaultValue()
+inline ruint RDOPROCQueue::getDefaultValue()
 {
 	return 0;
 }

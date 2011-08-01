@@ -2,7 +2,7 @@
  * @copyright (c) RDO-Team, 2011
  * @file      rdoprocess.h
  * @authors   Урусов Андрей, Лущан Дмитрий, etc.
- * @date      unknown
+ * @date      11.06.2006
  * @brief     Процесснные операторы РДО
  * @indent    4T
  *********************************************************************************/
@@ -193,7 +193,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	static int getDefaultValue();
+	static ruint   getDefaultValue  ();
 	static tstring getQueueParamName();
 
 private:
@@ -214,7 +214,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	static ruint   getDefaultValue();
+	static ruint   getDefaultValue   ();
 	static tstring getDepartParamName();
 
 private:
@@ -258,7 +258,8 @@ protected:
 	RDOPROCBlockForSeize(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par);
 
 	std::vector<runtime_for_Seize> forRes;
-	std::vector<parser_for_Seize> fromParser;
+	std::vector<parser_for_Seize>  fromParser;
+
 	void _onStart(CREF(LPRDORuntime) pRuntime);
 };
 
@@ -320,7 +321,7 @@ protected:
 	struct LeaveTr
 	{
 		LPRDOPROCTransact transact;
-		double           timeLeave;
+		double            timeLeave;
 		LeaveTr(CREF(LPRDOPROCTransact) _transact, double _timeLeave);
 	};
 	std::list<LeaveTr> leave_list;

@@ -1,8 +1,8 @@
 /******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
+ * @copyright (c) RDO-Team, 2006
  * @file      rdo_logic_dptsearch.cpp
  * @author    Урусов Андрей
- * @date      unknown
+ * @date      11.06.2006
  * @brief     unknown
  * @indent    4T
  *********************************************************************************/
@@ -57,7 +57,7 @@ void RDODPTSearchTrace::onSearchResultSuccess(CREF(LPRDORuntime) pRuntime, TreeR
 	{
 		pRuntime->getTracer()->writeSearchResult('S', pRuntime, treeRoot);
 	}
-	calc_res_found_cnt++;
+	++calc_res_found_cnt;
 	calc_mems.push_back(treeRoot->m_sizeof_dpt);
 	pRuntime->memory_insert(treeRoot->m_sizeof_dpt);
 }

@@ -1,8 +1,8 @@
 /******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
+ * @copyright (c) RDO-Team, 2006
  * @file      rdo_logic_dptsearch.h
  * @authors   Урусов Андрей
- * @date      unknown
+ * @date      11.06.2006
  * @brief     unknown
  * @indent    4T
  *********************************************************************************/
@@ -74,6 +74,10 @@ public:
 
 	void ExpandChildren();
 
+	/**
+	 * @class   NodeFoundInfo
+	 * @brief   Оценка найденной вершины
+	 */
 	enum NodeFoundInfo
 	{
 		nfi_notfound     = 0,
@@ -81,7 +85,9 @@ public:
 		nfi_found_loser  = 2
 	};
 
-	NodeFoundInfo CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
+	/// @todo задокументировать функцию
+	// return 0 - no such simulator, 1 - exist better, 2 - exist not better
+	NodeFoundInfo CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** better );
 	void ReCostSubTree(double cost);
 
 protected:

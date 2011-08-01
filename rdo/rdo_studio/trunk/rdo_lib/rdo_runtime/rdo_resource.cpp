@@ -60,12 +60,13 @@ RDOResource::~RDOResource()
 
 rbool RDOResource::operator!= (RDOResource &other)
 {
-	if ( m_type != other.m_type ) return true;
-	if ( m_params.size() != other.m_params.size() ) return true;
+	if (m_type != other.m_type) return true;
+	if (m_params.size() != other.m_params.size()) return true;
 
 	int size = m_params.size();
-	for ( int i = 0; i < size; i++ ) {
-		if ( m_params.at(i) != other.m_params.at(i) ) return true;
+	for (int i = 0; i < size; ++i)
+	{
+		if (m_params.at(i) != other.m_params.at(i)) return true;
 	}
 	return false;
 }
@@ -93,18 +94,21 @@ tstring RDOResource::traceParametersValue()
 #ifdef RDOSIM_COMPATIBLE
 			std::ostringstream _str;
 			_str << *it;
-			tstring::size_type pos = _str.str().find( "e" );
-			if ( pos != tstring::npos ) {
+			tstring::size_type pos = _str.str().find("e");
+			if (pos != tstring::npos)
+			{
 				tstring __str = _str.str();
-				__str.erase( pos + 2, 1 );
+				__str.erase(pos + 2, 1);
 				str << __str.c_str();
-			} else {
+			}
+			else
+			{
 				str << _str.str().c_str();
 			}
 #else
 			str << *it;
 #endif
-			if(++it == end)
+			if (++it == end)
 				break;
 			str << " ";
 		}
@@ -112,24 +116,42 @@ tstring RDOResource::traceParametersValue()
 	return str.str();
 }
 
-tstring RDOResource::traceResourceState( char prefix, CREF(LPRDORuntime) pRuntime )
+tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime)
 {
 	std::ostringstream res;
-	if ( traceable() || (prefix != '\0') ) {
-		if ( m_state == RDOResource::CS_NoChange || m_state == RDOResource::CS_NonExist ) return "";
-		if ( prefix != '\0' ) res << prefix;
-		switch ( m_state ) {
-			case RDOResource::CS_Create: res << "RC "; break;
-			case RDOResource::CS_Erase : res << "RE "
+	if (traceable() || (prefix != '\0'))
+	{
+		if (m_state == RDOResource::CS_NoChange || m_state == RDOResource::CS_NonExist)
+			return "";
+
+		if (prefix != '\0')
+			res << prefix;
+
+		switch (m_state)
+		{
+		case RDOResource::CS_Create:
+			res << "RC ";
+			break;
+		case RDOResource::CS_Erase:
+			res << "RE "
 #ifdef RDOSIM_COMPATIBLE
-				<< pRuntime->getCurrentTime() << " " << traceTypeId() << " " << traceId() << std::endl; return res.str();
+				<< pRuntime->getCurrentTime() << " "
+				<< traceTypeId()              << " "
+				<< traceId()                  << std::endl;
+			return res.str();
 #else
 				;
 #endif
-				break;
-			default                         : res << "RK "; break;
+			break;
+		default:
+			res << "RK ";
+			break;
 		}
-		res << pRuntime->getCurrentTime() << " " << traceTypeId() << " " << traceId() << " " << traceParametersValue() << std::endl;
+
+		res << pRuntime->getCurrentTime() << " "
+			<< traceTypeId()              << " "
+			<< traceId()                  << " "
+			<< traceParametersValue()     << std::endl;
 	}
 	return res.str();
 }

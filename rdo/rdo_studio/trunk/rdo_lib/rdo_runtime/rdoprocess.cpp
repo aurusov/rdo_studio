@@ -2,7 +2,7 @@
  * @copyright (c) RDO-Team, 2011
  * @file      rdoprocess.cpp
  * @authors   Урусов Андрей, Лущан Дмитрий, etc.
- * @date      unknown
+ * @date      11.06.2006
  * @brief     RDOProcess implementation
  * @indent    4T
  *********************************************************************************/
@@ -369,7 +369,7 @@ void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
 		bbb.enum_free = RDOValue(bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree());
 		bbb.enum_buzy = RDOValue(bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy());
 		forRes.push_back(bbb);
-		it1++;
+		++it1;
 	}
 }
 
@@ -429,7 +429,7 @@ void RDOPROCSeize::transactGoIn(RDOPROCTransact* _transact)
 void RDOPROCSeize::transactGoOut(RDOPROCTransact* _transact)
 {
 	int Size_Seizes = forRes.size();
-	for(int i=0;i<Size_Seizes; i++)
+	for(int i = 0; i < Size_Seizes; ++i)
 	{
 		forRes[i].rss->transacts.remove(_transact);
 	}
@@ -470,10 +470,10 @@ rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 					RDOTrace* tracer = pRuntime->getTracer();
 					TRACE3(_T("%7.1f RELEASES-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 					forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_free);
-						if (!tracer->isNull())
-						{
-							tracer->getOStream() << forRes[i].rss->traceResourceState('\0', pRuntime) << tracer->getEOL();
-						}				
+					if (!tracer->isNull())
+					{
+						tracer->getOStream() << forRes[i].rss->traceResourceState('\0', pRuntime) << tracer->getEOL();
+					}				
 					return true;
 				}		
 				// Не Занят и не свободен

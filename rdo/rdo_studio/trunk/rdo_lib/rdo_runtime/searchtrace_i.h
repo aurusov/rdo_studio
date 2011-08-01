@@ -22,6 +22,10 @@
 class IDPTSearchTraceStatistics
 {
 public:
+	/**
+	 * @enum      Type
+	 * @brief     unknown
+	 */
 	enum Type
 	{
 		ST_TIMES,
