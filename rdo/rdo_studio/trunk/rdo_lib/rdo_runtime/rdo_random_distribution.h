@@ -112,7 +112,7 @@ class RandGeneratorByHistReal: public RandGeneratorByHist
 {
 public:
 	RandGeneratorByHistReal(long int seed = 123456789);
-	void addValues(double from, double to, double freq)
+	void addValues(double from, double to, double freq);
 
 private:
 	std::vector< double > m_from;
