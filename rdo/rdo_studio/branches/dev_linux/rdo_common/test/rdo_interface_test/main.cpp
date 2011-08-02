@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : main.cpp
  * author   : Урусов Андрей, Evgeny Proydakov
  * date     : 07.07.2009
@@ -13,7 +13,7 @@
 #include <list>
 #include <string>
 #include <iostream>
-#define BOOST_TEST_MODULE test_rdo_interface
+#define BOOST_TEST_MODULE RdoInterfaceTest
 #include <boost/test/included/unit_test.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdointerface.h"
@@ -21,42 +21,40 @@
 
 #define DISABLE_CONSOLE_OUTPUT
 
-using namespace std;
+const tstring void_fun_1       = "void fun1():  ";
+const tstring void_fun_2       = "void fun2():  ";
+const tstring void_fun_3       = "void fun3():  ";
+const tstring create_myclass1  = "MyClass1():";
+const tstring destroy_myclass1 = "~MyClass1():";
+const tstring create_myclass2  = "MyClass2():";
+const tstring destroy_myclass2 = "~MyClass2():";
+const tstring create_myclass3  = "MyClass3():";
+const tstring destroy_myclass3 = "~MyClass3():";
 
-const string void_fun_1 = "void fun1():  ";
-const string void_fun_2 = "void fun2():  ";
-const string void_fun_3 = "void fun3():  ";
-const string create_myclass1 = "MyClass1():";
-const string destroy_myclass1 = "~MyClass1():";
-const string create_myclass2 = "MyClass2():";
-const string destroy_myclass2 = "~MyClass2():";
-const string create_myclass3 = "MyClass3():";
-const string destroy_myclass3 = "~MyClass3():";
-
-list<string> logList;
+std::list<tstring> logList;
 
 class IMy1
 {
 public:
-	virtual string fun1() = 0;
+	virtual tstring fun1() = 0;
 };
 
 class IMy2
 {
 public:
-	virtual string fun2() = 0;
+	virtual tstring fun2() = 0;
 };
 
 class IMy3
 {
 public:
-	virtual string fun3() = 0;
+	virtual tstring fun3() = 0;
 };
 
 class IMy4
 {
 public:
-	virtual string fun4() = 0;
+	virtual tstring fun4() = 0;
 };
 
 INTERFACE_REGISTRATOR(IMy1, 1);
@@ -97,14 +95,14 @@ protected:
 	char m_i;
 
 private:
-	string fun1()
+	tstring fun1()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << void_fun_1 << m_i << std::endl;
 #endif
 		return void_fun_1 + m_i;
 	}
-	string fun2()
+	tstring fun2()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << void_fun_2 << m_i << std::endl;
@@ -136,7 +134,7 @@ private:
 #endif
 		logList.push_back(destroy_myclass2);
 	}
-	string fun3()
+	tstring fun3()
 	{
 		ASSERT(this);
 		LPIMy1 int1 = this;
@@ -177,7 +175,7 @@ protected:
 	char m_i;
 
 private:
-	string fun3()
+	tstring fun3()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << void_fun_3 << m_i << std::endl;
@@ -189,7 +187,7 @@ private:
 typedef rdo::Interface<IMy3>     MyInterface;
 typedef std::vector<MyInterface> MyInterfaceList;
 
-BOOST_AUTO_TEST_SUITE(test_rdo_interface)
+BOOST_AUTO_TEST_SUITE(RdoInterfaceTest)
 
 BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
 {
@@ -197,7 +195,7 @@ BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initValue);
 	BOOST_REQUIRE(smptr);
 
-	list<string>::iterator it = logList.begin();
+	std::list<tstring>::iterator it = logList.begin();
 	BOOST_CHECK_EQUAL(*it, create_myclass1 + initValue);
 	BOOST_CHECK_EQUAL(*(++it), create_myclass2 + initValue);
 	logList.clear();
@@ -231,7 +229,7 @@ BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
 
 BOOST_AUTO_TEST_CASE(validation_failure_in_the_previous_test_1)
 {
-	list<string>::iterator it = logList.begin();
+	std::list<tstring>::iterator it = logList.begin();
 	BOOST_CHECK_EQUAL(*it, destroy_myclass2);
 	++it;
 	BOOST_CHECK_EQUAL(*it, destroy_myclass1);
@@ -246,7 +244,7 @@ BOOST_AUTO_TEST_CASE(test_rdo_interface_working)
 {
 	char initFValue = '2';
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initFValue);
-	list<string>::iterator iter = logList.begin();
+	std::list<tstring>::iterator iter = logList.begin();
 	BOOST_CHECK_EQUAL(*iter, create_myclass1 + initFValue);
 	BOOST_CHECK_EQUAL(*(++iter), create_myclass2 + initFValue);
 	logList.clear();
@@ -294,7 +292,7 @@ BOOST_AUTO_TEST_CASE(test_rdo_interface_working)
 
 BOOST_AUTO_TEST_CASE(validation_failure_in_the_previous_test_2)
 {
-	list<string>::iterator it = logList.begin();
+	std::list<tstring>::iterator it = logList.begin();
 	BOOST_CHECK_EQUAL(*it, destroy_myclass3);
 	++it;
 	BOOST_CHECK_EQUAL(*it, destroy_myclass2);
