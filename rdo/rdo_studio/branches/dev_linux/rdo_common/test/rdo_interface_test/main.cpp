@@ -11,7 +11,6 @@
 // ====================================================================== INCLUDES
 #include <vector>
 #include <list>
-#include <string>
 #include <iostream>
 #define BOOST_TEST_MODULE RdoInterfaceTest
 #include <boost/test/included/unit_test.hpp>
@@ -21,17 +20,18 @@
 
 #define DISABLE_CONSOLE_OUTPUT
 
-const tstring void_fun_1       = "void fun1():  ";
-const tstring void_fun_2       = "void fun2():  ";
-const tstring void_fun_3       = "void fun3():  ";
-const tstring create_myclass1  = "MyClass1():";
-const tstring destroy_myclass1 = "~MyClass1():";
-const tstring create_myclass2  = "MyClass2():";
-const tstring destroy_myclass2 = "~MyClass2():";
-const tstring create_myclass3  = "MyClass3():";
-const tstring destroy_myclass3 = "~MyClass3():";
+const tstring strIMy1            = _T("void fun1():  ");
+const tstring strIMy2            = _T("void fun2():  ");
+const tstring strIMy3            = _T("void fun3():  ");
+const tstring strMyClass1Create  = _T("MyClass1():");
+const tstring strMyClass1Destroy = _T("~MyClass1():");
+const tstring strMyClass2Create  = _T("MyClass2():");
+const tstring strMyClass2Destroy = _T("~MyClass2():");
+const tstring strMyClass3Create  = _T("MyClass3():");
+const tstring strMyClass3Destroy = _T("~MyClass3():");
 
-std::list<tstring> logList;
+typedef std::list<tstring> LogList;
+LogList logList;
 
 class IMy1
 {
@@ -64,27 +64,27 @@ INTERFACE_REGISTRATOR(IMy4, 4);
 
 class MyClass1: public rdo::IGetUnknown, public IMy1, public IMy2, public IInit
 {
-	QUERY_INTERFACE_BEGIN
-		QUERY_INTERFACE(IMy1)
-		QUERY_INTERFACE(IMy2)
-		QUERY_INTERFACE(IInit)
-		QUERY_INTERFACE_END
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IMy1)
+	QUERY_INTERFACE(IMy2)
+	QUERY_INTERFACE(IInit)
+QUERY_INTERFACE_END
 
 protected:
 	MyClass1(char i)
 		: m_i(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << create_myclass1 << i << std::endl;
+		std::cout << strMyClass1Create << i << std::endl;
 #endif
-		logList.push_back(create_myclass1 + i);
+		logList.push_back(strMyClass1Create + i);
 	}
 	~MyClass1()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << destroy_myclass1 << m_i << std::endl;
+		std::cout << strMyClass1Destroy << m_i << std::endl;
 #endif
-		logList.push_back(destroy_myclass1);
+		logList.push_back(strMyClass1Destroy);
 	}
 	rbool init()
 	{
@@ -98,41 +98,41 @@ private:
 	tstring fun1()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << void_fun_1 << m_i << std::endl;
+		std::cout << strIMy1 << m_i << std::endl;
 #endif
-		return void_fun_1 + m_i;
+		return strIMy1 + m_i;
 	}
 	tstring fun2()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << void_fun_2 << m_i << std::endl;
+		std::cout << strIMy2 << m_i << std::endl;
 #endif
-		return void_fun_2 + m_i;
+		return strIMy2 + m_i;
 	}
 };
 
 class MyClass2: public MyClass1, public IMy3
 {
-	DEFINE_IFACTORY(MyClass2);
-	QUERY_INTERFACE_BEGIN
-		QUERY_INTERFACE_PARENT(MyClass1)
-		QUERY_INTERFACE(IMy3)
-		QUERY_INTERFACE_END
+DEFINE_IFACTORY(MyClass2);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE_PARENT(MyClass1)
+	QUERY_INTERFACE(IMy3)
+QUERY_INTERFACE_END
 
 private:
 	MyClass2(char i): MyClass1(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << create_myclass2 << i << std::endl;
+		std::cout << strMyClass2Create << i << std::endl;
 #endif
-		logList.push_back(create_myclass2 + i);
+		logList.push_back(strMyClass2Create + i);
 	}
 	~MyClass2()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << destroy_myclass2 << m_i << std::endl;
+		std::cout << strMyClass2Destroy << m_i << std::endl;
 #endif
-		logList.push_back(destroy_myclass2);
+		logList.push_back(strMyClass2Destroy);
 	}
 	tstring fun3()
 	{
@@ -141,34 +141,34 @@ private:
 		ASSERT(int1)
 
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << void_fun_3 << m_i << std::endl;
+		std::cout << strIMy3 << m_i << std::endl;
 #endif
-		return void_fun_3 + m_i;
+		return strIMy3 + m_i;
 	}
 };
 
 class MyClass3: public IMy3, public rdo::IGetUnknown
 {
-	DEFINE_IFACTORY(MyClass3);
-	QUERY_INTERFACE_BEGIN
-		QUERY_INTERFACE(IMy3)
-		QUERY_INTERFACE_END
+DEFINE_IFACTORY(MyClass3);
+QUERY_INTERFACE_BEGIN
+	QUERY_INTERFACE(IMy3)
+QUERY_INTERFACE_END
 
 protected:
 	MyClass3(char i)
 		: m_i(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << create_myclass3 << i << std::endl;
+		std::cout << strMyClass3Create << i << std::endl;
 #endif
-		logList.push_back(create_myclass3 + i);
+		logList.push_back(strMyClass3Create + i);
 	}
 	~MyClass3()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << destroy_myclass3 << m_i << std::endl;
+		std::cout << strMyClass3Destroy << m_i << std::endl;
 #endif
-		logList.push_back(destroy_myclass3);
+		logList.push_back(strMyClass3Destroy);
 	}
 
 protected:
@@ -178,9 +178,9 @@ private:
 	tstring fun3()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
-		std::cout << void_fun_3 << m_i << std::endl;
+		std::cout << strIMy3 << m_i << std::endl;
 #endif
-		return void_fun_3 + m_i;
+		return strIMy3 + m_i;
 	}
 };
 
@@ -191,27 +191,27 @@ BOOST_AUTO_TEST_SUITE(RdoInterfaceTest)
 
 BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
 {
-	char initValue = '2';
+	char initValue = _T('2');
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initValue);
 	BOOST_REQUIRE(smptr);
 
-	std::list<tstring>::iterator it = logList.begin();
-	BOOST_CHECK_EQUAL(*it, create_myclass1 + initValue);
-	BOOST_CHECK_EQUAL(*(++it), create_myclass2 + initValue);
+	LogList::iterator it = logList.begin();
+	BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initValue);
+	BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initValue);
 	logList.clear();
 
-	BOOST_CHECK_EQUAL(smptr.query_cast<IMy1>()->fun1(), void_fun_1 + initValue);
-	BOOST_CHECK_EQUAL(smptr.query_cast<IMy3>()->fun3(), void_fun_3 + initValue);
+	BOOST_CHECK_EQUAL(smptr.query_cast<IMy1>()->fun1(), strIMy1 + initValue);
+	BOOST_CHECK_EQUAL(smptr.query_cast<IMy3>()->fun3(), strIMy3 + initValue);
 
 	MyInterface imy3 = smptr;
 
-	initValue = '7';
+	initValue = _T('7');
 
 	rdo::UnknownPointer smptr2;
 	smptr2 = F(MyClass2)::create(initValue);
 	it = logList.begin();
-	BOOST_CHECK_EQUAL(*it, create_myclass1 + initValue);
-	BOOST_CHECK_EQUAL(*(++it), create_myclass2 + initValue);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Create + initValue);
+	BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initValue);
 	logList.clear();
 
 	rdo::UnknownPointer smptr2_2 = smptr2;
@@ -229,62 +229,65 @@ BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
 
 BOOST_AUTO_TEST_CASE(validation_failure_in_the_previous_test_1)
 {
-	std::list<tstring>::iterator it = logList.begin();
-	BOOST_CHECK_EQUAL(*it, destroy_myclass2);
+	LogList::iterator it = logList.begin();
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
 	++it;
-	BOOST_CHECK_EQUAL(*it, destroy_myclass1);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
 	++it;
-	BOOST_CHECK_EQUAL(*it, destroy_myclass2);
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
 	++it;
-	BOOST_CHECK_EQUAL(*it, destroy_myclass1);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
 	logList.clear();
 }
 
 BOOST_AUTO_TEST_CASE(test_rdo_interface_working)
 {
-	char initFValue = '2';
+	char initFValue = _T('2');
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initFValue);
-	std::list<tstring>::iterator iter = logList.begin();
-	BOOST_CHECK_EQUAL(*iter, create_myclass1 + initFValue);
-	BOOST_CHECK_EQUAL(*(++iter), create_myclass2 + initFValue);
+	LogList::iterator iter = logList.begin();
+	BOOST_CHECK_EQUAL(*iter, strMyClass1Create + initFValue);
+	BOOST_CHECK_EQUAL(*(++iter), strMyClass2Create + initFValue);
 	logList.clear();
 
-	char initSValue = '5';
+	char initSValue = _T('5');
 	rdo::UnknownPointer smptr2 = F(MyClass2)::create(initSValue);
 	iter = logList.begin();
-	BOOST_CHECK_EQUAL(*iter, create_myclass1 + initSValue);
-	BOOST_CHECK_EQUAL(*(++iter), create_myclass2 + initSValue);
+	BOOST_CHECK_EQUAL(*iter, strMyClass1Create + initSValue);
+	BOOST_CHECK_EQUAL(*(++iter), strMyClass2Create + initSValue);
 	logList.clear();
 
 	MyInterfaceList myList;
 
-	char initTValue = '9';
+	char initTValue = _T('9');
 	myList.push_back(F(MyClass3)::create(initTValue));
 	myList.push_back(smptr);
 	myList.push_back(smptr2);
 	
-	char symbolT = '0';
+	char symbolT = _T('0');
 
 	MyInterfaceList::const_iterator endIt = myList.end();
-	for(MyInterfaceList::iterator it = myList.begin(); it != endIt; ++it)
+	for (MyInterfaceList::iterator it = myList.begin(); it != endIt; ++it)
 	{
 		rdo::Interface<IMy1> ptr1;
 		ptr1 = *it;
-		if (ptr1) {
+		if (ptr1)
+		{
 			symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
-			BOOST_CHECK_EQUAL(ptr1->fun1(), void_fun_1 + symbolT);
+			BOOST_CHECK_EQUAL(ptr1->fun1(), strIMy1 + symbolT);
 		}
 
 		rdo::Interface<IMy2> ptr2 = *it;
-		if (ptr2) {
+		if (ptr2)
+		{
 			symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
-			BOOST_CHECK_EQUAL(ptr2->fun2(), void_fun_2 + symbolT);
+			BOOST_CHECK_EQUAL(ptr2->fun2(), strIMy2 + symbolT);
 		}
 
 		rdo::Interface<IMy3> ptr3 = *it;
-		if (ptr3) {
+		if (ptr3)
+		{
 			symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
-			BOOST_CHECK_EQUAL(ptr3->fun3(), void_fun_3 + symbolT);
+			BOOST_CHECK_EQUAL(ptr3->fun3(), strIMy3 + symbolT);
 		}
 	}
 	logList.clear();
@@ -292,16 +295,16 @@ BOOST_AUTO_TEST_CASE(test_rdo_interface_working)
 
 BOOST_AUTO_TEST_CASE(validation_failure_in_the_previous_test_2)
 {
-	std::list<tstring>::iterator it = logList.begin();
-	BOOST_CHECK_EQUAL(*it, destroy_myclass3);
+	LogList::iterator it = logList.begin();
+	BOOST_CHECK_EQUAL(*it, strMyClass3Destroy);
 	++it;
-	BOOST_CHECK_EQUAL(*it, destroy_myclass2);
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
 	++it;
-	BOOST_CHECK_EQUAL(*it, destroy_myclass1);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
 	++it;
-	BOOST_CHECK_EQUAL(*it, destroy_myclass2);
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
 	++it;
-	BOOST_CHECK_EQUAL(*it, destroy_myclass1);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
 	logList.clear();
 }
 
