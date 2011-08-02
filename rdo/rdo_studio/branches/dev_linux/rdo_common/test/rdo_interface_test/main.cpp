@@ -257,16 +257,16 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest_Working)
 	BOOST_CHECK_EQUAL(*(++iter), strMyClass2Create + initSValue);
 	s_logList.clear();
 
-	MyInterfaceList myList;
+	MyInterfaceList myInterfaceList;
 
 	char initTValue = _T('9');
-	myList.push_back(F(MyClass3)::create(initTValue));
-	myList.push_back(smptr );
-	myList.push_back(smptr2);
+	myInterfaceList.push_back(F(MyClass3)::create(initTValue));
+	myInterfaceList.push_back(smptr );
+	myInterfaceList.push_back(smptr2);
 	
 	char symbolT = _T('0');
 
-	STL_FOR_ALL_CONST(myList, it)
+	STL_FOR_ALL_CONST(myInterfaceList, it)
 	{
 		rdo::Interface<IMy1> ptr1;
 		ptr1 = *it;
