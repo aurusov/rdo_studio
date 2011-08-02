@@ -10,7 +10,7 @@
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
 #include <boost/regex.hpp>
-#define BOOST_TEST_MODULE rdoCommonTest
+#define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
@@ -19,48 +19,48 @@
 #include "rdo_common/test/rdo_common_test/resource.h"
 // ===============================================================================
 
-const tstring testFileName(_T("test_file"));
-const tstring resourceStr1(_T("test_101"));
-const tstring resourceStr2(_T("test_102 22"));
-const tstring resourceStr3(_T("test_103 test_101 33 test_102 22"));
-const ruint64 createTestLocalTime = 129557633912040000;
+const tstring s_testFileName(_T("test_file"));
+const tstring s_resourceStr1(_T("test_101"));
+const tstring s_resourceStr2(_T("test_102 22"));
+const tstring s_resourceStr3(_T("test_103 test_101 33 test_102 22"));
+const ruint64 s_createTestLocalTime = 129557633912040000;
 
-BOOST_AUTO_TEST_SUITE(rdoCommonTest)
+BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 
-BOOST_AUTO_TEST_CASE(rdoCommonTest_ResourceFormat)
+BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
 {
 	tstring str1 = rdo::format(IDS_STRING101);
-	BOOST_CHECK(str1 == resourceStr1);
+	BOOST_CHECK(str1 == s_resourceStr1);
 	tstring str2 = rdo::format(IDS_STRING102, 22);
-	BOOST_CHECK(str2 == resourceStr2);
+	BOOST_CHECK(str2 == s_resourceStr2);
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
-	BOOST_CHECK(str3 == resourceStr3);
+	BOOST_CHECK(str3 == s_resourceStr3);
 }
 
-BOOST_AUTO_TEST_CASE(rdoCommonTest_File_Create)
+BOOST_AUTO_TEST_CASE(RDOCommon_FileCreate)
 {
-	BOOST_CHECK(rdo::File::create(testFileName));
+	BOOST_CHECK(rdo::File::create(s_testFileName));
 }
 
-BOOST_AUTO_TEST_CASE(rdoCommonTest_File_Exist)
+BOOST_AUTO_TEST_CASE(RDOCommon_FileExist)
 {
-	BOOST_CHECK(rdo::File::exist(testFileName));
+	BOOST_CHECK(rdo::File::exist(s_testFileName));
 }
 
-BOOST_AUTO_TEST_CASE(rdoCommonTest_File_ReadOnly)
+BOOST_AUTO_TEST_CASE(RDOCommon_FileReadOnly)
 {
-	BOOST_CHECK(!rdo::File::read_only(testFileName));
+	BOOST_CHECK(!rdo::File::read_only(s_testFileName));
 }
 
-BOOST_AUTO_TEST_CASE(rdoCommonTest_File_Remove)
+BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 {
-	BOOST_CHECK(rdo::File::unlink(testFileName));
+	BOOST_CHECK(rdo::File::unlink(s_testFileName));
 }
 
-BOOST_AUTO_TEST_CASE(rdoCommonTest_Time)
+BOOST_AUTO_TEST_CASE(RDOCommon_Time)
 {
 	rdo::Time timeValue = rdo::Time::local();
-	BOOST_CHECK(timeValue > createTestLocalTime);
+	BOOST_CHECK(timeValue > s_createTestLocalTime);
 	std::cout << _T("Today:  ") << timeValue.asString() << _T("  is not it?");
 }
 
