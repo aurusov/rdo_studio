@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_SUITE(RdoInterfaceTest)
 
 BOOST_AUTO_TEST_CASE(RdoInterfaceTest_CheckingOnTheSameOperator)
 {
-	char initValue = _T('2');
+	char initValue = _T('1');
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initValue);
 	BOOST_REQUIRE(smptr);
 
@@ -204,14 +204,12 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest_CheckingOnTheSameOperator)
 	BOOST_CHECK_EQUAL(smptr.query_cast<IMy1>()->fun1(), strIMy1 + initValue);
 	BOOST_CHECK_EQUAL(smptr.query_cast<IMy3>()->fun3(), strIMy3 + initValue);
 
-	MyInterface imy3 = smptr;
-
-	initValue = _T('7');
-
+	initValue = _T('2');
+	MyInterface         imy3 = smptr;
 	rdo::UnknownPointer smptr2;
 	smptr2 = F(MyClass2)::create(initValue);
 	it = s_logList.begin();
-	BOOST_CHECK_EQUAL(*it, strMyClass1Create + initValue);
+	BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initValue);
 	BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initValue);
 	s_logList.clear();
 
