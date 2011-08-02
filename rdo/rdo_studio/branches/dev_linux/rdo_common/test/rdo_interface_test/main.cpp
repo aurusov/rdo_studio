@@ -23,12 +23,12 @@
 const tstring strIMy1            = _T("void fun1():  ");
 const tstring strIMy2            = _T("void fun2():  ");
 const tstring strIMy3            = _T("void fun3():  ");
-const tstring strMyClass1Create  = _T("MyClass1():");
-const tstring strMyClass1Destroy = _T("~MyClass1():");
-const tstring strMyClass2Create  = _T("MyClass2():");
-const tstring strMyClass2Destroy = _T("~MyClass2():");
-const tstring strMyClass3Create  = _T("MyClass3():");
-const tstring strMyClass3Destroy = _T("~MyClass3():");
+const tstring strMyClass1Create  = _T("MyClass1():"   );
+const tstring strMyClass1Destroy = _T("~MyClass1():"  );
+const tstring strMyClass2Create  = _T("MyClass2():"   );
+const tstring strMyClass2Destroy = _T("~MyClass2():"  );
+const tstring strMyClass3Create  = _T("MyClass3():"   );
+const tstring strMyClass3Destroy = _T("~MyClass3():"  );
 
 typedef std::list<tstring> LogList;
 LogList logList;
@@ -120,7 +120,8 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	MyClass2(char i): MyClass1(i)
+	MyClass2(char i)
+		: MyClass1(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strMyClass2Create << i << std::endl;
@@ -189,7 +190,7 @@ typedef std::vector<MyInterface> MyInterfaceList;
 
 BOOST_AUTO_TEST_SUITE(RdoInterfaceTest)
 
-BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
+BOOST_AUTO_TEST_CASE(RdoInterfaceTest_CheckingOnTheSameOperator)
 {
 	char initValue = _T('2');
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initValue);
@@ -227,7 +228,7 @@ BOOST_AUTO_TEST_CASE(checking_on_the_same_operator)
 	BOOST_CHECK(int1_1 == int1_2);
 }
 
-BOOST_AUTO_TEST_CASE(validation_failure_in_the_previous_test_1)
+BOOST_AUTO_TEST_CASE(RdoInterfaceTest_ValidationFailureInThePreviousTest1)
 {
 	LogList::iterator it = logList.begin();
 	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
@@ -240,7 +241,7 @@ BOOST_AUTO_TEST_CASE(validation_failure_in_the_previous_test_1)
 	logList.clear();
 }
 
-BOOST_AUTO_TEST_CASE(test_rdo_interface_working)
+BOOST_AUTO_TEST_CASE(RdoInterfaceTest_Working)
 {
 	char initFValue = _T('2');
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initFValue);
@@ -260,13 +261,12 @@ BOOST_AUTO_TEST_CASE(test_rdo_interface_working)
 
 	char initTValue = _T('9');
 	myList.push_back(F(MyClass3)::create(initTValue));
-	myList.push_back(smptr);
+	myList.push_back(smptr );
 	myList.push_back(smptr2);
 	
 	char symbolT = _T('0');
 
-	MyInterfaceList::const_iterator endIt = myList.end();
-	for (MyInterfaceList::iterator it = myList.begin(); it != endIt; ++it)
+	STL_FOR_ALL_CONST(myList, it)
 	{
 		rdo::Interface<IMy1> ptr1;
 		ptr1 = *it;
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(test_rdo_interface_working)
 	logList.clear();
 }
 
-BOOST_AUTO_TEST_CASE(validation_failure_in_the_previous_test_2)
+BOOST_AUTO_TEST_CASE(RdoInterfaceTest_ValidationFailureInThePreviousTest2)
 {
 	LogList::iterator it = logList.begin();
 	BOOST_CHECK_EQUAL(*it, strMyClass3Destroy);
