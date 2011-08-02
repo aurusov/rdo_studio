@@ -84,7 +84,7 @@ protected:
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strMyClass1Destroy << m_i << std::endl;
 #endif
-		s_logList.push_back(strMyClass1Destroy);
+		s_logList.push_back(strMyClass1Destroy + m_i);
 	}
 	rbool init()
 	{
@@ -133,7 +133,7 @@ private:
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strMyClass2Destroy << m_i << std::endl;
 #endif
-		s_logList.push_back(strMyClass2Destroy);
+		s_logList.push_back(strMyClass2Destroy + m_i);
 	}
 	tstring fun3()
 	{
@@ -169,7 +169,7 @@ protected:
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strMyClass3Destroy << m_i << std::endl;
 #endif
-		s_logList.push_back(strMyClass3Destroy);
+		s_logList.push_back(strMyClass3Destroy + m_i);
 	}
 
 protected:
@@ -214,41 +214,39 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest_CheckingOnTheSameOperator)
 	s_logList.clear();
 
 	rdo::UnknownPointer smptr2_2 = smptr2;
-	//BOOST_CHECK(smptr2_2 == smptr);
-	//BOOST_CHECK_EQUAL(smptr2_2, smptr);
+	BOOST_CHECK(!(smptr2_2 == smptr));
 	BOOST_CHECK(smptr2_2 == smptr2);
 
 	rdo::Interface<IMy1> int1_1 = smptr;
 	rdo::Interface<IMy1> int2_1 = smptr2;
 	rdo::Interface<IMy1> int1_2 = smptr;
-	//BOOST_CHECK(int1_1 == int2_1);
-	//BOOST_CHECK_EQUAL(int1_1, int2_1);
+	BOOST_CHECK(!(int1_1 == int2_1));
 	BOOST_CHECK(int1_1 == int1_2);
 }
 
 BOOST_AUTO_TEST_CASE(RdoInterfaceTest_ValidationFailureInThePreviousTest1)
 {
 	LogList::iterator it = s_logList.begin();
-	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy + _T('2'));
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy + _T('2'));
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy + _T('1'));
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy + _T('1'));
 	s_logList.clear();
 }
 
 BOOST_AUTO_TEST_CASE(RdoInterfaceTest_Working)
 {
-	char initFValue = _T('2');
+	char initFValue = _T('1');
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initFValue);
 	LogList::iterator iter = s_logList.begin();
 	BOOST_CHECK_EQUAL(*iter, strMyClass1Create + initFValue);
 	BOOST_CHECK_EQUAL(*(++iter), strMyClass2Create + initFValue);
 	s_logList.clear();
 
-	char initSValue = _T('5');
+	char initSValue = _T('2');
 	rdo::UnknownPointer smptr2 = F(MyClass2)::create(initSValue);
 	iter = s_logList.begin();
 	BOOST_CHECK_EQUAL(*iter, strMyClass1Create + initSValue);
@@ -257,7 +255,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest_Working)
 
 	MyInterfaceList myInterfaceList;
 
-	char initTValue = _T('9');
+	char initTValue = _T('3');
 	myInterfaceList.push_back(F(MyClass3)::create(initTValue));
 	myInterfaceList.push_back(smptr );
 	myInterfaceList.push_back(smptr2);
@@ -294,15 +292,15 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest_Working)
 BOOST_AUTO_TEST_CASE(RdoInterfaceTest_ValidationFailureInThePreviousTest2)
 {
 	LogList::iterator it = s_logList.begin();
-	BOOST_CHECK_EQUAL(*it, strMyClass3Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass3Destroy + _T('3'));
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy + _T('2'));
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy + _T('2'));
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy + _T('1'));
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy);
+	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy + _T('1'));
 	s_logList.clear();
 }
 
