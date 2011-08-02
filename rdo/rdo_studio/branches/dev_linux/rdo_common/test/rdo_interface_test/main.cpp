@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest_CheckingOnTheSameOperator)
 	rdo::UnknownPointer smptr = F(MyClass2)::create(initValue);
 	BOOST_REQUIRE(smptr);
 
-	LogList::iterator it = s_logList.begin();
+	LogList::const_iterator it = s_logList.begin();
 	BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initValue);
 	BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initValue);
 	s_logList.clear();
