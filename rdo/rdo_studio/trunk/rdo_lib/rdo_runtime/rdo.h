@@ -1,5 +1,5 @@
 /******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
+ * @copyright (c) RDO-Team, 2006
  * @file      rdo.h
  * @authors   Урусов Андрей
  * @date      11.06.2006
@@ -37,6 +37,10 @@ public:
 	/**
 	 * @enum  BOResult
 	 * @brief Статуc состояния операции
+	 * @var   BOR_cant_run        операция не может быть запущена
+	 * @var   BOR_planned_and_run операция запланирована и выполняется
+	 * @var   BOR_must_continue   операция может быть продолжена
+	 * @var   BOR_done            операция выполнена
 	 */
 	enum BOResult
 	{
@@ -46,25 +50,57 @@ public:
 		BOR_done
 	};
 
-	// Вызывается перед стартом прогона и перед возобновление операции
-	// Например, условие DPT-some поменялось с false на true
-	// Используется для GENERATE, чтобы задать время прихода первого клиента
+	/**
+	 * @fn      virtual void onStart(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	 * @brief   Запуск
+	 * @details Вызывается перед стартом прогона и перед возобновление операции
+	 * Например, условие DPT-some поменялось с false на true
+	 * Используется для GENERATE, чтобы задать время прихода первого клиента
+	 * @param   pRuntime константная ссылка на указатель на Рантайм
+	 */
 	virtual void onStart(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	// Вызывается при остановке операции, например, условие DPT-some поменялось с true на false
+	/**
+	 * @fn      virtual void onStop(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	 * @brief   Остановка
+	 * @details Вызывается при остановке операции, например, условие DPT-some поменялось с true на false
+	 * @param   pRuntime константная ссылка на указатель на Рантайм
+	 */
 	virtual void onStop(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	// Вызывается для проверки выполнимости операции
+	/**
+	 * @fn      virtual rbool onCheckCondition(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	 * @brief   Проверка
+	 * @details Вызывается для проверки выполнимости операции
+	 * @param   pRuntime константная ссылка на указатель на Рантайм
+	 */
 	virtual rbool onCheckCondition(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	// Вызывается для выполнения правил/операций
+	/**
+	 * @fn      virtual BOResult onDoOperation(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	 * @brief   Выполнение
+	 * @details Вызывается для выполнения правил/операций
+	 * @return  BOResult результат выполнения операции
+	 * @param   pRuntime константная ссылка на указатель на Рантайм
+	 */
 	virtual BOResult onDoOperation(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	// Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
-	// Может не использоваться, например, для rule
+	/**
+	 * @fn      virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param)
+	 * @brief   Планирование
+	 * @details Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
+	 * Может не использоваться, например, для rule
+	 * @param   pRuntime константная ссылка на указатель на Рантайм
+	 */
 	virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param) = 0;
 
-	// Вызывается для продолжения долгой операции, например, DPT search
+	/**
+	 * @fn      virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	 * @brief   Продолжение
+	 * @details Вызывается для продолжения долгой операции, например, DPT search
+	 * @return  BOResult результат выполнения операции
+	 * @param   pRuntime константная ссылка на указатель на Рантайм
+	 */
 	virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 
@@ -81,6 +117,11 @@ public:
 	virtual BOResult onContinue      (CREF(rdoRuntime::LPRDORuntime) pRuntime);
 
 INTERFACE_PREDECLARATION(IBaseOperation);
+
+/******************************************************************************//**
+ * @typedef BaseOperationList
+ * @brief   Контейнер умных указателей на IBaseOperation
+ *********************************************************************************/
 typedef std::vector<LPIBaseOperation> BaseOperationList;
 
 #endif // _LIB_RUNTIME_RDO_H_

@@ -21,9 +21,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOPatternPrior
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPatternPrior
+ * @brief     Приоритет паттерна
+ *********************************************************************************/
 class RDOPatternPrior: public IPriority
 {
 QUERY_INTERFACE_BEGIN
@@ -31,48 +32,25 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOPatternPrior()
-	{}
-	virtual ~RDOPatternPrior()
-	{}
+	RDOPatternPrior();
+	virtual ~RDOPatternPrior();
 
 private:
-	virtual LPRDOCalc getPrior()
-	{
-		return m_pPrior; 
-	}
-	virtual rbool setPrior(CREF(LPRDOCalc) pPrior)
-	{
-		m_pPrior = pPrior;
-		return true;
-	}
+	virtual LPRDOCalc getPrior();
+	virtual rbool setPrior(CREF(LPRDOCalc) pPrior);
 
 	LPRDOCalc m_pPrior;
 };
 
-// ********************************************************************************
-// ******************** RDODPTActivityCompare
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDODPTActivityCompare
+ * @brief     Компаратор приоритетов активностей
+ *********************************************************************************/
 class RDODPTActivityCompare
 {
 public:
-	RDODPTActivityCompare(CREF(LPRDORuntime) pRuntime)
-		: m_pRuntime(pRuntime)
-	{}
-	rbool operator() (CREF(LPIBaseOperation) opr1, CREF(LPIBaseOperation) opr2)
-	{
-		LPIPriority pattern1 = opr1;
-		LPIPriority pattern2 = opr2;
-		if (pattern1 && pattern2)
-		{
-			LPRDOCalc prior1 = pattern1->getPrior();
-			LPRDOCalc prior2 = pattern2->getPrior();
-			RDOValue value1 = prior1 ? prior1->calcValue(m_pRuntime) : RDOValue(0.0);
-			RDOValue value2 = prior2 ? prior2->calcValue(m_pRuntime) : RDOValue(0.0);
-			return value1 > value2;
-		}
-		return false;
-	}
+	RDODPTActivityCompare(CREF(LPRDORuntime) pRuntime);
+	rbool operator() (CREF(LPIBaseOperation) opr1, CREF(LPIBaseOperation) opr2);
 
 private:
 	LPRDORuntime m_pRuntime;

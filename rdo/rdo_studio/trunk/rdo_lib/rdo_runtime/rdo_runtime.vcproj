@@ -1754,6 +1754,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdo_pattern.inl"
+							>
+						</File>
+						<File
 							RelativePath=".\rdo_priority.h"
 							>
 						</File>

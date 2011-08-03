@@ -15,7 +15,3 @@
 // ********************************************************************************
 
 #pragma warning(disable : 4786)
-
-OPEN_RDO_RUNTIME_NAMESPACE
-
-CLOSE_RDO_RUNTIME_NAMESPACE

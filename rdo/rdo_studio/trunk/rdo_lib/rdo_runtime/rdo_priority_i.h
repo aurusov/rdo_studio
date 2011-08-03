@@ -15,12 +15,21 @@
 #include "rdo_common/rdointerface.h"
 // ********************************************************************************
 
+/******************************************************************************//**
+ * @interface IPriority
+ * @brief     unknown
+ *********************************************************************************/
 class IPriority
 {
 public:
 	virtual rdoRuntime::LPRDOCalc getPrior()                                   = 0;
 	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior) = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_IPriority
+ * @brief     unknown
+ *********************************************************************************/
 #define DECLARE_IPriority \
 	virtual rdoRuntime::LPRDOCalc getPrior(); \
 	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior);

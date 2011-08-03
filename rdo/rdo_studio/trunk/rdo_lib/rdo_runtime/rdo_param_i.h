@@ -15,12 +15,22 @@
 #include "rdo_common/rdointerface.h"
 // ********************************************************************************
 
+/******************************************************************************//**
+ * @interface IParam
+ * @brief     Интерфейс для параметров
+ * @todo      перевести все параметры в РДО на этот интерфейс
+ *********************************************************************************/
 class IParam
 {
 public:
 	virtual rbool setParam(CREF(rdoRuntime::LPRDOCalc) pParam) = 0;
 	virtual rbool endParam() = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_IParam
+ * @brief     Декларация интерфейса \a IParam
+ *********************************************************************************/
 #define DECLARE_IParam \
 	virtual rbool setParam(CREF(rdoRuntime::LPRDOCalc) pParam); \
 	virtual rbool endParam();
