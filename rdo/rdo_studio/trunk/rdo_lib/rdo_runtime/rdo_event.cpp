@@ -3,9 +3,9 @@
  * @file      rdo_event.cpp
  * @authors   Урусов Андрей, Лущан Дмитрий
  * @date      18.08.2010
- * @brief     
+ * @brief     События
  * @indent    4T
- */
+ *********************************************************************************/
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -27,14 +27,14 @@ RDOEvent::RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern
 	setTraceID(pRuntime->getFreeEventId());
 }
 
-void RDOEvent::onStart( CREF(LPRDORuntime) pRuntime )
+void RDOEvent::onStart(CREF(LPRDORuntime) pRuntime)
 {
-	onBeforeEvent( pRuntime );
+	onBeforeEvent(pRuntime);
 }
 
-void RDOEvent::onStop( CREF(LPRDORuntime) pRuntime )
+void RDOEvent::onStop(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->removeTimePoint( this );
+	pRuntime->removeTimePoint(this);
 }
 
 rbool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
@@ -42,36 +42,36 @@ rbool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOEvent::onDoOperation( CREF(LPRDORuntime) pRuntime )
+IBaseOperation::BOResult RDOEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOEvent::onMakePlaned( CREF(LPRDORuntime) pRuntime, void* param )
+void RDOEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, void* param)
 {
 	pRuntime->inc_cnt_events();
-	onBeforeEvent( pRuntime );
-	convertEvent( pRuntime );
-	onAfterEvent( pRuntime );
+	onBeforeEvent(pRuntime);
+	convertEvent (pRuntime);
+	onAfterEvent (pRuntime);
 }
 
-void RDOEvent::convertEvent( CREF(LPRDORuntime) pRuntime ) 
+void RDOEvent::convertEvent(CREF(LPRDORuntime) pRuntime)
 { 
 	pRuntime->setCurrentActivity(this);
-	m_pPattern->convertEvent(pRuntime); 
+	m_pPattern->convertEvent(pRuntime);
 }
 
-void RDOEvent::onBeforeEvent( CREF(LPRDORuntime) pRuntime )
+void RDOEvent::onBeforeEvent(CREF(LPRDORuntime) pRuntime)
 {
-	setPatternParameters( pRuntime );
+	setPatternParameters(pRuntime);
 }
 
-void RDOEvent::onAfterEvent( CREF(LPRDORuntime) pRuntime )
+void RDOEvent::onAfterEvent(CREF(LPRDORuntime) pRuntime)
 {
-	updateConvertStatus( pRuntime, m_pPattern->m_convertorStatus );
-	pRuntime->getTracer()->writeEvent( this, pRuntime );
-	m_pPattern->convertErase( pRuntime );
-	updateRelRes( pRuntime );
+	updateConvertStatus(pRuntime, m_pPattern->m_convertorStatus);
+	pRuntime->getTracer()->writeEvent(this, pRuntime);
+	m_pPattern->convertErase(pRuntime);
+	updateRelRes(pRuntime);
 }
 
 IBaseOperation::BOResult RDOEvent::onContinue(CREF(LPRDORuntime) pRuntime)

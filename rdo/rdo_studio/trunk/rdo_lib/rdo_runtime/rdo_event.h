@@ -3,7 +3,7 @@
  * @file      rdo_event.h
  * @authors   Урусов Андрей, Лущан Дмитрий
  * @date      18.08.2010
- * @brief     
+ * @brief     События
  * @indent    4T
  *********************************************************************************/
 
@@ -21,9 +21,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOEvent
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOEvent
+ * @brief     Событие
+ *********************************************************************************/
 class RDOEvent: public IBaseOperation, public IEvent, public RDOActivityPattern<RDOPatternEvent>
 {
 typedef RDOActivityPattern<RDOPatternEvent> pattern_type;
@@ -37,12 +38,12 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOEvent( CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name );
+	RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name);
 
-	void convertEvent( CREF(LPRDORuntime) pRuntime );
+	void convertEvent(CREF(LPRDORuntime) pRuntime);
 
-	virtual void onBeforeEvent( CREF(LPRDORuntime) pRuntime );
-	virtual void onAfterEvent( CREF(LPRDORuntime) pRuntime );
+	virtual void onBeforeEvent(CREF(LPRDORuntime) pRuntime);
+	virtual void onAfterEvent (CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IEvent;
