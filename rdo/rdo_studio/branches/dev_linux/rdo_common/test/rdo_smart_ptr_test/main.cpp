@@ -12,7 +12,7 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#define BOOST_TEST_MODULE test_rdo_smart_prt
+#define BOOST_TEST_MODULE RDOSmartPrtTest
 #include <boost/test/included/unit_test.hpp>
 // ====================================================================== SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
@@ -119,20 +119,20 @@ private:
 };
 DECLARE_POINTER(MyClass4)
 
-BOOST_AUTO_TEST_SUITE(test_rdo_smart_prt)
+BOOST_AUTO_TEST_SUITE(RDOSmartPrtTest)
 
-BOOST_AUTO_TEST_CASE(test_creating_a_factory)
+BOOST_AUTO_TEST_CASE(Create)
 {
 	BOOST_CHECK(rdo::Factory<MyClass>::create());
 }
 
-BOOST_AUTO_TEST_CASE(test_default_constructor)
+BOOST_AUTO_TEST_CASE(DefaultConstructor)
 {
 	LPMyClass pMyClass = rdo::Factory<MyClass>::create();
 	BOOST_CHECK(pMyClass->m_i == MyClass::DAFAUL_VALUE);
 }
 
-BOOST_AUTO_TEST_CASE(test_copy_operator)
+BOOST_AUTO_TEST_CASE(CopyOperator)
 {
 	LPMyClass pMyClass_1;
 	LPMyClass pMyClass_2 = rdo::Factory<MyClass>::create();
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(test_copy_operator)
 	BOOST_CHECK(pMyClass_1 == pMyClass_2);
 }
 
-BOOST_AUTO_TEST_CASE(test_copy_constructor)
+BOOST_AUTO_TEST_CASE(CopyConstructor)
 {
 	LPMyClass pMyClass_1 = rdo::Factory<MyClass>::create();
 	LPMyClass pMyClass_2 = pMyClass_1;
@@ -154,13 +154,13 @@ BOOST_AUTO_TEST_CASE(test_copy_constructor)
 	BOOST_CHECK(pMyClass_1->m_i != pMyClass_3->m_i);
 }
 
-BOOST_AUTO_TEST_CASE(test_cast_pointer_to_rbool)
+BOOST_AUTO_TEST_CASE(CastSmartPtrToBool)
 {
 	LPMyClass pMyClass2 = rdo::Factory<MyClass>::create();
 	BOOST_CHECK((rbool)pMyClass2);
 }
 
-BOOST_AUTO_TEST_CASE(test_reset_the_pointer)
+BOOST_AUTO_TEST_CASE(ResetThePointerAndCheck)
 {
 	LPMyClass pMyClass_1;
 	LPMyClass pMyClass_2 = rdo::Factory<MyClass>::create();
@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(test_reset_the_pointer)
 	BOOST_CHECK(pMyClass_1 == pMyClass_3 && pMyClass_1 != NULL);
 }
 
-BOOST_AUTO_TEST_CASE(test_creating_a_pointer_type_not_just_from_the_factory)
+BOOST_AUTO_TEST_CASE(CreatingSmartPtrByRawPtr)
 {
 	PTR(MyClass3) pMyClass3_1 = new MyClass3();
 	BOOST_CHECK(pMyClass3_1);
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(test_creating_a_pointer_type_not_just_from_the_factory)
 	BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
 }
 
-BOOST_AUTO_TEST_CASE(test_create_a_pointer_to_this)
+BOOST_AUTO_TEST_CASE(CreatingSmartPtrByThis)
 {
 	PTR(MyClass3) pMyClass3_1 = new MyClass3();
 	LPMyClass3 pMyClass3_2 = pMyClass3_1->returnThis();
@@ -188,7 +188,7 @@ BOOST_AUTO_TEST_CASE(test_create_a_pointer_to_this)
 	BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
 }
 
-BOOST_AUTO_TEST_CASE(test_casting_to_an_ancestor)
+BOOST_AUTO_TEST_CASE(StaticCast)
 {
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
 	int i = 10, k = 22;
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(test_casting_to_an_ancestor)
 	BOOST_CHECK(pMyClass_2->m_i == 11);
 }
 
-BOOST_AUTO_TEST_CASE(test_casting_to_the_interface)
+BOOST_AUTO_TEST_CASE(InterfaceCast)
 {
 	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
 	LPIMyClass21 pMyClass_21 = pMyClass_2.interface_cast<IMyClass21>();
@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(test_casting_to_the_interface)
 	BOOST_CHECK(!pMyClass_21);
 }
 
-BOOST_AUTO_TEST_CASE(test_casting_to_the_interface_through_the_child)
+BOOST_AUTO_TEST_CASE(InterfaceCastThroughChild)
 {
 	LPMyClass4 pMyClass_4 = rdo::Factory<MyClass4>::create();
 	LPIMyClass21 pMyClass_21 = pMyClass_4.interface_cast<IMyClass21>();
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(test_casting_to_the_interface_through_the_child)
 	BOOST_CHECK(!pMyClass_21);
 }
 
-BOOST_AUTO_TEST_CASE(test_comparing_pointers)
+BOOST_AUTO_TEST_CASE(CompareSmartPtr)
 {
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
 	LPMyClass  pMyClass_2 = pMyClass_1.object_static_cast<MyClass>();
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(test_comparing_pointers)
 	BOOST_CHECK(!(pMyClass_1 == pMyClass_3));
 }
 
-BOOST_AUTO_TEST_CASE(test_comparison_of_the_values)
+BOOST_AUTO_TEST_CASE(CompareSmartPtrByValue)
 {
 	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
 	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
