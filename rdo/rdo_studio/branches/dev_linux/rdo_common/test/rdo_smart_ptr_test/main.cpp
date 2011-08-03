@@ -19,27 +19,32 @@
 #include "rdo_common/smart_ptr/interface_ptr.h"
 #include "rdo_common/rdodebug.h"
 // ===============================================================================
- 
+
 OBJECT(MyClass)
 {
-	DECLARE_FACTORY(MyClass)
+DECLARE_FACTORY(MyClass)
 public:
 	ruint m_i;
 
 	enum { DAFAUL_VALUE = 2 };
 
 protected:
-	MyClass() : m_i(DAFAUL_VALUE) { }
+	MyClass()
+		: m_i(DAFAUL_VALUE)
+	{}
 
-	~MyClass() { }
+	~MyClass()
+	{}
 };
 
 OBJECT_INTERFACE(IMyClass21)
 {
 	virtual void ifun21() = 0;
 
-	IMyClass21() {}
-	virtual ~IMyClass21() {}
+	IMyClass21()
+	{}
+	virtual ~IMyClass21()
+	{}
 };
 
 #define DECLARE_IMyClass21 \
@@ -47,10 +52,10 @@ public:                    \
 	void ifun21();
 
 CLASS(MyClass2):
-IMPLEMENTATION_OF(IMyClass21)
-AND INSTANCE_OF      (MyClass   )
+	IMPLEMENTATION_OF(IMyClass21)
+	AND INSTANCE_OF  (MyClass   )
 {
-	DECLARE_FACTORY(MyClass2)
+DECLARE_FACTORY(MyClass2)
 public:
 	ruint m_k;
 
@@ -62,9 +67,13 @@ public:
 	}
 
 protected:
-	MyClass2() : m_k(DAFAUL_VALUE) { }
+	MyClass2()
+		: m_k(DAFAUL_VALUE)
+	{}
 
-	virtual ~MyClass2() { }
+	virtual ~MyClass2()
+	{}
+
 	DECLARE_IMyClass21;
 };
 DECLARE_POINTER(MyClass2)
@@ -81,9 +90,11 @@ public:
 
 	enum { DAFAUL_VALUE = 3 };
 
-	MyClass3() : m_i(DAFAUL_VALUE) { }
-
-	~MyClass3() { }
+	MyClass3()
+		: m_i(DAFAUL_VALUE)
+	{}
+	~MyClass3()
+	{}
 
 	LPMyClass3 returnThis()
 	{
@@ -93,16 +104,18 @@ public:
 
 CLASS(MyClass4): INSTANCE_OF(MyClass2)
 {
-	DECLARE_FACTORY(MyClass4)
+DECLARE_FACTORY(MyClass4)
 public:
 	ruint m_a;
 
 	enum { DAFAUL_VALUE = 24 };
 
 private:
-	MyClass4() : m_a(DAFAUL_VALUE) { }
-
-	virtual ~MyClass4() { }
+	MyClass4():
+		m_a(DAFAUL_VALUE)
+	{}
+	virtual ~MyClass4()
+	{}
 };
 DECLARE_POINTER(MyClass4)
 
