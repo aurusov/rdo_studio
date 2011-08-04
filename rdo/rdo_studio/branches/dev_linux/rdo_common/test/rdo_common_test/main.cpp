@@ -27,41 +27,38 @@ const ruint64 s_createTestLocalTime = 129557633912040000;
 
 BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 
-BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
+BOOST_AUTO_TEST_CASE(RDOCommon_Test)
 {
-	tstring str1 = rdo::format(IDS_STRING101);
-	BOOST_CHECK(str1 == s_resourceStr1);
-	tstring str2 = rdo::format(IDS_STRING102, 22);
-	BOOST_CHECK(str2 == s_resourceStr2);
-	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
-	BOOST_CHECK(str3 == s_resourceStr3);
-}
+	{
+		tstring str1 = rdo::format(IDS_STRING101);
+		BOOST_CHECK(str1 == s_resourceStr1);
+		tstring str2 = rdo::format(IDS_STRING102, 22);
+		BOOST_CHECK(str2 == s_resourceStr2);
+		tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
+		BOOST_CHECK(str3 == s_resourceStr3);
+	}
 
-BOOST_AUTO_TEST_CASE(RDOCommon_FileCreate)
-{
-	BOOST_CHECK(rdo::File::create(s_testFileName));
-}
+	{
+		BOOST_CHECK(rdo::File::create(s_testFileName));
+	}
 
-BOOST_AUTO_TEST_CASE(RDOCommon_FileExist)
-{
-	BOOST_CHECK(rdo::File::exist(s_testFileName));
-}
+	{
+		BOOST_CHECK(rdo::File::exist(s_testFileName));
+	}
 
-BOOST_AUTO_TEST_CASE(RDOCommon_FileReadOnly)
-{
-	BOOST_CHECK(!rdo::File::read_only(s_testFileName));
-}
+	{
+		BOOST_CHECK(!rdo::File::read_only(s_testFileName));
+	}
 
-BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
-{
-	BOOST_CHECK(rdo::File::unlink(s_testFileName));
-}
+	{
+		BOOST_CHECK(rdo::File::unlink(s_testFileName));
+	}
 
-BOOST_AUTO_TEST_CASE(RDOCommon_Time)
-{
-	rdo::Time timeValue = rdo::Time::local();
-	BOOST_CHECK(timeValue > s_createTestLocalTime);
-	std::cout << _T("Today:  ") << timeValue.asString() << _T("  is not it?");
+	{
+		rdo::Time timeValue = rdo::Time::local();
+		BOOST_CHECK(timeValue > s_createTestLocalTime);
+		std::cout << _T("Today:  ") << timeValue.asString() << _T("  is not it?");
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END()

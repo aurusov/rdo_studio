@@ -80,7 +80,7 @@ DECLARE_POINTER(MyClass2)
 
 void MyClass2::ifun21()
 {
-	int i = 1;
+	ruint i = 1;
 }
 
 OBJECT(MyClass3)
@@ -121,129 +121,119 @@ DECLARE_POINTER(MyClass4)
 
 BOOST_AUTO_TEST_SUITE(RDOSmartPrtTest)
 
-BOOST_AUTO_TEST_CASE(Create)
+BOOST_AUTO_TEST_CASE(RDOSmartPrtTest)
 {
-	BOOST_CHECK(rdo::Factory<MyClass>::create());
-}
+	{
+		BOOST_CHECK(rdo::Factory<MyClass>::create());
+	}
 
-BOOST_AUTO_TEST_CASE(DefaultConstructor)
-{
-	LPMyClass pMyClass = rdo::Factory<MyClass>::create();
-	BOOST_CHECK(pMyClass->m_i == MyClass::DAFAUL_VALUE);
-}
+	{
+		LPMyClass pMyClass = rdo::Factory<MyClass>::create();
+		BOOST_CHECK(pMyClass->m_i == MyClass::DAFAUL_VALUE);
+	}
 
-BOOST_AUTO_TEST_CASE(CopyOperator)
-{
-	LPMyClass pMyClass_1;
-	LPMyClass pMyClass_2 = rdo::Factory<MyClass>::create();
+	{
+		LPMyClass pMyClass_1;
+		LPMyClass pMyClass_2 = rdo::Factory<MyClass>::create();
 
-	pMyClass_1 = pMyClass_2;
-	BOOST_CHECK(pMyClass_1 == pMyClass_2);
-}
+		pMyClass_1 = pMyClass_2;
+		BOOST_CHECK(pMyClass_1 == pMyClass_2);
+	}
 
-BOOST_AUTO_TEST_CASE(CopyConstructor)
-{
-	LPMyClass pMyClass_1 = rdo::Factory<MyClass>::create();
-	LPMyClass pMyClass_2 = pMyClass_1;
-	LPMyClass pMyClass_3 = rdo::Factory<MyClass>::create();
+	{
+		LPMyClass pMyClass_1 = rdo::Factory<MyClass>::create();
+		LPMyClass pMyClass_2 = pMyClass_1;
+		LPMyClass pMyClass_3 = rdo::Factory<MyClass>::create();
 
-	pMyClass_1->m_i = 2 * MyClass::DAFAUL_VALUE;
-	pMyClass_3->m_i = 3 * MyClass::DAFAUL_VALUE;
+		pMyClass_1->m_i = 2 * MyClass::DAFAUL_VALUE;
+		pMyClass_3->m_i = 3 * MyClass::DAFAUL_VALUE;
 
-	BOOST_CHECK(pMyClass_1->m_i == pMyClass_2->m_i);
-	BOOST_CHECK(pMyClass_1->m_i != pMyClass_3->m_i);
-}
+		BOOST_CHECK(pMyClass_1->m_i == pMyClass_2->m_i);
+		BOOST_CHECK(pMyClass_1->m_i != pMyClass_3->m_i);
+	}
 
-BOOST_AUTO_TEST_CASE(CastSmartPtrToBool)
-{
-	LPMyClass pMyClass2 = rdo::Factory<MyClass>::create();
-	BOOST_CHECK((rbool)pMyClass2);
-}
+	{
+		LPMyClass pMyClass2 = rdo::Factory<MyClass>::create();
+		BOOST_CHECK((rbool)pMyClass2);
+	}
 
-BOOST_AUTO_TEST_CASE(ResetThePointerAndCheck)
-{
-	LPMyClass pMyClass_1;
-	LPMyClass pMyClass_2 = rdo::Factory<MyClass>::create();
-	LPMyClass pMyClass_3 = rdo::Factory<MyClass>::create();
-	pMyClass_2 = NULL;
-	BOOST_CHECK(pMyClass_2 == NULL);
-	pMyClass_1 = pMyClass_3;
-	BOOST_CHECK(pMyClass_1 == pMyClass_3 && pMyClass_1 != NULL);
-}
+	{
+		LPMyClass pMyClass_1;
+		LPMyClass pMyClass_2 = rdo::Factory<MyClass>::create();
+		LPMyClass pMyClass_3 = rdo::Factory<MyClass>::create();
+		pMyClass_2 = NULL;
+		BOOST_CHECK(pMyClass_2 == NULL);
+		pMyClass_1 = pMyClass_3;
+		BOOST_CHECK(pMyClass_1 == pMyClass_3 && pMyClass_1 != NULL);
+	}
 
-BOOST_AUTO_TEST_CASE(CreatingSmartPtrByRawPtr)
-{
-	PTR(MyClass3) pMyClass3_1 = new MyClass3();
-	BOOST_CHECK(pMyClass3_1);
-	LPMyClass3 pMyClass3_2(pMyClass3_1);
-	pMyClass3_1->m_i = 3 * MyClass3::DAFAUL_VALUE;
-	BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
-}
+	{
+		PTR(MyClass3) pMyClass3_1 = new MyClass3();
+		BOOST_CHECK(pMyClass3_1);
+		LPMyClass3 pMyClass3_2(pMyClass3_1);
+		pMyClass3_1->m_i = 3 * MyClass3::DAFAUL_VALUE;
+		BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
+	}
 
-BOOST_AUTO_TEST_CASE(CreatingSmartPtrByThis)
-{
-	PTR(MyClass3) pMyClass3_1 = new MyClass3();
-	LPMyClass3 pMyClass3_2 = pMyClass3_1->returnThis();
-	pMyClass3_1->m_i = 2 * MyClass3::DAFAUL_VALUE;
-	BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
-}
+	{
+		PTR(MyClass3) pMyClass3_1 = new MyClass3();
+		LPMyClass3 pMyClass3_2 = pMyClass3_1->returnThis();
+		pMyClass3_1->m_i = 2 * MyClass3::DAFAUL_VALUE;
+		BOOST_CHECK(pMyClass3_1->m_i == pMyClass3_2->m_i);
+	}
 
-BOOST_AUTO_TEST_CASE(StaticCast)
-{
-	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
-	int i = 10, k = 22;
-	pMyClass_1->m_i = i;
-	pMyClass_1->m_k = k;
-	LPMyClass  pMyClass_2 = pMyClass_1.object_static_cast<MyClass>();
-	BOOST_CHECK(pMyClass_2->m_i == 10);
-	i = 11;
-	pMyClass_1->m_i = i;
-	BOOST_CHECK(pMyClass_2->m_i == 11);
-}
+	{
+		LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
+		ruint i = 10, k = 22;
+		pMyClass_1->m_i = i;
+		pMyClass_1->m_k = k;
+		LPMyClass  pMyClass_2 = pMyClass_1.object_static_cast<MyClass>();
+		BOOST_CHECK(pMyClass_2->m_i == 10);
+		i = 11;
+		pMyClass_1->m_i = i;
+		BOOST_CHECK(pMyClass_2->m_i == 11);
+	}
 
-BOOST_AUTO_TEST_CASE(InterfaceCast)
-{
-	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
-	LPIMyClass21 pMyClass_21 = pMyClass_2.interface_cast<IMyClass21>();
-	BOOST_CHECK(pMyClass_2 == pMyClass_21);
-	pMyClass_2 = NULL;
-	BOOST_CHECK(!pMyClass_2);
-	BOOST_CHECK(pMyClass_21);
-	pMyClass_21 = LPIMyClass21();
-	BOOST_CHECK(!pMyClass_21);
-}
+	{
+		LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
+		LPIMyClass21 pMyClass_21 = pMyClass_2.interface_cast<IMyClass21>();
+		BOOST_CHECK(pMyClass_2 == pMyClass_21);
+		pMyClass_2 = NULL;
+		BOOST_CHECK(!pMyClass_2);
+		BOOST_CHECK(pMyClass_21);
+		pMyClass_21 = LPIMyClass21();
+		BOOST_CHECK(!pMyClass_21);
+	}
 
-BOOST_AUTO_TEST_CASE(InterfaceCastThroughChild)
-{
-	LPMyClass4 pMyClass_4 = rdo::Factory<MyClass4>::create();
-	LPIMyClass21 pMyClass_21 = pMyClass_4.interface_cast<IMyClass21>();
-	BOOST_CHECK(pMyClass_4 == pMyClass_21);
-	pMyClass_4 = NULL;
-	BOOST_CHECK(!pMyClass_4);
-	BOOST_CHECK(pMyClass_21);
-	pMyClass_21 = LPIMyClass21();
-	BOOST_CHECK(!pMyClass_21);
-}
+	{
+		LPMyClass4 pMyClass_4 = rdo::Factory<MyClass4>::create();
+		LPIMyClass21 pMyClass_21 = pMyClass_4.interface_cast<IMyClass21>();
+		BOOST_CHECK(pMyClass_4 == pMyClass_21);
+		pMyClass_4 = NULL;
+		BOOST_CHECK(!pMyClass_4);
+		BOOST_CHECK(pMyClass_21);
+		pMyClass_21 = LPIMyClass21();
+		BOOST_CHECK(!pMyClass_21);
+	}
+	
+	{
+		LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
+		LPMyClass  pMyClass_2 = pMyClass_1.object_static_cast<MyClass>();
+		BOOST_CHECK(pMyClass_1 == pMyClass_2);
+		BOOST_CHECK(!(pMyClass_1 != pMyClass_2));
 
-BOOST_AUTO_TEST_CASE(CompareSmartPtr)
-{
-	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
-	LPMyClass  pMyClass_2 = pMyClass_1.object_static_cast<MyClass>();
-	BOOST_CHECK(pMyClass_1 == pMyClass_2);
-	BOOST_CHECK(!(pMyClass_1 != pMyClass_2));
+		LPMyClass3 pMyClass_3 = rdo::Factory<MyClass3>::create();
+		BOOST_CHECK(pMyClass_1 != pMyClass_3);
+		BOOST_CHECK(!(pMyClass_1 == pMyClass_3));
+	}
 
-	LPMyClass3 pMyClass_3 = rdo::Factory<MyClass3>::create();
-	BOOST_CHECK(pMyClass_1 != pMyClass_3);
-	BOOST_CHECK(!(pMyClass_1 == pMyClass_3));
-}
-
-BOOST_AUTO_TEST_CASE(CompareSmartPtrByValue)
-{
-	LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
-	LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
-	BOOST_CHECK(pMyClass_1.compare(pMyClass_2));
-	pMyClass_2->m_k++;
-	BOOST_CHECK(!pMyClass_1.compare(pMyClass_2));
+	{
+		LPMyClass2 pMyClass_1 = rdo::Factory<MyClass2>::create();
+		LPMyClass2 pMyClass_2 = rdo::Factory<MyClass2>::create();
+		BOOST_CHECK(pMyClass_1.compare(pMyClass_2));
+		pMyClass_2->m_k++;
+		BOOST_CHECK(!pMyClass_1.compare(pMyClass_2));
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END()
