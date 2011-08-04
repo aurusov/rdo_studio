@@ -3,7 +3,7 @@
  * @file      rdo_rule_i.h
  * @authors   Урусов Андрей
  * @date      01.08.2009
- * @brief     
+ * @brief     Продукционные правила
  * @indent    4T
  *********************************************************************************/
 
@@ -23,6 +23,10 @@ PREDECLARE_POINTER(RDORuntime);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
+/******************************************************************************//**
+ * @interface IRule
+ * @brief     Интерфейс продукционного правила
+ *********************************************************************************/
 class IRule
 {
 public:
@@ -32,6 +36,11 @@ public:
 	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
 	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch) = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_IRule
+ * @brief     Декларация интерфейса продукционного правила
+ *********************************************************************************/
 #define DECLARE_IRule \
 	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime); \

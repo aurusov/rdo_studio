@@ -3,9 +3,9 @@
  * @file      rdo_operation.cpp
  * @authors   Урусов Андрей, Лущан Дмитрий
  * @date      18.08.2010
- * @brief     
+ * @brief     Операции
  * @indent    4T
- */
+ *********************************************************************************/
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // ********************************************************************************
 RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
-	, RDOPatternPrior()
+	, RDOPatternPrior                        (                     )
 {
 	setTrace(trace);
 	haveAdditionalCondition = false;
@@ -30,12 +30,26 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 
 RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
-	, RDOPatternPrior    ()
-	, additionalCondition(pCondition)
+	, RDOPatternPrior                        (                     )
+	, additionalCondition                    (pCondition           )
 {
-	setTrace( trace );
+	setTrace(trace);
 	haveAdditionalCondition = true;
-	setTraceID( pRuntime->getFreeActivityId() );
+	setTraceID(pRuntime->getFreeActivityId());
+}
+
+RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone)
+	: RDOActivityPattern<RDOPatternOperation>(originForClone.m_pPattern, originForClone.traceable(), originForClone.m_oprName)
+	, additionalCondition                    (NULL                                                                           )
+{
+  setTrace(originForClone.traceable());
+  haveAdditionalCondition = false;
+  setTraceID(pRuntime->getFreeActivityId());
+
+  m_paramsCalcs.insert(m_paramsCalcs.begin(), originForClone.m_paramsCalcs.begin(), originForClone.m_paramsCalcs.end());
+  m_relResID   .insert(m_relResID   .begin(), originForClone.m_relResID   .begin(), originForClone.m_relResID   .end());
+  setTraceID(originForClone.getTraceID());
+  m_operId = pRuntime->getFreeOperationId();
 }
 
 RDOOperation::~RDOOperation()
@@ -109,9 +123,9 @@ void RDOOperation::onAfterOperationBegin(CREF(LPRDORuntime) pRuntime)
 	pRuntime->getTracer()->writeAfterOperationBegin(this, pRuntime);
 	m_pPattern->convertBeginErase(pRuntime);
 	updateRelRes(pRuntime);
-	updateConvertStatus( pRuntime, m_pPattern->m_convertorEndStatus);
+	updateConvertStatus(pRuntime, m_pPattern->m_convertorEndStatus);
 	incrementRelevantResourceReference(pRuntime);
-	updateConvertStatus( pRuntime, m_pPattern->m_convertorBeginStatus);
+	updateConvertStatus(pRuntime, m_pPattern->m_convertorBeginStatus);
 }
 
 void RDOOperation::onAfterOperationEnd(CREF(LPRDORuntime) pRuntime)
@@ -130,20 +144,6 @@ double RDOOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	return m_pPattern->getNextTimeInterval(pRuntime);
 }
 
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone)
-	: RDOActivityPattern<RDOPatternOperation>(originForClone.m_pPattern, originForClone.traceable(), originForClone.m_oprName)
-	, additionalCondition(NULL)
-{
-	setTrace( originForClone.traceable() );
-	haveAdditionalCondition = false;
-	setTraceID( pRuntime->getFreeActivityId() );
-
-	m_paramsCalcs.insert(m_paramsCalcs.begin(), originForClone.m_paramsCalcs.begin(), originForClone.m_paramsCalcs.end());
-	m_relResID   .insert(m_relResID   .begin(), originForClone.m_relResID   .begin(), originForClone.m_relResID   .end());
-	setTraceID(originForClone.getTraceID());
-	m_operId = pRuntime->getFreeOperationId();
-}
-
 tstring RDOOperation::traceOperId() const
 {
 	return rdo::toString(m_operId);
@@ -152,6 +152,6 @@ tstring RDOOperation::traceOperId() const
 void                     RDOOperation::onBeforeOperationBegin(CREF(LPRDORuntime) pRuntime) {}
 void                     RDOOperation::onStart               (CREF(LPRDORuntime) pRuntime) {}
 void                     RDOOperation::onStop                (CREF(LPRDORuntime) pRuntime) {}
-IBaseOperation::BOResult RDOOperation::onContinue            (CREF(LPRDORuntime) pRuntime) { return IBaseOperation::BOR_cant_run; }
+IBaseOperation::BOResult RDOOperation::onContinue            (CREF(LPRDORuntime) pRuntime) {return IBaseOperation::BOR_cant_run;}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -3,7 +3,7 @@
  * @file      rdo_dptsearch_activity.h
  * @authors   Урусов Андрей
  * @date      08.08.2009
- * @brief     
+ * @brief     Активности точки принятия решения DPTSearch
  * @indent    4T
  *********************************************************************************/
 
@@ -21,6 +21,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+/******************************************************************************//**
+ * @class     RDODPTSearchActivity
+ * @brief     Активность точки принятия решения DPTSearch
+ *********************************************************************************/
 class RDODPTSearchActivity: public IDPTSearchActivity, public RDOTraceableObject
 {
 DEFINE_IFACTORY(RDODPTSearchActivity);

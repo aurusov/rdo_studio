@@ -3,7 +3,7 @@
  * @file      rdo_rule.h
  * @authors   Урусов Андрей, Лущан Дмитрий
  * @date      18.08.2010
- * @brief     
+ * @brief     Продукционные правила
  * @indent    4T
  *********************************************************************************/
 
@@ -22,9 +22,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDORule
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDORule
+ * @brief     Продукционное правило
+ *********************************************************************************/
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
@@ -44,8 +45,7 @@ private:
 	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(tstring) name);
 	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
 
-	virtual ~RDORule()
-	{}
+	virtual ~RDORule();
 
 	void init();
 

@@ -3,7 +3,7 @@
  * @file      rdo_operation.h
  * @authors   Урусов Андрей, Лущан Дмитрий
  * @date      18.08.2010
- * @brief     
+ * @brief     Операции
  * @indent    4T
  *********************************************************************************/
 
@@ -23,9 +23,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOOperation
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOOperation
+ * @brief     Операция - модифицированное продукционное правило
+ *********************************************************************************/
 class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior, public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
@@ -43,8 +44,8 @@ friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
 protected:
-	RDOOperation( CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name );
-	RDOOperation( CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name );
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name);
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
 	virtual ~RDOOperation();
 	DECLARE_IOperation;
 

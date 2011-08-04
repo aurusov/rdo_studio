@@ -3,7 +3,7 @@
  * @file      rdo_dptsearch_activity_i.h
  * @authors   Урусов Андрей
  * @date      08.08.2009
- * @brief     
+ * @brief     Интерфейс активности точки принятия решения DPTSearch
  * @indent    4T
  *********************************************************************************/
 
@@ -24,9 +24,19 @@ class RDOSimulator;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
+/******************************************************************************//**
+ * @interface IDPTSearchActivity
+ * @brief     Интерфейс активности точки принятия решения DPTSearch
+ *********************************************************************************/
 class IDPTSearchActivity
 {
 public:
+	/**
+	 * @enum  ValueTime
+	 * @brief Время вычисления функции стоимости пути
+	 * @var   vt_before до выполнения активности
+	 * @var   vt_after  после выполнения активности
+	 */
 	enum ValueTime
 	{
 		vt_before,
@@ -37,6 +47,11 @@ public:
 	virtual double       cost     (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 	virtual ValueTime    valueTime() const                                  = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_IDPTSearchActivity
+ * @brief     Декларация интерфейса активности точки принятия решения DPTSearch
+ *********************************************************************************/
 #define DECLARE_IDPTSearchActivity                                           \
 	virtual REF(LPIRule) rule     ();                                        \
 	virtual double       cost     (CREF(rdoRuntime::LPRDORuntime) pRuntime); \

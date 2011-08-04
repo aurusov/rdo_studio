@@ -3,7 +3,7 @@
  * @file      rdo_keyboard.h
  * @authors   Урусов Андрей, Лущан Дмитрий
  * @date      18.08.2010
- * @brief     
+ * @brief     Клавиатурные операции
  * @indent    4T
  *********************************************************************************/
 
@@ -18,9 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOKeyboard
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOKeyboard
+ * @brief     Клавиатурная операция
+ *********************************************************************************/
 class RDOKeyboard: public RDOOperation, public IKeyboard
 {
 DEFINE_IFACTORY(RDOKeyboard);
@@ -30,15 +31,15 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOKeyboard( CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(tstring) name );
-	RDOKeyboard( CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name );
+	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(tstring) name);
+	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
 	virtual ~RDOKeyboard();
 
 	rbool m_shift;
 	rbool m_control;
 	int   m_scan_code;
 
-	virtual rbool choiceFrom( CREF(LPRDORuntime) pRuntime );
+	virtual rbool choiceFrom(CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IKeyboard;
 };

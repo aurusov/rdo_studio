@@ -3,7 +3,7 @@
  * @file      rdo_operation_i.h
  * @authors   Урусов Андрей
  * @date      30.07.2009
- * @brief     
+ * @brief     Интерфейс операции
  * @indent    4T
  *********************************************************************************/
 
@@ -15,6 +15,10 @@
 #include "rdo_common/rdointerface.h"
 // ********************************************************************************
 
+/******************************************************************************//**
+ * @interface IOperation
+ * @brief     Интерфейс модифицированного продукционного правила
+ *********************************************************************************/
 class IOperation
 {
 public:
@@ -28,6 +32,11 @@ public:
 	virtual void   onAfterOperationEnd   (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 	virtual double getNextTimeInterval   (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_IOperation
+ * @brief     Декларация интерфейса модифицированного продукционного правила
+ *********************************************************************************/
 #define DECLARE_IOperation \
 	virtual void   onBeforeChoiceFrom    (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual rbool  choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
@@ -39,11 +48,20 @@ public:
 	virtual void   onAfterOperationEnd   (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual double getNextTimeInterval   (CREF(rdoRuntime::LPRDORuntime) pRuntime)
 
+/******************************************************************************//**
+ * @interface IOperationTrace
+ * @brief     unknown
+ *********************************************************************************/
 class IOperationTrace
 {
 public:
 	virtual tstring traceOperId() const = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_IOperationTrace
+ * @brief     unknown
+ *********************************************************************************/
 #define DECLARE_IOperationTrace \
 	virtual tstring traceOperId() const;
 

@@ -3,7 +3,7 @@
  * @file      rdo_keyboard_i.h
  * @authors   Урусов Андрей
  * @date      01.08.2009
- * @brief     
+ * @brief     Интерфейс клавиатурной операции
  * @indent    4T
  *********************************************************************************/
 
@@ -15,9 +15,21 @@
 #include "rdo_common/rdointerface.h"
 // ********************************************************************************
 
+/******************************************************************************//**
+ * @interface IKeyboard
+ * @brief     Интерфейс клавиатурной операции
+ *********************************************************************************/
 class IKeyboard
 {
 public:
+	/**
+	 * @enum  AddHotKeyResult
+	 * @brief Статуc нажатия клавиши
+	 * @var   addhk_ok        клавиша нажата
+	 * @var   addhk_already   клавиша уже нажата
+	 * @var   addhk_notfound  клавиша не найдена
+	 * @var   addhk_dont      клавиша не нажата
+	 */
 	enum AddHotKeyResult
 	{
 		addhk_ok,
@@ -28,6 +40,11 @@ public:
 	virtual rbool           hasHotKey() const = 0;
 	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey) = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_IKeyboard
+ * @brief     Декларация интерфейса клавиатурной операции
+ *********************************************************************************/
 #define DECLARE_IKeyboard \
 	virtual rbool           hasHotKey() const; \
 	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey);
