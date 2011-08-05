@@ -12,49 +12,68 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOException
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOException
+ * @brief     Ошибка
+ *********************************************************************************/
 class RDOException
 {
 public:
-	RDOException(CREF(tstring) message): m_message(message) {}
+	RDOException(CREF(tstring) message);
 	virtual tstring getType() const = 0;
 	
-	CREF(tstring) message() const { return m_message; }
+	CREF(tstring) message() const;
 
 private:
 	tstring m_message;
 };
 
+/******************************************************************************//**
+ * @class     RDORuntimeException
+ * @brief     Ошибка времени выполнения
+ *********************************************************************************/
 class RDORuntimeException: public RDOException
 {
 public:
-	RDORuntimeException( CREF(tstring) message ): RDOException( message ) {}
-	virtual tstring getType() const { return "RDO Runtime Error"; }
+	RDORuntimeException(CREF(tstring) message);
+	virtual tstring getType() const;
 };
 
+/******************************************************************************//**
+ * @class     RDOTypeException
+ * @brief     Ошибка в типе
+ *********************************************************************************/
 class RDOTypeException: public RDORuntimeException
 {
 public:
-	RDOTypeException( CREF(tstring) message = "" ): RDORuntimeException( message ) {}
-	virtual tstring getType() const { return "RDOType Error"; }
+	RDOTypeException(CREF(tstring) message = "");
+	virtual tstring getType() const;
 };
 
+/******************************************************************************//**
+ * @class     RDOValueException
+ * @brief     Ошибка в значении
+ *********************************************************************************/
 class RDOValueException: public RDORuntimeException
 {
 public:
-	RDOValueException( CREF(tstring) message = "" ): RDORuntimeException( message ) {}
-	virtual tstring getType() const { return "RDOValue Error"; }
+	RDOValueException(CREF(tstring) message = "");
+	virtual tstring getType() const;
 };
 
+/******************************************************************************//**
+ * @class     RDOInternalException
+ * @brief     Внутренняя ошибка
+ *********************************************************************************/
 class RDOInternalException: public RDORuntimeException
 {
 public:
-	RDOInternalException( CREF(tstring) message ): RDORuntimeException( message ) {}
-	virtual tstring getType() const { return "RDO Internal Error"; }
+	RDOInternalException(CREF(tstring) message);
+	virtual tstring getType() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/rdo_exception.inl"
 
 #endif // _LIB_RUNTIME_EXCEPTION_H_
