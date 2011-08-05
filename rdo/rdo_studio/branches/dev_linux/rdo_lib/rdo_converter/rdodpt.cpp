@@ -279,7 +279,7 @@ RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
 	: RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTFree)::create(Converter::s_converter()->runtime());
+	m_pRuntimeLogic = RF(rdoRuntime::RDODPTFree)::create(Converter::s_converter()->runtime());
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTFree(this);
@@ -306,7 +306,7 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	: RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTSome)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSome)::create(Converter::s_converter()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTSome(this);
@@ -327,7 +327,7 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	: RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTPrior)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = RF(rdoRuntime::RDODPTPrior)::create(Converter::s_converter()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTPrior(this);
@@ -391,7 +391,7 @@ void RDODPTSearch::end()
 	rdoRuntime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 	rdoRuntime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 
-	m_pRuntimeLogic = F(rdoRuntime::RDODPTSearchRuntime)::create(Converter::s_converter()->runtime(),
+	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSearchRuntime)::create(Converter::s_converter()->runtime(),
 		m_pParent,
 		pCalcCondition,
 		pCalcTerminate,
@@ -423,7 +423,7 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
 	, m_closed        (false)
 {
 	Converter::s_converter()->insertPROCProcess(this);
-	m_pRuntime = F(rdoRuntime::RDOPROCProcess)::create(info.src_text(), Converter::s_converter()->runtime());
+	m_pRuntime = RF(rdoRuntime::RDOPROCProcess)::create(info.src_text(), Converter::s_converter()->runtime());
 	ASSERT(m_pRuntime);
 	m_pRuntime.query_cast<ILogic>()->init(Converter::s_converter()->runtime());
 }
@@ -481,7 +481,7 @@ RDOPROCOperator::~RDOPROCOperator()
 RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCGenerate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = RF(rdoRuntime::RDOPROCGenerate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
 	ASSERT(m_pRuntime);
 }
 
@@ -581,7 +581,7 @@ void RDOPROCRelease::addResource(CREF(tstring) name)
 RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCAdvance)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = RF(rdoRuntime::RDOPROCAdvance)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
 	ASSERT(m_pRuntime);
 }
 
@@ -591,7 +591,7 @@ RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) na
 RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(ruint) term)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), term);
+	m_pRuntime = RF(rdoRuntime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), term);
 	ASSERT(m_pRuntime);
 }
 
@@ -601,7 +601,7 @@ RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring
 RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue, int resID, int paramID)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = F(rdoRuntime::RDOPROCAssign)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pValue, resID, paramID);
+	m_pRuntime = RF(rdoRuntime::RDOPROCAssign)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pValue, resID, paramID);
 	ASSERT(m_pRuntime);
 }
 

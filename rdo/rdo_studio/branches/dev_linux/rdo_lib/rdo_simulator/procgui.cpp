@@ -133,7 +133,7 @@ ProcGUIProcess::ProcGUIProcess(CREF(rdoRuntime::LPRDORuntime) pRuntime)
 	: m_pRuntime(pRuntime)
 {
 	ASSERT(m_pRuntime);
-	m_pProcess = F(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_pRuntime);
+	m_pProcess = RF(rdoRuntime::RDOPROCProcess)::create(_T("GuiProcess"), m_pRuntime);
 	ASSERT(m_pProcess);
 	m_pProcess.query_cast<ILogic>()->init(m_pRuntime);
 }
@@ -226,7 +226,7 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 	}
 
 	//! GENERATE
-	m_pBlock = F(rdoRuntime::RDOPROCGenerate)::create(pProcess->getProcess(), getCalc(), m_pParams->getAmount());
+	m_pBlock = RF(rdoRuntime::RDOPROCGenerate)::create(pProcess->getProcess(), getCalc(), m_pParams->getAmount());
 	ASSERT(m_pBlock);
 }
 
@@ -243,7 +243,7 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CR
 	ASSERT(pProcess );
 	ASSERT(m_pParams);
 
-	m_pBlock = F(rdoRuntime::RDOPROCTerminate)::create(pProcess->getProcess(), static_cast<ruint>(m_pParams->getTermInc()));
+	m_pBlock = RF(rdoRuntime::RDOPROCTerminate)::create(pProcess->getProcess(), static_cast<ruint>(m_pParams->getTermInc()));
 	ASSERT(m_pBlock);
 }
 
@@ -316,7 +316,7 @@ ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime:
 	ASSERT(pRuntime );
 	ASSERT(m_pParams);
 
-	m_pBlock = F(rdoRuntime::RDOPROCAdvance)::create(pProcess->getProcess(), getCalc());
+	m_pBlock = RF(rdoRuntime::RDOPROCAdvance)::create(pProcess->getProcess(), getCalc());
 	ASSERT(m_pBlock);
 }
 
@@ -417,7 +417,7 @@ void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse:
 	}
 	if (!m_parserForRuntime.empty())
 	{
-		m_pBlock = F(rdoRuntime::RDOPROCSeize)::create(pProcess->getProcess(), m_parserForRuntime);
+		m_pBlock = RF(rdoRuntime::RDOPROCSeize)::create(pProcess->getProcess(), m_parserForRuntime);
 		ASSERT(m_pBlock);
 	}
 	else
@@ -526,7 +526,7 @@ void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoPars
 	}
 	if (!m_parserForRuntime.empty())
 	{
-		m_pBlock = F(rdoRuntime::RDOPROCRelease)::create(pProcess->getProcess(), m_parserForRuntime);
+		m_pBlock = RF(rdoRuntime::RDOPROCRelease)::create(pProcess->getProcess(), m_parserForRuntime);
 		ASSERT(m_pBlock);
 	}
 	else
@@ -621,7 +621,7 @@ void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse:
 	{
 		pParser->error().error(rdoParse::RDOParserSrcInfo(), rdo::format(_T("¬нутренн€€ ошибка ProcGUIQueue: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
 	}
-	m_pBlock = F(rdoRuntime::RDOPROCQueue)::create(pProcess->getProcess(), m_parserForRuntime);
+	m_pBlock = RF(rdoRuntime::RDOPROCQueue)::create(pProcess->getProcess(), m_parserForRuntime);
 	ASSERT(m_pBlock);
 }
 
@@ -695,7 +695,7 @@ void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse
 	{
 		pParser->error().error(rdoParse::RDOParserSrcInfo(), rdo::format(_T("¬нутренн€€ ошибка ProcGUIDepart: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
 	}
-	m_pBlock = F(rdoRuntime::RDOPROCDepart)::create(pProcess->getProcess(), m_parserForRuntime);
+	m_pBlock = RF(rdoRuntime::RDOPROCDepart)::create(pProcess->getProcess(), m_parserForRuntime);
 	ASSERT(m_pBlock);
 }
 

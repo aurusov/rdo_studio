@@ -427,7 +427,7 @@ CLOSE_RDO_NAMESPACE
 
 #define  CAST_TO_UNKNOWN  public rdo::IGetUnknown
 
-#define F(A) rdo::IFactory<A>
+#define RF(A) rdo::IFactory<A>
 
 #define DEFINE_IFACTORY(A)      friend class rdo::IFactory<A>; friend class rdo::IFactory<A>::Object;
 
