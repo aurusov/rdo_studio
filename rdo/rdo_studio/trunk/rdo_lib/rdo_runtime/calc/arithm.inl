@@ -1,6 +1,6 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2011
- * @file      arithm.cpp
+ * @file      arithm.inl
  * @authors   Ћущан ƒмитрий
  * @date      26.07.2011
  * @brief     unknown

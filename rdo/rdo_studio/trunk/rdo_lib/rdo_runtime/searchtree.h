@@ -1,6 +1,6 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2006
- * @file      rdo_logic_dptsearch.h
+ * @file      searchtree.h
  * @authors   Урусов Андрей
  * @date      11.06.2006
  * @brief     unknown
