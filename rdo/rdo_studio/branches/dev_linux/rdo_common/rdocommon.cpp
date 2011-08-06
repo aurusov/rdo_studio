@@ -7,7 +7,9 @@
  * indent   : 4T
  */
 
-#pragma warning(disable : 4786)  
+#ifdef WIN32
+#pragma warning(disable : 4786)
+#endif
 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
@@ -15,8 +17,10 @@
 #include <stdarg.h>
 #include <locale>
 #include <algorithm>
+#ifdef WIN32
 #include <windows.h>
 #include <io.h>
+#endif
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdocommon.h"
 // ===============================================================================
@@ -38,9 +42,13 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	s.resize( 256 );
 	int size = -1;
 	while ( size == -1 ) {
+#ifdef WIN32
 #pragma warning(disable: 4996)
+#endif
 		size = _vsnprintf( &s[0], s.size(), str, params );
+#ifdef WIN32
 #pragma warning(default: 4996)
+#endif
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
 		}
