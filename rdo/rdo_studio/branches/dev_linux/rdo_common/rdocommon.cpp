@@ -44,10 +44,10 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	while ( size == -1 ) {
 #ifdef WIN32
 #pragma warning(disable: 4996)
-#endif
 		size = _vsnprintf( &s[0], s.size(), str, params );
-#ifdef WIN32
 #pragma warning(default: 4996)
+#else
+		size = vsnprintf( &s[0], s.size(), str, params );	
 #endif
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
