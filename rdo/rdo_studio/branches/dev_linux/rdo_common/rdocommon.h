@@ -40,8 +40,11 @@ OPEN_RDO_NAMESPACE
 
 	tstring format(CPTR(tchar) str, ...);
 	tstring format(CPTR(tchar) str, REF(va_list) params);
+
+#ifdef WIN32
 	tstring format(ruint resource, ...);
 	tstring format(ruint resource, REF(va_list) params);
+#endif
 
 	void toLower  (REF(tstring) str);
 	void trim     (REF(tstring) str);

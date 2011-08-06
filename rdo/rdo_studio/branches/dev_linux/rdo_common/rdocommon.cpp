@@ -49,6 +49,8 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	return tstring( s.begin(), s.end() );
 }
 
+#ifdef WIN32
+
 tstring format(ruint resource, ...)
 {
 	va_list params;
@@ -69,6 +71,8 @@ tstring format(ruint resource, REF(va_list) params)
 	}
 	return _T("");
 }
+
+#endif
 
 struct _toLower {
 	_toLower( std::locale loc ): m_loc(loc) {};
