@@ -10,7 +10,9 @@
 #ifndef _RDOCOMMON_H_
 #define _RDOCOMMON_H_
 
+#ifdef WIN32
 #pragma warning(disable : 4786)
+#endif
 
 // ====================================================================== INCLUDES
 #include <string>
