@@ -26,13 +26,13 @@
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
-	template< class T >
+        template< class T >
 	T rmin(T v1, T v2)
 	{
 		return v1 <= v2 ? v1 : v2;
 	}
 
-	template< class T >
+        template< class T >
 	T rmax(T v1, T v2)
 	{
 		return v1 >= v2 ? v1 : v2;
@@ -53,7 +53,7 @@ OPEN_RDO_NAMESPACE
 
 	tstring extractFilePath(CREF(tstring) fileName);
 
-	template< class T >
+        template< class T >
 	inline tstring toString(T value)
 	{
 		std::ostringstream str;
@@ -61,10 +61,10 @@ OPEN_RDO_NAMESPACE
 		return str.str();
 	}
 
-	template<class T>
+        template< class T >
 	void deleteAllObjects(REF(T) container)
 	{
-		T::reverse_iterator it = container.rbegin();
+                typename T::reverse_iterator it = container.rbegin();
 		while (it != container.rend())
 		{
 			delete *it;
