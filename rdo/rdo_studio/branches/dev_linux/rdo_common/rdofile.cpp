@@ -31,7 +31,8 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
 		return false;
 
-	fileDir  = rdo::format(_T("%s%s"), _drive, _dir);
+	boost::filesystem::path from(_dir);
+	fileDir = from.string();
 	fileName = _name;
 	fileExt  = _ext;
 	return true;
