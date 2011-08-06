@@ -3,7 +3,7 @@
  * @file      rdo_memory.h
  * @authors   Чирков Михаил
  * @date      02.12.2010
- * @brief     
+ * @brief     Память
  * @indent    4T
  *********************************************************************************/
 
@@ -20,9 +20,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOMemory
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOMemory
+ * @brief     Память
+ *********************************************************************************/
 OBJECT(RDOMemory)
 {
 DECLARE_FACTORY(RDOMemory);
@@ -32,7 +33,7 @@ public:
 	void     createVariable(CREF(tstring) name);
 	RDOValue getVariable   (CREF(tstring) name) const;
 	void     setVariable   (CREF(tstring) name, CREF(RDOValue) Variable);
-	rbool    findVariable   (CREF(tstring) name) const;
+	rbool    findVariable  (CREF(tstring) name) const;
 
 private:
 	RDOMemory();
@@ -40,9 +41,10 @@ private:
 	LocalMemory m_localMemory;
 };
 
-// ********************************************************************************
-// ******************** RDOMemoryStack
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOMemoryStack
+ * @brief     Стэк памяти
+ *********************************************************************************/
 OBJECT(RDOMemoryStack)
 {
 DECLARE_FACTORY(RDOMemoryStack);

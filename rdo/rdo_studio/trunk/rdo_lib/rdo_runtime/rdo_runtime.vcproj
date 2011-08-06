@@ -539,6 +539,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_object.inl"
+				>
+			</File>
+			<File
 				RelativePath="rdo_runtime.cpp"
 				>
 				<FileConfiguration

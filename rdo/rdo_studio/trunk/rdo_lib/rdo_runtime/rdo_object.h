@@ -20,17 +20,18 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDORuntimeObject
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDORuntimeObject
+ * @brief     unknown
+ *********************************************************************************/
 class RDORuntimeObject
 {
 public:
-	RDORuntimeObject()
-	{}
-	virtual ~RDORuntimeObject()
-	{}
+	RDORuntimeObject();
+	virtual ~RDORuntimeObject();
 };
+
+/// @todo удалить комментарии
 
 //class RDORuntimeObject
 //{
@@ -116,97 +117,46 @@ public:
 //	ChildList m_childList;
 //};
 
-// ********************************************************************************
-// ******************** RDOSrcInfo
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOSrcInfo
+ * @brief     unknown
+ *********************************************************************************/
 class RDOSrcInfo
 {
 public:
 	struct Position
 	{
-		enum { UNDEFINE_POS  = ~0 };
-		enum { UNDEFINE_LINE = ~0 };
+		enum {UNDEFINE_POS  = ~0};
+		enum {UNDEFINE_LINE = ~0};
 
 		ruint m_first_line;
 		ruint m_first_pos;
 		ruint m_last_line;
 		ruint m_last_pos;
 
-		Position::Position()
-			: m_first_line(UNDEFINE_LINE)
-			, m_first_pos (UNDEFINE_POS )
-			, m_last_line (UNDEFINE_LINE)
-			, m_last_pos  (UNDEFINE_POS )
-		{}
-		Position::Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
-			: m_first_line(first_line)
-			, m_first_pos (first_pos )
-			, m_last_line (last_line )
-			, m_last_pos  (last_pos  )
-		{}
-		rbool empty() const
-		{
-			return m_first_line == UNDEFINE_LINE && m_first_pos == UNDEFINE_POS && m_last_line == UNDEFINE_LINE && m_last_pos == UNDEFINE_POS;
-		}
-		rbool point() const
-		{
-			return m_first_line == m_last_line && m_first_pos == m_last_pos;
-		}
+		Position::Position();
+		Position::Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
+		rbool empty() const;
+		rbool point() const;
 	};
 
-	RDOSrcInfo()
-		: m_text_data(_T("")              )
-		, m_file_type(rdoModelObjects::TRC)
-	{}
-	void setSrcInfo(CREF(RDOSrcInfo) info)
-	{
-		setSrcPos     (info.m_position );
-		setSrcText    (info.m_text_data);
-		setSrcFileType(info.m_file_type);
-	}
-	void setSrcInfo(CREF(RDOSrcInfo) begin, CREF(tstring) delim, CREF(RDOSrcInfo) end)
-	{
-		setSrcPos     (begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos);
-		setSrcText    (begin.src_text() + delim + end.src_text());
-		setSrcFileType(begin.src_filetype());
-	}
-	void setSrcPos(CREF(Position) position)
-	{
-		m_position.m_first_line = position.m_first_line;
-		m_position.m_first_pos  = position.m_first_pos;
-		m_position.m_last_line  = position.m_last_line;
-		m_position.m_last_pos   = position.m_last_pos;
-	}
-	void setSrcPos(CREF(Position) position_begin, CREF(Position) position_end)
-	{
-		m_position.m_first_line = position_begin.m_first_line;
-		m_position.m_first_pos  = position_begin.m_first_pos;
-		m_position.m_last_line  = position_end.m_last_line;
-		m_position.m_last_pos   = position_end.m_last_pos;
-	}
-	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
-	{
-		m_position.m_first_line = first_line;
-		m_position.m_first_pos  = first_pos;
-		m_position.m_last_line  = last_line;
-		m_position.m_last_pos   = last_pos;
-	}
-	virtual void setSrcText(CREF(tstring) value)
-	{
-		m_text_data = value;
-	}
-	void setSrcFileType(rdoModelObjects::RDOFileType value)
-	{
-		m_file_type = value;
-	}
-	CREF(RDOSrcInfo)             src_info    () const { return *this;       }
-	CREF(Position)               src_pos     () const { return m_position;  }
-	CREF(tstring)                src_text    () const { return m_text_data; }
-	rdoModelObjects::RDOFileType src_filetype() const { return m_file_type; }
-	rbool                        src_empty   () const
-	{
-		return m_position.empty() && m_text_data.empty() && m_file_type == rdoModelObjects::TRC;
-	}
+	RDOSrcInfo();
+
+	void setSrcInfo(CREF(RDOSrcInfo) info);
+	void setSrcInfo(CREF(RDOSrcInfo) begin, CREF(tstring) delim, CREF(RDOSrcInfo) end);
+
+	void setSrcPos(CREF(Position) position);
+	void setSrcPos(CREF(Position) position_begin, CREF(Position) position_end);
+	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
+
+	virtual void setSrcText(CREF(tstring) value);
+	void setSrcFileType(rdoModelObjects::RDOFileType value);
+
+	CREF(RDOSrcInfo)             src_info    () const;
+	CREF(Position)               src_pos     () const;
+	CREF(tstring)                src_text    () const;
+	rdoModelObjects::RDOFileType src_filetype() const;
+	rbool                        src_empty   () const;
 
 private:
 	Position                     m_position;
@@ -216,15 +166,23 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** INotify
-// ********************************************************************************
+/******************************************************************************//**
+ * @interface INotify
+ * @brief     unknown
+ *********************************************************************************/
 class INotify
 {
 public:
 	virtual void notify(ruint message, PTR(void) param) = 0;
 };
+
+/******************************************************************************//**
+ * @def       DECLARE_INotify
+ * @brief     unknown
+ *********************************************************************************/
 #define DECLARE_INotify \
 	virtual void notify(ruint message, PTR(void) param);
+
+#include "rdo_lib/rdo_runtime/rdo_object.inl"
 
 #endif // _LIB_RUNTIME_OBJECT_H_
