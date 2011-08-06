@@ -1,10 +1,11 @@
-/**
- @file    rdo_runtime.cpp
- @authors Урусов Андрей, Лущан Дмитрий
- @date    unknown
- @brief   RDORuntime implementation
- @indent  4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2007
+ * @file      rdo_runtime.cpp
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      16.05.2007
+ * @brief     RDORuntime implementation
+ * @indent    4T
+ *********************************************************************************/
 
 // *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
@@ -71,7 +72,7 @@ void RDORuntime::connect(PTR(INotify) to, ruint message)
 	{
 		if (it->second == to)
 			break;
-		it++;
+		++it;
 	}
 	if (it == m_connected.end())
 	{
@@ -89,7 +90,7 @@ void RDORuntime::disconnect(PTR(INotify) to)
 			it = m_connected.erase(it);
 			if (it == m_connected.end()) break;
 		}
-		it++;
+		++it;
 	}
 }
 
@@ -103,7 +104,7 @@ void RDORuntime::disconnect(PTR(INotify) to, ruint message)
 			it = m_connected.erase(it);
 			if (it == m_connected.end()) break;
 		}
-		it++;
+		++it;
 	}
 }
 
@@ -113,7 +114,7 @@ void RDORuntime::fireMessage(ruint message, PTR(void) param)
 	while (it != m_connected.end())
 	{
 		it->second->notify(message, param);
-		it++;
+		++it;
 	}
 }
 
@@ -124,7 +125,7 @@ void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
 
 rbool RDORuntime::endCondition()
 {
-	if ( !pTerminateIfCalc )
+	if (!pTerminateIfCalc)
 	{
 		return false;	// forever
 	}
@@ -211,10 +212,10 @@ rbool RDORuntime::checkState()
 		state.push_back(res);
 	}
 	if (state.size() != allResourcesByID.size()) return false;
-	for (ruint i = 0; i < state.size(); i++)
+	for (ruint i = 0; i < state.size(); ++i)
 	{
 		if (state[i].size() != allResourcesByID[i]->paramsCount()) return false;
-		for (ruint j = 0; j < allResourcesByID[i]->paramsCount(); j++)
+		for (ruint j = 0; j < allResourcesByID[i]->paramsCount(); ++j)
 		{
 			if (state[i][j] != allResourcesByID[i]->getParam(j)) return false;
 		}
@@ -232,7 +233,7 @@ void RDORuntime::showResources(int node) const
 		if (*it)
 		{
 			TRACE1(_T("%d. "), index);
-			for (ruint i = 0; i < (*it)->paramsCount(); i++)
+			for (ruint i = 0; i < (*it)->paramsCount(); ++i)
 			{
 				TRACE1(_T("%s "), (*it)->getParam(i).getAsString().c_str());
 			}
@@ -242,8 +243,8 @@ void RDORuntime::showResources(int node) const
 		{
 			TRACE1(_T("%d. NULL\n"), index);
 		}
-		index++;
-		it++;
+		++index;
+		++it;
 	}
 }
 #endif
@@ -266,7 +267,7 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 		while (it != m_pokazWatchValueList.end())
 		{
 			(*it)->checkResourceErased(res);
-			it++;
+			++it;
 		}
 		allResourcesByID.at(res_id) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
@@ -351,7 +352,7 @@ rbool RDORuntime::keyDown(ruint scan_code)
 			}
 			else
 			{
-				it++;
+				++it;
 			}
 		}
 	}
@@ -362,9 +363,9 @@ rbool RDORuntime::keyDown(ruint scan_code)
 	{
 		if (*it == scan_code)
 		{
-			cnt++;
+			++cnt;
 		}
-		it++;
+		++it;
 	}
 	// Добавим клавишу в буфер
 	if (cnt < 4)
@@ -389,7 +390,7 @@ void RDORuntime::keyUp(ruint scan_code)
 			}
 			else
 			{
-				it++;
+				++it;
 			}
 		}
 	//}
@@ -414,7 +415,7 @@ rbool RDORuntime::checkKeyPressed(ruint scan_code, rbool shift, rbool control)
 			control_found = true;
 			if (shift_found && control_found) break;
 		}
-		it++;
+		++it;
 	}
 	// Теперь найдем саму клавишу в буфере
 	// Удалим её из буфера перед выходом
@@ -429,7 +430,7 @@ rbool RDORuntime::checkKeyPressed(ruint scan_code, rbool shift, rbool control)
 				key_found = true;
 				return true;
 			}
-			it++;
+			++it;
 		}
 	}
 	key_found = false;
@@ -510,7 +511,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	ASSERT(pOther);
 
 	ruint size = pOther->allResourcesByID.size();
-	for (ruint i = 0; i < size; i++)
+	for (ruint i = 0; i < size; ++i)
 	{
 		if (pOther->allResourcesByID.at(i) == NULL)
 		{
@@ -537,7 +538,7 @@ rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 	if (pOther->allResourcesByID.size() != allResourcesByID.size()) return false;
 
 	ruint size = allResourcesByID.size();
-	for (ruint i = 0; i < size; i++)
+	for (ruint i = 0; i < size; ++i)
 	{
 		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) != NULL) return false;
 		if (allResourcesByID.at(i) != NULL && pOther->allResourcesByID.at(i) == NULL) return false;
@@ -553,7 +554,7 @@ void RDORuntime::onResetPokaz()
 	while (it != m_pokazAllList.end())
 	{
 		(*it)->resetPokaz(this);
-		it++;
+		++it;
 	}
 }
 
@@ -563,7 +564,7 @@ void RDORuntime::onCheckPokaz()
 	while (it != m_pokazAllList.end())
 	{
 		(*it)->checkPokaz(this);
-		it++;
+		++it;
 	}
 }
 
@@ -573,7 +574,7 @@ void RDORuntime::onAfterCheckPokaz()
 	while (it != m_pokazTraceList.end())
 	{
 		(*it)->tracePokaz();
-		it++;
+		++it;
 	}
 }
 
@@ -591,7 +592,7 @@ void RDORuntime::onPutToTreeNode()
 	// when create TreeNode with new RDOSimulator,
 	// make all resources permanent, to avoid trace their
 	// erase when delete TreeNode
-	for (ruint i = 0; i < allResourcesByID.size(); i++)
+	for (ruint i = 0; i < allResourcesByID.size(); ++i)
 	{
 		if (allResourcesByID.at(i))
 		{
@@ -631,7 +632,7 @@ void RDORuntime::postProcess()
 		}
 		catch (REF(RDORuntimeException))
 		{}
-		it++;
+		++it;
 	}
 
 	try
@@ -711,11 +712,12 @@ RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
 	m_keys.insert(KeySet::value_type("NUMPAD9", VK_NUMPAD9));
 	m_keys.insert(KeySet::value_type("NOKEY", 0));
 
-	for (char i = '0'; i <= '9'; i++)
+	for (char i = '0'; i <= '9'; ++i)
 	{
 		m_keys.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
 	}
-	for (char i = 'A'; i <= 'Z'; i++)
+
+	for (char i = 'A'; i <= 'Z'; ++i)
 	{
 		m_keys.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
 	}

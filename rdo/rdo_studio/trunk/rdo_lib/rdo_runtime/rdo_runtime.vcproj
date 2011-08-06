@@ -605,6 +605,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_runtime.inl"
+				>
+			</File>
+			<File
 				RelativePath="rdo_simulator.cpp"
 				>
 				<FileConfiguration
