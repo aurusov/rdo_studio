@@ -19,7 +19,7 @@
 #include "rdo_common/test/rdo_common_test/resource.h"
 // ===============================================================================
 
-const tstring s_testFileName(_T("test_file"));
+const tstring s_testFileName(_T("test_directory/test_file.test"));
 const tstring s_resourceStr1(_T("test_101"));
 const tstring s_resourceStr2(_T("test_102 22"));
 const tstring s_resourceStr3(_T("test_103 test_101 33 test_102 22"));
@@ -40,6 +40,16 @@ BOOST_AUTO_TEST_CASE(RDOCommon_Test)
 
 	{
 		BOOST_CHECK(rdo::File::create(s_testFileName));
+	}
+
+	{
+		tstring fileName;
+		tstring fileDir;
+		tstring fileExt;
+		BOOST_CHECK(rdo::File::splitpath(s_testFileName, fileDir, fileName, fileExt));
+		BOOST_CHECK(fileName == "test_file");
+		BOOST_CHECK(fileDir == "test_directory/");
+		BOOST_CHECK(fileExt == ".test");
 	}
 
 	{

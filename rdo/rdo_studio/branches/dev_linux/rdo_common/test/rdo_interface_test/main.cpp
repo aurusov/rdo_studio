@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_SUITE(RDOInterfaceTest)
 BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 {
 	{
-		rdo::UnknownPointer smptr = F(MyClass2)::create(initFValue);
+		rdo::UnknownPointer smptr = RF(MyClass2)::create(initFValue);
 		BOOST_REQUIRE(smptr);
 
 		BOOST_CHECK_EQUAL(s_logList.size(), 2);
@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 
 		MyInterface         imy3 = smptr;
 		rdo::UnknownPointer smptr2;
-		smptr2 = F(MyClass2)::create(initSValue);
+		smptr2 = RF(MyClass2)::create(initSValue);
 		BOOST_CHECK_EQUAL(s_logList.size(), 2);
 		it = s_logList.begin();
 		BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initSValue);
@@ -228,8 +228,8 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		BOOST_CHECK(int1_1 == int1_2);
 
 		MyInterfaceList myInterfaceList;
-		myInterfaceList.push_back(F(MyClass3)::create(initTValue));
-		myInterfaceList.push_back(smptr );
+		myInterfaceList.push_back(RF(MyClass3)::create(initTValue));
+		myInterfaceList.push_back(smptr);
 		myInterfaceList.push_back(smptr2);
 
 		char symbolT = _T('0');

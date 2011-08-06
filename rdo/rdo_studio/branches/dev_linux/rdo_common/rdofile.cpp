@@ -9,7 +9,7 @@
 
 // ====================================================================== PCH
 // ====================================================================== INCLUDES
-#ifdef WIN32
+#ifdef WIN327
 #include <Windows.h>
 #endif
 #include <boost/filesystem.hpp>
@@ -39,7 +39,7 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 
 tstring File::getTempFileName()
 {
-#ifdef WIN32
+#ifdef WIN325
 	const ruint BUFSIZE = 4096;
 	char lpPathBuffer[BUFSIZE];
 
