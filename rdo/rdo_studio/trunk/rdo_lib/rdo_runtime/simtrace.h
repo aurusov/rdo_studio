@@ -1,12 +1,24 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2006
+ * @file      simtrace.h
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
+
 #ifndef _LIB_RUNTIME_SIM_TRACE_H_
 #define _LIB_RUNTIME_SIM_TRACE_H_
 
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
+// ********************************************************************************
 
-namespace rdoParse {
+OPEN_RDO_PARSE_NAMESPACE
 class RDODPTSome;
-}
+CLOSE_RDO_PARSE_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -18,6 +30,10 @@ class RDOOperation;
 
 PREDECLARE_POINTER(RDOSimulatorTrace);
 
+/******************************************************************************//**
+ * @class     RDOSimulatorTrace
+ * @brief     unknown
+ *********************************************************************************/
 CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
 {
 DECLARE_FACTORY(RDOSimulatorTrace)
@@ -26,33 +42,20 @@ public:
 
 	virtual void rdoInit();
 
-	RDOTrace* getTracer() const            { return m_tracer;                }
-	rbool     canTrace() const             { return getTracer()->canTrace(); }
+	PTR(RDOTrace) getTracer() const;
+	rbool     canTrace() const;
 
-	double getTraceStartTime() const       { return traceStartTime;          }
-	void setTraceStartTime( double value ) { traceStartTime = value;         }
+	double getTraceStartTime() const;
+	void setTraceStartTime(double value);
 
-	double getTraceEndTime() const         { return traceEndTime;            }
-	void setTraceEndTime( double value )   { traceEndTime = value;           }
+	double getTraceEndTime() const;
+	void setTraceEndTime(double value);
 
-	virtual void onNewTimeNow() {
-		if ( timeForTrace() ) {
-			getTracer()->startWriting();
-		} else {
-			getTracer()->stopWriting();
-		}
-	}
+	virtual void onNewTimeNow();
 
-	void memory_insert( unsigned int mem ) {
-		memory_current += mem;
-		if ( memory_current > memory_max ) memory_max = memory_current;
-	}
-	void memory_remove( unsigned int mem ) {
-		memory_current -= mem;
-	}
-	unsigned int memory_get() const {
-		return memory_max;
-	}
+	void memory_insert(unsigned int mem);
+	void memory_remove(unsigned int mem);
+	unsigned int memory_get() const;
 
 	ruint getResourceId();
 	void incrementResourceIdReference(int id);
@@ -61,36 +64,13 @@ public:
 	int getFreeOperationId(); 
 	void onResourceErase(CREF(LPRDOResource) pResource);
 
-	int getFreeEventId()
-	{
-		return m_eventCounter++;
-	}
-	int getFreeActivityId()
-	{
-		return m_activityCounter++;
-	}
+	int getFreeEventId();
+	int getFreeActivityId();
 
-	int getFreeDPTId()
-	{
-		return m_dptCounter++;
-	}
+	int getFreeDPTId();
 
 protected:
-	RDOSimulatorTrace():
-		RDOSimulator(),
-		m_tracer( NULL ),
-		traceStartTime( UNDEFINE_TIME ),
-		traceEndTime( UNDEFINE_TIME ),
-		m_ieCounter( 1 ),
-		m_eventCounter( 1 ),
-		m_activityCounter( 1 ),
-		m_dptCounter( 1 ),
-		maxResourcesId( 0 ),
-		maxOperationId( 1 ),
-		memory_current( 0 ),
-		memory_max( 0 )
-	{
-	}
+	RDOSimulatorTrace();
 	virtual ~RDOSimulatorTrace();
 
 	void copyFrom(CREF(LPRDOSimulatorTrace) pOther);
@@ -114,7 +94,7 @@ private:
 	std::list<ruint> freeResourcesIds;
 	typedef std::map<int, int> MAPII;
 	MAPII resourcesIdsRefs;
-	std::list< int > freeOperationsIds;
+	std::list<int> freeOperationsIds;
 
 	void eraseFreeResourceId(ruint id);
 
@@ -123,22 +103,19 @@ private:
 	int m_activityCounter;
 	int m_dptCounter;
 
-	void addTemplateDecisionPoint ( RDODPTSearchTrace *dp   );
-	void addTemplateEvent         ( RDOEvent          *ev   );
-	void addTemplateRule          ( RDORule           *rule );
-	void addTemplateOperation     ( RDOOperation      *op   );
+	void addTemplateDecisionPoint(RDODPTSearchTrace *dp  );
+	void addTemplateEvent        (RDOEvent          *ev  );
+	void addTemplateRule         (RDORule           *rule);
+	void addTemplateOperation    (RDOOperation      *op  );
 
 	ruint memory_current;
 	ruint memory_max;
 
-	rbool timeForTrace() const
-	{
-		if ( getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime() ) return false;
-		if ( getTraceEndTime()   != UNDEFINE_TIME && getTraceEndTime()   < getCurrentTime() ) return false;
-		return true;
-	}
+	rbool timeForTrace() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/simtrace.inl"
 
 #endif // _LIB_RUNTIME_SIM_TRACE_H_

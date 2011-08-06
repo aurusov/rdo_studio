@@ -1,29 +1,44 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2006
+ * @file      rdo_base.cpp
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
+ * @brief     Управление симулятором
+ * @indent    4T
+ *********************************************************************************/
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// *********************************************************************** INCLUDES
 #include <limits>
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdobase.h"
 #include "rdo_lib/rdo_runtime/calc/operation_type.h"
+// ********************************************************************************
 
-#pragma warning(disable : 4786)  
+#pragma warning(disable : 4786)
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-RDOSimulatorBase::RDOSimulatorBase():
-	m_startTime( 0 ),
-	m_currentTime( 0 ),
-	m_nextTime( 0 ),
-	m_mode( rdoRuntime::RTM_MaxSpeed ),
-	m_speed( 1 ),
-	m_speed_range_max( 500000 ),
-	m_next_delay_count( 0 ),
-	m_next_delay_current( 0 ),
-	m_showRate( 60 ),
-	m_msec_wait( 0 ),
-	m_msec_prev( 0 ),
-	m_cnt_events( 0 ),
-	m_cnt_choice_from( 0 ),
-	m_checkOperation( true )
-{
-}
+// ********************************************************************************
+// ******************** RDOSimulatorBase
+// ********************************************************************************
+RDOSimulatorBase::RDOSimulatorBase()
+	: m_startTime         (0                       )
+	, m_currentTime       (0                       )
+	, m_nextTime          (0                       )
+	, m_mode              (rdoRuntime::RTM_MaxSpeed)
+	, m_speed             (1                       )
+	, m_speed_range_max   (500000                  )
+	, m_next_delay_count  (0                       )
+	, m_next_delay_current(0                       )
+	, m_showRate          (60                      )
+	, m_msec_wait         (0                       )
+	, m_msec_prev         (0                       )
+	, m_cnt_events        (0                       )
+	, m_cnt_choice_from   (0                       )
+	, m_checkOperation    (true                    )
+{}
 
 ruint RDOSimulatorBase::get_cnt_calc_arithm() const
 {
@@ -59,31 +74,31 @@ void RDOSimulatorBase::rdoInit()
 
 rbool RDOSimulatorBase::rdoNext()
 {
-	if ( m_mode == rdoRuntime::RTM_Pause || m_mode == rdoRuntime::RTM_BreakPoint )
+	if (m_mode == rdoRuntime::RTM_Pause || m_mode == rdoRuntime::RTM_BreakPoint)
 	{
-		::Sleep( 1 );
+		::Sleep(1);
 		return true;
 	}
 	// Если нажата клавиша или активная область, то задержки надо проскачить
 	rbool keyboard = isKeyDown();
-	if ( !keyboard )
+	if (!keyboard)
 	{
 		// Задержка общей скорости моделирования
 		// Это mode == rdoRuntime::RTM_Jump || mode == rdoRuntime::RTM_Sync
-		if ( m_mode != rdoRuntime::RTM_MaxSpeed && m_next_delay_count )
+		if (m_mode != rdoRuntime::RTM_MaxSpeed && m_next_delay_count)
 		{
-			m_next_delay_current++;
-			if ( m_next_delay_current < m_next_delay_count ) return true;
+			++m_next_delay_current;
+			if (m_next_delay_current < m_next_delay_count) return true;
 			m_next_delay_current = 0;
 		}
 		// Задержка синхронной скорости моделирования (длительность операций)
 		// Тут не надо проверять mode == rdoRuntime::RTM_Sync, т.к. это уже заложено в msec_wait,
 		// который сбрасывается в setMode и не изменяется далее.
-		if ( m_msec_wait > 1 )
+		if (m_msec_wait > 1)
 		{
 			SYSTEMTIME systime_current;
-			::GetSystemTime( &systime_current );
-			unsigned int msec_curr = getMSec( systime_current );
+			::GetSystemTime(&systime_current);
+			unsigned int msec_curr = getMSec(systime_current);
 			unsigned int msec_delta;
 			// Милисекунды считаются с учетом часов, но при смене суток часы сбрасываются на ноль,
 			// и текущее время в милисекундах становится меньше предыдущего. Учитываем этот момент
@@ -94,7 +109,7 @@ rbool RDOSimulatorBase::rdoNext()
 			// автоматическом режиме, обрабатывая информацию с контроллеров. РДО это делать не умеет.
 			// Как решение - отказ от синхронной работы в таких системах, и учет только скорости, или
 			// переход на работу с календарем дней, месяцев и лет. SYSTEMTIME содержит такую информацию.
-			if ( msec_curr >= m_msec_prev )
+			if (msec_curr >= m_msec_prev)
 			{
 				msec_delta = msec_curr - m_msec_prev;
 			}
@@ -102,54 +117,54 @@ rbool RDOSimulatorBase::rdoNext()
 			{
 				msec_delta = UINT_MAX - m_msec_prev + msec_curr;
 			}
-			if ( msec_delta <= m_msec_wait ) return true;
+			if (msec_delta <= m_msec_wait) return true;
 			m_msec_wait -= msec_delta;
 		}
 	}
 	// Окончание моделирования - сработало событие конца
-	if ( endCondition() )
+	if (endCondition())
 	{
 		onEndCondition();
 		return false;
 	}
-	if ( m_currentTime != m_nextTime )
+	if (m_currentTime != m_nextTime)
 	{
 		m_currentTime = m_nextTime;
 		onNewTimeNow();
 	}
 	// Выполнение операции
-	if ( doOperation() )
+	if (doOperation())
 	{
-		if ( breakPoints() )
+		if (breakPoints())
 		{
-			setMode( RTM_BreakPoint );
+			setMode(RTM_BreakPoint);
 		}
 		return true;
 	}
 	else
 	{
 		// Переход к следующей операции
-		if ( !m_timePoints.empty() )
+		if (!m_timePoints.empty())
 		{
 			double newTime = m_timePoints.begin()->first;
 			BOPlannedItem* list = m_timePoints.begin()->second;
-			if ( !list || list->empty() )
+			if (!list || list->empty())
 			{
 				delete m_timePoints.begin()->second;
-				m_timePoints.erase( m_timePoints.begin() );
+				m_timePoints.erase(m_timePoints.begin());
 			}
-			if ( m_currentTime > newTime )
+			if (m_currentTime > newTime)
 			{
 				newTime = m_currentTime;
 			}
-			if ( m_mode == rdoRuntime::RTM_Sync )
+			if (m_mode == rdoRuntime::RTM_Sync)
 			{
 				m_msec_wait += (newTime - m_nextTime) * 3600.0 * 1000.0 / m_showRate;
-				if ( m_msec_wait > 0 )
+				if (m_msec_wait > 0)
 				{
-					if ( newTime != m_startTime )
+					if (newTime != m_startTime)
 					{
-						if ( m_speed > DBL_MIN )
+						if (m_speed > DBL_MIN)
 						{
 							m_msec_wait = m_msec_wait / m_speed;
 						}
@@ -158,8 +173,8 @@ rbool RDOSimulatorBase::rdoNext()
 							m_msec_wait = m_msec_wait / DBL_MIN;
 						}
 						SYSTEMTIME systime_current;
-						::GetSystemTime( &systime_current );
-						m_msec_prev = getMSec( systime_current );
+						::GetSystemTime(&systime_current);
+						m_msec_prev = getMSec(systime_current);
 					}
 					else
 					{
@@ -180,16 +195,16 @@ rbool RDOSimulatorBase::rdoNext()
 	return true;
 }
 
-void RDOSimulatorBase::setMode( rdoRuntime::RunTimeMode _mode )
+void RDOSimulatorBase::setMode(rdoRuntime::RunTimeMode _mode)
 {
-	if ( m_mode == rdoRuntime::RTM_Pause )
+	if (m_mode == rdoRuntime::RTM_Pause)
 	{
 		// Чтобы сразу перейти к следующей операции после паузы и чтобы 'не бегало'
 		m_next_delay_current = m_next_delay_count;
 		m_msec_wait          = 0;
 	}
 	m_mode = _mode;
-	if ( m_mode == rdoRuntime::RTM_MaxSpeed || m_mode == rdoRuntime::RTM_Jump )
+	if (m_mode == rdoRuntime::RTM_MaxSpeed || m_mode == rdoRuntime::RTM_Jump)
 	{
 		// Чтобы сразу перейти к следующей операции
 		m_next_delay_current = m_next_delay_count;
@@ -199,8 +214,8 @@ void RDOSimulatorBase::setMode( rdoRuntime::RunTimeMode _mode )
 
 void RDOSimulatorBase::setSpeed( double value )
 {
-	if ( value < 0 ) value = 0;
-	if ( value > 1 ) value = 1;
+	if (value < 0) value = 0;
+	if (value > 1) value = 1;
 	m_speed = value;
 	m_next_delay_count = (unsigned int)((1 - m_speed) * m_speed_range_max);
 	// Чтобы сразу перейти к следующей операции
@@ -210,8 +225,8 @@ void RDOSimulatorBase::setSpeed( double value )
 
 void RDOSimulatorBase::setShowRate( double value )
 {
-	if ( value < DBL_MIN ) value = DBL_MIN;
-	if ( value > DBL_MAX ) value = DBL_MAX;
+	if (value < DBL_MIN) value = DBL_MIN;
+	if (value > DBL_MAX) value = DBL_MAX;
 	m_showRate = value;
 	// Чтобы сразу перейти к следующей операции
 	m_next_delay_current = m_next_delay_count;
@@ -221,53 +236,53 @@ void RDOSimulatorBase::setShowRate( double value )
 void RDOSimulatorBase::rdoPostProcess()
 {
 	postProcess();
-	while ( !m_timePoints.empty() )
+	while (!m_timePoints.empty())
 	{
 		delete m_timePoints.begin()->second;
-		m_timePoints.erase( m_timePoints.begin() );
+		m_timePoints.erase(m_timePoints.begin());
 	}
 }
 
 void RDOSimulatorBase::addTimePoint(double timePoint, CREF(LPIBaseOperation) opr, void* param)
 {
 	BOPlannedItem* list = NULL;
-	if ( opr && (m_timePoints.find( timePoint ) == m_timePoints.end() || m_timePoints[timePoint] == NULL) )
+	if (opr && (m_timePoints.find(timePoint) == m_timePoints.end() || m_timePoints[timePoint] == NULL))
 	{
 		list = new BOPlannedItem();
 		m_timePoints[timePoint] = list;
 	}
-	if ( opr )
+	if (opr)
 	{
-		m_timePoints[timePoint]->push_back( BOPlanned(opr, param) );
+		m_timePoints[timePoint]->push_back(BOPlanned(opr, param));
 	}
 }
 
 void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 {
 	BOPlannedMap::iterator it = m_timePoints.begin();
-	while ( it != m_timePoints.end() )
+	while (it != m_timePoints.end())
 	{
 		BOPlannedItem* list = it->second;
 		BOPlannedItem::iterator item = list->begin();
-		while ( item != list->end() )
+		while (item != list->end())
 		{
 			// Удалим операцию из списка запланированных
-			if ( item->m_opr == opr )
+			if (item->m_opr == opr)
 			{
-				item = list->erase( item );
+				item = list->erase(item);
 				continue;
 			}
-			item++;
+			++item;
 		}
 		// Если список запланированых пустой, то удалим и его
-		if ( list->empty() )
+		if (list->empty())
 		{
-			it = m_timePoints.erase( it );
+			it = m_timePoints.erase(it);
 			continue;
 		}
 		else
 		{
-			it++;
+			++it;
 		}
 	}
 }

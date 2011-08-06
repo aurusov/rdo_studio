@@ -671,6 +671,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_simulator.inl"
+				>
+			</File>
+			<File
 				RelativePath="rdobase.cpp"
 				>
 				<FileConfiguration
@@ -733,6 +737,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdobase.inl"
+				>
+			</File>
+			<File
 				RelativePath="simtrace.cpp"
 				>
 				<FileConfiguration
@@ -792,6 +800,10 @@
 			</File>
 			<File
 				RelativePath="simtrace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\simtrace.inl"
 				>
 			</File>
 			<File

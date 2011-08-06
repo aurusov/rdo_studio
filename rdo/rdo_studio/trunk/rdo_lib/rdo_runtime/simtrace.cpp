@@ -1,18 +1,35 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2006
+ * @file      simtrace.cpp
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/rdodebug.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
+// ********************************************************************************
 
 #pragma warning(disable : 4786)  
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+// ********************************************************************************
+// ******************** RDOSimulatorTrace
+// ********************************************************************************
 RDOSimulatorTrace::~RDOSimulatorTrace()
 {
-	if ( m_tracer ) {
+	if (m_tracer)
+	{
 		delete m_tracer;
 		m_tracer = NULL;
 	}
@@ -56,38 +73,45 @@ ruint RDOSimulatorTrace::getResourceId()
 
 void RDOSimulatorTrace::eraseFreeResourceId(ruint id)
 {
-	MAPII::iterator it = resourcesIdsRefs.find( id );
-	if ( it != resourcesIdsRefs.end() ) {
-		if( --(*it).second >= 1 ) return;
-		resourcesIdsRefs.erase( it );
+	MAPII::iterator it = resourcesIdsRefs.find(id);
+	if (it != resourcesIdsRefs.end())
+	{
+		if(--(*it).second >= 1) return;
+		resourcesIdsRefs.erase(it);
 	}
-	freeResourcesIds.push_back( id ); 
+	freeResourcesIds.push_back(id);
 }
 
-void RDOSimulatorTrace::incrementResourceIdReference( int id )
+void RDOSimulatorTrace::incrementResourceIdReference(int id)
 {
-	MAPII::iterator it = resourcesIdsRefs.find( id );
-	if ( it == resourcesIdsRefs.end() ) {
-		resourcesIdsRefs.insert( MAPII::value_type(id, 2) );
-	} else {
+	MAPII::iterator it = resourcesIdsRefs.find(id);
+	if (it == resourcesIdsRefs.end())
+	{
+		resourcesIdsRefs.insert(MAPII::value_type(id, 2));
+	}
+	else
+	{
 		(*it).second++;
 	}
 }
 
-int RDOSimulatorTrace::getFreeOperationId() 
+int RDOSimulatorTrace::getFreeOperationId()
 {
-	if ( freeOperationsIds.empty() ) {
+	if (freeOperationsIds.empty())
+	{
 		return maxOperationId++;
-	} else {
+	}
+	else
+	{
 		int id = freeOperationsIds.front();
 		freeOperationsIds.pop_front();
 		return id;
 	}
 }
 
-void RDOSimulatorTrace::freeOperationId(int id) 
+void RDOSimulatorTrace::freeOperationId(int id)
 {
-	freeOperationsIds.push_front(id); 
+	freeOperationsIds.push_front(id);
 }
 
 void RDOSimulatorTrace::onResourceErase(CREF(LPRDOResource) pResource)
