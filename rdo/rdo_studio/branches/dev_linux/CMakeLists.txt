@@ -32,6 +32,11 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 # add the include folder to the include path
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
+
+INCLUDE(CTest)
+ENABLE_TESTING()
+
+
 # Compile the rdo_common
 SET(RDO_COMMON_PATH ${RDO_BASE_DIRECTORY}/rdo_common)
 ADD_SUBDIRECTORY(${RDO_COMMON_PATH})

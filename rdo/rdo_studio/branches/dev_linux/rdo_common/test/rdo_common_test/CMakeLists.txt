@@ -25,6 +25,7 @@ FIND_PACKAGE(Boost COMPONENTS unit_test_framework REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(test_rdo_common ${SOURCE_FILES} ${RESOURCE_FILES})
+ADD_TEST(NAME test_rdo_common COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_common)
 ADD_DEPENDENCIES(test_rdo_common rdo_nix_common)
 
 IF(MSVC)

@@ -19,7 +19,8 @@
 #include "rdo_common/test/rdo_common_test/resource.h"
 // ===============================================================================
 
-const tstring s_testFileName(_T("test_directory/test_file.test"));
+const tstring s_testFileName(_T("test_file.test"));
+const tstring s_testFileNameDirectory(_T("test_directory/test_file.test"));
 const tstring s_resourceStr1(_T("test_101"));
 const tstring s_resourceStr2(_T("test_102 22"));
 const tstring s_resourceStr3(_T("test_103 test_101 33 test_102 22"));
@@ -30,15 +31,6 @@ BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 BOOST_AUTO_TEST_CASE(RDOCommon_Test)
 {
 	{
-		tstring str1 = rdo::format(IDS_STRING101);
-		BOOST_CHECK(str1 == s_resourceStr1);
-		tstring str2 = rdo::format(IDS_STRING102, 22);
-		BOOST_CHECK(str2 == s_resourceStr2);
-		tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
-		BOOST_CHECK(str3 == s_resourceStr3);
-	}
-
-	{
 		BOOST_CHECK(rdo::File::create(s_testFileName));
 	}
 
@@ -46,10 +38,10 @@ BOOST_AUTO_TEST_CASE(RDOCommon_Test)
 		tstring fileName;
 		tstring fileDir;
 		tstring fileExt;
-		BOOST_CHECK(rdo::File::splitpath(s_testFileName, fileDir, fileName, fileExt));
-		BOOST_CHECK(fileName == "test_file");
-		BOOST_CHECK(fileDir == "test_directory/");
-		BOOST_CHECK(fileExt == ".test");
+		BOOST_CHECK(rdo::File::splitpath(s_testFileNameDirectory, fileDir, fileName, fileExt));
+		BOOST_CHECK(fileName == tstring("test_file"));
+		BOOST_CHECK(fileDir == tstring("test_directory/"));
+		BOOST_CHECK(fileExt == tstring(".test"));
 	}
 
 	{
