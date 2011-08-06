@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="rdo_runtime"
 	ProjectGUID="{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}"
 	RootNamespace="rdo_runtime"
 	Keyword="MFCProj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
