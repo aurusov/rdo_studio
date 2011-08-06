@@ -1,5 +1,18 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2008
+ * @file      rdo_fuzzy.cpp
+ * @authors   Урусов Андрей
+ * @date      24.07.2008
+ * @brief     Нечеткая логика
+ * @indent    4T
+ *********************************************************************************/
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -63,6 +76,7 @@ RDOFuzzyValue RDOFuzzyValue::operator|| (CREF(RDOFuzzyValue) fuzzy_value) const
 	return fuzzy_result;
 }
 
+/// @todo комментарии в *.h
 //! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
 RDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(RDOFuzzyValue) fuzzy_value) const
 {

@@ -1,3 +1,12 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2008
+ * @file      rdo_fuzzy_def.h
+ * @authors   Урусов Андрей
+ * @date      28.07.2008
+ * @brief     Нечеткая логика
+ * @indent    4T
+ *********************************************************************************/
+
 #ifndef _LIB_RUNTIME_FUZZY_DEF_H_
 #define _LIB_RUNTIME_FUZZY_DEF_H_
 
@@ -10,17 +19,21 @@
 // #include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
 //
 
+// *********************************************************************** INCLUDES
 #include <map>
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOFuzzyValue
-// ********************************************************************************
 PREDECLARE_POINTER(RDOFuzzyType);
 
+/******************************************************************************//**
+ * @class     RDOFuzzyValue
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzyValue
 {
 public:
@@ -80,11 +93,12 @@ private:
 	/* 3.83  */  RDOFuzzyValue ext_binary(ExtBinaryFun fun, CREF(RDOFuzzyValue) fuzzy_value) const;
 };
 
-// ********************************************************************************
-// ******************** RDOFuzzyType
-// ********************************************************************************
 PREDECLARE_POINTER(RDOFuzzySetDefinition);
 
+/******************************************************************************//**
+ * @class     RDOFuzzyType
+ * @brief     Тип нечеткой переменной
+ *********************************************************************************/
 class RDOFuzzyType: public RDOType
 {
 DECLARE_FACTORY(RDOFuzzyType);
@@ -109,9 +123,10 @@ private:
 	LPRDOFuzzySetDefinition  m_fuzzySetDefinition;
 };
 
-// ********************************************************************************
-// ******************** RDOFuzzySetDefinition
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFuzzySetDefinition
+ * @brief     Нечеткое множество
+ *********************************************************************************/
 OBJECT(RDOFuzzySetDefinition)
 {
 DECLARE_FACTORY(RDOFuzzySetDefinition)
@@ -124,9 +139,10 @@ protected:
 	virtual ~RDOFuzzySetDefinition();
 };
 
-// ********************************************************************************
-// ******************** RDOFuzzySetDefinitionFixed
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFuzzySetDefinitionFixed
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzySetDefinitionFixed: public RDOFuzzySetDefinition
 {
 public:
@@ -143,9 +159,10 @@ private:
 	RDOFuzzyValue::FuzzySet  m_items;
 };
 
-// ********************************************************************************
-// ******************** RDOFuzzySetDefinitionRangeDiscret
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFuzzySetDefinitionRangeDiscret
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzySetDefinitionRangeDiscret: public RDOFuzzySetDefinition
 {
 public:
@@ -161,9 +178,10 @@ private:
 	RDOValue  m_step;
 };
 
-// ********************************************************************************
-// ******************** RDOFuzzyEmptyType
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOFuzzyEmptyType
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzyEmptyType: public RDOFuzzyType
 {
 public:
@@ -172,9 +190,10 @@ public:
 private:
 	static PTR(RDOFuzzyEmptyType) s_emptyType;
 
-	// ********************************************************************************
-	// ******************** RDOFuzzySetDefinitionEmpty
-	// ********************************************************************************
+	/**
+	 * @class     RDOFuzzySetDefinitionEmpty
+	 * @brief     unknown
+	 */
 	class RDOFuzzySetDefinitionEmpty: public RDOFuzzySetDefinition
 	{
 	public:

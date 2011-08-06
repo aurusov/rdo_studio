@@ -1,13 +1,25 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2006
+ * @file      rdotrace.h
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
+
 #ifndef _LIB_RUNTIME_TRACE_H_
 #define _LIB_RUNTIME_TRACE_H_
 
+// *********************************************************************** INCLUDES
 #include <fstream>
 #include <list>
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace_i.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -23,39 +35,37 @@ class TreeRoot;
 PREDECLARE_POINTER(RDOResource);
 PREDECLARE_POINTER(RDORuntime);
 
-// ********************************************************************************
-// ******************** RDOEndL - Рассылает броадкастом строку трассировки
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOEndL
+ * @brief     Рассылает броадкастом строку трассировки
+ *********************************************************************************/
 class RDOEndL
 {
 public:
-	virtual void onEndl() {}
+	virtual void onEndl();
 };
 
-inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL)
-{
-	rdoEndL.onEndl();
-	return stream;
-}
+inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL);
 
-// ********************************************************************************
-// ******************** RDOTrace - Формирует строки трассировки
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOTrace
+ * @brief     Формирует строки трассировки
+ *********************************************************************************/
 class RDOTrace
 {
 friend class RDOSimulatorTrace;
 friend class RDOResource;
 
 public:
-	RDOTrace(): m_isNullTracer( true ), m_canWriteToStream( false ) {}
-	virtual ~RDOTrace() {}
+	RDOTrace();
+	virtual ~RDOTrace();
 
-	rbool canTrace() const { return !isNull() && canWrite();   }
+	rbool canTrace() const;
 
-	void  startWriting()   { m_canWriteToStream = true;        }
-	void  stopWriting()    { m_canWriteToStream = false;       }
-	rbool canWrite() const { return m_canWriteToStream;        }
-	rbool isNull() const   { return m_isNullTracer;            }
+	void  startWriting();
+	void  stopWriting();
+	rbool canWrite() const;
+	rbool isNull() const;
 
 	// Search in tree
 	virtual void writeSearchBegin(double currentTime, tstring decisionPointId);
@@ -78,13 +88,13 @@ public:
 
 	virtual void writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm);
 
-	tstring traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, const std::list< LPRDOResource >& rel_res_list );
+	tstring traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list);
 
-	virtual void writePokaz(CREF(LPRDORuntime) pRuntime, RDOPokazTrace *pok);
+	virtual void writePokaz(CREF(LPRDORuntime) pRuntime, PTR(RDOPokazTrace) pok);
 
 public:
-	virtual std::ostream& getOStream() { return m_emptyOut; }
-	virtual RDOEndL&      getEOL()     { return m_emptyEndL;}
+	virtual REF(std::ostream) getOStream();
+	virtual REF(RDOEndL)      getEOL();
 
 protected:
 	rbool         m_isNullTracer;
@@ -95,9 +105,10 @@ private:
 	RDOEndL       m_emptyEndL;
 };
 
-// ********************************************************************************
-// ******************** RDOTraceableObject
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOTraceableObject
+ * @brief     unknown
+ *********************************************************************************/
 class RDOTraceableObject: public ITrace
 {
 QUERY_INTERFACE_BEGIN
@@ -107,47 +118,29 @@ QUERY_INTERFACE_END
 public:
 	enum { NONE = 0xFFFFFFFF };
 
-	rbool traceable() const        { return m_trace;  }
-	void  setTrace(rbool trace)    { m_trace = trace; }
+	rbool traceable() const;
+	void  setTrace(rbool trace);
 
-	ruint getTraceID() const       { return m_id;     }
-	void  setTraceID(ruint id)
-	{
-		setTraceID(id, id);
-	}
-	void setTraceID(ruint id, ruint str_id)
-	{
-		m_id     = id;
-		m_str_id = rdo::toString(str_id);
-	}
+	ruint getTraceID() const;
+	void  setTraceID(ruint id);
+	void  setTraceID(ruint id, ruint str_id);
 
-	REF(tstring) traceId() const
-	{
-		if (m_str_id.empty())
-		{
-			m_str_id = rdo::toString(m_id);
-		}
-		return m_str_id;
-	}
+	REF(tstring) traceId() const;
 
 protected:
-	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = _T(""))
-		: m_trace (trace)
-		, m_id    (id   )
-		, m_str_id(str  )
-	{}
-	virtual ~RDOTraceableObject()
-	{}
+	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = _T(""));
+	virtual ~RDOTraceableObject();
 
 private:
-	rbool               m_trace;
-	ruint               m_id;
+	rbool           m_trace;
+	ruint           m_id;
 	mutable tstring m_str_id;
 };
 
-// ********************************************************************************
-// ******************** RDOPokazTrace
-// ********************************************************************************
+/******************************************************************************//**
+ * @class     RDOPokazTrace
+ * @brief     unknown
+ *********************************************************************************/
 class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue
 {
 QUERY_INTERFACE_BEGIN
@@ -166,5 +159,7 @@ protected:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "rdo_lib/rdo_runtime/rdotrace.inl"
 
 #endif // _LIB_RUNTIME_TRACE_H_

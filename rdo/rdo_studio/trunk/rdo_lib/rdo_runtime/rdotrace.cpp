@@ -1,10 +1,23 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2006
+ * @file      rdotrace.cpp
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -14,15 +27,19 @@ tstring doubleToString(double value)
 	std::ostringstream _str;
 	_str << value;
 	tstring::size_type pos = _str.str().find("e");
-	if (pos != tstring::npos) {
+	if (pos != tstring::npos)
+	{
 		tstring __str = _str.str();
 		__str.erase(pos + 2, 1);
 		return __str.c_str();
-	} else {
+	}
+	else
+	{
 		return _str.str().c_str();
 	}
 }
 #else
+
 double doubleToString(double value)
 {
 	return value;
@@ -160,7 +177,7 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	}
 }
 
-void RDOTrace::writePermanentResources(CREF(LPRDORuntime) pRuntime, const std::list< LPRDOResource >& res_perm)
+void RDOTrace::writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm)
 {
 	if (!canTrace())
 		return;
@@ -168,11 +185,13 @@ void RDOTrace::writePermanentResources(CREF(LPRDORuntime) pRuntime, const std::l
 	getOStream() << traceResourcesList('\0', pRuntime, res_perm) << getEOL();
 }
 
-tstring RDOTrace::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime, const std::list< LPRDOResource >& rel_res_list)
+tstring RDOTrace::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list)
 {
 	tstring res;
-	for (std::list< LPRDOResource >::const_iterator i = rel_res_list.begin(); i != rel_res_list.end(); i++) {
-		if (*i) {
+	for (std::list<LPRDOResource>::const_iterator i = rel_res_list.begin(); i != rel_res_list.end(); ++i)
+	{
+		if (*i)
+		{
 			res += (*i)->traceResourceState(prefix, pRuntime);
 		}
 	}
@@ -313,7 +332,7 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
       << " 2" << std::endl << getEOL();
 }
 
-void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, char* status)
+void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, PTR(char) status)
 {
 	if (isNull()) return;
 
@@ -376,7 +395,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, char* status)
 				getOStream() << rdo::format("DPS_TG %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 			}
 		}
-		it++;
+		++it;
 	}
 
 	// Используемая память
@@ -384,7 +403,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, char* status)
 	getOStream() << "DPS_MM " << pRuntime->memory_get() << std::endl << getEOL();
 }
 
-void RDOTrace::writePokaz(CREF(LPRDORuntime) pRuntime, RDOPokazTrace *pok)
+void RDOTrace::writePokaz(CREF(LPRDORuntime) pRuntime, PTR(RDOPokazTrace) pok)
 {
 	if (!canTrace())
 		return;

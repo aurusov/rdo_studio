@@ -3,7 +3,7 @@
  * @file      rdotrace_i.h
  * @authors   Урусов Андрей
  * @date      28.07.2009
- * @brief     
+ * @brief     unknown
  * @indent    4T
  *********************************************************************************/
 
@@ -15,6 +15,10 @@
 #include "rdo_common/rdointerface.h"
 // ********************************************************************************
 
+/******************************************************************************//**
+ * @interface ITrace
+ * @brief     unknown
+ *********************************************************************************/
 class ITrace
 {
 public:
@@ -27,6 +31,11 @@ public:
 
 	virtual REF(tstring) traceId() const = 0;
 };
+
+/******************************************************************************//**
+ * @def     DECLARE_ITrace
+ * @brief   unknown
+ *********************************************************************************/
 #define DECLARE_ITrace                                       \
 	virtual rbool        traceable (           ) const;      \
 	virtual void         setTrace  (rbool trace);            \
@@ -35,21 +44,37 @@ public:
 	virtual void         setTraceID(ruint id, ruint str_id); \
 	virtual REF(tstring) traceId   (           ) const ;
 
-
+/******************************************************************************//**
+ * @interface IPokazTraceValue
+ * @brief     unknown
+ *********************************************************************************/
 class IPokazTraceValue
 {
 public:
 	virtual tstring traceValue() const = 0;
 };
+
+/******************************************************************************//**
+ * @def     DECLARE_IPokazTraceValue
+ * @brief   unknown
+ *********************************************************************************/
 #define DECLARE_IPokazTraceValue \
 	virtual tstring traceValue() const;
 
-
+/******************************************************************************//**
+ * @interface IPokazTrace
+ * @brief     unknown
+ *********************************************************************************/
 class IPokazTrace
 {
 public:
 	virtual void tracePokaz() = 0;
 };
+
+/******************************************************************************//**
+ * @def     DECLARE_IPokazTrace
+ * @brief   unknown
+ *********************************************************************************/
 #define DECLARE_IPokazTrace \
 	virtual void tracePokaz();
 

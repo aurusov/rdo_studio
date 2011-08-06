@@ -1,9 +1,9 @@
 /******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
+ * @copyright (c) RDO-Team, 2008
  * @file      rdo_value.h
  * @authors   Урусов Андрей
- * @date      
- * @brief     
+ * @date      22.06.2008
+ * @brief     RDOValue
  * @indent    4T
  *********************************************************************************/
 
@@ -18,9 +18,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOValue
-// ********************************************************************************
 class RDOFuzzyValue;
 class RDOArrayValue;
 class RDOArrayIterator;
@@ -28,6 +25,10 @@ class RDOMatrixValue;
 class RDOMatrixIterator;
 PREDECLARE_POINTER(RDOEnumType);
 
+/******************************************************************************//**
+ * @class     RDOValue
+ * @brief     Значение переменных в РДО
+ *********************************************************************************/
 class RDOValue
 {
 public:
@@ -59,8 +60,8 @@ public:
 	rbool             getBool         () const;
 	CREF(tstring)     getString       () const;
 	CREF(tstring)     getIdentificator() const;
-	CREF(RDOArrayValue) getArray        () const;
-	CREF(RDOMatrixValue)getMatrix       () const;
+	CREF(RDOArrayValue) getArray      () const;
+	CREF(RDOMatrixValue)getMatrix     () const;
 
 
 	rbool   getAsBool          () const;
@@ -109,13 +110,13 @@ private:
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
 
-	LPRDOEnumType       __enumT  () const;
-	 REF(tstring)       __stringV();
-	CREF(tstring)       __stringV() const;
-	 REF(RDOFuzzyValue) __fuzzyV ();
-	CREF(RDOFuzzyValue) __fuzzyV () const;
-	 REF(RDOArrayValue) __arrayV ();
-	CREF(RDOArrayValue) __arrayV () const;
+	LPRDOEnumType           __enumT    () const;
+	 REF(tstring)           __stringV  ();
+	CREF(tstring)           __stringV  () const;
+	 REF(RDOFuzzyValue)     __fuzzyV   ();
+	CREF(RDOFuzzyValue)     __fuzzyV   () const;
+	 REF(RDOArrayValue)     __arrayV   ();
+	CREF(RDOArrayValue)     __arrayV   () const;
 	 REF(RDOArrayIterator)  __arrayItr ();
 	CREF(RDOArrayIterator)  __arrayItr () const;
 	 REF(RDOMatrixValue)    __matrixV  ();
@@ -123,32 +124,41 @@ private:
 	 REF(RDOMatrixIterator) __matrixItr();
 	CREF(RDOMatrixIterator) __matrixItr() const;
 
+	/**
+	 * @class     string_class
+	 * @brief     Строковый тип данных
+	 */
 	OBJECT(string_class) IS INSTANCE_OF(tstring)
 	{
 	public:
-		string_class(CREF(tstring) string)
-			: tstring(string)
-		{}
+		string_class(CREF(tstring) string);
 	};
 
+	/**
+	 * @class     smart_string
+	 * @brief     Умный строковый тип данных
+	 * @details   С реализацией "копирование при записи"?
+	 */
 	class smart_string: public rdo::intrusive_ptr<string_class>
 	{
 	public:
 		typedef rdo::intrusive_ptr<string_class> parent_type;
 
-		smart_string(PTR(string_class) pString)
-			: parent_type(pString)
-		{}
+		smart_string(PTR(string_class) pString);
 
-		PTR(string_class)  get()       { return parent_type::get(); }
-		CPTR(string_class) get() const { return parent_type::get(); }
+		PTR(string_class)  get();
+		CPTR(string_class) get() const;
 
-		void  addref () { parent_type::addref ();      }
-		void  release() { parent_type::release();      }
-		rbool owner  () { return parent_type::owner(); }
+		void  addref ();
+		void  release();
+		rbool owner  ();
 	};
 	void deleteString();
 
+	/**
+	 * @union     Value
+	 * @brief     Значение
+	 */
 	union Value
 	{
 		int                i_value;

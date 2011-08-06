@@ -2153,6 +2153,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdotrace.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\rdotrace_i.h"
 				>
 			</File>

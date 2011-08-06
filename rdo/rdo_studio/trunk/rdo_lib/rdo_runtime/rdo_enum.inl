@@ -2,10 +2,10 @@
  * @copyright (c) RDO-Team, 2009
  * @file      rdo_enum.inl
  * @authors   Урусов Андрей
- * @date      
- * @brief     
+ * @date      18.04.2009
+ * @brief     Перечисления
  * @indent    4T
- */
+ *********************************************************************************/
 
 // *********************************************************************** INCLUDES
 // *********************************************************************** SYNOPSIS
@@ -43,9 +43,24 @@ inline rbool RDOEnumType::exist(CREF(tstring) val) const
 	return findEnum(val) != END;
 }
 
-inline rbool                        RDOEnumType::empty    () const { return m_enum.empty(); }
-inline const RDOEnumType::CIterator RDOEnumType::begin    () const { return m_enum.begin(); }
-inline const RDOEnumType::CIterator RDOEnumType::end      () const { return m_enum.end();   }
-inline CREF(RDOEnumType::Enums)     RDOEnumType::getValues() const { return m_enum;         }
+inline rbool RDOEnumType::empty() const
+{
+	return m_enum.empty();
+}
+
+inline const RDOEnumType::CIterator RDOEnumType::begin() const
+{
+	return m_enum.begin();
+}
+
+inline const RDOEnumType::CIterator RDOEnumType::end() const
+{
+	return m_enum.end();
+}
+
+inline CREF(RDOEnumType::Enums) RDOEnumType::getValues() const
+{
+	return m_enum;
+}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
