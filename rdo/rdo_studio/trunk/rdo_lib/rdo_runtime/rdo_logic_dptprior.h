@@ -46,7 +46,7 @@ protected:
 };
 
 /******************************************************************************//**
- * @class   RDOLogicDPTPrior
+ * @class   RDODPTPrior
  * @brief   unknown
  *********************************************************************************/
 class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
