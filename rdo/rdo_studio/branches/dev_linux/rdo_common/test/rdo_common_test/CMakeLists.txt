@@ -11,7 +11,7 @@ SET(SOURCE_FILES
 	main.cpp)
 
 SET(RESOURCE_FILES
-	resource_test.aps
+#	resource_test.aps
 	resource_test.rc)
 
 SOURCE_GROUP(".resource" FILES 
