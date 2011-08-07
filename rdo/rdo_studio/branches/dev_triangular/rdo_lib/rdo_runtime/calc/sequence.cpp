@@ -33,6 +33,10 @@ RDOCalcSeqInit::~RDOCalcSeqInit()
 
 RDOValue RDOCalcSeqNextUniform::getNextValue(PTR(RDORuntime) runtime)
 {
+	if (runtime->getFuncArgument(0).getDouble() > runtime->getFuncArgument(1).getDouble())
+	{
+		runtime->error(rdo::format(_T("ƒл€ последовательности типа uniform нужно указать два параметра: нижн€€ граница, вернхн€€ граница"), this));
+	}
 	return m_gen->next(runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble());
 }
 
