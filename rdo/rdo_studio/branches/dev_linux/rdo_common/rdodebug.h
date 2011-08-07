@@ -72,6 +72,8 @@ void NewOutputDebugString(CREF(tstring) A)
 #define TRACE3(A, P1, P2, P3)   NewOutputDebugString(rdo::format(A, P1, P2, P3).c_str());
 #define ASSERT(A)				assert(A);
 
+#define NEVER_REACH_HERE ASSERT(false)
+
 #endif // WIN32
 
 #else //! _DEBUG

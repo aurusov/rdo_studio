@@ -43,6 +43,7 @@ inline rbool File::read_only(CREF(tstring) name)
 #ifdef WIN32
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
 #else
+        // TODO
 	return true;
 #endif
 }

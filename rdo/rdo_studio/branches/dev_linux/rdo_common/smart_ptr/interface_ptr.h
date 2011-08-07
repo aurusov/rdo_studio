@@ -19,11 +19,18 @@
 
 OPEN_RDO_NAMESPACE
 
+#ifdef WIN32
 struct __declspec(novtable) ICounterReference
 {
 	virtual void addref () = 0;
 	virtual void release() = 0;
 };
+#else
+struct  ICounterReference
+{
+};
+#endif
+
 typedef PTR(ICounterReference) LPICounterReference;
 
 template <class T>

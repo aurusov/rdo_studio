@@ -11,6 +11,12 @@
 // ====================================================================== INCLUDES
 #ifdef WIN32
 #include <Windows.h>
+#else
+
+#define _MAX_DRIVE 512
+#define _MAX_DIR 512
+#define _MAX_FNAME 512
+#define _MAX_EXT 512
 #endif
 #include <boost/filesystem.hpp>
 #include <boost/random.hpp>
@@ -28,9 +34,13 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 	char _name [_MAX_FNAME];
 	char _ext  [_MAX_EXT  ];
 
+#ifdef WIN32
 	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
 		return false;
-
+#else
+        if(!exist(name.c_str()))
+            return false;
+#endif
 	boost::filesystem::path from(_dir);
 	fileDir = from.string();
 	fileName = _name;
@@ -55,9 +65,8 @@ tstring File::getTempFileName()
 	}
 	return szTempName;
 #else
-	boost::random::mt19937 rng;
-	boost::random::uniform_int_distribution<> six(1,32768);
-	int x = six(rng);
+        // TODO check random
+        int x = rand();
 	std::string tempFileName("/tmp/rdo_temp_file_num_");
 	tempFileName.push_back(x);
 	create(tempFileName);
