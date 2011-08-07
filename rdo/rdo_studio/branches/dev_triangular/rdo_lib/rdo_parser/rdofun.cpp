@@ -946,7 +946,7 @@ RDOFUNSequenceTriangular::RDOFUNSequenceTriangular(CREF(LPRDOFUNSequenceHeader) 
 {
 	if (m_pHeader->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int && m_pHeader->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Последовательность '%s' может возвращять значения только целого или вещественного типа"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Последовательность типа triangular может возвращять значения только целого или вещественного типа"), src_text().c_str()));
 	}
 }
 
@@ -963,7 +963,7 @@ LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pPar
 {
 	if (pParamList->getParamList().size() != 3)
 	{
-		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для треуголного закона распределения '%s' нужно указать три параметра: левую границу, математическое ожидание, правую границу"), name().c_str()));
+		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для последовательностb типа triangular нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), name().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
