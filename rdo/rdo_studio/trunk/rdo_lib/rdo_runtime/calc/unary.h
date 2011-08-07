@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDOCalcUnaryBase
- * @brief   unknown
+ * @brief   Базовый класс для унарного оператора
  *********************************************************************************/
 class RDOCalcUnaryBase: public RDOCalc
 {
@@ -35,8 +35,8 @@ protected:
 };
 
 /******************************************************************************//**
- * @class   RDOCalcUnaryBase
- * @brief   unknown
+ * @class   RDOCalcUnary
+ * @brief   Базовый унарный оператор
  *********************************************************************************/
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 class RDOCalcUnary: public RDOCalcUnaryBase
@@ -70,7 +70,7 @@ typedef RDOCalcUnary<rsint,    (&RDOValue::getInt   ), OperatorType::OT_ARITHM> 
 
 /******************************************************************************//**
  * @class   RDOCalcDoubleToIntByResult
- * @brief   unknown
+ * @brief   Преобразование вещественного в целое как результат
  *********************************************************************************/
 CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
 {
@@ -89,7 +89,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOCalcCheckDiap
- * @brief   unknown
+ * @brief   Проверка диапазона
  *********************************************************************************/
 CALC_SUB(RDOCalcCheckDiap, RDOCalc)
 {

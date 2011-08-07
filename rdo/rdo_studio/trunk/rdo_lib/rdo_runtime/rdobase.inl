@@ -64,7 +64,7 @@ inline ruint RDOSimulatorBase::get_cnt_choice_from()
 	return m_cnt_choice_from;
 }
 
-inline static ruint RDOSimulatorBase::getMSec(CREF(SYSTEMTIME) systime)
+inline ruint RDOSimulatorBase::getMSec(CREF(SYSTEMTIME) systime)
 {
 	return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
 }

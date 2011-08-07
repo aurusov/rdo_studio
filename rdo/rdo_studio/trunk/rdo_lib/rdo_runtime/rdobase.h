@@ -58,7 +58,7 @@ public:
 	void inc_cnt_choice_from();
 
 	ruint get_cnt_events();
-	ruint get_cnt_choice_from()
+	ruint get_cnt_choice_from();
 	ruint get_cnt_calc_arithm() const;
 	ruint get_cnt_calc_logic()  const;
 
@@ -120,7 +120,7 @@ protected:
 
 	/// @todo не ошибочная ли это реализация по-умолчанию?
 	// Вызывается при увеличении модельного времени
-	virtual void onNewTimeNow() {};
+	virtual void onNewTimeNow();
 
 private:
 	double m_startTime;

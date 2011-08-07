@@ -1010,12 +1010,12 @@ inline RDOValue::smart_string::smart_string(PTR(string_class) pString)
 	: parent_type(pString)
 {}
 
-inline PTR(string_class) RDOValue::smart_string::get()
+inline PTR(RDOValue::string_class) RDOValue::smart_string::get()
 {
 	return parent_type::get();
 }
 
-inline CPTR(string_class) RDOValue::smart_string::get() const
+inline CPTR(RDOValue::string_class) RDOValue::smart_string::get() const
 {
 	return parent_type::get();
 }

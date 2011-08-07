@@ -47,7 +47,7 @@ protected:
 };
 
 /******************************************************************************//**
- * @class     RandGenerator
+ * @class     RandGeneratorUniform
  * @brief     Базовое равномерное распределение [0, 1)
  *********************************************************************************/
 class RandGeneratorUniform: public RandGenerator

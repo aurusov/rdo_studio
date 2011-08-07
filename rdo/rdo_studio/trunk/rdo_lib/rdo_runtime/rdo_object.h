@@ -119,11 +119,15 @@ public:
 
 /******************************************************************************//**
  * @class     RDOSrcInfo
- * @brief     unknown
+ * @brief     Исходная информация
  *********************************************************************************/
 class RDOSrcInfo
 {
 public:
+	/**
+	 * @struct    Position
+	 * @brief     Позиция в тексте
+	 */
 	struct Position
 	{
 		enum {UNDEFINE_POS  = ~0};

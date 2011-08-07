@@ -78,7 +78,7 @@ inline void RDORuntime::setCurrentActivity(CREF(LPIActivity) activity)
 	m_currActivity = activity;
 }
 
-inline CREF(LPIPokazList) RDORuntime::getPokaz() const
+inline CREF(RDORuntime::LPIPokazList) RDORuntime::getPokaz() const
 {
 	return m_pokazAllList;
 }
@@ -189,12 +189,12 @@ inline void RDORuntime::onUserBreak()
 	whyStop = rdoSimulator::EC_UserBreak;
 }
 
-inline ResCIterator RDORuntime::res_begin() const
+inline RDORuntime::ResCIterator RDORuntime::res_begin() const
 {
 	return allResourcesByTime.begin();
 }
 
-inline ResCIterator RDORuntime::res_end() const
+inline RDORuntime::ResCIterator RDORuntime::res_end() const
 {
 	return allResourcesByTime.end();
 }
@@ -204,7 +204,7 @@ inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
 	return m_pThreadProxy;
 }
 
-inline ResList RDORuntime::getResourcesBeforeSim() const
+inline RDORuntime::ResList RDORuntime::getResourcesBeforeSim() const
 {
 	ResList list;
 	ResCIterator it = allResourcesByTime.begin();
@@ -225,6 +225,11 @@ inline void RDORuntime::preProcess()
 // ********************************************************************************
 // ******************** RDORuntime::BreakPoint
 // ********************************************************************************
+inline RDORuntime::BreakPoint::BreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
+	: m_name (name )
+	, m_pCalc(pCalc)
+{}
+
 inline CREF(tstring) RDORuntime::BreakPoint::getName() const
 {
 	return m_name;
@@ -234,10 +239,5 @@ inline CREF(LPRDOCalc) RDORuntime::BreakPoint::getCalc() const
 {
 	return m_pCalc;
 }
-
-inline RDORuntime::BreakPoint::BreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
-	: m_name (name )
-	, m_pCalc(pCalc)
-{}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

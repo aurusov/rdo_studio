@@ -74,7 +74,7 @@ inline REF(RDOEndL) RDOTrace::getEOL()
 // ********************************************************************************
 // ******************** RDOTraceableObject
 // ********************************************************************************
-inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id = NONE, tstring str)
+inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id, tstring str)
 	: m_trace (trace)
 	, m_id    (id   )
 	, m_str_id(str  )
