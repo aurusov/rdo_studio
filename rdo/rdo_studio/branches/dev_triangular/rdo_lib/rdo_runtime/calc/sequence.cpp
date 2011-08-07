@@ -48,6 +48,15 @@ RDOValue RDOCalcSeqNextExponential::getNextValue(PTR(RDORuntime) runtime)
 
 RDOValue RDOCalcSeqNextTriangular::getNextValue(PTR(RDORuntime) runtime)
 {
+	if (runtime->getFuncArgument(0).getDouble() > runtime->getFuncArgument(1).getDouble())
+	{
+		runtime->error(rdo::format(_T("Для треуголного закона распределения нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), this));
+	}
+	
+	if (runtime->getFuncArgument(1).getDouble() > runtime->getFuncArgument(2).getDouble())
+	{
+		runtime->error(rdo::format(_T("Для треуголного закона распределения нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), this));
+	}
 	return m_gen->next(runtime->getFuncArgument(0).getDouble(), runtime->getFuncArgument(1).getDouble(), runtime->getFuncArgument(2).getDouble());
 }
 
