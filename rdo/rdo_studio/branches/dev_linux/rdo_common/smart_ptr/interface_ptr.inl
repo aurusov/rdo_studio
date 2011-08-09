@@ -10,6 +10,9 @@
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS
 #include "rdo_common/rdodebug.h"
+#include "rdo_common/namespace.h"
+
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 // ===============================================================================
 
 OPEN_RDO_NAMESPACE
@@ -47,10 +50,8 @@ inline interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPICounterReference pC
         : m_pInterface(pInterface)
         , m_pCounter  (pCounter  )
 {
-#ifdef WIN32
         if (m_pInterface)
                 m_pCounter->addref();
-#endif
 }
 
 template<class T>
@@ -58,36 +59,28 @@ inline interface_ptr<T>::interface_ptr(CREF(this_type) sptr)
         : m_pInterface(sptr.m_pInterface)
         , m_pCounter  (sptr.m_pCounter  )
 {
-#ifdef WIN32
         if (m_pInterface)
                 m_pCounter->addref();
-#endif
 }
 
 template<class T>
 inline interface_ptr<T>::~interface_ptr()
 {
-#ifdef WIN32
         if (m_pInterface)
                 m_pCounter->release();
-#endif
 }
 
 template<class T>
 inline REF(typename interface_ptr<T>::this_type) interface_ptr<T>::operator= (CREF(this_type) sptr)
 {
-#ifdef WIN32
         if (m_pInterface)
                 m_pCounter->release();
-#endif
 
         m_pInterface = sptr.m_pInterface;
         m_pCounter   = sptr.m_pCounter;
 
-#ifdef WIN32
         if (m_pInterface)
                 m_pCounter->addref();
-#endif
 
         return *this;
 }

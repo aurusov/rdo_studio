@@ -85,6 +85,6 @@ void NewOutputDebugString(CREF(tstring) A)
 #define ASSERT(A)
 #define NEVER_REACH_HERE
 
-#endif
+#endif //! _DEBUG
 
 #endif //! _RDODEBUG_H_

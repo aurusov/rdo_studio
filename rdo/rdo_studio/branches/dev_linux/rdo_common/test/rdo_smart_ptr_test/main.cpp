@@ -20,6 +20,7 @@
 #include "rdo_common/rdodebug.h"
 // ===============================================================================
 
+
 OBJECT(MyClass)
 {
 DECLARE_FACTORY(MyClass)

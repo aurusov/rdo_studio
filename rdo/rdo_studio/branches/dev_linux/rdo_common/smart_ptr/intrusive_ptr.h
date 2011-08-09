@@ -150,10 +150,10 @@ public:
 	}
 
 private:
-	static void destroy(PTR(T) object)
-	{
-		delete object;
-	}
+        static void destroy(PTR(T) object)
+        {
+                delete object;
+        }
 };
 
 #define DECLARE_FACTORY(TYPE)    friend class rdo::Factory<TYPE>;
