@@ -28,17 +28,17 @@ public:
 template <class T> class GetInterface {};
 CLOSE_RDO_NAMESPACE
 
-#define INTERFACE_REGISTRATOR(I, ID) \
-class I; \
-typedef rdo::InterfaceRegistrator<I, ID> Registered##I; \
+#define INTERFACE_REGISTRATOR(I, ID)                             \
+class I;                                                         \
+typedef rdo::InterfaceRegistrator<I, ID> Registered##I;          \
 template <> class rdo::GetInterface<I>: public Registered##I {}; \
-class ___InterfaceRegistrator___DoubleID___##ID {}; \
+class ___InterfaceRegistrator___DoubleID___##ID {};              \
 typedef rdo::Interface<I> LP##I;
 
 #define INTERFACE_PREDECLARATION(I) \
 typedef rdo::Interface<I> LP##I;
 
-#define IID(I) \
+#define IID(I)    \
 Registered##I::ID
 
 OPEN_RDO_NAMESPACE
@@ -54,10 +54,10 @@ class UnknownPointer
 {
 public:
 	UnknownPointer ();
-	UnknownPointer (REF(IUnknown) smt_ptr    );
-	UnknownPointer (LPIGetUnknown get_smt_ptr);
-	UnknownPointer (PTR(void) aInterface, LPIUnknown smt_ptr);
-	UnknownPointer (CREF(UnknownPointer) unknowPointer);
+	UnknownPointer (REF(IUnknown) unknown    );
+	UnknownPointer (LPIGetUnknown pGetUnknown);
+	UnknownPointer (PTR(void) pInterface, LPIUnknown pUnknown);
+	UnknownPointer (CREF(UnknownPointer) pointer);
 	~UnknownPointer();
 
 	rbool               operator== (CREF(UnknownPointer) pointer) const;
@@ -74,10 +74,10 @@ public:
 	template<class I> operator      Interface<I>() const;
 
 protected:
-	PTR(void)   m_interface;
+	PTR(void)   m_pInterface;
 
 private:
-	LPIUnknown  m_smt_ptr;
+	LPIUnknown  m_pUnknown;
 };
 
 template<class I>
@@ -88,11 +88,11 @@ public:
 	typedef UnknownPointer parent_type;
 
 	Interface();
-	Interface(LPIGetUnknown get_smt_ptr);
-	Interface(PTR(void) aInterface, LPIUnknown smt_ptr);
-	Interface(CREF(this_type) pInterface);
+	Interface(LPIGetUnknown pGetUnknown);
+	Interface(PTR(void) pInterface, LPIUnknown pUnknown);
+	Interface(CREF(this_type) aInterface);
 
-	REF(this_type) operator=     (CREF(this_type) pointer);
+	REF(this_type) operator=     (CREF(this_type) aInterface);
 	               operator rbool() const;
 
 	PTR(I)  get();
@@ -128,7 +128,7 @@ private:
 	friend class IFactory<T>::Object;
 	private:
 		ruint  m_counter;
-		PTR(T) m_object;
+		PTR(T) m_pObject;
 
 		Counter();
 		operator UnknownPointer();
@@ -226,10 +226,10 @@ public:
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7);
 
-	static void destroy(PTR(T) object);
+	static void destroy(PTR(T) pObject);
 
 private:
-	static UnknownPointer init(PTR(Object) object);
+	static UnknownPointer init(PTR(Object) pObject);
 };
 
 CLOSE_RDO_NAMESPACE
@@ -240,20 +240,20 @@ CLOSE_RDO_NAMESPACE
 
 #define DEFINE_IFACTORY(A)      friend class rdo::IFactory<A>; friend class rdo::IFactory<A>::Object;
 
-#define QUERY_INTERFACE_BEGIN \
-public: \
-PTR(void) QueryInterface(ruint id) \
+#define QUERY_INTERFACE_BEGIN                           \
+public:                                                 \
+PTR(void) QueryInterface(ruint id)                      \
 {
 
-#define QUERY_INTERFACE_PARENT(A) \
-	PTR(void) pIterface##A = A::QueryInterface(id); \
+#define QUERY_INTERFACE_PARENT(A)                       \
+	PTR(void) pIterface##A = A::QueryInterface(id);     \
 	if (pIterface##A) return pIterface##A;
 
-#define QUERY_INTERFACE(A) \
+#define QUERY_INTERFACE(A)                              \
 	if (id == IID(A)) return static_cast<PTR(A)>(this);
 
-#define QUERY_INTERFACE_END \
-	return NULL; \
+#define QUERY_INTERFACE_END                             \
+	return NULL;                                        \
 }
 
 class IInit
@@ -261,7 +261,7 @@ class IInit
 public:
 	virtual rbool init() = 0;
 };
-#define DECLARE_IInit \
+#define DECLARE_IInit     \
 	virtual rbool init();
 
 INTERFACE_REGISTRATOR(IInit, 0);
