@@ -30,10 +30,16 @@ BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_Test)
 {
+#ifdef WIN32
 	{
-		BOOST_CHECK(rdo::File::create(s_testFileName));
+		tstring str1 = rdo::format(IDS_STRING101);
+		BOOST_CHECK(str1 == s_resourceStr1);
+		tstring str2 = rdo::format(IDS_STRING102, 22);
+		BOOST_CHECK(str2 == s_resourceStr2);
+		tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
+		BOOST_CHECK(str3 == s_resourceStr3);
 	}
-
+#endif
 	{
 		tstring fileName;
 		tstring fileDir;
@@ -43,6 +49,11 @@ BOOST_AUTO_TEST_CASE(RDOCommon_Test)
 		BOOST_CHECK(fileDir == tstring("test_directory/"));
 		BOOST_CHECK(fileExt == tstring(".test"));
 	}
+
+	{
+		BOOST_CHECK(rdo::File::create(s_testFileName));
+	}
+
 
 	{
 		BOOST_CHECK(rdo::File::exist(s_testFileName));
