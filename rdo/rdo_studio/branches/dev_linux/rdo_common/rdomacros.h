@@ -35,4 +35,6 @@
 #define STL_FOR_ALL(CONTAINER, IT)       for (BOOST_TYPEOF(CONTAINER)::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 #define STL_FOR_ALL_CONST(CONTAINER, IT) for (BOOST_TYPEOF(CONTAINER)::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 
+#define AUTO BOOST_AUTO
+
 #endif //! _RDOMACROS_H_
