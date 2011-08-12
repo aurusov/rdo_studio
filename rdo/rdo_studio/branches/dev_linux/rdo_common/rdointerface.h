@@ -409,7 +409,7 @@ private:
 	static UnknownPointer init(PTR(Object) object)
 	{
 		UnknownPointer uPointer(object ? *object->GetUnknown() : UnknownPointer());
-                LPIInit iInit = uPointer;
+		LPIInit iInit = uPointer;
 		if (iInit)
 		{
 			if (!iInit->init())
