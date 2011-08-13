@@ -1,29 +1,29 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdo_simulator.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2008
+ * @file      rdo_simulator.cpp
+ * @authors   Барс Александр, Урусов Андрей
+ * @date      19.04.2008
+ * @brief     Симулятор РДО
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/rdostream.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
 #include "rdo_lib/rdo_runtime/rdo_model_i.h"
-// ===============================================================================
+// ********************************************************************************
 
 #pragma warning(disable : 4786)  
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSimulator - один из базовых классов для RDORuntime
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOSimulator
+// ********************************************************************************
 RDOSimulator::RDOSimulator()
 	: RDOSimulatorBase( )
 	, m_sizeofSim     (0)
@@ -42,11 +42,13 @@ void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationCo
 
 rbool RDOSimulator::doOperation()
 {
+	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+
 	rbool res;
 	if (getMustContinueOpr())
 	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
-		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue(this);
+		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue(pRuntime);
 		if (result != IBaseOperation::BOR_must_continue)
 		{
 			setMustContinueOpr(NULL);
@@ -86,7 +88,7 @@ rbool RDOSimulator::doOperation()
 					{
 						m_checkOperation = false;
 					}
-					pOperation->onMakePlaned(this, pParam);
+					pOperation->onMakePlaned(pRuntime, pParam);
 					foundPlaned = true;
 				}
 			}
@@ -97,10 +99,10 @@ rbool RDOSimulator::doOperation()
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
 			LPIBaseOperation pMetaLogic = m_pMetaLogic.query_cast<IBaseOperation>();
-			res = pMetaLogic->onCheckCondition(this);
+			res = pMetaLogic->onCheckCondition(pRuntime);
 			if (res)
 			{
-				res = pMetaLogic->onDoOperation(this) != IBaseOperation::BOR_cant_run;
+				res = pMetaLogic->onDoOperation(pRuntime) != IBaseOperation::BOR_cant_run;
 			}
 			if (!res)
 			{
@@ -115,15 +117,9 @@ rbool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(this);
+	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(pRuntime);
 	onResetPokaz();
-}
-
-PTR(RDOSimulator) RDOSimulator::createCopy()
-{
-	PTR(RDOSimulator) pSimClone = clone();
-	pSimClone->setCurrentTime(getCurrentTime());
-	return pSimClone;
 }
 
 tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)

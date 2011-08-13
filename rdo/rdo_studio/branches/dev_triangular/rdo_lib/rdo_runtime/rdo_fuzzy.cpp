@@ -1,12 +1,24 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2008
+ * @file      rdo_fuzzy.cpp
+ * @authors   Урусов Андрей
+ * @date      24.07.2008
+ * @brief     Нечеткая логика
+ * @indent    4T
+ *********************************************************************************/
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
+// ********************************************************************************
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyValue
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzyValue
+// ********************************************************************************
 RDOFuzzyValue RDOFuzzyValue::operator&& (CREF(RDOFuzzyValue) fuzzy_value) const
 {
 	if (type() != fuzzy_value.type())
@@ -64,6 +76,7 @@ RDOFuzzyValue RDOFuzzyValue::operator|| (CREF(RDOFuzzyValue) fuzzy_value) const
 	return fuzzy_result;
 }
 
+/// @todo комментарии в *.h
 //! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
 RDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(RDOFuzzyValue) fuzzy_value) const
 {
@@ -299,9 +312,9 @@ tstring RDOFuzzyValue::getAsString() const
 	return res;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionFixed
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzySetDefinitionFixed
+// ********************************************************************************
 RDOFuzzyValue RDOFuzzySetDefinitionFixed::getSupplement(CREF(RDOFuzzyValue) value) const
 {
 	RDOFuzzyValue fuzzy_result(value.type());
@@ -315,9 +328,9 @@ RDOFuzzyValue RDOFuzzySetDefinitionFixed::getSupplement(CREF(RDOFuzzyValue) valu
 	return fuzzy_result;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionRangeDiscret
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzySetDefinitionRangeDiscret
+// ********************************************************************************
 rbool RDOFuzzySetDefinitionRangeDiscret::inRange(CREF(RDOValue) value) const
 {
 	return value >= m_from && value <= m_till;
@@ -334,9 +347,9 @@ RDOFuzzyValue RDOFuzzySetDefinitionRangeDiscret::getSupplement(CREF(RDOFuzzyValu
 	return fuzzy_result;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyEmptyType
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOFuzzyEmptyType
+// ********************************************************************************
 PTR(RDOFuzzyEmptyType) RDOFuzzyEmptyType::s_emptyType = NULL;
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

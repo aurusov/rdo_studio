@@ -1,49 +1,55 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : arithm.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      arithm.cpp
+ * @authors   Барс Александр, Урусов Андрей
+ * @date      13.03.2011
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/arithm.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- Арифметические функции
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcDiv::doCalc(PTR(RDORuntime) runtime)
+// ********************************************************************************
+// ******************** RDOCalcDiv
+// ********************************************************************************
+REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<calc_type>();
-	REF(RDOValue) rVal = m_pRight->calcValue(runtime);
+	REF(RDOValue) rVal = m_pRight->calcValue(pRuntime);
 	if (rVal == 0)
 	{
-		runtime->error(_T("Деление на ноль") , this);
-//		runtime->error(_T("Division by zero"), this);
+		pRuntime->error(_T("Деление на ноль") , this);
+//		pRuntime->error(_T("Division by zero"), this);
 	}
-	m_value = m_pLeft->calcValue(runtime) / rVal;
+	m_value = m_pLeft->calcValue(pRuntime) / rVal;
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(PTR(RDORuntime) runtime)
+// ********************************************************************************
+// ******************** RDOCalcPlusEnumSafe
+// ********************************************************************************
+REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<calc_type>();
-	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() + m_pRight->calcValue(runtime).getEnumAsInt();
+	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() + m_pRight->calcValue(pRuntime).getEnumAsInt();
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcMultEnumSafe::doCalc(PTR(RDORuntime) runtime)
+// ********************************************************************************
+// ******************** RDOCalcMultEnumSafe
+// ********************************************************************************
+REF(RDOValue) RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<calc_type>();
-	m_value = m_pLeft->calcValue(runtime).getEnumAsInt() * m_pRight->calcValue(runtime).getEnumAsInt();
+	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() * m_pRight->calcValue(pRuntime).getEnumAsInt();
 	return m_value;
 }
 

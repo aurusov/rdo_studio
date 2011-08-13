@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_object_matrix.h"
-#include "rdoprocess_object_flowchart.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_matrix.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG

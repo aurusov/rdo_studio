@@ -143,8 +143,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -254,15 +252,24 @@ dpt_process_header
 	;
 
 dpt_process_begin
-	: RDO_Process
+	: RDO_Process RDO_IDENTIF RDO_IDENTIF
 	{
 		LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
 		if (pProcess && !pProcess->closed())
 		{
 			PARSER->error().error(pProcess->src_info(), _T("Незакрыт предыдущий блок $Process"));
 		}
-		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, _T("Process")));
+
+		tstring transactName = P_RDOVALUE($3)->value().getIdentificator();
+		LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
+
+		tstring procName = P_RDOVALUE($2)->value().getIdentificator();
+		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, procName), procName, transactType);
 		ASSERT(pProcess);
+	}
+	| RDO_Process error
+	{
+		PARSER->error().error(@2, @2, _T("Ошибка в процессе!"));
 	}
 	;
 
@@ -328,40 +335,6 @@ dpt_process_line
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
-		tstring rtp_name       = _T("Транзакты");
-		tstring rtp_param_name = _T("Время_создания");
-
-		// Получили список всех типов ресурсов
-		rdoMBuilder::RDOResTypeList rtpList(PARSER);
-		// Найти тип ресурса, если его нет, то создать
-		if (!rtpList[rtp_name].exist())
-		{
-			// Создадим тип ресурса
-			rdoMBuilder::RDOResType rtp(rtp_name);
-			// Добавим параметр Время_создания
-			rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
-			// Добавим тип ресурса
-			if (!rtpList.append(rtp))
-			{
-				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
-			}
-			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
-		}
-		else
-		{
-			// Тип найден, проверим его на наличие вещественного параметра
-			CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
-			if (!rtp.m_params[rtp_param_name].exist())
-			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет требуемого параметра '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
-			}
-			// Параметр есть, надо проверить на тип
-			if (rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real)
-			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является перечислимым типом"), rtp.name().c_str(), rtp_param_name.c_str()));
-			}
-			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
-		}
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), pArithm->createCalc());
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);

@@ -5,12 +5,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-//#include "rdoprocess_object_chart.h"
-#include "rdoprocess_object_matrix.h"
-#include "rdoprocess_shape.h"
-#include "rdoprocess_factory.h"
-
 #include <list>
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_matrix.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPConnector

@@ -17,9 +17,9 @@
 #include <vector>
 #include <sstream>
 // ====================================================================== SYNOPSIS
-#include "namespace.h"
-#include "rdotypes.h"
-#include "rdomacros.h"
+#include "rdo_common/namespace.h"
+#include "rdo_common/rdotypes.h"
+#include "rdo_common/rdomacros.h"
 #include "rdo_common/model_objects.h"
 // ===============================================================================
 
@@ -56,7 +56,8 @@ OPEN_RDO_NAMESPACE
 		return str.str();
 	}
 
-	template<class T> void deleteAllObjects(REF(T) container)
+	template<class T>
+	void deleteAllObjects(REF(T) container)
 	{
 		T::reverse_iterator it = container.rbegin();
 		while (it != container.rend())
@@ -142,6 +143,6 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 	};
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
-#include "rdocommon.inl"
+#include "rdo_common/rdocommon.inl"
 
 #endif //! _RDOCOMMON_H_

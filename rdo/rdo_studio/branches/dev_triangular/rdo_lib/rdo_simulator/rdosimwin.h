@@ -98,7 +98,6 @@ CLOSE_RDO_SIMULATOR_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDORuntime;
 class RDOResult;
 
 // --------------------------------------------------------------------
@@ -198,7 +197,7 @@ public:
 
 private:
 	rdoParse::LPRDOParser           m_pParser;
-	PTR(rdoRuntime::RDORuntime)     m_pRuntime;
+	rdoRuntime::LPRDORuntime        m_pRuntime;
 	rbool                           m_canTrace;
 	LPProcGUIProcess                m_pGUIProcess;
 	LPProcGUIBlock                  m_pBlock;

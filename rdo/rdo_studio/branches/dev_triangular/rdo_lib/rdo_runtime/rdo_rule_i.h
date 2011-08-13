@@ -1,42 +1,51 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_rule_i.h
- * author   : Урусов Андрей
- * date     : 01.08.2009
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_rule_i.h
+ * @authors   Урусов Андрей
+ * @date      01.08.2009
+ * @brief     Продукционные правила
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_RULE_I_H_
-#define _RDO_RULE_I_H_
+#ifndef _LIB_RUNTIME_RULE_I_H_
+#define _LIB_RUNTIME_RULE_I_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
-// ===============================================================================
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOSimulator;
-class RDORuntime;
+PREDECLARE_POINTER(RDORuntime);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
+/******************************************************************************//**
+ * @interface IRule
+ * @brief     Интерфейс продукционного правила
+ *********************************************************************************/
 class IRule
 {
 public:
-	virtual void  onBeforeChoiceFrom(PTR(rdoRuntime::RDOSimulator) sim    )             = 0;
-	virtual rbool choiceFrom        (PTR(rdoRuntime::RDORuntime)   runtime)             = 0;
-	virtual void  onBeforeRule      (PTR(rdoRuntime::RDOSimulator) sim    )             = 0;
-	virtual void  convertRule       (PTR(rdoRuntime::RDORuntime)   runtime)             = 0;
-	virtual void  onAfterRule       (PTR(rdoRuntime::RDOSimulator) sim, rbool inSearch) = 0;
+	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  onBeforeRule      (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch) = 0;
 };
-#define DECLARE_IRule \
-	virtual void  onBeforeChoiceFrom(PTR(rdoRuntime::RDOSimulator) sim    ); \
-	virtual rbool choiceFrom        (PTR(rdoRuntime::RDORuntime)   runtime); \
-	virtual void  onBeforeRule      (PTR(rdoRuntime::RDOSimulator) sim    ); \
-	virtual void  convertRule       (PTR(rdoRuntime::RDORuntime)   runtime); \
-	virtual void  onAfterRule       (PTR(rdoRuntime::RDOSimulator) sim, rbool inSearch);
 
-#endif //! _RDO_RULE_I_H_
+/******************************************************************************//**
+ * @def       DECLARE_IRule
+ * @brief     Декларация интерфейса продукционного правила
+ *********************************************************************************/
+#define DECLARE_IRule \
+	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void  onBeforeRule      (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch);
+
+#endif // _LIB_RUNTIME_RULE_I_H_

@@ -1,34 +1,34 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_dptsearch.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2008
+ * @file      rdo_logic_dptsearch.h
+ * @authors   Урусов Андрей
+ * @date      29.04.2008
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_LOGIC_DPTSEARCH_H_
-#define _RDO_LOGIC_DPTSEARCH_H_
+#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
+#define _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch_i.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOSimulator;
 class TreeNode;
 class TreeRoot;
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDODPTSearch
+ * @brief   unknown
+ *********************************************************************************/
 class RDODPTSearch: public RDOLogicSimple, public IDPTSearchLogic, public RDOPatternPrior
 {
 QUERY_INTERFACE_BEGIN
@@ -41,30 +41,30 @@ friend class RDOSimulator;
 friend class TreeNode;
 
 protected:
-	RDODPTSearch( RDOSimulator* sim, LPIBaseOperationContainer parent = NULL );
+	RDODPTSearch(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDODPTSearch();
 
 	typedef std::list<LPIDPTSearchActivity> ActivityList;
 	ActivityList   m_activityList;
 
-	virtual bool   TermCondition( RDOSimulator* sim )                              = 0;
-	virtual double EvaluateBy( RDOSimulator* sim )                                 = 0;
-	virtual void   onSearchBegin( RDOSimulator* sim )                              = 0;
-	virtual void   onSearchDecisionHeader( RDOSimulator* sim )                     = 0;
-	virtual void   onSearchDecision( RDOSimulator* sim, TreeNode* node )           = 0;
-	virtual void   onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )  = 0;
-	virtual void   onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot ) = 0;
-	virtual bool   NeedCompareTops()                                               = 0;
-	virtual TreeRoot* createTreeRoot( RDOSimulator* sim )                          = 0;
-	virtual BOResult  onContinue( RDOSimulator* sim );
+	virtual rbool         TermCondition         (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual double        EvaluateBy            (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual void          onSearchBegin         (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual void          onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual void          onSearchDecision      (CREF(LPRDORuntime) pRuntime, PTR(TreeNode) node )     = 0;
+	virtual void          onSearchResultSuccess (CREF(LPRDORuntime) pRuntime, PTR(TreeRoot) treeRoot ) = 0;
+	virtual void          onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, PTR(TreeRoot) treeRoot ) = 0;
+	virtual rbool         NeedCompareTops       ()                                                     = 0;
+	virtual PTR(TreeRoot) createTreeRoot        (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual BOResult      onContinue            (CREF(LPRDORuntime) pRuntime);
 
 private:
-	TreeRoot* treeRoot;
-	virtual BOResult onDoOperation( RDOSimulator* sim );
+	PTR(TreeRoot) treeRoot;
+	virtual BOResult onDoOperation(CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IDPTSearchLogic;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _RDO_LOGIC_DPTSEARCH_H_
+#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_H_

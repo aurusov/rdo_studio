@@ -1540,7 +1540,7 @@ pat_convert_cmd
 		if (pCalc)
 		{
 			//! Проверка на диапазон
-			//! TODO: проверить работоспособность
+			/// @todo проверить работоспособность
 			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getType().get()))
 			{
 				LPRDOTypeIntRange pRange = param->getType()->type().object_static_cast<RDOTypeIntRange>();

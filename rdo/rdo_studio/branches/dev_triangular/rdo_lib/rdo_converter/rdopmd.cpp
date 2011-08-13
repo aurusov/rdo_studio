@@ -58,7 +58,7 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 		trace->setTraceID(Converter::s_converter()->getPMD_id());
 	}
 	Converter::s_converter()->insertPMDPokaz(this);
-	//! [TODO]: перенести в конструктор rdoRuntime::RDOPMDPokaz
+	/// @todo перенести в конструктор rdoRuntime::RDOPMDPokaz
 	Converter::s_converter()->runtime()->addRuntimePokaz(m_pPokaz);
 }
 

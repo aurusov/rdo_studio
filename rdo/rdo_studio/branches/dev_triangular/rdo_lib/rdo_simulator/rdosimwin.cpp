@@ -838,8 +838,6 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 // --------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     (_T("RDOThreadSimulator"))
-	, m_pRuntime      (NULL                    )
-	, m_pParser       (NULL                    )
 	, m_pThreadRuntime(NULL                    )
 	, m_exitCode      (rdoSimulator::EC_OK     )
 {
@@ -931,9 +929,11 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			PTR(RPShapeDataBlockCreate) pRawParams = static_cast<PTR(RPShapeDataBlockCreate)>(msg.param);
 			LPRPShapeDataBlockCreate pParams(pRawParams);
 			m_pBlock = rdo::Factory<ProcGUIBlockGenerate>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
-			ASSERT(m_pBlock);
 			msg.unlock();
-			m_pBlock = NULL;
+			ASSERT(m_pBlock);
+			pRawParams = NULL;
+			m_pBlock   = NULL;
+			pParams    = NULL;
 			break;
 		}
 		case RT_PROCGUI_BLOCK_PROCESS:
@@ -945,6 +945,9 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			m_pBlock = rdo::Factory<ProcGUIBlockProcess>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
 			msg.unlock();
 			ASSERT(m_pBlock);
+			pRawParams = NULL;
+			m_pBlock   = NULL;
+			pParams    = NULL;
 			break;
 		}
 		case RT_PROCGUI_BLOCK_TERMINATE:
@@ -956,6 +959,11 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			m_pBlock = rdo::Factory<ProcGUIBlockTerminate>::create(m_pGUIProcess, pParams);
 			msg.unlock();
 			ASSERT(m_pBlock);
+			m_pGUIProcess->clear();
+			m_pGUIProcess = NULL;
+			pRawParams    = NULL;
+			m_pBlock      = NULL;
+			pParams       = NULL;
 			break;
 		}
 		
@@ -1063,6 +1071,7 @@ rbool RDOThreadSimulator::parseModel()
 	ASSERT(m_pParser);
 	m_pParser->init();
 	m_pRuntime = m_pParser->runtime();
+	ASSERT(m_pRuntime);
 
 	try
 	{
@@ -1156,7 +1165,6 @@ void RDOThreadSimulator::closeModel()
 	{
 		if (m_pRuntime)
 		{
-			delete m_pRuntime;
 			m_pRuntime = NULL;
 		}
 	}

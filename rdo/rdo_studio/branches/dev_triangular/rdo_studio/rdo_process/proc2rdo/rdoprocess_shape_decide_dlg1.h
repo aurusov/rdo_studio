@@ -6,8 +6,8 @@
 #endif // _MSC_VER > 1000
 
 //
-#include "../../resource.h"
-#include "rdoprocess_shape_decide.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeDecideDlg1 dialog
 

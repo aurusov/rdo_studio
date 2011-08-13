@@ -17,7 +17,6 @@
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
 #include "rdo_lib/rdo_converter/runtime/rdo_ie.h"
-#include "rdo_lib/rdo_runtime/rdo_pattern.h"
 // ===============================================================================
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -116,10 +115,10 @@ void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource
 	ASSERT(pRelevantResource);
 	switch (getType())
 	{
-	case PT_IE       : static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
-	case PT_Rule     : static_cast<PTR(rdoRuntime::RDOPatternRule)>      (getPatRuntime())->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
-	case PT_Operation: static_cast<PTR(rdoRuntime::RDOPatternOperation)> (getPatRuntime())->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
-	case PT_Keyboard : static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>  (getPatRuntime())->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
+	case PT_IE       : getPatRuntime<rdoRuntime::RDOPatternIrregEvent>()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
+	case PT_Rule     : getPatRuntime<rdoRuntime::RDOPatternRule      >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
+	case PT_Operation: getPatRuntime<rdoRuntime::RDOPatternOperation >()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
+	case PT_Keyboard : getPatRuntime<rdoRuntime::RDOPatternKeyboard  >()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
 	default          : rdoConverter::g_error().error(src_info(), _T("Неизвестный тип образца"));
 	}
 	m_relResList.push_back(pRelevantResource);
@@ -160,8 +159,8 @@ void RDOPATPattern::addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 {
 	switch (getType())
 	{
-	case PT_IE       : static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addConvertorCalc(pCalc); break;
-	case PT_Rule     : static_cast<PTR(rdoRuntime::RDOPatternRule)>      (getPatRuntime())->addConvertorCalc(pCalc); break;
+	case PT_IE       : getPatRuntime<rdoRuntime::RDOPatternIrregEvent>()->addConvertorCalc(pCalc); break;
+	case PT_Rule     : getPatRuntime<rdoRuntime::RDOPatternRule      >()->addConvertorCalc(pCalc); break;
 	case PT_Operation: NEVER_REACH_HERE;
 	case PT_Keyboard : NEVER_REACH_HERE;
 	default          : rdoConverter::g_error().error(src_info(), _T("Неизвестный тип образца"));
@@ -245,9 +244,9 @@ void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
 { 
 	switch (getType())
 	{
-	case PT_IE       : static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->setTime(arithm->createCalc(NULL)); time = arithm; break;
-	case PT_Operation: static_cast<PTR(rdoRuntime::RDOPatternOperation)> (getPatRuntime())->setTime(arithm->createCalc(NULL)); break;
-	case PT_Keyboard : static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>  (getPatRuntime())->setTime(arithm->createCalc(NULL)); break;
+	case PT_IE       : getPatRuntime<rdoRuntime::RDOPatternIrregEvent>()->setTime(arithm->createCalc(NULL)); time = arithm; break;
+	case PT_Operation: getPatRuntime<rdoRuntime::RDOPatternOperation >()->setTime(arithm->createCalc(NULL)); break;
+	case PT_Keyboard : getPatRuntime<rdoRuntime::RDOPatternKeyboard  >()->setTime(arithm->createCalc(NULL)); break;
 	default          : rdoConverter::g_error().error(src_info(), rdo::format(_T("Для образца типа %s недопустимо использование выражения времени"), typeToString(getType()).c_str()));
 	}
 }
@@ -256,10 +255,10 @@ void RDOPATPattern::addChoiceFromCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 {
 	switch (getType())
 	{
-	case PT_IE       : static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addPreSelectRelRes(pCalc); break;
-	case PT_Rule     : static_cast<PTR(rdoRuntime::RDOPatternRule)>      (getPatRuntime())->addChoiceFromCalc (pCalc); break;
-	case PT_Operation: static_cast<PTR(rdoRuntime::RDOPatternOperation)> (getPatRuntime())->addChoiceFromCalc (pCalc); break;
-	case PT_Keyboard : static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>  (getPatRuntime())->addChoiceFromCalc (pCalc); break;
+	case PT_IE       : getPatRuntime<rdoRuntime::RDOPatternIrregEvent>()->addPreSelectRelRes(pCalc); break;
+	case PT_Rule     : getPatRuntime<rdoRuntime::RDOPatternRule      >()->addChoiceFromCalc (pCalc); break;
+	case PT_Operation: getPatRuntime<rdoRuntime::RDOPatternOperation >()->addChoiceFromCalc (pCalc); break;
+	case PT_Keyboard : getPatRuntime<rdoRuntime::RDOPatternKeyboard  >()->addChoiceFromCalc (pCalc); break;
 	default          : rdoConverter::g_error().error(src_info(), rdo::format(_T("Для образца типа %s недопустимо использование условния выбора"), typeToString(getType()).c_str()));
 	}
 }
@@ -339,7 +338,7 @@ void RDOPATPattern::end()
 		LPRDORelevantResource pCurrRelRes = m_relResList.at(i);
 		if (!pCurrRelRes->m_alreadyHaveConverter)
 		{
-			//! TODO: А почему нельзя сделать warning ? Возможно, есть жесткое требование недопустить пустого рел. ресурса.
+			/// @todo А почему нельзя сделать warning ? Возможно, есть жесткое требование недопустить пустого рел. ресурса.
 			rdoConverter::g_error().error(pCurrRelRes->src_info(), rdo::format(_T("Релевантный ресурс '%s' не используется в образце '%s'"), pCurrRelRes->name().c_str(), name().c_str()));
 		}
 		m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());
@@ -396,8 +395,9 @@ void RDOPATPattern::end()
 // ----------------------------------------------------------------------------
 RDOPatternIrregEvent::RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
-{ 
-	m_pPatRuntime = new rdoRuntime::RDOPatternIrregEvent(Converter::s_converter()->runtime(), trace); 
+{
+	m_pPatRuntime = rdo::Factory<rdoRuntime::RDOPatternIrregEvent>::create(trace);
+	ASSERT(m_pPatRuntime);
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
@@ -445,7 +445,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
-		static_cast<PTR(rdoRuntime::RDOPatternIrregEvent)>(getPatRuntime())->addEraseCalc(pCalc);
+		getPatRuntime<rdoRuntime::RDOPatternIrregEvent>()->addEraseCalc(pCalc);
 	}
 }
 
@@ -481,7 +481,7 @@ rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 			params_default.push_back((*it)->getDefault().value());
 		}
 	}
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateEmptyResource>::create(m_pCurrRelRes->getType()->getNumber(), trace, params_default, m_pCurrRelRes->m_relResID);
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateNumberedResource>::create(m_pCurrRelRes->getType()->getNumber(), trace, params_default, m_pCurrRelRes->m_relResID, false);
 	pCalc->setSrcInfo(m_pCurrRelRes->src_info());
 	pCalc->setSrcText(rdo::format(_T("Создание временного ресурса %s"), m_pCurrRelRes->name().c_str()));
 	return pCalc;
@@ -502,9 +502,10 @@ tstring RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(CREF(tstring) nam
 // ----------------------------------------------------------------------------
 RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
-{ 
+{
 //	Converter::s_converter()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(Converter::s_converter()->runtime(), _trace))); 
-	m_pPatRuntime = new rdoRuntime::RDOPatternRule(Converter::s_converter()->runtime(), trace);
+	m_pPatRuntime = rdo::Factory<rdoRuntime::RDOPatternRule>::create(trace);
+	ASSERT(m_pPatRuntime);
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
@@ -552,7 +553,7 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
-		static_cast<PTR(rdoRuntime::RDOPatternRule)>(getPatRuntime())->addEraseCalc(pCalc);
+		getPatRuntime<rdoRuntime::RDOPatternRule>()->addEraseCalc(pCalc);
 	}
 }
 
@@ -572,8 +573,9 @@ tstring RDOPatternRule::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo
 RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
-{ 
-	m_pPatRuntime = new rdoRuntime::RDOPatternOperation(Converter::s_converter()->runtime(), trace);
+{
+	m_pPatRuntime = rdo::Factory<rdoRuntime::RDOPatternOperation>::create(trace);
+	ASSERT(m_pPatRuntime);
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
@@ -586,7 +588,7 @@ void RDOPatternOperation::rel_res_insert(CREF(LPRDORelevantResource) pRelevantRe
 {
 	ASSERT(pRelevantResource);
 	RDOPATPattern::rel_res_insert(pRelevantResource);
-	static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addConvertorEndStatus(pRelevantResource->m_statusEnd);
+	getPatRuntime<rdoRuntime::RDOPatternOperation>()->addConvertorEndStatus(pRelevantResource->m_statusEnd);
 }
 
 void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
@@ -682,14 +684,14 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
-		static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addEraseBeginCalc(pCalc);
+		getPatRuntime<rdoRuntime::RDOPatternOperation>()->addEraseBeginCalc(pCalc);
 	}
 	if (pRelevantResource->m_statusEnd == rdoRuntime::RDOResource::CS_Erase)
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
 		pCalc->setSrcInfo(rel_info);
 		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
-		static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addEraseEndCalc(pCalc);
+		getPatRuntime<rdoRuntime::RDOPatternOperation>()->addEraseEndCalc(pCalc);
 	}
 }
 
@@ -715,8 +717,8 @@ void RDOPatternOperation::addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 {
 	switch (m_convertorType)
 	{
-	case convert_begin: static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addConvertorBeginCalc(pCalc); break;
-	case convert_end  : static_cast<PTR(rdoRuntime::RDOPatternOperation)>(getPatRuntime())->addConvertorEndCalc  (pCalc); break;
+	case convert_begin: getPatRuntime<rdoRuntime::RDOPatternOperation>()->addConvertorBeginCalc(pCalc); break;
+	case convert_end  : getPatRuntime<rdoRuntime::RDOPatternOperation>()->addConvertorEndCalc  (pCalc); break;
 	default           : NEVER_REACH_HERE;
 	}
 }
@@ -749,7 +751,8 @@ tstring RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(tstring) name
 RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPatternOperation(trace, name_src_info)
 {
-	m_pPatRuntime = new rdoRuntime::RDOPatternKeyboard(Converter::s_converter()->runtime(), trace); 
+	m_pPatRuntime = rdo::Factory<rdoRuntime::RDOPatternKeyboard>::create(trace);
+	ASSERT(m_pPatRuntime);
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 

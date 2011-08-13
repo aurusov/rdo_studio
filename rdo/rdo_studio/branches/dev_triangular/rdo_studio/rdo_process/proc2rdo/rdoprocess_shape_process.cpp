@@ -4,9 +4,9 @@
 
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 #include <list>
-#include "rdoprocess_shape_process.h"
-#include "rdoprocess_shape_process_dlg1.h"
-#include "rdoprocess_method_proc2rdo.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process_dlg1.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdostudioapp.h"
 
 #ifdef _DEBUG
@@ -86,38 +86,39 @@ void RPShapeProcessMJ::generate()
 			break;
 	}
 
-	params = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
-	ASSERT(params);
-	params->setBase(base_gen);
-	params->setDisp(gdisp);
-	params->setExp(gexp);
+	m_pParams = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
+	ASSERT(m_pParams);
+	m_pParams->setBase(base_gen);
+	m_pParams->setDisp(gdisp);
+	m_pParams->setExp(gexp);
 
 	switch(action)
 	{
 		case 0://advance
-			params->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 1://sieze,advance,release
-			params->addAction(RPShapeDataBlockProcess::Seize  );
-			params->addAction(RPShapeDataBlockProcess::Advance);
-			params->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
 			break;
 		case 2://seize,advance
-			params->addAction(RPShapeDataBlockProcess::Seize  );
-			params->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 3://seize,advance
-			params->addAction(RPShapeDataBlockProcess::Advance);
-			params->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
 			break;
 	}
 
 	std::list<CString>::iterator it = list_resource_procMJ.begin();
 	while( it != list_resource_procMJ.end() ) 
 	{
-		params->addRes(static_cast<tstring>(*it));
+		m_pParams->addRes(static_cast<tstring>(*it));
 		it++;
 	}
 
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, params.get());
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
+	m_pParams = NULL;
 }

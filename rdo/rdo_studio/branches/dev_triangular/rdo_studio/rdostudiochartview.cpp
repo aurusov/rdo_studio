@@ -737,12 +737,12 @@ BOOL RDOStudioChartView::OnPreparePrinting( CPrintInfo* pInfo )
 
 void RDOStudioChartView::OnBeginPrinting( CDC* /*pDC*/, CPrintInfo* /*pInfo*/ )
 {
-	// TODO: add extra initialization before printing
+	/// @todo add extra initialization before printing
 }
 
 void RDOStudioChartView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: add cleanup after printing
+	/// @todo add cleanup after printing
 }
 
 DROPEFFECT RDOStudioChartView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )

@@ -39,10 +39,6 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 // ===============================================================================
 
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDORuntime;
-CLOSE_RDO_RUNTIME_NAMESPACE
-
 OPEN_RDO_CONVERTER_NAMESPACE
 
 class RDOTypeParam;
@@ -102,7 +98,7 @@ public:
 	Converter();
 	virtual ~Converter();
 
-	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
+	rdoRuntime::LPRDORuntime runtime() { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -126,6 +122,7 @@ public:
 	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
 	ruint getPMD_id     () const { return m_allPMDPokaz.size()    + 1; }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	ruint getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
 
 	tstring getModelStructure();
 	tstring getChanges       () const;
@@ -221,8 +218,8 @@ protected:
 
 	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	ValueList              m_allValues;
-	rdoRuntime::RDORuntime m_runtime;
+	ValueList                m_allValues;
+	rdoRuntime::LPRDORuntime m_pRuntime;
 
 private:
 	LPRDOSMR        m_pSMR;
@@ -239,6 +236,10 @@ private:
 	{
 		m_pattern = false;
 	}
+
+	template <>
+	void howIsIt<LPRDOFUNGroup>()
+	{}
 
 	template <>
 	void howIsIt<LPRDOPATPattern>()

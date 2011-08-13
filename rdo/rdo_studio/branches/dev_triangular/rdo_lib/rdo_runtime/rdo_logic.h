@@ -1,30 +1,33 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_logic.h
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      23.04.2008
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_LOGIC_H_
-#define _RDO_LOGIC_H_
+#ifndef _LIB_RUNTIME_LOGIC_H_
+#define _LIB_RUNTIME_LOGIC_H_
 
 #pragma warning(disable : 4786)
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_i.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogicBase
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOLogic
+ * @tparam  Order Дисциплина очереди
+ * @brief   Базовый класс для логик РДО
+ *********************************************************************************/
 template <class Order>
 class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic, CAST_TO_UNKNOWN
 {
@@ -40,7 +43,7 @@ public:
 	typedef  BaseOperationList::const_iterator  CIterator;
 
 protected:
-	RDOLogic(PTR(RDOSimulator) sim = NULL, LPIBaseOperationContainer parent = NULL);
+	RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDOLogic();
 
 	DECLARE_IBaseOperationContainer;
@@ -52,57 +55,61 @@ protected:
 	LPIBaseOperationContainer  m_parent;
 
 private:
-	rbool checkSelfCondition(PTR(RDOSimulator) sim);
-	void  start             (PTR(RDOSimulator) sim);
-	void  stop              (PTR(RDOSimulator) sim);
+	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);
+	void  start             (CREF(LPRDORuntime) pRuntime);
+	void  stop              (CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_ILogic;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOrderSimple
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOOrderSimple
+ * @brief   unknown
+ *********************************************************************************/
 class RDOOrderSimple
 {
 public:
-	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOrderMeta
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOOrderMeta
+ * @brief   unknown
+ *********************************************************************************/
 class RDOOrderMeta
 {
 public:
-	static LPIBaseOperation sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogicSimple
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOLogicSimple
+ * @brief   unknown
+ *********************************************************************************/
 class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
 protected:
 	DEFINE_IFACTORY(RDOLogicSimple);
 
-	RDOLogicSimple(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent = NULL)
-		: RDOLogic<RDOOrderSimple>(sim, parent)
+	RDOLogicSimple(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+		: RDOLogic<RDOOrderSimple>(pRuntime, pParent)
 	{}
 	virtual ~RDOLogicSimple()
 	{}
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogicMeta
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDOLogicMeta
+ * @brief   unknown
+ *********************************************************************************/
 class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
 protected:
 	DEFINE_IFACTORY(RDOLogicMeta);
 
 	RDOLogicMeta()
-		: RDOLogic<RDOOrderMeta>()
+		: RDOLogic<RDOOrderMeta>(NULL)
 	{}
 	virtual ~RDOLogicMeta()
 	{}
@@ -112,4 +119,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_logic.inl"
 
-#endif //! _RDO_LOGIC_H_
+#endif // _LIB_RUNTIME_LOGIC_H_

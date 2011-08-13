@@ -13,6 +13,7 @@
 // ====================================================================== SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
 // ===============================================================================
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,7 +27,7 @@ RDOValue::RDOValue()
 {
 	m_pType = rdo::Factory<TypeInfo>::create(
 		rdo::Factory<RDOType__unknow>::create(),
-		RDOParserSrcInfo() //! TODO: TypeInfo реально неопределён, добавить соответствующий конструктор
+		RDOParserSrcInfo() /// @todo TypeInfo реально неопределён, добавить соответствующий конструктор
 	);
 }
 
@@ -37,7 +38,7 @@ RDOValue::RDOValue(CREF(LPRDOArrayValue) pValue)
 	m_value = m_pArray->getRArray();
 	m_pType = rdo::Factory<TypeInfo>::create(
 		pValue->getArrayType(),
-		pValue->src_info() //! TODO: Взять TypeInfo из pValue->getArrayType()
+		pValue->src_info() /// @todo Взять TypeInfo из pValue->getArrayType()
 	);
 }
 

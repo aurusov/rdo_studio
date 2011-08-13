@@ -1,29 +1,30 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_event.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.08.2010
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2010
+ * @file      rdo_event.h
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      18.08.2010
+ * @brief     События
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_EVENT_H_
-#define _RDO_EVENT_H_
+#ifndef _LIB_RUNTIME_EVENT_H_
+#define _LIB_RUNTIME_EVENT_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_event_i.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEvent
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class     RDOEvent
+ * @brief     Событие
+ *********************************************************************************/
 class RDOEvent: public IBaseOperation, public IEvent, public RDOActivityPattern<RDOPatternEvent>
 {
 typedef RDOActivityPattern<RDOPatternEvent> pattern_type;
@@ -37,12 +38,12 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOEvent( RDORuntime* runtime, RDOPatternEvent* pattern, bool trace, const std::string& name );
+	RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name);
 
-	void convertEvent( RDOSimulator* sim );
+	void convertEvent(CREF(LPRDORuntime) pRuntime);
 
-	virtual void onBeforeEvent( RDOSimulator* sim );
-	virtual void onAfterEvent( RDOSimulator* sim );
+	virtual void onBeforeEvent(CREF(LPRDORuntime) pRuntime);
+	virtual void onAfterEvent (CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IEvent;
@@ -50,4 +51,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_EVENT_H_
+#endif // _LIB_RUNTIME_EVENT_H_

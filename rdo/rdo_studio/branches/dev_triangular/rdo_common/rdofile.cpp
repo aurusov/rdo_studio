@@ -99,7 +99,7 @@ rbool File::trimLeft(CREF(tstring) name)
 		}
 		boost::filesystem::rename(from, to);
 	}
-	catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>))
+	catch (CREF(boost::system::error_code))
 	{
 		return false;
 	}

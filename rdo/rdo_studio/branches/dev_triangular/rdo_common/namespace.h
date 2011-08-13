@@ -17,6 +17,9 @@
 #define OPEN_RDO_NAMESPACE					namespace rdo {
 #define CLOSE_RDO_NAMESPACE					};
 
+#define OPEN_RDO_PARSE_NAMESPACE			namespace rdoParse {
+#define CLOSE_RDO_PARSE_NAMESPACE			};
+
 #define OPEN_RDO_RUNTIME_NAMESPACE			namespace rdoRuntime {
 #define CLOSE_RDO_RUNTIME_NAMESPACE			};
 

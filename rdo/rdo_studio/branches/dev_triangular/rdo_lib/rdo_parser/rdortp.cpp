@@ -43,6 +43,11 @@ RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) s
 RDORTPResType::~RDORTPResType()
 {}
 
+LPRDORSSResource RDORTPResType::createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info)
+{
+	return rdo::Factory<RDORSSResource>::create(pParser, src_info, this);
+}
+
 void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
 	if (findRTPParam(param->name()))

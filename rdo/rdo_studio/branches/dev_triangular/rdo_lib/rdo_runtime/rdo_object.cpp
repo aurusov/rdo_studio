@@ -1,73 +1,75 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_object.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 30.01.2007
- * bref     : Определение базового класса для всех объектов RDORuntime
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_object.cpp
+ * @authors   Барс Александр, Урусов Андрей
+ * @date      30.01.2007
+ * @brief     Определение базового класса для всех объектов RDORuntime
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDORuntimeObject
-// ----------------------------------------------------------------------------
-size_t RDORuntimeObject::s_memory_size = 0;
+/// @todo удалить комментарии
 
-RDORuntimeObject::RDORuntimeObject(PTR(RDORuntimeParent) parent)
-	: m_parent(parent)
-{
-	if (m_parent)
-	{
-		m_parent->insertObject(this);
-	}
-	else
-	{
-//		TRACE( "========= no parent for %d\n", this );
-	}
-}
-
-RDORuntimeObject::~RDORuntimeObject()
-{
-//	TRACE( "destroy %d\n", this );
-	if (m_parent)
-	{
-		m_parent->removeObject(this);
-	}
-}
-
-void RDORuntimeObject::detach()
-{
-	if (m_parent)
-	{
-		m_parent->removeObject(this);
-		m_parent = NULL;
-	}
-}
-
-void RDORuntimeObject::reparent(PTR(RDORuntimeParent) parent)
-{
-	if (m_parent != parent)
-	{
-		if (m_parent)
-		{
-			m_parent->removeObject(this);
-		}
-		m_parent = parent;
-		if (m_parent)
-		{
-			m_parent->insertObject(this);
-		}
-	}
-}
+// ********************************************************************************
+// ******************** RDORuntimeObject
+// ********************************************************************************
+//size_t RDORuntimeObject::s_memory_size = 0;
+//
+//RDORuntimeObject::RDORuntimeObject(PTR(RDORuntimeParent) parent)
+//	: m_parent(parent)
+//{
+//	if (m_parent)
+//	{
+//		m_parent->insertObject(this);
+//	}
+//	else
+//	{
+////		TRACE( "========= no parent for %d\n", this );
+//	}
+//}
+//
+//RDORuntimeObject::~RDORuntimeObject()
+//{
+////	TRACE( "destroy %d\n", this );
+//	if (m_parent)
+//	{
+//		m_parent->removeObject(this);
+//	}
+//}
+//
+//void RDORuntimeObject::detach()
+//{
+//	if (m_parent)
+//	{
+//		m_parent->removeObject(this);
+//		m_parent = NULL;
+//	}
+//}
+//
+//void RDORuntimeObject::reparent(PTR(RDORuntimeParent) parent)
+//{
+//	if (m_parent != parent)
+//	{
+//		if (m_parent)
+//		{
+//			m_parent->removeObject(this);
+//		}
+//		m_parent = parent;
+//		if (m_parent)
+//		{
+//			m_parent->insertObject(this);
+//		}
+//	}
+//}
 
 //#ifndef _DEBUG
 //PTR(void) RDORuntimeObject::operator new(size_t sz)
@@ -75,7 +77,7 @@ void RDORuntimeObject::reparent(PTR(RDORuntimeParent) parent)
 //	s_memory_size += sz;
 //	PTR(RDORuntimeObject) obj = static_cast<PTR(RDORuntimeObject)>(::operator new(sz));
 //	obj->m_object_size = sz;
-////	obj->runtime->memory_insert(sz);
+////	obj->pRuntime->memory_insert(sz);
 //	return obj;
 //}
 //
@@ -86,16 +88,16 @@ void RDORuntimeObject::reparent(PTR(RDORuntimeParent) parent)
 //}
 //#endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDORuntimeParent
-// ----------------------------------------------------------------------------
-RDORuntimeParent::RDORuntimeParent(PTR(RDORuntimeParent) parent)
-	: RDORuntimeObject(parent)
-{}
-
-RDORuntimeParent::~RDORuntimeParent()
-{
-	deleteObjects();
-}
+// ********************************************************************************
+// ******************** RDORuntimeParent
+// ********************************************************************************
+//RDORuntimeParent::RDORuntimeParent(PTR(RDORuntimeParent) parent)
+//	: RDORuntimeObject(parent)
+//{}
+//
+//RDORuntimeParent::~RDORuntimeParent()
+//{
+//	deleteObjects();
+//}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -1,38 +1,38 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : relres.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 16.04.11
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      relres.cpp
+ * @authors   Барс Александр, Урусов Андрей
+ * @date      16.04.2011
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/relres.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOGetRelResParamCalc
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOGetRelResParamCalc
+// ********************************************************************************
 RDOGetRelResParamCalc::RDOGetRelResParamCalc(ruint relResID, ruint paramID)
 	: m_relResID(relResID)
 	, m_paramID (paramID )
 {}
 
-REF(RDOValue) RDOGetRelResParamCalc::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOGetRelResParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelResParamDiapCalc
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOSetRelResParamDiapCalc
+// ********************************************************************************
 RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc)
 	: m_relResID(relResID)
 	, m_paramID (paramID )
@@ -47,7 +47,7 @@ RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(ruint relResID, ruint param
 	}
 }
 
-REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pCalc->calcValue(pRuntime);
 	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
@@ -58,9 +58,9 @@ REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEraseResRelCalc
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOEraseResRelCalc
+// ********************************************************************************
 RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
 	: m_relResID  (relResID  )
 	, m_relResName(relResName)
@@ -68,7 +68,7 @@ RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
 	m_value = 1;
 }
 
-REF(RDOValue) RDOEraseResRelCalc::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
 	return m_value;

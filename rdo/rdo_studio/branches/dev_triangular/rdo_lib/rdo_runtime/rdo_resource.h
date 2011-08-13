@@ -1,31 +1,44 @@
-#ifndef RDO_RESOURCE_H
-#define RDO_RESOURCE_H
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      rdo_resource.h
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      16.04.2008
+ * @brief     Ресурсы в runtime
+ * @indent    4T
+ *********************************************************************************/
 
+#ifndef _LIB_RUNTIME_RESOURCE_H_
+#define _LIB_RUNTIME_RESOURCE_H_
+
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
+// ********************************************************************************
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
+PREDECLARE_OBJECT_INTERFACE(IResourceType);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResourceType
-// ----------------------------------------------------------------------------
-class RDOResourceType: public RDORuntimeObject, public RDOTraceableObject
+/******************************************************************************//**
+ * @class   RDOResource
+ * @brief   "обычные" ресурсы моделей
+ * @details Ресурсы, которые могут быть релевантны активностям и
+ * событиям, но не могут использоваться в процессах
+ *********************************************************************************/
+OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
+friend class RDOResourceType;
 public:
-	RDOResourceType( RDORuntimeParent* parent );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOResource
-// ----------------------------------------------------------------------------
-class RDOResource: public RDORuntimeObject, public RDOTraceableObject, public RDORuntimeContainer
-{
-public:
-	enum ConvertStatus {
+	/**
+	 * @enum  ConvertStatus
+	 * @brief статусы конверторов релевантных ресурсов
+	 */
+	enum ConvertStatus
+	{
 		CS_None = 0,
 		CS_Keep,
 		CS_Create,
@@ -34,77 +47,53 @@ public:
 		CS_NoChange
 	};
 
-	RDOResource( RDORuntime* rt, int id, unsigned int type, bool trace );
-	RDOResource( const RDOResource& copy );
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
-	void setRuntime(RDORuntime* runtime) { RDORuntimeContainer::setRuntime(runtime); }
+	rbool operator!= (REF(RDOResource) other);
 
-	virtual std::string whoAreYou()      { return "rdoRes";     }
-	void makeTemporary( bool value )     { m_temporary = value; }
-	ConvertStatus getState() const       { return m_state;      }
-	void setState( ConvertStatus value ) { m_state = value;     }
-	std::string traceResourceState( char prefix, RDOSimulatorTrace* sim );
+	ConvertStatus               getState   (                           ) const;
+	CREF(RDOValue)              getParam   (ruint index                ) const;
+	rbool                       checkType  (ruint type                 ) const;
+	rbool                       canFree    (                           ) const;
+	CREF(LPIResourceType)       getResType (                           ) const;
+	ruint                       getType    (                           ) const;
+	virtual ruint               paramsCount(                           ) const;
+	LPRDOResource               clone      (CREF(LPRDORuntime) pRuntime) const;
+	CREF(std::vector<RDOValue>) getParams  (                           ) const;
 
-	bool checkType( unsigned int type ) const
-	{
-		return m_type == type;
-	}
+	typedef std::vector<RDOValue>::const_iterator VCI;
 
-	CREF(RDOValue) getParam(ruint index) const
-	{
-		ASSERT(index < m_params.size());
-		return m_params[index];
-	}
-	REF(RDOValue) getParamRaw(ruint index)
-	{
-		ASSERT(index < m_params.size());
-		setState(CS_Keep);
-		return m_params[index];
-	}
-	void setParam(ruint index, CREF(RDOValue) value)
-	{
-		if (m_params.size() <= index)
-		{
-			m_params.resize(index + 1);
-		}
-		setState(CS_Keep);
-		m_params.at(index) = value;
-	}
-	virtual ruint paramsCount() const
-	{
-		return m_params.size();
-	}
-	virtual void appendParams( const std::vector< RDOValue >::const_iterator& from_begin, const std::vector< RDOValue >::const_iterator& from_end )
-	{
-		m_params.insert( m_params.end(), from_begin, from_end );
-	}
-
-	std::string getTypeId();
-	std::string traceParametersValue();
-	bool operator!= ( RDOResource& other );
-
-	bool canFree() const { return m_referenceCount == 0; }
-	void incRef()        { m_referenceCount++;           }
-	void decRef()        { m_referenceCount--;           }
+	virtual void    appendParams        (CREF(VCI) from_begin, CREF(VCI) from_end);
+	void            setRuntime          (CREF(LPRDORuntime) pRuntime             );
+	void            makeTemporary       (rbool value                             );
+	void            setState            (ConvertStatus value                     );
+	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
+	REF(RDOValue)   getParamRaw         (ruint index                             );
+	void            setParam            (ruint index, CREF(RDOValue) value       );
+	tstring         getTypeId           ();
+	tstring         traceParametersValue();
+	virtual tstring whoAreYou           ();
+	void            incRef              ();
+	void            decRef              ();
 
 protected:
-	std::vector< RDOValue > m_params;
-	bool                    m_temporary;
-	ConvertStatus           m_state;
+	std::vector<RDOValue> m_params;
+	rbool                 m_temporary;
+	ConvertStatus         m_state;
 
 private:
-	unsigned int            m_type;
-	unsigned int            m_referenceCount;
+	ruint            m_type;
+	ruint            m_referenceCount;
+	LPIResourceType  m_resType;
+	tstring          m_typeId;
 
-	std::string             m_typeId;
-
-	std::string traceTypeId()
-	{
-		return m_typeId.empty() ? (m_typeId = getTypeId()) : m_typeId;
-	}
+	tstring traceTypeId();
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_RESOURCE_H
+#include "rdo_lib/rdo_runtime/rdo_resource.inl"
+
+#endif // _LIB_RUNTIME_RESOURCE_H_

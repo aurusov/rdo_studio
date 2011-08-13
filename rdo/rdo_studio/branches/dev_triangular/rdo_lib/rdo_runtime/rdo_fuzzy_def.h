@@ -1,26 +1,39 @@
-#ifndef RDO_FUZZY_DEF_H
-#define RDO_FUZZY_DEF_H
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2008
+ * @file      rdo_fuzzy_def.h
+ * @authors   Урусов Андрей
+ * @date      28.07.2008
+ * @brief     Нечеткая логика
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_VALUE_H_
-#error include "rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
+#ifndef _LIB_RUNTIME_FUZZY_DEF_H_
+#define _LIB_RUNTIME_FUZZY_DEF_H_
+
+#ifndef _LIB_RUNTIME_VALUE_H_
+#error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
 #endif
 
 //
 // Напрямую этот файл инклюдить не надо, юзайте
-// #include "rdo_fuzzy.h"
+// #include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
 //
 
+// *********************************************************************** INCLUDES
 #include <map>
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
+// ********************************************************************************
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyValue
-// ----------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOFuzzyType);
 
+/******************************************************************************//**
+ * @class     RDOFuzzyValue
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzyValue
 {
 public:
@@ -80,11 +93,12 @@ private:
 	/* 3.83  */  RDOFuzzyValue ext_binary(ExtBinaryFun fun, CREF(RDOFuzzyValue) fuzzy_value) const;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyType
-// ----------------------------------------------------------------------------
-class  RDOFuzzySetDefinition;
+PREDECLARE_POINTER(RDOFuzzySetDefinition);
 
+/******************************************************************************//**
+ * @class     RDOFuzzyType
+ * @brief     Тип нечеткой переменной
+ *********************************************************************************/
 class RDOFuzzyType: public RDOType
 {
 DECLARE_FACTORY(RDOFuzzyType);
@@ -99,38 +113,39 @@ public:
 	RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 
 protected:
-	RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition);
+	RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition);
 	virtual ~RDOFuzzyType();
 
 private:
 	typedef std::map< tstring, RDOFuzzyValue > Terms;
 
-	Terms                       m_terms;
-	PTR(RDOFuzzySetDefinition)  m_fuzzySetDefinition;
+	Terms                    m_terms;
+	LPRDOFuzzySetDefinition  m_fuzzySetDefinition;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinition
-// ----------------------------------------------------------------------------
-class RDOFuzzySetDefinition
+/******************************************************************************//**
+ * @class     RDOFuzzySetDefinition
+ * @brief     Нечеткое множество
+ *********************************************************************************/
+OBJECT(RDOFuzzySetDefinition)
 {
+DECLARE_FACTORY(RDOFuzzySetDefinition)
 public:
-	RDOFuzzySetDefinition();
-	virtual ~RDOFuzzySetDefinition();
-
 	virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const = 0;
 	virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const = 0;
+
+protected:
+	RDOFuzzySetDefinition();
+	virtual ~RDOFuzzySetDefinition();
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionFixed
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class     RDOFuzzySetDefinitionFixed
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzySetDefinitionFixed: public RDOFuzzySetDefinition
 {
 public:
-	RDOFuzzySetDefinitionFixed();
-	virtual ~RDOFuzzySetDefinitionFixed();
-
 	REF(RDOFuzzySetDefinitionFixed) append     (CREF(RDOValue) value);
 	REF(RDOFuzzySetDefinitionFixed) operator() (CREF(RDOValue) value);
 
@@ -138,12 +153,16 @@ public:
 	virtual  RDOFuzzyValue  getSupplement(CREF(RDOFuzzyValue) value) const;
 
 private:
+	RDOFuzzySetDefinitionFixed();
+	virtual ~RDOFuzzySetDefinitionFixed();
+
 	RDOFuzzyValue::FuzzySet  m_items;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionRangeDiscret
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class     RDOFuzzySetDefinitionRangeDiscret
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzySetDefinitionRangeDiscret: public RDOFuzzySetDefinition
 {
 public:
@@ -159,9 +178,10 @@ private:
 	RDOValue  m_step;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyEmptyType
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class     RDOFuzzyEmptyType
+ * @brief     unknown
+ *********************************************************************************/
 class RDOFuzzyEmptyType: public RDOFuzzyType
 {
 public:
@@ -170,13 +190,14 @@ public:
 private:
 	static PTR(RDOFuzzyEmptyType) s_emptyType;
 
-	// ----------------------------------------------------------------------------
-	// ---------- RDOFuzzySetDefinitionEmpty
-	// ----------------------------------------------------------------------------
+	/**
+	 * @class     RDOFuzzySetDefinitionEmpty
+	 * @brief     unknown
+	 */
 	class RDOFuzzySetDefinitionEmpty: public RDOFuzzySetDefinition
 	{
 	public:
-		RDOFuzzySetDefinitionEmpty(PTR(RDORuntimeParent) parent);
+		RDOFuzzySetDefinitionEmpty();
 		virtual ~RDOFuzzySetDefinitionEmpty();
 
 		virtual  rbool          inRange      (CREF(RDOValue) rdovalue  ) const;
@@ -189,6 +210,6 @@ private:
 	virtual tstring asString() const;
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_FUZZY_DEF_H
+#endif // _LIB_RUNTIME_FUZZY_DEF_H_

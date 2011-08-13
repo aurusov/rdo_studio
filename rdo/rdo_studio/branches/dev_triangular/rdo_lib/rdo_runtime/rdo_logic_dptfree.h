@@ -1,26 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_dptfree.h
- * author   : Лущан Дмитрий
- * date     : 07.11.09
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_logic_dptfree.h
+ * @authors   Лущан Дмитрий
+ * @date      07.11.2009
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_LOGIC_DPTFREE_H_
-#define _RDO_LOGIC_DPTFREE_H_
+#ifndef _LIB_RUNTIME_LOGIC_DPTFREE_H_
+#define _LIB_RUNTIME_LOGIC_DPTFREE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTFree
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDODPTFree
+ * @brief   Свободная точка принятия решений
+ * @todo    избавиться от нее
+ *********************************************************************************/
 class RDODPTFree: public RDOLogicSimple, public RDOPatternPrior
 {
 DEFINE_IFACTORY(RDODPTFree);
@@ -30,12 +32,12 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTFree (RDOSimulator* sim);
+	RDODPTFree (CREF(LPRDORuntime) pRuntime);
 	virtual ~RDODPTFree();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_logic_dptfree.inl"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptfree.inl"
 
-#endif // _RDO_LOGIC_DPTFREE_H_
+#endif // _LIB_RUNTIME_LOGIC_DPTFREE_H_

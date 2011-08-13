@@ -1,25 +1,25 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : event_plan.cpp
- * author   : Ћущан ƒмитрий
- * date     : 26.05.2010
- * bref     : RDOCalc дл€ планировани€, запуска и остановки событий и нерегул€рных событий
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2010
+ * @file      event_plan.cpp
+ * @authors   Ћущан ƒмитрий
+ * @date      26.05.2010
+ * @brief     RDOCalc дл€ планировани€, запуска и остановки событий и нерегул€рных событий
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/event_plan.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEvent
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcEvent
+// ********************************************************************************
 RDOCalcEvent::RDOCalcEvent()
 {}
 
@@ -29,33 +29,33 @@ void RDOCalcEvent::setEvent(CREF(LPIBaseOperation) pEvent)
 	m_pEvent = pEvent;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEventPlan
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcEventPlan
+// ********************************************************************************
 RDOCalcEventPlan::RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc)
 	: m_pTimeCalc(pTimeCalc)
 {
 	ASSERT(m_pTimeCalc);
 }
 
-REF(RDOValue) RDOCalcEventPlan::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pEvent);
-	m_value = m_pTimeCalc->calcValue(runtime);
-	runtime->addTimePoint(m_value.getDouble(), m_pEvent);
+	m_value = m_pTimeCalc->calcValue(pRuntime);
+	pRuntime->addTimePoint(m_value.getDouble(), m_pEvent);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEventStop
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcEventStop
+// ********************************************************************************
 RDOCalcEventStop::RDOCalcEventStop()
 {}
 
-REF(RDOValue) RDOCalcEventStop::doCalc(PTR(RDORuntime) runtime)
+REF(RDOValue) RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pEvent);
-	runtime->removeTimePoint(m_pEvent);
+	pRuntime->removeTimePoint(m_pEvent);
 	m_value = RDOValue(0);
 	return m_value;
 }

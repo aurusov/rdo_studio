@@ -1,27 +1,29 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_memory.h
- * author   : Чирков Михаил
- * date     : 02.12.2010
- * bref     : 
- * indent   : 4T
- */
-#ifndef _RDO_MEMORY_H_
-#define _RDO_MEMORY_H_
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2010
+ * @file      rdo_memory.h
+ * @authors   Чирков Михаил
+ * @date      02.12.2010
+ * @brief     Память
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== PCH
+#ifndef _LIB_RUNTIME_MEMORY_H_
+#define _LIB_RUNTIME_MEMORY_H_
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
+// *********************************************************************** INCLUDES
 #include <string>
-// ====================================================================== SYNOPSIS
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_value.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOMemory
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class     RDOMemory
+ * @brief     Память
+ *********************************************************************************/
 OBJECT(RDOMemory)
 {
 DECLARE_FACTORY(RDOMemory);
@@ -31,7 +33,7 @@ public:
 	void     createVariable(CREF(tstring) name);
 	RDOValue getVariable   (CREF(tstring) name) const;
 	void     setVariable   (CREF(tstring) name, CREF(RDOValue) Variable);
-	rbool    findVariable   (CREF(tstring) name) const;
+	rbool    findVariable  (CREF(tstring) name) const;
 
 private:
 	RDOMemory();
@@ -39,9 +41,10 @@ private:
 	LocalMemory m_localMemory;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOMemoryStack
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class     RDOMemoryStack
+ * @brief     Стэк памяти
+ *********************************************************************************/
 OBJECT(RDOMemoryStack)
 {
 DECLARE_FACTORY(RDOMemoryStack);
@@ -63,4 +66,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_MEMORY_H_
+#endif // _LIB_RUNTIME_MEMORY_H_

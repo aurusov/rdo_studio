@@ -1,28 +1,46 @@
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2006
+ * @file      simtrace.cpp
+ * @authors   Урусов Андрей
+ * @date      11.06.2006
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
+
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/rdodebug.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
+// ********************************************************************************
 
 #pragma warning(disable : 4786)  
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
+// ********************************************************************************
+// ******************** RDOSimulatorTrace
+// ********************************************************************************
 RDOSimulatorTrace::~RDOSimulatorTrace()
 {
-	if ( m_tracer ) {
+	if (m_tracer)
+	{
 		delete m_tracer;
 		m_tracer = NULL;
 	}
 }
 
-void RDOSimulatorTrace::operator= (const RDOSimulatorTrace& other)
+void RDOSimulatorTrace::copyFrom(CREF(LPRDOSimulatorTrace) pOther)
 {
-	freeResourcesIds = other.freeResourcesIds;
-	maxResourcesId   = other.maxResourcesId;
+	ASSERT(pOther);
+
+	freeResourcesIds = pOther->freeResourcesIds;
+	maxResourcesId   = pOther->maxResourcesId;
 }
 
 void RDOSimulatorTrace::rdoInit()
@@ -33,92 +51,82 @@ void RDOSimulatorTrace::rdoInit()
 	RDOSimulator::rdoInit();
 }
 
-int RDOSimulatorTrace::getFreeResourceId( int _id )
+ruint RDOSimulatorTrace::getResourceId()
 {
-	if ( freeResourcesIds.empty() ) {
-		if ( _id == -1 ) {
-			// Для новых ресурсов в процессе работы
-			maxResourcesId++;
-			return maxResourcesId - 1;
-		} else {
-			// id может быть больше maxResourcesId только при,
-			// инициализации RSS, в котором ресурсы могут инититься
-			// не по порядку в RSS, а по RTP
-			if ( _id >= maxResourcesId ) {
-				maxResourcesId = _id + 1;
-			}
-			return _id;
-		}
-	} else {
+	if (freeResourcesIds.empty())
+	{
+		return maxResourcesId++;
+	}
+	else
+	{
 #ifdef _DEBUG
-		std::list< int >::const_iterator it = freeResourcesIds.begin();
-		while ( it != freeResourcesIds.end() ) {
+		STL_FOR_ALL(freeResourcesIds, it)
+		{
 			TRACE1("getFreeResourceId: %d\n", *it);
-			it++;
 		}
 #endif
-//		freeResourcesIds.sort();
-//#ifdef _DEBUG
-//		it = freeResourcesIds.begin();
-//		while ( it != freeResourcesIds.end() ) {
-//			TRACE( "%d\n", *it );
-//			it++;
-//		}
-//#endif
-		int id = freeResourcesIds.back();
+		ruint id = freeResourcesIds.back();
 		freeResourcesIds.pop_back();
 		return id;
 	}
 }
 
-void RDOSimulatorTrace::eraseFreeResourceId( int id ) 
+void RDOSimulatorTrace::eraseFreeResourceId(ruint id)
 {
-	MAPII::iterator it = resourcesIdsRefs.find( id );
-	if ( it != resourcesIdsRefs.end() ) {
-		if( --(*it).second >= 1 ) return;
-		resourcesIdsRefs.erase( it );
+	MAPII::iterator it = resourcesIdsRefs.find(id);
+	if (it != resourcesIdsRefs.end())
+	{
+		if(--(*it).second >= 1) return;
+		resourcesIdsRefs.erase(it);
 	}
-	freeResourcesIds.push_back( id ); 
+	freeResourcesIds.push_back(id);
 }
 
-void RDOSimulatorTrace::incrementResourceIdReference( int id )
+void RDOSimulatorTrace::incrementResourceIdReference(int id)
 {
-	MAPII::iterator it = resourcesIdsRefs.find( id );
-	if ( it == resourcesIdsRefs.end() ) {
-		resourcesIdsRefs.insert( MAPII::value_type(id, 2) );
-	} else {
+	MAPII::iterator it = resourcesIdsRefs.find(id);
+	if (it == resourcesIdsRefs.end())
+	{
+		resourcesIdsRefs.insert(MAPII::value_type(id, 2));
+	}
+	else
+	{
 		(*it).second++;
 	}
 }
 
-int RDOSimulatorTrace::getFreeOperationId() 
+int RDOSimulatorTrace::getFreeOperationId()
 {
-	if ( freeOperationsIds.empty() ) {
+	if (freeOperationsIds.empty())
+	{
 		return maxOperationId++;
-	} else {
+	}
+	else
+	{
 		int id = freeOperationsIds.front();
 		freeOperationsIds.pop_front();
 		return id;
 	}
 }
 
-void RDOSimulatorTrace::freeOperationId(int id) 
+void RDOSimulatorTrace::freeOperationId(int id)
 {
-	freeOperationsIds.push_front(id); 
+	freeOperationsIds.push_front(id);
 }
 
-void RDOSimulatorTrace::onResourceErase( RDOResource* res )
+void RDOSimulatorTrace::onResourceErase(CREF(LPRDOResource) pResource)
 {
-	eraseFreeResourceId( res->getTraceID() );
+	eraseFreeResourceId(pResource->getTraceID());
 }
 
 void RDOSimulatorTrace::preProcess()
 {
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
-	getTracer()->writeTraceBegin(this);
-	getTracer()->writePermanentResources( this, getResourcesBeforeSim() );
-	getTracer()->writeModelBegin(this);
+	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	getTracer()->writeTraceBegin(pRuntime);
+	getTracer()->writePermanentResources(pRuntime, getResourcesBeforeSim());
+	getTracer()->writeModelBegin(pRuntime);
 	getTracer()->startWriting();
 	onCheckPokaz();
 	onAfterCheckPokaz();
@@ -126,8 +134,9 @@ void RDOSimulatorTrace::preProcess()
 
 void RDOSimulatorTrace::postProcess()
 {
-	getTracer()->writeTraceEnd( this );
+	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	getTracer()->writeTraceEnd(pRuntime);
 //	getTracer()->stopWriting();
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

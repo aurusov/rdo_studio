@@ -1,92 +1,99 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_dptsearch.cpp
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2008
+ * @file      rdo_logic_dptsearch.cpp
+ * @author    Урусов Андрей
+ * @date      29.04.2008
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-// =========================================================================== PCH
+// **************************************************************************** PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
 #include "rdo_lib/rdo_runtime/searchtree.h"
 #include "rdo_lib/rdo_runtime/rdo_rule.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 #pragma warning(disable : 4786)  
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
-// ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
-	: RDOLogicSimple(sim, parent)
-	, treeRoot    (NULL)
+// ********************************************************************************
+// ******************** RDODPTSearch
+// ********************************************************************************
+RDODPTSearch::RDODPTSearch(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+	: RDOLogicSimple(pRuntime, pParent)
+	, treeRoot      (NULL)
 {}
 
 RDODPTSearch::~RDODPTSearch()
 {}
 
-IBaseOperation::BOResult RDODPTSearch::onDoOperation(PTR(RDOSimulator) sim)
+IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
 	// Начало поиска: вывели трасировку, обновили статистику
-	onSearchBegin(sim);
-	treeRoot = createTreeRoot(sim);
-	treeRoot->createRootTreeNode(sim->createCopy());
+	onSearchBegin(pRuntime);
+	treeRoot = createTreeRoot(pRuntime);
+	treeRoot->createRootTreeNode(pRuntime->clone());
 
-	return onContinue(sim);
+	return onContinue(pRuntime);
 }
 
-IBaseOperation::BOResult RDODPTSearch::onContinue(PTR(RDOSimulator) sim)
+IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	DWORD time_begin = ::GetTickCount();
-	while ( true ) {
+	while (true)
+	{
 		// Возмем для раскрытия первую вершину из списка OPEN
 		TreeNode* curr = *(treeRoot->m_OPEN.begin());
 		curr->ExpandChildren();
-		if ( treeRoot->m_OPEN.empty() || treeRoot->m_targetNode ) break;
+		if (treeRoot->m_OPEN.empty() || treeRoot->m_targetNode) break;
 
 		DWORD time_current = ::GetTickCount();
-		if ( time_current - time_begin > 1000 / 40 ) {
+		if (time_current - time_begin > 1000 / 40)
+		{
 			return BOR_must_continue;
 		}
 	}
 
-	bool success = treeRoot->m_targetNode ? true : false;
-	if ( success ) {
+	rbool success = treeRoot->m_targetNode ? true : false;
+	if (success)
+	{
 		// Нашли решение, собрали путь
-		std::list< TreeNode* > bestPath;
+		std::list<TreeNode*> bestPath;
 //		TRACE( "решение... \n" );
-		for ( TreeNode* i = treeRoot->m_targetNode; i->m_parent; i = i->m_parent ) {
+		for (TreeNode* i = treeRoot->m_targetNode; i->m_parent; i = i->m_parent)
+		{
 #ifdef _DEBUG
-			static_cast<RDORuntime*>(i->m_sim)->showResources(i->m_number);
+			i->m_pRuntime->showResources(i->m_number);
 #endif
 			bestPath.push_front(i);
 		}
 //		TRACE( "решение... done\n" );
 		// Отработали предварительные действия: вывели трассировку
-		onSearchDecisionHeader( treeRoot->m_theRealSimulator );
+		onSearchDecisionHeader(treeRoot->m_theRealSimulator);
 		// Отработали рулы
-		for ( std::list< TreeNode* >::iterator ii = bestPath.begin(); ii != bestPath.end(); ii++ ) {
+		for (std::list<TreeNode*>::iterator ii = bestPath.begin(); ii != bestPath.end(); ++ii)
+		{
 			TreeNode* node = (*ii);
-			node->m_activity->rule()->onBeforeChoiceFrom( treeRoot->m_theRealSimulator );
-			node->m_activity->rule()->choiceFrom( static_cast<RDORuntime*>(treeRoot->m_theRealSimulator) );
-			node->m_activity->rule()->onBeforeRule( treeRoot->m_theRealSimulator );
-			node->m_activity->rule()->convertRule( static_cast<RDORuntime*>(treeRoot->m_theRealSimulator) );
-			node->m_activity->rule()->onAfterRule( treeRoot->m_theRealSimulator, true );
+			node->m_activity->rule()->onBeforeChoiceFrom(treeRoot->m_theRealSimulator);
+			node->m_activity->rule()->choiceFrom        (treeRoot->m_theRealSimulator);
+			node->m_activity->rule()->onBeforeRule      (treeRoot->m_theRealSimulator);
+			node->m_activity->rule()->convertRule       (treeRoot->m_theRealSimulator);
+			node->m_activity->rule()->onAfterRule       (treeRoot->m_theRealSimulator, true);
 			// Отработали каждую вершину: вывели трассировку
-			onSearchDecision( treeRoot->m_theRealSimulator, node );
+			onSearchDecision(treeRoot->m_theRealSimulator, node);
 		}
 		// Отработали завершающие действия: вывели трассировку, обновили статистику по поиску
-		onSearchResultSuccess( treeRoot->m_theRealSimulator, treeRoot );
-	} else {
+		onSearchResultSuccess(treeRoot->m_theRealSimulator, treeRoot);
+	}
+	else
+	{
 		// Неудачное завершение поиска: вывели статистику
-		onSearchResultNotFound( treeRoot->m_theRealSimulator, treeRoot );
+		onSearchResultNotFound(treeRoot->m_theRealSimulator, treeRoot);
 	}
 	delete treeRoot->m_rootNode;
 	delete treeRoot;
@@ -96,7 +103,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(PTR(RDOSimulator) sim)
 
 void RDODPTSearch::addActivity(LPIDPTSearchActivity activity)
 {
-	m_activityList.push_back(activity); 
+	m_activityList.push_back(activity);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

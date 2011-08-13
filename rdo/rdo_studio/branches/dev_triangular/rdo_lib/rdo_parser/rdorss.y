@@ -143,8 +143,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -303,7 +301,7 @@ rss_res_type
 			PARSER->error().push_only(pResourceExist->src_info(), _T("См. первое определение"));
 			PARSER->error().push_done();
 		}
-		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(PARSER, name->src_info(), pResType);
+		LPRDORSSResource pResource = pResType->createRes(PARSER, name->src_info());
 		$$ = PARSER->stack().push(pResource);
 	}
 	| RDO_IDENTIF_COLON error

@@ -184,15 +184,15 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 	switch (pattern()->getType())
 	{
 	case RDOPATPattern::PT_Rule:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Operation:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternOperation)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Keyboard:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	default:
@@ -365,7 +365,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	m_pActivity = F(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime()), true, name());
+	m_pActivity = F(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>(), true, name());
 	ASSERT(m_pActivity);
 }
 
@@ -435,9 +435,11 @@ void RDODPTSearch::end()
 tstring RDOPROCProcess::s_name_prefix = _T("");
 tstring RDOPROCProcess::s_name_sufix  = _T("s");
 
-RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
-	: RDOParserSrcInfo(info )
-	, m_closed        (false)
+RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name, LPRDORTPResType transactType)
+	: RDOParserSrcInfo(info        )
+	, m_closed        (false       )
+	, m_name          (name        )
+	, m_transactType  (transactType)
 {
 	RDOParser::s_parser()->insertPROCProcess(this);
 	m_pRuntime = F(rdoRuntime::RDOPROCProcess)::create(info.src_text(), RDOParser::s_parser()->runtime());
@@ -476,6 +478,11 @@ void RDOPROCProcess::insertChild(REF(LPRDOPROCProcess) pProcess)
 	ASSERT(pProcess);
 	m_childProcessList.push_back(pProcess);
 	pProcess->m_pParentProcess = this;
+}
+
+rbool RDOPROCProcess::checkTransactType(CREF(tstring) name) const
+{
+	return (name == m_transactType->name());
 }
 
 // ----------------------------------------------------------------------------

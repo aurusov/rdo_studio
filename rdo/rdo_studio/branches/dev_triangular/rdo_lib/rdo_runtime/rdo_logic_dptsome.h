@@ -1,27 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic_dptsome.h
- * author   : Ћущан ƒмитрий
- * date     : 04.11.09
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_logic_dptsome.h
+ * @authors   Ћущан ƒмитрий
+ * @date      04.11.2009
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_LOGIC_DPTSOME_H_
-#define _RDO_LOGIC_DPTSOME_H_
+#ifndef _LIB_RUNTIME_LOGIC_DPTSOME_H_
+#define _LIB_RUNTIME_LOGIC_DPTSOME_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSome
-// ----------------------------------------------------------------------------
+/******************************************************************************//**
+ * @class   RDODPTSome
+ * @brief   unknown
+ *********************************************************************************/
 class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {
 DEFINE_IFACTORY(RDODPTSome);
@@ -31,12 +32,12 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTSome (RDOSimulator* sim, LPIBaseOperationContainer parent = NULL);
+	RDODPTSome (CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent = NULL);
 	virtual ~RDODPTSome();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_logic_dptsome.inl"
+#include "rdo_lib/rdo_runtime/rdo_logic_dptsome.inl"
 
-#endif // _RDO_LOGIC_DPTSOME_H_
+#endif // _LIB_RUNTIME_LOGIC_DPTSOME_H_

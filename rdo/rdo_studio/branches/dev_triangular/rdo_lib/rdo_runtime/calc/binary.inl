@@ -1,22 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : binary.inl
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2011
+ * @file      binary.inl
+ * @authors   Барс Александр, Урусов Андрей
+ * @date      13.03.2011
+ * @brief     unknown
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// **************************************************************************** PCH
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/operation_name.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinaryBase
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcBinaryBase
+// ********************************************************************************
 inline RDOCalcBinaryBase::RDOCalcBinaryBase(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 	: m_pLeft (pLeft )
 	, m_pRight(pRight)
@@ -48,9 +49,9 @@ inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LP
 	return pCalc;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinary
-// ----------------------------------------------------------------------------
+// ********************************************************************************
+// ******************** RDOCalcBinary
+// ********************************************************************************
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 inline RDOCalcBinary<ret_type, pOperator, CalcType>::RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 	: RDOCalcBinaryBase(pLeft, pRight)
@@ -91,10 +92,10 @@ inline typename RDOCalcBinary<ret_type, pOperator, CalcType>::value_operator RDO
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
-inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
-	m_value = (m_pLeft->calcValue(runtime).*pOperator)(m_pRight->calcValue(runtime));
+	m_value = (m_pLeft->calcValue(pRuntime).*pOperator)(m_pRight->calcValue(pRuntime));
 	return m_value;
 }
 

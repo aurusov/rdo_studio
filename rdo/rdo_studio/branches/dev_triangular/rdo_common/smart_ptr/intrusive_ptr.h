@@ -29,9 +29,9 @@ public:
 	typedef T                object_type;
 	typedef intrusive_ptr<T> this_type;
 
-	intrusive_ptr ();
-	intrusive_ptr (PTR (T)         object);
-	intrusive_ptr (CREF(this_type) sptr  );
+	 intrusive_ptr();
+	 intrusive_ptr(PTR (T)         object);
+	 intrusive_ptr(CREF(this_type) sptr  );
 	~intrusive_ptr();
 
 	REF(this_type) operator= (CREF(this_type) sptr);
@@ -68,7 +68,7 @@ public:
 	template <class P>
 	interface_ptr<P> interface_dynamic_cast();
 
-	//! TODO: переместить в protected
+	/// @todo переместить в protected
 	PTR(T)   get();
 	CPTR(T)  get() const;
 
@@ -134,6 +134,18 @@ public:
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 	{
 		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7);
+		return intrusive_ptr<T>(pObject);
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8>
+	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8)
+	{
+		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7, p8);
+		return intrusive_ptr<T>(pObject);
+	}
+	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8, typename P9>
+	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8, CREF(P9) p9)
+	{
+		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7, p8, p9);
 		return intrusive_ptr<T>(pObject);
 	}
 

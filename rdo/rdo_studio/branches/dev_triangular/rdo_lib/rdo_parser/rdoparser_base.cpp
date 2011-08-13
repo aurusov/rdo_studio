@@ -84,10 +84,10 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 		case rdoModelObjects::obRSS : min = 300;  max = 399;  break;
 		case rdoModelObjects::obFUN : min = 400;  max = 499;  break;
 		case rdoModelObjects::obPMD : min = 500;  max = 599;  break;
-		case rdoModelObjects::obEVN : min = 600;  max = 699;  break;
-		case rdoModelObjects::obPAT : min = 700;  max = 799;  break;
-		case rdoModelObjects::obDPT : min = 800;  max = 899;  break;
-		case rdoModelObjects::obPRC : min = 900;  max = 999;  break;
+		case rdoModelObjects::obPRC : min = 600;  max = 699;  break;
+		case rdoModelObjects::obEVN : min = 700;  max = 799;  break;
+		case rdoModelObjects::obPAT : min = 800;  max = 899;  break;
+		case rdoModelObjects::obDPT : min = 900;  max = 999;  break;
 		case rdoModelObjects::obFRM : min = 1000; max = 1099; break;
 		case rdoModelObjects::obSMR : min = 1100; max = 1199; break;
 		case rdoModelObjects::obPOST: min = 1200; max = 1299; break;

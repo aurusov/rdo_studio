@@ -1,14 +1,14 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_pattern.cpp
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 13.04.2008
- * bref     : Описание базового класса для образцов всех типов активностей и событий
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2010
+ * @file      rdo_pattern.cpp
+ * @authors   Урусов Андрей, Лущан Дмитрий
+ * @date      13.04.2008
+ * @brief     Описание базового класса для образцов всех типов активностей и событий
+ * @indent    4T
+ *********************************************************************************/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_event.h"
@@ -16,111 +16,122 @@
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_keyboard.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPattern
-// ----------------------------------------------------------------------------
-RDOPattern::RDOPattern( PTR(RDORuntime) runtime, bool trace ):
-	RDORuntimeParent( runtime ),
-	RDOTraceableObject( trace )
-{
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternEvent
-// ----------------------------------------------------------------------------
-RDOPatternEvent::RDOPatternEvent( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace ),
-	m_timeCalc( NULL )
+// ********************************************************************************
+// ******************** RDOPattern
+// ********************************************************************************
+RDOPattern::RDOPattern(rbool trace)
+	: RDORuntimeObject  (     )
+	, RDOTraceableObject(trace)
 {}
 
-double RDOPatternEvent::getNextTimeInterval( PTR(RDORuntime) runtime )
+// ********************************************************************************
+// ******************** RDOPatternEvent
+// ********************************************************************************
+RDOPatternEvent::RDOPatternEvent(rbool trace)
+	: RDOPattern(trace)
+	, m_timeCalc(NULL )
+{}
+
+RDOPatternEvent::~RDOPatternEvent()
+{}
+
+double RDOPatternEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
-	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
-	if ( time_next >= 0 ) return time_next;
-	runtime->error( rdo::format("Попытка запланировать событие в прошлом. Выражение времени для $Time имеет отрицательное значение: %f", time_next), m_timeCalc );
+	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
+	if (time_next >= 0) return time_next;
+	pRuntime->error(rdo::format("Попытка запланировать событие в прошлом. Выражение времени для $Time имеет отрицательное значение: %f", time_next), m_timeCalc);
 	return 0;
 }
 
-LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) oprName)
+LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) oprName)
 {
-	LPIEvent ev = F(RDOEvent)::create(runtime, this, traceable(), oprName);
-	runtime->addRuntimeEvent(parent, ev);
+	LPIEvent ev = F(RDOEvent)::create(pRuntime, this, traceable(), oprName);
+	pRuntime->addRuntimeEvent(parent, ev);
 	return ev;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternRule
-// ----------------------------------------------------------------------------
-RDOPatternRule::RDOPatternRule( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace )
+// ********************************************************************************
+// ******************** RDOPatternRule
+// ********************************************************************************
+RDOPatternRule::RDOPatternRule(rbool trace)
+	: RDOPattern(trace)
 {}
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
+RDOPatternRule::~RDOPatternRule()
+{}
+
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)
 {
-	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), _oprName);
-	runtime->addRuntimeRule(logic, rule);
+	LPIRule rule = F(RDORule)::create(pRuntime, this, traceable(), _oprName);
+	pRuntime->addRuntimeRule(logic, rule);
 	return rule;
 }
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, PTR(RDORuntime) runtime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer logic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
 {
-	LPIRule rule = F(RDORule)::create(runtime, this, traceable(), pCondition, _oprName);
-	runtime->addRuntimeRule(logic, rule);
+	LPIRule rule = F(RDORule)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	pRuntime->addRuntimeRule(logic, rule);
 	return rule;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternOperation
-// ----------------------------------------------------------------------------
-RDOPatternOperation::RDOPatternOperation( PTR(RDORuntime) rTime, bool trace ):
-	RDOPattern( rTime, trace ),
-	m_timeCalc( NULL )
+// ********************************************************************************
+// ******************** RDOPatternOperation
+// ********************************************************************************
+RDOPatternOperation::RDOPatternOperation(rbool trace)
+	: RDOPattern(trace)
+	, m_timeCalc(NULL )
 {}
 
-double RDOPatternOperation::getNextTimeInterval( PTR(RDORuntime) runtime )
+RDOPatternOperation::~RDOPatternOperation()
+{}
+
+double RDOPatternOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
-	double time_next = m_timeCalc->calcValue( runtime ).getDouble();
-	if ( time_next >= 0 ) return time_next;
-	runtime->error( rdo::format("Попытка запланировать окончание операции в прошлом. Выражение времени для $Time имеет отрицательное значение: %f", time_next), m_timeCalc );
+	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
+	if (time_next >= 0) return time_next;
+	pRuntime->error(rdo::format("Попытка запланировать окончание операции в прошлом. Выражение времени для $Time имеет отрицательное значение: %f", time_next), m_timeCalc);
 	return 0;
 }
 
-LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)
 {
-	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), _oprName);
-	runtime->addRuntimeOperation(parent, operation);
+	LPIOperation operation = F(RDOOperation)::create(pRuntime, this, traceable(), _oprName);
+	pRuntime->addRuntimeOperation(parent, operation);
 	return operation;
 }
 
-LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
 {
-	LPIOperation operation = F(RDOOperation)::create(runtime, this, traceable(), pCondition, _oprName);
-	runtime->addRuntimeOperation(parent, operation);
+	LPIOperation operation = F(RDOOperation)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	pRuntime->addRuntimeOperation(parent, operation);
 	return operation;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternKeyboard
-// ----------------------------------------------------------------------------
-RDOPatternKeyboard::RDOPatternKeyboard( PTR(RDORuntime) rTime, bool _trace ):
-	RDOPatternOperation( rTime, _trace )
+// ********************************************************************************
+// ******************** RDOPatternKeyboard
+// ********************************************************************************
+RDOPatternKeyboard::RDOPatternKeyboard(rbool trace)
+	: RDOPatternOperation(trace)
 {}
 
-LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(tstring) _oprName)
+RDOPatternKeyboard::~RDOPatternKeyboard()
+{}
+
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)
 {
-	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), _oprName);
-	runtime->addRuntimeOperation(parent, keyboard);
+	LPIKeyboard keyboard = F(RDOKeyboard)::create(pRuntime, this, traceable(), _oprName);
+	pRuntime->addRuntimeOperation(parent, keyboard);
 	return keyboard;
 }
 
-LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, PTR(RDORuntime) runtime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
 {
-	LPIKeyboard keyboard = F(RDOKeyboard)::create(runtime, this, traceable(), pCondition, _oprName);
-	runtime->addRuntimeOperation(parent, keyboard);
+	LPIKeyboard keyboard = F(RDOKeyboard)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	pRuntime->addRuntimeOperation(parent, keyboard);
 	return keyboard;
 }
 

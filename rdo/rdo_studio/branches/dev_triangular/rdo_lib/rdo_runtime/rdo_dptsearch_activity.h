@@ -1,26 +1,30 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_dptsearch_activity.h
- * author   : Урусов Андрей
- * date     : 08.08.2009
- * bref     : 
- * indent   : 4T
- */
+/******************************************************************************//**
+ * @copyright (c) RDO-Team, 2009
+ * @file      rdo_dptsearch_activity.h
+ * @authors   Урусов Андрей
+ * @date      08.08.2009
+ * @brief     Активности точки принятия решения DPTSearch
+ * @indent    4T
+ *********************************************************************************/
 
-#ifndef _RDO_DPTSEARCH_ACTIVITY_H_
-#define _RDO_DPTSEARCH_ACTIVITY_H_
+#ifndef _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_
+#define _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// *********************************************************************** INCLUDES
+// *********************************************************************** SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_rule_i.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
-// ===============================================================================
+// ********************************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+/******************************************************************************//**
+ * @class     RDODPTSearchActivity
+ * @brief     Активность точки принятия решения DPTSearch
+ *********************************************************************************/
 class RDODPTSearchActivity: public IDPTSearchActivity, public RDOTraceableObject
 {
 DEFINE_IFACTORY(RDODPTSearchActivity);
@@ -41,4 +45,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_DPTSEARCH_ACTIVITY_H_
+#endif // _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_

@@ -9,9 +9,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_shape.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 #include <list>
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 
 class RPShapeProcessMJ : public RPShape_MJ
 {
@@ -29,7 +29,7 @@ public:
 	virtual void generate();
 
 	//параметры для симулятора
-	LPRPShapeDataBlockProcess params;
+	LPRPShapeDataBlockProcess m_pParams;
 	//переменные для генерации
 	tstring gname; // имя
 	

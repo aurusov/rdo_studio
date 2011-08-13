@@ -20,6 +20,7 @@
 // ----------------------------------------------------------------------------
 OBJECT(RPShapeDataBlock)
 {
+DECLARE_FACTORY(RPShapeDataBlock);
 public:
 	enum zakonRaspr
 	{
@@ -95,28 +96,28 @@ class RPShapeDataBlockProcess: public RPShapeDataBlock
 {
 DECLARE_FACTORY(RPShapeDataBlockProcess)
 public:
-	enum resAction
+	enum Action
 	{
-		Advance,
-		Seize,
-		Release
+		A_ADVANCE,
+		A_SEIZE,
+		A_RELEASE
 	};
 
-	typedef std::list<resAction> ActionList;
-	typedef std::list<tstring  > ResList;
+	typedef  std::list<Action>   ActionList;
+	typedef  std::list<tstring>  ResNameList;
 
-	void addAction(resAction action);
+	void addAction(Action action);
 	void addRes   (CREF(tstring) res);
 	
-	CREF(ActionList) getAction() const;
-	CREF(ResList)    getRes   () const;
+	CREF(ActionList)  getActionList () const;
+	CREF(ResNameList) getResNameList() const;
 
 private:
 	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
 	virtual ~RPShapeDataBlockProcess();
 
-	ActionList  m_actions;
-	ResList     m_res;
+	ActionList  m_actionList;
+	ResNameList m_resNameList;
 };
 DECLARE_POINTER(RPShapeDataBlockProcess);
 

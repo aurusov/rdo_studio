@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdoprocess_factory.h"
-#include "rdoprocess_connector.h"
-#include "rdoprocess_method.h"
-#include "block_default.xpm"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
 #include <fstream>
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_connector.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rp_method/block_default.xpm"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -3,9 +3,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdoprocess_shape_terminate.h"
-#include "rdoprocess_shape_terminate_dlg1.h"
-#include "rdoprocess_method_proc2rdo.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_terminate.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_terminate_dlg1.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdostudioapp.h"
 
 #ifdef _DEBUG
@@ -54,7 +54,8 @@ void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeTerminateMJ::generate()
 {
-	params = rdo::Factory<RPShapeDataBlockTerminate>::create(m_name);
-	params->setTermInc(m_term_inc);
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, params.get());
+	m_pParams = rdo::Factory<RPShapeDataBlockTerminate>::create(m_name);
+	m_pParams->setTermInc(m_term_inc);
+	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
+	m_pParams = NULL;
 }

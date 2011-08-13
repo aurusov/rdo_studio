@@ -39,10 +39,6 @@
 #include "rdo_lib/rdo_parser/rdo_array.h"
 // ===============================================================================
 
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDORuntime;
-CLOSE_RDO_RUNTIME_NAMESPACE
-
 OPEN_RDO_PARSER_NAMESPACE
 
 class RDOTypeParam;
@@ -100,16 +96,16 @@ DEFINE_OBJECT_CONTAINER(DPTPrior       );
 DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
 DEFINE_OBJECT_CONTAINER(Event          );
 DEFINE_OBJECT_CONTAINER(ResultGroup    );
+DEFINE_OBJECT_CONTAINER(PROCProcess    );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
-DEFINE_OBJECT_CONTAINER_NONAME(PROCProcess);
 
 public:
 	virtual void init  ();
 	virtual void deinit();
 
-	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
+	CREF(rdoRuntime::LPRDORuntime) runtime() const { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -239,8 +235,8 @@ protected:
 
 	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	ValueList              m_allValues;
-	rdoRuntime::RDORuntime m_runtime;
+	ValueList                m_allValues;
+	rdoRuntime::LPRDORuntime m_pRuntime;
 
 	void parse(rdoModelObjects::RDOParseType file);
 
@@ -260,6 +256,10 @@ private:
 	{
 		m_pattern = false;
 	}
+
+	template <>
+	void howIsIt<LPRDOFUNGroup>()
+	{}
 
 	template <>
 	void howIsIt<LPRDOPATPattern>()

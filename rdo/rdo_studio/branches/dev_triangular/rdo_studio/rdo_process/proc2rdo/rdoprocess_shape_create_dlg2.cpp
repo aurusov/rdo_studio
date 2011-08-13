@@ -2,7 +2,7 @@
 //
 
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdoprocess_shape_create_dlg2.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create_dlg2.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
