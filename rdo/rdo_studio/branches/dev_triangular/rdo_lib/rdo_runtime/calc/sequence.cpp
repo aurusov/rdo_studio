@@ -36,6 +36,10 @@ RDOCalcSeqInit::~RDOCalcSeqInit()
 // ********************************************************************************
 RDOValue RDOCalcSeqNextUniform::getNextValue(CREF(LPRDORuntime) pRuntime)
 {
+	if (pRuntime->getFuncArgument(0).getDouble() > pRuntime->getFuncArgument(1).getDouble())
+	{
+		pRuntime->error(rdo::format(_T("ƒл€ последовательности типа uniform нужно указать два параметра: нижн€€ граница, вернхн€€ граница"), this));
+	}
 	return m_gen->next(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
 }
 
@@ -53,6 +57,23 @@ RDOValue RDOCalcSeqNextNormal::getNextValue(CREF(LPRDORuntime) pRuntime)
 RDOValue RDOCalcSeqNextExponential::getNextValue(CREF(LPRDORuntime) pRuntime)
 {
 	return m_gen->next(pRuntime->getFuncArgument(0).getDouble());
+}
+
+// ********************************************************************************
+// ******************** RDOCalcSeqNextTriangular
+// ********************************************************************************
+RDOValue RDOCalcSeqNextTriangular::getNextValue(CREF(LPRDORuntime) pRuntime)
+{
+	if (pRuntime->getFuncArgument(0).getDouble() > pRuntime->getFuncArgument(1).getDouble())
+	{
+		pRuntime->error(rdo::format(_T("ƒл€ треуголного закона распределени€ нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), this));
+	}
+	
+	if (pRuntime->getFuncArgument(1).getDouble() > pRuntime->getFuncArgument(2).getDouble())
+	{
+		pRuntime->error(rdo::format(_T("ƒл€ треуголного закона распределени€ нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), this));
+	}
+	return m_gen->next(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble(), pRuntime->getFuncArgument(2).getDouble());
 }
 
 // ********************************************************************************

@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @def       RDO_NATIVE_U01
- * @brief     Законы распределения псевдослучайных чмсел в стиле РДО
+ * @brief     Законы распределения псевдослучайных чисел в стиле РДО
  *********************************************************************************/
 #define RDO_NATIVE_U01
 
@@ -77,6 +77,17 @@ class RandGeneratorNormal: public RandGenerator
 public:
 	RandGeneratorNormal(long int seed = 123456789);
 	double next(double av, double var);
+};
+
+/******************************************************************************//**
+ * @class     RandGeneratorNormal
+ * @brief     Треугольное распределение
+ *********************************************************************************/
+class RandGeneratorTriangular: public RandGenerator
+{
+public:
+	RandGeneratorTriangular(long int seed = 123456789);
+	double next(double from, double top, double to);
 };
 
 /******************************************************************************//**

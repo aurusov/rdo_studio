@@ -123,19 +123,19 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc(ruint base, double arg
 	return pFuctionCall;
 }
 
-rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getTriangularCalc(int m_pBase,double m_pArg1,double m_pArg2,double m_pArg3)
+rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getTriangularCalc(ruint base, double arg1, double arg2, double arg3)
 {
 	PTR(rdoRuntime::RandGeneratorTriangular) pGenerator = new rdoRuntime::RandGeneratorTriangular();
-	rdoRuntime::LPRDOCalcSeqInit m_pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(m_pBase, pGenerator);
-	ASSERT(m_pInitCalc);
-	m_pRuntime->addInitCalc(m_pInitCalc);
-	rdoRuntime::LPRDOCalcSeqNext m_pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextTriangular>::create(pGenerator);
-	ASSERT(m_pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	rdoRuntime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(base, pGenerator);
+	ASSERT(pInitCalc);
+	m_pRuntime->addInitCalc(pInitCalc);
+	rdoRuntime::LPRDOCalcSeqNext pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextTriangular>::create(pGenerator);
+	ASSERT(pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pNextCalc);
 	ASSERT(pFuctionCall);
-	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg1);
-	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg2);
-	rdoRuntime::LPRDOCalcConst pArg3 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pArg3);
+	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg1);
+	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg2);
+	rdoRuntime::LPRDOCalcConst pArg3 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg3);
 	pFuctionCall->addParameter(pArg1);
 	pFuctionCall->addParameter(pArg2);
 	pFuctionCall->addParameter(pArg3);

@@ -75,21 +75,22 @@ private:
  * @def     DEFINE_RANDON_DISTRIBUTION
  * @brief   unknown
  *********************************************************************************/
-#define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution) \
+#define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                  \
 CALC_SUB(RDOCalcSeqNext##CalcName, RDOCalcRandomDistribution<Distribution>) \
-{ \
-DECLARE_FACTORY(RDOCalcSeqNext##CalcName) \
-private: \
-	RDOCalcSeqNext##CalcName(PTR(Distribution) gen) \
-		: RDOCalcRandomDistribution<Distribution>(gen) \
-	{} \
- \
-	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime); \
+{                                                                           \
+DECLARE_FACTORY(RDOCalcSeqNext##CalcName)                                   \
+private:                                                                    \
+	RDOCalcSeqNext##CalcName(PTR(Distribution) gen)                         \
+		: RDOCalcRandomDistribution<Distribution>(gen)                      \
+	{}                                                                      \
+                                                                            \
+	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime);             \
 };
 
 DEFINE_RANDON_DISTRIBUTION(Uniform    , RandGeneratorUniform    );
 DEFINE_RANDON_DISTRIBUTION(Normal     , RandGeneratorNormal     );
 DEFINE_RANDON_DISTRIBUTION(Exponential, RandGeneratorExponential);
+DEFINE_RANDON_DISTRIBUTION(Triangular , RandGeneratorTriangular );
 DEFINE_RANDON_DISTRIBUTION(ByHist     , RandGeneratorCommonNext );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
