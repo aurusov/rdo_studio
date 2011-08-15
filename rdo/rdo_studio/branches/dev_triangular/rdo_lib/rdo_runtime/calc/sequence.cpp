@@ -36,11 +36,18 @@ RDOCalcSeqInit::~RDOCalcSeqInit()
 // ********************************************************************************
 RDOValue RDOCalcSeqNextUniform::getNextValue(CREF(LPRDORuntime) pRuntime)
 {
-	if (pRuntime->getFuncArgument(0).getDouble() > pRuntime->getFuncArgument(1).getDouble())
+	RDOValue from = pRuntime->getFuncArgument(0);
+	RDOValue to   = pRuntime->getFuncArgument(1);
+	if (from > to)
 	{
-		pRuntime->error(rdo::format(_T("Для последовательности типа uniform нужно указать два параметра: нижняя граница, вернхняя граница"), this));
+		pRuntime->error(
+			rdo::format(_T("Для последовательности типа uniform нижняя граница диапазона должна быть меньше либо равна верхней, текущие значения: %s..%s")
+				, from.getAsString().c_str()
+				, to  .getAsString().c_str())
+			, this
+		);
 	}
-	return m_gen->next(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
+	return m_gen->next(from.getDouble(), to.getDouble());
 }
 
 // ********************************************************************************
