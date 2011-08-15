@@ -3,7 +3,7 @@
  * @file      rdo_logic_dptsearch.cpp
  * @author    Урусов Андрей
  * @date      29.04.2008
- * @brief     unknown
+ * @brief     DPTSearch
  * @indent    4T
  *********************************************************************************/
 

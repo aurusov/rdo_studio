@@ -3,7 +3,7 @@
  * @file      rdo_logic_dptfree.h
  * @authors   Ћущан ƒмитрий
  * @date      07.11.2009
- * @brief     unknown
+ * @brief     DPTFree
  * @indent    4T
  *********************************************************************************/
 

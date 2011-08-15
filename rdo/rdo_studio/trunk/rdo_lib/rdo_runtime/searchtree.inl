@@ -3,7 +3,7 @@
  * @file      searchtree.inl
  * @author    Лущан Дмитрий
  * @date      22.07.2011
- * @brief     unknown
+ * @brief     Интерфейс IDPTSearchTraceStatistics
  * @indent    4T
  *********************************************************************************/
 

@@ -3,7 +3,7 @@
  * @file      rdodptrtime.inl
  * @author    Лущан Дмитрий
  * @date      22.07.2011
- * @brief     unknown
+ * @brief     Runtime трассировка для DPTSearch
  * @indent    4T
  *********************************************************************************/
 

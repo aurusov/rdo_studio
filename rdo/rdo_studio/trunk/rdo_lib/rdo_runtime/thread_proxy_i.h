@@ -3,7 +3,7 @@
  * @file      thread_proxy_i.h
  * @authors   Урусов Андрей
  * @date      05.03.2011
- * @brief     unknown
+ * @brief     Интерфейс IThreadProxy
  * @indent    4T
  *********************************************************************************/
 

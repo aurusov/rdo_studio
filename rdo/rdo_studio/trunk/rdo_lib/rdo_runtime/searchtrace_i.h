@@ -3,7 +3,7 @@
  * @file      searchtrace_i.h
  * @authors   Урусов Андрей
  * @date      30.07.2009
- * @brief     unknown
+ * @brief     Интерфейс IDPTSearchTraceStatistics
  * @indent    4T
  *********************************************************************************/
 

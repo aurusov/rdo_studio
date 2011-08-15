@@ -3,7 +3,7 @@
  * @file      logic.cpp
  * @authors   Барс Александр, Урусов Андрей
  * @date      13.03.2011
- * @brief     unknown
+ * @brief     Логические операторы
  * @indent    4T
  *********************************************************************************/
 
@@ -18,7 +18,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // ********************************************************************************
-// ******************** Логические функции
+// ******************** RDOCalcAnd
 // ********************************************************************************
 REF(RDOValue) RDOCalcAnd::doCalc(CREF(LPRDORuntime) pRuntime)
 {
@@ -33,6 +33,9 @@ REF(RDOValue) RDOCalcAnd::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value_true;
 }
 
+// ********************************************************************************
+// ******************** RDOCalcAnd
+// ********************************************************************************
 REF(RDOValue) RDOCalcOr::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<calc_type>();

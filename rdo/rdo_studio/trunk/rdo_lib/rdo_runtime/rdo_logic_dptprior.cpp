@@ -3,7 +3,7 @@
  * @file      rdo_logic_dptprior.cpp
  * @author    Ћущан ƒмитрий
  * @date      04.11.2009
- * @brief     unknown
+ * @brief     DPTPrior
  * @indent    4T
  *********************************************************************************/
 
