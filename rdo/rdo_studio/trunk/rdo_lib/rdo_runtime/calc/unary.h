@@ -36,6 +36,9 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOCalcUnary
+ * @tparam  ret_type  Возвращаемое значение
+ * @tparam  pOperator Оператор
+ * @tparam  CalcType  Тип бинарного оператора
  * @brief   Базовый унарный оператор
  *********************************************************************************/
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>

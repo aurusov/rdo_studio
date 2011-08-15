@@ -52,7 +52,7 @@ public:
  * @def       DECLARE_IDPTSearchActivity
  * @brief     Декларация интерфейса активности точки принятия решения DPTSearch
  *********************************************************************************/
-#define DECLARE_IDPTSearchActivity                                           \
+#define DECLARE_IDPTSearchActivity \
 	virtual REF(LPIRule) rule     ();                                        \
 	virtual double       cost     (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual ValueTime    valueTime() const;
