@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDODPTSome
- * @brief   unknown
+ * @brief   Точка принятия решений DPTSome
  *********************************************************************************/
 class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {

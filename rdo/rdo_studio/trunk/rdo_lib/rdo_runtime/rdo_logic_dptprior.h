@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDOOrderDPTPrior
- * @brief   unknown
+ * @brief   Дисциплина очереди для приоритетных логик БЗ
  *********************************************************************************/
 class RDOOrderDPTPrior
 {
@@ -31,7 +31,7 @@ public:
 
 /******************************************************************************//**
  * @class   RDOLogicDPTPrior
- * @brief   unknown
+ * @brief   Логика БЗ для DPTPrior
  *********************************************************************************/
 class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
 {
@@ -47,7 +47,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDODPTPrior
- * @brief   unknown
+ * @brief   Точка принятия решений DPTPrior
  *********************************************************************************/
 class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {

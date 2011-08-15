@@ -18,7 +18,7 @@
 
 /******************************************************************************//**
  * @interface IDPTSearchLogic
- * @brief     unknown
+ * @brief     Инерфейс IDPTSearchLogic
  *********************************************************************************/
 class IDPTSearchLogic
 {
@@ -28,7 +28,7 @@ public:
 
 /******************************************************************************//**
  * @def     DECLARE_IDPTSearchLogic
- * @brief   unknown
+ * @brief   Декларация интерфейса IDPTSearchLogic
  *********************************************************************************/
 #define DECLARE_IDPTSearchLogic \
 	virtual void addActivity(LPIDPTSearchActivity activity);

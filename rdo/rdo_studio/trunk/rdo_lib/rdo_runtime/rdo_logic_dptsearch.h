@@ -27,7 +27,7 @@ class TreeRoot;
 
 /******************************************************************************//**
  * @class   RDODPTSearch
- * @brief   unknown
+ * @brief   Точка принятия решений DPTSearch
  *********************************************************************************/
 class RDODPTSearch: public RDOLogicSimple, public IDPTSearchLogic, public RDOPatternPrior
 {

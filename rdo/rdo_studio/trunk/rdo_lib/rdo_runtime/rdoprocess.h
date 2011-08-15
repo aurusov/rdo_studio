@@ -150,6 +150,7 @@ private:
 
 /******************************************************************************//**
  * @struct  runtime_for_Seize
+ * @brief   unknown
  *********************************************************************************/
 struct runtime_for_Queue
 {
@@ -160,6 +161,7 @@ struct runtime_for_Queue
 
 /******************************************************************************//**
  * @struct  parser_for_Queue
+ * @brief   unknown
  *********************************************************************************/
 struct parser_for_Queue
 {
@@ -169,6 +171,7 @@ struct parser_for_Queue
 
 /******************************************************************************//**
  * @class   RDOPROCBlockForQueue
+ * @brief   unknown
  *********************************************************************************/
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
@@ -204,6 +207,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCDepart
+ * @brief   unknown
  *********************************************************************************/
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
@@ -225,6 +229,7 @@ private:
 
 /******************************************************************************//**
  * @struct  runtime_for_Seize
+ * @brief   unknown
  *********************************************************************************/
 struct runtime_for_Seize
 {
@@ -237,6 +242,7 @@ struct runtime_for_Seize
 
 /******************************************************************************//**
  * @struct  parser_for_Seize
+ * @brief   unknown
  *********************************************************************************/
 struct parser_for_Seize
 {
@@ -246,6 +252,7 @@ struct parser_for_Seize
 
 /******************************************************************************//**
  * @class   RDOPROCBlockForSeize
+ * @brief   unknown
  *********************************************************************************/
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
@@ -265,6 +272,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOPROCSeize
+ * @brief   unknown
  *********************************************************************************/
 class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
@@ -287,6 +295,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCRelease
+ * @brief   unknown
  *********************************************************************************/
 class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
@@ -306,6 +315,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCAdvance
+ * @brief   unknown
  *********************************************************************************/
 class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
@@ -318,6 +328,10 @@ QUERY_INTERFACE_END
 protected:
 	LPRDOCalc pDelayCalc;
 
+	/**
+	 * @struct  LeaveTr
+	 * @brief   unknown
+	 */
 	struct LeaveTr
 	{
 		LPRDOPROCTransact transact;
@@ -334,7 +348,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCTerminate
- * @brief   
+ * @brief   unknown
  *********************************************************************************/
 class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {
