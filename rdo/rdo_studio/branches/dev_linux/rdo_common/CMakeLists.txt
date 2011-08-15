@@ -43,6 +43,7 @@ SET(INLITE_FILES
 	rdofile.inl
 	rdocommon.inl
 	rdoanimation.inl
+        rdointerface.inl
 	smart_ptr/counter_reference.inl
 	smart_ptr/interface_ptr.inl
 	smart_ptr/intrusive_ptr.inl)
