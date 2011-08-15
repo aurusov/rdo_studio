@@ -711,7 +711,10 @@ EXCLUDE                = ../examples \
                          ../thirdparty \
                          ../rdo_common/test \
                          ../rdo_lib/rdo_runtime/test \
-                         ../rdo_lib/rdo_parser/test
+                         ../rdo_lib/rdo_parser/test \
+                         ../rdo_studio/sizecbar \
+                         ../rdo_studio/win_registry \
+                         ../rdo_studio/edit_ctrls/sci
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or 
 # directories that are symbolic links (a Unix file system feature) are excluded 
