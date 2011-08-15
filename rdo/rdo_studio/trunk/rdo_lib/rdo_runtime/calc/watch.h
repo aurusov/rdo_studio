@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDOCalcWatchGroupStart
- * @brief   unknown
+ * @brief   RDOCalc 
  *********************************************************************************/
 CALC(RDOCalcWatchGroupStart)
 {

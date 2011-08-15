@@ -26,7 +26,7 @@ CALC(RDOSelectResourceCalc)
 public:
 	/**
 	 * @enum  Type
-	 * @brief unknown
+	 * @brief Способ выбора релевантного ресурса
 	 */
 	enum Type
 	{
@@ -47,7 +47,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOSelectResourceNonExistCalc
- * @brief   unknown
+ * @brief   RDOCalc для оператора !Exist()
  *********************************************************************************/
 CALC_SUB(RDOSelectResourceNonExistCalc, RDOSelectResourceCalc)
 {
@@ -76,7 +76,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOSelectResourceByTypeCalc
- * @brief   unknown
+ * @brief   Выбор ресурсов по типу
  *********************************************************************************/
 CALC_SUB(RDOSelectResourceByTypeCalc, RDOSelectResourceCalc)
 {
@@ -90,8 +90,8 @@ protected:
 };
 
 /******************************************************************************//**
- * @class   IRDOSelectResourceCommon
- * @brief   unknown
+ * @interface IRDOSelectResourceCommon
+ * @brief     Интерфейс для выбора ресурсов оператором Select()
  *********************************************************************************/
 OBJECT_INTERFACE(IRDOSelectResourceCommon)
 {
@@ -107,7 +107,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOSelectResourceCommonCalc
- * @brief   unknown
+ * @brief   RDOCalc для оператора Select()
  *********************************************************************************/
 CALC(RDOSelectResourceCommonCalc)
 {

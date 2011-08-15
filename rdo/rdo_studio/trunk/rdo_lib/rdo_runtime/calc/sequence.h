@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDOCalcSeqInit
- * @brief   unknown
+ * @brief   RDOCalc дл€ инициализации последовательности псевдослучайных чисел
  *********************************************************************************/
 CALC(RDOCalcSeqInit)
 {
@@ -39,7 +39,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOCalcSeqNext
- * @brief   unknown
+ * @brief   RDOCalc дл€ вычислени€ следующего значени€ последовательности псевдослучайных чисел
  *********************************************************************************/
 CALC_SUB(RDOCalcSeqNext, RDOFunCalc)
 {
@@ -57,7 +57,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOCalcRandomDistribution
- * @brief   unknown
+ * @brief   ѕсевдослучайное распределение
  *********************************************************************************/
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
@@ -73,24 +73,43 @@ private:
 
 /******************************************************************************//**
  * @def     DEFINE_RANDON_DISTRIBUTION
- * @brief   unknown
+ * @brief   ћакрос дл€ разных законов распределени€
  *********************************************************************************/
-#define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution) \
+#define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                  \
 CALC_SUB(RDOCalcSeqNext##CalcName, RDOCalcRandomDistribution<Distribution>) \
-{ \
-DECLARE_FACTORY(RDOCalcSeqNext##CalcName) \
-private: \
-	RDOCalcSeqNext##CalcName(PTR(Distribution) gen) \
-		: RDOCalcRandomDistribution<Distribution>(gen) \
-	{} \
- \
-	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime); \
+{                                                                           \
+DECLARE_FACTORY(RDOCalcSeqNext##CalcName)                                   \
+private:                                                                    \
+	RDOCalcSeqNext##CalcName(PTR(Distribution) gen)                         \
+		: RDOCalcRandomDistribution<Distribution>(gen)                      \
+	{}                                                                      \
+                                                                            \
+	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime);             \
 };
 
-DEFINE_RANDON_DISTRIBUTION(Uniform    , RandGeneratorUniform    );
-DEFINE_RANDON_DISTRIBUTION(Normal     , RandGeneratorNormal     );
+/******************************************************************************//**
+ * @class   RDOCalcSeqNextUniform
+ * @brief   —ледующее значение псевдослучайной величины, распределенной равномерно
+ *********************************************************************************/
+DEFINE_RANDON_DISTRIBUTION(Uniform, RandGeneratorUniform);
+
+/******************************************************************************//**
+ * @class   RDOCalcSeqNextNormal
+ * @brief   —ледующее значение псевдослучайной величины, распределенной по нормальному закону
+ *********************************************************************************/
+DEFINE_RANDON_DISTRIBUTION(Normal, RandGeneratorNormal);
+
+/******************************************************************************//**
+ * @class   RDOCalcSeqNextExponential
+ * @brief   —ледующее значение псевдослучайной величины, распределенной по экспоненциальному закону
+ *********************************************************************************/
 DEFINE_RANDON_DISTRIBUTION(Exponential, RandGeneratorExponential);
-DEFINE_RANDON_DISTRIBUTION(ByHist     , RandGeneratorCommonNext );
+
+/******************************************************************************//**
+ * @class   RDOCalcSeqNextByHist
+ * @brief   —ледующее значение псевдослучайной величины, распределенной по заданной гистограмме
+ *********************************************************************************/
+DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

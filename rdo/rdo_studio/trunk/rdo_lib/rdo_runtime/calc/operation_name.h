@@ -19,8 +19,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   OperatorName
- * @tparam  Тип операции
- * @brief   unknown
+ * @tparam  opr_type Тип операции
+ * @brief   Имя операторов
  *********************************************************************************/
 template <typename opr_type>
 class OperatorName
@@ -31,7 +31,7 @@ public:
 private:
 	/**
 	 * @struct OprItem
-	 * @brief  unknown
+	 * @brief  Экземпляр оператора
 	 */
 	struct OprItem
 	{

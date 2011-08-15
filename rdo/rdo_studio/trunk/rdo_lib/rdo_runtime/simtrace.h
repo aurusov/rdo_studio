@@ -32,7 +32,7 @@ PREDECLARE_POINTER(RDOSimulatorTrace);
 
 /******************************************************************************//**
  * @class     RDOSimulatorTrace
- * @brief     unknown
+ * @brief     Трассировщик симулятора
  *********************************************************************************/
 CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
 {

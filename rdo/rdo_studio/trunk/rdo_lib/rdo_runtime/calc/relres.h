@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDOGetRelResParamCalc
- * @brief   unknown
+ * @brief   Параметр релевантного ресурса
  *********************************************************************************/
 CALC(RDOGetRelResParamCalc)
 {
@@ -36,8 +36,8 @@ private:
 
 /******************************************************************************//**
  * @class   RDOSetRelResParamCalc
- * @brief   unknown
- * @tparam  unknown
+ * @tparam  equalType Тип присваивания
+ * @brief   RDOCalc для установки значения параметра релевантного ресурса
  *********************************************************************************/
 template <EqualType equalType>
 class RDOSetRelResParamCalc: public RDOCalc
@@ -56,7 +56,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOSetRelResParamDiapCalc
- * @brief   unknown
+ * @brief   RDOCalc ограничения диапазона параметра
  *********************************************************************************/
 CALC(RDOSetRelResParamDiapCalc)
 {
@@ -75,7 +75,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOEraseResRelCalc
- * @brief   unknown
+ * @brief   RDOCalc для удаления релевантного ресурса
  *********************************************************************************/
 CALC(RDOEraseResRelCalc)
 {
