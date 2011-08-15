@@ -699,9 +699,9 @@ RECURSIVE              = YES
 # subdirectory from a directory tree whose root is specified with the INPUT tag. 
 # Note that relative paths are relative to directory from which doxygen is run.
 
-EXCLUDE                = ../examples \
+EXCLUDE                = . \
+                         ../examples \
                          ../rdo_designmaket \
-                         . \
                          ../rdo_plugin \
                          ../rdo_plugin_cbuilder \
                          ../rdo_plugin_game5 \
@@ -710,12 +710,12 @@ EXCLUDE                = ../examples \
                          ../rdo_version \
                          ../thirdparty \
                          ../rdo_common/test \
+                         ../rdo_lib/rdo_converter \
                          ../rdo_lib/rdo_runtime/test \
                          ../rdo_lib/rdo_parser/test \
                          ../rdo_studio/sizecbar \
                          ../rdo_studio/win_registry \
-                         ../rdo_studio/edit_ctrls/sci \
-                         ../rdo_lib/rdo_converter
+                         ../rdo_studio/edit_ctrls/sci
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or 
 # directories that are symbolic links (a Unix file system feature) are excluded 
