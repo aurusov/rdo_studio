@@ -1,7 +1,7 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2009
  * @file      rdo_logic_dptfree.h
- * @authors   Ћущан ƒмитрий
+ * @author    Ћущан ƒмитрий
  * @date      07.11.2009
  * @brief     DPTFree
  * @indent    4T

@@ -1,7 +1,7 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2011
  * @file      rdo_resource.inl
- * @authors   Ћущан ƒмитрий
+ * @author    Ћущан ƒмитрий
  * @date      15.06.2011
  * @brief     RDOResource inline implementation
  * @indent    4T

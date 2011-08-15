@@ -1,7 +1,7 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2009
  * @file      rdo_model_i.h
- * @authors   Урусов Андрей
+ * @author    Урусов Андрей
  * @date      28.07.2009
  * @brief     Интерфейсы IModelStructure и IName
  * @indent    4T

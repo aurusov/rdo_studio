@@ -1,7 +1,7 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2011
  * @file      rdo_runtime.inl
- * @authors   Ћущан ƒмитрий
+ * @author    Ћущан ƒмитрий
  * @date      06.08.2011
  * @brief     RDORuntime implementation
  * @indent    4T

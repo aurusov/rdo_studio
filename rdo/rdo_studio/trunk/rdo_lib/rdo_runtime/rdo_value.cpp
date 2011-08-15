@@ -1,7 +1,7 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2008
  * @file      rdo_value.cpp
- * @authors   Урусов Андрей
+ * @author    Урусов Андрей
  * @date      22.06.2008
  * @brief     RDOValue
  * @indent    4T

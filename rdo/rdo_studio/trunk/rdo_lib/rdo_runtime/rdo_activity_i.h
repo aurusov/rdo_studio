@@ -1,7 +1,7 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2009
  * @file      rdo_activity_i.h
- * @authors   Урусов Андрей
+ * @author    Урусов Андрей
  * @date      01.08.2009
  * @brief     Интерфейс IActivity
  * @indent    4T

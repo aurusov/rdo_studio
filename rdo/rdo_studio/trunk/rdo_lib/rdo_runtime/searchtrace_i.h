@@ -1,7 +1,7 @@
 /******************************************************************************//**
  * @copyright (c) RDO-Team, 2009
  * @file      searchtrace_i.h
- * @authors   Урусов Андрей
+ * @author    Урусов Андрей
  * @date      30.07.2009
  * @brief     Интерфейс IDPTSearchTraceStatistics
  * @indent    4T
