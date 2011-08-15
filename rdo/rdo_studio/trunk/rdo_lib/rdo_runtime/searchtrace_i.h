@@ -17,14 +17,14 @@
 
 /******************************************************************************//**
  * @interface IDPTSearchTraceStatistics
- * @brief     unknown
+ * @brief     Интерфейс IDPTSearchTraceStatistics
  *********************************************************************************/
 class IDPTSearchTraceStatistics
 {
 public:
 	/**
 	 * @enum      Type
-	 * @brief     unknown
+	 * @brief     Тип статистики точки принятия решений DPTSearch
 	 */
 	enum Type
 	{
@@ -43,8 +43,8 @@ public:
 };
 
 /******************************************************************************//**
- * @def     DECLARE_IDPTSearchTraceStatistics
- * @brief   unknown
+ * @def       DECLARE_IDPTSearchTraceStatistics
+ * @brief     Декларация интерфейса IDPTSearchTraceStatistics
  *********************************************************************************/
 #define DECLARE_IDPTSearchTraceStatistics                                                                 \
 	virtual ruint getCalcCnt        () const;                                                             \

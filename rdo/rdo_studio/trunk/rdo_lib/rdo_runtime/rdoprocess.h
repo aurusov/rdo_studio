@@ -124,7 +124,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCGenerate
- * @brief   Блок GENERATE
+ * @brief   Процессный блок GENERATE
  *********************************************************************************/
 class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
 {
@@ -149,8 +149,8 @@ private:
 };
 
 /******************************************************************************//**
- * @struct  runtime_for_Seize
- * @brief   unknown
+ * @struct  runtime_for_Queue
+ * @brief   Вспомогательный класс для оператора QUEUE в Runtime
  *********************************************************************************/
 struct runtime_for_Queue
 {
@@ -161,7 +161,7 @@ struct runtime_for_Queue
 
 /******************************************************************************//**
  * @struct  parser_for_Queue
- * @brief   unknown
+ * @brief   Вспомогательный класс для оператора QUEUE в Parser
  *********************************************************************************/
 struct parser_for_Queue
 {
@@ -171,7 +171,7 @@ struct parser_for_Queue
 
 /******************************************************************************//**
  * @class   RDOPROCBlockForQueue
- * @brief   unknown
+ * @brief   Вспомогательный класс для процессного оператора QUEUE
  *********************************************************************************/
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
@@ -185,7 +185,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOPROCQueue
- * @brief   Блок GENERATE
+ * @brief   Процессный блок QUEUE
  *********************************************************************************/
 class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
@@ -207,7 +207,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCDepart
- * @brief   unknown
+ * @brief   Процессный блок DEPART
  *********************************************************************************/
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
@@ -229,7 +229,7 @@ private:
 
 /******************************************************************************//**
  * @struct  runtime_for_Seize
- * @brief   unknown
+ * @brief   Вспомогательный класс для оператора SEIZE в Runtime
  *********************************************************************************/
 struct runtime_for_Seize
 {
@@ -242,7 +242,7 @@ struct runtime_for_Seize
 
 /******************************************************************************//**
  * @struct  parser_for_Seize
- * @brief   unknown
+ * @brief   Вспомогательный класс для оператора SEIZE в Parser
  *********************************************************************************/
 struct parser_for_Seize
 {
@@ -252,7 +252,7 @@ struct parser_for_Seize
 
 /******************************************************************************//**
  * @class   RDOPROCBlockForSeize
- * @brief   unknown
+ * @brief   Вспомогательный класс для процессного оператора SEIZE
  *********************************************************************************/
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
@@ -272,7 +272,7 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOPROCSeize
- * @brief   unknown
+ * @brief   Процессный блок SEIZE
  *********************************************************************************/
 class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
@@ -295,7 +295,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCRelease
- * @brief   unknown
+ * @brief   Процессный блок RELEASE
  *********************************************************************************/
 class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
@@ -315,7 +315,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCAdvance
- * @brief   unknown
+ * @brief   Процессный блок ADVANCE
  *********************************************************************************/
 class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
@@ -330,7 +330,8 @@ protected:
 
 	/**
 	 * @struct  LeaveTr
-	 * @brief   unknown
+	 * @brief   Время ухода транзакта
+	 * @todo    что это?
 	 */
 	struct LeaveTr
 	{
@@ -348,7 +349,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOPROCTerminate
- * @brief   unknown
+ * @brief   Процессный блок TERMINATE
  *********************************************************************************/
 class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {

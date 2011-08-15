@@ -277,7 +277,7 @@ CLASS(A): INSTANCE_OF(RDOFRMItem)
 
 /******************************************************************************//**
  * @class     RDOFRMText
- * @brief     unknown
+ * @brief     Текстовая анимация
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMText)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -312,7 +312,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMBitmapBase
- * @brief     unknown
+ * @brief     Базовый класс для картинок в анимации
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMBitmapBase)
 {
@@ -329,7 +329,7 @@ protected:
 
 /******************************************************************************//**
  * @class     RDOFRMBitmap
- * @brief     unknown
+ * @brief     Картинка в анимации
  *********************************************************************************/
 CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
 {
@@ -354,7 +354,8 @@ DECLARE_POINTER(RDOFRMBitmap)
 
 /******************************************************************************//**
  * @class     RDOFRMBitmapStretch
- * @brief     unknown
+ * @brief     Растягивающаяся картинка в анимации
+ * @todo      что это?
  *********************************************************************************/
 CLASS(RDOFRMBitmapStretch):
 		INSTANCE_OF(RDOFRMBitmapBase  )
@@ -380,7 +381,7 @@ DECLARE_POINTER(RDOFRMBitmapStretch);
 
 /******************************************************************************//**
  * @class     RDOFRMRect
- * @brief     unknown
+ * @brief     Прямоугольник для анимации
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMRect)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -404,7 +405,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMRectRound
- * @brief     unknown
+ * @brief     Прямоугольник со скругленными углами для анимации
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMRectRound)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -428,7 +429,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMEllipse
- * @brief     unknown
+ * @brief     Эллипс для анимации
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMEllipse)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -452,7 +453,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMLine
- * @brief     unknown
+ * @brief     Линия для анимации
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -475,7 +476,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMTriang
- * @brief     unknown
+ * @brief     Треугольник для анимации
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
 {
@@ -506,7 +507,8 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMActive
- * @brief     unknown
+ * @brief     Активный кадр
+ * @todo      что это?
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -529,7 +531,8 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMSpace
- * @brief     unknown
+ * @brief     Пробел
+ * @todo      что это?
  *********************************************************************************/
 RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -549,7 +552,8 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFRMShow
- * @brief     unknown
+ * @brief     Показ кадра
+ * @todo      что это?
  *********************************************************************************/
 OBJECT(RDOFRMShow) IS INSTANCE_OF(RDORuntimeObject)
 {

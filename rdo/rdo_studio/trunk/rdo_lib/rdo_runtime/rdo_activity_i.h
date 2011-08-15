@@ -19,7 +19,7 @@
 
 /******************************************************************************//**
  * @interface IActivity
- * @brief     unknown
+ * @brief     Интерфейс IActivity
  *********************************************************************************/
 class IActivity
 {
@@ -31,7 +31,7 @@ public:
 
 /******************************************************************************//**
  * @def       DECLARE_IActivity
- * @brief     unknown
+ * @brief     Декларация интерфейса IActivity
  *********************************************************************************/
 #define DECLARE_IActivity \
 	virtual void addParamCalc  (CREF(rdoRuntime::LPRDOCalc) pCalc); \
@@ -40,7 +40,7 @@ public:
 
 /******************************************************************************//**
  * @interface IActivityTrace
- * @brief     unknown
+ * @brief     Интерфейс IActivityTrace
  *********************************************************************************/
 class IActivityTrace
 {
@@ -51,7 +51,7 @@ public:
 
 /******************************************************************************//**
  * @def       DECLARE_IActivityTrace
- * @brief     unknown
+ * @brief     Декларация интерфейса IActivityTrace
  *********************************************************************************/
 #define DECLARE_IActivityTrace                                                                                   \
 	virtual tstring traceResourcesList       (char prefix, CREF(rdoRuntime::LPRDORuntime) pRuntime);             \
@@ -59,7 +59,7 @@ public:
 
 /******************************************************************************//**
  * @interface IActivityPatternTrace
- * @brief     unknown
+ * @brief     Интерфейс IActivityPatternTrace
  *********************************************************************************/
 class IActivityPatternTrace
 {
@@ -69,7 +69,7 @@ public:
 
 /******************************************************************************//**
  * @def       DECLARE_IActivityPatternTrace
- * @brief     unknown
+ * @brief     Декларация интерфейса IActivityPatternTrace
  *********************************************************************************/
 #define DECLARE_IActivityPatternTrace \
 	virtual CREF(tstring) tracePatternId() const;

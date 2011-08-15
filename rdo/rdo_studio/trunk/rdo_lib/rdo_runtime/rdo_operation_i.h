@@ -50,7 +50,7 @@ public:
 
 /******************************************************************************//**
  * @interface IOperationTrace
- * @brief     unknown
+ * @brief     Интерфейс IOperationTrace
  *********************************************************************************/
 class IOperationTrace
 {
@@ -60,7 +60,7 @@ public:
 
 /******************************************************************************//**
  * @def       DECLARE_IOperationTrace
- * @brief     unknown
+ * @brief     Декларация интерфейса IOperationTrace
  *********************************************************************************/
 #define DECLARE_IOperationTrace \
 	virtual tstring traceOperId() const;

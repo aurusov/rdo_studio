@@ -50,7 +50,7 @@ public:
 
 /******************************************************************************//**
  * @def     DECLARE_IPokazWatchQuant
- * @brief   unknown
+ * @brief   Макрос для декларации интерфейса IPokazWatchQuant
  *********************************************************************************/
 #define DECLARE_IPokazWatchQuant \
 	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc);
@@ -69,7 +69,7 @@ public:
 
 /******************************************************************************//**
  * @def     DECLARE_IPokazWatchValue
- * @brief   unknown
+ * @brief   Макрос для декларации интерфейса IPokazWatchValue
  *********************************************************************************/
 #define DECLARE_IPokazWatchValue                                                   \
 	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ); \
@@ -88,7 +88,7 @@ public:
 
 /******************************************************************************//**
  * @def     DECLARE_IPokazGetValue
- * @brief   unknown
+ * @brief   Макрос для декларации интерфейса IPokazGetValue
  *********************************************************************************/
 #define DECLARE_IPokazGetValue \
 	CREF(rdoRuntime::RDOValue) getValue() const;

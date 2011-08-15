@@ -106,7 +106,7 @@ public:
 
 /******************************************************************************//**
  * @def     DECLARE_IBaseOperation
- * @brief   unknown
+ * @brief   Декларация интерфейса IBaseOperation
  *********************************************************************************/
 #define DECLARE_IBaseOperation                                                                   \
 	virtual void     onStart         (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \

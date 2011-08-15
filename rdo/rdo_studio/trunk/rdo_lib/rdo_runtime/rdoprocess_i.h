@@ -24,7 +24,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @interface IPROCBlock
- * @brief     unknown
+ * @brief     Интерфейс IPROCBlock
  *********************************************************************************/
 class IPROCBlock
 {
@@ -41,8 +41,8 @@ public:
 };
 
 /******************************************************************************//**
- * @def     DECLARE_IPROCBlock
- * @brief   unknown
+ * @def       DECLARE_IPROCBlock
+ * @brief     Декларация интерфейса IPROCBlock
  *********************************************************************************/
 #define DECLARE_IPROCBlock \
 	virtual TransactIt     transactFind (CREF(LPTransact) pTransact); \
@@ -53,7 +53,7 @@ public:
 
 /******************************************************************************//**
  * @interface IPROCProcess
- * @brief     unknown
+ * @brief     Интерфейс IPROCProcess
  *********************************************************************************/
 class IPROCProcess
 {
@@ -65,8 +65,8 @@ public:
 };
 
 /******************************************************************************//**
- * @def     DECLARE_IPROCProcess
- * @brief   unknown
+ * @def       DECLARE_IPROCProcess
+ * @brief     Декларация интерфейса IPROCProcess
  *********************************************************************************/
 #define DECLARE_IPROCProcess                                                  \
 	virtual void  insertChild(LPIPROCProcess                      pProcess ); \

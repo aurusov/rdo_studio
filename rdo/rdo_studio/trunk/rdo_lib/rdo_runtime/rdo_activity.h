@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDOActivity
- * @brief   unknown
+ * @brief   Активность БЗ
  *********************************************************************************/
 class RDOActivity: public RDOTraceableObject, public IActivity, public IActivityTrace, CAST_TO_UNKNOWN
 {
@@ -57,7 +57,7 @@ private:
 
 /******************************************************************************//**
  * @class   RDOActivityPattern
- * @brief   unknown
+ * @brief   Образец активности БЗ
  *********************************************************************************/
 template<class T>
 class RDOActivityPattern: public RDOActivity, public IModelStructure, public IActivityPatternTrace

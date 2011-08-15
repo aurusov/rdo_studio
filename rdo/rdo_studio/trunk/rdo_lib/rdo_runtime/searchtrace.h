@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDODPTSearchTrace
- * @brief   unknown
+ * @brief   Трассировка точки принятия решений DPTSearch
  *********************************************************************************/
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
@@ -75,7 +75,7 @@ private:
 
 /******************************************************************************//**
  * @class   TreeRootTrace
- * @brief   unknown
+ * @brief   Трассировка корня графа состояний точки принятия решений DPTSearch
  *********************************************************************************/
 class TreeRootTrace: public TreeRoot
 {
@@ -88,7 +88,7 @@ public:
 
 /******************************************************************************//**
  * @class   TreeNodeTrace
- * @brief   unknown
+ * @brief   Трассировка узла графа состояний точки принятия решений DPTSearch
  *********************************************************************************/
 class TreeNodeTrace: public TreeNode
 {

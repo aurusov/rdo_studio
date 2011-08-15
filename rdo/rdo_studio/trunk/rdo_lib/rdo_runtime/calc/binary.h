@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class   RDOCalcBinaryBase
- * @brief   unknown
+ * @brief   Базовый класс для бинарных операторов
  *********************************************************************************/
 class RDOCalcBinaryBase: public RDOCalc
 {
@@ -37,8 +37,10 @@ protected:
 
 /******************************************************************************//**
  * @class   RDOCalcBinary
- * @tparam  unknown
- * @brief   unknown
+ * @tparam  ret_type  Возвращаемое значение
+ * @tparam  pOperator Оператор
+ * @tparam  CalcType  Тип бинарного оператора
+ * @brief   Бинарный оператор
  *********************************************************************************/
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase

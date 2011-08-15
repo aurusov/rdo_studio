@@ -59,7 +59,8 @@ private:
 
 /******************************************************************************//**
  * @class   RDOSelectResourceDirectCalc
- * @brief   unknown
+ * @brief   RDOCalc для прямого вычисления оператора Select()
+ * @todo    что это?
  *********************************************************************************/
 CALC_SUB(RDOSelectResourceDirectCalc, RDOSelectResourceCalc)
 {
@@ -129,7 +130,8 @@ private:
 
 /******************************************************************************//**
  * @class   RDOSelectResourceDirectCommonCalc
- * @brief   unknown
+ * @brief   RDOCalc для общего прямого вычисления оператора Select()
+ * @todo    что это?
  *********************************************************************************/
 CALC_SUB(RDOSelectResourceDirectCommonCalc, RDOSelectResourceDirectCalc)
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
@@ -146,7 +148,8 @@ private:
 
 /******************************************************************************//**
  * @class   RDOSelectResourceByTypeCommonCalc
- * @brief   unknown
+ * @brief   RDOCalc для общего вычисления оператора Select() по типу
+ * @todo    что это?
  *********************************************************************************/
 CALC_SUB(RDOSelectResourceByTypeCommonCalc, RDOSelectResourceByTypeCalc)
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)

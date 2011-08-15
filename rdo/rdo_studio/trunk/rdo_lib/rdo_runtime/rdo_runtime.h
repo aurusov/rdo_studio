@@ -33,7 +33,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class     RDOResults
- * @brief     unknown
+ * @brief     Результаты моделирования
+ * @todo      что это?
  *********************************************************************************/
 class RDOResults
 {
@@ -60,7 +61,7 @@ PREDECLARE_POINTER(RDOEraseResRelCalc);
 
 /******************************************************************************//**
  * @class     RDORuntime
- * @brief     unknown
+ * @brief     RDORuntime
  *********************************************************************************/
 CLASS(RDORuntime): INSTANCE_OF(RDOSimulatorTrace)
 {

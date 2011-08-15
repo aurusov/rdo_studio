@@ -26,7 +26,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /******************************************************************************//**
  * @class     RDOPMDPokaz
- * @brief     unknown
+ * @brief     Базовый собираемый показатель
+ * @todo      Дать классу адекватное англоязычное имя
  *********************************************************************************/
 class RDOPMDPokaz: public RDOPokazTrace, public IName
 {
@@ -47,7 +48,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOPMDWatchPar
- * @brief     unknown
+ * @brief     Собираемый показатель типа WatchPar
  *********************************************************************************/
 class RDOPMDWatchPar: public RDOPMDPokaz, public IPokaz, public IModelStructure, public INotify
 {
@@ -87,7 +88,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOPMDWatchState
- * @brief     unknown
+ * @brief     Собираемый показатель типа WatchState
  *********************************************************************************/
 class RDOPMDWatchState: public RDOPMDPokaz, public IPokaz, public IModelStructure
 {
@@ -122,7 +123,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOPMDWatchQuant
- * @brief     unknown
+ * @brief     Собираемый показатель типа WatchQuant
  *********************************************************************************/
 class RDOPMDWatchQuant: public RDOPMDPokaz, public IPokaz, public IPokazWatchQuant, public IModelStructure
 {
@@ -160,7 +161,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOPMDWatchValue
- * @brief     unknown
+ * @brief     Собираемый показатель типа WatchValue
  *********************************************************************************/
 class RDOPMDWatchValue: public RDOPMDPokaz, public IPokaz, public IPokazWatchValue, public IModelStructure
 {
@@ -196,7 +197,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOPMDGetValue
- * @brief     unknown
+ * @brief     Собираемый показатель типа GetValue
  *********************************************************************************/
 class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IPokazGetValue, public IModelStructure
 {

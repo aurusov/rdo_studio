@@ -162,7 +162,8 @@ private:
 
 /******************************************************************************//**
  * @class     RDOFuzzySetDefinitionRangeDiscret
- * @brief     unknown
+ * @brief     ќпределение дискретного диапазона
+ * @todo      что это?
  *********************************************************************************/
 class RDOFuzzySetDefinitionRangeDiscret: public RDOFuzzySetDefinition
 {
@@ -193,7 +194,8 @@ private:
 
 	/**
 	 * @class     RDOFuzzySetDefinitionEmpty
-	 * @brief     unknown
+	 * @brief     ќпределение простого нечеткого множества
+	 * @todo      что это?
 	 */
 	class RDOFuzzySetDefinitionEmpty: public RDOFuzzySetDefinition
 	{

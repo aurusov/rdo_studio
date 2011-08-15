@@ -107,7 +107,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOTraceableObject
- * @brief     unknown
+ * @brief     Трассируемый объект
  *********************************************************************************/
 class RDOTraceableObject: public ITrace
 {
@@ -139,7 +139,7 @@ private:
 
 /******************************************************************************//**
  * @class     RDOPokazTrace
- * @brief     unknown
+ * @brief     Трассируемый показатель
  *********************************************************************************/
 class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue
 {
