@@ -18,15 +18,14 @@
 
 /******************************************************************************//**
  * @interface IModelStructure
- * @brief     Структурная единица модели
+ * @brief     Интерфейс структуры модели, используется для записи стукруры в файл трассировки
  *********************************************************************************/
 class IModelStructure
 {
 public:
 	/**
-	 * @fn     virtual void writeModelStructure(REF(std::ostream) stream) const
-	 * @brief  Запись структуры модели
-	 * @param  stream выходной поток
+	 * @brief      Записать структу модели в поток
+	 * @param[out] stream выходной поток
 	 */
 	virtual void writeModelStructure(REF(std::ostream) stream) const = 0;
 };
@@ -41,15 +40,14 @@ public:
 
 /******************************************************************************//**
  * @interface IName
- * @brief     Имя для показателей на PMD и типов ресурсов
+ * @brief     Интерфейс имени объекта
  *********************************************************************************/
 class IName
 {
 public:
 	/**
-	 * @fn     virtual CREF(tstring) name() const
-	 * @brief  Запрос имени
-	 * @return строка имени
+	 * @brief  Получить имя объекта
+	 * @return имя объекта
 	 */
 	virtual CREF(tstring) name() const = 0;
 };

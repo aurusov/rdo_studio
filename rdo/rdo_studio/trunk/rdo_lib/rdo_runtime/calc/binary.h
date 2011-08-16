@@ -61,7 +61,12 @@ protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 private:
-	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
+	//! Выполняет бинарную операцию \ref value_operator над \ref m_pLeft и \ref m_pRight
+	//! \param pRuntime - указатель на объект runtime'а.
+	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
+	//! \exception RDORuntimeException
+	//! \result Вычесленное калком значение
+	DECALRE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
