@@ -1529,26 +1529,36 @@ INCLUDE_FILE_PATTERNS  =
 # undefined via #undef or recursively expanded use the := operator 
 # instead of the = operator.
 
-PREDEFINED             = "REF(A) = A&" \
-                         "CREF(A) = const A&" \
-                         "PTR(A) = A*" \
-                         "CPTR(A) = const A*" \
-                         "CPTRC(A) = const A* const" \
-                         "CLASS(A) = class A" \
-                         "STRUCT(A) = struct A" \
-                         "S_INTERFACE(A) = struct A" \
-                         "IS = ," \
-                         "AND = ," \
-                         "IMPLEMENTATION_OF(A) = public A" \
-                         "INSTANCE_OF(A) = public A" \
-                         "CLASS_PARENT_OF(A, B) = CLASS(A): IMPLEMENTATION_OF(B)" \
-                         "STRUCT_PARENT_OF(A, B) = STRUCT(A): IMPLEMENTATION_OF(B)" \
-                         "DECLARE_FACTORY(TYPE) = friend class rdo::Factory<TYPE>;" \
-                         "DECLARE_POINTER(TYPE) = typedef rdo::intrusive_ptr<TYPE> LP##TYPE;" \
-                         "PREDECLARE_POINTER(TYPE) = class TYPE; DECLARE_POINTER(TYPE);" \
-                         "OBJECT(TYPE) = PREDECLARE_POINTER(TYPE) class TYPE: public rdo::counter_reference" \
-                         "CALC_SUB(TYPE, PARENT) = PREDECLARE_POINTER(TYPE); class TYPE: public PARENT" \
-                         "CALC(TYPE)  = CALC_SUB(TYPE, RDOCalc)"
+PREDEFINED             = "REF(A)=A&" \
+                         "CREF(A)=const A&" \
+                         "PTR(A)=A*" \
+                         "CPTR(A)=const A*" \
+                         "CPTRC(A)=const A* const" \
+                         "CLASS(A)=class A" \
+                         "STRUCT(A)=struct A" \
+                         "S_INTERFACE(A)=struct A" \
+                         "IS=," \
+                         "AND=," \
+                         "IMPLEMENTATION_OF(A)=public A" \
+                         "INSTANCE_OF(A)=public A" \
+                         "CLASS_PARENT_OF(A, B)=CLASS(A): IMPLEMENTATION_OF(B)" \
+                         "STRUCT_PARENT_OF(A, B)=STRUCT(A): IMPLEMENTATION_OF(B)" \
+                         "DECLARE_FACTORY(TYPE)=friend class rdo::Factory<TYPE>;" \
+                         "DECLARE_POINTER(TYPE)=typedef rdo::intrusive_ptr<TYPE> LP##TYPE;" \
+                         "PREDECLARE_POINTER(TYPE)=class TYPE; DECLARE_POINTER(TYPE);" \
+                         "OBJECT(TYPE)=PREDECLARE_POINTER(TYPE) class TYPE: public rdo::counter_reference" \
+                         "CALC_SUB(TYPE, PARENT)=PREDECLARE_POINTER(TYPE); class TYPE: public PARENT" \
+                         "CALC(TYPE)=CALC_SUB(TYPE, RDOCalc)" \
+                         "OPEN_RDO_NAMESPACE=namespace rdo {" \
+                         "CLOSE_RDO_NAMESPACE=};" \
+                         "OPEN_RDO_PARSE_NAMESPACE=namespace rdoParse {" \
+                         "CLOSE_RDO_PARSE_NAMESPACE=};" \
+                         "OPEN_RDO_RUNTIME_NAMESPACE=namespace rdoRuntime {" \
+                         "CLOSE_RDO_RUNTIME_NAMESPACE=};" \
+                         "OPEN_RDO_SIMULATOR_NAMESPACE=namespace rdoSimulator {" \
+                         "CLOSE_RDO_SIMULATOR_NAMESPACE=};" \
+                         "OPEN_RDO_ANIMATION_NAMESPACE=namespace rdoAnimation {" \
+                         "CLOSE_RDO_ANIMATION_NAMESPACE=};"
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 
