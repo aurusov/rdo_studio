@@ -21,6 +21,7 @@ class counter_reference
 template<class T> friend class intrusive_ptr;
 template<class T> friend class CounterReferenceReal;
 public:
+	//! Инициализиреут счетчик нулём
 	counter_reference();
 
 private:
