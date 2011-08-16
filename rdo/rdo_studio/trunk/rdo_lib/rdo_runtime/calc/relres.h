@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2009
   \file      relres.h
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.12.2009
   \brief     RDOCalc для подбора релевантных ресурсов
   \indent    4T

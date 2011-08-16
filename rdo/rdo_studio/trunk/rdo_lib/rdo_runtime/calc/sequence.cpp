@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      sequence.cpp
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.03.2011
   \brief     Последовательности
   \indent    4T

@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      choice_from.inl
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      27.07.2011
   \brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
   \indent    4T

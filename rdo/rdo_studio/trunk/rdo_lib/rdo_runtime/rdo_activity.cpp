@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2008
   \file      rdo_activity.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      13.04.2008
   \brief     Описание базового класса для событий и активностей -- RDOActivity
   \indent    4T

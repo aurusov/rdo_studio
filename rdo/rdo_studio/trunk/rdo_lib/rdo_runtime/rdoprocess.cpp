@@ -1,7 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2006
   \file      rdoprocess.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru), etc.
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   etc.
   \date      11.06.2006
   \brief     RDOProcess implementation
   \indent    4T

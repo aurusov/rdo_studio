@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2009
   \file      rdo_logic_i.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      30.07.2009
   \brief     Интерфейс ILogic
   \indent    4T

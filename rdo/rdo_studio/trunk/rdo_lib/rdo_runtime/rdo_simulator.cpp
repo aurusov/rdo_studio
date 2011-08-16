@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2008
   \file      rdo_simulator.cpp
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      19.04.2008
   \brief     Симулятор РДО
   \indent    4T

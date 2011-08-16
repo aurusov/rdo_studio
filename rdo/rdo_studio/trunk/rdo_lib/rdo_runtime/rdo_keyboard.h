@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2010
   \file      rdo_keyboard.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      18.08.2010
   \brief     Клавиатурные операции
   \indent    4T

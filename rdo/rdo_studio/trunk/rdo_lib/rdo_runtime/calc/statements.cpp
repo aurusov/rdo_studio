@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      statements.cpp
-  \authors   Чирков Михаил, Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Чирков Михаил
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      16.04.2011
   \brief     Инструкции
   \indent    4T

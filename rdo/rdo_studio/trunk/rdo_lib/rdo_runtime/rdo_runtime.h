@@ -1,7 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2007
   \file      rdo_runtime.h
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      16.05.2007
   \brief     RDORuntime
   \indent    4T

@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2008
   \file      rdo_resource.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      16.04.2008
   \brief     Ресурсы в runtime
   \indent    4T

@@ -1,7 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      choice_from.cpp
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      13.03.2011
   \brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
   \indent    4T

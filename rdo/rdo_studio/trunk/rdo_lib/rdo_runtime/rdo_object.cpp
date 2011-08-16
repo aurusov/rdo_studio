@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2007
   \file      rdo_object.cpp
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      30.01.2007
   \brief     Определение базового класса для всех объектов RDORuntime
   \indent    4T

@@ -1,7 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      logic.h
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      13.03.2011
   \brief     Логические операторы
   \indent    4T

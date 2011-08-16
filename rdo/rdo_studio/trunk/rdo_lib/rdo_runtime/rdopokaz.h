@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2007
   \file      rdopokaz.h
-  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      29.01.2007
   \brief     Собираемые при моделированиии показатели
   \indent    4T

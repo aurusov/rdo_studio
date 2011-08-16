@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2009
   \file      rdoprocess_i.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      31.07.2009
   \brief     RDOProcess interface
   \indent    4T
