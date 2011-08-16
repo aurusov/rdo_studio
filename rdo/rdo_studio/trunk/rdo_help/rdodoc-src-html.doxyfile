@@ -1543,10 +1543,6 @@ PREDEFINED             = "REF(A) = A&" \
                          "INSTANCE_OF(A) = public A" \
                          "CLASS_PARENT_OF(A, B) = CLASS(A): IMPLEMENTATION_OF(B)" \
                          "STRUCT_PARENT_OF(A, B) = STRUCT(A): IMPLEMENTATION_OF(B)" \
-                         "OPEN_RDO_NAMESPACE = namespace rdo {" \
-                         "CLOSE_RDO_NAMESPACE = };" \
-                         "OPEN_RDO_RUNTIME_NAMESPACE = namespace rdoRuntime {" \
-                         "CLOSE_RDO_RUNTIME_NAMESPACE = };" \
                          "DECLARE_FACTORY(TYPE) = friend class rdo::Factory<TYPE>;" \
                          "DECLARE_POINTER(TYPE) = typedef rdo::intrusive_ptr<TYPE> LP##TYPE;" \
                          "PREDECLARE_POINTER(TYPE) = class TYPE; DECLARE_POINTER(TYPE);" \
