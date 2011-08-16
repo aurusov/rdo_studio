@@ -27,6 +27,8 @@ public:
 	/**
 	 * @enum  Type
 	 * @brief Тип операции в РДО
+	 * @var   OT_ARITHM Арифметическое выражение
+	 * @var   OT_LOGIC  Логическое выражение
 	 */
 	enum Type
 	{
