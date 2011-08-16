@@ -15,27 +15,27 @@
 // ===============================================================================
 
 //! \namespace rdo
-//! Базовое пространство имён
+//! \brief     Базовое пространство имён
 #define OPEN_RDO_NAMESPACE					namespace rdo {
 #define CLOSE_RDO_NAMESPACE					};
 
 //! \namespace rdoParse
-//! Пространство имён парсера
+//! \brief     Пространство имён парсера
 #define OPEN_RDO_PARSE_NAMESPACE			namespace rdoParse {
 #define CLOSE_RDO_PARSE_NAMESPACE			};
 
 //! \namespace rdoRuntime
-//! Пространство имён рантайма
+//! \brief     Пространство имён рантайма
 #define OPEN_RDO_RUNTIME_NAMESPACE			namespace rdoRuntime {
 #define CLOSE_RDO_RUNTIME_NAMESPACE			};
 
 //! \namespace rdoSimulator
-//! Пространство имён симулятора
+//! \brief     Пространство имён симулятора
 #define OPEN_RDO_SIMULATOR_NAMESPACE		namespace rdoSimulator {
 #define CLOSE_RDO_SIMULATOR_NAMESPACE		};
 
 //! \namespace rdoAnimation
-//! Пространство имён анимации
+//! \brief     Пространство имён анимации
 #define OPEN_RDO_ANIMATION_NAMESPACE		namespace rdoAnimation {
 #define CLOSE_RDO_ANIMATION_NAMESPACE		};
 
