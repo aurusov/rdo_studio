@@ -83,65 +83,142 @@ private:
 	REF(ruint) counter();
 };
 
+//! \class Factory<T>
+//! Фабрика, используется для создания и автоматического удаления объектов
+//! \tparam T - Тип создаваемого объекта
 template <class T>
 class Factory
 {
 friend class intrusive_ptr<T>;
 friend class CounterReferenceReal<T>;
 public:
+	//! Создает объект класса Т
+	//! \result Умный указатель на объект
 	inline static intrusive_ptr<T> create()
 	{
 		PTR(T) pObject = new T();
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1>
 	static intrusive_ptr<T> create(CREF(P1) p1)
 	{
 		PTR(T) pObject = new T(p1);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2)
 	{
 		PTR(T) pObject = new T(p1, p2);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \param p3 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
 	{
 		PTR(T) pObject = new T(p1, p2, p3);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \param p3 - параметр конструктора
+	//! \param p4 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
 	{
 		PTR(T) pObject = new T(p1, p2, p3, p4);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \param p3 - параметр конструктора
+	//! \param p4 - параметр конструктора
+	//! \param p5 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
 	{
 		PTR(T) pObject = new T(p1, p2, p3, p4, p5);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \param p3 - параметр конструктора
+	//! \param p4 - параметр конструктора
+	//! \param p5 - параметр конструктора
+	//! \param p6 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
 	{
 		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \param p3 - параметр конструктора
+	//! \param p4 - параметр конструктора
+	//! \param p5 - параметр конструктора
+	//! \param p6 - параметр конструктора
+	//! \param p7 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 	{
 		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \param p3 - параметр конструктора
+	//! \param p4 - параметр конструктора
+	//! \param p5 - параметр конструктора
+	//! \param p6 - параметр конструктора
+	//! \param p7 - параметр конструктора
+	//! \param p8 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8)
 	{
 		PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7, p8);
 		return intrusive_ptr<T>(pObject);
 	}
+
+	//! Создает объект класса Т
+	//! \param p1 - параметр конструктора
+	//! \param p2 - параметр конструктора
+	//! \param p3 - параметр конструктора
+	//! \param p4 - параметр конструктора
+	//! \param p5 - параметр конструктора
+	//! \param p6 - параметр конструктора
+	//! \param p7 - параметр конструктора
+	//! \param p8 - параметр конструктора
+	//! \param p9 - параметр конструктора
+	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8, typename P9>
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8, CREF(P9) p9)
 	{
