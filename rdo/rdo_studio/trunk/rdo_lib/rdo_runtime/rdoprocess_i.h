@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdoprocess_i.h
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      31.07.2009
- * @brief     RDOProcess interface
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdoprocess_i.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      31.07.2009
+  \brief     RDOProcess interface
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_PROCESS_I_H_
 #define _LIB_RUNTIME_PROCESS_I_H_
@@ -21,10 +21,10 @@ PREDECLARE_POINTER(RDOPROCTransact);
 PREDECLARE_POINTER(RDOResourceType);
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @interface IPROCBlock
- * @brief     Интерфейс IPROCBlock
- *********************************************************************************/
+/*!
+  \interface IPROCBlock
+  \brief     Интерфейс IPROCBlock
+*/
 class IPROCBlock
 {
 public:
@@ -39,10 +39,10 @@ public:
 	virtual LPIPROCProcess getProcess   () const                     = 0;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_IPROCBlock
- * @brief     Декларация интерфейса IPROCBlock
- *********************************************************************************/
+/*!
+  \def       DECLARE_IPROCBlock
+  \brief     Декларация интерфейса IPROCBlock
+*/
 #define DECLARE_IPROCBlock \
 	virtual TransactIt     transactFind (CREF(LPTransact) pTransact); \
 	virtual TransactIt     transactEnd  ();                           \
@@ -50,10 +50,10 @@ public:
 	virtual void           transactGoOut(CREF(LPTransact) pTransact); \
 	virtual LPIPROCProcess getProcess   () const;
 
-/******************************************************************************//**
- * @interface IPROCProcess
- * @brief     Интерфейс IPROCProcess
- *********************************************************************************/
+/*!
+  \interface IPROCProcess
+  \brief     Интерфейс IPROCProcess
+*/
 class IPROCProcess
 {
 public:
@@ -63,10 +63,10 @@ public:
 	virtual CREF(rdoRuntime::LPRDOResourceType) getTranType() const          = 0;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_IPROCProcess
- * @brief     Декларация интерфейса IPROCProcess
- *********************************************************************************/
+/*!
+  \def       DECLARE_IPROCProcess
+  \brief     Декларация интерфейса IPROCProcess
+*/
 #define DECLARE_IPROCProcess                                                  \
 	virtual void  insertChild(LPIPROCProcess                      pProcess ); \
 	virtual void  setParent  (LPIPROCProcess                      pProcess ); \

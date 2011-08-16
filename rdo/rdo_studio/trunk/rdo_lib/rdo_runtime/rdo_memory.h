@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      rdo_memory.h
- * @author    Чирков Михаил
- * @date      02.12.2010
- * @brief     Память
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      rdo_memory.h
+  \author    Чирков Михаил
+  \date      02.12.2010
+  \brief     Память
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_MEMORY_H_
 #define _LIB_RUNTIME_MEMORY_H_
@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDOMemory
- * @brief     Память
- *********************************************************************************/
+/*!
+  \class     RDOMemory
+  \brief     Память
+*/
 OBJECT(RDOMemory)
 {
 DECLARE_FACTORY(RDOMemory);
@@ -39,10 +39,10 @@ private:
 	LocalMemory m_localMemory;
 };
 
-/******************************************************************************//**
- * @class     RDOMemoryStack
- * @brief     Стэк памяти
- *********************************************************************************/
+/*!
+  \class     RDOMemoryStack
+  \brief     Стэк памяти
+*/
 OBJECT(RDOMemoryStack)
 {
 DECLARE_FACTORY(RDOMemoryStack);

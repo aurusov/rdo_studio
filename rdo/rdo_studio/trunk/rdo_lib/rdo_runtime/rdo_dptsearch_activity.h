@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_dptsearch_activity.h
- * @author    Урусов Андрей
- * @date      08.08.2009
- * @brief     Активности точки принятия решения DPTSearch
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_dptsearch_activity.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      08.08.2009
+  \brief     Активности точки принятия решения DPTSearch
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_
 #define _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_
@@ -21,10 +21,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDODPTSearchActivity
- * @brief     Активность точки принятия решения DPTSearch
- *********************************************************************************/
+/*!
+  \class     RDODPTSearchActivity
+  \brief     Активность точки принятия решения DPTSearch
+*/
 class RDODPTSearchActivity: public IDPTSearchActivity, public RDOTraceableObject
 {
 DEFINE_IFACTORY(RDODPTSearchActivity);

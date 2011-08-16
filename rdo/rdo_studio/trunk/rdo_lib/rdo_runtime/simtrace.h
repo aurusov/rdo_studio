@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2006
- * @file      simtrace.h
- * @author    Урусов Андрей
- * @date      11.06.2006
- * @brief     Трассировка симулятора
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2006
+  \file      simtrace.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.06.2006
+  \brief     Трассировка симулятора
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_SIM_TRACE_H_
 #define _LIB_RUNTIME_SIM_TRACE_H_
@@ -30,10 +30,10 @@ class RDOOperation;
 
 PREDECLARE_POINTER(RDOSimulatorTrace);
 
-/******************************************************************************//**
- * @class     RDOSimulatorTrace
- * @brief     Трассировщик симулятора
- *********************************************************************************/
+/*!
+  \class     RDOSimulatorTrace
+  \brief     Трассировщик симулятора
+*/
 CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
 {
 DECLARE_FACTORY(RDOSimulatorTrace)

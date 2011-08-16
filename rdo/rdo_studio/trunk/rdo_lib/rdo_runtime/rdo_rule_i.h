@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_rule_i.h
- * @author    Урусов Андрей
- * @date      01.08.2009
- * @brief     Интерфейс продукционных правил
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_rule_i.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      01.08.2009
+  \brief     Интерфейс продукционных правил
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_RULE_I_H_
 #define _LIB_RUNTIME_RULE_I_H_
@@ -23,10 +23,10 @@ PREDECLARE_POINTER(RDORuntime);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @interface IRule
- * @brief     Интерфейс продукционного правила
- *********************************************************************************/
+/*!
+  \interface IRule
+  \brief     Интерфейс продукционного правила
+*/
 class IRule
 {
 public:
@@ -37,10 +37,10 @@ public:
 	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch) = 0;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_IRule
- * @brief     Декларация интерфейса продукционного правила
- *********************************************************************************/
+/*!
+  \def       DECLARE_IRule
+  \brief     Декларация интерфейса продукционного правила
+*/
 #define DECLARE_IRule \
 	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime); \

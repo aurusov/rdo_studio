@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      locvar.h
- * @author    Чирков Михаил
- * @date      03.12.2010
- * @brief     Локальные переменные
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      locvar.h
+  \author    Чирков Михаил
+  \date      03.12.2010
+  \brief     Локальные переменные
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_LOC_VAR_H_
 #define _LIB_RUNTIME_CALC_LOC_VAR_H_
@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOCalcCreateLocalVariable
- * @brief   Создание локальной переменной
- *********************************************************************************/
+/*!
+  \class   RDOCalcCreateLocalVariable
+  \brief   Создание локальной переменной
+*/
 CALC(RDOCalcCreateLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
@@ -33,10 +33,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcInitLocalVariable
- * @brief   Инициализация локальной переменной
- *********************************************************************************/
+/*!
+  \class   RDOCalcInitLocalVariable
+  \brief   Инициализация локальной переменной
+*/
 CALC(RDOCalcInitLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcInitLocalVariable)
@@ -49,10 +49,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcGetLocalVariable
- * @brief   Получение локальной переменной
- *********************************************************************************/
+/*!
+  \class   RDOCalcGetLocalVariable
+  \brief   Получение локальной переменной
+*/
 CALC(RDOCalcGetLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcGetLocalVariable)
@@ -64,10 +64,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcSetLocalVariable
- * @brief   Сохранение локальной переменной
- *********************************************************************************/
+/*!
+  \class   RDOCalcSetLocalVariable
+  \brief   Сохранение локальной переменной
+*/
 template <EqualType equalType>
 class RDOCalcSetLocalVariable: public RDOCalc
 {
@@ -82,10 +82,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcLocalVariableList
- * @brief   Список локальных переменных
- *********************************************************************************/
+/*!
+  \class   RDOCalcLocalVariableList
+  \brief   Список локальных переменных
+*/
 CALC(RDOCalcLocalVariableList)
 {
 	DECLARE_FACTORY(RDOCalcLocalVariableList)

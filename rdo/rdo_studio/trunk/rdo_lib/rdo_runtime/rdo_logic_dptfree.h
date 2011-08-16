@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_logic_dptfree.h
- * @author    Лущан Дмитрий
- * @date      07.11.2009
- * @brief     DPTFree
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_logic_dptfree.h
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      07.11.2009
+  \brief     DPTFree
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_LOGIC_DPTFREE_H_
 #define _LIB_RUNTIME_LOGIC_DPTFREE_H_
@@ -18,11 +18,11 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDODPTFree
- * @brief   Свободная точка принятия решений
- * @todo    избавиться от нее
- *********************************************************************************/
+/*!
+  \class   RDODPTFree
+  \brief   Свободная точка принятия решений
+  \todo    избавиться от нее
+*/
 class RDODPTFree: public RDOLogicSimple, public RDOPatternPrior
 {
 DEFINE_IFACTORY(RDODPTFree);

@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2006
- * @file      rdoprocess.h
- * @authors   Урусов Андрей, Лущан Дмитрий, etc.
- * @date      11.06.2006
- * @brief     Процесснные операторы РДО
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2006
+  \file      rdoprocess.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru), etc.
+  \date      11.06.2006
+  \brief     Процесснные операторы РДО
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_PROCESS_H_
 #define _LIB_RUNTIME_PROCESS_H_
@@ -20,10 +20,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOPROCBlock
- * @brief   Базовый класс для процессных блоков (операторов) РДО
- *********************************************************************************/
+/*!
+  \class   RDOPROCBlock
+  \brief   Базовый класс для процессных блоков (операторов) РДО
+*/
 class RDOPROCBlock: public IPROCBlock, public IInit, CAST_TO_UNKNOWN
 {
 QUERY_INTERFACE_BEGIN
@@ -46,10 +46,10 @@ protected:
 	DECLARE_IInit;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCProcess
- * @brief   Процесс в РДО
- *********************************************************************************/
+/*!
+  \class   RDOPROCProcess
+  \brief   Процесс в РДО
+*/
 class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatternPrior
 {
 DEFINE_IFACTORY(RDOPROCProcess)
@@ -75,10 +75,10 @@ private:
 
 PREDECLARE_POINTER(RDOPROCResource);
 
-/******************************************************************************//**
- * @class   RDOPROCTransact
- * @brief   Транзакт в РДО
- *********************************************************************************/
+/*!
+  \class   RDOPROCTransact
+  \brief   Транзакт в РДО
+*/
 CLASS_PARENT_OF(RDOPROCTransact, RDOResource)
 {
 DECLARE_FACTORY(RDOPROCTransact);
@@ -99,10 +99,10 @@ private:
 	LPRDOPROCResource  m_res;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCResource
- * @brief   Процессный ресурс РДО - обслуживает транзакты в процессах
- *********************************************************************************/
+/*!
+  \class   RDOPROCResource
+  \brief   Процессный ресурс РДО - обслуживает транзакты в процессах
+*/
 CLASS_PARENT_OF(RDOPROCResource, RDOResource)
 {
 DECLARE_FACTORY(RDOPROCResource);
@@ -121,10 +121,10 @@ private:
 	virtual ~RDOPROCResource();
 };
 
-/******************************************************************************//**
- * @class   RDOPROCGenerate
- * @brief   Процессный блок GENERATE
- *********************************************************************************/
+/*!
+  \class   RDOPROCGenerate
+  \brief   Процессный блок GENERATE
+*/
 class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
 {
 DEFINE_IFACTORY(RDOPROCGenerate);
@@ -147,10 +147,10 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/******************************************************************************//**
- * @struct  runtime_for_Queue
- * @brief   Вспомогательный класс для оператора QUEUE в Runtime
- *********************************************************************************/
+/*!
+  \struct  runtime_for_Queue
+  \brief   Вспомогательный класс для оператора QUEUE в Runtime
+*/
 struct runtime_for_Queue
 {
 	LPRDOResource rss; 
@@ -158,20 +158,20 @@ struct runtime_for_Queue
 	RDOValue      defaultValue;
 };
 
-/******************************************************************************//**
- * @struct  parser_for_Queue
- * @brief   Вспомогательный класс для оператора QUEUE в Parser
- *********************************************************************************/
+/*!
+  \struct  parser_for_Queue
+  \brief   Вспомогательный класс для оператора QUEUE в Parser
+*/
 struct parser_for_Queue
 {
 	int Id_res;
 	int Id_param;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCBlockForQueue
- * @brief   Вспомогательный класс для процессного оператора QUEUE
- *********************************************************************************/
+/*!
+  \class   RDOPROCBlockForQueue
+  \brief   Вспомогательный класс для процессного оператора QUEUE
+*/
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
 protected:
@@ -182,10 +182,10 @@ protected:
 	void _onStart(CREF(LPRDORuntime) pRuntime);
 };
 
-/******************************************************************************//**
- * @class   RDOPROCQueue
- * @brief   Процессный блок QUEUE
- *********************************************************************************/
+/*!
+  \class   RDOPROCQueue
+  \brief   Процессный блок QUEUE
+*/
 class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
 DEFINE_IFACTORY(RDOPROCQueue);
@@ -204,10 +204,10 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCDepart
- * @brief   Процессный блок DEPART
- *********************************************************************************/
+/*!
+  \class   RDOPROCDepart
+  \brief   Процессный блок DEPART
+*/
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {
 DEFINE_IFACTORY(RDOPROCDepart);
@@ -226,10 +226,10 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/******************************************************************************//**
- * @struct  runtime_for_Seize
- * @brief   Вспомогательный класс для оператора SEIZE в Runtime
- *********************************************************************************/
+/*!
+  \struct  runtime_for_Seize
+  \brief   Вспомогательный класс для оператора SEIZE в Runtime
+*/
 struct runtime_for_Seize
 {
 	LPRDOPROCResource  rss;
@@ -239,20 +239,20 @@ struct runtime_for_Seize
 	RDOValue           enum_break;
 };
 
-/******************************************************************************//**
- * @struct  parser_for_Seize
- * @brief   Вспомогательный класс для оператора SEIZE в Parser
- *********************************************************************************/
+/*!
+  \struct  parser_for_Seize
+  \brief   Вспомогательный класс для оператора SEIZE в Parser
+*/
 struct parser_for_Seize
 {
 	int Id_res;
 	int Id_param;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCBlockForSeize
- * @brief   Вспомогательный класс для процессного оператора SEIZE
- *********************************************************************************/
+/*!
+  \class   RDOPROCBlockForSeize
+  \brief   Вспомогательный класс для процессного оператора SEIZE
+*/
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 public:
@@ -269,10 +269,10 @@ protected:
 	void _onStart(CREF(LPRDORuntime) pRuntime);
 };
 
-/******************************************************************************//**
- * @class   RDOPROCSeize
- * @brief   Процессный блок SEIZE
- *********************************************************************************/
+/*!
+  \class   RDOPROCSeize
+  \brief   Процессный блок SEIZE
+*/
 class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
 DEFINE_IFACTORY(RDOPROCSeize);
@@ -292,10 +292,10 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCRelease
- * @brief   Процессный блок RELEASE
- *********************************************************************************/
+/*!
+  \class   RDOPROCRelease
+  \brief   Процессный блок RELEASE
+*/
 class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {
 DEFINE_IFACTORY(RDOPROCRelease);
@@ -312,10 +312,10 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCAdvance
- * @brief   Процессный блок ADVANCE
- *********************************************************************************/
+/*!
+  \class   RDOPROCAdvance
+  \brief   Процессный блок ADVANCE
+*/
 class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
 {
 DEFINE_IFACTORY(RDOPROCAdvance);
@@ -327,11 +327,11 @@ QUERY_INTERFACE_END
 protected:
 	LPRDOCalc pDelayCalc;
 
-	/**
-	 * @struct  LeaveTr
-	 * @brief   Время ухода транзакта
-	 * @todo    что это?
-	 */
+	/*!
+	  \struct  LeaveTr
+	  \brief   Время ухода транзакта
+	  \todo    что это?
+	*/
 	struct LeaveTr
 	{
 		LPRDOPROCTransact transact;
@@ -346,10 +346,10 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCTerminate
- * @brief   Процессный блок TERMINATE
- *********************************************************************************/
+/*!
+  \class   RDOPROCTerminate
+  \brief   Процессный блок TERMINATE
+*/
 class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
 {
 DEFINE_IFACTORY(RDOPROCTerminate);
@@ -367,10 +367,10 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/******************************************************************************//**
- * @class   RDOPROCAssign
- * @brief   Процессный блок ASSIGN
- *********************************************************************************/
+/*!
+  \class   RDOPROCAssign
+  \brief   Процессный блок ASSIGN
+*/
 class RDOPROCAssign: public RDOPROCBlock, public IBaseOperation
 {
 DEFINE_IFACTORY(RDOPROCAssign);

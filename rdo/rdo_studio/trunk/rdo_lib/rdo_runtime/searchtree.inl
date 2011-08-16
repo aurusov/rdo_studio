@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      searchtree.inl
- * @author    Лущан Дмитрий
- * @date      22.07.2011
- * @brief     Интерфейс IDPTSearchTraceStatistics
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      searchtree.inl
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      22.07.2011
+  \brief     Интерфейс IDPTSearchTraceStatistics
+  \indent    4T
+*/
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -44,10 +44,10 @@ inline void TreeNode::onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime)
 inline void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
 {}
 
-/******************************************************************************//**
- * @fn      compareNodes
- * @brief   функция сравнения вершин графа для сортировки списка OPEN
- *********************************************************************************/
+/*!
+  \fn      compareNodes
+  \brief   функция сравнения вершин графа для сортировки списка OPEN
+*/
 inline rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
 {
 	if (fabs(tn1->m_costRest - tn2->m_costRest) > 0.0000001)

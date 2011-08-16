@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_logic.h
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      23.04.2008
- * @brief     Логика - контейнер БЗ
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_logic.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      23.04.2008
+  \brief     Логика - контейнер БЗ
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_LOGIC_H_
 #define _LIB_RUNTIME_LOGIC_H_
@@ -22,11 +22,11 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOLogic
- * @tparam  Order Дисциплина очереди
- * @brief   Базовый класс для логик РДО
- *********************************************************************************/
+/*!
+  \class   RDOLogic
+  \tparam  Order Дисциплина очереди
+  \brief   Базовый класс для логик РДО
+*/
 template <class Order>
 class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic, CAST_TO_UNKNOWN
 {
@@ -62,31 +62,31 @@ private:
 	DECLARE_ILogic;
 };
 
-/******************************************************************************//**
- * @class   RDOOrderSimple
- * @brief   Простая дисциплина очереди для логик БЗ
- *********************************************************************************/
+/*!
+  \class   RDOOrderSimple
+  \brief   Простая дисциплина очереди для логик БЗ
+*/
 class RDOOrderSimple
 {
 public:
 	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
 };
 
-/******************************************************************************//**
- * @class   RDOOrderMeta
- * @brief   Дисциплина очереди для мета-логики БЗ
- *********************************************************************************/
+/*!
+  \class   RDOOrderMeta
+  \brief   Дисциплина очереди для мета-логики БЗ
+*/
 class RDOOrderMeta
 {
 public:
 	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
 };
 
-/******************************************************************************//**
- * @class   RDOLogicSimple
- * @brief   Простая логика БЗ
- * @details Используется в DPRSome
- *********************************************************************************/
+/*!
+  \class   RDOLogicSimple
+  \brief   Простая логика БЗ
+  \details Используется в DPRSome
+*/
 class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
 protected:
@@ -99,10 +99,10 @@ protected:
 	{}
 };
 
-/******************************************************************************//**
- * @class   RDOLogicMeta
- * @brief   Мета-логика БЗ
- *********************************************************************************/
+/*!
+  \class   RDOLogicMeta
+  \brief   Мета-логика БЗ
+*/
 class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
 protected:

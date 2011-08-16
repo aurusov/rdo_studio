@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2007
- * @file      rdo_runtime.h
- * @authors   Барс Александр, Урусов Андрей, Лущан Дмитрий
- * @date      16.05.2007
- * @brief     RDORuntime
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2007
+  \file      rdo_runtime.h
+  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.05.2007
+  \brief     RDORuntime
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_RUNTIME_H_
 #define _LIB_RUNTIME_RUNTIME_H_
@@ -31,11 +31,11 @@ class RDOThread;
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDOResults
- * @brief     Результаты моделирования
- * @todo      что это?
- *********************************************************************************/
+/*!
+  \class     RDOResults
+  \brief     Результаты моделирования
+  \todo      что это?
+*/
 class RDOResults
 {
 public:
@@ -59,10 +59,10 @@ PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
-/******************************************************************************//**
- * @class     RDORuntime
- * @brief     RDORuntime
- *********************************************************************************/
+/*!
+  \class     RDORuntime
+  \brief     RDORuntime
+*/
 CLASS(RDORuntime): INSTANCE_OF(RDOSimulatorTrace)
 {
 DECLARE_FACTORY(RDORuntime);
@@ -74,10 +74,10 @@ public:
 	typedef  std::vector<LPIPokazTrace>      LPIPokazTraceList;
 	typedef  std::vector<LPIPokazWatchValue> LPIPokazWatchValueList;
 
-	/**
-	 * @enum      Messages
-	 * @brief     Работа с уведомлениями
-	 */
+	/*!
+	  \enum      Messages
+	  \brief     Работа с уведомлениями
+	*/
 	enum Messages
 	{
 		RO_BEFOREDELETE = 0
@@ -95,10 +95,10 @@ public:
 	void         copyFrom(CREF(LPRDORuntime) pOther);
 	rbool        equal   (CREF(LPRDORuntime) pOther) const;
 
-	/**
-	 * @class     RDOHotKeyToolkit
-	 * @brief     Горячие клавиши
-	 */
+	/*!
+	  \class     RDOHotKeyToolkit
+	  \brief     Горячие клавиши
+	*/
 	class RDOHotKeyToolkit
 	{
 	public:
@@ -204,10 +204,10 @@ public:
 
 	virtual void postProcess();
 
-	/**
-	 * @enum      FunBreakFlag
-	 * @brief     Флаг остановки функции
-	 */
+	/*!
+	  \enum      FunBreakFlag
+	  \brief     Флаг остановки функции
+	*/
 	enum FunBreakFlag
 	{
 		FBF_CONTINUE = 0,
@@ -245,10 +245,10 @@ private:
 	LPIThreadProxy              m_pThreadProxy;
 	PTR(RDOThread)              m_pStudioThread;
 
-	/**
-	 * @class     BreakPoint
-	 * @brief     Точка останова
-	 */
+	/*!
+	  \class     BreakPoint
+	  \brief     Точка останова
+	*/
 	OBJECT(BreakPoint) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(BreakPoint)

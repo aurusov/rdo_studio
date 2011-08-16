@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_logic_i.h
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      30.07.2009
- * @brief     Интерфейс ILogic
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_logic_i.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      30.07.2009
+  \brief     Интерфейс ILogic
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_LOGIC_I_H_
 #define _LIB_RUNTIME_LOGIC_I_H_
@@ -22,10 +22,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOSimulator;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @interface ILogic
- * @brief     Логика в РДО - правила логического вывода для контейнеров IBaseOperationContainer
- *********************************************************************************/
+/*!
+  \interface ILogic
+  \brief     Логика в РДО - правила логического вывода для контейнеров IBaseOperationContainer
+*/
 class ILogic
 {
 public:
@@ -33,19 +33,19 @@ public:
 	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition) = 0;
 };
 
-/******************************************************************************//**
- * @def     DECLARE_ILogic
- * @brief   Макрос для декларации методов логики ILogic
- * @details Декларирует методы \a init() и \a setCondition()
- *********************************************************************************/
+/*!
+  \def     DECLARE_ILogic
+  \brief   Макрос для декларации методов логики ILogic
+  \details Декларирует методы \a init() и \a setCondition()
+*/
 #define DECLARE_ILogic                                                       \
 	virtual void init           (CREF(rdoRuntime::LPRDORuntime) pRuntime  ); \
 	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition);
 
-/******************************************************************************//**
- * @interface IBaseOperationContainer
- * @brief     Иерархические контейнеры активностей. См. паттерн "Компоновщик"
- *********************************************************************************/
+/*!
+  \interface IBaseOperationContainer
+  \brief     Иерархические контейнеры активностей. См. паттерн "Компоновщик"
+*/
 class IBaseOperationContainer
 {
 public:
@@ -64,10 +64,10 @@ public:
 	virtual void                  clear ()                = 0;
 };
 
-/******************************************************************************//**
- * @def     DECLARE_IBaseOperationContainer
- * @brief   Макрос для декларации методов контейнера \a IBaseOperationContainer
- *********************************************************************************/
+/*!
+  \def     DECLARE_IBaseOperationContainer
+  \brief   Макрос для декларации методов контейнера \a IBaseOperationContainer
+*/
 #define DECLARE_IBaseOperationContainer                    \
 	virtual Iterator              begin ();                \
 	virtual Iterator              end   ();                \

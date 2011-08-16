@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      event_plan.h
- * @author    Лущан Дмитрий
- * @date      26.05.2010
- * @brief     RDOCalc для планирования и остановки событий
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      event_plan.h
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      26.05.2010
+  \brief     RDOCalc для планирования и остановки событий
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_EVENT_PLAN_H_
 #define _LIB_RUNTIME_CALC_EVENT_PLAN_H_
@@ -19,10 +19,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOCalcEvent
- * @brief   Базовая калка для управления событиями
- *********************************************************************************/
+/*!
+  \class   RDOCalcEvent
+  \brief   Базовая калка для управления событиями
+*/
 CALC(RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEvent)
@@ -35,10 +35,10 @@ protected:
 	LPIBaseOperation m_pEvent;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcEventPlan
- * @brief   Планирование событий
- *********************************************************************************/
+/*!
+  \class   RDOCalcEventPlan
+  \brief   Планирование событий
+*/
 CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventPlan)
@@ -50,10 +50,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcEventStop
- * @brief   Остановка событий
- *********************************************************************************/
+/*!
+  \class   RDOCalcEventStop
+  \brief   Остановка событий
+*/
 CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventStop)

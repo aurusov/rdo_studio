@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_simulator.h
- * @authors   Барс Александр, Урусов Андрей
- * @date      19.04.2008
- * @brief     Симулятор РДО
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_simulator.h
+  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      19.04.2008
+  \brief     Симулятор РДО
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_SIMULATOR_H_
 #define _LIB_RUNTIME_SIMULATOR_H_
@@ -19,10 +19,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDOSimulator
- * @brief     Один из базовых классов для RDORuntime
- *********************************************************************************/
+/*!
+  \class     RDOSimulator
+  \brief     Один из базовых классов для RDORuntime
+*/
 CLASS(RDOSimulator): INSTANCE_OF (RDOSimulatorBase)
 {
 public:

@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_model_i.h
- * @author    Урусов Андрей
- * @date      28.07.2009
- * @brief     Интерфейсы IModelStructure и IName
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_model_i.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.07.2009
+  \brief     Интерфейсы IModelStructure и IName
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_MODEL_I_H_
 #define _LIB_RUNTIME_MODEL_I_H_
@@ -15,47 +15,47 @@
 #include "rdo_common/rdointerface.h"
 // --------------------------------------------------------------------------------
 
-/******************************************************************************//**
- * @interface IModelStructure
- * @brief     Интерфейс структуры модели, используется для записи стукруры в файл трассировки
- *********************************************************************************/
+/*!
+  \interface IModelStructure
+  \brief     Интерфейс структуры модели, используется для записи стукруры в файл трассировки
+*/
 class IModelStructure
 {
 public:
-	/**
-	 * @brief      Записать структу модели в поток
-	 * @param[out] stream выходной поток
-	 */
+	/*!
+	  \brief      Записать структу модели в поток
+	  \param[out] stream выходной поток
+	*/
 	virtual void writeModelStructure(REF(std::ostream) stream) const = 0;
 };
 
-/******************************************************************************//**
- * @def     DECLARE_IModelStructure
- * @brief   Макрос для декларации метода структуры модели IModelStructure
- * @details Декларирует метод \a writeModelStructure()
- *********************************************************************************/
+/*!
+  \def     DECLARE_IModelStructure
+  \brief   Макрос для декларации метода структуры модели IModelStructure
+  \details Декларирует метод \a writeModelStructure()
+*/
 #define DECLARE_IModelStructure \
 	virtual void writeModelStructure(REF(std::ostream) stream) const;
 
-/******************************************************************************//**
- * @interface IName
- * @brief     Интерфейс имени объекта
- *********************************************************************************/
+/*!
+  \interface IName
+  \brief     Интерфейс имени объекта
+*/
 class IName
 {
 public:
-	/**
-	 * @brief  Получить имя объекта
-	 * @return имя объекта
-	 */
+	/*!
+	  \brief  Получить имя объекта
+	  \return имя объекта
+	*/
 	virtual CREF(tstring) name() const = 0;
 };
 
-/******************************************************************************//**
- * @def     DECLARE_IName
- * @brief   Макрос для декларации метода интерфейса IName
- * @details Декларирует метод \a name()
- *********************************************************************************/
+/*!
+  \def     DECLARE_IName
+  \brief   Макрос для декларации метода интерфейса IName
+  \details Декларирует метод \a name()
+*/
 #define DECLARE_IName \
 	virtual CREF(tstring) name() const;
 

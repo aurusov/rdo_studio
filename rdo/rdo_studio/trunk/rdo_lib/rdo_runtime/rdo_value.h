@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_value.h
- * @author    Урусов Андрей
- * @date      22.06.2008
- * @brief     RDOValue
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_value.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      22.06.2008
+  \brief     RDOValue
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_VALUE_H_
 #define _LIB_RUNTIME_VALUE_H_
@@ -25,10 +25,10 @@ class RDOMatrixValue;
 class RDOMatrixIterator;
 PREDECLARE_POINTER(RDOEnumType);
 
-/******************************************************************************//**
- * @class     RDOValue
- * @brief     Значение переменных в РДО
- *********************************************************************************/
+/*!
+  \class     RDOValue
+  \brief     Значение переменных в РДО
+*/
 class RDOValue
 {
 public:
@@ -124,21 +124,21 @@ private:
 	 REF(RDOMatrixIterator) __matrixItr();
 	CREF(RDOMatrixIterator) __matrixItr() const;
 
-	/**
-	 * @class     string_class
-	 * @brief     Строковый тип данных
-	 */
+	/*!
+	  \class     string_class
+	  \brief     Строковый тип данных
+	*/
 	OBJECT(string_class) IS INSTANCE_OF(tstring)
 	{
 	public:
 		string_class(CREF(tstring) string);
 	};
 
-	/**
-	 * @class     smart_string
-	 * @brief     Умный строковый тип данных
-	 * @details   С реализацией "копирование при записи"?
-	 */
+	/*!
+	  \class     smart_string
+	  \brief     Умный строковый тип данных
+	  \details   С реализацией "копирование при записи"?
+	*/
 	class smart_string: public rdo::intrusive_ptr<string_class>
 	{
 	public:
@@ -155,10 +155,10 @@ private:
 	};
 	void deleteString();
 
-	/**
-	 * @union     Value
-	 * @brief     Значение
-	 */
+	/*!
+	  \union     Value
+	  \brief     Значение
+	*/
 	union Value
 	{
 		int                i_value;

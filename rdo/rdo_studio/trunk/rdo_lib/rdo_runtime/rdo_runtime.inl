@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      rdo_runtime.inl
- * @author    Ћущан ƒмитрий
- * @date      06.08.2011
- * @brief     RDORuntime implementation
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_runtime.inl
+  \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
+  \date      06.08.2011
+  \brief     RDORuntime implementation
+  \indent    4T
+*/
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS

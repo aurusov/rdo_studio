@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_random_distribution.h
- * @author    Урусов Андрей
- * @date      11.04.2008
- * @brief     Датчики псевдослучайных чисел
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_random_distribution.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.04.2008
+  \brief     Датчики псевдослучайных чисел
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_
 #define _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_
@@ -18,16 +18,16 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @def       RDO_NATIVE_U01
- * @brief     Законы распределения псевдослучайных чмсел в стиле РДО
- *********************************************************************************/
+/*!
+  \def       RDO_NATIVE_U01
+  \brief     Законы распределения псевдослучайных чмсел в стиле РДО
+*/
 #define RDO_NATIVE_U01
 
-/******************************************************************************//**
- * @class     RandGenerator
- * @brief     Базовое равномерное распределение [0, 1)
- *********************************************************************************/
+/*!
+  \class     RandGenerator
+  \brief     Базовое равномерное распределение [0, 1)
+*/
 class RandGenerator
 {
 public:
@@ -46,10 +46,10 @@ protected:
 	RandGenerator(long int seed = 123456789);
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorUniform
- * @brief     Базовое равномерное распределение [0, 1)
- *********************************************************************************/
+/*!
+  \class     RandGeneratorUniform
+  \brief     Базовое равномерное распределение [0, 1)
+*/
 class RandGeneratorUniform: public RandGenerator
 {
 public:
@@ -57,10 +57,10 @@ public:
 	double next(double from, double to);
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorExponential
- * @brief     Экспоненциальное распределение
- *********************************************************************************/
+/*!
+  \class     RandGeneratorExponential
+  \brief     Экспоненциальное распределение
+*/
 class RandGeneratorExponential: public RandGenerator
 {
 public:
@@ -68,10 +68,10 @@ public:
 	double next(double math);
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorNormal
- * @brief     Нормальное распределение
- *********************************************************************************/
+/*!
+  \class     RandGeneratorNormal
+  \brief     Нормальное распределение
+*/
 class RandGeneratorNormal: public RandGenerator
 {
 public:
@@ -79,10 +79,10 @@ public:
 	double next(double av, double var);
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorCommonNext
- * @brief     Общий класс для by_hist и enumerative
- *********************************************************************************/
+/*!
+  \class     RandGeneratorCommonNext
+  \brief     Общий класс для by_hist и enumerative
+*/
 class RandGeneratorCommonNext
 {
 public:
@@ -93,10 +93,10 @@ protected:
 	RandGeneratorCommonNext();
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorByHist
- * @brief     Базовый класс для гистограмм
- *********************************************************************************/
+/*!
+  \class     RandGeneratorByHist
+  \brief     Базовый класс для гистограмм
+*/
 class RandGeneratorByHist: public RandGeneratorUniform, public RandGeneratorCommonNext
 {
 protected:
@@ -104,10 +104,10 @@ protected:
 	RandGeneratorByHist(long int seed = 123456789);
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorByHistReal
- * @brief     Гистограмма вещественных чисел
- *********************************************************************************/
+/*!
+  \class     RandGeneratorByHistReal
+  \brief     Гистограмма вещественных чисел
+*/
 class RandGeneratorByHistReal: public RandGeneratorByHist
 {
 public:
@@ -122,10 +122,10 @@ private:
 	virtual RDOValue next();
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorByHistEnum
- * @brief     Гистограмма перечислимого типа
- *********************************************************************************/
+/*!
+  \class     RandGeneratorByHistEnum
+  \brief     Гистограмма перечислимого типа
+*/
 class RandGeneratorByHistEnum: public RandGeneratorByHist
 {
 public:
@@ -139,10 +139,10 @@ private:
 	virtual RDOValue next();
 };
 
-/******************************************************************************//**
- * @class     RandGeneratorEnumerative
- * @brief     Перечень значений
- *********************************************************************************/
+/*!
+  \class     RandGeneratorEnumerative
+  \brief     Перечень значений
+*/
 class RandGeneratorEnumerative: public RandGeneratorCommonNext
 {
 public:

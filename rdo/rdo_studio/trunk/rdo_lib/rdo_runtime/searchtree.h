@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2006
- * @file      searchtree.h
- * @author    Урусов Андрей
- * @date      11.06.2006
- * @brief     Граф состояний DPTSearch как дерево
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2006
+  \file      searchtree.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.06.2006
+  \brief     Граф состояний DPTSearch как дерево
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_SEARCH_TREE_H_
 #define _LIB_RUNTIME_SEARCH_TREE_H_
@@ -20,11 +20,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 class TreeNode;
 
-/******************************************************************************//**
- * @class   TreeRoot
- * @brief   Корень дерева DPT
- * @details С помощью createRootTreeNode создает реальный узер-корень
- *********************************************************************************/
+/*!
+  \class   TreeRoot
+  \brief   Корень дерева DPT
+  \details С помощью createRootTreeNode создает реальный узер-корень
+*/
 class TreeRoot
 {
 public:
@@ -53,10 +53,10 @@ private:
 	int m_nodesCount;
 };
 
-/******************************************************************************//**
- * @class   TreeNode
- * @brief   Узел графа DPT
- *********************************************************************************/
+/*!
+  \class   TreeNode
+  \brief   Узел графа DPT
+*/
 class TreeNode
 {
 public:
@@ -74,10 +74,10 @@ public:
 
 	void ExpandChildren();
 
-	/**
-	 * @class   NodeFoundInfo
-	 * @brief   Оценка найденной вершины
-	 */
+	/*!
+	  \class   NodeFoundInfo
+	  \brief   Оценка найденной вершины
+	*/
 	enum NodeFoundInfo
 	{
 		nfi_notfound     = 0,

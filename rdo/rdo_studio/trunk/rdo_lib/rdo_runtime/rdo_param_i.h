@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      rdo_param_i.h
- * @author    Лущан Дмитрий
- * @date      09.12.2010
- * @brief     Интерфейс IParam
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      rdo_param_i.h
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      09.12.2010
+  \brief     Интерфейс IParam
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_PARAM_I_H_
 #define _LIB_RUNTIME_PARAM_I_H_
@@ -15,11 +15,11 @@
 #include "rdo_common/rdointerface.h"
 // --------------------------------------------------------------------------------
 
-/******************************************************************************//**
- * @interface IParam
- * @brief     Интерфейс для параметров
- * @todo      перевести все параметры в РДО на этот интерфейс
- *********************************************************************************/
+/*!
+  \interface IParam
+  \brief     Интерфейс для параметров
+  \todo      перевести все параметры в РДО на этот интерфейс
+*/
 class IParam
 {
 public:
@@ -27,10 +27,10 @@ public:
 	virtual rbool endParam() = 0;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_IParam
- * @brief     Декларация интерфейса \a IParam
- *********************************************************************************/
+/*!
+  \def       DECLARE_IParam
+  \brief     Декларация интерфейса \a IParam
+*/
 #define DECLARE_IParam \
 	virtual rbool setParam(CREF(rdoRuntime::LPRDOCalc) pParam); \
 	virtual rbool endParam();

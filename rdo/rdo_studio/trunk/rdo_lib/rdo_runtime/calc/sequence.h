@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      sequence.h
- * @authors   Барс Александр, Урусов Андрей
- * @date      13.03.2011
- * @brief     Последовательности
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      sequence.h
+  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2011
+  \brief     Последовательности
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_SEQUENCE_H_
 #define _LIB_RUNTIME_CALC_SEQUENCE_H_
@@ -17,10 +17,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOCalcSeqInit
- * @brief   RDOCalc для инициализации последовательности псевдослучайных чисел
- *********************************************************************************/
+/*!
+  \class   RDOCalcSeqInit
+  \brief   RDOCalc для инициализации последовательности псевдослучайных чисел
+*/
 CALC(RDOCalcSeqInit)
 {
 DECLARE_FACTORY(RDOCalcSeqInit)
@@ -37,10 +37,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcSeqNext
- * @brief   RDOCalc для вычисления следующего значения последовательности псевдослучайных чисел
- *********************************************************************************/
+/*!
+  \class   RDOCalcSeqNext
+  \brief   RDOCalc для вычисления следующего значения последовательности псевдослучайных чисел
+*/
 CALC_SUB(RDOCalcSeqNext, RDOFunCalc)
 {
 public:
@@ -55,10 +55,10 @@ protected:
 	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime) = 0;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcRandomDistribution
- * @brief   Псевдослучайное распределение
- *********************************************************************************/
+/*!
+  \class   RDOCalcRandomDistribution
+  \brief   Псевдослучайное распределение
+*/
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
@@ -71,10 +71,10 @@ private:
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 };
 
-/******************************************************************************//**
- * @def     DEFINE_RANDON_DISTRIBUTION
- * @brief   Макрос для разных законов распределения
- *********************************************************************************/
+/*!
+  \def     DEFINE_RANDON_DISTRIBUTION
+  \brief   Макрос для разных законов распределения
+*/
 #define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                  \
 CALC_SUB(RDOCalcSeqNext##CalcName, RDOCalcRandomDistribution<Distribution>) \
 {                                                                           \
@@ -87,28 +87,28 @@ private:                                                                    \
 	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime);             \
 };
 
-/******************************************************************************//**
- * @class   RDOCalcSeqNextUniform
- * @brief   Следующее значение псевдослучайной величины, распределенной равномерно
- *********************************************************************************/
+/*!
+  \class   RDOCalcSeqNextUniform
+  \brief   Следующее значение псевдослучайной величины, распределенной равномерно
+*/
 DEFINE_RANDON_DISTRIBUTION(Uniform, RandGeneratorUniform);
 
-/******************************************************************************//**
- * @class   RDOCalcSeqNextNormal
- * @brief   Следующее значение псевдослучайной величины, распределенной по нормальному закону
- *********************************************************************************/
+/*!
+  \class   RDOCalcSeqNextNormal
+  \brief   Следующее значение псевдослучайной величины, распределенной по нормальному закону
+*/
 DEFINE_RANDON_DISTRIBUTION(Normal, RandGeneratorNormal);
 
-/******************************************************************************//**
- * @class   RDOCalcSeqNextExponential
- * @brief   Следующее значение псевдослучайной величины, распределенной по экспоненциальному закону
- *********************************************************************************/
+/*!
+  \class   RDOCalcSeqNextExponential
+  \brief   Следующее значение псевдослучайной величины, распределенной по экспоненциальному закону
+*/
 DEFINE_RANDON_DISTRIBUTION(Exponential, RandGeneratorExponential);
 
-/******************************************************************************//**
- * @class   RDOCalcSeqNextByHist
- * @brief   Следующее значение псевдослучайной величины, распределенной по заданной гистограмме
- *********************************************************************************/
+/*!
+  \class   RDOCalcSeqNextByHist
+  \brief   Следующее значение псевдослучайной величины, распределенной по заданной гистограмме
+*/
 DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 
 CLOSE_RDO_RUNTIME_NAMESPACE

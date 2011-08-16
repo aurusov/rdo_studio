@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_logic_dptsearch.h
- * @author    Урусов Андрей
- * @date      29.04.2008
- * @brief     DPTSearch
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_logic_dptsearch.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      29.04.2008
+  \brief     DPTSearch
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
 #define _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
@@ -25,10 +25,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class TreeNode;
 class TreeRoot;
 
-/******************************************************************************//**
- * @class   RDODPTSearch
- * @brief   Точка принятия решений DPTSearch
- *********************************************************************************/
+/*!
+  \class   RDODPTSearch
+  \brief   Точка принятия решений DPTSearch
+*/
 class RDODPTSearch: public RDOLogicSimple, public IDPTSearchLogic, public RDOPatternPrior
 {
 QUERY_INTERFACE_BEGIN

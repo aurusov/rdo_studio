@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_priority.h
- * @author    Лущан Дмитрий
- * @date      04.11.2009
- * @brief     Описание приоритета активностей. Используется при сортировке БЗ.
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_priority.h
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      04.11.2009
+  \brief     Описание приоритета активностей. Используется при сортировке БЗ.
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_PRIORITY_H_
 #define _LIB_RUNTIME_PRIORITY_H_
@@ -21,10 +21,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDOPatternPrior
- * @brief     Приоритет паттерна
- *********************************************************************************/
+/*!
+  \class     RDOPatternPrior
+  \brief     Приоритет паттерна
+*/
 class RDOPatternPrior: public IPriority
 {
 QUERY_INTERFACE_BEGIN
@@ -42,10 +42,10 @@ private:
 	LPRDOCalc m_pPrior;
 };
 
-/******************************************************************************//**
- * @class     RDODPTActivityCompare
- * @brief     Компаратор приоритетов активностей
- *********************************************************************************/
+/*!
+  \class     RDODPTActivityCompare
+  \brief     Компаратор приоритетов активностей
+*/
 class RDODPTActivityCompare
 {
 public:

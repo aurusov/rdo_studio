@@ -1,12 +1,12 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2006
- * @file      rdo.h
- * @author    Урусов Андрей
- * @date      11.06.2006
- * @brief     Определение интерфейса IBaseOperation
- * @details   Через него осуществляются базовые операции имитации всех сущностей РДО
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2006
+  \file      rdo.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.06.2006
+  \brief     Определение интерфейса IBaseOperation
+  \details   Через него осуществляются базовые операции имитации всех сущностей РДО
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_RDO_H_
 #define _LIB_RUNTIME_RDO_H_
@@ -26,21 +26,21 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /// @todo Надо бы сделать IBaseOperation базовым для всех возможных логик
 
-/******************************************************************************//**
- * @interface IBaseOperation
- * @brief     Интерфейс для паттернов, процессов и блоков процесса
- *********************************************************************************/
+/*!
+  \interface IBaseOperation
+  \brief     Интерфейс для паттернов, процессов и блоков процесса
+*/
 class IBaseOperation
 {
 public:
-	/**
-	 * @enum  BOResult
-	 * @brief Статуc состояния операции
-	 * @var   BOR_cant_run        операция не может быть запущена
-	 * @var   BOR_planned_and_run операция запланирована и выполняется
-	 * @var   BOR_must_continue   операция может быть продолжена
-	 * @var   BOR_done            операция выполнена
-	 */
+	/*!
+	  \enum  BOResult
+	  \brief Статуc состояния операции
+	  \var   BOR_cant_run        операция не может быть запущена
+	  \var   BOR_planned_and_run операция запланирована и выполняется
+	  \var   BOR_must_continue   операция может быть продолжена
+	  \var   BOR_done            операция выполнена
+	*/
 	enum BOResult
 	{
 		BOR_cant_run       = 0,
@@ -49,64 +49,64 @@ public:
 		BOR_done
 	};
 
-	/**
-	 * @fn      virtual void onStart(CREF(rdoRuntime::LPRDORuntime) pRuntime)
-	 * @brief   Запуск
-	 * @details Вызывается перед стартом прогона и перед возобновление операции
+	/*!
+	  \fn      virtual void onStart(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	  \brief   Запуск
+	  \details Вызывается перед стартом прогона и перед возобновление операции
 	 * Например, условие DPT-some поменялось с false на true
 	 * Используется для GENERATE, чтобы задать время прихода первого клиента
-	 * @param   pRuntime константная ссылка на указатель на Рантайм
-	 */
+	  \param   pRuntime константная ссылка на указатель на Рантайм
+	*/
 	virtual void onStart(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	/**
-	 * @fn      virtual void onStop(CREF(rdoRuntime::LPRDORuntime) pRuntime)
-	 * @brief   Остановка
-	 * @details Вызывается при остановке операции, например, условие DPT-some поменялось с true на false
-	 * @param   pRuntime константная ссылка на указатель на Рантайм
-	 */
+	/*!
+	  \fn      virtual void onStop(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	  \brief   Остановка
+	  \details Вызывается при остановке операции, например, условие DPT-some поменялось с true на false
+	  \param   pRuntime константная ссылка на указатель на Рантайм
+	*/
 	virtual void onStop(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	/**
-	 * @fn      virtual rbool onCheckCondition(CREF(rdoRuntime::LPRDORuntime) pRuntime)
-	 * @brief   Проверка
-	 * @details Вызывается для проверки выполнимости операции
-	 * @param   pRuntime константная ссылка на указатель на Рантайм
-	 */
+	/*!
+	  \fn      virtual rbool onCheckCondition(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	  \brief   Проверка
+	  \details Вызывается для проверки выполнимости операции
+	  \param   pRuntime константная ссылка на указатель на Рантайм
+	*/
 	virtual rbool onCheckCondition(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	/**
-	 * @fn      virtual BOResult onDoOperation(CREF(rdoRuntime::LPRDORuntime) pRuntime)
-	 * @brief   Выполнение
-	 * @details Вызывается для выполнения правил/операций
-	 * @return  BOResult результат выполнения операции
-	 * @param   pRuntime константная ссылка на указатель на Рантайм
-	 */
+	/*!
+	  \fn      virtual BOResult onDoOperation(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	  \brief   Выполнение
+	  \details Вызывается для выполнения правил/операций
+	  \return  BOResult результат выполнения операции
+	  \param   pRuntime константная ссылка на указатель на Рантайм
+	*/
 	virtual BOResult onDoOperation(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
-	/**
-	 * @fn      virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param)
-	 * @brief   Планирование
-	 * @details Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
+	/*!
+	  \fn      virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param)
+	  \brief   Планирование
+	  \details Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
 	 * Может не использоваться, например, для rule
-	 * @param   pRuntime константная ссылка на указатель на Рантайм
-	 */
+	  \param   pRuntime константная ссылка на указатель на Рантайм
+	*/
 	virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param) = 0;
 
-	/**
-	 * @fn      virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime)
-	 * @brief   Продолжение
-	 * @details Вызывается для продолжения долгой операции, например, DPT search
-	 * @return  BOResult результат выполнения операции
-	 * @param   pRuntime константная ссылка на указатель на Рантайм
-	 */
+	/*!
+	  \fn      virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime)
+	  \brief   Продолжение
+	  \details Вызывается для продолжения долгой операции, например, DPT search
+	  \return  BOResult результат выполнения операции
+	  \param   pRuntime константная ссылка на указатель на Рантайм
+	*/
 	virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 
-/******************************************************************************//**
- * @def     DECLARE_IBaseOperation
- * @brief   Декларация интерфейса IBaseOperation
- *********************************************************************************/
+/*!
+  \def     DECLARE_IBaseOperation
+  \brief   Декларация интерфейса IBaseOperation
+*/
 #define DECLARE_IBaseOperation                                                                   \
 	virtual void     onStart         (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
 	virtual void     onStop          (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
@@ -117,10 +117,10 @@ public:
 
 INTERFACE_PREDECLARATION(IBaseOperation);
 
-/******************************************************************************//**
- * @typedef BaseOperationList
- * @brief   Контейнер умных указателей на IBaseOperation
- *********************************************************************************/
+/*!
+  \typedef BaseOperationList
+  \brief   Контейнер умных указателей на IBaseOperation
+*/
 typedef std::vector<LPIBaseOperation> BaseOperationList;
 
 #endif // _LIB_RUNTIME_RDO_H_

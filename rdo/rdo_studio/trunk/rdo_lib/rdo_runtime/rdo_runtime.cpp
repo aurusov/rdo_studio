@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2007
- * @file      rdo_runtime.cpp
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      16.05.2007
- * @brief     RDORuntime implementation
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2007
+  \file      rdo_runtime.cpp
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.05.2007
+  \brief     RDORuntime implementation
+  \indent    4T
+*/
 
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"

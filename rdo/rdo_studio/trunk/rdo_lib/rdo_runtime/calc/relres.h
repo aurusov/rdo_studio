@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      relres.h
- * @authors   Барс Александр, Урусов Андрей
- * @date      28.12.2009
- * @brief     RDOCalc для подбора релевантных ресурсов
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      relres.h
+  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.12.2009
+  \brief     RDOCalc для подбора релевантных ресурсов
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_REL_RES_H_
 #define _LIB_RUNTIME_CALC_REL_RES_H_
@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOGetRelResParamCalc
- * @brief   Параметр релевантного ресурса
- *********************************************************************************/
+/*!
+  \class   RDOGetRelResParamCalc
+  \brief   Параметр релевантного ресурса
+*/
 CALC(RDOGetRelResParamCalc)
 {
 DECLARE_FACTORY(RDOGetRelResParamCalc)
@@ -34,11 +34,11 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOSetRelResParamCalc
- * @tparam  equalType Тип присваивания
- * @brief   RDOCalc для установки значения параметра релевантного ресурса
- *********************************************************************************/
+/*!
+  \class   RDOSetRelResParamCalc
+  \tparam  equalType Тип присваивания
+  \brief   RDOCalc для установки значения параметра релевантного ресурса
+*/
 template <EqualType equalType>
 class RDOSetRelResParamCalc: public RDOCalc
 {
@@ -54,10 +54,10 @@ protected:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOSetRelResParamDiapCalc
- * @brief   RDOCalc ограничения диапазона параметра
- *********************************************************************************/
+/*!
+  \class   RDOSetRelResParamDiapCalc
+  \brief   RDOCalc ограничения диапазона параметра
+*/
 CALC(RDOSetRelResParamDiapCalc)
 {
 DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
@@ -73,10 +73,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOEraseResRelCalc
- * @brief   RDOCalc для удаления релевантного ресурса
- *********************************************************************************/
+/*!
+  \class   RDOEraseResRelCalc
+  \brief   RDOCalc для удаления релевантного ресурса
+*/
 CALC(RDOEraseResRelCalc)
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)

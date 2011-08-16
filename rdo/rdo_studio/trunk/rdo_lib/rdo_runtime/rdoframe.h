@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdoframe.h
- * @author    Урусов Андрей
- * @date      07.12.2008
- * @brief     Кадры РДО модели
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdoframe.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      07.12.2008
+  \brief     Кадры РДО модели
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_FRAME_H_
 #define _LIB_RUNTIME_FRAME_H_
@@ -23,10 +23,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOFRMShow);
 PREDECLARE_POINTER(RDOFRMItem);
 
-/******************************************************************************//**
- * @class     RDOFRMFrame
- * @brief     Кадр
- *********************************************************************************/
+/*!
+  \class     RDOFRMFrame
+  \brief     Кадр
+*/
 OBJECT(RDOFRMFrame)
 	IS  INSTANCE_OF(RDORuntimeObject)
 	AND INSTANCE_OF(RDOSrcInfo      )
@@ -35,18 +35,18 @@ DECLARE_FACTORY(RDOFRMFrame)
 public:
 	typedef std::list<tstring> ImageNameList;
 
-	/**
-	 * @class     RDOFRMPosition
-	 * @brief     Позиция кадра
-	 */
+	/*!
+	  \class     RDOFRMPosition
+	  \brief     Позиция кадра
+	*/
 	OBJECT(RDOFRMPosition) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(RDOFRMPosition)
 	public:
-		/**
-		 * @enum      RDOFRMFrame
-		 * @brief     Тип позици кадра
-		 */
+		/*!
+		  \enum      RDOFRMFrame
+		  \brief     Тип позици кадра
+		*/
 		enum PositionType
 		{
 			PT_ABSOLUTE,
@@ -75,18 +75,18 @@ public:
 	};
 	friend class RDOFRMPosition;
 
-	/**
-	 * @class     RDOFRMColor
-	 * @brief     Объект-цвет
-	 */
+	/*!
+	  \class     RDOFRMColor
+	  \brief     Объект-цвет
+	*/
 	OBJECT(RDOFRMColor) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(RDOFRMColor)
 	public:
-		/**
-		 * @enum      ColorType
-		 * @brief     Цвет фигуры
-		 */
+		/*!
+		  \enum      ColorType
+		  \brief     Цвет фигуры
+		*/
 		enum ColorType
 		{
 			CT_NONE,
@@ -116,10 +116,10 @@ public:
 	};
 	friend class RDOFRMColor;
 
-	/**
-	 * @class     RDOFRMRulet
-	 * @brief     Объект-цвет
-	 */
+	/*!
+	  \class     RDOFRMRulet
+	  \brief     Объект-цвет
+	*/
 	OBJECT(RDOFRMRulet)
 		 IS  INSTANCE_OF(RDORuntimeObject)
 		 AND INSTANCE_OF(RDOSrcInfo      )
@@ -189,11 +189,11 @@ private:
 	RuletList               m_ruletList;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMBoundingItem
- * @brief     Объект-четырехугольник
- * @details   В парсере не создается
- *********************************************************************************/
+/*!
+  \class     RDOFRMBoundingItem
+  \brief     Объект-четырехугольник
+  \details   В парсере не создается
+*/
 class RDOFRMBoundingItem
 {
 protected:
@@ -214,11 +214,11 @@ private:
 	RDOFRMFrame::LPRDOFRMPosition m_pHeight;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMColoredItem
- * @brief     Цветной объект
- * @details   В парсере не создается
- *********************************************************************************/
+/*!
+  \class     RDOFRMColoredItem
+  \brief     Цветной объект
+  \details   В парсере не создается
+*/
 class RDOFRMColoredItem
 {
 public:
@@ -237,10 +237,10 @@ private:
 	RDOFRMFrame::LPRDOFRMColor m_pFgColor;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMItem
- * @brief     Базовый для всех элементов
- *********************************************************************************/
+/*!
+  \class     RDOFRMItem
+  \brief     Базовый для всех элементов
+*/
 OBJECT(RDOFRMItem) IS INSTANCE_OF(RDORuntimeObject)
 {
 DECLARE_FACTORY(RDOFRMItem)
@@ -259,26 +259,26 @@ private:
 	LPRDOFRMFrame m_pFrame;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_RDOFRMIItem
- * @brief     Декларация метода \a createElement
- *********************************************************************************/
+/*!
+  \def       DECLARE_RDOFRMIItem
+  \brief     Декларация метода \a createElement
+*/
 #define DECLARE_RDOFRMIItem \
 private:                    \
 	PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
 
-/******************************************************************************//**
- * @def       RDOFRM_ITEM(A)
- * @brief     Декларация наследника \a RDOFRMItem
- *********************************************************************************/
+/*!
+  \def       RDOFRM_ITEM(A)
+  \brief     Декларация наследника \a RDOFRMItem
+*/
 #define RDOFRM_ITEM(A) \
 PREDECLARE_POINTER(A); \
 CLASS(A): INSTANCE_OF(RDOFRMItem)
 
-/******************************************************************************//**
- * @class     RDOFRMText
- * @brief     Текстовая анимация
- *********************************************************************************/
+/*!
+  \class     RDOFRMText
+  \brief     Текстовая анимация
+*/
 RDOFRM_ITEM(RDOFRMText)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -310,10 +310,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMBitmapBase
- * @brief     Базовый класс для картинок в анимации
- *********************************************************************************/
+/*!
+  \class     RDOFRMBitmapBase
+  \brief     Базовый класс для картинок в анимации
+*/
 RDOFRM_ITEM(RDOFRMBitmapBase)
 {
 protected:
@@ -327,10 +327,10 @@ protected:
 	virtual ~RDOFRMBitmapBase();
 };
 
-/******************************************************************************//**
- * @class     RDOFRMBitmap
- * @brief     Картинка в анимации
- *********************************************************************************/
+/*!
+  \class     RDOFRMBitmap
+  \brief     Картинка в анимации
+*/
 CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
 {
 DECLARE_FACTORY(RDOFRMBitmap)
@@ -352,11 +352,11 @@ private:
 
 DECLARE_POINTER(RDOFRMBitmap)
 
-/******************************************************************************//**
- * @class     RDOFRMBitmapStretch
- * @brief     Растягивающаяся картинка в анимации
- * @todo      что это?
- *********************************************************************************/
+/*!
+  \class     RDOFRMBitmapStretch
+  \brief     Растягивающаяся картинка в анимации
+  \todo      что это?
+*/
 CLASS(RDOFRMBitmapStretch):
 		INSTANCE_OF(RDOFRMBitmapBase  )
 	AND INSTANCE_OF(RDOFRMBoundingItem)
@@ -379,10 +379,10 @@ private:
 
 DECLARE_POINTER(RDOFRMBitmapStretch);
 
-/******************************************************************************//**
- * @class     RDOFRMRect
- * @brief     Прямоугольник для анимации
- *********************************************************************************/
+/*!
+  \class     RDOFRMRect
+  \brief     Прямоугольник для анимации
+*/
 RDOFRM_ITEM(RDOFRMRect)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -403,10 +403,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMRectRound
- * @brief     Прямоугольник со скругленными углами для анимации
- *********************************************************************************/
+/*!
+  \class     RDOFRMRectRound
+  \brief     Прямоугольник со скругленными углами для анимации
+*/
 RDOFRM_ITEM(RDOFRMRectRound)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -427,10 +427,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMEllipse
- * @brief     Эллипс для анимации
- *********************************************************************************/
+/*!
+  \class     RDOFRMEllipse
+  \brief     Эллипс для анимации
+*/
 RDOFRM_ITEM(RDOFRMEllipse)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
@@ -451,10 +451,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMLine
- * @brief     Линия для анимации
- *********************************************************************************/
+/*!
+  \class     RDOFRMLine
+  \brief     Линия для анимации
+*/
 RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMLine)
@@ -474,10 +474,10 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMTriang
- * @brief     Треугольник для анимации
- *********************************************************************************/
+/*!
+  \class     RDOFRMTriang
+  \brief     Треугольник для анимации
+*/
 RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
 {
 DECLARE_FACTORY(RDOFRMTriang)
@@ -505,11 +505,11 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMActive
- * @brief     Активный кадр
- * @todo      что это?
- *********************************************************************************/
+/*!
+  \class     RDOFRMActive
+  \brief     Активный кадр
+  \todo      что это?
+*/
 RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMActive)
@@ -529,11 +529,11 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMSpace
- * @brief     Пробел
- * @todo      что это?
- *********************************************************************************/
+/*!
+  \class     RDOFRMSpace
+  \brief     Пробел
+  \todo      что это?
+*/
 RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMSpace)
@@ -550,11 +550,11 @@ private:
 	DECLARE_RDOFRMIItem;
 };
 
-/******************************************************************************//**
- * @class     RDOFRMShow
- * @brief     Показ кадра
- * @todo      что это?
- *********************************************************************************/
+/*!
+  \class     RDOFRMShow
+  \brief     Показ кадра
+  \todo      что это?
+*/
 OBJECT(RDOFRMShow) IS INSTANCE_OF(RDORuntimeObject)
 {
 DECLARE_FACTORY(RDOFRMShow)

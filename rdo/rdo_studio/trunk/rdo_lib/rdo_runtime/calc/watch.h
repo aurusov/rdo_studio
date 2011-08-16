@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      watch.h
- * @author    Урусов Андрей
- * @date      04.03.2011
- * @brief     Собираемые показатели
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      watch.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      04.03.2011
+  \brief     Собираемые показатели
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_WATCH_H_
 #define _LIB_RUNTIME_CALC_WATCH_H_
@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOCalcWatchGroupStart
- * @brief   RDOCalc 
- *********************************************************************************/
+/*!
+  \class   RDOCalcWatchGroupStart
+  \brief   RDOCalc 
+*/
 CALC(RDOCalcWatchGroupStart)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
@@ -34,10 +34,10 @@ protected:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcWatchGroupStop
- * @brief   Начало сбора статистики по группе показателей
- *********************************************************************************/
+/*!
+  \class   RDOCalcWatchGroupStop
+  \brief   Начало сбора статистики по группе показателей
+*/
 CALC(RDOCalcWatchGroupStop)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)

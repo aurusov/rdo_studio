@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      statements.h
- * @authors   Чирков Михаил, Лущан Дмитрий
- * @date      16.04.2011
- * @brief     Инструкции
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      statements.h
+  \authors   Чирков Михаил, Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.04.2011
+  \brief     Инструкции
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_STATEMENTS_H_
 #define _LIB_RUNTIME_CALC_STATEMENTS_H_
@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOCalcNoChange
- * @brief   RDOCalc для константного параметра релевантного ресурса
- *********************************************************************************/
+/*!
+  \class   RDOCalcNoChange
+  \brief   RDOCalc для константного параметра релевантного ресурса
+*/
 CALC(RDOCalcNoChange)
 {
 	DECLARE_FACTORY(RDOCalcNoChange)
@@ -30,10 +30,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcIf
- * @brief   RDOCalc для сокращенного условного оператора
- *********************************************************************************/
+/*!
+  \class   RDOCalcIf
+  \brief   RDOCalc для сокращенного условного оператора
+*/
 CALC(RDOCalcIf)
 {
 	DECLARE_FACTORY(RDOCalcIf)
@@ -46,10 +46,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcIfElse
- * @brief   RDOCalc для полного условного оператора
- *********************************************************************************/
+/*!
+  \class   RDOCalcIfElse
+  \brief   RDOCalc для полного условного оператора
+*/
 CALC(RDOCalcIfElse)
 {
 	DECLARE_FACTORY(RDOCalcIfElse)
@@ -63,10 +63,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcFor
- * @brief   RDOCalc для циклического оператора for
- *********************************************************************************/
+/*!
+  \class   RDOCalcFor
+  \brief   RDOCalc для циклического оператора for
+*/
 CALC(RDOCalcFor)
 {
 	DECLARE_FACTORY(RDOCalcFor)
@@ -81,10 +81,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcFunReturn
- * @brief   RDOCalc для оператора выхода из функции
- *********************************************************************************/
+/*!
+  \class   RDOCalcFunReturn
+  \brief   RDOCalc для оператора выхода из функции
+*/
 CALC(RDOCalcFunReturn)
 {
 	DECLARE_FACTORY(RDOCalcFunReturn)
@@ -95,10 +95,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcFunBreak
- * @brief   RDOCalc для оператора выхода из тела цикла
- *********************************************************************************/
+/*!
+  \class   RDOCalcFunBreak
+  \brief   RDOCalc для оператора выхода из тела цикла
+*/
 CALC(RDOCalcFunBreak)
 {
 	DECLARE_FACTORY(RDOCalcFunBreak)

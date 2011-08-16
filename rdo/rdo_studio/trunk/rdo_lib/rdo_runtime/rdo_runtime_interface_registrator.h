@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_runtime_interface_registrator.h
- * @author    Урусов Андрей
- * @date      29.07.2009
- * @brief     Глобальная регистрация интерфейсов
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_runtime_interface_registrator.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      29.07.2009
+  \brief     Глобальная регистрация интерфейсов
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_RUNTIME_INTERFACE_REGISTRATOR_H_
 #define _LIB_RUNTIME_RUNTIME_INTERFACE_REGISTRATOR_H_

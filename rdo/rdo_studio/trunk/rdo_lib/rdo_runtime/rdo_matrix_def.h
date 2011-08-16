@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      rdo_matrix_def.h
- * @author    Чирков Михаил
- * @date      01.10.2010
- * @brief     Матрицы
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      rdo_matrix_def.h
+  \author    Чирков Михаил
+  \date      01.10.2010
+  \brief     Матрицы
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_MATRIX_DEF_H_
 #define _LIB_RUNTIME_MATRIX_DEF_H_
@@ -31,10 +31,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOMatrixType);
 
-/******************************************************************************//**
- * @class     RDOMatrixValue
- * @brief     Элемент матрицы
- *********************************************************************************/
+/*!
+  \class     RDOMatrixValue
+  \brief     Элемент матрицы
+*/
 class RDOMatrixValue
 {
 public:
@@ -60,10 +60,10 @@ private:
 	LPRDOMatrixType m_pMatrixType;
 };
 
-/******************************************************************************//**
- * @class     RDOMatrixIterator
- * @brief     Итератор матрицы
- *********************************************************************************/
+/*!
+  \class     RDOMatrixIterator
+  \brief     Итератор матрицы
+*/
 class RDOMatrixIterator
 {
 public:
@@ -83,10 +83,10 @@ private:
 	Iterator m_iterator;
 };
 
-/******************************************************************************//**
- * @class     RDOMatrixType
- * @brief     Матричный тип
- *********************************************************************************/
+/*!
+  \class     RDOMatrixType
+  \brief     Матричный тип
+*/
 class RDOMatrixType: public RDOType
 {
 DECLARE_FACTORY(RDOMatrixType);

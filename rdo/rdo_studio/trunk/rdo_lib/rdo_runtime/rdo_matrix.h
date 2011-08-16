@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      rdo_matrix.h
- * @author    Чирков Михаил
- * @date      01.10.2010
- * @brief     Матрицы
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      rdo_matrix.h
+  \author    Чирков Михаил
+  \date      01.10.2010
+  \brief     Матрицы
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_MATRIX_H_
 #define _LIB_RUNTIME_MATRIX_H_

@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_dptsearch_activity.cpp
- * @author    Урусов Андрей
- * @date      08.08.2009
- * @brief     Активности точки принятия решения DPTSearch
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_dptsearch_activity.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      08.08.2009
+  \brief     Активности точки принятия решения DPTSearch
+  \indent    4T
+*/
 
 // ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"

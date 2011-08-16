@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2006
- * @file      rdotrace.h
- * @author    Урусов Андрей
- * @date      11.06.2006
- * @brief     Трассировщик
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2006
+  \file      rdotrace.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.06.2006
+  \brief     Трассировщик
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_TRACE_H_
 #define _LIB_RUNTIME_TRACE_H_
@@ -35,10 +35,10 @@ class TreeRoot;
 PREDECLARE_POINTER(RDOResource);
 PREDECLARE_POINTER(RDORuntime);
 
-/******************************************************************************//**
- * @class     RDOEndL
- * @brief     Рассылает броадкастом строку трассировки
- *********************************************************************************/
+/*!
+  \class     RDOEndL
+  \brief     Рассылает броадкастом строку трассировки
+*/
 class RDOEndL
 {
 public:
@@ -47,10 +47,10 @@ public:
 
 inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL);
 
-/******************************************************************************//**
- * @class     RDOTrace
- * @brief     Формирует строки трассировки
- *********************************************************************************/
+/*!
+  \class     RDOTrace
+  \brief     Формирует строки трассировки
+*/
 class RDOTrace
 {
 friend class RDOSimulatorTrace;
@@ -105,10 +105,10 @@ private:
 	RDOEndL       m_emptyEndL;
 };
 
-/******************************************************************************//**
- * @class     RDOTraceableObject
- * @brief     Трассируемый объект
- *********************************************************************************/
+/*!
+  \class     RDOTraceableObject
+  \brief     Трассируемый объект
+*/
 class RDOTraceableObject: public ITrace
 {
 QUERY_INTERFACE_BEGIN
@@ -137,10 +137,10 @@ private:
 	mutable tstring m_str_id;
 };
 
-/******************************************************************************//**
- * @class     RDOPokazTrace
- * @brief     Трассируемый показатель
- *********************************************************************************/
+/*!
+  \class     RDOPokazTrace
+  \brief     Трассируемый показатель
+*/
 class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue
 {
 QUERY_INTERFACE_BEGIN

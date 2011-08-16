@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2006
- * @file      rdobase.h
- * @author    Урусов Андрей
- * @date      11.06.2006
- * @brief     Управление симулятором
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2006
+  \file      rdobase.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.06.2006
+  \brief     Управление симулятором
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_BASE_H_
 #define _LIB_RUNTIME_BASE_H_
@@ -26,10 +26,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDOSimulatorBase
- * @brief     Один из базовых классов для RDORuntime
- *********************************************************************************/
+/*!
+  \class     RDOSimulatorBase
+  \brief     Один из базовых классов для RDORuntime
+*/
 OBJECT(RDOSimulatorBase)
 {
 DECLARE_FACTORY(RDOSimulatorBase)

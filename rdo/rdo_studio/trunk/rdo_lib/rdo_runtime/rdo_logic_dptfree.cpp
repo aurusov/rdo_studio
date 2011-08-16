@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_logic_dptfree.cpp
- * @author    Ћущан ƒмитрий
- * @date      07.11.2009
- * @brief     DPTFree
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_logic_dptfree.cpp
+  \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
+  \date      07.11.2009
+  \brief     DPTFree
+  \indent    4T
+*/
 
 // ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"

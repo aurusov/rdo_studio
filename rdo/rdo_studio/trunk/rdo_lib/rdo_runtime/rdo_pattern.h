@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_pattern.h
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      13.04.2008
- * @brief     Описание базового класса для образцов всех типов активностей и событий
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_pattern.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      13.04.2008
+  \brief     Описание базового класса для образцов всех типов активностей и событий
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_PATTERN_H_
 #define _LIB_RUNTIME_PATTERN_H_
@@ -24,10 +24,10 @@ class RDOEvent;
 class RDORule;
 class RDOKeyboard;
 
-/******************************************************************************//**
- * @class     RDOPattern
- * @brief     Базовый класс для паттернов активностей и событий
- *********************************************************************************/
+/*!
+  \class     RDOPattern
+  \brief     Базовый класс для паттернов активностей и событий
+*/
 OBJECT(RDOPattern)
 	IS  INSTANCE_OF(RDORuntimeObject  )
 	AND INSTANCE_OF(RDOTraceableObject)
@@ -52,10 +52,10 @@ protected:
 	rbool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
 };
 
-/******************************************************************************//**
- * @class     RDOPatternEvent
- * @brief     Паттерн событий
- *********************************************************************************/
+/*!
+  \class     RDOPatternEvent
+  \brief     Паттерн событий
+*/
 CLASS(RDOPatternEvent): INSTANCE_OF(RDOPattern)
 {
 DECLARE_FACTORY(RDOPatternEvent);
@@ -85,10 +85,10 @@ private:
 };
 DECLARE_POINTER(RDOPatternEvent);
 
-/******************************************************************************//**
- * @class     RDOPatternRule
- * @brief     Паттерн активностей типа rule
- *********************************************************************************/
+/*!
+  \class     RDOPatternRule
+  \brief     Паттерн активностей типа rule
+*/
 CLASS(RDOPatternRule): INSTANCE_OF(RDOPattern)
 {
 DECLARE_FACTORY(RDOPatternRule);
@@ -120,10 +120,10 @@ private:
 };
 DECLARE_POINTER(RDOPatternRule);
 
-/******************************************************************************//**
- * @class     RDOPatternOperation
- * @brief     Паттерн активностей типа operation
- *********************************************************************************/
+/*!
+  \class     RDOPatternOperation
+  \brief     Паттерн активностей типа operation
+*/
 CLASS(RDOPatternOperation): INSTANCE_OF(RDOPattern)
 {
 DECLARE_FACTORY(RDOPatternOperation);
@@ -169,10 +169,10 @@ private:
 };
 DECLARE_POINTER(RDOPatternOperation);
 
-/******************************************************************************//**
- * @class     RDOPatternKeyboard
- * @brief     Паттерн активностей типа keyboard
- *********************************************************************************/
+/*!
+  \class     RDOPatternKeyboard
+  \brief     Паттерн активностей типа keyboard
+*/
 CLASS(RDOPatternKeyboard): INSTANCE_OF(RDOPatternOperation)
 {
 DECLARE_FACTORY(RDOPatternKeyboard);

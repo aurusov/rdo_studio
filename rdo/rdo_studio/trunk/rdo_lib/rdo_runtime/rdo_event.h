@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      rdo_event.h
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      18.08.2010
- * @brief     События
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      rdo_event.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      18.08.2010
+  \brief     События
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_EVENT_H_
 #define _LIB_RUNTIME_EVENT_H_
@@ -21,10 +21,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDOEvent
- * @brief     Событие
- *********************************************************************************/
+/*!
+  \class     RDOEvent
+  \brief     Событие
+*/
 class RDOEvent: public IBaseOperation, public IEvent, public RDOActivityPattern<RDOPatternEvent>
 {
 typedef RDOActivityPattern<RDOPatternEvent> pattern_type;

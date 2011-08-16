@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_array_def.h
- * @author    Чирков Михаил
- * @date      14.12.2009
- * @brief     Определение массива
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_array_def.h
+  \author    Чирков Михаил
+  \date      14.12.2009
+  \brief     Определение массива
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_ARRAY_DEF_H_
 #define _LIB_RUNTIME_ARRAY_DEF_H_
@@ -31,10 +31,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOArrayType);
 
-/******************************************************************************//**
- * @class     RDOArrayValue
- * @brief     Элемент массива
- *********************************************************************************/
+/*!
+  \class     RDOArrayValue
+  \brief     Элемент массива
+*/
 class RDOArrayValue
 {
 public:
@@ -63,10 +63,10 @@ private:
 	LPRDOArrayType  m_pArrayType;
 };
 
-/******************************************************************************//**
- * @class     RDOArrayIterator
- * @brief     Итератор массива
- *********************************************************************************/
+/*!
+  \class     RDOArrayIterator
+  \brief     Итератор массива
+*/
 class RDOArrayIterator
 {
 public:
@@ -86,10 +86,10 @@ private:
 	Iterator m_iterator;
 };
 
-/******************************************************************************//**
- * @class     RDOArrayType
- * @brief     Тип массива
- *********************************************************************************/
+/*!
+  \class     RDOArrayType
+  \brief     Тип массива
+*/
 class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);

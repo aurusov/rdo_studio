@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2009
- * @file      rdo_operation_i.h
- * @author    Урусов Андрей
- * @date      30.07.2009
- * @brief     Интерфейс операции
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2009
+  \file      rdo_operation_i.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      30.07.2009
+  \brief     Интерфейс операции
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_OPERATION_I_H_
 #define _LIB_RUNTIME_OPERATION_I_H_
@@ -15,10 +15,10 @@
 #include "rdo_common/rdointerface.h"
 // --------------------------------------------------------------------------------
 
-/******************************************************************************//**
- * @interface IOperation
- * @brief     Интерфейс модифицированного продукционного правила
- *********************************************************************************/
+/*!
+  \interface IOperation
+  \brief     Интерфейс модифицированного продукционного правила
+*/
 class IOperation
 {
 public:
@@ -33,10 +33,10 @@ public:
 	virtual double getNextTimeInterval   (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_IOperation
- * @brief     Декларация интерфейса модифицированного продукционного правила
- *********************************************************************************/
+/*!
+  \def       DECLARE_IOperation
+  \brief     Декларация интерфейса модифицированного продукционного правила
+*/
 #define DECLARE_IOperation \
 	virtual void   onBeforeChoiceFrom    (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual rbool  choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
@@ -48,20 +48,20 @@ public:
 	virtual void   onAfterOperationEnd   (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual double getNextTimeInterval   (CREF(rdoRuntime::LPRDORuntime) pRuntime)
 
-/******************************************************************************//**
- * @interface IOperationTrace
- * @brief     Интерфейс IOperationTrace
- *********************************************************************************/
+/*!
+  \interface IOperationTrace
+  \brief     Интерфейс IOperationTrace
+*/
 class IOperationTrace
 {
 public:
 	virtual tstring traceOperId() const = 0;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_IOperationTrace
- * @brief     Декларация интерфейса IOperationTrace
- *********************************************************************************/
+/*!
+  \def       DECLARE_IOperationTrace
+  \brief     Декларация интерфейса IOperationTrace
+*/
 #define DECLARE_IOperationTrace \
 	virtual tstring traceOperId() const;
 

@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      rdo_resource.inl
- * @author    Ћущан ƒмитрий
- * @date      15.06.2011
- * @brief     RDOResource inline implementation
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_resource.inl
+  \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
+  \date      15.06.2011
+  \brief     RDOResource inline implementation
+  \indent    4T
+*/
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS

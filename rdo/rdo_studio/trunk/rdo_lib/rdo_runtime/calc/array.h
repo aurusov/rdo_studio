@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2010
- * @file      array.h
- * @author    Чирков Михаил
- * @date      03.12.2010
- * @brief     Агрегатный тип данных - массив
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2010
+  \file      array.h
+  \author    Чирков Михаил
+  \date      03.12.2010
+  \brief     Агрегатный тип данных - массив
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_ARRAY_H_
 #define _LIB_RUNTIME_CALC_ARRAY_H_
@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOCalcArraySize
- * @brief   Размер массива
- *********************************************************************************/
+/*!
+  \class   RDOCalcArraySize
+  \brief   Размер массива
+*/
 CALC(RDOCalcArraySize)
 {
 DECLARE_FACTORY(RDOCalcArraySize)
@@ -33,10 +33,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcArrayItem
- * @brief   Элемент массива
- *********************************************************************************/
+/*!
+  \class   RDOCalcArrayItem
+  \brief   Элемент массива
+*/
 CALC(RDOCalcArrayItem)
 {
 DECLARE_FACTORY(RDOCalcArrayItem)
@@ -49,10 +49,10 @@ private:
 	DECALRE_ICalc;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcSetArrayItem
- * @brief   Множество элементов массива
- *********************************************************************************/
+/*!
+  \class   RDOCalcSetArrayItem
+  \brief   Множество элементов массива
+*/
 CALC(RDOCalcSetArrayItem)
 {
 	DECLARE_FACTORY(RDOCalcSetArrayItem)

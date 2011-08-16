@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_resource.h
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      16.04.2008
- * @brief     Ресурсы в runtime
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_resource.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.04.2008
+  \brief     Ресурсы в runtime
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_RESOURCE_H_
 #define _LIB_RUNTIME_RESOURCE_H_
@@ -22,20 +22,20 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDORuntime;
 PREDECLARE_OBJECT_INTERFACE(IResourceType);
 
-/******************************************************************************//**
- * @class   RDOResource
- * @brief   "обычные" ресурсы моделей
- * @details Ресурсы, которые могут быть релевантны активностям и
+/*!
+  \class   RDOResource
+  \brief   "обычные" ресурсы моделей
+  \details Ресурсы, которые могут быть релевантны активностям и
  * событиям, но не могут использоваться в процессах
- *********************************************************************************/
+*/
 OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
 friend class RDOResourceType;
 public:
-	/**
-	 * @enum  ConvertStatus
-	 * @brief статусы конверторов релевантных ресурсов
-	 */
+	/*!
+	  \enum  ConvertStatus
+	  \brief статусы конверторов релевантных ресурсов
+	*/
 	enum ConvertStatus
 	{
 		CS_None = 0,

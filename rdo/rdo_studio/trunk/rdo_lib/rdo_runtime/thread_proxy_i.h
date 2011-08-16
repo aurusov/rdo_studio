@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      thread_proxy_i.h
- * @author    Урусов Андрей
- * @date      05.03.2011
- * @brief     Интерфейс IThreadProxy
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      thread_proxy_i.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      05.03.2011
+  \brief     Интерфейс IThreadProxy
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_THREAD_PROXY_I_H_
 #define _LIB_RUNTIME_THREAD_PROXY_I_H_
@@ -16,10 +16,10 @@
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-/******************************************************************************//**
- * @interface IThreadProxy
- * @brief     Интерфейс IThreadProxy
- *********************************************************************************/
+/*!
+  \interface IThreadProxy
+  \brief     Интерфейс IThreadProxy
+*/
 OBJECT_INTERFACE(IThreadProxy)
 {
 DECLARE_FACTORY(IThreadProxy)

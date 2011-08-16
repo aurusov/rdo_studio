@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      binary.h
- * @authors   Барс Александр, Урусов Андрей
- * @date      13.03.2011
- * @brief     Бинарные операторы
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      binary.h
+  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2011
+  \brief     Бинарные операторы
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_CALC_BINARY_H_
 #define _LIB_RUNTIME_CALC_BINARY_H_
@@ -18,10 +18,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class   RDOCalcBinaryBase
- * @brief   Базовый класс для бинарных операторов
- *********************************************************************************/
+/*!
+  \class   RDOCalcBinaryBase
+  \brief   Базовый класс для бинарных операторов
+*/
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:
@@ -35,13 +35,13 @@ protected:
 	LPRDOCalc  m_pRight;
 };
 
-/******************************************************************************//**
- * @class   RDOCalcBinary
- * @tparam  ret_type  Возвращаемое значение
- * @tparam  pOperator Оператор
- * @tparam  CalcType  Тип бинарного оператора
- * @brief   Бинарный оператор
- *********************************************************************************/
+/*!
+  \class   RDOCalcBinary
+  \tparam  ret_type  Возвращаемое значение
+  \tparam  pOperator Оператор
+  \tparam  CalcType  Тип бинарного оператора
+  \brief   Бинарный оператор
+*/
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {

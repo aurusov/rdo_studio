@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2008
- * @file      rdo_resource.cpp
- * @authors   Урусов Андрей, Лущан Дмитрий
- * @date      16.04.2008
- * @brief     RDOResource implementation
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2008
+  \file      rdo_resource.cpp
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru), Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.04.2008
+  \brief     RDOResource implementation
+  \indent    4T
+*/
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2011
- * @file      rdo_exception.inl
- * @author    Лущан Дмитрий
- * @date      06.08.2011
- * @brief     Определение исключений
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_exception.inl
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      06.08.2011
+  \brief     Определение исключений
+  \indent    4T
+*/
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

@@ -1,11 +1,11 @@
-/******************************************************************************//**
- * @copyright (c) RDO-Team, 2007
- * @file      rdo_object.h
- * @authors   Барс Александр, Урусов Андрей
- * @date      30.01.2007
- * @brief     Определение базового класса для всех объектов RDORuntime
- * @indent    4T
- *********************************************************************************/
+/*!
+  \copyright (c) RDO-Team, 2007
+  \file      rdo_object.h
+  \authors   Барс Александр, Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      30.01.2007
+  \brief     Определение базового класса для всех объектов RDORuntime
+  \indent    4T
+*/
 
 #ifndef _LIB_RUNTIME_OBJECT_H_
 #define _LIB_RUNTIME_OBJECT_H_
@@ -20,10 +20,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @class     RDORuntimeObject
- * @brief     Базовый класс для объектов Runtime
- *********************************************************************************/
+/*!
+  \class     RDORuntimeObject
+  \brief     Базовый класс для объектов Runtime
+*/
 class RDORuntimeObject
 {
 public:
@@ -117,17 +117,17 @@ public:
 //	ChildList m_childList;
 //};
 
-/******************************************************************************//**
- * @class     RDOSrcInfo
- * @brief     Исходная информация
- *********************************************************************************/
+/*!
+  \class     RDOSrcInfo
+  \brief     Исходная информация
+*/
 class RDOSrcInfo
 {
 public:
-	/**
-	 * @struct    Position
-	 * @brief     Позиция в тексте
-	 */
+	/*!
+	  \struct    Position
+	  \brief     Позиция в тексте
+	*/
 	struct Position
 	{
 		enum {UNDEFINE_POS  = ~0};
@@ -170,20 +170,20 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/******************************************************************************//**
- * @interface INotify
- * @brief     Интерфейс INotify
- *********************************************************************************/
+/*!
+  \interface INotify
+  \brief     Интерфейс INotify
+*/
 class INotify
 {
 public:
 	virtual void notify(ruint message, PTR(void) param) = 0;
 };
 
-/******************************************************************************//**
- * @def       DECLARE_INotify
- * @brief     Декларация интерфейса INotify
- *********************************************************************************/
+/*!
+  \def       DECLARE_INotify
+  \brief     Декларация интерфейса INotify
+*/
 #define DECLARE_INotify \
 	virtual void notify(ruint message, PTR(void) param);
 
