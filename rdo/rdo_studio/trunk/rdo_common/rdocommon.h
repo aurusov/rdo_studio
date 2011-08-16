@@ -13,7 +13,6 @@
 #pragma warning(disable : 4786)
 
 // ====================================================================== INCLUDES
-#include <string>
 #include <vector>
 #include <sstream>
 // ====================================================================== SYNOPSIS
