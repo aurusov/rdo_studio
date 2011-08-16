@@ -13,7 +13,7 @@
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
 #endif
 
-// *********************************************************************** INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #ifdef RDO_MT
 #include <afxwin.h>
 #else
@@ -30,9 +30,9 @@
 #include <fstream>
 #include <map>
 #include <functional>
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdodebug.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------

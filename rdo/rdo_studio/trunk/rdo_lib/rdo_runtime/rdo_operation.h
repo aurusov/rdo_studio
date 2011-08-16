@@ -10,8 +10,8 @@
 #ifndef _LIB_RUNTIME_OPERATION_H_
 #define _LIB_RUNTIME_OPERATION_H_
 
-// *********************************************************************** INCLUDES
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
@@ -19,7 +19,7 @@
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdo_operation_i.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

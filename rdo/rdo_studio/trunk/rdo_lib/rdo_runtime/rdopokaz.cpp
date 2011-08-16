@@ -7,21 +7,21 @@
  * @indent    4T
  *********************************************************************************/
 
-// **************************************************************************** PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// *********************************************************************** INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <limits>
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOPMDPokaz
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDPokaz
+// --------------------------------------------------------------------------------
 RDOPMDPokaz::RDOPMDPokaz(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace)
 	: RDOPokazTrace(pRuntime, trace)
 	, m_name       (name           )
@@ -37,9 +37,9 @@ CREF(tstring) RDOPMDPokaz::name() const
 	return m_name;
 }
 
-// ********************************************************************************
-// ******************** RDOPMDWatchPar
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchPar
+// --------------------------------------------------------------------------------
 RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber)
 	: RDOPMDPokaz(pRuntime, name, trace)
 	, m_resNumber(resNumber            )
@@ -125,9 +125,9 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) str
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
-// ********************************************************************************
-// ******************** RDOPMDWatchState
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchState
+// --------------------------------------------------------------------------------
 RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic)
 	: RDOPMDPokaz (pRuntime, name, trace)
 	, m_pLogicCalc(pLogic               )
@@ -200,9 +200,9 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
-// ********************************************************************************
-// ******************** RDOPMDWatchQuant
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchQuant
+// --------------------------------------------------------------------------------
 RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
 	: RDOPMDPokaz (pRuntime, name, trace)
 	, m_pLogicCalc(NULL                 )
@@ -294,9 +294,9 @@ void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 	m_pLogicCalc = pLogicCalc;
 }
 
-// ********************************************************************************
-// ******************** RDOPMDWatchValue
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchValue
+// --------------------------------------------------------------------------------
 RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
 	: RDOPMDPokaz  (pRuntime, name, trace)
 	, m_pLogicCalc (NULL                 )
@@ -393,9 +393,9 @@ void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 	m_pArithmCalc = pArithmCalc;
 }
 
-// ********************************************************************************
-// ******************** RDOPMDGetValue
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDGetValue
+// --------------------------------------------------------------------------------
 RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm)
 	: RDOPMDPokaz  (pRuntime, name, false)
 	, m_pArithmCalc(pArithm              )

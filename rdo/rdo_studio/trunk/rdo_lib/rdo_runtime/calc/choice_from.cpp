@@ -7,31 +7,31 @@
  * @indent    4T
  *********************************************************************************/
 
-// **************************************************************************** PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// *********************************************************************** INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <limits>
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/choice_from.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOSelectResourceNonExistCalc
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceNonExistCalc
+// --------------------------------------------------------------------------------
 REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(rel_res_id, -1);
 	return m_value;
 }
 
-// ********************************************************************************
-// ******************** RDOCalcCreateNumberedResource
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcCreateNumberedResource
+// --------------------------------------------------------------------------------
 RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
 	: m_pType    (_type       )
 	, traceFlag  (_traceFlag  )
@@ -45,9 +45,9 @@ REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ********************************************************************************
-// ******************** RDOCalcCreateProcessResource
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcCreateProcessResource
+// --------------------------------------------------------------------------------
 RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent)
 	: m_pType    (_type       )
 	, traceFlag  (_traceFlag  )
@@ -61,9 +61,9 @@ REF(RDOValue) RDOCalcCreateProcessResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ********************************************************************************
-// ******************** RDOCalcCreateResource
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcCreateResource
+// --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
 	: m_pResType     (pType        )
 	, m_traceFlag    (traceFlag    )
@@ -83,9 +83,9 @@ REF(RDOValue) RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value; // just to return something
 }
 
-// ********************************************************************************
-// ******************** RDOSelectResourceCalc
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceCalc
+// --------------------------------------------------------------------------------
 RDOSelectResourceCalc::RDOSelectResourceCalc(int _rel_res_id, CREF(LPRDOCalc) _choice_calc, CREF(LPRDOCalc) _order_calc, Type _order_type)
 	: rel_res_id (_rel_res_id )
 	, choice_calc(_choice_calc)
@@ -93,9 +93,9 @@ RDOSelectResourceCalc::RDOSelectResourceCalc(int _rel_res_id, CREF(LPRDOCalc) _c
 	, order_type (_order_type )
 {}
 
-// ********************************************************************************
-// ******************** RDOSelectResourceDirectCalc
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceDirectCalc
+// --------------------------------------------------------------------------------
 REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(rel_res_id, res_id);
@@ -109,9 +109,9 @@ REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ********************************************************************************
-// ******************** RDOSelectResourceByTypeCalc
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceByTypeCalc
+// --------------------------------------------------------------------------------
 REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue maxVal   = -DBL_MAX;
@@ -184,9 +184,9 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ********************************************************************************
-// ******************** RDOSelectResourceCommonCalc
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceCommonCalc
+// --------------------------------------------------------------------------------
 void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const
 {
 	if (level >= allNumbs.size())
@@ -302,9 +302,9 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// ********************************************************************************
-// ******************** RDOSelectResourceDirectCommonCalc
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceDirectCommonCalc
+// --------------------------------------------------------------------------------
 std::vector<int> RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const
 {
 	std::vector<int> res;	
@@ -320,9 +320,9 @@ rbool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime)
 RDOSelectResourceDirectCommonCalc::~RDOSelectResourceDirectCommonCalc()
 {}
 
-// ********************************************************************************
-// ******************** RDOSelectResourceByTypeCommonCalc
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceByTypeCommonCalc
+// --------------------------------------------------------------------------------
 std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const
 {
 	std::vector<int> res;
@@ -349,9 +349,9 @@ rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime)
 RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()
 {}
 
-// ********************************************************************************
-// ******************** IRDOSelectResourceCommon
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- IRDOSelectResourceCommon
+// --------------------------------------------------------------------------------
 IRDOSelectResourceCommon::IRDOSelectResourceCommon()
 {}
 

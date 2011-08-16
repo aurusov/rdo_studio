@@ -7,22 +7,22 @@
  * @indent    4T
  *********************************************************************************/
 
-// **************************************************************************** PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// *********************************************************************** INCLUDES
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/relres.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOPROCProcess
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCProcess
+// --------------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, CREF(LPRDORuntime) pRuntime)
 	: RDOLogicSimple(pRuntime, NULL)
 	, m_name        (name          )
@@ -103,9 +103,9 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 	}
 }
 
-// ********************************************************************************
-// ******************** RDOPROCTransact
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCTransact
+// --------------------------------------------------------------------------------
 RDOPROCTransact::RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
 	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {
@@ -126,9 +126,9 @@ void RDOPROCTransact::next()
 	m_block->getProcess()->next(this);
 }
 
-// ********************************************************************************
-// ******************** RDOPROCResource
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCResource
+// --------------------------------------------------------------------------------
 RDOPROCResource::RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
 	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {}
@@ -141,9 +141,9 @@ LPRDOResource RDOPROCResource::clone(CREF(LPRDORuntime) pRuntime) const
 	return rdo::Factory<RDOResource>::create(pRuntime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
-// ********************************************************************************
-// ******************** RDOPROCBlock
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlock
+// --------------------------------------------------------------------------------
 RDOPROCBlock::RDOPROCBlock(LPIPROCProcess pProcess)
 	: m_process(pProcess)
 {}
@@ -182,9 +182,9 @@ LPIPROCProcess RDOPROCBlock::getProcess() const
 	return m_process;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCGenerate
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCGenerate
+// --------------------------------------------------------------------------------
 void RDOPROCGenerate::onStart( CREF(LPRDORuntime) pRuntime )
 {
 	calcNextTimeInterval(pRuntime);
@@ -244,9 +244,9 @@ IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime
 	return IBaseOperation::BOR_cant_run;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCBlockForQueue
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlockForQueue
+// --------------------------------------------------------------------------------
 RDOPROCBlockForQueue::RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par)
 	: RDOPROCBlock(process )
 	, fromParser  (From_Par)
@@ -262,9 +262,9 @@ void RDOPROCBlockForQueue::_onStart(CREF(LPRDORuntime) pRuntime)
 	forRes.defaultValue = RDOValue(RDOPROCQueue::getDefaultValue());
 }
 
-// ********************************************************************************
-// ******************** RDOPROCQueue
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCQueue
+// --------------------------------------------------------------------------------
 void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	_onStart(pRuntime);
@@ -303,9 +303,9 @@ IBaseOperation::BOResult RDOPROCQueue::onContinue(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_cant_run;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCDepart
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCDepart
+// --------------------------------------------------------------------------------
 void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	_onStart(pRuntime);
@@ -344,9 +344,9 @@ IBaseOperation::BOResult RDOPROCDepart::onContinue(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_cant_run;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCBlockForSeize
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlockForSeize
+// --------------------------------------------------------------------------------
 RDOPROCBlockForSeize::RDOPROCBlockForSeize(LPIPROCProcess process, std::vector <parser_for_Seize> From_Par)
 	: RDOPROCBlock(process )
 	, fromParser  (From_Par)
@@ -373,9 +373,9 @@ void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-// ********************************************************************************
-// ******************** RDOPROCSeize
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCSeize
+// --------------------------------------------------------------------------------
 void RDOPROCSeize::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	_onStart(pRuntime);
@@ -447,9 +447,9 @@ IBaseOperation::BOResult RDOPROCSeize::onContinue(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_cant_run;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCRelease
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCRelease
+// --------------------------------------------------------------------------------
 void RDOPROCRelease::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	_onStart(pRuntime);
@@ -517,9 +517,9 @@ IBaseOperation::BOResult RDOPROCRelease::onContinue(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_cant_run;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCAdvance
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCAdvance
+// --------------------------------------------------------------------------------
 rbool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (!m_transacts.empty())
@@ -589,9 +589,9 @@ IBaseOperation::BOResult RDOPROCAdvance::onContinue(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_cant_run;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCTerminate
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCTerminate
+// --------------------------------------------------------------------------------
 rbool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	return !m_transacts.empty() ? true : false;
@@ -630,9 +630,9 @@ IBaseOperation::BOResult RDOPROCTerminate::onContinue(CREF(LPRDORuntime) pRuntim
 	return IBaseOperation::BOR_cant_run;
 }
 
-// ********************************************************************************
-// ******************** RDOPROCAssign
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCAssign
+// --------------------------------------------------------------------------------
 rbool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	return !m_transacts.empty();

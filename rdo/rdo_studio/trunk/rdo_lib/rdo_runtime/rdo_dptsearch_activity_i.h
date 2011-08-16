@@ -10,13 +10,13 @@
 #ifndef _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_
 #define _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_
 
-// *********************************************************************** INCLUDES
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
 #include "rdo_lib/rdo_runtime/rdo_rule_i.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

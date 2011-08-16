@@ -10,15 +10,15 @@
 #ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
 #define _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
 
-// *********************************************************************** INCLUDES
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_logic.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
 #include "rdo_lib/rdo_runtime/rdo_logic_dptsearch_i.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

@@ -7,15 +7,15 @@
  * @indent    4T
  *********************************************************************************/
 
-// *********************************************************************** INCLUDES
-// *********************************************************************** SYNOPSIS
-// ********************************************************************************
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ********************************************************************************
-// ******************** RDOFRMFrame::RDOFRMPosition
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame::RDOFRMPosition
+// --------------------------------------------------------------------------------
 inline RDOFRMFrame::RDOFRMPosition::RDOFRMPosition()
 	: RDORuntimeObject()
 	, m_type   (PT_ABSOLUTE)
@@ -92,9 +92,9 @@ inline int RDOFRMFrame::RDOFRMPosition::getHeight(CREF(LPRDORuntime) pRuntime, C
 	return res.getInt();
 }
 
-// ********************************************************************************
-// ******************** RDOFRMFrame::RDOFRMColor
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame::RDOFRMColor
+// --------------------------------------------------------------------------------
 inline RDOFRMFrame::RDOFRMColor::ColorType RDOFRMFrame::RDOFRMColor::getType() const
 {
 	return m_type;
@@ -108,9 +108,9 @@ inline void RDOFRMFrame::RDOFRMColor::setType(ColorType type)
 	}
 }
 
-// ********************************************************************************
-// ******************** RDOFRMFrame::RDOFRMRulet
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame::RDOFRMRulet
+// --------------------------------------------------------------------------------
 inline ruint RDOFRMFrame::RDOFRMRulet::getIndex() const
 {
 	return m_index;
@@ -136,9 +136,9 @@ inline RDOFRMFrame::RDOFRMRulet::RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint in
 inline RDOFRMFrame::RDOFRMRulet::~RDOFRMRulet()
 {}
 
-// ********************************************************************************
-// ******************** RDOFRMFrame
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame
+// --------------------------------------------------------------------------------
 inline LPRDOFRMShow RDOFRMFrame::getLastShow() const
 {
 	return !m_showList.empty() ? m_showList.back() : NULL;
@@ -181,9 +181,9 @@ inline RDOFRMFrame::LPRDOFRMRulet RDOFRMFrame::findRulet(ruint ruletID) const
 	return it != m_ruletList.end() ? it->second : NULL;
 }
 
-// ********************************************************************************
-// ******************** RDOFRMBoundingItem
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMBoundingItem
+// --------------------------------------------------------------------------------
 inline RDOFRMBoundingItem::RDOFRMBoundingItem(CREF(RDOFRMFrame::LPRDOFRMPosition) pX, CREF(RDOFRMFrame::LPRDOFRMPosition) pY, CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth, CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight)
 	: m_pX     (pX     )
 	, m_pY     (pY     )
@@ -224,9 +224,9 @@ inline int RDOFRMBoundingItem::getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LP
 	return m_pHeight->getY(pRuntime, pFrame);
 }
 
-// ********************************************************************************
-// ******************** RDOFRMColoredItem
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMColoredItem
+// --------------------------------------------------------------------------------
 inline RDOFRMColoredItem::RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) pBgColor, CREF(RDOFRMFrame::LPRDOFRMColor) pFgColor)
 	: m_pBgColor(pBgColor)
 	, m_pFgColor(pFgColor)
@@ -255,9 +255,9 @@ inline rdoAnimation::RDOColor RDOFRMColoredItem::getFg(CREF(LPRDORuntime) pRunti
 	return m_pFgColor->getColor(pRuntime, pFrame);
 }
 
-// ********************************************************************************
-// ******************** RDOFRMItem
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMItem
+// --------------------------------------------------------------------------------
 inline RDOFRMItem::RDOFRMItem(CREF(LPRDOFRMFrame) pFrame)
 	: m_pFrame(pFrame)
 {}
@@ -273,9 +273,9 @@ inline CREF(LPRDOFRMFrame) RDOFRMItem::getFrame() const
 	return m_pFrame;
 }
 
-// ********************************************************************************
-// ******************** RDOFRMBitmapBase
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMBitmapBase
+// --------------------------------------------------------------------------------
 inline RDOFRMBitmapBase::RDOFRMBitmapBase(CREF(LPRDOFRMFrame) pFrame, CREF(tstring) pictFilename, CREF(tstring) maskFilename)
 	: RDOFRMItem    (pFrame      )
 	, m_pictFilename(pictFilename)
@@ -294,9 +294,9 @@ inline void RDOFRMBitmapBase::getBitmaps(REF(RDOFRMFrame::ImageNameList) list)
 	}
 }
 
-// ********************************************************************************
-// ******************** RDOFRMShow
-// ********************************************************************************
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMShow
+// --------------------------------------------------------------------------------
 inline rbool RDOFRMShow::isShowIf() const
 {
 	return m_pConditionCalc != NULL;

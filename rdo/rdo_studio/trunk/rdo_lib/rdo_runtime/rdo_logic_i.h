@@ -10,14 +10,13 @@
 #ifndef _LIB_RUNTIME_LOGIC_I_H_
 #define _LIB_RUNTIME_LOGIC_I_H_
 
-// **************************************************************************** PCH
-// *********************************************************************** INCLUDES
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdointerface.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOSimulator;

@@ -12,9 +12,9 @@
 
 #pragma warning(disable : 4786)
 
-// *********************************************************************** INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <time.h>
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
@@ -25,7 +25,7 @@
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
 #include "rdo_lib/rdo_runtime/thread_proxy_i.h"
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 class RDOThread;
 

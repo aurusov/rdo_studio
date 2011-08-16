@@ -10,9 +10,9 @@
 #ifndef _LIB_RUNTIME_BASE_H_
 #define _LIB_RUNTIME_BASE_H_
 
-// *********************************************************************** INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <map>
-// *********************************************************************** SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_common/rdocommon.h"
@@ -22,7 +22,7 @@
 #else
 #include <windows.h>
 #endif
-// ********************************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
