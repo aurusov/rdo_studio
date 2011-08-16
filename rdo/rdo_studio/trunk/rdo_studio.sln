@@ -21,7 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".help", ".help", "{5810CF5F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".resources (not for compiler)", ".resources (not for compiler)", "{9ECFE882-0486-4248-9A76-7F44E9732861}"
 	ProjectSection(SolutionItems) = preProject
-		rdo_help\Doxyfile = rdo_help\Doxyfile
 		rdo_help\rdodoc-src-html.doxyfile = rdo_help\rdodoc-src-html.doxyfile
 	EndProjectSection
 EndProject
