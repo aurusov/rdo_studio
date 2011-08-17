@@ -1,7 +1,8 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdosmr_file.y
-  \author    Барс Александр, Урусов Андрей
+  \authors   Барс Александр
+  \authors   Урусов Андрей
   \date      20.02.2003
   \brief     Синтаксис описания файлов модели
   \indent    4T

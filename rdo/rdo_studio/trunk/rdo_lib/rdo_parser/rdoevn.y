@@ -1,7 +1,9 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdoevn.y
-  \author    Барс Александр, Урусов Андрей, Лущан Дмитрий
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий
   \date      12.06.2010
   \brief     Синтаксис событий
   \indent    4T

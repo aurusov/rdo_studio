@@ -1,7 +1,8 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_corba.h
-  \author    Раевнев Никита, Урусов Андрей
+  \authors   Раевнев Никита
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T

@@ -1,7 +1,9 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdopat.y
-  \author    Барс Александр, Урусов Андрей, Лущан Дмитрий
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий
   \date      20.02.2003
   \brief     Синтаксис образцов активностей
   \indent    4T

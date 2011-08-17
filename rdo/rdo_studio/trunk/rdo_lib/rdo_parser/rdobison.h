@@ -1,7 +1,8 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdobison.h
-  \author    Лущан Дмитрий, Урусов Андрей
+  \authors   Лущан Дмитрий
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      03.08.2010
   \brief     Структура координат токена бизона, дополненная линейной позицией
   \indent    4T

@@ -1,7 +1,8 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdoanimation.h
-  \author    Барс Александр, Урусов Андрей
+  \authors   Барс Александр
+  \authors   Урусов Андрей
   \date      13.06.2009
   \brief     Описание объектов анимации
   \indent    4T

@@ -1,7 +1,8 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      std_fun.h
-  \author    Барс Александр, Урусов Андрей
+  \authors   Барс Александр
+  \authors   Урусов Андрей
   \date      02.04.2011
   \brief     
   \indent    4T

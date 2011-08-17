@@ -1,7 +1,8 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_base.h
-  \author    Барс Александр, Урусов Андрей
+  \authors   Барс Александр
+  \authors   Урусов Андрей
   \date      
   \brief     
   \indent    4T

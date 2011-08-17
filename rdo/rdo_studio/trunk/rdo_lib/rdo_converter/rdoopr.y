@@ -1,7 +1,9 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdoopr.y
-  \author    Барс Александр, Урусов Андрей, Лущан Дмитрий
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий
   \date      
   \brief     
   \indent    4T
