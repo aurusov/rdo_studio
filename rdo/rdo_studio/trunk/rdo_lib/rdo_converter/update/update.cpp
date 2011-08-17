@@ -1,7 +1,7 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      update.cpp
-  \author    Урусов Андрей
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      29.10.2010
   \brief     
   \indent    4T

@@ -2,7 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      std_fun.cpp
   \authors   Барс Александр
-  \authors   Урусов Андрей
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      02.04.2011
   \brief     
   \indent    4T

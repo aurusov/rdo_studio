@@ -3,7 +3,7 @@
   \file      rdoevn_preparse.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      12.06.2010
   \brief     Предварительный поиск названий событий
   \indent    4T

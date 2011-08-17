@@ -2,7 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_opr.y
   \authors   Барс Александр
-  \authors   Урусов Андрей
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      24.03.2008
   \brief     Синтаксис процессов. based on rdodpt_opr.y
   \indent    4T

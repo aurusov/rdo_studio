@@ -1,7 +1,7 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      stack.h
-  \author    Урусов Андрей
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.02.2010
   \brief     
   \indent    4T

@@ -2,7 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      rdo_lexer.h
   \authors   Барс Александр
-  \authors   Урусов Андрей
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      11.06.2006
   \brief     Лексика РДО
   \indent    4T

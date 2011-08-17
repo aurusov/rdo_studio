@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : main.cpp
- * author   : Урусов Андрей
+ * author   : Урусов Андрей (rdo@rk9.bmstu.ru)
  * date     : 07.07.2009
  * bref     : Тест интерфейсов
  * indent   : 4T

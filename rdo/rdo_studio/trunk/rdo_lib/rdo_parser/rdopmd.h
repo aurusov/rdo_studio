@@ -2,7 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      rdopmd.h
   \authors   Барс Александр
-  \authors   Урусов Андрей
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T

@@ -1,7 +1,7 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      rdopatpreparse.h
-  \author    Ћущан ƒмитрий
+  \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
   \date      22.05.10
   \brief     
   \indent    4T

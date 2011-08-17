@@ -2,7 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_rss.y
   \authors   Барс Александр
-  \authors   Урусов Андрей
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      24.03.2008
   \brief     Сбор ресурсов из процессов. based on rdodpt_rss.y
   \indent    4T

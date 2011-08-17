@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : main.cpp
- * author   : Урусов Андрей
+ * author   : Урусов Андрей (rdo@rk9.bmstu.ru)
  * date     : 28.09.2009
  * bref     : Тест логик
  * indent   : 4T

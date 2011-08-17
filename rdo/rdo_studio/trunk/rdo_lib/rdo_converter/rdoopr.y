@@ -3,7 +3,7 @@
   \file      rdoopr.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T

@@ -1,7 +1,7 @@
 /*
   \copyright (c) RDO-Team, 2011
   \file      interface_ptr.h
-  \author    Урусов Андрей
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.06.2010
   \brief     
   \indent    4T

@@ -2,7 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      rdosmr_file.y
   \authors   Барс Александр
-  \authors   Урусов Андрей
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     Синтаксис описания файлов модели
   \indent    4T
