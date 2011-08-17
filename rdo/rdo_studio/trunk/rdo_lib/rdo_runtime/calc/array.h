@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2010
+  \copyright (c) RDO-Team, 2011
   \file      array.h
   \author    Чирков Михаил
   \date      03.12.2010

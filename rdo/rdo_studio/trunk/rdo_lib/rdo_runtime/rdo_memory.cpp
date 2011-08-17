@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2010
+  \copyright (c) RDO-Team, 2011
   \file      rdo_memory.cpp
   \author    Чирков Михаил
   \date      02.12.2010

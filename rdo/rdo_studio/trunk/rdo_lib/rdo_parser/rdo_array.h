@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdo_array.h
  * author   : Чирков Михаил
  * date     : 

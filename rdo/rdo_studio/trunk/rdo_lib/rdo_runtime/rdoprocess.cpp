@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2006
+  \copyright (c) RDO-Team, 2011
   \file      rdoprocess.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)

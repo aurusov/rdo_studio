@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2009
+  \copyright (c) RDO-Team, 2011
   \file      rdo_priority.inl
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)

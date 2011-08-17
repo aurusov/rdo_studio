@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2009
+  \copyright (c) RDO-Team, 2011
   \file      rdo_array_def.h
   \author    Чирков Михаил
   \date      14.12.2009

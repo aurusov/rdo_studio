@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdofile.cpp
  * author   : Урусов Андрей
  * date     : 07.11.2020

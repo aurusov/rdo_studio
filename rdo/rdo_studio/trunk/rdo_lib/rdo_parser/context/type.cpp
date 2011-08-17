@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : type.cpp
  * author   : Урусов Андрей
  * date     : 30.10.2010

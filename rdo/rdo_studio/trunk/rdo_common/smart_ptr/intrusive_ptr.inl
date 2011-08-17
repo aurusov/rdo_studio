@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : intrusive_ptr.inl
  * author   : Урусов Андрей
  * date     : 08.06.2010

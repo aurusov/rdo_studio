@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdo_value.h
  * author   : Урусов Андрей
  * date     : 

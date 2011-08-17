@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2008
+  \copyright (c) RDO-Team, 2011
   \file      rdo_fuzzy.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      24.07.2008

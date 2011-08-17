@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2006
+  \copyright (c) RDO-Team, 2011
   \file      simtrace.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      11.06.2006

@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : supersubclass.h
  * author   : Урусов Андрей
  * date     : 08.03.2010

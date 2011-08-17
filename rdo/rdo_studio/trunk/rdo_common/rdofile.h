@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdofile.h
  * author   : Урусов Андрей
  * date     : 10.05.2009

@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdortp_param.cpp
  * author   : Александ Барс, Урусов Андрей
  * date     : 

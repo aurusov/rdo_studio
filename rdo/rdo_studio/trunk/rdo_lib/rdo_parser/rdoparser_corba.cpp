@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdoparser_corba.h
  * author   : Раевнев Никита, Урусов Андрей
  * date     : 

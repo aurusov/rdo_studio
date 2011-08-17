@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdorss.cpp
  * author   : Александ Барс, Урусов Андрей
  * date     : 

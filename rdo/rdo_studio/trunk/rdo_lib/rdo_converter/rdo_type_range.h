@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdo_type_range.h
  * author   : Урусов Андрей
  * date     : 10.02.2010

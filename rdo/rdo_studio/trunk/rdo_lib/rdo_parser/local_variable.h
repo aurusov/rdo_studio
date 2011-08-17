@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : local_variable.h
  * author   : Урусов Андрей
  * date     : 16.10.2010

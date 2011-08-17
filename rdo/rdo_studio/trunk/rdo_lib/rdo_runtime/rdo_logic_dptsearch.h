@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2008
+  \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptsearch.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      29.04.2008

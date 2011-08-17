@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdo_lexer.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 11.06.2006

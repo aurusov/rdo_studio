@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2009
+  \copyright (c) RDO-Team, 2011
   \file      rdo_operation_i.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      30.07.2009

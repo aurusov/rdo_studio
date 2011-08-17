@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : pch.h
  * author   : Урусов Андрей
  * date     : 15.08.2010

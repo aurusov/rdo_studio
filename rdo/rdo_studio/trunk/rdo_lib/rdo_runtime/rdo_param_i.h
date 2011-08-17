@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2010
+  \copyright (c) RDO-Team, 2011
   \file      rdo_param_i.h
   \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
   \date      09.12.2010

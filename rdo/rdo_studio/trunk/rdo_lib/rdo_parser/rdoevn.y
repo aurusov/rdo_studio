@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdoevn.y
  * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
  * date     : 12.06.2010

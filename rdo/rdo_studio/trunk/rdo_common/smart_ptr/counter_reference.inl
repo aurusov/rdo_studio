@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : counter_reference.inl
  * author   : Урусов Андрей
  * date     : 12.06.2010

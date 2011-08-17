@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2010
+  \copyright (c) RDO-Team, 2011
   \file      rdo_matrix.cpp
   \author    Чирков Михаил
   \date      01.10.2010

@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : context.cpp
  * author   : Урусов Андрей
  * date     : 06.06.2010

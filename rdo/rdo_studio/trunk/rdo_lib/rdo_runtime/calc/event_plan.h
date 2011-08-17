@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2010
+  \copyright (c) RDO-Team, 2011
   \file      event_plan.h
   \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
   \date      26.05.2010

@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2008
+  \copyright (c) RDO-Team, 2011
   \file      rdo_random_distribution.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      11.04.2008

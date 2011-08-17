@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2009
+  \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptprior.inl
   \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
   \date      04.11.2009

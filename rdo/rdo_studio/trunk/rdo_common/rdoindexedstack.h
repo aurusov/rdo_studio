@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdoindexedstack.h
  * author   : Урусов Андрей
  * date     : 23.02.2010

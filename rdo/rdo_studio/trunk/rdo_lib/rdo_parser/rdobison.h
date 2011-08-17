@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdobison.h
  * author   : Лущан Дмитрий, Урусов Андрей
  * date     : 03.08.2010

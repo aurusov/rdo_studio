@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdosingletone.h
  * author   : Урусов Андрей
  * date     : 26.07.2009

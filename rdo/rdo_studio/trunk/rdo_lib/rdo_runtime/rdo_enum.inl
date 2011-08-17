@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2009
+  \copyright (c) RDO-Team, 2011
   \file      rdo_enum.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.04.2009

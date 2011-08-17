@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdo_resources.cpp
  * author   : Урусов Андрей
  * date     : 

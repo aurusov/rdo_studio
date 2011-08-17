@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : update.h
  * author   : Урусов Андрей
  * date     : 29.10.2010

@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : document.h
  * author   : Урусов Андрей
  * date     : 01.11.2010

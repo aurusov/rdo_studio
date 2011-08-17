@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdopatpreparse.h
  * author   : Ћущан ƒмитрий
  * date     : 22.05.10

@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdopat.y
  * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
  * date     : 12.07.2010

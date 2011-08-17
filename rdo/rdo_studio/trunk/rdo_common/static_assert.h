@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : static_assert.h
  * author   : Урусов Андрей
  * date     : 08.03.2010

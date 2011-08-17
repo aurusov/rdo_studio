@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2010
+ * copyright: (c) RDO-Team, 2011
  * filename : rdodpt.h
  * author   : Александ Барс, Урусов Андрей
  * date     : 

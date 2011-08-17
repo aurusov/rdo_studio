@@ -1,5 +1,5 @@
 /*
- * copyright: (c) RDO-Team, 2009
+ * copyright: (c) RDO-Team, 2011
  * filename : rdoanimation.inl
  * author   : Урусов Андрей
  * date     : 13.06.2009

@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2007
+  \copyright (c) RDO-Team, 2011
   \file      rdodptrtime.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      16.05.2007
