@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdosimwin.cpp
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      
   \brief     
   \indent    4T
- */
+*/
 
 #pragma warning(disable : 4786)
 

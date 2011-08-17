@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdodpt.y
   \authors   Барс Александр
@@ -7,7 +7,7 @@
   \date      20.02.2003
   \brief     Синтаксис точек принятия решений DPT
   \indent    4T
- */
+*/
 
 %{
 #define YYPARSE_PARAM lexer

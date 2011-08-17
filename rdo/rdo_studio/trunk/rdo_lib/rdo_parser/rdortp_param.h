@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdortp_param.h
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDORTP_PARAM_H_
 #define _RDORTP_PARAM_H_

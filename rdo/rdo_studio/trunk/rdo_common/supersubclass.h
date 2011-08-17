@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      supersubclass.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      08.03.2010
   \brief     основан на классе Conversion из Александреску
   \indent    4T
- */
+*/
 
 #ifndef _SUPERSUBCLASS_H_
 #define _SUPERSUBCLASS_H_

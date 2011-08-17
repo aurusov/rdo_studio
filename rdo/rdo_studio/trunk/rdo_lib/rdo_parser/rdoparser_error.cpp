@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_error.cpp
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      09.02.2010
   \brief     основан на rdoparser.h/cpp
   \indent    4T
- */
+*/
 
 // ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"

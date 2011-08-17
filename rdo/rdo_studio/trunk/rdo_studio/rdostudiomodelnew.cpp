@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdostudiomodelnew.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
- */
+*/
 
 // ====================================================================== PCH
 #include "rdo_studio/stdafx.h"

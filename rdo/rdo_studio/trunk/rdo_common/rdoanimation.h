@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdoanimation.h
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      13.06.2009
   \brief     Описание объектов анимации
   \indent    4T
- */
+*/
 
 #ifndef _RDOANIMATION_H_
 #define _RDOANIMATION_H_

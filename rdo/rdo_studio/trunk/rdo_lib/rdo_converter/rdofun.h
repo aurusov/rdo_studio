@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdofun.h
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _CONVERTOR_RDOFUN_H_
 #define _CONVERTOR_RDOFUN_H_

@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_rss.y
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      24.03.2008
   \brief     Сбор ресурсов из процессов. based on rdodpt_rss.y
   \indent    4T
- */
+*/
 
 %{
 #define YYPARSE_PARAM lexer

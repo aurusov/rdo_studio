@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      counter_reference.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.06.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDO_COUNTER_REFERENCE_H_
 #define _RDO_COUNTER_REFERENCE_H_

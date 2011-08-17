@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdodebug.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.05.2009
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDODEBUG_H_
 #define _RDODEBUG_H_

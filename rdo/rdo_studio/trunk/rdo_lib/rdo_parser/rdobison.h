@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdobison.h
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
@@ -6,7 +6,7 @@
   \date      03.08.2010
   \brief     Структура координат токена бизона, дополненная линейной позицией
   \indent    4T
- */
+*/
 
 #ifndef _RDOBISON_H_
 #define _RDOBISON_H_

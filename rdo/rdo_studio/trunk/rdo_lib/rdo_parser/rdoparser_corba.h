@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_corba.h
   \authors   Раевнев Никита
@@ -6,7 +6,7 @@
   \date      
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOPARSER_CORBA_H_
 #define _RDOPARSER_CORBA_H_

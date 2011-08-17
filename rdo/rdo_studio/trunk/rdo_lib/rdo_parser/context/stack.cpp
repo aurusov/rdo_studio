@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      stack.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.06.2010
   \brief     
   \indent    4T
- */
+*/
 
 // ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"

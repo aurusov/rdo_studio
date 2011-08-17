@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      std_fun.cpp
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      02.04.2011
   \brief     
   \indent    4T
- */
+*/
 
 // ====================================================================== PCH
 #include "rdo_lib/rdo_parser/pch.h"

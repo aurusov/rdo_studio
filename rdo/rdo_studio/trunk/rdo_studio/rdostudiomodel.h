@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdostudiomodel.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOSTUDIOMODEL_H_
 #define _RDOSTUDIOMODEL_H_

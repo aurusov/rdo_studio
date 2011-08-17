@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      expression.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      07.03.2011
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOPARSER_EXPRESSION_H_
 #define _RDOPARSER_EXPRESSION_H_

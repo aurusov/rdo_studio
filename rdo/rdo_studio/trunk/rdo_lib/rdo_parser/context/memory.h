@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      memory.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      16.10.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _CONEXT_MEMORY_H_
 #define _CONEXT_MEMORY_H_

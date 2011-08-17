@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      variable_container.h
   \author    Чирков Михаил
   \date      02.12.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _VARIABLE_CONTAINER_H_
 #define _VARIABLE_CONTAINER_H_

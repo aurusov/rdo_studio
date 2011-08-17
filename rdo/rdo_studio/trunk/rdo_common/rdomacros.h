@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdomacros.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.06.2009
   \brief     Объявление стандартных макросов
   \indent    4T
- */
+*/
 
 #ifndef _LIB_COMMON_MACROS_H_
 #define _LIB_COMMON_MACROS_H_

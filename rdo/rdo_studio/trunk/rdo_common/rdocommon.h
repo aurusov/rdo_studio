@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdocommon.h
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      13.06.2009
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOCOMMON_H_
 #define _RDOCOMMON_H_

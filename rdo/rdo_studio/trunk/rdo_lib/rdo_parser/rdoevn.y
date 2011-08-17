@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdoevn.y
   \authors   Барс Александр
@@ -7,7 +7,7 @@
   \date      12.06.2010
   \brief     Синтаксис событий
   \indent    4T
- */
+*/
 
 %{
 #define YYPARSE_PARAM lexer

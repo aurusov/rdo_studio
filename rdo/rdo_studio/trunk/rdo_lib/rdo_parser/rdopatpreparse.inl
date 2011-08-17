@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdopatpreparse.inl
   \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
   \date      22.05.10
   \brief     
   \indent    4T
- */
+*/
 
 // ====================================================================== INCLUDES
 // ====================================================================== SYNOPSIS

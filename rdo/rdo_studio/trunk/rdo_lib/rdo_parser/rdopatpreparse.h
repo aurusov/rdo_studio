@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdopatpreparse.h
   \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
   \date      22.05.10
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOPATPREPARSE_H_
 #define _RDOPATPREPARSE_H_

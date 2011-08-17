@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdofun.y
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      20.02.2003
   \brief     Синтаксис функций, констант и последовательностей
   \indent    4T
- */
+*/
 
 %{
 #define YYPARSE_PARAM lexer

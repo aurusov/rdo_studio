@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdopat.y
   \authors   Барс Александр
@@ -7,7 +7,7 @@
   \date      12.07.2010
   \brief     закладка PAT - описание образцов активностей модели
   \indent    4T
- */
+*/
 
 %{
 #define YYPARSE_PARAM lexer

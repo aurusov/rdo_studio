@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdortp.y
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      20.02.2003
   \brief     Синтаксис типов ресурсов
   \indent    4T
- */
+*/
 
 %{
 #define YYPARSE_PARAM lexer

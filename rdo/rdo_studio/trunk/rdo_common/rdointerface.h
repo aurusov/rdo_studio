@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdointerface.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      05.07.2009
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOINTERFACE_H_
 #define _RDOINTERFACE_H_

@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
-  \file      rdointerface.h
+  \file      rdostream.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      05.07.2009
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOSTREAM_H_
 #define _RDOSTREAM_H_

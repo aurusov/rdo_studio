@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      range.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.02.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOPARSER_TYPE_RANGE_H_
 #define _RDOPARSER_TYPE_RANGE_H_

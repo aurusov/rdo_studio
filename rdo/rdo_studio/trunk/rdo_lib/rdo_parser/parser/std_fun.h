@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      std_fun.h
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      02.04.2011
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOPARSER_STD_FUN_H_
 #define _RDOPARSER_STD_FUN_H_

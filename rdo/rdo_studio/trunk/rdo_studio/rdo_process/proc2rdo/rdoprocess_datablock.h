@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdoprocess_datablock.h
   \author    Шувалов Андрей
   \date      04.05.2011
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef RDO_PROCESS_DATABLOCK_H
 #define RDO_PROCESS_DATABLOCK_H

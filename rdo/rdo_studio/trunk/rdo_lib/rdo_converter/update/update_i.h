@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      update_i.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      29.10.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _CONVERTOR_UPDATE_I_H_
 #define _CONVERTOR_UPDATE_I_H_

@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      intrusive_ptr.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      08.06.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDO_INTRUSIVE_PTR_H_
 #define _RDO_INTRUSIVE_PTR_H_

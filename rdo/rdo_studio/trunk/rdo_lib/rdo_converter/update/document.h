@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      document.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      01.11.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _CONVERTOR_DOCUMENT_H_
 #define _CONVERTOR_DOCUMENT_H_

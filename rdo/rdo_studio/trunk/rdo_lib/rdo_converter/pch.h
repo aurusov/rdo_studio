@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      pch.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      15.08.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _CONVERTOR_PCH_H_
 #define _CONVERTOR_PCH_H_

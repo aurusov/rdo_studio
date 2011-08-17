@@ -1,4 +1,4 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdocommon.cpp
   \authors   Барс Александр
@@ -6,7 +6,7 @@
   \date      13.06.2009
   \brief     
   \indent    4T
- */
+*/
 
 #pragma warning(disable : 4786)  
 

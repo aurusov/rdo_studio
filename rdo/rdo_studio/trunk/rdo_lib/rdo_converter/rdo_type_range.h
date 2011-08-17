@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_type_range.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.02.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _CONVERTOR_RDO_TYPE_RANGE_H_
 #define _CONVERTOR_RDO_TYPE_RANGE_H_

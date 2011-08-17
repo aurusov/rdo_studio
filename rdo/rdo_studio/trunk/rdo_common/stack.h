@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      stack.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.02.2010
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDO_COMMON_STACK_H_
 #define _RDO_COMMON_STACK_H_

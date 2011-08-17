@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      context_create_calc_i.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      03.03.2011
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _RDOPARSER_CONTEXT_CREATE_CALC_I_H_
 #define _RDOPARSER_CONTEXT_CREATE_CALC_I_H_

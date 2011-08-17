@@ -1,11 +1,11 @@
-/*
+/*!
   \copyright (c) RDO-Team, 2011
   \file      namespace.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.06.2009
   \brief     
   \indent    4T
- */
+*/
 
 #ifndef _COMMON_NAMESPACE_H_
 #define _COMMON_NAMESPACE_H_
