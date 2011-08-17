@@ -7,19 +7,19 @@
   \indent    4T
 */
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_simulator/procgui.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_lib/rdo_mbuilder/process.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATOR_NAMESPACE
 
-// --------------------------------------------------------------------
-// ---------- ProcGUICalc
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUICalc
+// --------------------------------------------------------------------------------
 ProcGUICalc::ProcGUICalc(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams)
 	: m_pRuntime(pRuntime)
 	, m_pParams (pParams )
@@ -123,9 +123,9 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc(ruint base, double arg
 	return pFuctionCall;
 }
 
-// --------------------------------------------------------------------
-// ---------- ProcGUIProcess
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIProcess
+// --------------------------------------------------------------------------------
 tstring ProcGUIProcess::s_namePrefix = _T("");
 tstring ProcGUIProcess::s_nameSufix  = _T("s");
 
@@ -176,9 +176,9 @@ void ProcGUIProcess::addResNameToBlock(CREF(tstring) name)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlock
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlock
+// --------------------------------------------------------------------------------
 ProcGUIBlock::ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(tstring) name)
 	: m_name(name)
 {
@@ -189,9 +189,9 @@ ProcGUIBlock::ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(tstring) name)
 ProcGUIBlock::~ProcGUIBlock()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlockGenerate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlockGenerate
+// --------------------------------------------------------------------------------
 ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, ProcGUICalc (pRuntime, pParams           )
@@ -233,9 +233,9 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 ProcGUIBlockGenerate::~ProcGUIBlockGenerate()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlockTerminate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlockTerminate
+// --------------------------------------------------------------------------------
 ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(LPRPShapeDataBlockTerminate) pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, m_pParams   (pParams                     )
@@ -250,9 +250,9 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CR
 ProcGUIBlockTerminate::~ProcGUIBlockTerminate()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlockProcess
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlockProcess
+// --------------------------------------------------------------------------------
 ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, m_pParams   (pParams                     )
@@ -304,9 +304,9 @@ ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(r
 ProcGUIBlockProcess::~ProcGUIBlockProcess()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIAdvance
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIAdvance
+// --------------------------------------------------------------------------------
 ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams)
 	: ProcGUIBlock(pProcess, rdo::format(_T("%s Advance"), pParams->getName().c_str()))
 	, ProcGUICalc (pRuntime, pParams)
@@ -323,9 +323,9 @@ ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime:
 ProcGUIAdvance::~ProcGUIAdvance()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUISeize
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUISeize
+// --------------------------------------------------------------------------------
 ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
 	: ProcGUIBlock(pProcess, rdo::format(_T("%s Seize"), pParams->getName().c_str()))
 	, m_pParams   (pParams)
@@ -432,9 +432,9 @@ void ProcGUISeize::addResourceName(CREF(tstring) name)
 	m_resNameList.push_back(name);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIRelease
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIRelease
+// --------------------------------------------------------------------------------
 ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
 	: ProcGUIBlock(pProcess, rdo::format(_T("%s Release"), pParams->getName().c_str()))
 	, m_pParams   (pParams)
@@ -541,9 +541,9 @@ void ProcGUIRelease::addResourceName(CREF(tstring) name)
 	m_resNameList.push_back(name);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCQueue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCQueue
+// --------------------------------------------------------------------------------
 ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(tstring) name)
 	: ProcGUIBlock  (pProcess, rdo::format(_T("%s Queue"), name.c_str()))
 	, m_resourceName(name)
@@ -626,9 +626,9 @@ void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse:
 }
 
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIDepart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIDepart
+// --------------------------------------------------------------------------------
 ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(tstring) name)
 	: ProcGUIBlock  (pProcess, rdo::format(_T("%s Depart"), name.c_str()))
 	, m_resourceName(name)

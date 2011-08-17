@@ -15,9 +15,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectFlowChart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectFlowChart
+// --------------------------------------------------------------------------------
 const int RPObjectFlowChart::select_box_size2 = 4;
 
 RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
@@ -418,7 +418,7 @@ RPPixmap* bmp = NULL;
 
 void RPObjectFlowChart::draw( CDC& dc )
 {
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	SYSTEMTIME t0;
 	SYSTEMTIME t1;
 	SYSTEMTIME t2;
@@ -428,7 +428,7 @@ void RPObjectFlowChart::draw( CDC& dc )
 	SYSTEMTIME t6;
 	SYSTEMTIME t7;
 	::GetSystemTime( &t0 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	std::list< RPObjectChart* > objects;
 	getChartObjects( objects );
@@ -440,22 +440,22 @@ void RPObjectFlowChart::draw( CDC& dc )
 
 	if ( client_width < border_w * 2 || client_height < border_h * 2 ) {
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 
 		dc.FillSolidRect( 0, 0, client_width, client_height, paper_border_color );
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 		}
 		::GetSystemTime( &t1 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	} else {
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 
 		dc.FillSolidRect( 0, 0, border_w - paper_border, client_height, paper_border_color );
 		dc.FillSolidRect( client_width - border_w + paper_border + paper_shadow, 0, border_w - paper_border - paper_shadow, client_height, paper_border_color );
@@ -473,11 +473,11 @@ void RPObjectFlowChart::draw( CDC& dc )
 			dc.FillSolidRect( border_w, border_h, client_width - border_w * 2, client_height - border_h * 2, paper_bg_color );
 		}
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 		}
 		::GetSystemTime( &t1 );
 		for ( int cnt2 = 0; cnt2 <= base_speed * 10; cnt2++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 
 		const int shadow_border_w = 2;
 		const int shadow_border_h = 2;
@@ -490,29 +490,29 @@ void RPObjectFlowChart::draw( CDC& dc )
 		dc.LineTo( border_w - 1, client_height - border_h );
 		dc.LineTo( border_w - 1, border_h - 1 );
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 		}
 		::GetSystemTime( &t2 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 		if ( pixmap_w_show > 0 && pixmap_h_show > 0 ) {
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 			for ( int cnt3 = 0; cnt3 <= base_speed; cnt3++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 /*
 			if ( grid_show ) {
 				int x_start = scroll_x_pos / grid_bmp_width;
 				int y_start = scroll_y_pos / grid_bmp_width;
 				int x_stop  = x_start + pixmap_w_show / grid_bmp_width + 1;
 				int y_stop  = y_start + pixmap_h_show / grid_bmp_width + 1;
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 				if ( cnt3 == 0 ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 				TRACE( "x_start = %d, y_start = %d, x_stop = %d, y_stop = %d\n", x_start, y_start, x_stop, y_stop );
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 				}
-#endif // ================================================
+#endif // ------------------------------------------------
 				for ( int i = x_start; i <= x_stop; i++ ) {
 					for ( int j = y_start; j <= y_stop; j++ ) {
 						mem_dc.BitBlt( -scroll_x_pos + paper_border_w + i * grid_bmp_width, -scroll_y_pos + paper_border_h + j * grid_bmp_width, grid_bmp_width, grid_bmp_width, &grid_dc, 0, 0, SRCCOPY );
@@ -522,7 +522,7 @@ void RPObjectFlowChart::draw( CDC& dc )
 */
 			mem_dc.FillSolidRect( 0, 0, pixmap_w_show, pixmap_h_show, paper_bg_color );
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 			}
 			::GetSystemTime( &t3 );
 
@@ -533,7 +533,7 @@ void RPObjectFlowChart::draw( CDC& dc )
 				}
 			}
 			::GetSystemTime( &t4 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 //			std::list< RPObjectChart* >::iterator it = objects.begin();
 //			while ( it != objects.end() ) {
@@ -542,9 +542,9 @@ void RPObjectFlowChart::draw( CDC& dc )
 //				it++;
 //			}
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 			for ( int cnt5 = 0; cnt5 <= base_speed; cnt5++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 /*
 			if ( !bmp ) bmp = rpMethod::project->createBitmap( red );
 			CDC dc2;
@@ -555,18 +555,18 @@ void RPObjectFlowChart::draw( CDC& dc )
 */
 			RPObjectMatrix::draw( mem_dc );
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 			}
 			::GetSystemTime( &t5 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 			for ( int cnt6 = 0; cnt6 <= base_speed * 10; cnt6++ ) {
-#endif // ================================================
-#ifdef TEST_SPEED // =====================================
+#endif // ------------------------------------------------
+#ifdef TEST_SPEED // -------------------------------------
 			}
 			::GetSystemTime( &t6 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 			std::list< RPObjectChart* >::iterator it = objects.begin();
 			while ( it != objects.end() ) {
@@ -590,20 +590,20 @@ void RPObjectFlowChart::draw( CDC& dc )
 //				trash_bmp->Draw( mem_dc.m_hDC, trash_rect.left, trash_rect.top, trash_rect.Width() );
 			}
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 			for ( int cnt7 = 0; cnt7 <= base_speed * 5; cnt7++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 
 			dc.BitBlt( border_w + paper_border_w, border_h + paper_border_h, pixmap_w_show, pixmap_h_show, &mem_dc, 0, 0, SRCCOPY );
 			
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 			}
 			::GetSystemTime( &t7 );
-#endif // ================================================
+#endif // ------------------------------------------------
 		}
 	}
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	int delay1 = (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds) - (t0.wMinute * 1000 * 60 + t0.wSecond * 1000 + t0.wMilliseconds);
 	int delay2 = (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds);
 	int delay3 = ((t3.wMinute * 1000 * 60 + t3.wSecond * 1000 + t3.wMilliseconds) - (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds)) * 10;
@@ -613,26 +613,26 @@ void RPObjectFlowChart::draw( CDC& dc )
 	int delay7 = ((t7.wMinute * 1000 * 60 + t7.wSecond * 1000 + t7.wMilliseconds) - (t6.wMinute * 1000 * 60 + t6.wSecond * 1000 + t6.wMilliseconds)) * 2;
 	int delay0 = delay1 + delay2 + delay3 + delay4 + delay5 + delay6 + delay7;
 	TRACE( "paint_delay = %d: %d, %d, %d, %d, %d, %d, %d\n", delay0, delay1, delay2, delay3, delay4, delay5, delay6, delay7 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 }
 
 void RPObjectFlowChart::makeNewPixmap()
 {
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	makepixmap_cnt++;
 
 	SYSTEMTIME t1;
 	SYSTEMTIME t2;
 	::GetSystemTime( &t1 );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	int pixmap_w_show_old = pixmap_w_show;
 	int pixmap_h_show_old = pixmap_h_show;
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	for ( int cnt = 0; cnt <= base_speed * 10; cnt++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	CRect client_rect;
 	flowchart->GetClientRect( &client_rect );
@@ -667,12 +667,12 @@ void RPObjectFlowChart::makeNewPixmap()
 
 	flowchart->updateScrollBars();
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	}
 	::GetSystemTime( &t2 );
 	int delay = (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds);
 	TRACE( "makepixmap_delay = %d\n", delay );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	if ( pixmap_w_show_old != pixmap_w_show || pixmap_h_show_old != pixmap_h_show ) {
 		flowchart->makeGrid();

@@ -14,25 +14,25 @@
 #pragma once
 #endif
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <fstream>
 #include <map>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_kernel/rdothread.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_common/rdocommon.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define OPEN_RDO_REPOSITORY_NAMESPACE  namespace rdoRepository {
 #define CLOSE_RDO_REPOSITORY_NAMESPACE };
 
 OPEN_RDO_REPOSITORY_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOThreadRepository
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadRepository
+// --------------------------------------------------------------------------------
 class RDOThreadRepository: public RDOThreadMT
 {
 public:

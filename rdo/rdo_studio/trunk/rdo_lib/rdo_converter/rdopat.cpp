@@ -8,17 +8,17 @@
   \indent    4T
 */
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdopat.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdo_type_range.h"
 #include "rdo_lib/rdo_converter/runtime/rdo_ie.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -42,9 +42,9 @@ int pat_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void pat_preparse_error(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPATPattern
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPATPattern
+// --------------------------------------------------------------------------------
 RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	: RDOParserSrcInfo    (name_src_info)
 	, m_pCommonChoice     (NULL         )
@@ -391,9 +391,9 @@ void RDOPATPattern::end()
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternIrregEvent
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternIrregEvent
+// --------------------------------------------------------------------------------
 RDOPatternIrregEvent::RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
 {
@@ -498,9 +498,9 @@ tstring RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(CREF(tstring) nam
 	return rdo::format(_T("ƒл€ релевантного ресурса '%s' указан пустой конвертор (Convert_event), хот€ его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternRule
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternRule
+// --------------------------------------------------------------------------------
 RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
 {
@@ -568,9 +568,9 @@ tstring RDOPatternRule::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo
 	return rdo::format(_T("ƒл€ релевантного ресурса '%s' указан пустой конвертор (Convert_rule), хот€ его статус: %s"), name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternOperation
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternOperation
+// --------------------------------------------------------------------------------
 RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
@@ -746,9 +746,9 @@ tstring RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(tstring) name
 	return tstring();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternKeyboard
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternKeyboard
+// --------------------------------------------------------------------------------
 RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPatternOperation(trace, name_src_info)
 {
@@ -757,9 +757,9 @@ RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbo
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDORelevantResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORelevantResource
+// --------------------------------------------------------------------------------
 rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {
 	if (m_pChoiceFrom && m_pChoiceFrom->m_type == rdoConverter::RDOPATChoiceFrom::ch_from)
@@ -783,9 +783,9 @@ rdoRuntime::RDOSelectResourceCalc::Type RDORelevantResource::getSelectType() con
 	return m_pChoiceOrder ? m_pChoiceOrder->m_type : rdoRuntime::RDOSelectResourceCalc::order_empty;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDORelevantResourceDirect - по имени ресурса
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORelevantResourceDirect - по имени ресурса
+// --------------------------------------------------------------------------------
 rdoRuntime::LPRDOCalc RDORelevantResourceDirect::createPreSelectRelResCalc()
 {
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSelectResourceDirectCalc>::create(m_relResID, m_pResource->getID());
@@ -819,9 +819,9 @@ LPRDORTPResType RDORelevantResourceDirect::getType() const
 	return m_pResource->getType(); 
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDORelevantResourceByType - по имени типа
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORelevantResourceByType - по имени типа
+// --------------------------------------------------------------------------------
 rdoRuntime::LPRDOCalc RDORelevantResourceByType::createPreSelectRelResCalc()
 {
 	if ((m_statusBegin != rdoRuntime::RDOResource::CS_Create) && (m_statusEnd != rdoRuntime::RDOResource::CS_Create))

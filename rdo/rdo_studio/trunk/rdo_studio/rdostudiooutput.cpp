@@ -20,9 +20,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdoEditor;
 using namespace rdoEditCtrl;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOutput
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioOutput
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOutput, RDOStudioDockWnd)
 	//{{AFX_MSG_MAP(RDOStudioOutput)
 	ON_WM_CREATE()

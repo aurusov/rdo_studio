@@ -11,14 +11,14 @@
 #ifndef _RDOFRM_H_
 #define _RDOFRM_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/context/context.h"
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -26,9 +26,9 @@ int  frmparse(PTR(void) lexer);
 int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void frmerror(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMFrame
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame
+// --------------------------------------------------------------------------------
 CLASS(RDOFRMFrame):
 	    INSTANCE_OF      (RDOParserSrcInfo)
 	AND INSTANCE_OF      (Context         )

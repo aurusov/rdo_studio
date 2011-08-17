@@ -8,10 +8,10 @@
   \indent    4T
 */
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
 #include "rdo_lib/rdo_parser/parser/std_fun.h"
@@ -22,13 +22,13 @@
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainer
+// --------------------------------------------------------------------------------
 RDOParserContainer::RDOParserContainer()
 {}
 
@@ -96,9 +96,9 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerModel
+// --------------------------------------------------------------------------------
 RDOParserContainerModel::RDOParserContainerModel()
 	: RDOParserContainer()
 {
@@ -128,18 +128,18 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserSMRPost>::create());
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerSMRInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerSMRInfo
+// --------------------------------------------------------------------------------
 RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
 	: RDOParserContainer()
 {
 	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerCorba
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerCorba
+// --------------------------------------------------------------------------------
 RDOParserContainerCorba::RDOParserContainerCorba()
 	: RDOParserContainer()
 {

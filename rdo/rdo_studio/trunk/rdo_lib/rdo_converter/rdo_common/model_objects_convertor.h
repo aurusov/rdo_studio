@@ -11,9 +11,9 @@
 #ifndef _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
 #define _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 #define OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE	namespace rdoModelObjectsConvertor {
 #define CLOSE_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE	};

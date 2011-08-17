@@ -16,9 +16,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOToolBar
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOToolBar
+// --------------------------------------------------------------------------------
 void RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
 {
 	CreateEx( parent, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
@@ -30,9 +30,9 @@ void RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabl
 	GetToolBarCtrl().SetDisabledImageList( &disabledImage );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOToolBarModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOToolBarModel
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOToolBarModel, RDOToolBar)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
@@ -64,9 +64,9 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioMainFrame
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioMainFrame
+// --------------------------------------------------------------------------------
 const int WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
 const int OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
 const int update_timer_ID = 1;

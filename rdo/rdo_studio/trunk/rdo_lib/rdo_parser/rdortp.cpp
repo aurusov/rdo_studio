@@ -8,15 +8,15 @@
   \indent    4T
 */
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -30,9 +30,9 @@ int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void rtperror(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDORTPResType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORTPResType
+// --------------------------------------------------------------------------------
 RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
@@ -85,9 +85,9 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 }
 
 /*
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
+// --------------------------------------------------------------------------------
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 	RDOParserObject(pParser)
 {
@@ -103,9 +103,9 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 		it++;
 	}
 }
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyTerm - нечеткий термин
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORTPFuzzyTerm - нечеткий термин
+// --------------------------------------------------------------------------------
 RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
 	RDOParserObject(pParser)
 {

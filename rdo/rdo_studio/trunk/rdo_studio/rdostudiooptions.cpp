@@ -19,9 +19,9 @@ using namespace rdoTracerLog;
 
 #define timerPlugin_ID 1
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsGeneral
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioOptionsGeneral
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsGeneral, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsGeneral)
 	ON_BN_CLICKED(IDC_FILEASSOCIATION_SETUP_CHECK, OnUpdateModify)
@@ -86,9 +86,9 @@ void RDOStudioOptionsGeneral::OnUpdateModify()
 	SetModified( m_setup != (studioApp.getFileAssociationSetup() ? 1 : 0) || m_checkInFuture != (studioApp.getFileAssociationCheckInFuture() ? 1 : 0) || m_openLastProject != (studioApp.getOpenLastProject() ? 1 : 0) || m_showFullName != (studioApp.getShowCaptionFullName() ? 1 : 0) );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsEditor
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioOptionsEditor
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsEditor)
 	ON_BN_CLICKED(IDC_USEAUTOCOMPLETE_CHECK, OnUseAutoCompleteCheck)
@@ -212,9 +212,9 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 	SetModified( *sheet->style_editor.buffer != *studioApp.mainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.mainFrame->style_editor.margin );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsTabs
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioOptionsTabs
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsTabs)
 	ON_BN_CLICKED(IDC_USETABS_CHECK, OnUpdateModify)
@@ -306,9 +306,9 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 	SetModified( *sheet->style_editor.tab != *studioApp.mainFrame->style_editor.tab );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsColorsStyles
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioOptionsColorsStyles
+// --------------------------------------------------------------------------------
 COLORREF RDOStudioOptionsColorsStyles::null_fg_color = RGB( 0x00, 0x00, 0x00 );
 COLORREF RDOStudioOptionsColorsStyles::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
 bool RDOStudioOptionsColorsStyles::null_wordwrap      = false;
@@ -1650,9 +1650,9 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsPlugins
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioOptionsPlugins
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsPlugins)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_PLUGIN_LIST, OnPluginListColumnClick)
@@ -2065,9 +2065,9 @@ void RDOStudioOptionsPlugins::OnTimer( UINT nIDEvent )
 	CPropertyPage::OnTimer( nIDEvent );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOptions
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioOptions
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptions, CPropertySheet)
 	//{{AFX_MSG_MAP(RDOStudioOptions)
 	ON_WM_HELPINFO()

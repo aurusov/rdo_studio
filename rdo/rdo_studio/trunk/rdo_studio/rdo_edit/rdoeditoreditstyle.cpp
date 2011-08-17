@@ -10,9 +10,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdoEditor;
 using namespace rdoEditCtrl;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorEditTheme
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEditorEditTheme
+// --------------------------------------------------------------------------------
 RDOEditorEditTheme::RDOEditorEditTheme(): RDOEditorBaseEditTheme()
 {
 	foldFgColor = RGB( 0xFF, 0xFF, 0xFF );
@@ -182,9 +182,9 @@ RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 	return theme;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorEditAutoComplete
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEditorEditAutoComplete
+// --------------------------------------------------------------------------------
 RDOEditorEditAutoComplete::RDOEditorEditAutoComplete()
 {
 	useAutoComplete = true;
@@ -228,9 +228,9 @@ void RDOEditorEditAutoComplete::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "showFullList", showFullList );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorEditBuffer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEditorEditBuffer
+// --------------------------------------------------------------------------------
 RDOEditorEditBuffer::RDOEditorEditBuffer()
 {
 	canClearBuffer   = true;
@@ -274,9 +274,9 @@ void RDOEditorEditBuffer::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "clearBufferDelay", clearBufferDelay );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorEditMargin
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEditorEditMargin
+// --------------------------------------------------------------------------------
 RDOEditorEditMargin::RDOEditorEditMargin()
 {
 	fold       = true;
@@ -325,9 +325,9 @@ void RDOEditorEditMargin::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "lineNumber", lineNumber );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorEditStyle
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEditorEditStyle
+// --------------------------------------------------------------------------------
 RDOEditorEditStyle::RDOEditorEditStyle():
 	RDOEditorBaseEditStyle(),
 	autoComplete( NULL ),

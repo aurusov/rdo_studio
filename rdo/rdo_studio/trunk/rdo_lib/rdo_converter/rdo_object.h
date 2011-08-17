@@ -11,8 +11,8 @@
 #ifndef _CONVERTOR_RDOCONVERTER_OBJECT_H_
 #define _CONVERTOR_RDOCONVERTER_OBJECT_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/rdobison.h"
 #include "rdo_lib/rdo_converter/rdogramma.h"
@@ -20,13 +20,13 @@
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSrcInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserSrcInfo
+// --------------------------------------------------------------------------------
 class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo
 {
 public:

@@ -8,16 +8,16 @@
   \indent    4T
 */
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdorss.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -31,9 +31,9 @@ int cnv_rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void cnv_rsserror(PTR(char) message)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDORSSResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORSSResource
+// --------------------------------------------------------------------------------
 RDORSSResource::RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
@@ -102,9 +102,9 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 	return calc;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCResource
+// --------------------------------------------------------------------------------
 RDOPROCResource::RDOPROCResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDORSSResource(pParser, src_info, pResType, id)
 {}

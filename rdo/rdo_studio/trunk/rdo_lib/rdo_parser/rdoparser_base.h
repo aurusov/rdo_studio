@@ -11,15 +11,15 @@
 #ifndef _RDOPARSER_BASE_H_
 #define _RDOPARSER_BASE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_parser/rdobison.h"
 #include "rdo_lib/rdo_parser/rdogramma.h"
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -27,9 +27,9 @@ typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
 typedef void (*t_bison_error_fun)(PTR(char) message);
 typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserItem
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserItem
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParser);
 
 OBJECT(RDOParserItem)
@@ -76,9 +76,9 @@ protected:
 	StreamFrom m_from;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainer
+// --------------------------------------------------------------------------------
 OBJECT(RDOParserContainer)
 {
 DECLARE_FACTORY(RDOParserContainer);
@@ -105,9 +105,9 @@ private:
 	List m_list;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerModel
+// --------------------------------------------------------------------------------
 class RDOParserContainerModel: public RDOParserContainer
 {
 DECLARE_FACTORY(RDOParserContainerModel);
@@ -115,9 +115,9 @@ private:
 	RDOParserContainerModel();
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerSMRInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerSMRInfo
+// --------------------------------------------------------------------------------
 class RDOParserContainerSMRInfo: public RDOParserContainer
 {
 DECLARE_FACTORY(RDOParserContainerSMRInfo);
@@ -125,9 +125,9 @@ private:
 	RDOParserContainerSMRInfo();
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerCorba
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerCorba
+// --------------------------------------------------------------------------------
 class RDOParserContainerCorba: public RDOParserContainer
 {
 DECLARE_FACTORY(RDOParserContainerCorba);

@@ -9,9 +9,9 @@
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_math.h"
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectMatrix
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectMatrix
+// --------------------------------------------------------------------------------
 class RPObjectMatrix: public RPObjectChart
 {
 private:

@@ -7,9 +7,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerResParamInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerResParamInfo
+// --------------------------------------------------------------------------------
 RDOTracerResParamInfo::RDOTracerResParamInfo( const RDOTracerResParamType type ) :
 	paramType( type ),
 	enumValues( NULL )
@@ -43,9 +43,9 @@ std::string RDOTracerResParamInfo::getEnumValue( unsigned int index ) const
 	return enumValues->at( index );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerResType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerResType
+// --------------------------------------------------------------------------------
 RDOTracerResType::RDOTracerResType( const RDOTracerResTypeKind kind ) :
 	RDOTracerTreeItem(),
 	restypeKind( kind )

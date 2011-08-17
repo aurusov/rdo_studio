@@ -21,9 +21,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioFrameManager
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioFrameManager
+// --------------------------------------------------------------------------------
 //std::vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
 
 RDOStudioFrameManager::RDOStudioFrameManager():

@@ -8,10 +8,10 @@
   \indent    4T
 */
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdopokaz_group.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
@@ -19,7 +19,7 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -33,9 +33,9 @@ int pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void pmderror(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDPokaz
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDPokaz
+// --------------------------------------------------------------------------------
 RDOPMDPokaz::RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 {}
@@ -75,9 +75,9 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- ResultGroup
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ResultGroup
+// --------------------------------------------------------------------------------
 RDOResultGroup::RDOResultGroup()
 {}
 
@@ -138,9 +138,9 @@ LPRDOPMDPokaz RDOResultGroup::find(CREF(tstring) resultName) const
 	return NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchPar
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchPar
+// --------------------------------------------------------------------------------
 RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info)
 	: RDOPMDPokaz(src_info)
 {}
@@ -181,9 +181,9 @@ void RDOPMDWatchPar::init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF
 	endOfCreation(F(rdoRuntime::RDOPMDWatchPar)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchState
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchState
+// --------------------------------------------------------------------------------
 RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info)
 	: RDOPMDPokaz(src_info)
 {}
@@ -196,9 +196,9 @@ void RDOPMDWatchState::init(rbool trace, LPRDOFUNLogic pLogic)
 	endOfCreation(F(rdoRuntime::RDOPMDWatchState)::create(RDOParser::s_parser()->runtime(), src_text(), trace, pLogic->getCalc()));
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchTemp
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchTemp
+// --------------------------------------------------------------------------------
 RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDPokaz(src_info)
 {
@@ -218,9 +218,9 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 RDOPMDWatchTemp::~RDOPMDWatchTemp()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchQuant
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchQuant
+// --------------------------------------------------------------------------------
 RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {}
@@ -251,9 +251,9 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchValue
+// --------------------------------------------------------------------------------
 RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {}
@@ -286,9 +286,9 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDGetValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDGetValue
+// --------------------------------------------------------------------------------
 RDOPMDGetValue::RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOPMDPokaz(src_info)
 {}

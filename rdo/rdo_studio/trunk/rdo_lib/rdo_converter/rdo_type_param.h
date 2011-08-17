@@ -10,20 +10,20 @@
 #ifndef _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_
 #define _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdo_type.h"
 #include "rdo_lib/rdo_converter/rdo_value.h"
 #include "rdo_lib/rdo_converter/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_model_i.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTypeParam
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTypeParam
+// --------------------------------------------------------------------------------
 OBJECT(RDOTypeParam)
 	IS INSTANCE_OF       (RDOParserSrcInfo)
 	AND IMPLEMENTATION_OF(IModelStructure )

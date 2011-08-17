@@ -9,14 +9,14 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 const int sec_timer_id = 2;
 const int base_speed = 10000;
-#endif // ================================================
+#endif // ------------------------------------------------
 
-// ----------------------------------------------------------------------------
-// ---------- RPFlowChart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPFlowChart
+// --------------------------------------------------------------------------------
 const int grid_dx_plus = 1;
 const int grid_dy_plus = 2;
 const int grid_timer_id = 1;
@@ -48,13 +48,13 @@ RPFlowChart::RPFlowChart( RPObjectFlowChart* _flowobj, CDocument* _doc ):
 	scroll_size( 0, 0 ),
 	flowobj( _flowobj ),
 	doc( _doc )
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	,
 	sec_cnt( 0 ),
 	sec_timer( 0 ),
 	makegrid_cnt( 0 ),
 	makegridempty_cnt( 0 )
-#endif // ================================================
+#endif // ------------------------------------------------
 {
 	flowobj->flowchart = this;
 }
@@ -89,9 +89,9 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 //	updateFont();
 	updateScrollBars();
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	sec_timer = SetTimer( sec_timer_id, 1000, NULL );
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	return true;
 }
@@ -105,12 +105,12 @@ void RPFlowChart::OnDestroy()
 {
 	if ( rpMethod::factory->getCurrentFlowchart() == this ) rpMethod::factory->setCurrentFlowchart( NULL );
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	if ( sec_timer ) {
 		KillTimer( sec_timer );
 		sec_timer = 0;
 	}
-#endif // ================================================
+#endif // ------------------------------------------------
 //	if ( grid_timer ) {
 //		KillTimer( grid_timer );
 //		grid_timer = 0;
@@ -180,9 +180,9 @@ void RPFlowChart::OnSize( UINT nType, int cx, int cy )
 void RPFlowChart::makeGrid()
 {
 /*
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	makegridempty_cnt++;
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	if ( pixmap_w_show <= paper_border_w * 2 || pixmap_h_show <= paper_border_h * 2 ) {
 		grid_cnt_x = 0;
@@ -191,13 +191,13 @@ void RPFlowChart::makeGrid()
 		return;
 	}
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	makegrid_cnt++;
 	SYSTEMTIME t1;
 	SYSTEMTIME t2;
 	::GetSystemTime( &t1 );
 	for ( int cnt = 0; cnt <= base_speed * 10; cnt++ ) {
-#endif // ================================================
+#endif // ------------------------------------------------
 
 	CSize size = getFlowSize();
 	grid_cnt_x = (max(size.cx, scroll_x_pos + pixmap_w_show - paper_border_w * 2) / grid_step) + 1;
@@ -297,12 +297,12 @@ void RPFlowChart::makeGrid()
 	}
 	ReleaseDC( dc );
 
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	}
 	::GetSystemTime( &t2 );
 	int delay = (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds);
 	TRACE( "makegrid_delay = %d\n", delay );
-#endif // ================================================
+#endif // ------------------------------------------------
 */
 }
 
@@ -429,14 +429,14 @@ void RPFlowChart::snapToGridAllShapes()
 
 void RPFlowChart::OnTimer( UINT nIDEvent )
 {
-#ifdef TEST_SPEED // =====================================
+#ifdef TEST_SPEED // -------------------------------------
 	if ( nIDEvent == sec_timer ) {
 		TRACE( "%d. makepixmap = %d, makegrid = %d, makegrid_empty = %d\n", sec_cnt++, flowobj->makepixmap_cnt, makegrid_cnt, makegridempty_cnt );
 		makegrid_cnt      = 0;
 		makegridempty_cnt = 0;
 		flowobj->makepixmap_cnt = 0;
 	}
-#endif // ================================================
+#endif // ------------------------------------------------
 //	if ( nIDEvent == grid_timer ) {
 //		if ( grid_mode != gtSnapOff && !grid_objects.empty() ) {
 //			std::list< RPShape* >::const_iterator it = grid_objects.begin();

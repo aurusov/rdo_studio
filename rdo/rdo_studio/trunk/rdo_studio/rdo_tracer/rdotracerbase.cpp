@@ -23,9 +23,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdoTracer;
 using namespace rdoTracerLog;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerBase
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerBase
+// --------------------------------------------------------------------------------
 RDOTracerBase::RDOTracerBase( const std::string& _thread_name, RDOKernelGUI* _kernel_gui ):
 	RDOThreadGUI( _thread_name, _kernel_gui ),
 	log( NULL ),

@@ -16,7 +16,7 @@
 #define WINVER 0x0501        //! Change this to the appropriate value to target other versions of Windows.
 #endif
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <vector>
 #include <map>
@@ -29,11 +29,11 @@
 #include <list>
 #include <math.h>
 #include <time.h>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdodebug.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #endif //! _CONVERTOR_PCH_H_

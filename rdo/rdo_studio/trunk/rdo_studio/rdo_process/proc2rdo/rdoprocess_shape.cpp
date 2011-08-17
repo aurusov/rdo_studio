@@ -7,9 +7,9 @@
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_terminate.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_resource.h"
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectFlowChart_MJ
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectFlowChart_MJ
+// --------------------------------------------------------------------------------
 RPObjectFlowChart_MJ::RPObjectFlowChart_MJ( RPObject* parent ):
 	RPObjectFlowChart( parent ),
 	RPObject_MJ( get_this() )

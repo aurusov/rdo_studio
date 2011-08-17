@@ -10,8 +10,8 @@
 
 #pragma warning(disable : 4786)
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <stdio.h>
 #include <conio.h>
 #include <fstream>
@@ -23,7 +23,7 @@
 #include <math.h>
 #include <sstream>
 #include <algorithm>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_repository/rdorepository.h"
@@ -38,7 +38,7 @@
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_common/rdodebug.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 //#ifndef DISABLE_CORBA
 
@@ -346,9 +346,9 @@ void RDOThreadCorba::stop()
 
 OPEN_RDO_SIMULATOR_NAMESPACE
 
-// --------------------------------------------------------------------
-// ---------- RDORuntimeTracer
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORuntimeTracer
+// --------------------------------------------------------------------------------
 class RDORuntimeTracer: public rdoRuntime::RDOTrace, public rdoRuntime::RDOEndL
 {
 public:
@@ -390,9 +390,9 @@ private:
 	rdo::textstream         m_stream;
 };
 
-// --------------------------------------------------------------------
-// ---------- RDOSimResulter
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOSimResulter
+// --------------------------------------------------------------------------------
 class RDOSimResulter: public rdoRuntime::RDOResults
 {
 public:
@@ -441,9 +441,9 @@ private:
 	}
 };
 
-// --------------------------------------------------------------------
-// ---------- RDOSimResultInformer
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOSimResultInformer
+// --------------------------------------------------------------------------------
 class RDOSimResultInformer: public rdoRuntime::RDOResults
 {
 public:
@@ -468,9 +468,9 @@ private:
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
-// --------------------------------------------------------------------
-// ---------- RDOThreadRunTime
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadRunTime
+// --------------------------------------------------------------------------------
 RDOThreadRunTime::RDOThreadRunTime()
 	: RDOThreadMT   (_T("RDOThreadRunTime"))
 	, m_pSimulator  (NULL                  )
@@ -834,9 +834,9 @@ void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void)
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_SIMULATOR_NAMESPACE
-// --------------------------------------------------------------------
-// ---------- RDOThreadSimulator
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadSimulator
+// --------------------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     (_T("RDOThreadSimulator"))
 	, m_pThreadRuntime(NULL                    )
@@ -1550,9 +1550,9 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParse::RDOCorba::GetRSS_var) my_rssL
 }
 #endif //! CORBA_ENABLE
 
-// --------------------------------------------------------------------
-// ---------- RDOThreadCodeComp
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadCodeComp
+// --------------------------------------------------------------------------------
 RDOThreadCodeComp::RDOThreadCodeComp()
 	: RDOThreadMT(_T("RDOThreadCodeComp"))
 	, m_pParser  (NULL                   )

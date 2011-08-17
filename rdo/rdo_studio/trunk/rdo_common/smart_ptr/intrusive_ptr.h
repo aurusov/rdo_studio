@@ -10,14 +10,14 @@
 #ifndef _RDO_INTRUSIVE_PTR_H_
 #define _RDO_INTRUSIVE_PTR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/smart_ptr/counter_reference.h"
 #include "rdo_common/smart_ptr/interface_ptr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
 

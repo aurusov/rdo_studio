@@ -8,9 +8,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerOperationBase
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerOperationBase
+// --------------------------------------------------------------------------------
 RDOTracerOperationBase::RDOTracerOperationBase( RDOTracerPattern* const pat )
 	: RDOTracerSerie( RDOST_OPERATION ),
 	pattern( pat )
@@ -39,9 +39,9 @@ void RDOTracerOperationBase::monitorTime( RDOTracerTimeNow* const time, const in
 {
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerOperation
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerOperation
+// --------------------------------------------------------------------------------
 RDOTracerOperation::RDOTracerOperation( RDOTracerPattern* const pat ) :
 	RDOTracerOperationBase( pat )
 {
@@ -67,9 +67,9 @@ void RDOTracerOperation::accomplish( RDOTracerTimeNow* const time, const int eve
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerIrregularEvent
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerIrregularEvent
+// --------------------------------------------------------------------------------
 RDOTracerEvent::RDOTracerEvent( RDOTracerPattern* const pat ) :
 	RDOTracerOperationBase( pat )
 {

@@ -13,9 +13,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartDocInsertTime
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartDocInsertTime
+// --------------------------------------------------------------------------------
 class RDOStudioChartDocInsertTime
 {
 	RDOStudioChartDoc* doc;
@@ -49,9 +49,9 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 	//studioApp.mainFrame->stepProgress();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartDoc
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartDoc
+// --------------------------------------------------------------------------------
 IMPLEMENT_DYNCREATE(RDOStudioChartDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(RDOStudioChartDoc, CDocument)

@@ -8,10 +8,10 @@
   \indent    4T
 */
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser_base.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
 #include "rdo_lib/rdo_converter/rdopat.h"
@@ -21,13 +21,13 @@
 #include "rdo_lib/rdo_converter/rdofrm.h"
 #include "rdo_lib/rdo_converter/rdopmd.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserItem
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserItem
+// --------------------------------------------------------------------------------
 RDOParserItem::RDOParserItem()
 	: m_type      (rdoModelObjectsConvertor::PAT_IN)
 	, m_parser_fun(NULL                            )
@@ -54,9 +54,9 @@ RDOParserItem::~RDOParserItem()
 void RDOParserItem::init()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainer
+// --------------------------------------------------------------------------------
 RDOParserContainer::RDOParserContainer()
 {}
 
@@ -118,9 +118,9 @@ void RDOParserContainer::getMinMax(rdoModelObjectsConvertor::RDOParseType type, 
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerModel
+// --------------------------------------------------------------------------------
 RDOParserContainerModel::RDOParserContainerModel()
 	: RDOParserContainer()
 {
@@ -141,9 +141,9 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjectsConvertor::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR_IN, cnv_smr_sim_parse, cnv_smr_sim_error, cnv_smr_sim_lex));
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerSMRInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerSMRInfo
+// --------------------------------------------------------------------------------
 RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
 	: RDOParserContainer()
 {

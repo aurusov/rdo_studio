@@ -9,9 +9,9 @@
 #include "rdo_studio/rdostudioframetreectrl.h"
 #include "rdo_ctrls/rdotabctrl.h"
 #include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioWorkspace
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioWorkspace
+// --------------------------------------------------------------------------------
 class RDOStudioWorkspace: public RDOStudioDockWnd
 {
 friend class RDOStudioFrameManager;

@@ -10,9 +10,9 @@
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_rect.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_point.h"
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectChart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectChart
+// --------------------------------------------------------------------------------
 class RPObjectFlowChart;
 
 class RPObjectChart: public RPObject

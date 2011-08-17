@@ -10,10 +10,10 @@
 #ifndef _CONVERTOR_DOCUMENT_H_
 #define _CONVERTOR_DOCUMENT_H_
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <boost/shared_ptr.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdomacros.h"
 
@@ -21,13 +21,13 @@
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/update/document_i.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- Document
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Document
+// --------------------------------------------------------------------------------
 OBJECT(Document)
 	IS IMPLEMENTATION_OF(IDocument)
 {

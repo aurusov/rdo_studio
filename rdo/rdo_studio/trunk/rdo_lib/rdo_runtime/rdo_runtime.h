@@ -27,7 +27,7 @@
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
 #include "rdo_lib/rdo_runtime/thread_proxy_i.h"
-// --------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 
 class RDOThread;
 

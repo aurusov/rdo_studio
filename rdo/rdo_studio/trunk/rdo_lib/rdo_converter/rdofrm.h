@@ -11,12 +11,12 @@
 #ifndef _CONVERTOR_RDOFRM_H_
 #define _CONVERTOR_RDOFRM_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_converter/rdo_object.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -24,9 +24,9 @@ int  cnv_frmparse(PTR(void) lexer);
 int  cnv_frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void cnv_frmerror(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMFrame
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame
+// --------------------------------------------------------------------------------
 OBJECT(RDOFRMFrame) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOFRMFrame);

@@ -23,9 +23,9 @@ RDOTracer* tracer = NULL;
 
 static bool clear_after_stop = false;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracer
+// --------------------------------------------------------------------------------
 RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.studioGUI) )
 {
 	clear_after_stop = false;

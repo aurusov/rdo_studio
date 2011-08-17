@@ -16,9 +16,9 @@ namespace rpMethod {
 RPObjectFactory* factory = NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectClassInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectClassInfo
+// --------------------------------------------------------------------------------
 RPObjectClassInfo::RPObjectClassInfo( const rp::string& _class_name, RPObjectClassInfo* _parent, MakeObject _makeObject ):
 	class_name( _class_name ),
 	makeObject( _makeObject ),
@@ -112,9 +112,9 @@ RPPixmap* RPObjectClassInfo::getPreview()
 	return preview;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectFactory
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectFactory
+// --------------------------------------------------------------------------------
 RPObjectFactory::RPObjectFactory()
 {
 	rpMethod::project->log() << "RPObjectFactory::RPObjectFactory()" << std::endl;

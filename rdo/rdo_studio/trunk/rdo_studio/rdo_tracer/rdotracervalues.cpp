@@ -7,9 +7,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerTimeNow
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerTimeNow
+// --------------------------------------------------------------------------------
 RDOTracerTimeNow::RDOTracerTimeNow( const double _time ) : time( _time )
 {
 	eventCount = 0;
@@ -49,9 +49,9 @@ bool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
 	return res;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerValue
+// --------------------------------------------------------------------------------
 RDOTracerValue::RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex, const double _value )
 	: modeltime( timenow ),
 	eventIndex( _eventIndex ),
