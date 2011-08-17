@@ -32,7 +32,7 @@ private:
 	ruint m_relResID;
 	ruint m_paramID;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -52,7 +52,7 @@ protected:
 	ruint     m_paramID;
 	LPRDOCalc m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -71,7 +71,7 @@ private:
 	RDOValue  m_minValue;
 	RDOValue  m_maxValue;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -90,7 +90,7 @@ private:
 	ruint   m_relResID;
 	tstring m_relResName;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

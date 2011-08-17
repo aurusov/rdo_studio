@@ -30,7 +30,7 @@ private:
 
 	LPRDOCalc m_pArray;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -46,7 +46,7 @@ private:
 	LPRDOCalc m_pArray;
 	LPRDOCalc m_pArrayInd;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -63,7 +63,7 @@ private:
 	LPRDOCalc m_pArrayInd;
 	LPRDOCalc m_pSetItem;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

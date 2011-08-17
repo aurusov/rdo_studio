@@ -27,7 +27,7 @@ CALC(RDOCalcOpenBrace)
 private:
 	RDOCalcOpenBrace();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -40,7 +40,7 @@ CALC(RDOCalcCloseBrace)
 private:
 	RDOCalcCloseBrace();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -60,7 +60,7 @@ private:
 
 	CalcList m_calcList;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -82,7 +82,7 @@ private:
 
 	CalcFunList m_calcFunList;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -96,7 +96,7 @@ CALC(RDOCalcFunEnd)
 private:
 	RDOCalcFunEnd();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -59,7 +59,7 @@ CALC_SUB(RDOSelectResourceNonExistCalc, RDOSelectResourceCalc)
 DECLARE_FACTORY(RDOSelectResourceNonExistCalc)
 private:
 	RDOSelectResourceNonExistCalc(int _rel_res_id);
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -77,7 +77,7 @@ protected:
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -92,7 +92,7 @@ protected:
 
 	int resType;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -130,7 +130,7 @@ private:
 	void  getBest ( REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const;
 	rbool getFirst( REF(std::vector< std::vector<int> >) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!

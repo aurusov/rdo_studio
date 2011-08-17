@@ -27,10 +27,14 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+//! \defgroup calc      Общая группа калков
+//! \defgroup calc_base Абстрактный калк
+
 /*!
   \class    RDOCalc
   \brief    Абстрактный "вычислитель", он же калк.
   \details  Cкомпилированная модель состоит из последовательоности калков, так же как и скомпилированная программа состоит из ассемблеровских команд. Данный класс описывает базовый, абстрактный калк.
+  \ingroup  calc calc_base
 */
 OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 {
@@ -65,42 +69,44 @@ protected:
 	//! \result Вычесленное калком значение
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
 };
-
-/*!
-  \def     DECALRE_ICalc
-  \brief   Декларация интерфейса ICalc
-*/
-#define DECALRE_ICalc \
+#define DECLARE_ICalc \
 private:              \
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-/*!
-  \def     CALC_SUB
-  \brief   Калки-потомки
-*/
+//! \def    CALC_SUB
+//! \brief  Описывает класс-потомок
 #define CALC_SUB(TYPE, PARENT) \
 PREDECLARE_POINTER(TYPE);      \
 class TYPE: public PARENT
 
-/*!
-  \def     CALC
-  \brief   Калки-потомки от RDOCalc
-*/
+//! \def    CALC
+//! \brief  Описывает класс-потомок от RDOCalc
 #define CALC(TYPE) CALC_SUB(TYPE, RDOCalc)
 
 /*!
-  \class   RDOCalcConst
-  \brief   Константы
+  \defgroup calc_const Константный калк
+  \class    RDOCalcConst
+  \brief    Константа
+  \details  Возвращает константное значение
+  \ingroup  calc calc_const
 */
 CALC(RDOCalcConst)
 {
 DECLARE_FACTORY(RDOCalcConst)
 public:
+	//! Возвращает хранимую константу, может быть использован в parser-time
+	//! \result Значение константы
 	CREF(RDOValue) getValue() const;
 
 private:
+	//! Инициализируется указанным значением переменную базового класса \ref RDOCalc::m_value
+	//! \param value - Значение константы
 	RDOCalcConst(CREF(RDOValue) value);
-	DECALRE_ICalc;
+
+	//! Возвращает значение константы
+	//! \param pRuntime - Не используется
+	//! \result Значение константы
+	DECLARE_ICalc;
 };
 
 /*!
@@ -116,7 +122,7 @@ protected:
 	int m_resID;
 	int m_paramID;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -147,7 +153,7 @@ private:
 	tstring m_resName;
 	tstring m_parName;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -163,7 +169,7 @@ private:
 
 	int m_parNumb;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -180,7 +186,7 @@ private:
 	int        m_parNumb;
 	LPRDOCalc  m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -196,7 +202,7 @@ private:
 	int      m_parNumb;
 	RDOValue m_val;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -211,7 +217,7 @@ private:
 
 	int m_numberOfParam;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -221,7 +227,7 @@ private:
 CALC(RDOCalcGetTimeNow)
 {
 DECLARE_FACTORY(RDOCalcGetTimeNow)
-DECALRE_ICalc;
+DECLARE_ICalc;
 };
 
 /*!
@@ -231,7 +237,7 @@ DECALRE_ICalc;
 CALC(RDOCalcGetSeconds)
 {
 DECLARE_FACTORY(RDOCalcGetSeconds)
-DECALRE_ICalc;
+DECLARE_ICalc;
 };
 
 /*!
@@ -241,7 +247,7 @@ DECALRE_ICalc;
 CALC(RDOCalcGetTermNow)
 {
 DECLARE_FACTORY(RDOCalcGetTermNow)
-DECALRE_ICalc;
+DECLARE_ICalc;
 };
 
 /*!
@@ -273,7 +279,7 @@ private:
 	std::vector<LPRDOCalcConst> m_results;
 	LPRDOCalc                   m_pArgCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -293,7 +299,7 @@ private:
 	std::vector<LPRDOCalcConst>  m_results;
 	LPRDOCalcConst               m_pDefaultValue;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -312,7 +318,7 @@ protected:
 	std::vector<LPRDOCalc> m_conditions;
 	std::vector<LPRDOCalc> m_actions;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -328,7 +334,7 @@ private:
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -399,7 +405,7 @@ public:
 private:
 	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition);
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -427,7 +433,7 @@ private: \
 	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition) \
 		: RDOFunCalcSelectBase(pSelect, pCondition) \
 	{} \
-	DECALRE_ICalc; \
+	DECLARE_ICalc; \
 };
 
 /*!
@@ -442,7 +448,7 @@ private: \
 	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect) \
 		: RDOFunCalcSelectBase(pSelect, NULL) \
 	{} \
-	DECALRE_ICalc; \
+	DECLARE_ICalc; \
 };
 
 /*!
@@ -493,7 +499,7 @@ private:
 
 	int m_param_number;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -507,7 +513,7 @@ private:
 	RDOCalcGetConst(int number);
 
 	int m_number;
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -523,7 +529,7 @@ private:
 	int        m_number;
 	LPRDOCalc  m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -543,7 +549,7 @@ private:
 	std::vector<LPRDOCalc>  m_parameters;
 	LPRDOFunCalc            m_pFunction;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -566,7 +572,7 @@ protected:
 	ruint                  number;
 	rbool                  isPermanent;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -589,7 +595,7 @@ protected:
 	ruint                  number;
 	rbool                  isPermanent;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -609,7 +615,7 @@ private:
 	rbool                  m_permanentFlag;
 	ruint                  m_relResID;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

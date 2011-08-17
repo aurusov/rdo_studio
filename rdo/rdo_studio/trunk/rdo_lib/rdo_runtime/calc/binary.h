@@ -67,7 +67,7 @@ private:
 	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
 	//! \exception RDORuntimeException
 	//! \result Вычесленное калком значение
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

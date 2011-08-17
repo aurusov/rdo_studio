@@ -35,7 +35,7 @@ private:
 	int                m_base;
 	PTR(RandGenerator) m_gen;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!

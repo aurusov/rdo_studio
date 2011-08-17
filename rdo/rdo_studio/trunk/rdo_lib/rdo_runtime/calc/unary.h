@@ -88,7 +88,7 @@ private:
 	rbool     m_round;
 	LPRDOCalc m_pOperation;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -105,7 +105,7 @@ private:
 	RDOValue  m_max_value;
 	LPRDOCalc m_pOperation;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -120,7 +120,7 @@ private:
 
 	LPRDOCalc m_pOperation;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

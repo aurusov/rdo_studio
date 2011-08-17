@@ -30,7 +30,7 @@ private:
 
 	tstring m_name;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -46,7 +46,7 @@ private:
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -61,7 +61,7 @@ private:
 
 	tstring m_name;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -79,7 +79,7 @@ private:
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -99,7 +99,7 @@ private:
 
 	CalcLocalVariableList m_calcLocalVariableList;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

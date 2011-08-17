@@ -31,7 +31,7 @@ protected:
 
 	LPIPokazGroup m_pResultGroup;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -47,7 +47,7 @@ protected:
 
 	LPIPokazGroup m_pResultGroup;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

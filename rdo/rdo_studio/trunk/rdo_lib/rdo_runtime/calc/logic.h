@@ -33,7 +33,7 @@ private:
 	RDOValue m_value_true;
 	RDOValue m_value_false;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -49,7 +49,7 @@ private:
 	RDOValue m_value_true;
 	RDOValue m_value_false;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!

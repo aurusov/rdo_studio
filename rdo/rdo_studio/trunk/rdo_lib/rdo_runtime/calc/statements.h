@@ -28,7 +28,7 @@ CALC(RDOCalcNoChange)
 	DECLARE_FACTORY(RDOCalcNoChange)
 private:
 	RDOCalcNoChange();
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -44,7 +44,7 @@ private:
 	LPRDOCalc m_pCondition;
 	LPRDOCalc m_pStatement;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -61,7 +61,7 @@ private:
 	LPRDOCalc m_pIfStatement;
 	LPRDOCalc m_pElseStatement;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -79,7 +79,7 @@ private:
 	LPRDOCalc m_pExpression;
 	LPRDOCalc m_pStatement;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -93,7 +93,7 @@ private:
 	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
 
 	LPRDOCalc m_pReturn;
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -106,7 +106,7 @@ CALC(RDOCalcFunBreak)
 private:
 	RDOCalcFunBreak();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

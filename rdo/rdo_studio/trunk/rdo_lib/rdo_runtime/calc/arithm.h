@@ -46,7 +46,7 @@ DECLARE_FACTORY(RDOCalcDiv);
 private:
 	RDOCalcDiv(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 DECLARE_POINTER(RDOCalcDiv);
 
@@ -60,7 +60,7 @@ DECLARE_FACTORY(RDOCalcPlusEnumSafe)
 private:
 	RDOCalcPlusEnumSafe(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -73,7 +73,7 @@ DECLARE_FACTORY(RDOCalcMultEnumSafe)
 private:
 	RDOCalcMultEnumSafe(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

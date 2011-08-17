@@ -47,7 +47,7 @@ private:
 
 	LPRDOCalc m_pTimeCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -60,7 +60,7 @@ DECLARE_FACTORY(RDOCalcEventStop)
 private:
 	RDOCalcEventStop();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

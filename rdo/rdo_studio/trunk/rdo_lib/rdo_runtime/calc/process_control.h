@@ -32,7 +32,7 @@ DECLARE_FACTORY(RDOCalcProcessControl)
 public:
 protected:
 	RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum);
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 private:
 	LPIPROCBlock  m_Block;
 	rsint         m_relResNum;
