@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : stack.h
+ * file     : stack.h
  * author   : Урусов Андрей
  * date     : 06.06.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

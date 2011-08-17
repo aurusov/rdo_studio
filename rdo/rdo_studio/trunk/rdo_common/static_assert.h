@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : static_assert.h
+ * file     : static_assert.h
  * author   : Урусов Андрей
  * date     : 08.03.2010
- * bref     : основан на классе CompileTimeError из Александреску
+ * brief    : основан на классе CompileTimeError из Александреску
  * indent   : 4T
  */
 

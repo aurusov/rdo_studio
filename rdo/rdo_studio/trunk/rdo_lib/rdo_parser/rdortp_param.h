@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdortp_param.h
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdortp_param.h
+ * author   : Барс Александр, Урусов Андрей
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

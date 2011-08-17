@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_type_range.inl
+ * file     : rdo_type_range.inl
  * author   : Урусов Андрей
  * date     : 10.02.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

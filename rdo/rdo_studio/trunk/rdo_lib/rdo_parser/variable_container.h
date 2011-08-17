@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : variable_container.h
+ * file     : variable_container.h
  * author   : Чирков Михаил
  * date     : 02.12.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

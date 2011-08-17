@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : type.h
+ * file     : type.h
  * author   : Урусов Андрей
  * date     : 30.10.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

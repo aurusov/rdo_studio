@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : stack.inl
+ * file     : stack.inl
  * author   : Урусов Андрей
  * date     : 12.12.2009
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

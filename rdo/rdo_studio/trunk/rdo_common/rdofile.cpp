@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdofile.cpp
+ * file     : rdofile.cpp
  * author   : Урусов Андрей
  * date     : 07.11.2020
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdofile.h
+ * file     : rdofile.h
  * author   : Урусов Андрей
  * date     : 10.05.2009
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

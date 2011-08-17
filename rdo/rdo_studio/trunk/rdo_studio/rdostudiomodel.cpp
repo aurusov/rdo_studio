@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdostudiomodel.cpp
+ * file     : rdostudiomodel.cpp
  * author   : Урусов Андрей
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

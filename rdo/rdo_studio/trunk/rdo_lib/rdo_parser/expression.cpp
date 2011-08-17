@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : expression.cpp
+ * file     : expression.cpp
  * author   : Урусов Андрей
  * date     : 07.03.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

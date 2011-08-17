@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdomacros.h
+ * file     : rdomacros.h
  * author   : ”русов јндрей
  * date     : 13.06.2009
- * bref     : ќбъ€вление стандартных макросов
+ * brief    : ќбъ€вление стандартных макросов
  * indent   : 4T
  */
 

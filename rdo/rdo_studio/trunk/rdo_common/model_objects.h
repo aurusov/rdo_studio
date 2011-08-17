@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : model_objects.h
- * author   : Александ Барс, Урусов Андрей
+ * file     : model_objects.h
+ * author   : Барс Александр, Урусов Андрей
  * date     : 13.06.2009
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

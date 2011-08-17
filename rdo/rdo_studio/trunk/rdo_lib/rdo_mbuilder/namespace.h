@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : namespace.h
+ * file     : namespace.h
  * author   : Урусов Андрей
  * date     : 07.08.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

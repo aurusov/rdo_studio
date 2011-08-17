@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoevn_preparse.y
- * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
+ * file     : rdoevn_preparse.y
+ * author   : Барс Александр, Урусов Андрей, Лущан Дмитрий
  * date     : 12.06.2010
- * bref     : Предварительный поиск названий событий
+ * brief    : Предварительный поиск названий событий
  * indent   : 4T
  */
 

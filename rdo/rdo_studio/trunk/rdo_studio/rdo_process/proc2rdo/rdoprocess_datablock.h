@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoprocess_datablock.h
+ * file     : rdoprocess_datablock.h
  * author   : Шувалов Андрей
  * date     : 04.05.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

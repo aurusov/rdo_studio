@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdosmart_ptr_wrapper.h
+ * file     : rdosmart_ptr_wrapper.h
  * author   : Урусов Андрей
  * date     : 26.02.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

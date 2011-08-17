@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoevn.y
- * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
+ * file     : rdoevn.y
+ * author   : Барс Александр, Урусов Андрей, Лущан Дмитрий
  * date     : 12.06.2010
- * bref     : Синтаксис событий
+ * brief    : Синтаксис событий
  * indent   : 4T
  */
 

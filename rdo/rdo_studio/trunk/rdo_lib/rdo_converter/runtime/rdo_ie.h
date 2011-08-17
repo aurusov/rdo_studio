@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_ie.h
+ * file     : rdo_ie.h
  * author   : 
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

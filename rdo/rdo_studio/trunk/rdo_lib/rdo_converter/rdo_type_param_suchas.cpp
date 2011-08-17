@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_type_param_suchas.cpp
+ * file     : rdo_type_param_suchas.cpp
  * author   : Урусов Андрей
  * date     : 09.01.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

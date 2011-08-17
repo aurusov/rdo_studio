@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : pch.h
- * author   : Александ Барс, Урусов Андрей
+ * file     : pch.h
+ * author   : Барс Александр, Урусов Андрей
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

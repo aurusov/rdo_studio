@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : info.cpp
+ * file     : info.cpp
  * author   : Урусов Андрей
  * date     : 09.04.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

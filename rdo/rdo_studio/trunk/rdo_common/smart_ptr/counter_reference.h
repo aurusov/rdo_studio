@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : counter_reference.h
+ * file     : counter_reference.h
  * author   : Урусов Андрей
  * date     : 12.06.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

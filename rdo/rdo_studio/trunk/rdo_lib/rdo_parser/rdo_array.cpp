@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_array.cpp
+ * file     : rdo_array.cpp
  * author   : Чирков Михаил
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

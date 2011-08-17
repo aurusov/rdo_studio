@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdosmr.h
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdosmr.h
+ * author   : Барс Александр, Урусов Андрей
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

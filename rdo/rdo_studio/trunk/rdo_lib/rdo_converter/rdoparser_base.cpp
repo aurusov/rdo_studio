@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoparser_base.cpp
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdoparser_base.cpp
+ * author   : Барс Александр, Урусов Андрей
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

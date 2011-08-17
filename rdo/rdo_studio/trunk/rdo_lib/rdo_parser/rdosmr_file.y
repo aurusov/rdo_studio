@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdosmr_file.y
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdosmr_file.y
+ * author   : Барс Александр, Урусов Андрей
  * date     : 20.02.2003
- * bref     : Синтаксис описания файлов модели
+ * brief    : Синтаксис описания файлов модели
  * indent   : 4T
  */
 

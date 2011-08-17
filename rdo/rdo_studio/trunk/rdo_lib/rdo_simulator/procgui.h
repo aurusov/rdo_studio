@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : procgui.h
+ * file     : procgui.h
  * author   : Шувалов Андрей
  * date     : 22.04.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

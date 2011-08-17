@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : supersubclass.h
+ * file     : supersubclass.h
  * author   : Урусов Андрей
  * date     : 08.03.2010
- * bref     : основан на классе Conversion из Александреску
+ * brief    : основан на классе Conversion из Александреску
  * indent   : 4T
  */
 

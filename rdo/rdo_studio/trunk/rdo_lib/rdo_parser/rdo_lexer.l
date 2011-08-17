@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_lexer.h
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdo_lexer.h
+ * author   : Барс Александр, Урусов Андрей
  * date     : 11.06.2006
- * bref     : Лексика РДО
+ * brief    : Лексика РДО
  * indent   : 4T
  */
 

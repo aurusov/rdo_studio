@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdorss.y
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdorss.y
+ * author   : Барс Александр, Урусов Андрей
  * date     : 20.02.2003
- * bref     : Синтаксис ресурсов
+ * brief    : Синтаксис ресурсов
  * indent   : 4T
  */
 

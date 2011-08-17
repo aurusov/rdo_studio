@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdofrm.y
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdofrm.y
+ * author   : Барс Александр, Урусов Андрей
  * date     : 20.02.2003
- * bref     : Синтаксис кадров анимации
+ * brief    : Синтаксис кадров анимации
  * indent   : 4T
  */
 

@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdosimwin.h
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdosimwin.h
+ * author   : Барс Александр, Урусов Андрей
  * date     : 
  * bref     : 
  * indent   : 4T

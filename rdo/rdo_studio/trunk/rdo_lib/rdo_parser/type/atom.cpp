@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : atom.cpp
+ * file     : atom.cpp
  * author   : Урусов Андрей
  * date     : 09.04.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

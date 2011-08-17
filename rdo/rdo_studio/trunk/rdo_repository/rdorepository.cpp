@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdorepository.cpp
+ * file     : rdorepository.cpp
  * author   : Урусов Андрей
  * date     : 
  * bref     : 

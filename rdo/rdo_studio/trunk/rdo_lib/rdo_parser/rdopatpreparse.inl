@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdopatpreparse.inl
+ * file     : rdopatpreparse.inl
  * author   : Ћущан ƒмитрий
  * date     : 22.05.10
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

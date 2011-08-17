@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : std_fun.h
- * author   : Александ Барс, Урусов Андрей
+ * file     : std_fun.h
+ * author   : Барс Александр, Урусов Андрей
  * date     : 02.04.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

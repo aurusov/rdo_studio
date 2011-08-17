@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : interface_ptr.inl
+ * file     : interface_ptr.inl
  * author   : Урусов Андрей
  * date     : 12.06.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

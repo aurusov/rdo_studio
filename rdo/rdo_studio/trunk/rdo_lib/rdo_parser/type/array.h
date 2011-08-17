@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : array.h
+ * file     : array.h
  * author   : Чирков Михаил
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

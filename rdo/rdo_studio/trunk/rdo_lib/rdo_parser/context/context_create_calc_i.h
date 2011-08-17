@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : context_create_calc_i.h
+ * file     : context_create_calc_i.h
  * author   : Урусов Андрей
  * date     : 03.03.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

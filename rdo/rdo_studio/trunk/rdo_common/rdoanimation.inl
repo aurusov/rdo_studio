@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoanimation.inl
+ * file     : rdoanimation.inl
  * author   : Урусов Андрей
  * date     : 13.06.2009
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

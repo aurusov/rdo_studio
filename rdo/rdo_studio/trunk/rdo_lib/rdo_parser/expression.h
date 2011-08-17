@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : expression.h
+ * file     : expression.h
  * author   : Урусов Андрей
  * date     : 07.03.2011
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

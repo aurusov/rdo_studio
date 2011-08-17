@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoopr.y
- * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
+ * file     : rdoopr.y
+ * author   : Барс Александр, Урусов Андрей, Лущан Дмитрий
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

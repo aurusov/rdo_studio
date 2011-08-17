@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : pch.h
+ * file     : pch.h
  * author   : Урусов Андрей
  * date     : 15.08.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

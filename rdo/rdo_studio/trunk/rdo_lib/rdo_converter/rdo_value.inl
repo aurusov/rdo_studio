@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdo_value.inl
+ * file     : rdo_value.inl
  * author   : Урусов Андрей
  * date     : 21.04.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

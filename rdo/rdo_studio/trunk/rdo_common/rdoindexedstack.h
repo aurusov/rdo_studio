@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoindexedstack.h
+ * file     : rdoindexedstack.h
  * author   : Урусов Андрей
  * date     : 23.02.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

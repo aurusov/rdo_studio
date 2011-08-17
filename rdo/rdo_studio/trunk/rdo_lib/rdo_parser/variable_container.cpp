@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : local_variable.cpp
+ * file     : local_variable.cpp
  * author   : Чирков Михаил
  * date     : 02.12.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

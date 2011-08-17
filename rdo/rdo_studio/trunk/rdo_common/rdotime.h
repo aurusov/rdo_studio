@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdotime.h
+ * file     : rdotime.h
  * author   : Урусов Андрей
  * date     : 10.05.2009
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

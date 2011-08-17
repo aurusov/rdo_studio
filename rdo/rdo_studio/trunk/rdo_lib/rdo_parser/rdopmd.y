@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdopmd.y
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdopmd.y
+ * author   : Барс Александр, Урусов Андрей
  * date     : 20.02.2003
- * bref     : Синтаксис собираемых показателей
+ * brief    : Синтаксис собираемых показателей
  * indent   : 4T
  */
 

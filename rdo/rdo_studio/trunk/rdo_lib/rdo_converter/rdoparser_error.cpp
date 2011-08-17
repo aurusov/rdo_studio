@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoparser_error.cpp
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdoparser_error.cpp
+ * author   : Барс Александр, Урусов Андрей
  * date     : 09.02.2010
- * bref     : основан на rdoparser.h/cpp
+ * brief    : основан на rdoparser.h/cpp
  * indent   : 4T
  */
 

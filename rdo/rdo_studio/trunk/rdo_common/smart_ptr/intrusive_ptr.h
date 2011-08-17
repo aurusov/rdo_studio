@@ -1,6 +1,6 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : intrusive_ptr.h
+ * file     : intrusive_ptr.h
  * author   : Урусов Андрей
  * date     : 08.06.2010
  * bref     : 

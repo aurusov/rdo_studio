@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoparser_lexer.inl
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdoparser_lexer.inl
+ * author   : Барс Александр, Урусов Андрей
  * date     : 
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 

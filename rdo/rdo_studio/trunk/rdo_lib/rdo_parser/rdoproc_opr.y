@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : rdoproc_opr.y
- * author   : Александ Барс, Урусов Андрей
+ * file     : rdoproc_opr.y
+ * author   : Барс Александр, Урусов Андрей
  * date     : 24.03.2008
- * bref     : Синтаксис процессов. based on rdodpt_opr.y
+ * brief    : Синтаксис процессов. based on rdodpt_opr.y
  * indent   : 4T
  */
 

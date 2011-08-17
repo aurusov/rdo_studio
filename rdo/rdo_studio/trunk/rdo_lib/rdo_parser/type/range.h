@@ -1,9 +1,9 @@
 /*
  * copyright: (c) RDO-Team, 2011
- * filename : range.h
+ * file     : range.h
  * author   : Урусов Андрей
  * date     : 10.02.2010
- * bref     : 
+ * brief    : 
  * indent   : 4T
  */
 
