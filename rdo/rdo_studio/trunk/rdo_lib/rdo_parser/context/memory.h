@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : memory.h
- * author   : Урусов Андрей
- * date     : 16.10.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      memory.h
+  \author    Урусов Андрей
+  \date      16.10.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _CONEXT_MEMORY_H_

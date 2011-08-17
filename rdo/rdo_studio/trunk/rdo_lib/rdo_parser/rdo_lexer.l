@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdo_lexer.h
- * author   : Барс Александр, Урусов Андрей
- * date     : 11.06.2006
- * brief    : Лексика РДО
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_lexer.h
+  \author    Барс Александр, Урусов Андрей
+  \date      11.06.2006
+  \brief     Лексика РДО
+  \indent    4T
  */
 
 %{

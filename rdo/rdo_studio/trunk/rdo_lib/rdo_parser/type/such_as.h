@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : such_as.h
- * author   : Урусов Андрей
- * date     : 09.01.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      such_as.h
+  \author    Урусов Андрей
+  \date      09.01.2011
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPARSER_TYPE_SUCH_AS_H_

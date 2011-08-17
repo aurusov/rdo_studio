@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoidgenerator.h
- * author   : Урусов Андрей
- * date     : 23.02.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoidgenerator.h
+  \author    Урусов Андрей
+  \date      23.02.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOIDGENERATOR_H_

@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : range.h
- * author   : Урусов Андрей
- * date     : 10.02.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      range.h
+  \author    Урусов Андрей
+  \date      10.02.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPARSER_TYPE_RANGE_H_

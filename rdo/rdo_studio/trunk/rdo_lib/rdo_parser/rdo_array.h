@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdo_array.h
- * author   : Чирков Михаил
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_array.h
+  \author    Чирков Михаил
+  \date      
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPARSER_VALUE_ARRAY_H_

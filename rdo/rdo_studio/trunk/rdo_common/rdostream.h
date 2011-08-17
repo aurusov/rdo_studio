@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdointerface.h
- * author   : Урусов Андрей
- * date     : 05.07.2009
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdointerface.h
+  \author    Урусов Андрей
+  \date      05.07.2009
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOSTREAM_H_

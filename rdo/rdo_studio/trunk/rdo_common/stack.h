@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : stack.h
- * author   : Урусов Андрей
- * date     : 12.02.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      stack.h
+  \author    Урусов Андрей
+  \date      12.02.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDO_COMMON_STACK_H_

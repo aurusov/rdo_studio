@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoanimation.inl
- * author   : Урусов Андрей
- * date     : 13.06.2009
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoanimation.inl
+  \author    Урусов Андрей
+  \date      13.06.2009
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== INCLUDES

@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : pch.h
- * author   : Урусов Андрей
- * date     : 15.08.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      pch.h
+  \author    Урусов Андрей
+  \date      15.08.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _CONVERTOR_PCH_H_

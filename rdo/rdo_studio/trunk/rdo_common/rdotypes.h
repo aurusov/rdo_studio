@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdotypes.h
- * author   : Урусов Андрей
- * date     : 18.04.2009
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdotypes.h
+  \author    Урусов Андрей
+  \date      18.04.2009
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOTYPES_H_

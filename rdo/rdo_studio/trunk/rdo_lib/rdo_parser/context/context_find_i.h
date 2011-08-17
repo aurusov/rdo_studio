@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : context_find_i.h
- * author   : Урусов Андрей
- * date     : 03.03.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      context_find_i.h
+  \author    Урусов Андрей
+  \date      03.03.2011
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPARSER_CONTEXT_FIND_I_H_

@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdo_enum.h
- * author   : Урусов Андрей
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_enum.h
+  \author    Урусов Андрей
+  \date      
+  \brief     
+  \indent    4T
  */
 
 #ifndef _CONVERTOR_RDOCONVERTER_ENUM_H_

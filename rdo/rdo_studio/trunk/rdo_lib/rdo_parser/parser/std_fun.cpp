@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : std_fun.cpp
- * author   : Барс Александр, Урусов Андрей
- * date     : 02.04.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      std_fun.cpp
+  \author    Барс Александр, Урусов Андрей
+  \date      02.04.2011
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== PCH

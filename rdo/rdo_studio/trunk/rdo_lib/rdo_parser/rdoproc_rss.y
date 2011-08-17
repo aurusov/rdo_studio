@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoproc_rss.y
- * author   : Барс Александр, Урусов Андрей
- * date     : 24.03.2008
- * brief    : Сбор ресурсов из процессов. based on rdodpt_rss.y
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoproc_rss.y
+  \author    Барс Александр, Урусов Андрей
+  \date      24.03.2008
+  \brief     Сбор ресурсов из процессов. based on rdodpt_rss.y
+  \indent    4T
  */
 
 %{

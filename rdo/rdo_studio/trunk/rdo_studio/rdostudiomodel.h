@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdostudiomodel.h
- * author   : Урусов Андрей
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdostudiomodel.h
+  \author    Урусов Андрей
+  \date      
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOSTUDIOMODEL_H_

@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdortp_param.h
- * author   : Барс Александр, Урусов Андрей
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdortp_param.h
+  \author    Барс Александр, Урусов Андрей
+  \date      
+  \brief     
+  \indent    4T
  */
 
 #ifndef _CONVERTOR_RDORTP_PARAM_H_

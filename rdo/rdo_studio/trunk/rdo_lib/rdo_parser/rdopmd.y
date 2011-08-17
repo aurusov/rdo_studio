@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdopmd.y
- * author   : Барс Александр, Урусов Андрей
- * date     : 20.02.2003
- * brief    : Синтаксис собираемых показателей
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdopmd.y
+  \author    Барс Александр, Урусов Андрей
+  \date      20.02.2003
+  \brief     Синтаксис собираемых показателей
+  \indent    4T
  */
 
 %{

@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdobison.h
- * author   : Лущан Дмитрий, Урусов Андрей
- * date     : 
- * brief    : Структура координат токена бизона, дополненная линейной позицией
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdobison.h
+  \author    Лущан Дмитрий, Урусов Андрей
+  \date      
+  \brief     Структура координат токена бизона, дополненная линейной позицией
+  \indent    4T
  */
 
 #ifndef _CONVERTOR_RDOBISON_H_

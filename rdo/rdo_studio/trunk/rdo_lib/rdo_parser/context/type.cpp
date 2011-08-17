@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : type.cpp
- * author   : Урусов Андрей
- * date     : 30.10.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      type.cpp
+  \author    Урусов Андрей
+  \date      30.10.2010
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== PCH

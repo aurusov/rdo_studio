@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoevn.y
- * author   : Барс Александр, Урусов Андрей, Лущан Дмитрий
- * date     : 12.06.2010
- * brief    : Синтаксис событий
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoevn.y
+  \author    Барс Александр, Урусов Андрей, Лущан Дмитрий
+  \date      12.06.2010
+  \brief     Синтаксис событий
+  \indent    4T
  */
 
 %{

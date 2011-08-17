@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoparser_base.h
- * author   : Барс Александр, Урусов Андрей
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_base.h
+  \author    Барс Александр, Урусов Андрей
+  \date      
+  \brief     
+  \indent    4T
  */
 
 #ifndef _CONVERTOR_RDOCONVERTER_BASE_H_

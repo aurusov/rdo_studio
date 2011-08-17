@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoparser_lexer.h
- * author   : Барс Александр, Урусов Андрей
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_lexer.h
+  \author    Барс Александр, Урусов Андрей
+  \date      
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPARSER_LEXER_H_

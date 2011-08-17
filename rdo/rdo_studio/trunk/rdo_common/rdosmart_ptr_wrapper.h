@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdosmart_ptr_wrapper.h
- * author   : Урусов Андрей
- * date     : 26.02.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdosmart_ptr_wrapper.h
+  \author    Урусов Андрей
+  \date      26.02.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOSMART_PTR_WRAPPER_H_

@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : context.h
- * author   : Урусов Андрей
- * date     : 06.06.2010
- * bref     : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      context.h
+  \author    Урусов Андрей
+  \date      06.06.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPARSER_CONTEXT_H_

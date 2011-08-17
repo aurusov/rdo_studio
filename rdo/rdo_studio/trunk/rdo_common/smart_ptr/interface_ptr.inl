@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : interface_ptr.inl
- * author   : Урусов Андрей
- * date     : 12.06.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      interface_ptr.inl
+  \author    Урусов Андрей
+  \date      12.06.2010
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== INCLUDES

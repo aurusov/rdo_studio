@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoevn_preparse.y
- * author   : Барс Александр, Урусов Андрей, Лущан Дмитрий
- * date     : 12.06.2010
- * brief    : Предварительный поиск названий событий
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoevn_preparse.y
+  \author    Барс Александр, Урусов Андрей, Лущан Дмитрий
+  \date      12.06.2010
+  \brief     Предварительный поиск названий событий
+  \indent    4T
  */
 
 %{

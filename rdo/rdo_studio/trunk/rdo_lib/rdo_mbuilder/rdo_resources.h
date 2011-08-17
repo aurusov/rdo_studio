@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdo_resources.h
- * author   : Урусов Андрей
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_resources.h
+  \author    Урусов Андрей
+  \date      
+  \brief     
+  \indent    4T
  */
 
 #ifndef _MBUILDER_RESOURCES_H_

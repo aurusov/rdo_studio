@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdo_type_param_suchas.h
- * author   : Урусов Андрей
- * date     : 09.01.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_type_param_suchas.h
+  \author    Урусов Андрей
+  \date      09.01.2011
+  \brief     
+  \indent    4T
  */
 
 #ifndef _CONVERTOR_RDO_TYPE_PARAM_SUCHAS_H_

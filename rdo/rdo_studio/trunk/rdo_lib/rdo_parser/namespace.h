@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : namespace.h
- * author   : Урусов Андрей
- * date     : 09.02.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      namespace.h
+  \author    Урусов Андрей
+  \date      09.02.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _PARSER_NAMESPACE_H_

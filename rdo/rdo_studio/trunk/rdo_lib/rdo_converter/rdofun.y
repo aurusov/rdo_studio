@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdofun.y
- * author   : Барс Александр, Урусов Андрей
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdofun.y
+  \author    Барс Александр, Урусов Андрей
+  \date      
+  \brief     
+  \indent    4T
  */
 
 %{

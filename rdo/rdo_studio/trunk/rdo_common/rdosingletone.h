@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdosingletone.h
- * author   : Урусов Андрей
- * date     : 26.07.2009
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdosingletone.h
+  \author    Урусов Андрей
+  \date      26.07.2009
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOSINGLETONE_H_

@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdopatpreparse.h
- * author   : Ћущан ƒмитрий
- * date     : 22.05.10
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdopatpreparse.h
+  \author    Ћущан ƒмитрий
+  \date      22.05.10
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPATPREPARSE_H_

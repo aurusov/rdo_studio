@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : model_objects.h
- * author   : Барс Александр, Урусов Андрей
- * date     : 13.06.2009
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      model_objects.h
+  \author    Барс Александр, Урусов Андрей
+  \date      13.06.2009
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOCOMMON_MODEL_OBJECTS_H_

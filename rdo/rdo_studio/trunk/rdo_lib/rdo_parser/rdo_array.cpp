@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdo_array.cpp
- * author   : Чирков Михаил
- * date     : 
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_array.cpp
+  \author    Чирков Михаил
+  \date      
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== PCH

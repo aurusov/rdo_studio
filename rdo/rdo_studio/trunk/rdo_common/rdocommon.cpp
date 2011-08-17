@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdocommon.cpp
- * author   : Барс Александр, Урусов Андрей
- * date     : 13.06.2009
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdocommon.cpp
+  \author    Барс Александр, Урусов Андрей
+  \date      13.06.2009
+  \brief     
+  \indent    4T
  */
 
 #pragma warning(disable : 4786)  

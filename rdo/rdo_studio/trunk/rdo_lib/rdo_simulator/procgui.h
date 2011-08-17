@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : procgui.h
- * author   : Шувалов Андрей
- * date     : 22.04.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      procgui.h
+  \author    Шувалов Андрей
+  \date      22.04.2011
+  \brief     
+  \indent    4T
  */
 
 #ifndef _PROCGUI_H_

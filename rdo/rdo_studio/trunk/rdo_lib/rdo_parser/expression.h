@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : expression.h
- * author   : Урусов Андрей
- * date     : 07.03.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      expression.h
+  \author    Урусов Андрей
+  \date      07.03.2011
+  \brief     
+  \indent    4T
  */
 
 #ifndef _RDOPARSER_EXPRESSION_H_

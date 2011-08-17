@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : update_i.inl
- * author   : Урусов Андрей
- * date     : 24.01.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      update_i.inl
+  \author    Урусов Андрей
+  \date      24.01.2011
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== INCLUDES

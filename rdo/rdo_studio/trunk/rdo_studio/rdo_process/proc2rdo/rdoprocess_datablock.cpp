@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : rdoprocess_datablock.cpp
- * author   : Шувалов Андрей
- * date     : 04.05.2011
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      rdoprocess_datablock.cpp
+  \author    Шувалов Андрей
+  \date      04.05.2011
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== PCH

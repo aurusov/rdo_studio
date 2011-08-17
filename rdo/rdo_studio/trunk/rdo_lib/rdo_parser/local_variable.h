@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : local_variable.h
- * author   : Урусов Андрей
- * date     : 16.10.2010
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      local_variable.h
+  \author    Урусов Андрей
+  \date      16.10.2010
+  \brief     
+  \indent    4T
  */
 
 #ifndef _LOCAL_VARIABLE_H_

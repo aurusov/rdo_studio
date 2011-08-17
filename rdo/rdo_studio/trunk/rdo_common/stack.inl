@@ -1,10 +1,10 @@
 /*
- * copyright: (c) RDO-Team, 2011
- * file     : stack.inl
- * author   : Урусов Андрей
- * date     : 12.12.2009
- * brief    : 
- * indent   : 4T
+  \copyright (c) RDO-Team, 2011
+  \file      stack.inl
+  \author    Урусов Андрей
+  \date      12.12.2009
+  \brief     
+  \indent    4T
  */
 
 // ====================================================================== INCLUDES
