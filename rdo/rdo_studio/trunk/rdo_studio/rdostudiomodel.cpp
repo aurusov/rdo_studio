@@ -412,8 +412,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning);
-				if (it->warning)
+				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
+				if (it->m_warning)
 				{
 					warnings_cnt++;
 				}
@@ -446,8 +446,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning);
-				if (it->warning)
+				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
+				if (it->m_warning)
 				{
 					warnings_cnt++;
 				}
@@ -484,8 +484,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning);
-				if (it->warning)
+				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
+				if (it->m_warning)
 				{
 					warnings_cnt++;
 				}
