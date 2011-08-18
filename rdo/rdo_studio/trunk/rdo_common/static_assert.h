@@ -19,10 +19,10 @@
 
 OPEN_RDO_NAMESPACE
 
-//! \struct rdo::CompileTimeError
+//! \struct  rdo::CompileTimeError
 //! \brief   Ўаблонный класс дл€ генерации ошибки компил€ции
 //! \details »спользуетс€ через макрос \ref STATIC_ASSERT
-//! \tparam rbool - если \b true, ошибки нет, если \b false - ошибка есть
+//! \tparam  rbool - если \b true, ошибки нет, если \b false - ошибка есть
 template <rbool>
 struct CompileTimeError;
 
