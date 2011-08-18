@@ -41,10 +41,6 @@ public:
 	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey) = 0;
 };
 
-/*!
-  \def       DECLARE_IKeyboard
-  \brief     Декларация интерфейса клавиатурной операции
-*/
 #define DECLARE_IKeyboard \
 	virtual rbool           hasHotKey() const; \
 	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey);

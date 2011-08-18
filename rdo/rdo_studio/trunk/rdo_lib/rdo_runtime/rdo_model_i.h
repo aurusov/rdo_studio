@@ -29,11 +29,6 @@ public:
 	virtual void writeModelStructure(REF(std::ostream) stream) const = 0;
 };
 
-/*!
-  \def     DECLARE_IModelStructure
-  \brief   Макрос для декларации метода структуры модели IModelStructure
-  \details Декларирует метод \a writeModelStructure()
-*/
 #define DECLARE_IModelStructure \
 	virtual void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -51,11 +46,6 @@ public:
 	virtual CREF(tstring) name() const = 0;
 };
 
-/*!
-  \def     DECLARE_IName
-  \brief   Макрос для декларации метода интерфейса IName
-  \details Декларирует метод \a name()
-*/
 #define DECLARE_IName \
 	virtual CREF(tstring) name() const;
 

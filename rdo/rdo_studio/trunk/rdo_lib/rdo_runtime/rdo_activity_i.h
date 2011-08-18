@@ -29,10 +29,6 @@ public:
 	virtual void setRelRes     (ruint rel_res_id, ruint res_id)    = 0;
 };
 
-/*!
-  \def       DECLARE_IActivity
-  \brief     Декларация интерфейса IActivity
-*/
 #define DECLARE_IActivity \
 	virtual void addParamCalc  (CREF(rdoRuntime::LPRDOCalc) pCalc); \
 	virtual int  getResByRelRes(ruint rel_res_id) const;            \
@@ -49,10 +45,6 @@ public:
 	virtual tstring traceResourcesListNumbers(CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool show_create_index) = 0;
 };
 
-/*!
-  \def       DECLARE_IActivityTrace
-  \brief     Декларация интерфейса IActivityTrace
-*/
 #define DECLARE_IActivityTrace                                                                                   \
 	virtual tstring traceResourcesList       (char prefix, CREF(rdoRuntime::LPRDORuntime) pRuntime);             \
 	virtual tstring traceResourcesListNumbers(CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool show_create_index);
@@ -67,10 +59,6 @@ public:
 	virtual CREF(tstring) tracePatternId() const = 0;
 };
 
-/*!
-  \def       DECLARE_IActivityPatternTrace
-  \brief     Декларация интерфейса IActivityPatternTrace
-*/
 #define DECLARE_IActivityPatternTrace \
 	virtual CREF(tstring) tracePatternId() const;
 

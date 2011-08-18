@@ -181,10 +181,6 @@ public:
 	virtual void notify(ruint message, PTR(void) param) = 0;
 };
 
-/*!
-  \def       DECLARE_INotify
-  \brief     Декларация интерфейса INotify
-*/
 #define DECLARE_INotify \
 	virtual void notify(ruint message, PTR(void) param);
 

@@ -42,10 +42,6 @@ public:
 	virtual void  getStatsRUINT     (Type type, REF(ruint)  min, REF(ruint)  max, REF(double) med) const = 0;
 };
 
-/*!
-  \def       DECLARE_IDPTSearchTraceStatistics
-  \brief     Декларация интерфейса IDPTSearchTraceStatistics
-*/
 #define DECLARE_IDPTSearchTraceStatistics                                                                 \
 	virtual ruint getCalcCnt        () const;                                                             \
 	virtual ruint getCalcResFoundCnt() const;                                                             \

@@ -29,10 +29,6 @@ public:
 	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
 };
 
-/*!
-  \def     DECLARE_IPokaz
-  \brief   Макрос для декларации методов собираемых показателей
-*/
 #define DECLARE_IPokaz                                               \
 	virtual void resetPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
 	virtual void checkPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
@@ -48,10 +44,6 @@ public:
 	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc) = 0;
 };
 
-/*!
-  \def     DECLARE_IPokazWatchQuant
-  \brief   Макрос для декларации интерфейса IPokazWatchQuant
-*/
 #define DECLARE_IPokazWatchQuant \
 	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc);
 
@@ -67,10 +59,6 @@ public:
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc) = 0;
 };
 
-/*!
-  \def     DECLARE_IPokazWatchValue
-  \brief   Макрос для декларации интерфейса IPokazWatchValue
-*/
 #define DECLARE_IPokazWatchValue                                                   \
 	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ); \
 	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)     pLogicCalc ); \
@@ -86,10 +74,6 @@ public:
 	virtual CREF(rdoRuntime::RDOValue) getValue() const = 0;
 };
 
-/*!
-  \def     DECLARE_IPokazGetValue
-  \brief   Макрос для декларации интерфейса IPokazGetValue
-*/
 #define DECLARE_IPokazGetValue \
 	CREF(rdoRuntime::RDOValue) getValue() const;
 

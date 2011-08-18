@@ -26,10 +26,6 @@ public:
 	virtual void addActivity(LPIDPTSearchActivity activity) = 0;
 };
 
-/*!
-  \def     DECLARE_IDPTSearchLogic
-  \brief   Декларация интерфейса IDPTSearchLogic
-*/
 #define DECLARE_IDPTSearchLogic \
 	virtual void addActivity(LPIDPTSearchActivity activity);
 

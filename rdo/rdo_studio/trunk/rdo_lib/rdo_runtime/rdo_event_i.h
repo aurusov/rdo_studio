@@ -25,10 +25,6 @@ class IEvent
 public:
 };
 
-/*!
-  \def       DECLARE_IEvent
-  \brief     Декларация интерфейса событий
-*/
 #define DECLARE_IEvent
 
 #endif // _LIB_RUNTIME_EVENT_I_H_

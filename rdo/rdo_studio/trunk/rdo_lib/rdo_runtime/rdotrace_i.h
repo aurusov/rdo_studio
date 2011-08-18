@@ -32,10 +32,6 @@ public:
 	virtual REF(tstring) traceId() const = 0;
 };
 
-/*!
-  \def     DECLARE_ITrace
-  \brief   Декларация интерфейса ITrace
-*/
 #define DECLARE_ITrace                                       \
 	virtual rbool        traceable (           ) const;      \
 	virtual void         setTrace  (rbool trace);            \
@@ -54,10 +50,6 @@ public:
 	virtual tstring traceValue() const = 0;
 };
 
-/*!
-  \def     DECLARE_IPokazTraceValue
-  \brief   Декларация интерфейса IPokazTraceValue
-*/
 #define DECLARE_IPokazTraceValue \
 	virtual tstring traceValue() const;
 
@@ -71,10 +63,6 @@ public:
 	virtual void tracePokaz() = 0;
 };
 
-/*!
-  \def     DECLARE_IPokazTrace
-  \brief   Декларация интерфейса IPokazTrace
-*/
 #define DECLARE_IPokazTrace \
 	virtual void tracePokaz();
 

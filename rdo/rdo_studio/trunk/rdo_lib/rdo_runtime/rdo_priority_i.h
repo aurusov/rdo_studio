@@ -26,10 +26,6 @@ public:
 	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior) = 0;
 };
 
-/*!
-  \def       DECLARE_IPriority
-  \brief     Декларация интерфейса IPriority
-*/
 #define DECLARE_IPriority \
 	virtual rdoRuntime::LPRDOCalc getPrior(); \
 	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior);

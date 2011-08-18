@@ -29,10 +29,6 @@ public:
 	virtual void onAppend(CREF(LPIPokaz)                 pResult ) = 0;
 };
 
-/*!
-  \def     DECLARE_IPokazGroup
-  \brief   Макрос для декларации методов группы собираемых показателей
-*/
 #define DECLARE_IPokazGroup                                 \
 	void onStart (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	void onStop  (CREF(rdoRuntime::LPRDORuntime) pRuntime); \

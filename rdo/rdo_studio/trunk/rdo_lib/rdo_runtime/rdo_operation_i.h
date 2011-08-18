@@ -33,10 +33,6 @@ public:
 	virtual double getNextTimeInterval   (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 
-/*!
-  \def       DECLARE_IOperation
-  \brief     Декларация интерфейса модифицированного продукционного правила
-*/
 #define DECLARE_IOperation \
 	virtual void   onBeforeChoiceFrom    (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual rbool  choiceFrom            (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
@@ -58,10 +54,6 @@ public:
 	virtual tstring traceOperId() const = 0;
 };
 
-/*!
-  \def       DECLARE_IOperationTrace
-  \brief     Декларация интерфейса IOperationTrace
-*/
 #define DECLARE_IOperationTrace \
 	virtual tstring traceOperId() const;
 

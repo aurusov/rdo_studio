@@ -27,10 +27,6 @@ public:
 	virtual rbool endParam() = 0;
 };
 
-/*!
-  \def       DECLARE_IParam
-  \brief     Декларация интерфейса \a IParam
-*/
 #define DECLARE_IParam \
 	virtual rbool setParam(CREF(rdoRuntime::LPRDOCalc) pParam); \
 	virtual rbool endParam();

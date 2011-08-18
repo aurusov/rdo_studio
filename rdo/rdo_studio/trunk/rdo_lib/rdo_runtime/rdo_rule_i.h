@@ -37,10 +37,6 @@ public:
 	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch) = 0;
 };
 
-/*!
-  \def       DECLARE_IRule
-  \brief     Декларация интерфейса продукционного правила
-*/
 #define DECLARE_IRule \
 	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime); \

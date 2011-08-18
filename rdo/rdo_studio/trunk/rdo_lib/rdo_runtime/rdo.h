@@ -103,10 +103,6 @@ public:
 	virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 
-/*!
-  \def     DECLARE_IBaseOperation
-  \brief   Декларация интерфейса IBaseOperation
-*/
 #define DECLARE_IBaseOperation                                                                   \
 	virtual void     onStart         (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
 	virtual void     onStop          (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \

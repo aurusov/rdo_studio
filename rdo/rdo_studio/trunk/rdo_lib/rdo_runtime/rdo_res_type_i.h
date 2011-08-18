@@ -36,10 +36,6 @@ protected:
 	virtual ~IResourceType() {}
 };
 
-/*!
-  \def   DECLARE_IResourceType
-  \brief Интерфейс типа ресурса - метод \a createRes()
-*/
 #define DECLARE_IResourceType \
 	rdoRuntime::LPRDOResource createRes(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, rbool trace, rbool permanentFlag);
 

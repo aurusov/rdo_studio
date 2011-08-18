@@ -69,6 +69,7 @@ protected:
 	//! \result Вычесленное калком значение
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
 };
+
 #define DECLARE_ICalc \
 private:              \
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);

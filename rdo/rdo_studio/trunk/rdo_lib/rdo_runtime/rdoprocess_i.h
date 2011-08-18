@@ -40,10 +40,6 @@ public:
 	virtual LPIPROCProcess getProcess   () const                     = 0;
 };
 
-/*!
-  \def       DECLARE_IPROCBlock
-  \brief     Декларация интерфейса IPROCBlock
-*/
 #define DECLARE_IPROCBlock \
 	virtual TransactIt     transactFind (CREF(LPTransact) pTransact); \
 	virtual TransactIt     transactEnd  ();                           \
@@ -64,10 +60,6 @@ public:
 	virtual CREF(rdoRuntime::LPRDOResourceType) getTranType() const          = 0;
 };
 
-/*!
-  \def       DECLARE_IPROCProcess
-  \brief     Декларация интерфейса IPROCProcess
-*/
 #define DECLARE_IPROCProcess                                                  \
 	virtual void  insertChild(LPIPROCProcess                      pProcess ); \
 	virtual void  setParent  (LPIPROCProcess                      pProcess ); \

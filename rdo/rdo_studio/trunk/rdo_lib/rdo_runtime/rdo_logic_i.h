@@ -34,11 +34,6 @@ public:
 	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition) = 0;
 };
 
-/*!
-  \def     DECLARE_ILogic
-  \brief   Макрос для декларации методов логики ILogic
-  \details Декларирует методы \a init() и \a setCondition()
-*/
 #define DECLARE_ILogic                                                       \
 	virtual void init           (CREF(rdoRuntime::LPRDORuntime) pRuntime  ); \
 	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition);
@@ -65,10 +60,6 @@ public:
 	virtual void                  clear ()                = 0;
 };
 
-/*!
-  \def     DECLARE_IBaseOperationContainer
-  \brief   Макрос для декларации методов контейнера \a IBaseOperationContainer
-*/
 #define DECLARE_IBaseOperationContainer                    \
 	virtual Iterator              begin ();                \
 	virtual Iterator              end   ();                \
