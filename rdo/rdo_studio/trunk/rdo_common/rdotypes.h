@@ -3,7 +3,7 @@
   \file      rdotypes.h
   \author    ”русов јндрей (rdo@rk9.bmstu.ru)
   \date      18.04.2009
-  \brief     
+  \brief     ќбъ€вление базовый типов
   \indent    4T
 */
 

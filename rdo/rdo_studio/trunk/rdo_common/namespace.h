@@ -3,7 +3,7 @@
   \file      namespace.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.06.2009
-  \brief     
+  \brief     Декларация namespace'ов
   \indent    4T
 */
 

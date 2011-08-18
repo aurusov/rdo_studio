@@ -1,9 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoanimation.inl
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.06.2009
-  \brief     
+  \brief     Описание объектов анимации, которые передаются от симулятора к GUI для отрисовки
   \indent    4T
 */
 

@@ -3,7 +3,7 @@
   \file      rdomacros.h
   \author    ”русов јндрей (rdo@rk9.bmstu.ru)
   \date      13.06.2009
-  \brief     ќбъ€вление стандартных макросов
+  \brief     ќбъ€вление базовых макросов
   \indent    4T
 */
 

@@ -4,7 +4,7 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.06.2009
-  \brief     
+  \brief     Типы объектов модели
   \indent    4T
 */
 
