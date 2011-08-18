@@ -3,12 +3,12 @@
   \file      rdodebug.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.05.2009
-  \brief     
+  \brief     Декларация макросов для отладки
   \indent    4T
 */
 
-#ifndef _RDODEBUG_H_
-#define _RDODEBUG_H_
+#ifndef _LIB_COMMON_RDODEBUG_H_
+#define _LIB_COMMON_RDODEBUG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef RDO_MT
@@ -53,7 +53,7 @@
 
 #define NEVER_REACH_HERE ASSERT(false)
 
-#else //! _DEBUG
+#else // _DEBUG
 
 #define  TRACE(A)
 #define TRACE1(A, P1)
@@ -64,4 +64,36 @@
 
 #endif
 
-#endif //! _RDODEBUG_H_
+//! \def TRACE(A)
+//! Выводит сообщение в окно Output Visial Studio. В режиме компиляции \b release удаляется из кода.
+//! \param A - строка вывода
+
+//! \def TRACE1(A, P1)
+//! Выводит сообщение в окно Output Visial Studio, принимает один параметр для формирования итоговой строки. В режиме компиляции \b release удаляется из кода.
+//! \param A  - строка вывода, должна содержать форматку в стиле <a href="http://ru.wikipedia.org/wiki/Printf">printf</a> для одного параметра
+//! \param P1 - параметр для вставки в результирующую строку
+
+//! \def TRACE2(A, P1, P2)
+//! Выводит сообщение в окно Output Visial Studio, принимает два параметра для формирования итоговой строки. В режиме компиляции \b release удаляется из кода.
+//! \param A      - строка вывода, должна содержать форматку в стиле <a href="http://ru.wikipedia.org/wiki/Printf">printf</a> для двух параметров
+//! \param P1, P2 - параметры для вставки в результирующую строку
+
+//! \def TRACE3(A, P1, P2, P3)
+//! Выводит сообщение в окно Output Visial Studio, принимает три параметра для формирования итоговой строки. В режиме компиляции \b release удаляется из кода.
+//! \param A          - строка вывода, должна содержать форматку в стиле <a href="http://ru.wikipedia.org/wiki/Printf">printf</a> для трёх параметров
+//! \param P1, P2, P3 - параметры для вставки в результирующую строку
+
+//! \def ASSERT(A)
+//! Если значение A равно \b false, то выводит сообщение об ошибке в окно Output Visial Studio и роняет приложение. В режиме компиляции \b release удаляется из кода, т.е. <b>нельзя внутри мароса располагать вызов функции или другой важный код</b>. Пример:
+//! \code
+//! LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
+//! ASSERT(pThreadProxy);
+//! // Значение указателя pThreadProxy не равно нулю, можно его использовать
+//! pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
+//! \endcode
+//! \param A - Проверяемое значение
+
+//! \def NEVER_REACH_HERE
+//! Указывается в тех местах кода, до которых не должно дойти дело при работе программы. Аналог ASSERT(false). В режиме компиляции \b release удаляется из кода.
+
+#endif //! _LIB_COMMON_RDODEBUG_H_
