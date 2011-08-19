@@ -615,13 +615,13 @@ void RDOPROCSeize::createRuntime()
 		if (pResource)
 		{
 			tstring res_name = pResource->name();
-			//! ѕолучили список всех ресурсов
+			// ѕолучили список всех ресурсов
 			rdoMBuilder::RDOResourceList rssList(RDOParser::s_parser());
-			//! —оздадим тип ресурса
+			// —оздадим тип ресурса
 			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
-			//! "—осто€ние"
+			// "—осто€ние"
 			tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-			//! проверим его на наличие перечислимого параметра
+			// проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
 				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("” типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
