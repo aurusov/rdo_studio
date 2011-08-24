@@ -63,7 +63,7 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 			// Находим перемещаемый транзакт в списке его транзактов
 			RDOPROCBlock::TransactIt it_res = block->transactFind(pTransact);
 			// Если транзакт найден
-			// XXX: только что созданный транзакт не привязывается к блоку GENERATE!!!
+			// @warning только что созданный транзакт не привязывается к блоку GENERATE!!!
 			if (it_res != block->transactEnd()) 
 			{
 				// Удаляем его из списка транзактов этого блока
@@ -75,7 +75,7 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 				//	getRuntime()->error( "Внутренняя ошибка: неучтенный транзакт (транзакт потерял свой блок)" );
 			}
 			// Переходим к следующему блоку
-			it++;
+			++it;
 			// Если следующий блок существует
 			if (it != end())
 			{
