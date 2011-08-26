@@ -123,9 +123,28 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc(ruint base, double arg
 	return pFuctionCall;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- ProcGUIProcess
-// --------------------------------------------------------------------------------
+rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getTriangularCalc(ruint base, double arg1, double arg2, double arg3)
+{
+	PTR(rdoRuntime::RandGeneratorTriangular) pGenerator = new rdoRuntime::RandGeneratorTriangular();
+	rdoRuntime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(base, pGenerator);
+	ASSERT(pInitCalc);
+	m_pRuntime->addInitCalc(pInitCalc);
+	rdoRuntime::LPRDOCalcSeqNext pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextTriangular>::create(pGenerator);
+	ASSERT(pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pNextCalc);
+	ASSERT(pFuctionCall);
+	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg1);
+	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg2);
+	rdoRuntime::LPRDOCalcConst pArg3 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg3);
+	pFuctionCall->addParameter(pArg1);
+	pFuctionCall->addParameter(pArg2);
+	pFuctionCall->addParameter(pArg3);
+	return pFuctionCall;
+}
+
+// --------------------------------------------------------------------
+// ---------- ProcGUIProcess
+// --------------------------------------------------------------------
 tstring ProcGUIProcess::s_namePrefix = _T("");
 tstring ProcGUIProcess::s_nameSufix  = _T("s");
 

@@ -54,6 +54,7 @@
 %token RDO_uniform
 %token RDO_exponential
 %token RDO_normal
+%token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
 

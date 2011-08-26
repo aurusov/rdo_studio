@@ -53,6 +53,7 @@
 %token RDO_uniform
 %token RDO_exponential
 %token RDO_normal
+%token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
 
@@ -1448,6 +1449,7 @@ fun_seq_descr
 	: fun_seq_uniform
 	| fun_seq_exponential
 	| fun_seq_normal
+	| fun_seq_triangular
 	| fun_seq_by_hist
 	| fun_seq_enumerative
 	;
@@ -1575,9 +1577,38 @@ fun_seq_normal
 	}
 	;
 
-// --------------------------------------------------------------------------------
-// -------------------- Гистограмма
-// --------------------------------------------------------------------------------
+fun_seq_triangular
+	: fun_seq_header RDO_triangular RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceTriangular>::create(pHeader);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_triangular RDO_INT_CONST RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceTriangular>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_triangular RDO_INT_CONST error
+	{
+		PARSER->error().error( @4, _T("После базы ожидается ключевое слово $End"));
+	}
+	| fun_seq_header RDO_triangular error
+	{
+		PARSER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+	}
+	;
+
+// ----------------------------------------------------------------------------
+// ---------- Гистограмма
+// ----------------------------------------------------------------------------
 fun_seq_by_hist_header
 	: fun_seq_header RDO_by_hist RDO_Body
 	{

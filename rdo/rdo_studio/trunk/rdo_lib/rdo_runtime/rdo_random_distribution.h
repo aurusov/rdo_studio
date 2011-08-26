@@ -80,6 +80,17 @@ public:
 };
 
 /*!
+  \class     RandGeneratorTriangular
+  \brief     Треугольное распределение
+*/
+class RandGeneratorTriangular: public RandGenerator
+{
+public:
+	RandGeneratorTriangular(long int seed = 123456789);
+	double next(double from, double top, double to);
+};
+
+/*!
   \class     RandGeneratorCommonNext
   \brief     Общий класс для by_hist и enumerative
 */

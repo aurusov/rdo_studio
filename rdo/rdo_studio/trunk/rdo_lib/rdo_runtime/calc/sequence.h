@@ -107,6 +107,12 @@ DEFINE_RANDON_DISTRIBUTION(Normal, RandGeneratorNormal);
 DEFINE_RANDON_DISTRIBUTION(Exponential, RandGeneratorExponential);
 
 /*!
+  \class   RDOCalcSeqNextTriangular
+  \brief   Следующее значение псевдослучайной величины, распределенной по треугольному закону
+*/
+DEFINE_RANDON_DISTRIBUTION(Triangular, RandGeneratorTriangular);
+
+/*!
   \class   RDOCalcSeqNextByHist
   \brief   Следующее значение псевдослучайной величины, распределенной по заданной гистограмме
 */

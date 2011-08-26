@@ -94,6 +94,27 @@ inline double RandGeneratorNormal::next(double av, double var)
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RandGeneratorTriangular
+// --------------------------------------------------------------------------------
+inline RandGeneratorTriangular::RandGeneratorTriangular(long int seed)
+	: RandGenerator(seed)
+{}
+
+inline double RandGeneratorTriangular::next(double from, double top, double to)
+{
+	double result;
+	if (u01() > (top-from)/(to-from))
+	{
+		result = -(to-top)*(sqrt(u01()) - 1);
+	}
+	else
+	{
+		result = (top-from)*(sqrt(u01()) - 1);
+	}
+	return result + top;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RandGeneratorCommonNext
 // --------------------------------------------------------------------------------
 inline RandGeneratorCommonNext::RandGeneratorCommonNext()

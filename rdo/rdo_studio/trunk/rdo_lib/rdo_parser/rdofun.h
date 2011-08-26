@@ -319,11 +319,24 @@ private:
 	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
 };
 
-// --------------------------------------------------------------------------------
-// -------------------- Ãטסעמדנאללא
-// --------------------------------------------------------------------------------
-// -------------------- RDOFUNSequenceByHist
-// --------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceTriangular
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceTriangular: public RDOFUNSequence
+{
+DECLARE_FACTORY(RDOFUNSequenceTriangular);
+private:
+	RDOFUNSequenceTriangular(CREF(LPRDOFUNSequenceHeader) pHeader, int seed = 123456789);
+
+	virtual void           createCalcs   ();
+	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- Ãטסעמדנאללא
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceByHist
+// ----------------------------------------------------------------------------
 class RDOFUNSequenceByHist: public RDOFUNSequence
 {
 public:
