@@ -1,16 +1,17 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_base.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_base.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_base.h"
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
 #include "rdo_lib/rdo_parser/parser/std_fun.h"
@@ -21,13 +22,13 @@
 #include "rdo_lib/rdo_parser/rdofrm.h"
 #include "rdo_lib/rdo_parser/rdopmd.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainer
+// --------------------------------------------------------------------------------
 RDOParserContainer::RDOParserContainer()
 {}
 
@@ -84,10 +85,10 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 		case rdoModelObjects::obRSS : min = 300;  max = 399;  break;
 		case rdoModelObjects::obFUN : min = 400;  max = 499;  break;
 		case rdoModelObjects::obPMD : min = 500;  max = 599;  break;
-		case rdoModelObjects::obEVN : min = 600;  max = 699;  break;
-		case rdoModelObjects::obPAT : min = 700;  max = 799;  break;
-		case rdoModelObjects::obDPT : min = 800;  max = 899;  break;
-		case rdoModelObjects::obPRC : min = 900;  max = 999;  break;
+		case rdoModelObjects::obPRC : min = 600;  max = 699;  break;
+		case rdoModelObjects::obEVN : min = 700;  max = 799;  break;
+		case rdoModelObjects::obPAT : min = 800;  max = 899;  break;
+		case rdoModelObjects::obDPT : min = 900;  max = 999;  break;
 		case rdoModelObjects::obFRM : min = 1000; max = 1099; break;
 		case rdoModelObjects::obSMR : min = 1100; max = 1199; break;
 		case rdoModelObjects::obPOST: min = 1200; max = 1299; break;
@@ -95,9 +96,9 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerModel
+// --------------------------------------------------------------------------------
 RDOParserContainerModel::RDOParserContainerModel()
 	: RDOParserContainer()
 {
@@ -127,18 +128,18 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserSMRPost>::create());
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerSMRInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerSMRInfo
+// --------------------------------------------------------------------------------
 RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
 	: RDOParserContainer()
 {
 	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserContainerCorba
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserContainerCorba
+// --------------------------------------------------------------------------------
 RDOParserContainerCorba::RDOParserContainerCorba()
 	: RDOParserContainer()
 {

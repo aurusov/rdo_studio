@@ -5,15 +5,15 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_point.h"
 #include <vector>
 #include <algorithm>
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_point.h"
 
 namespace rp {
 
-// ----------------------------------------------------------------------------
-// ---------- polyline
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- polyline
+// --------------------------------------------------------------------------------
 class rect;
 
 class polyline: public std::vector< rp::point > {

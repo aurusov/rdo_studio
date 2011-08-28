@@ -1,32 +1,37 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_type.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_type.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      22.06.2008
+  \brief     Базовый тип данных
+  \indent    4T
+*/
 
-#ifndef _RDO_TYPE_H_
-#define _RDO_TYPE_H_
+#ifndef _LIB_RUNTIME_TYPE_H_
+#define _LIB_RUNTIME_TYPE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOValue;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOType
+  \brief     Базовый тип данных РДО
+*/
 OBJECT(RDOType)
 {
 public:
+	/*!
+	  \enum      TypeID
+	  \brief     Идентификатор типа данных
+	*/
 	enum TypeID
 	{
 		t_unknow = 0,
@@ -52,9 +57,11 @@ private:
 	TypeID  m_typeID;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- ATOM_TYPE
-// ----------------------------------------------------------------------------
+/// @todo внимание макрос!
+/*!
+  \def       DEFINE_ATOM_TYPE
+  \brief     Макрос для определения простых (атомарных) типов данных
+*/
 #define DEFINE_ATOM_TYPE(Type)        \
 class RDOType__##Type: public RDOType \
 {                                     \
@@ -65,18 +72,62 @@ public:                               \
 };                                    \
 extern rdo::intrusive_ptr<RDOType__##Type> g_##Type;
 
-DEFINE_ATOM_TYPE(unknow        );
-DEFINE_ATOM_TYPE(void          );
-DEFINE_ATOM_TYPE(identificator );
-DEFINE_ATOM_TYPE(int           );
-DEFINE_ATOM_TYPE(real          );
-DEFINE_ATOM_TYPE(bool          );
-DEFINE_ATOM_TYPE(string        );
-DEFINE_ATOM_TYPE(arrayIterator );
+/*!
+  \class     RDOType__unknow
+  \brief     Атомарный неизвестный тип данных
+*/
+DEFINE_ATOM_TYPE(unknow);
+
+/*!
+  \class     RDOType__void
+  \brief     Атомарный пусто тип данных
+*/
+DEFINE_ATOM_TYPE(void);
+
+/*!
+  \class     RDOType__identificator
+  \brief     Атомарный тип данных идентификатор
+*/
+DEFINE_ATOM_TYPE(identificator);
+
+/*!
+  \class     RDOType__int
+  \brief     Атомарный целочисленный тип данных
+*/
+DEFINE_ATOM_TYPE(int);
+
+/*!
+  \class     RDOType__real
+  \brief     Атомарный вещественный тип данных
+*/
+DEFINE_ATOM_TYPE(real);
+
+/*!
+  \class     RDOType__bool
+  \brief     Атомарный логический тип данных
+*/
+DEFINE_ATOM_TYPE(bool);
+
+/*!
+  \class     RDOType__string
+  \brief     Атомарный строковый тип данных
+*/
+DEFINE_ATOM_TYPE(string);
+
+/*!
+  \class     RDOType__arrayIterator
+  \brief     Атомарный тип данных итератор массива
+*/
+DEFINE_ATOM_TYPE(arrayIterator);
+
+/*!
+  \class     RDOType__matrixIterator
+  \brief     Атомарный тип данных итератор матрицы
+*/
 DEFINE_ATOM_TYPE(matrixIterator);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_type.inl"
 
-#endif //! _RDO_TYPE_H_
+#endif // _LIB_RUNTIME_TYPE_H_

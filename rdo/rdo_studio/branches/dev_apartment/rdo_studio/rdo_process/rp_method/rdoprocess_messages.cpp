@@ -1,11 +1,11 @@
-#include "stdafx.h"
-#include "rdoprocess_messages.h"
-#include "rdoprocess_object.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_messages.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
 
 namespace rp {
-// ----------------------------------------------------------------------------
-// ---------- RPMessages
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPMessages
+// --------------------------------------------------------------------------------
 msg::msg(): RPObject( NULL )
 {
 	connect( this, RP_OBJ_BEFOREDELETE );

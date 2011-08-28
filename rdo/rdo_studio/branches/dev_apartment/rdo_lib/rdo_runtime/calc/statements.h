@@ -1,37 +1,40 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : statements.h
- * author   : Чирков Михаил, Дмитрий Лущан
- * date     : 16.04.11
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      statements.h
+  \authors   Чирков Михаил
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.04.2011
+  \brief     Инструкции
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_STATEMENTS_H_
-#define _RDOCALC_STATEMENTS_H_
+#ifndef _LIB_RUNTIME_CALC_STATEMENTS_H_
+#define _LIB_RUNTIME_CALC_STATEMENTS_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcNoChange
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcNoChange
+  \brief   RDOCalc для константного параметра релевантного ресурса
+*/
 CALC(RDOCalcNoChange)
 {
 	DECLARE_FACTORY(RDOCalcNoChange)
 private:
 	RDOCalcNoChange();
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcIf
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcIf
+  \brief   RDOCalc для сокращенного условного оператора
+*/
 CALC(RDOCalcIf)
 {
 	DECLARE_FACTORY(RDOCalcIf)
@@ -41,12 +44,13 @@ private:
 	LPRDOCalc m_pCondition;
 	LPRDOCalc m_pStatement;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcIfElse
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcIfElse
+  \brief   RDOCalc для полного условного оператора
+*/
 CALC(RDOCalcIfElse)
 {
 	DECLARE_FACTORY(RDOCalcIfElse)
@@ -57,12 +61,13 @@ private:
 	LPRDOCalc m_pIfStatement;
 	LPRDOCalc m_pElseStatement;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFor
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcFor
+  \brief   RDOCalc для циклического оператора for
+*/
 CALC(RDOCalcFor)
 {
 	DECLARE_FACTORY(RDOCalcFor)
@@ -74,12 +79,13 @@ private:
 	LPRDOCalc m_pExpression;
 	LPRDOCalc m_pStatement;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunReturn
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcFunReturn
+  \brief   RDOCalc для оператора выхода из функции
+*/
 CALC(RDOCalcFunReturn)
 {
 	DECLARE_FACTORY(RDOCalcFunReturn)
@@ -87,21 +93,22 @@ private:
 	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
 
 	LPRDOCalc m_pReturn;
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunBreak
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcFunBreak
+  \brief   RDOCalc для оператора выхода из тела цикла
+*/
 CALC(RDOCalcFunBreak)
 {
 	DECLARE_FACTORY(RDOCalcFunBreak)
 private:
 	RDOCalcFunBreak();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_STATEMENTS_H_
+#endif // _LIB_RUNTIME_CALC_STATEMENTS_H_

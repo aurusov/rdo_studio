@@ -9,9 +9,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoStyle;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogTheme
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOLogTheme
+// --------------------------------------------------------------------------------
 RDOStudioChartViewTheme::RDOStudioChartViewTheme(): RDOStyleTheme()
 {
 	defaultColor    = RGB( 0x80, 0x80, 0x80 );
@@ -103,9 +103,9 @@ RDOStudioChartViewTheme RDOStudioChartViewTheme::getDefaultTheme()
 	return theme;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartViewFontsTicks
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartViewFontsTicks
+// --------------------------------------------------------------------------------
 RDOStudioChartViewFontsTicks::RDOStudioChartViewFontsTicks()
 {
 	titleFontSize  = 12;
@@ -154,9 +154,9 @@ void RDOStudioChartViewFontsTicks::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "tickWidth", tickWidth );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartViewStyle
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartViewStyle
+// --------------------------------------------------------------------------------
 RDOStudioChartViewStyle::RDOStudioChartViewStyle() : RDOStyleWithTheme()
 {
 }

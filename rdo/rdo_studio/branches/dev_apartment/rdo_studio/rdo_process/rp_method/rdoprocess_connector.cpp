@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdoprocess_connector.h"
-#include "rdoprocess_object_flowchart.h"
-#include "rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_connector.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG
@@ -10,9 +10,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RPConnector
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPConnector
+// --------------------------------------------------------------------------------
 RPConnector::RPConnector( RPObject* _parent, const rp::string& _name ):
 	RPObjectChart( _parent, _name ),
 	dock_begin( NULL ),
@@ -706,9 +706,9 @@ RPConnectorDock* RPConnector::getConnectedDock( const RPConnectorDock& dock ) co
 	return NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPConnectorDock
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPConnectorDock
+// --------------------------------------------------------------------------------
 const int RPConnectorDock::delta = 10;
 
 RPConnectorDock::~RPConnectorDock()

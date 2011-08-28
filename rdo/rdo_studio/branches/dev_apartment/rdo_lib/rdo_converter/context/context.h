@@ -1,31 +1,31 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : context.h
- * author   : Урусов Андрей
- * date     : 06.06.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      context.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      06.06.2010
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_RDOCONVERTER_CONTEXT_H_
 #define _CONVERTOR_RDOCONVERTER_CONTEXT_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
 class Converter;
 
-// ----------------------------------------------------------------------------
-// ---------- IContext
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- IContext
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(Context);
 
 S_INTERFACE(IContext)
@@ -38,9 +38,9 @@ S_INTERFACE(IContext)
 	LPContext             parser (PTR(Converter) pParser, CREF(RDOValue) value); \
 	rdoRuntime::LPRDOCalc getCalc();
 
-// ----------------------------------------------------------------------------
-// ---------- Context
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Context
+// --------------------------------------------------------------------------------
 OBJECT(Context) IS IMPLEMENTATION_OF(IContext)
 {
 public:

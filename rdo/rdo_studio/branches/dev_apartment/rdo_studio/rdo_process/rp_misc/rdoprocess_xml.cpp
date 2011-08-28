@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_xml.h"
+#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
 #include <comdef.h>
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -10,9 +10,9 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rp {
 
-// ----------------------------------------------------------------------------
-// ---------- RPXMLNode
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPXMLNode
+// --------------------------------------------------------------------------------
 RPXMLNode::~RPXMLNode()
 {
 	std::list< MSXML2::IXMLDOMAttribute* >::const_iterator iattr_it = iattrs.begin();
@@ -202,9 +202,9 @@ void RPXMLNode::insertAttribute( const rp::string& name, double value )
 	insertAttribute( name, rp::string::fromdouble(value) );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPXML
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPXML
+// --------------------------------------------------------------------------------
 RPXML* xml = NULL;
 
 RPXML::RPXML():

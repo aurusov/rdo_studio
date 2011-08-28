@@ -1,19 +1,19 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : document.h
- * author   : Урусов Андрей
- * date     : 01.11.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      document.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      01.11.2010
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_DOCUMENT_H_
 #define _CONVERTOR_DOCUMENT_H_
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <boost/shared_ptr.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/rdomacros.h"
 
@@ -21,13 +21,13 @@
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_converter/update/document_i.h"
 #include "rdo_lib/rdo_converter/update/update_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- Document
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Document
+// --------------------------------------------------------------------------------
 OBJECT(Document)
 	IS IMPLEMENTATION_OF(IDocument)
 {

@@ -1,26 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : unary.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      unary.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2011
+  \brief     Унарные операторы
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_UNARY_H_
-#define _RDOCALC_UNARY_H_
+#ifndef _LIB_RUNTIME_CALC_UNARY_H_
+#define _LIB_RUNTIME_CALC_UNARY_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/operation_type.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcUnaryBase
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcUnaryBase
+  \brief   Базовый класс для унарного оператора
+*/
 class RDOCalcUnaryBase: public RDOCalc
 {
 public:
@@ -33,9 +35,13 @@ protected:
 	LPRDOCalc m_pOperation;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcUnary
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcUnary
+  \tparam  ret_type  Возвращаемое значение
+  \tparam  pOperator Оператор
+  \tparam  CalcType  Тип бинарного оператора
+  \brief   Базовый унарный оператор
+*/
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 class RDOCalcUnary: public RDOCalcUnaryBase
 {
@@ -51,71 +57,74 @@ protected:
 	RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation);
 
 private:
-	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- Унарные операции
-// ----------------------------------------------------------------------------
+/*!
+  \typedef RDOCalcUMinus
+  \brief   Унарный оператор плюс
+*/
 typedef RDOCalcUnary<RDOValue, (&RDOValue::operator-), OperatorType::OT_ARITHM> RDOCalcUMinus;
+
+/*!
+  \typedef RDOCalcDoubleToInt
+  \brief   Оператор праобразования вещественного числа в целое
+*/
 typedef RDOCalcUnary<rsint,    (&RDOValue::getInt   ), OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
+/*!
+  \class   RDOCalcDoubleToIntByResult
+  \brief   Преобразование вещественного в целое как результат
+*/
 CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
 public:
-	void needRound()
-	{
-		m_round = true;
-	}
+	void needRound();
 
 private:
-	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
-		: m_pOperation(pOper)
-		, m_round     (false)
-	{}
+	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper);
 
 	rbool     m_round;
 	LPRDOCalc m_pOperation;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
+/*!
+  \class   RDOCalcCheckDiap
+  \brief   Проверка диапазона
+*/
 CALC_SUB(RDOCalcCheckDiap, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcCheckDiap)
 private:
-	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper)
-		: m_pOperation(pOper    )
-		, m_min_value (min_value)
-		, m_max_value (max_value)
-	{}
+	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper);
 
 	RDOValue  m_min_value;
 	RDOValue  m_max_value;
 	LPRDOCalc m_pOperation;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcInt (приведение к целому)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcInt
+  \brief   Приведение к целому
+*/
 CALC_SUB(RDOCalcInt, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcInt)
 private:
-	RDOCalcInt(CREF(LPRDOCalc) pOperation)
-		: m_pOperation(pOperation)
-	{}
+	RDOCalcInt(CREF(LPRDOCalc) pOperation);
 
 	LPRDOCalc m_pOperation;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/unary.inl"
 
-#endif //! _RDOCALC_UNARY_H_
+#endif // _LIB_RUNTIME_CALC_UNARY_H_

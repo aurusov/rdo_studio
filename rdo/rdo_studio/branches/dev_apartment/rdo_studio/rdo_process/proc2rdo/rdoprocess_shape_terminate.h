@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
 
 class RPShapeTerminateMJ : public RPShape_MJ
@@ -23,7 +23,7 @@ public:
 	tstring m_name;
 	int     m_term_inc;
 
-	LPRPShapeDataBlockTerminate params;
+	LPRPShapeDataBlockTerminate m_pParams;
 
 	RPShapeTerminateMJ( RPObject* parent );
 	virtual ~RPShapeTerminateMJ();

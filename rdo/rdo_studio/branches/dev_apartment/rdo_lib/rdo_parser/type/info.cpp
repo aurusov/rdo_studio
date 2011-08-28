@@ -1,26 +1,26 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : info.cpp
- * author   : Урусов Андрей
- * date     : 09.04.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      info.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      09.04.2011
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/type/info.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- TypeInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- TypeInfo
+// --------------------------------------------------------------------------------
 TypeInfo::TypeInfo(CREF(LPTypeInfo) pTypeInfo)
 	: m_pType  (pTypeInfo->m_pType  )
 	, m_srcInfo(pTypeInfo->m_srcInfo)
@@ -46,7 +46,7 @@ void TypeInfo::init()
 
 LPTypeInfo TypeInfo::type_cast(CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const
 {
-	//! TODO: TypeInfo убрать параметр из src_info()
+	/// @todo TypeInfo убрать параметр из src_info()
 	LPRDOType pType = type()->type_cast(pFrom->type(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
 	ASSERT(pType);
 	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType, this->src_info(src_info));

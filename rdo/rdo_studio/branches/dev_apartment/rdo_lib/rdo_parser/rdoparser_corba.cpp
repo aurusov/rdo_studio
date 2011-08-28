@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_corba.h
- * author   : Раевнев Никита, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_corba.h
+  \authors   Раевнев Никита
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-//! ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
 #ifdef CORBA_ENABLE
-//! ====================================================================== INCLUDES
-//! ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #pragma warning(disable: 4996)
 #include "rdo_lib/rdo_parser/rdoparser_corba.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
@@ -20,7 +21,7 @@
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_corba/RDOCorba.hh"
 #pragma warning(default: 4996)
-//! ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define file1 "C:\\RTP.txt"
 #define file2 "C:\\RSS.txt"

@@ -1,22 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdortp.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdortp.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -30,9 +31,9 @@ int cnv_rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void cnv_rtperror(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDORTPResType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORTPResType
+// --------------------------------------------------------------------------------
 RDORTPResType::RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
@@ -84,9 +85,9 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 }
 
 /*
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
+// --------------------------------------------------------------------------------
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 	RDOParserObject(pParser)
 {
@@ -102,9 +103,9 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 		it++;
 	}
 }
-// ----------------------------------------------------------------------------
-// ---------- RDORTPFuzzyTerm - нечеткий термин
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORTPFuzzyTerm - нечеткий термин
+// --------------------------------------------------------------------------------
 RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
 	RDOParserObject(pParser)
 {

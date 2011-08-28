@@ -1,26 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_keyboard.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.08.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_keyboard.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      18.08.2010
+  \brief     Клавиатурные операции
+  \indent    4T
+*/
 
-#ifndef _RDO_KEYBOARD_H_
-#define _RDO_KEYBOARD_H_
+#ifndef _LIB_RUNTIME_KEYBOARD_H_
+#define _LIB_RUNTIME_KEYBOARD_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdo_keyboard_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOKeyboard
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOKeyboard
+  \brief     Клавиатурная операция
+*/
 class RDOKeyboard: public RDOOperation, public IKeyboard
 {
 DEFINE_IFACTORY(RDOKeyboard);
@@ -30,19 +32,19 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, const std::string& name );
-	RDOKeyboard( RDORuntime* runtime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
+	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(tstring) name);
+	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
 	virtual ~RDOKeyboard();
 
-	bool m_shift;
-	bool m_control;
-	int  m_scan_code;
+	rbool m_shift;
+	rbool m_control;
+	int   m_scan_code;
 
-	virtual bool choiceFrom( RDOSimulator* sim );
+	virtual rbool choiceFrom(CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IKeyboard;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_KEYBOARD_H_
+#endif // _LIB_RUNTIME_KEYBOARD_H_

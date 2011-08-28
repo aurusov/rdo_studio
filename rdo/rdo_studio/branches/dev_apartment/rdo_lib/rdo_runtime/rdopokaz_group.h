@@ -1,26 +1,26 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdopokaz_group.h
- * author   : Урусов Андрей
- * date     : 04.03.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdopokaz_group.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      04.03.2011
+  \brief     Группы собираемых показателей
+  \indent    4T
+*/
 
-#ifndef _RDOPOKAZ_GROUP_H_
-#define _RDOPOKAZ_GROUP_H_
+#ifndef _LIB_RUNTIME_POKAZ_GROUP_H_
+#define _LIB_RUNTIME_POKAZ_GROUP_H_
 
-// =========================================================================== PCH
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdopokaz_group_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDPokazGroup
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOPMDPokazGroup
+  \brief     Группа собираемых при моделировании показателей
+*/
 class RDOPMDPokazGroup: public IPokaz, public IPokazGroup
 {
 DEFINE_IFACTORY(RDOPMDPokazGroup);
@@ -33,6 +33,10 @@ private:
 	RDOPMDPokazGroup(CREF(tstring) name);
 	virtual ~RDOPMDPokazGroup();
 
+	/*!
+	  \enum      State
+	  \brief     Состояние группы показателей
+	*/
 	enum State
 	{
 		RGS_STOP,
@@ -53,4 +57,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOPOKAZ_GROUP_H_
+#endif // _LIB_RUNTIME_POKAZ_GROUP_H_

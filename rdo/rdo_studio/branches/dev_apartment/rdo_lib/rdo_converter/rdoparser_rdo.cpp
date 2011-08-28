@@ -1,16 +1,17 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_rdo.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_rdo.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
@@ -25,13 +26,13 @@
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_lib/rdo_runtime/calc/std_fun.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRDOItem
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRDOItem
+// --------------------------------------------------------------------------------
 RDOParserRDOItem::RDOParserRDOItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
 	: RDOParserItem(type, parser_fun, error_fun, lexer_fun)
 	, m_pLexer(NULL)
@@ -86,9 +87,9 @@ ruint RDOParserRDOItem::lexer_loc_pos()
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRSS
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRSS
+// --------------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS()
 	: RDOParserRDOItem(rdoModelObjectsConvertor::RSS_IN, cnv_rssparse, cnv_rsserror, cnv_rsslex)
 {}
@@ -101,9 +102,9 @@ void RDOParserRSS::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
 	RDOParserRDOItem::parse(pParser, streamIn);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRSSPost
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRSSPost
+// --------------------------------------------------------------------------------
 RDOParserRSSPost::RDOParserRSSPost()
 	: RDOParserItem(rdoModelObjectsConvertor::RSS_IN, NULL, NULL, NULL)
 {
@@ -136,9 +137,9 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 #endif
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSTDFUN
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserSTDFUN
+// --------------------------------------------------------------------------------
 RDOParserSTDFUN::RDOParserSTDFUN()
 	: RDOParserItem(rdoModelObjectsConvertor::FUN_IN, NULL, NULL, NULL)
 {

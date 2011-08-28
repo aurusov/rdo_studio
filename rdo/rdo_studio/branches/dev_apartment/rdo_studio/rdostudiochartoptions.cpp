@@ -15,9 +15,9 @@ static char THIS_FILE[] = __FILE__;
 #define MAX_X_Y     100
 #define MAX_M       6
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartOptionsChart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartOptionsChart
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptionsChart, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioChartOptionsChart)
 	ON_EN_CHANGE(IDC_CHART_TITLE_EDIT, OnUpdateModify)
@@ -160,9 +160,9 @@ void RDOStudioChartOptionsChart::apply() const
 	sheet->view->GetDocument()->SetTitle( m_ChartTitle );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartOptionsSeries
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartOptionsSeries
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptionsSeries, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioChartOptionsSeries)
 	ON_EN_CHANGE(IDC_SERIE_TITLE_EDIT, OnUpdateModify)
@@ -377,9 +377,9 @@ void RDOStudioChartOptionsSeries::OnColorButton()
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartOptions
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartOptions
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptions, CPropertySheet)
 	//{{AFX_MSG_MAP(RDOStudioChartOptions)
 	ON_WM_HELPINFO()

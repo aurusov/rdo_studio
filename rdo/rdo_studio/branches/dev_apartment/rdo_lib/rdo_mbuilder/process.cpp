@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdodpt.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdodpt.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_mbuilder/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_mbuilder/process.h"
 
 #include "rdo_lib/rdo_parser/rdoparser.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_MBUILDER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- BlockForQueue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- BlockForQueue
+// --------------------------------------------------------------------------------
 void BlockForQueue::createRes(RDOResType rtp, CREF(tstring) res_name)
 {
 	// Получили список всех ресурсов
@@ -60,16 +61,16 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	// Создадим параметр типа integer
 	rtp.m_params.append(RDOResType::Param(rtp_param_name, rdo::Factory<rdoParse::RDOType__int>::create(), default));
 	// Добавим тип ресурса
-	if (!rtpList.append(rtp))
+	if (!rtpList.append<rdoRuntime::RDOResourceType>(rtp))
 	{
 		rdoParse::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 	}
 	return rtp;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- BlockForSeize
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- BlockForSeize
+// --------------------------------------------------------------------------------
 rbool BlockForSeize::checkType(RDOResType rtp, CREF(rdoParse::RDOParserSrcInfo) info)
 {
 	// "Состояние"
@@ -137,7 +138,7 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 		default
 	));
 	// Добавим тип ресурса
-	if (!rtpList.append(rtp))
+	if (!rtpList.append<rdoRuntime::RDOResourceTypeProccess>(rtp))
 	{
 		rdoParse::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 	}

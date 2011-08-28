@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "rdoprocess_pixmap.h"
-#include "mctranspblt/McTransparentBlit.h"
-#include "clonebitmap/CloneBitmap.h"
+#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "rdo_studio/rdo_process/rp_misc/mctranspblt/McTransparentBlit.h"
+#include "rdo_studio/rdo_process/rp_misc/clonebitmap/CloneBitmap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -9,9 +9,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RPPixmap
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPPixmap
+// --------------------------------------------------------------------------------
 RPPixmap::RPPixmap( char* _xpm[] ):
 	xpm( _xpm ),
 	transparent( ::GetSysColor( COLOR_BTNFACE ) ),

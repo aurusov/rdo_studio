@@ -1,29 +1,29 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdorepository.cpp
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdorepository.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
-#include "thirdparty/pugixml/src/pugixml.hpp"
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_repository/rdorepository.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdotime.h"
-// ===============================================================================
+#include "thirdparty/pugixml/src/pugixml.hpp"
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_REPOSITORY_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOThreadRepository
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadRepository
+// --------------------------------------------------------------------------------
 RDOThreadRepository::RDOThreadRepository()
 	: RDOThreadMT    (_T("RDOThreadRepository"))
 	, m_modelName    (_T("")                   )

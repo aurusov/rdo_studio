@@ -1,20 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdofile.cpp
- * author   : Урусов Андрей
- * date     : 07.11.2020
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdofile.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      07.11.2020
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <Windows.h>
 #include <boost/filesystem.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdocommon.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
 
@@ -99,7 +99,7 @@ rbool File::trimLeft(CREF(tstring) name)
 		}
 		boost::filesystem::rename(from, to);
 	}
-	catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>))
+	catch (CREF(boost::system::error_code))
 	{
 		return false;
 	}

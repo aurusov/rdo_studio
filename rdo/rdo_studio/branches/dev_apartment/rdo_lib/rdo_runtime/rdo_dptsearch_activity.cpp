@@ -1,23 +1,26 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_dptsearch_activity.cpp
- * author   : Урусов Андрей
- * date     : 08.08.2009
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_dptsearch_activity.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      08.08.2009
+  \brief     Активности точки принятия решения DPTSearch
+  \indent    4T
+*/
 
-// =========================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSearchActivity
+// --------------------------------------------------------------------------------
 RDODPTSearchActivity::RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, CREF(LPRDOCalc) pCost)
 	: RDOTraceableObject(false    )
 	, m_rule            (rule     )
@@ -34,9 +37,9 @@ REF(LPIRule) RDODPTSearchActivity::rule()
 	return m_rule;
 }
 
-double RDODPTSearchActivity::cost(PTR(RDOSimulator) runtime)
+double RDODPTSearchActivity::cost(CREF(LPRDORuntime) pRuntime)
 {
-	return m_pCost->calcValue(static_cast<PTR(RDORuntime)>(runtime)).getDouble();
+	return m_pCost->calcValue(pRuntime).getDouble();
 }
 
 IDPTSearchActivity::ValueTime RDODPTSearchActivity::valueTime() const

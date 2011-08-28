@@ -1,28 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : enum.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      enum.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOPARSER_TYPE_ENUM_H_
 #define _RDOPARSER_TYPE_ENUM_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/type/type.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_enum.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEnumType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEnumType
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOEnumType);
 
 class RDOEnumType: public RDOType

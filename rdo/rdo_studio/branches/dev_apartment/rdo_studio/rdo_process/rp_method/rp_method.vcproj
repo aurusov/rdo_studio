@@ -46,7 +46,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="rdo_studio\rdo_process\rp_method\stdafx.h"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -108,7 +108,7 @@
 				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="rdo_studio\rdo_process\rp_method\stdafx.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

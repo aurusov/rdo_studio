@@ -1,11 +1,12 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdofun.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 20.02.2003
- * bref     : Синтаксис функций, констант и последовательностей
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdofun.y
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     Синтаксис функций, констант и последовательностей
+  \indent    4T
+*/
 
 %{
 #define YYPARSE_PARAM lexer
@@ -52,6 +53,7 @@
 %token RDO_uniform
 %token RDO_exponential
 %token RDO_normal
+%token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
 
@@ -142,8 +144,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -199,10 +199,10 @@
 %token RDO_ASSIGN
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
@@ -217,7 +217,8 @@
 #include "rdo_lib/rdo_runtime/calc/locvar.h"
 #include "rdo_lib/rdo_runtime/calc/braces.h"
 #include "rdo_lib/rdo_runtime/calc/statements.h"
-// ===============================================================================
+#include "rdo_lib/rdo_runtime/calc/array.h"
+// --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
@@ -254,9 +255,9 @@ fun_list
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Константы
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Константы
+// --------------------------------------------------------------------------------
 fun_consts
 	: /* empty */
 	| RDO_Constant fun_const_body RDO_End
@@ -297,9 +298,9 @@ fun_const_param_desc
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Последовательности и функции
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Последовательности и функции
+// --------------------------------------------------------------------------------
 fun_func_seq
 	: /* empty */
 	| fun_func_seq fun_func_descr
@@ -310,9 +311,9 @@ fun_func_seq
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Функции
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Функции
+// --------------------------------------------------------------------------------
 fun_func_descr
 	: fun_func_header fun_func_footer
 	{
@@ -539,6 +540,11 @@ statement
 	}
 	| equal_statement ';'
 	| equal_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| set_array_item_statement ';'
+	| set_array_item_statement error
 	{
 		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -854,6 +860,52 @@ equal_statement
 	}
 	;
 
+set_array_item_statement
+	: RDO_IDENTIF '[' fun_arithm ']' '=' fun_arithm
+	{
+		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		LPRDOFUNArithm pArithmInd   = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($6);
+		if (pArrayArithm->typeID() != rdoRuntime::RDOType::t_array)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+		}
+
+		LPRDOType pType = pArrayArithm->typeInfo()->type();
+		ASSERT(pType);
+		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
+		ASSERT(pArrayType);
+
+		LPTypeInfo pItemType = pArrayType->getItemType()->type_cast(pRightArithm->typeInfo(),RDOParserSrcInfo(@1));
+		ASSERT(pItemType);
+
+		rdoRuntime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
+		ASSERT(pArrayItemCalc);
+		
+		tstring               paramName    = RDOVALUE($1)->getIdentificator();
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+		rdoRuntime::LPRDOCalc pCalc;
+		if (pLocalVariable)
+		{
+
+			pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_EQUAL> >::create(paramName, pArrayItemCalc);
+
+		}
+		else {NEVER_REACH_HERE;}
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
 local_variable_declaration
 	: type_declaration init_declaration_list
 	{
@@ -1094,7 +1146,7 @@ init_declaration
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(variableName->getIdentificator());
 		ASSERT(pCalcCreateLocalVariable);
 
-		rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(variableName->getIdentificator(), pArithm->calc());
+		rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(variableName->getIdentificator(), pArithm->createCalc(pParam));
 		ASSERT(pCalcSetLocalVariable);
 
 		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
@@ -1390,13 +1442,14 @@ fun_func_list_value
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Последовательности
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Последовательности
+// --------------------------------------------------------------------------------
 fun_seq_descr
 	: fun_seq_uniform
 	| fun_seq_exponential
 	| fun_seq_normal
+	| fun_seq_triangular
 	| fun_seq_by_hist
 	| fun_seq_enumerative
 	;
@@ -1434,9 +1487,9 @@ fun_seq_header
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Датчики случайных чисел
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Датчики случайных чисел
+// --------------------------------------------------------------------------------
 fun_seq_uniform
 	: fun_seq_header RDO_uniform RDO_End
 	{
@@ -1519,6 +1572,35 @@ fun_seq_normal
 		PARSER->error().error( @4, _T("После базы ожидается ключевое слово $End"));
 	}
 	| fun_seq_header RDO_normal error
+	{
+		PARSER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+	}
+	;
+
+fun_seq_triangular
+	: fun_seq_header RDO_triangular RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceTriangular>::create(pHeader);
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_triangular RDO_INT_CONST RDO_End
+	{
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = PARSER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
+		ASSERT(pHeader);
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceTriangular>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		ASSERT(pSequence);
+		pSequence->createCalcs();
+		$$ = PARSER->stack().push(pSequence);
+	}
+	| fun_seq_header RDO_triangular RDO_INT_CONST error
+	{
+		PARSER->error().error( @4, _T("После базы ожидается ключевое слово $End"));
+	}
+	| fun_seq_header RDO_triangular error
 	{
 		PARSER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
 	}
@@ -1959,9 +2041,9 @@ fun_seq_by_hist
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Перечень значений
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Перечень значений
+// --------------------------------------------------------------------------------
 fun_seq_enumerative
 	: fun_seq_enumerative_body RDO_End
 	{
@@ -2076,9 +2158,9 @@ fun_seq_enumerative_body
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Описание типа параметра
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Описание типа параметра
+// --------------------------------------------------------------------------------
 param_type
 	: RDO_integer param_type_range
 	{
@@ -2446,11 +2528,11 @@ array_item
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Общие составные токены для всех объектов РДО
-// ----------------------------------------------------------------------------
-// ---------- Логические выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Общие составные токены для всех объектов РДО
+// --------------------------------------------------------------------------------
+// -------------------- Логические выражения
+// --------------------------------------------------------------------------------
 fun_logic_eq
 	: RDO_eq { $$ = RDO_eq; }
 	;
@@ -2581,9 +2663,9 @@ fun_logic
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Арифметические выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Арифметические выражения
+// --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
 	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
@@ -2651,11 +2733,64 @@ fun_arithm
 		info.setSrcPos(@1, @2);
 		$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
 	}
+	| RDO_IDENTIF '.' RDO_Size
+	{
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		rdoRuntime::LPRDOCalc pCalc;
+		if(pArithm->typeID() == rdoRuntime::RDOType::t_array)
+		{
+			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
+			ASSERT(pCalc);
+		}
+		else
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+		}
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPRDOFUNArithm pArithmArraySize = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithmArraySize);
+
+		$$ = PARSER->stack().push(pArithmArraySize);
+	}
+	| RDO_IDENTIF '[' fun_arithm ']'
+	{
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
+		if (pArithm->typeID() != rdoRuntime::RDOType::t_array)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+		}
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		ASSERT(pCalc);
+
+		LPRDOType pType = pArithm->typeInfo()->type();
+		ASSERT(pType);
+		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
+		ASSERT(pArrayType);
+
+		LPTypeInfo pItemType = pArrayType->getItemType();
+		ASSERT(pItemType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pItemType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPRDOFUNArithm pArithmArrayItem = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithmArrayItem);
+
+		$$ = PARSER->stack().push(pArithmArrayItem);
+	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Функции и последовательности
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Функции и последовательности
+// --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
 	{
@@ -2718,9 +2853,9 @@ fun_arithm_func_call_pars
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Групповые выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Групповые выражения
+// --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
 	| RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
@@ -2777,9 +2912,9 @@ fun_group
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Select
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Select
+// --------------------------------------------------------------------------------
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{

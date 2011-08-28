@@ -6,8 +6,8 @@
 #endif // _MSC_VER > 1000
 // rdoprocess_shape_terminate_dlg1_MJ.h : header file
 //
-#include "../../resource.h"
-#include "rdoprocess_shape_terminate.h"
+#include "rdo_studio/resource.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_terminate.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeTerminateDlg1_MJ dialog
 

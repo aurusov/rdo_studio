@@ -1,25 +1,25 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : watch.cpp
- * author   : Урусов Андрей
- * date     : 04.03.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      watch.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      04.03.2011
+  \brief     Собираемые показатели
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/watch.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcWatchGroupStart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcWatchGroupStart
+// --------------------------------------------------------------------------------
 RDOCalcWatchGroupStart::RDOCalcWatchGroupStart(CREF(LPIPokazGroup) pResultGroup)
 	: m_pResultGroup(pResultGroup)
 {
@@ -29,16 +29,16 @@ RDOCalcWatchGroupStart::RDOCalcWatchGroupStart(CREF(LPIPokazGroup) pResultGroup)
 RDOCalcWatchGroupStart::~RDOCalcWatchGroupStart()
 {}
 
-REF(RDOValue) RDOCalcWatchGroupStart::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcWatchGroupStart::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pResultGroup);
 	m_pResultGroup->onStart(pRuntime);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcWatchGroupStop
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcWatchGroupStop
+// --------------------------------------------------------------------------------
 RDOCalcWatchGroupStop::RDOCalcWatchGroupStop(CREF(LPIPokazGroup) pResultGroup)
 	: m_pResultGroup(pResultGroup)
 {
@@ -48,7 +48,7 @@ RDOCalcWatchGroupStop::RDOCalcWatchGroupStop(CREF(LPIPokazGroup) pResultGroup)
 RDOCalcWatchGroupStop::~RDOCalcWatchGroupStop()
 {}
 
-REF(RDOValue) RDOCalcWatchGroupStop::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcWatchGroupStop::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pResultGroup);
 	m_pResultGroup->onStop(pRuntime);

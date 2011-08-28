@@ -1,60 +1,79 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_exception.h
- * author   : Урусов Андрей
- * date     : 22.06.2008
- * bref     : Определение исключений
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_exception.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      22.06.2008
+  \brief     Определение исключений
+  \indent    4T
+*/
 
-#ifndef _RDO_EXCEPTION_H_
-#define _RDO_EXCEPTION_H_
+#ifndef _LIB_RUNTIME_EXCEPTION_H_
+#define _LIB_RUNTIME_EXCEPTION_H_
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOException
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOException
+  \brief     Ошибка
+*/
 class RDOException
 {
 public:
-	RDOException(const std::string& message): m_message(message) {}
-	virtual std::string getType() const = 0;
+	RDOException(CREF(tstring) message);
+	virtual tstring getType() const = 0;
 	
-	const std::string& message() const { return m_message; }
+	CREF(tstring) message() const;
 
 private:
-	std::string m_message;
+	tstring m_message;
 };
 
+/*!
+  \class     RDORuntimeException
+  \brief     Ошибка времени выполнения
+*/
 class RDORuntimeException: public RDOException
 {
 public:
-	RDORuntimeException( const std::string& message ): RDOException( message ) {}
-	virtual std::string getType() const { return "RDO Runtime Error"; }
+	RDORuntimeException(CREF(tstring) message);
+	virtual tstring getType() const;
 };
 
+/*!
+  \class     RDOTypeException
+  \brief     Ошибка в типе
+*/
 class RDOTypeException: public RDORuntimeException
 {
 public:
-	RDOTypeException( const std::string& message = "" ): RDORuntimeException( message ) {}
-	virtual std::string getType() const { return "RDOType Error"; }
+	RDOTypeException(CREF(tstring) message = "");
+	virtual tstring getType() const;
 };
 
+/*!
+  \class     RDOValueException
+  \brief     Ошибка в значении
+*/
 class RDOValueException: public RDORuntimeException
 {
 public:
-	RDOValueException( const std::string& message = "" ): RDORuntimeException( message ) {}
-	virtual std::string getType() const { return "RDOValue Error"; }
+	RDOValueException(CREF(tstring) message = "");
+	virtual tstring getType() const;
 };
 
+/*!
+  \class     RDOInternalException
+  \brief     Внутренняя ошибка
+*/
 class RDOInternalException: public RDORuntimeException
 {
 public:
-	RDOInternalException( const std::string& message ): RDORuntimeException( message ) {}
-	virtual std::string getType() const { return "RDO Internal Error"; }
+	RDOInternalException(CREF(tstring) message);
+	virtual tstring getType() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_EXCEPTION_H_
+#include "rdo_lib/rdo_runtime/rdo_exception.inl"
+
+#endif // _LIB_RUNTIME_EXCEPTION_H_

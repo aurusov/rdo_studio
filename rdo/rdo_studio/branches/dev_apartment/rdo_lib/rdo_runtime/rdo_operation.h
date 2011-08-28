@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_operation.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.08.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_operation.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      18.08.2010
+  \brief     Операции
+  \indent    4T
+*/
 
-#ifndef _RDO_OPERATION_H_
-#define _RDO_OPERATION_H_
+#ifndef _LIB_RUNTIME_OPERATION_H_
+#define _LIB_RUNTIME_OPERATION_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/simtrace.h"
@@ -19,13 +20,14 @@
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdo_operation_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOperation
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOOperation
+  \brief     Операция - модифицированное продукционное правило
+*/
 class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior, public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
@@ -43,18 +45,18 @@ friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
 protected:
-	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, const std::string& name );
-	RDOOperation( RDORuntime* runtime, RDOPatternOperation* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name);
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
 	virtual ~RDOOperation();
 	DECLARE_IOperation;
 
 private:
-	RDOOperation(PTR(RDORuntime) runtime, CREF(RDOOperation) originForClone);
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone);
 
 	typedef std::vector<LPIOperation> CloneList;
 	CloneList m_cloneList;
 
-	bool      haveAdditionalCondition;
+	rbool     haveAdditionalCondition;
 	LPRDOCalc additionalCondition;
 
 	int m_operId;
@@ -65,4 +67,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_OPERATION_H_
+#endif // _LIB_RUNTIME_OPERATION_H_

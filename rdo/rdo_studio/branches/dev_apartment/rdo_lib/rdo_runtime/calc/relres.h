@@ -1,26 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : relres.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 28.12.09
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      relres.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.12.2009
+  \brief     RDOCalc для подбора релевантных ресурсов
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_RELRES_H_
-#define _RDOCALC_RELRES_H_
+#ifndef _LIB_RUNTIME_CALC_REL_RES_H_
+#define _LIB_RUNTIME_CALC_REL_RES_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/equaltype.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOGetRelResParamCalc
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOGetRelResParamCalc
+  \brief   Параметр релевантного ресурса
+*/
 CALC(RDOGetRelResParamCalc)
 {
 DECLARE_FACTORY(RDOGetRelResParamCalc)
@@ -30,12 +32,14 @@ private:
 	ruint m_relResID;
 	ruint m_paramID;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelResParamCalc
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOSetRelResParamCalc
+  \tparam  equalType Тип присваивания
+  \brief   RDOCalc для установки значения параметра релевантного ресурса
+*/
 template <EqualType equalType>
 class RDOSetRelResParamCalc: public RDOCalc
 {
@@ -48,12 +52,13 @@ protected:
 	ruint     m_paramID;
 	LPRDOCalc m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelResParamDiapCalc
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOSetRelResParamDiapCalc
+  \brief   RDOCalc ограничения диапазона параметра
+*/
 CALC(RDOSetRelResParamDiapCalc)
 {
 DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
@@ -66,12 +71,13 @@ private:
 	RDOValue  m_minValue;
 	RDOValue  m_maxValue;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEraseResRelCalc
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOEraseResRelCalc
+  \brief   RDOCalc для удаления релевантного ресурса
+*/
 CALC(RDOEraseResRelCalc)
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)
@@ -84,11 +90,11 @@ private:
 	ruint   m_relResID;
 	tstring m_relResName;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/relres.inl"
 
-#endif //! _RDOCALC_RELRES_H_
+#endif // _LIB_RUNTIME_CALC_REL_RES_H_

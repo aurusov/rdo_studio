@@ -1,16 +1,17 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdosimwin.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdosimwin.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOSIMWIN_H_
 #define _RDOSIMWIN_H_
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #pragma warning(disable : 4786)
 #include <string>
 #include <sstream>
@@ -20,7 +21,7 @@
 #else
 #include <windows.h>
 #endif
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_kernel/rdokernel.h"
@@ -29,7 +30,7 @@
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
 #include "rdo_lib/rdo_simulator/procgui.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
@@ -69,9 +70,9 @@ CLOSE_RDO_ANIMATION_NAMESPACE
 
 namespace rdoCorba {
 
-// --------------------------------------------------------------------
-// ---------- RDOThreadCorba
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadCorba
+// --------------------------------------------------------------------------------
 class RDOThreadCorba: public RDOThreadMT
 {
 public:
@@ -98,12 +99,11 @@ CLOSE_RDO_SIMULATOR_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDORuntime;
 class RDOResult;
 
-// --------------------------------------------------------------------
-// ---------- RDOThreadRunTime
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadRunTime
+// --------------------------------------------------------------------------------
 OBJECT(RDOThreadRunTime)
 	IS  INSTANCE_OF      (RDOThreadMT )
 	AND IMPLEMENTATION_OF(IThreadProxy)
@@ -164,9 +164,9 @@ CLOSE_RDO_PARSER_NAMESPACE
 
 OPEN_RDO_SIMULATOR_NAMESPACE
 
-// --------------------------------------------------------------------
-// ---------- RDOThreadSimulator
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadSimulator
+// --------------------------------------------------------------------------------
 class RDOThreadSimulator: public RDOThreadMT
 {
 friend class rdoRuntime::RDOThreadRunTime;
@@ -198,7 +198,7 @@ public:
 
 private:
 	rdoParse::LPRDOParser           m_pParser;
-	PTR(rdoRuntime::RDORuntime)     m_pRuntime;
+	rdoRuntime::LPRDORuntime        m_pRuntime;
 	rbool                           m_canTrace;
 	LPProcGUIProcess                m_pGUIProcess;
 	LPProcGUIBlock                  m_pBlock;
@@ -270,9 +270,9 @@ public:
 	};
 };
 
-// --------------------------------------------------------------------
-// ---------- RDOThreadCodeComp
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadCodeComp
+// --------------------------------------------------------------------------------
 class RDOThreadCodeComp: public RDOThreadMT
 {
 protected:

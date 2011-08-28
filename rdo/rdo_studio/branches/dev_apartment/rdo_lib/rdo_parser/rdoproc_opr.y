@@ -1,11 +1,12 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoproc_opr.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 24.03.2008
- * bref     : Синтаксис процессов. based on rdodpt_opr.y
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoproc_opr.y
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      24.03.2008
+  \brief     Синтаксис процессов. based on rdodpt_opr.y
+  \indent    4T
+*/
 
 %{
 #define YYPARSE_PARAM lexer
@@ -52,6 +53,7 @@
 %token RDO_uniform
 %token RDO_exponential
 %token RDO_normal
+%token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
 
@@ -142,8 +144,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -199,10 +199,10 @@
 %token RDO_ASSIGN
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
@@ -211,7 +211,7 @@
 #include "rdo_lib/rdo_parser/rdorss.h"
 
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
@@ -233,17 +233,17 @@ OPEN_RDO_PARSER_NAMESPACE
 
 %%
 
-// ----------------------------------------------------------------------------
-// ---------- General part
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- General part
+// --------------------------------------------------------------------------------
 prc_main
 	: /* empty */
 	| prc_main dpt_process_end
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Process
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Process
+// --------------------------------------------------------------------------------
 dpt_process
 	: dpt_process_header dpt_process_input
 	;
@@ -253,15 +253,24 @@ dpt_process_header
 	;
 
 dpt_process_begin
-	: RDO_Process
+	: RDO_Process RDO_IDENTIF RDO_IDENTIF
 	{
 		LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
 		if (pProcess && !pProcess->closed())
 		{
 			PARSER->error().error(pProcess->src_info(), _T("Незакрыт предыдущий блок $Process"));
 		}
-		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, _T("Process")));
+
+		tstring transactName = P_RDOVALUE($3)->value().getIdentificator();
+		LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
+
+		tstring procName = P_RDOVALUE($2)->value().getIdentificator();
+		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, procName), procName, transactType);
 		ASSERT(pProcess);
+	}
+	| RDO_Process error
+	{
+		PARSER->error().error(@2, @2, _T("Ошибка в процессе!"));
 	}
 	;
 
@@ -327,40 +336,6 @@ dpt_process_line
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
-		tstring rtp_name       = _T("Транзакты");
-		tstring rtp_param_name = _T("Время_создания");
-
-		// Получили список всех типов ресурсов
-		rdoMBuilder::RDOResTypeList rtpList(PARSER);
-		// Найти тип ресурса, если его нет, то создать
-		if (!rtpList[rtp_name].exist())
-		{
-			// Создадим тип ресурса
-			rdoMBuilder::RDOResType rtp(rtp_name);
-			// Добавим параметр Время_создания
-			rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
-			// Добавим тип ресурса
-			if (!rtpList.append(rtp))
-			{
-				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
-			}
-			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
-		}
-		else
-		{
-			// Тип найден, проверим его на наличие вещественного параметра
-			CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
-			if (!rtp.m_params[rtp_param_name].exist())
-			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет требуемого параметра '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
-			}
-			// Параметр есть, надо проверить на тип
-			if (rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real)
-			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является перечислимым типом"), rtp.name().c_str(), rtp_param_name.c_str()));
-			}
-			rdoRuntime::RDOPROCTransact::s_typeID = rtp.id();
-		}
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), pArithm->createCalc());
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
@@ -600,11 +575,11 @@ dpt_process_end
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Общие составные токены для всех объектов РДО
-// ----------------------------------------------------------------------------
-// ---------- Логические выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Общие составные токены для всех объектов РДО
+// --------------------------------------------------------------------------------
+// -------------------- Логические выражения
+// --------------------------------------------------------------------------------
 fun_logic_eq
 	: RDO_eq { $$ = RDO_eq; }
 	;
@@ -735,9 +710,9 @@ fun_logic
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Арифметические выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Арифметические выражения
+// --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
 	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
@@ -806,9 +781,9 @@ fun_arithm
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Функции и последовательности
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Функции и последовательности
+// --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
 	{
@@ -871,9 +846,9 @@ fun_arithm_func_call_pars
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Групповые выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Групповые выражения
+// --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
 	| RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
@@ -930,9 +905,9 @@ fun_group
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Select
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Select
+// --------------------------------------------------------------------------------
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{

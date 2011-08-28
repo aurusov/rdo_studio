@@ -1,11 +1,12 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdosmr_file.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdosmr_file.y
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 %{
 #define YYPARSE_PARAM lexer
@@ -189,14 +190,14 @@
 
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdosmr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()

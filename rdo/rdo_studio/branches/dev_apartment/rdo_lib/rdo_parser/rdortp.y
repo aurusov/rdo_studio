@@ -1,11 +1,12 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdortp.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 20.02.2003
- * bref     : Синтаксис типов ресурсов
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdortp.y
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     Синтаксис типов ресурсов
+  \indent    4T
+*/
 
 %{
 #define YYPARSE_PARAM lexer
@@ -52,6 +53,7 @@
 %token RDO_uniform
 %token RDO_exponential
 %token RDO_normal
+%token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
 
@@ -142,10 +144,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
-%token RDO_WatchStart
-%token RDO_WatchStop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -201,10 +199,10 @@
 %token RDO_ASSIGN
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
@@ -212,7 +210,7 @@
 #include "rdo_lib/rdo_parser/type/range.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
 #include "rdo_lib/rdo_parser/type/such_as.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
@@ -257,6 +255,7 @@ rtp_res_type
 		{
 			PARSER->error().warning(@2, rdo::format(_T("Тип ресурса '%s' не содежит параметров"), pResourceType->name().c_str()));
 		}
+		pResourceType->end<rdoRuntime::RDOResourceType>();
 		$$ = PARSER->stack().push(pResourceType);
 	}
 	| rtp_header RDO_Parameters rtp_body
@@ -388,9 +387,9 @@ rtp_param
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Описание типа параметра
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Описание типа параметра
+// --------------------------------------------------------------------------------
 param_type
 	: RDO_integer param_type_range
 	{
@@ -768,7 +767,7 @@ array_enumeration
 	}
 	;
 
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 %%
 

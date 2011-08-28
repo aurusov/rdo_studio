@@ -9,9 +9,9 @@
 #include <vector>
 #include "rdo_plugin/rdoplugin.h"
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioPlugin
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioPlugin
+// --------------------------------------------------------------------------------
 class RDOStudioPlugin
 {
 friend class RDOStudioPlugins;
@@ -67,9 +67,9 @@ public:
 	std::string getFileName() const;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioPlugins
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioPlugins
+// --------------------------------------------------------------------------------
 static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
 
 class RDOStudioPlugins
@@ -164,7 +164,7 @@ public:
 	static int comparePluginsByDescription( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 };
 
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 extern RDOStudioPlugins* plugins;
 
 #endif // RDOSTUDIOPLUGINS_H

@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_lexer.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_lexer.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdobison.h"
 #include "rdo_lib/rdo_converter/rdogramma.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
@@ -21,7 +22,7 @@
 #include "rdo_lib/rdo_converter/update/update.h"
 
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #ifdef LEXER
 #undef LEXER

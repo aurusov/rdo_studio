@@ -12,9 +12,9 @@ using namespace rdoEditor;
 using namespace rdoStyle;
 using namespace rdoEditCtrl;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorBaseEditTheme
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEditorBaseEditTheme
+// --------------------------------------------------------------------------------
 RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): RDOBaseEditTheme()
 {
 	defaultColor    = RGB( 0x80, 0x80, 0x80 );
@@ -394,9 +394,9 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	return theme;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorBaseEditStyle
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEditorBaseEditStyle
+// --------------------------------------------------------------------------------
 RDOEditorBaseEditStyle::RDOEditorBaseEditStyle(): RDOBaseEditStyle()
 {
 }

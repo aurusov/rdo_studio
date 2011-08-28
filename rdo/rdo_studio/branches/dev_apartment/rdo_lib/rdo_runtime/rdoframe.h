@@ -1,548 +1,583 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoframe.h
- * author   : Урусов Андрей
- * date     : 13.06.2009
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoframe.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      07.12.2008
+  \brief     Кадры РДО модели
+  \indent    4T
+*/
 
-#ifndef _RDOFRAME_H_
-#define _RDOFRAME_H_
+#ifndef _LIB_RUNTIME_FRAME_H_
+#define _LIB_RUNTIME_FRAME_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdoanimation.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMFrame
-// ----------------------------------------------------------------------------
-class RDOFRMShow;
-class RDOFRMItem;
+PREDECLARE_POINTER(RDOFRMShow);
+PREDECLARE_POINTER(RDOFRMItem);
 
-class RDOFRMFrame: public RDORuntimeParent, public RDOSrcInfo
+/*!
+  \class     RDOFRMFrame
+  \brief     Кадр
+*/
+OBJECT(RDOFRMFrame)
+	IS  INSTANCE_OF(RDORuntimeObject)
+	AND INSTANCE_OF(RDOSrcInfo      )
 {
+DECLARE_FACTORY(RDOFRMFrame)
 public:
-	// ----------------------------------------------------------------------------
-	// ---------- RDOFRMPosition
-	// ----------------------------------------------------------------------------
-	class RDOFRMPosition: public RDORuntimeObject
-	{
-	public:
-		enum PositionType {
-			absolute,
-			delta,
-			gabarit,
-			mult,
-			rulet
-		};
-		LPRDOCalc    pCalc;
-		PositionType type;
-		int          rulet_id;
+	typedef std::list<tstring> ImageNameList;
 
-		RDOFRMPosition( RDOFRMFrame* _parent ):
-			RDORuntimeObject( _parent ),
-			pCalc( NULL ),
-			type( absolute ),
-			rulet_id( 0 )
+	/*!
+	  \class     RDOFRMPosition
+	  \brief     Позиция кадра
+	*/
+	OBJECT(RDOFRMPosition) IS INSTANCE_OF(RDORuntimeObject)
+	{
+	DECLARE_FACTORY(RDOFRMPosition)
+	public:
+		/*!
+		  \enum      RDOFRMFrame
+		  \brief     Тип позици кадра
+		*/
+		enum PositionType
 		{
-		}
-		RDOFRMPosition( RDOFRMFrame* _parent, CREF(LPRDOCalc) _pCalc, PositionType _type = absolute, int _rulet_id = 0 ):
-			RDORuntimeObject( _parent ),
-			pCalc( _pCalc ),
-			type( _type ),
-			rulet_id( _rulet_id )
-		{
-		}
-		int getX( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = pCalc->calcValue( sim );
-			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_x;                     break;
-				case RDOFRMPosition::gabarit: res += frame->last_x + frame->last_width; break;
-				case RDOFRMPosition::mult   : res *= frame->last_x;                     break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletX( sim, rulet_id ); break;
-			}
-			return res.getInt();
-		}
-		int getY( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = pCalc->calcValue( sim );
-			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_y;                      break;
-				case RDOFRMPosition::gabarit: res += frame->last_y + frame->last_height; break;
-				case RDOFRMPosition::mult   : res *= frame->last_y;                      break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletY( sim, rulet_id );  break;
-			}
-			return res.getInt();
-		}
-		int getWidth( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = pCalc->calcValue( sim );
-			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_width; break;
-				case RDOFRMPosition::mult   : res *= frame->last_width; break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletX( sim, rulet_id ); break;
-			}
-			return res.getInt();
-		}
-		int getHeight( RDORuntime* sim, RDOFRMFrame* frame ) {
-			RDOValue res = pCalc->calcValue( sim );
-			switch ( type ) {
-				case RDOFRMPosition::delta  : res += frame->last_height; break;
-				case RDOFRMPosition::mult   : res *= frame->last_height; break;
-				case RDOFRMPosition::rulet  : res += frame->getRuletY( sim, rulet_id ); break;
-			}
-			return res.getInt();
-		}
+			PT_ABSOLUTE,
+			PT_DELTA,
+			PT_GABARIT,
+			PT_MULT,
+			PT_RULET
+		};
+
+		PositionType    getType() const;
+		CREF(LPRDOCalc) getCalc() const;
+
+		int getX     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+		int getY     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+		int getWidth (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+		int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+
+	private:
+		RDOFRMPosition(CREF(LPRDOCalc) pCalc, PositionType type = PT_ABSOLUTE, int ruletID = 0);
+		RDOFRMPosition();
+		virtual ~RDOFRMPosition();
+
+		LPRDOCalc    m_pCalc;
+		PositionType m_type;
+		int          m_ruletID;
 	};
 	friend class RDOFRMPosition;
 
-	// ----------------------------------------------------------------------------
-	// ---------- RDOFRMColor - объект-цвет
-	// ----------------------------------------------------------------------------
-	class RDOFRMColor: public RDORuntimeObject
+	/*!
+	  \class     RDOFRMColor
+	  \brief     Объект-цвет
+	*/
+	OBJECT(RDOFRMColor) IS INSTANCE_OF(RDORuntimeObject)
 	{
+	DECLARE_FACTORY(RDOFRMColor)
 	public:
-		enum ColorType {
-			color_none,
-			color_rgb,
-			color_transparent,
-			color_last_bg,
-			color_last_fg,
-			color_last_bg_text,
-			color_last_fg_text
+		/*!
+		  \enum      ColorType
+		  \brief     Цвет фигуры
+		*/
+		enum ColorType
+		{
+			CT_NONE,
+			CT_RGB,
+			CT_TRANSPARENT,
+			CT_LAST_BG,
+			CT_LAST_FG,
+			CT_LAST_BG_TEXT,
+			CT_LAST_FG_TEXT
 		};
 
+		rdoAnimation::RDOColor getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+
+		ColorType getType() const;
+		void setType(ColorType type);
+
 	private:
-		ColorType color_type;
+		RDOFRMColor(ColorType type = CT_NONE);
+		RDOFRMColor(int red, int green, int blue);
+		RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
+		virtual ~RDOFRMColor();
+
+		ColorType m_type;
 		LPRDOCalc m_pRedCalc;
 		LPRDOCalc m_pGreenCalc;
 		LPRDOCalc m_pBlueCalc;
-
-	public:
-		RDOFRMColor(RDOFRMFrame* _parent, ColorType _type = color_none);
-		RDOFRMColor(RDOFRMFrame* _parent, int _red, int _green, int _blue);
-		RDOFRMColor(RDOFRMFrame* _parent, CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
-		~RDOFRMColor();
-
-		rdoAnimation::RDOColor getColor( RDORuntime* sim, RDOFRMFrame* frame ) const;
-
-		ColorType getColorType() const {
-			return color_type;
-		};
-		void setColorType( ColorType _type ) {
-			if ( color_type == color_none ) color_type = _type;
-		};
 	};
 	friend class RDOFRMColor;
 
-	// ----------------------------------------------------------------------------
-	// ---------- RDOFRMRulet
-	// ----------------------------------------------------------------------------
-	class RDOFRMRulet: public RDOSrcInfo
+	/*!
+	  \class     RDOFRMRulet
+	  \brief     Объект-цвет
+	*/
+	OBJECT(RDOFRMRulet)
+		 IS  INSTANCE_OF(RDORuntimeObject)
+		 AND INSTANCE_OF(RDOSrcInfo      )
 	{
+	DECLARE_FACTORY(RDOFRMRulet)
 	public:
-		int index;
-		RDOFRMPosition* x;
-		RDOFRMPosition* y;
-		RDOFRMRulet( const RDOSrcInfo& _src_info, int _index, RDOFRMPosition* _x, RDOFRMPosition* _y ):
-			RDOSrcInfo( _src_info ),
-			index( _index ),
-			x(_x),
-			y(_y)
-		{
-		}
-		~RDOFRMRulet() {
-			delete x;
-			delete y;
-		}
+		ruint getIndex() const;
+		CREF(LPRDOFRMPosition) getX() const;
+		CREF(LPRDOFRMPosition) getY() const;
+
+	private:
+		RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY);
+		virtual ~RDOFRMRulet();
+
+		ruint             m_index;
+		LPRDOFRMPosition  m_pX;
+		LPRDOFRMPosition  m_pY;
 	};
 
 public:
-	RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, CREF(LPRDOCalc) _pConditionCalc = NULL );
-	virtual ~RDOFRMFrame();
-	void setBackgroundColor( RDOFRMColor* _background_color );
-	void setBackPicture( const std::string& _picFileName );
-	void setBackPicture( int _width, int _height );
-	void startShow(CREF(LPRDOCalc) pCalc = NULL);
-	const RDOFRMShow* getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
-	void addItem( RDOFRMItem* item );
-	void addRulet( RDOFRMRulet* rulet );
-	bool checkCondition( RDORuntime* sim );
-	rdoAnimation::RDOFrame* createFrame( RDORuntime* sim ) {
-		rdoAnimation::RDOFrame* frame = new rdoAnimation::RDOFrame();
-		return prepareFrame( frame, sim );
-	}
-	rdoAnimation::RDOFrame* prepareFrame( rdoAnimation::RDOFrame* frame, RDORuntime* sim );
-	const std::string& name() const { return src_text(); }
-	void getBitmaps( std::list< std::string >& list ) const;
+	void          getBitmaps        (REF(ImageNameList) list) const;
+	LPRDOFRMShow  getLastShow       () const;
+	CREF(tstring) name              () const;
 
-	void setColorLastBG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg );
-	void setColorLastFG( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg );
-	void setColorLastBGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_bg_text );
-	void setColorLastFGText( RDOFRMColor::ColorType type, const rdoAnimation::RDOColor& _last_fg_text );
-	void setLastXYWH( double _x, double _y, double _width, double _height ) {
-		last_x      = _x;
-		last_y      = _y;
-		last_width  = _width;
-		last_height = _height;
-	}
+	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
+	void          setBackPicture    (CREF(tstring)       picFileName);
+	void          setBackPicture    (int width, int height          );
+	void          startShow         (CREF(LPRDOCalc) pCalc = NULL   );
+	void          addItem           (CREF(LPRDOFRMItem)  pItem      );
+	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
+	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
-	int getRuletX( RDORuntime* sim, int rulet_id ) {
-		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
-		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->x->pCalc->calcValue( sim ).getInt();
-			it++;
-		}
-		return 0;
-	}
-	int getRuletY( RDORuntime* sim, int rulet_id ) {
-		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
-		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->y->pCalc->calcValue( sim ).getInt();
-			it++;
-		}
-		return 0;
-	}
-	const RDOFRMRulet* findRulet( int rulet_id ) {
-		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
-		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it);
-			it++;
-		}
-		return NULL;
-	}
+	PTR(rdoAnimation::RDOFrame) createFrame(CREF(LPRDORuntime) pRuntime);
+	PTR(rdoAnimation::RDOFrame) prepareFrame(PTR(rdoAnimation::RDOFrame) pFrame, CREF(LPRDORuntime) pRuntime);
+
+	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBg);
+	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFg);
+	void setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBgText);
+	void setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFgText);
+	void setLastXYWH       (double x, double y, double width, double height);
+
+	int getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
+	int getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
+	LPRDOFRMRulet findRulet(ruint ruletID) const;
 
 private:
-	typedef std::list  <PTR(RDOFRMShow) > ShowList;
-	typedef std::vector<PTR(RDOFRMRulet)> RuletList;
+	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
+	virtual ~RDOFRMFrame();
 
-	LPRDOCalc    pConditionCalc;
-	RDOFRMColor* background_color;
-	tstring      picFileName;
-	ruint        width;
-	ruint        height;
-	ShowList     shows;
-	rdoAnimation::RDOColor color_last_bg;
-	rdoAnimation::RDOColor color_last_fg;
-	rdoAnimation::RDOColor color_last_bg_text;
-	rdoAnimation::RDOColor color_last_fg_text;
-	double       last_x;
-	double       last_y;
-	double       last_width;
-	double       last_height;
-	RuletList    rulets;
+	typedef std::list<LPRDOFRMShow>        ShowList;
+	typedef std::map<ruint, LPRDOFRMRulet> RuletList;
+
+	LPRDOCalc               m_pConditionCalc;
+	LPRDOFRMColor           m_pBgColor;
+	tstring                 m_picFileName;
+	ruint                   m_width;
+	ruint                   m_height;
+	ShowList                m_showList;
+	rdoAnimation::RDOColor  m_colorLastBg;
+	rdoAnimation::RDOColor  m_colorLastFg;
+	rdoAnimation::RDOColor  m_colorLastBgText;
+	rdoAnimation::RDOColor  m_colorLastFgText;
+	double                  m_lastX;
+	double                  m_lastY;
+	double                  m_lastWidth;
+	double                  m_lastHeight;
+	RuletList               m_ruletList;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMBoundingItem - объект-четырехугольник
-// ----------------------------------------------------------------------------
-// В парсере не создается
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOFRMBoundingItem
+  \brief     Объект-четырехугольник
+  \details   В парсере не создается
+*/
 class RDOFRMBoundingItem
 {
-public:
-	struct RDOFRMBoundingData {
-		RDOFRMFrame::RDOFRMPosition* x;
-		RDOFRMFrame::RDOFRMPosition* y;
-		RDOFRMFrame::RDOFRMPosition* width;
-		RDOFRMFrame::RDOFRMPosition* height;
-	};
+protected:
+	RDOFRMBoundingItem(CREF(RDOFRMFrame::LPRDOFRMPosition) pX, CREF(RDOFRMFrame::LPRDOFRMPosition) pY, CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth, CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight);
+	virtual ~RDOFRMBoundingItem();
+
+	int getX        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getY        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getWidth    (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getHeight   (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getWidthAsX (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
 private:
-	RDOFRMBoundingData data;
-
-protected:
-	RDOFRMBoundingItem( RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height )
-	{
-		data.x = _x;
-		data.y = _y;
-		data.width = _width;
-		data.height = _height;
-	}
-	RDOFRMBoundingItem( const RDOFRMBoundingData* _data )
-	{
-		data.x      = _data->x;
-		data.y      = _data->y;
-		data.width  = _data->width;
-		data.height = _data->height;
-	}
-	int getX( RDORuntime* sim, RDOFRMFrame* frame ) {
-		return data.x->getX( sim, frame );
-	}
-	int getY( RDORuntime* sim, RDOFRMFrame* frame ) {
-		return data.y->getY( sim, frame );
-	}
-	int getWidth( RDORuntime* sim, RDOFRMFrame* frame ) {
-		return data.width->getWidth( sim, frame );
-	}
-	int getHeight( RDORuntime* sim, RDOFRMFrame* frame ) {
-		return data.height->getHeight( sim, frame );
-	}
-	int getWidthAsX( RDORuntime* sim, RDOFRMFrame* frame ) {
-		return data.width->getX( sim, frame );
-	}
-	int getHeightAsY( RDORuntime* sim, RDOFRMFrame* frame ) {
-		return data.height->getY( sim, frame );
-	}
+	RDOFRMFrame::LPRDOFRMPosition m_pX;
+	RDOFRMFrame::LPRDOFRMPosition m_pY;
+	RDOFRMFrame::LPRDOFRMPosition m_pWidth;
+	RDOFRMFrame::LPRDOFRMPosition m_pHeight;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMColoredItem - цветной объект
-// ----------------------------------------------------------------------------
-// В парсере не создается
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOFRMColoredItem
+  \brief     Цветной объект
+  \details   В парсере не создается
+*/
 class RDOFRMColoredItem
 {
-protected:
-	RDOFRMFrame::RDOFRMColor* bgColor;
-	RDOFRMFrame::RDOFRMColor* fgColor;
-
-	RDOFRMColoredItem( RDOFRMFrame::RDOFRMColor* _bgColor, RDOFRMFrame::RDOFRMColor* _fgColor ):
-		bgColor( _bgColor ),
-		fgColor( _fgColor )
-	{
-	}
-	virtual ~RDOFRMColoredItem() {}
-
-	void color_reparent( RDORuntimeParent* _parent ) {
-		bgColor->reparent( _parent );
-		fgColor->reparent( _parent );
-	}
-
 public:
-	const RDOFRMFrame::RDOFRMColor* getBgColor() const { return bgColor; }
-	const RDOFRMFrame::RDOFRMColor* getFgColor() const { return fgColor; }
-	rdoAnimation::RDOColor getBg( RDORuntime* sim, RDOFRMFrame* frame ) { return bgColor->getColor( sim, frame ); }
-	rdoAnimation::RDOColor getFg( RDORuntime* sim, RDOFRMFrame* frame ) { return fgColor->getColor( sim, frame ); }
-};
+	CREF(RDOFRMFrame::LPRDOFRMColor) getBgColor() const;
+	CREF(RDOFRMFrame::LPRDOFRMColor) getFgColor() const;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMItem - базовый для всех элементов
-// ----------------------------------------------------------------------------
-class RDOFRMItem: public RDORuntimeParent
-{
-friend class RDOFRMShow;
-friend class RDOFRMFrame;
+	rdoAnimation::RDOColor getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	rdoAnimation::RDOColor getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+
+protected:
+	RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) pBgColor, CREF(RDOFRMFrame::LPRDOFRMColor) pFgColor);
+	virtual ~RDOFRMColoredItem();
 
 private:
-	RDOFRMFrame* frame;
-
-protected:
-	RDOFRMItem( RDOFRMFrame* _parent ):
-		RDORuntimeParent( _parent ),
-		frame( _parent )
-	{
-	}
-	virtual ~RDOFRMItem()
-	{
-	}
-	virtual void getBitmaps( std::list< std::string >& list )
-	{
-	}
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim ) = 0;
-	RDOFRMFrame* getFrame() const { return frame; }
+	RDOFRMFrame::LPRDOFRMColor m_pBgColor;
+	RDOFRMFrame::LPRDOFRMColor m_pFgColor;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMText
-// ----------------------------------------------------------------------------
-class RDOFRMText: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
+/*!
+  \class     RDOFRMItem
+  \brief     Базовый для всех элементов
+*/
+OBJECT(RDOFRMItem) IS INSTANCE_OF(RDORuntimeObject)
 {
-private:
-	rdoAnimation::RDOTextElement::TextAlign align;
-	LPRDOCalc            pValue;
-	std::string          txt;
-	bool                 isTextString;
-
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
+DECLARE_FACTORY(RDOFRMItem)
 public:
-	RDOFRMText( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-	void setText( rdoAnimation::RDOTextElement::TextAlign _align, CREF(LPRDOCalc) _pValue );
-	void setText( rdoAnimation::RDOTextElement::TextAlign _align, const std::string& _txt );
-};
+	virtual PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime) = 0;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMBitmapBase
-// ----------------------------------------------------------------------------
-class RDOFRMBitmapBase: public RDOFRMItem
-{
-protected:
-	std::string pict_filename;
-	std::string mask_filename;
-
-	virtual void getBitmaps( std::list< std::string >& list ) {\
-		list.push_back( pict_filename );
-		if ( !mask_filename.empty() ) {
-			list.push_back( mask_filename );
-		}
-	}
-
-public:
-	RDOFRMBitmapBase( RDOFRMFrame* _parent, const std::string& _pict_filename, const std::string& _mask_filename = "" ):
-		RDOFRMItem( _parent ),
-		pict_filename( _pict_filename ),
-		mask_filename( _mask_filename )
-	{
-	}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMBitmap
-// ----------------------------------------------------------------------------
-class RDOFRMBitmap: public RDOFRMBitmapBase
-{
-private:
-	RDOFRMFrame::RDOFRMPosition* x;
-	RDOFRMFrame::RDOFRMPosition* y;
+	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list);
 
 protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
+	RDOFRMItem(CREF(LPRDOFRMFrame) pFrame);
+	virtual ~RDOFRMItem();
 
-public:
-	RDOFRMBitmap( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, const std::string& _pict_filename, const std::string& _mask_filename = "" );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMBitmapStretch
-// ----------------------------------------------------------------------------
-class RDOFRMBitmapStretch: public RDOFRMBitmapBase, public RDOFRMBoundingItem
-{
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMBitmapStretch( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, const std::string& _pict_filename, const std::string& _mask_filename = "" );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMRect
-// ----------------------------------------------------------------------------
-class RDOFRMRect: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
-{
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMRect( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMRectRound
-// ----------------------------------------------------------------------------
-class RDOFRMRectRound: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
-{
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMRectRound( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMEllipse
-// ----------------------------------------------------------------------------
-class RDOFRMEllipse: public RDOFRMItem, public RDOFRMBoundingItem, public RDOFRMColoredItem
-{
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMEllipse( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMLine
-// ----------------------------------------------------------------------------
-class RDOFRMLine: public RDOFRMItem, public RDOFRMBoundingItem
-{
-private:
-	RDOFRMFrame::RDOFRMColor* color;
-
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMLine( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x1, RDOFRMFrame::RDOFRMPosition* _y1, RDOFRMFrame::RDOFRMPosition* _x2, RDOFRMFrame::RDOFRMPosition* _y2, RDOFRMFrame::RDOFRMColor* _color );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMTriang
-// ----------------------------------------------------------------------------
-class RDOFRMTriang: public RDOFRMItem, public RDOFRMColoredItem
-{
-private:
-	RDOFRMFrame::RDOFRMPosition* x1;
-	RDOFRMFrame::RDOFRMPosition* y1;
-	RDOFRMFrame::RDOFRMPosition* x2;
-	RDOFRMFrame::RDOFRMPosition* y2;
-	RDOFRMFrame::RDOFRMPosition* x3;
-	RDOFRMFrame::RDOFRMPosition* y3;
-
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMTriang( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _x2, RDOFRMFrame::RDOFRMPosition* _y2, RDOFRMFrame::RDOFRMPosition* _x3, RDOFRMFrame::RDOFRMPosition* _y3, RDOFRMFrame::RDOFRMColor* bgColor, RDOFRMFrame::RDOFRMColor* fgColor );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMActive
-// ----------------------------------------------------------------------------
-class RDOFRMActive: public RDOFRMItem, public RDOFRMBoundingItem
-{
-private:
-	std::string operName;
-
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMActive( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height, const std::string& _operName );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMSpace
-// ----------------------------------------------------------------------------
-class RDOFRMSpace: public RDOFRMItem, public RDOFRMBoundingItem
-{
-protected:
-	virtual rdoAnimation::FrameItem* createElement( RDORuntime* sim );
-
-public:
-	RDOFRMSpace( RDOFRMFrame* _parent, RDOFRMFrame::RDOFRMPosition* _x, RDOFRMFrame::RDOFRMPosition* _y, RDOFRMFrame::RDOFRMPosition* _width, RDOFRMFrame::RDOFRMPosition* _height );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMShow
-// ----------------------------------------------------------------------------
-// В списке потомков RDOFRMShow должны находится только RDOFRMItem.
-// Такова текущая логика добавления объектов к RDOFRMShow.
-// Приведение RDORuntimeObject к RDOFRMItem происходит без проверок.
-// ----------------------------------------------------------------------------
-class RDOFRMShow: public RDORuntimeParent
-{
-friend class RDOFRMFrame;
+	CREF(LPRDOFRMFrame) getFrame() const;
 
 private:
-	LPRDOCalc pConditionCalc;
+	LPRDOFRMFrame m_pFrame;
+};
 
+/*!
+  \def       DECLARE_RDOFRMIItem
+  \brief     Декларация метода \a createElement
+*/
+#define DECLARE_RDOFRMIItem \
+private:                    \
+	PTR(rdoAnimation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
+
+/*!
+  \def       RDOFRM_ITEM(A)
+  \brief     Декларация наследника \a RDOFRMItem
+*/
+#define RDOFRM_ITEM(A) \
+PREDECLARE_POINTER(A); \
+CLASS(A): INSTANCE_OF(RDOFRMItem)
+
+/*!
+  \class     RDOFRMText
+  \brief     Текстовая анимация
+*/
+RDOFRM_ITEM(RDOFRMText)
+	IS  INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
+{
+DECLARE_FACTORY(RDOFRMText)
 public:
-	RDOFRMShow( RDOFRMFrame* _parent, CREF(LPRDOCalc) _pConditionCalc );
+	typedef rdoAnimation::RDOTextElement::TextAlign Align;
+
+	void setText(Align align, CREF(LPRDOCalc) pValue);
+	void setText(Align align, CREF(tstring)   text  );
+
+private:
+	RDOFRMText(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMText();
+
+	Align        m_align;
+	LPRDOCalc    m_pValue;
+	tstring      m_text;
+	rbool        m_isTextString;
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMBitmapBase
+  \brief     Базовый класс для картинок в анимации
+*/
+RDOFRM_ITEM(RDOFRMBitmapBase)
+{
+protected:
+	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list);
+
+	tstring m_pictFilename;
+	tstring m_maskFilename;
+
+protected:
+	RDOFRMBitmapBase(CREF(LPRDOFRMFrame) pFrame, CREF(tstring) pictFilename, CREF(tstring) maskFilename = _T(""));
+	virtual ~RDOFRMBitmapBase();
+};
+
+/*!
+  \class     RDOFRMBitmap
+  \brief     Картинка в анимации
+*/
+CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
+{
+DECLARE_FACTORY(RDOFRMBitmap)
+private:
+	RDOFRMBitmap(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(tstring)                       pictFilename,
+		CREF(tstring)                       maskFilename = _T("")
+	);
+	virtual ~RDOFRMBitmap();
+
+	RDOFRMFrame::LPRDOFRMPosition m_pX;
+	RDOFRMFrame::LPRDOFRMPosition m_pY;
+
+	DECLARE_RDOFRMIItem;
+};
+
+DECLARE_POINTER(RDOFRMBitmap)
+
+/*!
+  \class     RDOFRMBitmapStretch
+  \brief     Растягивающаяся картинка в анимации
+  \todo      что это?
+*/
+CLASS(RDOFRMBitmapStretch):
+		INSTANCE_OF(RDOFRMBitmapBase  )
+	AND INSTANCE_OF(RDOFRMBoundingItem)
+{
+DECLARE_FACTORY(RDOFRMBitmapStretch)
+private:
+	RDOFRMBitmapStretch(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(tstring)                       pictFilename,
+		CREF(tstring)                       maskFilename = _T("")
+	);
+	virtual ~RDOFRMBitmapStretch();
+
+	DECLARE_RDOFRMIItem;
+};
+
+DECLARE_POINTER(RDOFRMBitmapStretch);
+
+/*!
+  \class     RDOFRMRect
+  \brief     Прямоугольник для анимации
+*/
+RDOFRM_ITEM(RDOFRMRect)
+	IS  INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
+{
+DECLARE_FACTORY(RDOFRMRect)
+private:
+	RDOFRMRect(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMRect();
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMRectRound
+  \brief     Прямоугольник со скругленными углами для анимации
+*/
+RDOFRM_ITEM(RDOFRMRectRound)
+	IS  INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
+{
+DECLARE_FACTORY(RDOFRMRectRound)
+private:
+	RDOFRMRectRound(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMRectRound();
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMEllipse
+  \brief     Эллипс для анимации
+*/
+RDOFRM_ITEM(RDOFRMEllipse)
+	IS  INSTANCE_OF(RDOFRMBoundingItem)
+	AND INSTANCE_OF(RDOFRMColoredItem )
+{
+DECLARE_FACTORY(RDOFRMEllipse)
+private:
+	RDOFRMEllipse(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMEllipse();
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMLine
+  \brief     Линия для анимации
+*/
+RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
+{
+DECLARE_FACTORY(RDOFRMLine)
+private:
+	RDOFRMLine(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX2,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY2,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pColor
+	);
+	virtual ~RDOFRMLine();
+
+	RDOFRMFrame::LPRDOFRMColor m_pColor;
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMTriang
+  \brief     Треугольник для анимации
+*/
+RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
+{
+DECLARE_FACTORY(RDOFRMTriang)
+private:
+	RDOFRMTriang(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY1,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX2,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY2,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX3,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY3,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMTriang();
+
+	RDOFRMFrame::LPRDOFRMPosition m_pX1;
+	RDOFRMFrame::LPRDOFRMPosition m_pY1;
+	RDOFRMFrame::LPRDOFRMPosition m_pX2;
+	RDOFRMFrame::LPRDOFRMPosition m_pY2;
+	RDOFRMFrame::LPRDOFRMPosition m_pX3;
+	RDOFRMFrame::LPRDOFRMPosition m_pY3;
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMActive
+  \brief     Активный кадр
+  \todo      что это?
+*/
+RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
+{
+DECLARE_FACTORY(RDOFRMActive)
+private:
+	RDOFRMActive(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(tstring)                       operName
+	);
+	virtual ~RDOFRMActive();
+
+	tstring m_operName;
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMSpace
+  \brief     Пробел
+  \todo      что это?
+*/
+RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
+{
+DECLARE_FACTORY(RDOFRMSpace)
+private:
+	RDOFRMSpace(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight
+	);
+	virtual ~RDOFRMSpace();
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMShow
+  \brief     Показ кадра
+  \todo      что это?
+*/
+OBJECT(RDOFRMShow) IS INSTANCE_OF(RDORuntimeObject)
+{
+DECLARE_FACTORY(RDOFRMShow)
+public:
+	typedef std::list<LPRDOFRMItem> ItemList;
+
+	rbool         isShowIf      () const;
+
+	REF(ItemList) getItemList   ();
+	void          insertItem    (CREF(LPRDOFRMItem) pItem            );
+	rbool         checkCondition(CREF(LPRDORuntime) pRuntime         );
+	virtual void  getBitmaps    (REF(RDOFRMFrame::ImageNameList) list);
+
+private:
+	RDOFRMShow(CREF(LPRDOCalc) pConditionCalc);
 	virtual ~RDOFRMShow();
 
-	bool isShowIf() const { return pConditionCalc != NULL; }
-
-	bool checkCondition( RDORuntime* sim );
-	virtual void getBitmaps(REF(std::list<tstring>) list);
+	ItemList  m_itemList;
+	LPRDOCalc m_pConditionCalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOFRAME_H_
+#include "rdo_lib/rdo_runtime/rdoframe.inl"
+
+#endif // _LIB_RUNTIME_FRAME_H_

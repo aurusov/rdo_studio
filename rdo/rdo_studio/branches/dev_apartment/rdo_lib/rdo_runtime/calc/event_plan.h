@@ -1,27 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : event_plan.h
- * author   : Лущан Дмитрий
- * date     : 26.05.2010
- * bref     : RDOCalc для планирования и остановки событий
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      event_plan.h
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      26.05.2010
+  \brief     RDOCalc для планирования и остановки событий
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_EVENT_PLAN_H_
-#define _RDOCALC_EVENT_PLAN_H_
+#ifndef _LIB_RUNTIME_CALC_EVENT_PLAN_H_
+#define _LIB_RUNTIME_CALC_EVENT_PLAN_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEvent
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcEvent
+  \brief   Базовая калка для управления событиями
+*/
 CALC(RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEvent)
@@ -34,9 +35,10 @@ protected:
 	LPIBaseOperation m_pEvent;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEventPlan
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcEventPlan
+  \brief   Планирование событий
+*/
 CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventPlan)
@@ -45,21 +47,22 @@ private:
 
 	LPRDOCalc m_pTimeCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcEventStop
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcEventStop
+  \brief   Остановка событий
+*/
 CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventStop)
 private:
 	RDOCalcEventStop();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_EVENT_PLAN_H_
+#endif // _LIB_RUNTIME_CALC_EVENT_PLAN_H_

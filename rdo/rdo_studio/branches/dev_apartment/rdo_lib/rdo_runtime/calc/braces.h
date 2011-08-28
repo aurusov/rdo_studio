@@ -1,49 +1,52 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : braces.h
- * author   : Чирков Михаил
- * date     : 16.04.11
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      braces.h
+  \author    Чирков Михаил
+  \date      16.04.2011
+  \brief     Список инструкций в стиле C++
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_BRACES_H_
-#define _RDOCALC_BRACES_H_
+#ifndef _LIB_RUNTIME_CALC_BRACES_H_
+#define _LIB_RUNTIME_CALC_BRACES_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/statements.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcOpenBrace
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcOpenBrace
+  \brief   Открывающая скобка
+*/
 CALC(RDOCalcOpenBrace)
 {
 	DECLARE_FACTORY(RDOCalcOpenBrace)
 private:
 	RDOCalcOpenBrace();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCloseBrace
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcCloseBrace
+  \brief   Закрывающая скобка
+*/
 CALC(RDOCalcCloseBrace)
 {
 	DECLARE_FACTORY(RDOCalcCloseBrace)
 private:
 	RDOCalcCloseBrace();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBodyBrace
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcBodyBrace
+  \brief   Тело списка инструкций между скобками
+*/
 CALC(RDOCalcBodyBrace)
 {
 	DECLARE_FACTORY(RDOCalcBodyBrace)
@@ -57,12 +60,14 @@ private:
 
 	CalcList m_calcList;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunBodyBrace
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcFunBodyBrace
+  \brief   Функция в теле инструкций
+  \todo    что это?
+*/
 CALC_SUB(RDOCalcFunBodyBrace, RDOFunCalc)
 {
 	DECLARE_FACTORY(RDOCalcFunBodyBrace)
@@ -77,22 +82,23 @@ private:
 
 	CalcFunList m_calcFunList;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunEnd
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcFunEnd
+  \brief   Окончание функции
+  \todo    что это?
+*/
 CALC(RDOCalcFunEnd)
 {
 	DECLARE_FACTORY(RDOCalcFunEnd)
 private:
 	RDOCalcFunEnd();
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
-
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_BRACES_H_
+#endif // _LIB_RUNTIME_CALC_BRACES_H_

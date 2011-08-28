@@ -1,19 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_RDOCONVERTER_H_
 #define _CONVERTOR_RDOCONVERTER_H_
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <stack>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdoindexedstack.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
@@ -37,11 +38,7 @@
 
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
-// ===============================================================================
-
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDORuntime;
-CLOSE_RDO_RUNTIME_NAMESPACE
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -49,9 +46,9 @@ class RDOTypeParam;
 
 class RDORTPFuzzyParam;
 
-// ----------------------------------------------------------------------------
-// ---------- Converter
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Converter
+// --------------------------------------------------------------------------------
 #define DEFINE_OBJECT_CONTAINER_MINIMUM(TYPE, NAME) \
 public: \
 	typedef std::vector<TYPE> NAME##List; \
@@ -102,7 +99,7 @@ public:
 	Converter();
 	virtual ~Converter();
 
-	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
+	rdoRuntime::LPRDORuntime runtime() { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -126,6 +123,7 @@ public:
 	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
 	ruint getPMD_id     () const { return m_allPMDPokaz.size()    + 1; }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	ruint getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
 
 	tstring getModelStructure();
 	tstring getChanges       () const;
@@ -221,8 +219,8 @@ protected:
 
 	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	ValueList              m_allValues;
-	rdoRuntime::RDORuntime m_runtime;
+	ValueList                m_allValues;
+	rdoRuntime::LPRDORuntime m_pRuntime;
 
 private:
 	LPRDOSMR        m_pSMR;
@@ -239,6 +237,10 @@ private:
 	{
 		m_pattern = false;
 	}
+
+	template <>
+	void howIsIt<LPRDOFUNGroup>()
+	{}
 
 	template <>
 	void howIsIt<LPRDOPATPattern>()
@@ -262,9 +264,9 @@ private:
 	static ParserList s_parserStack;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserTemplate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserTemplate
+// --------------------------------------------------------------------------------
 template <class Container>
 class RDOParserTemplate: public Converter
 {
@@ -287,9 +289,9 @@ private:
 	}
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserModel
+// --------------------------------------------------------------------------------
 class RDOParserModel: public RDOParserTemplate<RDOParserContainerModel>
 {
 public:
@@ -305,9 +307,9 @@ private:
 	rbool createRDOX(CREF(tstring) smrFileName) const;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSMRInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserSMRInfo
+// --------------------------------------------------------------------------------
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:

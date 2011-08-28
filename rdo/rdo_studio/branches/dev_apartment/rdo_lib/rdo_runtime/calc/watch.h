@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : watch.h
- * author   : Урусов Андрей
- * date     : 04.03.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      watch.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      04.03.2011
+  \brief     Собираемые показатели
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_WATCH_H_
-#define _RDOCALC_WATCH_H_
+#ifndef _LIB_RUNTIME_CALC_WATCH_H_
+#define _LIB_RUNTIME_CALC_WATCH_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdopokaz_group_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcWatchGroupStart
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcWatchGroupStart
+  \brief   RDOCalc 
+*/
 CALC(RDOCalcWatchGroupStart)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
@@ -30,12 +31,13 @@ protected:
 
 	LPIPokazGroup m_pResultGroup;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcWatchGroupStop
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcWatchGroupStop
+  \brief   Начало сбора статистики по группе показателей
+*/
 CALC(RDOCalcWatchGroupStop)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)
@@ -45,9 +47,9 @@ protected:
 
 	LPIPokazGroup m_pResultGroup;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_WATCH_H_
+#endif // _LIB_RUNTIME_CALC_WATCH_H_

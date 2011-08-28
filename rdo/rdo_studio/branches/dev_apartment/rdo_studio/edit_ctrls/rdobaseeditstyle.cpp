@@ -10,9 +10,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdoStyle;
 using namespace rdoEditCtrl;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOBaseEditTheme
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOBaseEditTheme
+// --------------------------------------------------------------------------------
 RDOBaseEditTheme::RDOBaseEditTheme(): RDOStyleTheme()
 {
 	defaultColor    = RGB( 0x00, 0x00, 0x00 );
@@ -193,9 +193,9 @@ std::string RDOBaseEditTheme::colorToHEX( const COLORREF color )
 	return rdo::format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOBaseEditTab
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOBaseEditTab
+// --------------------------------------------------------------------------------
 RDOBaseEditTab::RDOBaseEditTab()
 {
 	tabSize         = 4;
@@ -259,9 +259,9 @@ void RDOBaseEditTab::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "autoIndent", autoIndent );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOBaseEditWindow
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOBaseEditWindow
+// --------------------------------------------------------------------------------
 RDOBaseEditWindow::RDOBaseEditWindow()
 {
 	wordWrap          = false;
@@ -305,9 +305,9 @@ void RDOBaseEditWindow::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "showHorzScrollBar", showHorzScrollBar );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOBaseEditStyle
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOBaseEditStyle
+// --------------------------------------------------------------------------------
 RDOBaseEditStyle::RDOBaseEditStyle():
 	RDOStyleWithTheme(),
 	tab( NULL ),

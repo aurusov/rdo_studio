@@ -1,32 +1,33 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_value.cpp
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_value.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
-// ===============================================================================
+#include "rdo_lib/rdo_runtime/rdo_resource.h"
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOValue
+// --------------------------------------------------------------------------------
 RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow.object_parent_cast<rdoRuntime::RDOType>()))
 {
 	m_pType = rdo::Factory<TypeInfo>::create(
 		rdo::Factory<RDOType__unknow>::create(),
-		RDOParserSrcInfo() //! TODO: TypeInfo реально неопределён, добавить соответствующий конструктор
+		RDOParserSrcInfo() /// @todo TypeInfo реально неопределён, добавить соответствующий конструктор
 	);
 }
 
@@ -37,7 +38,7 @@ RDOValue::RDOValue(CREF(LPRDOArrayValue) pValue)
 	m_value = m_pArray->getRArray();
 	m_pType = rdo::Factory<TypeInfo>::create(
 		pValue->getArrayType(),
-		pValue->src_info() //! TODO: Взять TypeInfo из pValue->getArrayType()
+		pValue->src_info() /// @todo Взять TypeInfo из pValue->getArrayType()
 	);
 }
 

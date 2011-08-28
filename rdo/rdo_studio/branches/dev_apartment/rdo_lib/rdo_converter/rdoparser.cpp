@@ -1,19 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdofile.h"
 
@@ -26,13 +27,13 @@
 #include "rdo_lib/rdo_converter/update/update.h"
 
 #include "thirdparty/pugixml/src/pugixml.hpp"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- Converter
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Converter
+// --------------------------------------------------------------------------------
 Converter::ParserList Converter::s_parserStack;
 
 #define DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
@@ -104,8 +105,11 @@ Converter::Converter()
 	, m_pattern             (false)
 {
 	s_parserStack.push_back(this);
-	m_runtime.memory_insert(sizeof(Converter));
-	m_runtime.init();
+
+	m_pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
+	ASSERT(m_pRuntime);
+	m_pRuntime->memory_insert(sizeof(Converter));
+	m_pRuntime->init();
 
 	m_pDocument = rdo::Factory<Document>::create();
 	ASSERT(m_pDocument);
@@ -113,7 +117,9 @@ Converter::Converter()
 
 Converter::~Converter()
 {
-	m_runtime.deinit();
+	m_pRuntime->deinit();
+	m_pRuntime = NULL;
+
 	rdo::deleteAllObjects(m_allValues);
 	m_movementObjectList.clear();
 	s_parserStack.remove(this);
@@ -208,7 +214,7 @@ tstring Converter::getModelStructure()
 	// OPR/DPT
 	ruint counter = 1;
 	modelStructure << std::endl << _T("$Activities") << std::endl;
-	modelStructure << m_runtime.writeActivitiesStructure(counter);
+	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
 	for (ruint i = 0; i < m_allDPTSearch.size(); i++)
@@ -224,7 +230,7 @@ tstring Converter::getModelStructure()
 	// PMD
 	modelStructure << std::endl << _T("$Watching") << std::endl;
 	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_runtime.getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -237,7 +243,7 @@ tstring Converter::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_runtime.getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -400,16 +406,13 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 
 	error().clear();
 
-	BOOST_AUTO(fileIt, fileList.begin());
-	boost::filesystem::path fullPath(fileIt->second);
-	fullPath.remove_filename();
+	boost::filesystem::path fullPath = boost::filesystem::path(fileList.begin()->second).parent_path();
 
 	try
 	{
 		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
 		std::stringstream backupDirName;
-		backupDirName << fullPath.directory_string()
-		              << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
 		                 % time.date().year ()
 		                 % time.date().month()
 		                 % time.date().day  ()
@@ -417,7 +420,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 		                 % time.time_of_day().minutes()
 		                 % time.time_of_day().seconds();
 
-		boost::filesystem::path backupPath(backupDirName.str());
+		boost::filesystem::path backupPath = fullPath / backupDirName.str();
 
 		try
 		{
@@ -426,12 +429,12 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 				YYLTYPE pos;
 				pos.m_last_line = 0;
 				pos.m_last_pos  = 0;
-				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.directory_string().c_str()));
+				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.c_str()));
 			}
 		}
-		catch (CREF(boost::filesystem::basic_filesystem_error<boost::filesystem::path>) ex)
+		catch (CREF(boost::system::error_code) ex)
 		{
-			tstring message = ex.what();
+			tstring message = ex.message();
 			if (message.find(_T("boost")) == 0)
 			{
 				BOOST_AUTO(pos, message.find(_T(' ')));
@@ -443,15 +446,15 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			YYLTYPE pos;
 			pos.m_last_line = 0;
 			pos.m_last_pos  = 0;
-			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.directory_string().c_str(), message.c_str()));
+			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.c_str(), message.c_str()));
 		}
 
 		STL_FOR_ALL(fileList, it)
 		{
 			boost::filesystem::path from(it->second);
-			boost::filesystem::path to  (backupPath.directory_string() + boost::filesystem::slash<boost::filesystem::path>::value + from.filename());
+			boost::filesystem::path to  (backupPath / from.filename());
 			boost::filesystem::rename(from, to);
-			it->second = to.file_string();
+			it->second = to.string();
 		}
 	}
 	catch (REF(rdoConverter::RDOSyntaxException))
@@ -467,7 +470,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 		return CNV_ERROR;
 	}
 
-	m_pDocument->create(fullPath.directory_string(), modelName);
+	m_pDocument->create(fullPath.string(), modelName);
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
@@ -489,7 +492,9 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 	m_pDocument->convert();
 	m_pDocument->close();
 
-	if (!createRDOX(rdo::format(_T("%s%s.rdox"), fullPath.directory_string().c_str(), modelName.c_str())))
+	boost::filesystem::path rdoxFile(fullPath / modelName);
+	rdoxFile.replace_extension(_T(".rdox"));
+	if (!createRDOX(rdoxFile.string()))
 	{
 		return CNV_ERROR;
 	}

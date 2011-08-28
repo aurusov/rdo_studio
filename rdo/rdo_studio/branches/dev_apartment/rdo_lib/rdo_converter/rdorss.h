@@ -1,22 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdorss.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdorss.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_RDORSS_RSS_H_
 #define _CONVERTOR_RDORSS_RSS_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdo_object.h"
 #include "rdo_lib/rdo_converter/rdo_value.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
@@ -28,9 +29,9 @@ int  cnv_rssparse(PTR(void)    lexer);
 int  cnv_rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void cnv_rsserror(PTR(char)    message);
 
-// ----------------------------------------------------------------------------
-// ---------- RDORSSResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORSSResource
+// --------------------------------------------------------------------------------
 OBJECT(RDORSSResource) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDORSSResource);
@@ -81,9 +82,9 @@ private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCResource
+// --------------------------------------------------------------------------------
 class RDOPROCResource: public RDORSSResource
 {
 DECLARE_FACTORY(RDOPROCResource);

@@ -1,9 +1,21 @@
-namespace rdoRuntime
-{
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_fuzzy.inl
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      18.04.2009
+  \brief     Нечеткая логика
+  \indent    4T
+*/
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyValue
-// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
+
+OPEN_RDO_RUNTIME_NAMESPACE
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFuzzyValue
+// --------------------------------------------------------------------------------
 inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyType) pType)
 	: m_pType(pType)
 {}
@@ -59,16 +71,16 @@ inline RDOFuzzyValue RDOFuzzyValue::supplement() const { return type()->getSuppl
 inline RDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
 inline RDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyType
-// ----------------------------------------------------------------------------
-inline RDOFuzzyType::RDOFuzzyType(PTR(RDOFuzzySetDefinition) fuzzySetDefinition)
-	: RDOType             (t_fuzzy           )
-	, m_fuzzySetDefinition(fuzzySetDefinition)
+// --------------------------------------------------------------------------------
+// -------------------- RDOFuzzyType
+// --------------------------------------------------------------------------------
+inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition)
+	: RDOType             (t_fuzzy            )
+	, m_fuzzySetDefinition(pFuzzySetDefinition)
 {
 	//! Было
 	//! m_fuzzySetDefinition->reparent(this);
-	//! TODO: для порядку перевести на умные указатели
+	/// @todo для порядку перевести на умные указатели
 }
 
 inline RDOFuzzyType::~RDOFuzzyType()
@@ -104,18 +116,18 @@ inline RDOFuzzyValue RDOFuzzyType::getSupplement(CREF(RDOFuzzyValue) value) cons
 	return m_fuzzySetDefinition->getSupplement(value);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinition
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFuzzySetDefinition
+// --------------------------------------------------------------------------------
 inline RDOFuzzySetDefinition::RDOFuzzySetDefinition()
 {}
 
 inline RDOFuzzySetDefinition::~RDOFuzzySetDefinition()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionFixed
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFuzzySetDefinitionFixed
+// --------------------------------------------------------------------------------
 inline RDOFuzzySetDefinitionFixed::RDOFuzzySetDefinitionFixed()
 	: RDOFuzzySetDefinition()
 {}
@@ -139,9 +151,9 @@ inline rbool RDOFuzzySetDefinitionFixed::inRange(CREF(RDOValue) rdovalue) const
 	return m_items.find(rdovalue) != m_items.end();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionRangeDiscret
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFuzzySetDefinitionRangeDiscret
+// --------------------------------------------------------------------------------
 inline RDOFuzzySetDefinitionRangeDiscret::RDOFuzzySetDefinitionRangeDiscret(CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step)
 	: RDOFuzzySetDefinition(    )
 	, m_from               (from)
@@ -152,11 +164,11 @@ inline RDOFuzzySetDefinitionRangeDiscret::RDOFuzzySetDefinitionRangeDiscret(CREF
 inline RDOFuzzySetDefinitionRangeDiscret::~RDOFuzzySetDefinitionRangeDiscret()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzyEmptyType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFuzzyEmptyType
+// --------------------------------------------------------------------------------
 inline RDOFuzzyEmptyType::RDOFuzzyEmptyType()
-	: RDOFuzzyType(new RDOFuzzySetDefinitionEmpty(NULL))
+	: RDOFuzzyType(rdo::Factory<RDOFuzzySetDefinitionEmpty>::create())
 {}
 
 inline RDOFuzzyEmptyType::~RDOFuzzyEmptyType()
@@ -178,10 +190,10 @@ inline LPRDOFuzzyType RDOFuzzyEmptyType::getInstance()
 	return LPRDOFuzzyType(RDOFuzzyEmptyType::s_emptyType);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuzzySetDefinitionEmpty
-// ----------------------------------------------------------------------------
-inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::RDOFuzzySetDefinitionEmpty(PTR(RDORuntimeParent) parent)
+// --------------------------------------------------------------------------------
+// -------------------- RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty
+// --------------------------------------------------------------------------------
+inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::RDOFuzzySetDefinitionEmpty()
 	: RDOFuzzySetDefinition()
 {}
 
@@ -198,4 +210,4 @@ inline RDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSupplemen
 	return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
 }
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE

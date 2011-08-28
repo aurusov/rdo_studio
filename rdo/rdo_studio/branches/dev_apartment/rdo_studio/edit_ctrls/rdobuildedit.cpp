@@ -13,9 +13,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoEditCtrl;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOBuildEditLineInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOBuildEditLineInfo
+// --------------------------------------------------------------------------------
 RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, bool _warning ):
 	RDOLogEditLineInfo( _message, _fileType, _lineNumber, _posInLine ),
 	error_code( _error_code ),
@@ -58,8 +58,8 @@ std::string RDOBuildEditLineInfo::getMessage() const
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOBuildEdit
+// --------------------------------------------------------------------------------
+// -------------------- RDOBuildEdit
 // ---------------------------------------------------------------------------
 
 // ON_UPDATE_COMMAND_UI сделано

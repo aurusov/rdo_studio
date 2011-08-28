@@ -1,20 +1,21 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdofrm.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdofrm.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdofrm.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -28,13 +29,13 @@ int cnv_frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void cnv_frmerror(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFRMFrame
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame
+// --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	: RDOParserSrcInfo(src_info)
 {
-	m_pFrame = new rdoRuntime::RDOFRMFrame(Converter::s_converter()->runtime(), src_info, pLogic ? pLogic->getCalc() : NULL);
+	m_pFrame = rdo::Factory<rdoRuntime::RDOFRMFrame>::create(src_info, pLogic ? pLogic->getCalc() : NULL);
 	Converter::s_converter()->insertFRMFrame(this);
 }
 

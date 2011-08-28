@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_lexer.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 11.06.2006
- * bref     : Лексика РДО
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_lexer.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.06.2006
+  \brief     Лексика РДО
+  \indent    4T
+*/
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdobison.h"
 #include "rdo_lib/rdo_parser/rdogramma.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
@@ -19,7 +20,7 @@
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #ifdef LEXER
 #undef LEXER
@@ -87,6 +88,7 @@ $sequence                      return(RDO_Sequence);
 uniform                        return(RDO_uniform);
 exponential                    return(RDO_exponential);
 normal                         return(RDO_normal);
+triangular                     return(RDO_triangular);
 by_hist                        return(RDO_by_hist);
 enumerative                    return(RDO_enumerative);
 
@@ -248,8 +250,6 @@ planning                       return(RDO_Planning);
 Planning                       return(RDO_Planning);
 stopping                       return(RDO_Stopping);
 Stopping                       return(RDO_Stopping);
-stop                           return(RDO_Stop);
-Stop                           return(RDO_Stop);
 Exist                          return(RDO_Exist);
 exist                          return(RDO_Exist);
 Not_Exist                      return(RDO_Not_Exist);
@@ -321,7 +321,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, name) : rdoParse::RDOParserSrcInfo(name)
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(name, pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_STRING_CONST;
 }
@@ -361,7 +361,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, value) : rdoParse::RDOParserSrcInfo(value)
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(value.c_str()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
@@ -372,7 +372,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atof(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_REAL_CONST;
 }
@@ -383,7 +383,7 @@ $term                          return(RDO_Fuzzy_Term);
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
@@ -394,7 +394,7 @@ true {
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
@@ -405,7 +405,7 @@ false {
 		LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParse::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	//! TODO: TypeInfo, убрать rdoParse::RDOParserSrcInfo()
+	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
 	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }

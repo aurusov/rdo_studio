@@ -1,30 +1,30 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : type.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      type.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOPARSER_TYPE_H_
 #define _RDOPARSER_TYPE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_model_i.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- IType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- IType
+// --------------------------------------------------------------------------------
 class RDOValue;
 PREDECLARE_POINTER(RDOType);
 
@@ -57,9 +57,9 @@ public:
 	virtual rdoRuntime::LPRDOCalc  calc_cast  (CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;                                                                         \
 	virtual rdoRuntime::RDOValue   get_default() const;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType
+// --------------------------------------------------------------------------------
 OBJECT(RDOType)
 	IS  IMPLEMENTATION_OF(IType          )
 	AND IMPLEMENTATION_OF(IModelStructure)

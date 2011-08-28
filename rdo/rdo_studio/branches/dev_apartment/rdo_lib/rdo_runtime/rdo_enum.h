@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_enum.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_enum.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      22.06.2008
+  \brief     Перечисления
+  \indent    4T
+*/
 
-#ifndef _RDO_ENUM_H_
-#define _RDO_ENUM_H_
+#ifndef _LIB_RUNTIME_ENUM_H_
+#define _LIB_RUNTIME_ENUM_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_runtime/rdo_type.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEnumType
-// ----------------------------------------------------------------------------
+/*!
+  \class     RDOEnumType
+  \brief     Тип перечисления
+*/
 class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
@@ -53,4 +54,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdo_enum.inl"
 
-#endif //! _RDO_ENUM_H_
+#endif // _LIB_RUNTIME_ENUM_H_

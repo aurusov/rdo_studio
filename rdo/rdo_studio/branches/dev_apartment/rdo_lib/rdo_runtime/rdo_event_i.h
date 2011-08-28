@@ -1,24 +1,30 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_event_i.h
- * author   : Лущан Дмитрий
- * date     : 23.05.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_event_i.h
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      23.05.2010
+  \brief     Интерфейс событий
+  \indent    4T
+*/
 
-#ifndef _RDO_EVENT_I_H_
-#define _RDO_EVENT_I_H_
+#ifndef _LIB_RUNTIME_EVENT_I_H_
+#define _LIB_RUNTIME_EVENT_I_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdointerface.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
+/*!
+  \interface IEvent
+  \brief     Интерфейс событий
+  \todo      что это?
+*/
 class IEvent
 {
 public:
 };
+
 #define DECLARE_IEvent
 
-#endif //! _RDO_EVENT_I_H_
+#endif // _LIB_RUNTIME_EVENT_I_H_

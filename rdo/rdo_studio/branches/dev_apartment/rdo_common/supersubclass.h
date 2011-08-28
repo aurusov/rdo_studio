@@ -1,21 +1,21 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : supersubclass.h
- * author   : Урусов Андрей
- * date     : 08.03.2010
- * bref     : основан на классе Conversion из Александреску
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      supersubclass.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      08.03.2010
+  \brief     основан на классе Conversion из Александреску
+  \indent    4T
+*/
 
 #ifndef _SUPERSUBCLASS_H_
 #define _SUPERSUBCLASS_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
 

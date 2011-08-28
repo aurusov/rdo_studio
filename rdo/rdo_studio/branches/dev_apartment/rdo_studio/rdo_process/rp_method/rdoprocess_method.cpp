@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_method.h"
-#include "rdoprocess_factory.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 
 #ifdef _DEBUG
@@ -11,9 +11,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rpMethod;
 
-// ----------------------------------------------------------------------------
-// ---------- RPMethod
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPMethod
+// --------------------------------------------------------------------------------
 RPMethod::RPMethod( RPObject* _parent, const rp::string _name ):
 	RPObject( _parent, _name ),
 	pixmap_big( NULL ),

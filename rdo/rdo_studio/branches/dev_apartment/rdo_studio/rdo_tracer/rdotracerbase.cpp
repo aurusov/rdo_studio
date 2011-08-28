@@ -23,9 +23,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdoTracer;
 using namespace rdoTracerLog;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerBase
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerBase
+// --------------------------------------------------------------------------------
 RDOTracerBase::RDOTracerBase( const std::string& _thread_name, RDOKernelGUI* _kernel_gui ):
 	RDOThreadGUI( _thread_name, _kernel_gui ),
 	log( NULL ),
@@ -439,7 +439,7 @@ RDOTracerResource* RDOTracerBase::getResource( std::string& line )
 
 RDOTracerResource* RDOTracerBase::resourceCreation( std::string& line, RDOTracerTimeNow* const time  )
 {
-	ruint typeID = atoi( getNextValue( line ).c_str() ) - 1;
+	ruint typeID = atoi( getNextValue( line ).c_str() - 1);
 	ASSERT(typeID < resTypes.size());
 	RDOTracerResType* type = resTypes.at( typeID );
 	int id = atoi( getNextValue( line ).c_str() );

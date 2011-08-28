@@ -1,42 +1,63 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : model_objects.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 13.06.2009
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      model_objects.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.06.2009
+  \brief     Типы объектов модели
+  \indent    4T
+*/
 
-#ifndef _RDOCOMMON_MODEL_OBJECTS_H_
-#define _RDOCOMMON_MODEL_OBJECTS_H_
+#ifndef _LIB_COMMON_MODEL_OBJECTS_H_
+#define _LIB_COMMON_MODEL_OBJECTS_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
+//! \namespace rdoModelObjects
+//! \brief     Пространство имён объектов модели
 #define OPEN_RDO_MODEL_OBJECTS_NAMESPACE	namespace rdoModelObjects {
 #define CLOSE_RDO_MODEL_OBJECTS_NAMESPACE	};
 
 OPEN_RDO_MODEL_OBJECTS_NAMESPACE
-	enum RDOFileType  {RTP = 0, RSS, EVN, PAT, DPT, PRC, FRM, FUN, SMR, PMD, PMV, TRC, RDOX};
 
+	//! \details Типы файлов
+	enum RDOFileType
+	{
+		RTP = 0, //!< Файл типов ресурсов
+		RSS,     //!< Файл ресурсов
+		EVN,     //!< Файл событий
+		PAT,     //!< Файл паттернов
+		DPT,     //!< Файл точек принятия решений
+		PRC,     //!< Файл процессов
+		FRM,     //!< Файл анимации
+		FUN,     //!< Файл функций
+		SMR,     //!< Файл прогона
+		PMD,     //!< Файл описания показателей
+		PMV,     //!< Файл со значениями показателей
+		TRC,     //!< Файл трассировки
+		RDOX     //!< Файл проекта
+	};
+
+	//! \details Типы объектов парсера, представляет собой битовую маску
 	enum RDOParseType
 	{
-		obNONE = 0x0000,
-		obPRE  = 0x0001,
-		obRTP  = 0x0002,
-		obRSS  = 0x0004,
-		obFUN  = 0x0008,
-		obEVN  = 0x0010,
-		obPAT  = 0x0020,
-		obDPT  = 0x0040,
-		obPRC  = 0x0080,
-		obPMD  = 0x0100,
-		obFRM  = 0x0200,
-		obSMR  = 0x0400,
-		obPOST = 0x0800,
-		obALL  = 0x0FFF
+		obNONE = 0x0000, //!< Тип отсутствует (маски нет)
+		obPRE  = 0x0001, //!< Предварительная компиляция
+		obRTP  = 0x0002, //!< Компиляция типов ресурсов
+		obRSS  = 0x0004, //!< Компиляция ресурсов
+		obFUN  = 0x0008, //!< Компиляция функций
+		obEVN  = 0x0010, //!< Компиляция событий
+		obPAT  = 0x0020, //!< Компиляция паттернов
+		obDPT  = 0x0040, //!< Компиляция точек принятия решений
+		obPRC  = 0x0080, //!< Компиляция процессов
+		obPMD  = 0x0100, //!< Компиляция показателей
+		obFRM  = 0x0200, //!< Компиляция анимации
+		obSMR  = 0x0400, //!< Компиляция прогона
+		obPOST = 0x0800, //!< Пост-компиляция
+		obALL  = 0x0FFF  //!< Все типы (маска полностью выставлена)
 	};
 CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
 
-#endif //! _RDOCOMMON_MODEL_OBJECTS_H_
+#endif //! _LIB_COMMON_MODEL_OBJECTS_H_

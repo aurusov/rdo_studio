@@ -1,19 +1,19 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_matrix.h
- * author   : Чирков Михаил
- * date     : 01.10.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_matrix.h
+  \author    Чирков Михаил
+  \date      01.10.2010
+  \brief     Матрицы
+  \indent    4T
+*/
 
-#ifndef _RDO_MATRIX_H_
-#define _RDO_MATRIX_H_
+#ifndef _LIB_RUNTIME_MATRIX_H_
+#define _LIB_RUNTIME_MATRIX_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_value.h"
 #include "rdo_lib/rdo_runtime/rdo_matrix_def.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
-#endif //! _RDO_MATRIX_H_
+#endif // _LIB_RUNTIME_MATRIX_H_

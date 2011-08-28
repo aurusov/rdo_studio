@@ -1,156 +1,235 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : procgui.h
- * author   : Шувалов Андрей
- * date     : 22.04.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      procgui.h
+  \author    Шувалов Андрей
+  \date      22.04.2011
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _PROCGUI_H_
 #define _PROCGUI_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATOR_NAMESPACE
 
-// --------------------------------------------------------------------
-// ---------- ProcGUICalc
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUICalc
+// --------------------------------------------------------------------------------
 class ProcGUICalc
 {
 public:
-	ProcGUICalc(PTR(rdoRuntime::RDORuntime) pRuntime);
+	rdoRuntime::LPRDOCalcConst        getConstCalc     (double arg                                       );
+	rdoRuntime::LPRDOCalcFunctionCall getNormalCalc    (ruint base, double arg1, double arg2             );
+	rdoRuntime::LPRDOCalcFunctionCall getUniformCalc   (ruint base, double arg1, double arg2             );
+	rdoRuntime::LPRDOCalcFunctionCall getExpCalc       (ruint base, double arg                           );
+	rdoRuntime::LPRDOCalcFunctionCall getTriangularCalc(ruint base, double arg1, double arg2, double arg3);
+	rdoRuntime::LPRDOCalc             getCalc();
+
+protected:
+	ProcGUICalc(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams);
 	virtual ~ProcGUICalc();
 
-	rdoRuntime::LPRDOCalcConst        ProcGUICalc::getConstCalc  (double arg                        );
-	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getNormalCalc (int p_base,double arg1,double arg2);
-	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getUniformCalc(int p_base,double arg1,double arg2);
-	rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc    (int p_base,double arg1            );
-
 private:
-	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
+	rdoRuntime::LPRDORuntime  m_pRuntime;
+	LPRPShapeDataBlock        m_pParams;
+	rdoRuntime::LPRDOCalc     m_pCalc;
 };
 
-// --------------------------------------------------------------------
-// ---------- ProcGUIProcess
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIProcess
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(ProcGUIBlock);
 
 OBJECT(ProcGUIProcess)
 {
+DECLARE_FACTORY(ProcGUIProcess);
 public:
-	static tstring s_name_prefix;
-	static tstring s_name_sufix;
+	typedef  std::list<LPProcGUIBlock>  BlockList;
+	typedef  std::list<tstring>         ResNameList;
 
-	ProcGUIProcess(PTR(rdoRuntime::RDORuntime) pRuntime);
+	static tstring s_namePrefix;
+	static tstring s_nameSufix;
 
-	void     insertBlock(CREF(LPProcGUIBlock) pBlock);
-	LPILogic getProcess (                              ) {return m_pProcess;}
-
-	virtual ~ProcGUIProcess();
+	void           clear             ();
+	void           insertBlock       (CREF(LPProcGUIBlock)        pBlock );
+	void           initResources     (CREF(rdoParse::LPRDOParser) pParser);
+	void           addResNameToBlock (CREF(tstring)               name   );
+	CREF(LPILogic) getProcess        () const     { return m_pProcess; }
 
 private:
-	PTR(rdoRuntime::RDORuntime)  m_pRuntime;
-	LPILogic                     m_pProcess;
-	std::list<LPProcGUIBlock> m_blockList;
+	ProcGUIProcess(CREF(rdoRuntime::LPRDORuntime) pRuntime);
+	virtual ~ProcGUIProcess();
+
+	rdoRuntime::LPRDORuntime  m_pRuntime;
+	LPILogic                  m_pProcess;
+	BlockList                 m_blockList;
+	ResNameList               m_resNameList;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlock
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlock
+// --------------------------------------------------------------------------------
 OBJECT(ProcGUIBlock)
 {
 DECLARE_FACTORY(ProcGUIBlock);
 protected:
-	tstring          m_name;
-	LPProcGUIProcess m_pProcess;
-
-	ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(tstring) pName);
+	ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(tstring) name);
 	virtual ~ProcGUIBlock();
+
+private:
+	tstring m_name;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlockGenerate
-// ----------------------------------------------------------------------------
-class ProcGUIBlockGenerate: public ProcGUIBlock, public ProcGUICalc
+#define PROCGUI_BLOCK(A)                  \
+PREDECLARE_POINTER(A);                    \
+CLASS(A): IMPLEMENTATION_OF(ProcGUIBlock)
+
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlockGenerate
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUIBlockGenerate)	IS IMPLEMENTATION_OF(ProcGUICalc)
 {
 DECLARE_FACTORY(ProcGUIBlockGenerate);
-protected:
-	LPIPROCBlock             m_pBlock;
-	rdoParse::LPRDOParser    m_pParser;
-	LPRPShapeDataBlockCreate m_pParams;
-
 private:
-	ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams /*CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc*/);
+	ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams);
+	virtual ~ProcGUIBlockGenerate();
+
+	LPIPROCBlock             m_pBlock;
+	LPRPShapeDataBlockCreate m_pParams;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlockTerminate
-// ----------------------------------------------------------------------------
-class ProcGUIBlockTerminate: public ProcGUIBlock
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlockTerminate
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUIBlockTerminate)
 {
 DECLARE_FACTORY(ProcGUIBlockTerminate);
-protected:
-	LPIPROCBlock                m_pBlock;
-	LPRPShapeDataBlockTerminate m_pParams;
-
 private:
 	ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(LPRPShapeDataBlockTerminate) pParams);
+	virtual ~ProcGUIBlockTerminate();
+
+	LPIPROCBlock                m_pBlock;
+	LPRPShapeDataBlockTerminate m_pParams;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIBlockProcess
-// ----------------------------------------------------------------------------
-class ProcGUIBlockProcess: public ProcGUIBlock
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIBlockProcess
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUIBlockProcess)
 {
 DECLARE_FACTORY(ProcGUIBlockProcess);
 private:
-	LPRPShapeDataBlockProcess m_pParams;
-	LPProcGUIBlock            m_pBlock;
+	ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+	virtual ~ProcGUIBlockProcess();
 
-	ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+	LPProcGUIBlock            m_pBlock;
+	LPRPShapeDataBlockProcess m_pParams;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUIAdvance
-// ----------------------------------------------------------------------------
-class ProcGUIAdvance: public ProcGUIBlock, public ProcGUICalc
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIAdvance
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUIAdvance) IS IMPLEMENTATION_OF(ProcGUICalc)
 {
 DECLARE_FACTORY(ProcGUIAdvance);
 private:
-	ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, PTR(rdoRuntime::RDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams);
+	ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams);
+	virtual ~ProcGUIAdvance();
 
-	LPRPShapeDataBlockProcess m_pParams;
 	LPIPROCBlock              m_pBlock;
+	LPRPShapeDataBlockProcess m_pParams;
 };
-DECLARE_POINTER(ProcGUIAdvance);
 
-// ----------------------------------------------------------------------------
-// ---------- ProcGUISeize
-// ----------------------------------------------------------------------------
-class ProcGUISeize: public ProcGUIBlock
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUISeize
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUISeize)
 {
 DECLARE_FACTORY(ProcGUISeize);
 public:
-	void createRuntime();
-	void addResource  (CREF(tstring) name);
+	void createRuntime  (CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser);
+	void addResourceName(CREF(tstring)          name);
 
 private:
 	ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+	virtual ~ProcGUISeize();
 
-	rdoParse::LPRDOParser     m_pParser;
+	typedef  std::list<tstring>                         ResNameList;
+	typedef  std::vector<rdoRuntime::parser_for_Seize>  TODO_parser_for_Seize;
+
 	LPIPROCBlock              m_pBlock;
 	LPRPShapeDataBlockProcess m_pParams;
-	std::list  <tstring>      m_resList;
-	std::vector<rdoRuntime::parser_for_Seize>  m_parserForRuntime;
+	ResNameList               m_resNameList;
+	TODO_parser_for_Seize     m_parserForRuntime;
 };
-DECLARE_POINTER(ProcGUISeize);
+
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIRelease
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUIRelease)
+{
+DECLARE_FACTORY(ProcGUIRelease);
+public:
+	void createRuntime  (CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser);
+	void addResourceName(CREF(tstring)          name);
+
+private:
+	ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+	virtual ~ProcGUIRelease();
+
+	typedef  std::list<tstring>                         ResNameList;
+	typedef  std::vector<rdoRuntime::parser_for_Seize>  TODO_parser_for_Seize;
+
+	LPIPROCBlock              m_pBlock;
+	LPRPShapeDataBlockProcess m_pParams;
+	ResNameList               m_resNameList;
+	TODO_parser_for_Seize     m_parserForRuntime;
+};
+
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIQueue
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUIQueue)
+{
+DECLARE_FACTORY(ProcGUIQueue);
+public:
+	void createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser);
+	void setResource  (CREF(tstring)          name);
+
+private:
+	ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(tstring) name);
+	virtual ~ProcGUIQueue();
+
+	tstring                      m_resourceName;
+	LPIPROCBlock                 m_pBlock;
+	rdoRuntime::parser_for_Queue m_parserForRuntime;
+};
+
+// --------------------------------------------------------------------------------
+// -------------------- ProcGUIDepart
+// --------------------------------------------------------------------------------
+PROCGUI_BLOCK(ProcGUIDepart)
+{
+DECLARE_FACTORY(ProcGUIDepart);
+public:
+	void createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser);
+	void setResource  (CREF(tstring)          name);
+
+private:
+	ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDOParser) pParser, CREF(tstring) name);
+	virtual ~ProcGUIDepart();
+
+	tstring                      m_resourceName;
+	LPIPROCBlock                 m_pBlock;
+	rdoRuntime::parser_for_Queue m_parserForRuntime;
+};
 
 CLOSE_RDO_SIMULATOR_NAMESPACE
 

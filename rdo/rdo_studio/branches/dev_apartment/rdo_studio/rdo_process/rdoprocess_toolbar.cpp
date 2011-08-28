@@ -10,9 +10,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RPToolbarToolTip
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPToolbarToolTip
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPToolbarToolTip, CToolBar)
 	//{{AFX_MSG_MAP(RPToolbarToolTip)
 	ON_WM_SIZE()
@@ -41,9 +41,9 @@ void RPToolbarToolTip::OnSize( UINT nType, int cx, int cy )
 	updateToolTips();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPCtrlToolbarMFC
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPCtrlToolbarMFC
+// --------------------------------------------------------------------------------
 RPCtrlToolbarMFC::RPCtrlToolbarMFC( CWnd* parent ):
 	RPCtrlToolbar()
 {
@@ -104,9 +104,9 @@ void RPCtrlToolbarMFC::setCaption( const rp::string& caption )
 	toolbar.SetWindowText( caption.c_str() );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOProcToolBar
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOProcToolBar
+// --------------------------------------------------------------------------------
 void RDOProcToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
 {
 	CreateEx( parent, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
@@ -122,9 +122,9 @@ void RDOProcToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDi
 	EnableDocking( CBRS_ALIGN_ANY );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPToolBar
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPToolBar
+// --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPToolBar, RDOProcToolBar)
 	//{{AFX_MSG_MAP(RPToolBar)
 	ON_WM_PAINT()

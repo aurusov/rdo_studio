@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdodpt.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdodpt.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDODPT_H_
 #define _RDODPT_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 
 #include "rdo_lib/rdo_parser/rdo_object.h"
@@ -24,7 +25,7 @@
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/searchtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
@@ -60,9 +61,9 @@ int  proc_opr_parse(PTR(void) lexer);
 int  proc_opr_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void proc_opr_error(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTActivity
+// --------------------------------------------------------------------------------
 CLASS(RDODPTActivity):
 	    INSTANCE_OF      (RDOParserSrcInfo)
 	AND INSTANCE_OF      (Context         )
@@ -93,9 +94,9 @@ private:
 };
 DECLARE_POINTER(RDODPTActivity);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTActivityHotKey
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTActivityHotKey
+// --------------------------------------------------------------------------------
 class RDODPTActivityHotKey: public RDODPTActivity
 {
 public:
@@ -106,9 +107,9 @@ protected:
 };
 DECLARE_POINTER(RDODPTActivityHotKey);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTFreeActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTFreeActivity
+// --------------------------------------------------------------------------------
 class RDODPTFreeActivity: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDODPTFreeActivity);
@@ -117,9 +118,9 @@ private:
 };
 DECLARE_POINTER(RDODPTFreeActivity);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTFree
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTFree
+// --------------------------------------------------------------------------------
 CLASS(RDODPTFree): public RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
@@ -134,9 +135,9 @@ private:
 };
 DECLARE_POINTER(RDODPTFree);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSomeActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSomeActivity
+// --------------------------------------------------------------------------------
 class RDODPTSomeActivity: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDODPTSomeActivity);
@@ -144,9 +145,9 @@ private:
 	RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTPriorActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTPriorActivity
+// --------------------------------------------------------------------------------
 class RDODPTPriorActivity: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDODPTPriorActivity);
@@ -154,9 +155,9 @@ private:
 	RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSome
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSome
+// --------------------------------------------------------------------------------
 CLASS(RDODPTSome): public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
@@ -177,9 +178,9 @@ private:
 };
 DECLARE_POINTER(RDODPTSome);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTPrior
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTPrior
+// --------------------------------------------------------------------------------
 CLASS(RDODPTPrior): public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
@@ -200,9 +201,9 @@ private:
 };
 DECLARE_POINTER(RDODPTPrior);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearchActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSearchActivity
+// --------------------------------------------------------------------------------
 class RDODPTSearchActivity: public RDODPTActivity
 {
 DECLARE_FACTORY(RDODPTSearchActivity);
@@ -221,9 +222,9 @@ private:
 };
 DECLARE_POINTER(RDODPTSearchActivity);
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSearch
+// --------------------------------------------------------------------------------
 CLASS(RDODPTSearch): public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
@@ -252,23 +253,31 @@ private:
 };
 DECLARE_POINTER(RDODPTSearch);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCProcess
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCProcess
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOPROCOperator);
 
 OBJECT(RDOPROCProcess) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOPROCProcess);
 public:
+	typedef  std::list<LPRDOPROCProcess >  ProcessList;
+	typedef  std::list<LPRDOPROCOperator>  BlockList;
+
 	static tstring s_name_prefix;
 	static tstring s_name_sufix;
+
+	tstring name() const { return m_name; }
 
 	void  end   ();
 	rbool closed() const { return m_closed; }
 
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
+	void            setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
+	LPRDOFUNLogic   getConditon () const                               { return m_pConditon;      }
+	CREF(BlockList) getBlockList() const                               { return m_blockList;      }
+
+	rbool checkTransactType(CREF(tstring) name) const;
 
 	rbool    setPrior   (REF(LPRDOFUNArithm)     pPrior  );
 	void     insertBlock(CREF(LPRDOPROCOperator) pBlock  );
@@ -277,9 +286,6 @@ public:
 	LPILogic getRunTime () const { return m_pRuntime; }
 
 protected:
-	typedef  std::list<LPRDOPROCProcess >  ProcessList;
-	typedef  std::list<LPRDOPROCOperator>  BlockList;
-
 	rbool             m_closed;
 	LPRDOPROCProcess  m_pParentProcess;
 	ProcessList       m_childProcessList;
@@ -287,17 +293,21 @@ protected:
 	LPILogic          m_pRuntime;
 
 private:
-	RDOPROCProcess(CREF(RDOParserSrcInfo) info);
+	RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name, LPRDORTPResType transactType);
 
-	LPRDOFUNLogic m_pConditon;
+	LPRDOFUNLogic   m_pConditon;
+	tstring         m_name;
+	LPRDORTPResType m_transactType;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCOperator
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCOperator
+// --------------------------------------------------------------------------------
 OBJECT(RDOPROCOperator)
 {
 DECLARE_FACTORY(RDOPROCOperator);
+public:
+	virtual LPIPROCBlock getRuntimeBlock() const = 0;
 protected:
 	tstring          m_name;
 	LPRDOPROCProcess m_pProcess;
@@ -306,12 +316,14 @@ protected:
 	virtual ~RDOPROCOperator();
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCGenerate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCGenerate
+// --------------------------------------------------------------------------------
 class RDOPROCGenerate: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCGenerate);
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 
@@ -319,9 +331,9 @@ private:
 	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCBlockForQueue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlockForQueue
+// --------------------------------------------------------------------------------
 class RDOPROCBlockForQueue: public RDOPROCOperator
 {
 protected:
@@ -331,13 +343,14 @@ protected:
 	rdoRuntime::parser_for_Queue m_parserForRuntime;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCQueue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCQueue
+// --------------------------------------------------------------------------------
 class RDOPROCQueue: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCQueue);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void setResource  (CREF(tstring) name);
 
@@ -350,13 +363,14 @@ private:
 };
 DECLARE_POINTER(RDOPROCQueue);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCDepart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCDepart
+// --------------------------------------------------------------------------------
 class RDOPROCDepart: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCDepart);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void setResource  (CREF(tstring) name);
 
@@ -369,9 +383,9 @@ private:
 };
 DECLARE_POINTER(RDOPROCDepart);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCBlockForSeize
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlockForSeize
+// --------------------------------------------------------------------------------
 class RDOPROCBlockForSeize: public RDOPROCOperator
 {
 protected:
@@ -381,13 +395,14 @@ protected:
 	rdoRuntime::parser_for_Seize m_parserForRuntime;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCSeize
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCSeize
+// --------------------------------------------------------------------------------
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 DECLARE_FACTORY(RDOPROCSeize);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void addResource  (CREF(tstring) name);
 
@@ -404,13 +419,14 @@ private:
 };
 DECLARE_POINTER(RDOPROCSeize);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCRelease
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCRelease
+// --------------------------------------------------------------------------------
 class RDOPROCRelease: public RDOPROCBlockForSeize
 {
 DECLARE_FACTORY(RDOPROCRelease);
 public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 	void createRuntime();
 	void addResource  (CREF(tstring) name);
 
@@ -427,12 +443,14 @@ private:
 };
 DECLARE_POINTER(RDOPROCRelease);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCAdvance
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCAdvance
+// --------------------------------------------------------------------------------
 class RDOPROCAdvance: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCAdvance);
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 
@@ -440,13 +458,15 @@ private:
 	RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCTerminate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCTerminate
+// --------------------------------------------------------------------------------
 class RDOPROCTerminate: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCTerminate);
 
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 
@@ -454,12 +474,14 @@ private:
 	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(ruint) term);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCAssign
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCAssign
+// --------------------------------------------------------------------------------
 class RDOPROCAssign: public RDOPROCOperator
 {
 DECLARE_FACTORY(RDOPROCAssign);
+public:
+	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
 protected:
 	LPIPROCBlock m_pRuntime;
 

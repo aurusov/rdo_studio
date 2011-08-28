@@ -1,17 +1,17 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdostudiomodel.cpp
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdostudiomodel.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_studio/stdafx.h"
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <limits>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_studio/rdostudiomodel.h"
 #include "rdo_studio/rdostudiothread.h"
 #include "rdo_studio/rdostudiomainfrm.h"
@@ -32,7 +32,7 @@
 #include "rdo_common/rdoanimation.h"
 #include "rdo_plugin/rdoplugin.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
 using namespace rdoSimulator;
@@ -43,9 +43,9 @@ using namespace rdoSimulator;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioModel
+// --------------------------------------------------------------------------------
 PTR(RDOStudioModel) model = NULL;
 
 RDOStudioModel::RDOStudioModel()
@@ -412,8 +412,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning);
-				if (it->warning)
+				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
+				if (it->m_warning)
 				{
 					warnings_cnt++;
 				}
@@ -446,8 +446,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning);
-				if (it->warning)
+				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
+				if (it->m_warning)
 				{
 					warnings_cnt++;
 				}
@@ -484,8 +484,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning);
-				if (it->warning)
+				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
+				if (it->m_warning)
 				{
 					warnings_cnt++;
 				}

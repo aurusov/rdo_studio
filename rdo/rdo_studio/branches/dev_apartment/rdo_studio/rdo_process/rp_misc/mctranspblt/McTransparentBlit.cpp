@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
-#include "McTransparentBlit.h"
+#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
+#include "rdo_studio/rdo_process/rp_misc/mctranspblt/McTransparentBlit.h"
 
 //////////////////////////////////////////////////////////////////////
 // Name	  :	McTransparentBlt

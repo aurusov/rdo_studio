@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_lexer.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_lexer.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_RDOCONVERTER_LEXER_H_
 #define _CONVERTOR_RDOCONVERTER_LEXER_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/namespace.h"
 #include "rdo_lib/rdo_converter/rdobison.h"
 #include "rdo_lib/rdo_converter/rdogramma.h"
@@ -21,13 +22,13 @@
 #define yyFlexLexer cnvFlexLexer
 #include "thirdparty/bison_flex/FlexLexer.h"
 #endif
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLexer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOLexer
+// --------------------------------------------------------------------------------
 class Converter;
 
 class RDOLexer: public yyFlexLexer

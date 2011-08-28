@@ -1,11 +1,11 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdorepository.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdorepository.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOREPOSITORYFILE_H_
 #define _RDOREPOSITORYFILE_H_
@@ -14,25 +14,25 @@
 #pragma once
 #endif
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <fstream>
 #include <map>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_kernel/rdothread.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_common/rdocommon.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define OPEN_RDO_REPOSITORY_NAMESPACE  namespace rdoRepository {
 #define CLOSE_RDO_REPOSITORY_NAMESPACE };
 
 OPEN_RDO_REPOSITORY_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOThreadRepository
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadRepository
+// --------------------------------------------------------------------------------
 class RDOThreadRepository: public RDOThreadMT
 {
 public:

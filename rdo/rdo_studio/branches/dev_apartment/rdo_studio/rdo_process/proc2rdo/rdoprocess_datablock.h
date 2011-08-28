@@ -1,25 +1,26 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdoprocess_datablock.h
- * author   : Шувалов Андрей
- * date     : 04.05.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoprocess_datablock.h
+  \author    Шувалов Андрей
+  \date      04.05.2011
+  \brief     
+  \indent    4T
+*/
 
 #ifndef RDO_PROCESS_DATABLOCK_H
 #define RDO_PROCESS_DATABLOCK_H
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlock
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlock
+// --------------------------------------------------------------------------------
 OBJECT(RPShapeDataBlock)
 {
+DECLARE_FACTORY(RPShapeDataBlock);
 public:
 	enum zakonRaspr
 	{
@@ -51,9 +52,9 @@ protected:
 	double     m_disp;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlockCreate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlockCreate
+// --------------------------------------------------------------------------------
 class RPShapeDataBlockCreate: public RPShapeDataBlock
 {
 DECLARE_FACTORY(RPShapeDataBlockCreate)
@@ -69,9 +70,9 @@ private:
 };
 DECLARE_POINTER(RPShapeDataBlockCreate);
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlockTerminate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlockTerminate
+// --------------------------------------------------------------------------------
 OBJECT(RPShapeDataBlockTerminate)
 {
 DECLARE_FACTORY(RPShapeDataBlockTerminate)
@@ -88,35 +89,35 @@ private:
 	tstring m_name;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlockProcess
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlockProcess
+// --------------------------------------------------------------------------------
 class RPShapeDataBlockProcess: public RPShapeDataBlock
 {
 DECLARE_FACTORY(RPShapeDataBlockProcess)
 public:
-	enum resAction
+	enum Action
 	{
-		Advance,
-		Seize,
-		Release
+		A_ADVANCE,
+		A_SEIZE,
+		A_RELEASE
 	};
 
-	typedef std::list<resAction> ActionList;
-	typedef std::list<tstring  > ResList;
+	typedef  std::list<Action>   ActionList;
+	typedef  std::list<tstring>  ResNameList;
 
-	void addAction(resAction action);
+	void addAction(Action action);
 	void addRes   (CREF(tstring) res);
 	
-	CREF(ActionList) getAction() const;
-	CREF(ResList)    getRes   () const;
+	CREF(ActionList)  getActionList () const;
+	CREF(ResNameList) getResNameList() const;
 
 private:
 	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
 	virtual ~RPShapeDataBlockProcess();
 
-	ActionList  m_actions;
-	ResList     m_res;
+	ActionList  m_actionList;
+	ResNameList m_resNameList;
 };
 DECLARE_POINTER(RPShapeDataBlockProcess);
 

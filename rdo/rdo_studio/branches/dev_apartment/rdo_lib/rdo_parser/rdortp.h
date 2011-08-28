@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdortp.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdortp.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDORTP_H_
 #define _RDORTP_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/type/type.h"
@@ -19,7 +20,7 @@
 #include "rdo_lib/rdo_parser/rdortp_param.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_value.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -27,10 +28,11 @@ int  rtpparse(PTR(void) lexer);
 int  rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void rtperror(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDORTPResType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORTPResType
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParser);
+PREDECLARE_POINTER(RDORSSResource);
 
 OBJECT(RDORTPResType) IS INSTANCE_OF(RDOParserSrcInfo)
 {
@@ -45,12 +47,23 @@ public:
 	rbool         isPermanent() const   { return m_permanent;  };
 	rbool         isTemporary() const   { return !m_permanent; };
 
+	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
+
 	void addParam(CREF(LPRDORTPParam) param);
 	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
 	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
-	CREF(ParamList) getParams        ()                        const { return m_params; }
+	CREF(ParamList) getParams        ()                        const { return m_params;          }
+
+	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const      { return m_pRuntimeResType; }
+
+	template<class T>
+	void end()
+	{
+		m_pRuntimeResType = rdo::Factory<T>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
+		ASSERT(m_pRuntimeResType);
+	}
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -58,19 +71,20 @@ private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
-	const rsint  m_number;
-	const rbool  m_permanent;
-	ParamList    m_params;
+	rdoRuntime::LPIResourceType m_pRuntimeResType;
+	const ruint                 m_number;
+	const rbool                 m_permanent;
+	ParamList                   m_params;
 };
 DECLARE_POINTER(RDORTPResType);
 
-//// ----------------------------------------------------------------------------
+//// --------------------------------------------------------------------------------
 ////------------------------------ FOR FUZZY LOGIC ------------------------------	
-//// ----------------------------------------------------------------------------
+//// --------------------------------------------------------------------------------
 //
-//// ----------------------------------------------------------------------------
-//// ---------- RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма
-//// ----------------------------------------------------------------------------
+//// --------------------------------------------------------------------------------
+//// -------------------- RDORTPFuzzyMembershiftPoint - точка ф-ии принадлежности нечеткого терма
+//// --------------------------------------------------------------------------------
 //class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
@@ -91,9 +105,9 @@ DECLARE_POINTER(RDORTPResType);
 //	double    m_y_value;
 //};
 //
-//// ----------------------------------------------------------------------------
-//// ---------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности для нечеткого терма
-//// ----------------------------------------------------------------------------
+//// --------------------------------------------------------------------------------
+//// -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности для нечеткого терма
+//// --------------------------------------------------------------------------------
 //class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
@@ -119,9 +133,9 @@ DECLARE_POINTER(RDORTPResType);
 //	Items m_points;	// точки, определяющие ф-ию принадлежности
 //	double m_value;	// значение ф-ии принадлежности для конкретного четкого значения
 //};
-//// ----------------------------------------------------------------------------
-//// ---------- RDORTPFuzzyTerm - нечеткий термин
-//// ----------------------------------------------------------------------------
+//// --------------------------------------------------------------------------------
+//// -------------------- RDORTPFuzzyTerm - нечеткий термин
+//// --------------------------------------------------------------------------------
 //class RDORTPFuzzyTerm: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
@@ -139,9 +153,9 @@ DECLARE_POINTER(RDORTPResType);
 //private:
 //	PTR(RDORTPFuzzyMembershiftFun) m_fun;
 //};
-//// ----------------------------------------------------------------------------
-//// ---------- RDORTPFuzzyTermsSet - набор терминов одного параметра
-//// ----------------------------------------------------------------------------
+//// --------------------------------------------------------------------------------
+//// -------------------- RDORTPFuzzyTermsSet - набор терминов одного параметра
+//// --------------------------------------------------------------------------------
 //class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
@@ -167,9 +181,9 @@ DECLARE_POINTER(RDORTPResType);
 //	Items m_terms; // набор терминов одного параметра
 //};
 //
-//// ----------------------------------------------------------------------------
-//// ---------- RDORTPFuzzyParam
-//// ----------------------------------------------------------------------------
+//// --------------------------------------------------------------------------------
+//// -------------------- RDORTPFuzzyParam
+//// --------------------------------------------------------------------------------
 //class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:

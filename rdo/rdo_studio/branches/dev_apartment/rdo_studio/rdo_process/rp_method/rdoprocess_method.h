@@ -5,7 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_object.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
 #include "rdo_studio/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 
 class RPObjectFlowChart;
@@ -15,9 +15,9 @@ class RPPixmap;
 
 namespace rpMethod {
 
-// ----------------------------------------------------------------------------
-// ---------- RPMethod
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPMethod
+// --------------------------------------------------------------------------------
 class RPMethod: public RPObject
 {
 public:
